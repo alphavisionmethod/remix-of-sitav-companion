@@ -409,7 +409,18 @@ const App = () => (
                     <Route path="/owner/leases" element={<LeaseDashboard />} />
                     <Route path="/owner/constitution" element={<ConstitutionEditor />} />
 
-                    {/* Enterprise Control Plane */}
+                    {/* Owner Mode — Founder-Safe Control Room */}
+                    <Route path="/owner-mode" element={<OwnerModePage />} />
+
+                    {/* Global Admin Surfaces */}
+                    <Route path="/workflow-replay" element={<WorkflowReplayHub />} />
+                    <Route path="/observability" element={<ObservabilityPage />} />
+                    <Route path="/users" element={<UsersAdminPage />} />
+                    <Route path="/policy-simulator" element={<PolicySimulatorHub />} />
+
+                    {/* Redirects — merge rule */}
+                    <Route path="/policies/simulator" element={<Navigate to="/policy-simulator" replace />} />
+
                     <Route path="/enterprise" element={<EnterpriseControlPlane />} />
                     <Route path="/enterprise/roles" element={<EnterpriseControlPlane />} />
                     <Route path="/enterprise/compliance" element={<EnterpriseControlPlane />} />
