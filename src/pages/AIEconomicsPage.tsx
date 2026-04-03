@@ -52,6 +52,7 @@ function useDemoEconomics() {
 
     // Set a budget
     engines.tokens.setBudget({
+      id: "budget-daily-global",
       scope: "daily",
       scopeId: "global",
       limit: 100000,
@@ -60,6 +61,8 @@ function useDemoEconomics() {
       period: "daily",
       hardLimit: false,
       alertThreshold: 80,
+      overage: 0,
+      lastReset: new Date().toISOString(),
     });
 
     const dashboard = engines.tokens.getDashboard("today");
