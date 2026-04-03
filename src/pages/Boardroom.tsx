@@ -8,6 +8,8 @@ import { KPITile, RiskCard, OpportunityCard, EmptyState, SitaTabs } from "@/comp
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge, StateStep } from "@/components/sita/StateBadge";
 import { ConfidenceLadder } from "@/components/sita/AdvisorComponents";
+import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { Progress } from "@/components/ui/progress";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getPerspectiveConfig, type PerspectiveLevel } from "@/lib/advisor-protocol";
@@ -614,7 +616,124 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       {/* Confidence Envelope & Provenance */}
       {config.showConfidenceEnvelope && <ConfidenceEnvelopePanel envelope={packet.confidenceEnvelope} />}
       {config.showProvenance && <ProvenancePanel packet={packet} />}
+
+      {/* ── Phase 5: Twin Health Signals ── */}
+      <BoardroomTwinPanel />
+
+      {/* ── Phase 5: Boardroom Templates ── */}
+      <BoardroomTemplatesPanel />
+
+      {/* ── Phase 5: Quick Scenario Simulation ── */}
+      <BoardroomScenarioPanel />
     </motion.div>
+  );
+};
+
+// ── Phase 5: Digital Twin Health in Boardroom ─────────────────
+const BoardroomTwinPanel = () => {
+  const { engines } = useOSRuntime();
+  const types = ["business", "money", "household"] as const;
+
+  // Seed twins if needed
+  for (const t of types) {
+    if (!engines.twins.getTwin(t, "default-user")) {
+      const twin = engines.twins.createTwin(t, "default-user");
+      if (t === "business") {
+        engines.twins.addSignal(twin.id, { category: "revenue_risk", severity: "warning", title: "Pipeline thinning", description: "Deal pipeline value dropped 18% this month", trend: "worsening", detectedAt: new Date().toISOString() });
+        engines.twins.addBottleneck(twin.id, { area: "Follow-up", severity: "high", description: "4.2 day avg response time", impact: "Losing 15% warm leads", suggestedAction: "Enable auto follow-up", estimatedResolutionDays: 1 });
+      }
+      if (t === "money") {
+        engines.twins.addSignal(twin.id, { category: "cash_pressure", severity: "warning", title: "Cash runway shortening", description: "4.8 months at current burn", trend: "worsening", detectedAt: new Date().toISOString() });
+      }
+      if (t === "household") {
+        engines.twins.addSignal(twin.id, { category: "schedule_strain", severity: "info", title: "3 conflicts next week", description: "Over-scheduled", trend: "stable", detectedAt: new Date().toISOString() });
+      }
+    }
+  }
+
+  const unified = engines.twins.getUnifiedView("default-user");
+  const twinMeta: Record<string, { label: string; color: string }> = {
+    business: { label: "Business", color: "text-primary" },
+    money: { label: "Money", color: "text-sita-gold" },
+    household: { label: "Household", color: "text-trust-safe" },
+  };
+
+  return (
+    <div className="space-y-3">
+      <SitaSectionHeader title="Operating Twin Health" subtitle="Live signals from your digital twins" />
+      <div className="grid gap-3 sm:grid-cols-3">
+        {unified.twins.filter(t => t.type !== "unified" && t.type !== "operating").map(twin => {
+          const meta = twinMeta[twin.type] || { label: twin.type, color: "text-foreground" };
+          return (
+            <SitaCard key={twin.id} hover={false} className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className={`text-xs font-semibold ${meta.color}`}>{meta.label} Twin</span>
+                <span className={`text-lg font-bold font-display ${twin.healthScore >= 70 ? "text-trust-safe" : twin.healthScore >= 40 ? "text-accent" : "text-destructive"}`}>{twin.healthScore}</span>
+              </div>
+              <Progress value={twin.healthScore} className="h-1.5 mb-2" />
+              <p className="text-[10px] text-muted-foreground">{twin.signals.length} signals · {twin.bottlenecks.length} bottlenecks</p>
+              {twin.signals.filter(s => s.severity !== "info").slice(0, 1).map(s => (
+                <div key={s.id} className="flex items-start gap-1.5 mt-2 text-[10px]">
+                  <AlertTriangle className={`h-3 w-3 shrink-0 mt-0.5 ${s.severity === "critical" ? "text-destructive" : "text-accent"}`} />
+                  <span className="text-muted-foreground">{s.title}</span>
+                </div>
+              ))}
+            </SitaCard>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// ── Phase 5: Boardroom Session Templates ──────────────────────
+const BoardroomTemplatesPanel = () => {
+  const { engines } = useOSRuntime();
+  const templates = engines.boardroom.getTemplates();
+
+  return (
+    <div className="space-y-3">
+      <SitaSectionHeader title="Session Templates" subtitle="Start a structured boardroom session" />
+      <div className="grid gap-2 sm:grid-cols-3">
+        {templates.map(t => (
+          <SitaCard key={t.id} hover className="p-3 cursor-pointer">
+            <p className="text-sm font-semibold text-foreground">{t.name}</p>
+            <p className="text-[10px] text-muted-foreground mt-0.5">{t.description}</p>
+            <div className="flex items-center gap-2 mt-2">
+              <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary capitalize">{t.type}</span>
+              <span className="text-[9px] text-muted-foreground">{t.frequency} · {t.defaultAgenda.length} items</span>
+            </div>
+          </SitaCard>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ── Phase 5: Quick Scenario Simulation ────────────────────────
+const BoardroomScenarioPanel = () => {
+  const { engines } = useOSRuntime();
+  const templates = engines.scenarios.getTemplates().slice(0, 3);
+
+  return (
+    <div className="space-y-3">
+      <SitaSectionHeader title="Scenario Cards" subtitle="Simulate decisions before committing" />
+      <div className="grid gap-2 sm:grid-cols-3">
+        {templates.map(t => (
+          <SitaCard key={t.id} hover className="p-3 cursor-pointer group">
+            <div className="flex items-center gap-2 mb-1">
+              <Lightbulb className="h-3.5 w-3.5 text-accent" />
+              <p className="text-sm font-semibold text-foreground">{t.name}</p>
+            </div>
+            <p className="text-[10px] text-muted-foreground">{t.description}</p>
+            <div className="flex items-center gap-2 mt-2">
+              <span className="text-[9px] px-1.5 py-0.5 rounded bg-accent/10 text-accent capitalize">{t.type.replace("_", " ")}</span>
+              <span className="text-[9px] text-muted-foreground">{t.domain}</span>
+            </div>
+          </SitaCard>
+        ))}
+      </div>
+    </div>
   );
 };
 
