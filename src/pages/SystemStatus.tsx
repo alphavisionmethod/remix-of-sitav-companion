@@ -175,7 +175,7 @@ const SystemStatus = () => {
     else navigate(`/system/${key}`);
   };
 
-  const connectors = mockConnectors;
+  const connectors = ENGINE_CONNECTORS;
   const sloData = (slos || []) as Array<{ service: string; slo: number; current: number; burnRate: string; period: string }>;
 
   const incidents = healingService.getAllIncidents();

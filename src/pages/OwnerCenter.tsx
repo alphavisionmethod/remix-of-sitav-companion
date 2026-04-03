@@ -1646,7 +1646,7 @@ const OwnerCenter = () => {
                 </div>
               </div>
             </SitaCard>
-            {mockCosts.map((c, i) => (
+            {ENGINE_COSTS.map((c, i) => (
               <SitaCard key={i} hover={false} className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
