@@ -200,7 +200,7 @@ function QuickActionsStrip() {
 // ── MC Home ─────────────────────────────────────────────────────────────────
 
 function MCHome() {
-  const { adminIncidents: adminData } = useMCAdmin();
+  const { adminIncidents: adminData, runtime } = useMCAdmin();
   const adminIncidentList = adminData?.incidents || [];
   const openIncidents = adminIncidentList.length > 0
     ? mockIncidents.map((m, i) => ({ ...m, status: adminIncidentList[i]?.status === "resolved" ? "resolved" as const : m.status })).filter(i => i.status !== "resolved")
