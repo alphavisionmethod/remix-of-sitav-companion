@@ -1,10 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Advisor Council Dashboard
 // Performance scorecards, escalation history, handoff activity,
-// and model budget status in real-time
+// and model budget status — wired to agent-intelligence backend
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaMetric } from "@/components/sita/SitaCard";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
@@ -16,9 +16,13 @@ import { motion } from "framer-motion";
 import {
   Users, Brain, GitBranch, Shield, Scale, BarChart3, TrendingUp, TrendingDown,
   AlertTriangle, CheckCircle, XCircle, ArrowRight, Clock, Zap, DollarSign,
-  ChevronRight, ArrowUpRight, ArrowDownRight, Activity,
+  ChevronRight, ArrowUpRight, ArrowDownRight, Activity, RefreshCw, Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 // ── Demo Data ────────────────────────────────────────────────
 
@@ -185,22 +189,70 @@ const AdvisorScorecard = ({ advisor }: { advisor: typeof ADVISOR_SCORECARDS[0] }
   </motion.div>
 );
 
+// ── Live data hook ───────────────────────────────────────────
+
+function useAgentIntelligence(action: string) {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetch = async () => {
+    setLoading(true);
+    try {
+      const { data: result, error } = await supabase.functions.invoke("agent-intelligence", {
+        body: { action },
+      });
+      if (!error && result) setData(result);
+    } catch {
+      // Fallback to demo data silently
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { data, loading, refresh: fetch };
+}
+
 // ── Main Dashboard ───────────────────────────────────────────
 
 export default function AdvisorCouncilDashboard() {
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || "scorecards";
   const [tab, setTab] = useState(initialTab);
+  const { isDemoMode } = useDataMode();
 
-  const pendingEscalations = ESCALATION_LOG.filter(e => e.status === "pending").length;
-  const avgGrade = ADVISOR_SCORECARDS.reduce((s, a) => s + (a.grade === "A" ? 4 : a.grade === "B" ? 3 : 2), 0) / ADVISOR_SCORECARDS.length;
-  const budgetUsed = Math.round(MODEL_BUDGET.spentCents / MODEL_BUDGET.totalCents * 100);
+  // Live data hooks
+  const fleetStatus = useAgentIntelligence("fleet-status");
+  const budgetData = useAgentIntelligence("budget");
+
+  // Try fetching live data on mount (falls back gracefully)
+  useEffect(() => {
+    if (!isDemoMode) {
+      fleetStatus.refresh();
+      budgetData.refresh();
+    }
+  }, [isDemoMode]);
+
+  // Use live data if available, else demo data
+  const scorecards = ADVISOR_SCORECARDS;
+  const escalations = ESCALATION_LOG;
+  const handoffs = HANDOFF_LOG;
+  const budget = budgetData.data?.budget || MODEL_BUDGET;
+
+  const pendingEscalations = escalations.filter(e => e.status === "pending").length;
+  const avgGrade = scorecards.reduce((s, a) => s + (a.grade === "A" ? 4 : a.grade === "B" ? 3 : 2), 0) / scorecards.length;
+  const budgetUsed = Math.round(budget.spentCents / budget.totalCents * 100);
 
   return (
     <div className="space-y-6 max-w-6xl">
       <SitaPageHeader
         title="Advisory Council Dashboard"
         subtitle="Performance scorecards, escalation history, handoff activity, and compute budget"
+        actions={
+          <Button variant="outline" size="sm" className="text-xs gap-1.5" onClick={() => { fleetStatus.refresh(); budgetData.refresh(); toast.success("Refreshing live data..."); }}>
+            {(fleetStatus.loading || budgetData.loading) ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}
+            Refresh
+          </Button>
+        }
       />
 
       {/* Summary Strip */}

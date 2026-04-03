@@ -918,6 +918,52 @@ function EmptyState({ icon: Icon, title, description, color }: { icon: React.Ele
   );
 }
 
+// ── Environment Selector + Diagnostics ──────────────────────────────────────
+
+function EnvironmentBar() {
+  const [env, setEnv] = useState<"production" | "staging">("production");
+
+  const exportDiagnostics = () => {
+    const bundle = {
+      timestamp: new Date().toISOString(),
+      environment: env,
+      agents: mockInternalAgents.map(a => ({ id: a.id, name: a.name, health: a.health, role: a.role })),
+      incidents: mockIncidents.map(i => ({ id: i.id, title: i.title, severity: i.severity, status: i.status })),
+      connectors: mockConnectorHealth.map(c => ({ id: c.id, name: c.name, status: c.status })),
+      costAnomalies: mockCostAnomalies.length,
+      stuckWorkflows: mockStuckWorkflows.length,
+      safeMode: mockSafeMode.globalSafeMode,
+    };
+    const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `sita-diagnostics-${env}-${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-xl border border-border/40 bg-card/50 px-4 py-2">
+      <div className="flex items-center gap-2">
+        <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Environment</span>
+        <div className="flex rounded-lg border border-border/40 overflow-hidden">
+          <button onClick={() => setEnv("production")} className={cn("px-3 py-1 text-[11px] font-medium transition-all", env === "production" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground")}>
+            Production
+          </button>
+          <button onClick={() => setEnv("staging")} className={cn("px-3 py-1 text-[11px] font-medium transition-all", env === "staging" ? "bg-amber-500/10 text-amber-500" : "text-muted-foreground hover:text-foreground")}>
+            Staging
+          </button>
+        </div>
+        <div className={cn("h-2 w-2 rounded-full", env === "production" ? "bg-emerald-500" : "bg-amber-500 animate-pulse")} />
+      </div>
+      <button onClick={exportDiagnostics} className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-[11px] text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
+        <Database className="h-3 w-3" /> Export Diagnostics
+      </button>
+    </div>
+  );
+}
+
 // ── Main Page ───────────────────────────────────────────────────────────────
 
 export default function MissionControlPage() {
@@ -927,6 +973,7 @@ export default function MissionControlPage() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-5">
       <SystemPulseHero />
+      <EnvironmentBar />
       <QuickActionsStrip />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
