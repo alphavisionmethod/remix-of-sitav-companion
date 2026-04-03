@@ -27,7 +27,8 @@ export type TypedReceipt =
   | BoardroomDecisionProof
   | CommunicationReceipt
   | PaymentReceipt
-  | SystemReceipt;
+  | SystemReceipt
+  | RefusalReceipt;
 
 interface BaseReceipt {
   id: string;
