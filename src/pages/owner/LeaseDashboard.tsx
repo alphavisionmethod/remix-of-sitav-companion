@@ -160,7 +160,7 @@ function LeaseCard({
           <Eye className="h-3 w-3" /> Inspect
         </button>
         {lease.status === "active" && (
-          <SitaButton size="sm" variant="destructive" onClick={() => onRevoke(lease.id)}>
+          <SitaButton size="sm" variant="danger" onClick={() => onRevoke(lease.id)}>
             <Ban className="h-3 w-3 mr-1" /> Revoke
           </SitaButton>
         )}
