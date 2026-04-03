@@ -1,247 +1,141 @@
 
 
-# SITA OS — Full Product Experience & Implementation Blueprint
+# SITA OS — Intelligence & Advisor System Completion Plan
+
+## Audit Summary
+
+After reviewing the entire codebase, SITA OS already has an extraordinarily deep intelligence architecture:
+
+**What exists and is fully implemented:**
+- Brain Core with intent parsing, orchestration plans, council voting, advisor selection, simulation builder, approval packaging, explanation builder, boardroom request builder (8 modules)
+- Advisor Protocol Engine with 26 advisors across 4 councils (business: 7, finance: 6, concierge: 6, meta: 7), full council protocol with disagreement detection, capability checks, trust threshold validation, mission modes (10 modes), perspective configs (475 lines)
+- No-Hallucination Engine with confidence envelopes, staleness tracking, grounding reports, contradiction detection, refusal engine, truth boundaries (35 deterministic field rules), advisor grounding contracts (6 contracts)
+- Internal Agent Workforce: 40 agents across 6 councils, 7 supervisors, full rights system with promotion/demotion rules
+- Self-Learning Engine: 521 lines with exponential decay, confidence calibration, pattern detection, promotion/demotion recommendations
+- Agent Orchestrator: 418 lines with lifecycle management, scheduler, task queue, fleet status, cost budgets
+- Self-Healing: immune controller, root cause analysis, auto-remediation capabilities
+- Workflow Engine: 11-state canonical state machine with validated transitions
+- Core Services Chain Orchestrator: policy → executor → receipt → verification with refusal receipts
+- Correction Service: records user corrections and adjusts confidence per domain
+- Trust Memory: weighted factor scoring with flags and history
+
+**What is genuinely missing (5 items):**
+
+### 1. Advisor Handoff Protocol
+No `handoff` logic exists. When one advisor reaches its autonomy ceiling or a cross-domain issue emerges, there is no formal protocol for transferring context to another advisor.
+
+### 2. Advisor Performance Evaluation Service
+The Self-Learning Engine tracks agent performance but there is no advisor-specific performance evaluation that maps to the `kpis` field on each `AdvisorDefinition`. No scoring of advisor recommendations vs actual outcomes.
+
+### 3. Escalation Protocol for Advisor Council
+Collections has escalation. Internal agents have escalation targets. But the advisor council itself has no formal escalation chain — what happens when a council vote fails consensus, when confidence is below threshold, or when a meta-advisor disagrees with a domain advisor.
+
+### 4. Negative Receipts (Refusal Proof)
+The core-services chain creates `refusalReceipt` on policy deny, but there is no formalized negative receipt type in the proof-model package. The receipt-service in `src/lib/services/receipt-service` only has `ActionReceipt` and `SystemReceipt`.
+
+### 5. Budget-Aware Compute Router
+The Model Routing agent exists as a definition but has no actual routing logic. No service maps intent complexity to model tier (cheap/fast vs expensive/accurate).
 
 ---
 
-## 1. PRODUCT EXPERIENCE THESIS
+## Implementation Plan
 
-SITA OS is a sovereign operating environment — one shell, one brain, one trust chain — for founders, families, and service businesses who need a calm, premium, AI-native command layer over their entire life and work.
+### Task 1: Advisor Handoff Protocol
+**File:** `src/lib/advisor-protocol/handoff.ts`
 
-**Emotional state it creates:** Relief. The feeling that someone competent is watching everything, nothing is falling through cracks, and every action is provable. Not excitement — *confidence*.
+Create a formal handoff protocol with:
+- `HandoffRequest` type: source advisor, target advisor, context payload, reason, urgency
+- `HandoffResult`: accepted/rejected, context received, proof ID
+- `initiateHandoff()`: validates target advisor has capacity and relevant scope
+- `acceptHandoff()`: target advisor acknowledges with context receipt
+- `rejectHandoff()`: target refuses with reason, triggers escalation
+- Rules: context must include all relevant memory keys, proof chain must continue, original advisor remains in "monitoring" state
 
-**What "premium" means:** Every pixel earns its space. No gratuitous decoration. Information density is intentional. Whitespace is structural. Typography carries hierarchy. Motion confirms, never distracts.
+Export from `src/lib/advisor-protocol/index.ts`.
 
-**What "calm" means:** The system never shouts. Urgency is conveyed through semantic color shifts and badge weight, not flashing alerts. The default state is quiet readiness.
+### Task 2: Advisor Performance Evaluation
+**File:** `src/lib/advisor-protocol/performance.ts`
 
-**What "powerful without chaos" means:** 150+ routes exist, but the user sees 5 primary workspaces. Depth reveals itself through interaction, not upfront complexity.
+Create evaluation service that:
+- `AdvisorPerformanceRecord`: tracks recommendation acceptance rate, correction frequency, confidence calibration accuracy, average response quality, boardroom contribution score
+- `evaluateAdvisor()`: computes performance against the advisor's `kpis` field
+- `getAdvisorScorecard()`: returns formatted scorecard per advisor
+- `getCouncilPerformance()`: aggregates across a council
+- `shouldDemoteAdvisor()` / `shouldPromoteAdvisor()`: based on outcome history
+- Connects to the Self-Learning Engine for outcome data
 
-**What "AI-native but human-friendly" means:** Advisors suggest, simulate, and draft — but proof, receipts, and approval gates are the source of truth. The human always sees *why* before *what happens*.
+Export from `src/lib/advisor-protocol/index.ts`.
 
-**What "trust-bearing beauty" means:** Verification badges, proof cards, confidence scores, and approval chains are first-class visual elements with their own design language, elevation, and motion.
+### Task 3: Council Escalation Protocol
+**File:** `src/lib/advisor-protocol/escalation.ts`
 
----
+Create escalation logic for the advisor council:
+- `EscalationTrigger`: consensus failure, confidence below threshold, blocking disagreement, autonomy ceiling reached, policy violation
+- `EscalationTarget`: meta-advisor, owner, trust-policy-advisor, recovery-advisor
+- `evaluateEscalation()`: given a `CouncilSynthesis`, determine if escalation is needed
+- `routeEscalation()`: select target based on trigger type and domain
+- `createEscalationPackage()`: bundle context, disagreements, recommendations, and proof for the escalation target
+- Rules: blocking disagreements always escalate to owner; consensus failures escalate to meta-advisor first; policy violations escalate to trust-policy-advisor
 
-## 2. VISUAL DESIGN SYSTEM
+Export from `src/lib/advisor-protocol/index.ts`.
 
-### Brand Color System (Already Correct)
+### Task 4: Negative Receipt Type in Proof Model
+**File:** `src/packages/proof-model/index.ts` — add `RefusalReceipt` type
+**File:** `src/lib/services/receipt-service/receipts.service.ts` — add `createRefusalReceipt()`
 
-| Token | HSL | Role |
-|-------|-----|------|
-| `--sita-purple` | 265 55% 58% | Primary brand, CTAs, active states |
-| `--sita-gold` | 38 85% 58% | Opportunity, accent, concierge domain |
-| `--trust-safe` | 152 55% 48% | Verified, approved, healthy |
-| `--urgency-critical` | 0 65% 52% | Failed, blocked, destructive |
+Add:
+- `RefusalReceipt` type: extends base receipt with `refusalReason`, `blockedAction`, `policyId`, `advisorId`, `confidenceAtRefusal`, `requiredForRetry` fields
+- `createRefusalReceipt()` in receipt service with hash chaining
+- Update `TypedReceipt` union to include `RefusalReceipt`
 
-Surface layers (0-3), glass treatment, shadow system, domain accent colors — all already defined in `index.css`. No palette changes needed. Typography (Space Grotesk display, Inter body, JetBrains Mono) is correct. Motion tokens in `design-tokens` are correct.
+### Task 5: Budget-Aware Model Router
+**File:** `src/lib/services/brain-core/model-router.ts`
 
-### New Component Primitives Needed
+Create:
+- `ModelTier`: "nano" | "standard" | "premium" | "reasoning"
+- `ModelRoutingDecision`: selected tier, estimated cost, estimated latency, reasoning
+- `routeToModel()`: given intent complexity, domain risk class, budget remaining, and urgency → select model tier
+- Rules: critical-truth domains always use "premium" or "reasoning"; low-risk queries use "nano"; simulations use "standard"; budget exhaustion forces downgrade with caveat
+- `getModelBudgetStatus()`: remaining budget, spend rate, projected exhaustion
 
-| Component | Purpose |
-|-----------|---------|
-| `ConfidenceBar` | Visual 0-100 score with semantic color gradient |
-| `ApprovalGate` | Inline simulate/approve/reject widget |
-| `ProofReceipt` | Expandable proof artifact with verification badge |
-| `AdvisorAvatar` | Advisor identity with status indicator |
-| `BoardroomSlide` | Fullscreen presentation-grade content card |
-| `DomainHeader` | Workspace header with domain color accent bar |
+Export from brain-core index.
 
----
-
-## 3. GLOBAL SHELL REFINEMENTS
-
-### Sidebar (AppSidebar) — Reduce Cognitive Load
-- Show 5 primary items by default: Daily Pulse, Business, Money, Concierge, Files
-- Collapse Intelligence (Advisors, Inbox, Activity, Opportunities, Approvals) into expandable group
-- Collapse System (Workflows, Proof, Boardroom) into expandable group
-- Collapse Control (Personalization, Memory, Automation, System) into expandable group
-- Keep footer icons: Pack Store, Settings, Mission Control
-
-### Right Contextual Rail — New
-- Slide-in panel for entity detail (lead, invoice, task, etc.)
-- Shows proof chain, advisor notes, related items
-- Extends existing `InspectorPanel` concept
-
-### Context Switcher — New
-- Household/org/entity dropdown in top bar
-- Switch between personal, family, business entity views
-
-### Display Mode Additions
-- **Boardroom mode**: No chrome, fullscreen presentation slides
-- **Operator mode**: Dense Mission Control variant
-- **Family mode**: Concierge-forward, warm accent
-
----
-
-## 4. APP-BY-APP DESIGN
-
-### 4A. DAILY PULSE (/) — Enhance
-Already 604 lines with mission modes, KPIs, cross-domain intelligence. Add:
-- "What changed since last visit" delta section at top
-- Inline approval queue (not just badge count)
-- Boardroom prep card (next scheduled review)
-- Quick actions row (add lead, pay bill, create task, upload file)
-
-### 4B. BUSINESS CENTER (/business/*) — Deepen
-15 sub-pages routed. Needs:
-- Customer detail with full timeline + health score + communication history
-- Lead aging detection with advisor suggestions
-- Invoice follow-up automation with approval gates
-- Pipeline kanban with drag-drop stages
-- Revenue Autopilot playbook builder
-
-### 4C. MONEY CENTER (/money/*) — Deepen
-12 sub-pages routed. Needs:
-- Safe-to-spend widget (deterministic via sovereign-calculation)
-- Bill calendar with countdown and auto-pay status
-- Subscription waste detector with cancellation suggestions
-- Reserve health visualization (target vs actual)
-- Cash timing waterfall chart
-
-### 4D. CONCIERGE CENTER (/concierge/*) — Deepen
-16 sub-pages routed. Needs:
-- Calendar reconciliation (merge family calendars)
-- Task delegation with household member assignment
-- Provider management with service history
-- Travel itinerary builder
-- Events/gifts relationship continuity tracker
-
-### 4E. FILES CENTER (/files/*) — Deepen
-8 sub-pages. Needs:
-- Universal drag-drop intake box
-- Entity extraction display (linked to entity-graph)
-- Obligation extraction (due dates from documents)
-- Privacy/retention controls
-- Graph view of linked entities
-
-### 4F. PRODUCTIVITY HUB — Deepen
-Hub + 3 workspaces. Needs:
-- Template library from template-registry
-- Version history with diff
-- Proposal builder connected to business quotes
-- Review/approval flow
-
-### 4G. ADVISOR COUNCIL (/advisors/*) — Deepen
-AdvisorWorkspace with 7 sub-routes. Needs:
-- Single advisor view: what it sees, confidence, reasoning, history
-- Multi-advisor comparison for same decision
-- Simulation studio with before/after projections
-- Disagreement cards when advisors conflict
-- Confidence ladder visualization
-
-### 4H. MAIN GUIDE (SitaCompanionBar) — Enhance
-Exists as floating companion. Needs:
-- Context-aware workspace summaries
-- Quick routing suggestions
-- Workflow creation assistant
-- Never replaces proof as truth
-
-### 4I. BOARDROOM (/boardroom/*) — Deepen
-7 sub-routes. Needs:
-- Template-driven reviews (weekly business, weekly finance, monthly planning)
-- Priorities → Risks → Unresolved → Opportunities → Actions flow
-- Decision memory with carryover
-- Confidence ladder per decision
-- Fullscreen presentation mode
-- Advisor disagreement cards
-
-### 4J. PROOF CENTER (/proof/*) — Deepen
-4 sub-routes. Needs:
-- Real-time receipt stream
-- Full execution chain visualization
-- Verification state badges
-- Rollback history with recovery proof
-- Export/audit trail
-
-### 4K. APPROVAL CENTER (/approvals/*) — Deepen
-3 sub-routes. Needs:
-- Risk context and policy explanation per approval
-- Simulation preview before approve
-- Batch approve for low-risk items
-- Escalation flow
-
-### 4L. PACK STORE (/store/*) — Deepen
-6 pages. Needs:
-- Featured packs by category
-- Trust requirement display
-- Trial mode
-- Usage analytics
-
-### 4M. MISSION CONTROL (/mission-control/*, /owner/*) — Polish
-Extensive sub-routes exist. Needs:
-- Clear advisor vs internal agent separation
-- Agent status dashboard with confidence + autonomy level
-- Incident auto-healing proof timeline
-- Cost guardrail visualization
-- Plain-language mode for non-technical owners
-
-### 4N. MOBILE COMPANION (/mobile/*) — Continuity Surface
-9 pages exist. Needs:
-- 3-5 item pulse summary
-- Quick approve/reject
-- Proof receipt viewer
-- Card-based touch-optimized UI
+### Task 6: Update Registries and Manifests
+- Update `generated/advisor-registry.json` to include `handoffTargets`, `escalationBehavior`, and `performanceKpis` per advisor
+- Update `generated/capability-index.json` to include model-routing capability
+- Verify all new exports compile cleanly
 
 ---
 
-## 5. DEVELOPMENT MODEL
+## What Does NOT Need Work
 
-### Architecture Law
-
-| Frontend Workspace | Backend Service |
-|---|---|
-| Business Center | business-os |
-| Money Center | finance-os |
-| Concierge Center | concierge-os |
-| Files Center | memory-service + entity-graph |
-| Boardroom | boardroom-service (reads projections) |
-| Advisors | brain-core |
-| Proof/Approvals | receipt-service + approval-engine |
-| Mission Control | All internal services |
-| Pack Store | capability-router + billing |
-| Productivity | Thin surfaces on projections |
-
-No new peer backend modules. CRM = business-os. Family = concierge-os. Investments = finance-os.
-
----
-
-## 6. LAUNCH SEQUENCE
-
-### NOW (Sprint 1)
-1. Sidebar refinement — collapse to 5 primary + expandable
-2. New components (ConfidenceBar, ApprovalGate, ProofReceipt, AdvisorAvatar, DomainHeader)
-3. Daily Pulse enhancement — "what changed", inline approvals, boardroom prep
-4. Visual polish — glass treatment on overlays, elevation consistency
-5. Proof Center depth — receipt detail with execution chain
-6. Boardroom templates — weekly business + finance reviews
-
-### NEXT (Sprint 2)
-7. Business Center depth — customer timeline, lead aging, invoice automation
-8. Money Center depth — safe-to-spend, bill calendar, waste detector
-9. Concierge depth — calendar reconciliation, task delegation
-10. Advisor workspace — single advisor view, simulation studio
-11. Right contextual rail
-12. Context switcher
-
-### LATER
-13. Files graph view, obligation extraction
-14. Productivity template library, version history
-15. Investment Office surfaces
-16. Mobile biometric approval
-17. Boardroom replay mode
-18. Desktop/spatial surfaces
+These are all fully implemented and correct:
+- Intent parsing and orchestration (brain-core)
+- Council voting and synthesis (advisor-protocol)
+- Disagreement detection (advisor-protocol — `detectCouncilDisagreements`)
+- Advisor capability checks and trust validation
+- Truth boundaries (35 deterministic rules)
+- Confidence/staleness/grounding/contradiction/refusal engines (no-hallucination)
+- Advisor grounding contracts (6 advisors)
+- Mission modes (10 modes with advisor prominence)
+- Workflow state machine (11 states)
+- Self-healing immune system
+- Self-learning with decay
+- Agent orchestrator with fleet management
+- 40 internal agents with full definitions
+- Correction service with confidence adjustment
+- Trust memory with factor scoring
 
 ---
 
-## 7. IMPLEMENTATION DIRECTIVE
+## Implementation Order
 
-Begin with Sprint 1, items 1-6, in this priority order:
-1. Sidebar refinement (fastest UX impact)
-2. New component primitives (foundation for everything else)
-3. Daily Pulse enhancement (first impression)
-4. Visual polish pass (premium feel)
-5. Proof Center depth (trust differentiator)
-6. Boardroom templates (executive-grade)
+1. Advisor Handoff Protocol (foundational)
+2. Council Escalation Protocol (depends on handoff)
+3. Negative Receipt Type (quick, enables proof for refusals)
+4. Advisor Performance Evaluation (connects learning → advisors)
+5. Budget-Aware Model Router (operationalizes cost control)
+6. Registry updates (final sync)
 
-All work stays within existing architecture. No new backend services. No new packages. Depth, polish, and premium execution of what's correctly structured.
+All work stays within existing architecture. No new packages. No new backend services.
 
