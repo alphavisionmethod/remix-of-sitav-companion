@@ -683,6 +683,111 @@ const OwnerCenter = () => {
         )}
 
         {/* ══════════════════════════════════════════ */}
+        {/* AUTOPILOT */}
+        {/* ══════════════════════════════════════════ */}
+        {activePage === "autopilot" && (
+          <motion.div key="autopilot" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
+            <div className="grid gap-3 sm:grid-cols-4">
+              <KPITile label="Automation Coverage" value="67%" icon={Zap} sub="Eligible workflows" trend="up" />
+              <KPITile label="Delegated Recurring" value="12" icon={RotateCcw} sub="Fully automated" />
+              <KPITile label="Approval Conversion" value="94%" icon={CheckCircle} sub="Auto-approved" trend="up" />
+              <KPITile label="Blocked Flows" value="3" icon={Shield} sub="Trust-sensitive" />
+            </div>
+
+            <SitaCard hover={false} className="p-5">
+              <p className="font-display text-sm font-bold text-foreground mb-3">Autonomy Ladder</p>
+              <p className="text-[10px] text-muted-foreground mb-4">Each workflow family can be set to a different execution mode</p>
+              <div className="space-y-2">
+                {[
+                  { family: "Bill Payments", mode: "execute", eligible: true, savings: "$120/mo" },
+                  { family: "Lead Follow-ups", mode: "draft", eligible: true, savings: "4h/week" },
+                  { family: "Invoice Generation", mode: "approval-ready", eligible: true, savings: "$80/mo" },
+                  { family: "Insurance Renewals", mode: "simulate", eligible: false, savings: "$500/yr" },
+                  { family: "Tax Filings", mode: "observe", eligible: false, savings: "N/A" },
+                  { family: "Grocery Orders", mode: "execute", eligible: true, savings: "2h/week" },
+                  { family: "Capital Allocation", mode: "approval-ready", eligible: false, savings: "N/A" },
+                ].map((wf) => (
+                  <div key={wf.family} className="flex items-center justify-between rounded-lg border border-border/30 bg-card/30 px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`h-2 w-2 rounded-full ${
+                        wf.mode === "execute" ? "bg-trust-safe" :
+                        wf.mode === "draft" ? "bg-primary" :
+                        wf.mode === "approval-ready" ? "bg-accent" :
+                        wf.mode === "simulate" ? "bg-sita-gold" :
+                        "bg-muted-foreground"
+                      }`} />
+                      <div>
+                        <p className="text-xs font-semibold text-foreground">{wf.family}</p>
+                        <p className="text-[9px] text-muted-foreground">
+                          {wf.eligible ? "Eligible for delegation" : "Trust-sensitive — manual only"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[9px] text-muted-foreground">{wf.savings}</span>
+                      <span className={`text-[9px] font-semibold rounded-full px-2 py-0.5 ${
+                        wf.mode === "execute" ? "bg-trust-safe/10 text-trust-safe" :
+                        wf.mode === "draft" ? "bg-primary/10 text-primary" :
+                        wf.mode === "approval-ready" ? "bg-accent/10 text-accent" :
+                        wf.mode === "simulate" ? "bg-sita-gold/10 text-sita-gold" :
+                        "bg-secondary text-muted-foreground"
+                      }`}>
+                        {wf.mode}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </SitaCard>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <SitaCard hover={false} className="p-5">
+                <p className="font-display text-sm font-bold text-foreground mb-2">Why Not Fully Automated?</p>
+                <div className="space-y-2">
+                  {[
+                    { flow: "Insurance Renewals", reason: "Amount exceeds $500 threshold — dual approval required" },
+                    { flow: "Tax Filings", reason: "Regulatory domain — simulation + human review mandatory" },
+                    { flow: "Capital Allocation", reason: "Critical risk tier — owner-only authorization" },
+                  ].map(b => (
+                    <div key={b.flow} className="rounded-lg bg-destructive/5 border border-destructive/10 p-3">
+                      <p className="text-xs font-semibold text-foreground">{b.flow}</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">{b.reason}</p>
+                    </div>
+                  ))}
+                </div>
+              </SitaCard>
+
+              <SitaCard hover={false} className="p-5">
+                <p className="font-display text-sm font-bold text-foreground mb-2">Global Controls</p>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">Simulation Before Action</p>
+                      <p className="text-[9px] text-muted-foreground">Run dry-run before executing any new workflow</p>
+                    </div>
+                    <div className="h-5 w-9 rounded-full bg-trust-safe/20 flex items-center justify-end px-0.5"><div className="h-4 w-4 rounded-full bg-trust-safe" /></div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">Pause All Automation</p>
+                      <p className="text-[9px] text-muted-foreground">Emergency freeze — all workflows go to observe mode</p>
+                    </div>
+                    <div className="h-5 w-9 rounded-full bg-secondary flex items-center px-0.5"><div className="h-4 w-4 rounded-full bg-muted-foreground" /></div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">Budget-Aware Throttle</p>
+                      <p className="text-[9px] text-muted-foreground">Auto-reduce automation when spend exceeds daily ceiling</p>
+                    </div>
+                    <div className="h-5 w-9 rounded-full bg-trust-safe/20 flex items-center justify-end px-0.5"><div className="h-4 w-4 rounded-full bg-trust-safe" /></div>
+                  </div>
+                </div>
+              </SitaCard>
+            </div>
+          </motion.div>
+        )}
+
+        {/* ══════════════════════════════════════════ */}
         {/* FLEET */}
         {/* ══════════════════════════════════════════ */}
         {activePage === "fleet" && (
