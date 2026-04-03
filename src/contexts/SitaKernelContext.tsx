@@ -45,7 +45,7 @@ export function useSitaKernel(): SitaKernel {
 export function useCanonicalAction() {
   const kernel = useSitaKernel();
   const [isExecuting, setIsExecuting] = useState(false);
-  const [lastResult, setLastResult] = useState<CanonicalChainResult | null>(null);
+  const [lastResult, setLastResult] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const execute = useCallback(async (
