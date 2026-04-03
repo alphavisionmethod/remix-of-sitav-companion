@@ -304,7 +304,6 @@ export default function ConstitutionEditor() {
       <SitaPageHeader
         title="Personal Constitution"
         subtitle="Your rules, compiled into machine-enforced policy — not settings, a runtime constitution"
-        icon={ScrollText}
       />
 
       {/* KPI Strip */}
