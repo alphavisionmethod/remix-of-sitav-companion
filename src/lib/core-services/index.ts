@@ -43,7 +43,7 @@ export * from "./cloud-sync-manager";
 export * from "./self-learning-engine";
 export { NLPCompanion, createNLPCompanion, type Intent, type NLPResult, type NLPAction, type ConversationTurn, type PredictiveSuggestion, type Sentiment, type ExtractedEntity } from "./nlp-companion";
 export * from "./lease-manager";
-export * from "./constitution-compiler";
+export { ConstitutionCompiler, createConstitutionCompiler, type ConstitutionRule, type ConstitutionRuleCategory, type ConstitutionEvaluation, type EnforcementMode, type CompiledPolicy, type AdvisorConstraint, type UIFrictionRule, type NotificationRule, type ApprovalRule, type MemorySharingRule, type ApproverSpec } from "./constitution-compiler";
 
 // ── Canonical Chain Orchestrator ────────────────────────────────────────────
 
