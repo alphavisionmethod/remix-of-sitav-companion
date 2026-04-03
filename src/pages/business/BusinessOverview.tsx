@@ -124,6 +124,9 @@ const BusinessOverview = () => {
             ))}
           </div>
 
+          {/* Revenue Leakage Intelligence — wired to OS runtime */}
+          <BusinessLeakagePanel />
+
           {/* Opportunities */}
           <div className="space-y-3">
             <SitaSectionHeader title="Opportunities Detected" />
