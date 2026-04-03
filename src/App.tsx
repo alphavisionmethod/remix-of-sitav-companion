@@ -390,12 +390,12 @@ const App = () => (
 
                     {/* Owner — Advanced Workspace (Layer 2) */}
                     <Route path="/owner" element={<OwnerCenter />} />
-                    <Route path="/owner/home" element={<OwnerHomePage />} />
-                    <Route path="/owner/health" element={<OwnerHealthPage />} />
+                    <Route path="/owner/home" element={<Navigate to="/owner" replace />} />
+                    <Route path="/owner/health" element={<Navigate to="/owner" replace />} />
                     <Route path="/owner/pulse" element={<OwnerPulsePage />} />
-                    <Route path="/owner/trust" element={<OwnerTrustPage />} />
+                    <Route path="/owner/trust" element={<Navigate to="/owner/trust-center" replace />} />
                     <Route path="/owner/approvals" element={<OwnerApprovalsPage />} />
-                    <Route path="/owner/ai-team" element={<OwnerAiTeamPage />} />
+                    <Route path="/owner/ai-team" element={<Navigate to="/owner/internal-agents" replace />} />
                     <Route path="/owner/ai-team/updates" element={<OwnerAiTeamUpdatesPage />} />
                     <Route path="/owner/incidents" element={<OwnerCenter />} />
                     <Route path="/owner/intelligence" element={<OwnerCenter />} />
