@@ -47,7 +47,7 @@ export class SitaKernel {
     this.trust = new TrustStateService();
     this.workflows = new WorkflowEngine();
     this.entityGraph = new EntityGraphService();
-    this.identityGraph = new IdentityGraph();
+    this.identityGraph = new IdentityService();
     this.projections = new ProjectionService();
     this.verification = new VerificationEngine();
     this.executor = new ExecutorService();
