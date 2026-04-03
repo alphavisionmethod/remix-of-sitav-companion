@@ -238,6 +238,10 @@ export default function AdvisorCouncilDashboard() {
   const handoffs = HANDOFF_LOG;
   const budget = budgetData.data?.budget || MODEL_BUDGET;
 
+  const pendingEscalations = escalations.filter(e => e.status === "pending").length;
+  const avgGrade = scorecards.reduce((s, a) => s + (a.grade === "A" ? 4 : a.grade === "B" ? 3 : 2), 0) / scorecards.length;
+  const budgetUsed = Math.round(budget.spentCents / budget.totalCents * 100);
+
   return (
     <div className="space-y-6 max-w-6xl">
       <SitaPageHeader
