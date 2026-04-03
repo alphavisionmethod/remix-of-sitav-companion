@@ -29,6 +29,11 @@ const intelligenceNav = [
   { title: "Activity", url: "/activity", icon: Activity },
   { title: "Opportunities", url: "/opportunities", icon: Sparkles },
   { title: "Approvals", url: "/approvals", icon: CheckCircle },
+  { title: "Integrations", url: "/integrations", icon: Globe },
+  { title: "Digital Twins", url: "/digital-twins", icon: Cpu },
+  { title: "Scenario Lab", url: "/scenario-lab", icon: Sliders },
+  { title: "AI Economics", url: "/ai-economics", icon: Gauge },
+  { title: "Recovered Value", url: "/recovered-value", icon: CreditCard },
 ];
 
 const workspaceNav = [
