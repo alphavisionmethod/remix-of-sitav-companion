@@ -15,6 +15,8 @@ import { VerificationEngine } from "./core-services/verification-engine";
 import { ExecutorService } from "./core-services/executor-service";
 import { CanonicalChainOrchestrator } from "./core-services/index";
 import { AgentOrchestrator } from "./core-services/agent-orchestrator";
+import { LeaseManager } from "./core-services/lease-manager";
+import { ConstitutionCompiler } from "./core-services/constitution-compiler";
 import type { EntityProfile } from "@/contexts/EntityContext";
 
 // ── Kernel Class ────────────────────────────────────────────────
@@ -33,6 +35,8 @@ export class SitaKernel {
   readonly executor: ExecutorService;
   readonly chain: CanonicalChainOrchestrator;
   readonly agents: AgentOrchestrator;
+  readonly leases: LeaseManager;
+  readonly constitution: ConstitutionCompiler;
 
   // Active entity context
   private _activeEntity: EntityProfile | null = null;
@@ -66,6 +70,10 @@ export class SitaKernel {
 
     // Wire agent orchestrator to shared EventBus + ReceiptService
     this.agents = new AgentOrchestrator({ eventBus: this.eventBus, receipts: this.receipts });
+
+    // Wire lease manager and constitution compiler to shared services
+    this.leases = new LeaseManager({ eventBus: this.eventBus, receipts: this.receipts });
+    this.constitution = new ConstitutionCompiler({ eventBus: this.eventBus, receipts: this.receipts });
 
     // Track all events for telemetry
     this.eventBus.subscribe("*", () => {
