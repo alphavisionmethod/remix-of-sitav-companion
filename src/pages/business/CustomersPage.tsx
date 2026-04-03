@@ -119,10 +119,10 @@ const CustomersPage = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <SitaPageHeader
+      <DomainHeader
         title="Customers"
-        subtitle="Relationships, health scores, and revenue intelligence"
-        actions={<SitaButton variant="primary"><Plus className="h-4 w-4" /> Add Customer</SitaButton>}
+        subtitle="Relationships, health scores, and revenue intelligence — click any customer for full detail in the inspector"
+        domain="business"
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
