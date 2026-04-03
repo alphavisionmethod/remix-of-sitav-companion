@@ -1,15 +1,17 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Observability Center
 // System telemetry, reliability, latency, anomaly detection
+// Uses shared admin components and typed view models
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/admin";
 import {
   useMissionControlSummary, useFounderCostSummary, useConnectorSummaries,
   useDiagnosticsSummary, useSystemActivity, useTrustSummary,
@@ -19,23 +21,17 @@ import {
   TrendingUp, TrendingDown, Database, Radio, Shield, RefreshCw,
   Server, CheckCircle,
 } from "lucide-react";
+import type { ServiceReliabilityView } from "@/lib/types/admin-view-models";
 
-interface ServiceMetric {
-  name: string;
-  uptime: number;
-  latencyP50: number;
-  latencyP99: number;
-  errorRate: number;
-  throughput: number;
-}
-
-const mockServices: ServiceMetric[] = [
-  { name: "Brain Core", uptime: 99.99, latencyP50: 45, latencyP99: 180, errorRate: 0.01, throughput: 2400 },
-  { name: "Policy Engine", uptime: 99.95, latencyP50: 12, latencyP99: 55, errorRate: 0.02, throughput: 1800 },
-  { name: "Receipt Service", uptime: 99.98, latencyP50: 8, latencyP99: 30, errorRate: 0.00, throughput: 3200 },
-  { name: "Workflow Engine", uptime: 99.90, latencyP50: 85, latencyP99: 350, errorRate: 0.05, throughput: 900 },
-  { name: "Connector Gateway", uptime: 99.85, latencyP50: 120, latencyP99: 500, errorRate: 0.08, throughput: 1200 },
-  { name: "Model Router", uptime: 99.97, latencyP50: 200, latencyP99: 800, errorRate: 0.03, throughput: 600 },
+const mockServices: ServiceReliabilityView[] = [
+  { name: "Brain Core", uptime: 99.99, latencyP50: 45, latencyP99: 180, errorRate: 0.01, throughput: 2400, status: "healthy" },
+  { name: "Policy Engine", uptime: 99.95, latencyP50: 12, latencyP99: 55, errorRate: 0.02, throughput: 1800, status: "healthy" },
+  { name: "Receipt Service", uptime: 99.98, latencyP50: 8, latencyP99: 30, errorRate: 0.00, throughput: 3200, status: "healthy" },
+  { name: "Workflow Engine", uptime: 99.90, latencyP50: 85, latencyP99: 350, errorRate: 0.05, throughput: 900, status: "warning" },
+  { name: "Connector Gateway", uptime: 99.85, latencyP50: 120, latencyP99: 500, errorRate: 0.08, throughput: 1200, status: "degraded" },
+  { name: "Model Router", uptime: 99.97, latencyP50: 200, latencyP99: 800, errorRate: 0.03, throughput: 600, status: "healthy" },
+  { name: "Event Bus", uptime: 99.99, latencyP50: 3, latencyP99: 12, errorRate: 0.00, throughput: 8500, status: "healthy" },
+  { name: "Identity Service", uptime: 99.98, latencyP50: 15, latencyP99: 45, errorRate: 0.01, throughput: 500, status: "healthy" },
 ];
 
 export default function ObservabilityPage() {
@@ -48,21 +44,9 @@ export default function ObservabilityPage() {
   const trust = useTrustSummary();
 
   return (
-    <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-5">
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-6"
-      >
-        <div className="flex items-center gap-4 mb-5">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 shadow-lg shadow-primary/10">
-            <Eye className="h-7 w-7 text-primary" />
-          </div>
-          <div>
-            <h1 className="font-display text-xl font-bold text-foreground">System Observability</h1>
-            <p className="text-sm text-muted-foreground">Telemetry, reliability, latency, anomalies, and event throughput</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+    <div className="max-w-[1400px] mx-auto space-y-5">
+      <AdminPageHeader icon={Eye} title="System Observability" subtitle="Telemetry, reliability, latency, anomalies, and event throughput">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 w-full mt-5">
           {[
             { label: "System Score", value: `${summary.systemScore}`, ok: summary.systemScore >= 90, icon: Cpu },
             { label: "Services", value: `${mockServices.length}`, ok: true, icon: Server },
@@ -77,7 +61,9 @@ export default function ObservabilityPage() {
             </div>
           ))}
         </div>
-      </motion.div>
+      </AdminPageHeader>
+
+      <TrustRibbon />
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-9 p-0.5">
@@ -86,6 +72,7 @@ export default function ObservabilityPage() {
             { value: "connectors", label: "Connector Latency", icon: Wifi },
             { value: "events", label: "Event Stream", icon: Radio },
             { value: "anomalies", label: "Anomalies", icon: AlertTriangle },
+            { value: "cost", label: "Cost Overlay", icon: BarChart3 },
           ].map(t => (
             <TabsTrigger key={t.value} value={t.value} className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
               <t.icon className="h-3 w-3 mr-1.5" />{t.label}
@@ -105,7 +92,10 @@ export default function ObservabilityPage() {
                       <div className={cn("h-2.5 w-2.5 rounded-full", svc.uptime >= 99.95 ? "bg-trust-safe" : svc.uptime >= 99.9 ? "bg-accent" : "bg-destructive")} />
                       <span className="text-xs font-semibold text-foreground">{svc.name}</span>
                     </div>
-                    <Badge variant="outline" className="text-[9px]">{svc.uptime}% uptime</Badge>
+                    <div className="flex items-center gap-2">
+                      <StatusBadge status={svc.status} size="xs" />
+                      <Badge variant="outline" className="text-[9px]">{svc.uptime}% uptime</Badge>
+                    </div>
                   </div>
                   <div className="grid grid-cols-4 gap-3">
                     {[
@@ -147,7 +137,7 @@ export default function ObservabilityPage() {
                       <p className="text-[9px] text-muted-foreground">Health</p>
                     </div>
                   </div>
-                  <Badge variant="outline" className={cn("text-[9px]", c.status === "connected" ? "bg-trust-verified/10 text-trust-safe" : "bg-accent/10 text-accent")}>{c.status}</Badge>
+                  <StatusBadge status={c.status} size="xs" />
                 </motion.div>
               ))}
             </div>
@@ -164,7 +154,7 @@ export default function ObservabilityPage() {
                     <div className={cn("h-2 w-2 rounded-full shrink-0",
                       evt.severity === "error" ? "bg-destructive" : evt.severity === "warning" ? "bg-accent" : evt.severity === "success" ? "bg-trust-safe" : "bg-primary/50"
                     )} />
-                    <Badge variant="outline" className="text-[9px] w-16 justify-center shrink-0">{evt.type}</Badge>
+                    <StatusBadge status={evt.type} size="xs" className="w-16 justify-center shrink-0" />
                     <span className="text-xs text-foreground flex-1">{evt.event}</span>
                     <span className="text-[10px] text-muted-foreground shrink-0">{evt.actor}</span>
                     <span className="text-[10px] text-muted-foreground shrink-0">{new Date(evt.timestamp).toLocaleTimeString()}</span>
@@ -214,6 +204,37 @@ export default function ObservabilityPage() {
                     <Database className="h-3 w-3 inline mr-1" /> Export Diagnostic Bundle
                   </button>
                 )}
+              </SitaCard>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="cost">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <SitaCard hover={false}>
+                <SitaCardTitle sub="Cost per service">Service Cost Breakdown</SitaCardTitle>
+                <div className="mt-4 space-y-2">
+                  {cost.byModule.map(m => (
+                    <div key={m.module} className="flex items-center justify-between rounded-lg bg-secondary/20 px-3 py-2.5">
+                      <span className="text-xs text-foreground">{m.module}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-[10px] text-muted-foreground">{m.tokens.toLocaleString()} tokens</span>
+                        <span className="text-xs font-mono font-medium text-foreground">${m.cost.toFixed(3)}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </SitaCard>
+
+              <SitaCard hover={false}>
+                <SitaCardTitle sub="Cost per connector">Connector Cost</SitaCardTitle>
+                <div className="mt-4 space-y-2">
+                  {cost.byConnector.map(c => (
+                    <div key={c.connector} className="flex items-center justify-between rounded-lg bg-secondary/20 px-3 py-2.5">
+                      <span className="text-xs text-foreground">{c.connector}</span>
+                      <span className="text-xs font-mono text-foreground">${c.cost.toFixed(3)}</span>
+                    </div>
+                  ))}
+                </div>
               </SitaCard>
             </div>
           </TabsContent>
