@@ -29,6 +29,7 @@ const FilesCenter = lazy(() => import("./pages/FilesCenter"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const MissionControl = lazy(() => import("./pages/mission-control/MissionControlPage"));
 const AdvisorWorkspace = lazy(() => import("./pages/advisors/AdvisorWorkspace"));
+const AdvisorCouncilDashboard = lazy(() => import("./pages/advisors/AdvisorCouncilDashboard"));
 const Onboarding = lazy(() => import("./pages/OnboardingWrapper"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Login = lazy(() => import("./pages/auth/Login"));
@@ -224,6 +225,7 @@ const App = () => (
 
                     {/* Advisor Workspace — explicit sub-routes + wildcard */}
                     <Route path="/advisors" element={<AdvisorWorkspace />} />
+                    <Route path="/advisors/council-dashboard" element={<AdvisorCouncilDashboard />} />
                     <Route path="/advisors/overview" element={<AdvisorWorkspace />} />
                     <Route path="/advisors/compare" element={<AdvisorWorkspace />} />
                     <Route path="/advisors/simulations" element={<AdvisorWorkspace />} />
