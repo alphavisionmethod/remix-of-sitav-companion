@@ -339,7 +339,7 @@ function useSeedLeases() {
 // ── Main Page ───────────────────────────────────────────────────
 
 export default function LeaseDashboard() {
-  const { leaseManager, revokeLease } = useCapabilityLease();
+  const { leaseManager, revokeLease: revokeLeaseHook } = useCapabilityLease();
   useSeedLeases();
 
   const [inspecting, setInspecting] = useState<CapabilityLease | null>(null);
@@ -358,8 +358,8 @@ export default function LeaseDashboard() {
   }, [allLeases]);
 
   const handleRevoke = useCallback((id: string) => {
-    revokeLease(id, "owner", "Manually revoked by owner");
-  }, [revokeLease]);
+    revokeLeaseHook(id, "Manually revoked by owner");
+  }, [revokeLeaseHook]);
 
   return (
     <div className="container max-w-7xl mx-auto py-8 px-4 space-y-6">
