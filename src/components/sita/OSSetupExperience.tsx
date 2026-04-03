@@ -18,6 +18,7 @@ import {
   FileText, CreditCard, Sliders, Sun, Moon, Monitor,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FirstBootScreen } from "@/components/sita/FirstBootScreen";
 
 // ── Types ───────────────────────────────────────────────────
 
