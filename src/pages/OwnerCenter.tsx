@@ -3,6 +3,8 @@ import { KPITile, SitaTabs, TimelineItem, EmptyState } from "@/components/sita/S
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useState, useEffect } from "react";
+import { useKernelEventStream } from "@/hooks/use-kernel-events";
+import { useKernelStatus } from "@/contexts/SitaKernelContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDataMode } from "@/contexts/DataModeContext";
