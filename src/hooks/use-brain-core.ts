@@ -33,12 +33,12 @@ interface UseBrainCoreOptions {
 
 export function useBrainCore({ advisor, secondaryAdvisor }: UseBrainCoreOptions) {
   const { session } = useAuth();
+  const kernel = useSitaKernel();
   const [isLoading, setIsLoading] = useState(false);
   const [lastResponse, setLastResponse] = useState<AdvisorResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [lastPolicyResult, setLastPolicyResult] = useState<PolicyEvaluationResult | null>(null);
   const [lastReceipt, setLastReceipt] = useState<Receipt | null>(null);
-  const receiptServiceRef = useRef<ReceiptService>(createReceiptService());
 
   const ask = useCallback(async (intent: string, context?: Record<string, unknown>): Promise<AdvisorResponse | null> => {
     if (!session?.access_token) {
