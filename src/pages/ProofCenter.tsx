@@ -49,6 +49,8 @@ type FilterType = "all" | "verified" | "pending" | "failed";
 
 const ProofCenter = () => {
   const { data: proofRecords = [], isLoading } = useProofRecords();
+  const { receipts: kernelReceipts, chainValid, chainLength } = useProofTimeline();
+  const kernelStatus = useKernelStatus();
   const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState<FilterType>("all");
 
