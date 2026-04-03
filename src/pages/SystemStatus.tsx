@@ -647,7 +647,7 @@ const SystemStatus = () => {
       {activeTab === "health" && (
         <div className="space-y-3">
           {allServices.map((svc) => {
-            const latest = svc.history[svc.history.length - 1];
+            const latest = svc.metrics;
             const isHealthy = svc.healthScore >= 90;
             const isDegraded = svc.healthScore < 90 && svc.healthScore >= 60;
             return (
