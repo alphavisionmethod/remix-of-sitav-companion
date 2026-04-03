@@ -59,6 +59,14 @@ const bottomNav = [
   { title: "Owner", url: "/owner", icon: Shield },
 ];
 
+const ownerSubNav = [
+  { title: "Leases", url: "/owner/leases", icon: Key },
+  { title: "Constitution", url: "/owner/constitution", icon: ScrollText },
+  { title: "Pricing", url: "/owner/pricing", icon: CreditCard },
+  { title: "Packs", url: "/owner/packs", icon: Package },
+  { title: "Advisors", url: "/owner/advisors", icon: Cpu },
+];
+
 const NavItems = ({ items, collapsed }: { items: typeof primaryNav; collapsed: boolean }) => {
   const location = useLocation();
   const isActive = (path: string) => path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
