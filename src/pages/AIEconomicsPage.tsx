@@ -29,21 +29,24 @@ function useDemoEconomics() {
     for (let i = 0; i < 50; i++) {
       const domain = domains[i % domains.length];
       const model = models[Math.min(Math.floor(i / 15), 3)];
+      const tier = (["no_llm", "cheap", "mid", "premium"] as const)[Math.min(Math.floor(i / 15), 3)];
       const tokens = model === "structured-state" ? 0 : Math.floor(Math.random() * 4000) + 200;
       const costMap: Record<string, number> = { "structured-state": 0, "gemini-3-flash-preview": 0.00015, "gpt-4o-mini": 0.0003, "claude-sonnet-4-20250514": 0.003 };
 
       engines.tokens.recordUsage({
+        requestId: `req-${i}`,
         userId: "default-user",
         domain,
         model,
+        tier,
         workflowId: `wf-${i}`,
         advisorId: advisors[i % advisors.length],
         inputTokens: Math.floor(tokens * 0.7),
         outputTokens: Math.floor(tokens * 0.3),
         totalTokens: tokens,
         cost: (tokens / 1000) * (costMap[model] || 0.001),
-        latencyMs: model === "structured-state" ? 1 : Math.floor(Math.random() * 800) + 100,
         cached: Math.random() > 0.7,
+        compressed: false,
       });
     }
 
