@@ -1,171 +1,176 @@
 
 
-# SITA OS — Admin Backend: Three-Layer Architecture Implementation Plan
+# SITA OS — Unification Layer Implementation Plan
 
-## Current State
+## The Core Problem
 
-The admin backend is already substantial:
-- **OwnerCenter** (1883 lines, 18 tabs): Overview, Incidents, Intelligence, Policies, Fleet, Council, Audit, Workforce, Connectors, Costs, Trust, Releases, Model Routing, Knowledge, Support, Changes, Rollback, System Map
-- **MissionControl** (1020+ lines, 12 tabs): Agents, Incidents, Connectors, Workflows, Costs, Policies, Releases, Permissions, Safe Mode, Activity Feed, Self-Healing, Trust
-- **AdvisorCouncilDashboard**: Scorecards, Escalations, Handoffs, Budget
+Every service creates its own isolated instance. The `EventBus` has a `getEventBus()` singleton — but nothing calls it. The `CanonicalChainOrchestrator` exists — but no UI component uses it. The `EntityContext` is in the React tree — but no service reads it. The `MemoryService`, `TrustStateService`, `ReceiptService` all work — but each lives alone.
 
-## What Is Missing
+**Result:** 40+ services. Zero shared state. The OS is a collection of brilliant demos, not a unified system.
 
-The user wants three distinct admin layers with specific gaps filled:
+## What the Unification Layer Is
 
-### Layer 1: Owner Mode (personal premium dashboard) — GAPS
-1. **"What Matters Now" card** — not present; overview has KPIs but no prioritized "today's decisions" card
-2. **Revenue summary card** — not on owner overview
-3. **Risk summary card** — not on owner overview
-4. **Platform maturity gauge** — not present
-5. **Undo last admin change** — no undo mechanism exists
-6. **Preview-before-publish mode** — not implemented
-7. **Plain-English policy controls** — current policy editor uses raw JSON conditions
-8. **One-click workflow enable/disable** — not on owner, only in automation center
-9. **Pricing editor** — does not exist
-10. **Pack editor** — store exists but no admin pack management
-11. **Advisor configuration panel** — not in owner mode
+One runtime kernel that boots once, shared by every surface, every hook, every advisor call.
 
-### Layer 2: Mission Control (internal ops) — GAPS
-Already strong. Missing:
-1. **Correlation IDs** — not surfaced in incident or workflow views
-2. **Environment controls** — no env switching (staging/prod)
-3. **Support diagnostics export** — not implemented
-
-### Layer 3: Enterprise/Family Office Control Plane — MISSING ENTIRELY
-No dedicated enterprise admin surface exists. Needs:
-1. **Org admin console** with team/member management
-2. **Role and permission editor** (visual, not code)
-3. **Trust environment dashboard**
-4. **Compliance vault** (ISO/SOC/NIST attestation viewer)
-5. **SLA panel**
-6. **Deployment health** per org
-7. **Fleet visibility** for enterprise
-
-### UX Rule (applies to every control)
-Every admin action card must show: what it changes, risk level, what happens next, how to undo, what proof is logged. This is not currently implemented for any controls.
+```text
+┌─────────────────────────────────────────────────────┐
+│                   React App                         │
+│                                                     │
+│   ┌─────────────────────────────────────────────┐   │
+│   │         <SitaKernelProvider>                 │   │
+│   │                                             │   │
+│   │   EventBus (singleton)                      │   │
+│   │   CanonicalChain (singleton)                │   │
+│   │   MemoryService (singleton)                 │   │
+│   │   TrustStateService (singleton)             │   │
+│   │   EntityGraphService (singleton)            │   │
+│   │   IdentityGraph (singleton)                 │   │
+│   │   PolicyEngine (stateless — already shared) │   │
+│   │   ReceiptService (singleton)                │   │
+│   │   WorkflowEngine (singleton)                │   │
+│   │                                             │   │
+│   │   Entity context scoping on every call      │   │
+│   │                                             │   │
+│   └─────────────────────────────────────────────┘   │
+│                                                     │
+│   useSitaKernel() — access any service              │
+│   useCanonicalAction() — Intent → full chain        │
+│   useEntityScoped() — auto-scope to current entity  │
+│                                                     │
+└─────────────────────────────────────────────────────┘
+```
 
 ---
 
 ## Implementation Plan
 
-### Task 1: Owner Mode — "What Matters Now" Hero Redesign
+### Task 1: SitaKernel — The Runtime Singleton
 
-Replace the current Owner overview with a premium personal cockpit:
+**New file:** `src/lib/sita-kernel.ts`
 
-**File:** `src/pages/OwnerCenter.tsx` — rewrite the `activePage === "overview"` section
+A single class that instantiates every core service exactly once, wiring them together with shared references:
 
-New layout:
-- **What Matters Now** — a prioritized list of 3-5 decisions needing owner attention, pulled from incidents, pending council votes, budget alerts, and connector issues. Each item shows: plain-English summary, risk badge, one-click action, and "what happens if I ignore this"
-- **Revenue/Risk/AI Spend** — three hero metric cards in a row with sparkline trends
-- **Platform Maturity** — circular gauge (0-100) computed from: test coverage, agent health, connector coverage, policy completeness
-- **Safe Mode switch** — prominent toggle with confirmation dialog that explains consequences
-- **Undo Last Admin Change** — button that queries the most recent audit log entry with `actor = owner` and offers to reverse it
+- One `EventBus` — every service uses this one
+- One `ReceiptService` — every receipt chains to the same hash sequence
+- One `MemoryService` — shared memory across all domains
+- One `TrustStateService` — unified trust scores
+- One `WorkflowEngine` — all workflows in one state machine
+- One `EntityGraphService` — cross-domain entity resolution
+- One `IdentityGraph` — identity + household + delegation
+- One `CanonicalChainOrchestrator` — wired to all of the above
+- One `AgentOrchestrator` — wired to shared EventBus + ReceiptService
+- One `ProjectionService` — shared projections
 
-### Task 2: Plain-English Policy Editor
+The kernel exposes a `boot()` method and typed getters. It boots lazily on first access.
 
-**File:** `src/components/sita/PlainEnglishPolicyEditor.tsx`
+### Task 2: SitaKernelProvider — React Context
 
-Replace the raw JSON policy editor with a natural-language builder:
-- Sentence-based rules: "When [domain] action [verb] exceeds [amount], require [approval/deny/flag]"
-- Dropdown selectors for domain, action type, threshold type
-- Visual preview of what the policy does
-- "Test this policy" button (uses existing policy simulator)
-- Shows: what this changes, risk it carries, how to undo, proof that will be logged
+**New file:** `src/contexts/SitaKernelContext.tsx`
 
-### Task 3: Admin Action Card Wrapper
+A React context that:
+- Creates the kernel once on mount
+- Subscribes to `EntityContext` changes and scopes the kernel's active entity
+- Provides `useSitaKernel()` hook returning typed access to every service
+- Provides `useCanonicalAction(domain, capabilityId)` — a hook that calls `kernel.chain.execute()` with the current entity context auto-injected
+- Provides `useSharedMemory(key)` — reads from the singleton memory service
+- Provides `useSharedTrust(entityId)` — reads from the singleton trust service
+- Provides `useProofTimeline(correlationId?)` — reads from the singleton receipt service
 
-**File:** `src/components/sita/AdminActionCard.tsx`
+**Wire into App.tsx:** Wrap inside `EntityContextProvider`, so kernel can read entity context.
 
-A reusable wrapper component that wraps every owner/admin control with:
-- `whatChanges: string` — plain-English description
-- `riskLevel: "low" | "medium" | "high" | "critical"` — color-coded badge
-- `whatHappensNext: string` — consequence preview
-- `undoAction?: () => void` — undo handler
-- `proofNote: string` — what will be logged
-- Confirmation dialog with all five fields visible before execution
-- Apply this wrapper to: Safe Mode toggle, Policy create/edit, Agent pause/resume, Connector disable, Workflow toggle
+### Task 3: Entity-Scoped Operations
 
-### Task 4: Pricing & Pack Editor
+**Modify:** `src/lib/sita-kernel.ts`
 
-**File:** `src/pages/owner/PricingEditor.tsx`
+Add entity scoping so every operation automatically tags with current entity:
+- `kernel.setActiveEntity(entityProfile)` — called when EntityContext changes
+- All `memory.store()` calls auto-tag with `entityId`
+- All `receipts.createReceipt()` calls include entity in metadata
+- All `eventBus.publish()` calls include `tenantId: entity.id`
+- All `trust` lookups scope to current entity
 
-Simple pricing management:
-- Service/product list with price, currency, billing cycle
-- Edit inline with preview-before-save
-- Change history with undo
-- AdminActionCard wrapper on every save
+### Task 4: Wire useBrainCore Through the Kernel
 
-**File:** `src/pages/owner/PackEditor.tsx`
+**Modify:** `src/hooks/use-brain-core.ts`
 
-Pack management for installed packs:
-- Pack list with status (active/paused/disabled)
-- Toggle switches with AdminActionCard confirmation
-- Pack dependency visualization
-- Install/uninstall with preview of what changes
+Currently creates its own `ReceiptService`. Change to:
+- Import `useSitaKernel()` 
+- Use `kernel.receipts` instead of local instance
+- Use `kernel.memory` to store advisor responses
+- Use `kernel.eventBus` to emit `advisor.response.v1` events
+- Use `kernel.trust` to check advisor trust before executing
 
-### Task 5: Advisor Configuration Panel
+This means every advisor call now: generates shared receipts, emits events other services can hear, stores in shared memory, and checks trust.
 
-**File:** `src/pages/owner/AdvisorConfig.tsx`
+### Task 5: Wire useSitaData Through the Kernel
 
-Visual configuration for the 26 advisors:
-- Per-advisor: name, prominence level (primary/supporting/hidden), autonomy ceiling, allowed domains
-- Toggle advisor on/off per mission mode
-- Plain-English description of what each advisor does
-- "Preview" mode to see how a change affects daily pulse recommendations
+**Modify:** `src/hooks/use-sita-data.ts`
 
-### Task 6: Enterprise / Family Office Control Plane
+Currently standalone Supabase queries. Add:
+- On successful data fetch, publish `data.loaded.v1` to shared EventBus
+- On mutation, run through `kernel.chain.execute()` instead of raw Supabase calls (for write operations that need policy/approval/proof)
+- Entity-scope all queries using `kernel.activeEntity`
 
-**File:** `src/pages/enterprise/EnterpriseControlPlane.tsx`
+### Task 6: Shared Proof Timeline Hook
 
-New top-level page with tabs:
+**New file:** `src/hooks/use-proof-timeline.ts`
 
-1. **Organization** — team members, invite flow, role assignment (using existing user_roles pattern)
-2. **Roles & Permissions** — visual matrix editor: role × capability grid with toggle switches
-3. **Trust Environment** — trust scores per member, permission drift alerts, anomaly timeline
-4. **Compliance Vault** — ISO 27001, SOC 2, NIST checklist with attestation status and evidence links
-5. **SLA Dashboard** — uptime, response time, resolution time vs targets
-6. **Deployment Health** — per-environment status (staging/production), recent deploys, rollback options
-7. **Fleet Overview** — org-wide device/service fleet with health aggregation
+A hook that subscribes to the kernel's receipt service and returns a live timeline:
+- All receipts from the current session
+- Filtered by entity, domain, or correlationId
+- Used by Proof Center, Inspector Rail, and Boardroom to show the same data
 
-### Task 7: Route Registration & Navigation
+### Task 7: Shared Event Subscription Hook
 
-**File:** `src/App.tsx` — add routes:
-- `/owner/pricing` → PricingEditor
-- `/owner/packs` → PackEditor  
-- `/owner/advisors` → AdvisorConfig
-- `/enterprise` → EnterpriseControlPlane
-- `/enterprise/roles`, `/enterprise/compliance`, `/enterprise/sla`, `/enterprise/fleet`
+**New file:** `src/hooks/use-kernel-events.ts`
 
-**File:** `src/components/sita/AppSidebar.tsx` — add Enterprise section under Control group
+A hook that subscribes to the kernel's EventBus:
+- `useKernelEvent("execution.completed.v1", handler)` — React-safe subscription
+- Auto-unsubscribe on unmount
+- Used by: notification system, activity stream, real-time dashboards
+- Replaces any component that currently polls or uses isolated state
 
-### Task 8: Mission Control Enhancements
+### Task 8: Wire Existing Surfaces to Kernel
 
-**File:** `src/pages/mission-control/MissionControlPage.tsx`
+Update key pages to use kernel hooks instead of isolated data:
 
-Add to existing tabs:
-- **Correlation IDs** in incident and workflow cards — display as monospace badges, clickable to filter all related events
-- **Environment selector** — staging/production toggle in top bar affecting which data is displayed
-- **Diagnostics Export** — button that bundles: last 24h incidents, agent telemetry, connector health, audit logs into a downloadable JSON (sanitized of secrets)
+- **Daily Pulse:** Use `useSharedMemory("daily-pulse")` for advisor recommendations
+- **Money Center:** Use `useCanonicalAction("finance", "pay-bill")` for bill payments — gets policy check, receipt, proof
+- **Business Center:** Use `useCanonicalAction("business", "update-lead")` for CRM mutations
+- **Proof Center:** Use `useProofTimeline()` — shows all receipts from all domains in one view
+- **Inspector Rail:** Use `useSharedTrust(entityId)` and `useProofTimeline(correlationId)` — shows trust + proof for inspected entity
+- **Owner Center:** Use `useKernelEvent("*")` for live activity feed
+- **Boardroom:** Use `useSharedMemory` for replay data sourced from real kernel state
 
 ---
 
+## What This Achieves
+
+After implementation:
+1. **One EventBus** — every action anywhere emits events that every other surface can hear
+2. **One ReceiptService** — every action produces a receipt in one hash chain (Proof Center shows everything)
+3. **One MemoryService** — advisors, agents, and surfaces share context
+4. **One TrustStateService** — trust scores are system-wide, not per-component
+5. **One WorkflowEngine** — all workflows visible in one place
+6. **Entity scoping** — switch from Personal to Household and everything re-scopes instantly
+7. **Policy enforcement** — every mutation goes through the canonical chain (policy → approval → execution → receipt → projection)
+
 ## Implementation Order
 
-1. AdminActionCard wrapper (foundation — used by everything else)
-2. Owner Mode overview redesign (highest UX impact)
-3. Plain-English Policy Editor (replaces JSON editor)
-4. Pricing & Pack editors (fills obvious gap)
-5. Advisor Configuration panel (connects to existing advisor system)
-6. Enterprise Control Plane (new surface)
-7. Mission Control enhancements (incremental)
-8. Route registration & sidebar updates (final wiring)
+1. `SitaKernel` class (the runtime singleton)
+2. `SitaKernelContext` + `useSitaKernel()` hook
+3. Entity scoping integration
+4. `use-brain-core.ts` rewire
+5. `use-proof-timeline.ts` and `use-kernel-events.ts` hooks
+6. Wire Proof Center, Inspector Rail, Daily Pulse, Money Center
+7. Wire Owner Center activity feed and Boardroom replay
+8. Wire Business Center mutations through canonical chain
 
 ## Technical Notes
 
-- All new pages use existing `SitaCard`, `SitaPageHeader`, `KPITile`, `glass-panel` primitives
-- Enterprise control plane reuses existing `useAdminIncidents`, `useFleetHealth`, `useAdminAuditLogs` hooks
-- Pricing/Pack editors use Supabase tables (new migration for `pricing_items` and `pack_configs`)
-- Every admin action generates an audit log entry via existing audit infrastructure
-- No new backend services needed — all data comes from existing hooks, edge functions, and demo data fallbacks
+- Zero new backend services — this is purely client-side service unification
+- Zero breaking changes to existing pages — hooks maintain the same return signatures
+- All existing core-services stay exactly as they are (EventBus, MemoryService, etc.) — only their instantiation changes from `new X()` everywhere to `kernel.x` everywhere
+- The kernel is tree-shakeable — services only initialize when first accessed
+- Performance: singleton services mean less memory, less GC, and shared caches
 
