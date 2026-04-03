@@ -236,10 +236,29 @@ const MoneyOverview = () => {
 
           {/* Waste Detection */}
           <div className="space-y-3">
-            <SitaSectionHeader title="Waste Detected" action={<button onClick={() => navigate("/money/subscriptions")} className="text-xs text-primary hover:underline">View all</button>} />
-            <RiskCard title="Zoom Pro — $15.99/mo" description="Usage: Low — last used 3 weeks ago. Cancel to save $192/yr." severity="medium" />
-            <RiskCard title="Calendly Pro — $12/mo" description="Usage: Very Low — free tier may suffice. Save $144/yr." severity="low" />
-            <OpportunityCard title="Potential annual savings: $336" description="2 subscriptions identified for review or cancellation" action="Review All" />
+            <SitaSectionHeader title="Waste Detector" action={<button onClick={() => navigate("/money/subscriptions")} className="text-xs text-primary hover:underline">View all</button>} />
+            <SitaCard hover={false} className="p-4 border-l-4 border-l-[hsl(var(--sita-gold))]">
+              <div className="flex items-center gap-2 mb-3">
+                <AlertTriangle className="h-4 w-4 text-[hsl(var(--sita-gold))]" />
+                <span className="text-sm font-semibold text-foreground">$336/yr potential savings</span>
+                <span className="ml-auto text-[10px] text-muted-foreground bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))] rounded-full px-2 py-0.5 font-medium">2 flagged</span>
+              </div>
+              <div className="space-y-2">
+                {[
+                  { name: "Zoom Pro", cost: "$15.99/mo", usage: "Low", savings: "$192/yr", lastUsed: "3 weeks ago", risk: "medium" as const },
+                  { name: "Calendly Pro", cost: "$12/mo", usage: "Very Low", savings: "$144/yr", lastUsed: "5 weeks ago", risk: "low" as const },
+                ].map((sub, i) => (
+                  <div key={i} className="flex items-center gap-3 rounded-lg bg-secondary/30 px-3 py-2.5">
+                    <div className={`h-2 w-2 rounded-full ${sub.risk === "medium" ? "bg-[hsl(var(--sita-gold))]" : "bg-muted-foreground/40"}`} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[12px] font-medium text-foreground">{sub.name} — {sub.cost}</p>
+                      <p className="text-[10px] text-muted-foreground">Usage: {sub.usage} · Last used {sub.lastUsed}</p>
+                    </div>
+                    <span className="text-[11px] font-semibold text-[hsl(var(--trust-safe))]">Save {sub.savings}</span>
+                  </div>
+                ))}
+              </div>
+            </SitaCard>
           </div>
 
           {/* Receivables */}
