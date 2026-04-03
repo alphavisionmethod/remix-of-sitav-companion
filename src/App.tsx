@@ -88,6 +88,7 @@ const MissionRegistryPage = lazy(() => import("./pages/mission/MissionRegistryPa
 const MissionReleaseDetailPage = lazy(() => import("./pages/mission/MissionReleaseDetailPage"));
 const MissionWorkflowReplayPage = lazy(() => import("./pages/mission/MissionWorkflowReplayPage"));
 const EnterpriseControlPlane = lazy(() => import("./pages/enterprise/EnterpriseControlPlane"));
+const EnterpriseMaturityDashboard = lazy(() => import("./pages/EnterpriseMaturityDashboard"));
 const IntegrationConcierge = lazy(() => import("./pages/IntegrationConcierge"));
 const DigitalTwinsPage = lazy(() => import("./pages/DigitalTwinsPage"));
 const ScenarioLabPage = lazy(() => import("./pages/ScenarioLabPage"));
@@ -458,6 +459,8 @@ const App = () => (
                     <Route path="/enterprise/compliance" element={<EnterpriseControlPlane />} />
                     <Route path="/enterprise/sla" element={<EnterpriseControlPlane />} />
                     <Route path="/enterprise/fleet" element={<EnterpriseControlPlane />} />
+                    <Route path="/enterprise/maturity" element={<EnterpriseMaturityDashboard />} />
+                    <Route path="/enterprise-maturity" element={<EnterpriseMaturityDashboard />} />
 
                     {/* Policy Engine */}
                     <Route path="/policies" element={<PolicyEditor />} />

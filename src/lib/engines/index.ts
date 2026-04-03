@@ -13,3 +13,7 @@ export { DigitalTwinEngine, BoardroomIntelligenceEngine, ScenarioIntelligenceEng
 export { TokenGovernanceEngine } from "./token-governance";
 export { IntegrationConciergeEngine } from "./connector-concierge";
 export { ReplayRecoveryEngine } from "./replay-recovery";
+export {
+  EnterpriseControlPlaneEngine, SupportDiagnosticsEngine, ObservabilityEngine,
+  ReleaseSafetyEngine, TrustDeviceEngine, ComplianceAuditEngine,
+} from "./enterprise-maturity";

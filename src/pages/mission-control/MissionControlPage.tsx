@@ -200,7 +200,7 @@ function QuickActionsStrip() {
 // ── MC Home ─────────────────────────────────────────────────────────────────
 
 function MCHome() {
-  const { adminIncidents: adminData } = useMCAdmin();
+  const { adminIncidents: adminData, runtime } = useMCAdmin();
   const adminIncidentList = adminData?.incidents || [];
   const openIncidents = adminIncidentList.length > 0
     ? mockIncidents.map((m, i) => ({ ...m, status: adminIncidentList[i]?.status === "resolved" ? "resolved" as const : m.status })).filter(i => i.status !== "resolved")
@@ -284,6 +284,68 @@ function MCHome() {
           ))}
         </div>
       </div>
+
+      {/* Phase 6 — Enterprise Maturity Quick View */}
+      {runtime && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Trust Devices */}
+          <div className="rounded-xl border border-border/40 bg-card/60 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Lock className="h-4 w-4 text-primary" />
+              <h4 className="text-xs font-bold text-foreground font-display">Trust Devices</h4>
+            </div>
+            {runtime.engines.trustDevice.getDemoDevices().slice(0, 2).map(d => (
+              <div key={d.id} className="flex items-center gap-2 py-1.5 text-[11px]">
+                <span className={cn("h-2 w-2 rounded-full", d.trustLevel === "secure-enclave" || d.trustLevel === "trusted" ? "bg-trust-safe" : "bg-accent")} />
+                <span className="text-foreground flex-1">{d.name}</span>
+                <span className="text-muted-foreground">{d.trustScore}%</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Release Safety */}
+          <div className="rounded-xl border border-border/40 bg-card/60 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Rocket className="h-4 w-4 text-primary" />
+              <h4 className="text-xs font-bold text-foreground font-display">Release Safety</h4>
+            </div>
+            {runtime.engines.releases.getDemoReleases().map(r => (
+              <div key={r.id} className="flex items-center gap-2 py-1.5 text-[11px]">
+                <Badge variant="outline" className={cn("text-[8px]", r.status === "ga" ? "text-trust-safe" : "text-accent")}>{r.status}</Badge>
+                <span className="text-foreground flex-1">{r.version}</span>
+                <span className="text-muted-foreground">{r.confidenceScore}%</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Compliance */}
+          <div className="rounded-xl border border-border/40 bg-card/60 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Shield className="h-4 w-4 text-trust-safe" />
+              <h4 className="text-xs font-bold text-foreground font-display">Compliance</h4>
+            </div>
+            {(() => {
+              const c = runtime.engines.compliance.getComplianceSummary();
+              return (
+                <div className="space-y-2">
+                  <div className="flex justify-between text-[11px]">
+                    <span className="text-muted-foreground">Status</span>
+                    <span className="text-trust-safe font-medium capitalize">{c.overallStatus}</span>
+                  </div>
+                  <div className="flex justify-between text-[11px]">
+                    <span className="text-muted-foreground">Audit Coverage</span>
+                    <span className="text-foreground">{c.auditCoverage}%</span>
+                  </div>
+                  <div className="flex justify-between text-[11px]">
+                    <span className="text-muted-foreground">Tamper Integrity</span>
+                    <span className="text-foreground">{c.tamperEvidenceIntegrity}%</span>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
