@@ -24,6 +24,7 @@ const ConciergeCenter = lazy(() => import("./pages/ConciergeCenter"));
 const WorkflowsCenter = lazy(() => import("./pages/WorkflowsCenter"));
 const ProofCenter = lazy(() => import("./pages/ProofCenter"));
 const Boardroom = lazy(() => import("./pages/Boardroom"));
+const BoardroomReplay = lazy(() => import("./pages/boardroom/BoardroomReplay"));
 const FilesCenter = lazy(() => import("./pages/FilesCenter"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const MissionControl = lazy(() => import("./pages/mission-control/MissionControlPage"));
