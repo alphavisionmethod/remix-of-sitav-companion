@@ -45,7 +45,7 @@ export function useSitaKernel(): SitaKernel {
 export function useCanonicalAction() {
   const kernel = useSitaKernel();
   const [isExecuting, setIsExecuting] = useState(false);
-  const [lastResult, setLastResult] = useState<CanonicalChainResult | null>(null);
+  const [lastResult, setLastResult] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const execute = useCallback(async (
@@ -53,7 +53,7 @@ export function useCanonicalAction() {
     capabilityId: string,
     payload: Record<string, unknown>,
     options?: { amount?: number; isSimulation?: boolean; intent?: string }
-  ): Promise<CanonicalChainResult | null> => {
+  ): Promise<Record<string, unknown> | null> => {
     setIsExecuting(true);
     setError(null);
     try {
@@ -65,8 +65,8 @@ export function useCanonicalAction() {
         amount: options?.amount,
         isSimulation: options?.isSimulation,
       });
-      setLastResult(result);
-      return result;
+      setLastResult(result as Record<string, unknown>);
+      return result as Record<string, unknown>;
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Execution failed";
       setError(msg);
@@ -184,7 +184,7 @@ export function useCapabilityLease() {
     return result;
   }, [kernel]);
 
-  return { activeLeases, issueLease, validateLease, revokeLease, stats: kernel.leases.getLeaseStats() };
+  return { activeLeases, issueLease, validateLease, revokeLease, stats: kernel.leases.getLeaseStats(), leaseManager: kernel.leases };
 }
 
 // ── Constitution Hook ───────────────────────────────────────────
@@ -225,7 +225,7 @@ export function useConstitution() {
     setRules(kernel.constitution.getAllRules());
   }, [kernel]);
 
-  return { rules, compileRule, evaluate, toggleRule, deleteRule, stats: kernel.constitution.getStats() };
+  return { rules, compileRule, evaluate, toggleRule, deleteRule, stats: kernel.constitution.getStats(), compiler: kernel.constitution };
 }
 
 // ── Kernel Status Hook ──────────────────────────────────────────
