@@ -332,8 +332,6 @@ export default function BoardroomReplay() {
             <BoardroomSlide
               title={slide.title}
               subtitle={slide.subtitle}
-              icon={<Icon className="h-5 w-5" />}
-              domain={slide.domain}
               slideNumber={current + 1}
               totalSlides={slides.length}
             >
