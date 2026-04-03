@@ -7,6 +7,7 @@ import type {
   MemoryEntry, MemoryContradiction, MemoryCorrection,
   MemoryForgetRequest, MemoryPersistenceRule, MemoryGovernanceConfig,
   MemoryConflictResolution, MemoryType, MemoryPrivacy, MemorySource,
+  MemoryAuditEntry,
 } from "../types/memory-governance.types";
 
 const DEFAULT_CONFIG: MemoryGovernanceConfig = {
@@ -32,6 +33,7 @@ export class MemoryGovernanceEngine {
   private contradictions: MemoryContradiction[] = [];
   private corrections: MemoryCorrection[] = [];
   private forgetRequests: MemoryForgetRequest[] = [];
+  private auditTrail: MemoryAuditEntry[] = [];
   private config: MemoryGovernanceConfig;
 
   constructor(config: Partial<MemoryGovernanceConfig> = {}) {
@@ -77,6 +79,7 @@ export class MemoryGovernanceEngine {
     }
 
     this.memories.set(id, memory);
+    this.auditWrite("created", id, entry.source, { type: entry.type, domain: entry.domain });
     return memory;
   }
 
@@ -227,6 +230,34 @@ export class MemoryGovernanceEngine {
       corrections: this.corrections.length,
       forgetRequests: this.forgetRequests.length,
     };
+  }
+
+  // ── Promote Memory ───────────────────────────────────────────
+  promote(memoryId: string, newType: MemoryType, promotedBy: string): MemoryEntry {
+    const mem = this.memories.get(memoryId);
+    if (!mem) throw new Error(`Memory ${memoryId} not found`);
+    const prev = mem.type;
+    mem.type = newType;
+    mem.updatedAt = new Date().toISOString();
+    this.auditWrite("promoted", memoryId, promotedBy, { from: prev, to: newType });
+    return { ...mem };
+  }
+
+  // ── Audit Trail ─────────────────────────────────────────────
+  getAuditTrail(memoryId?: string): MemoryAuditEntry[] {
+    return memoryId ? this.auditTrail.filter(a => a.memoryId === memoryId) : this.auditTrail;
+  }
+
+  private auditWrite(action: MemoryAuditEntry["action"], memoryId: string, actor: string, details: Record<string, unknown> = {}): void {
+    this.auditTrail.push({
+      id: `audit_mem_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      memoryId,
+      action,
+      actor,
+      actorType: actor.includes("advisor") ? "advisor" : actor === "system" ? "system" : "user",
+      timestamp: new Date().toISOString(),
+      details,
+    });
   }
 
   private getRule(domain: string, type: MemoryType): MemoryPersistenceRule | undefined {

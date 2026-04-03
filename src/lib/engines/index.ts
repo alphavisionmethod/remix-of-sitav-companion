@@ -12,3 +12,4 @@ export { RevenueOpportunityEngine } from "./revenue-opportunity";
 export { DigitalTwinEngine, BoardroomIntelligenceEngine, ScenarioIntelligenceEngine } from "./digital-twin";
 export { TokenGovernanceEngine } from "./token-governance";
 export { IntegrationConciergeEngine } from "./connector-concierge";
+export { ReplayRecoveryEngine } from "./replay-recovery";

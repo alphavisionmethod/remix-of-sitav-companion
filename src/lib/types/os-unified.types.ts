@@ -14,6 +14,7 @@ export type ActionState =
   | "simulated"
   | "approval_requested"
   | "approved"
+  | "rejected"
   | "queued"
   | "executing"
   | "partially_completed"
