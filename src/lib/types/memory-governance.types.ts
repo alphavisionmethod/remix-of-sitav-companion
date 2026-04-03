@@ -3,7 +3,7 @@
 // Memory as a first-class governed platform system
 // ═══════════════════════════════════════════════════════════════
 
-export type MemoryType = "temporary" | "durable" | "shared" | "private" | "advisor_scoped" | "org_scoped" | "household_scoped";
+export type MemoryType = "ephemeral" | "working" | "durable" | "temporary" | "shared" | "private" | "advisor_scoped" | "org_scoped" | "household_scoped" | "workflow" | "boardroom" | "preference" | "operating_pattern" | "trust_behavior";
 export type MemoryPrivacy = "private" | "household" | "org" | "advisor" | "system";
 export type MemorySource = "user_input" | "advisor_inference" | "connector_sync" | "workflow_output" | "boardroom_decision" | "system_observation";
 
