@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { useInspector, type InspectorEntity } from "@/contexts/InspectorContext";
-import { SitaPageHeader, SitaButton, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaPageHeader, SitaButton, SitaSectionHeader, SitaCard } from "@/components/sita/SitaCard";
+import { ApprovalGate } from "@/components/sita/primitives/ApprovalGate";
+import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
 import { KPITile, OpportunityCard, RiskCard, TimelineItem, ProofCard } from "@/components/sita/SitaComponents";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
