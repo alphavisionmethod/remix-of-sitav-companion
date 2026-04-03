@@ -60,10 +60,21 @@ const timeAgo = (dt: string | null) => {
 
 type Tab = "all" | "active" | "at-risk" | "new" | "inactive";
 
+const DEMO_CUSTOMERS: Customer[] = [
+  { id: "demo-1", name: "Sarah Chen", company: "Bloom Studio", email: "sarah@bloomstudio.co", phone: "+1 (555) 234-5678", status: "active", relationship_type: "Client", health_score: 92, lifetime_revenue: 24500, last_contact_at: new Date(Date.now() - 3600000).toISOString(), created_at: "2025-06-15T00:00:00Z", notes: "Key client — website redesign project. Very responsive." },
+  { id: "demo-2", name: "James Rodriguez", company: "Peak Ventures", email: "james@peakventures.com", phone: "+1 (555) 345-6789", status: "active", relationship_type: "Client", health_score: 78, lifetime_revenue: 18200, last_contact_at: new Date(Date.now() - 604800000).toISOString(), created_at: "2025-08-01T00:00:00Z", notes: "Onboarding check-in — started last week." },
+  { id: "demo-3", name: "Emily Watson", company: "Coastal Health", email: "emily@coastalhealth.org", phone: "+1 (555) 456-7890", status: "active", relationship_type: "Partner", health_score: 95, lifetime_revenue: 42000, last_contact_at: new Date(Date.now() - 86400000).toISOString(), created_at: "2025-03-10T00:00:00Z", notes: "Long-term partner. Quarterly reviews." },
+  { id: "demo-4", name: "Michael Park", company: null, email: "michael@gmail.com", phone: "+1 (555) 567-8901", status: "active", relationship_type: "Client", health_score: 45, lifetime_revenue: 3200, last_contact_at: new Date(Date.now() - 2592000000).toISOString(), created_at: "2025-11-20T00:00:00Z", notes: "Has not responded to last 2 follow-ups." },
+  { id: "demo-5", name: "David Kim", company: "Nova Digital", email: "david@novadigital.io", phone: "+1 (555) 678-9012", status: "inactive", relationship_type: "Former Client", health_score: 30, lifetime_revenue: 8500, last_contact_at: new Date(Date.now() - 7776000000).toISOString(), created_at: "2024-12-01T00:00:00Z", notes: "Project completed. May have future needs." },
+  { id: "demo-6", name: "Lisa Thompson", company: "Greenfield Corp", email: "lisa@greenfield.co", phone: "+1 (555) 789-0123", status: "new", relationship_type: "prospect", health_score: 70, lifetime_revenue: 0, last_contact_at: new Date(Date.now() - 172800000).toISOString(), created_at: new Date(Date.now() - 259200000).toISOString(), notes: "Inbound inquiry — needs proposal." },
+  { id: "demo-7", name: "Marcus Johnson", company: "Sterling & Co", email: "marcus@sterling.com", phone: "+1 (555) 890-1234", status: "active", relationship_type: "Client", health_score: 88, lifetime_revenue: 31000, last_contact_at: new Date(Date.now() - 43200000).toISOString(), created_at: "2025-04-22T00:00:00Z", notes: "Premium client. Monthly retainer." },
+];
+
 const CustomersPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { inspect } = useInspector();
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -84,14 +95,17 @@ const CustomersPage = () => {
     });
   };
 
-  const { data: customers = [], isLoading } = useQuery({
+  const { data: dbCustomers = [], isLoading } = useQuery({
     queryKey: ["customers"],
     queryFn: async () => {
+      if (isDemoMode) return DEMO_CUSTOMERS;
       const { data, error } = await (supabase as any).from("customers").select("*").order("created_at", { ascending: false });
       if (error) throw error;
       return data as Customer[];
     },
   });
+
+  const customers = isDemoMode && dbCustomers.length === 0 ? DEMO_CUSTOMERS : dbCustomers;
 
   const filtered = customers
     .filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()) || c.company?.toLowerCase().includes(search.toLowerCase()))
