@@ -208,6 +208,16 @@ export function AppSidebar() {
             <NavItems items={bottomNav} collapsed={collapsed} />
           </SidebarGroupContent>
         </SidebarGroup>
+        {isOwnerArea && !collapsed && (
+          <SidebarGroup>
+            <SidebarGroupLabel className="px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/50">
+              Owner Controls
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <NavItems items={ownerSubNav} collapsed={collapsed} />
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
         {user && (
           <div className="mt-2 px-1">
             <button
