@@ -685,7 +685,7 @@ const SystemStatus = () => {
               <div className="flex items-center gap-4 text-xs">
                 <span className="text-trust-safe">{fleetSummary.healthy} healthy</span>
                 <span className="text-amber-500">{fleetSummary.degraded} degraded</span>
-                <span className="text-destructive">{fleetSummary.critical} critical</span>
+                <span className="text-destructive">{fleetSummary.unhealthy} unhealthy</span>
                 <span className="font-bold text-foreground">Avg: {fleetSummary.avgHealthScore}%</span>
               </div>
             </div>
