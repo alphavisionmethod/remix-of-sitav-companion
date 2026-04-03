@@ -88,6 +88,7 @@ const MissionRegistryPage = lazy(() => import("./pages/mission/MissionRegistryPa
 const MissionReleaseDetailPage = lazy(() => import("./pages/mission/MissionReleaseDetailPage"));
 const MissionWorkflowReplayPage = lazy(() => import("./pages/mission/MissionWorkflowReplayPage"));
 const EnterpriseControlPlane = lazy(() => import("./pages/enterprise/EnterpriseControlPlane"));
+const EnterpriseMaturityDashboard = lazy(() => import("./pages/EnterpriseMaturityDashboard"));
 const IntegrationConcierge = lazy(() => import("./pages/IntegrationConcierge"));
 const DigitalTwinsPage = lazy(() => import("./pages/DigitalTwinsPage"));
 const ScenarioLabPage = lazy(() => import("./pages/ScenarioLabPage"));
