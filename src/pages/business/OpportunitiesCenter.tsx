@@ -89,7 +89,13 @@ const OpportunitiesCenter = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <SitaPageHeader title="Opportunities" subtitle="Pipeline, risks, and reactivation" actions={
-        <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><Plus className="h-3.5 w-3.5" /> New Opportunity</button>
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1 rounded-lg border border-border p-0.5">
+            <button onClick={() => setView("list")} className={`rounded-md px-2 py-1 text-[11px] font-medium transition-all ${view === "list" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}><LayoutList className="h-3.5 w-3.5" /></button>
+            <button onClick={() => setView("kanban")} className={`rounded-md px-2 py-1 text-[11px] font-medium transition-all ${view === "kanban" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}><Columns className="h-3.5 w-3.5" /></button>
+          </div>
+          <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><Plus className="h-3.5 w-3.5" /> New Opportunity</button>
+        </div>
       } />
 
       <AnimatePresence>
