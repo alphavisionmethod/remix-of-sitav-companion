@@ -247,6 +247,12 @@ export default function AdvisorCouncilDashboard() {
       <SitaPageHeader
         title="Advisory Council Dashboard"
         subtitle="Performance scorecards, escalation history, handoff activity, and compute budget"
+        actions={
+          <Button variant="outline" size="sm" className="text-xs gap-1.5" onClick={() => { fleetStatus.refresh(); budgetData.refresh(); toast.success("Refreshing live data..."); }}>
+            {(fleetStatus.loading || budgetData.loading) ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}
+            Refresh
+          </Button>
+        }
       />
 
       {/* Summary Strip */}
