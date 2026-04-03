@@ -62,9 +62,26 @@ type Tab = "all" | "active" | "at-risk" | "new" | "inactive";
 const CustomersPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { inspect } = useInspector();
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const inspectCustomer = (c: Customer) => {
+    inspect({
+      id: c.id, type: "customer", title: c.name, subtitle: c.company || "Individual",
+      domain: "business", status: c.status, trustLevel: trustFromHealth(c.health_score) as string,
+      details: {
+        email: c.email || "N/A", phone: c.phone || "N/A", company: c.company || "Individual",
+        health_score: c.health_score ?? 80, lifetime_revenue: `$${(c.lifetime_revenue || 0).toLocaleString()}`,
+        relationship: c.relationship_type || "Client", last_contact: timeAgo(c.last_contact_at),
+      },
+      timeline: [
+        { action: "Customer onboarded", actor: "System", timestamp: new Date(c.created_at).toLocaleDateString() },
+        ...(c.last_contact_at ? [{ action: "Last interaction", actor: "You", timestamp: timeAgo(c.last_contact_at) }] : []),
+      ],
+    });
+  };
 
   const { data: customers = [], isLoading } = useQuery({
     queryKey: ["customers"],
