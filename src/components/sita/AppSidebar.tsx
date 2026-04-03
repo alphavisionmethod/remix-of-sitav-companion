@@ -53,6 +53,7 @@ const controlNav = [
 
 const bottomNav = [
   { title: "Pack Store", url: "/store", icon: Package },
+  { title: "Enterprise", url: "/enterprise", icon: Globe },
   { title: "Settings", url: "/settings", icon: Settings },
   { title: "Mission Control", url: "/mission-control", icon: Server },
   { title: "Owner", url: "/owner", icon: Shield },
