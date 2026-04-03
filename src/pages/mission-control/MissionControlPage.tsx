@@ -62,9 +62,10 @@ interface MCAdminData {
   adminIncidents: any;
   fleetHealth: any;
   trustCenter: any;
+  runtime: OSRuntime | null;
 }
-const MCAdminCtx = createContext<MCAdminData>({ adminIncidents: null, fleetHealth: null, trustCenter: null });
-function useMCAdmin() { return useContext(MCAdminCtx); }
+const MCAdminCtx = createContext<MCAdminData>({ adminIncidents: null, fleetHealth: null, trustCenter: null, runtime: null });
+export function useMCAdmin() { return useContext(MCAdminCtx); }
 
 // ── System Pulse — Mac-like Hero ────────────────────────────────────────────
 
