@@ -27,7 +27,7 @@ export class SitaKernel {
   readonly trust: TrustStateService;
   readonly workflows: WorkflowEngine;
   readonly entityGraph: EntityGraphService;
-  readonly identityGraph: IdentityGraph;
+  readonly identityGraph: IdentityService;
   readonly projections: ProjectionService;
   readonly verification: VerificationEngine;
   readonly executor: ExecutorService;
