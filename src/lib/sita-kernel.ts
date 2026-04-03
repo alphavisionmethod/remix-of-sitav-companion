@@ -9,7 +9,7 @@ import { MemoryService } from "./core-services/memory-service";
 import { TrustStateService } from "./core-services/trust-state-service";
 import { WorkflowEngine } from "./core-services/workflow-engine";
 import { EntityGraphService } from "./core-services/entity-graph";
-import { IdentityGraph } from "./core-services/identity-graph";
+import { IdentityService } from "./core-services/identity-graph";
 import { ProjectionService } from "./core-services/projection-service";
 import { VerificationEngine } from "./core-services/verification-engine";
 import { ExecutorService } from "./core-services/executor-service";
