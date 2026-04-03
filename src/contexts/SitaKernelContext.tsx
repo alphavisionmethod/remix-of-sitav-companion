@@ -225,7 +225,7 @@ export function useConstitution() {
     setRules(kernel.constitution.getAllRules());
   }, [kernel]);
 
-  return { rules, compileRule, evaluate, toggleRule, deleteRule, stats: kernel.constitution.getStats() };
+  return { rules, compileRule, evaluate, toggleRule, deleteRule, stats: kernel.constitution.getStats(), compiler: kernel.constitution };
 }
 
 // ── Kernel Status Hook ──────────────────────────────────────────

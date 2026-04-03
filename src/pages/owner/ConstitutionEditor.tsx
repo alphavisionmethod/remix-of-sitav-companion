@@ -328,7 +328,7 @@ export default function ConstitutionEditor() {
           <TabsTrigger value="all" className="text-[10px]">All ({allRules.length})</TabsTrigger>
           {categories.map(cat => (
             <TabsTrigger key={cat} value={cat} className="text-[10px]">
-              {CATEGORY_CONFIG[cat]?.label ?? cat} ({allRules.filter(r => r.category === cat).length})
+              {CATEGORY_CONFIG[cat as string]?.label ?? cat} ({allRules.filter(r => r.category === cat).length})
             </TabsTrigger>
           ))}
         </TabsList>

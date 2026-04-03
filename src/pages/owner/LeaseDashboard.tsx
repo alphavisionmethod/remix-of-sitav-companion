@@ -366,7 +366,6 @@ export default function LeaseDashboard() {
       <SitaPageHeader
         title="Capability Leases"
         subtitle="Intent-bound execution authority — every advisor action is scoped, timed, and capped"
-        icon={Key}
       />
 
       {/* KPI Strip */}
