@@ -5,8 +5,10 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useInspector } from "@/contexts/InspectorContext";
+import { useSharedTrust, useKernelStatus } from "@/contexts/SitaKernelContext";
+import { useProofTimeline } from "@/hooks/use-proof-timeline";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Shield, Brain, GitBranch, Link2, Clock, CheckCircle, AlertTriangle, XCircle, ChevronRight } from "lucide-react";
+import { X, Shield, Brain, GitBranch, Link2, Clock, CheckCircle, AlertTriangle, XCircle, ChevronRight, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TrustBadge } from "./TrustBadge";
@@ -28,6 +30,9 @@ const proofIcon = (result: string) => {
 
 export const InspectorPanel = () => {
   const { entity, isOpen, close } = useInspector();
+  const { trustState } = useSharedTrust(entity?.id);
+  const { receipts: kernelReceipts, chainValid } = useProofTimeline({ limit: 5 });
+  const kernelStatus = useKernelStatus();
 
   return (
     <AnimatePresence>
@@ -199,6 +204,28 @@ export const InspectorPanel = () => {
                     </div>
                   </Section>
                 )}
+
+                {/* Kernel Trust & Proof Status */}
+                <Section icon={<Activity className="h-3.5 w-3.5 text-primary" />} title="Kernel Status">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between rounded-lg bg-secondary/50 px-3 py-2">
+                      <span className="text-xs text-muted-foreground">Trust Score</span>
+                      <span className="text-xs font-semibold text-foreground">{trustState?.score ?? "—"}/100</span>
+                    </div>
+                    <div className="flex items-center justify-between rounded-lg bg-secondary/50 px-3 py-2">
+                      <span className="text-xs text-muted-foreground">Chain Integrity</span>
+                      <span className={cn("text-xs font-semibold", chainValid ? "text-trust-safe" : "text-destructive")}>{chainValid ? "Valid" : "Broken"}</span>
+                    </div>
+                    <div className="flex items-center justify-between rounded-lg bg-secondary/50 px-3 py-2">
+                      <span className="text-xs text-muted-foreground">Receipt Chain</span>
+                      <span className="text-xs font-semibold text-foreground">{kernelReceipts.length} receipts</span>
+                    </div>
+                    <div className="flex items-center justify-between rounded-lg bg-secondary/50 px-3 py-2">
+                      <span className="text-xs text-muted-foreground">Events Processed</span>
+                      <span className="text-xs font-semibold text-foreground">{kernelStatus.totalEvents}</span>
+                    </div>
+                  </div>
+                </Section>
               </div>
             </ScrollArea>
           </motion.aside>

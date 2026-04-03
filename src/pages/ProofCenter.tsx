@@ -4,9 +4,11 @@ import { ProofReceipt } from "@/components/sita/primitives/ProofReceipt";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { useProofRecords } from "@/hooks/use-sita-data";
+import { useProofTimeline } from "@/hooks/use-proof-timeline";
+import { useKernelStatus } from "@/contexts/SitaKernelContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useState } from "react";
-import { Receipt, ShieldCheck, Clock, AlertTriangle, Eye, RotateCcw, FileDown, Filter } from "lucide-react";
+import { Receipt, ShieldCheck, Clock, AlertTriangle, Eye, RotateCcw, FileDown, Filter, Link2 } from "lucide-react";
 
 const trustMap: Record<string, "verified" | "pending" | "failed" | "rolled-back"> = {
   "system-verified": "verified",
@@ -47,6 +49,8 @@ type FilterType = "all" | "verified" | "pending" | "failed";
 
 const ProofCenter = () => {
   const { data: proofRecords = [], isLoading } = useProofRecords();
+  const { receipts: kernelReceipts, chainValid, chainLength } = useProofTimeline();
+  const kernelStatus = useKernelStatus();
   const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState<FilterType>("all");
 
@@ -85,6 +89,31 @@ const ProofCenter = () => {
         <KPITile label="Failed / Escalated" value={String(failed.length)} icon={AlertTriangle} sub={failed.length === 0 ? "Clean record" : "Needs review"} />
         <div className="rounded-xl border border-border bg-card p-4">
           <ConfidenceBar value={trustScore} label="Trust Score" size="lg" />
+        </div>
+      </div>
+
+      {/* Kernel Chain Status */}
+      <div className="grid gap-3 sm:grid-cols-3">
+        <div className="rounded-xl border border-border/50 bg-card/50 p-3 flex items-center gap-3">
+          <Link2 className="h-4 w-4 text-primary" />
+          <div>
+            <p className="text-xs font-semibold text-foreground">{chainLength} Kernel Receipts</p>
+            <p className="text-[10px] text-muted-foreground">Shared hash chain</p>
+          </div>
+        </div>
+        <div className="rounded-xl border border-border/50 bg-card/50 p-3 flex items-center gap-3">
+          <ShieldCheck className={`h-4 w-4 ${chainValid ? "text-trust-safe" : "text-destructive"}`} />
+          <div>
+            <p className="text-xs font-semibold text-foreground">Chain {chainValid ? "Valid" : "Broken"}</p>
+            <p className="text-[10px] text-muted-foreground">Integrity verified</p>
+          </div>
+        </div>
+        <div className="rounded-xl border border-border/50 bg-card/50 p-3 flex items-center gap-3">
+          <Receipt className="h-4 w-4 text-muted-foreground" />
+          <div>
+            <p className="text-xs font-semibold text-foreground">{kernelStatus.totalEvents} Events</p>
+            <p className="text-[10px] text-muted-foreground">Uptime: {Math.round(kernelStatus.uptimeMs / 1000)}s</p>
+          </div>
         </div>
       </div>
 
