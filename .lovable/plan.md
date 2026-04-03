@@ -1,176 +1,116 @@
 
 
-# SITA OS — Unification Layer Implementation Plan
+# SITA OS — Admin Architecture Normalization Plan
 
-## The Core Problem
+## Executive Verdict
 
-Every service creates its own isolated instance. The `EventBus` has a `getEventBus()` singleton — but nothing calls it. The `CanonicalChainOrchestrator` exists — but no UI component uses it. The `EntityContext` is in the React tree — but no service reads it. The `MemoryService`, `TrustStateService`, `ReceiptService` all work — but each lives alone.
+The current admin route tree is **fragmented and needs consolidation**. There are 4 overlapping admin surfaces rendering conceptually similar content:
 
-**Result:** 40+ services. Zero shared state. The OS is a collection of brilliant demos, not a unified system.
+| Surface | File | Lines | Purpose |
+|---------|------|-------|---------|
+| `MissionControl.tsx` | `src/pages/MissionControl.tsx` | 305 | Legacy admin with real Supabase API calls |
+| `MissionControlPage.tsx` | `src/pages/mission-control/` | 1118 | Rebuilt 23-tab advanced ops with mock data |
+| `OwnerCenter.tsx` | `src/pages/OwnerCenter.tsx` | 2255 | 20-tab mega-component (incidents, connectors, costs, fleet, etc.) |
+| `OwnerModePage.tsx` | `src/pages/owner-mode/` | 441 | 6-tab founder-safe control room |
 
-## What the Unification Layer Is
+Plus 7 standalone `owner/*` pages (Home, Health, Pulse, Trust, Approvals, AiTeam, AiTeamUpdates) that **overlap** with OwnerCenter tabs — both render incidents, connectors, trust, costs, etc. with different data sources and different quality levels.
 
-One runtime kernel that boots once, shared by every surface, every hook, every advisor call.
+## Exact Architectural Problems
+
+1. **Two MissionControl files** — `MissionControl.tsx` (legacy, 305 lines, real API) and `mission-control/MissionControlPage.tsx` (rebuilt, 1118 lines, mocks). Both route to `/mission-control`.
+2. **OwnerCenter has 20 tabs** covering the same domains as the 7 standalone `owner/*` pages — incidents, trust, connectors, costs, AI team all exist in both.
+3. **Three incident surfaces** — OwnerCenter "incidents" tab, MissionControlPage "incidents" tab, and `/incidents` redirect.
+4. **Three connector surfaces** — OwnerCenter "connectors" tab, MissionControlPage "connectors" tab, ConnectorHub standalone.
+5. **Three cost surfaces** — OwnerCenter "costs" tab, MissionControlPage "costs" tab, standalone owner cost views.
+6. **Trust rendered in 4 places** — OwnerCenter "trust-center" tab, MissionControlPage "trust" tab, OwnerTrustPage, OwnerModePage "Risk & Trust" tab.
+7. **Sidebar shows 3 admin entry points** (Owner Mode, Mission Control, Owner Workspace) — confusing for users.
+
+## Canonical Route Hierarchy (Final)
 
 ```text
-┌─────────────────────────────────────────────────────┐
-│                   React App                         │
-│                                                     │
-│   ┌─────────────────────────────────────────────┐   │
-│   │         <SitaKernelProvider>                 │   │
-│   │                                             │   │
-│   │   EventBus (singleton)                      │   │
-│   │   CanonicalChain (singleton)                │   │
-│   │   MemoryService (singleton)                 │   │
-│   │   TrustStateService (singleton)             │   │
-│   │   EntityGraphService (singleton)            │   │
-│   │   IdentityGraph (singleton)                 │   │
-│   │   PolicyEngine (stateless — already shared) │   │
-│   │   ReceiptService (singleton)                │   │
-│   │   WorkflowEngine (singleton)                │   │
-│   │                                             │   │
-│   │   Entity context scoping on every call      │   │
-│   │                                             │   │
-│   └─────────────────────────────────────────────┘   │
-│                                                     │
-│   useSitaKernel() — access any service              │
-│   useCanonicalAction() — Intent → full chain        │
-│   useEntityScoped() — auto-scope to current entity  │
-│                                                     │
-└─────────────────────────────────────────────────────┘
+LAYER 1 — Founder-Safe
+/owner-mode                     → Single-page tabbed control room (absorbs 15 child concepts)
+
+LAYER 2 — Advanced Owner Workspace  
+/owner                          → OwnerCenter (keeps 20 tabs — this is the power user surface)
+/owner/home                     → REMOVE (duplicate of /owner overview tab)
+/owner/health                   → REMOVE (duplicate of /owner connectors + fleet tabs)
+/owner/pulse                    → KEEP (unique boardroom pulse — not in OwnerCenter)
+/owner/trust                    → REMOVE (duplicate of /owner trust-center tab)
+/owner/approvals                → KEEP (unique dedicated approval workflow)
+/owner/ai-team                  → REMOVE (duplicate of /owner workforce tab)
+/owner/ai-team/updates          → KEEP (unique updates feed — not in OwnerCenter)
+/owner/leases                   → KEEP (unique)
+/owner/constitution             → KEEP (unique)
+/owner/pricing                  → KEEP (unique)
+/owner/packs                    → KEEP (unique)
+/owner/advisors                 → KEEP (unique)
+
+LAYER 3 — Mission Ops (drill-downs only)
+/mission-control                → MissionControlPage (23-tab ops view)
+/mission/overview               → Advanced ops dashboard
+/mission/connectors/:id         → Connector drill-down
+/mission/incidents/:id          → Incident investigation
+/mission/policies/simulate      → Advanced scenario builder
+/mission/registry               → System registry
+/mission/releases/:id           → Release detail
+/mission/workflows/:id/replay   → Workflow replay detail
+/mission/error                  → Premium error state
+
+GLOBAL TOOLS
+/policy-simulator               → Founder-safe simulation hub
+/workflow-replay                → Replay hub/search
+/observability                  → Telemetry center
+/users                          → User admin
+
+DEPRECATED
+/incidents                      → Already redirects to /mission-control ✓
+/policies/simulator             → Already redirects to /policy-simulator ✓
+/owner-mode/home                → Already redirects to /owner-mode ✓
 ```
 
----
+## Implementation Steps
 
-## Implementation Plan
+### Step 1: Remove duplicate Owner pages (4 files)
+Delete these files — their functionality already exists as tabs in OwnerCenter:
+- `src/pages/owner/OwnerHomePage.tsx` → `/owner` overview tab covers this
+- `src/pages/owner/OwnerHealthPage.tsx` → `/owner` connectors + fleet tabs cover this
+- `src/pages/owner/OwnerTrustPage.tsx` → `/owner` trust-center tab covers this
+- `src/pages/owner/OwnerAiTeamPage.tsx` → `/owner` workforce tab covers this
 
-### Task 1: SitaKernel — The Runtime Singleton
+### Step 2: Remove legacy MissionControl
+Delete `src/pages/MissionControl.tsx` (305 lines, legacy API approach) — `mission-control/MissionControlPage.tsx` is the canonical replacement.
 
-**New file:** `src/lib/sita-kernel.ts`
+### Step 3: Clean up App.tsx routes
+- Remove routes for deleted pages (`/owner/home`, `/owner/health`, `/owner/trust`, `/owner/ai-team`)
+- Add redirects: `/owner/home` → `/owner`, `/owner/health` → `/owner`, `/owner/trust` → `/owner/trust-center`, `/owner/ai-team` → `/owner/internal-agents`
+- Point `/mission-control` import to `MissionControlPage` (not legacy `MissionControl`)
 
-A single class that instantiates every core service exactly once, wiring them together with shared references:
+### Step 4: Simplify sidebar navigation
+Reduce admin sidebar from 3 entry points to 2 clearly labeled options:
+- **"Simple Mode"** → `/owner-mode` (founder-safe)
+- **"Control Room"** → `/owner` (advanced, with sub-links for mission-control, policy-simulator, etc.)
 
-- One `EventBus` — every service uses this one
-- One `ReceiptService` — every receipt chains to the same hash sequence
-- One `MemoryService` — shared memory across all domains
-- One `TrustStateService` — unified trust scores
-- One `WorkflowEngine` — all workflows in one state machine
-- One `EntityGraphService` — cross-domain entity resolution
-- One `IdentityGraph` — identity + household + delegation
-- One `CanonicalChainOrchestrator` — wired to all of the above
-- One `AgentOrchestrator` — wired to shared EventBus + ReceiptService
-- One `ProjectionService` — shared projections
+Remove the separate "Owner Workspace" link — it's confusing alongside "Owner Mode".
 
-The kernel exposes a `boot()` method and typed getters. It boots lazily on first access.
+### Step 5: Wire MissionControlPage to use real data hooks
+Replace mock imports in `MissionControlPage.tsx` with the existing admin hooks (`useAdminIncidents`, `useFleetHealth`, `useTrustCenter`, etc.) that OwnerCenter already uses — ensuring both surfaces share one data layer.
 
-### Task 2: SitaKernelProvider — React Context
+### Step 6: Add cross-navigation between layers
+- OwnerModePage "What Matters Now" items should link to `/owner` tabs (not standalone pages)
+- OwnerCenter tab headers should link to `/mission/*` drill-downs where applicable
+- MissionControlPage should link to `/mission/*` drill-downs
 
-**New file:** `src/contexts/SitaKernelContext.tsx`
+## Anti-Patterns to Avoid
 
-A React context that:
-- Creates the kernel once on mount
-- Subscribes to `EntityContext` changes and scopes the kernel's active entity
-- Provides `useSitaKernel()` hook returning typed access to every service
-- Provides `useCanonicalAction(domain, capabilityId)` — a hook that calls `kernel.chain.execute()` with the current entity context auto-injected
-- Provides `useSharedMemory(key)` — reads from the singleton memory service
-- Provides `useSharedTrust(entityId)` — reads from the singleton trust service
-- Provides `useProofTimeline(correlationId?)` — reads from the singleton receipt service
+- Do NOT create new standalone pages for concepts already covered by OwnerCenter tabs
+- Do NOT maintain two data-fetching patterns (real hooks vs mock hooks) for the same domain
+- Do NOT keep 3 admin entry points in the sidebar
+- Do NOT let `owner/*` standalone pages and OwnerCenter tabs render competing UIs for the same data
 
-**Wire into App.tsx:** Wrap inside `EntityContextProvider`, so kernel can read entity context.
+## Priority
 
-### Task 3: Entity-Scoped Operations
-
-**Modify:** `src/lib/sita-kernel.ts`
-
-Add entity scoping so every operation automatically tags with current entity:
-- `kernel.setActiveEntity(entityProfile)` — called when EntityContext changes
-- All `memory.store()` calls auto-tag with `entityId`
-- All `receipts.createReceipt()` calls include entity in metadata
-- All `eventBus.publish()` calls include `tenantId: entity.id`
-- All `trust` lookups scope to current entity
-
-### Task 4: Wire useBrainCore Through the Kernel
-
-**Modify:** `src/hooks/use-brain-core.ts`
-
-Currently creates its own `ReceiptService`. Change to:
-- Import `useSitaKernel()` 
-- Use `kernel.receipts` instead of local instance
-- Use `kernel.memory` to store advisor responses
-- Use `kernel.eventBus` to emit `advisor.response.v1` events
-- Use `kernel.trust` to check advisor trust before executing
-
-This means every advisor call now: generates shared receipts, emits events other services can hear, stores in shared memory, and checks trust.
-
-### Task 5: Wire useSitaData Through the Kernel
-
-**Modify:** `src/hooks/use-sita-data.ts`
-
-Currently standalone Supabase queries. Add:
-- On successful data fetch, publish `data.loaded.v1` to shared EventBus
-- On mutation, run through `kernel.chain.execute()` instead of raw Supabase calls (for write operations that need policy/approval/proof)
-- Entity-scope all queries using `kernel.activeEntity`
-
-### Task 6: Shared Proof Timeline Hook
-
-**New file:** `src/hooks/use-proof-timeline.ts`
-
-A hook that subscribes to the kernel's receipt service and returns a live timeline:
-- All receipts from the current session
-- Filtered by entity, domain, or correlationId
-- Used by Proof Center, Inspector Rail, and Boardroom to show the same data
-
-### Task 7: Shared Event Subscription Hook
-
-**New file:** `src/hooks/use-kernel-events.ts`
-
-A hook that subscribes to the kernel's EventBus:
-- `useKernelEvent("execution.completed.v1", handler)` — React-safe subscription
-- Auto-unsubscribe on unmount
-- Used by: notification system, activity stream, real-time dashboards
-- Replaces any component that currently polls or uses isolated state
-
-### Task 8: Wire Existing Surfaces to Kernel
-
-Update key pages to use kernel hooks instead of isolated data:
-
-- **Daily Pulse:** Use `useSharedMemory("daily-pulse")` for advisor recommendations
-- **Money Center:** Use `useCanonicalAction("finance", "pay-bill")` for bill payments — gets policy check, receipt, proof
-- **Business Center:** Use `useCanonicalAction("business", "update-lead")` for CRM mutations
-- **Proof Center:** Use `useProofTimeline()` — shows all receipts from all domains in one view
-- **Inspector Rail:** Use `useSharedTrust(entityId)` and `useProofTimeline(correlationId)` — shows trust + proof for inspected entity
-- **Owner Center:** Use `useKernelEvent("*")` for live activity feed
-- **Boardroom:** Use `useSharedMemory` for replay data sourced from real kernel state
-
----
-
-## What This Achieves
-
-After implementation:
-1. **One EventBus** — every action anywhere emits events that every other surface can hear
-2. **One ReceiptService** — every action produces a receipt in one hash chain (Proof Center shows everything)
-3. **One MemoryService** — advisors, agents, and surfaces share context
-4. **One TrustStateService** — trust scores are system-wide, not per-component
-5. **One WorkflowEngine** — all workflows visible in one place
-6. **Entity scoping** — switch from Personal to Household and everything re-scopes instantly
-7. **Policy enforcement** — every mutation goes through the canonical chain (policy → approval → execution → receipt → projection)
-
-## Implementation Order
-
-1. `SitaKernel` class (the runtime singleton)
-2. `SitaKernelContext` + `useSitaKernel()` hook
-3. Entity scoping integration
-4. `use-brain-core.ts` rewire
-5. `use-proof-timeline.ts` and `use-kernel-events.ts` hooks
-6. Wire Proof Center, Inspector Rail, Daily Pulse, Money Center
-7. Wire Owner Center activity feed and Boardroom replay
-8. Wire Business Center mutations through canonical chain
-
-## Technical Notes
-
-- Zero new backend services — this is purely client-side service unification
-- Zero breaking changes to existing pages — hooks maintain the same return signatures
-- All existing core-services stay exactly as they are (EventBus, MemoryService, etc.) — only their instantiation changes from `new X()` everywhere to `kernel.x` everywhere
-- The kernel is tree-shakeable — services only initialize when first accessed
-- Performance: singleton services mean less memory, less GC, and shared caches
+**Launch Now**: Steps 1-4 (route cleanup, dedup, sidebar simplification)
+**Next**: Step 5 (wire real data into MissionControlPage)
+**Later**: Step 6 (cross-navigation polish)
 
