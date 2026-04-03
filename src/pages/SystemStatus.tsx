@@ -663,8 +663,8 @@ const SystemStatus = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className={`text-xs font-medium ${latest?.metrics.errorRate === 0 ? "text-trust-safe" : (latest?.metrics.errorRate ?? 0) < 0.05 ? "text-muted-foreground" : "text-destructive"}`}>
-                      {((latest?.metrics.errorRate ?? 0) * 100).toFixed(2)}% err
+                    <span className={`text-xs font-medium ${latest.errorRate === 0 ? "text-trust-safe" : latest.errorRate < 0.05 ? "text-muted-foreground" : "text-destructive"}`}>
+                      {(latest.errorRate * 100).toFixed(2)}% err
                     </span>
                     <div className="w-16">
                       <Progress value={svc.healthScore} className="h-1.5" />
