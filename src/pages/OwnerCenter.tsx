@@ -2,7 +2,8 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton 
 import { KPITile, SitaTabs, TimelineItem, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useKernelEventStream } from "@/hooks/use-kernel-events";
 import { useKernelStatus } from "@/contexts/SitaKernelContext";
 import { useLocation, useNavigate } from "react-router-dom";
