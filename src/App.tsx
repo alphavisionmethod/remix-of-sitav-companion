@@ -69,6 +69,8 @@ const ServiceArchitectureDashboard = lazy(() => import("./pages/ServiceArchitect
 const PricingEditor = lazy(() => import("./pages/owner/PricingEditor"));
 const PackEditorPage = lazy(() => import("./pages/owner/PackEditor"));
 const AdvisorConfigPage = lazy(() => import("./pages/owner/AdvisorConfig"));
+const LeaseDashboard = lazy(() => import("./pages/owner/LeaseDashboard"));
+const ConstitutionEditor = lazy(() => import("./pages/owner/ConstitutionEditor"));
 const EnterpriseControlPlane = lazy(() => import("./pages/enterprise/EnterpriseControlPlane"));
 
 // Mobile Trusted Device
