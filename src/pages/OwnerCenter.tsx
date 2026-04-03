@@ -1956,4 +1956,98 @@ const OwnerCenter = () => {
   );
 };
 
+// ── Live Activity Feed Component ─────────────────────────────
+
+const EVENT_ICONS: Record<string, string> = {
+  "advisor": "🧠",
+  "execution": "⚡",
+  "policy": "🛡️",
+  "approval": "✅",
+  "lease": "🔑",
+  "constitution": "📜",
+  "kernel": "🔧",
+  "receipt": "🧾",
+  "intent": "🎯",
+  "entity": "👤",
+  "governance": "⚖️",
+  "trust": "🔒",
+  "memory": "💾",
+  "verification": "✓",
+};
+
+const getEventIcon = (topic: string): string => {
+  for (const [key, icon] of Object.entries(EVENT_ICONS)) {
+    if (topic.includes(key)) return icon;
+  }
+  return "📡";
+};
+
+const getEventColor = (topic: string): string => {
+  if (topic.includes("failed") || topic.includes("denied") || topic.includes("revoked")) return "border-destructive/30 bg-destructive/5";
+  if (topic.includes("completed") || topic.includes("passed") || topic.includes("approved")) return "border-trust-safe/30 bg-trust-safe/5";
+  if (topic.includes("requested") || topic.includes("pending")) return "border-accent/30 bg-accent/5";
+  return "border-border/30 bg-secondary/20";
+};
+
+const LiveActivityFeed = () => {
+  const { events, clear } = useKernelEventStream("*", 30);
+  const kStatus = useKernelStatus();
+
+  return (
+    <SitaCard hover={false} className="p-5">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+            <Radio className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <p className="font-display text-base font-bold text-foreground">Live System Activity</p>
+            <p className="text-[10px] text-muted-foreground">
+              {kStatus.totalEvents} events · {kStatus.receiptChainLength} receipts · {kStatus.workflowCount} workflows · Uptime {Math.round(kStatus.uptimeMs / 1000)}s
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 rounded-full px-2.5 py-1 bg-trust-safe/10 border border-trust-safe/20">
+            <div className="h-1.5 w-1.5 rounded-full bg-trust-safe animate-pulse" />
+            <span className="text-[10px] font-semibold text-trust-safe">Live</span>
+          </div>
+          {events.length > 0 && (
+            <button onClick={clear} className="text-[10px] text-muted-foreground hover:text-foreground transition-colors">
+              Clear
+            </button>
+          )}
+        </div>
+      </div>
+
+      {events.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-xs text-muted-foreground">Waiting for system events…</p>
+          <p className="text-[10px] text-muted-foreground/50 mt-1">Navigate other pages to see activity here</p>
+        </div>
+      ) : (
+        <div className="space-y-1.5 max-h-[320px] overflow-y-auto">
+          {[...events].reverse().map((event) => (
+            <div key={event.id} className={`flex items-start gap-2.5 rounded-lg border px-3 py-2 transition-all ${getEventColor(event.topic)}`}>
+              <span className="text-sm mt-0.5">{getEventIcon(event.topic)}</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-xs font-medium text-foreground truncate font-mono">{event.topic}</p>
+                  <span className="text-[9px] text-muted-foreground shrink-0">
+                    {new Date(event.timestamp).toLocaleTimeString()}
+                  </span>
+                </div>
+                <p className="text-[10px] text-muted-foreground truncate mt-0.5">
+                  {event.source} · {Object.keys(event.payload).slice(0, 3).join(", ")}
+                  {event.correlationId ? ` · ${event.correlationId.slice(0, 8)}…` : ""}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </SitaCard>
+  );
+};
+
 export default OwnerCenter;
