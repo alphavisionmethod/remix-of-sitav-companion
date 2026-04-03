@@ -29,6 +29,7 @@ const FilesCenter = lazy(() => import("./pages/FilesCenter"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const MissionControl = lazy(() => import("./pages/mission-control/MissionControlPage"));
 const AdvisorWorkspace = lazy(() => import("./pages/advisors/AdvisorWorkspace"));
+const AdvisorCouncilDashboard = lazy(() => import("./pages/advisors/AdvisorCouncilDashboard"));
 const Onboarding = lazy(() => import("./pages/OnboardingWrapper"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Login = lazy(() => import("./pages/auth/Login"));
