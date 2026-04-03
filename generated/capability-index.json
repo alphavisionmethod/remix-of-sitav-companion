@@ -58,6 +58,11 @@
     { "id": "connector-failover", "domain": "platform", "family": "self-healing", "riskTier": "elevated", "requiresApproval": true, "description": "Automatic failover to backup connector on provider outage" },
     { "id": "workflow-unstick", "domain": "platform", "family": "self-healing", "riskTier": "elevated", "requiresApproval": false, "description": "Detect and recover stuck workflows via replay or compensation" },
     { "id": "model-swap-routing", "domain": "platform", "family": "self-healing", "riskTier": "elevated", "requiresApproval": false, "description": "Swap to alternative AI model on latency spike or failure" },
-    { "id": "rollback-execution", "domain": "platform", "family": "self-healing", "riskTier": "critical", "requiresApproval": true, "description": "Recommendation-first, simulation-first rollback with full logging" }
+    { "id": "rollback-execution", "domain": "platform", "family": "self-healing", "riskTier": "critical", "requiresApproval": true, "description": "Recommendation-first, simulation-first rollback with full logging" },
+    { "id": "model-routing", "domain": "platform", "family": "intelligence", "riskTier": "standard", "requiresApproval": false, "description": "Budget-aware model tier selection based on intent complexity, domain risk, and cost constraints" },
+    { "id": "advisor-handoff", "domain": "platform", "family": "intelligence", "riskTier": "standard", "requiresApproval": false, "description": "Formal context transfer between advisors with proof chain continuity" },
+    { "id": "council-escalation", "domain": "platform", "family": "intelligence", "riskTier": "elevated", "requiresApproval": false, "description": "Escalation routing when councils fail consensus or hit policy boundaries" },
+    { "id": "advisor-performance-evaluation", "domain": "platform", "family": "intelligence", "riskTier": "standard", "requiresApproval": false, "description": "Advisor scorecard computation, promotion/demotion recommendation" },
+    { "id": "refusal-proof-generation", "domain": "platform", "family": "trust", "riskTier": "standard", "requiresApproval": false, "description": "Negative receipt generation for refused actions with policy reference" }
   ]
 }
