@@ -68,13 +68,12 @@ export default function OwnerHealthPage() {
         </div>
       </motion.div>
 
-      {/* Summary strip */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
           { label: "Services Healthy", value: `${healthyCount}/${modules.length}`, icon: Server },
-          { label: "Connectors Up", value: `${connectors.filter(c => c.status === "healthy").length}/${connectors.length}`, icon: Wifi },
-          { label: "Verification Rate", value: `${trust.verificationRate}%`, icon: Shield },
-          { label: "Active Incidents", value: `${summary.activeIncidents}`, icon: AlertTriangle },
+          { label: "Connectors Up", value: `${connectors.filter(c => c.status === "connected").length}/${connectors.length}`, icon: Wifi },
+          { label: "Verification Health", value: `${trust.verificationHealth}%`, icon: Shield },
+          { label: "Active Incidents", value: `${summary.incidentsSummary.open}`, icon: AlertTriangle },
           { label: "Recovery Queue", value: `${diagnostics.recentFailures}`, icon: RefreshCw },
         ].map(k => (
           <div key={k.label} className="rounded-xl border border-border/50 bg-card/60 p-3 text-center">
@@ -85,7 +84,6 @@ export default function OwnerHealthPage() {
         ))}
       </div>
 
-      {/* Module health grid */}
       <SitaSectionHeader title="Module Health Map" subtitle="Per-service health with trust contribution" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {modules.map((m, i) => (
@@ -123,7 +121,6 @@ export default function OwnerHealthPage() {
         ))}
       </div>
 
-      {/* Degradation patterns */}
       <SitaSectionHeader title="Degradation Patterns" subtitle="Recent performance anomalies" />
       <SitaCard hover={false}>
         <div className="space-y-2">

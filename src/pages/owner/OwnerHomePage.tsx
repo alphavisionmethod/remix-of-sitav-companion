@@ -45,7 +45,7 @@ export default function OwnerHomePage() {
   const matters = useWhatMattersNow();
   const recovery = useRecoverySummary();
 
-  const healthScore = Math.round((trust.verificationRate + trust.proofCompleteness + (connectors.filter(c => c.status === "healthy").length / Math.max(connectors.length, 1)) * 100) / 3);
+  const healthScore = Math.round((trust.verificationHealth + trust.proofCompleteness + (connectors.filter(c => c.status === "connected").length / Math.max(connectors.length, 1)) * 100) / 3);
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
@@ -74,11 +74,11 @@ export default function OwnerHomePage() {
       {/* KPI Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
         {kpiCard(DollarSign, "Monthly Revenue", "$112K", "+18% MoM", "bg-trust-verified/10 text-trust-safe")}
-        {kpiCard(CreditCard, "Monthly Spend", `$${cost.totalMonthly.toLocaleString()}`, `${cost.budgetUsedPercent}% of budget`, "bg-accent/10 text-accent")}
-        {kpiCard(Shield, "Trust Score", `${trust.overallScore}%`, `${trust.approvalHealthLabel}`, "bg-primary/10 text-primary")}
-        {kpiCard(Wifi, "Connectors", `${connectors.filter(c => c.status === "healthy").length}/${connectors.length}`, "healthy", "bg-primary/10 text-primary")}
+        {kpiCard(CreditCard, "Daily Spend", `$${cost.totalCostToday.toFixed(2)}`, `${cost.budgetUtilization}% of budget`, "bg-accent/10 text-accent")}
+        {kpiCard(Shield, "Trust Posture", trust.posture, trust.approvalHealth, "bg-primary/10 text-primary")}
+        {kpiCard(Wifi, "Connectors", `${connectors.filter(c => c.status === "connected").length}/${connectors.length}`, "connected", "bg-primary/10 text-primary")}
         {kpiCard(AlertTriangle, "Incidents", `${incidents.filter(i => i.severity === "critical").length}`, "critical active", "bg-destructive/10 text-destructive")}
-        {kpiCard(Cpu, "AI Agents", `${aiTeam.activeAgents}/${aiTeam.totalAgents}`, "active", "bg-sita-gold/10 text-sita-gold")}
+        {kpiCard(Cpu, "AI Agents", `${aiTeam.healthyCount}/${aiTeam.totalAgents}`, "healthy", "bg-sita-gold/10 text-sita-gold")}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -86,7 +86,7 @@ export default function OwnerHomePage() {
         <SitaCard hover={false} className="lg:col-span-2">
           <SitaCardTitle sub="Prioritized by urgency and impact">What Matters Now</SitaCardTitle>
           <div className="mt-3 space-y-2">
-            {matters.slice(0, 5).map((item, i) => (
+            {matters.slice(0, 5).map((item) => (
               <div key={item.id} onClick={() => item.actionRoute && navigate(item.actionRoute)}
                 className={cn("flex items-center gap-3 rounded-xl border p-3 cursor-pointer hover:shadow-sm transition-all",
                   item.urgency === "critical" ? "border-destructive/20 bg-destructive/5" :
@@ -111,7 +111,7 @@ export default function OwnerHomePage() {
           <SitaCardTitle sub="Common owner actions">Quick Actions</SitaCardTitle>
           <div className="mt-3 space-y-2">
             {[
-              { label: "Review approvals", icon: CheckCircle, route: "/owner/approvals", count: summary.pendingApprovals },
+              { label: "Review approvals", icon: CheckCircle, route: "/owner/approvals", count: summary.incidentsSummary.open },
               { label: "Trust center", icon: Shield, route: "/owner/trust", count: 0 },
               { label: "System health", icon: Heart, route: "/owner/health", count: 0 },
               { label: "AI team status", icon: Cpu, route: "/owner/ai-team", count: aiTeam.stuckTasks },
@@ -136,11 +136,11 @@ export default function OwnerHomePage() {
         <SitaCard hover={false}>
           <SitaCardTitle sub="Spend awareness">Cost Summary</SitaCardTitle>
           <div className="mt-3 space-y-2">
-            <div className="flex justify-between text-xs"><span className="text-muted-foreground">AI/Model</span><span className="font-medium text-foreground">${cost.aiModelCost.toLocaleString()}</span></div>
-            <div className="flex justify-between text-xs"><span className="text-muted-foreground">Connector</span><span className="font-medium text-foreground">${cost.connectorCost.toLocaleString()}</span></div>
-            <div className="flex justify-between text-xs"><span className="text-muted-foreground">Infrastructure</span><span className="font-medium text-foreground">${cost.infraCost.toLocaleString()}</span></div>
-            <Progress value={cost.budgetUsedPercent} className="h-1.5 mt-2" />
-            <p className="text-[10px] text-muted-foreground">{cost.budgetUsedPercent}% of monthly budget used</p>
+            {cost.byModule.slice(0, 3).map(m => (
+              <div key={m.module} className="flex justify-between text-xs"><span className="text-muted-foreground">{m.module}</span><span className="font-medium text-foreground">${m.cost.toFixed(2)}</span></div>
+            ))}
+            <Progress value={cost.budgetUtilization} className="h-1.5 mt-2" />
+            <p className="text-[10px] text-muted-foreground">{cost.budgetUtilization}% of daily budget used</p>
           </div>
         </SitaCard>
 
@@ -149,7 +149,7 @@ export default function OwnerHomePage() {
           <div className="mt-3 space-y-2">
             {connectors.slice(0, 4).map(c => (
               <div key={c.id} className="flex items-center gap-2">
-                <div className={cn("h-2 w-2 rounded-full", c.status === "healthy" ? "bg-trust-safe" : c.status === "degraded" ? "bg-accent" : "bg-destructive")} />
+                <div className={cn("h-2 w-2 rounded-full", c.status === "connected" ? "bg-trust-safe" : c.status === "degraded" ? "bg-accent" : "bg-destructive")} />
                 <span className="text-xs text-foreground flex-1">{c.name}</span>
                 <Badge variant="outline" className="text-[9px]">{c.status}</Badge>
               </div>
@@ -160,9 +160,9 @@ export default function OwnerHomePage() {
         <SitaCard hover={false}>
           <SitaCardTitle sub="Deployment state">Rollout</SitaCardTitle>
           <div className="mt-3 space-y-3">
-            <div className="flex items-center gap-2"><Rocket className="h-4 w-4 text-primary" /><span className="text-xs text-foreground">Canary at 15%</span></div>
-            <Progress value={15} className="h-1.5" />
-            <div className="text-[10px] text-muted-foreground">3 modules in canary, 0 rollback candidates</div>
+            <div className="flex items-center gap-2"><Rocket className="h-4 w-4 text-primary" /><span className="text-xs text-foreground">Canary at {summary.releaseSummary.canaryHealth}%</span></div>
+            <Progress value={summary.releaseSummary.canaryHealth} className="h-1.5" />
+            <div className="text-[10px] text-muted-foreground">{summary.releaseSummary.currentVersion} — {summary.releaseSummary.ringStatus}</div>
             <div className="flex items-center gap-2 text-[10px]"><CheckCircle className="h-3 w-3 text-trust-safe" /><span className="text-muted-foreground">All health checks passing</span></div>
           </div>
         </SitaCard>

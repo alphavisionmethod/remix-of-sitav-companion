@@ -33,6 +33,7 @@ const ladder: TrustLadderRung[] = [
 export default function OwnerTrustPage() {
   const trust = useTrustSummary();
   const recovery = useRecoverySummary();
+  const trustScore = Math.round((trust.policyConfidence + trust.verificationHealth + trust.proofCompleteness) / 3);
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
@@ -47,20 +48,19 @@ export default function OwnerTrustPage() {
             <h1 className="font-display text-xl font-bold text-foreground">Trust Center</h1>
             <p className="text-sm text-muted-foreground">Trust ladder, approval health, proof, verification posture</p>
           </div>
-          <Badge variant="outline" className={cn("ml-auto text-sm", trust.overallScore >= 85 ? "bg-trust-verified/10 text-trust-safe" : "bg-accent/10 text-accent")}>
-            Trust Score: {trust.overallScore}%
+          <Badge variant="outline" className={cn("ml-auto text-sm", trustScore >= 85 ? "bg-trust-verified/10 text-trust-safe" : "bg-accent/10 text-accent")}>
+            Trust Score: {trustScore}%
           </Badge>
         </div>
       </motion.div>
 
-      {/* Trust metrics strip */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Overall Score", value: `${trust.overallScore}%`, icon: Shield },
-          { label: "Approval Health", value: trust.approvalHealthLabel, icon: CheckCircle },
-          { label: "Verification Rate", value: `${trust.verificationRate}%`, icon: FileCheck },
+          { label: "Trust Posture", value: trust.posture, icon: Shield },
+          { label: "Approval Health", value: trust.approvalHealth, icon: CheckCircle },
+          { label: "Verification Health", value: `${trust.verificationHealth}%`, icon: FileCheck },
           { label: "Proof Completeness", value: `${trust.proofCompleteness}%`, icon: Lock },
-          { label: "Recovery Ready", value: `${recovery.rollbackReady}`, icon: RefreshCw },
+          { label: "Rollback Readiness", value: `${trust.rollbackReadiness}%`, icon: RefreshCw },
         ].map(k => (
           <div key={k.label} className="rounded-xl border border-border/50 bg-card/60 p-3 text-center">
             <k.icon className="h-4 w-4 text-primary mx-auto mb-1" />
@@ -70,7 +70,6 @@ export default function OwnerTrustPage() {
         ))}
       </div>
 
-      {/* Trust Ladder */}
       <SitaSectionHeader title="Trust Ladder" subtitle="Progressive trust maturity levels" />
       <SitaCard hover={false}>
         <div className="space-y-1">
@@ -96,7 +95,6 @@ export default function OwnerTrustPage() {
         </div>
       </SitaCard>
 
-      {/* Sensitive workflow warnings */}
       <SitaSectionHeader title="Sensitive Workflow Status" subtitle="Workflows requiring elevated trust" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {[
@@ -122,7 +120,6 @@ export default function OwnerTrustPage() {
         ))}
       </div>
 
-      {/* Execution confidence */}
       <SitaCard hover={false}>
         <SitaCardTitle sub="Confidence by domain">Execution Confidence</SitaCardTitle>
         <div className="mt-3 space-y-3">

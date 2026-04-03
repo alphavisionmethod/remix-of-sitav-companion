@@ -12,7 +12,6 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
   useMissionControlSummary, useFounderCostSummary, useTrustSummary,
-  useConnectorSummaries, useIncidentSummaries,
 } from "@/hooks/use-mission-control-views";
 import {
   BarChart3, TrendingUp, DollarSign, Shield, Users, Rocket,
@@ -122,8 +121,8 @@ export default function OwnerPulsePage() {
               { label: "Churn Risk", value: "$234K", trend: "5 accounts", direction: "down" as const },
             ]},
             { domain: "Trust", icon: Shield, items: [
-              { label: "Overall Score", value: `${trust.overallScore}%` },
-              { label: "Verification Rate", value: `${trust.verificationRate}%`, trend: "above SLO", direction: "up" as const },
+              { label: "Posture", value: trust.posture },
+              { label: "Verification Health", value: `${trust.verificationHealth}%`, trend: "above SLO", direction: "up" as const },
               { label: "Proof Completeness", value: `${trust.proofCompleteness}%` },
             ]},
             { domain: "Product", icon: Rocket, items: [
@@ -140,15 +139,14 @@ export default function OwnerPulsePage() {
         </TabsContent>
       </Tabs>
 
-      {/* Owner summary */}
       <SitaCard hover={false} className="border-primary/10 bg-gradient-to-br from-primary/3 to-card">
         <SitaCardTitle sub="AI-generated executive summary">
           <Sparkles className="h-4 w-4 text-primary inline mr-2" />Boardroom Summary
         </SitaCardTitle>
         <div className="mt-3 space-y-2 text-xs text-muted-foreground leading-relaxed">
-          <p>Revenue continues strong growth at +18% MoM. Pipeline is healthy with 23 active deals worth $1.2M. Trust score is at {trust.overallScore}% — within acceptable range.</p>
+          <p>Revenue continues strong growth at +18% MoM. Pipeline is healthy with 23 active deals worth $1.2M. Trust posture is "{trust.posture}" — within acceptable range.</p>
           <p>Two degradation patterns flagged: Connector Gateway latency spikes and Workflow Engine retry increases. Neither has crossed SLO thresholds but both warrant monitoring.</p>
-          <p>AI spend is at {cost.budgetUsedPercent}% of monthly budget. No cost anomalies detected. {summary.activeIncidents} active incidents, none critical to revenue.</p>
+          <p>AI spend is at {cost.budgetUtilization}% of daily budget. No cost anomalies detected. {summary.incidentsSummary.open} active incidents, none critical to revenue.</p>
         </div>
       </SitaCard>
     </div>
