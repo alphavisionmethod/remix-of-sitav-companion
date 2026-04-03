@@ -735,6 +735,7 @@ const BoardroomScenarioPanel = () => {
       </div>
     </div>
   );
+};
 
 // ── Tab Icons ─────────────────────────────────────────────────
 
