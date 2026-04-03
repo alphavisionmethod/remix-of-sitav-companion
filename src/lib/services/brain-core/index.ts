@@ -6,3 +6,4 @@ export * from "./build-explanation";
 export * from "./build-simulation-request";
 export * from "./build-approval-package";
 export * from "./build-boardroom-request";
+export * from "./model-router";

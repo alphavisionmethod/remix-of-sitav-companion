@@ -154,7 +154,7 @@ export function evaluateEscalation(params: {
 
   // Check for policy violations flagged in caveats
   const hasPolicyViolation = params.recommendations.some(
-    r => r.caveats?.some(c => c.toLowerCase().includes("policy") || c.toLowerCase().includes("violation"))
+    r => r.concerns.some(c => c.toLowerCase().includes("policy") || c.toLowerCase().includes("violation"))
   );
   if (hasPolicyViolation) triggers.push("policy-violation");
 

@@ -119,6 +119,16 @@ export interface SystemReceipt extends BaseReceipt {
   details: Record<string, unknown>;
 }
 
+export interface RefusalReceipt extends BaseReceipt {
+  type: "refusal";
+  refusalReason: string;
+  blockedAction: string;
+  policyId: string;
+  advisorId: string;
+  confidenceAtRefusal: number;
+  requiredForRetry: string[];
+}
+
 // ── Sub-module re-exports ────────────────────────────────────
 export * from "./receipts";
 export * from "./agentic-and-investment-proof";
