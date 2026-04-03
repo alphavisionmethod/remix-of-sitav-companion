@@ -53,7 +53,7 @@ export function useCanonicalAction() {
     capabilityId: string,
     payload: Record<string, unknown>,
     options?: { amount?: number; isSimulation?: boolean; intent?: string }
-  ): Promise<CanonicalChainResult | null> => {
+  ): Promise<Record<string, unknown> | null> => {
     setIsExecuting(true);
     setError(null);
     try {
@@ -65,8 +65,8 @@ export function useCanonicalAction() {
         amount: options?.amount,
         isSimulation: options?.isSimulation,
       });
-      setLastResult(result);
-      return result;
+      setLastResult(result as Record<string, unknown>);
+      return result as Record<string, unknown>;
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Execution failed";
       setError(msg);
