@@ -1034,7 +1034,10 @@ export default function MissionControlPage() {
   const [activeTab, setActiveTab] = useState("home");
   const { mode, setMode, isOwner } = useControlMode();
   const navigate = useNavigate();
-  const openIncidents = mockIncidents.filter(i => i.status !== "resolved").length;
+  const { data: adminIncidents } = useAdminIncidents();
+  const { data: fleetHealth } = useFleetHealth();
+  const { data: trustCenter } = useTrustCenter();
+  const openIncidents = adminIncidents?.summary?.open ?? mockIncidents.filter(i => i.status !== "resolved").length;
 
   const ownerTabs = [
     { value: "home", label: "Home", icon: Cpu },
