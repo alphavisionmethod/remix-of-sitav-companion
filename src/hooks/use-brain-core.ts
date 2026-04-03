@@ -131,9 +131,9 @@ export function useBrainCore({ advisor, secondaryAdvisor }: UseBrainCoreOptions)
     } finally {
       setIsLoading(false);
     }
-  }, [session, advisor]);
+  }, [session, advisor, kernel]);
 
-  return { ask, isLoading, lastResponse, error, lastPolicyResult, lastReceipt, receiptService: receiptServiceRef.current };
+  return { ask, isLoading, lastResponse, error, lastPolicyResult, lastReceipt, receiptService: kernel.receipts };
 }
 
 // ── Demo Mode Hook ──────────────────────────────────────────────────────────
