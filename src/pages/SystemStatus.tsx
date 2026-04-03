@@ -658,7 +658,7 @@ const SystemStatus = () => {
                     <div>
                       <p className="text-sm font-medium text-foreground">{svc.name}</p>
                       <p className="text-[11px] text-muted-foreground">
-                        Uptime {latest?.metrics.uptimePercent ?? 0}% · Avg {latest?.metrics.avgLatencyMs ?? 0}ms · P99 {latest?.metrics.p99LatencyMs ?? 0}ms · {latest?.metrics.requestsPerMinute ?? 0} req/min
+                        Uptime {latest.uptimePercent}% · Avg {latest.avgLatencyMs}ms · P99 {latest.p99LatencyMs}ms · {latest.requestsPerMinute} req/min
                       </p>
                     </div>
                   </div>
