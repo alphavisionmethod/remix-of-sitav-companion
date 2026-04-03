@@ -71,6 +71,7 @@ export const SitaTopBar = ({
       {/* Left: Sidebar trigger + Command Palette */}
       <div className="flex items-center gap-2">
         <SidebarTrigger className="h-7 w-7 text-muted-foreground hover:text-foreground" />
+        <ContextSwitcher />
         <div className="hidden md:block">
           <CommandPalette />
         </div>
