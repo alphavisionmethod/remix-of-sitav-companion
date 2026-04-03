@@ -640,7 +640,7 @@ function MCCosts() {
       <SitaCard hover={false}>
         <SitaCardTitle sub="Active model routing rules from TokenGovernanceEngine">Model Routing</SitaCardTitle>
         <div className="mt-4 space-y-2">
-          {routes.routes?.map((r, i) => (
+          {modelRoutes?.map((r, i) => (
             <motion.div key={r.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}
               className="flex items-center gap-3 rounded-lg bg-secondary/20 px-3 py-2.5"
             >
