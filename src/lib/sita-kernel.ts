@@ -35,6 +35,8 @@ export class SitaKernel {
   readonly executor: ExecutorService;
   readonly chain: CanonicalChainOrchestrator;
   readonly agents: AgentOrchestrator;
+  readonly leases: LeaseManager;
+  readonly constitution: ConstitutionCompiler;
 
   // Active entity context
   private _activeEntity: EntityProfile | null = null;
