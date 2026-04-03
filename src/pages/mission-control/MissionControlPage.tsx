@@ -3,10 +3,11 @@
 // Two-layer system: Owner Mode (calm) + Advanced Ops (deep)
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMissionControlLive } from "@/hooks/use-mission-control-data";
 import { useControlMode, useWhatMattersNow, useMissionControlSummary, useSystemActivity } from "@/hooks/use-mission-control-views";
+import { useAdminIncidents, useFleetHealth, useTrustCenter } from "@/hooks/use-admin-data";
 import { AdminSpendChart } from "@/components/sita/AdminSpendChart";
 import { AnimatedProgressRing } from "@/components/sita/AnimatedProgressRing";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
@@ -55,12 +56,24 @@ import {
   Target, ClipboardList, Network, BellRing,
 }from "lucide-react";
 
+// ── Admin Data Context ───────────────────────────────────────────────────────
+interface MCAdminData {
+  adminIncidents: any;
+  fleetHealth: any;
+  trustCenter: any;
+}
+const MCAdminCtx = createContext<MCAdminData>({ adminIncidents: null, fleetHealth: null, trustCenter: null });
+function useMCAdmin() { return useContext(MCAdminCtx); }
+
 // ── System Pulse — Mac-like Hero ────────────────────────────────────────────
 
 function SystemPulseHero() {
+  const { adminIncidents } = useMCAdmin();
+  const adminOpenCount = adminIncidents?.summary?.open ?? 0;
+
   const healthyAgents = mockInternalAgents.filter(a => a.health === "healthy").length;
   const totalAgents = mockInternalAgents.length;
-  const openIncidents = mockIncidents.filter(i => i.status !== "resolved").length;
+  const openIncidents = adminOpenCount || mockIncidents.filter(i => i.status !== "resolved").length;
   const degradedConnectors = mockConnectorHealth.filter(c => c.status !== "connected").length;
   const stuckWorkflows = mockStuckWorkflows.length;
   const totalTokens = mockInternalAgents.reduce((s, a) => s + a.costTokens24h, 0);
@@ -185,7 +198,11 @@ function QuickActionsStrip() {
 // ── MC Home ─────────────────────────────────────────────────────────────────
 
 function MCHome() {
-  const openIncidents = mockIncidents.filter(i => i.status !== "resolved");
+  const { adminIncidents: adminData } = useMCAdmin();
+  const adminIncidentList = adminData?.incidents || [];
+  const openIncidents = adminIncidentList.length > 0
+    ? mockIncidents.map((m, i) => ({ ...m, status: adminIncidentList[i]?.status === "resolved" ? "resolved" as const : m.status })).filter(i => i.status !== "resolved")
+    : mockIncidents.filter(i => i.status !== "resolved");
   const degradedAgents = mockInternalAgents.filter(a => a.health !== "healthy");
   const degradedConnectors = mockConnectorHealth.filter(c => c.status !== "connected");
 
@@ -1017,7 +1034,10 @@ export default function MissionControlPage() {
   const [activeTab, setActiveTab] = useState("home");
   const { mode, setMode, isOwner } = useControlMode();
   const navigate = useNavigate();
-  const openIncidents = mockIncidents.filter(i => i.status !== "resolved").length;
+  const { data: adminIncidents } = useAdminIncidents();
+  const { data: fleetHealth } = useFleetHealth();
+  const { data: trustCenter } = useTrustCenter();
+  const openIncidents = adminIncidents?.summary?.open ?? mockIncidents.filter(i => i.status !== "resolved").length;
 
   const ownerTabs = [
     { value: "home", label: "Home", icon: Cpu },
@@ -1056,7 +1076,10 @@ export default function MissionControlPage() {
 
   const tabs = isOwner ? ownerTabs : advancedTabs;
 
+  const mcAdminData = useMemo(() => ({ adminIncidents, fleetHealth, trustCenter }), [adminIncidents, fleetHealth, trustCenter]);
+
   return (
+    <MCAdminCtx.Provider value={mcAdminData}>
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-5">
       <div className="flex items-center justify-between">
         <ModeToggle mode={mode} setMode={setMode} />
