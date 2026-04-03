@@ -88,6 +88,11 @@ const MissionRegistryPage = lazy(() => import("./pages/mission/MissionRegistryPa
 const MissionReleaseDetailPage = lazy(() => import("./pages/mission/MissionReleaseDetailPage"));
 const MissionWorkflowReplayPage = lazy(() => import("./pages/mission/MissionWorkflowReplayPage"));
 const EnterpriseControlPlane = lazy(() => import("./pages/enterprise/EnterpriseControlPlane"));
+const IntegrationConcierge = lazy(() => import("./pages/IntegrationConcierge"));
+const DigitalTwinsPage = lazy(() => import("./pages/DigitalTwinsPage"));
+const ScenarioLabPage = lazy(() => import("./pages/ScenarioLabPage"));
+const AIEconomicsPage = lazy(() => import("./pages/AIEconomicsPage"));
+const RecoveredValuePage = lazy(() => import("./pages/RecoveredValuePage"));
 
 // Mobile Trusted Device
 const MobileHome = lazy(() => import("./pages/mobile/MobileHome"));
@@ -350,6 +355,16 @@ const App = () => (
                     <Route path="/agent-activity" element={<AgentActivityDashboard />} />
                     <Route path="/revenue-calling" element={<RevenueCallingPage />} />
                     <Route path="/service-architecture" element={<ServiceArchitectureDashboard />} />
+
+                    {/* Phase 5 — Platform Intelligence */}
+                    <Route path="/integration-concierge" element={<IntegrationConcierge />} />
+                    <Route path="/digital-twins" element={<DigitalTwinsPage />} />
+                    <Route path="/digital-twins/business" element={<DigitalTwinsPage />} />
+                    <Route path="/digital-twins/money" element={<DigitalTwinsPage />} />
+                    <Route path="/digital-twins/household" element={<DigitalTwinsPage />} />
+                    <Route path="/scenario-lab" element={<ScenarioLabPage />} />
+                    <Route path="/ai-economics" element={<AIEconomicsPage />} />
+                    <Route path="/recovered-value" element={<RecoveredValuePage />} />
 
                     <Route path="/settings" element={<SettingsPage />} />
                     <Route path="/settings/trust" element={<SettingsPage />} />
