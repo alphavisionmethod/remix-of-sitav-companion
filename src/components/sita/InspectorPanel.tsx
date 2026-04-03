@@ -30,6 +30,9 @@ const proofIcon = (result: string) => {
 
 export const InspectorPanel = () => {
   const { entity, isOpen, close } = useInspector();
+  const { trustState } = useSharedTrust(entity?.id);
+  const { receipts: kernelReceipts, chainValid } = useProofTimeline({ limit: 5 });
+  const kernelStatus = useKernelStatus();
 
   return (
     <AnimatePresence>
