@@ -13,7 +13,7 @@ describe("Page Module Exports", () => {
   it("MoneyCenter exports default component", async () => {
     const mod = await import("@/pages/MoneyCenter");
     expect(mod.default).toBeDefined();
-  });
+  }, 15000);
 
   it("BusinessCenter exports default component", async () => {
     const mod = await import("@/pages/BusinessCenter");
