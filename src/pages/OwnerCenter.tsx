@@ -46,7 +46,7 @@ import {
 } from "lucide-react";
 
 type OwnerPage = "overview" | "workforce" | "incidents" | "connectors" | "costs" | "policies" | "audit" | "fleet" | "intelligence" | "council"
-  | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map";
+  | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing";
 
 const subpageFromPath = (path: string): OwnerPage => {
   const last = path.split("/").pop() || "";
