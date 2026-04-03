@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FirstBootScreen } from "@/components/sita/FirstBootScreen";
+import { FirstWelcomeScreen } from "@/components/sita/FirstWelcomeScreen";
 
 // ── Types ───────────────────────────────────────────────────
 
@@ -255,33 +256,9 @@ export function OSSetupExperience() {
           </div>
 
           <AnimatePresence mode="wait">
-            {/* Welcome */}
+            {/* Welcome — premium full-screen */}
             {phase === "welcome" && (
-              <PhaseCard key="welcome" title="Welcome to SITA OS" subtitle="Your sovereign AI operating system" icon={Brain} step={0} total={totalSteps}>
-                <div className="text-center space-y-6">
-                  <motion.img src={logo} alt="SITA" initial={{ scale: 0.8 }} animate={{ scale: 1 }}
-                    className="mx-auto h-24 w-24 rounded-3xl shadow-2xl shadow-primary/20" />
-                  <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
-                    One brain, three domains — Business, Money, and Concierge — all working together under your control.
-                  </p>
-                  <div className="grid grid-cols-3 gap-3">
-                    {[
-                      { icon: Shield, label: "Trust-First", desc: "Every action has proof" },
-                      { icon: Eye, label: "Transparent", desc: "You see everything" },
-                      { icon: Lock, label: "Sovereign", desc: "Your data, your rules" },
-                    ].map(p => (
-                      <div key={p.label} className="rounded-xl border border-border bg-secondary/20 p-3 text-center">
-                        <p.icon className="h-5 w-5 text-primary mx-auto mb-1.5" />
-                        <p className="text-xs font-semibold text-foreground">{p.label}</p>
-                        <p className="text-[10px] text-muted-foreground">{p.desc}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <button onClick={goNext} className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
-                    Begin Setup <ChevronRight className="h-4 w-4" />
-                  </button>
-                </div>
-              </PhaseCard>
+              <FirstWelcomeScreen key="welcome" onSetup={goNext} />
             )}
 
             {/* Identity */}
