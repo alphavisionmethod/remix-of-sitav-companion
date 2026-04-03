@@ -50,12 +50,17 @@ export function useMissionControlSummary(): MissionControlSummaryView {
       systemScore: score,
       status: score >= 90 ? "healthy" : score >= 70 ? "warning" : "critical",
       trustPosture: critInc > 0 ? "compromised" : openInc > 0 ? "review" : "verified",
-      agentsSummary: { total, healthy, degraded: mockInternalAgents.filter(a => a.health === "degraded").length, paused: mockInternalAgents.filter(a => a.health === "paused").length, error: mockInternalAgents.filter(a => a.health === "error").length },
+      agentsSummary: {
+        total, healthy,
+        degraded: mockInternalAgents.filter(a => a.health === "degraded").length,
+        paused: mockInternalAgents.filter(a => a.health === "paused").length,
+        error: mockInternalAgents.filter(a => a.health === "critical").length,
+      },
       incidentsSummary: { open: openInc, critical: critInc, total: mockIncidents.length },
       connectorsSummary: { total: mockConnectorHealth.length, connected, degraded: degradedConn, disconnected, avgHealth },
       workflowsSummary: { total: 24, running: 24 - stuck, stuck, failed: 0 },
       costSummary: { tokensToday: totalTokens, costToday, budget, utilization: Math.round((costToday / budget) * 100) },
-      releaseSummary: { currentVersion: mockReleaseSafety.version, ringStatus: mockReleaseSafety.ringStatus, canaryHealth: mockReleaseSafety.canaryHealthScore },
+      releaseSummary: { currentVersion: "v2.4.0", ringStatus: mockReleaseSafety.currentRing, canaryHealth: mockReleaseSafety.canaryStatus === "healthy" ? 100 : 60 },
       safeModeActive: mockSafeMode.globalSafeMode,
       lastUpdated: new Date().toISOString(),
     };
@@ -68,10 +73,10 @@ export function useWhatMattersNow(): WhatMattersItem[] {
     const items: WhatMattersItem[] = [];
     const openInc = mockIncidents.filter(i => i.status !== "resolved");
     openInc.forEach(i => items.push({
-      id: `inc-${i.id}`, title: i.title, description: `${i.severity} severity — ${i.affectedArea}`,
+      id: `inc-${i.id}`, title: i.title, description: `${i.severity} severity — ${i.scope}`,
       urgency: i.severity === "critical" ? "critical" : "high", domain: "incidents",
-      actionLabel: "Investigate", actionRoute: `/mission-control/incidents`,
-      timestamp: i.timestamp,
+      actionLabel: "Investigate", actionRoute: `/mission/incidents/${i.id}`,
+      timestamp: i.createdAt,
     }));
 
     const degradedConn = mockConnectorHealth.filter(c => c.status !== "connected");
@@ -83,14 +88,14 @@ export function useWhatMattersNow(): WhatMattersItem[] {
     }));
 
     mockCostAnomalies.forEach(a => items.push({
-      id: `cost-${a.id}`, title: a.description, description: `Flagged by ${a.flaggedBy}`,
+      id: `cost-${a.id}`, title: a.description, description: `${a.advisor} — ${a.timeframe}`,
       urgency: "medium", domain: "costs",
       actionLabel: "Review", actionRoute: `/mission-control/costs`,
-      timestamp: a.detectedAt,
+      timestamp: new Date().toISOString(),
     }));
 
     mockStuckWorkflows.forEach(w => items.push({
-      id: `wf-${w.id}`, title: `Workflow stuck: ${w.name}`, description: `${w.stuckReason} — stuck since ${w.stuckSince}`,
+      id: `wf-${w.id}`, title: `Workflow stuck: ${w.name}`, description: `${w.reason} — stuck since ${w.stuckSince}`,
       urgency: "high", domain: "workflows",
       actionLabel: "Recover", actionRoute: `/mission-control/recovery`,
       timestamp: w.stuckSince,
@@ -109,7 +114,8 @@ export function useConnectorSummaries(): ConnectorSummaryView[] {
     mockConnectorHealth.map(c => ({
       id: c.id, name: c.name, status: c.status as ConnectorSummaryView["status"],
       healthScore: c.healthScore, authState: "valid" as const,
-      lastSync: c.lastSync, errorRate: c.errorRate, latencyMs: c.latency,
+      lastSync: c.lastSync, errorRate: parseFloat(c.errorRate) || 0,
+      latencyMs: Math.floor(Math.random() * 300) + 50,
       trustScore: Math.round(c.healthScore * 0.9), affectedWorkflows: c.impactedWorkflows?.length || 0,
       recommendation: c.healthScore < 70 ? "Schedule reconnect" : undefined,
     }))
@@ -123,7 +129,8 @@ export function useConnectorDetail(connectorId: string): ConnectorDetailView | n
     return {
       id: c.id, name: c.name, status: c.status as ConnectorSummaryView["status"],
       healthScore: c.healthScore, authState: "valid" as const,
-      lastSync: c.lastSync, errorRate: c.errorRate, latencyMs: c.latency,
+      lastSync: c.lastSync, errorRate: parseFloat(c.errorRate) || 0,
+      latencyMs: Math.floor(Math.random() * 300) + 50,
       trustScore: Math.round(c.healthScore * 0.9), affectedWorkflows: c.impactedWorkflows?.length || 0,
       scopes: ["read", "write", "sync"], environment: "live" as const,
       retryQueue: Math.floor(Math.random() * 5), syncQuality: c.healthScore,
@@ -141,12 +148,13 @@ export function useConnectorHealth(connectorId: string): ConnectorHealthView | n
   return useMemo(() => {
     const c = mockConnectorHealth.find(x => x.id === connectorId);
     if (!c) return null;
+    const latencyMs = Math.floor(Math.random() * 300) + 50;
     return {
-      connectorId: c.id, latencyP50: c.latency * 0.7, latencyP99: c.latency * 2.5,
-      retryQueueDepth: Math.floor(Math.random() * 5), syncFailureRate: c.errorRate,
+      connectorId: c.id, latencyP50: latencyMs * 0.7, latencyP99: latencyMs * 2.5,
+      retryQueueDepth: Math.floor(Math.random() * 5), syncFailureRate: parseFloat(c.errorRate) || 0,
       authExpiresIn: "23 days", idempotencyIssues: 0,
       timeoutPatterns: Array.from({ length: 24 }, (_, h) => ({ hour: h, count: Math.floor(Math.random() * 3) })),
-      degradationTrend: c.healthScore > 80 ? "stable" : c.healthScore > 50 ? "worsening" : "worsening",
+      degradationTrend: c.healthScore > 80 ? "stable" : "worsening",
       trustWarnings: c.healthScore < 70 ? ["Health below threshold — data freshness at risk"] : [],
     };
   }, [connectorId]);
@@ -169,9 +177,9 @@ export function useIncidentSummaries(): IncidentSummaryView[] {
     mockIncidents.map(i => ({
       id: i.id, title: i.title, severity: i.severity as IncidentSummaryView["severity"],
       status: i.status as IncidentSummaryView["status"],
-      affectedModules: [i.affectedArea], trustImpact: i.severity === "critical" ? "critical" as const : "minor" as const,
+      affectedModules: [i.scope], trustImpact: i.severity === "critical" ? "critical" as const : "minor" as const,
       recoveryStatus: i.status === "resolved" ? "Recovered" : "In progress",
-      createdAt: i.timestamp, ttc: i.status === "resolved" ? "35m" : undefined,
+      createdAt: i.createdAt, ttc: i.status === "resolved" ? "35m" : undefined,
     }))
   , []);
 }
@@ -183,25 +191,19 @@ export function useIncidentDetail(incidentId: string): IncidentDetailView | null
     return {
       id: i.id, title: i.title, severity: i.severity as IncidentSummaryView["severity"],
       status: i.status as IncidentSummaryView["status"],
-      affectedModules: [i.affectedArea], trustImpact: i.severity === "critical" ? "critical" as const : "minor" as const,
+      affectedModules: [i.scope], trustImpact: i.severity === "critical" ? "critical" as const : "minor" as const,
       recoveryStatus: i.status === "resolved" ? "Recovered" : "In progress",
-      createdAt: i.timestamp,
-      timeline: [
-        { time: i.timestamp, event: "Incident detected", actor: "System Monitor" },
-        { time: new Date(new Date(i.timestamp).getTime() + 120000).toISOString(), event: "Investigation started", actor: i.responders?.[0] || "Auto-triage" },
-        { time: new Date(new Date(i.timestamp).getTime() + 600000).toISOString(), event: "Root cause identified", actor: "Diagnostics Agent" },
-      ],
-      rootCauseHypothesis: `Likely caused by ${i.affectedArea} degradation affecting downstream workflows`,
+      createdAt: i.createdAt,
+      timeline: i.timeline.map(t => ({ ...t, actor: "System" })),
+      rootCauseHypothesis: i.rootCause || `Likely caused by ${i.scope} degradation`,
       impactedUsers: Math.floor(Math.random() * 50),
-      relatedReleases: [], relatedConnectors: [], relatedWorkflows: [],
-      mitigationActions: [
-        { label: "Isolate affected service", status: "done" as const },
-        { label: "Deploy hotfix", status: "in_progress" as const },
-        { label: "Verify recovery", status: "pending" as const },
-      ],
-      rollbackCandidates: [
-        { id: "rb-1", label: "Revert to v2.3.1", risk: "low" as const },
-      ],
+      relatedReleases: [], relatedConnectors: [], relatedWorkflows: i.affectedFlows,
+      mitigationActions: i.recommendedActions.map((a, idx) => ({
+        label: a, status: (idx === 0 ? "done" : idx === 1 ? "in_progress" : "pending") as any,
+      })),
+      rollbackCandidates: i.rollbackSuggestion
+        ? [{ id: "rb-1", label: i.rollbackSuggestion, risk: "low" as const }]
+        : [],
     };
   }, [incidentId]);
 }
@@ -259,7 +261,7 @@ export function useRecoverySummary(): RecoverySummaryView {
     items: mockStuckWorkflows.map(w => ({
       id: w.id, workflowName: w.name, status: "stuck" as const,
       stuckSince: w.stuckSince, suggestedAction: "retry" as const,
-      domain: "system", impact: w.stuckReason,
+      domain: "system", impact: w.reason,
     })),
   }), []);
 }
@@ -295,7 +297,7 @@ export function useAITeamSummary(): AITeamSummaryView {
           id: a.id, name: a.name, role: a.role, health: a.health as any,
           autonomyLevel: a.autonomyLevel, tokens24h: a.costTokens24h,
           invocations24h: a.invocations24h, currentTasks: a.currentTasks,
-          recentFindings: a.recentFindings, lastAction: a.lastAction,
+          recentFindings: a.recentFindings, lastAction: a.lastMajorAction,
         })),
       })),
     };
