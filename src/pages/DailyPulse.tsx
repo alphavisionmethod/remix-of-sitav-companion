@@ -330,16 +330,16 @@ const DailyPulse = () => {
 
       {/* ── Quick Actions Row ── */}
       <div className="flex flex-wrap gap-2">
-        <SitaButton size="sm" variant="outline" onClick={() => navigate("/business/leads")}>
+        <SitaButton size="sm" variant="ghost" onClick={() => navigate("/business/leads")}>
           <Briefcase className="h-3.5 w-3.5 mr-1.5" /> Add Lead
         </SitaButton>
-        <SitaButton size="sm" variant="outline" onClick={() => navigate("/money/bills")}>
+        <SitaButton size="sm" variant="ghost" onClick={() => navigate("/money/bills")}>
           <DollarSign className="h-3.5 w-3.5 mr-1.5" /> Pay Bill
         </SitaButton>
-        <SitaButton size="sm" variant="outline" onClick={() => navigate("/concierge/tasks")}>
+        <SitaButton size="sm" variant="ghost" onClick={() => navigate("/concierge/tasks")}>
           <CheckCircle className="h-3.5 w-3.5 mr-1.5" /> Create Task
         </SitaButton>
-        <SitaButton size="sm" variant="outline" onClick={() => navigate("/files")}>
+        <SitaButton size="sm" variant="ghost" onClick={() => navigate("/files")}>
           <FileText className="h-3.5 w-3.5 mr-1.5" /> Upload File
         </SitaButton>
       </div>
