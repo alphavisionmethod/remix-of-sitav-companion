@@ -198,7 +198,11 @@ function QuickActionsStrip() {
 // ── MC Home ─────────────────────────────────────────────────────────────────
 
 function MCHome() {
-  const openIncidents = mockIncidents.filter(i => i.status !== "resolved");
+  const { adminIncidents: adminData } = useMCAdmin();
+  const adminIncidentList = adminData?.incidents || [];
+  const openIncidents = adminIncidentList.length > 0
+    ? mockIncidents.map((m, i) => ({ ...m, status: adminIncidentList[i]?.status === "resolved" ? "resolved" as const : m.status })).filter(i => i.status !== "resolved")
+    : mockIncidents.filter(i => i.status !== "resolved");
   const degradedAgents = mockInternalAgents.filter(a => a.health !== "healthy");
   const degradedConnectors = mockConnectorHealth.filter(c => c.status !== "connected");
 
