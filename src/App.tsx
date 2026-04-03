@@ -29,6 +29,11 @@ const BoardroomReplay = lazy(() => import("./pages/boardroom/BoardroomReplay"));
 const FilesCenter = lazy(() => import("./pages/FilesCenter"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const MissionControl = lazy(() => import("./pages/mission-control/MissionControlPage"));
+const MissionOverview = lazy(() => import("./pages/mission/MissionOverviewPage"));
+const ConnectorDetail = lazy(() => import("./pages/mission/ConnectorDetailPage"));
+const IncidentDetail = lazy(() => import("./pages/mission/IncidentDetailPage"));
+const PolicySimulator = lazy(() => import("./pages/mission/PolicySimulatorPage"));
+const MissionError = lazy(() => import("./pages/mission/MissionErrorPage"));
 const AdvisorWorkspace = lazy(() => import("./pages/advisors/AdvisorWorkspace"));
 const AdvisorCouncilDashboard = lazy(() => import("./pages/advisors/AdvisorCouncilDashboard"));
 const Onboarding = lazy(() => import("./pages/OnboardingWrapper"));
@@ -356,6 +361,18 @@ const App = () => (
                     <Route path="/mission-control/releases" element={<MissionControl />} />
                     <Route path="/mission-control/safe-mode" element={<MissionControl />} />
                     <Route path="/mission-control/permissions" element={<MissionControl />} />
+
+                    {/* Mission Drill-Downs (Layer 2 — Advanced Ops) */}
+                    <Route path="/mission/overview" element={<MissionOverview />} />
+                    <Route path="/mission/connectors/:connectorId" element={<ConnectorDetail />} />
+                    <Route path="/mission/connectors/:connectorId/health" element={<ConnectorDetail />} />
+                    <Route path="/mission/connectors/:connectorId/logs" element={<ConnectorDetail />} />
+                    <Route path="/mission/incidents/:incidentId" element={<IncidentDetail />} />
+                    <Route path="/mission/policies/simulate" element={<PolicySimulator />} />
+                    <Route path="/mission/error" element={<MissionError />} />
+
+                    {/* Redirect /incidents to mission-control/incidents */}
+                    <Route path="/incidents" element={<Navigate to="/mission-control" replace />} />
 
                     {/* Owner Center */}
                     <Route path="/owner" element={<OwnerCenter />} />
