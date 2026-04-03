@@ -1076,7 +1076,10 @@ export default function MissionControlPage() {
 
   const tabs = isOwner ? ownerTabs : advancedTabs;
 
+  const mcAdminData = useMemo(() => ({ adminIncidents, fleetHealth, trustCenter }), [adminIncidents, fleetHealth, trustCenter]);
+
   return (
+    <MCAdminCtx.Provider value={mcAdminData}>
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-5">
       <div className="flex items-center justify-between">
         <ModeToggle mode={mode} setMode={setMode} />
