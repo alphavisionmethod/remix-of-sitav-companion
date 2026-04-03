@@ -592,7 +592,14 @@ function MCCosts() {
 // ── Trust & Policy ──────────────────────────────────────────────────────────
 
 function MCTrust() {
+  const { trustCenter } = useMCAdmin();
   const [simResult, setSimResult] = useState<SimulationResult | null>(null);
+
+  const tc = trustCenter;
+  const posture = tc?.posture ?? "verified";
+  const policyConfidence = tc?.policyConfidence ?? 94;
+  const permissionDrifts = tc?.permissionDrifts ?? 0;
+  const lastAudit = tc?.lastAudit ? new Date(tc.lastAudit).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "1h ago";
 
   const runSim = () => {
     const gov = new GovernanceSimulatorService();
@@ -619,7 +626,9 @@ function MCTrust() {
             </div>
             <div>
               <h3 className="text-sm font-bold text-foreground font-display">Trust & Policy Oversight</h3>
-              <p className="text-xs text-muted-foreground">Policy anomalies, approval chain health, trust incidents, and permission drift</p>
+              <p className="text-xs text-muted-foreground">
+                Posture: {posture} · Policy confidence: {policyConfidence}%
+              </p>
             </div>
           </div>
           <SitaButton variant="primary" size="sm" onClick={runSim}>Run Policy Simulation</SitaButton>
@@ -630,17 +639,17 @@ function MCTrust() {
       <div className="grid grid-cols-3 gap-3">
         <div className="rounded-xl border border-trust-verified/15 bg-trust-verified/5 p-4 text-center">
           <Shield className="h-5 w-5 text-trust-safe mx-auto mb-1" />
-          <p className="font-display text-lg font-bold text-trust-safe">Clean</p>
+          <p className="font-display text-lg font-bold text-trust-safe">{posture === "verified" || posture === "clean" ? "Clean" : "Review"}</p>
           <p className="text-[10px] text-muted-foreground">Approval Chain</p>
         </div>
         <div className="rounded-xl border border-primary/15 bg-primary/5 p-4 text-center">
           <Lock className="h-5 w-5 text-primary mx-auto mb-1" />
-          <p className="font-display text-lg font-bold text-primary">0</p>
+          <p className="font-display text-lg font-bold text-primary">{permissionDrifts}</p>
           <p className="text-[10px] text-muted-foreground">Permission Drifts</p>
         </div>
         <div className="rounded-xl border border-border bg-card/50 p-4 text-center">
           <Eye className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-          <p className="font-display text-lg font-bold text-foreground">1h ago</p>
+          <p className="font-display text-lg font-bold text-foreground">{lastAudit}</p>
           <p className="text-[10px] text-muted-foreground">Last Audit</p>
         </div>
       </div>
