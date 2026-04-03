@@ -708,7 +708,7 @@ const SystemStatus = () => {
             type: "incident" as const,
             title: inc.title,
             result: inc.state === "resolved" ? "Auto-healed" : `State: ${inc.state}`,
-            time: new Date(inc.detectedAt).toLocaleTimeString(),
+            time: new Date(inc.createdAt).toLocaleTimeString(),
             trust: (inc.state === "resolved" ? "verified" : inc.severity === "P0" || inc.severity === "P1" ? "blocked" : "review") as "verified" | "blocked" | "review" | "approval",
           }))].sort(() => 0.5 - Math.random()).map((entry) => (
             <SitaCard key={entry.id} hover={false} className="p-4">
