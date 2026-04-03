@@ -4,9 +4,11 @@ import { ProofReceipt } from "@/components/sita/primitives/ProofReceipt";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { useProofRecords } from "@/hooks/use-sita-data";
+import { useProofTimeline } from "@/hooks/use-proof-timeline";
+import { useKernelStatus } from "@/contexts/SitaKernelContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useState } from "react";
-import { Receipt, ShieldCheck, Clock, AlertTriangle, Eye, RotateCcw, FileDown, Filter } from "lucide-react";
+import { Receipt, ShieldCheck, Clock, AlertTriangle, Eye, RotateCcw, FileDown, Filter, Link2 } from "lucide-react";
 
 const trustMap: Record<string, "verified" | "pending" | "failed" | "rolled-back"> = {
   "system-verified": "verified",
