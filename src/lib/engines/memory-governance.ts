@@ -79,6 +79,7 @@ export class MemoryGovernanceEngine {
     }
 
     this.memories.set(id, memory);
+    this.auditWrite("created", id, entry.source, { type: entry.type, domain: entry.domain });
     return memory;
   }
 
