@@ -163,7 +163,7 @@ export class BoardroomIntelligenceEngine {
       sessionId,
       preparedAt: new Date().toISOString(),
       summary: `${session.type} boardroom session with ${session.agenda.length} agenda items`,
-      keyMetrics: session.agenda.flatMap(a => a.dataPoints.map(d => ({ ...d, alert: false }))),
+      keyMetrics: session.agenda.flatMap(a => a.dataPoints.map(d => ({ label: d.label, value: d.value, trend: d.trend || "stable", alert: false }))),
       agenda: session.agenda,
       unresolved: session.unresolvedCarryover,
       recentDecisions: session.decisions.slice(-5),
