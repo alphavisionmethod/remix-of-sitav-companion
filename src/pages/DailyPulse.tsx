@@ -295,10 +295,103 @@ const DailyPulse = () => {
         <div className="absolute left-1/3 -bottom-4 h-24 w-48 rounded-full bg-primary/3 blur-[50px]" />
       </div>
 
+      {/* ── What Changed ── */}
+      <SitaCard hover={false} className="p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Eye className="h-4 w-4 text-primary" />
+          <h3 className="text-sm font-semibold text-foreground">What Changed</h3>
+          <span className="text-[10px] text-muted-foreground ml-auto">Since last visit</span>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {staleLeads.length > 0 && (
+            <div className="flex items-center gap-2 rounded-lg bg-secondary/40 px-3 py-2">
+              <div className="h-2 w-2 rounded-full bg-[hsl(var(--sita-gold))]" />
+              <span className="text-[12px] text-foreground">{staleLeads.length} leads went cold</span>
+            </div>
+          )}
+          {overdueBills.length > 0 && (
+            <div className="flex items-center gap-2 rounded-lg bg-secondary/40 px-3 py-2">
+              <div className="h-2 w-2 rounded-full bg-[hsl(var(--destructive))]" />
+              <span className="text-[12px] text-foreground">{overdueBills.length} bills overdue</span>
+            </div>
+          )}
+          {pendingApprovals.length > 0 && (
+            <div className="flex items-center gap-2 rounded-lg bg-secondary/40 px-3 py-2">
+              <div className="h-2 w-2 rounded-full bg-[hsl(var(--sita-purple))]" />
+              <span className="text-[12px] text-foreground">{pendingApprovals.length} approvals waiting</span>
+            </div>
+          )}
+          <div className="flex items-center gap-2 rounded-lg bg-secondary/40 px-3 py-2">
+            <div className="h-2 w-2 rounded-full bg-[hsl(var(--trust-safe))]" />
+            <span className="text-[12px] text-foreground">{crossDomainInsights.length} insights detected</span>
+          </div>
+        </div>
+      </SitaCard>
+
+      {/* ── Quick Actions Row ── */}
+      <div className="flex flex-wrap gap-2">
+        <SitaButton size="sm" variant="outline" onClick={() => navigate("/business/leads")}>
+          <Briefcase className="h-3.5 w-3.5 mr-1.5" /> Add Lead
+        </SitaButton>
+        <SitaButton size="sm" variant="outline" onClick={() => navigate("/money/bills")}>
+          <DollarSign className="h-3.5 w-3.5 mr-1.5" /> Pay Bill
+        </SitaButton>
+        <SitaButton size="sm" variant="outline" onClick={() => navigate("/concierge/tasks")}>
+          <CheckCircle className="h-3.5 w-3.5 mr-1.5" /> Create Task
+        </SitaButton>
+        <SitaButton size="sm" variant="outline" onClick={() => navigate("/files")}>
+          <FileText className="h-3.5 w-3.5 mr-1.5" /> Upload File
+        </SitaButton>
+      </div>
+
       {/* KPIs — ordered by mission mode */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {orderedKpis}
       </div>
+
+      {/* ── Inline Approval Queue (with ApprovalGate) ── */}
+      {showSection("approvals") && pendingApprovals.length > 0 && (
+        <div className="space-y-3">
+          <SitaSectionHeader title="Quick Approvals" subtitle="Decide inline — no context switch needed" />
+          {pendingApprovals.slice(0, 2).map((approval: any, i: number) => (
+            <ApprovalGate
+              key={i}
+              title={approval.title || `Approval #${i + 1}`}
+              description={approval.description || "Requires your review"}
+              riskLevel={approval.risk_level === "high" ? "high" : approval.risk_level === "low" ? "low" : "medium"}
+              policyContext={approval.policy_context}
+              onApprove={() => {}}
+              onReject={() => {}}
+              onSimulate={() => {}}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* ── Boardroom Prep Card ── */}
+      {showSection("boardroom") && (
+        <SitaCard hover className="cursor-pointer" onClick={() => navigate("/boardroom")}>
+          <div className="flex items-center gap-4 p-1">
+            <div className="rounded-xl bg-[hsl(var(--sita-purple-dark))]/10 p-3">
+              <BarChart3 className="h-5 w-5 text-[hsl(var(--sita-purple))]" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-foreground">Weekly Business Review</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {businessHealth.risks.length} risks · {businessHealth.opportunities.length} opportunities · {pendingApprovals.length} decisions pending
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="flex -space-x-2">
+                <AdvisorAvatar domain="business" size="sm" />
+                <AdvisorAvatar domain="money" size="sm" />
+                <AdvisorAvatar domain="concierge" size="sm" />
+              </div>
+              <ArrowRight className="h-4 w-4 text-muted-foreground" />
+            </div>
+          </div>
+        </SitaCard>
+      )}
 
       {/* === Advisor Top Moves === */}
       {showSection("advisors") && (
