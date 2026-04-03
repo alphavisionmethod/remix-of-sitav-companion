@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "generated_at": "2026-04-02T00:00:00Z",
+  "version": "1.1.0",
+  "generated_at": "2026-04-03T00:00:00Z",
   "advisors": [
     {
       "id": "business-advisor",
@@ -13,6 +13,13 @@
       "confidenceThreshold": 0.7,
       "blockedActions": ["execute-payment", "delete-customer", "send-communication-without-approval"],
       "boardroomContributions": ["business-boardroom", "executive-review", "opportunity-review"],
+      "handoffTargets": ["money-advisor", "concierge-advisor", "strategy-advisor"],
+      "escalationBehavior": {
+        "onConsensusFailure": "escalate-to-strategy-advisor",
+        "onAutonomyCeiling": "escalate-to-owner",
+        "onPolicyViolation": "escalate-to-trust-policy-advisor"
+      },
+      "performanceKpis": ["recommendation-acceptance-rate", "pipeline-accuracy", "revenue-forecast-calibration", "client-health-prediction"],
       "maturity": "alpha"
     },
     {
@@ -26,6 +33,14 @@
       "confidenceThreshold": 0.8,
       "blockedActions": ["execute-payment-over-500", "modify-account", "transfer-funds"],
       "boardroomContributions": ["finance-boardroom", "executive-review", "family-office-review"],
+      "handoffTargets": ["business-advisor", "strategy-advisor"],
+      "escalationBehavior": {
+        "onConsensusFailure": "escalate-to-strategy-advisor",
+        "onAutonomyCeiling": "escalate-to-owner",
+        "onPolicyViolation": "escalate-to-trust-policy-advisor",
+        "onCriticalFinance": "escalate-to-owner"
+      },
+      "performanceKpis": ["cashflow-prediction-accuracy", "waste-detection-rate", "reserve-recommendation-quality", "tax-estimation-calibration"],
       "maturity": "alpha"
     },
     {
@@ -39,6 +54,13 @@
       "confidenceThreshold": 0.7,
       "blockedActions": ["book-without-approval", "send-communications", "purchase-over-100"],
       "boardroomContributions": ["family-boardroom", "executive-review"],
+      "handoffTargets": ["business-advisor", "money-advisor", "strategy-advisor"],
+      "escalationBehavior": {
+        "onConsensusFailure": "escalate-to-strategy-advisor",
+        "onAutonomyCeiling": "escalate-to-owner",
+        "onPolicyViolation": "escalate-to-trust-policy-advisor"
+      },
+      "performanceKpis": ["task-completion-rate", "booking-satisfaction", "conflict-prevention-rate", "household-efficiency"],
       "maturity": "alpha"
     },
     {
@@ -52,6 +74,13 @@
       "confidenceThreshold": 0.8,
       "blockedActions": ["execute-any-action", "modify-data"],
       "boardroomContributions": ["executive-review", "opportunity-review"],
+      "handoffTargets": ["business-advisor", "money-advisor", "concierge-advisor"],
+      "escalationBehavior": {
+        "onConsensusFailure": "escalate-to-owner",
+        "onAutonomyCeiling": "escalate-to-owner",
+        "onPolicyViolation": "escalate-to-trust-policy-advisor"
+      },
+      "performanceKpis": ["cross-domain-insight-quality", "risk-prediction-accuracy", "strategic-recommendation-acceptance"],
       "maturity": "scaffold"
     }
   ]
