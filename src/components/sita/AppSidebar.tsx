@@ -55,17 +55,21 @@ const bottomNav = [
   { title: "Pack Store", url: "/store", icon: Package },
   { title: "Enterprise", url: "/enterprise", icon: Globe },
   { title: "Settings", url: "/settings", icon: Settings },
-  { title: "Owner Mode", url: "/owner-mode", icon: Sparkles },
-  { title: "Mission Control", url: "/mission-control", icon: Server },
-  { title: "Owner Workspace", url: "/owner", icon: Shield },
+  { title: "Simple Mode", url: "/owner-mode", icon: Sparkles },
+  { title: "Control Room", url: "/owner", icon: Shield },
 ];
 
 const ownerSubNav = [
+  { title: "Mission Control", url: "/mission-control", icon: Gauge },
   { title: "Leases", url: "/owner/leases", icon: Key },
   { title: "Constitution", url: "/owner/constitution", icon: ScrollText },
   { title: "Pricing", url: "/owner/pricing", icon: CreditCard },
   { title: "Packs", url: "/owner/packs", icon: Package },
   { title: "Advisors", url: "/owner/advisors", icon: Cpu },
+  { title: "Policy Simulator", url: "/policy-simulator", icon: Sliders },
+  { title: "Workflow Replay", url: "/workflow-replay", icon: RotateCcw },
+  { title: "Observability", url: "/observability", icon: Activity },
+  { title: "Users", url: "/users", icon: Users },
 ];
 
 const NavItems = ({ items, collapsed }: { items: typeof primaryNav; collapsed: boolean }) => {

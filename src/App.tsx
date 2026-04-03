@@ -76,12 +76,8 @@ const PackEditorPage = lazy(() => import("./pages/owner/PackEditor"));
 const AdvisorConfigPage = lazy(() => import("./pages/owner/AdvisorConfig"));
 const LeaseDashboard = lazy(() => import("./pages/owner/LeaseDashboard"));
 const ConstitutionEditor = lazy(() => import("./pages/owner/ConstitutionEditor"));
-const OwnerHomePage = lazy(() => import("./pages/owner/OwnerHomePage"));
-const OwnerHealthPage = lazy(() => import("./pages/owner/OwnerHealthPage"));
 const OwnerPulsePage = lazy(() => import("./pages/owner/OwnerPulsePage"));
-const OwnerTrustPage = lazy(() => import("./pages/owner/OwnerTrustPage"));
 const OwnerApprovalsPage = lazy(() => import("./pages/owner/OwnerApprovalsPage"));
-const OwnerAiTeamPage = lazy(() => import("./pages/owner/OwnerAiTeamPage"));
 const OwnerAiTeamUpdatesPage = lazy(() => import("./pages/owner/OwnerAiTeamUpdatesPage"));
 const OwnerModePage = lazy(() => import("./pages/owner-mode/OwnerModePage"));
 const WorkflowReplayHub = lazy(() => import("./pages/WorkflowReplayHub"));
@@ -394,12 +390,12 @@ const App = () => (
 
                     {/* Owner — Advanced Workspace (Layer 2) */}
                     <Route path="/owner" element={<OwnerCenter />} />
-                    <Route path="/owner/home" element={<OwnerHomePage />} />
-                    <Route path="/owner/health" element={<OwnerHealthPage />} />
+                    <Route path="/owner/home" element={<Navigate to="/owner" replace />} />
+                    <Route path="/owner/health" element={<Navigate to="/owner" replace />} />
                     <Route path="/owner/pulse" element={<OwnerPulsePage />} />
-                    <Route path="/owner/trust" element={<OwnerTrustPage />} />
+                    <Route path="/owner/trust" element={<Navigate to="/owner/trust-center" replace />} />
                     <Route path="/owner/approvals" element={<OwnerApprovalsPage />} />
-                    <Route path="/owner/ai-team" element={<OwnerAiTeamPage />} />
+                    <Route path="/owner/ai-team" element={<Navigate to="/owner/internal-agents" replace />} />
                     <Route path="/owner/ai-team/updates" element={<OwnerAiTeamUpdatesPage />} />
                     <Route path="/owner/incidents" element={<OwnerCenter />} />
                     <Route path="/owner/intelligence" element={<OwnerCenter />} />
