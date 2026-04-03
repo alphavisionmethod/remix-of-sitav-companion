@@ -392,6 +392,14 @@ function MCAgentTeam() {
 // ── Incidents ───────────────────────────────────────────────────────────────
 
 function MCIncidents() {
+  const { adminIncidents } = useMCAdmin();
+  const adminList = adminIncidents?.incidents || [];
+  // Merge admin data onto mock incidents for enriched display
+  const incidents = mockIncidents.map((m, idx) => {
+    const admin = adminList[idx];
+    return admin ? { ...m, status: admin.status ?? m.status, severity: admin.severity ?? m.severity } : m;
+  });
+
   return (
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -403,14 +411,18 @@ function MCIncidents() {
           </div>
           <div>
             <h3 className="text-sm font-bold text-foreground font-display">Incident Review</h3>
-            <p className="text-xs text-muted-foreground">Severity, scope, root cause, timeline, rollback options, and recommended actions</p>
+            <p className="text-xs text-muted-foreground">
+              {adminIncidents?.summary
+                ? `${adminIncidents.summary.open} open · ${adminIncidents.summary.resolved} resolved · ${adminIncidents.summary.total} total`
+                : "Severity, scope, root cause, timeline, rollback options, and recommended actions"}
+            </p>
           </div>
         </div>
       </motion.div>
 
-      {mockIncidents.length > 0 ? (
+      {incidents.length > 0 ? (
         <div className="space-y-4">
-          {mockIncidents.map((inc, i) => (
+          {incidents.map((inc, i) => (
             <motion.div key={inc.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
               <IncidentCard incident={inc} />
             </motion.div>
@@ -426,8 +438,13 @@ function MCIncidents() {
 // ── Connectors ──────────────────────────────────────────────────────────────
 
 function MCConnectors() {
-  const sorted = [...mockConnectorHealth].sort((a, b) => a.healthScore - b.healthScore);
-  const avgScore = Math.round(mockConnectorHealth.reduce((s, c) => s + c.healthScore, 0) / mockConnectorHealth.length);
+  const { fleetHealth } = useMCAdmin();
+  const connectors = mockConnectorHealth.map(c => {
+    const fleetService = fleetHealth?.services?.find((s: any) => s.name?.toLowerCase().includes(c.name.toLowerCase()));
+    return fleetService ? { ...c, healthScore: Math.round(fleetService.uptime ?? c.healthScore) } : c;
+  });
+  const sorted = [...connectors].sort((a, b) => a.healthScore - b.healthScore);
+  const avgScore = Math.round(connectors.reduce((s, c) => s + c.healthScore, 0) / connectors.length);
 
   return (
     <div className="space-y-6">
@@ -575,7 +592,14 @@ function MCCosts() {
 // ── Trust & Policy ──────────────────────────────────────────────────────────
 
 function MCTrust() {
+  const { trustCenter } = useMCAdmin();
   const [simResult, setSimResult] = useState<SimulationResult | null>(null);
+
+  const tc = trustCenter;
+  const posture = tc?.posture ?? "verified";
+  const policyConfidence = tc?.policyConfidence ?? 94;
+  const permissionDrifts = tc?.permissionDrifts ?? 0;
+  const lastAudit = tc?.lastAudit ? new Date(tc.lastAudit).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "1h ago";
 
   const runSim = () => {
     const gov = new GovernanceSimulatorService();
@@ -602,7 +626,9 @@ function MCTrust() {
             </div>
             <div>
               <h3 className="text-sm font-bold text-foreground font-display">Trust & Policy Oversight</h3>
-              <p className="text-xs text-muted-foreground">Policy anomalies, approval chain health, trust incidents, and permission drift</p>
+              <p className="text-xs text-muted-foreground">
+                Posture: {posture} · Policy confidence: {policyConfidence}%
+              </p>
             </div>
           </div>
           <SitaButton variant="primary" size="sm" onClick={runSim}>Run Policy Simulation</SitaButton>
@@ -613,17 +639,17 @@ function MCTrust() {
       <div className="grid grid-cols-3 gap-3">
         <div className="rounded-xl border border-trust-verified/15 bg-trust-verified/5 p-4 text-center">
           <Shield className="h-5 w-5 text-trust-safe mx-auto mb-1" />
-          <p className="font-display text-lg font-bold text-trust-safe">Clean</p>
+          <p className="font-display text-lg font-bold text-trust-safe">{posture === "verified" || posture === "clean" ? "Clean" : "Review"}</p>
           <p className="text-[10px] text-muted-foreground">Approval Chain</p>
         </div>
         <div className="rounded-xl border border-primary/15 bg-primary/5 p-4 text-center">
           <Lock className="h-5 w-5 text-primary mx-auto mb-1" />
-          <p className="font-display text-lg font-bold text-primary">0</p>
+          <p className="font-display text-lg font-bold text-primary">{permissionDrifts}</p>
           <p className="text-[10px] text-muted-foreground">Permission Drifts</p>
         </div>
         <div className="rounded-xl border border-border bg-card/50 p-4 text-center">
           <Eye className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-          <p className="font-display text-lg font-bold text-foreground">1h ago</p>
+          <p className="font-display text-lg font-bold text-foreground">{lastAudit}</p>
           <p className="text-[10px] text-muted-foreground">Last Audit</p>
         </div>
       </div>
