@@ -67,7 +67,7 @@ export const SitaTopBar = ({
   };
 
   return (
-    <header className="sita-top-bar sticky top-0 z-50 flex h-11 items-center justify-between border-b border-border/30 bg-surface-0/85 backdrop-blur-xl px-3 select-none">
+    <header className="sita-top-bar sticky top-0 z-50 flex h-11 items-center justify-between border-b border-border/30 glass-panel px-3 select-none">
       {/* Left: Sidebar trigger + Command Palette */}
       <div className="flex items-center gap-2">
         <SidebarTrigger className="h-7 w-7 text-muted-foreground hover:text-foreground" />

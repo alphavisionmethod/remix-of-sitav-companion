@@ -44,7 +44,7 @@ export const ContextualRail = () => {
           animate={{ width: 380, opacity: 1 }}
           exit={{ width: 0, opacity: 0 }}
           transition={{ type: "spring", damping: 28, stiffness: 320 }}
-          className="hidden lg:flex flex-col h-full border-l border-border bg-card/50 backdrop-blur-sm overflow-hidden shrink-0"
+          className="hidden lg:flex flex-col h-full border-l border-border/50 glass-panel overflow-hidden shrink-0"
         >
           <ScrollArea className="h-full">
             <div className="p-4 space-y-4">
