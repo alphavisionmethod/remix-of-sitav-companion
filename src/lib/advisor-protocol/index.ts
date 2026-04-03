@@ -473,3 +473,8 @@ export function synthesizeCouncilRecommendations(
     requiresApproval: recommendations.some(r => r.riskAssessment === "high" || r.riskAssessment === "critical"),
   };
 }
+
+// ── Sub-module re-exports ────────────────────────────────────
+export * from "./handoff";
+export * from "./escalation";
+export * from "./performance";

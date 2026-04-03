@@ -27,7 +27,8 @@ export type TypedReceipt =
   | BoardroomDecisionProof
   | CommunicationReceipt
   | PaymentReceipt
-  | SystemReceipt;
+  | SystemReceipt
+  | RefusalProofReceipt;
 
 interface BaseReceipt {
   id: string;
@@ -116,6 +117,16 @@ export interface SystemReceipt extends BaseReceipt {
   action: string;
   scope: string;
   details: Record<string, unknown>;
+}
+
+export interface RefusalProofReceipt extends BaseReceipt {
+  type: "refusal";
+  refusalReason: string;
+  blockedAction: string;
+  policyId: string;
+  advisorId: string;
+  confidenceAtRefusal: number;
+  requiredForRetry: string[];
 }
 
 // ── Sub-module re-exports ────────────────────────────────────

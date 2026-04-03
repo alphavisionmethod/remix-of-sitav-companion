@@ -86,6 +86,34 @@ export function verifyChainIntegrity(): { valid: boolean; brokenAt?: number } {
   return { valid: true };
 }
 
+export function createRefusalReceipt(params: {
+  refusalReason: string;
+  blockedAction: string;
+  policyId: string;
+  advisorId: string;
+  confidenceAtRefusal: number;
+  requiredForRetry: string[];
+  tenantId: string;
+}): import("@/packages/proof-model").RefusalProofReceipt {
+  const previousHash = getLastHash();
+  const receipt = {
+    type: "refusal" as const,
+    id: crypto.randomUUID(),
+    timestamp: new Date().toISOString(),
+    hash: computeHash(`${previousHash}:refusal:${params.blockedAction}:${params.policyId}`),
+    previousHash,
+    tenantId: params.tenantId,
+    refusalReason: params.refusalReason,
+    blockedAction: params.blockedAction,
+    policyId: params.policyId,
+    advisorId: params.advisorId,
+    confidenceAtRefusal: params.confidenceAtRefusal,
+    requiredForRetry: params.requiredForRetry,
+  };
+  receiptChain.push(receipt);
+  return receipt;
+}
+
 export function getReceiptById(id: string): TypedReceipt | undefined {
   return receiptChain.find((r) => r.id === id);
 }
