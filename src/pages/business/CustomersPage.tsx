@@ -10,7 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
   Users, Search, DollarSign, Heart, AlertTriangle, TrendingUp, Star, Phone, Mail,
-  Building, Clock, CheckCircle, Plus, ArrowRight, Sparkles
+  Building, Clock, CheckCircle, Plus, ArrowRight, Sparkles, FileText, MessageSquare, Receipt
 } from "lucide-react";
 import { motion } from "framer-motion";
 import CustomerAutopilotPanel from "@/components/autopilot/CustomerAutopilotPanel";
