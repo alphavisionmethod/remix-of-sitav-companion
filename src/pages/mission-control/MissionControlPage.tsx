@@ -56,12 +56,24 @@ import {
   Target, ClipboardList, Network, BellRing,
 }from "lucide-react";
 
+// ── Admin Data Context ───────────────────────────────────────────────────────
+interface MCAdminData {
+  adminIncidents: any;
+  fleetHealth: any;
+  trustCenter: any;
+}
+const MCAdminCtx = createContext<MCAdminData>({ adminIncidents: null, fleetHealth: null, trustCenter: null });
+function useMCAdmin() { return useContext(MCAdminCtx); }
+
 // ── System Pulse — Mac-like Hero ────────────────────────────────────────────
 
 function SystemPulseHero() {
+  const { adminIncidents } = useMCAdmin();
+  const adminOpenCount = adminIncidents?.summary?.open ?? 0;
+
   const healthyAgents = mockInternalAgents.filter(a => a.health === "healthy").length;
   const totalAgents = mockInternalAgents.length;
-  const openIncidents = mockIncidents.filter(i => i.status !== "resolved").length;
+  const openIncidents = adminOpenCount || mockIncidents.filter(i => i.status !== "resolved").length;
   const degradedConnectors = mockConnectorHealth.filter(c => c.status !== "connected").length;
   const stuckWorkflows = mockStuckWorkflows.length;
   const totalTokens = mockInternalAgents.reduce((s, a) => s + a.costTokens24h, 0);
