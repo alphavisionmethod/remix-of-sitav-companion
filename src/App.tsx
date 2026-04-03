@@ -65,6 +65,10 @@ const PermissionsCenter = lazy(() => import("./pages/PermissionsCenter"));
 const AgentActivityDashboard = lazy(() => import("./pages/AgentActivityDashboard"));
 const RevenueCallingPage = lazy(() => import("./pages/RevenueCallingPage"));
 const ServiceArchitectureDashboard = lazy(() => import("./pages/ServiceArchitectureDashboard"));
+const PricingEditor = lazy(() => import("./pages/owner/PricingEditor"));
+const PackEditorPage = lazy(() => import("./pages/owner/PackEditor"));
+const AdvisorConfigPage = lazy(() => import("./pages/owner/AdvisorConfig"));
+const EnterpriseControlPlane = lazy(() => import("./pages/enterprise/EnterpriseControlPlane"));
 
 // Mobile Trusted Device
 const MobileHome = lazy(() => import("./pages/mobile/MobileHome"));
