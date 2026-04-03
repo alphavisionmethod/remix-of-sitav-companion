@@ -92,6 +92,31 @@ const ProofCenter = () => {
         </div>
       </div>
 
+      {/* Kernel Chain Status */}
+      <div className="grid gap-3 sm:grid-cols-3">
+        <div className="rounded-xl border border-border/50 bg-card/50 p-3 flex items-center gap-3">
+          <Link2 className="h-4 w-4 text-primary" />
+          <div>
+            <p className="text-xs font-semibold text-foreground">{chainLength} Kernel Receipts</p>
+            <p className="text-[10px] text-muted-foreground">Shared hash chain</p>
+          </div>
+        </div>
+        <div className="rounded-xl border border-border/50 bg-card/50 p-3 flex items-center gap-3">
+          <ShieldCheck className={`h-4 w-4 ${chainValid ? "text-trust-safe" : "text-destructive"}`} />
+          <div>
+            <p className="text-xs font-semibold text-foreground">Chain {chainValid ? "Valid" : "Broken"}</p>
+            <p className="text-[10px] text-muted-foreground">Integrity verified</p>
+          </div>
+        </div>
+        <div className="rounded-xl border border-border/50 bg-card/50 p-3 flex items-center gap-3">
+          <Receipt className="h-4 w-4 text-muted-foreground" />
+          <div>
+            <p className="text-xs font-semibold text-foreground">{kernelStatus.totalEvents} Events</p>
+            <p className="text-[10px] text-muted-foreground">Uptime: {Math.round(kernelStatus.uptimeMs / 1000)}s</p>
+          </div>
+        </div>
+      </div>
+
       {/* Filter Bar */}
       <div className="flex items-center gap-2">
         <Filter className="h-4 w-4 text-muted-foreground" />
