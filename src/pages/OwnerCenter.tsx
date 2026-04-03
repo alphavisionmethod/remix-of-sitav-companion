@@ -1582,6 +1582,99 @@ const OwnerCenter = () => {
         )}
 
         {/* ══════════════════════════════════════════ */}
+        {/* BILLING & ENTITLEMENTS */}
+        {/* ══════════════════════════════════════════ */}
+        {activePage === "billing" && (
+          <motion.div key="billing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
+            <div className="grid gap-3 sm:grid-cols-4">
+              <KPITile label="Current Plan" value="Pro" icon={CreditCard} sub="$99/mo" />
+              <KPITile label="AI Budget Used" value="72%" icon={Zap} sub="$72 of $100" />
+              <KPITile label="Active Modules" value="6/8" icon={Package} sub="2 available" />
+              <KPITile label="Support Level" value="Priority" icon={Headphones} sub="24h SLA" />
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <SitaCard hover={false} className="p-5">
+                <p className="font-display text-sm font-bold text-foreground mb-3">Module Entitlements</p>
+                <div className="space-y-2">
+                  {[
+                    { name: "Business OS", status: "active", tier: "Pro" },
+                    { name: "Finance OS", status: "active", tier: "Pro" },
+                    { name: "Concierge OS", status: "active", tier: "Pro" },
+                    { name: "Boardroom", status: "active", tier: "Pro" },
+                    { name: "Investment Office", status: "active", tier: "Pro+" },
+                    { name: "Family Office", status: "active", tier: "Pro+" },
+                    { name: "Enterprise Fleet", status: "locked", tier: "Enterprise" },
+                    { name: "Multi-Org", status: "locked", tier: "Enterprise" },
+                  ].map(m => (
+                    <div key={m.name} className="flex items-center justify-between rounded-lg bg-secondary/30 px-3 py-2">
+                      <div className="flex items-center gap-2">
+                        <div className={`h-2 w-2 rounded-full ${m.status === "active" ? "bg-trust-safe" : "bg-muted-foreground"}`} />
+                        <span className="text-xs text-foreground">{m.name}</span>
+                      </div>
+                      <span className={`text-[9px] font-semibold rounded-full px-2 py-0.5 ${
+                        m.status === "active" ? "bg-trust-safe/10 text-trust-safe" : "bg-secondary text-muted-foreground"
+                      }`}>{m.tier}</span>
+                    </div>
+                  ))}
+                </div>
+              </SitaCard>
+
+              <SitaCard hover={false} className="p-5">
+                <p className="font-display text-sm font-bold text-foreground mb-3">Advisor Entitlements</p>
+                <div className="space-y-2">
+                  {[
+                    { name: "Money Advisor", cap: "Unlimited", model: "GPT-4o" },
+                    { name: "Business Advisor", cap: "Unlimited", model: "GPT-4o" },
+                    { name: "Concierge Advisor", cap: "500/day", model: "GPT-4o-mini" },
+                    { name: "Boardroom Council", cap: "50/day", model: "GPT-4o" },
+                    { name: "Investment Advisor", cap: "100/day", model: "GPT-4o" },
+                  ].map(a => (
+                    <div key={a.name} className="flex items-center justify-between rounded-lg bg-secondary/30 px-3 py-2">
+                      <span className="text-xs text-foreground">{a.name}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[9px] text-muted-foreground">{a.model}</span>
+                        <span className="text-[9px] font-semibold text-primary">{a.cap}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </SitaCard>
+            </div>
+
+            <SitaCard hover={false} className="p-5">
+              <p className="font-display text-sm font-bold text-foreground mb-3">Runtime Budget Controls</p>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div className="rounded-lg border border-border/30 bg-card/30 p-4">
+                  <p className="text-[10px] text-muted-foreground mb-1">Daily Token Ceiling</p>
+                  <p className="text-lg font-bold text-foreground">50,000</p>
+                  <p className="text-[9px] text-muted-foreground mt-1">32,400 used today (65%)</p>
+                  <div className="h-1.5 rounded-full bg-secondary mt-2 overflow-hidden">
+                    <div className="h-full rounded-full bg-primary" style={{ width: "65%" }} />
+                  </div>
+                </div>
+                <div className="rounded-lg border border-border/30 bg-card/30 p-4">
+                  <p className="text-[10px] text-muted-foreground mb-1">Boardroom Budget</p>
+                  <p className="text-lg font-bold text-foreground">$25/session</p>
+                  <p className="text-[9px] text-muted-foreground mt-1">Avg: $18.40 per session</p>
+                  <div className="h-1.5 rounded-full bg-secondary mt-2 overflow-hidden">
+                    <div className="h-full rounded-full bg-trust-safe" style={{ width: "74%" }} />
+                  </div>
+                </div>
+                <div className="rounded-lg border border-border/30 bg-card/30 p-4">
+                  <p className="text-[10px] text-muted-foreground mb-1">Monthly Spend Cap</p>
+                  <p className="text-lg font-bold text-foreground">$100</p>
+                  <p className="text-[9px] text-muted-foreground mt-1">$72 used this month</p>
+                  <div className="h-1.5 rounded-full bg-secondary mt-2 overflow-hidden">
+                    <div className="h-full rounded-full bg-accent" style={{ width: "72%" }} />
+                  </div>
+                </div>
+              </div>
+            </SitaCard>
+          </motion.div>
+        )}
+
+        {/* ══════════════════════════════════════════ */}
         {/* TRUST CENTER */}
         {/* ══════════════════════════════════════════ */}
         {activePage === "trust-center" && (
