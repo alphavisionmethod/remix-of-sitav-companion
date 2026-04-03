@@ -102,6 +102,81 @@ const BatteryIcon = ({ level }: { level: number | null }) => {
 };
 
 // ═══════════════════════════════════════════════════
+// Phase 5: Revenue Leakage & Recovery Panel
+// ═══════════════════════════════════════════════════
+const OwnerRevenuePanel = () => {
+  const { engines } = useOSRuntime();
+
+  const data = useMemo(() => {
+    // Seed leakage signals
+    const signals = [
+      engines.revenue.detectLeakage({ type: "stale_lead", domain: "business", title: "Sarah Chen — no follow-up 12 days", description: "Warm lead, $8.5k potential", estimatedValue: 8500, currency: "USD", confidence: 0.82, source: "CRM sync", entityId: "lead-sarah", relatedRecords: [{ type: "contact", id: "c-sarah" }], suggestedAction: "Send re-engagement email", assignedAdvisor: "business-advisor" }),
+      engines.revenue.detectLeakage({ type: "overdue_invoice", domain: "finance", title: "Invoice #1042 — 15 days overdue", description: "Bloom Studio, $4,200", estimatedValue: 4200, currency: "USD", confidence: 0.95, source: "QuickBooks sync", entityId: "inv-1042", relatedRecords: [{ type: "invoice", id: "inv-1042" }], suggestedAction: "Send payment reminder", assignedAdvisor: "money-advisor" }),
+      engines.revenue.detectLeakage({ type: "subscription_waste", domain: "finance", title: "Analytics Pro — unused 90d", description: "$89/mo, zero logins since Jan", estimatedValue: 1068, currency: "USD", confidence: 0.98, source: "Expense scan", relatedRecords: [{ type: "subscription", id: "sub-analytics" }], suggestedAction: "Cancel subscription", assignedAdvisor: "money-advisor" }),
+    ];
+
+    engines.revenue.markRecovered(signals[2].id, { type: "subscription_waste", domain: "finance", title: "Analytics Pro canceled", recoveredAmount: 1068, currency: "USD", method: "One-click cancel", advisorId: "money-advisor", proofId: "proof-sub", effortLevel: "trivial", automationLevel: "fully_automatic" });
+
+    return {
+      stats: engines.revenue.getStats(),
+      rankings: engines.revenue.rankOpportunities(),
+      ledger: engines.revenue.getLedger("this_month"),
+    };
+  }, [engines.revenue]);
+
+  return (
+    <div className="space-y-3">
+      <SitaSectionHeader title="Revenue Intelligence" subtitle="Leakage signals, recovery actions, and recovered value" />
+
+      {/* Summary KPIs */}
+      <div className="grid gap-3 sm:grid-cols-4">
+        <KPITile label="Leakage Detected" value={data.stats.detected} icon={AlertTriangle} sub="active signals" />
+        <KPITile label="In Recovery" value={data.stats.inRecovery} icon={RefreshCw} sub="being addressed" />
+        <KPITile label="Recovered" value={`$${data.ledger.totalRecovered.toLocaleString()}`} icon={CheckCircle} sub="this month" className="gradient-sita-subtle" />
+        <KPITile label="Potential" value={`$${(data.stats.totalPotentialValue / 1000).toFixed(1)}k`} icon={Target} sub="recoverable" />
+      </div>
+
+      {/* Top Ranked Opportunities */}
+      {data.rankings.length > 0 && (
+        <SitaCard hover={false} className="p-4">
+          <SitaCardTitle sub="Ranked by value × urgency × confidence">Active Opportunities</SitaCardTitle>
+          <div className="mt-3 space-y-2">
+            {data.rankings.slice(0, 3).map(r => (
+              <div key={r.opportunityId} className="flex items-center gap-3 rounded-xl bg-secondary/20 p-3">
+                <span className="text-sm font-bold font-display text-primary w-6 text-center">#{r.rank}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-foreground truncate">{r.opportunityId.replace(/^leak_\d+_/, "Signal ")}</p>
+                  <p className="text-[10px] text-muted-foreground">Score: {(r.score * 100).toFixed(0)} · Val: {(r.factors.value * 100).toFixed(0)}% · Urg: {(r.factors.urgency * 100).toFixed(0)}%</p>
+                </div>
+                <SitaButton variant="accent" size="sm" className="text-[10px] shrink-0">Recover</SitaButton>
+              </div>
+            ))}
+          </div>
+        </SitaCard>
+      )}
+
+      {/* Top Recoveries */}
+      {data.ledger.topRecoveries.length > 0 && (
+        <SitaCard hover={false} className="p-4 border-trust-safe/10 bg-trust-safe/[0.02]">
+          <SitaCardTitle sub="Value SITA has already recovered">✓ Recovered Value</SitaCardTitle>
+          <div className="mt-3 space-y-1.5">
+            {data.ledger.topRecoveries.map(r => (
+              <div key={r.id} className="flex items-center justify-between rounded-lg bg-secondary/20 px-3 py-2">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-3.5 w-3.5 text-trust-safe" />
+                  <span className="text-xs text-foreground">{r.title}</span>
+                </div>
+                <span className="text-sm font-bold font-display text-trust-safe">${r.recoveredAmount.toLocaleString()}</span>
+              </div>
+            ))}
+          </div>
+        </SitaCard>
+      )}
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════
 // MAIN COMPONENT
 // ═══════════════════════════════════════════════════
 const OwnerCenter = () => {
