@@ -76,11 +76,21 @@ const PackEditorPage = lazy(() => import("./pages/owner/PackEditor"));
 const AdvisorConfigPage = lazy(() => import("./pages/owner/AdvisorConfig"));
 const LeaseDashboard = lazy(() => import("./pages/owner/LeaseDashboard"));
 const ConstitutionEditor = lazy(() => import("./pages/owner/ConstitutionEditor"));
+const OwnerHomePage = lazy(() => import("./pages/owner/OwnerHomePage"));
+const OwnerHealthPage = lazy(() => import("./pages/owner/OwnerHealthPage"));
+const OwnerPulsePage = lazy(() => import("./pages/owner/OwnerPulsePage"));
+const OwnerTrustPage = lazy(() => import("./pages/owner/OwnerTrustPage"));
+const OwnerApprovalsPage = lazy(() => import("./pages/owner/OwnerApprovalsPage"));
+const OwnerAiTeamPage = lazy(() => import("./pages/owner/OwnerAiTeamPage"));
+const OwnerAiTeamUpdatesPage = lazy(() => import("./pages/owner/OwnerAiTeamUpdatesPage"));
 const OwnerModePage = lazy(() => import("./pages/owner-mode/OwnerModePage"));
 const WorkflowReplayHub = lazy(() => import("./pages/WorkflowReplayHub"));
 const ObservabilityPage = lazy(() => import("./pages/ObservabilityPage"));
 const UsersAdminPage = lazy(() => import("./pages/UsersAdminPage"));
 const PolicySimulatorHub = lazy(() => import("./pages/PolicySimulatorHub"));
+const MissionRegistryPage = lazy(() => import("./pages/mission/MissionRegistryPage"));
+const MissionReleaseDetailPage = lazy(() => import("./pages/mission/MissionReleaseDetailPage"));
+const MissionWorkflowReplayPage = lazy(() => import("./pages/mission/MissionWorkflowReplayPage"));
 const EnterpriseControlPlane = lazy(() => import("./pages/enterprise/EnterpriseControlPlane"));
 
 // Mobile Trusted Device
