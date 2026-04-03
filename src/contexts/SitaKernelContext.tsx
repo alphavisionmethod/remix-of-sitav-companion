@@ -124,11 +124,11 @@ export function useSharedTrust(entityId?: string) {
 
   useEffect(() => {
     const id = entityId ?? kernel.tenantId;
-    const state = kernel.trust.getTrustState(id);
+    const state = kernel.trust.get(id);
     setTrustState(state ?? null);
 
     const subId = kernel.eventBus.subscribe("trust.*", () => {
-      const updated = kernel.trust.getTrustState(id);
+      const updated = kernel.trust.get(id);
       setTrustState(updated ?? null);
     }, "shared-trust-hook");
 
@@ -137,7 +137,7 @@ export function useSharedTrust(entityId?: string) {
     };
   }, [kernel, entityId]);
 
-  return { trustState, history: kernel.trust.getHistory(entityId ?? kernel.tenantId) };
+  return { trustState, auditLog: kernel.trust.getAuditLog({ entityId: entityId ?? kernel.tenantId }) };
 }
 
 // ── Entity-Scoped Data Hook ─────────────────────────────────────
