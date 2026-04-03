@@ -575,7 +575,7 @@ function MCRecovery() {
 
 function MCCosts() {
   const { runtime } = useMCAdmin();
-  const tokenEngine = runtime.engines.tokenGovernance;
+  const tokenEngine = runtime.engines.tokens;
 
   // Seed demo usage so the dashboard has data
   const dashboard = useMemo(() => {
