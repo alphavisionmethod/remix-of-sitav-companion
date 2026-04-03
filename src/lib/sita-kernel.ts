@@ -15,6 +15,8 @@ import { VerificationEngine } from "./core-services/verification-engine";
 import { ExecutorService } from "./core-services/executor-service";
 import { CanonicalChainOrchestrator } from "./core-services/index";
 import { AgentOrchestrator } from "./core-services/agent-orchestrator";
+import { LeaseManager } from "./core-services/lease-manager";
+import { ConstitutionCompiler } from "./core-services/constitution-compiler";
 import type { EntityProfile } from "@/contexts/EntityContext";
 
 // ── Kernel Class ────────────────────────────────────────────────
