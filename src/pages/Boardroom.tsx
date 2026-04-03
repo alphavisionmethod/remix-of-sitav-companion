@@ -8,6 +8,8 @@ import { KPITile, RiskCard, OpportunityCard, EmptyState, SitaTabs } from "@/comp
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge, StateStep } from "@/components/sita/StateBadge";
 import { ConfidenceLadder } from "@/components/sita/AdvisorComponents";
+import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { Progress } from "@/components/ui/progress";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getPerspectiveConfig, type PerspectiveLevel } from "@/lib/advisor-protocol";
