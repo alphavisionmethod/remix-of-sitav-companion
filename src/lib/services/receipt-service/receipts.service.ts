@@ -94,7 +94,7 @@ export function createRefusalReceipt(params: {
   confidenceAtRefusal: number;
   requiredForRetry: string[];
   tenantId: string;
-}): import("@/packages/proof-model").RefusalReceipt {
+}): import("@/packages/proof-model").RefusalProofReceipt {
   const previousHash = getLastHash();
   const receipt = {
     type: "refusal" as const,

@@ -119,7 +119,7 @@ export interface SystemReceipt extends BaseReceipt {
   details: Record<string, unknown>;
 }
 
-export interface RefusalReceipt extends BaseReceipt {
+export interface RefusalProofReceipt extends BaseReceipt {
   type: "refusal";
   refusalReason: string;
   blockedAction: string;
