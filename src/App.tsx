@@ -88,6 +88,11 @@ const MissionRegistryPage = lazy(() => import("./pages/mission/MissionRegistryPa
 const MissionReleaseDetailPage = lazy(() => import("./pages/mission/MissionReleaseDetailPage"));
 const MissionWorkflowReplayPage = lazy(() => import("./pages/mission/MissionWorkflowReplayPage"));
 const EnterpriseControlPlane = lazy(() => import("./pages/enterprise/EnterpriseControlPlane"));
+const IntegrationConcierge = lazy(() => import("./pages/IntegrationConcierge"));
+const DigitalTwinsPage = lazy(() => import("./pages/DigitalTwinsPage"));
+const ScenarioLabPage = lazy(() => import("./pages/ScenarioLabPage"));
+const AIEconomicsPage = lazy(() => import("./pages/AIEconomicsPage"));
+const RecoveredValuePage = lazy(() => import("./pages/RecoveredValuePage"));
 
 // Mobile Trusted Device
 const MobileHome = lazy(() => import("./pages/mobile/MobileHome"));
