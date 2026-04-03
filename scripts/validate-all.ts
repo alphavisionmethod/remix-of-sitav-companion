@@ -15,6 +15,7 @@ const validators = [
   "scripts/check-contract-completeness.ts",
   "scripts/validation/generated-truth.ts",
   "scripts/validation/schema-compliance.ts",
+  "scripts/check-no-page-mocks.ts",
 ];
 
 console.log(`\n🔍 Running ${validators.length} validators...\n`);
