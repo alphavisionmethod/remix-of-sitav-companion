@@ -42,7 +42,8 @@ import {
   Target, Gauge, BatteryLow, BatteryFull, BatteryMedium, MapPin, RotateCw,
   ChevronRight, ChevronLeft, Filter, X, FileDown, Vote, Gavel, Scale,
   Bot, Network, ShieldCheck, Coins, Landmark, BookOpen, ChevronDown, ChevronUp, Layers,
-  Rocket, GitBranch, BookMarked, Headphones, FileCheck, Map, ExternalLink
+  Rocket, GitBranch, BookMarked, Headphones, FileCheck, Map, ExternalLink,
+  CreditCard, Package
 } from "lucide-react";
 
 type OwnerPage = "overview" | "workforce" | "incidents" | "connectors" | "costs" | "policies" | "audit" | "fleet" | "intelligence" | "council"
