@@ -76,11 +76,21 @@ const PackEditorPage = lazy(() => import("./pages/owner/PackEditor"));
 const AdvisorConfigPage = lazy(() => import("./pages/owner/AdvisorConfig"));
 const LeaseDashboard = lazy(() => import("./pages/owner/LeaseDashboard"));
 const ConstitutionEditor = lazy(() => import("./pages/owner/ConstitutionEditor"));
+const OwnerHomePage = lazy(() => import("./pages/owner/OwnerHomePage"));
+const OwnerHealthPage = lazy(() => import("./pages/owner/OwnerHealthPage"));
+const OwnerPulsePage = lazy(() => import("./pages/owner/OwnerPulsePage"));
+const OwnerTrustPage = lazy(() => import("./pages/owner/OwnerTrustPage"));
+const OwnerApprovalsPage = lazy(() => import("./pages/owner/OwnerApprovalsPage"));
+const OwnerAiTeamPage = lazy(() => import("./pages/owner/OwnerAiTeamPage"));
+const OwnerAiTeamUpdatesPage = lazy(() => import("./pages/owner/OwnerAiTeamUpdatesPage"));
 const OwnerModePage = lazy(() => import("./pages/owner-mode/OwnerModePage"));
 const WorkflowReplayHub = lazy(() => import("./pages/WorkflowReplayHub"));
 const ObservabilityPage = lazy(() => import("./pages/ObservabilityPage"));
 const UsersAdminPage = lazy(() => import("./pages/UsersAdminPage"));
 const PolicySimulatorHub = lazy(() => import("./pages/PolicySimulatorHub"));
+const MissionRegistryPage = lazy(() => import("./pages/mission/MissionRegistryPage"));
+const MissionReleaseDetailPage = lazy(() => import("./pages/mission/MissionReleaseDetailPage"));
+const MissionWorkflowReplayPage = lazy(() => import("./pages/mission/MissionWorkflowReplayPage"));
 const EnterpriseControlPlane = lazy(() => import("./pages/enterprise/EnterpriseControlPlane"));
 
 // Mobile Trusted Device
@@ -374,14 +384,23 @@ const App = () => (
                     <Route path="/mission/connectors/:connectorId/logs" element={<ConnectorDetail />} />
                     <Route path="/mission/incidents/:incidentId" element={<IncidentDetail />} />
                     <Route path="/mission/policies/simulate" element={<PolicySimulator />} />
+                    <Route path="/mission/registry" element={<MissionRegistryPage />} />
+                    <Route path="/mission/releases/:releaseId" element={<MissionReleaseDetailPage />} />
+                    <Route path="/mission/workflows/:workflowId/replay" element={<MissionWorkflowReplayPage />} />
                     <Route path="/mission/error" element={<MissionError />} />
 
                     {/* Redirect /incidents to mission-control/incidents */}
                     <Route path="/incidents" element={<Navigate to="/mission-control" replace />} />
 
-                    {/* Owner Center */}
+                    {/* Owner — Advanced Workspace (Layer 2) */}
                     <Route path="/owner" element={<OwnerCenter />} />
-                    <Route path="/owner/ai-team" element={<OwnerCenter />} />
+                    <Route path="/owner/home" element={<OwnerHomePage />} />
+                    <Route path="/owner/health" element={<OwnerHealthPage />} />
+                    <Route path="/owner/pulse" element={<OwnerPulsePage />} />
+                    <Route path="/owner/trust" element={<OwnerTrustPage />} />
+                    <Route path="/owner/approvals" element={<OwnerApprovalsPage />} />
+                    <Route path="/owner/ai-team" element={<OwnerAiTeamPage />} />
+                    <Route path="/owner/ai-team/updates" element={<OwnerAiTeamUpdatesPage />} />
                     <Route path="/owner/incidents" element={<OwnerCenter />} />
                     <Route path="/owner/intelligence" element={<OwnerCenter />} />
                     <Route path="/owner/policies" element={<OwnerCenter />} />
@@ -409,8 +428,9 @@ const App = () => (
                     <Route path="/owner/leases" element={<LeaseDashboard />} />
                     <Route path="/owner/constitution" element={<ConstitutionEditor />} />
 
-                    {/* Owner Mode — Founder-Safe Control Room */}
+                    {/* Owner Mode — Founder-Safe Control Room (Layer 1) */}
                     <Route path="/owner-mode" element={<OwnerModePage />} />
+                    <Route path="/owner-mode/home" element={<Navigate to="/owner-mode" replace />} />
 
                     {/* Global Admin Surfaces */}
                     <Route path="/workflow-replay" element={<WorkflowReplayHub />} />
