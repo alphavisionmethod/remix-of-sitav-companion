@@ -60,11 +60,16 @@ const bottomNav = [
 ];
 
 const ownerSubNav = [
+  { title: "Mission Control", url: "/mission-control", icon: Gauge },
   { title: "Leases", url: "/owner/leases", icon: Key },
   { title: "Constitution", url: "/owner/constitution", icon: ScrollText },
   { title: "Pricing", url: "/owner/pricing", icon: CreditCard },
   { title: "Packs", url: "/owner/packs", icon: Package },
   { title: "Advisors", url: "/owner/advisors", icon: Cpu },
+  { title: "Policy Simulator", url: "/policy-simulator", icon: Sliders },
+  { title: "Workflow Replay", url: "/workflow-replay", icon: RotateCcw },
+  { title: "Observability", url: "/observability", icon: Activity },
+  { title: "Users", url: "/users", icon: Users },
 ];
 
 const NavItems = ({ items, collapsed }: { items: typeof primaryNav; collapsed: boolean }) => {
