@@ -42,11 +42,12 @@ import {
   Target, Gauge, BatteryLow, BatteryFull, BatteryMedium, MapPin, RotateCw,
   ChevronRight, ChevronLeft, Filter, X, FileDown, Vote, Gavel, Scale,
   Bot, Network, ShieldCheck, Coins, Landmark, BookOpen, ChevronDown, ChevronUp, Layers,
-  Rocket, GitBranch, BookMarked, Headphones, FileCheck, Map, ExternalLink
+  Rocket, GitBranch, BookMarked, Headphones, FileCheck, Map, ExternalLink,
+  CreditCard, Package
 } from "lucide-react";
 
 type OwnerPage = "overview" | "workforce" | "incidents" | "connectors" | "costs" | "policies" | "audit" | "fleet" | "intelligence" | "council"
-  | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map";
+  | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing";
 
 const subpageFromPath = (path: string): OwnerPage => {
   const last = path.split("/").pop() || "";
@@ -58,6 +59,7 @@ const subpageFromPath = (path: string): OwnerPage => {
     "trust-center": "trust-center", "releases": "releases", "model-routing": "model-routing",
     "knowledge": "knowledge", "support": "support", "change-review": "change-review",
     "rollback-center": "rollback-center", "system-map": "system-map",
+    "autopilot": "autopilot", "billing": "billing",
   };
   return map[last] || "overview";
 };
@@ -178,12 +180,14 @@ const OwnerCenter = () => {
     { key: "incidents", label: "Incidents", count: openIncidents },
     { key: "intelligence", label: "Intelligence" },
     { key: "policies", label: "Policies" },
+    { key: "autopilot", label: "Autopilot" },
     { key: "fleet", label: "Fleet" },
     { key: "council", label: "Council", count: (councilData?.summary?.pending || 0) },
     { key: "audit", label: "Audit" },
     { key: "workforce", label: "Workforce", count: workforceData?.summary?.totalAgents },
     { key: "connectors", label: "Connectors" },
     { key: "costs", label: "Costs" },
+    { key: "billing", label: "Billing" },
     { key: "trust-center", label: "Trust" },
     { key: "releases", label: "Releases" },
     { key: "model-routing", label: "Models" },
@@ -676,6 +680,111 @@ const OwnerCenter = () => {
                   </div>
                 </SitaCard>
               ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* ══════════════════════════════════════════ */}
+        {/* AUTOPILOT */}
+        {/* ══════════════════════════════════════════ */}
+        {activePage === "autopilot" && (
+          <motion.div key="autopilot" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
+            <div className="grid gap-3 sm:grid-cols-4">
+              <KPITile label="Automation Coverage" value="67%" icon={Zap} sub="Eligible workflows" trend="up" />
+              <KPITile label="Delegated Recurring" value="12" icon={RotateCcw} sub="Fully automated" />
+              <KPITile label="Approval Conversion" value="94%" icon={CheckCircle} sub="Auto-approved" trend="up" />
+              <KPITile label="Blocked Flows" value="3" icon={Shield} sub="Trust-sensitive" />
+            </div>
+
+            <SitaCard hover={false} className="p-5">
+              <p className="font-display text-sm font-bold text-foreground mb-3">Autonomy Ladder</p>
+              <p className="text-[10px] text-muted-foreground mb-4">Each workflow family can be set to a different execution mode</p>
+              <div className="space-y-2">
+                {[
+                  { family: "Bill Payments", mode: "execute", eligible: true, savings: "$120/mo" },
+                  { family: "Lead Follow-ups", mode: "draft", eligible: true, savings: "4h/week" },
+                  { family: "Invoice Generation", mode: "approval-ready", eligible: true, savings: "$80/mo" },
+                  { family: "Insurance Renewals", mode: "simulate", eligible: false, savings: "$500/yr" },
+                  { family: "Tax Filings", mode: "observe", eligible: false, savings: "N/A" },
+                  { family: "Grocery Orders", mode: "execute", eligible: true, savings: "2h/week" },
+                  { family: "Capital Allocation", mode: "approval-ready", eligible: false, savings: "N/A" },
+                ].map((wf) => (
+                  <div key={wf.family} className="flex items-center justify-between rounded-lg border border-border/30 bg-card/30 px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`h-2 w-2 rounded-full ${
+                        wf.mode === "execute" ? "bg-trust-safe" :
+                        wf.mode === "draft" ? "bg-primary" :
+                        wf.mode === "approval-ready" ? "bg-accent" :
+                        wf.mode === "simulate" ? "bg-sita-gold" :
+                        "bg-muted-foreground"
+                      }`} />
+                      <div>
+                        <p className="text-xs font-semibold text-foreground">{wf.family}</p>
+                        <p className="text-[9px] text-muted-foreground">
+                          {wf.eligible ? "Eligible for delegation" : "Trust-sensitive — manual only"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[9px] text-muted-foreground">{wf.savings}</span>
+                      <span className={`text-[9px] font-semibold rounded-full px-2 py-0.5 ${
+                        wf.mode === "execute" ? "bg-trust-safe/10 text-trust-safe" :
+                        wf.mode === "draft" ? "bg-primary/10 text-primary" :
+                        wf.mode === "approval-ready" ? "bg-accent/10 text-accent" :
+                        wf.mode === "simulate" ? "bg-sita-gold/10 text-sita-gold" :
+                        "bg-secondary text-muted-foreground"
+                      }`}>
+                        {wf.mode}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </SitaCard>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <SitaCard hover={false} className="p-5">
+                <p className="font-display text-sm font-bold text-foreground mb-2">Why Not Fully Automated?</p>
+                <div className="space-y-2">
+                  {[
+                    { flow: "Insurance Renewals", reason: "Amount exceeds $500 threshold — dual approval required" },
+                    { flow: "Tax Filings", reason: "Regulatory domain — simulation + human review mandatory" },
+                    { flow: "Capital Allocation", reason: "Critical risk tier — owner-only authorization" },
+                  ].map(b => (
+                    <div key={b.flow} className="rounded-lg bg-destructive/5 border border-destructive/10 p-3">
+                      <p className="text-xs font-semibold text-foreground">{b.flow}</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">{b.reason}</p>
+                    </div>
+                  ))}
+                </div>
+              </SitaCard>
+
+              <SitaCard hover={false} className="p-5">
+                <p className="font-display text-sm font-bold text-foreground mb-2">Global Controls</p>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">Simulation Before Action</p>
+                      <p className="text-[9px] text-muted-foreground">Run dry-run before executing any new workflow</p>
+                    </div>
+                    <div className="h-5 w-9 rounded-full bg-trust-safe/20 flex items-center justify-end px-0.5"><div className="h-4 w-4 rounded-full bg-trust-safe" /></div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">Pause All Automation</p>
+                      <p className="text-[9px] text-muted-foreground">Emergency freeze — all workflows go to observe mode</p>
+                    </div>
+                    <div className="h-5 w-9 rounded-full bg-secondary flex items-center px-0.5"><div className="h-4 w-4 rounded-full bg-muted-foreground" /></div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">Budget-Aware Throttle</p>
+                      <p className="text-[9px] text-muted-foreground">Auto-reduce automation when spend exceeds daily ceiling</p>
+                    </div>
+                    <div className="h-5 w-9 rounded-full bg-trust-safe/20 flex items-center justify-end px-0.5"><div className="h-4 w-4 rounded-full bg-trust-safe" /></div>
+                  </div>
+                </div>
+              </SitaCard>
             </div>
           </motion.div>
         )}
@@ -1470,6 +1579,99 @@ const OwnerCenter = () => {
                 </div>
               </SitaCard>
             ))}
+          </motion.div>
+        )}
+
+        {/* ══════════════════════════════════════════ */}
+        {/* BILLING & ENTITLEMENTS */}
+        {/* ══════════════════════════════════════════ */}
+        {activePage === "billing" && (
+          <motion.div key="billing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
+            <div className="grid gap-3 sm:grid-cols-4">
+              <KPITile label="Current Plan" value="Pro" icon={CreditCard} sub="$99/mo" />
+              <KPITile label="AI Budget Used" value="72%" icon={Zap} sub="$72 of $100" />
+              <KPITile label="Active Modules" value="6/8" icon={Package} sub="2 available" />
+              <KPITile label="Support Level" value="Priority" icon={Headphones} sub="24h SLA" />
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <SitaCard hover={false} className="p-5">
+                <p className="font-display text-sm font-bold text-foreground mb-3">Module Entitlements</p>
+                <div className="space-y-2">
+                  {[
+                    { name: "Business OS", status: "active", tier: "Pro" },
+                    { name: "Finance OS", status: "active", tier: "Pro" },
+                    { name: "Concierge OS", status: "active", tier: "Pro" },
+                    { name: "Boardroom", status: "active", tier: "Pro" },
+                    { name: "Investment Office", status: "active", tier: "Pro+" },
+                    { name: "Family Office", status: "active", tier: "Pro+" },
+                    { name: "Enterprise Fleet", status: "locked", tier: "Enterprise" },
+                    { name: "Multi-Org", status: "locked", tier: "Enterprise" },
+                  ].map(m => (
+                    <div key={m.name} className="flex items-center justify-between rounded-lg bg-secondary/30 px-3 py-2">
+                      <div className="flex items-center gap-2">
+                        <div className={`h-2 w-2 rounded-full ${m.status === "active" ? "bg-trust-safe" : "bg-muted-foreground"}`} />
+                        <span className="text-xs text-foreground">{m.name}</span>
+                      </div>
+                      <span className={`text-[9px] font-semibold rounded-full px-2 py-0.5 ${
+                        m.status === "active" ? "bg-trust-safe/10 text-trust-safe" : "bg-secondary text-muted-foreground"
+                      }`}>{m.tier}</span>
+                    </div>
+                  ))}
+                </div>
+              </SitaCard>
+
+              <SitaCard hover={false} className="p-5">
+                <p className="font-display text-sm font-bold text-foreground mb-3">Advisor Entitlements</p>
+                <div className="space-y-2">
+                  {[
+                    { name: "Money Advisor", cap: "Unlimited", model: "GPT-4o" },
+                    { name: "Business Advisor", cap: "Unlimited", model: "GPT-4o" },
+                    { name: "Concierge Advisor", cap: "500/day", model: "GPT-4o-mini" },
+                    { name: "Boardroom Council", cap: "50/day", model: "GPT-4o" },
+                    { name: "Investment Advisor", cap: "100/day", model: "GPT-4o" },
+                  ].map(a => (
+                    <div key={a.name} className="flex items-center justify-between rounded-lg bg-secondary/30 px-3 py-2">
+                      <span className="text-xs text-foreground">{a.name}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[9px] text-muted-foreground">{a.model}</span>
+                        <span className="text-[9px] font-semibold text-primary">{a.cap}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </SitaCard>
+            </div>
+
+            <SitaCard hover={false} className="p-5">
+              <p className="font-display text-sm font-bold text-foreground mb-3">Runtime Budget Controls</p>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div className="rounded-lg border border-border/30 bg-card/30 p-4">
+                  <p className="text-[10px] text-muted-foreground mb-1">Daily Token Ceiling</p>
+                  <p className="text-lg font-bold text-foreground">50,000</p>
+                  <p className="text-[9px] text-muted-foreground mt-1">32,400 used today (65%)</p>
+                  <div className="h-1.5 rounded-full bg-secondary mt-2 overflow-hidden">
+                    <div className="h-full rounded-full bg-primary" style={{ width: "65%" }} />
+                  </div>
+                </div>
+                <div className="rounded-lg border border-border/30 bg-card/30 p-4">
+                  <p className="text-[10px] text-muted-foreground mb-1">Boardroom Budget</p>
+                  <p className="text-lg font-bold text-foreground">$25/session</p>
+                  <p className="text-[9px] text-muted-foreground mt-1">Avg: $18.40 per session</p>
+                  <div className="h-1.5 rounded-full bg-secondary mt-2 overflow-hidden">
+                    <div className="h-full rounded-full bg-trust-safe" style={{ width: "74%" }} />
+                  </div>
+                </div>
+                <div className="rounded-lg border border-border/30 bg-card/30 p-4">
+                  <p className="text-[10px] text-muted-foreground mb-1">Monthly Spend Cap</p>
+                  <p className="text-lg font-bold text-foreground">$100</p>
+                  <p className="text-[9px] text-muted-foreground mt-1">$72 used this month</p>
+                  <div className="h-1.5 rounded-full bg-secondary mt-2 overflow-hidden">
+                    <div className="h-full rounded-full bg-accent" style={{ width: "72%" }} />
+                  </div>
+                </div>
+              </div>
+            </SitaCard>
           </motion.div>
         )}
 

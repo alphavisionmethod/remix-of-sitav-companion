@@ -1,5 +1,5 @@
 import { Home, Briefcase, DollarSign, Headphones, Workflow, Receipt, BarChart3, FolderOpen, Settings, Shield, LogOut,
-  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders } from "lucide-react";
+  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
@@ -57,6 +57,14 @@ const bottomNav = [
   { title: "Settings", url: "/settings", icon: Settings },
   { title: "Mission Control", url: "/mission-control", icon: Server },
   { title: "Owner", url: "/owner", icon: Shield },
+];
+
+const ownerSubNav = [
+  { title: "Leases", url: "/owner/leases", icon: Key },
+  { title: "Constitution", url: "/owner/constitution", icon: ScrollText },
+  { title: "Pricing", url: "/owner/pricing", icon: CreditCard },
+  { title: "Packs", url: "/owner/packs", icon: Package },
+  { title: "Advisors", url: "/owner/advisors", icon: Cpu },
 ];
 
 const NavItems = ({ items, collapsed }: { items: typeof primaryNav; collapsed: boolean }) => {
@@ -138,6 +146,8 @@ export function AppSidebar() {
   const { isDemoMode } = useDataMode();
   const { preferences } = useUserPreferences();
   const role = preferences.role;
+  const location = useLocation();
+  const isOwnerArea = location.pathname.startsWith("/owner");
 
   const displayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
   const initials = displayName.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2);
@@ -193,6 +203,16 @@ export function AppSidebar() {
             <NavItems items={bottomNav} collapsed={collapsed} />
           </SidebarGroupContent>
         </SidebarGroup>
+        {isOwnerArea && !collapsed && (
+          <SidebarGroup>
+            <SidebarGroupLabel className="px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/50">
+              Owner Controls
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <NavItems items={ownerSubNav} collapsed={collapsed} />
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
         {user && (
           <div className="mt-2 px-1">
             <button
