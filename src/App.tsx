@@ -362,6 +362,18 @@ const App = () => (
                     <Route path="/mission-control/safe-mode" element={<MissionControl />} />
                     <Route path="/mission-control/permissions" element={<MissionControl />} />
 
+                    {/* Mission Drill-Downs (Layer 2 — Advanced Ops) */}
+                    <Route path="/mission/overview" element={<MissionOverview />} />
+                    <Route path="/mission/connectors/:connectorId" element={<ConnectorDetail />} />
+                    <Route path="/mission/connectors/:connectorId/health" element={<ConnectorDetail />} />
+                    <Route path="/mission/connectors/:connectorId/logs" element={<ConnectorDetail />} />
+                    <Route path="/mission/incidents/:incidentId" element={<IncidentDetail />} />
+                    <Route path="/mission/policies/simulate" element={<PolicySimulator />} />
+                    <Route path="/mission/error" element={<MissionError />} />
+
+                    {/* Redirect /incidents to mission-control/incidents */}
+                    <Route path="/incidents" element={<Navigate to="/mission-control" replace />} />
+
                     {/* Owner Center */}
                     <Route path="/owner" element={<OwnerCenter />} />
                     <Route path="/owner/ai-team" element={<OwnerCenter />} />
