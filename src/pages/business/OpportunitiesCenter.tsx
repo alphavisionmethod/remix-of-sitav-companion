@@ -2,13 +2,14 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/component
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
+import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { Target, DollarSign, TrendingUp, Clock, AlertTriangle, Sparkles, ArrowRight, CheckCircle, Plus, X, Trash2 } from "lucide-react";
+import { Target, DollarSign, TrendingUp, Clock, AlertTriangle, Sparkles, ArrowRight, CheckCircle, Plus, X, Trash2, LayoutList, Columns } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
@@ -35,6 +36,7 @@ const OpportunitiesCenter = () => {
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
+  const [view, setView] = useState<"list" | "kanban">("list");
   const [form, setForm] = useState({ title: "", value: "", confidence: 50, stage: "lead", next_action: "" });
 
   const { data: opportunities = [], isLoading } = useQuery({
@@ -87,7 +89,13 @@ const OpportunitiesCenter = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <SitaPageHeader title="Opportunities" subtitle="Pipeline, risks, and reactivation" actions={
-        <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><Plus className="h-3.5 w-3.5" /> New Opportunity</button>
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1 rounded-lg border border-border p-0.5">
+            <button onClick={() => setView("list")} className={`rounded-md px-2 py-1 text-[11px] font-medium transition-all ${view === "list" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}><LayoutList className="h-3.5 w-3.5" /></button>
+            <button onClick={() => setView("kanban")} className={`rounded-md px-2 py-1 text-[11px] font-medium transition-all ${view === "kanban" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}><Columns className="h-3.5 w-3.5" /></button>
+          </div>
+          <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><Plus className="h-3.5 w-3.5" /> New Opportunity</button>
+        </div>
       } />
 
       <AnimatePresence>
@@ -128,66 +136,102 @@ const OpportunitiesCenter = () => {
         { key: "won", label: "Won" },
       ]} active={tab} onChange={setTab} />
 
-      <div className="grid gap-6 lg:grid-cols-5">
-        <div className="lg:col-span-3 space-y-2">
-          {isLoading ? <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-20 rounded-xl bg-muted/30 animate-pulse" />)}</div>
-          : filtered.length === 0 ? <EmptyState icon={Target} title="No opportunities" description={opportunities.length === 0 ? "Add your first opportunity to build your pipeline" : "Try a different filter"} />
-          : (
-            <motion.div className="space-y-2" variants={stagger} initial="hidden" animate="show">
-              {filtered.map((opp: any) => {
-                const conf = opp.confidence || 0;
-                const customerName = opp.customers?.name || "No customer";
-                return (
-                  <motion.div key={opp.id} variants={fadeUp} layout>
-                    <SitaCard onClick={() => setSelectedId(opp.id)} selected={selectedId === opp.id} lane={opp.stale_risk ? "action" : conf >= 80 ? "opportunity" : undefined} className="p-4">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-3 flex-1 min-w-0">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/8 font-display text-sm font-semibold text-primary shrink-0">{initials(opp.title)}</div>
-                          <div className="min-w-0">
-                            <p className="text-sm font-medium text-foreground truncate">{opp.title}</p>
-                            <p className="text-xs text-muted-foreground">{customerName} · {stageLabels[opp.stage] || opp.stage}</p>
-                          </div>
-                        </div>
-                        <div className="text-right shrink-0">
-                          <p className="font-display text-sm font-semibold text-foreground">{opp.value ? `$${Number(opp.value).toLocaleString()}` : "—"}</p>
-                          <div className="flex items-center justify-end gap-1 mt-0.5">
-                            <div className="h-1.5 w-8 rounded-full overflow-hidden bg-secondary">
-                              <div className={`h-full rounded-full ${conf >= 70 ? "bg-trust-verified" : conf >= 40 ? "bg-trust-review" : "bg-urgency-high"}`} style={{ width: `${conf}%` }} />
-                            </div>
-                            <span className="text-[10px] text-muted-foreground">{conf}%</span>
-                          </div>
-                        </div>
-                      </div>
-                      {opp.stale_risk && <div className="mt-2 flex items-center gap-2 text-xs"><AlertTriangle className="h-3 w-3 text-urgency-high" /><span className="text-urgency-high">{opp.blockers || "Going stale — needs follow-up"}</span></div>}
-                    </SitaCard>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          )}
-        </div>
-
-        <div className="lg:col-span-2 space-y-4">
-          {selected ? (
-            <>
-              <SitaCard hover={false} glow className="p-5">
-                <SitaCardTitle sub={`${selected.customers?.name || "No customer"} · ${stageLabels[selected.stage] || selected.stage}`}>{selected.title}</SitaCardTitle>
-                <div className="mt-4 space-y-3">
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Value</span><span className="font-semibold text-foreground">{selected.value ? `$${Number(selected.value).toLocaleString()}` : "—"}</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Confidence</span><span className={`font-semibold ${(selected.confidence || 0) >= 70 ? "text-trust-verified" : "text-trust-review"}`}>{selected.confidence || 0}%</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">State</span><StateBadge state={stageToState(selected.stage)} size="sm" /></div>
-                  {selected.next_action && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Next Action</span><span className="text-foreground">{selected.next_action}</span></div>}
-                  {selected.blockers && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Blocker</span><span className="text-urgency-high">{selected.blockers}</span></div>}
+      {view === "kanban" ? (
+        /* ── Pipeline Kanban ── */
+        <div className="flex gap-3 overflow-x-auto pb-4 -mx-2 px-2">
+          {["lead", "discovery", "qualified", "proposal", "negotiation", "won"].map(stage => {
+            const stageOpps = opportunities.filter((o: any) => o.stage === stage);
+            const stageValue = stageOpps.reduce((s: number, o: any) => s + (o.value || 0), 0);
+            return (
+              <div key={stage} className="flex-shrink-0 w-64 rounded-xl border border-border bg-card/50">
+                <div className="p-3 border-b border-border/50">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[12px] font-semibold text-foreground capitalize">{stageLabels[stage]}</span>
+                    <span className="text-[10px] text-muted-foreground bg-secondary rounded-full px-2 py-0.5">{stageOpps.length}</span>
+                  </div>
+                  {stageValue > 0 && <p className="text-[10px] text-muted-foreground mt-0.5">${(stageValue / 1000).toFixed(0)}K</p>}
                 </div>
-              </SitaCard>
-              <div className="flex gap-2 flex-wrap">
-                {selected.stage !== "won" && <button onClick={() => updateStage.mutate({ id: selected.id, stage: "won" })} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><CheckCircle className="h-3.5 w-3.5" /> Mark Won</button>}
-                <button onClick={() => deleteOpp.mutate(selected.id)} className="rounded-lg border border-border px-3 py-2 text-xs text-muted-foreground hover:text-destructive hover:border-destructive/30 transition-colors"><Trash2 className="h-3.5 w-3.5" /></button>
+                <div className="p-2 space-y-2 min-h-[120px]">
+                  {stageOpps.map((opp: any) => (
+                    <div key={opp.id} onClick={() => setSelectedId(opp.id)} className="rounded-lg border border-border/50 bg-card p-3 cursor-pointer hover:border-primary/20 hover:shadow-sm transition-all">
+                      <p className="text-[12px] font-medium text-foreground truncate">{opp.title}</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">{opp.customers?.name || "No customer"}</p>
+                      <div className="flex items-center justify-between mt-2">
+                        <span className="text-[11px] font-semibold text-foreground">{opp.value ? `$${Number(opp.value).toLocaleString()}` : "—"}</span>
+                        <ConfidenceBar value={opp.confidence || 0} size="sm" showValue={false} className="w-12" />
+                      </div>
+                      {opp.stale_risk && <div className="mt-1.5 flex items-center gap-1 text-[10px] text-[hsl(var(--destructive))]"><AlertTriangle className="h-2.5 w-2.5" /> Stale</div>}
+                    </div>
+                  ))}
+                  {stageOpps.length === 0 && <p className="text-[10px] text-muted-foreground text-center py-4">No deals</p>}
+                </div>
               </div>
-            </>
-          ) : <EmptyState icon={Target} title="Select an opportunity" description="Click on an opportunity to see details and actions" />}
+            );
+          })}
         </div>
-      </div>
+      ) : (
+        /* ── List View ── */
+        <div className="grid gap-6 lg:grid-cols-5">
+          <div className="lg:col-span-3 space-y-2">
+            {isLoading ? <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-20 rounded-xl bg-muted/30 animate-pulse" />)}</div>
+            : filtered.length === 0 ? <EmptyState icon={Target} title="No opportunities" description={opportunities.length === 0 ? "Add your first opportunity to build your pipeline" : "Try a different filter"} />
+            : (
+              <motion.div className="space-y-2" variants={stagger} initial="hidden" animate="show">
+                {filtered.map((opp: any) => {
+                  const conf = opp.confidence || 0;
+                  const customerName = opp.customers?.name || "No customer";
+                  return (
+                    <motion.div key={opp.id} variants={fadeUp} layout>
+                      <SitaCard onClick={() => setSelectedId(opp.id)} selected={selectedId === opp.id} lane={opp.stale_risk ? "action" : conf >= 80 ? "opportunity" : undefined} className="p-4">
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/8 font-display text-sm font-semibold text-primary shrink-0">{initials(opp.title)}</div>
+                            <div className="min-w-0">
+                              <p className="text-sm font-medium text-foreground truncate">{opp.title}</p>
+                              <p className="text-xs text-muted-foreground">{customerName} · {stageLabels[opp.stage] || opp.stage}</p>
+                            </div>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <p className="font-display text-sm font-semibold text-foreground">{opp.value ? `$${Number(opp.value).toLocaleString()}` : "—"}</p>
+                            <div className="flex items-center justify-end gap-1 mt-0.5">
+                              <div className="h-1.5 w-8 rounded-full overflow-hidden bg-secondary">
+                                <div className={`h-full rounded-full ${conf >= 70 ? "bg-trust-verified" : conf >= 40 ? "bg-trust-review" : "bg-urgency-high"}`} style={{ width: `${conf}%` }} />
+                              </div>
+                              <span className="text-[10px] text-muted-foreground">{conf}%</span>
+                            </div>
+                          </div>
+                        </div>
+                        {opp.stale_risk && <div className="mt-2 flex items-center gap-2 text-xs"><AlertTriangle className="h-3 w-3 text-urgency-high" /><span className="text-urgency-high">{opp.blockers || "Going stale — needs follow-up"}</span></div>}
+                      </SitaCard>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            )}
+          </div>
+
+          <div className="lg:col-span-2 space-y-4">
+            {selected ? (
+              <>
+                <SitaCard hover={false} glow className="p-5">
+                  <SitaCardTitle sub={`${selected.customers?.name || "No customer"} · ${stageLabels[selected.stage] || selected.stage}`}>{selected.title}</SitaCardTitle>
+                  <div className="mt-4 space-y-3">
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Value</span><span className="font-semibold text-foreground">{selected.value ? `$${Number(selected.value).toLocaleString()}` : "—"}</span></div>
+                    <ConfidenceBar value={selected.confidence || 0} label="Confidence" />
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">State</span><StateBadge state={stageToState(selected.stage)} size="sm" /></div>
+                    {selected.next_action && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Next Action</span><span className="text-foreground">{selected.next_action}</span></div>}
+                    {selected.blockers && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Blocker</span><span className="text-urgency-high">{selected.blockers}</span></div>}
+                  </div>
+                </SitaCard>
+                <div className="flex gap-2 flex-wrap">
+                  {selected.stage !== "won" && <button onClick={() => updateStage.mutate({ id: selected.id, stage: "won" })} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><CheckCircle className="h-3.5 w-3.5" /> Mark Won</button>}
+                  <button onClick={() => deleteOpp.mutate(selected.id)} className="rounded-lg border border-border px-3 py-2 text-xs text-muted-foreground hover:text-destructive hover:border-destructive/30 transition-colors"><Trash2 className="h-3.5 w-3.5" /></button>
+                </div>
+              </>
+            ) : <EmptyState icon={Target} title="Select an opportunity" description="Click on an opportunity to see details and actions" />}
+          </div>
+        </div>
+      )}
       <LiveAdvisorCard
         advisor="business"
         intent="opportunity_pipeline"

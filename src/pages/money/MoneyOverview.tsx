@@ -1,6 +1,8 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, RiskCard, OpportunityCard, ProofCard, TimelineItem } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
+import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { useNavigate } from "react-router-dom";
@@ -79,9 +81,11 @@ const MoneyOverview = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <SitaPageHeader
+      <DomainHeader
         title="Money Center"
         subtitle="Cash posture, obligations, and financial intelligence"
+        icon={DollarSign}
+        domain="money"
       />
 
       {/* KPI Strip */}
@@ -153,18 +157,34 @@ const MoneyOverview = () => {
             ))}
           </div>
 
-          {/* Safe-to-Spend */}
+          {/* Safe-to-Spend — Deterministic Calculation */}
           <SitaCard hover={false} className="gradient-sita-subtle p-5">
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-4">
               <Shield className="h-4 w-4 text-primary" />
               <SitaCardTitle>Safe to Spend</SitaCardTitle>
+              <span className="ml-auto text-[10px] text-muted-foreground rounded-full bg-secondary px-2 py-0.5">Deterministic</span>
             </div>
-            <p className="font-display text-3xl font-bold text-foreground">$3,180</p>
-            <p className="mt-1 text-xs text-muted-foreground">After bills ($2,929), reserves ($12,000), and obligations</p>
-            <div className="mt-3 h-2 w-full rounded-full bg-secondary overflow-hidden">
-              <div className="h-full rounded-full bg-trust-verified" style={{ width: "42%" }} />
+            <p className="font-display text-4xl font-bold text-foreground tracking-tight">$3,180</p>
+            <p className="mt-1 text-xs text-muted-foreground">Available after all obligations</p>
+            
+            {/* Breakdown */}
+            <div className="mt-4 space-y-2 border-t border-border/30 pt-4">
+              {[
+                { label: "Total Cash", value: "$58,570", color: "text-foreground" },
+                { label: "− Bills due (7d)", value: "−$2,929", color: "text-[hsl(var(--sita-gold))]" },
+                { label: "− Reserve minimum", value: "−$12,000", color: "text-muted-foreground" },
+                { label: "− Scheduled payments", value: "−$40,461", color: "text-muted-foreground" },
+                { label: "= Safe to spend", value: "$3,180", color: "text-[hsl(var(--trust-safe))]" },
+              ].map((row, i) => (
+                <div key={i} className={`flex items-center justify-between text-[12px] ${i === 4 ? "font-semibold pt-2 border-t border-border/20" : ""}`}>
+                  <span className="text-muted-foreground">{row.label}</span>
+                  <span className={`font-mono tabular-nums ${row.color}`}>{row.value}</span>
+                </div>
+              ))}
             </div>
-            <p className="mt-1.5 text-[11px] text-muted-foreground">42% of available cash · Comfortable range</p>
+            
+            <ConfidenceBar value={42} label="Spending capacity" size="md" className="mt-4" />
+            
             <SitaButton variant="accent" size="sm" className="mt-3" onClick={() => navigate("/money/cash-timing")}>
               View Cash Timing <ArrowRight className="h-3 w-3" />
             </SitaButton>
@@ -174,17 +194,40 @@ const MoneyOverview = () => {
         {/* Column 2 — Bills + Obligations */}
         <div className="space-y-6">
           <div className="space-y-3">
-            <SitaSectionHeader title="Bills Due Soon" action={<button onClick={() => navigate("/money/bills")} className="text-xs text-primary hover:underline">View all</button>} />
+            <SitaSectionHeader title="Bill Calendar" action={<button onClick={() => navigate("/money/bills")} className="text-xs text-primary hover:underline">View all</button>} />
+            {/* Visual calendar strip */}
+            <SitaCard hover={false} className="p-4">
+              <div className="flex gap-1 mb-3">
+                {Array.from({ length: 7 }, (_, i) => {
+                  const d = new Date(); d.setDate(d.getDate() + i);
+                  const dayName = d.toLocaleDateString("en", { weekday: "short" });
+                  const dayNum = d.getDate();
+                  const hasBill = upcomingBills.some(b => b.daysLeft === i);
+                  return (
+                    <div key={i} className={`flex-1 text-center rounded-lg py-2 transition-colors ${i === 0 ? "bg-primary/10 border border-primary/20" : hasBill ? "bg-[hsl(var(--sita-gold))]/10 border border-[hsl(var(--sita-gold))]/20" : "bg-secondary/30"}`}>
+                      <p className="text-[10px] text-muted-foreground">{dayName}</p>
+                      <p className={`text-sm font-semibold ${i === 0 ? "text-primary" : "text-foreground"}`}>{dayNum}</p>
+                      {hasBill && <div className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--sita-gold))] mx-auto mt-1" />}
+                    </div>
+                  );
+                })}
+              </div>
+            </SitaCard>
             {upcomingBills.map((bill, i) => (
               <SitaCard key={i} lane={bill.daysLeft <= 2 ? "action" : undefined} className="p-4">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{bill.name}</p>
-                    <p className="text-xs text-muted-foreground">Due {bill.due}</p>
+                  <div className="flex items-center gap-3">
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl font-display text-sm font-bold ${bill.daysLeft <= 1 ? "bg-[hsl(var(--destructive))]/10 text-[hsl(var(--destructive))]" : bill.daysLeft <= 3 ? "bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))]" : "bg-secondary text-muted-foreground"}`}>
+                      {bill.daysLeft}d
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">{bill.name}</p>
+                      <p className="text-xs text-muted-foreground">Due {bill.due}</p>
+                    </div>
                   </div>
                   <div className="text-right">
                     <p className="font-display text-sm font-bold text-foreground">{bill.amount}</p>
-                    <TrustBadge level={bill.daysLeft <= 2 ? "degraded" : "review"} label={`${bill.daysLeft}d`} size="sm" />
+                    <TrustBadge level={bill.daysLeft <= 2 ? "degraded" : "review"} label={bill.daysLeft <= 1 ? "Tomorrow" : `${bill.daysLeft} days`} size="sm" />
                   </div>
                 </div>
               </SitaCard>
@@ -193,10 +236,29 @@ const MoneyOverview = () => {
 
           {/* Waste Detection */}
           <div className="space-y-3">
-            <SitaSectionHeader title="Waste Detected" action={<button onClick={() => navigate("/money/subscriptions")} className="text-xs text-primary hover:underline">View all</button>} />
-            <RiskCard title="Zoom Pro — $15.99/mo" description="Usage: Low — last used 3 weeks ago. Cancel to save $192/yr." severity="medium" />
-            <RiskCard title="Calendly Pro — $12/mo" description="Usage: Very Low — free tier may suffice. Save $144/yr." severity="low" />
-            <OpportunityCard title="Potential annual savings: $336" description="2 subscriptions identified for review or cancellation" action="Review All" />
+            <SitaSectionHeader title="Waste Detector" action={<button onClick={() => navigate("/money/subscriptions")} className="text-xs text-primary hover:underline">View all</button>} />
+            <SitaCard hover={false} className="p-4 border-l-4 border-l-[hsl(var(--sita-gold))]">
+              <div className="flex items-center gap-2 mb-3">
+                <AlertTriangle className="h-4 w-4 text-[hsl(var(--sita-gold))]" />
+                <span className="text-sm font-semibold text-foreground">$336/yr potential savings</span>
+                <span className="ml-auto text-[10px] text-muted-foreground bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))] rounded-full px-2 py-0.5 font-medium">2 flagged</span>
+              </div>
+              <div className="space-y-2">
+                {[
+                  { name: "Zoom Pro", cost: "$15.99/mo", usage: "Low", savings: "$192/yr", lastUsed: "3 weeks ago", risk: "medium" as const },
+                  { name: "Calendly Pro", cost: "$12/mo", usage: "Very Low", savings: "$144/yr", lastUsed: "5 weeks ago", risk: "low" as const },
+                ].map((sub, i) => (
+                  <div key={i} className="flex items-center gap-3 rounded-lg bg-secondary/30 px-3 py-2.5">
+                    <div className={`h-2 w-2 rounded-full ${sub.risk === "medium" ? "bg-[hsl(var(--sita-gold))]" : "bg-muted-foreground/40"}`} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[12px] font-medium text-foreground">{sub.name} — {sub.cost}</p>
+                      <p className="text-[10px] text-muted-foreground">Usage: {sub.usage} · Last used {sub.lastUsed}</p>
+                    </div>
+                    <span className="text-[11px] font-semibold text-[hsl(var(--trust-safe))]">Save {sub.savings}</span>
+                  </div>
+                ))}
+              </div>
+            </SitaCard>
           </div>
 
           {/* Receivables */}

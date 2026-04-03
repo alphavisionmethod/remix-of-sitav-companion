@@ -1,7 +1,8 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, SitaTabs, EmptyState, CustomerRow } from "@/components/sita/SitaComponents";
+import { KPITile, SitaTabs, EmptyState, CustomerRow, TimelineItem } from "@/components/sita/SitaComponents";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
+import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,7 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
   Users, Search, DollarSign, Heart, AlertTriangle, TrendingUp, Star, Phone, Mail,
-  Building, Clock, CheckCircle, Plus, ArrowRight, Sparkles
+  Building, Clock, CheckCircle, Plus, ArrowRight, Sparkles, FileText, MessageSquare, Receipt
 } from "lucide-react";
 import { motion } from "framer-motion";
 import CustomerAutopilotPanel from "@/components/autopilot/CustomerAutopilotPanel";
@@ -203,9 +204,24 @@ const CustomersPage = () => {
                 <SitaCardTitle>Relationship Summary</SitaCardTitle>
                 <div className="mt-3 space-y-2">
                   <div className="flex justify-between text-sm"><span className="text-muted-foreground">Lifetime Revenue</span><span className="font-semibold text-foreground">${(selected.lifetime_revenue || 0).toLocaleString()}</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Health Score</span><span className={`font-semibold ${healthColor(selected.health_score)}`}>{selected.health_score ?? 80}%</span></div>
+                  <ConfidenceBar value={selected.health_score ?? 80} label="Health Score" size="md" />
                   <div className="flex justify-between text-sm"><span className="text-muted-foreground">Last Contact</span><span className="text-foreground">{timeAgo(selected.last_contact_at)}</span></div>
                   <div className="flex justify-between text-sm"><span className="text-muted-foreground">Type</span><span className="text-foreground capitalize">{selected.relationship_type || "Client"}</span></div>
+                </div>
+              </SitaCard>
+
+              {/* Customer Timeline */}
+              <SitaCard hover={false}>
+                <SitaCardTitle>Timeline</SitaCardTitle>
+                <div className="mt-3">
+                  {[
+                    { icon: CheckCircle, color: "text-[hsl(var(--trust-safe))]", title: "Onboarded", subtitle: `Customer since ${new Date(selected.created_at).toLocaleDateString()}`, time: new Date(selected.created_at).toLocaleDateString() },
+                    { icon: MessageSquare, color: "text-primary", title: "Last interaction", subtitle: selected.last_contact_at ? `Contacted ${timeAgo(selected.last_contact_at)}` : "No contact recorded", time: timeAgo(selected.last_contact_at) },
+                    ...(selected.lifetime_revenue && selected.lifetime_revenue > 0 ? [{ icon: Receipt, color: "text-[hsl(var(--trust-safe))]", title: `$${selected.lifetime_revenue.toLocaleString()} lifetime revenue`, subtitle: "Total payments received", time: "All time" }] : []),
+                    ...((selected.health_score ?? 80) < 50 ? [{ icon: AlertTriangle, color: "text-[hsl(var(--destructive))]", title: "Health declining", subtitle: "Re-engagement recommended", time: "Now" }] : []),
+                  ].map((event, i) => (
+                    <TimelineItem key={i} {...event} />
+                  ))}
                 </div>
               </SitaCard>
 
