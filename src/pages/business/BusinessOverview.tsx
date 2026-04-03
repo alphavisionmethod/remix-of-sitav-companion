@@ -34,6 +34,50 @@ const changes = [
   { icon: CheckCircle, color: "text-trust-verified", title: "Callback completed: James Rodriguez", subtitle: "18 min call — discussed Q2 projects", time: "Yesterday" },
 ];
 
+// ── Revenue Leakage Panel (wired to OS runtime) ──────────────
+const BusinessLeakagePanel = () => {
+  const { engines } = useOSRuntime();
+  const navigate = useNavigate();
+
+  const leakageData = useMemo(() => {
+    // Seed signals from the revenue engine
+    engines.revenue.detectLeakage({ type: "stale_lead", domain: "business", title: "Emily Watson — 3 days no contact", description: "$1,800 at risk", estimatedValue: 1800, currency: "USD", confidence: 0.78, source: "Pipeline scan", entityId: "lead-emily", relatedRecords: [{ type: "contact", id: "c-emily" }], suggestedAction: "Send follow-up", assignedAdvisor: "business-advisor" });
+    engines.revenue.detectLeakage({ type: "cold_repeat_customer", domain: "business", title: "Apex Corp — quote expiring", description: "$3,200 quote, no response", estimatedValue: 3200, currency: "USD", confidence: 0.72, source: "Quote tracker", entityId: "cust-apex", relatedRecords: [{ type: "quote", id: "q-1039" }], suggestedAction: "Call contact", assignedAdvisor: "business-advisor" });
+
+    return {
+      rankings: engines.revenue.rankOpportunities().slice(0, 3),
+      stats: engines.revenue.getStats(),
+    };
+  }, [engines.revenue]);
+
+  if (leakageData.rankings.length === 0) return null;
+
+  return (
+    <div className="space-y-3">
+      <SitaSectionHeader title="Revenue Leakage Signals" subtitle="From Revenue Intelligence Engine" action={<button onClick={() => navigate("/recovered-value")} className="text-xs text-primary hover:underline">Full ledger →</button>} />
+      {leakageData.rankings.map(r => {
+        const autoDecision = engines.revenue.shouldAutoRecover(Array.from((engines.revenue as any).signals?.values?.() || []).find((s: any) => s.id === r.opportunityId) as any);
+        return (
+          <SitaCard key={r.opportunityId} lane="action" className="p-3">
+            <div className="flex items-center gap-3">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent/10 shrink-0">
+                <Zap className="h-3.5 w-3.5 text-accent" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold text-foreground truncate">Rank #{r.rank} · Score {(r.score * 100).toFixed(0)}</p>
+                <p className="text-[10px] text-muted-foreground">Val: {(r.factors.value * 100).toFixed(0)}% · Urg: {(r.factors.urgency * 100).toFixed(0)}% · Conf: {(r.factors.probability * 100).toFixed(0)}%</p>
+              </div>
+              <SitaButton variant="accent" size="sm" className="text-[10px] shrink-0">
+                {autoDecision?.auto ? "Auto-Recover" : "Review"}
+              </SitaButton>
+            </div>
+          </SitaCard>
+        );
+      })}
+    </div>
+  );
+};
+
 const BusinessOverview = () => {
   const navigate = useNavigate();
   const { isDemoMode } = useDataMode();
