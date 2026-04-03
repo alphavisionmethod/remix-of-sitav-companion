@@ -42,6 +42,8 @@ export * from "./error-patrol";
 export * from "./cloud-sync-manager";
 export * from "./self-learning-engine";
 export { NLPCompanion, createNLPCompanion, type Intent, type NLPResult, type NLPAction, type ConversationTurn, type PredictiveSuggestion, type Sentiment, type ExtractedEntity } from "./nlp-companion";
+export * from "./lease-manager";
+export * from "./constitution-compiler";
 
 // ── Canonical Chain Orchestrator ────────────────────────────────────────────
 
