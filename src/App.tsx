@@ -8,6 +8,7 @@ import { useUserPreferences } from "@/hooks/use-user-preferences";
 import { DataModeProvider } from "@/contexts/DataModeContext";
 import { DisplayModeProvider } from "@/contexts/DisplayModeContext";
 import { InspectorProvider } from "@/contexts/InspectorContext";
+import { EntityContextProvider } from "@/contexts/EntityContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ShellLayout } from "@/components/sita/ShellLayout";
 import { Suspense, lazy } from "react";
@@ -122,6 +123,7 @@ const App = () => (
           <ThemeProvider>
           <DataModeProvider>
           <DisplayModeProvider>
+          <EntityContextProvider>
           <InspectorProvider>
           <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -390,6 +392,7 @@ const App = () => (
           </Routes>
           </Suspense>
           </InspectorProvider>
+          </EntityContextProvider>
           </DisplayModeProvider>
           </DataModeProvider>
           </ThemeProvider>

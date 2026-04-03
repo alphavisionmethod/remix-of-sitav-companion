@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import CustomerAutopilotPanel from "@/components/autopilot/CustomerAutopilotPanel";
+import { useInspector } from "@/contexts/InspectorContext";
+import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 
 interface Customer {
   id: string; name: string; company: string | null; email: string | null; phone: string | null;
@@ -60,9 +62,26 @@ type Tab = "all" | "active" | "at-risk" | "new" | "inactive";
 const CustomersPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { inspect } = useInspector();
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const inspectCustomer = (c: Customer) => {
+    inspect({
+      id: c.id, type: "customer", title: c.name, subtitle: c.company || "Individual",
+      domain: "business", status: c.status, trustLevel: trustFromHealth(c.health_score) as string,
+      details: {
+        email: c.email || "N/A", phone: c.phone || "N/A", company: c.company || "Individual",
+        health_score: c.health_score ?? 80, lifetime_revenue: `$${(c.lifetime_revenue || 0).toLocaleString()}`,
+        relationship: c.relationship_type || "Client", last_contact: timeAgo(c.last_contact_at),
+      },
+      timeline: [
+        { action: "Customer onboarded", actor: "System", timestamp: new Date(c.created_at).toLocaleDateString() },
+        ...(c.last_contact_at ? [{ action: "Last interaction", actor: "You", timestamp: timeAgo(c.last_contact_at) }] : []),
+      ],
+    });
+  };
 
   const { data: customers = [], isLoading } = useQuery({
     queryKey: ["customers"],
@@ -100,10 +119,10 @@ const CustomersPage = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <SitaPageHeader
+      <DomainHeader
         title="Customers"
-        subtitle="Relationships, health scores, and revenue intelligence"
-        actions={<SitaButton variant="primary"><Plus className="h-4 w-4" /> Add Customer</SitaButton>}
+        subtitle="Relationships, health scores, and revenue intelligence — click any customer for full detail in the inspector"
+        domain="business"
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -146,7 +165,7 @@ const CustomersPage = () => {
             return (
               <SitaCard
                 key={c.id}
-                onClick={() => setSelectedId(c.id)}
+                onClick={() => { setSelectedId(c.id); inspectCustomer(c); }}
                 selected={selectedId === c.id}
                 lane={health < 50 ? "action" : health >= 80 ? "opportunity" : undefined}
                 className="p-4"

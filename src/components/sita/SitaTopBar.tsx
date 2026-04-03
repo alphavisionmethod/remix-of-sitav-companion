@@ -13,6 +13,7 @@ import { AISpendIndicator } from "./AISpendIndicator";
 import { CommandPalette } from "./CommandPalette";
 import { useUnreadCount } from "./NotificationPanel";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { ContextSwitcher } from "./ContextSwitcher";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Bell, Clock, Eye, EyeOff, Shield, Check, Sun, Moon, Monitor,
@@ -70,6 +71,7 @@ export const SitaTopBar = ({
       {/* Left: Sidebar trigger + Command Palette */}
       <div className="flex items-center gap-2">
         <SidebarTrigger className="h-7 w-7 text-muted-foreground hover:text-foreground" />
+        <ContextSwitcher />
         <div className="hidden md:block">
           <CommandPalette />
         </div>
