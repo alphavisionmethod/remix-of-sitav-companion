@@ -1,5 +1,5 @@
 import { Home, Briefcase, DollarSign, Headphones, Workflow, Receipt, BarChart3, FolderOpen, Settings, Shield, LogOut,
-  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart } from "lucide-react";
+  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
@@ -11,13 +11,16 @@ import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter, useSidebar,
 } from "@/components/ui/sidebar";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useState } from "react";
 
-const mainNav = [
+const primaryNav = [
   { title: "Daily Pulse", url: "/", icon: Home },
   { title: "Life Dashboard", url: "/life", icon: Heart },
   { title: "Business", url: "/business", icon: Briefcase },
   { title: "Money", url: "/money", icon: DollarSign },
   { title: "Concierge", url: "/concierge", icon: Headphones },
+  { title: "Files", url: "/files", icon: FolderOpen },
 ];
 
 const intelligenceNav = [
@@ -37,7 +40,6 @@ const workspaceNav = [
 const systemNav = [
   { title: "Workflows", url: "/workflows", icon: Workflow },
   { title: "Proof", url: "/proof", icon: Receipt },
-  { title: "Files", url: "/files", icon: FolderOpen },
   { title: "Boardroom", url: "/boardroom", icon: BarChart3 },
 ];
 
@@ -56,44 +58,75 @@ const bottomNav = [
   { title: "Owner", url: "/owner", icon: Shield },
 ];
 
-const NavGroup = ({ items, label, collapsed }: { items: typeof mainNav; label?: string; collapsed: boolean }) => {
+const NavItems = ({ items, collapsed }: { items: typeof primaryNav; collapsed: boolean }) => {
   const location = useLocation();
   const isActive = (path: string) => path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
+
   return (
-    <SidebarGroup>
-      {label && !collapsed && (
-        <SidebarGroupLabel className="px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/50 mt-1">
-          {label}
-        </SidebarGroupLabel>
-      )}
-      <SidebarGroupContent>
-        <SidebarMenu>
-          {items.map((item) => {
-            const active = isActive(item.url);
-            return (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild isActive={active}>
-                  <NavLink
-                    to={item.url}
-                    end={item.url === "/"}
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-200",
-                      active
-                        ? "bg-primary/8 text-foreground shadow-xs border border-primary/10"
-                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                    )}
-                    activeClassName=""
-                  >
-                    <item.icon className={cn("h-[18px] w-[18px] shrink-0", active && "text-primary")} strokeWidth={1.8} />
-                    {!collapsed && <span>{item.title}</span>}
-                  </NavLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            );
-          })}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
+    <SidebarMenu>
+      {items.map((item) => {
+        const active = isActive(item.url);
+        return (
+          <SidebarMenuItem key={item.title}>
+            <SidebarMenuButton asChild isActive={active}>
+              <NavLink
+                to={item.url}
+                end={item.url === "/"}
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-200",
+                  active
+                    ? "bg-primary/8 text-foreground shadow-xs border border-primary/10"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                )}
+                activeClassName=""
+              >
+                <item.icon className={cn("h-[18px] w-[18px] shrink-0", active && "text-primary")} strokeWidth={1.8} />
+                {!collapsed && <span>{item.title}</span>}
+              </NavLink>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        );
+      })}
+    </SidebarMenu>
+  );
+};
+
+const CollapsibleNavGroup = ({ items, label, collapsed, defaultOpen = false }: {
+  items: typeof primaryNav; label: string; collapsed: boolean; defaultOpen?: boolean;
+}) => {
+  const location = useLocation();
+  const hasActive = items.some(item => item.url === "/" ? location.pathname === "/" : location.pathname.startsWith(item.url));
+  const [open, setOpen] = useState(defaultOpen || hasActive);
+
+  if (collapsed) {
+    return (
+      <SidebarGroup>
+        <SidebarGroupContent>
+          <NavItems items={items} collapsed={collapsed} />
+        </SidebarGroupContent>
+      </SidebarGroup>
+    );
+  }
+
+  return (
+    <Collapsible open={open} onOpenChange={setOpen}>
+      <SidebarGroup>
+        <CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-1.5 group">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/50">
+            {label}
+          </span>
+          <ChevronRight className={cn(
+            "h-3 w-3 text-muted-foreground/40 transition-transform duration-200",
+            open && "rotate-90"
+          )} />
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <SidebarGroupContent>
+            <NavItems items={items} collapsed={collapsed} />
+          </SidebarGroupContent>
+        </CollapsibleContent>
+      </SidebarGroup>
+    </Collapsible>
   );
 };
 
@@ -107,6 +140,12 @@ export function AppSidebar() {
 
   const displayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
   const initials = displayName.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2);
+
+  const filteredPrimary = primaryNav.filter(item => {
+    if (item.url === "/business" && !showBusinessNav(role)) return false;
+    if (item.url === "/concierge" && !showConciergeNav(role)) return false;
+    return true;
+  });
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
@@ -128,19 +167,31 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent className="px-2 scrollbar-thin">
-        <NavGroup items={mainNav.filter(item => {
-          if (item.url === "/business" && !showBusinessNav(role)) return false;
-          if (item.url === "/concierge" && !showConciergeNav(role)) return false;
-          return true;
-        })} label="Spaces" collapsed={collapsed} />
-        <NavGroup items={intelligenceNav} label="Intelligence" collapsed={collapsed} />
-        <NavGroup items={workspaceNav} label="Workspace" collapsed={collapsed} />
-        <NavGroup items={systemNav} label="System" collapsed={collapsed} />
-        <NavGroup items={controlNav} label="Control" collapsed={collapsed} />
+        {/* Primary — always visible */}
+        <SidebarGroup>
+          {!collapsed && (
+            <SidebarGroupLabel className="px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/50 mt-1">
+              Spaces
+            </SidebarGroupLabel>
+          )}
+          <SidebarGroupContent>
+            <NavItems items={filteredPrimary} collapsed={collapsed} />
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Collapsible groups */}
+        <CollapsibleNavGroup items={intelligenceNav} label="Intelligence" collapsed={collapsed} />
+        <CollapsibleNavGroup items={workspaceNav} label="Workspace" collapsed={collapsed} />
+        <CollapsibleNavGroup items={systemNav} label="System" collapsed={collapsed} />
+        <CollapsibleNavGroup items={controlNav} label="Control" collapsed={collapsed} />
       </SidebarContent>
 
       <SidebarFooter className="px-2 pb-4 border-t border-sidebar-border pt-2">
-        <NavGroup items={bottomNav} collapsed={collapsed} />
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <NavItems items={bottomNav} collapsed={collapsed} />
+          </SidebarGroupContent>
+        </SidebarGroup>
         {user && (
           <div className="mt-2 px-1">
             <button
