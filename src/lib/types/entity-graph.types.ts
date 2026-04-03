@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 // ── Entity Types ────────────────────────────────────────────────
-export type EntityType = "person" | "household" | "organization" | "device" | "advisor" | "service";
+export type EntityType = "person" | "household" | "organization" | "legal_entity" | "team" | "device" | "advisor" | "service" | "connector_account" | "shared_space" | "boardroom_context";
 
 export interface Entity {
   id: string;
