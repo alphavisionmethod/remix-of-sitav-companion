@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import CustomerAutopilotPanel from "@/components/autopilot/CustomerAutopilotPanel";
+import { useInspector } from "@/contexts/InspectorContext";
+import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 
 interface Customer {
   id: string; name: string; company: string | null; email: string | null; phone: string | null;
