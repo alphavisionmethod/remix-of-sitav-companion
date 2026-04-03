@@ -163,10 +163,11 @@ export default function ObservabilityPage() {
               <SitaCard hover={false}>
                 <SitaCardTitle sub="Real-time trust dimensions from ObservabilityEngine">Trust Posture</SitaCardTitle>
                 <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {Object.entries(engineData.trustPosture.dimensions).map(([dim, score]) => (
-                    <div key={dim} className="rounded-lg bg-secondary/20 p-3 text-center">
-                      <p className={cn("font-display text-lg font-bold", (score as number) >= 90 ? "text-trust-safe" : (score as number) >= 70 ? "text-accent" : "text-destructive")}>{score as number}%</p>
-                      <p className="text-[9px] text-muted-foreground capitalize">{dim.replace(/([A-Z])/g, " $1").trim()}</p>
+                  {engineData.trustPosture.map(dim => (
+                    <div key={dim.dimension} className="rounded-lg bg-secondary/20 p-3 text-center">
+                      <p className={cn("font-display text-lg font-bold", dim.current >= 90 ? "text-trust-safe" : dim.current >= 70 ? "text-accent" : "text-destructive")}>{dim.current}%</p>
+                      <p className="text-[9px] text-muted-foreground">{dim.dimension}</p>
+                      <p className="text-[8px] text-muted-foreground/60">Target: {dim.target}% · {dim.incidents} incidents</p>
                     </div>
                   ))}
                 </div>
