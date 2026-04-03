@@ -593,9 +593,8 @@ function MCCosts() {
     return tokenEngine.getDashboard("today");
   }, [tokenEngine]);
 
-  const routes = useMemo(() => {
-    const budget = tokenEngine.getBudgetStatus();
-    return { budget, routes: (tokenEngine as any).routes as Array<{ id: string; name: string; tier: string; model: string; costPer1kTokens: number; latencyMs: number; active: boolean }> };
+  const modelRoutes = useMemo(() => {
+    return (tokenEngine as any).routes as Array<{ id: string; name: string; tier: string; model: string; costPer1kTokens: number; latencyMs: number; active: boolean }>;
   }, [tokenEngine]);
 
   const dailyBudget = 5.00;
