@@ -123,6 +123,7 @@ const App = () => (
           <ThemeProvider>
           <DataModeProvider>
           <DisplayModeProvider>
+          <EntityContextProvider>
           <InspectorProvider>
           <Suspense fallback={<PageLoader />}>
           <Routes>
