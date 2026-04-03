@@ -382,6 +382,8 @@ const App = () => (
                     <Route path="/owner/pricing" element={<PricingEditor />} />
                     <Route path="/owner/packs" element={<PackEditorPage />} />
                     <Route path="/owner/advisors" element={<AdvisorConfigPage />} />
+                    <Route path="/owner/leases" element={<LeaseDashboard />} />
+                    <Route path="/owner/constitution" element={<ConstitutionEditor />} />
 
                     {/* Enterprise Control Plane */}
                     <Route path="/enterprise" element={<EnterpriseControlPlane />} />
