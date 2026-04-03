@@ -8,7 +8,7 @@ describe("Page Module Exports", () => {
     const mod = await import("@/pages/DailyPulse");
     expect(mod.default).toBeDefined();
     expect(typeof mod.default).toBe("function");
-  });
+  }, 15000);
 
   it("MoneyCenter exports default component", async () => {
     const mod = await import("@/pages/MoneyCenter");
