@@ -184,7 +184,7 @@ export function useCapabilityLease() {
     return result;
   }, [kernel]);
 
-  return { activeLeases, issueLease, validateLease, revokeLease, stats: kernel.leases.getLeaseStats() };
+  return { activeLeases, issueLease, validateLease, revokeLease, stats: kernel.leases.getLeaseStats(), leaseManager: kernel.leases };
 }
 
 // ── Constitution Hook ───────────────────────────────────────────
