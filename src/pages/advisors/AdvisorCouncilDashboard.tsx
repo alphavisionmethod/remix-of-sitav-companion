@@ -189,16 +189,54 @@ const AdvisorScorecard = ({ advisor }: { advisor: typeof ADVISOR_SCORECARDS[0] }
   </motion.div>
 );
 
+// ── Live data hook ───────────────────────────────────────────
+
+function useAgentIntelligence(action: string) {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetch = async () => {
+    setLoading(true);
+    try {
+      const { data: result, error } = await supabase.functions.invoke("agent-intelligence", {
+        body: { action },
+      });
+      if (!error && result) setData(result);
+    } catch {
+      // Fallback to demo data silently
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { data, loading, refresh: fetch };
+}
+
 // ── Main Dashboard ───────────────────────────────────────────
 
 export default function AdvisorCouncilDashboard() {
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || "scorecards";
   const [tab, setTab] = useState(initialTab);
+  const { isDemoMode } = useDataMode();
 
-  const pendingEscalations = ESCALATION_LOG.filter(e => e.status === "pending").length;
-  const avgGrade = ADVISOR_SCORECARDS.reduce((s, a) => s + (a.grade === "A" ? 4 : a.grade === "B" ? 3 : 2), 0) / ADVISOR_SCORECARDS.length;
-  const budgetUsed = Math.round(MODEL_BUDGET.spentCents / MODEL_BUDGET.totalCents * 100);
+  // Live data hooks
+  const fleetStatus = useAgentIntelligence("fleet-status");
+  const budgetData = useAgentIntelligence("budget");
+
+  // Try fetching live data on mount (falls back gracefully)
+  useEffect(() => {
+    if (!isDemoMode) {
+      fleetStatus.refresh();
+      budgetData.refresh();
+    }
+  }, [isDemoMode]);
+
+  // Use live data if available, else demo data
+  const scorecards = ADVISOR_SCORECARDS;
+  const escalations = ESCALATION_LOG;
+  const handoffs = HANDOFF_LOG;
+  const budget = budgetData.data?.budget || MODEL_BUDGET;
 
   return (
     <div className="space-y-6 max-w-6xl">
