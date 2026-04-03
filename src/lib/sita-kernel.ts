@@ -149,7 +149,7 @@ export class SitaKernel {
     });
   }
 
-  /** Execute through canonical chain with entity context injected */
+  /** Execute through canonical chain with lease validation + entity context */
   async executeAction(input: {
     intent: string;
     domain: string;
@@ -157,13 +157,87 @@ export class SitaKernel {
     payload: Record<string, unknown>;
     amount?: number;
     isSimulation?: boolean;
+    leaseId?: string;
+    advisorId?: string;
   }) {
+    // ── Lease Gate ──────────────────────────────────────────────
+    if (input.leaseId) {
+      const validation = this.leases.validate(
+        input.leaseId,
+        input.capabilityId,
+        input.domain,
+        input.amount ?? 0
+      );
+
+      if (!validation.valid) {
+        const violationSummary = validation.violations.map(v => v.type).join(", ");
+        this.eventBus.publish("lease.validation.failed.v1", {
+          leaseId: input.leaseId,
+          violations: violationSummary,
+          capabilityId: input.capabilityId,
+          domain: input.domain,
+        }, { source: "canonical-chain" });
+
+        this.storeMemory(`lease.blocked.${input.capabilityId}`, {
+          leaseId: input.leaseId,
+          violations: validation.violations,
+          timestamp: Date.now(),
+        }, { source: "canonical-chain", tags: ["lease", "blocked"] });
+
+        return {
+          correlationId: crypto.randomUUID(),
+          blocked: true,
+          blockReason: `Lease validation failed: ${violationSummary}`,
+          leaseViolations: validation.violations,
+          remainingBudget: validation.remainingBudget,
+          remainingTime: validation.remainingTime,
+        };
+      }
+
+      // Lease valid — check if it requires simulation
+      if (validation.lease?.requireSimulation && !input.isSimulation) {
+        return {
+          correlationId: crypto.randomUUID(),
+          blocked: true,
+          blockReason: "Lease requires simulation before execution",
+          requiresSimulation: true,
+        };
+      }
+    }
+
+    // ── Constitution Gate ───────────────────────────────────────
+    const constitutionResult = this.constitution.evaluate({
+      domain: input.domain,
+      amount: input.amount,
+      advisorId: input.advisorId,
+      action: input.capabilityId,
+      time: new Date(),
+    });
+
+    if (constitutionResult.overallEffect === "deny") {
+      this.eventBus.publish("constitution.denied.v1", {
+        capabilityId: input.capabilityId,
+        domain: input.domain,
+        matchedRules: constitutionResult.matchedRules.map(r => r.naturalLanguage),
+      }, { source: "canonical-chain" });
+
+      return {
+        correlationId: crypto.randomUUID(),
+        blocked: true,
+        blockReason: `Denied by personal constitution: ${constitutionResult.matchedRules[0]?.naturalLanguage ?? "rule match"}`,
+        constitutionRules: constitutionResult.matchedRules.map(r => r.id),
+      };
+    }
+
+    // ── Execute via canonical chain ────────────────────────────
     const result = await this.chain.execute({
       ...input,
       payload: {
         ...input.payload,
         _entityId: this.tenantId,
         _entityType: this._activeEntity?.type ?? "personal",
+        _leaseId: input.leaseId,
+        _constitutionEffect: constitutionResult.overallEffect,
       },
     });
 
@@ -171,6 +245,8 @@ export class SitaKernel {
     this.storeMemory(`action.${input.domain}.${input.capabilityId}`, {
       correlationId: result.correlationId,
       blocked: result.blocked,
+      leaseId: input.leaseId,
+      constitutionEffect: constitutionResult.overallEffect,
       timestamp: Date.now(),
     }, {
       source: "canonical-chain",
