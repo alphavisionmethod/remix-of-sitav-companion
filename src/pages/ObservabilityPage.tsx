@@ -246,11 +246,11 @@ export default function ObservabilityPage() {
               <SitaCard hover={false}>
                 <SitaCardTitle sub="Engine-detected anomalies">Anomaly Detection</SitaCardTitle>
                 <div className="mt-4 space-y-2">
-                  {engineData.anomalies.map((a, i) => (
-                    <div key={i} className="flex items-center gap-2 rounded-lg bg-accent/5 border border-accent/15 px-3 py-2">
+                  {engineData.anomalies.map((a) => (
+                    <div key={a.id} className="flex items-center gap-2 rounded-lg bg-accent/5 border border-accent/15 px-3 py-2">
                       <AlertTriangle className="h-3 w-3 text-accent" />
                       <div className="flex-1">
-                        <span className="text-xs text-foreground">{a.metric}: {a.value} ({a.deviation.toFixed(1)}σ deviation)</span>
+                        <span className="text-xs text-foreground">{a.metric}: {a.actualValue} ({a.deviation.toFixed(1)}σ deviation)</span>
                       </div>
                       <Badge variant="outline" className={cn("text-[9px]", a.severity === "critical" ? "text-destructive" : "text-accent")}>{a.severity}</Badge>
                     </div>
