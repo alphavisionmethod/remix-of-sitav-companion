@@ -176,14 +176,25 @@ export interface RelationshipEdge {
 }
 
 export type RelationshipType =
-  | "member_of"
+  | "belongs_to"
   | "owns"
+  | "can_view"
+  | "can_approve"
+  | "can_execute"
+  | "delegated_by"
+  | "delegated_to"
+  | "shared_with"
+  | "private_to"
+  | "guardian_of"
+  | "manager_of"
+  | "operator_for"
+  | "member_of"
+  | "signer_for"
+  | "trusted_device_for"
   | "manages"
-  | "delegates_to"
   | "reports_to"
   | "advises"
   | "depends_on"
-  | "shares_with"
   | "trusts"
   | "vendor_of"
   | "customer_of";
