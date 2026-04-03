@@ -1,141 +1,151 @@
 
 
-# SITA OS — Intelligence & Advisor System Completion Plan
+# SITA OS — Fully Automatic Backend AI Team Implementation Plan
 
-## Audit Summary
+## Current State
 
-After reviewing the entire codebase, SITA OS already has an extraordinarily deep intelligence architecture:
+The system already has extraordinary depth:
+- **40 internal agents** across 6 councils with full definitions (scope, tools, confidence, rollback, KPIs)
+- **7 supervisors** including Chief of Staff
+- **Agent Orchestrator** (418 lines): lifecycle, scheduler, task queue, fleet status, promotion/demotion
+- **26 customer-facing advisors** across 4 councils with handoff, escalation, performance evaluation
+- **10 edge functions** including `brain-core` (737 lines with intent classification, policy evaluation, LLM routing, multi-advisor composition), `agent-executor`, `agent-heartbeat`, `self-healing`
+- **Model Router** with budget-aware tier selection
+- **Complete rights system** (L0-L6, promotion rules, demotion triggers, never-allowed list)
 
-**What exists and is fully implemented:**
-- Brain Core with intent parsing, orchestration plans, council voting, advisor selection, simulation builder, approval packaging, explanation builder, boardroom request builder (8 modules)
-- Advisor Protocol Engine with 26 advisors across 4 councils (business: 7, finance: 6, concierge: 6, meta: 7), full council protocol with disagreement detection, capability checks, trust threshold validation, mission modes (10 modes), perspective configs (475 lines)
-- No-Hallucination Engine with confidence envelopes, staleness tracking, grounding reports, contradiction detection, refusal engine, truth boundaries (35 deterministic field rules), advisor grounding contracts (6 contracts)
-- Internal Agent Workforce: 40 agents across 6 councils, 7 supervisors, full rights system with promotion/demotion rules
-- Self-Learning Engine: 521 lines with exponential decay, confidence calibration, pattern detection, promotion/demotion recommendations
-- Agent Orchestrator: 418 lines with lifecycle management, scheduler, task queue, fleet status, cost budgets
-- Self-Healing: immune controller, root cause analysis, auto-remediation capabilities
-- Workflow Engine: 11-state canonical state machine with validated transitions
-- Core Services Chain Orchestrator: policy → executor → receipt → verification with refusal receipts
-- Correction Service: records user corrections and adjusts confidence per domain
-- Trust Memory: weighted factor scoring with flags and history
+## What Is Missing
 
-**What is genuinely missing (5 items):**
+The 40 internal agents are fully **defined** but not **executable**. The agent-executor edge function only handles 4 agent types (connector-health, stale-workflow, cost-anomaly, data-freshness). The remaining 36 agents have definitions but no backend execution logic. The orchestrator runs client-side only.
 
-### 1. Advisor Handoff Protocol
-No `handoff` logic exists. When one advisor reaches its autonomy ceiling or a cross-domain issue emerges, there is no formal protocol for transferring context to another advisor.
+### Gap 1: Agent Execution Backends (the core gap)
+The `agent-executor` edge function needs execution logic for all agent categories, not just 4 diagnostics agents. Each pod needs real execution handlers.
 
-### 2. Advisor Performance Evaluation Service
-The Self-Learning Engine tracks agent performance but there is no advisor-specific performance evaluation that maps to the `kpis` field on each `AdvisorDefinition`. No scoring of advisor recommendations vs actual outcomes.
+### Gap 2: Agent Scheduling Service
+No cron/scheduler calls `agent-heartbeat` or triggers scheduled agents. Agents with `schedule: "continuous"` or `"hourly"` have no invocation mechanism.
 
-### 3. Escalation Protocol for Advisor Council
-Collections has escalation. Internal agents have escalation targets. But the advisor council itself has no formal escalation chain — what happens when a council vote fails consensus, when confidence is below threshold, or when a meta-advisor disagrees with a domain advisor.
+### Gap 3: Agent-to-Agent Communication
+Agents can escalate to supervisors (defined), but there's no message-passing between agents. The orchestrator manages lifecycle but doesn't route inter-agent signals.
 
-### 4. Negative Receipts (Refusal Proof)
-The core-services chain creates `refusalReceipt` on policy deny, but there is no formalized negative receipt type in the proof-model package. The receipt-service in `src/lib/services/receipt-service` only has `ActionReceipt` and `SystemReceipt`.
+### Gap 4: Agent Execution Receipt Chain
+The orchestrator creates work items but doesn't generate proof receipts per-agent-action that chain into the existing receipt service.
 
-### 5. Budget-Aware Compute Router
-The Model Routing agent exists as a definition but has no actual routing logic. No service maps intent complexity to model tier (cheap/fast vs expensive/accurate).
+### Gap 5: Agent Dashboard Backend API
+The frontend `AdvisorCouncilDashboard` uses hardcoded demo data. No edge function serves real agent telemetry, escalation logs, or performance data.
 
 ---
 
 ## Implementation Plan
 
-### Task 1: Advisor Handoff Protocol
-**File:** `src/lib/advisor-protocol/handoff.ts`
+### Task 1: Expand Agent Executor with Pod Handlers
 
-Create a formal handoff protocol with:
-- `HandoffRequest` type: source advisor, target advisor, context payload, reason, urgency
-- `HandoffResult`: accepted/rejected, context received, proof ID
-- `initiateHandoff()`: validates target advisor has capacity and relevant scope
-- `acceptHandoff()`: target advisor acknowledges with context receipt
-- `rejectHandoff()`: target refuses with reason, triggers escalation
-- Rules: context must include all relevant memory keys, proof chain must continue, original advisor remains in "monitoring" state
+**File:** `supabase/functions/agent-executor/index.ts`
 
-Export from `src/lib/advisor-protocol/index.ts`.
+Expand from 4 handlers to cover all 6 council categories:
 
-### Task 2: Advisor Performance Evaluation
-**File:** `src/lib/advisor-protocol/performance.ts`
+**Product Build pod** — handlers for:
+- `feature-governance`: query feature registry table, check completeness
+- `contract-validator`: query API contracts, detect drift
+- `schema-checker`: validate schema versions match
 
-Create evaluation service that:
-- `AdvisorPerformanceRecord`: tracks recommendation acceptance rate, correction frequency, confidence calibration accuracy, average response quality, boardroom contribution score
-- `evaluateAdvisor()`: computes performance against the advisor's `kpis` field
-- `getAdvisorScorecard()`: returns formatted scorecard per advisor
-- `getCouncilPerformance()`: aggregates across a council
-- `shouldDemoteAdvisor()` / `shouldPromoteAdvisor()`: based on outcome history
-- Connects to the Self-Learning Engine for outcome data
+**Reliability Ops pod** (extend existing):
+- `incident-response`: query incidents table, classify severity, recommend healing
+- `self-healing-controller`: orchestrate multi-step recovery (already partially in self-healing function — wire into executor)
+- `release-safety`: check recent deployments, validate canary metrics
 
-Export from `src/lib/advisor-protocol/index.ts`.
+**Security Trust pod**:
+- `fraud-sentinel`: query auth logs, detect anomalous patterns
+- `access-monitor`: check permission changes in last 24h
+- `policy-validator`: verify active policies match expected state
 
-### Task 3: Council Escalation Protocol
-**File:** `src/lib/advisor-protocol/escalation.ts`
+**Runtime Cost pod**:
+- `cost-guardrail`: query advisor_responses for token spend, enforce budget
+- `model-router`: validate model selection matches routing rules
+- `budget-enforcer`: check daily spend against limits
 
-Create escalation logic for the advisor council:
-- `EscalationTrigger`: consensus failure, confidence below threshold, blocking disagreement, autonomy ceiling reached, policy violation
-- `EscalationTarget`: meta-advisor, owner, trust-policy-advisor, recovery-advisor
-- `evaluateEscalation()`: given a `CouncilSynthesis`, determine if escalation is needed
-- `routeEscalation()`: select target based on trigger type and domain
-- `createEscalationPackage()`: bundle context, disagreements, recommendations, and proof for the escalation target
-- Rules: blocking disagreements always escalate to owner; consensus failures escalate to meta-advisor first; policy violations escalate to trust-policy-advisor
+**Architecture Governance pod**:
+- `boundary-enforcer`: validate service boundaries from registry
+- `dependency-auditor`: check dependency freshness
 
-Export from `src/lib/advisor-protocol/index.ts`.
+**Knowledge Coordination pod**:
+- `memory-curator`: check memory freshness, flag stale entries
+- `runbook-updater`: detect docs that need updates based on recent changes
 
-### Task 4: Negative Receipt Type in Proof Model
-**File:** `src/packages/proof-model/index.ts` — add `RefusalReceipt` type
-**File:** `src/lib/services/receipt-service/receipts.service.ts` — add `createRefusalReceipt()`
+Each handler follows the existing pattern: query Supabase tables, compute health/status, return structured results with `health` field.
 
-Add:
-- `RefusalReceipt` type: extends base receipt with `refusalReason`, `blockedAction`, `policyId`, `advisorId`, `confidenceAtRefusal`, `requiredForRetry` fields
-- `createRefusalReceipt()` in receipt service with hash chaining
-- Update `TypedReceipt` union to include `RefusalReceipt`
+### Task 2: Agent Scheduling Edge Function
 
-### Task 5: Budget-Aware Model Router
-**File:** `src/lib/services/brain-core/model-router.ts`
+**File:** `supabase/functions/agent-scheduler/index.ts`
 
-Create:
-- `ModelTier`: "nano" | "standard" | "premium" | "reasoning"
-- `ModelRoutingDecision`: selected tier, estimated cost, estimated latency, reasoning
-- `routeToModel()`: given intent complexity, domain risk class, budget remaining, and urgency → select model tier
-- Rules: critical-truth domains always use "premium" or "reasoning"; low-risk queries use "nano"; simulations use "standard"; budget exhaustion forces downgrade with caveat
-- `getModelBudgetStatus()`: remaining budget, spend rate, projected exhaustion
+New edge function that:
+- Reads agent definitions and their `schedule` field
+- Queries `agent_telemetry` for last execution timestamps
+- Determines which agents are due to run
+- Calls `agent-executor` for each due agent
+- Records execution results in `agent_telemetry`
+- Can be invoked by Supabase pg_cron or external cron
 
-Export from brain-core index.
+### Task 3: Inter-Agent Signal Bus
 
-### Task 6: Update Registries and Manifests
-- Update `generated/advisor-registry.json` to include `handoffTargets`, `escalationBehavior`, and `performanceKpis` per advisor
-- Update `generated/capability-index.json` to include model-routing capability
-- Verify all new exports compile cleanly
+**File:** `supabase/functions/agent-signal/index.ts`
+
+New edge function for agent-to-agent messaging:
+- Accepts `{ from_agent, to_agent, signal_type, payload }`
+- Signal types: `escalation`, `data-request`, `finding`, `alert`
+- Stores in `agent_signals` table (new migration)
+- Target agent picks up signals on next execution cycle
+- Supervisor agents can broadcast to their council
+
+**Migration:** Create `agent_signals` table with columns: id, from_agent, to_agent, signal_type, payload (jsonb), status (pending/processed), created_at, processed_at, tenant_id.
+
+### Task 4: Agent Receipt Integration
+
+Modify `agent-executor` to generate proof receipts for every agent action:
+- Create `agent_action_receipts` table (new migration)
+- Each execution produces a receipt with: agent_id, action_type, input_summary, output_summary, confidence, duration_ms, cost_tokens, receipt_hash, parent_receipt_hash
+- Hash-chain receipts for tamper evidence (matching existing receipt-service pattern)
+
+### Task 5: Agent Intelligence API
+
+**File:** `supabase/functions/agent-intelligence/index.ts`
+
+New edge function serving the frontend dashboard with real data:
+- `GET /fleet-status`: aggregate agent_telemetry into fleet health
+- `GET /council-status/:council`: per-council health metrics
+- `GET /agent/:id/history`: last N executions with results
+- `GET /escalations`: recent escalation records
+- `GET /budget`: real spend from advisor_responses + agent_action_receipts
+- `GET /signals`: recent inter-agent communications
+
+### Task 6: Database Migrations
+
+New tables needed:
+- `agent_signals` — inter-agent communication
+- `agent_action_receipts` — proof chain for agent actions
+- `agent_schedules` — override schedule configs per tenant
+
+All with RLS policies scoped to `auth.uid()`.
 
 ---
 
-## What Does NOT Need Work
+## What Does NOT Change
 
-These are all fully implemented and correct:
-- Intent parsing and orchestration (brain-core)
-- Council voting and synthesis (advisor-protocol)
-- Disagreement detection (advisor-protocol — `detectCouncilDisagreements`)
-- Advisor capability checks and trust validation
-- Truth boundaries (35 deterministic rules)
-- Confidence/staleness/grounding/contradiction/refusal engines (no-hallucination)
-- Advisor grounding contracts (6 advisors)
-- Mission modes (10 modes with advisor prominence)
-- Workflow state machine (11 states)
-- Self-healing immune system
-- Self-learning with decay
-- Agent orchestrator with fleet management
-- 40 internal agents with full definitions
-- Correction service with confidence adjustment
-- Trust memory with factor scoring
+- The 40 agent definitions in `src/lib/internal-agents/agents/` — complete and correct
+- The orchestrator in `src/lib/core-services/agent-orchestrator.ts` — stays as client-side fleet manager
+- The advisor protocol (26 advisors, handoff, escalation, performance) — complete
+- The brain-core edge function (737 lines) — already production-grade
+- The rights system, councils, supervisors — complete
+- The existing self-healing edge function — stays, executor will delegate to it
 
----
+## Critical Separation Maintained
+
+Customer-facing advisors (26 in advisor-protocol) remain completely separate from internal platform agents (40 in internal-agents). Users interact with advisors through brain-core. Internal agents operate invisibly through agent-executor/scheduler/heartbeat. The only shared surface is Mission Control, which is an admin-only view.
 
 ## Implementation Order
 
-1. Advisor Handoff Protocol (foundational)
-2. Council Escalation Protocol (depends on handoff)
-3. Negative Receipt Type (quick, enables proof for refusals)
-4. Advisor Performance Evaluation (connects learning → advisors)
-5. Budget-Aware Model Router (operationalizes cost control)
-6. Registry updates (final sync)
-
-All work stays within existing architecture. No new packages. No new backend services.
+1. Database migrations (tables for signals, receipts, schedules)
+2. Expand agent-executor with all pod handlers
+3. Agent scheduling edge function
+4. Inter-agent signal bus
+5. Agent receipt chain integration
+6. Agent intelligence API for dashboard
 
