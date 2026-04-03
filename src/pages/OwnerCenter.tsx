@@ -413,6 +413,9 @@ const OwnerCenter = () => {
               </SitaCard>
             </div>
 
+            {/* ── Phase 5: Revenue Leakage & Recovery ── */}
+            <OwnerRevenuePanel />
+
             {/* ── Quick Nav to Owner Sub-pages ── */}
             <div className="grid gap-2 sm:grid-cols-3 lg:grid-cols-5">
               {[
