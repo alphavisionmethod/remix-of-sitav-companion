@@ -1,0 +1,67 @@
+# SITA OS — Capability Registry
+
+capabilities:
+  business-os:
+    - crm-lead-management
+    - crm-customer-health
+    - crm-opportunity-management
+    - revenue-forecasting
+    - revenue-autopilot
+    - invoice-management
+    - outbound-communication
+    - quote-proposal-management
+    - collections-management
+    - website-lead-capture
+
+  finance-os:
+    - cashflow-analysis
+    - bill-management
+    - subscription-management
+    - reserve-management
+    - tax-estimation
+    - investment-management
+    - payment-execution
+    - safe-to-spend
+    - budget-health
+    - family-office-review
+
+  concierge-os:
+    - task-prioritization
+    - booking-management
+    - calendar-management
+    - grocery-management
+    - household-coordination
+    - school-activity-planning
+    - service-provider-management
+    - event-planning
+    - travel-itinerary
+
+  platform:
+    - file-ingestion
+    - sensitive-document-handling
+    - boardroom-generation
+    - pack-management
+    - workflow-execution
+    - approval-processing
+    - proof-generation
+    - memory-management
+    - connector-management
+    - search-fabric
+    - incident-detection
+    - incident-classification
+    - incident-triage
+    - healing-plan-generation
+    - healing-execution
+    - healing-verification
+    - circuit-breaker-management
+    - fleet-health-monitoring
+    - degraded-mode-management
+    - quarantine-management
+    - immune-rule-matching
+    - diagnostic-bundle-generation
+    - recovery-sequencing
+    - cascade-prediction
+    - connector-failover
+    - workflow-unstick
+    - model-swap-routing
+    - rollback-execution

@@ -1,0 +1,101 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Execute Action Service
+// Wraps actions in ExecutionEnvelope with idempotency + mode
+// ═══════════════════════════════════════════════════════════════
+
+export type ExecutionMode = "live" | "dry-run" | "simulation";
+export type ExecutionStatus = "pending" | "running" | "completed" | "failed" | "rolled-back";
+
+export interface ExecutionEnvelope {
+  id: string;
+  capabilityId: string;
+  mode: ExecutionMode;
+  idempotencyKey: string;
+  status: ExecutionStatus;
+  input: Record<string, unknown>;
+  output?: Record<string, unknown>;
+  error?: string;
+  startedAt: string;
+  completedAt?: string;
+  durationMs?: number;
+  correlationId: string;
+}
+
+const executionLog = new Map<string, ExecutionEnvelope>();
+const idempotencyIndex = new Map<string, string>(); // key → envelope id
+
+export function executeAction(params: {
+  capabilityId: string;
+  mode: ExecutionMode;
+  input: Record<string, unknown>;
+  idempotencyKey?: string;
+  correlationId?: string;
+}): ExecutionEnvelope {
+  const key = params.idempotencyKey || crypto.randomUUID();
+
+  // Idempotency check
+  const existingId = idempotencyIndex.get(key);
+  if (existingId) {
+    const existing = executionLog.get(existingId);
+    if (existing) return existing;
+  }
+
+  const envelope: ExecutionEnvelope = {
+    id: crypto.randomUUID(),
+    capabilityId: params.capabilityId,
+    mode: params.mode,
+    idempotencyKey: key,
+    status: "running",
+    input: params.input,
+    startedAt: new Date().toISOString(),
+    correlationId: params.correlationId || crypto.randomUUID(),
+  };
+
+  idempotencyIndex.set(key, envelope.id);
+
+  // Simulate execution
+  if (params.mode === "dry-run") {
+    envelope.status = "completed";
+    envelope.output = { dryRun: true, wouldExecute: params.capabilityId, input: params.input };
+    envelope.completedAt = new Date().toISOString();
+    envelope.durationMs = 0;
+  } else if (params.mode === "simulation") {
+    envelope.status = "completed";
+    envelope.output = { simulated: true, projectedResult: "success", confidence: 0.85 };
+    envelope.completedAt = new Date().toISOString();
+    envelope.durationMs = Math.floor(Math.random() * 200) + 50;
+  } else {
+    envelope.status = "completed";
+    envelope.output = { executed: true, result: "success" };
+    envelope.completedAt = new Date().toISOString();
+    envelope.durationMs = Math.floor(Math.random() * 500) + 100;
+  }
+
+  executionLog.set(envelope.id, envelope);
+  return envelope;
+}
+
+export function getEnvelope(id: string): ExecutionEnvelope | undefined {
+  return executionLog.get(id);
+}
+
+export function markFailed(id: string, error: string): boolean {
+  const e = executionLog.get(id);
+  if (!e) return false;
+  e.status = "failed";
+  e.error = error;
+  e.completedAt = new Date().toISOString();
+  return true;
+}
+
+export function markRolledBack(id: string): boolean {
+  const e = executionLog.get(id);
+  if (!e) return false;
+  e.status = "rolled-back";
+  return true;
+}
+
+export function listExecutions(capabilityId?: string): ExecutionEnvelope[] {
+  const all = Array.from(executionLog.values());
+  return capabilityId ? all.filter((e) => e.capabilityId === capabilityId) : all;
+}

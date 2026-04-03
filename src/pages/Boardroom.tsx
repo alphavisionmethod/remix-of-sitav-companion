@@ -1,0 +1,762 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Premium Boardroom Experience
+// Where advisor voices become one governed plan
+// ═══════════════════════════════════════════════════════════════
+
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton, SitaMetric } from "@/components/sita/SitaCard";
+import { KPITile, RiskCard, OpportunityCard, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
+import { TrustBadge } from "@/components/sita/TrustBadge";
+import { StateBadge, StateStep } from "@/components/sita/StateBadge";
+import { ConfidenceLadder } from "@/components/sita/AdvisorComponents";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { getPerspectiveConfig, type PerspectiveLevel } from "@/lib/advisor-protocol";
+import {
+  BarChart3, AlertTriangle, Shield, Clock, Sparkles, Brain, ChevronDown, ChevronUp,
+  RefreshCw, FileCheck, Database, Hash, ArrowRight, CheckCircle, Lightbulb,
+  Home, Briefcase, DollarSign, Zap, Activity, ShieldAlert, Eye, XCircle,
+  Maximize2, Minimize2, ChevronLeft, ChevronRight, Pause, Play, Scale,
+  GitCompare, Lock, Target, TrendingUp, MessageSquare, Calendar
+} from "lucide-react";
+import { useBoardroomPacket } from "@/hooks/use-boardroom";
+import { mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory } from "@/lib/mocks/advisor-mission-control";
+import type {
+  BoardroomType, BoardroomPacket, BoardroomSection, MetricCardData,
+  TableData, NarrativeData, AlertData, ActionItemData, ChartData, BOARDROOM_META
+} from "@/lib/boardroom/types";
+import { BOARDROOM_META as META } from "@/lib/boardroom/types";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import type { ConfidenceEnvelope, ContradictionReport, GroundingReport } from "@/lib/no-hallucination/types";
+import type { Receipt, TrustState, ExecutionEnvelope, BoardroomSection as ContractBoardroomSection, AdvisorTrack, Disagreement, DecisionRecord } from "@/packages/contracts";
+import type { ProofPack } from "@/packages/proof-model";
+import type { AdvisorConfig } from "@/packages/advisor-config";
+import { cn } from "@/lib/utils";
+
+// ── Section Renderers (preserved from original) ───────────────
+
+const MetricCardGrid = ({ data, title }: { data: MetricCardData[]; title: string }) => (
+  <div>
+    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">{title}</p>
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {data.map((m, i) => (
+        <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
+          <KPITile label={m.label} value={m.value} trend={m.trend} sub={m.trendValue || m.source} />
+        </motion.div>
+      ))}
+    </div>
+  </div>
+);
+
+const TableSection = ({ data, title }: { data: TableData; title: string }) => (
+  <SitaCard hover={false}>
+    <SitaCardTitle sub={`Source: ${data.source}`}>{title}</SitaCardTitle>
+    <div className="mt-3 overflow-x-auto">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            {data.columns.map(col => <TableHead key={col.key} className="text-[11px] font-semibold uppercase tracking-wider">{col.label}</TableHead>)}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.rows.map((row, i) => (
+            <TableRow key={i}>
+              {data.columns.map(col => (
+                <TableCell key={col.key} className="text-sm">
+                  {(col.key === "status" || col.key === "priority" || col.key === "severity") ? (
+                    <StatusBadge value={String(row[col.key])} />
+                  ) : String(row[col.key] ?? "—")}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  </SitaCard>
+);
+
+const StatusBadge = ({ value }: { value: string }) => {
+  const colors: Record<string, string> = {
+    paid: "bg-primary/10 text-primary", overdue: "bg-destructive/10 text-destructive",
+    pending: "bg-amber-500/10 text-amber-600", upcoming: "bg-blue-500/10 text-blue-600",
+    scheduled: "bg-primary/10 text-primary", new: "bg-primary/10 text-primary",
+    contacted: "bg-blue-500/10 text-blue-600", qualified: "bg-accent/10 text-accent",
+    cooling: "bg-destructive/10 text-destructive", high: "bg-destructive/10 text-destructive",
+    medium: "bg-amber-500/10 text-amber-600", low: "bg-blue-500/10 text-blue-600",
+    "in-progress": "bg-blue-500/10 text-blue-600", open: "bg-destructive/10 text-destructive",
+    resolved: "bg-primary/10 text-primary",
+  };
+  return <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold capitalize ${colors[value] || "bg-secondary text-muted-foreground"}`}>{value}</span>;
+};
+
+const NarrativeBlock = ({ data, title }: { data: NarrativeData; title: string }) => (
+  <SitaCard hover={false} glow>
+    <div className="flex items-start gap-3">
+      <div className="rounded-xl bg-accent/10 p-2.5 shrink-0"><Brain className="h-5 w-5 text-accent" /></div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-2">
+          <p className="text-sm font-semibold text-foreground">{title}</p>
+          <ConfidencePill value={data.confidence} />
+        </div>
+        <p className="text-sm text-muted-foreground leading-relaxed">{data.text}</p>
+        <div className="flex flex-wrap gap-1.5 mt-3">
+          {data.citations.map((c, i) => (
+            <span key={i} className="inline-flex items-center gap-1 rounded-md bg-secondary/60 px-2 py-0.5 text-[10px] text-muted-foreground">
+              <Database className="h-2.5 w-2.5" />{c}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </SitaCard>
+);
+
+const AlertSection = ({ data, title }: { data: AlertData[]; title: string }) => (
+  <div>
+    <SitaSectionHeader title={title} />
+    <div className="mt-3 space-y-2.5">
+      {data.map((alert, i) => (
+        <motion.div key={i} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.04 }}
+          className={`rounded-xl border p-4 transition-all hover:shadow-card-hover ${
+            alert.severity === "critical" ? "border-destructive/20 bg-destructive/5" :
+            alert.severity === "warning" ? "border-amber-500/20 bg-amber-500/5" :
+            "border-border bg-card"
+          }`}>
+          <div className="flex items-start gap-3">
+            <AlertTriangle className={`h-4 w-4 mt-0.5 shrink-0 ${
+              alert.severity === "critical" ? "text-destructive" : alert.severity === "warning" ? "text-amber-500" : "text-muted-foreground"
+            }`} />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-foreground">{alert.title}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{alert.description}</p>
+              {alert.suggestedAction && (
+                <button className="mt-2 inline-flex items-center gap-1 rounded-md bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent hover:bg-accent/20 transition-colors">
+                  {alert.suggestedAction} <ArrowRight className="h-3 w-3" />
+                </button>
+              )}
+            </div>
+            <span className="text-[9px] text-muted-foreground shrink-0">{alert.source}</span>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+);
+
+const ActionListSection = ({ items }: { items: ActionItemData[] }) => (
+  <SitaCard hover={false}>
+    <SitaCardTitle sub={`${items.length} items sorted by priority`}>Action Items</SitaCardTitle>
+    <div className="mt-4 space-y-2">
+      {items.map((item, i) => (
+        <motion.div key={i} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}
+          className="flex items-center gap-3 rounded-xl bg-secondary/30 p-3.5 hover:bg-secondary/50 transition-colors cursor-pointer group">
+          <span className={`flex h-6 w-6 items-center justify-center rounded-full font-display text-xs font-bold text-primary-foreground shrink-0 ${
+            item.priority === "critical" ? "bg-destructive" : item.priority === "high" ? "bg-amber-500" : "gradient-sita"
+          }`}>{i + 1}</span>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm text-foreground">{item.text}</p>
+            <div className="flex items-center gap-2 mt-0.5">
+              {item.assignee && <span className="text-[10px] text-muted-foreground">{item.assignee}</span>}
+              {item.dueDate && <span className="text-[10px] text-muted-foreground">· Due {item.dueDate}</span>}
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold capitalize ${
+              item.priority === "critical" ? "bg-destructive/10 text-destructive" :
+              item.priority === "high" ? "bg-amber-500/10 text-amber-600" :
+              "bg-secondary text-muted-foreground"
+            }`}>{item.priority}</span>
+          </div>
+          <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/50 group-hover:text-foreground transition-colors shrink-0" />
+        </motion.div>
+      ))}
+    </div>
+  </SitaCard>
+);
+
+const ConfidencePill = ({ value }: { value: number }) => {
+  const pct = Math.round(value * 100);
+  const color = pct >= 85 ? "bg-primary/10 text-primary" : pct >= 65 ? "bg-amber-500/10 text-amber-600" : "bg-destructive/10 text-destructive";
+  return <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${color}`}><Shield className="h-2.5 w-2.5" />{pct}%</span>;
+};
+
+// ── NEW: Advisor Voice Track ──────────────────────────────────
+
+const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
+  const relevantAdvisors = type === "financial-health" || type === "pipeline-review"
+    ? mockAdvisors.filter(a => ["money", "treasury", "business", "sales", "risk"].includes(a.domain))
+    : type === "household-ops"
+    ? mockAdvisors.filter(a => ["concierge", "family", "calendar"].includes(a.domain))
+    : mockAdvisors.slice(0, 5);
+
+  return (
+    <div className="space-y-3">
+      <SitaSectionHeader title="Advisor Voices" subtitle="Each advisor's perspective on this review" />
+      <div className="space-y-2">
+        {relevantAdvisors.map((advisor, i) => {
+          const rec = mockRecommendations.find(r => r.advisorId === advisor.id);
+          return (
+            <motion.div key={advisor.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}
+              className="group rounded-xl border border-border/60 bg-card/80 p-4 hover:border-primary/20 transition-all"
+            >
+              <div className="flex items-start gap-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary text-xs font-bold">
+                  {i + 1}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="text-sm font-semibold text-foreground">{advisor.name}</p>
+                    <div className={`h-2 w-2 rounded-full ${advisor.status === "active" ? "bg-trust-safe" : "bg-muted-foreground"}`} />
+                    <span className={`text-[11px] font-mono ${advisor.confidence >= 0.85 ? "text-trust-safe" : advisor.confidence >= 0.65 ? "text-accent" : "text-muted-foreground"}`}>
+                      {Math.round(advisor.confidence * 100)}%
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{rec?.title || advisor.topMove}</p>
+                  {advisor.uncertainty && (
+                    <p className="text-[11px] text-accent flex items-center gap-1 mt-1">
+                      <AlertTriangle className="h-3 w-3" /> {advisor.uncertainty}
+                    </p>
+                  )}
+                </div>
+                {advisor.pendingApprovals > 0 && (
+                  <Badge variant="outline" className="text-[9px] bg-trust-approval/10 text-trust-approval border-trust-approval/20 shrink-0">
+                    {advisor.pendingApprovals} approval{advisor.pendingApprovals > 1 ? "s" : ""}
+                  </Badge>
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// ── NEW: Disagreement Card ────────────────────────────────────
+
+const DisagreementCards = () => {
+  const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
+  if (disagreements.length === 0) return null;
+
+  return (
+    <div className="space-y-3">
+      <SitaSectionHeader title="Visible Disagreements" subtitle="Where advisors see different paths" />
+      {disagreements.map(s => (
+        <motion.div key={s.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+          className="rounded-xl border border-accent/20 bg-accent/5 p-4"
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <Scale className="h-4 w-4 text-accent" />
+            <p className="text-sm font-semibold text-foreground">{s.title}</p>
+          </div>
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            {s.participants.map(p => <Badge key={p.name} variant="outline" className="text-[9px]">{p.name}</Badge>)}
+          </div>
+          {s.disagreements?.map((d, i) => (
+            <p key={i} className="text-xs text-muted-foreground flex items-start gap-1.5 mt-1">
+              <AlertTriangle className="h-3 w-3 text-accent shrink-0 mt-0.5" /> {d}
+            </p>
+          ))}
+          <p className="text-xs text-foreground mt-2 font-medium">Recommendation: {s.primaryRecommendation}</p>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
+// ── NEW: Decision Memory Strip ────────────────────────────────
+
+const DecisionMemoryStrip = () => {
+  const decisions = mockProofHistory.filter(p => p.type === "approval" || p.type === "execution").slice(0, 5);
+
+  return (
+    <div className="space-y-3">
+      <SitaSectionHeader title="Decision Memory" subtitle="Recent decisions and their outcomes" />
+      <div className="flex gap-3 overflow-x-auto scrollbar-none pb-1">
+        {decisions.map((d, i) => (
+          <motion.div key={d.id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.05 }}
+            className="flex shrink-0 flex-col rounded-xl border border-border bg-card/80 p-3 min-w-[200px] max-w-[240px]"
+          >
+            <p className="text-xs font-semibold text-foreground truncate">{d.title}</p>
+            <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2">{d.whatChanged}</p>
+            <div className="flex items-center gap-2 mt-2">
+              <TrustBadge level={d.outcome === "verified" ? "verified" : d.outcome === "executed" || d.outcome === "accepted" ? "safe" : "review"} size="sm" />
+              <span className="text-[9px] text-muted-foreground">{d.createdAt}</span>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ── NEW: Carryover Panel ──────────────────────────────────────
+
+const CarryoverPanel = () => {
+  const unresolved = [
+    { id: "c1", title: "Collection follow-up on Invoice #1042", domain: "Business", since: "2 weeks", impact: "high" },
+    { id: "c2", title: "School enrollment decision", domain: "Concierge", since: "5 days", impact: "medium" },
+    { id: "c3", title: "Reserve target shortfall", domain: "Money", since: "3 weeks", impact: "high" },
+  ];
+
+  return (
+    <div className="space-y-3">
+      <SitaSectionHeader title="Carryover / Unresolved" subtitle="Items carried forward from previous reviews" />
+      <div className="space-y-2">
+        {unresolved.map((item, i) => (
+          <motion.div key={item.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}
+            className={cn(
+              "flex items-center gap-3 rounded-xl border p-3.5 cursor-pointer transition-all hover:shadow-card-hover",
+              item.impact === "high" ? "border-destructive/15 bg-destructive/3" : "border-border bg-card/50"
+            )}
+          >
+            <RefreshCw className={cn("h-4 w-4 shrink-0", item.impact === "high" ? "text-destructive" : "text-muted-foreground")} />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-foreground">{item.title}</p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-[10px] text-muted-foreground">{item.domain}</span>
+                <span className="text-[10px] text-muted-foreground">· Open {item.since}</span>
+              </div>
+            </div>
+            <span className={cn("rounded-full px-2 py-0.5 text-[9px] font-semibold",
+              item.impact === "high" ? "bg-destructive/10 text-destructive" : "bg-accent/10 text-accent"
+            )}>{item.impact}</span>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ── NEW: Proof Summary Board ──────────────────────────────────
+
+const ProofSummaryBoard = () => {
+  const verified = mockProofHistory.filter(p => p.outcome === "verified").length;
+  const executed = mockProofHistory.filter(p => p.outcome === "executed" || p.outcome === "accepted").length;
+  const failed = mockProofHistory.filter(p => p.outcome === "rolled-back" || p.outcome === "rejected").length;
+
+  return (
+    <SitaCard hover={false}>
+      <SitaCardTitle sub="Audit trail from this review period">Proof Summary</SitaCardTitle>
+      <div className="mt-3 grid grid-cols-3 gap-3">
+        <div className="rounded-lg bg-trust-verified/5 border border-trust-verified/10 p-3 text-center">
+          <p className="font-display text-lg font-bold text-trust-safe">{verified}</p>
+          <p className="text-[10px] text-muted-foreground">Verified</p>
+        </div>
+        <div className="rounded-lg bg-primary/5 border border-primary/10 p-3 text-center">
+          <p className="font-display text-lg font-bold text-primary">{executed}</p>
+          <p className="text-[10px] text-muted-foreground">Executed</p>
+        </div>
+        <div className="rounded-lg bg-destructive/5 border border-destructive/10 p-3 text-center">
+          <p className="font-display text-lg font-bold text-destructive">{failed}</p>
+          <p className="text-[10px] text-muted-foreground">Failed / Rolled Back</p>
+        </div>
+      </div>
+    </SitaCard>
+  );
+};
+
+// ── Confidence & Provenance ───────────────────────────────────
+
+const PacketHeader = ({ packet, onRegenerate, variant }: { packet: BoardroomPacket; onRegenerate: () => void; variant?: string }) => {
+  const meta = META[packet.type];
+  const genTime = new Date(packet.generatedAt);
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/8 via-card to-card p-6">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/70 shadow-lg shadow-primary/20">
+            <BarChart3 className="h-6 w-6 text-primary-foreground" />
+          </div>
+          <div>
+            <h2 className="font-display text-lg font-bold text-foreground">{meta.label}</h2>
+            <p className="text-xs text-muted-foreground">{meta.purpose}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3 flex-wrap">
+          <ConfidencePill value={packet.confidence} />
+          {variant && (
+            <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-semibold text-primary capitalize">
+              {variant} View
+            </span>
+          )}
+          <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+            <Clock className="h-3 w-3" />
+            {genTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+          </span>
+          <span className="text-[10px] text-muted-foreground flex items-center gap-1 font-mono">
+            <Hash className="h-3 w-3" />{packet.packetId}
+          </span>
+          <button onClick={onRegenerate} className="rounded-lg bg-card border border-border p-1.5 hover:bg-secondary transition-colors" title="Regenerate">
+            <RefreshCw className="h-3.5 w-3.5 text-muted-foreground" />
+          </button>
+        </div>
+      </div>
+      <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/3 blur-3xl" />
+    </div>
+  );
+};
+
+const StaleWarnings = ({ warnings }: { warnings: string[] }) => {
+  if (warnings.length === 0) return null;
+  return (
+    <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-3.5">
+      <div className="flex items-center gap-2 mb-2">
+        <AlertTriangle className="h-4 w-4 text-amber-500" />
+        <p className="text-xs font-semibold text-amber-600">Stale Data Detected</p>
+      </div>
+      <div className="space-y-1">{warnings.map((w, i) => <p key={i} className="text-[11px] text-amber-600/80">• {w}</p>)}</div>
+    </div>
+  );
+};
+
+const ContradictionMarkers = ({ report }: { report?: ContradictionReport }) => {
+  if (!report || report.contradictions.length === 0) return null;
+  return (
+    <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-3.5">
+      <div className="flex items-center gap-2 mb-2">
+        <ShieldAlert className="h-4 w-4 text-amber-500" />
+        <p className="text-xs font-semibold text-amber-600">Data Contradictions</p>
+        <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-600">{report.contradictions.length}</span>
+      </div>
+      <div className="space-y-2">
+        {report.contradictions.map((c, i) => (
+          <div key={i} className={`flex items-start gap-2 rounded-lg px-3 py-2 text-[11px] ${c.severity === "material" ? "bg-destructive/5 border border-destructive/10" : "bg-secondary/40"}`}>
+            <XCircle className={`h-3 w-3 mt-0.5 shrink-0 ${c.severity === "material" ? "text-destructive" : "text-amber-500"}`} />
+            <div>
+              <span className="font-semibold text-foreground">{c.field}</span>
+              <span className="text-muted-foreground"> — {c.sourceA}: </span>
+              <span className="font-mono text-foreground">{c.valueA}</span>
+              <span className="text-muted-foreground"> vs {c.sourceB}: </span>
+              <span className="font-mono text-foreground">{c.valueB}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const ConfidenceEnvelopePanel = ({ envelope }: { envelope?: ConfidenceEnvelope }) => {
+  const [open, setOpen] = useState(false);
+  if (!envelope) return null;
+  const riskColors: Record<string, string> = { low: "bg-primary/10 text-primary", medium: "bg-amber-500/10 text-amber-600", high: "bg-destructive/10 text-destructive", "critical-truth": "bg-destructive/10 text-destructive" };
+  return (
+    <div className="rounded-xl border border-border bg-card/50">
+      <button onClick={() => setOpen(!open)} className="flex w-full items-center justify-between p-3 text-left hover:bg-secondary/30 transition-colors rounded-xl">
+        <div className="flex items-center gap-2">
+          <ShieldAlert className="h-4 w-4 text-muted-foreground" />
+          <span className="text-xs font-semibold text-foreground">Truth & Confidence Envelope</span>
+          <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${riskColors[envelope.riskClass]}`}>{envelope.riskClass}</span>
+        </div>
+        {open ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
+      </button>
+      {open && (
+        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="border-t border-border px-4 pb-4 space-y-3 pt-3">
+          {envelope.reasons.length > 0 && <div><p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">Reasons</p>{envelope.reasons.map((r, i) => <p key={i} className="text-[11px] text-muted-foreground">• {r}</p>)}</div>}
+          {envelope.missingInputs.length > 0 && <div><p className="text-[10px] font-semibold uppercase tracking-wider text-destructive mb-1">Missing Inputs</p><div className="flex flex-wrap gap-1">{envelope.missingInputs.map((m, i) => <span key={i} className="rounded-md bg-destructive/10 px-2 py-0.5 text-[10px] text-destructive">{m}</span>)}</div></div>}
+          {envelope.staleInputs.length > 0 && <div><p className="text-[10px] font-semibold uppercase tracking-wider text-amber-600 mb-1">Stale Inputs</p><div className="flex flex-wrap gap-1">{envelope.staleInputs.map((s, i) => <span key={i} className="rounded-md bg-amber-500/10 px-2 py-0.5 text-[10px] text-amber-600">{s}</span>)}</div></div>}
+        </motion.div>
+      )}
+    </div>
+  );
+};
+
+const ProvenancePanel = ({ packet }: { packet: BoardroomPacket }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="rounded-xl border border-border bg-card/50">
+      <button onClick={() => setOpen(!open)} className="flex w-full items-center justify-between p-3.5 text-left hover:bg-secondary/30 transition-colors rounded-xl">
+        <div className="flex items-center gap-2">
+          <Database className="h-4 w-4 text-muted-foreground" />
+          <span className="text-xs font-semibold text-foreground">Provenance & Receipt</span>
+          <span className="text-[10px] text-muted-foreground">{packet.dataSources.length} sources · {packet.receipt.generationTimeMs}ms</span>
+        </div>
+        {open ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
+      </button>
+      {open && (
+        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="border-t border-border px-4 pb-4">
+          <div className="grid gap-4 sm:grid-cols-2 mt-3">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">Data Sources</p>
+              <div className="space-y-1.5">
+                {packet.dataSources.map(ds => (
+                  <div key={ds.id} className="flex items-center justify-between rounded-lg bg-secondary/30 px-3 py-2">
+                    <div><p className="text-xs font-medium text-foreground">{ds.name}</p><p className="text-[10px] text-muted-foreground">{ds.domain} · {ds.recordCount} records</p></div>
+                    <span className="text-[10px] text-muted-foreground">{new Date(ds.lastUpdated).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">Generation Receipt</p>
+              <div className="rounded-lg bg-secondary/30 p-3 space-y-1.5">
+                <div className="flex justify-between"><span className="text-[11px] text-muted-foreground">Receipt ID</span><span className="text-[11px] font-mono text-foreground">{packet.receipt.receiptId}</span></div>
+                <div className="flex justify-between"><span className="text-[11px] text-muted-foreground">Hash</span><span className="text-[11px] font-mono text-foreground">{packet.receipt.hash}</span></div>
+                <div className="flex justify-between"><span className="text-[11px] text-muted-foreground">Time</span><span className="text-[11px] text-foreground">{packet.receipt.generationTimeMs}ms</span></div>
+                <div className="flex justify-between"><span className="text-[11px] text-muted-foreground">Confidence</span><span className="text-[11px] text-foreground">{Math.round(packet.confidence * 100)}%</span></div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+};
+
+const OpportunitiesGrid = ({ opportunities }: { opportunities: BoardroomPacket["opportunities"] }) => {
+  if (opportunities.length === 0) return null;
+  return (
+    <div>
+      <SitaSectionHeader title="Opportunities" />
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        {opportunities.map((opp, i) => (
+          <motion.div key={opp.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}>
+            <SitaCard hover={false} className="p-4" lane="action">
+              <div className="flex items-start gap-3">
+                <div className="rounded-xl bg-accent/10 p-2"><Lightbulb className="h-4 w-4 text-accent" /></div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-foreground">{opp.title}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{opp.description}</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-[10px] font-semibold text-accent">{opp.projectedValue}</span>
+                    <ConfidencePill value={opp.confidence} />
+                  </div>
+                </div>
+              </div>
+            </SitaCard>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ── Section Dispatcher ────────────────────────────────────────
+
+const RenderSection = ({ section }: { section: BoardroomSection }) => {
+  switch (section.type) {
+    case "metric-card": return <MetricCardGrid data={section.data as MetricCardData[]} title={section.title} />;
+    case "table": return <TableSection data={section.data as TableData} title={section.title} />;
+    case "narrative": return <NarrativeBlock data={section.data as NarrativeData} title={section.title} />;
+    case "alert": return <AlertSection data={section.data as AlertData[]} title={section.title} />;
+    case "action-list": return <ActionListSection items={section.data as ActionItemData[]} />;
+    default: return null;
+  }
+};
+
+// ── Packet View with Advisor Enhancements ─────────────────────
+
+const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; perspective?: PerspectiveLevel }) => {
+  const { packet, regenerate } = useBoardroomPacket(type);
+  const config = getPerspectiveConfig(perspective);
+
+  const filteredSections = packet.sections.filter(section => {
+    if (section.type === "table" && !config.showDetailTables) return false;
+    if (section.type === "metric-card") return config.showMetricCards;
+    if (section.type === "narrative") return config.showNarratives;
+    if (section.type === "alert") return config.showAlerts;
+    if (section.type === "action-list") return config.showActionItems;
+    return true;
+  });
+
+  const limitedSections = filteredSections.map(section => {
+    if (section.type === "metric-card" && Array.isArray(section.data)) return { ...section, data: (section.data as MetricCardData[]).slice(0, config.maxMetrics) };
+    if (section.type === "alert" && Array.isArray(section.data)) return { ...section, data: (section.data as AlertData[]).slice(0, config.maxAlerts) };
+    if (section.type === "action-list" && Array.isArray(section.data)) return { ...section, data: (section.data as ActionItemData[]).slice(0, config.maxActionItems) };
+    return section;
+  });
+
+  return (
+    <motion.div key={type} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-5">
+      <PacketHeader packet={packet} onRegenerate={regenerate} variant={config.label} />
+
+      <StaleWarnings warnings={packet.staleDataWarnings} />
+      {config.showContradictions && <ContradictionMarkers report={packet.contradictions} />}
+
+      {/* Executive Summary section */}
+      {limitedSections.filter(s => s.type === "narrative").map(s => <RenderSection key={s.id} section={s} />)}
+
+      {/* Advisor Voice Track — signature boardroom feature */}
+      <AdvisorVoiceTrack type={type} />
+
+      {/* Disagreement Cards */}
+      <DisagreementCards />
+
+      {/* Metrics & data sections */}
+      {limitedSections.filter(s => s.type !== "narrative").map(s => <RenderSection key={s.id} section={s} />)}
+
+      {/* Confidence ladder for this boardroom */}
+      <div className="space-y-3">
+        <SitaSectionHeader title="Confidence Ladder" subtitle="Advisor certainty levels for this review" />
+        <SitaCard hover={false}>
+          <ConfidenceLadder items={mockAdvisors.slice(0, 5).map(a => ({ label: a.name, confidence: a.confidence }))} />
+        </SitaCard>
+      </div>
+
+      {/* Opportunities */}
+      {config.showOpportunities && <OpportunitiesGrid opportunities={packet.opportunities} />}
+
+      {/* Action Items */}
+      {config.showActionItems && packet.actionItems.length > 0 && (
+        <ActionListSection items={packet.actionItems.slice(0, config.maxActionItems)} />
+      )}
+
+      {/* Decision Memory & Carryover */}
+      <DecisionMemoryStrip />
+      <CarryoverPanel />
+
+      {/* Proof Summary */}
+      <ProofSummaryBoard />
+
+      {/* Confidence Envelope & Provenance */}
+      {config.showConfidenceEnvelope && <ConfidenceEnvelopePanel envelope={packet.confidenceEnvelope} />}
+      {config.showProvenance && <ProvenancePanel packet={packet} />}
+    </motion.div>
+  );
+};
+
+// ── Tab Icons ─────────────────────────────────────────────────
+
+const TAB_ICONS: Record<BoardroomType, React.ReactNode> = {
+  "morning-briefing": <Sparkles className="h-3.5 w-3.5" />,
+  "weekly-review": <BarChart3 className="h-3.5 w-3.5" />,
+  "financial-health": <DollarSign className="h-3.5 w-3.5" />,
+  "pipeline-review": <Briefcase className="h-3.5 w-3.5" />,
+  "household-ops": <Home className="h-3.5 w-3.5" />,
+  "opportunity-board": <Lightbulb className="h-3.5 w-3.5" />,
+  "incident-review": <Activity className="h-3.5 w-3.5" />,
+};
+
+// ── Fullscreen Presentation Mode ──────────────────────────────
+
+type PresentationMode = "executive" | "analyst" | "owner";
+
+const FullscreenPresentation = ({ type, onExit }: { type: BoardroomType; onExit: () => void }) => {
+  const { packet } = useBoardroomPacket(type);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [autoAdvance, setAutoAdvance] = useState(true);
+  const [elapsed, setElapsed] = useState(0);
+  const [presMode, setPresMode] = useState<PresentationMode>("executive");
+  const SLIDE_DURATION = 30;
+
+  const slides = packet.sections;
+  const totalSlides = slides.length;
+
+  useEffect(() => {
+    if (!autoAdvance) return;
+    const interval = setInterval(() => {
+      setElapsed(prev => {
+        if (prev >= SLIDE_DURATION - 1) { setCurrentSlide(c => (c + 1) % totalSlides); return 0; }
+        return prev + 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [autoAdvance, totalSlides]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onExit();
+      if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); setCurrentSlide(c => Math.min(c + 1, totalSlides - 1)); setElapsed(0); }
+      if (e.key === "ArrowLeft") { setCurrentSlide(c => Math.max(c - 1, 0)); setElapsed(0); }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [totalSlides, onExit]);
+
+  const meta = META[type];
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[60] flex flex-col bg-background">
+      <div className="h-1 bg-secondary w-full"><motion.div className="h-full gradient-sita" style={{ width: `${(elapsed / SLIDE_DURATION) * 100}%` }} /></div>
+      <div className="flex items-center justify-between px-6 py-3 border-b border-border glass">
+        <div className="flex items-center gap-3">
+          <div className="rounded-lg gradient-sita p-1.5"><BarChart3 className="h-4 w-4 text-primary-foreground" /></div>
+          <div><p className="text-sm font-semibold text-foreground">{meta.label}</p><p className="text-[10px] text-muted-foreground">Slide {currentSlide + 1} of {totalSlides}</p></div>
+        </div>
+        <div className="flex items-center gap-2">
+          {(["executive", "analyst", "owner"] as PresentationMode[]).map(m => (
+            <button key={m} onClick={() => setPresMode(m)} className={`rounded-lg px-2.5 py-1 text-[11px] font-medium capitalize transition-all ${presMode === m ? "bg-primary/10 text-primary border border-primary/20" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}>{m}</button>
+          ))}
+          <div className="h-4 w-px bg-border mx-1" />
+          <button onClick={() => setAutoAdvance(!autoAdvance)} className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors">
+            {autoAdvance ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+          </button>
+          <ConfidencePill value={packet.confidence} />
+          <button onClick={onExit} className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"><Minimize2 className="h-4 w-4" /></button>
+        </div>
+      </div>
+      <div className="flex-1 overflow-auto p-8 lg:p-16">
+        <AnimatePresence mode="wait">
+          {slides[currentSlide] && (
+            <motion.div key={currentSlide} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -40 }} transition={{ duration: 0.3 }} className="max-w-5xl mx-auto">
+              <RenderSection section={slides[currentSlide]} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <div className="flex items-center justify-between px-6 py-3 border-t border-border glass">
+        <button onClick={() => { setCurrentSlide(c => Math.max(c - 1, 0)); setElapsed(0); }} disabled={currentSlide === 0} className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors disabled:opacity-30"><ChevronLeft className="h-5 w-5" /></button>
+        <div className="flex items-center gap-1.5">
+          {slides.map((_, i) => <button key={i} onClick={() => { setCurrentSlide(i); setElapsed(0); }} className={`h-2 rounded-full transition-all ${i === currentSlide ? "w-6 gradient-sita" : "w-2 bg-muted hover:bg-muted-foreground/30"}`} />)}
+        </div>
+        <button onClick={() => { setCurrentSlide(c => Math.min(c + 1, totalSlides - 1)); setElapsed(0); }} disabled={currentSlide === totalSlides - 1} className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors disabled:opacity-30"><ChevronRight className="h-5 w-5" /></button>
+      </div>
+    </motion.div>
+  );
+};
+
+// ── Main Boardroom ────────────────────────────────────────────
+
+const Boardroom = () => {
+  const [activeType, setActiveType] = useState<BoardroomType>("morning-briefing");
+  const [isPresenting, setIsPresenting] = useState(false);
+  const [perspective, setPerspective] = useState<PerspectiveLevel>("owner");
+
+  const tabs: { key: string; label: string }[] = [
+    { key: "morning-briefing", label: "Morning Briefing" },
+    { key: "weekly-review", label: "Weekly Review" },
+    { key: "financial-health", label: "Financial Health" },
+    { key: "pipeline-review", label: "Pipeline Review" },
+    { key: "household-ops", label: "Household Ops" },
+    { key: "opportunity-board", label: "Opportunities" },
+    { key: "incident-review", label: "Incidents" },
+  ];
+
+  return (
+    <>
+      <motion.div className="mx-auto max-w-7xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+        <SitaPageHeader
+          title="Boardroom"
+          subtitle="Where advisor voices become one governed plan — not a dashboard, a deliberation artifact"
+          actions={
+            <div className="flex items-center gap-2">
+              <div className="flex items-center rounded-lg border border-border overflow-hidden">
+                {(["executive", "analyst", "owner"] as PerspectiveLevel[]).map(p => (
+                  <button key={p} onClick={() => setPerspective(p)} className={`px-2.5 py-1 text-[11px] font-medium capitalize transition-all ${perspective === p ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}>{p}</button>
+                ))}
+              </div>
+              <button onClick={() => setIsPresenting(true)} className="inline-flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors">
+                <Maximize2 className="h-3.5 w-3.5" /> Present
+              </button>
+            </div>
+          }
+        />
+
+        <SitaTabs tabs={tabs} active={activeType} onChange={(k) => setActiveType(k as BoardroomType)} />
+
+        <AnimatePresence mode="wait">
+          <PacketView key={activeType} type={activeType} perspective={perspective} />
+        </AnimatePresence>
+      </motion.div>
+
+      <AnimatePresence>
+        {isPresenting && <FullscreenPresentation type={activeType} onExit={() => setIsPresenting(false)} />}
+      </AnimatePresence>
+    </>
+  );
+};
+
+export default Boardroom;

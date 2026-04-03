@@ -1,0 +1,95 @@
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { KPITile, SitaTabs, ProofCard } from "@/components/sita/SitaComponents";
+import { TrustBadge } from "@/components/sita/TrustBadge";
+import { useState } from "react";
+import { Shield, CheckCircle, Clock, FileText, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift } from "lucide-react";
+
+interface ProofRecord {
+  id: string;
+  action: string;
+  category: string;
+  who: string;
+  timestamp: string;
+  result: "completed" | "confirmed" | "submitted" | "sent" | "recorded";
+  verification: "verified" | "pending" | "unverified";
+  linkedItem?: string;
+  details?: string;
+}
+
+const proofRecords: ProofRecord[] = [
+  { id: "1", action: "Grocery order placed — 14 items for school lunches", category: "Grocery", who: "You", timestamp: "Today 9:15 AM", result: "completed", verification: "verified", linkedItem: "Weekly grocery workflow", details: "$87.42 at Whole Foods" },
+  { id: "2", action: "Dentist appointment confirmed — Emma & Liam", category: "Appointment", who: "You", timestamp: "Yesterday 2:30 PM", result: "confirmed", verification: "verified", linkedItem: "Dr. Patel — Next Thursday", details: "Confirmation #DPT-4421" },
+  { id: "3", action: "Permission slip signed and returned — Field trip", category: "School", who: "Partner", timestamp: "Yesterday 7:45 AM", result: "submitted", verification: "verified", linkedItem: "Lincoln Elementary — Science Museum", details: "Handed to Mrs. Thompson" },
+  { id: "4", action: "HVAC maintenance scheduled", category: "Provider", who: "Partner", timestamp: "Mar 30", result: "confirmed", verification: "verified", linkedItem: "ComfortAir — Apr 8", details: "Service window 2–4 PM" },
+  { id: "5", action: "Birthday gift ordered — Mom's spa card + photo book", category: "Events", who: "You", timestamp: "Mar 29", result: "completed", verification: "verified", linkedItem: "Mom's birthday — Apr 14", details: "$120 — arrives Apr 11" },
+  { id: "6", action: "Travel insurance purchased — Spring break trip", category: "Travel", who: "You", timestamp: "Mar 28", result: "recorded", verification: "pending", linkedItem: "Family vacation — Apr 20", details: "Policy #TRV-88291" },
+  { id: "7", action: "Carpool duty completed — morning route", category: "Transport", who: "You", timestamp: "Today 8:00 AM", result: "completed", verification: "verified", details: "3 kids dropped at Lincoln Elementary" },
+  { id: "8", action: "Thank-you message sent — Johnson dinner party", category: "Social", who: "Partner", timestamp: "Today 10:00 AM", result: "sent", verification: "pending", linkedItem: "Johnson family follow-up" },
+];
+
+const ConciergeProof = () => {
+  const [view, setView] = useState("all");
+  const verified = proofRecords.filter(p => p.verification === "verified").length;
+  const pending = proofRecords.filter(p => p.verification === "pending").length;
+
+  const filtered = view === "verified" ? proofRecords.filter(p => p.verification === "verified")
+    : view === "pending" ? proofRecords.filter(p => p.verification === "pending")
+    : proofRecords;
+
+  return (
+    <div className="space-y-6">
+      <SitaPageHeader title="Household Proof" subtitle="Verifiable record of completed actions, confirmations, and receipts" />
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <KPITile label="Total Records" value={String(proofRecords.length)} icon={Shield} />
+        <KPITile label="Verified" value={String(verified)} icon={CheckCircle} sub="Confirmed actions" />
+        <KPITile label="Pending" value={String(pending)} icon={Clock} sub="Awaiting verification" />
+        <KPITile label="This Week" value={String(proofRecords.filter(p => p.timestamp.includes("Today") || p.timestamp.includes("Yesterday")).length)} icon={FileText} />
+      </div>
+
+      <SitaTabs
+        tabs={[
+          { key: "all", label: "All Records" },
+          { key: "verified", label: "Verified" },
+          { key: "pending", label: "Pending" },
+        ]}
+        active={view}
+        onChange={setView}
+      />
+
+      <div className="space-y-3">
+        {filtered.map(proof => (
+          <SitaCard key={proof.id} className="p-4">
+            <div className="flex items-start gap-4">
+              <div className={`rounded-xl p-2.5 shrink-0 ${proof.verification === "verified" ? "bg-chart-2/10" : "bg-amber-500/10"}`}>
+                {proof.verification === "verified"
+                  ? <CheckCircle className="h-4 w-4 text-chart-2" />
+                  : <Clock className="h-4 w-4 text-amber-500" />
+                }
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <p className="text-sm font-medium text-foreground">{proof.action}</p>
+                  <TrustBadge level={proof.verification === "verified" ? "verified" : "review"} label={proof.verification} size="sm" />
+                </div>
+                <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground flex-wrap">
+                  <span className="rounded-md bg-secondary px-1.5 py-px text-[10px]">{proof.category}</span>
+                  <span>·</span>
+                  <span>{proof.who}</span>
+                  <span>·</span>
+                  <span>{proof.timestamp}</span>
+                </div>
+                {proof.details && <p className="text-xs text-foreground/70 mt-1">{proof.details}</p>}
+                {proof.linkedItem && (
+                  <p className="text-xs text-primary/70 mt-1">↗ {proof.linkedItem}</p>
+                )}
+              </div>
+            </div>
+          </SitaCard>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default ConciergeProof;

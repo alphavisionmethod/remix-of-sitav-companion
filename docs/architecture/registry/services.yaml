@@ -1,0 +1,148 @@
+# SITA OS — Service Registry
+# Canonical list of runtime services
+
+services:
+  - id: api-gateway
+    owner: platform
+    status: scaffold
+    dependencies: [brain-core]
+
+  - id: brain-core
+    owner: platform
+    status: alpha
+    dependencies: [policy-engine, approval-engine, executor-service, receipt-service, event-bus, memory-service]
+
+  - id: business-os
+    owner: business
+    status: alpha
+    dependencies: [event-bus, projections, receipt-service]
+
+  - id: finance-os
+    owner: finance
+    status: alpha
+    dependencies: [event-bus, projections, receipt-service, sovereign-calculation]
+
+  - id: concierge-os
+    owner: concierge
+    status: alpha
+    dependencies: [event-bus, projections, receipt-service]
+
+  - id: policy-engine
+    owner: platform
+    status: alpha
+    dependencies: [event-bus]
+
+  - id: approval-engine
+    owner: platform
+    status: alpha
+    dependencies: [event-bus, receipt-service]
+
+  - id: capability-router
+    owner: platform
+    status: scaffold
+    dependencies: [policy-engine]
+
+  - id: executor-service
+    owner: platform
+    status: alpha
+    dependencies: [connector-runners, receipt-service, verification-engine]
+
+  - id: receipt-service
+    owner: platform
+    status: alpha
+    dependencies: [event-bus]
+
+  - id: verification-engine
+    owner: platform
+    status: alpha
+    dependencies: [receipt-service]
+
+  - id: event-bus
+    owner: platform
+    status: alpha
+    dependencies: []
+
+  - id: projections
+    owner: platform
+    status: scaffold
+    dependencies: [event-bus]
+
+  - id: memory-service
+    owner: platform
+    status: alpha
+    dependencies: [event-bus]
+
+  - id: identity
+    owner: platform
+    status: scaffold
+    dependencies: []
+
+  - id: household-org-graph
+    owner: platform
+    status: scaffold
+    dependencies: [identity]
+
+  - id: entity-graph
+    owner: platform
+    status: scaffold
+    dependencies: [event-bus]
+
+  - id: role-permission-engine
+    owner: platform
+    status: scaffold
+    dependencies: [identity]
+
+  - id: connector-control-plane
+    owner: platform
+    status: alpha
+    dependencies: [event-bus]
+
+  - id: connector-runners
+    owner: platform
+    status: scaffold
+    dependencies: [connector-control-plane]
+
+  - id: boardroom
+    owner: platform
+    status: alpha
+    dependencies: [brain-core, projections, memory-service]
+
+  - id: analytics
+    owner: platform
+    status: scaffold
+    dependencies: [event-bus, projections]
+
+  - id: billing
+    owner: platform
+    status: scaffold
+    dependencies: []
+
+  - id: support-diagnostics
+    owner: platform
+    status: scaffold
+    dependencies: [event-bus, memory-service]
+
+  - id: sovereign-calculation
+    owner: platform
+    status: alpha
+    dependencies: []
+
+  - id: owner-control-room
+    owner: platform
+    status: scaffold
+    dependencies: [brain-core, policy-engine, receipt-service]
+
+  - id: trust-governor
+    owner: platform
+    status: scaffold
+    dependencies: [policy-engine, receipt-service, verification-engine]
+
+  - id: enterprise-control-plane
+    owner: platform
+    status: scaffold
+    dependencies: [identity, role-permission-engine, event-bus]
+
+  - id: sovereign-exporter
+    owner: platform
+    status: scaffold
+    dependencies: [receipt-service, verification-engine, memory-service]

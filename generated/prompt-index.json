@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-04-02T00:00:00Z",
+  "prompts": [
+    { "id": "business-advisor-system", "domain": "business-os", "type": "system", "advisor": "business-advisor", "description": "Business advisor system prompt with CRM, pipeline, and revenue context" },
+    { "id": "money-advisor-system", "domain": "finance-os", "type": "system", "advisor": "money-advisor", "description": "Money advisor system prompt with finance, reserves, and investment context" },
+    { "id": "concierge-advisor-system", "domain": "concierge-os", "type": "system", "advisor": "concierge-advisor", "description": "Concierge advisor system prompt with household, calendar, and logistics context" },
+    { "id": "strategy-advisor-system", "domain": "cross-domain", "type": "system", "advisor": "strategy-advisor", "description": "Strategy advisor system prompt with cross-domain synthesis context" },
+    { "id": "boardroom-synthesis", "domain": "boardroom", "type": "generation", "advisor": null, "description": "Boardroom packet synthesis from multi-advisor inputs" },
+    { "id": "explanation-assembly", "domain": "brain-core", "type": "generation", "advisor": null, "description": "Plain-language explanation of advisor reasoning chains" },
+    { "id": "lead-scoring-narrative", "domain": "business-os", "type": "generation", "advisor": "business-advisor", "description": "Narrative explanation of lead score factors" },
+    { "id": "cashflow-summary", "domain": "finance-os", "type": "generation", "advisor": "money-advisor", "description": "Plain-language cash flow position summary" },
+    { "id": "household-briefing", "domain": "concierge-os", "type": "generation", "advisor": "concierge-advisor", "description": "Daily household briefing generation" },
+    { "id": "incident-classification", "domain": "reliability-ops", "type": "internal-agent", "advisor": null, "description": "Incident severity and root cause classification" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-04-02T00:00:00Z",
+  "connectors": [
+    { "id": "plaid", "name": "Plaid", "category": "finance", "status": "supported", "domains": ["finance-os"], "capabilities": ["account-aggregation", "transaction-sync"], "authType": "oauth", "sandboxMode": true, "healthCheckInterval": 900 },
+    { "id": "stripe", "name": "Stripe", "category": "payments", "status": "supported", "domains": ["finance-os", "business-os"], "capabilities": ["payment-processing", "invoice-sync", "subscription-management"], "authType": "api-key", "sandboxMode": true, "healthCheckInterval": 300 },
+    { "id": "quickbooks", "name": "QuickBooks", "category": "accounting", "status": "planned", "domains": ["finance-os", "business-os"], "capabilities": ["accounting-sync", "invoice-sync", "expense-tracking"], "authType": "oauth", "sandboxMode": false, "healthCheckInterval": 1800 },
+    { "id": "google-calendar", "name": "Google Calendar", "category": "calendar", "status": "supported", "domains": ["concierge-os", "business-os"], "capabilities": ["calendar-sync", "event-management", "conflict-detection"], "authType": "oauth", "sandboxMode": true, "healthCheckInterval": 600 },
+    { "id": "google-drive", "name": "Google Drive", "category": "storage", "status": "planned", "domains": ["platform"], "capabilities": ["file-sync", "document-import"], "authType": "oauth", "sandboxMode": false, "healthCheckInterval": 1800 },
+    { "id": "gmail", "name": "Gmail", "category": "email", "status": "planned", "domains": ["business-os", "concierge-os"], "capabilities": ["email-sync", "inbox-capture", "outbound-email"], "authType": "oauth", "sandboxMode": false, "healthCheckInterval": 300 },
+    { "id": "twilio", "name": "Twilio", "category": "communication", "status": "planned", "domains": ["business-os"], "capabilities": ["sms-send", "voice-call"], "authType": "api-key", "sandboxMode": true, "healthCheckInterval": 600 },
+    { "id": "sendgrid", "name": "SendGrid", "category": "email", "status": "planned", "domains": ["business-os"], "capabilities": ["transactional-email", "marketing-email"], "authType": "api-key", "sandboxMode": true, "healthCheckInterval": 600 },
+    { "id": "instacart", "name": "Instacart", "category": "household", "status": "planned", "domains": ["concierge-os"], "capabilities": ["grocery-ordering", "delivery-tracking"], "authType": "oauth", "sandboxMode": false, "healthCheckInterval": 3600 }
+  ]
+}

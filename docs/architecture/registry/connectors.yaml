@@ -1,0 +1,79 @@
+# SITA OS — Connector Registry
+
+connectors:
+  finance:
+    - id: plaid
+      name: Plaid
+      status: supported
+      auth: oauth
+      sandbox: true
+      capabilities: [account-aggregation, transaction-sync]
+      health_interval: 900
+
+    - id: stripe
+      name: Stripe
+      status: supported
+      auth: api-key
+      sandbox: true
+      capabilities: [payment-processing, invoice-sync, subscription-management]
+      health_interval: 300
+
+    - id: quickbooks
+      name: QuickBooks
+      status: planned
+      auth: oauth
+      sandbox: false
+      capabilities: [accounting-sync, invoice-sync, expense-tracking]
+      health_interval: 1800
+
+  calendar:
+    - id: google-calendar
+      name: Google Calendar
+      status: supported
+      auth: oauth
+      sandbox: true
+      capabilities: [calendar-sync, event-management, conflict-detection]
+      health_interval: 600
+
+  storage:
+    - id: google-drive
+      name: Google Drive
+      status: planned
+      auth: oauth
+      sandbox: false
+      capabilities: [file-sync, document-import]
+      health_interval: 1800
+
+  communication:
+    - id: gmail
+      name: Gmail
+      status: planned
+      auth: oauth
+      sandbox: false
+      capabilities: [email-sync, inbox-capture, outbound-email]
+      health_interval: 300
+
+    - id: twilio
+      name: Twilio
+      status: planned
+      auth: api-key
+      sandbox: true
+      capabilities: [sms-send, voice-call]
+      health_interval: 600
+
+    - id: sendgrid
+      name: SendGrid
+      status: planned
+      auth: api-key
+      sandbox: true
+      capabilities: [transactional-email, marketing-email]
+      health_interval: 600
+
+  household:
+    - id: instacart
+      name: Instacart
+      status: planned
+      auth: oauth
+      sandbox: false
+      capabilities: [grocery-ordering, delivery-tracking]
+      health_interval: 3600

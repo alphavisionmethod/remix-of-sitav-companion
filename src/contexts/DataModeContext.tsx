@@ -1,0 +1,109 @@
+import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { toast } from "sonner";
+
+type DataMode = "demo" | "live";
+
+interface ConnectorStatus {
+  id: string;
+  name: string;
+  status: "connected" | "disconnected" | "degraded" | "error";
+  lastSync?: string;
+  type: "slack" | "resend" | "twilio" | "stripe" | "google-calendar" | "quickbooks" | "custom";
+}
+
+interface DataModeContextType {
+  mode: DataMode;
+  isDemoMode: boolean;
+  isLiveMode: boolean;
+  toggleMode: () => void;
+  setMode: (mode: DataMode) => void;
+  connectors: ConnectorStatus[];
+  refreshConnectors: () => void;
+}
+
+const DataModeContext = createContext<DataModeContextType | undefined>(undefined);
+
+const STORAGE_KEY = "sita-data-mode";
+
+// Demo connector statuses (shown in demo mode)
+const demoConnectors: ConnectorStatus[] = [
+  { id: "slack-1", name: "Slack", type: "slack", status: "connected", lastSync: "2 min ago" },
+  { id: "resend-1", name: "Resend (Email)", type: "resend", status: "connected", lastSync: "Just now" },
+  { id: "twilio-1", name: "Twilio (SMS)", type: "twilio", status: "connected", lastSync: "5 min ago" },
+  { id: "stripe-1", name: "Stripe", type: "stripe", status: "connected", lastSync: "1 min ago" },
+  { id: "gcal-1", name: "Google Calendar", type: "google-calendar", status: "connected", lastSync: "3 min ago" },
+  { id: "qb-1", name: "QuickBooks", type: "quickbooks", status: "degraded", lastSync: "2h ago" },
+];
+
+export function DataModeProvider({ children }: { children: React.ReactNode }) {
+  const [mode, setModeState] = useState<DataMode>(() => {
+    try {
+      return (localStorage.getItem(STORAGE_KEY) as DataMode) || "demo";
+    } catch {
+      return "demo";
+    }
+  });
+
+  const [connectors, setConnectors] = useState<ConnectorStatus[]>(demoConnectors);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, mode);
+  }, [mode]);
+
+  const setMode = useCallback((newMode: DataMode) => {
+    setModeState(newMode);
+    toast.success(
+      newMode === "demo"
+        ? "Switched to Demo Mode — using sample data"
+        : "Switched to Live Mode — using real connections",
+      { duration: 3000 }
+    );
+  }, []);
+
+  const toggleMode = useCallback(() => {
+    setModeState((prev) => {
+      const next = prev === "demo" ? "live" : "demo";
+      toast.success(
+        next === "demo"
+          ? "Switched to Demo Mode — using sample data"
+          : "Switched to Live Mode — using real connections",
+        { duration: 3000 }
+      );
+      return next;
+    });
+  }, []);
+
+  const refreshConnectors = useCallback(() => {
+    // In live mode, this would call the connector-proxy edge function
+    // For now, simulate a refresh
+    if (mode === "demo") {
+      setConnectors(demoConnectors);
+    } else {
+      // In live mode, connectors start as disconnected until actually connected
+      setConnectors(demoConnectors.map(c => ({ ...c, status: "disconnected" as const, lastSync: undefined })));
+    }
+    toast.info("Connector status refreshed");
+  }, [mode]);
+
+  return (
+    <DataModeContext.Provider
+      value={{
+        mode,
+        isDemoMode: mode === "demo",
+        isLiveMode: mode === "live",
+        toggleMode,
+        setMode,
+        connectors,
+        refreshConnectors,
+      }}
+    >
+      {children}
+    </DataModeContext.Provider>
+  );
+}
+
+export function useDataMode() {
+  const ctx = useContext(DataModeContext);
+  if (!ctx) throw new Error("useDataMode must be used within DataModeProvider");
+  return ctx;
+}

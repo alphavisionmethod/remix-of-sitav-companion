@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-04-02T00:00:00Z",
+  "outcomes": [
+    { "id": "revenue-recovered", "domain": "business", "description": "Revenue recovered from missed follow-ups and reactivations", "metric": "dollars", "advisors": ["business-advisor"], "capabilities": ["revenue-autopilot"] },
+    { "id": "pipeline-velocity", "domain": "business", "description": "Speed of deal progression through pipeline", "metric": "days", "advisors": ["business-advisor"], "capabilities": ["crm-opportunity-management"] },
+    { "id": "client-retention", "domain": "business", "description": "Customer health improvement and churn prevention", "metric": "percentage", "advisors": ["business-advisor"], "capabilities": ["crm-customer-health"] },
+    { "id": "money-saved", "domain": "finance", "description": "Savings from subscription waste and optimization", "metric": "dollars", "advisors": ["money-advisor"], "capabilities": ["subscription-management"] },
+    { "id": "cash-visibility", "domain": "finance", "description": "Days of accurate cash flow visibility ahead", "metric": "days", "advisors": ["money-advisor"], "capabilities": ["cashflow-analysis"] },
+    { "id": "bill-confidence", "domain": "finance", "description": "Percentage of bills tracked and on-time", "metric": "percentage", "advisors": ["money-advisor"], "capabilities": ["bill-management"] },
+    { "id": "time-saved-household", "domain": "concierge", "description": "Hours saved on household coordination weekly", "metric": "hours", "advisors": ["concierge-advisor"], "capabilities": ["task-prioritization", "household-coordination"] },
+    { "id": "conflict-prevention", "domain": "concierge", "description": "Scheduling conflicts prevented", "metric": "count", "advisors": ["concierge-advisor"], "capabilities": ["calendar-management"] },
+    { "id": "decision-quality", "domain": "cross-domain", "description": "Boardroom decisions with full advisor council input", "metric": "percentage", "advisors": ["strategy-advisor"], "capabilities": ["boardroom-generation"] }
+  ]
+}

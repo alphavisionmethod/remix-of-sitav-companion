@@ -1,0 +1,103 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Kong Declarative Configuration
+# Routes requests to Supabase services (Auth, REST, Realtime, Storage)
+# ═══════════════════════════════════════════════════════════════
+
+_format_version: "2.1"
+_transform: true
+
+services:
+  # ── PostgREST ──────────────────────────────────────────────────
+  - name: rest-v1
+    url: http://sita-supabase-db:3000
+    routes:
+      - name: rest-v1-route
+        strip_path: true
+        paths:
+          - /rest/v1/
+    plugins:
+      - name: cors
+      - name: key-auth
+        config:
+          hide_credentials: false
+
+  # ── GoTrue Auth ────────────────────────────────────────────────
+  - name: auth-v1
+    url: http://sita-supabase-auth:9999
+    routes:
+      - name: auth-v1-route
+        strip_path: true
+        paths:
+          - /auth/v1/
+    plugins:
+      - name: cors
+
+  # ── Realtime ───────────────────────────────────────────────────
+  - name: realtime-v1
+    url: http://sita-supabase-db:4000
+    routes:
+      - name: realtime-v1-route
+        strip_path: true
+        paths:
+          - /realtime/v1/
+    plugins:
+      - name: cors
+
+  # ── Storage ────────────────────────────────────────────────────
+  - name: storage-v1
+    url: http://sita-supabase-storage:5000
+    routes:
+      - name: storage-v1-route
+        strip_path: true
+        paths:
+          - /storage/v1/
+    plugins:
+      - name: cors
+      - name: key-auth
+        config:
+          hide_credentials: false
+
+  # ── Meta / Health ──────────────────────────────────────────────
+  - name: meta
+    url: http://sita-supabase-db:8080
+    routes:
+      - name: meta-route
+        strip_path: true
+        paths:
+          - /pg/
+
+consumers:
+  - username: anon
+    keyauth_credentials:
+      - key: ${SUPABASE_ANON_KEY}
+  - username: service_role
+    keyauth_credentials:
+      - key: ${SUPABASE_SERVICE_KEY}
+
+plugins:
+  - name: cors
+    config:
+      origins:
+        - "*"
+      methods:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+        - OPTIONS
+      headers:
+        - Accept
+        - Authorization
+        - Content-Type
+        - apikey
+        - x-client-info
+      exposed_headers:
+        - Content-Range
+      max_age: 3600
+      credentials: true
+  - name: request-transformer
+    config:
+      add:
+        headers:
+          - "X-Request-Id:$(uuid)"

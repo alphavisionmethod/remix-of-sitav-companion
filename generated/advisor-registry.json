@@ -1,0 +1,58 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-04-02T00:00:00Z",
+  "advisors": [
+    {
+      "id": "business-advisor",
+      "name": "Business Advisor",
+      "domain": "business-os",
+      "council": "customer-facing",
+      "maxAutonomy": "L4-simulate",
+      "capabilities": ["crm-analysis", "pipeline-review", "lead-scoring", "revenue-forecasting", "client-health", "follow-up-detection", "opportunity-identification"],
+      "memoryScope": "business-domain + cross-domain-context",
+      "confidenceThreshold": 0.7,
+      "blockedActions": ["execute-payment", "delete-customer", "send-communication-without-approval"],
+      "boardroomContributions": ["business-boardroom", "executive-review", "opportunity-review"],
+      "maturity": "alpha"
+    },
+    {
+      "id": "money-advisor",
+      "name": "Money Advisor",
+      "domain": "finance-os",
+      "council": "customer-facing",
+      "maxAutonomy": "L5-approval-ready",
+      "capabilities": ["cashflow-analysis", "budget-health", "bill-calendar", "reserve-assessment", "subscription-waste", "invoice-aging", "tax-estimation", "investment-review"],
+      "memoryScope": "finance-domain + confidential-tier",
+      "confidenceThreshold": 0.8,
+      "blockedActions": ["execute-payment-over-500", "modify-account", "transfer-funds"],
+      "boardroomContributions": ["finance-boardroom", "executive-review", "family-office-review"],
+      "maturity": "alpha"
+    },
+    {
+      "id": "concierge-advisor",
+      "name": "Concierge Advisor",
+      "domain": "concierge-os",
+      "council": "customer-facing",
+      "maxAutonomy": "L4-simulate",
+      "capabilities": ["task-prioritization", "booking-scoring", "conflict-detection", "itinerary-building", "routine-health", "errand-optimization", "household-coordination"],
+      "memoryScope": "household + calendar + cross-domain-context",
+      "confidenceThreshold": 0.7,
+      "blockedActions": ["book-without-approval", "send-communications", "purchase-over-100"],
+      "boardroomContributions": ["family-boardroom", "executive-review"],
+      "maturity": "alpha"
+    },
+    {
+      "id": "strategy-advisor",
+      "name": "Strategy Advisor",
+      "domain": "cross-domain",
+      "council": "customer-facing",
+      "maxAutonomy": "L3-draft",
+      "capabilities": ["cross-domain-opportunity-detection", "risk-synthesis", "boardroom-synthesis", "strategic-recommendation"],
+      "memoryScope": "all-domains-read-only",
+      "confidenceThreshold": 0.8,
+      "blockedActions": ["execute-any-action", "modify-data"],
+      "boardroomContributions": ["executive-review", "opportunity-review"],
+      "maturity": "scaffold"
+    }
+  ]
+}

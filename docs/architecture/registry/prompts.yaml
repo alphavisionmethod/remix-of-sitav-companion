@@ -1,0 +1,69 @@
+# SITA OS — Prompt Registry
+
+prompts:
+  advisor-system:
+    - id: business-advisor-system
+      domain: business-os
+      advisor: business-advisor
+      type: system
+      description: CRM, pipeline, revenue, and client health context
+
+    - id: money-advisor-system
+      domain: finance-os
+      advisor: money-advisor
+      type: system
+      description: Finance, reserves, and investment context
+
+    - id: concierge-advisor-system
+      domain: concierge-os
+      advisor: concierge-advisor
+      type: system
+      description: Household, calendar, and logistics context
+
+    - id: strategy-advisor-system
+      domain: cross-domain
+      advisor: strategy-advisor
+      type: system
+      description: Cross-domain synthesis and strategic context
+
+  generation:
+    - id: boardroom-synthesis
+      domain: boardroom
+      type: generation
+      description: Multi-advisor boardroom packet synthesis
+
+    - id: explanation-assembly
+      domain: brain-core
+      type: generation
+      description: Plain-language explanation of advisor reasoning
+
+    - id: lead-scoring-narrative
+      domain: business-os
+      type: generation
+      description: Lead score factor explanation
+
+    - id: cashflow-summary
+      domain: finance-os
+      type: generation
+      description: Cash flow position narrative
+
+    - id: household-briefing
+      domain: concierge-os
+      type: generation
+      description: Daily household briefing
+
+  internal-agent:
+    - id: incident-classification
+      domain: reliability-ops
+      type: internal-agent
+      description: Incident severity and root cause classification
+
+    - id: cost-anomaly-detection
+      domain: runtime-cost
+      type: internal-agent
+      description: Token spend anomaly detection
+
+    - id: policy-compliance-check
+      domain: security-trust
+      type: internal-agent
+      description: Policy boundary compliance verification

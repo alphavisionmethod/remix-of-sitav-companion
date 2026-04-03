@@ -1,0 +1,66 @@
+# SITA OS — Workflow Registry
+
+workflows:
+  business:
+    - id: lead-qualification
+      trigger: lead.captured
+      steps: [score, classify, route, notify-advisor]
+      approval: false
+
+    - id: follow-up-sequence
+      trigger: customer.health-changed
+      steps: [detect-gap, draft-followup, approve, send]
+      approval: true
+
+    - id: invoice-collection
+      trigger: invoice.overdue
+      steps: [classify-severity, draft-reminder, approve, send, escalate-if-needed]
+      approval: true
+
+    - id: revenue-recovery
+      trigger: opportunity.stalled
+      steps: [detect, analyze, recommend, approve-action, execute]
+      approval: true
+
+  finance:
+    - id: bill-payment
+      trigger: bill.upcoming
+      steps: [verify-amount, check-balance, approve, execute-payment, generate-receipt]
+      approval: true
+
+    - id: subscription-review
+      trigger: subscription.detected
+      steps: [classify, assess-waste, recommend, approve-cancellation]
+      approval: true
+
+    - id: reserve-rebalance
+      trigger: reserve.threshold-crossed
+      steps: [calculate-target, simulate, approve, execute, verify]
+      approval: true
+
+  concierge:
+    - id: grocery-reorder
+      trigger: grocery.inventory-low
+      steps: [generate-list, check-preferences, approve, order]
+      approval: true
+
+    - id: travel-booking
+      trigger: booking.search-requested
+      steps: [search, score-options, present, approve, book, confirm, track]
+      approval: true
+
+    - id: calendar-reconciliation
+      trigger: calendar.sync-completed
+      steps: [detect-conflicts, classify-severity, recommend-resolution, apply]
+      approval: false
+
+  platform:
+    - id: file-ingestion
+      trigger: file.uploaded
+      steps: [classify, extract, enrich, index, route, notify]
+      approval: false
+
+    - id: pack-install
+      trigger: pack.install-requested
+      steps: [verify-compatibility, check-permissions, install, run-onboarding, configure, activate]
+      approval: true

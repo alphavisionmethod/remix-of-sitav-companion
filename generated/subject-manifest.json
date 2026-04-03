@@ -1,0 +1,2105 @@
+{
+  "version": "2.0.0",
+  "generated_at": "2026-04-03T00:00:00Z",
+  "streams": [
+    {
+      "id": "SITA_GOVERNED",
+      "description": "Core governance events",
+      "retention": "limits",
+      "maxAge": "90d",
+      "replay": "instant",
+      "partitionKey": "correlationId"
+    },
+    {
+      "id": "SITA_BUSINESS",
+      "description": "Business domain events",
+      "retention": "limits",
+      "maxAge": "365d",
+      "replay": "instant",
+      "partitionKey": "orgId"
+    },
+    {
+      "id": "SITA_PERSONAL",
+      "description": "Personal finance events",
+      "retention": "limits",
+      "maxAge": "365d",
+      "replay": "instant",
+      "partitionKey": "householdId"
+    },
+    {
+      "id": "SITA_VITALITY",
+      "description": "Wellness and schedule events",
+      "retention": "limits",
+      "maxAge": "180d",
+      "replay": "instant",
+      "partitionKey": "userId"
+    },
+    {
+      "id": "SITA_PLATFORM",
+      "description": "Platform infrastructure events",
+      "retention": "limits",
+      "maxAge": "30d",
+      "replay": "instant",
+      "partitionKey": "serviceId"
+    }
+  ],
+  "subjects": [
+    {
+      "id": "lead",
+      "domain": "business-os",
+      "description": "Inbound prospect with lifecycle state",
+      "states": [
+        "new",
+        "qualified",
+        "contacted",
+        "nurturing",
+        "converted",
+        "lost"
+      ]
+    },
+    {
+      "id": "contact",
+      "domain": "business-os",
+      "description": "Person record with communication history"
+    },
+    {
+      "id": "account",
+      "domain": "business-os",
+      "description": "Business/organization entity"
+    },
+    {
+      "id": "customer",
+      "domain": "business-os",
+      "description": "Active client with health score",
+      "states": [
+        "active",
+        "at-risk",
+        "churned",
+        "reactivated"
+      ]
+    },
+    {
+      "id": "opportunity",
+      "domain": "business-os",
+      "description": "Active deal in pipeline",
+      "states": [
+        "discovery",
+        "proposal",
+        "negotiation",
+        "closed-won",
+        "closed-lost"
+      ]
+    },
+    {
+      "id": "quote",
+      "domain": "business-os",
+      "description": "Priced proposal linked to opportunity",
+      "states": [
+        "draft",
+        "sent",
+        "accepted",
+        "rejected",
+        "expired"
+      ]
+    },
+    {
+      "id": "invoice",
+      "domain": "business-os",
+      "description": "Billing record",
+      "states": [
+        "draft",
+        "sent",
+        "partial",
+        "paid",
+        "overdue",
+        "void"
+      ]
+    },
+    {
+      "id": "financial-account",
+      "domain": "finance-os",
+      "description": "Bank/investment account"
+    },
+    {
+      "id": "transaction",
+      "domain": "finance-os",
+      "description": "Financial transaction record"
+    },
+    {
+      "id": "bill",
+      "domain": "finance-os",
+      "description": "Upcoming payment obligation",
+      "states": [
+        "upcoming",
+        "due",
+        "paid",
+        "overdue"
+      ]
+    },
+    {
+      "id": "subscription",
+      "domain": "finance-os",
+      "description": "Recurring payment",
+      "states": [
+        "active",
+        "flagged-waste",
+        "cancelled"
+      ]
+    },
+    {
+      "id": "reserve",
+      "domain": "finance-os",
+      "description": "Savings/reserve allocation"
+    },
+    {
+      "id": "household-task",
+      "domain": "concierge-os",
+      "description": "Family/household action item",
+      "states": [
+        "pending",
+        "in-progress",
+        "completed",
+        "deferred"
+      ]
+    },
+    {
+      "id": "booking",
+      "domain": "concierge-os",
+      "description": "Travel/service booking",
+      "states": [
+        "searching",
+        "options-scored",
+        "approval-needed",
+        "booked",
+        "confirmed",
+        "completed",
+        "cancelled"
+      ]
+    },
+    {
+      "id": "reminder",
+      "domain": "concierge-os",
+      "description": "Timed reminder or nudge"
+    },
+    {
+      "id": "file",
+      "domain": "platform",
+      "description": "Ingested document",
+      "states": [
+        "uploading",
+        "classifying",
+        "extracting",
+        "indexed",
+        "review-needed",
+        "archived"
+      ]
+    },
+    {
+      "id": "workflow",
+      "domain": "platform",
+      "description": "Automated process instance",
+      "states": [
+        "pending",
+        "running",
+        "waiting-approval",
+        "completed",
+        "failed",
+        "stuck",
+        "rolled-back"
+      ]
+    },
+    {
+      "id": "approval",
+      "domain": "platform",
+      "description": "Approval request",
+      "states": [
+        "pending",
+        "approved",
+        "rejected",
+        "expired",
+        "escalated",
+        "delegated"
+      ]
+    },
+    {
+      "id": "receipt",
+      "domain": "platform",
+      "description": "Immutable proof record"
+    },
+    {
+      "id": "pack",
+      "domain": "platform",
+      "description": "Installed operating intelligence pack",
+      "states": [
+        "available",
+        "installing",
+        "active",
+        "paused",
+        "updating",
+        "uninstalling",
+        "trial"
+      ]
+    },
+    {
+      "id": "notification",
+      "domain": "platform",
+      "description": "User notification with urgency and read state",
+      "states": [
+        "unread",
+        "read"
+      ]
+    },
+    {
+      "id": "moat-event",
+      "domain": "moat",
+      "description": "Competitive defensibility event registered for lock-in tracking"
+    },
+    {
+      "id": "simulation-conversion",
+      "domain": "moat",
+      "description": "Progression from simulation to live execution",
+      "states": [
+        "simulated",
+        "approved-for-live",
+        "executing",
+        "completed",
+        "rolled-back"
+      ]
+    },
+    {
+      "id": "sovereign-export",
+      "domain": "moat",
+      "description": "Data export pack with integrity verification",
+      "states": [
+        "preparing",
+        "ready",
+        "verified",
+        "expired"
+      ]
+    },
+    {
+      "id": "trust-posture",
+      "domain": "moat",
+      "description": "Institutional trust expectations report"
+    },
+    {
+      "id": "adoption-metric",
+      "domain": "moat",
+      "description": "Feature adoption progression metric",
+      "states": [
+        "observe",
+        "suggest",
+        "approve-execute",
+        "delegated-single",
+        "delegated-recurring"
+      ]
+    },
+    {
+      "id": "competitive-gap",
+      "domain": "moat",
+      "description": "Gap analysis vs generic AI tooling"
+    },
+    {
+      "id": "proof-density",
+      "domain": "moat",
+      "description": "Governed execution proof density profile"
+    },
+    {
+      "id": "firewall-rule",
+      "domain": "enterprise",
+      "description": "Tenant firewall access control rule",
+      "states": [
+        "active",
+        "disabled"
+      ]
+    },
+    {
+      "id": "audit-review",
+      "domain": "enterprise",
+      "description": "Periodic enterprise audit review",
+      "states": [
+        "pending",
+        "completed"
+      ]
+    },
+    {
+      "id": "role-permission",
+      "domain": "enterprise",
+      "description": "Role-permission grant with scope",
+      "states": [
+        "active",
+        "expired",
+        "revoked"
+      ]
+    },
+    {
+      "id": "control-plane-event",
+      "domain": "enterprise",
+      "description": "Enterprise control plane event"
+    },
+    {
+      "id": "lead.created",
+      "domain": "business-os",
+      "description": "Lead created from inbound source",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "lead.qualified",
+      "domain": "business-os",
+      "description": "Lead qualified by scoring engine",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "lead.converted",
+      "domain": "business-os",
+      "description": "Lead converted to customer",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "lead.lost",
+      "domain": "business-os",
+      "description": "Lead marked as lost",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "lead.score.updated",
+      "domain": "business-os",
+      "description": "Lead score recalculated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "lead.assigned",
+      "domain": "business-os",
+      "description": "Lead assigned to owner",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "lead.nurture.started",
+      "domain": "business-os",
+      "description": "Nurture sequence initiated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "lead.nurture.completed",
+      "domain": "business-os",
+      "description": "Nurture sequence completed",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "contact.created",
+      "domain": "business-os",
+      "description": "New contact record created",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "contact.updated",
+      "domain": "business-os",
+      "description": "Contact information updated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "contact.merged",
+      "domain": "business-os",
+      "description": "Duplicate contacts merged",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "contact.enriched",
+      "domain": "business-os",
+      "description": "Contact enriched with external data",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "account.created",
+      "domain": "business-os",
+      "description": "New business account created",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "account.updated",
+      "domain": "business-os",
+      "description": "Account details updated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "account.health.changed",
+      "domain": "business-os",
+      "description": "Account health score changed",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "account.tier.changed",
+      "domain": "business-os",
+      "description": "Account tier upgraded or downgraded",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "customer.created",
+      "domain": "business-os",
+      "description": "New customer activated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "customer.health.updated",
+      "domain": "business-os",
+      "description": "Customer health score recalculated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "customer.churn.predicted",
+      "domain": "business-os",
+      "description": "Churn risk detected",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "customer.reactivated",
+      "domain": "business-os",
+      "description": "Churned customer reactivated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "customer.feedback.received",
+      "domain": "business-os",
+      "description": "Customer feedback or NPS received",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "opportunity.created",
+      "domain": "business-os",
+      "description": "New sales opportunity opened",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "opportunity.stage.changed",
+      "domain": "business-os",
+      "description": "Opportunity moved to new pipeline stage",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "opportunity.won",
+      "domain": "business-os",
+      "description": "Opportunity closed-won",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "opportunity.lost",
+      "domain": "business-os",
+      "description": "Opportunity closed-lost",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "opportunity.value.updated",
+      "domain": "business-os",
+      "description": "Opportunity value changed",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "opportunity.assigned",
+      "domain": "business-os",
+      "description": "Opportunity assigned to rep",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "quote.created",
+      "domain": "business-os",
+      "description": "New quote generated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "quote.sent",
+      "domain": "business-os",
+      "description": "Quote sent to prospect",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "quote.accepted",
+      "domain": "business-os",
+      "description": "Quote accepted by prospect",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "quote.rejected",
+      "domain": "business-os",
+      "description": "Quote rejected",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "quote.expired",
+      "domain": "business-os",
+      "description": "Quote expired without action",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "quote.revised",
+      "domain": "business-os",
+      "description": "Quote revised with new terms",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "invoice.created",
+      "domain": "business-os",
+      "description": "Invoice generated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "invoice.sent",
+      "domain": "business-os",
+      "description": "Invoice sent to customer",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "invoice.paid",
+      "domain": "business-os",
+      "description": "Invoice payment received",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "invoice.overdue",
+      "domain": "business-os",
+      "description": "Invoice past due date",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "invoice.voided",
+      "domain": "business-os",
+      "description": "Invoice voided",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "invoice.partial.payment",
+      "domain": "business-os",
+      "description": "Partial payment received",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "pipeline.stage.changed",
+      "domain": "business-os",
+      "description": "Pipeline stage transition",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "pipeline.forecast.updated",
+      "domain": "business-os",
+      "description": "Revenue forecast recalculated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "campaign.created",
+      "domain": "business-os",
+      "description": "Marketing campaign created",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "campaign.launched",
+      "domain": "business-os",
+      "description": "Campaign launched",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "campaign.completed",
+      "domain": "business-os",
+      "description": "Campaign completed",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "campaign.performance.updated",
+      "domain": "business-os",
+      "description": "Campaign metrics updated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "outreach.email.sent",
+      "domain": "business-os",
+      "description": "Outreach email sent",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "outreach.email.opened",
+      "domain": "business-os",
+      "description": "Outreach email opened",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "outreach.email.replied",
+      "domain": "business-os",
+      "description": "Outreach email replied to",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "outreach.call.scheduled",
+      "domain": "business-os",
+      "description": "Outreach call scheduled",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "outreach.call.completed",
+      "domain": "business-os",
+      "description": "Outreach call completed",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "outreach.meeting.booked",
+      "domain": "business-os",
+      "description": "Meeting booked from outreach",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "revenue.milestone.reached",
+      "domain": "business-os",
+      "description": "Revenue milestone achieved",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "revenue.recovery.initiated",
+      "domain": "business-os",
+      "description": "Revenue recovery plan started",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "revenue.recovery.completed",
+      "domain": "business-os",
+      "description": "Revenue recovery completed",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "attribution.touch.recorded",
+      "domain": "business-os",
+      "description": "Marketing attribution touch recorded",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "attribution.model.updated",
+      "domain": "business-os",
+      "description": "Attribution model recalculated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "org.created",
+      "domain": "business-os",
+      "description": "Organization created",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "org.updated",
+      "domain": "business-os",
+      "description": "Organization updated",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "org.member.added",
+      "domain": "business-os",
+      "description": "Member added to org",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "org.member.removed",
+      "domain": "business-os",
+      "description": "Member removed from org",
+      "stream": "SITA_BUSINESS"
+    },
+    {
+      "id": "account.linked",
+      "domain": "finance-os",
+      "description": "Financial account linked",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "account.synced",
+      "domain": "finance-os",
+      "description": "Account balance synced",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "account.unlinked",
+      "domain": "finance-os",
+      "description": "Financial account unlinked",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "transaction.imported",
+      "domain": "finance-os",
+      "description": "Transaction imported from bank",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "transaction.categorized",
+      "domain": "finance-os",
+      "description": "Transaction auto-categorized",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "transaction.flagged",
+      "domain": "finance-os",
+      "description": "Transaction flagged for review",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "transaction.reconciled",
+      "domain": "finance-os",
+      "description": "Transaction reconciled",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "transaction.split",
+      "domain": "finance-os",
+      "description": "Transaction split into categories",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "balance.updated",
+      "domain": "finance-os",
+      "description": "Account balance updated",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "balance.low.alert",
+      "domain": "finance-os",
+      "description": "Low balance alert triggered",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "bill.created",
+      "domain": "finance-os",
+      "description": "New bill tracked",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "bill.due.reminder",
+      "domain": "finance-os",
+      "description": "Bill due date reminder",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "bill.paid",
+      "domain": "finance-os",
+      "description": "Bill payment confirmed",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "bill.overdue",
+      "domain": "finance-os",
+      "description": "Bill past due date",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "bill.recurring.detected",
+      "domain": "finance-os",
+      "description": "Recurring bill pattern detected",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "subscription.detected",
+      "domain": "finance-os",
+      "description": "New subscription detected",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "subscription.waste.flagged",
+      "domain": "finance-os",
+      "description": "Subscription flagged as potential waste",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "subscription.cancelled",
+      "domain": "finance-os",
+      "description": "Subscription cancellation confirmed",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "subscription.price.changed",
+      "domain": "finance-os",
+      "description": "Subscription price changed",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "budget.created",
+      "domain": "finance-os",
+      "description": "Budget created",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "budget.updated",
+      "domain": "finance-os",
+      "description": "Budget allocation changed",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "budget.exceeded",
+      "domain": "finance-os",
+      "description": "Budget category exceeded",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "budget.on.track",
+      "domain": "finance-os",
+      "description": "Budget on track for period",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "budget.period.closed",
+      "domain": "finance-os",
+      "description": "Budget period closed",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "reserve.created",
+      "domain": "finance-os",
+      "description": "Reserve fund created",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "reserve.funded",
+      "domain": "finance-os",
+      "description": "Reserve received deposit",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "reserve.withdrawn",
+      "domain": "finance-os",
+      "description": "Reserve withdrawal",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "reserve.target.reached",
+      "domain": "finance-os",
+      "description": "Reserve target amount reached",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "reserve.rebalanced",
+      "domain": "finance-os",
+      "description": "Reserve allocations rebalanced",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "investment.purchased",
+      "domain": "finance-os",
+      "description": "Investment position opened",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "investment.sold",
+      "domain": "finance-os",
+      "description": "Investment position closed",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "investment.dividend.received",
+      "domain": "finance-os",
+      "description": "Dividend payment received",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "investment.rebalance.recommended",
+      "domain": "finance-os",
+      "description": "Portfolio rebalance recommended",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "investment.performance.updated",
+      "domain": "finance-os",
+      "description": "Investment performance recalculated",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "investment.risk.changed",
+      "domain": "finance-os",
+      "description": "Investment risk profile changed",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "net.worth.calculated",
+      "domain": "finance-os",
+      "description": "Net worth snapshot calculated",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "net.worth.milestone",
+      "domain": "finance-os",
+      "description": "Net worth milestone reached",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "cash.flow.forecast",
+      "domain": "finance-os",
+      "description": "Cash flow forecast generated",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "cash.flow.anomaly",
+      "domain": "finance-os",
+      "description": "Cash flow anomaly detected",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "tax.estimate.updated",
+      "domain": "finance-os",
+      "description": "Tax estimate recalculated",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "tax.document.available",
+      "domain": "finance-os",
+      "description": "Tax document ready",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "payment.initiated",
+      "domain": "finance-os",
+      "description": "Payment initiated",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "payment.completed",
+      "domain": "finance-os",
+      "description": "Payment completed",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "payment.failed",
+      "domain": "finance-os",
+      "description": "Payment failed",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "payment.scheduled",
+      "domain": "finance-os",
+      "description": "Payment scheduled",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "payment.cancelled",
+      "domain": "finance-os",
+      "description": "Scheduled payment cancelled",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "goal.created",
+      "domain": "finance-os",
+      "description": "Financial goal created",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "goal.progress",
+      "domain": "finance-os",
+      "description": "Goal progress updated",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "goal.achieved",
+      "domain": "finance-os",
+      "description": "Financial goal achieved",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "goal.at.risk",
+      "domain": "finance-os",
+      "description": "Goal at risk of not being met",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "spending.insight.generated",
+      "domain": "finance-os",
+      "description": "Spending insight generated",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "spending.pattern.detected",
+      "domain": "finance-os",
+      "description": "Spending pattern detected",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "debt.payment.made",
+      "domain": "finance-os",
+      "description": "Debt payment recorded",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "debt.payoff.projected",
+      "domain": "finance-os",
+      "description": "Debt payoff timeline projected",
+      "stream": "SITA_PERSONAL"
+    },
+    {
+      "id": "task.created",
+      "domain": "concierge-os",
+      "description": "Household task created",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "task.assigned",
+      "domain": "concierge-os",
+      "description": "Task assigned to member",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "task.completed",
+      "domain": "concierge-os",
+      "description": "Task completed",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "task.overdue",
+      "domain": "concierge-os",
+      "description": "Task past due date",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "task.recurring.generated",
+      "domain": "concierge-os",
+      "description": "Recurring task generated",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "task.delegated",
+      "domain": "concierge-os",
+      "description": "Task delegated to another member",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "grocery.list.created",
+      "domain": "concierge-os",
+      "description": "Grocery list created",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "grocery.list.updated",
+      "domain": "concierge-os",
+      "description": "Grocery list updated",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "grocery.item.added",
+      "domain": "concierge-os",
+      "description": "Item added to grocery list",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "grocery.item.purchased",
+      "domain": "concierge-os",
+      "description": "Grocery item purchased",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "grocery.reorder.suggested",
+      "domain": "concierge-os",
+      "description": "Reorder suggestion based on patterns",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "grocery.budget.exceeded",
+      "domain": "concierge-os",
+      "description": "Grocery budget exceeded",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "meal.plan.created",
+      "domain": "concierge-os",
+      "description": "Meal plan created",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "meal.plan.updated",
+      "domain": "concierge-os",
+      "description": "Meal plan adjusted",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "travel.search.initiated",
+      "domain": "concierge-os",
+      "description": "Travel search started",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "travel.options.scored",
+      "domain": "concierge-os",
+      "description": "Travel options scored and ranked",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "travel.booking.requested",
+      "domain": "concierge-os",
+      "description": "Travel booking requested",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "travel.booking.confirmed",
+      "domain": "concierge-os",
+      "description": "Travel booking confirmed",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "travel.booking.cancelled",
+      "domain": "concierge-os",
+      "description": "Travel booking cancelled",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "travel.itinerary.updated",
+      "domain": "concierge-os",
+      "description": "Travel itinerary updated",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "travel.alert.issued",
+      "domain": "concierge-os",
+      "description": "Travel alert issued",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "travel.expense.tracked",
+      "domain": "concierge-os",
+      "description": "Travel expense tracked",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "schedule.event.created",
+      "domain": "concierge-os",
+      "description": "Calendar event created",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "schedule.event.updated",
+      "domain": "concierge-os",
+      "description": "Calendar event updated",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "schedule.event.cancelled",
+      "domain": "concierge-os",
+      "description": "Calendar event cancelled",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "schedule.conflict.detected",
+      "domain": "concierge-os",
+      "description": "Schedule conflict detected",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "schedule.optimized",
+      "domain": "concierge-os",
+      "description": "Schedule optimized",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "schedule.reminder.sent",
+      "domain": "concierge-os",
+      "description": "Schedule reminder sent",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "household.member.added",
+      "domain": "concierge-os",
+      "description": "Household member added",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "household.member.removed",
+      "domain": "concierge-os",
+      "description": "Household member removed",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "household.chore.rotated",
+      "domain": "concierge-os",
+      "description": "Chore rotation updated",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "wellness.check.in",
+      "domain": "concierge-os",
+      "description": "Wellness check-in recorded",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "wellness.goal.set",
+      "domain": "concierge-os",
+      "description": "Wellness goal established",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "wellness.streak.updated",
+      "domain": "concierge-os",
+      "description": "Wellness streak updated",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "wellness.insight.generated",
+      "domain": "concierge-os",
+      "description": "Wellness insight generated",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "bio.signal.received",
+      "domain": "concierge-os",
+      "description": "Biometric signal received",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "bio.threshold.alert",
+      "domain": "concierge-os",
+      "description": "Biometric threshold alert",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "vendor.contacted",
+      "domain": "concierge-os",
+      "description": "Service vendor contacted",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "vendor.booking.confirmed",
+      "domain": "concierge-os",
+      "description": "Vendor service confirmed",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "vendor.review.submitted",
+      "domain": "concierge-os",
+      "description": "Vendor review submitted",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "maintenance.scheduled",
+      "domain": "concierge-os",
+      "description": "Home maintenance scheduled",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "maintenance.completed",
+      "domain": "concierge-os",
+      "description": "Home maintenance completed",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "maintenance.overdue",
+      "domain": "concierge-os",
+      "description": "Maintenance task overdue",
+      "stream": "SITA_VITALITY"
+    },
+    {
+      "id": "intent.received",
+      "domain": "platform",
+      "description": "User intent received by brain-core",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "intent.classified",
+      "domain": "platform",
+      "description": "Intent classified by NLU",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "intent.routed",
+      "domain": "platform",
+      "description": "Intent routed to capability",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "intent.completed",
+      "domain": "platform",
+      "description": "Intent fully resolved",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "intent.failed",
+      "domain": "platform",
+      "description": "Intent processing failed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "policy.evaluated",
+      "domain": "platform",
+      "description": "Policy rule evaluated",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "policy.updated",
+      "domain": "platform",
+      "description": "Policy rule updated",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "policy.violation",
+      "domain": "platform",
+      "description": "Policy violation detected",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "policy.exception.granted",
+      "domain": "platform",
+      "description": "Policy exception granted",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "approval.requested",
+      "domain": "platform",
+      "description": "Approval request created",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "approval.approved",
+      "domain": "platform",
+      "description": "Approval granted",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "approval.rejected",
+      "domain": "platform",
+      "description": "Approval rejected",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "approval.escalated",
+      "domain": "platform",
+      "description": "Approval escalated",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "approval.expired",
+      "domain": "platform",
+      "description": "Approval request expired",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "approval.delegated",
+      "domain": "platform",
+      "description": "Approval delegated to another user",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "receipt.issued",
+      "domain": "platform",
+      "description": "Immutable receipt issued",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "receipt.verified",
+      "domain": "platform",
+      "description": "Receipt verification completed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "receipt.tamper.detected",
+      "domain": "platform",
+      "description": "Receipt tampering detected",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "execution.started",
+      "domain": "platform",
+      "description": "Capability execution started",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "execution.completed",
+      "domain": "platform",
+      "description": "Capability execution completed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "execution.failed",
+      "domain": "platform",
+      "description": "Capability execution failed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "execution.rolled.back",
+      "domain": "platform",
+      "description": "Execution rolled back",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "execution.retried",
+      "domain": "platform",
+      "description": "Execution retry attempted",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "verification.passed",
+      "domain": "platform",
+      "description": "Post-execution verification passed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "verification.failed",
+      "domain": "platform",
+      "description": "Post-execution verification failed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "verification.rollback.recommended",
+      "domain": "platform",
+      "description": "Rollback recommended by verification",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "workflow.created",
+      "domain": "platform",
+      "description": "Workflow instance created",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "workflow.state.changed",
+      "domain": "platform",
+      "description": "Workflow state transitioned",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "workflow.completed",
+      "domain": "platform",
+      "description": "Workflow completed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "workflow.failed",
+      "domain": "platform",
+      "description": "Workflow failed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "workflow.stuck",
+      "domain": "platform",
+      "description": "Workflow stuck detection",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "workflow.recovered",
+      "domain": "platform",
+      "description": "Stuck workflow recovered",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "connector.registered",
+      "domain": "platform",
+      "description": "Connector registered",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "connector.connected",
+      "domain": "platform",
+      "description": "Connector established connection",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "connector.disconnected",
+      "domain": "platform",
+      "description": "Connector disconnected",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "connector.health.changed",
+      "domain": "platform",
+      "description": "Connector health score changed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "connector.sync.completed",
+      "domain": "platform",
+      "description": "Connector data sync completed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "connector.error",
+      "domain": "platform",
+      "description": "Connector error occurred",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "connector.circuit.opened",
+      "domain": "platform",
+      "description": "Connector circuit breaker opened",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "connector.circuit.closed",
+      "domain": "platform",
+      "description": "Connector circuit breaker closed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "memory.stored",
+      "domain": "platform",
+      "description": "Memory entry stored",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "memory.retrieved",
+      "domain": "platform",
+      "description": "Memory entry retrieved",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "memory.expired",
+      "domain": "platform",
+      "description": "Memory entry expired",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "memory.consolidated",
+      "domain": "platform",
+      "description": "Memory entries consolidated",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "event.published",
+      "domain": "platform",
+      "description": "Event published to bus",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "event.consumed",
+      "domain": "platform",
+      "description": "Event consumed by subscriber",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "event.dead.lettered",
+      "domain": "platform",
+      "description": "Event moved to dead letter",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "event.replayed",
+      "domain": "platform",
+      "description": "Event replayed from stream",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "projection.updated",
+      "domain": "platform",
+      "description": "Read model projection updated",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "projection.rebuilt",
+      "domain": "platform",
+      "description": "Projection rebuilt from events",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "projection.stale",
+      "domain": "platform",
+      "description": "Projection marked as stale",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "file.uploaded",
+      "domain": "platform",
+      "description": "File uploaded for ingestion",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "file.classified",
+      "domain": "platform",
+      "description": "File classified by type",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "file.extracted",
+      "domain": "platform",
+      "description": "File data extracted",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "file.indexed",
+      "domain": "platform",
+      "description": "File indexed for search",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "file.archived",
+      "domain": "platform",
+      "description": "File moved to archive",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "file.deleted",
+      "domain": "platform",
+      "description": "File deleted",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "search.query.executed",
+      "domain": "platform",
+      "description": "Search query executed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "search.results.returned",
+      "domain": "platform",
+      "description": "Search results returned",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "search.index.updated",
+      "domain": "platform",
+      "description": "Search index updated",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "identity.created",
+      "domain": "platform",
+      "description": "Identity record created",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "identity.verified",
+      "domain": "platform",
+      "description": "Identity verification completed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "identity.device.registered",
+      "domain": "platform",
+      "description": "Device registered for identity",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "identity.device.challenged",
+      "domain": "platform",
+      "description": "Device challenge issued",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "identity.passkey.created",
+      "domain": "platform",
+      "description": "Passkey created",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "identity.session.started",
+      "domain": "platform",
+      "description": "User session started",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "identity.session.ended",
+      "domain": "platform",
+      "description": "User session ended",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "permission.granted",
+      "domain": "platform",
+      "description": "Permission granted to user",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "permission.revoked",
+      "domain": "platform",
+      "description": "Permission revoked from user",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "permission.checked",
+      "domain": "platform",
+      "description": "Permission check performed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "role.assigned",
+      "domain": "platform",
+      "description": "Role assigned to user",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "role.revoked",
+      "domain": "platform",
+      "description": "Role revoked from user",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "trust.score.updated",
+      "domain": "platform",
+      "description": "Trust score updated for domain",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "trust.flag.raised",
+      "domain": "platform",
+      "description": "Trust flag raised",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "trust.flag.resolved",
+      "domain": "platform",
+      "description": "Trust flag resolved",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "trust.tier.changed",
+      "domain": "platform",
+      "description": "Trust tier changed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "self.healing.detected",
+      "domain": "platform",
+      "description": "Self-healing issue detected",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "self.healing.resolved",
+      "domain": "platform",
+      "description": "Self-healing resolution applied",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "self.healing.escalated",
+      "domain": "platform",
+      "description": "Self-healing escalated to human",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "immune.response.triggered",
+      "domain": "platform",
+      "description": "Immune controller response triggered",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "immune.quarantine.applied",
+      "domain": "platform",
+      "description": "Service quarantined by immune system",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "fleet.health.snapshot",
+      "domain": "platform",
+      "description": "Fleet health snapshot taken",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "fleet.service.degraded",
+      "domain": "platform",
+      "description": "Service degraded in fleet",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "fleet.service.recovered",
+      "domain": "platform",
+      "description": "Service recovered in fleet",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "analytics.metric.recorded",
+      "domain": "platform",
+      "description": "Analytics metric recorded",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "analytics.report.generated",
+      "domain": "platform",
+      "description": "Analytics report generated",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "analytics.anomaly.detected",
+      "domain": "platform",
+      "description": "Analytics anomaly detected",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "billing.usage.recorded",
+      "domain": "platform",
+      "description": "Billing usage event recorded",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "billing.limit.approaching",
+      "domain": "platform",
+      "description": "Billing limit approaching",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "billing.limit.exceeded",
+      "domain": "platform",
+      "description": "Billing limit exceeded",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "billing.plan.changed",
+      "domain": "platform",
+      "description": "Billing plan changed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "billing.invoice.generated",
+      "domain": "platform",
+      "description": "Billing invoice generated",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "diagnostic.recorded",
+      "domain": "platform",
+      "description": "Diagnostic entry recorded",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "diagnostic.alert.triggered",
+      "domain": "platform",
+      "description": "Diagnostic alert triggered",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "diagnostic.trace.captured",
+      "domain": "platform",
+      "description": "Debug trace captured",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "diagnostic.health.report",
+      "domain": "platform",
+      "description": "Health report generated",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "boardroom.session.started",
+      "domain": "platform",
+      "description": "Boardroom session started",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "boardroom.session.completed",
+      "domain": "platform",
+      "description": "Boardroom session completed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "boardroom.advisor.consulted",
+      "domain": "platform",
+      "description": "Advisor consulted in boardroom",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "boardroom.recommendation.generated",
+      "domain": "platform",
+      "description": "Boardroom recommendation generated",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "boardroom.decision.made",
+      "domain": "platform",
+      "description": "Boardroom decision recorded",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "notification.created",
+      "domain": "platform",
+      "description": "Notification created",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "notification.delivered",
+      "domain": "platform",
+      "description": "Notification delivered",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "notification.read",
+      "domain": "platform",
+      "description": "Notification marked as read",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "notification.dismissed",
+      "domain": "platform",
+      "description": "Notification dismissed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "agent.task.assigned",
+      "domain": "platform",
+      "description": "Internal agent task assigned",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "agent.task.completed",
+      "domain": "platform",
+      "description": "Internal agent task completed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "agent.heartbeat.received",
+      "domain": "platform",
+      "description": "Agent heartbeat received",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "agent.error.reported",
+      "domain": "platform",
+      "description": "Agent error reported",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "governance.intake.submitted",
+      "domain": "governance",
+      "description": "Feature intake submitted",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "governance.intake.approved",
+      "domain": "governance",
+      "description": "Feature intake approved",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "governance.spec.validated",
+      "domain": "governance",
+      "description": "Feature spec validated",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "governance.capability.registered",
+      "domain": "governance",
+      "description": "Capability registered",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "governance.schema.validated",
+      "domain": "governance",
+      "description": "Schema validated",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "governance.boundary.checked",
+      "domain": "governance",
+      "description": "Owner boundary checked",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "governance.risk.assessed",
+      "domain": "governance",
+      "description": "Risk tier assessed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "governance.gate.passed",
+      "domain": "governance",
+      "description": "Governance gate passed",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "governance.gate.rejected",
+      "domain": "governance",
+      "description": "Governance gate rejected",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "governance.exception.requested",
+      "domain": "governance",
+      "description": "Governance exception requested",
+      "stream": "SITA_GOVERNED"
+    },
+    {
+      "id": "moat.event.recorded",
+      "domain": "moat",
+      "description": "Moat defensibility event recorded",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "moat.score.updated",
+      "domain": "moat",
+      "description": "Moat score recalculated",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "moat.adoption.tracked",
+      "domain": "moat",
+      "description": "Feature adoption tracked",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "moat.competitive.gap.analyzed",
+      "domain": "moat",
+      "description": "Competitive gap analysis updated",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "moat.simulation.converted",
+      "domain": "moat",
+      "description": "Simulation converted to live execution",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "moat.data.export.prepared",
+      "domain": "moat",
+      "description": "Sovereign data export prepared",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "moat.trust.posture.updated",
+      "domain": "moat",
+      "description": "Institutional trust posture updated",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "moat.proof.density.calculated",
+      "domain": "moat",
+      "description": "Proof density profile calculated",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "enterprise.tenant.created",
+      "domain": "enterprise",
+      "description": "Enterprise tenant provisioned",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "enterprise.tenant.configured",
+      "domain": "enterprise",
+      "description": "Tenant configuration updated",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "enterprise.firewall.rule.created",
+      "domain": "enterprise",
+      "description": "Firewall rule created",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "enterprise.firewall.rule.updated",
+      "domain": "enterprise",
+      "description": "Firewall rule updated",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "enterprise.audit.started",
+      "domain": "enterprise",
+      "description": "Enterprise audit started",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "enterprise.audit.completed",
+      "domain": "enterprise",
+      "description": "Enterprise audit completed",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "enterprise.compliance.check",
+      "domain": "enterprise",
+      "description": "Compliance check performed",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "enterprise.sso.configured",
+      "domain": "enterprise",
+      "description": "SSO configuration updated",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "enterprise.data.residency.set",
+      "domain": "enterprise",
+      "description": "Data residency configured",
+      "stream": "SITA_PLATFORM"
+    },
+    {
+      "id": "enterprise.backup.completed",
+      "domain": "enterprise",
+      "description": "Enterprise backup completed",
+      "stream": "SITA_PLATFORM"
+    }
+  ]
+}

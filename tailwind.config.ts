@@ -8,13 +8,17 @@ export default {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+      screens: { "2xl": "1400px" },
     },
     extend: {
+      fontFamily: {
+        display: ["Space Grotesk", "sans-serif"],
+        body: ["Inter", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"],
+      },
       colors: {
         border: "hsl(var(--border))",
+        "border-subtle": "hsl(var(--border-subtle))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
@@ -46,6 +50,7 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+          elevated: "hsl(var(--card-elevated))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -57,33 +62,129 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        sita: {
+          purple: "hsl(var(--sita-purple))",
+          "purple-light": "hsl(var(--sita-purple-light))",
+          "purple-dark": "hsl(var(--sita-purple-dark))",
+          gold: "hsl(var(--sita-gold))",
+          "gold-light": "hsl(var(--sita-gold-light))",
+          "gold-dark": "hsl(var(--sita-gold-dark))",
+        },
+        trust: {
+          safe: "hsl(var(--trust-safe))",
+          verified: "hsl(var(--trust-verified))",
+          review: "hsl(var(--trust-review))",
+          approval: "hsl(var(--trust-approval))",
+          "high-impact": "hsl(var(--trust-high-impact))",
+          "low-confidence": "hsl(var(--trust-low-confidence))",
+          recovered: "hsl(var(--trust-recovered))",
+          degraded: "hsl(var(--trust-degraded))",
+          blocked: "hsl(var(--trust-blocked))",
+        },
+        proof: {
+          confirmed: "hsl(var(--proof-confirmed))",
+          partial: "hsl(var(--proof-partial))",
+          missing: "hsl(var(--proof-missing))",
+          disputed: "hsl(var(--proof-disputed))",
+        },
+        state: {
+          proposed: "hsl(var(--state-proposed))",
+          drafted: "hsl(var(--state-drafted))",
+          simulated: "hsl(var(--state-simulated))",
+          "approval-requested": "hsl(var(--state-approval-requested))",
+          approved: "hsl(var(--state-approved))",
+          queued: "hsl(var(--state-queued))",
+          executing: "hsl(var(--state-executing))",
+          completed: "hsl(var(--state-completed))",
+          verified: "hsl(var(--state-verified))",
+          failed: "hsl(var(--state-failed))",
+          escalated: "hsl(var(--state-escalated))",
+          "rolled-back": "hsl(var(--state-rolled-back))",
+        },
+        urgency: {
+          critical: "hsl(var(--urgency-critical))",
+          high: "hsl(var(--urgency-high))",
+          medium: "hsl(var(--urgency-medium))",
+          low: "hsl(var(--urgency-low))",
+          none: "hsl(var(--urgency-none))",
+        },
+        opportunity: "hsl(var(--opportunity))",
+        domain: {
+          business: "hsl(var(--domain-business))",
+          money: "hsl(var(--domain-money))",
+          concierge: "hsl(var(--domain-concierge))",
+          boardroom: "hsl(var(--domain-boardroom))",
+          admin: "hsl(var(--domain-admin))",
+          files: "hsl(var(--domain-files))",
+        },
+        surface: {
+          "0": "hsl(var(--surface-0))",
+          "1": "hsl(var(--surface-1))",
+          "2": "hsl(var(--surface-2))",
+          "3": "hsl(var(--surface-3))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xl: "calc(var(--radius) + 4px)",
+        "2xl": "calc(var(--radius) + 8px)",
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0", opacity: "0" },
+          to: { height: "var(--radix-accordion-content-height)", opacity: "1" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)", opacity: "1" },
+          to: { height: "0", opacity: "0" },
+        },
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-out": {
+          "0%": { opacity: "1", transform: "translateY(0)" },
+          "100%": { opacity: "0", transform: "translateY(8px)" },
+        },
+        "scale-in": {
+          "0%": { transform: "scale(0.97)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+        "slide-in-right": {
+          "0%": { transform: "translateX(100%)", opacity: "0" },
+          "100%": { transform: "translateX(0)", opacity: "1" },
+        },
+        "slide-out-right": {
+          "0%": { transform: "translateX(0)", opacity: "1" },
+          "100%": { transform: "translateX(100%)", opacity: "0" },
+        },
+        "slide-up": {
+          "0%": { transform: "translateY(4px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "0.4" },
+          "50%": { opacity: "1" },
+        },
+        "shimmer": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.35s ease-out",
+        "fade-out": "fade-out 0.25s ease-out",
+        "scale-in": "scale-in 0.2s ease-out",
+        "slide-in-right": "slide-in-right 0.3s ease-out",
+        "slide-out-right": "slide-out-right 0.3s ease-out",
+        "slide-up": "slide-up 0.25s ease-out",
+        "pulse-glow": "pulse-glow 3s ease-in-out infinite",
+        "shimmer": "shimmer 2s linear infinite",
+        "enter": "fade-in 0.35s ease-out, scale-in 0.2s ease-out",
       },
     },
   },

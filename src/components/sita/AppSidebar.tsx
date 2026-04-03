@@ -1,0 +1,170 @@
+import { Home, Briefcase, DollarSign, Headphones, Workflow, Receipt, BarChart3, FolderOpen, Settings, Shield, LogOut,
+  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { NavLink } from "@/components/NavLink";
+import { useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useUserPreferences, showBusinessNav, showConciergeNav } from "@/hooks/use-user-preferences";
+import logo from "@/assets/logo.jpeg";
+import {
+  Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu,
+  SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter, useSidebar,
+} from "@/components/ui/sidebar";
+
+const mainNav = [
+  { title: "Daily Pulse", url: "/", icon: Home },
+  { title: "Life Dashboard", url: "/life", icon: Heart },
+  { title: "Business", url: "/business", icon: Briefcase },
+  { title: "Money", url: "/money", icon: DollarSign },
+  { title: "Concierge", url: "/concierge", icon: Headphones },
+];
+
+const intelligenceNav = [
+  { title: "Advisors", url: "/advisors", icon: Users },
+  { title: "Inbox", url: "/inbox", icon: Inbox },
+  { title: "Activity", url: "/activity", icon: Activity },
+  { title: "Opportunities", url: "/opportunities", icon: Sparkles },
+  { title: "Approvals", url: "/approvals", icon: CheckCircle },
+];
+
+const workspaceNav = [
+  { title: "Docs", url: "/docs", icon: FileText },
+  { title: "Sheets", url: "/sheets", icon: Table2 },
+  { title: "Slides", url: "/slides", icon: Presentation },
+];
+
+const systemNav = [
+  { title: "Workflows", url: "/workflows", icon: Workflow },
+  { title: "Proof", url: "/proof", icon: Receipt },
+  { title: "Files", url: "/files", icon: FolderOpen },
+  { title: "Boardroom", url: "/boardroom", icon: BarChart3 },
+];
+
+const controlNav = [
+  { title: "Personalization", url: "/personalization", icon: Brain },
+  { title: "Memory", url: "/memory", icon: Eye },
+  { title: "Automation", url: "/automation", icon: Zap },
+  { title: "Agent Activity", url: "/agent-activity", icon: Activity },
+  { title: "System", url: "/system", icon: Shield },
+];
+
+const bottomNav = [
+  { title: "Pack Store", url: "/store", icon: Package },
+  { title: "Settings", url: "/settings", icon: Settings },
+  { title: "Mission Control", url: "/mission-control", icon: Server },
+  { title: "Owner", url: "/owner", icon: Shield },
+];
+
+const NavGroup = ({ items, label, collapsed }: { items: typeof mainNav; label?: string; collapsed: boolean }) => {
+  const location = useLocation();
+  const isActive = (path: string) => path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
+  return (
+    <SidebarGroup>
+      {label && !collapsed && (
+        <SidebarGroupLabel className="px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/50 mt-1">
+          {label}
+        </SidebarGroupLabel>
+      )}
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {items.map((item) => {
+            const active = isActive(item.url);
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild isActive={active}>
+                  <NavLink
+                    to={item.url}
+                    end={item.url === "/"}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-200",
+                      active
+                        ? "bg-primary/8 text-foreground shadow-xs border border-primary/10"
+                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                    )}
+                    activeClassName=""
+                  >
+                    <item.icon className={cn("h-[18px] w-[18px] shrink-0", active && "text-primary")} strokeWidth={1.8} />
+                    {!collapsed && <span>{item.title}</span>}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+};
+
+export function AppSidebar() {
+  const { state } = useSidebar();
+  const collapsed = state === "collapsed";
+  const { user, signOut } = useAuth();
+  const { isDemoMode } = useDataMode();
+  const { preferences } = useUserPreferences();
+  const role = preferences.role;
+
+  const displayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
+  const initials = displayName.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2);
+
+  return (
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
+      <SidebarHeader className="p-4 pb-6">
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <img src={logo} alt="SITA OS" className="h-9 w-9 rounded-xl shadow-xs" />
+            <div className={`absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-sidebar ${isDemoMode ? "bg-amber-500" : "bg-emerald-500"}`} title={isDemoMode ? "Demo Mode" : "Live Mode"} />
+          </div>
+          {!collapsed && (
+            <div>
+              <h1 className="font-display text-[15px] font-bold tracking-tight gradient-sita-text">SITA</h1>
+              <p className={`text-[9px] tracking-[0.2em] uppercase font-semibold ${isDemoMode ? "text-amber-500" : "text-emerald-500"}`}>
+                {isDemoMode ? "Demo" : "Live"}
+              </p>
+            </div>
+          )}
+        </div>
+      </SidebarHeader>
+
+      <SidebarContent className="px-2 scrollbar-thin">
+        <NavGroup items={mainNav.filter(item => {
+          if (item.url === "/business" && !showBusinessNav(role)) return false;
+          if (item.url === "/concierge" && !showConciergeNav(role)) return false;
+          return true;
+        })} label="Spaces" collapsed={collapsed} />
+        <NavGroup items={intelligenceNav} label="Intelligence" collapsed={collapsed} />
+        <NavGroup items={workspaceNav} label="Workspace" collapsed={collapsed} />
+        <NavGroup items={systemNav} label="System" collapsed={collapsed} />
+        <NavGroup items={controlNav} label="Control" collapsed={collapsed} />
+      </SidebarContent>
+
+      <SidebarFooter className="px-2 pb-4 border-t border-sidebar-border pt-2">
+        <NavGroup items={bottomNav} collapsed={collapsed} />
+        {user && (
+          <div className="mt-2 px-1">
+            <button
+              onClick={signOut}
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium text-muted-foreground transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
+            >
+              {collapsed ? (
+                <LogOut className="h-[18px] w-[18px] shrink-0" strokeWidth={1.8} />
+              ) : (
+                <>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary shrink-0">
+                    {initials}
+                  </div>
+                  <div className="flex-1 text-left min-w-0">
+                    <p className="text-xs font-medium text-foreground truncate">{displayName}</p>
+                    <p className="text-[10px] text-muted-foreground truncate">{user.email}</p>
+                  </div>
+                  <LogOut className="h-4 w-4 shrink-0" strokeWidth={1.8} />
+                </>
+              )}
+            </button>
+          </div>
+        )}
+      </SidebarFooter>
+    </Sidebar>
+  );
+}

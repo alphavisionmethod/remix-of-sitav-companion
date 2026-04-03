@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-04-02T00:00:00Z",
+  "order": [
+    { "phase": 1, "services": ["event-bus"], "reason": "Foundation — all other services publish/subscribe events" },
+    { "phase": 2, "services": ["identity", "role-permission-engine"], "reason": "Auth and permissions before any domain logic" },
+    { "phase": 3, "services": ["memory-service", "entity-graph", "household-org-graph"], "reason": "State stores before domain services" },
+    { "phase": 4, "services": ["policy-engine", "sovereign-calculation"], "reason": "Policy and deterministic engines before execution" },
+    { "phase": 5, "services": ["connector-control-plane", "connector-runners"], "reason": "Connector infra before domain services that use connectors" },
+    { "phase": 6, "services": ["receipt-service", "verification-engine"], "reason": "Proof infrastructure before execution" },
+    { "phase": 7, "services": ["approval-engine", "executor-service", "capability-router"], "reason": "Execution chain" },
+    { "phase": 8, "services": ["business-os", "finance-os", "concierge-os"], "reason": "Domain modules after all platform services" },
+    { "phase": 9, "services": ["projections", "boardroom"], "reason": "Read models and boardroom after domain events flow" },
+    { "phase": 10, "services": ["brain-core"], "reason": "Orchestrator last — needs all services available" },
+    { "phase": 11, "services": ["analytics", "billing", "support-diagnostics"], "reason": "Observability services can start last" },
+    { "phase": 12, "services": ["api-gateway"], "reason": "Gateway opens traffic after all backends ready" }
+  ]
+}

@@ -1,0 +1,529 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Investment Office / Family Office Workspace
+// 10 tabs: Capital Map, Portfolio, Regime, Risk, Theses, Committee,
+// Opportunities, Execution Review, Proof, Settings
+// ═══════════════════════════════════════════════════════════════
+
+import { useState } from "react";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaTabs, KPITile } from "@/components/sita/SitaComponents";
+import { TrustBadge } from "@/components/sita/TrustBadge";
+import { motion } from "framer-motion";
+import {
+  Building2, Shield, TrendingUp, AlertTriangle, BarChart3,
+  Target, Eye, DollarSign, Activity, Lock, Layers, FileCheck, Wallet,
+  ArrowUpRight, Settings, Search, Zap, CheckCircle2, XCircle, Clock,
+  Scale, BookOpen
+} from "lucide-react";
+import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
+import {
+  buildCapitalMap, analyzePortfolioRisk, detectRegime, runStressScenarios,
+  evaluateThesis, calculatePositionSize,
+  type Position, type CapitalBucket, type Thesis,
+} from "@/lib/domain-engines/investment-office";
+import {
+  getWatchlist, getTradeReviewPackets, getExecutionIntents,
+  getOpportunityScores, getAvailableTrustModes, getInvestmentTrustMode,
+} from "@/lib/services/finance-os/investment-office.service";
+import { INVESTMENT_POLICY_RULES } from "@/lib/core-services/investment-policy-rules";
+
+// ── Mock Data ───────────────────────────────────────────────────
+
+const MOCK_BUCKETS: CapitalBucket[] = [
+  { id: "b1", name: "Personal Checking", type: "personal-cash", balance: 24500, currency: "USD", entityOwner: "Personal", ringfenced: false },
+  { id: "b2", name: "Business Operating", type: "business-cash", balance: 67800, currency: "USD", entityOwner: "Business", ringfenced: false },
+  { id: "b3", name: "Emergency Reserve", type: "reserve-emergency", balance: 35000, targetBalance: 50000, currency: "USD", entityOwner: "Personal", ringfenced: true },
+  { id: "b4", name: "Tax Reserve", type: "reserve-tax", balance: 18000, targetBalance: 22000, currency: "USD", entityOwner: "Business", ringfenced: true },
+  { id: "b5", name: "Growth Fund", type: "reserve-growth", balance: 15000, targetBalance: 25000, currency: "USD", entityOwner: "Business", ringfenced: false },
+  { id: "b6", name: "Investing Capital", type: "investing-capital", balance: 42000, currency: "USD", entityOwner: "Personal", ringfenced: false },
+  { id: "b7", name: "Household Fund", type: "household-cash", balance: 8200, currency: "USD", entityOwner: "Household", ringfenced: false },
+  { id: "b8", name: "College Sinking Fund", type: "sinking-fund", balance: 12000, targetBalance: 80000, currency: "USD", entityOwner: "Household", ringfenced: true },
+];
+
+const MOCK_POSITIONS: Position[] = [
+  { id: "p1", symbol: "SPY", name: "S&P 500 ETF", assetClass: "equity", quantity: 45, avgCostBasis: 420, currentPrice: 485, currency: "USD", venue: "Schwab", custodyType: "brokerage" },
+  { id: "p2", symbol: "BTC", name: "Bitcoin", assetClass: "crypto", quantity: 0.35, avgCostBasis: 38000, currentPrice: 62000, currency: "USD", venue: "Coinbase", custodyType: "exchange" },
+  { id: "p3", symbol: "TLT", name: "20+ Year Treasury", assetClass: "fixed-income", quantity: 80, avgCostBasis: 102, currentPrice: 94, currency: "USD", venue: "Schwab", custodyType: "brokerage" },
+  { id: "p4", symbol: "GLD", name: "Gold ETF", assetClass: "commodity", quantity: 30, avgCostBasis: 175, currentPrice: 192, currency: "USD", venue: "Schwab", custodyType: "brokerage" },
+  { id: "p5", symbol: "ETH", name: "Ethereum", assetClass: "crypto", quantity: 3.2, avgCostBasis: 2200, currentPrice: 3100, currency: "USD", venue: "Coinbase", custodyType: "exchange" },
+  { id: "p6", symbol: "CASH", name: "Cash Sweep", assetClass: "cash", quantity: 15000, avgCostBasis: 1, currentPrice: 1, currency: "USD", venue: "Schwab", custodyType: "brokerage" },
+];
+
+const MOCK_THESES: Thesis[] = [
+  { id: "t1", title: "S&P momentum continuation", asset: "SPY", direction: "long", rationale: "Earnings growth + AI capex cycle", catalysts: ["Q2 earnings season", "Fed rate cut"], invalidationConditions: ["VIX > 30", "Yield curve re-inversion"], sizeLogic: "Core 30% position", regimeContext: "Risk-on trend regime", confidence: 0.72, status: "active", createdAt: Date.now() - 60 * 86400000, approvalStatus: "approved", proofIds: ["proof-001"] },
+  { id: "t2", title: "BTC halving cycle thesis", asset: "BTC", direction: "long", rationale: "Post-halving supply reduction + institutional adoption", catalysts: ["ETF inflows", "Halving effect"], invalidationConditions: ["Regulatory ban", "Exchange collapse"], sizeLogic: "Speculative 5% allocation", regimeContext: "Crypto risk-on", confidence: 0.55, status: "active", createdAt: Date.now() - 120 * 86400000, approvalStatus: "approved", proofIds: ["proof-002"] },
+  { id: "t3", title: "Duration hedge — rates peak", asset: "TLT", direction: "long", rationale: "Rate cuts ahead, duration to rally", catalysts: ["Fed pivot", "Recession signal"], invalidationConditions: ["Inflation re-acceleration", "Fiscal crisis"], sizeLogic: "Hedge 15% allocation", regimeContext: "Rate cycle inflection", confidence: 0.48, status: "active", createdAt: Date.now() - 30 * 86400000, approvalStatus: "approved", proofIds: [] },
+];
+
+const MOCK_REGIME = detectRegime({ vix: 19, sp500Change30d: 2.4, yieldSpread: 1.2, correlationIndex: 0.38, pendingEvents: ["nfp release Friday"] });
+const capitalMap = buildCapitalMap(MOCK_BUCKETS);
+const riskMetrics = analyzePortfolioRisk(MOCK_POSITIONS, capitalMap.reserveCapital);
+const stressScenarios = runStressScenarios(MOCK_POSITIONS, capitalMap.reserveCapital);
+
+const regimeColor = (value: string) => {
+  if (["extreme", "crisis", "flight-to-safety", "stressed", "dislocating", "strong-down"].includes(value)) return "text-destructive bg-destructive/10";
+  if (["elevated", "fragile", "risk-off", "tightening", "high", "down"].includes(value)) return "text-amber-600 bg-amber-500/10";
+  if (["compressed", "risk-on", "abundant", "strong-up", "stable", "low"].includes(value)) return "text-primary bg-primary/10";
+  return "text-muted-foreground bg-secondary";
+};
+
+// ── Sub-Pages (existing 6) ──────────────────────────────────────
+
+const CapitalMapView = () => (
+  <div className="space-y-4">
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <KPITile label="Total Capital" value={`$${Math.round(capitalMap.totalCapital).toLocaleString()}`} sub={`${Object.keys(capitalMap.byEntity).length} entities`} />
+      <KPITile label="Deployable" value={`$${Math.round(capitalMap.deployableCapital).toLocaleString()}`} sub="Available to invest" />
+      <KPITile label="Reserves" value={`$${Math.round(capitalMap.reserveCapital).toLocaleString()}`} sub={`${capitalMap.reserveCoverageMonths.toFixed(1)} months coverage`} />
+      <KPITile label="Ringfenced" value={`$${Math.round(capitalMap.restrictedCapital).toLocaleString()}`} sub="Protected capital" />
+    </div>
+    <div className="space-y-2">
+      {MOCK_BUCKETS.map((b, i) => (
+        <motion.div key={b.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.02 }}>
+          <SitaCard className="p-4" hover>
+            <div className="flex items-center gap-4">
+              <div className={`rounded-xl p-2.5 shrink-0 ${b.ringfenced ? "bg-amber-500/10" : "bg-primary/10"}`}>
+                {b.ringfenced ? <Lock className="h-4 w-4 text-amber-600" /> : <Wallet className="h-4 w-4 text-primary" />}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-foreground">{b.name}</p>
+                <div className="flex items-center gap-2 mt-0.5 text-[11px] text-muted-foreground">
+                  <span>{b.entityOwner}</span>
+                  <span className="capitalize">{b.type.replace(/-/g, " ")}</span>
+                </div>
+              </div>
+              <div className="text-right shrink-0">
+                <p className="text-sm font-bold text-foreground">${b.balance.toLocaleString()}</p>
+                {b.targetBalance && (
+                  <div className="flex items-center gap-1 justify-end">
+                    <div className="h-1 w-16 rounded-full bg-secondary overflow-hidden">
+                      <div className="h-full rounded-full bg-primary" style={{ width: `${Math.min(100, (b.balance / b.targetBalance) * 100)}%` }} />
+                    </div>
+                    <span className="text-[9px] text-muted-foreground">{Math.round((b.balance / b.targetBalance) * 100)}%</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </SitaCard>
+        </motion.div>
+      ))}
+    </div>
+    {capitalMap.fundingGaps.length > 0 && (
+      <SitaCard>
+        <SitaCardTitle sub="Buckets below 80% of target">Funding Gaps</SitaCardTitle>
+        {capitalMap.fundingGaps.map(g => (
+          <div key={g.bucket} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+            <span className="text-sm text-foreground">{g.bucket}</span>
+            <span className="text-sm font-semibold text-destructive">-${g.shortfall.toLocaleString()}</span>
+          </div>
+        ))}
+      </SitaCard>
+    )}
+  </div>
+);
+
+const PortfolioView = () => (
+  <div className="space-y-4">
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <KPITile label="Portfolio Value" value={`$${Math.round(riskMetrics.totalValue).toLocaleString()}`} sub="All positions" />
+      <KPITile label="Unrealized P&L" value={`${riskMetrics.unrealizedPnL >= 0 ? "+" : ""}$${Math.round(riskMetrics.unrealizedPnL).toLocaleString()}`} sub={`${(riskMetrics.unrealizedPnLPct * 100).toFixed(1)}%`} trend={riskMetrics.unrealizedPnL >= 0 ? "up" : "down"} />
+      <KPITile label="Concentration" value={riskMetrics.concentrationRisk} sub={`Largest: ${riskMetrics.largestPosition.symbol} (${(riskMetrics.largestPosition.pct * 100).toFixed(0)}%)`} />
+      <KPITile label="Cash" value={`${(riskMetrics.cashPct * 100).toFixed(0)}%`} sub="Portfolio cash allocation" />
+    </div>
+    <div className="space-y-2">
+      {MOCK_POSITIONS.map((p, i) => {
+        const value = p.quantity * p.currentPrice;
+        const pnl = (p.currentPrice - p.avgCostBasis) * p.quantity;
+        const pnlPct = ((p.currentPrice - p.avgCostBasis) / p.avgCostBasis) * 100;
+        return (
+          <motion.div key={p.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
+            <SitaCard className="p-4" hover>
+              <div className="flex items-center gap-4">
+                <div className="rounded-xl bg-secondary p-2.5 shrink-0"><span className="text-xs font-bold text-foreground">{p.symbol}</span></div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-foreground">{p.name}</p>
+                  <div className="flex items-center gap-2 mt-0.5 text-[11px] text-muted-foreground">
+                    <span className="capitalize">{p.assetClass}</span><span>·</span><span>{p.venue}</span><span>·</span><span>{p.quantity} units</span>
+                  </div>
+                </div>
+                <div className="text-right shrink-0">
+                  <p className="text-sm font-bold text-foreground">${Math.round(value).toLocaleString()}</p>
+                  <p className={`text-[11px] font-medium ${pnl >= 0 ? "text-primary" : "text-destructive"}`}>{pnl >= 0 ? "+" : ""}${Math.round(pnl).toLocaleString()} ({pnlPct.toFixed(1)}%)</p>
+                </div>
+              </div>
+            </SitaCard>
+          </motion.div>
+        );
+      })}
+    </div>
+  </div>
+);
+
+const RegimeView = () => (
+  <div className="space-y-4">
+    <SitaCard>
+      <SitaCardTitle sub={`Confidence: ${(MOCK_REGIME.confidence * 100).toFixed(0)}% · Data: ${MOCK_REGIME.dataFreshness}`}>Current Market Regime</SitaCardTitle>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {(Object.entries(MOCK_REGIME) as [string, string][]).filter(([k]) => ["volatility", "trend", "liquidity", "correlation", "riskAppetite", "macroEvent", "instability"].includes(k)).map(([key, value]) => (
+          <div key={key} className="rounded-xl border border-border p-3">
+            <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider capitalize">{key.replace(/([A-Z])/g, " $1")}</p>
+            <p className={`mt-1 text-sm font-bold rounded-full inline-block px-2 py-0.5 capitalize ${regimeColor(value)}`}>{value.replace(/-/g, " ")}</p>
+          </div>
+        ))}
+      </div>
+    </SitaCard>
+    <SitaCard>
+      <SitaCardTitle sub="Honest regime framing — not predictions">What This Means</SitaCardTitle>
+      <div className="mt-3 space-y-2 text-sm text-muted-foreground">
+        <p>Current regime looks <span className="font-semibold text-foreground capitalize">{MOCK_REGIME.riskAppetite.replace(/-/g, " ")}</span> with <span className="font-semibold text-foreground capitalize">{MOCK_REGIME.volatility}</span> volatility.</p>
+        {MOCK_REGIME.volatility === "elevated" || MOCK_REGIME.volatility === "extreme" ?
+          <p className="text-amber-600">⚠️ Elevated volatility regime — position sizing should be reduced.</p> :
+          <p>Volatility environment is supportive for measured position-taking within risk budget.</p>}
+        {MOCK_REGIME.macroEvent !== "none" && <p className="text-amber-600">⚠️ Pending macro event: {MOCK_REGIME.macroEvent.replace(/-/g, " ")}</p>}
+        <p className="text-[11px] italic">This does not tell the future. It describes the current environment.</p>
+      </div>
+    </SitaCard>
+  </div>
+);
+
+const RiskView = () => (
+  <div className="space-y-4">
+    <div className="grid gap-3 sm:grid-cols-3">
+      <KPITile label="Risk Budget Used" value={`${(riskMetrics.riskBudgetUsed * 100).toFixed(0)}%`} sub="Of total allocation" />
+      <KPITile label="Reserve Coverage" value={`${riskMetrics.reserveCoverage.toFixed(1)} mo`} sub="Monthly obligations covered" />
+      <KPITile label="Concentration" value={riskMetrics.concentrationRisk} sub={`${riskMetrics.largestPosition.symbol}: ${(riskMetrics.largestPosition.pct * 100).toFixed(0)}%`} />
+    </div>
+    <SitaCard>
+      <SitaCardTitle sub="How portfolio performs under adverse conditions">Stress Scenarios</SitaCardTitle>
+      <div className="mt-4 space-y-3">
+        {stressScenarios.map(sc => (
+          <div key={sc.id} className="flex items-center gap-4 py-3 border-b border-border last:border-0">
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-foreground">{sc.name}</p>
+              <p className="text-[11px] text-muted-foreground">{sc.description}</p>
+            </div>
+            <div className="text-right shrink-0">
+              <p className={`text-sm font-bold ${sc.portfolioImpact < 0 ? "text-destructive" : "text-primary"}`}>{sc.portfolioImpact >= 0 ? "+" : ""}${Math.round(sc.portfolioImpact).toLocaleString()}</p>
+              <p className="text-[10px] text-muted-foreground">({(sc.portfolioImpactPct * 100).toFixed(1)}%)</p>
+            </div>
+            <div className="flex items-center gap-1 shrink-0">
+              {sc.breachesRiskBudget && <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-[9px] font-medium text-destructive">Risk breach</span>}
+              {sc.breachesReserve && <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-[9px] font-medium text-destructive">Reserve breach</span>}
+              {!sc.breachesRiskBudget && !sc.breachesReserve && <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-medium text-primary">Within limits</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </SitaCard>
+  </div>
+);
+
+const ThesisVault = () => (
+  <div className="space-y-4">
+    {MOCK_THESES.map((thesis, i) => {
+      const eval_ = evaluateThesis(thesis, MOCK_REGIME);
+      return (
+        <motion.div key={thesis.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+          <SitaCard className="p-5">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <p className="text-base font-bold text-foreground">{thesis.title}</p>
+                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${eval_.stillValid ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"}`}>{eval_.stillValid ? "Valid" : "Review needed"}</span>
+                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${eval_.regimeAligned ? "bg-primary/10 text-primary" : "bg-amber-500/10 text-amber-600"}`}>{eval_.regimeAligned ? "Regime aligned" : "Regime conflict"}</span>
+                </div>
+                <p className="text-sm text-muted-foreground mt-1">{thesis.rationale}</p>
+                <div className="flex items-center gap-4 mt-3 text-[11px] text-muted-foreground">
+                  <span className="font-medium">{thesis.asset} · {thesis.direction}</span>
+                  <span>Confidence: {(thesis.confidence * 100).toFixed(0)}%</span>
+                  <span>Size: {thesis.sizeLogic}</span>
+                </div>
+                {eval_.warningFlags.length > 0 && (
+                  <div className="mt-3 space-y-1">{eval_.warningFlags.map((flag, j) => (<p key={j} className="text-[11px] text-amber-600 flex items-center gap-1"><AlertTriangle className="h-3 w-3 shrink-0" /> {flag}</p>))}</div>
+                )}
+              </div>
+              <div className="shrink-0 ml-4">
+                <span className={`rounded-lg px-3 py-1.5 text-xs font-bold capitalize ${eval_.recommendedAction === "add" ? "bg-primary/10 text-primary" : eval_.recommendedAction === "hold" ? "bg-secondary text-foreground" : eval_.recommendedAction === "reduce" || eval_.recommendedAction === "close" ? "bg-destructive/10 text-destructive" : "bg-amber-500/10 text-amber-600"}`}>{eval_.recommendedAction}</span>
+              </div>
+            </div>
+          </SitaCard>
+        </motion.div>
+      );
+    })}
+  </div>
+);
+
+const CommitteeView = () => (
+  <div className="space-y-4">
+    <SitaCard>
+      <SitaCardTitle sub="Synthesized investment committee perspective">Committee Summary</SitaCardTitle>
+      <div className="mt-4 space-y-3 text-sm text-muted-foreground">
+        <p>Regime: <span className="font-semibold text-foreground capitalize">{MOCK_REGIME.riskAppetite.replace(/-/g, " ")}</span> · Volatility: <span className="font-semibold text-foreground capitalize">{MOCK_REGIME.volatility}</span></p>
+        <p>Portfolio concentration risk: <span className="font-semibold text-foreground capitalize">{riskMetrics.concentrationRisk}</span></p>
+        <p>Reserve coverage: <span className="font-semibold text-foreground">{riskMetrics.reserveCoverage.toFixed(1)} months</span></p>
+        <p>Active theses: <span className="font-semibold text-foreground">{MOCK_THESES.filter(t => t.status === "active").length}</span> — {MOCK_THESES.filter(t => evaluateThesis(t, MOCK_REGIME).stillValid).length} valid, {MOCK_THESES.filter(t => !evaluateThesis(t, MOCK_REGIME).stillValid).length} need review</p>
+        <div className="mt-4 p-3 rounded-xl bg-secondary/50 border border-border">
+          <p className="text-[11px] font-semibold text-foreground mb-1">System Posture</p>
+          <p className="text-[11px]">Observe-only mode active. All recommendations require approval. No autonomous execution. Simulation-first for new positions.</p>
+        </div>
+      </div>
+    </SitaCard>
+    <SitaCard>
+      <SitaCardTitle sub="Advisors may not agree — disagreement is a feature">Dissenting Views</SitaCardTitle>
+      <div className="mt-3 space-y-2">
+        <div className="p-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
+          <p className="text-sm font-medium text-foreground">Treasury Advisor vs. Growth Advisor</p>
+          <p className="text-[11px] text-muted-foreground mt-1">Treasury: "Reserve coverage at {riskMetrics.reserveCoverage.toFixed(1)} months is below 6-month target."</p>
+          <p className="text-[11px] text-muted-foreground mt-1">Growth: "Current regime favors adding to equity exposure."</p>
+          <p className="text-[11px] font-medium text-amber-600 mt-2">Dominant constraint: Reserve protection takes precedence per policy.</p>
+        </div>
+      </div>
+    </SitaCard>
+  </div>
+);
+
+// ── NEW: Opportunities Tab ──────────────────────────────────────
+
+const OpportunitiesView = () => {
+  const watchlist = getWatchlist();
+  const scores = getOpportunityScores();
+  return (
+    <div className="space-y-4">
+      <SitaCard>
+        <SitaCardTitle sub={`Regime: ${watchlist.currentRegime} · ${watchlist.entries.length} items`}>Watchlist</SitaCardTitle>
+        <div className="mt-4 space-y-3">
+          {watchlist.entries.map(e => (
+            <div key={e.id} className="flex items-center gap-4 py-3 border-b border-border last:border-0">
+              <div className="rounded-xl bg-secondary p-2.5 shrink-0"><Search className="h-4 w-4 text-foreground" /></div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-semibold text-foreground">{e.asset}</p>
+                  <span className="text-[10px] text-muted-foreground capitalize">{e.assetClass}</span>
+                  {e.regimeAlignment ? <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-medium text-primary">Regime aligned</span> : <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[9px] font-medium text-amber-600">Regime conflict</span>}
+                  {e.thesisCandidate && <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-medium text-primary">Thesis candidate</span>}
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-0.5">{e.reason}</p>
+              </div>
+              <div className="text-right shrink-0">
+                <p className="text-sm font-bold text-foreground">${e.currentPrice}</p>
+                <p className={`text-[11px] font-medium ${e.changePct >= 0 ? "text-primary" : "text-destructive"}`}>{e.changePct >= 0 ? "+" : ""}{e.changePct.toFixed(1)}%</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SitaCard>
+      <SitaCard>
+        <SitaCardTitle sub="Composite scoring across thesis, regime, risk/reward, liquidity">Opportunity Scores</SitaCardTitle>
+        <div className="mt-4 space-y-3">
+          {scores.map(s => (
+            <div key={s.asset} className="flex items-center gap-4 py-3 border-b border-border last:border-0">
+              <div className="rounded-xl bg-primary/10 p-2.5 shrink-0"><Target className="h-4 w-4 text-primary" /></div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-foreground">{s.asset}</p>
+                <p className="text-[11px] text-muted-foreground">{s.recommendation}</p>
+              </div>
+              <div className="text-right shrink-0">
+                <p className="text-sm font-bold text-foreground">{(s.compositeScore * 100).toFixed(0)}%</p>
+                <p className="text-[10px] text-muted-foreground">Rank #{s.rank}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SitaCard>
+    </div>
+  );
+};
+
+// ── NEW: Execution Review Tab ───────────────────────────────────
+
+const ExecutionReviewView = () => {
+  const reviews = getTradeReviewPackets();
+  const intents = getExecutionIntents();
+  const pipeline = ["Proposal", "Simulation", "Approval", "Executed"];
+  const currentStep = 0; // pending-approval
+  return (
+    <div className="space-y-4">
+      <SitaCard>
+        <SitaCardTitle sub="4-stage action pipeline">Action Pipeline</SitaCardTitle>
+        <div className="mt-4 flex items-center gap-2">
+          {pipeline.map((step, i) => (
+            <div key={step} className="flex items-center gap-2">
+              <div className={`rounded-full px-3 py-1.5 text-[11px] font-semibold ${i <= currentStep ? "bg-primary/10 text-primary" : "bg-secondary text-muted-foreground"}`}>{step}</div>
+              {i < pipeline.length - 1 && <div className="h-px w-6 bg-border" />}
+            </div>
+          ))}
+        </div>
+      </SitaCard>
+      <SitaCard>
+        <SitaCardTitle sub="Pending trade reviews">Trade Reviews</SitaCardTitle>
+        <div className="mt-4 space-y-3">
+          {reviews.map(r => (
+            <div key={r.tradeId} className="p-4 rounded-xl border border-border">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Zap className="h-4 w-4 text-primary" />
+                  <p className="text-sm font-semibold text-foreground">{r.asset} — {r.direction.toUpperCase()}</p>
+                </div>
+                <span className="text-sm font-bold text-foreground">${(r.quantityOrAmountCents / 100).toLocaleString()}</span>
+              </div>
+              <p className="text-[11px] text-muted-foreground mt-2">{r.rationale}</p>
+              <p className="text-[11px] text-muted-foreground mt-1">Risk impact: {r.riskImpact}</p>
+              <div className="flex items-center gap-2 mt-3">
+                {r.complianceCheck.passed ? <span className="flex items-center gap-1 text-[10px] text-primary"><CheckCircle2 className="h-3 w-3" /> Compliance passed</span> : <span className="flex items-center gap-1 text-[10px] text-destructive"><XCircle className="h-3 w-3" /> Compliance failed</span>}
+                {r.approvalRequired && <span className="flex items-center gap-1 text-[10px] text-amber-600"><Clock className="h-3 w-3" /> Approval required</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </SitaCard>
+      <SitaCard>
+        <SitaCardTitle sub="Execution intents awaiting approval">Execution Queue</SitaCardTitle>
+        <div className="mt-4 space-y-3">
+          {intents.map(ei => (
+            <div key={ei.id} className="flex items-center gap-4 py-3 border-b border-border last:border-0">
+              <div className="rounded-xl bg-amber-500/10 p-2.5 shrink-0"><Scale className="h-4 w-4 text-amber-600" /></div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-foreground">{ei.asset} — {ei.direction} ({ei.orderType}{ei.limitPrice ? ` @ $${ei.limitPrice}` : ""})</p>
+                <p className="text-[11px] text-muted-foreground">Venue: {ei.venue} · ${(ei.amountCents / 100).toLocaleString()}</p>
+              </div>
+              <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${ei.status === "pending-approval" ? "bg-amber-500/10 text-amber-600" : ei.status === "filled" ? "bg-primary/10 text-primary" : "bg-secondary text-muted-foreground"}`}>{ei.status.replace(/-/g, " ")}</span>
+            </div>
+          ))}
+        </div>
+      </SitaCard>
+    </div>
+  );
+};
+
+// ── NEW: Proof Tab ──────────────────────────────────────────────
+
+const ProofView = () => {
+  const proofTimeline = [
+    { id: "p1", type: "thesis-approval", summary: "S&P momentum thesis approved", date: new Date(Date.now() - 60 * 86400000).toISOString(), hash: "a1b2c3d4e5f6" },
+    { id: "p2", type: "thesis-approval", summary: "BTC halving cycle thesis approved", date: new Date(Date.now() - 120 * 86400000).toISOString(), hash: "f6e5d4c3b2a1" },
+    { id: "p3", type: "regime-review", summary: "Regime transition: transition → risk-on", date: new Date(Date.now() - 7 * 86400000).toISOString(), hash: "1a2b3c4d5e6f" },
+    { id: "p4", type: "rebalance-review", summary: "Rebalance recommendations generated — no action taken", date: new Date(Date.now() - 3 * 86400000).toISOString(), hash: "6f5e4d3c2b1a" },
+    { id: "p5", type: "risk-assessment", summary: "Monthly risk budget review — 68% utilized", date: new Date(Date.now() - 1 * 86400000).toISOString(), hash: "b1c2d3e4f5a6" },
+  ];
+  return (
+    <div className="space-y-4">
+      <SitaCard>
+        <SitaCardTitle sub="Every meaningful decision produces a proof receipt">Decision Proof Timeline</SitaCardTitle>
+        <div className="mt-4 space-y-3">
+          {proofTimeline.map(p => (
+            <div key={p.id} className="flex items-center gap-4 py-3 border-b border-border last:border-0">
+              <div className="rounded-xl bg-primary/10 p-2.5 shrink-0"><FileCheck className="h-4 w-4 text-primary" /></div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-foreground">{p.summary}</p>
+                <div className="flex items-center gap-3 mt-0.5 text-[10px] text-muted-foreground">
+                  <span className="capitalize">{p.type.replace(/-/g, " ")}</span>
+                  <span>{new Date(p.date).toLocaleDateString()}</span>
+                  <span className="font-mono">#{p.hash.slice(0, 8)}</span>
+                </div>
+              </div>
+              <BookOpen className="h-4 w-4 text-muted-foreground shrink-0" />
+            </div>
+          ))}
+        </div>
+      </SitaCard>
+    </div>
+  );
+};
+
+// ── NEW: Settings Tab ───────────────────────────────────────────
+
+const SettingsView = () => {
+  const currentMode = getInvestmentTrustMode();
+  const modes = getAvailableTrustModes();
+  return (
+    <div className="space-y-4">
+      <SitaCard>
+        <SitaCardTitle sub="Controls what the system is allowed to do">Trust Mode</SitaCardTitle>
+        <div className="mt-4 space-y-2">
+          {modes.map(m => (
+            <div key={m.mode} className={`flex items-center gap-4 p-3 rounded-xl border ${m.mode === currentMode ? "border-primary bg-primary/5" : "border-border"}`}>
+              <div className={`h-3 w-3 rounded-full shrink-0 ${m.mode === currentMode ? "bg-primary" : "bg-secondary"}`} />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-foreground">{m.label}</p>
+                <p className="text-[11px] text-muted-foreground">{m.description}</p>
+              </div>
+              {m.mode === currentMode && <span className="text-[10px] font-semibold text-primary">Active</span>}
+            </div>
+          ))}
+        </div>
+      </SitaCard>
+      <SitaCard>
+        <SitaCardTitle sub="16 investment-specific governance rules">Policy Rules</SitaCardTitle>
+        <div className="mt-4 space-y-2">
+          {INVESTMENT_POLICY_RULES.map((rule, i) => (
+            <div key={rule.id} className="flex items-center gap-3 py-2 border-b border-border last:border-0">
+              <span className="text-[10px] font-mono text-muted-foreground w-6 shrink-0">{i + 1}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-foreground">{rule.name}</p>
+                <p className="text-[10px] text-muted-foreground">{rule.reason}</p>
+              </div>
+              <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${rule.effect === "deny" ? "bg-destructive/10 text-destructive" : rule.effect.includes("dual") ? "bg-amber-500/10 text-amber-600" : rule.effect === "require-simulation" ? "bg-blue-500/10 text-blue-600" : "bg-amber-500/10 text-amber-600"}`}>{rule.effect.replace(/-/g, " ")}</span>
+            </div>
+          ))}
+        </div>
+      </SitaCard>
+    </div>
+  );
+};
+
+// ── Main Component ──────────────────────────────────────────────
+
+const InvestmentOffice = () => {
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const tabs = [
+    { key: "overview", label: "Capital Map" },
+    { key: "portfolio", label: "Portfolio" },
+    { key: "regime", label: "Regime" },
+    { key: "risk", label: "Risk" },
+    { key: "theses", label: "Theses" },
+    { key: "committee", label: "Committee" },
+    { key: "opportunities", label: "Opportunities" },
+    { key: "execution", label: "Execution Review" },
+    { key: "proof", label: "Proof" },
+    { key: "settings", label: "Settings" },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <SitaPageHeader
+        title="Investment Office"
+        subtitle="Capital protection, regime-aware intelligence, thesis discipline — not a trading app"
+        actions={
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-amber-500/10 px-3 py-1 text-[10px] font-semibold text-amber-600 flex items-center gap-1"><Eye className="h-3 w-3" /> Observe-Only Mode</span>
+            <TrustBadge level="safe" />
+          </div>
+        }
+      />
+      <SitaTabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
+      {activeTab === "overview" && <CapitalMapView />}
+      {activeTab === "portfolio" && <PortfolioView />}
+      {activeTab === "regime" && <RegimeView />}
+      {activeTab === "risk" && <RiskView />}
+      {activeTab === "theses" && <ThesisVault />}
+      {activeTab === "committee" && <CommitteeView />}
+      {activeTab === "opportunities" && <OpportunitiesView />}
+      {activeTab === "execution" && <ExecutionReviewView />}
+      {activeTab === "proof" && <ProofView />}
+      {activeTab === "settings" && <SettingsView />}
+
+      <LiveAdvisorCard
+        advisor="money"
+        intent="portfolio_intelligence"
+        demoName="Portfolio Intelligence"
+        demoRole="Investment Advisor"
+        demoConfidence="Medium"
+        demoRecommendation="Current regime is risk-on with compressed volatility — supportive for measured position-taking. TLT thesis showing regime conflict — monitor for rate pivot signals before adding duration."
+        demoReasoning="Based on regime detection, thesis evaluation, stress scenarios, and risk budget utilization."
+      />
+    </div>
+  );
+};
+
+export default InvestmentOffice;

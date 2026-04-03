@@ -1,0 +1,215 @@
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
+import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
+import { TrustBadge } from "@/components/sita/TrustBadge";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+const db: any = supabase;
+import { useAuth } from "@/contexts/AuthContext";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { motion } from "framer-motion";
+import { toast } from "sonner";
+import {
+  Zap, Shield, Clock, CheckCircle, Eye, Lock, Settings, ArrowRight, Sparkles,
+  DollarSign, Briefcase, Home, Mail, Calendar, AlertTriangle, RefreshCw, Pause, Play,
+  Plus, ToggleLeft, ToggleRight, Trash2
+} from "lucide-react";
+
+const demoRules = [
+  { id: "1", name: "Send invoice reminders", trigger_event: "3 days before due date", steps: [{ action: "Email reminder to customer" }], active: true, domain: "Business" },
+  { id: "2", name: "Auto-approve bills under $200", trigger_event: "New bill detected", steps: [{ action: "Pay if under threshold" }], active: true, domain: "Money" },
+  { id: "3", name: "Grocery restock alerts", trigger_event: "Consumption pattern detected", steps: [{ action: "Create shopping list" }], active: true, domain: "Household" },
+  { id: "4", name: "Lead follow-up drafts", trigger_event: "No contact in 24h", steps: [{ action: "Draft follow-up email" }], active: true, domain: "Business" },
+  { id: "5", name: "Travel conflict detection", trigger_event: "New booking", steps: [{ action: "Alert if conflict" }], active: false, domain: "Concierge" },
+];
+
+const delegations = [
+  { action: "Invoice reminders", level: "Fully delegated", approvalNeeded: false, threshold: "All amounts" },
+  { action: "Bill payments", level: "Threshold-based", approvalNeeded: true, threshold: "Under $200 auto, over $200 approval" },
+  { action: "Lead follow-ups", level: "Draft for review", approvalNeeded: true, threshold: "All outbound comms" },
+  { action: "Grocery orders", level: "Fully delegated", approvalNeeded: false, threshold: "Under $100" },
+  { action: "Calendar scheduling", level: "Suggest only", approvalNeeded: true, threshold: "All changes" },
+  { action: "Subscription cancellations", level: "Approval required", approvalNeeded: true, threshold: "Always" },
+];
+
+const AutomationCenter = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
+  const qc = useQueryClient();
+
+  const activeTab = (() => {
+    if (location.pathname.includes("/trust")) return "trust";
+    if (location.pathname.includes("/delegations")) return "delegations";
+    return "rules";
+  })();
+
+  const goTo = (key: string) => {
+    if (key === "rules") navigate("/automation");
+    else navigate(`/automation/${key}`);
+  };
+
+  // Live workflows as automation rules
+  const { data: liveWorkflows = [] } = useQuery({
+    queryKey: ["workflows_automation", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data, error } = await db.from("workflows").select("*").order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  // Live workflow runs for execution stats
+  const { data: runs = [] } = useQuery({
+    queryKey: ["workflow_runs_stats", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data, error } = await db.from("workflow_runs").select("status, completed_at").limit(200);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const toggleWorkflow = useMutation({
+    mutationFn: async ({ id, active }: { id: string; active: boolean }) => {
+      const { error } = await db.from("workflows").update({ active }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["workflows_automation"] }); toast.success("Workflow updated"); },
+  });
+
+  const rules = isDemoMode ? demoRules : liveWorkflows.map(w => ({
+    id: w.id,
+    name: w.name,
+    trigger_event: w.trigger_event,
+    steps: w.steps as Array<{ action?: string }>,
+    active: w.active,
+    domain: w.trigger_event.split(".")[0] || "System",
+  }));
+
+  const totalRuns = runs.length;
+  const completedRuns = runs.filter(r => r.status === "completed").length;
+  const successRate = totalRuns > 0 ? Math.round((completedRuns / totalRuns) * 100) : 0;
+
+  return (
+    <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <SitaPageHeader
+        title="Automation Center"
+        subtitle="What SITA handles automatically — thresholds, rules, and delegation"
+        actions={<SitaButton variant="primary"><Zap className="h-4 w-4" /> New Rule</SitaButton>}
+      />
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <KPITile label="Active Rules" value={rules.filter(r => r.active).length} icon={Zap} />
+        <KPITile label="Total Runs" value={isDemoMode ? 124 : totalRuns} trend="up" icon={CheckCircle} />
+        <KPITile label="Success Rate" value={isDemoMode ? "97.2%" : `${successRate}%`} trend="up" icon={Shield} />
+        <KPITile label="Rules" value={rules.length} icon={Settings} />
+      </div>
+
+      <SitaTabs
+        tabs={[
+          { key: "rules", label: "Rules", count: rules.length },
+          { key: "delegations", label: "Delegations", count: delegations.length },
+          { key: "trust", label: "Trust Levels" },
+        ]}
+        active={activeTab}
+        onChange={goTo}
+      />
+
+      {activeTab === "rules" && (
+        <div className="space-y-2">
+          {rules.length === 0 ? (
+            <EmptyState icon={Zap} title="No automation rules" description="Create workflows to automate recurring tasks, approvals, and follow-ups." />
+          ) : (
+            rules.map((rule) => (
+              <SitaCard key={rule.id} className="p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3 flex-1 min-w-0">
+                    <div className={`rounded-lg p-2 shrink-0 ${rule.active ? "bg-trust-verified/10" : "bg-muted"}`}>
+                      {rule.active ? <Play className="h-4 w-4 text-trust-verified" /> : <Pause className="h-4 w-4 text-muted-foreground" />}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="text-sm font-medium text-foreground">{rule.name}</p>
+                        <span className="text-[10px] bg-secondary text-muted-foreground rounded px-1.5 py-px capitalize">{rule.domain}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        <span className="text-muted-foreground/70">Trigger:</span> {rule.trigger_event}
+                      </p>
+                      {rule.steps?.[0] && (
+                        <p className="text-xs text-muted-foreground">
+                          <span className="text-muted-foreground/70">Action:</span> {(rule.steps[0] as any).action || JSON.stringify(rule.steps[0]).slice(0, 60)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <TrustBadge level={rule.active ? "verified" : "low-confidence"} label={rule.active ? "Active" : "Paused"} size="sm" />
+                    {!isDemoMode && (
+                      <button
+                        onClick={() => toggleWorkflow.mutate({ id: rule.id, active: !rule.active })}
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {rule.active ? <ToggleRight className="h-5 w-5 text-primary" /> : <ToggleLeft className="h-5 w-5" />}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </SitaCard>
+            ))
+          )}
+        </div>
+      )}
+
+      {activeTab === "delegations" && (
+        <div className="space-y-2">
+          {delegations.map((d, i) => (
+            <SitaCard key={i} hover={false} className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-foreground">{d.action}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{d.threshold}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground">{d.level}</span>
+                  <TrustBadge level={d.approvalNeeded ? "approval" : "verified"} size="sm" />
+                </div>
+              </div>
+            </SitaCard>
+          ))}
+        </div>
+      )}
+
+      {activeTab === "trust" && (
+        <div className="space-y-4">
+          <SitaSectionHeader title="Trust Ladder" subtitle="How SITA escalates from observation to full automation" />
+          {[
+            { level: "Observe", desc: "SITA watches and learns — no actions taken", icon: Eye, trust: "low-confidence" as const },
+            { level: "Suggest", desc: "SITA recommends actions — you decide", icon: Sparkles, trust: "review" as const },
+            { level: "Simulate", desc: "SITA shows you what would happen before acting", icon: RefreshCw, trust: "review" as const },
+            { level: "Approval-Ready", desc: "SITA prepares actions — one click to approve", icon: Shield, trust: "approval" as const },
+            { level: "Execute", desc: "SITA acts with guardrails — you get receipts", icon: Zap, trust: "verified" as const },
+            { level: "Delegated", desc: "SITA handles it fully — verified and proven safe", icon: CheckCircle, trust: "safe" as const },
+          ].map((step, i) => (
+            <SitaCard key={i} hover={false} className="p-4">
+              <div className="flex items-center gap-4">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary shrink-0">{i + 1}</div>
+                <div className="rounded-lg bg-secondary p-2"><step.icon className="h-4 w-4 text-foreground" /></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-foreground">{step.level}</p>
+                  <p className="text-xs text-muted-foreground">{step.desc}</p>
+                </div>
+                <TrustBadge level={step.trust} size="sm" />
+              </div>
+            </SitaCard>
+          ))}
+        </div>
+      )}
+    </motion.div>
+  );
+};
+
+export default AutomationCenter;

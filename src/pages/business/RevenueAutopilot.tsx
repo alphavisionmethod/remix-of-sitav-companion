@@ -1,0 +1,258 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Revenue Autopilot Workspace
+// ═══════════════════════════════════════════════════════════════
+
+import { useState, useMemo } from "react";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaTabs, KPITile } from "@/components/sita/SitaComponents";
+import { motion } from "framer-motion";
+import {
+  TrendingUp, TrendingDown, DollarSign, AlertTriangle, RefreshCw, Zap,
+  Target, ArrowUpRight, Clock, CheckCircle, XCircle, BarChart3, Shield,
+  Search, Users, FileText, Inbox, Activity
+} from "lucide-react";
+import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
+import {
+  detectLeakage, suggestRecoveryActions, rankOpportunities, computeRecoveredValueSummary,
+  computeAutopilotSummary, type LeakageItem, type RecoveredValueEntry, type RankedOpportunity
+} from "@/lib/domain-engines/revenue-autopilot";
+
+// ── Mock Data ───────────────────────────────────────────────────
+
+const MOCK_LEAKAGE = detectLeakage({
+  leads: [
+    { id: "l1", name: "David Park", status: "new", lastContactDays: 5, estimatedValue: 12000 },
+    { id: "l2", name: "Lisa Chen", status: "new", lastContactDays: 9, estimatedValue: 28000 },
+    { id: "l3", name: "Mike Ross", status: "new", lastContactDays: 3, estimatedValue: 8000 },
+  ],
+  quotes: [
+    { id: "q1", name: "Enterprise Plan — Acme Corp", sentDays: 12, value: 45000, hasResponse: false, closed: false },
+    { id: "q2", name: "Starter Package — StartupXYZ", sentDays: 5, value: 6000, hasResponse: false, closed: false },
+  ],
+  invoices: [
+    { id: "i1", customerName: "Sarah Chen", amount: 8500, overdueDays: 22, chasedRecently: false },
+    { id: "i2", customerName: "TechVentures", amount: 15000, overdueDays: 45, chasedRecently: false },
+  ],
+  customers: [
+    { id: "c1", name: "Johnson & Co", lastInteractionDays: 75, avgMonthlyRevenue: 4200, isRepeat: true },
+    { id: "c2", name: "Premier Design", lastInteractionDays: 45, avgMonthlyRevenue: 2800, isRepeat: true },
+  ],
+  bookings: [
+    { id: "b1", name: "Strategy Session — Alex", confirmed: false, dateTs: Date.now() + 86400000, noShowRisk: 0.55 },
+  ],
+  subscriptions: [
+    { id: "s1", name: "Analytics Pro", monthlyCost: 89, lastUsedDays: 60, utilization: 0.08 },
+    { id: "s2", name: "Design Cloud", monthlyCost: 149, lastUsedDays: 45, utilization: 0.12 },
+  ],
+});
+
+const MOCK_RECOVERY_ACTIONS = suggestRecoveryActions(MOCK_LEAKAGE);
+
+const MOCK_RECOVERED: RecoveredValueEntry[] = [
+  { id: "r1", category: "revenue-recovered", amount: 8500, description: "Sarah Chen invoice collected after reminder", source: "invoice-chase", recoveredAt: Date.now() - 3 * 86400000, proofId: "rcpt-001" },
+  { id: "r2", category: "waste-canceled", amount: 1068, description: "Unused Analytics Pro subscription canceled", source: "waste-detection", recoveredAt: Date.now() - 7 * 86400000 },
+  { id: "r3", category: "opportunity-revived", amount: 12000, description: "David Park re-engaged after callback", source: "lead-reactivation", recoveredAt: Date.now() - 14 * 86400000 },
+  { id: "r4", category: "capacity-filled", amount: 3200, description: "Cancellation slot filled with waitlist client", source: "cancellation-fill", recoveredAt: Date.now() - 10 * 86400000 },
+  { id: "r5", category: "fees-avoided", amount: 450, description: "Late payment fee avoided by early reminder", source: "bill-reminder", recoveredAt: Date.now() - 5 * 86400000 },
+];
+
+const MOCK_OPPORTUNITIES = rankOpportunities([
+  { id: "o1", name: "Acme Corp enterprise expansion", source: "pipeline", probability: 0.65, estimatedValue: 45000, urgencyScore: 80, effortScore: 40, trustRequirement: "medium", cashImpactDays: 30, suggestedAction: "Send updated proposal" },
+  { id: "o2", name: "Johnson & Co reactivation", source: "reactivation", probability: 0.55, estimatedValue: 12600, urgencyScore: 60, effortScore: 20, trustRequirement: "low", cashImpactDays: 14, suggestedAction: "Launch reactivation email" },
+  { id: "o3", name: "TechVentures overdue collection", source: "leakage", probability: 0.8, estimatedValue: 15000, urgencyScore: 95, effortScore: 30, trustRequirement: "high", cashImpactDays: 7, suggestedAction: "Escalate with collections ladder" },
+  { id: "o4", name: "Premier Design upsell", source: "upsell", probability: 0.4, estimatedValue: 8400, urgencyScore: 40, effortScore: 25, trustRequirement: "low", cashImpactDays: 45, suggestedAction: "Propose premium tier" },
+]);
+
+const SUMMARY = computeAutopilotSummary(MOCK_LEAKAGE, MOCK_RECOVERY_ACTIONS, MOCK_RECOVERED);
+
+// ── Severity Colors ─────────────────────────────────────────────
+
+const severityColors: Record<string, string> = {
+  critical: "bg-destructive/10 text-destructive",
+  high: "bg-amber-500/10 text-amber-600",
+  medium: "bg-accent/10 text-accent",
+  low: "bg-secondary text-muted-foreground",
+};
+
+// ── Sub-Pages ───────────────────────────────────────────────────
+
+const LeakageRadar = () => (
+  <div className="space-y-4">
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <KPITile label="Total Leakage Detected" value={`$${Math.round(SUMMARY.totalLeakageDetected).toLocaleString()}`} sub="Across all sources" trend="down" />
+      <KPITile label="Recoverable" value={`$${Math.round(SUMMARY.totalRecoverable).toLocaleString()}`} sub={`${MOCK_LEAKAGE.filter(l => l.recoverable).length} items`} />
+      <KPITile label="Critical Items" value={String(MOCK_LEAKAGE.filter(l => l.severity === "critical").length)} sub="Need immediate action" trend="down" />
+      <KPITile label="Health Score" value={`${SUMMARY.healthScore}/100`} sub="Revenue health" trend="up" />
+    </div>
+    <div className="space-y-2">
+      {MOCK_LEAKAGE.map((item, i) => (
+        <motion.div key={item.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
+          <SitaCard className="p-4" hover>
+            <div className="flex items-center gap-4">
+              <div className="shrink-0">
+                <AlertTriangle className={`h-5 w-5 ${item.severity === "critical" ? "text-destructive" : item.severity === "high" ? "text-amber-500" : "text-muted-foreground"}`} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <p className="text-sm font-semibold text-foreground">{item.entityName}</p>
+                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold capitalize ${severityColors[item.severity]}`}>{item.severity}</span>
+                  <span className="rounded-full bg-secondary px-2 py-0.5 text-[9px] text-muted-foreground">{item.type.replace(/-/g, " ")}</span>
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-0.5">{item.suggestedAction}</p>
+              </div>
+              <div className="text-right shrink-0">
+                <p className="text-sm font-bold text-foreground">${item.estimatedValue.toLocaleString()}</p>
+                <p className="text-[10px] text-muted-foreground">{item.daysSinceLastAction}d inactive</p>
+              </div>
+              <button className="rounded-lg bg-primary/10 px-2.5 py-1 text-[10px] font-semibold text-primary hover:bg-primary/20 transition-colors shrink-0">
+                Recover
+              </button>
+            </div>
+          </SitaCard>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+);
+
+const RecoveryEngine = () => (
+  <div className="space-y-4">
+    <div className="grid gap-3 sm:grid-cols-3">
+      <KPITile label="Active Recoveries" value={String(SUMMARY.activeRecoveryActions)} sub="In progress" />
+      <KPITile label="Suggested Actions" value={String(MOCK_RECOVERY_ACTIONS.length)} sub="Ready to launch" />
+      <KPITile label="Approval Required" value={String(MOCK_RECOVERY_ACTIONS.filter(r => r.approvalRequired).length)} sub="Need your OK" />
+    </div>
+    <div className="space-y-2">
+      {MOCK_RECOVERY_ACTIONS.map((action, i) => (
+        <motion.div key={action.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
+          <SitaCard className="p-4" hover>
+            <div className="flex items-center gap-4">
+              <div className="rounded-xl bg-primary/10 p-2.5 shrink-0">
+                <Zap className="h-4 w-4 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-foreground capitalize">{action.type.replace(/-/g, " ")}</p>
+                <p className="text-[11px] text-muted-foreground">Est. recovery: ${Math.round(action.estimatedRecovery).toLocaleString()}</p>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0">
+                {action.approvalRequired && (
+                  <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[9px] font-medium text-amber-600 flex items-center gap-1">
+                    <Shield className="h-3 w-3" /> Approval needed
+                  </span>
+                )}
+                <button className="rounded-lg gradient-sita px-3 py-1 text-[10px] font-semibold text-primary-foreground">
+                  Launch
+                </button>
+              </div>
+            </div>
+          </SitaCard>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+);
+
+const OpportunitiesRanked = () => (
+  <div className="space-y-4">
+    <div className="space-y-2">
+      {MOCK_OPPORTUNITIES.map((opp, i) => (
+        <motion.div key={opp.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
+          <SitaCard className="p-4" hover>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center h-9 w-9 rounded-xl gradient-sita text-primary-foreground text-sm font-bold shrink-0">
+                {opp.compositeScore}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-foreground">{opp.name}</p>
+                <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground">
+                  <span className="capitalize">{opp.source}</span>
+                  <span>{Math.round(opp.probability * 100)}% prob</span>
+                  <span>{opp.cashImpactDays}d to cash</span>
+                </div>
+              </div>
+              <div className="text-right shrink-0">
+                <p className="text-sm font-bold text-foreground">${opp.estimatedValue.toLocaleString()}</p>
+                <p className="text-[10px] text-muted-foreground">{opp.suggestedAction}</p>
+              </div>
+            </div>
+          </SitaCard>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+);
+
+const RecoveredValueLedger = () => {
+  const summary = computeRecoveredValueSummary(MOCK_RECOVERED);
+  return (
+    <div className="space-y-4">
+      <div className="grid gap-3 sm:grid-cols-3">
+        <KPITile label="Total Recovered" value={`$${summary.totalRecovered.toLocaleString()}`} sub="All time" trend="up" />
+        <KPITile label="Last 30 Days" value={`$${summary.last30Days.toLocaleString()}`} sub={`Trend: ${summary.trend}`} trend={summary.trend === "up" ? "up" : "down"} />
+        <KPITile label="Categories" value={String(Object.keys(summary.byCategory).length)} sub="Active recovery types" />
+      </div>
+      <div className="space-y-2">
+        {MOCK_RECOVERED.map((entry, i) => (
+          <motion.div key={entry.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
+            <SitaCard className="p-4" hover>
+              <div className="flex items-center gap-4">
+                <div className="rounded-xl bg-primary/10 p-2.5 shrink-0">
+                  <CheckCircle className="h-4 w-4 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-foreground">{entry.description}</p>
+                  <p className="text-[11px] text-muted-foreground capitalize">{entry.category.replace(/-/g, " ")}</p>
+                </div>
+                <p className="text-sm font-bold text-primary shrink-0">+${entry.amount.toLocaleString()}</p>
+              </div>
+            </SitaCard>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ── Main Component ──────────────────────────────────────────────
+
+const RevenueAutopilot = () => {
+  const [activeTab, setActiveTab] = useState("leakage");
+
+  const tabs = [
+    { key: "leakage", label: "Leakage Radar" },
+    { key: "recovery", label: "Recovery Engine" },
+    { key: "opportunities", label: "Opportunities" },
+    { key: "recovered", label: "Recovered Value" },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <SitaPageHeader
+        title="Revenue Autopilot"
+        subtitle="Continuously find and recover value leaks across leads, quotes, invoices, renewals, and capacity"
+        actions={
+          <span className="rounded-full bg-primary/10 px-3 py-1 text-[10px] font-semibold text-primary flex items-center gap-1">
+            <Zap className="h-3 w-3" /> Autopilot Active
+          </span>
+        }
+      />
+      <SitaTabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
+      {activeTab === "leakage" && <LeakageRadar />}
+      {activeTab === "recovery" && <RecoveryEngine />}
+      {activeTab === "opportunities" && <OpportunitiesRanked />}
+      {activeTab === "recovered" && <RecoveredValueLedger />}
+
+      <LiveAdvisorCard
+        advisor="business"
+        intent="revenue_recovery"
+        demoName="Revenue Recovery AI"
+        demoRole="Autopilot Intelligence"
+        demoConfidence="High"
+        demoRecommendation="$23,500 in detectable leakage across stale leads, aging quotes, and overdue invoices. Top recovery priority: TechVentures $15K overdue — escalate with collections ladder."
+        demoReasoning="Based on real-time leakage radar, recovery probability models, and opportunity ranking."
+      />
+    </div>
+  );
+};
+
+export default RevenueAutopilot;
