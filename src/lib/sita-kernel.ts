@@ -65,7 +65,7 @@ export class SitaKernel {
     );
 
     // Wire agent orchestrator to shared EventBus + ReceiptService
-    this.agents = new AgentOrchestrator(this.eventBus, this.receipts);
+    this.agents = new AgentOrchestrator({ eventBus: this.eventBus, receipts: this.receipts });
 
     // Track all events for telemetry
     this.eventBus.subscribe("*", () => {
