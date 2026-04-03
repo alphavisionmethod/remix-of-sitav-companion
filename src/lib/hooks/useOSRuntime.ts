@@ -9,6 +9,8 @@ import {
   AdvisorOrchestrationEngine, PolicyDepthEngine, RevenueOpportunityEngine,
   DigitalTwinEngine, BoardroomIntelligenceEngine, ScenarioIntelligenceEngine,
   TokenGovernanceEngine, IntegrationConciergeEngine,
+  EnterpriseControlPlaneEngine, SupportDiagnosticsEngine, ObservabilityEngine,
+  ReleaseSafetyEngine, TrustDeviceEngine, ComplianceAuditEngine,
 } from "@/lib/engines";
 import { ReplayRecoveryEngine } from "@/lib/engines/replay-recovery";
 import type { OSRuntimeContext } from "@/lib/types/os-unified.types";
@@ -27,6 +29,13 @@ export interface OSRuntime {
     tokens: TokenGovernanceEngine;
     integrations: IntegrationConciergeEngine;
     replay: ReplayRecoveryEngine;
+    // Phase 6
+    enterprise: EnterpriseControlPlaneEngine;
+    support: SupportDiagnosticsEngine;
+    observability: ObservabilityEngine;
+    releases: ReleaseSafetyEngine;
+    trustDevice: TrustDeviceEngine;
+    compliance: ComplianceAuditEngine;
   };
   /** Create a new action-state machine for a workflow */
   createAction: typeof ActionStateMachine;
@@ -50,6 +59,13 @@ export function useOSRuntime(userId: string = "default-user"): OSRuntime {
     const tokens = new TokenGovernanceEngine();
     const integrations = new IntegrationConciergeEngine();
     const replay = new ReplayRecoveryEngine();
+    // Phase 6
+    const enterprise = new EnterpriseControlPlaneEngine();
+    const support = new SupportDiagnosticsEngine();
+    const observability = new ObservabilityEngine();
+    const releases = new ReleaseSafetyEngine();
+    const trustDevice = new TrustDeviceEngine();
+    const compliance = new ComplianceAuditEngine();
 
     const context: OSRuntimeContext = {
       userId,
@@ -82,6 +98,7 @@ export function useOSRuntime(userId: string = "default-user"): OSRuntime {
       engines: {
         entityGraph, memory, advisors, policy, revenue,
         twins, boardroom, scenarios, tokens, integrations, replay,
+        enterprise, support, observability, releases, trustDevice, compliance,
       },
       createAction: ActionStateMachine,
     };
