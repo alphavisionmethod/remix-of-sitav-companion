@@ -1,0 +1,298 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Enterprise / Family Office Control Plane
+// Org admin, roles, compliance, SLA, deployment, fleet
+// ═══════════════════════════════════════════════════════════════
+
+import { useState } from "react";
+import { SitaPageHeader, SitaCard, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { KPITile } from "@/components/sita/SitaComponents";
+import { AdminActionCard } from "@/components/sita/AdminActionCard";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Users, Shield, CheckCircle, FileText, Clock, Server, Activity, Plus,
+  Globe, Lock, Eye, AlertTriangle, TrendingUp, Layers, Heart, Mail,
+} from "lucide-react";
+import { toast } from "sonner";
+import { motion } from "framer-motion";
+
+// ── Demo Data ──────────────────────────────────────────────────
+
+const TEAM_MEMBERS = [
+  { id: "1", name: "Sarah Chen", email: "sarah@acme.co", role: "admin", status: "active", lastSeen: "2 min ago", trustScore: 98 },
+  { id: "2", name: "Marcus Rivera", email: "marcus@acme.co", role: "moderator", status: "active", lastSeen: "1 hour ago", trustScore: 92 },
+  { id: "3", name: "Aisha Patel", email: "aisha@acme.co", role: "user", status: "active", lastSeen: "Today", trustScore: 88 },
+  { id: "4", name: "James Wong", email: "james@acme.co", role: "user", status: "invited", lastSeen: "Never", trustScore: 0 },
+];
+
+const CAPABILITIES = ["biz-crm-read", "biz-crm-write", "fin-accounts-read", "fin-payment-execute", "con-calendar-read", "con-booking-create", "plat-diagnostic", "plat-config-write"];
+const ROLES = ["admin", "moderator", "user"];
+
+const COMPLIANCE_ITEMS = [
+  { id: "iso27001", name: "ISO 27001", status: "compliant", lastAudit: "2026-03-15", evidence: 12, nextReview: "2026-09-15" },
+  { id: "soc2", name: "SOC 2 Type II", status: "in-progress", lastAudit: "2026-01-20", evidence: 8, nextReview: "2026-07-20" },
+  { id: "gdpr", name: "GDPR", status: "compliant", lastAudit: "2026-02-10", evidence: 15, nextReview: "2026-08-10" },
+  { id: "nist", name: "NIST CSF", status: "review-needed", lastAudit: "2025-11-01", evidence: 6, nextReview: "2026-05-01" },
+];
+
+const SLA_METRICS = [
+  { name: "Uptime", target: 99.9, actual: 99.97, unit: "%" },
+  { name: "Response Time (p95)", target: 200, actual: 142, unit: "ms" },
+  { name: "Incident Resolution", target: 4, actual: 2.3, unit: "hrs" },
+  { name: "Data Recovery", target: 1, actual: 0.5, unit: "hrs" },
+];
+
+const DEPLOYMENTS = [
+  { id: "1", env: "production", version: "v2.14.3", status: "healthy", deployed: "2 hours ago", by: "CI/CD" },
+  { id: "2", env: "staging", version: "v2.15.0-rc1", status: "testing", deployed: "30 min ago", by: "Sarah Chen" },
+  { id: "3", env: "production", version: "v2.14.2", status: "rolled-back", deployed: "Yesterday", by: "CI/CD" },
+];
+
+// ── Permission Matrix ────────────────────────────────────────
+
+const ROLE_PERMISSIONS: Record<string, Record<string, boolean>> = {
+  admin: Object.fromEntries(CAPABILITIES.map(c => [c, true])),
+  moderator: { "biz-crm-read": true, "biz-crm-write": true, "fin-accounts-read": true, "fin-payment-execute": false, "con-calendar-read": true, "con-booking-create": true, "plat-diagnostic": true, "plat-config-write": false },
+  user: { "biz-crm-read": true, "biz-crm-write": false, "fin-accounts-read": true, "fin-payment-execute": false, "con-calendar-read": true, "con-booking-create": false, "plat-diagnostic": false, "plat-config-write": false },
+};
+
+const EnterpriseControlPlane = () => {
+  const [activeTab, setActiveTab] = useState("organization");
+  const [permissions, setPermissions] = useState(ROLE_PERMISSIONS);
+  const [inviteEmail, setInviteEmail] = useState("");
+
+  const togglePermission = (role: string, cap: string) => {
+    if (role === "admin") return; // Admin always has all
+    setPermissions(prev => ({
+      ...prev,
+      [role]: { ...prev[role], [cap]: !prev[role][cap] },
+    }));
+  };
+
+  return (
+    <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <SitaPageHeader
+        title="Enterprise Control Plane"
+        subtitle="Organization management, roles, compliance, SLA, and deployment health"
+        actions={<Badge variant="outline" className="text-xs gap-1"><Globe className="h-3 w-3" /> Enterprise</Badge>}
+      />
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <KPITile label="Team Members" value={TEAM_MEMBERS.filter(m => m.status === "active").length} icon={Users} sub={`${TEAM_MEMBERS.length} total`} />
+        <KPITile label="Compliance" value={`${COMPLIANCE_ITEMS.filter(c => c.status === "compliant").length}/${COMPLIANCE_ITEMS.length}`} icon={Shield} sub="frameworks" />
+        <KPITile label="SLA Health" value="99.97%" icon={Activity} trend="up" />
+        <KPITile label="Deployments" value={DEPLOYMENTS.filter(d => d.status === "healthy").length} icon={Server} sub="healthy" />
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="glass-panel border border-border/30 bg-secondary/20 p-1 h-auto flex-wrap">
+          {[
+            { value: "organization", label: "Organization", icon: Users },
+            { value: "roles", label: "Roles & Permissions", icon: Lock },
+            { value: "trust", label: "Trust Environment", icon: Eye },
+            { value: "compliance", label: "Compliance Vault", icon: FileText },
+            { value: "sla", label: "SLA Dashboard", icon: TrendingUp },
+            { value: "deployments", label: "Deployment Health", icon: Server },
+            { value: "fleet", label: "Fleet Overview", icon: Layers },
+          ].map(tab => (
+            <TabsTrigger key={tab.value} value={tab.value} className="text-xs gap-1.5 data-[state=active]:bg-background data-[state=active]:shadow-sm">
+              <tab.icon className="h-3 w-3" /> {tab.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {/* ═══ ORGANIZATION ═══ */}
+        <TabsContent value="organization" className="space-y-4 mt-4">
+          <div className="flex items-center gap-2">
+            <Input value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="Email address" className="max-w-xs h-8 text-xs" />
+            <Button size="sm" className="text-xs gap-1.5" onClick={() => { toast.success(`Invitation sent to ${inviteEmail}`); setInviteEmail(""); }}>
+              <Mail className="h-3.5 w-3.5" /> Invite
+            </Button>
+          </div>
+
+          <div className="space-y-2">
+            {TEAM_MEMBERS.map(member => (
+              <SitaCard key={member.id} hover={false} className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                      {member.name.split(" ").map(n => n[0]).join("")}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">{member.name}</p>
+                      <p className="text-xs text-muted-foreground">{member.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {member.trustScore > 0 && (
+                      <div className="text-right">
+                        <p className="text-[10px] text-muted-foreground">Trust</p>
+                        <p className="text-xs font-semibold text-foreground">{member.trustScore}%</p>
+                      </div>
+                    )}
+                    <Badge variant={member.role === "admin" ? "default" : "secondary"} className="text-[10px]">{member.role}</Badge>
+                    <Badge variant={member.status === "active" ? "outline" : "secondary"} className="text-[10px]">{member.status}</Badge>
+                  </div>
+                </div>
+              </SitaCard>
+            ))}
+          </div>
+        </TabsContent>
+
+        {/* ═══ ROLES & PERMISSIONS ═══ */}
+        <TabsContent value="roles" className="space-y-4 mt-4">
+          <SitaCard hover={false} className="p-4 overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-border/30">
+                  <th className="text-left py-2 px-3 font-semibold text-muted-foreground">Capability</th>
+                  {ROLES.map(role => (
+                    <th key={role} className="text-center py-2 px-3 font-semibold text-muted-foreground capitalize">{role}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {CAPABILITIES.map(cap => (
+                  <tr key={cap} className="border-b border-border/10 hover:bg-secondary/20 transition-colors">
+                    <td className="py-2 px-3 font-mono text-foreground">{cap}</td>
+                    {ROLES.map(role => (
+                      <td key={role} className="text-center py-2 px-3">
+                        <Switch
+                          checked={permissions[role]?.[cap] ?? false}
+                          onCheckedChange={() => togglePermission(role, cap)}
+                          disabled={role === "admin"}
+                          className="scale-75"
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </SitaCard>
+
+          <AdminActionCard
+            title="Save Permission Changes"
+            whatChanges="Role-capability matrix will be updated"
+            riskLevel="high"
+            whatHappensNext="Permission changes apply immediately to all users with affected roles"
+            proofNote="Permission matrix diff logged with before/after per role"
+            undoDescription="Revert from Owner → Rollback → Permissions"
+            onConfirm={() => toast.success("Permissions saved")}
+            confirmLabel="Save Permissions"
+            icon={<Lock className="h-5 w-5 text-primary" />}
+          />
+        </TabsContent>
+
+        {/* ═══ TRUST ENVIRONMENT ═══ */}
+        <TabsContent value="trust" className="space-y-4 mt-4">
+          {TEAM_MEMBERS.filter(m => m.trustScore > 0).map(member => (
+            <SitaCard key={member.id} hover={false} className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-medium text-foreground">{member.name}</p>
+                <span className={`text-xs font-semibold ${member.trustScore > 90 ? "text-emerald-500" : member.trustScore > 70 ? "text-amber-500" : "text-destructive"}`}>
+                  {member.trustScore}% trust
+                </span>
+              </div>
+              <Progress value={member.trustScore} className="h-1.5" />
+              <div className="flex items-center gap-4 mt-2 text-[10px] text-muted-foreground">
+                <span>Last seen: {member.lastSeen}</span>
+                <span>Role: {member.role}</span>
+                <span>No permission drift detected</span>
+              </div>
+            </SitaCard>
+          ))}
+        </TabsContent>
+
+        {/* ═══ COMPLIANCE VAULT ═══ */}
+        <TabsContent value="compliance" className="space-y-4 mt-4">
+          {COMPLIANCE_ITEMS.map(item => (
+            <SitaCard key={item.id} hover={false} className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Shield className={`h-4 w-4 ${item.status === "compliant" ? "text-emerald-500" : item.status === "in-progress" ? "text-amber-500" : "text-destructive"}`} />
+                  <p className="text-sm font-semibold text-foreground">{item.name}</p>
+                </div>
+                <Badge variant={item.status === "compliant" ? "default" : "secondary"} className="text-[10px] capitalize">{item.status.replace("-", " ")}</Badge>
+              </div>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <span>Last audit: {item.lastAudit}</span>
+                <span>{item.evidence} evidence items</span>
+                <span>Next review: {item.nextReview}</span>
+              </div>
+            </SitaCard>
+          ))}
+        </TabsContent>
+
+        {/* ═══ SLA DASHBOARD ═══ */}
+        <TabsContent value="sla" className="space-y-4 mt-4">
+          <div className="grid gap-3 sm:grid-cols-2">
+            {SLA_METRICS.map(metric => {
+              const met = metric.name.includes("Time") || metric.name.includes("Recovery")
+                ? metric.actual <= metric.target
+                : metric.actual >= metric.target;
+              return (
+                <SitaCard key={metric.name} hover={false} className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-sm font-medium text-foreground">{metric.name}</p>
+                    <CheckCircle className={`h-4 w-4 ${met ? "text-emerald-500" : "text-destructive"}`} />
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-bold text-foreground">{metric.actual}{metric.unit}</span>
+                    <span className="text-xs text-muted-foreground">/ target: {metric.target}{metric.unit}</span>
+                  </div>
+                  <Progress value={Math.min((metric.name.includes("Time") ? metric.target / metric.actual : metric.actual / metric.target) * 100, 100)} className="h-1.5 mt-2" />
+                </SitaCard>
+              );
+            })}
+          </div>
+        </TabsContent>
+
+        {/* ═══ DEPLOYMENT HEALTH ═══ */}
+        <TabsContent value="deployments" className="space-y-4 mt-4">
+          {DEPLOYMENTS.map(dep => (
+            <SitaCard key={dep.id} hover={false} className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`h-2.5 w-2.5 rounded-full ${dep.status === "healthy" ? "bg-emerald-500" : dep.status === "testing" ? "bg-amber-500 animate-pulse" : "bg-muted-foreground"}`} />
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{dep.env} — {dep.version}</p>
+                    <p className="text-xs text-muted-foreground">{dep.deployed} by {dep.by}</p>
+                  </div>
+                </div>
+                <Badge variant={dep.status === "healthy" ? "default" : "secondary"} className="text-[10px] capitalize">{dep.status}</Badge>
+              </div>
+            </SitaCard>
+          ))}
+        </TabsContent>
+
+        {/* ═══ FLEET OVERVIEW ═══ */}
+        <TabsContent value="fleet" className="space-y-4 mt-4">
+          <div className="grid gap-3 sm:grid-cols-3">
+            <KPITile label="Total Services" value={12} icon={Server} sub="Running" />
+            <KPITile label="Edge Functions" value={10} icon={Activity} sub="Deployed" />
+            <KPITile label="Health Score" value="98%" icon={Heart} trend="up" />
+          </div>
+          <SitaCard hover={false} className="p-4">
+            <p className="text-sm font-medium text-foreground mb-3">Service Fleet</p>
+            {["brain-core", "agent-executor", "agent-scheduler", "agent-signal", "agent-intelligence", "self-healing", "agent-heartbeat"].map(svc => (
+              <div key={svc} className="flex items-center justify-between py-2 border-b border-border/10 last:border-0">
+                <div className="flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                  <span className="text-xs font-mono text-foreground">{svc}</span>
+                </div>
+                <Badge variant="outline" className="text-[10px]">Healthy</Badge>
+              </div>
+            ))}
+          </SitaCard>
+        </TabsContent>
+      </Tabs>
+    </motion.div>
+  );
+};
+
+export default EnterpriseControlPlane;

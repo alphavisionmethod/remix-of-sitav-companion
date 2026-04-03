@@ -65,6 +65,10 @@ const PermissionsCenter = lazy(() => import("./pages/PermissionsCenter"));
 const AgentActivityDashboard = lazy(() => import("./pages/AgentActivityDashboard"));
 const RevenueCallingPage = lazy(() => import("./pages/RevenueCallingPage"));
 const ServiceArchitectureDashboard = lazy(() => import("./pages/ServiceArchitectureDashboard"));
+const PricingEditor = lazy(() => import("./pages/owner/PricingEditor"));
+const PackEditorPage = lazy(() => import("./pages/owner/PackEditor"));
+const AdvisorConfigPage = lazy(() => import("./pages/owner/AdvisorConfig"));
+const EnterpriseControlPlane = lazy(() => import("./pages/enterprise/EnterpriseControlPlane"));
 
 // Mobile Trusted Device
 const MobileHome = lazy(() => import("./pages/mobile/MobileHome"));
@@ -371,6 +375,16 @@ const App = () => (
                     <Route path="/owner/support" element={<OwnerCenter />} />
                     <Route path="/owner/change-review" element={<OwnerCenter />} />
                     <Route path="/owner/rollback-center" element={<OwnerCenter />} />
+                    <Route path="/owner/pricing" element={<PricingEditor />} />
+                    <Route path="/owner/packs" element={<PackEditorPage />} />
+                    <Route path="/owner/advisors" element={<AdvisorConfigPage />} />
+
+                    {/* Enterprise Control Plane */}
+                    <Route path="/enterprise" element={<EnterpriseControlPlane />} />
+                    <Route path="/enterprise/roles" element={<EnterpriseControlPlane />} />
+                    <Route path="/enterprise/compliance" element={<EnterpriseControlPlane />} />
+                    <Route path="/enterprise/sla" element={<EnterpriseControlPlane />} />
+                    <Route path="/enterprise/fleet" element={<EnterpriseControlPlane />} />
 
                     {/* Policy Engine */}
                     <Route path="/policies" element={<PolicyEditor />} />
