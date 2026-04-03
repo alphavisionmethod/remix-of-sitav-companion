@@ -157,18 +157,34 @@ const MoneyOverview = () => {
             ))}
           </div>
 
-          {/* Safe-to-Spend */}
+          {/* Safe-to-Spend — Deterministic Calculation */}
           <SitaCard hover={false} className="gradient-sita-subtle p-5">
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-4">
               <Shield className="h-4 w-4 text-primary" />
               <SitaCardTitle>Safe to Spend</SitaCardTitle>
+              <span className="ml-auto text-[10px] text-muted-foreground rounded-full bg-secondary px-2 py-0.5">Deterministic</span>
             </div>
-            <p className="font-display text-3xl font-bold text-foreground">$3,180</p>
-            <p className="mt-1 text-xs text-muted-foreground">After bills ($2,929), reserves ($12,000), and obligations</p>
-            <div className="mt-3 h-2 w-full rounded-full bg-secondary overflow-hidden">
-              <div className="h-full rounded-full bg-trust-verified" style={{ width: "42%" }} />
+            <p className="font-display text-4xl font-bold text-foreground tracking-tight">$3,180</p>
+            <p className="mt-1 text-xs text-muted-foreground">Available after all obligations</p>
+            
+            {/* Breakdown */}
+            <div className="mt-4 space-y-2 border-t border-border/30 pt-4">
+              {[
+                { label: "Total Cash", value: "$58,570", color: "text-foreground" },
+                { label: "− Bills due (7d)", value: "−$2,929", color: "text-[hsl(var(--sita-gold))]" },
+                { label: "− Reserve minimum", value: "−$12,000", color: "text-muted-foreground" },
+                { label: "− Scheduled payments", value: "−$40,461", color: "text-muted-foreground" },
+                { label: "= Safe to spend", value: "$3,180", color: "text-[hsl(var(--trust-safe))]" },
+              ].map((row, i) => (
+                <div key={i} className={`flex items-center justify-between text-[12px] ${i === 4 ? "font-semibold pt-2 border-t border-border/20" : ""}`}>
+                  <span className="text-muted-foreground">{row.label}</span>
+                  <span className={`font-mono tabular-nums ${row.color}`}>{row.value}</span>
+                </div>
+              ))}
             </div>
-            <p className="mt-1.5 text-[11px] text-muted-foreground">42% of available cash · Comfortable range</p>
+            
+            <ConfidenceBar value={42} label="Spending capacity" size="md" className="mt-4" />
+            
             <SitaButton variant="accent" size="sm" className="mt-3" onClick={() => navigate("/money/cash-timing")}>
               View Cash Timing <ArrowRight className="h-3 w-3" />
             </SitaButton>
