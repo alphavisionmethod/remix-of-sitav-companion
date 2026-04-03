@@ -16,6 +16,10 @@ const validators = [
   "scripts/validation/generated-truth.ts",
   "scripts/validation/schema-compliance.ts",
   "scripts/check-no-page-mocks.ts",
+  "scripts/check-runtime-usage.ts",
+  "scripts/check-duplicate-exports.ts",
+  "scripts/check-inline-mocks.ts",
+  "scripts/check-route-drift.ts",
 ];
 
 console.log(`\n🔍 Running ${validators.length} validators...\n`);
