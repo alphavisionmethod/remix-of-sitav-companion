@@ -1062,6 +1062,7 @@ export default function MissionControlPage() {
   const [activeTab, setActiveTab] = useState("home");
   const { mode, setMode, isOwner } = useControlMode();
   const navigate = useNavigate();
+  const runtime = useOSRuntime();
   const { data: adminIncidents } = useAdminIncidents();
   const { data: fleetHealth } = useFleetHealth();
   const { data: trustCenter } = useTrustCenter();
