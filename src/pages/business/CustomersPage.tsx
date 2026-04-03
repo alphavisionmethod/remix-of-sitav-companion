@@ -1,7 +1,8 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, SitaTabs, EmptyState, CustomerRow } from "@/components/sita/SitaComponents";
+import { KPITile, SitaTabs, EmptyState, CustomerRow, TimelineItem } from "@/components/sita/SitaComponents";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
+import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
