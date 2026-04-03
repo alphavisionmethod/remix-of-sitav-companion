@@ -7,7 +7,8 @@ import {
   classifyRiskTier,
   type PolicyEvaluationResult,
 } from "@/lib/core-services/policy-engine";
-import { createReceiptService, type ReceiptService, type Receipt } from "@/lib/core-services/receipt-service";
+import type { ReceiptService, Receipt } from "@/lib/core-services/receipt-service";
+import { useSitaKernel } from "@/contexts/SitaKernelContext";
 
 export interface AdvisorResponse {
   request_id: string;
@@ -32,12 +33,12 @@ interface UseBrainCoreOptions {
 
 export function useBrainCore({ advisor, secondaryAdvisor }: UseBrainCoreOptions) {
   const { session } = useAuth();
+  const kernel = useSitaKernel();
   const [isLoading, setIsLoading] = useState(false);
   const [lastResponse, setLastResponse] = useState<AdvisorResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [lastPolicyResult, setLastPolicyResult] = useState<PolicyEvaluationResult | null>(null);
   const [lastReceipt, setLastReceipt] = useState<Receipt | null>(null);
-  const receiptServiceRef = useRef<ReceiptService>(createReceiptService());
 
   const ask = useCallback(async (intent: string, context?: Record<string, unknown>): Promise<AdvisorResponse | null> => {
     if (!session?.access_token) {
@@ -65,11 +66,12 @@ export function useBrainCore({ advisor, secondaryAdvisor }: UseBrainCoreOptions)
 
       // If policy denies, skip the network call
       if (policyResult.effect === "deny") {
-        const refusalReceipt = await receiptServiceRef.current.createReceipt(
+        const refusalReceipt = await kernel.createReceipt(
           crypto.randomUUID(), "refusal",
           { intent, advisor, reason: policyResult.reason, riskTier }
         );
         setLastReceipt(refusalReceipt);
+        await kernel.emitEvent("advisor.denied.v1", { advisor, intent, reason: policyResult.reason });
         setError(`Policy blocked: ${policyResult.reason}`);
         return null;
       }
@@ -103,13 +105,22 @@ export function useBrainCore({ advisor, secondaryAdvisor }: UseBrainCoreOptions)
       const data: AdvisorResponse = await response.json();
       setLastResponse(data);
 
-      // Generate execution receipt
-      const receipt = await receiptServiceRef.current.createReceipt(
+      // Generate execution receipt via shared kernel
+      const receipt = await kernel.createReceipt(
         data.correlation_id || crypto.randomUUID(),
         "execution-summary",
         { intent, advisor, confidence: data.confidence, source: data.source, model: data.model }
       );
       setLastReceipt(receipt);
+
+      // Emit advisor response event + store in shared memory
+      await kernel.emitEvent("advisor.response.v1", {
+        advisor, intent, confidence: data.confidence, source: data.source,
+      }, data.correlation_id);
+      kernel.storeMemory(`advisor.${advisor}.lastResponse`, {
+        intent, confidence: data.confidence, recommendation: data.recommendation,
+        timestamp: Date.now(),
+      }, { source: `advisor-${advisor}`, tags: [advisor, "advisor-response"] });
 
       return data;
     } catch (e) {
@@ -120,9 +131,9 @@ export function useBrainCore({ advisor, secondaryAdvisor }: UseBrainCoreOptions)
     } finally {
       setIsLoading(false);
     }
-  }, [session, advisor]);
+  }, [session, advisor, kernel]);
 
-  return { ask, isLoading, lastResponse, error, lastPolicyResult, lastReceipt, receiptService: receiptServiceRef.current };
+  return { ask, isLoading, lastResponse, error, lastPolicyResult, lastReceipt, receiptService: kernel.receipts };
 }
 
 // ── Demo Mode Hook ──────────────────────────────────────────────────────────
