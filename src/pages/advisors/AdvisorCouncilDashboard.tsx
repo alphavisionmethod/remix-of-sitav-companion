@@ -1,10 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Advisor Council Dashboard
 // Performance scorecards, escalation history, handoff activity,
-// and model budget status in real-time
+// and model budget status — wired to agent-intelligence backend
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaMetric } from "@/components/sita/SitaCard";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
@@ -16,9 +16,13 @@ import { motion } from "framer-motion";
 import {
   Users, Brain, GitBranch, Shield, Scale, BarChart3, TrendingUp, TrendingDown,
   AlertTriangle, CheckCircle, XCircle, ArrowRight, Clock, Zap, DollarSign,
-  ChevronRight, ArrowUpRight, ArrowDownRight, Activity,
+  ChevronRight, ArrowUpRight, ArrowDownRight, Activity, RefreshCw, Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 // ── Demo Data ────────────────────────────────────────────────
 
