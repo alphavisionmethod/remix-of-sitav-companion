@@ -356,6 +356,16 @@ const App = () => (
                     <Route path="/revenue-calling" element={<RevenueCallingPage />} />
                     <Route path="/service-architecture" element={<ServiceArchitectureDashboard />} />
 
+                    {/* Phase 5 — Platform Intelligence */}
+                    <Route path="/integration-concierge" element={<IntegrationConcierge />} />
+                    <Route path="/digital-twins" element={<DigitalTwinsPage />} />
+                    <Route path="/digital-twins/business" element={<DigitalTwinsPage />} />
+                    <Route path="/digital-twins/money" element={<DigitalTwinsPage />} />
+                    <Route path="/digital-twins/household" element={<DigitalTwinsPage />} />
+                    <Route path="/scenario-lab" element={<ScenarioLabPage />} />
+                    <Route path="/ai-economics" element={<AIEconomicsPage />} />
+                    <Route path="/recovered-value" element={<RecoveredValuePage />} />
+
                     <Route path="/settings" element={<SettingsPage />} />
                     <Route path="/settings/trust" element={<SettingsPage />} />
                     <Route path="/settings/profile" element={<SettingsPage />} />
