@@ -8,11 +8,13 @@ import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { useNavigate } from "react-router-dom";
 import { useLeads, useCustomers, useInvoices } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import {
   Phone, Clock, AlertTriangle, DollarSign, Users, FileText, Sparkles, CheckCircle, Briefcase,
-  Calendar, TrendingUp, ArrowRight, BarChart3, UserPlus, Receipt, Mail, Target
+  Calendar, TrendingUp, ArrowRight, BarChart3, UserPlus, Receipt, Mail, Target, Zap
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useMemo } from "react";
 
 const todayCallbacks = [
   { name: "Sarah Chen", time: "10:30 AM", reason: "Quote follow-up — $2,500 website redesign", stale: false },
