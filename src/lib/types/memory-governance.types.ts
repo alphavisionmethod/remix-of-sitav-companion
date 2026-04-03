@@ -106,3 +106,16 @@ export interface MemoryGovernanceConfig {
   contradictionDetectionEnabled: boolean;
   autoExpirationEnabled: boolean;
 }
+
+// ── Memory Audit Trail ──────────────────────────────────────────
+export interface MemoryAuditEntry {
+  id: string;
+  memoryId: string;
+  action: "created" | "read" | "updated" | "corrected" | "forgotten" | "shared" | "promoted" | "expired" | "conflict_resolved";
+  actor: string;
+  actorType: "user" | "advisor" | "system";
+  timestamp: string;
+  details: Record<string, unknown>;
+  previousState?: unknown;
+  newState?: unknown;
+}
