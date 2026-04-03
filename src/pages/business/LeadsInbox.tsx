@@ -200,6 +200,34 @@ const LeadsInbox = () => {
         </SitaCard>
       )}
 
+      {/* Lead Aging Detection */}
+      {leads.filter(l => l.stale_risk).length > 0 && (
+        <SitaCard hover={false} className="p-4 border-l-4 border-l-[hsl(var(--sita-gold))]">
+          <div className="flex items-center gap-3 mb-3">
+            <Clock className="h-4 w-4 text-[hsl(var(--sita-gold))]" />
+            <span className="text-sm font-semibold text-foreground">Lead Aging Alert</span>
+            <span className="text-[10px] bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))] rounded-full px-2 py-0.5 font-medium">{leads.filter(l => l.stale_risk).length} going stale</span>
+          </div>
+          <div className="space-y-1.5">
+            {leads.filter(l => l.stale_risk).slice(0, 3).map((lead) => {
+              const daysSince = lead.last_contact_at ? Math.floor((Date.now() - new Date(lead.last_contact_at).getTime()) / 86400000) : 0;
+              return (
+                <div key={lead.id} onClick={() => setSelectedId(lead.id)} className="flex items-center gap-3 rounded-lg bg-secondary/30 px-3 py-2 cursor-pointer hover:bg-secondary/50 transition-colors">
+                  <div className={`flex h-8 w-8 items-center justify-center rounded-full text-[10px] font-bold ${daysSince > 7 ? "bg-[hsl(var(--destructive))]/10 text-[hsl(var(--destructive))]" : "bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))]"}`}>
+                    {daysSince}d
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[12px] font-medium text-foreground truncate">{lead.name}{lead.company ? ` · ${lead.company}` : ""}</p>
+                    <p className="text-[10px] text-muted-foreground">{lead.likely_value ? `$${lead.likely_value.toLocaleString()} at risk` : "No contact in " + daysSince + " days"}</p>
+                  </div>
+                  <span className="text-[10px] text-muted-foreground">{lead.next_action || "Follow up"}</span>
+                </div>
+              );
+            })}
+          </div>
+        </SitaCard>
+      )}
+
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="Total Leads" value={leads.length} icon={User} />
         <KPITile label="Callbacks Due" value={leads.filter(l => l.status === "callback-due").length} icon={Phone} sub="Today" />
