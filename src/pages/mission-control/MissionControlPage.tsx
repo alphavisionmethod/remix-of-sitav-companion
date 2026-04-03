@@ -966,91 +966,125 @@ function EnvironmentBar() {
   );
 }
 
+// ── What Matters Now — Founder Panel ────────────────────────────────────────
+
+function WhatMattersNowPanel() {
+  const items = useWhatMattersNow();
+  const navigate = useNavigate();
+  if (items.length === 0) return null;
+  const urgencyDot: Record<string, string> = { critical: "bg-destructive", high: "bg-accent", medium: "bg-primary", low: "bg-muted-foreground", info: "bg-primary/50" };
+  const urgencyBorder: Record<string, string> = { critical: "border-destructive/20 bg-destructive/5", high: "border-accent/20 bg-accent/5", medium: "border-primary/15 bg-primary/3", low: "border-border bg-card/50", info: "border-border bg-card/30" };
+  return (
+    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl border border-accent/15 bg-gradient-to-br from-accent/3 via-card to-card p-5">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15"><AlertTriangle className="h-5 w-5 text-accent" /></div>
+        <div><h3 className="text-sm font-bold text-foreground font-display">What Matters Now</h3><p className="text-[11px] text-muted-foreground">{items.length} item{items.length > 1 ? "s" : ""} needing attention</p></div>
+      </div>
+      <div className="space-y-2">
+        {items.slice(0, 5).map((item, i) => (
+          <motion.div key={item.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.04 }}
+            className={cn("flex items-center gap-3 rounded-xl border p-3 cursor-pointer hover:shadow-sm transition-all", urgencyBorder[item.urgency])}
+            onClick={() => item.actionRoute && navigate(item.actionRoute)}
+          >
+            <div className={cn("h-2.5 w-2.5 rounded-full shrink-0", urgencyDot[item.urgency])} />
+            <div className="flex-1 min-w-0"><p className="text-xs font-medium text-foreground truncate">{item.title}</p><p className="text-[10px] text-muted-foreground truncate">{item.description}</p></div>
+            {item.actionLabel && <span className="text-[10px] font-medium text-primary shrink-0">{item.actionLabel} →</span>}
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+// ── Mode Toggle ─────────────────────────────────────────────────────────────
+
+function ModeToggle({ mode, setMode }: { mode: "owner" | "advanced"; setMode: (m: "owner" | "advanced") => void }) {
+  return (
+    <div className="flex items-center gap-1 rounded-xl border border-border/50 bg-muted/20 p-0.5">
+      <button onClick={() => setMode("owner")} className={cn("rounded-lg px-4 py-1.5 text-[11px] font-medium transition-all", mode === "owner" ? "bg-card shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground")}>
+        <Eye className="h-3 w-3 inline mr-1.5" />Owner
+      </button>
+      <button onClick={() => setMode("advanced")} className={cn("rounded-lg px-4 py-1.5 text-[11px] font-medium transition-all", mode === "advanced" ? "bg-card shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground")}>
+        <Cpu className="h-3 w-3 inline mr-1.5" />Advanced
+      </button>
+    </div>
+  );
+}
+
 // ── Main Page ───────────────────────────────────────────────────────────────
 
 export default function MissionControlPage() {
   const [activeTab, setActiveTab] = useState("home");
+  const { mode, setMode, isOwner } = useControlMode();
+  const navigate = useNavigate();
   const openIncidents = mockIncidents.filter(i => i.status !== "resolved").length;
+
+  const ownerTabs = [
+    { value: "home", label: "Home", icon: Cpu },
+    { value: "incidents", label: "Incidents", icon: AlertTriangle, badge: openIncidents > 0 ? openIncidents : undefined },
+    { value: "connectors", label: "Connectors", icon: Wifi },
+    { value: "costs", label: "Costs", icon: DollarSign },
+    { value: "trust", label: "Trust", icon: Shield },
+    { value: "safe-mode", label: "Safe Mode", icon: ShieldAlert },
+  ];
+
+  const advancedTabs = [
+    { value: "home", label: "Home", icon: Cpu },
+    { value: "ai-team", label: "AI Team", icon: Server, badge: mockInternalAgents.length },
+    { value: "incidents", label: "Incidents", icon: AlertTriangle, badge: openIncidents > 0 ? openIncidents : undefined },
+    { value: "connectors", label: "Connectors", icon: Wifi },
+    { value: "recovery", label: "Recovery", icon: RefreshCw },
+    { value: "costs", label: "Costs", icon: DollarSign },
+    { value: "trust", label: "Trust", icon: Shield },
+    { value: "replay", label: "Replay", icon: Rewind },
+    { value: "releases", label: "Releases", icon: Rocket },
+    { value: "permissions", label: "Permissions", icon: Lock },
+    { value: "safe-mode", label: "Safe Mode", icon: ShieldAlert },
+    { value: "activity-feed", label: "Activity", icon: Radio },
+    { value: "self-healing", label: "Self-Healing", icon: Heart },
+    { value: "self-learning", label: "Self-Learning", icon: Brain },
+    { value: "control-panel", label: "Control", icon: Power },
+    { value: "history", label: "History", icon: History },
+    { value: "predictive", label: "Predictive", icon: Target },
+    { value: "audit-log", label: "Audit", icon: ClipboardList },
+    { value: "compliance", label: "Compliance", icon: Shield },
+    { value: "bcpdr", label: "BCP/DR", icon: RotateCcw },
+    { value: "cab", label: "CAB", icon: GitBranch },
+    { value: "comm-graph", label: "Agent Comms", icon: Network },
+    { value: "heal-notify", label: "Heal Alerts", icon: BellRing },
+  ];
+
+  const tabs = isOwner ? ownerTabs : advancedTabs;
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-5">
+      <div className="flex items-center justify-between">
+        <ModeToggle mode={mode} setMode={setMode} />
+        {isOwner && (
+          <div className="flex gap-2">
+            <button onClick={() => navigate("/mission/overview")} className="flex items-center gap-1.5 rounded-xl border border-border bg-card/60 px-3 py-1.5 text-[11px] text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
+              <BarChart3 className="h-3 w-3" /> Ops Overview
+            </button>
+            <button onClick={() => navigate("/mission/policies/simulate")} className="flex items-center gap-1.5 rounded-xl border border-border bg-card/60 px-3 py-1.5 text-[11px] text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
+              <Shield className="h-3 w-3" /> Policy Simulator
+            </button>
+          </div>
+        )}
+      </div>
+
       <SystemPulseHero />
+      {isOwner && <WhatMattersNowPanel />}
       <EnvironmentBar />
       <QuickActionsStrip />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-9 p-0.5 gap-0.5 flex-wrap">
-          <TabsTrigger value="home" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Cpu className="h-3 w-3 mr-1.5" />Home
-          </TabsTrigger>
-          <TabsTrigger value="ai-team" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Users className="h-3 w-3 mr-1.5" />AI Team
-            <Badge className="ml-1.5 h-4 px-1 text-[9px] bg-primary/10 text-primary">{mockInternalAgents.length}</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="incidents" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <AlertTriangle className="h-3 w-3 mr-1.5" />Incidents
-            {openIncidents > 0 && <Badge className="ml-1.5 h-4 px-1 text-[9px] bg-destructive/20 text-destructive">{openIncidents}</Badge>}
-          </TabsTrigger>
-          <TabsTrigger value="connectors" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Wifi className="h-3 w-3 mr-1.5" />Connectors
-          </TabsTrigger>
-          <TabsTrigger value="recovery" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <RefreshCw className="h-3 w-3 mr-1.5" />Recovery
-          </TabsTrigger>
-          <TabsTrigger value="costs" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <DollarSign className="h-3 w-3 mr-1.5" />Costs
-          </TabsTrigger>
-          <TabsTrigger value="trust" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Shield className="h-3 w-3 mr-1.5" />Trust
-          </TabsTrigger>
-          <TabsTrigger value="replay" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Rewind className="h-3 w-3 mr-1.5" />Replay
-          </TabsTrigger>
-          <TabsTrigger value="releases" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Rocket className="h-3 w-3 mr-1.5" />Releases
-          </TabsTrigger>
-          <TabsTrigger value="permissions" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Lock className="h-3 w-3 mr-1.5" />Permissions
-          </TabsTrigger>
-          <TabsTrigger value="safe-mode" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <ShieldAlert className="h-3 w-3 mr-1.5" />Safe Mode
-          </TabsTrigger>
-          <TabsTrigger value="activity-feed" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Radio className="h-3 w-3 mr-1.5" />Activity Feed
-          </TabsTrigger>
-          <TabsTrigger value="self-healing" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Heart className="h-3 w-3 mr-1.5" />Self-Healing
-          </TabsTrigger>
-          <TabsTrigger value="self-learning" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Brain className="h-3 w-3 mr-1.5" />Self-Learning
-          </TabsTrigger>
-          <TabsTrigger value="control-panel" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Power className="h-3 w-3 mr-1.5" />Control Panel
-          </TabsTrigger>
-          <TabsTrigger value="history" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <History className="h-3 w-3 mr-1.5" />History
-          </TabsTrigger>
-          <TabsTrigger value="predictive" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Target className="h-3 w-3 mr-1.5" />Predictive
-          </TabsTrigger>
-          <TabsTrigger value="audit-log" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <ClipboardList className="h-3 w-3 mr-1.5" />Audit Log
-          </TabsTrigger>
-          <TabsTrigger value="compliance" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Shield className="h-3 w-3 mr-1.5" />Compliance
-          </TabsTrigger>
-          <TabsTrigger value="bcpdr" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <RotateCcw className="h-3 w-3 mr-1.5" />BCP/DR
-          </TabsTrigger>
-          <TabsTrigger value="cab" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <GitBranch className="h-3 w-3 mr-1.5" />CAB
-          </TabsTrigger>
-          <TabsTrigger value="comm-graph" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <Network className="h-3 w-3 mr-1.5" />Agent Comms
-          </TabsTrigger>
-          <TabsTrigger value="heal-notify" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
-            <BellRing className="h-3 w-3 mr-1.5" />Heal Alerts
-          </TabsTrigger>
+          {tabs.map(t => (
+            <TabsTrigger key={t.value} value={t.value} className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
+              <t.icon className="h-3 w-3 mr-1.5" />{t.label}
+              {t.badge !== undefined && <Badge className={cn("ml-1.5 h-4 px-1 text-[9px]", t.value === "incidents" ? "bg-destructive/20 text-destructive" : "bg-primary/10 text-primary")}>{t.badge}</Badge>}
+            </TabsTrigger>
+          ))}
         </TabsList>
 
         <div className="mt-5">
