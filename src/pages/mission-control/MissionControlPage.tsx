@@ -574,17 +574,35 @@ function MCRecovery() {
 // ── Cost & Token Control ────────────────────────────────────────────────────
 
 function MCCosts() {
-  const totalTokens = mockInternalAgents.reduce((s, a) => s + a.costTokens24h, 0);
-  const totalInvocations = mockInternalAgents.reduce((s, a) => s + a.invocations24h, 0);
-  const estCost = totalTokens * 0.002 / 1000;
-  const budget = 5.00; // daily budget
-  const utilization = Math.round((estCost / budget) * 100);
+  const { runtime } = useMCAdmin();
+  const tokenEngine = runtime.engines.tokens;
 
-  const sorted = [...mockInternalAgents].sort((a, b) => b.costTokens24h - a.costTokens24h);
+  // Seed demo usage so the dashboard has data
+  const dashboard = useMemo(() => {
+    const demoUsages: Array<Omit<import("@/lib/types/token-governance.types").TokenUsageRecord, "id" | "timestamp">> = [
+      { requestId: "r1", userId: "owner", domain: "business", model: "gemini-3-flash-preview", tier: "cheap" as const, inputTokens: 4200, outputTokens: 1800, totalTokens: 6000, cost: 0.0009, cached: false, compressed: false, workflowId: "lead-scoring", advisorId: "business-advisor" },
+      { requestId: "r2", userId: "owner", domain: "finance", model: "gpt-4o-mini", tier: "mid" as const, inputTokens: 8500, outputTokens: 3200, totalTokens: 11700, cost: 0.0035, cached: false, compressed: false, workflowId: "cash-timing", advisorId: "money-advisor" },
+      { requestId: "r3", userId: "owner", domain: "boardroom", model: "claude-sonnet-4-20250514", tier: "premium" as const, inputTokens: 18000, outputTokens: 6000, totalTokens: 24000, cost: 0.072, cached: false, compressed: false, workflowId: "boardroom-session", advisorId: "strategy-advisor" },
+      { requestId: "r4", userId: "owner", domain: "concierge", model: "gemini-3-flash-preview", tier: "cheap" as const, inputTokens: 2100, outputTokens: 900, totalTokens: 3000, cost: 0.00045, cached: true, compressed: false, workflowId: "household-prep", advisorId: "concierge-advisor" },
+      { requestId: "r5", userId: "owner", domain: "business", model: "gpt-4o-mini", tier: "mid" as const, inputTokens: 5500, outputTokens: 2200, totalTokens: 7700, cost: 0.0023, cached: false, compressed: false, workflowId: "crm-health-check", advisorId: "business-advisor" },
+      { requestId: "r6", userId: "owner", domain: "finance", model: "structured-state", tier: "no_llm" as const, inputTokens: 0, outputTokens: 0, totalTokens: 0, cost: 0, cached: false, compressed: false, workflowId: "balance-lookup" },
+      { requestId: "r7", userId: "owner", domain: "boardroom", model: "gpt-4o-mini", tier: "mid" as const, inputTokens: 6800, outputTokens: 2800, totalTokens: 9600, cost: 0.0029, cached: false, compressed: false, workflowId: "advisor-synthesis", advisorId: "strategy-advisor" },
+      { requestId: "r8", userId: "owner", domain: "business", model: "gemini-3-flash-preview", tier: "cheap" as const, inputTokens: 3100, outputTokens: 1200, totalTokens: 4300, cost: 0.00065, cached: true, compressed: false, workflowId: "lead-follow-up", advisorId: "business-advisor" },
+    ];
+    for (const u of demoUsages) tokenEngine.recordUsage(u);
+    return tokenEngine.getDashboard("today");
+  }, [tokenEngine]);
+
+  const modelRoutes = useMemo(() => {
+    return (tokenEngine as any).routes as Array<{ id: string; name: string; tier: string; model: string; costPer1kTokens: number; latencyMs: number; active: boolean }>;
+  }, [tokenEngine]);
+
+  const dailyBudget = 5.00;
+  const utilization = Math.round((dashboard.totalSpend / dailyBudget) * 100);
 
   return (
     <div className="space-y-6">
-      {/* Cost Overview Card */}
+      {/* Cost Overview — engine-backed */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-xl border border-primary/10 bg-gradient-to-br from-primary/5 via-card to-card p-5"
       >
@@ -594,22 +612,22 @@ function MCCosts() {
           </div>
           <div>
             <h3 className="text-sm font-bold text-foreground font-display">Cost & Token Control</h3>
-            <p className="text-xs text-muted-foreground">Daily spend, budget utilization, per-agent breakdown</p>
+            <p className="text-xs text-muted-foreground">Live from TokenGovernanceEngine — model routing, budgets, anomalies</p>
           </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
-          <MetricBox label="Total Tokens / 24h" value={`${(totalTokens / 1000).toFixed(0)}k`} />
-          <MetricBox label="Total Invocations" value={totalInvocations.toLocaleString()} />
-          <MetricBox label="Est. Cost / 24h" value={`$${estCost.toFixed(2)}`} accent={estCost > budget * 0.8} />
-          <MetricBox label="Budget Utilization" value={`${utilization}%`} accent={utilization > 80} />
+          <MetricBox label="Total Spend" value={`$${dashboard.totalSpend.toFixed(3)}`} />
+          <MetricBox label="Forecasted" value={`$${dashboard.forecastedSpend.toFixed(3)}`} accent={dashboard.forecastedSpend > dailyBudget} />
+          <MetricBox label="Efficiency" value={`${dashboard.efficiencyScore.toFixed(0)}%`} />
+          <MetricBox label="Budget Used" value={`${utilization}%`} accent={utilization > 80} />
         </div>
 
         {/* Budget bar */}
         <div className="mb-2">
           <div className="flex items-center justify-between text-[10px] text-muted-foreground mb-1">
-            <span>Daily Budget: ${budget.toFixed(2)}</span>
-            <span className={utilization > 80 ? "text-accent font-semibold" : ""}>${estCost.toFixed(2)} used</span>
+            <span>Daily Budget: ${dailyBudget.toFixed(2)}</span>
+            <span className={utilization > 80 ? "text-accent font-semibold" : ""}>${dashboard.totalSpend.toFixed(3)} used</span>
           </div>
           <div className="h-2 rounded-full bg-muted/40 overflow-hidden">
             <motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(utilization, 100)}%` }} transition={{ duration: 0.8 }}
@@ -618,35 +636,84 @@ function MCCosts() {
         </div>
       </motion.div>
 
-      {/* Per-agent spend */}
+      {/* Model Routes — from engine */}
       <SitaCard hover={false}>
-        <SitaCardTitle sub="Ranked by token consumption">Spend by Agent</SitaCardTitle>
+        <SitaCardTitle sub="Active model routing rules from TokenGovernanceEngine">Model Routing</SitaCardTitle>
         <div className="mt-4 space-y-2">
-          {sorted.map((a, i) => {
-            const pct = (a.costTokens24h / totalTokens) * 100;
+          {modelRoutes?.map((r, i) => (
+            <motion.div key={r.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}
+              className="flex items-center gap-3 rounded-lg bg-secondary/20 px-3 py-2.5"
+            >
+              <div className={cn("h-2.5 w-2.5 rounded-full", r.active ? "bg-trust-safe" : "bg-muted")} />
+              <span className="text-xs font-semibold text-foreground w-36 truncate">{r.name}</span>
+              <Badge variant="outline" className="text-[9px]">{r.tier}</Badge>
+              <span className="text-[10px] text-muted-foreground flex-1 truncate">{r.model}</span>
+              <span className="text-[10px] font-mono text-muted-foreground w-20 text-right">${r.costPer1kTokens}/1k</span>
+              <span className="text-[10px] text-muted-foreground w-14 text-right">{r.latencyMs}ms</span>
+            </motion.div>
+          ))}
+        </div>
+      </SitaCard>
+
+      {/* Spend by Domain — from engine dashboard */}
+      <SitaCard hover={false}>
+        <SitaCardTitle sub="Token spend breakdown by domain">Spend by Domain</SitaCardTitle>
+        <div className="mt-4 space-y-2">
+          {dashboard.byDomain.map((d, i) => {
+            const maxCost = Math.max(...dashboard.byDomain.map(x => x.cost));
+            const pct = maxCost > 0 ? (d.cost / maxCost) * 100 : 0;
             return (
-              <motion.div key={a.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}
+              <motion.div key={d.domain} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}
                 className="flex items-center gap-3"
               >
                 <span className="text-[10px] font-display font-bold text-muted-foreground w-5 text-right">{i + 1}</span>
-                <span className="text-xs text-foreground w-44 truncate">{a.name}</span>
+                <span className="text-xs text-foreground w-28 truncate capitalize">{d.domain}</span>
                 <div className="flex-1 h-2 rounded-full bg-muted/30 overflow-hidden">
                   <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 0.6, delay: i * 0.05 }}
                     className="h-full rounded-full bg-primary/60" />
                 </div>
-                <span className="text-[10px] font-mono text-muted-foreground w-14 text-right">{(a.costTokens24h / 1000).toFixed(1)}k</span>
-                <span className="text-[10px] text-muted-foreground w-16 text-right">{a.invocations24h} calls</span>
+                <span className="text-[10px] font-mono text-muted-foreground w-14 text-right">{(d.tokens / 1000).toFixed(1)}k</span>
+                <span className="text-[10px] font-mono text-foreground w-16 text-right">${d.cost.toFixed(4)}</span>
               </motion.div>
             );
           })}
         </div>
       </SitaCard>
 
-      {/* Cost Anomalies */}
-      {mockCostAnomalies.length > 0 && (
+      {/* Spend by Model — from engine dashboard */}
+      <SitaCard hover={false}>
+        <SitaCardTitle sub="Cost per model tier">Spend by Model</SitaCardTitle>
+        <div className="mt-4 space-y-2">
+          {dashboard.byModel.map((m, i) => (
+            <motion.div key={m.model} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}
+              className="flex items-center justify-between rounded-lg bg-secondary/20 px-3 py-2"
+            >
+              <span className="text-xs text-foreground truncate">{m.model}</span>
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] text-muted-foreground">{(m.tokens / 1000).toFixed(1)}k tokens</span>
+                <span className="text-[10px] font-mono font-medium text-foreground">${m.cost.toFixed(4)}</span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </SitaCard>
+
+      {/* Engine Anomalies — from TokenGovernanceEngine */}
+      {dashboard.anomalies.length > 0 && (
         <div className="space-y-3">
-          <SitaSectionHeader title="Cost Anomalies" subtitle="Flagged by Cost Guardrail Agent" />
-          {mockCostAnomalies.map(c => <CostAnomalyCard key={c.id} anomaly={c} />)}
+          <SitaSectionHeader title="Token Anomalies" subtitle="Detected by TokenGovernanceEngine" />
+          {dashboard.anomalies.map(a => (
+            <motion.div key={a.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+              className="rounded-xl border border-accent/20 bg-accent/5 p-4"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <Badge variant="outline" className={cn("text-[9px]", a.severity === "critical" ? "text-destructive" : "text-accent")}>{a.type}</Badge>
+                <span className="text-[10px] text-muted-foreground">{new Date(a.detectedAt).toLocaleTimeString()}</span>
+              </div>
+              <p className="text-xs text-foreground">{a.description}</p>
+              <p className="text-[10px] text-muted-foreground mt-1">{a.suggestedAction} · Est. waste: ${a.estimatedWaste.toFixed(4)}</p>
+            </motion.div>
+          ))}
         </div>
       )}
     </div>
