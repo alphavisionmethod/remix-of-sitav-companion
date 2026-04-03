@@ -243,7 +243,7 @@ export function OSSetupExperience() {
   return (
     <>
       {/* Boot */}
-      {phase === "boot" && <BootScreen onComplete={goNext} />}
+      {phase === "boot" && <FirstBootScreen onComplete={goNext} />}
 
       {/* Setup phases */}
       {phase !== "boot" && (
