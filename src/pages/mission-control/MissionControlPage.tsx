@@ -1,10 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Mission Control (Premium Rebuild)
-// Mac-like AI team cockpit: calm, powerful, safe
+// Two-layer system: Owner Mode (calm) + Advanced Ops (deep)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMissionControlLive } from "@/hooks/use-mission-control-data";
+import { useControlMode, useWhatMattersNow, useMissionControlSummary, useSystemActivity } from "@/hooks/use-mission-control-views";
 import { AdminSpendChart } from "@/components/sita/AdminSpendChart";
 import { AnimatedProgressRing } from "@/components/sita/AnimatedProgressRing";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
