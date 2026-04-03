@@ -29,3 +29,12 @@ verify_jwt = false
 
 [functions.self-healing]
 verify_jwt = false
+
+[functions.agent-intelligence]
+verify_jwt = false
+
+[functions.agent-scheduler]
+verify_jwt = false
+
+[functions.agent-signal]
+verify_jwt = false

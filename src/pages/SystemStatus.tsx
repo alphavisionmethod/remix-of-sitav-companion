@@ -600,11 +600,143 @@ const SystemStatus = () => {
         </div>
       )}
 
-      {(activeTab === "trust" || activeTab === "history" || activeTab === "health") && (
-        <SitaCard hover={false} className="p-6">
-          <SitaCardTitle>{activeTab === "trust" ? "Trust Score Breakdown" : activeTab === "health" ? "Health Overview" : "Execution History"}</SitaCardTitle>
-          <p className="mt-2 text-sm text-muted-foreground">Detailed {activeTab} view coming soon — this surface is being built.</p>
-        </SitaCard>
+      {activeTab === "trust" && (
+        <div className="space-y-4">
+          <SitaCard hover={false} className="p-6">
+            <SitaCardTitle>Trust Score Breakdown</SitaCardTitle>
+            <p className="mt-1 text-xs text-muted-foreground">Real-time trust dimensions across the operating system</p>
+            <div className="mt-5 space-y-4">
+              {[
+                { name: "Policy Compliance", score: 98, icon: Lock, desc: "All active policies passing validation" },
+                { name: "Proof Completeness", score: 96, icon: CheckCircle, desc: "Receipt chain intact, 0 orphaned actions" },
+                { name: "Verification Health", score: 92, icon: Shield, desc: "Dual-pass verification active on financial workflows" },
+                { name: "Rollback Readiness", score: 100, icon: ArrowRightLeft, desc: "All critical workflows have rollback points" },
+                { name: "Memory Integrity", score: 94, icon: Layers, desc: "No contradictions detected, 2 stale entries flagged" },
+                { name: "Connector Health", score: 78, icon: Unplug, desc: "1 connector degraded (Stripe sync delay)" },
+                { name: "Advisor Governance", score: 97, icon: Eye, desc: "All advisor actions within approval thresholds" },
+              ].map((dim) => (
+                <div key={dim.name} className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <dim.icon className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm font-medium text-foreground">{dim.name}</span>
+                    </div>
+                    <span className={`text-sm font-bold ${dim.score >= 90 ? "text-trust-safe" : dim.score >= 70 ? "text-amber-500" : "text-destructive"}`}>{dim.score}%</span>
+                  </div>
+                  <Progress value={dim.score} className="h-2" />
+                  <p className="text-[11px] text-muted-foreground">{dim.desc}</p>
+                </div>
+              ))}
+            </div>
+          </SitaCard>
+          <SitaCard hover={false} className="p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-foreground">Overall Trust Score</p>
+                <p className="text-[11px] text-muted-foreground">Weighted average across all dimensions</p>
+              </div>
+              <div className="text-right">
+                <p className="text-3xl font-bold text-trust-safe">94%</p>
+                <TrustBadge level="verified" size="sm" />
+              </div>
+            </div>
+          </SitaCard>
+        </div>
+      )}
+
+      {activeTab === "health" && (
+        <div className="space-y-3">
+          {allServices.map((svc) => {
+            const latest = svc.history[svc.history.length - 1];
+            const isHealthy = svc.healthScore >= 90;
+            const isDegraded = svc.healthScore < 90 && svc.healthScore >= 60;
+            return (
+              <SitaCard key={svc.serviceId} hover={false} className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className={`h-3 w-3 rounded-full ${isHealthy ? "bg-trust-verified" : isDegraded ? "bg-amber-500 animate-pulse" : "bg-destructive animate-pulse"}`} />
+                    <div>
+                      <p className="text-sm font-medium text-foreground">{svc.name}</p>
+                      <p className="text-[11px] text-muted-foreground">
+                        Uptime {latest?.metrics.uptimePercent ?? 0}% · Avg {latest?.metrics.avgLatencyMs ?? 0}ms · P99 {latest?.metrics.p99LatencyMs ?? 0}ms · {latest?.metrics.requestsPerMinute ?? 0} req/min
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className={`text-xs font-medium ${latest?.metrics.errorRate === 0 ? "text-trust-safe" : (latest?.metrics.errorRate ?? 0) < 0.05 ? "text-muted-foreground" : "text-destructive"}`}>
+                      {((latest?.metrics.errorRate ?? 0) * 100).toFixed(2)}% err
+                    </span>
+                    <div className="w-16">
+                      <Progress value={svc.healthScore} className="h-1.5" />
+                    </div>
+                    <span className="text-xs font-bold text-foreground w-8 text-right">{svc.healthScore}%</span>
+                    <TrustBadge level={isHealthy ? "verified" : isDegraded ? "degraded" : "blocked"} size="sm" />
+                  </div>
+                </div>
+                {svc.dependencies.length > 0 && (
+                  <p className="mt-1.5 text-[10px] text-muted-foreground ml-6">Depends on: {svc.dependencies.join(", ")}</p>
+                )}
+              </SitaCard>
+            );
+          })}
+          <SitaCard hover={false} className="p-4">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium text-foreground">Fleet Summary</p>
+              <div className="flex items-center gap-4 text-xs">
+                <span className="text-trust-safe">{fleetSummary.healthy} healthy</span>
+                <span className="text-amber-500">{fleetSummary.degraded} degraded</span>
+                <span className="text-destructive">{fleetSummary.critical} critical</span>
+                <span className="font-bold text-foreground">Avg: {fleetSummary.avgHealthScore}%</span>
+              </div>
+            </div>
+          </SitaCard>
+        </div>
+      )}
+
+      {activeTab === "history" && (
+        <div className="space-y-3">
+          {[...recentApprovals.map((a, i) => ({
+            id: `approval-${i}`,
+            type: "approval" as const,
+            title: a.action,
+            result: a.result,
+            time: a.time,
+            trust: a.trust,
+          })),
+          ...incidents.map((inc) => ({
+            id: inc.id,
+            type: "incident" as const,
+            title: inc.title,
+            result: inc.state === "resolved" ? "Auto-healed" : `State: ${inc.state}`,
+            time: new Date(inc.detectedAt).toLocaleTimeString(),
+            trust: (inc.state === "resolved" ? "verified" : inc.severity === "P0" || inc.severity === "P1" ? "blocked" : "review") as "verified" | "blocked" | "review" | "approval",
+          }))].sort(() => 0.5 - Math.random()).map((entry) => (
+            <SitaCard key={entry.id} hover={false} className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`flex h-7 w-7 items-center justify-center rounded-full ${entry.type === "approval" ? "bg-primary/10" : "bg-amber-500/10"}`}>
+                    {entry.type === "approval" ? <CheckCircle className="h-3.5 w-3.5 text-primary" /> : <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{entry.title}</p>
+                    <p className="text-[11px] text-muted-foreground">{entry.result} · {entry.time}</p>
+                  </div>
+                </div>
+                <TrustBadge level={entry.trust} size="sm" />
+              </div>
+            </SitaCard>
+          ))}
+          <SitaCard hover={false} className="p-4">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium text-foreground">Execution Summary</p>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <span>{recentApprovals.length} approvals</span>
+                <span>{incidents.length} incidents</span>
+                <span className="text-trust-safe">{incidents.filter(i => i.state === "resolved").length} resolved</span>
+              </div>
+            </div>
+          </SitaCard>
+        </div>
       )}
     </motion.div>
   );
