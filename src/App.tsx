@@ -372,6 +372,8 @@ const App = () => (
                     <Route path="/owner/internal-agents" element={<OwnerCenter />} />
                     <Route path="/owner/workflow-control" element={<OwnerCenter />} />
                     <Route path="/owner/trust-center" element={<OwnerCenter />} />
+                    <Route path="/owner/autopilot" element={<OwnerCenter />} />
+                    <Route path="/owner/billing" element={<OwnerCenter />} />
                     <Route path="/owner/releases" element={<OwnerCenter />} />
                     <Route path="/owner/model-routing" element={<OwnerCenter />} />
                     <Route path="/owner/system-map" element={<OwnerCenter />} />
