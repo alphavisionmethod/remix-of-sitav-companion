@@ -55,8 +55,9 @@ const bottomNav = [
   { title: "Pack Store", url: "/store", icon: Package },
   { title: "Enterprise", url: "/enterprise", icon: Globe },
   { title: "Settings", url: "/settings", icon: Settings },
+  { title: "Owner Mode", url: "/owner-mode", icon: Sparkles },
   { title: "Mission Control", url: "/mission-control", icon: Server },
-  { title: "Owner", url: "/owner", icon: Shield },
+  { title: "Owner Workspace", url: "/owner", icon: Shield },
 ];
 
 const ownerSubNav = [
