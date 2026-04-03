@@ -1105,7 +1105,7 @@ export default function MissionControlPage() {
 
   const tabs = isOwner ? ownerTabs : advancedTabs;
 
-  const mcAdminData = useMemo(() => ({ adminIncidents, fleetHealth, trustCenter }), [adminIncidents, fleetHealth, trustCenter]);
+  const mcAdminData = useMemo(() => ({ adminIncidents, fleetHealth, trustCenter, runtime }), [adminIncidents, fleetHealth, trustCenter, runtime]);
 
   return (
     <MCAdminCtx.Provider value={mcAdminData}>
