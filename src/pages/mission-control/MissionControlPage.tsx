@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, createContext, useContext } from "react";
+import { useOSRuntime, type OSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useNavigate } from "react-router-dom";
 import { useMissionControlLive } from "@/hooks/use-mission-control-data";
 import { useControlMode, useWhatMattersNow, useMissionControlSummary, useSystemActivity } from "@/hooks/use-mission-control-views";
@@ -61,9 +62,10 @@ interface MCAdminData {
   adminIncidents: any;
   fleetHealth: any;
   trustCenter: any;
+  runtime: OSRuntime | null;
 }
-const MCAdminCtx = createContext<MCAdminData>({ adminIncidents: null, fleetHealth: null, trustCenter: null });
-function useMCAdmin() { return useContext(MCAdminCtx); }
+const MCAdminCtx = createContext<MCAdminData>({ adminIncidents: null, fleetHealth: null, trustCenter: null, runtime: null });
+export function useMCAdmin() { return useContext(MCAdminCtx); }
 
 // ── System Pulse — Mac-like Hero ────────────────────────────────────────────
 
@@ -1060,6 +1062,7 @@ export default function MissionControlPage() {
   const [activeTab, setActiveTab] = useState("home");
   const { mode, setMode, isOwner } = useControlMode();
   const navigate = useNavigate();
+  const runtime = useOSRuntime();
   const { data: adminIncidents } = useAdminIncidents();
   const { data: fleetHealth } = useFleetHealth();
   const { data: trustCenter } = useTrustCenter();
@@ -1102,7 +1105,7 @@ export default function MissionControlPage() {
 
   const tabs = isOwner ? ownerTabs : advancedTabs;
 
-  const mcAdminData = useMemo(() => ({ adminIncidents, fleetHealth, trustCenter }), [adminIncidents, fleetHealth, trustCenter]);
+  const mcAdminData = useMemo(() => ({ adminIncidents, fleetHealth, trustCenter, runtime }), [adminIncidents, fleetHealth, trustCenter, runtime]);
 
   return (
     <MCAdminCtx.Provider value={mcAdminData}>
