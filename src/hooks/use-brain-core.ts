@@ -66,11 +66,12 @@ export function useBrainCore({ advisor, secondaryAdvisor }: UseBrainCoreOptions)
 
       // If policy denies, skip the network call
       if (policyResult.effect === "deny") {
-        const refusalReceipt = await receiptServiceRef.current.createReceipt(
+        const refusalReceipt = await kernel.createReceipt(
           crypto.randomUUID(), "refusal",
           { intent, advisor, reason: policyResult.reason, riskTier }
         );
         setLastReceipt(refusalReceipt);
+        await kernel.emitEvent("advisor.denied.v1", { advisor, intent, reason: policyResult.reason });
         setError(`Policy blocked: ${policyResult.reason}`);
         return null;
       }
