@@ -427,6 +427,9 @@ const OwnerCenter = () => {
                 </button>
               ))}
             </div>
+
+            {/* ── Live System Activity Feed ── */}
+            <LiveActivityFeed />
           </motion.div>
         )}
 
