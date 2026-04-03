@@ -1,151 +1,171 @@
 
 
-# SITA OS — Fully Automatic Backend AI Team Implementation Plan
+# SITA OS — Admin Backend: Three-Layer Architecture Implementation Plan
 
 ## Current State
 
-The system already has extraordinary depth:
-- **40 internal agents** across 6 councils with full definitions (scope, tools, confidence, rollback, KPIs)
-- **7 supervisors** including Chief of Staff
-- **Agent Orchestrator** (418 lines): lifecycle, scheduler, task queue, fleet status, promotion/demotion
-- **26 customer-facing advisors** across 4 councils with handoff, escalation, performance evaluation
-- **10 edge functions** including `brain-core` (737 lines with intent classification, policy evaluation, LLM routing, multi-advisor composition), `agent-executor`, `agent-heartbeat`, `self-healing`
-- **Model Router** with budget-aware tier selection
-- **Complete rights system** (L0-L6, promotion rules, demotion triggers, never-allowed list)
+The admin backend is already substantial:
+- **OwnerCenter** (1883 lines, 18 tabs): Overview, Incidents, Intelligence, Policies, Fleet, Council, Audit, Workforce, Connectors, Costs, Trust, Releases, Model Routing, Knowledge, Support, Changes, Rollback, System Map
+- **MissionControl** (1020+ lines, 12 tabs): Agents, Incidents, Connectors, Workflows, Costs, Policies, Releases, Permissions, Safe Mode, Activity Feed, Self-Healing, Trust
+- **AdvisorCouncilDashboard**: Scorecards, Escalations, Handoffs, Budget
 
 ## What Is Missing
 
-The 40 internal agents are fully **defined** but not **executable**. The agent-executor edge function only handles 4 agent types (connector-health, stale-workflow, cost-anomaly, data-freshness). The remaining 36 agents have definitions but no backend execution logic. The orchestrator runs client-side only.
+The user wants three distinct admin layers with specific gaps filled:
 
-### Gap 1: Agent Execution Backends (the core gap)
-The `agent-executor` edge function needs execution logic for all agent categories, not just 4 diagnostics agents. Each pod needs real execution handlers.
+### Layer 1: Owner Mode (personal premium dashboard) — GAPS
+1. **"What Matters Now" card** — not present; overview has KPIs but no prioritized "today's decisions" card
+2. **Revenue summary card** — not on owner overview
+3. **Risk summary card** — not on owner overview
+4. **Platform maturity gauge** — not present
+5. **Undo last admin change** — no undo mechanism exists
+6. **Preview-before-publish mode** — not implemented
+7. **Plain-English policy controls** — current policy editor uses raw JSON conditions
+8. **One-click workflow enable/disable** — not on owner, only in automation center
+9. **Pricing editor** — does not exist
+10. **Pack editor** — store exists but no admin pack management
+11. **Advisor configuration panel** — not in owner mode
 
-### Gap 2: Agent Scheduling Service
-No cron/scheduler calls `agent-heartbeat` or triggers scheduled agents. Agents with `schedule: "continuous"` or `"hourly"` have no invocation mechanism.
+### Layer 2: Mission Control (internal ops) — GAPS
+Already strong. Missing:
+1. **Correlation IDs** — not surfaced in incident or workflow views
+2. **Environment controls** — no env switching (staging/prod)
+3. **Support diagnostics export** — not implemented
 
-### Gap 3: Agent-to-Agent Communication
-Agents can escalate to supervisors (defined), but there's no message-passing between agents. The orchestrator manages lifecycle but doesn't route inter-agent signals.
+### Layer 3: Enterprise/Family Office Control Plane — MISSING ENTIRELY
+No dedicated enterprise admin surface exists. Needs:
+1. **Org admin console** with team/member management
+2. **Role and permission editor** (visual, not code)
+3. **Trust environment dashboard**
+4. **Compliance vault** (ISO/SOC/NIST attestation viewer)
+5. **SLA panel**
+6. **Deployment health** per org
+7. **Fleet visibility** for enterprise
 
-### Gap 4: Agent Execution Receipt Chain
-The orchestrator creates work items but doesn't generate proof receipts per-agent-action that chain into the existing receipt service.
-
-### Gap 5: Agent Dashboard Backend API
-The frontend `AdvisorCouncilDashboard` uses hardcoded demo data. No edge function serves real agent telemetry, escalation logs, or performance data.
+### UX Rule (applies to every control)
+Every admin action card must show: what it changes, risk level, what happens next, how to undo, what proof is logged. This is not currently implemented for any controls.
 
 ---
 
 ## Implementation Plan
 
-### Task 1: Expand Agent Executor with Pod Handlers
+### Task 1: Owner Mode — "What Matters Now" Hero Redesign
 
-**File:** `supabase/functions/agent-executor/index.ts`
+Replace the current Owner overview with a premium personal cockpit:
 
-Expand from 4 handlers to cover all 6 council categories:
+**File:** `src/pages/OwnerCenter.tsx` — rewrite the `activePage === "overview"` section
 
-**Product Build pod** — handlers for:
-- `feature-governance`: query feature registry table, check completeness
-- `contract-validator`: query API contracts, detect drift
-- `schema-checker`: validate schema versions match
+New layout:
+- **What Matters Now** — a prioritized list of 3-5 decisions needing owner attention, pulled from incidents, pending council votes, budget alerts, and connector issues. Each item shows: plain-English summary, risk badge, one-click action, and "what happens if I ignore this"
+- **Revenue/Risk/AI Spend** — three hero metric cards in a row with sparkline trends
+- **Platform Maturity** — circular gauge (0-100) computed from: test coverage, agent health, connector coverage, policy completeness
+- **Safe Mode switch** — prominent toggle with confirmation dialog that explains consequences
+- **Undo Last Admin Change** — button that queries the most recent audit log entry with `actor = owner` and offers to reverse it
 
-**Reliability Ops pod** (extend existing):
-- `incident-response`: query incidents table, classify severity, recommend healing
-- `self-healing-controller`: orchestrate multi-step recovery (already partially in self-healing function — wire into executor)
-- `release-safety`: check recent deployments, validate canary metrics
+### Task 2: Plain-English Policy Editor
 
-**Security Trust pod**:
-- `fraud-sentinel`: query auth logs, detect anomalous patterns
-- `access-monitor`: check permission changes in last 24h
-- `policy-validator`: verify active policies match expected state
+**File:** `src/components/sita/PlainEnglishPolicyEditor.tsx`
 
-**Runtime Cost pod**:
-- `cost-guardrail`: query advisor_responses for token spend, enforce budget
-- `model-router`: validate model selection matches routing rules
-- `budget-enforcer`: check daily spend against limits
+Replace the raw JSON policy editor with a natural-language builder:
+- Sentence-based rules: "When [domain] action [verb] exceeds [amount], require [approval/deny/flag]"
+- Dropdown selectors for domain, action type, threshold type
+- Visual preview of what the policy does
+- "Test this policy" button (uses existing policy simulator)
+- Shows: what this changes, risk it carries, how to undo, proof that will be logged
 
-**Architecture Governance pod**:
-- `boundary-enforcer`: validate service boundaries from registry
-- `dependency-auditor`: check dependency freshness
+### Task 3: Admin Action Card Wrapper
 
-**Knowledge Coordination pod**:
-- `memory-curator`: check memory freshness, flag stale entries
-- `runbook-updater`: detect docs that need updates based on recent changes
+**File:** `src/components/sita/AdminActionCard.tsx`
 
-Each handler follows the existing pattern: query Supabase tables, compute health/status, return structured results with `health` field.
+A reusable wrapper component that wraps every owner/admin control with:
+- `whatChanges: string` — plain-English description
+- `riskLevel: "low" | "medium" | "high" | "critical"` — color-coded badge
+- `whatHappensNext: string` — consequence preview
+- `undoAction?: () => void` — undo handler
+- `proofNote: string` — what will be logged
+- Confirmation dialog with all five fields visible before execution
+- Apply this wrapper to: Safe Mode toggle, Policy create/edit, Agent pause/resume, Connector disable, Workflow toggle
 
-### Task 2: Agent Scheduling Edge Function
+### Task 4: Pricing & Pack Editor
 
-**File:** `supabase/functions/agent-scheduler/index.ts`
+**File:** `src/pages/owner/PricingEditor.tsx`
 
-New edge function that:
-- Reads agent definitions and their `schedule` field
-- Queries `agent_telemetry` for last execution timestamps
-- Determines which agents are due to run
-- Calls `agent-executor` for each due agent
-- Records execution results in `agent_telemetry`
-- Can be invoked by Supabase pg_cron or external cron
+Simple pricing management:
+- Service/product list with price, currency, billing cycle
+- Edit inline with preview-before-save
+- Change history with undo
+- AdminActionCard wrapper on every save
 
-### Task 3: Inter-Agent Signal Bus
+**File:** `src/pages/owner/PackEditor.tsx`
 
-**File:** `supabase/functions/agent-signal/index.ts`
+Pack management for installed packs:
+- Pack list with status (active/paused/disabled)
+- Toggle switches with AdminActionCard confirmation
+- Pack dependency visualization
+- Install/uninstall with preview of what changes
 
-New edge function for agent-to-agent messaging:
-- Accepts `{ from_agent, to_agent, signal_type, payload }`
-- Signal types: `escalation`, `data-request`, `finding`, `alert`
-- Stores in `agent_signals` table (new migration)
-- Target agent picks up signals on next execution cycle
-- Supervisor agents can broadcast to their council
+### Task 5: Advisor Configuration Panel
 
-**Migration:** Create `agent_signals` table with columns: id, from_agent, to_agent, signal_type, payload (jsonb), status (pending/processed), created_at, processed_at, tenant_id.
+**File:** `src/pages/owner/AdvisorConfig.tsx`
 
-### Task 4: Agent Receipt Integration
+Visual configuration for the 26 advisors:
+- Per-advisor: name, prominence level (primary/supporting/hidden), autonomy ceiling, allowed domains
+- Toggle advisor on/off per mission mode
+- Plain-English description of what each advisor does
+- "Preview" mode to see how a change affects daily pulse recommendations
 
-Modify `agent-executor` to generate proof receipts for every agent action:
-- Create `agent_action_receipts` table (new migration)
-- Each execution produces a receipt with: agent_id, action_type, input_summary, output_summary, confidence, duration_ms, cost_tokens, receipt_hash, parent_receipt_hash
-- Hash-chain receipts for tamper evidence (matching existing receipt-service pattern)
+### Task 6: Enterprise / Family Office Control Plane
 
-### Task 5: Agent Intelligence API
+**File:** `src/pages/enterprise/EnterpriseControlPlane.tsx`
 
-**File:** `supabase/functions/agent-intelligence/index.ts`
+New top-level page with tabs:
 
-New edge function serving the frontend dashboard with real data:
-- `GET /fleet-status`: aggregate agent_telemetry into fleet health
-- `GET /council-status/:council`: per-council health metrics
-- `GET /agent/:id/history`: last N executions with results
-- `GET /escalations`: recent escalation records
-- `GET /budget`: real spend from advisor_responses + agent_action_receipts
-- `GET /signals`: recent inter-agent communications
+1. **Organization** — team members, invite flow, role assignment (using existing user_roles pattern)
+2. **Roles & Permissions** — visual matrix editor: role × capability grid with toggle switches
+3. **Trust Environment** — trust scores per member, permission drift alerts, anomaly timeline
+4. **Compliance Vault** — ISO 27001, SOC 2, NIST checklist with attestation status and evidence links
+5. **SLA Dashboard** — uptime, response time, resolution time vs targets
+6. **Deployment Health** — per-environment status (staging/production), recent deploys, rollback options
+7. **Fleet Overview** — org-wide device/service fleet with health aggregation
 
-### Task 6: Database Migrations
+### Task 7: Route Registration & Navigation
 
-New tables needed:
-- `agent_signals` — inter-agent communication
-- `agent_action_receipts` — proof chain for agent actions
-- `agent_schedules` — override schedule configs per tenant
+**File:** `src/App.tsx` — add routes:
+- `/owner/pricing` → PricingEditor
+- `/owner/packs` → PackEditor  
+- `/owner/advisors` → AdvisorConfig
+- `/enterprise` → EnterpriseControlPlane
+- `/enterprise/roles`, `/enterprise/compliance`, `/enterprise/sla`, `/enterprise/fleet`
 
-All with RLS policies scoped to `auth.uid()`.
+**File:** `src/components/sita/AppSidebar.tsx` — add Enterprise section under Control group
+
+### Task 8: Mission Control Enhancements
+
+**File:** `src/pages/mission-control/MissionControlPage.tsx`
+
+Add to existing tabs:
+- **Correlation IDs** in incident and workflow cards — display as monospace badges, clickable to filter all related events
+- **Environment selector** — staging/production toggle in top bar affecting which data is displayed
+- **Diagnostics Export** — button that bundles: last 24h incidents, agent telemetry, connector health, audit logs into a downloadable JSON (sanitized of secrets)
 
 ---
 
-## What Does NOT Change
-
-- The 40 agent definitions in `src/lib/internal-agents/agents/` — complete and correct
-- The orchestrator in `src/lib/core-services/agent-orchestrator.ts` — stays as client-side fleet manager
-- The advisor protocol (26 advisors, handoff, escalation, performance) — complete
-- The brain-core edge function (737 lines) — already production-grade
-- The rights system, councils, supervisors — complete
-- The existing self-healing edge function — stays, executor will delegate to it
-
-## Critical Separation Maintained
-
-Customer-facing advisors (26 in advisor-protocol) remain completely separate from internal platform agents (40 in internal-agents). Users interact with advisors through brain-core. Internal agents operate invisibly through agent-executor/scheduler/heartbeat. The only shared surface is Mission Control, which is an admin-only view.
-
 ## Implementation Order
 
-1. Database migrations (tables for signals, receipts, schedules)
-2. Expand agent-executor with all pod handlers
-3. Agent scheduling edge function
-4. Inter-agent signal bus
-5. Agent receipt chain integration
-6. Agent intelligence API for dashboard
+1. AdminActionCard wrapper (foundation — used by everything else)
+2. Owner Mode overview redesign (highest UX impact)
+3. Plain-English Policy Editor (replaces JSON editor)
+4. Pricing & Pack editors (fills obvious gap)
+5. Advisor Configuration panel (connects to existing advisor system)
+6. Enterprise Control Plane (new surface)
+7. Mission Control enhancements (incremental)
+8. Route registration & sidebar updates (final wiring)
+
+## Technical Notes
+
+- All new pages use existing `SitaCard`, `SitaPageHeader`, `KPITile`, `glass-panel` primitives
+- Enterprise control plane reuses existing `useAdminIncidents`, `useFleetHealth`, `useAdminAuditLogs` hooks
+- Pricing/Pack editors use Supabase tables (new migration for `pricing_items` and `pack_configs`)
+- Every admin action generates an audit log entry via existing audit infrastructure
+- No new backend services needed — all data comes from existing hooks, edge functions, and demo data fallbacks
 
