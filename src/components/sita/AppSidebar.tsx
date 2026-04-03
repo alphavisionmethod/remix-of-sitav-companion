@@ -146,6 +146,13 @@ export function AppSidebar() {
   const { isDemoMode } = useDataMode();
   const { preferences } = useUserPreferences();
   const role = preferences.role;
+  const location = useLocation();
+  const isOwnerArea = location.pathname.startsWith("/owner");
+  const collapsed = state === "collapsed";
+  const { user, signOut } = useAuth();
+  const { isDemoMode } = useDataMode();
+  const { preferences } = useUserPreferences();
+  const role = preferences.role;
 
   const displayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
   const initials = displayName.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2);
