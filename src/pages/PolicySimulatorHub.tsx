@@ -1,18 +1,19 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Policy Simulator Hub
 // Founder-safe simulation entry with quick presets
+// Uses shared admin components
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/admin";
 import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
 import {
   Shield, Play, AlertTriangle, CheckCircle, ChevronRight,
-  DollarSign, Wifi, Users, Zap, Lock, Eye,
+  DollarSign, Wifi, Users, Zap, Lock, Eye, RotateCcw, Package,
 } from "lucide-react";
 
 interface PresetScenario {
@@ -33,6 +34,8 @@ const presets: PresetScenario[] = [
   { id: "p4", name: "Budget Update", description: "What if we change the monthly budget to $8K?", icon: DollarSign, domain: "finance", capabilityId: "finance.budget.update", riskTier: "medium", amount: 8000 },
   { id: "p5", name: "CRM Contact View", description: "Can an advisor view customer records freely?", icon: Eye, domain: "business", capabilityId: "crm.contact.view", riskTier: "low" },
   { id: "p6", name: "Deploy to Production", description: "What checks happen before a production deploy?", icon: Zap, domain: "system", capabilityId: "release.deploy", riskTier: "critical" },
+  { id: "p7", name: "Pack Publish", description: "What if a new pack is published to the store?", icon: Package, domain: "system", capabilityId: "pack.publish", riskTier: "high" },
+  { id: "p8", name: "Rollback Release", description: "What happens if we need to roll back?", icon: RotateCcw, domain: "system", capabilityId: "release.rollback", riskTier: "critical" },
 ];
 
 export default function PolicySimulatorHub() {
@@ -49,27 +52,16 @@ export default function PolicySimulatorHub() {
   };
 
   return (
-    <div className="p-4 md:p-6 max-w-[1200px] mx-auto space-y-5">
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-6"
-      >
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 shadow-lg shadow-primary/10">
-              <Shield className="h-7 w-7 text-primary" />
-            </div>
-            <div>
-              <h1 className="font-display text-xl font-bold text-foreground">Policy Simulator</h1>
-              <p className="text-sm text-muted-foreground">Test "what if" scenarios to understand how policies protect your system</p>
-            </div>
-          </div>
-          <button onClick={() => navigate("/mission/policies/simulate")}
-            className="flex items-center gap-2 rounded-xl border border-border bg-card/60 px-4 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
-          >
-            <Lock className="h-3.5 w-3.5" /> Advanced Simulator
-          </button>
-        </div>
-      </motion.div>
+    <div className="max-w-[1200px] mx-auto space-y-5">
+      <AdminPageHeader icon={Shield} title="Policy Simulator" subtitle='Test "what if" scenarios to understand how policies protect your system'>
+        <button onClick={() => navigate("/mission/policies/simulate")}
+          className="flex items-center gap-2 rounded-xl border border-border bg-card/60 px-4 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
+        >
+          <Lock className="h-3.5 w-3.5" /> Advanced Simulator
+        </button>
+      </AdminPageHeader>
+
+      <TrustRibbon />
 
       <SitaSectionHeader title="Quick Scenarios" subtitle="Click to simulate — see what your policies would do" />
 
@@ -93,10 +85,7 @@ export default function PolicySimulatorHub() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <p className="text-xs font-semibold text-foreground">{preset.name}</p>
-                      <Badge variant="outline" className={cn("text-[9px]",
-                        preset.riskTier === "critical" ? "bg-destructive/10 text-destructive" :
-                        preset.riskTier === "high" ? "bg-accent/10 text-accent" : ""
-                      )}>{preset.riskTier}</Badge>
+                      <StatusBadge status={preset.riskTier} size="xs" />
                     </div>
                     <p className="text-[11px] text-muted-foreground">{preset.description}</p>
 
