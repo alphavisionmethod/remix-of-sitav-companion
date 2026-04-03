@@ -1,0 +1,333 @@
+{
+  "version": "2.0.0",
+  "generated_at": "2026-04-03T00:00:00Z",
+  "audit_verdict": "PASS_WITH_ISSUES",
+  "scores": {
+    "architecture": 78,
+    "integration": 55,
+    "trust": 65,
+    "ux_coherence": 68,
+    "test_coverage": 30,
+    "release_readiness": 45
+  },
+  "features": [
+    {
+      "name": "Daily Pulse",
+      "service": "src/lib/services/projections/home/home-projection.service.ts",
+      "package": "src/packages/contracts/index.ts",
+      "hook": "src/hooks/use-sita-data.ts",
+      "route": "/",
+      "component": "src/pages/DailyPulse.tsx",
+      "contract": "src/lib/types/os-unified.types.ts",
+      "issues": ["Page does NOT use useOSRuntime", "Inline mock data"]
+    },
+    {
+      "name": "Advisor Council",
+      "service": "src/lib/services/brain-core/councils.ts",
+      "package": "src/packages/advisor-config/index.ts",
+      "hook": "src/hooks/use-advisor-status.ts",
+      "route": "/advisors",
+      "component": "src/pages/advisors/AdvisorCouncilDashboard.tsx",
+      "contract": "src/lib/types/advisor-orchestration.types.ts",
+      "issues": ["Page does NOT use useOSRuntime"]
+    },
+    {
+      "name": "Boardroom",
+      "service": "src/lib/services/boardroom-service/index.ts",
+      "package": "src/packages/contracts/index.ts",
+      "hook": "src/hooks/use-boardroom.ts",
+      "route": "/boardroom",
+      "component": "src/pages/Boardroom.tsx",
+      "contract": "src/lib/types/os-unified.types.ts",
+      "issues": ["881 lines — large but acceptable", "Uses useOSRuntime ✅"]
+    },
+    {
+      "name": "CRM & Customers",
+      "service": "src/lib/services/business-os/contacts.service.ts",
+      "package": "src/packages/business-contracts/index.ts",
+      "hook": "src/hooks/use-sita-data.ts",
+      "route": "/business/customers",
+      "component": "src/pages/business/CustomersPage.tsx",
+      "contract": "src/packages/business-contracts/index.ts",
+      "issues": ["Page does NOT use useOSRuntime"]
+    },
+    {
+      "name": "Revenue Autopilot",
+      "service": "src/lib/services/business-os/revenue-autopilot.service.ts",
+      "package": "src/packages/business-contracts/revenue-autopilot/index.ts",
+      "hook": "src/hooks/use-sita-data.ts",
+      "route": "/business/autopilot",
+      "component": "src/pages/business/RevenueAutopilot.tsx",
+      "contract": "src/packages/business-contracts/revenue-autopilot/index.ts",
+      "issues": ["4 inline mock arrays", "Page does NOT use useOSRuntime"]
+    },
+    {
+      "name": "Finance Overview",
+      "service": "src/lib/services/finance-os/overview.service.ts",
+      "package": "src/packages/finance-contracts/index.ts",
+      "hook": "src/hooks/use-sita-data.ts",
+      "route": "/money",
+      "component": "src/pages/money/MoneyOverview.tsx",
+      "contract": "src/packages/finance-contracts/index.ts",
+      "issues": ["Page does NOT use useOSRuntime"]
+    },
+    {
+      "name": "Investment Office",
+      "service": "src/lib/services/finance-os/investment-office.service.ts",
+      "package": "src/packages/finance-contracts/investment-office/index.ts",
+      "hook": "src/hooks/use-sita-data.ts",
+      "route": "/money/investments",
+      "component": "src/pages/money/InvestmentOffice.tsx",
+      "contract": "src/packages/finance-contracts/investment-office/types.ts",
+      "issues": ["4 inline mock arrays", "Page does NOT use useOSRuntime"]
+    },
+    {
+      "name": "Household Operations",
+      "service": "src/lib/services/concierge-os/household-ops.service.ts",
+      "package": "src/packages/concierge-contracts/household/index.ts",
+      "hook": "src/hooks/use-household.ts",
+      "route": "/concierge",
+      "component": "src/pages/ConciergeCenter.tsx",
+      "contract": "src/packages/concierge-contracts/household/types.ts",
+      "issues": ["Page does NOT use useOSRuntime"]
+    },
+    {
+      "name": "Owner Center",
+      "service": "src/lib/engines/enterprise-maturity.ts",
+      "package": "src/packages/enterprise-contracts/index.ts",
+      "hook": "src/hooks/use-admin-data.ts",
+      "route": "/owner/*",
+      "component": "src/pages/OwnerCenter.tsx",
+      "contract": "src/lib/types/admin-view-models.ts",
+      "issues": ["2341 lines — MONOLITH", "1 inline mock", "Uses useOSRuntime ✅"]
+    },
+    {
+      "name": "Mission Control",
+      "service": "src/lib/engines/enterprise-maturity.ts",
+      "package": "src/packages/enterprise-contracts/index.ts",
+      "hook": "src/hooks/use-mission-control-views.ts",
+      "route": "/mission-control",
+      "component": "src/pages/mission-control/MissionControlPage.tsx",
+      "contract": "src/lib/types/mission-control.types.ts",
+      "issues": ["1233 lines — too large", "Uses useOSRuntime via context ✅"]
+    },
+    {
+      "name": "Observability",
+      "service": "src/lib/engines/enterprise-maturity.ts → ObservabilityEngine",
+      "package": "src/packages/telemetry/index.ts",
+      "hook": "src/hooks/use-mission-control-views.ts",
+      "route": "/observability",
+      "component": "src/pages/ObservabilityPage.tsx",
+      "contract": "src/lib/types/admin-view-models.ts",
+      "issues": ["Uses useOSRuntime ✅ (just wired)"]
+    },
+    {
+      "name": "Workflow Replay",
+      "service": "src/lib/engines/replay-recovery.ts",
+      "package": "src/packages/contracts/index.ts",
+      "hook": "src/hooks/use-mission-control-views.ts",
+      "route": "/workflow-replay",
+      "component": "src/pages/WorkflowReplayHub.tsx",
+      "contract": "src/lib/types/replay-recovery.types.ts",
+      "issues": ["Uses useOSRuntime ✅ (just wired)", "1 inline mock array remaining"]
+    },
+    {
+      "name": "Policy Simulator",
+      "service": "src/lib/services/shared/governance-simulator.service.ts",
+      "package": "src/packages/policy-contracts/index.ts",
+      "hook": "none",
+      "route": "/policy-simulator AND /mission/policies/simulate",
+      "component": "src/pages/PolicySimulatorHub.tsx + src/pages/mission/PolicySimulatorPage.tsx",
+      "contract": "src/lib/types/policy-depth.types.ts",
+      "issues": ["DUPLICATE: 2 separate implementations", "Neither uses useOSRuntime"]
+    },
+    {
+      "name": "System Status",
+      "service": "src/lib/core-services/self-healing/service.ts",
+      "package": "src/packages/contracts/index.ts",
+      "hook": "none direct",
+      "route": "/system",
+      "component": "src/pages/SystemStatus.tsx",
+      "contract": "src/lib/types/admin-view-models.ts",
+      "issues": ["753 lines", "Does NOT use useOSRuntime"]
+    },
+    {
+      "name": "Enterprise Maturity",
+      "service": "src/lib/engines/enterprise-maturity.ts",
+      "package": "src/packages/enterprise-contracts/index.ts",
+      "hook": "src/lib/hooks/useOSRuntime.ts",
+      "route": "/enterprise-maturity",
+      "component": "src/pages/EnterpriseMaturityDashboard.tsx",
+      "contract": "src/lib/types/admin-view-models.ts",
+      "issues": ["OVERLAPS with OwnerCenter tabs (trust, releases, support, observability)"]
+    },
+    {
+      "name": "Digital Twins",
+      "service": "src/lib/engines/digital-twin.ts → DigitalTwinEngine",
+      "package": "src/lib/types/digital-twin.types.ts",
+      "hook": "src/lib/hooks/useOSRuntime.ts",
+      "route": "/digital-twins",
+      "component": "src/pages/DigitalTwinsPage.tsx",
+      "contract": "src/lib/types/digital-twin.types.ts",
+      "issues": ["Uses useOSRuntime ✅"]
+    },
+    {
+      "name": "Scenario Lab",
+      "service": "src/lib/engines/digital-twin.ts → ScenarioIntelligenceEngine",
+      "package": "src/lib/types/digital-twin.types.ts",
+      "hook": "src/lib/hooks/useOSRuntime.ts",
+      "route": "/scenario-lab",
+      "component": "src/pages/ScenarioLabPage.tsx",
+      "contract": "src/lib/types/digital-twin.types.ts",
+      "issues": ["Uses useOSRuntime ✅"]
+    },
+    {
+      "name": "AI Economics",
+      "service": "src/lib/engines/token-governance.ts",
+      "package": "src/lib/types/token-governance.types.ts",
+      "hook": "src/lib/hooks/useOSRuntime.ts",
+      "route": "/ai-economics",
+      "component": "src/pages/AIEconomicsPage.tsx",
+      "contract": "src/lib/types/token-governance.types.ts",
+      "issues": ["Uses useOSRuntime ✅"]
+    },
+    {
+      "name": "Integration Concierge",
+      "service": "src/lib/engines/connector-concierge.ts",
+      "package": "src/packages/contracts/index.ts",
+      "hook": "src/lib/hooks/useOSRuntime.ts",
+      "route": "/integrations",
+      "component": "src/pages/IntegrationConcierge.tsx",
+      "contract": "src/lib/types/os-unified.types.ts",
+      "issues": ["Uses useOSRuntime ✅"]
+    },
+    {
+      "name": "Recovered Value",
+      "service": "src/lib/engines/revenue-opportunity.ts",
+      "package": "src/packages/business-contracts/revenue-autopilot/index.ts",
+      "hook": "src/lib/hooks/useOSRuntime.ts",
+      "route": "/recovered-value",
+      "component": "src/pages/RecoveredValuePage.tsx",
+      "contract": "src/lib/types/revenue-engine.types.ts",
+      "issues": ["Uses useOSRuntime ✅"]
+    },
+    {
+      "name": "Proof Center",
+      "service": "src/lib/services/receipt-service/proof-bundles.service.ts",
+      "package": "src/packages/proof-model/index.ts",
+      "hook": "src/hooks/use-proof-timeline.ts",
+      "route": "/proof",
+      "component": "src/pages/ProofCenter.tsx",
+      "contract": "src/packages/proof-model/index.ts",
+      "issues": ["Does NOT use useOSRuntime"]
+    },
+    {
+      "name": "Approvals Center",
+      "service": "src/lib/services/approval-engine/index.ts",
+      "package": "src/packages/policy-contracts/approvals/index.ts",
+      "hook": "none direct",
+      "route": "/approvals",
+      "component": "src/pages/ApprovalsCenter.tsx",
+      "contract": "src/packages/policy-contracts/approvals/types.ts",
+      "issues": ["Does NOT use useOSRuntime"]
+    },
+    {
+      "name": "Memory Center",
+      "service": "src/lib/services/memory-service/index.ts",
+      "package": "src/packages/contracts/index.ts",
+      "hook": "none direct",
+      "route": "/memory",
+      "component": "src/pages/MemoryCenter.tsx",
+      "contract": "src/lib/types/memory-governance.types.ts",
+      "issues": ["Does NOT use useOSRuntime"]
+    },
+    {
+      "name": "Pack Store",
+      "service": "src/lib/services/capability-router/pack-enablement.service.ts",
+      "package": "src/packages/store-metadata/index.ts",
+      "hook": "none",
+      "route": "/store",
+      "component": "src/pages/store/PackStorePage.tsx",
+      "contract": "src/packages/store-metadata/index.ts",
+      "issues": ["Does NOT use useOSRuntime"]
+    },
+    {
+      "name": "Files Center",
+      "service": "none direct",
+      "package": "src/packages/contracts/index.ts",
+      "hook": "none direct",
+      "route": "/files",
+      "component": "src/pages/FilesCenter.tsx",
+      "contract": "none",
+      "issues": ["Does NOT use useOSRuntime", "Inline mock data"]
+    },
+    {
+      "name": "Users Admin",
+      "service": "src/lib/engines/entity-role-graph.ts",
+      "package": "src/lib/types/entity-graph.types.ts",
+      "hook": "src/hooks/use-admin-data.ts",
+      "route": "/users",
+      "component": "src/pages/UsersAdminPage.tsx",
+      "contract": "src/lib/types/entity-graph.types.ts",
+      "issues": ["1 inline mock array", "Does NOT use useOSRuntime"]
+    }
+  ],
+  "duplicate_functions": [
+    {
+      "name": "generateDiagnosticBundle",
+      "locations": [
+        "src/lib/core-services/self-healing/service.ts:332",
+        "src/lib/services/shared/support-diagnostics.service.ts:39",
+        "src/lib/services/support-diagnostics/diagnostic-bundle.service.ts:4",
+        "src/lib/engines/enterprise-maturity.ts:231"
+      ],
+      "canonical": "src/lib/engines/enterprise-maturity.ts → SupportDiagnosticsEngine.generateDiagnosticBundle()",
+      "action": "Deprecate 3 others, re-export from engine"
+    },
+    {
+      "name": "classifyIncident",
+      "locations": [
+        "src/lib/services/shared/support-diagnostics.service.ts:70",
+        "src/lib/services/support-diagnostics/incident-classification.service.ts:4"
+      ],
+      "canonical": "src/lib/services/support-diagnostics/incident-classification.service.ts",
+      "action": "Remove duplicate from shared/"
+    },
+    {
+      "name": "generateBusinessPacket / generateFinancePacket / generateFamilyPacket / generateOpportunityPacket / generateCommitteePacket",
+      "locations": [
+        "src/lib/services/boardroom-service/packets/*.service.ts (canonical, rich data)",
+        "src/lib/services/shared/boardroom-packets.service.ts (thin duplicate)"
+      ],
+      "canonical": "src/lib/services/boardroom-service/packets/",
+      "action": "Delete shared/boardroom-packets.service.ts, update re-exports"
+    }
+  ],
+  "duplicate_pages": [
+    {
+      "feature": "Policy Simulator",
+      "pages": ["src/pages/PolicySimulatorHub.tsx", "src/pages/mission/PolicySimulatorPage.tsx"],
+      "action": "Make PolicySimulatorHub canonical, redirect mission route"
+    },
+    {
+      "feature": "Workflow Replay",
+      "pages": ["src/pages/WorkflowReplayHub.tsx", "src/pages/mission/MissionWorkflowReplayPage.tsx", "src/pages/boardroom/BoardroomReplay.tsx"],
+      "action": "Make WorkflowReplayHub canonical, use as shared component in boardroom"
+    },
+    {
+      "feature": "Enterprise / Owner overlap",
+      "pages": ["src/pages/EnterpriseMaturityDashboard.tsx", "src/pages/OwnerCenter.tsx (trust/releases/support tabs)"],
+      "action": "EnterpriseMaturityDashboard is canonical for those tabs"
+    }
+  ],
+  "pages_without_runtime": 95,
+  "pages_with_runtime": 12,
+  "pages_with_inline_mocks": 20,
+  "total_routes": 265,
+  "total_engines": 12,
+  "total_services": 140,
+  "total_hooks": 18,
+  "total_packages": 25,
+  "total_test_files": 42,
+  "total_ci_validators": 10
+}
