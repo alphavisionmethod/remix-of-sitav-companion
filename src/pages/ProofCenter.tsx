@@ -1,24 +1,27 @@
 import { SitaPageHeader, SitaSectionHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, ProofCard } from "@/components/sita/SitaComponents";
-import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
-import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
+import { KPITile } from "@/components/sita/SitaComponents";
+import { ProofReceipt } from "@/components/sita/primitives/ProofReceipt";
+import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { useProofRecords } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useState } from "react";
-import { Receipt, ShieldCheck, FileText, RotateCcw, AlertTriangle, Eye, Clock, ChevronDown, ChevronRight, Zap } from "lucide-react";
+import { Receipt, ShieldCheck, Clock, AlertTriangle, Eye, RotateCcw, FileDown, Filter } from "lucide-react";
 
-const trustMap: Record<string, TrustLevel> = {
+const trustMap: Record<string, "verified" | "pending" | "failed" | "rolled-back"> = {
   "system-verified": "verified",
   verified: "verified",
-  pending: "review",
-  unverified: "degraded",
+  pending: "pending",
+  unverified: "pending",
+  failed: "failed",
 };
 
-const stateMap: Record<string, ExecutionState> = {
-  completed: "completed",
-  executing: "executing",
-  escalated: "escalated",
-  failed: "rolled-back",
+const stateMap: Record<string, "verified" | "pending" | "failed" | "rolled-back"> = {
+  completed: "verified",
+  executing: "pending",
+  escalated: "failed",
+  failed: "failed",
+  "rolled-back": "rolled-back",
 };
 
 const generateHash = (id: string) => {
@@ -28,104 +31,132 @@ const generateHash = (id: string) => {
   return hash;
 };
 
-/* ── Proof Chain Browser ─────────────────────────────── */
-const ProofChain = ({ item }: { item: any }) => {
-  const [open, setOpen] = useState(false);
-  const hash = generateHash(item.id || "unknown");
-
-  return (
-    <div className="rounded-xl border border-border bg-card overflow-hidden">
-      <div className="p-4">
-        <ProofCard
-          title={item.action_summary || "Action"}
-          artifact={item.artifact || `${item.category || "system"} — ${item.verification || "pending"}`}
-          time={item.created_at ? new Date(item.created_at).toLocaleString() : "Unknown"}
-          trust={trustMap[item.verification] || "review"}
-          state={stateMap[item.result] || "completed"}
-          hash={hash}
-        />
-      </div>
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex w-full items-center gap-2 border-t border-border px-4 py-2 text-[11px] font-medium text-muted-foreground hover:bg-secondary/30 transition-colors"
-      >
-        {open ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
-        Proof Chain
-      </button>
-      {open && (
-        <div className="border-t border-border px-4 py-3 space-y-2">
-          <div className="flex items-center gap-2">
-            <div className="h-6 w-6 rounded-lg bg-primary/10 flex items-center justify-center"><Zap className="h-3 w-3 text-primary" /></div>
-            <div>
-              <p className="text-[11px] font-medium text-foreground">Action Initiated</p>
-              <p className="text-[10px] text-muted-foreground">{item.action_summary || "System action"}</p>
-            </div>
-          </div>
-          <div className="ml-3 border-l border-border pl-4 py-1">
-            <div className="flex items-center gap-2">
-              <div className="h-6 w-6 rounded-lg bg-accent/10 flex items-center justify-center"><Receipt className="h-3 w-3 text-accent" /></div>
-              <div>
-                <p className="text-[11px] font-medium text-foreground">Receipt Generated</p>
-                <p className="font-mono text-[10px] text-muted-foreground/60">{hash.slice(0, 16)}…</p>
-              </div>
-            </div>
-          </div>
-          <div className="ml-6 border-l border-border pl-4 py-1">
-            <div className="flex items-center gap-2">
-              <div className="h-6 w-6 rounded-lg bg-trust-verified/10 flex items-center justify-center"><ShieldCheck className="h-3 w-3 text-trust-verified" /></div>
-              <div>
-                <p className="text-[11px] font-medium text-foreground">Verification</p>
-                <p className="text-[10px] text-muted-foreground">{item.verification === "system-verified" ? "System verified ✓" : item.verification || "Pending"}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+const buildSteps = (item: any) => {
+  const steps = [
+    { label: "Action Initiated", detail: item.action_summary || "System action", status: "completed" as const, timestamp: item.created_at ? new Date(item.created_at).toLocaleTimeString() : undefined },
+    { label: "Receipt Generated", detail: `Hash: ${generateHash(item.id || "unknown").slice(0, 16)}…`, status: "completed" as const },
+    { label: "Verification", detail: item.verification === "system-verified" ? "System verified ✓" : item.verification || "Pending", status: item.verification === "system-verified" || item.verification === "verified" ? "completed" as const : item.result === "failed" ? "failed" as const : "pending" as const },
+  ];
+  if (item.result === "failed" || item.result === "escalated") {
+    steps.push({ label: item.result === "escalated" ? "Escalated to Owner" : "Rollback Initiated", detail: "Automatic recovery triggered", status: "failed" as const });
+  }
+  return steps;
 };
+
+type FilterType = "all" | "verified" | "pending" | "failed";
 
 const ProofCenter = () => {
   const { data: proofRecords = [], isLoading } = useProofRecords();
   const { isDemoMode } = useDataMode();
+  const [filter, setFilter] = useState<FilterType>("all");
 
   const verified = proofRecords.filter((p: any) => p.verification === "system-verified" || p.result === "completed");
   const pending = proofRecords.filter((p: any) => p.verification === "pending" || p.result === "executing");
   const failed = proofRecords.filter((p: any) => p.result === "failed" || p.result === "escalated");
 
+  const trustScore = proofRecords.length > 0 ? Math.round((verified.length / proofRecords.length) * 100) : 96;
+
+  const filtered = filter === "all" ? proofRecords
+    : filter === "verified" ? verified
+    : filter === "pending" ? pending
+    : failed;
+
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <SitaPageHeader
+      <DomainHeader
         title="Proof Center"
-        subtitle="Trust-verified receipts, action logs, and approval records"
+        subtitle="Trust-verified receipts, execution chains, and approval records"
+        icon={Receipt}
+        domain="system"
         actions={
-          <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${isDemoMode ? "bg-amber-500/10 text-amber-600 border border-amber-500/20" : "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"}`}>
-            <div className={`h-2 w-2 rounded-full ${isDemoMode ? "bg-amber-500 animate-pulse" : "bg-emerald-500"}`} />
-            {isDemoMode ? "Demo" : "Live"}
+          <div className="flex items-center gap-2">
+            <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${isDemoMode ? "bg-amber-500/10 text-amber-600 border border-amber-500/20" : "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"}`}>
+              <div className={`h-2 w-2 rounded-full ${isDemoMode ? "bg-amber-500 animate-pulse" : "bg-emerald-500"}`} />
+              {isDemoMode ? "Demo" : "Live"}
+            </div>
           </div>
         }
       />
 
+      {/* KPIs */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Verified Actions" value={String(verified.length)} icon={ShieldCheck} sub="Trust-proven" />
-        <KPITile label="Pending Verification" value={String(pending.length)} icon={Clock} />
-        <KPITile label="Escalated / Failed" value={String(failed.length)} icon={AlertTriangle} />
-        <KPITile label="Trust Score" value="96%" trend="up" icon={Receipt} sub="Excellent standing" className="gradient-sita-subtle" />
+        <KPITile label="Pending" value={String(pending.length)} icon={Clock} sub="Awaiting verification" />
+        <KPITile label="Failed / Escalated" value={String(failed.length)} icon={AlertTriangle} sub={failed.length === 0 ? "Clean record" : "Needs review"} />
+        <div className="rounded-xl border border-border bg-card p-4">
+          <ConfidenceBar value={trustScore} label="Trust Score" size="lg" />
+        </div>
       </div>
 
-      <SitaSectionHeader title="Proof Stream" subtitle="All trust-verified actions with proof chain browsing" />
+      {/* Filter Bar */}
+      <div className="flex items-center gap-2">
+        <Filter className="h-4 w-4 text-muted-foreground" />
+        {(["all", "verified", "pending", "failed"] as FilterType[]).map(f => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={`rounded-lg px-3 py-1.5 text-[12px] font-medium capitalize transition-all ${
+              filter === f ? "bg-primary/10 text-primary border border-primary/20" : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+            }`}
+          >
+            {f} {f === "all" ? `(${proofRecords.length})` : f === "verified" ? `(${verified.length})` : f === "pending" ? `(${pending.length})` : `(${failed.length})`}
+          </button>
+        ))}
+        <div className="ml-auto">
+          <button className="inline-flex items-center gap-1.5 rounded-lg bg-secondary px-3 py-1.5 text-[11px] font-medium text-foreground hover:bg-secondary/80 transition-colors">
+            <FileDown className="h-3 w-3" /> Export Audit Trail
+          </button>
+        </div>
+      </div>
+
+      {/* Proof Stream */}
+      <SitaSectionHeader title="Proof Stream" subtitle={`${filtered.length} records — with full execution chain browsing`} />
 
       <div className="space-y-3">
-        {proofRecords.map((item: any, i: number) => (
-          <ProofChain key={item.id || i} item={item} />
+        {filtered.map((item: any, i: number) => (
+          <ProofReceipt
+            key={item.id || i}
+            title={item.action_summary || "Action"}
+            hash={generateHash(item.id || "unknown")}
+            verification={trustMap[item.verification] || stateMap[item.result] || "pending"}
+            timestamp={item.created_at ? new Date(item.created_at).toLocaleString() : "Unknown"}
+            actor={item.actor || "System"}
+            steps={buildSteps(item)}
+          />
         ))}
-        {proofRecords.length === 0 && !isLoading && (
+        {filtered.length === 0 && !isLoading && (
           <SitaCard hover={false} className="p-8 text-center">
             <Eye className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-            <p className="text-sm text-muted-foreground">No proof records yet. Actions will appear here as they're verified.</p>
+            <p className="text-sm text-muted-foreground">
+              {filter === "all" ? "No proof records yet. Actions will appear here as they're verified." : `No ${filter} records found.`}
+            </p>
           </SitaCard>
         )}
       </div>
+
+      {/* Rollback History */}
+      {failed.length > 0 && (
+        <>
+          <SitaSectionHeader title="Rollback History" subtitle="Failed actions with recovery proof" />
+          <div className="space-y-3">
+            {failed.map((item: any, i: number) => (
+              <ProofReceipt
+                key={`rollback-${item.id || i}`}
+                title={`Recovery: ${item.action_summary || "Action"}`}
+                hash={generateHash((item.id || "unknown") + "-recovery")}
+                verification="rolled-back"
+                timestamp={item.created_at ? new Date(item.created_at).toLocaleString() : "Unknown"}
+                actor="Recovery Agent"
+                steps={[
+                  { label: "Failure Detected", detail: item.result || "Unknown failure", status: "failed" },
+                  { label: "Rollback Initiated", detail: "Automatic recovery triggered", status: "completed" },
+                  { label: "State Restored", detail: "Previous state verified", status: "completed" },
+                ]}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };
