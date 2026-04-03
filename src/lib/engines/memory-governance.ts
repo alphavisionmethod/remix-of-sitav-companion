@@ -33,6 +33,7 @@ export class MemoryGovernanceEngine {
   private contradictions: MemoryContradiction[] = [];
   private corrections: MemoryCorrection[] = [];
   private forgetRequests: MemoryForgetRequest[] = [];
+  private auditTrail: MemoryAuditEntry[] = [];
   private config: MemoryGovernanceConfig;
 
   constructor(config: Partial<MemoryGovernanceConfig> = {}) {
