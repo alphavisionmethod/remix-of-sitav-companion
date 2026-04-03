@@ -412,6 +412,7 @@ const App = () => (
           </Routes>
           </Suspense>
           </InspectorProvider>
+          </SitaKernelProvider>
           </EntityContextProvider>
           </DisplayModeProvider>
           </DataModeProvider>
