@@ -272,6 +272,7 @@ const App = () => (
                     <Route path="/boardroom/morning" element={<Boardroom />} />
                     <Route path="/boardroom/weekly" element={<Boardroom />} />
                     <Route path="/boardroom/incidents" element={<Boardroom />} />
+                    <Route path="/boardroom/replay" element={<BoardroomReplay />} />
 
                     {/* Workflows */}
                     <Route path="/workflows" element={<WorkflowsCenter />} />
