@@ -131,6 +131,7 @@ const App = () => (
           <DataModeProvider>
           <DisplayModeProvider>
           <EntityContextProvider>
+          <SitaKernelProvider>
           <InspectorProvider>
           <Suspense fallback={<PageLoader />}>
           <Routes>
