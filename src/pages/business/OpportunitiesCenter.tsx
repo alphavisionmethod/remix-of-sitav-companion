@@ -36,6 +36,7 @@ const OpportunitiesCenter = () => {
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
+  const [view, setView] = useState<"list" | "kanban">("list");
   const [form, setForm] = useState({ title: "", value: "", confidence: 50, stage: "lead", next_action: "" });
 
   const { data: opportunities = [], isLoading } = useQuery({
