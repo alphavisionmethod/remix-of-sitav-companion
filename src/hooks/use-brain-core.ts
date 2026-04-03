@@ -105,13 +105,22 @@ export function useBrainCore({ advisor, secondaryAdvisor }: UseBrainCoreOptions)
       const data: AdvisorResponse = await response.json();
       setLastResponse(data);
 
-      // Generate execution receipt
-      const receipt = await receiptServiceRef.current.createReceipt(
+      // Generate execution receipt via shared kernel
+      const receipt = await kernel.createReceipt(
         data.correlation_id || crypto.randomUUID(),
         "execution-summary",
         { intent, advisor, confidence: data.confidence, source: data.source, model: data.model }
       );
       setLastReceipt(receipt);
+
+      // Emit advisor response event + store in shared memory
+      await kernel.emitEvent("advisor.response.v1", {
+        advisor, intent, confidence: data.confidence, source: data.source,
+      }, data.correlation_id);
+      kernel.storeMemory(`advisor.${advisor}.lastResponse`, {
+        intent, confidence: data.confidence, recommendation: data.recommendation,
+        timestamp: Date.now(),
+      }, { source: `advisor-${advisor}`, tags: [advisor, "advisor-response"] });
 
       return data;
     } catch (e) {
