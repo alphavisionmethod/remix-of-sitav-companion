@@ -389,9 +389,15 @@ const App = () => (
                     {/* Redirect /incidents to mission-control/incidents */}
                     <Route path="/incidents" element={<Navigate to="/mission-control" replace />} />
 
-                    {/* Owner Center */}
+                    {/* Owner — Advanced Workspace (Layer 2) */}
                     <Route path="/owner" element={<OwnerCenter />} />
-                    <Route path="/owner/ai-team" element={<OwnerCenter />} />
+                    <Route path="/owner/home" element={<OwnerHomePage />} />
+                    <Route path="/owner/health" element={<OwnerHealthPage />} />
+                    <Route path="/owner/pulse" element={<OwnerPulsePage />} />
+                    <Route path="/owner/trust" element={<OwnerTrustPage />} />
+                    <Route path="/owner/approvals" element={<OwnerApprovalsPage />} />
+                    <Route path="/owner/ai-team" element={<OwnerAiTeamPage />} />
+                    <Route path="/owner/ai-team/updates" element={<OwnerAiTeamUpdatesPage />} />
                     <Route path="/owner/incidents" element={<OwnerCenter />} />
                     <Route path="/owner/intelligence" element={<OwnerCenter />} />
                     <Route path="/owner/policies" element={<OwnerCenter />} />
@@ -419,8 +425,9 @@ const App = () => (
                     <Route path="/owner/leases" element={<LeaseDashboard />} />
                     <Route path="/owner/constitution" element={<ConstitutionEditor />} />
 
-                    {/* Owner Mode — Founder-Safe Control Room */}
+                    {/* Owner Mode — Founder-Safe Control Room (Layer 1) */}
                     <Route path="/owner-mode" element={<OwnerModePage />} />
+                    <Route path="/owner-mode/home" element={<Navigate to="/owner-mode" replace />} />
 
                     {/* Global Admin Surfaces */}
                     <Route path="/workflow-replay" element={<WorkflowReplayHub />} />
