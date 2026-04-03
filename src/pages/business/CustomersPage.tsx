@@ -3,7 +3,8 @@ import { KPITile, SitaTabs, EmptyState, CustomerRow, TimelineItem } from "@/comp
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
