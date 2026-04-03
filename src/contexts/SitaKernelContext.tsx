@@ -155,6 +155,79 @@ export function useEntityScoped() {
   };
 }
 
+// ── Lease Hook ──────────────────────────────────────────────────
+
+export function useCapabilityLease() {
+  const kernel = useSitaKernel();
+  const [activeLeases, setActiveLeases] = useState(kernel.leases.getActiveLeases());
+
+  useEffect(() => {
+    const subId = kernel.eventBus.subscribe("lease.*", () => {
+      setActiveLeases(kernel.leases.getActiveLeases());
+    }, "lease-hook");
+    return () => { kernel.eventBus.unsubscribe(subId); };
+  }, [kernel]);
+
+  const issueLease = useCallback(async (request: Parameters<typeof kernel.leases.issueLease>[0]) => {
+    const lease = await kernel.leases.issueLease(request);
+    setActiveLeases(kernel.leases.getActiveLeases());
+    return lease;
+  }, [kernel]);
+
+  const validateLease = useCallback((leaseId: string, action: string, system: string, amount?: number) => {
+    return kernel.leases.validate(leaseId, action, system, amount);
+  }, [kernel]);
+
+  const revokeLease = useCallback(async (leaseId: string, reason: string) => {
+    const result = await kernel.leases.revokeLease(leaseId, "user", reason);
+    setActiveLeases(kernel.leases.getActiveLeases());
+    return result;
+  }, [kernel]);
+
+  return { activeLeases, issueLease, validateLease, revokeLease, stats: kernel.leases.getLeaseStats() };
+}
+
+// ── Constitution Hook ───────────────────────────────────────────
+
+export function useConstitution() {
+  const kernel = useSitaKernel();
+  const [rules, setRules] = useState(kernel.constitution.getAllRules());
+
+  useEffect(() => {
+    const subId = kernel.eventBus.subscribe("constitution.*", () => {
+      setRules(kernel.constitution.getAllRules());
+    }, "constitution-hook");
+    return () => { kernel.eventBus.unsubscribe(subId); };
+  }, [kernel]);
+
+  const compileRule = useCallback(async (naturalLanguage: string, options?: { priority?: number; enforcementMode?: "strict" | "advisory" | "learning" }) => {
+    const rule = await kernel.constitution.compile({
+      naturalLanguage,
+      entityId: kernel.tenantId,
+      createdBy: "owner",
+      ...options,
+    });
+    setRules(kernel.constitution.getAllRules());
+    return rule;
+  }, [kernel]);
+
+  const evaluate = useCallback((context: Parameters<typeof kernel.constitution.evaluate>[0]) => {
+    return kernel.constitution.evaluate(context);
+  }, [kernel]);
+
+  const toggleRule = useCallback((id: string, active: boolean) => {
+    kernel.constitution.toggleRule(id, active);
+    setRules(kernel.constitution.getAllRules());
+  }, [kernel]);
+
+  const deleteRule = useCallback((id: string) => {
+    kernel.constitution.deleteRule(id);
+    setRules(kernel.constitution.getAllRules());
+  }, [kernel]);
+
+  return { rules, compileRule, evaluate, toggleRule, deleteRule, stats: kernel.constitution.getStats() };
+}
+
 // ── Kernel Status Hook ──────────────────────────────────────────
 
 export function useKernelStatus() {
