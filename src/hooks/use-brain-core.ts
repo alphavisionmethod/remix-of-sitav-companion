@@ -7,7 +7,8 @@ import {
   classifyRiskTier,
   type PolicyEvaluationResult,
 } from "@/lib/core-services/policy-engine";
-import { createReceiptService, type ReceiptService, type Receipt } from "@/lib/core-services/receipt-service";
+import type { ReceiptService, Receipt } from "@/lib/core-services/receipt-service";
+import { useSitaKernel } from "@/contexts/SitaKernelContext";
 
 export interface AdvisorResponse {
   request_id: string;
