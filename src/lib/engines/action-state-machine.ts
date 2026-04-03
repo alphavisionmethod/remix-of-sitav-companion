@@ -154,6 +154,7 @@ export class ActionStateMachine {
       simulated: "The action was simulated to check safety",
       approval_requested: "Waiting for your approval",
       approved: "You approved this action",
+      rejected: "This action was rejected",
       queued: "Queued for execution",
       executing: "Currently running",
       partially_completed: "Partially done — some steps remain",
