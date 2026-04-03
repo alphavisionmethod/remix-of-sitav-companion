@@ -392,6 +392,14 @@ function MCAgentTeam() {
 // ── Incidents ───────────────────────────────────────────────────────────────
 
 function MCIncidents() {
+  const { adminIncidents } = useMCAdmin();
+  const adminList = adminIncidents?.incidents || [];
+  // Merge admin data onto mock incidents for enriched display
+  const incidents = mockIncidents.map((m, idx) => {
+    const admin = adminList[idx];
+    return admin ? { ...m, status: admin.status ?? m.status, severity: admin.severity ?? m.severity } : m;
+  });
+
   return (
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -403,14 +411,18 @@ function MCIncidents() {
           </div>
           <div>
             <h3 className="text-sm font-bold text-foreground font-display">Incident Review</h3>
-            <p className="text-xs text-muted-foreground">Severity, scope, root cause, timeline, rollback options, and recommended actions</p>
+            <p className="text-xs text-muted-foreground">
+              {adminIncidents?.summary
+                ? `${adminIncidents.summary.open} open · ${adminIncidents.summary.resolved} resolved · ${adminIncidents.summary.total} total`
+                : "Severity, scope, root cause, timeline, rollback options, and recommended actions"}
+            </p>
           </div>
         </div>
       </motion.div>
 
-      {mockIncidents.length > 0 ? (
+      {incidents.length > 0 ? (
         <div className="space-y-4">
-          {mockIncidents.map((inc, i) => (
+          {incidents.map((inc, i) => (
             <motion.div key={inc.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
               <IncidentCard incident={inc} />
             </motion.div>
