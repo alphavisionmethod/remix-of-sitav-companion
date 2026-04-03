@@ -438,8 +438,13 @@ function MCIncidents() {
 // ── Connectors ──────────────────────────────────────────────────────────────
 
 function MCConnectors() {
-  const sorted = [...mockConnectorHealth].sort((a, b) => a.healthScore - b.healthScore);
-  const avgScore = Math.round(mockConnectorHealth.reduce((s, c) => s + c.healthScore, 0) / mockConnectorHealth.length);
+  const { fleetHealth } = useMCAdmin();
+  const connectors = mockConnectorHealth.map(c => {
+    const fleetService = fleetHealth?.services?.find((s: any) => s.name?.toLowerCase().includes(c.name.toLowerCase()));
+    return fleetService ? { ...c, healthScore: Math.round(fleetService.uptime ?? c.healthScore) } : c;
+  });
+  const sorted = [...connectors].sort((a, b) => a.healthScore - b.healthScore);
+  const avgScore = Math.round(connectors.reduce((s, c) => s + c.healthScore, 0) / connectors.length);
 
   return (
     <div className="space-y-6">
