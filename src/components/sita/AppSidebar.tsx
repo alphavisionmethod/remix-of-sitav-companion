@@ -1,5 +1,5 @@
 import { Home, Briefcase, DollarSign, Headphones, Workflow, Receipt, BarChart3, FolderOpen, Settings, Shield, LogOut,
-  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge } from "lucide-react";
+  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
@@ -55,8 +55,9 @@ const bottomNav = [
   { title: "Pack Store", url: "/store", icon: Package },
   { title: "Enterprise", url: "/enterprise", icon: Globe },
   { title: "Settings", url: "/settings", icon: Settings },
+  { title: "Owner Mode", url: "/owner-mode", icon: Sparkles },
   { title: "Mission Control", url: "/mission-control", icon: Server },
-  { title: "Owner", url: "/owner", icon: Shield },
+  { title: "Owner Workspace", url: "/owner", icon: Shield },
 ];
 
 const ownerSubNav = [

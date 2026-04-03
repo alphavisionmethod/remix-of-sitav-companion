@@ -76,6 +76,11 @@ const PackEditorPage = lazy(() => import("./pages/owner/PackEditor"));
 const AdvisorConfigPage = lazy(() => import("./pages/owner/AdvisorConfig"));
 const LeaseDashboard = lazy(() => import("./pages/owner/LeaseDashboard"));
 const ConstitutionEditor = lazy(() => import("./pages/owner/ConstitutionEditor"));
+const OwnerModePage = lazy(() => import("./pages/owner-mode/OwnerModePage"));
+const WorkflowReplayHub = lazy(() => import("./pages/WorkflowReplayHub"));
+const ObservabilityPage = lazy(() => import("./pages/ObservabilityPage"));
+const UsersAdminPage = lazy(() => import("./pages/UsersAdminPage"));
+const PolicySimulatorHub = lazy(() => import("./pages/PolicySimulatorHub"));
 const EnterpriseControlPlane = lazy(() => import("./pages/enterprise/EnterpriseControlPlane"));
 
 // Mobile Trusted Device
@@ -404,7 +409,18 @@ const App = () => (
                     <Route path="/owner/leases" element={<LeaseDashboard />} />
                     <Route path="/owner/constitution" element={<ConstitutionEditor />} />
 
-                    {/* Enterprise Control Plane */}
+                    {/* Owner Mode — Founder-Safe Control Room */}
+                    <Route path="/owner-mode" element={<OwnerModePage />} />
+
+                    {/* Global Admin Surfaces */}
+                    <Route path="/workflow-replay" element={<WorkflowReplayHub />} />
+                    <Route path="/observability" element={<ObservabilityPage />} />
+                    <Route path="/users" element={<UsersAdminPage />} />
+                    <Route path="/policy-simulator" element={<PolicySimulatorHub />} />
+
+                    {/* Redirects — merge rule */}
+                    <Route path="/policies/simulator" element={<Navigate to="/policy-simulator" replace />} />
+
                     <Route path="/enterprise" element={<EnterpriseControlPlane />} />
                     <Route path="/enterprise/roles" element={<EnterpriseControlPlane />} />
                     <Route path="/enterprise/compliance" element={<EnterpriseControlPlane />} />
