@@ -18,6 +18,7 @@ import {
   FileText, CreditCard, Sliders, Sun, Moon, Monitor,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FirstBootScreen } from "@/components/sita/FirstBootScreen";
 
 // ── Types ───────────────────────────────────────────────────
 
@@ -38,69 +39,7 @@ const phases: Phase[] = ["boot", "welcome", "identity", "domains", "trust", "ai-
 
 // ── Boot Screen ─────────────────────────────────────────────
 
-function BootScreen({ onComplete }: { onComplete: () => void }) {
-  const [line, setLine] = useState(0);
-  const bootLines = [
-    { text: "SITA OS v3.0.0 — Sovereign Intelligence Platform", delay: 200 },
-    { text: "Initializing neural architecture...", delay: 400 },
-    { text: "Loading advisor protocols ████████████████ OK", delay: 600 },
-    { text: "Mounting trust engine... verified ✓", delay: 300 },
-    { text: "Connecting proof ledger... sealed ✓", delay: 250 },
-    { text: "Starting governance layer... active ✓", delay: 300 },
-    { text: "Loading memory subsystem... ready ✓", delay: 200 },
-    { text: "AI workforce online — 20 agents standing by", delay: 400 },
-    { text: "", delay: 200 },
-    { text: "System ready. Welcome, Operator.", delay: 500 },
-  ];
-
-  useEffect(() => {
-    if (line >= bootLines.length) {
-      setTimeout(onComplete, 800);
-      return;
-    }
-    const timer = setTimeout(() => setLine(l => l + 1), bootLines[line].delay);
-    return () => clearTimeout(timer);
-  }, [line]);
-
-  return (
-    <div className="fixed inset-0 z-[200] bg-[hsl(225,15%,4%)] flex flex-col items-center justify-center font-mono">
-      {/* Logo pulse */}
-      <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }}
-        transition={{ type: "spring", damping: 20 }} className="mb-8">
-        <div className="relative">
-          <img src={logo} alt="SITA" className="h-20 w-20 rounded-2xl" />
-          <motion.div className="absolute inset-0 rounded-2xl border-2 border-primary/40"
-            animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }} />
-        </div>
-      </motion.div>
-
-      {/* Boot log */}
-      <div className="w-full max-w-lg px-6 space-y-1 text-left">
-        {bootLines.slice(0, line).map((bl, i) => (
-          <motion.p key={i} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
-            className={cn("text-[11px] leading-relaxed",
-              i === line - 1 ? "text-primary" : bl.text.includes("✓") ? "text-[hsl(var(--trust-safe))]" : "text-[hsl(var(--muted-foreground))]"
-            )}>
-            {bl.text || "\u00A0"}
-          </motion.p>
-        ))}
-        {line < bootLines.length && (
-          <span className="inline-block w-2 h-4 bg-primary animate-pulse" />
-        )}
-      </div>
-
-      {/* Progress bar */}
-      <div className="absolute bottom-12 w-full max-w-xs px-6">
-        <div className="h-1 rounded-full bg-[hsl(var(--muted))]">
-          <motion.div className="h-full rounded-full bg-primary"
-            animate={{ width: `${(line / bootLines.length) * 100}%` }}
-            transition={{ duration: 0.3 }} />
-        </div>
-      </div>
-    </div>
-  );
-}
+// Boot screen replaced by FirstBootScreen component
 
 // ── Phase Wrapper ───────────────────────────────────────────
 
@@ -304,7 +243,7 @@ export function OSSetupExperience() {
   return (
     <>
       {/* Boot */}
-      {phase === "boot" && <BootScreen onComplete={goNext} />}
+      {phase === "boot" && <FirstBootScreen onComplete={goNext} />}
 
       {/* Setup phases */}
       {phase !== "boot" && (
