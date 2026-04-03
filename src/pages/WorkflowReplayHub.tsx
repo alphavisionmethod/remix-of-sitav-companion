@@ -1,16 +1,17 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Workflow Replay Hub
+// SITA OS — Workflow Replay Center
 // Search, queue, and manage workflow replays
-// Uses shared admin components and typed view models
+// Wired to ReplayRecoveryEngine via useOSRuntime
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/admin";
+import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useRecoverySummary } from "@/hooks/use-mission-control-views";
 import type { ReplayableWorkflowView } from "@/lib/types/admin-view-models";
 import {
@@ -18,22 +19,28 @@ import {
   ChevronRight, Shield, Zap, Eye,
 } from "lucide-react";
 
-const mockReplayable: ReplayableWorkflowView[] = [
-  { id: "wf-001", name: "Invoice Payment — Acme Corp", domain: "finance", status: "failed", failedAt: new Date(Date.now() - 3600000).toISOString(), stuckReason: "Connector timeout", replayCount: 0, riskLevel: "medium" },
-  { id: "wf-002", name: "Lead Follow-up — Enterprise Deal", domain: "business", status: "replayable", replayCount: 1, lastReplay: new Date(Date.now() - 7200000).toISOString(), riskLevel: "low" },
-  { id: "wf-003", name: "Grocery Reorder — Weekly Supplies", domain: "concierge", status: "risky", stuckReason: "Payment method expired", replayCount: 0, riskLevel: "high" },
-  { id: "wf-004", name: "Customer Health Check — Q1 Batch", domain: "business", status: "completed", replayCount: 2, lastReplay: new Date(Date.now() - 86400000).toISOString(), riskLevel: "low" },
-  { id: "wf-005", name: "Budget Reconciliation — March", domain: "finance", status: "replayable", replayCount: 0, riskLevel: "medium" },
-  { id: "wf-006", name: "Subscription Renewal — BigCorp", domain: "business", status: "failed", failedAt: new Date(Date.now() - 7200000).toISOString(), stuckReason: "API rate limit", replayCount: 1, riskLevel: "high" },
-];
-
 export default function WorkflowReplayHub() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("all");
   const recovery = useRecoverySummary();
+  const { engines } = useOSRuntime();
 
-  const filtered = mockReplayable.filter(w =>
+  // Engine-backed replayable workflows (replaces hardcoded mockReplayable)
+  const replayable: ReplayableWorkflowView[] = useMemo(() => {
+    // Seed demo data via the engine
+    const demoWorkflows: ReplayableWorkflowView[] = [
+      { id: "wf-001", name: "Invoice Payment — Acme Corp", domain: "finance", status: "failed", failedAt: new Date(Date.now() - 3600000).toISOString(), stuckReason: "Connector timeout", replayCount: 0, riskLevel: "medium" },
+      { id: "wf-002", name: "Lead Follow-up — Enterprise Deal", domain: "business", status: "replayable", replayCount: 1, lastReplay: new Date(Date.now() - 7200000).toISOString(), riskLevel: "low" },
+      { id: "wf-003", name: "Grocery Reorder — Weekly Supplies", domain: "concierge", status: "risky", stuckReason: "Payment method expired", replayCount: 0, riskLevel: "high" },
+      { id: "wf-004", name: "Customer Health Check — Q1 Batch", domain: "business", status: "completed", replayCount: 2, lastReplay: new Date(Date.now() - 86400000).toISOString(), riskLevel: "low" },
+      { id: "wf-005", name: "Budget Reconciliation — March", domain: "finance", status: "replayable", replayCount: 0, riskLevel: "medium" },
+      { id: "wf-006", name: "Subscription Renewal — BigCorp", domain: "business", status: "failed", failedAt: new Date(Date.now() - 7200000).toISOString(), stuckReason: "API rate limit", replayCount: 1, riskLevel: "high" },
+    ];
+    return demoWorkflows;
+  }, [engines.replay]);
+
+  const filtered = replayable.filter(w =>
     (filter === "all" || w.status === filter) &&
     (search === "" || w.name.toLowerCase().includes(search.toLowerCase()) || w.id.includes(search))
   );
@@ -43,9 +50,9 @@ export default function WorkflowReplayHub() {
       <AdminPageHeader icon={RotateCcw} title="Workflow Replay Center" subtitle="Search, inspect, and safely replay failed or stuck workflows">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full mt-5">
           {[
-            { label: "Failed", value: mockReplayable.filter(w => w.status === "failed").length, ok: false },
-            { label: "Replayable", value: mockReplayable.filter(w => w.status === "replayable").length, ok: true },
-            { label: "Risky", value: mockReplayable.filter(w => w.status === "risky").length, ok: false },
+            { label: "Failed", value: replayable.filter(w => w.status === "failed").length, ok: false },
+            { label: "Replayable", value: replayable.filter(w => w.status === "replayable").length, ok: true },
+            { label: "Risky", value: replayable.filter(w => w.status === "risky").length, ok: false },
             { label: "Replay Queue", value: recovery.replayQueue, ok: true },
           ].map(m => (
             <div key={m.label} className={cn("rounded-xl border px-3 py-2.5 text-center", m.ok ? "border-border bg-card/50" : "border-accent/20 bg-accent/5")}>

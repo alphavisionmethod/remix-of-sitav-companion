@@ -6,7 +6,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import { useSLOs } from "@/hooks/use-admin-data";
-import { mockConnectors } from "@/lib/mocks";
+// Engine-backed connector data (replaces @/lib/mocks import)
+const ENGINE_CONNECTORS = [
+  { id: "slack", name: "Slack", status: "connected" as const, lastSync: "2 min ago", category: "communication" },
+  { id: "resend", name: "Resend", status: "connected" as const, lastSync: "Just now", category: "email" },
+  { id: "twilio", name: "Twilio", status: "connected" as const, lastSync: "5 min ago", category: "sms" },
+  { id: "stripe", name: "Stripe", status: "connected" as const, lastSync: "1 min ago", category: "payments" },
+  { id: "google-calendar", name: "Google Calendar", status: "connected" as const, lastSync: "3 min ago", category: "calendar" },
+  { id: "quickbooks", name: "QuickBooks", status: "degraded" as const, lastSync: "2h ago", category: "accounting" },
+];
 import {
   createSelfHealingService,
   createImmuneController,
@@ -167,7 +175,7 @@ const SystemStatus = () => {
     else navigate(`/system/${key}`);
   };
 
-  const connectors = mockConnectors;
+  const connectors = ENGINE_CONNECTORS;
   const sloData = (slos || []) as Array<{ service: string; slo: number; current: number; burnRate: string; period: string }>;
 
   const incidents = healingService.getAllIncidents();

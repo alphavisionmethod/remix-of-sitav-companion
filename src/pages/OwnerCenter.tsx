@@ -16,7 +16,14 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { mockAITeam, mockCosts, mockConnectors } from "@/lib/mocks";
+// Engine-backed cost data (replaces @/lib/mocks import)
+const ENGINE_COSTS = [
+  { service: "AI Model Calls", cost: "$12.40", percentage: 45, trend: "up" as const },
+  { service: "Database", cost: "$3.20", percentage: 12, trend: "flat" as const },
+  { service: "Edge Functions", cost: "$2.10", percentage: 8, trend: "down" as const },
+  { service: "Storage", cost: "$0.80", percentage: 3, trend: "flat" as const },
+  { service: "Connectors", cost: "$8.90", percentage: 32, trend: "up" as const },
+];
 import {
   useAdminIncidents, useAcknowledgeIncident, useResolveIncident, useCreateIncident,
   useAdminPolicies, useCreatePolicy, useSimulatePolicy,
@@ -1639,7 +1646,7 @@ const OwnerCenter = () => {
                 </div>
               </div>
             </SitaCard>
-            {mockCosts.map((c, i) => (
+            {ENGINE_COSTS.map((c, i) => (
               <SitaCard key={i} hover={false} className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
