@@ -199,7 +199,6 @@ export default function AdvisorCouncilDashboard() {
   return (
     <div className="space-y-6 max-w-6xl">
       <SitaPageHeader
-        icon={<Scale className="h-5 w-5" />}
         title="Advisory Council Dashboard"
         subtitle="Performance scorecards, escalation history, handoff activity, and compute budget"
       />
