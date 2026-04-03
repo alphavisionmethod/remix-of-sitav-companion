@@ -91,7 +91,7 @@ export function useSharedMemory(key?: string) {
         const results = kernel.memory.query({ key });
         setEntries(results);
       } else {
-        setEntries(kernel.memory.getAll());
+        setEntries(kernel.memory.query({}));
       }
     };
     refresh();
