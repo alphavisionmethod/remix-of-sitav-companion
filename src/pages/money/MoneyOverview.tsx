@@ -1,6 +1,8 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, RiskCard, OpportunityCard, ProofCard, TimelineItem } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
+import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { useNavigate } from "react-router-dom";
