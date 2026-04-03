@@ -384,6 +384,9 @@ const App = () => (
                     <Route path="/mission/connectors/:connectorId/logs" element={<ConnectorDetail />} />
                     <Route path="/mission/incidents/:incidentId" element={<IncidentDetail />} />
                     <Route path="/mission/policies/simulate" element={<PolicySimulator />} />
+                    <Route path="/mission/registry" element={<MissionRegistryPage />} />
+                    <Route path="/mission/releases/:releaseId" element={<MissionReleaseDetailPage />} />
+                    <Route path="/mission/workflows/:workflowId/replay" element={<MissionWorkflowReplayPage />} />
                     <Route path="/mission/error" element={<MissionError />} />
 
                     {/* Redirect /incidents to mission-control/incidents */}
