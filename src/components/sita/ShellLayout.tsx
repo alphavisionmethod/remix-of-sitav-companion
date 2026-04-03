@@ -7,6 +7,7 @@ import { AdvisorFAB } from "./AdvisorFAB";
 import { NotificationPanel } from "./NotificationPanel";
 import { UniversalTimeline } from "./UniversalTimeline";
 import { InspectorPanel } from "./InspectorPanel";
+import { ContextualRail } from "./ContextualRail";
 import { MobileBottomNav } from "./MobileBottomNav";
 import { SitaCompanionBar } from "./SitaCompanionBar";
 import { KeyboardShortcuts } from "./KeyboardShortcuts";
@@ -16,6 +17,7 @@ import { QuickAddWizard, QuickAddFAB } from "./QuickAddWizard";
 import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
 import { useProactiveNotifications } from "@/hooks/use-proactive-notifications";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
+import { useInspector } from "@/contexts/InspectorContext";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -33,6 +35,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [timelineOpen, setTimelineOpen] = useState(false);
   const [wizardType, setWizardType] = useState<"lead" | "invoice" | "budget" | null>(null);
   const { isCalm, isFocus } = useDisplayMode();
+  const { isOpen: railOpen } = useInspector();
   const location = useLocation();
 
   // Phase 4: Real-time notification toasts
@@ -51,30 +54,38 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
         <div className="flex flex-1 min-w-0">
           <AppSidebar />
-          <div className="flex flex-1 flex-col min-w-0">
-            <main className="flex-1 overflow-auto scrollbar-thin">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={workspaceKey}
-                  initial={pageTransition.initial}
-                  animate={pageTransition.animate}
-                  exit={pageTransition.exit}
-                  transition={pageTransition.transition}
-                  className="p-4 md:p-6"
-                >
-                  {children}
-                </motion.div>
-              </AnimatePresence>
-            </main>
+          <div className="flex flex-1 min-w-0">
+            <div className="flex flex-1 flex-col min-w-0">
+              <main className="flex-1 overflow-auto scrollbar-thin">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={workspaceKey}
+                    initial={pageTransition.initial}
+                    animate={pageTransition.animate}
+                    exit={pageTransition.exit}
+                    transition={pageTransition.transition}
+                    className="p-4 md:p-6"
+                  >
+                    {children}
+                  </motion.div>
+                </AnimatePresence>
+              </main>
+            </div>
+            {/* Persistent Contextual Rail — desktop only */}
+            <ContextualRail />
           </div>
         </div>
+      </div>
+
+      {/* Mobile overlay fallback for inspector */}
+      <div className="lg:hidden">
+        <InspectorPanel />
       </div>
 
       {/* Panels */}
       <NotificationPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
       <UniversalTimeline isOpen={timelineOpen} onClose={() => setTimelineOpen(false)} />
       <AdvisorChat isOpen={chatOpen} onClose={() => setChatOpen(false)} />
-      <InspectorPanel />
 
       {/* Phase 3: Welcome Tour */}
       <WelcomeTour />

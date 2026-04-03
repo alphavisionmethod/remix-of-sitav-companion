@@ -24,6 +24,7 @@ const ConciergeCenter = lazy(() => import("./pages/ConciergeCenter"));
 const WorkflowsCenter = lazy(() => import("./pages/WorkflowsCenter"));
 const ProofCenter = lazy(() => import("./pages/ProofCenter"));
 const Boardroom = lazy(() => import("./pages/Boardroom"));
+const BoardroomReplay = lazy(() => import("./pages/boardroom/BoardroomReplay"));
 const FilesCenter = lazy(() => import("./pages/FilesCenter"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const MissionControl = lazy(() => import("./pages/mission-control/MissionControlPage"));
@@ -271,6 +272,7 @@ const App = () => (
                     <Route path="/boardroom/morning" element={<Boardroom />} />
                     <Route path="/boardroom/weekly" element={<Boardroom />} />
                     <Route path="/boardroom/incidents" element={<Boardroom />} />
+                    <Route path="/boardroom/replay" element={<BoardroomReplay />} />
 
                     {/* Workflows */}
                     <Route path="/workflows" element={<WorkflowsCenter />} />

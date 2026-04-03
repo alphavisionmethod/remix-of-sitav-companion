@@ -464,6 +464,7 @@ const ProofHistory = () => (
 
 const SingleAdvisorView = ({ advisorId }: { advisorId: string }) => {
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState<"overview" | "simulations" | "history">("overview");
   const advisor = mockAdvisors.find(a => a.id === advisorId) || mockAdvisors[0];
   const recs = mockRecommendations.filter(r => r.advisorId === advisor.id);
   const proofs = mockProofHistory.filter(p => p.advisor === advisor.name);
@@ -501,62 +502,210 @@ const SingleAdvisorView = ({ advisorId }: { advisorId: string }) => {
           </div>
         </div>
 
+        {/* What it sees */}
+        <div className="rounded-xl bg-secondary/30 border border-border p-4 mt-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Eye className="h-4 w-4 text-primary" />
+            <p className="text-xs font-semibold text-foreground">What This Advisor Sees</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: "Data Sources", value: "6 connected" },
+              { label: "Last Scan", value: "12 min ago" },
+              { label: "Entities Tracked", value: advisor.domain === "money" ? "24 accounts" : advisor.domain === "business" ? "18 clients" : "12 tasks" },
+              { label: "Memory Items", value: `${memories.length + 8} learned` },
+            ].map((m, i) => (
+              <div key={i}>
+                <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                <p className="text-xs font-medium text-foreground">{m.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Confidence breakdown */}
-        <ConfidenceLadder items={[
-          { label: "Overall Confidence", confidence: advisor.confidence },
-          { label: "Data Freshness", confidence: 0.91 },
-          { label: "Source Coverage", confidence: 0.85 },
-          { label: "Memory Quality", confidence: 0.88 },
-        ]} />
+        <div className="mt-4">
+          <ConfidenceLadder items={[
+            { label: "Overall Confidence", confidence: advisor.confidence },
+            { label: "Data Freshness", confidence: 0.91 },
+            { label: "Source Coverage", confidence: 0.85 },
+            { label: "Memory Quality", confidence: 0.88 },
+          ]} />
+        </div>
       </motion.div>
 
+      {/* Section tabs */}
+      <div className="flex gap-1.5 border-b border-border pb-2">
+        {(["overview", "simulations", "history"] as const).map(s => (
+          <button key={s} onClick={() => setActiveSection(s)}
+            className={cn("rounded-lg px-3 py-1.5 text-xs font-medium capitalize transition-all",
+              activeSection === s ? "bg-primary/10 text-primary border border-primary/20" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+            )}>
+            {s === "simulations" ? "Simulation Studio" : s}
+          </button>
+        ))}
+      </div>
+
       {/* Uncertainty */}
-      {advisor.uncertainty && (
+      {activeSection === "overview" && advisor.uncertainty && (
         <UncertaintyCard title="Uncertainty Detected" description={advisor.uncertainty} sources={["Calendar sync", "School portal"]} suggestion="Verify in the relevant app" />
       )}
 
       {/* Trust pipeline for this advisor */}
-      <SitaCard hover={false}>
-        <SitaCardTitle sub="Current state of this advisor's actions">Trust Pipeline</SitaCardTitle>
-        <div className="mt-3">
-          <StateStep states={TRUST_PIPELINE} current={recs.length > 0 && recs[0].requiresApproval ? "approval-requested" : "proposed"} />
-        </div>
-      </SitaCard>
+      {activeSection === "overview" && (
+        <>
+          <SitaCard hover={false}>
+            <SitaCardTitle sub="Current state of this advisor's actions">Trust Pipeline</SitaCardTitle>
+            <div className="mt-3">
+              <StateStep states={TRUST_PIPELINE} current={recs.length > 0 && recs[0].requiresApproval ? "approval-requested" : "proposed"} />
+            </div>
+          </SitaCard>
 
-      {/* Recommendations */}
-      <div className="space-y-3">
-        <SitaSectionHeader title="Recommendations" subtitle={`${recs.length} active`} />
-        {recs.length > 0 ? (
-          recs.map(r => <RecommendationCard key={r.id} rec={r} />)
-        ) : (
-          <EmptyState icon={CheckCircle} title="All caught up" description="No recommendations right now" />
-        )}
-      </div>
-
-      {/* Memory for this advisor */}
-      {memories.length > 0 && (
-        <div className="space-y-3">
-          <SitaSectionHeader title="What This Advisor Knows" subtitle="Memory items used for personalization" />
-          <div className="space-y-2">
-            {memories.slice(0, 4).map(m => <MemoryCard key={m.id} item={m} />)}
+          {/* Recommendations */}
+          <div className="space-y-3">
+            <SitaSectionHeader title="Recommendations" subtitle={`${recs.length} active`} />
+            {recs.length > 0 ? (
+              recs.map(r => <RecommendationCard key={r.id} rec={r} />)
+            ) : (
+              <EmptyState icon={CheckCircle} title="All caught up" description="No recommendations right now" />
+            )}
           </div>
+
+          {/* Memory for this advisor */}
+          {memories.length > 0 && (
+            <div className="space-y-3">
+              <SitaSectionHeader title="What This Advisor Knows" subtitle="Memory items used for personalization" />
+              <div className="space-y-2">
+                {memories.slice(0, 4).map(m => <MemoryCard key={m.id} item={m} />)}
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Simulation Studio */}
+      {activeSection === "simulations" && (
+        <div className="space-y-5">
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+            className="rounded-xl border border-state-simulated/20 bg-state-simulated/5 p-5"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-state-simulated/15">
+                <GitCompare className="h-5 w-5 text-state-simulated" />
+              </div>
+              <div>
+                <h2 className="text-base font-bold text-foreground font-display">Simulation Studio</h2>
+                <p className="text-xs text-muted-foreground">Before/after projections for {advisor.name}'s recommendations</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Before / After Projections */}
+          {recs.slice(0, 3).map((rec, i) => (
+            <motion.div key={rec.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
+              className="rounded-xl border border-border bg-card p-5 space-y-4"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{rec.title}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{rec.description}</p>
+                </div>
+                <Badge variant="outline" className={cn("text-[9px]",
+                  rec.impact === "high" ? "bg-destructive/10 text-destructive border-destructive/20" :
+                  "bg-accent/10 text-accent border-accent/20"
+                )}>{rec.impact} impact</Badge>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                {/* Before */}
+                <div className="rounded-lg border border-border bg-secondary/20 p-4 space-y-2">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Current State</p>
+                  {advisor.domain === "money" ? (
+                    <>
+                      <ProjectionRow label="Reserve Health" value="78%" />
+                      <ProjectionRow label="Cash Position" value="$31,200" />
+                      <ProjectionRow label="Risk Score" value="Medium" />
+                    </>
+                  ) : advisor.domain === "business" ? (
+                    <>
+                      <ProjectionRow label="Pipeline Value" value="$128K" />
+                      <ProjectionRow label="Close Rate" value="24%" />
+                      <ProjectionRow label="Aging Leads" value="5" />
+                    </>
+                  ) : (
+                    <>
+                      <ProjectionRow label="Open Tasks" value="8" />
+                      <ProjectionRow label="Calendar Conflicts" value="2" />
+                      <ProjectionRow label="Provider Score" value="3.8/5" />
+                    </>
+                  )}
+                </div>
+
+                {/* After */}
+                <div className="rounded-lg border border-trust-safe/20 bg-trust-safe/5 p-4 space-y-2">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-trust-safe">Projected After</p>
+                  {advisor.domain === "money" ? (
+                    <>
+                      <ProjectionRow label="Reserve Health" value="85%" positive />
+                      <ProjectionRow label="Cash Position" value="$30,400" />
+                      <ProjectionRow label="Risk Score" value="Low" positive />
+                    </>
+                  ) : advisor.domain === "business" ? (
+                    <>
+                      <ProjectionRow label="Pipeline Value" value="$142K" positive />
+                      <ProjectionRow label="Close Rate" value="28%" positive />
+                      <ProjectionRow label="Aging Leads" value="3" positive />
+                    </>
+                  ) : (
+                    <>
+                      <ProjectionRow label="Open Tasks" value="5" positive />
+                      <ProjectionRow label="Calendar Conflicts" value="0" positive />
+                      <ProjectionRow label="Provider Score" value="4.2/5" positive />
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <SitaButton variant="primary" size="sm">
+                  <CheckCircle className="h-3 w-3 mr-1" /> Approve
+                </SitaButton>
+                <SitaButton variant="ghost" size="sm">
+                  <GitCompare className="h-3 w-3 mr-1" /> Run Simulation
+                </SitaButton>
+              </div>
+            </motion.div>
+          ))}
+
+          {recs.length === 0 && (
+            <EmptyState icon={Play} title="No simulations available" description="Simulations appear when this advisor has active recommendations" />
+          )}
         </div>
       )}
 
       {/* Proof trail */}
-      <div className="space-y-3">
-        <SitaSectionHeader title="Proof & History" />
-        <div className="space-y-2">
-          {proofs.length > 0 ? (
-            proofs.map(p => <ProofCard key={p.id} item={p} />)
-          ) : (
-            <EmptyState icon={FileText} title="No history yet" description="Actions will appear here as this advisor operates" />
-          )}
+      {activeSection === "history" && (
+        <div className="space-y-3">
+          <SitaSectionHeader title="Proof & History" />
+          <div className="space-y-2">
+            {proofs.length > 0 ? (
+              proofs.map(p => <ProofCard key={p.id} item={p} />)
+            ) : (
+              <EmptyState icon={FileText} title="No history yet" description="Actions will appear here as this advisor operates" />
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
+
+const ProjectionRow = ({ label, value, positive }: { label: string; value: string; positive?: boolean }) => (
+  <div className="flex items-center justify-between">
+    <p className="text-[11px] text-muted-foreground">{label}</p>
+    <p className={cn("text-xs font-medium", positive ? "text-trust-safe" : "text-foreground")}>{value}</p>
+  </div>
+);
 
 // ── Empty State ─────────────────────────────────────────────────
 
