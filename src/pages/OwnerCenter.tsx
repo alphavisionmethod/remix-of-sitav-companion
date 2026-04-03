@@ -236,123 +236,194 @@ const OwnerCenter = () => {
         {/* OVERVIEW */}
         {/* ══════════════════════════════════════════ */}
         {activePage === "overview" && (
-          <motion.div key="overview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid gap-6 lg:grid-cols-2">
-            <div className="space-y-4">
-              {/* Operating Mode */}
-              <SitaCard hover={false} glow className="p-5">
+          <motion.div key="overview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-6">
+
+            {/* ── What Matters Now ── */}
+            <SitaCard hover={false} glow className="p-5 border-primary/10 bg-primary/[0.02]">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <p className="font-display text-base font-bold text-foreground">What Matters Now</p>
+                  <p className="text-xs text-muted-foreground">Prioritized decisions needing your attention</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {[
+                  { text: "2 invoices overdue — total $4,200. Auto-reminder ready to send.", risk: "high" as const, action: "Send Reminders", ignore: "Late fees may apply. Cash flow impact in 5 days." },
+                  { text: "Connector 'Stripe' degraded — last sync 4 hours ago.", risk: "medium" as const, action: "Check Health", ignore: "Payment processing may miss recent transactions." },
+                  { text: "Council vote pending: approve Growth Advisor autonomy upgrade.", risk: "low" as const, action: "Review Vote", ignore: "Growth recommendations stay in suggest-only mode." },
+                  openIncidents > 0 ? { text: `${openIncidents} open incident${openIncidents > 1 ? "s" : ""} — ${incidents.filter((i: any) => i.severity === "SEV-1").length} critical.`, risk: "critical" as const, action: "View Incidents", ignore: "System health may degrade without intervention." } : null,
+                ].filter(Boolean).slice(0, 4).map((item: any, i) => (
+                  <div key={i} className="flex items-center justify-between gap-3 rounded-xl border border-border/30 bg-secondary/20 p-3 transition-all hover:bg-secondary/30">
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <div className={`h-2 w-2 rounded-full shrink-0 ${item.risk === "critical" ? "bg-destructive animate-pulse" : item.risk === "high" ? "bg-orange-500" : item.risk === "medium" ? "bg-amber-500" : "bg-blue-500"}`} />
+                      <div className="min-w-0">
+                        <p className="text-xs font-medium text-foreground truncate">{item.text}</p>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">If ignored: {item.ignore}</p>
+                      </div>
+                    </div>
+                    <SitaButton variant="accent" size="sm" className="shrink-0 text-[11px]">{item.action}</SitaButton>
+                  </div>
+                ))}
+              </div>
+            </SitaCard>
+
+            {/* ── Revenue / Risk / AI Spend ── */}
+            <div className="grid gap-3 sm:grid-cols-3">
+              <SitaCard hover={false} className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <DollarSign className="h-4 w-4 text-primary" />
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Revenue (30d)</span>
+                </div>
+                <p className="text-2xl font-bold text-foreground">$47,200</p>
+                <div className="flex items-center gap-1 mt-1">
+                  <TrendingUp className="h-3 w-3 text-emerald-500" />
+                  <span className="text-[11px] text-emerald-500 font-medium">+12% vs last month</span>
+                </div>
+                <div className="flex gap-0.5 mt-2 h-6">
+                  {[40, 55, 35, 60, 72, 65, 80, 75, 68, 82, 90, 85].map((v, i) => (
+                    <div key={i} className="flex-1 rounded-sm bg-primary/20 relative overflow-hidden">
+                      <div className="absolute bottom-0 w-full bg-primary/50 rounded-sm" style={{ height: `${v}%` }} />
+                    </div>
+                  ))}
+                </div>
+              </SitaCard>
+
+              <SitaCard hover={false} className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertTriangle className="h-4 w-4 text-amber-500" />
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Risk Score</span>
+                </div>
+                <p className="text-2xl font-bold text-foreground">Low</p>
+                <p className="text-[11px] text-muted-foreground mt-1">1 connector degraded · 0 policy violations</p>
+                <div className="flex gap-0.5 mt-2 h-6">
+                  {[10, 15, 8, 12, 20, 18, 10, 5, 8, 12, 15, 10].map((v, i) => (
+                    <div key={i} className="flex-1 rounded-sm bg-amber-500/10 relative overflow-hidden">
+                      <div className="absolute bottom-0 w-full bg-amber-500/30 rounded-sm" style={{ height: `${v}%` }} />
+                    </div>
+                  ))}
+                </div>
+              </SitaCard>
+
+              <SitaCard hover={false} className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Cpu className="h-4 w-4 text-sita-purple" />
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">AI Spend (30d)</span>
+                </div>
+                <p className="text-2xl font-bold text-foreground">$128</p>
+                <p className="text-[11px] text-muted-foreground mt-1">~4,200 requests · avg 30 tokens/req</p>
+                <div className="flex gap-0.5 mt-2 h-6">
+                  {[30, 40, 35, 45, 50, 42, 38, 55, 48, 52, 45, 40].map((v, i) => (
+                    <div key={i} className="flex-1 rounded-sm bg-primary/10 relative overflow-hidden">
+                      <div className="absolute bottom-0 w-full bg-primary/30 rounded-sm" style={{ height: `${v}%` }} />
+                    </div>
+                  ))}
+                </div>
+              </SitaCard>
+            </div>
+
+            {/* ── Platform Maturity + Safe Mode + Undo ── */}
+            <div className="grid gap-4 lg:grid-cols-3">
+              {/* Platform Maturity Gauge */}
+              <SitaCard hover={false} className="p-5">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Platform Maturity</p>
+                <div className="flex items-center justify-center">
+                  <div className="relative h-28 w-28">
+                    <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90">
+                      <circle cx="50" cy="50" r="42" fill="none" strokeWidth="8" className="stroke-secondary" />
+                      <circle cx="50" cy="50" r="42" fill="none" strokeWidth="8" className="stroke-primary" strokeDasharray={`${0.82 * 264} 264`} strokeLinecap="round" />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-2xl font-bold text-foreground">82</span>
+                      <span className="text-[9px] text-muted-foreground">/ 100</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-1.5 mt-3 text-[10px]">
+                  {[{ l: "Agent Health", v: 95 }, { l: "Connectors", v: 75 }, { l: "Policies", v: 88 }, { l: "Test Coverage", v: 70 }].map(m => (
+                    <div key={m.l} className="flex items-center justify-between px-2 py-1 rounded bg-secondary/30">
+                      <span className="text-muted-foreground">{m.l}</span>
+                      <span className="font-semibold text-foreground">{m.v}%</span>
+                    </div>
+                  ))}
+                </div>
+              </SitaCard>
+
+              {/* Operating Mode + Safe Mode */}
+              <SitaCard hover={false} className="p-5">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${isDemoMode ? "bg-amber-500/10" : "bg-emerald-500/10"}`}>
-                      {isDemoMode ? <CloudOff className="h-6 w-6 text-amber-500" /> : <Cloud className="h-6 w-6 text-emerald-500" />}
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${isDemoMode ? "bg-amber-500/10" : "bg-emerald-500/10"}`}>
+                      {isDemoMode ? <CloudOff className="h-5 w-5 text-amber-500" /> : <Cloud className="h-5 w-5 text-emerald-500" />}
                     </div>
                     <div>
-                      <p className="font-display text-base font-bold text-foreground">Operating Mode</p>
-                      <p className="text-xs text-muted-foreground">{isDemoMode ? "Using sample data" : "Using real connections"}</p>
+                      <p className="text-sm font-bold text-foreground">Operating Mode</p>
+                      <p className="text-[10px] text-muted-foreground">{isDemoMode ? "Sample data" : "Live connections"}</p>
                     </div>
                   </div>
                   <Switch checked={!isDemoMode} onCheckedChange={toggleMode} />
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className={`rounded-xl p-3 text-center transition-all ${isDemoMode ? "bg-amber-500/10 border border-amber-500/20 ring-2 ring-amber-500/20" : "bg-secondary/30 opacity-60"}`}>
-                    <p className="text-sm font-semibold text-foreground">Demo</p>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">Mock data · Safe to explore</p>
-                  </div>
-                  <div className={`rounded-xl p-3 text-center transition-all ${!isDemoMode ? "bg-emerald-500/10 border border-emerald-500/20 ring-2 ring-emerald-500/20" : "bg-secondary/30 opacity-60"}`}>
-                    <p className="text-sm font-semibold text-foreground">Live</p>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">Real APIs · Production</p>
+
+                <div className="border-t border-border/30 pt-3 mt-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Power className="h-4 w-4 text-destructive" />
+                      <div>
+                        <p className="text-sm font-bold text-foreground">Safe Mode</p>
+                        <p className="text-[10px] text-muted-foreground">Pause all automation</p>
+                      </div>
+                    </div>
+                    <Switch />
                   </div>
                 </div>
               </SitaCard>
 
-              {/* Quick Actions */}
-              <SitaSectionHeader title="Quick Actions" />
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { label: "View Incidents", icon: AlertTriangle, action: () => goTo("incidents") },
-                  { label: "Intelligence", icon: Brain, action: () => goTo("intelligence") },
-                  { label: "Fleet Health", icon: Server, action: () => goTo("fleet") },
-                  { label: "Policy Simulator", icon: Shield, action: () => { goTo("policies"); setSimulatorDialog(true); } },
-                  { label: "Export Audit", icon: Download, action: () => goTo("audit") },
-                  { label: "Council Votes", icon: Gavel, action: () => goTo("council") },
-                ].map((a, i) => (
-                  <button key={i} onClick={a.action} className="flex items-center gap-2.5 rounded-xl border border-border p-3 text-sm text-foreground transition-all hover:bg-secondary hover:shadow-xs">
-                    <a.icon className="h-4 w-4 text-muted-foreground" /> {a.label}
-                  </button>
-                ))}
-              </div>
+              {/* Undo Last Admin Change */}
+              <SitaCard hover={false} className="p-5">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Last Admin Change</p>
+                <div className="rounded-xl bg-secondary/30 p-3 mb-3">
+                  <p className="text-xs font-medium text-foreground">Policy "High-value payments" updated</p>
+                  <p className="text-[10px] text-muted-foreground mt-1">Threshold changed from $500 → $1,000</p>
+                  <p className="text-[10px] text-muted-foreground">2 hours ago</p>
+                </div>
+                <SitaButton variant="secondary" className="w-full text-xs gap-1.5">
+                  <RotateCcw className="h-3.5 w-3.5" /> Undo This Change
+                </SitaButton>
 
-              {/* Open Incidents */}
-              <SitaSectionHeader title="Open Incidents" />
-              {incidents.filter((i: any) => i.status === "open").slice(0, 3).map((inc: any) => (
-                <SitaCard key={inc.id} hover={false} lane="action" className="p-4">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-mono text-muted-foreground">{inc.id}</span>
-                        <SeverityBadge severity={inc.severity} />
-                      </div>
-                      <p className="text-sm font-medium text-foreground truncate">{inc.title}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5 truncate">{inc.impact}</p>
+                <div className="mt-3 space-y-1">
+                  {[
+                    { text: "Advisor config: Growth Advisor → supporting", time: "Yesterday" },
+                    { text: "Pack paused: Concierge Pro", time: "3 days ago" },
+                  ].map((c, i) => (
+                    <div key={i} className="flex items-center justify-between text-[10px] px-1 py-1.5 rounded hover:bg-secondary/20 transition-colors cursor-pointer">
+                      <span className="text-muted-foreground truncate flex-1">{c.text}</span>
+                      <span className="text-muted-foreground/50 shrink-0 ml-2">{c.time}</span>
                     </div>
-                    <SitaButton variant="accent" size="sm" onClick={() => acknowledgeIncident.mutate(inc.id)}>
-                      <Eye className="h-3 w-3" /> Ack
-                    </SitaButton>
-                  </div>
-                </SitaCard>
-              ))}
+                  ))}
+                </div>
+              </SitaCard>
             </div>
 
-            <div className="space-y-4">
-              {/* Intelligence Preview */}
-              <SitaSectionHeader title="Intelligence Highlights" />
-              {(intelligenceData?.forecasts || []).slice(0, 2).map((f: any) => (
-                <SitaCard key={f.id} hover={false} className="p-4">
-                  <div className="flex items-start gap-3">
-                    <div className={`rounded-lg p-2 ${f.severity === "warning" ? "bg-amber-500/10" : "bg-blue-500/10"}`}>
-                      {f.severity === "warning" ? <TrendingUp className="h-4 w-4 text-amber-500" /> : <Target className="h-4 w-4 text-blue-500" />}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground">{f.title}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{f.description}</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Progress value={f.probability * 100} className="flex-1 h-1.5" />
-                        <span className="text-[10px] font-semibold text-muted-foreground">{Math.round(f.probability * 100)}%</span>
-                      </div>
-                    </div>
-                  </div>
-                </SitaCard>
+            {/* ── Quick Nav to Owner Sub-pages ── */}
+            <div className="grid gap-2 sm:grid-cols-3 lg:grid-cols-5">
+              {[
+                { label: "Pricing", icon: DollarSign, path: "/owner/pricing" },
+                { label: "Packs", icon: Layers, path: "/owner/packs" },
+                { label: "Advisors", icon: Users, path: "/owner/advisors" },
+                { label: "Enterprise", icon: Globe, path: "/enterprise" },
+                { label: "Incidents", icon: AlertTriangle, action: () => goTo("incidents") },
+                { label: "Intelligence", icon: Brain, action: () => goTo("intelligence") },
+                { label: "Fleet", icon: Server, action: () => goTo("fleet") },
+                { label: "Policies", icon: Shield, action: () => goTo("policies") },
+                { label: "Audit Log", icon: FileText, action: () => goTo("audit") },
+                { label: "Council", icon: Gavel, action: () => goTo("council") },
+              ].map((a, i) => (
+                <button key={i} onClick={a.action || (() => navigate(a.path!))} className="flex items-center gap-2.5 rounded-xl border border-border/50 p-3 text-xs font-medium text-foreground transition-all hover:bg-secondary/40 hover:shadow-xs hover:border-primary/20">
+                  <a.icon className="h-4 w-4 text-muted-foreground" /> {a.label}
+                </button>
               ))}
-
-              {/* AI Team Summary */}
-              <SitaSectionHeader title="AI Team" />
-              {mockAITeam.slice(0, 4).map((agent, i) => (
-                <SitaCard key={i} hover={false} className="p-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={`h-2.5 w-2.5 rounded-full ${agent.status === "healthy" ? "bg-trust-verified" : "bg-trust-degraded animate-pulse"}`} />
-                      <div>
-                        <p className="text-sm text-foreground">{agent.name}</p>
-                        <p className="text-[11px] text-muted-foreground">{agent.requests} req · {agent.accuracy}</p>
-                      </div>
-                    </div>
-                    <span className="text-[10px] text-muted-foreground bg-secondary rounded px-1.5 py-0.5">{agent.model}</span>
-                  </div>
-                </SitaCard>
-              ))}
-
-              {/* Cost Preview */}
-              <SitaSectionHeader title="Cost Breakdown (30d)" />
-              <SitaCard hover={false} className="p-4">
-                {mockCosts.map((c, i) => (
-                  <div key={i} className="flex items-center gap-3 py-2">
-                    <span className="text-xs text-muted-foreground w-28">{c.service}</span>
-                    <div className="flex-1 h-2 rounded-full bg-secondary overflow-hidden">
-                      <div className="h-full rounded-full bg-primary" style={{ width: `${c.percentage}%` }} />
-                    </div>
-                    <span className="text-xs font-medium text-foreground w-14 text-right">{c.cost}</span>
-                  </div>
-                ))}
-              </SitaCard>
             </div>
           </motion.div>
         )}
