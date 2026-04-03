@@ -165,7 +165,7 @@ const CustomersPage = () => {
             return (
               <SitaCard
                 key={c.id}
-                onClick={() => setSelectedId(c.id)}
+                onClick={() => { setSelectedId(c.id); inspectCustomer(c); }}
                 selected={selectedId === c.id}
                 lane={health < 50 ? "action" : health >= 80 ? "opportunity" : undefined}
                 className="p-4"
