@@ -1,84 +1,19 @@
 // ═══════════════════════════════════════════════════
 // SITA OS — Internal AI Workforce Type System
-// Canonical contracts for 40 agents, 6 councils, 7 supervisors
+// Re-exports canonical types + runtime-only extensions
 // ═══════════════════════════════════════════════════
 
-export type InternalAgentCouncil =
-  | "product-build"
-  | "reliability-ops"
-  | "security-trust"
-  | "runtime-cost"
-  | "architecture-governance"
-  | "knowledge-coordination";
-
-export type AgentRightsLevel =
-  | "observe"          // L0
-  | "diagnose"         // L1
-  | "recommend"        // L2
-  | "draft"            // L3
-  | "simulate"         // L4
-  | "approval_ready"   // L5
-  | "constrained_action_ready"; // L6
-
-export type AgentScheduleType = "continuous" | "hourly" | "daily" | "on-event";
-
-export type AgentMaturity = "scaffold" | "alpha" | "beta" | "production";
-
-export interface ConfidenceRules {
-  minConfidenceToAct: number;
-  minConfidenceToRecommend: number;
-}
-
-export interface InternalAgentDefinition {
-  agentId: string;
-  name: string;
-  council: InternalAgentCouncil;
-  mission: string;
-  specialAbility: string;
-  scope: string[];
-  outOfScope: string[];
-  toolsAllowed: string[];
-  toolsForbidden: string[];
-  memoryScope: string;
-  triggerConditions: string[];
-  escalationTargets: string[];
-  receivesEscalationsFrom: string[];
-  confidenceRules: ConfidenceRules;
-  simulationRequirements: string[];
-  humanApprovalRequirements: string[];
-  maxAutonomyLevel: AgentRightsLevel;
-  rollbackAuthority: string;
-  reportingOutputs: string[];
-  measurableKpis: string[];
-  costBudgetGuidance: string;
-  failureHandlingRules: string[];
-  relatedServices: string[];
-  relatedDocs: string[];
-  schedule: AgentScheduleType;
-  triggerEvents: string[];
-  maturity: AgentMaturity;
-  tags: string[];
-}
-
-export interface CouncilDefinition {
-  councilId: InternalAgentCouncil;
-  name: string;
-  purpose: string;
-  agentCount: number;
-  supervisorId: string;
-  quorum: number; // percentage
-  vetoAuthority: boolean;
-}
-
-export interface SupervisorDefinition {
-  supervisorId: string;
-  name: string;
-  council: InternalAgentCouncil | "all";
-  maxConcurrentEscalations: number;
-  canOverride: boolean;
-  canSuspend: boolean;
-  responsibilities: string[];
-}
+// Re-export all shared types from the canonical package
+export type {
+  InternalAgentCouncil,
+  AgentRightsLevel,
+  AgentScheduleType,
+  AgentMaturity,
+  ConfidenceRules,
+  InternalAgentDefinition,
+  CouncilDefinition,
+  SupervisorDefinition,
+} from "@/packages/internal-agent-config/types";
 
 // Runtime state tracked per agent
 export interface AgentRuntimeState {
