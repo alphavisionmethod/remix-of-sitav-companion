@@ -13,6 +13,7 @@ import { AISpendIndicator } from "./AISpendIndicator";
 import { CommandPalette } from "./CommandPalette";
 import { useUnreadCount } from "./NotificationPanel";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { ContextSwitcher } from "./ContextSwitcher";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Bell, Clock, Eye, EyeOff, Shield, Check, Sun, Moon, Monitor,
