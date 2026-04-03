@@ -58,6 +58,7 @@ const subpageFromPath = (path: string): OwnerPage => {
     "trust-center": "trust-center", "releases": "releases", "model-routing": "model-routing",
     "knowledge": "knowledge", "support": "support", "change-review": "change-review",
     "rollback-center": "rollback-center", "system-map": "system-map",
+    "autopilot": "autopilot", "billing": "billing",
   };
   return map[last] || "overview";
 };
