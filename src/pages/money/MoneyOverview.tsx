@@ -194,17 +194,40 @@ const MoneyOverview = () => {
         {/* Column 2 — Bills + Obligations */}
         <div className="space-y-6">
           <div className="space-y-3">
-            <SitaSectionHeader title="Bills Due Soon" action={<button onClick={() => navigate("/money/bills")} className="text-xs text-primary hover:underline">View all</button>} />
+            <SitaSectionHeader title="Bill Calendar" action={<button onClick={() => navigate("/money/bills")} className="text-xs text-primary hover:underline">View all</button>} />
+            {/* Visual calendar strip */}
+            <SitaCard hover={false} className="p-4">
+              <div className="flex gap-1 mb-3">
+                {Array.from({ length: 7 }, (_, i) => {
+                  const d = new Date(); d.setDate(d.getDate() + i);
+                  const dayName = d.toLocaleDateString("en", { weekday: "short" });
+                  const dayNum = d.getDate();
+                  const hasBill = upcomingBills.some(b => b.daysLeft === i);
+                  return (
+                    <div key={i} className={`flex-1 text-center rounded-lg py-2 transition-colors ${i === 0 ? "bg-primary/10 border border-primary/20" : hasBill ? "bg-[hsl(var(--sita-gold))]/10 border border-[hsl(var(--sita-gold))]/20" : "bg-secondary/30"}`}>
+                      <p className="text-[10px] text-muted-foreground">{dayName}</p>
+                      <p className={`text-sm font-semibold ${i === 0 ? "text-primary" : "text-foreground"}`}>{dayNum}</p>
+                      {hasBill && <div className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--sita-gold))] mx-auto mt-1" />}
+                    </div>
+                  );
+                })}
+              </div>
+            </SitaCard>
             {upcomingBills.map((bill, i) => (
               <SitaCard key={i} lane={bill.daysLeft <= 2 ? "action" : undefined} className="p-4">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{bill.name}</p>
-                    <p className="text-xs text-muted-foreground">Due {bill.due}</p>
+                  <div className="flex items-center gap-3">
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl font-display text-sm font-bold ${bill.daysLeft <= 1 ? "bg-[hsl(var(--destructive))]/10 text-[hsl(var(--destructive))]" : bill.daysLeft <= 3 ? "bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))]" : "bg-secondary text-muted-foreground"}`}>
+                      {bill.daysLeft}d
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">{bill.name}</p>
+                      <p className="text-xs text-muted-foreground">Due {bill.due}</p>
+                    </div>
                   </div>
                   <div className="text-right">
                     <p className="font-display text-sm font-bold text-foreground">{bill.amount}</p>
-                    <TrustBadge level={bill.daysLeft <= 2 ? "degraded" : "review"} label={`${bill.daysLeft}d`} size="sm" />
+                    <TrustBadge level={bill.daysLeft <= 2 ? "degraded" : "review"} label={bill.daysLeft <= 1 ? "Tomorrow" : `${bill.daysLeft} days`} size="sm" />
                   </div>
                 </div>
               </SitaCard>
