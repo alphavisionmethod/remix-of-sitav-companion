@@ -82,7 +82,11 @@ export const ArrivalPrepStep = ({
     {
       label: "Trust Mode",
       icon: Shield,
-      items: [trustLabels[trustLevel] || trustLevel],
+      items: [
+        trustCalibrationLevel && calibrationLabels[trustCalibrationLevel]
+          ? calibrationLabels[trustCalibrationLevel]
+          : trustLabels[trustLevel] || trustLevel
+      ],
     },
     {
       label: "Active Domains",
