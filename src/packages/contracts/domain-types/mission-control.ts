@@ -282,3 +282,37 @@ export interface SystemActivityEntry {
   domain?: string;
   actor?: string;
 }
+
+// ── Lifecycle Diagnostics (Phase 5) ─────────────────────────────
+// Surfaces crash-loop, dependency-pressure, quarantine, restart/rollback
+// evidence in mission-control diagnostics
+
+import type {
+  LifecycleState,
+  LifecycleTransitionRecord,
+  QuarantineAction,
+  RestartDecision,
+  LifecycleProofReceipt,
+} from "../runtime/lifecycle-authority";
+import type { LifecycleGovernanceEvent, CrashLoopDetectionState, DependencyPressureState } from "../runtime/host-supervision";
+
+export interface LifecycleDiagnosticsView {
+  currentState: LifecycleState;
+  uptimeMs: number;
+  recentTransitions: LifecycleTransitionRecord[];
+  activeQuarantine: QuarantineAction | null;
+  recentRestarts: RestartDecision[];
+  crashLoopServices: CrashLoopDetectionState[];
+  pressureState: DependencyPressureState | null;
+  recentGovernanceEvents: LifecycleGovernanceEvent[];
+  rollbackHistory: { id: string; fromVersion: string; toVersion: string; outcome: string; timestamp: string }[];
+  lastBootProofId: string | null;
+}
+
+export interface DegradedLifecycleState {
+  isDegraded: boolean;
+  reason: string;
+  affectedSurfaces: ("web" | "admin" | "desktop" | "mobile")[];
+  fallbackBehavior: "show-cached" | "show-warning" | "hide-section";
+  lastKnownGoodData?: LifecycleDiagnosticsView;
+}
