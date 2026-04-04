@@ -650,6 +650,7 @@ export function OSSetupExperience() {
   const canAdvance = () => {
     if (phase === "identity") return state.displayName.length > 0 && state.role.length > 0;
     if (phase === "domains") return state.enabledDomains.length > 0;
+    if (phase === "primary-use-mode") return state.primaryUseMode.length > 0;
     return true;
   };
 
