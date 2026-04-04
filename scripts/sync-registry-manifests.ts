@@ -77,12 +77,11 @@ function checkContractManifestSync(): SyncResult {
   }
   try {
     const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
-    // Check that required contract families are listed
-    const expectedFamilies = ["core", "runtime", "execution", "native"];
-    const families = manifest.families?.map((f: { name: string }) => f.name) || [];
-    const missing = expectedFamilies.filter((f) => !families.includes(f));
+    // Check that required fields exist
+    const expectedFields = ["version", "totalContracts", "contracts"];
+    const missing = expectedFields.filter((f) => !(f in manifest));
     if (missing.length > 0) {
-      return { artifact: "contract-manifest.json", status: "drift-detected", details: `Missing families: ${missing.join(", ")}` };
+      return { artifact: "contract-manifest.json", status: "drift-detected", details: `Missing fields: ${missing.join(", ")}` };
     }
     return { artifact: "contract-manifest.json", status: "in-sync" };
   } catch (e) {
