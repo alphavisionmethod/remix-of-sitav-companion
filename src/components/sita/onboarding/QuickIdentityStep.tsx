@@ -104,14 +104,13 @@ export function QuickIdentityStep({ data, onUpdate, onNext, onPrev }: Props) {
 
       <div className="flex-1 min-w-0">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.05 }}
-          className="flex items-center gap-3 mb-6">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20">
-            <Compass className="h-6 w-6 text-primary-foreground" />
-          </div>
-          <div>
-            <h2 className="font-display text-2xl font-bold tracking-tight text-foreground">Help SITA understand where to begin</h2>
-            <p className="text-sm text-muted-foreground">A few quick choices will shape your environment</p>
-          </div>
+          className="mb-6">
+          <SetupStageHeader
+            icon={Compass}
+            title="Help SITA understand where to begin"
+            subtitle="A few quick choices will shape your environment"
+            align="left"
+          />
         </motion.div>
 
         <div className="space-y-6">
