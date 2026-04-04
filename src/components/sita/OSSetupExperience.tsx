@@ -758,6 +758,38 @@ export function OSSetupExperience() {
                     onStateChange={({ accessMethod, recoveryMethod }) => setState(s => ({ ...s, accessMethod, recoveryMethod }))} />
                 )}
 
+                {/* Privacy Transparency */}
+                {phase === "privacy-transparency" && (
+                  <PrivacyTransparencyStep key="privacy-transparency"
+                    permissionChoices={state.permissionChoices}
+                    onUpdate={choices => setState(s => ({ ...s, permissionChoices: choices }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* Quick Identity */}
+                {phase === "quick-identity" && (
+                  <QuickIdentityStep key="quick-identity"
+                    data={state.quickIdentity}
+                    onUpdate={qi => setState(s => ({ ...s, quickIdentity: qi }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* Deep World Modeling */}
+                {phase === "deep-world-modeling" && (
+                  <DeepWorldModelingStep key="deep-world-modeling"
+                    data={state.worldModel}
+                    onUpdate={wm => setState(s => ({ ...s, worldModel: wm }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* Primary Use Mode */}
+                {phase === "primary-use-mode" && (
+                  <PrimaryUseModeStep key="primary-use-mode"
+                    selected={state.primaryUseMode}
+                    onSelect={mode => setState(s => ({ ...s, primaryUseMode: mode }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
                 {/* Welcome */}
                 {phase === "welcome" && (
                   <FirstWelcomeScreen key="welcome" onSetup={goNext}
