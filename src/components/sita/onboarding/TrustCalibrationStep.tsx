@@ -2,7 +2,7 @@
 // SITA OS — Trust & Autonomy Calibration Step (Phase 2.12)
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Eye, MessageSquare, FlaskConical, ShieldCheck, Zap,
@@ -46,7 +46,16 @@ const ESCALATION_OPTIONS = ["silent", "notify", "urgent"];
 
 export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCalibrationStepProps) {
   const [showFineTune, setShowFineTune] = useState(false);
+  const [prevLevel, setPrevLevel] = useState(data.level);
+  const directionRef = useRef<"up" | "down">("up");
   const selectedLevel = TRUST_LEVELS.find(t => t.level === data.level);
+  const prefersReduced = useReducedMotion();
+
+  // Track direction of trust level change for directional animations
+  if (data.level !== prevLevel) {
+    directionRef.current = data.level > prevLevel ? "up" : "down";
+    setPrevLevel(data.level);
+  }
 
   const update = (partial: Partial<TrustCalibrationData>) => onUpdate({ ...data, ...partial });
 
@@ -263,27 +272,45 @@ export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCa
             <div className="space-y-2">
               {WORKFLOW_STAGES.map((stage, i) => {
                 const isActive = selectedLevel ? selectedLevel.stages[i] : false;
+                const stageDirection = directionRef.current;
                 return (
                   <motion.div
                     key={stage}
-                    animate={{ opacity: isActive ? 1 : 0.3, scale: isActive ? 1 : 0.97 }}
-                    transition={{ type: "spring", damping: 20, stiffness: 300 }}
+                    layout={!prefersReduced}
+                    animate={{
+                      opacity: isActive ? 1 : 0.3,
+                      scale: isActive ? 1 : 0.95,
+                      x: isActive ? 0 : 4,
+                      filter: isActive ? "blur(0px)" : "blur(1px)",
+                    }}
+                    transition={{
+                      type: "spring",
+                      damping: 22,
+                      stiffness: 260,
+                      delay: prefersReduced ? 0 : i * 0.06,
+                    }}
                     className={cn(
-                      "rounded-xl border p-3 transition-all",
+                      "rounded-xl border p-3 transition-colors duration-300",
                       isActive
                         ? "border-primary/30 bg-primary/5"
                         : "border-border/30 bg-secondary/10"
                     )}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={cn(
-                        "h-8 w-8 rounded-lg flex items-center justify-center text-xs font-bold transition-colors",
-                        isActive ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"
-                      )}>
-                        {i + 1}
-                      </div>
-                      <div>
-                        <p className={cn("text-sm font-semibold", isActive ? "text-foreground" : "text-muted-foreground")}>{stage}</p>
+                      <motion.div
+                        animate={{
+                          backgroundColor: isActive
+                            ? "hsl(var(--primary) / 0.15)"
+                            : "hsl(var(--muted))",
+                          scale: isActive ? 1 : 0.9,
+                        }}
+                        transition={{ type: "spring", damping: 18, stiffness: 300, delay: prefersReduced ? 0 : i * 0.06 }}
+                        className="h-8 w-8 rounded-lg flex items-center justify-center text-xs font-bold"
+                      >
+                        <span className={cn(isActive ? "text-primary" : "text-muted-foreground")}>{i + 1}</span>
+                      </motion.div>
+                      <div className="flex-1 min-w-0">
+                        <p className={cn("text-sm font-semibold transition-colors duration-200", isActive ? "text-foreground" : "text-muted-foreground")}>{stage}</p>
                         <p className="text-[10px] text-muted-foreground">
                           {i === 0 && "SITA prepares the action"}
                           {i === 1 && "Review before execution"}
@@ -292,55 +319,115 @@ export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCa
                           {i === 4 && "Verified proof recorded"}
                         </p>
                       </div>
-                      {isActive && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          className="ml-auto h-2 w-2 rounded-full bg-[hsl(var(--trust-safe))]"
-                        />
-                      )}
+                      <AnimatePresence mode="wait">
+                        {isActive && (
+                          <motion.div
+                            key={`dot-${stage}-active`}
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0, opacity: 0 }}
+                            transition={{
+                              type: "spring",
+                              damping: 15,
+                              stiffness: 400,
+                              delay: prefersReduced ? 0 : i * 0.08,
+                            }}
+                            className="ml-auto flex items-center gap-1.5"
+                          >
+                            <motion.div
+                              animate={{ scale: [1, 1.4, 1] }}
+                              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
+                              className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--trust-safe))]/40"
+                            />
+                            <div className="h-2 w-2 rounded-full bg-[hsl(var(--trust-safe))]" />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
+                    {/* Progress bar within active stages */}
+                    <motion.div
+                      className="mt-2 h-0.5 rounded-full bg-primary/20 overflow-hidden"
+                      animate={{ opacity: isActive ? 1 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <motion.div
+                        className="h-full rounded-full bg-gradient-to-r from-primary/60 to-[hsl(var(--trust-safe))]"
+                        initial={{ width: "0%" }}
+                        animate={{ width: isActive ? "100%" : "0%" }}
+                        transition={{
+                          duration: prefersReduced ? 0.1 : 0.8,
+                          ease: "easeOut",
+                          delay: prefersReduced ? 0 : 0.15 + i * 0.1,
+                        }}
+                      />
+                    </motion.div>
                   </motion.div>
                 );
               })}
             </div>
 
             {/* Trust summary */}
-            {data.level > 0 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="rounded-xl bg-primary/5 border border-primary/20 p-4"
-              >
-                <p className="text-xs text-foreground font-semibold mb-1">
-                  {selectedLevel?.title}
-                </p>
-                <p className="text-[10px] text-muted-foreground leading-relaxed">
-                  {data.level === 1 && "SITA observes patterns and learns, but takes no action. You maintain full manual control."}
-                  {data.level === 2 && "SITA drafts suggestions and surfaces insights. Every action requires your explicit decision."}
-                  {data.level === 3 && "SITA simulates outcomes before proposing actions. You see what would happen before approving."}
-                  {data.level === 4 && "SITA prepares and queues actions. Each one waits for your approval before executing."}
-                  {data.level === 5 && "SITA handles routine tasks automatically. Exceptions and high-impact actions still need approval."}
-                </p>
-              </motion.div>
-            )}
+            <AnimatePresence mode="wait">
+              {data.level > 0 && (
+                <motion.div
+                  key={`summary-${data.level}`}
+                  initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                  transition={{ type: "spring", damping: 24, stiffness: 300 }}
+                  className="rounded-xl bg-primary/5 border border-primary/20 p-4"
+                >
+                  <p className="text-xs text-foreground font-semibold mb-1">
+                    {selectedLevel?.title}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground leading-relaxed">
+                    {data.level === 1 && "SITA observes patterns and learns, but takes no action. You maintain full manual control."}
+                    {data.level === 2 && "SITA drafts suggestions and surfaces insights. Every action requires your explicit decision."}
+                    {data.level === 3 && "SITA simulates outcomes before proposing actions. You see what would happen before approving."}
+                    {data.level === 4 && "SITA prepares and queues actions. Each one waits for your approval before executing."}
+                    {data.level === 5 && "SITA handles routine tasks automatically. Exceptions and high-impact actions still need approval."}
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Example workflow */}
-            {data.level > 0 && (
-              <div className="space-y-2">
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Example</p>
-                <div className="rounded-lg bg-secondary/30 p-3 space-y-1.5">
-                  <p className="text-[11px] text-foreground font-medium">💳 Subscription renewal detected</p>
-                  <div className="space-y-1">
-                    {data.level >= 1 && <p className="text-[10px] text-muted-foreground">→ SITA detects the charge pattern</p>}
-                    {data.level >= 2 && <p className="text-[10px] text-muted-foreground">→ Suggests "Cancel unused service"</p>}
-                    {data.level >= 3 && <p className="text-[10px] text-muted-foreground">→ Simulates savings: $14.99/month</p>}
-                    {data.level >= 4 && <p className="text-[10px] text-muted-foreground">→ Drafts cancellation, awaits approval</p>}
-                    {data.level >= 5 && <p className="text-[10px] text-[hsl(var(--trust-safe))]">→ Auto-cancels with proof receipt</p>}
+            <AnimatePresence mode="wait">
+              {data.level > 0 && (
+                <motion.div
+                  key={`example-${data.level}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ type: "spring", damping: 24, stiffness: 260, delay: 0.05 }}
+                  className="space-y-2"
+                >
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Example</p>
+                  <div className="rounded-lg bg-secondary/30 p-3 space-y-1.5">
+                    <p className="text-[11px] text-foreground font-medium">💳 Subscription renewal detected</p>
+                    <div className="space-y-1">
+                      {[
+                        { min: 1, text: "→ SITA detects the charge pattern", color: "text-muted-foreground" },
+                        { min: 2, text: '→ Suggests "Cancel unused service"', color: "text-muted-foreground" },
+                        { min: 3, text: "→ Simulates savings: $14.99/month", color: "text-muted-foreground" },
+                        { min: 4, text: "→ Drafts cancellation, awaits approval", color: "text-muted-foreground" },
+                        { min: 5, text: "→ Auto-cancels with proof receipt", color: "text-[hsl(var(--trust-safe))]" },
+                      ].filter(step => data.level >= step.min).map((step, idx) => (
+                        <motion.p
+                          key={step.min}
+                          initial={{ opacity: 0, x: -8 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: prefersReduced ? 0 : idx * 0.07, duration: 0.3 }}
+                          className={cn("text-[10px]", step.color)}
+                        >
+                          {step.text}
+                        </motion.p>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
