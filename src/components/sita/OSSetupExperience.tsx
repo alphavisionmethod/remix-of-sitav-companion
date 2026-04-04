@@ -470,6 +470,9 @@ export function OSSetupExperience() {
 
   const [previewExample, setPreviewExample] = useState<string | null>(null);
   const [showResumeBanner, setShowResumeBanner] = useState(isResumed);
+  const [activeWowMoment, setActiveWowMoment] = useState<WowMomentId | null>(null);
+  const [activeChapterTransition, setActiveChapterTransition] = useState<{ from: ChapterName; to: ChapterName } | null>(null);
+  const [lastPhase, setLastPhase] = useState<string>(phase);
 
   const [state, setState] = useState<SetupState>({
     language: "en",
