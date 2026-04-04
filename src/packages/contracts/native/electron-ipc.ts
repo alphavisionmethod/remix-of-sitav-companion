@@ -10,7 +10,12 @@ export type ElectronIPCChannel =
   | "auto-update"
   | "tray-actions"
   | "window-control"
-  | "app-version";
+  | "app-version"
+  | "trust-attestation"
+  | "proof-emit"
+  | "capability-query"
+  | "degraded-mode"
+  | "policy-check";
 
 export interface SystemInfo {
   platform: string;
