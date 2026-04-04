@@ -53,9 +53,25 @@ import { DeviceReadinessStep } from "@/components/sita/onboarding/DeviceReadines
 import { DeviceOwnershipStep } from "@/components/sita/onboarding/DeviceOwnershipStep";
 import { AccountEnvironmentStep } from "@/components/sita/onboarding/AccountEnvironmentStep";
 import { AccessProtectionStep } from "@/components/sita/onboarding/AccessProtectionStep";
+import { PrivacyTransparencyStep } from "@/components/sita/onboarding/PrivacyTransparencyStep";
+import { QuickIdentityStep } from "@/components/sita/onboarding/QuickIdentityStep";
+import type { QuickIdentityData } from "@/components/sita/onboarding/QuickIdentityStep";
+import { DeepWorldModelingStep } from "@/components/sita/onboarding/DeepWorldModelingStep";
+import type { WorldModelData } from "@/components/sita/onboarding/DeepWorldModelingStep";
+import { PrimaryUseModeStep } from "@/components/sita/onboarding/PrimaryUseModeStep";
 import { Progress } from "@/components/ui/progress";
 
+interface OperatingModelData {
+  routines: string[];
+  household: string[];
+  work: string[];
+  finances: string[];
+  preferences: string[];
+}
+
 // ── Types ───────────────────────────────────────────────────
+
+type SetupState = SetupData;
 
 type Phase = SetupPhaseId;
 
@@ -102,6 +118,11 @@ interface SetupData {
   accountPath: string;
   accessMethod: string;
   recoveryMethod: string;
+  // New phase 2.8-2.11 fields
+  permissionChoices: Record<string, boolean>;
+  quickIdentity: QuickIdentityData;
+  worldModel: WorldModelData;
+  primaryUseMode: string;
 }
 
 // ── Phase Status Indicator ──────────────────────────────────
@@ -428,6 +449,16 @@ export function OSSetupExperience() {
   const [showResumeBanner, setShowResumeBanner] = useState(isResumed);
 
   const [state, setState] = useState<SetupState>({
+    language: "en",
+    region: "US",
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
+    dateFormat: "MM/DD/YYYY",
+    currency: "USD",
+    operatingMode: "",
+    operatingModel: null,
+    autonomyLevel: 50,
+    thresholds: {},
+    activeAdvisors: [],
     displayName: "",
     role: "",
     enabledDomains: ["business", "money", "concierge"],
@@ -453,6 +484,17 @@ export function OSSetupExperience() {
     accountPath: "",
     accessMethod: "",
     recoveryMethod: "",
+    permissionChoices: { calendar: false, communication: false, files: false, money: false, household: false, behavior: false, notifications: false },
+    quickIdentity: { runFirst: [], slipPoints: [], supportStyle: "", infoPreference: [], easierFirst: "" },
+    worldModel: {
+      routines: { morningType: 50, weekday: [], weekend: [] },
+      household: { size: "", responsibilities: [] },
+      work: { industry: [], teamSize: "", tools: [] },
+      money: { savingSpending: 50, goals: [] },
+      communication: { responseTime: 50, channels: [] },
+      goals: { topGoals: [], stressPoints: [] },
+    },
+    primaryUseMode: "",
   });
 
   // Sync setup state to engine for branch evaluation
@@ -618,10 +660,11 @@ export function OSSetupExperience() {
   const canAdvance = () => {
     if (phase === "identity") return state.displayName.length > 0 && state.role.length > 0;
     if (phase === "domains") return state.enabledDomains.length > 0;
+    if (phase === "primary-use-mode") return state.primaryUseMode.length > 0;
     return true;
   };
 
-  const showLearningPanel = !["boot", "network-setup", "device-readiness", "device-ownership", "account-environment", "access-protection", "welcome", "restore", "enterprise", "cinematic-intro", "trust-certificate"].includes(phase);
+  const showLearningPanel = !["boot", "network-setup", "device-readiness", "device-ownership", "account-environment", "access-protection", "privacy-transparency", "quick-identity", "deep-world-modeling", "primary-use-mode", "welcome", "restore", "enterprise", "cinematic-intro", "trust-certificate"].includes(phase);
   const canSkipCurrent = !isPhaseRequired(phase);
   const showRollbackBtn = state.setupStyle === "advanced";
   const currentBgTasks = backgroundTasks.filter(t => t.phaseId === phase);
@@ -654,7 +697,7 @@ export function OSSetupExperience() {
       )}
 
       {/* Boot */}
-      {phase === "boot" && <FirstBootScreen onComplete={() => goTo("welcome")} />}
+      {phase === "boot" && <FirstBootScreen onComplete={() => setCurrentPhase("network-setup")} />}
 
       {/* Preview example modal */}
       <AnimatePresence>
@@ -723,6 +766,38 @@ export function OSSetupExperience() {
                 {phase === "access-protection" && (
                   <AccessProtectionStep key="access-protection" onNext={goNext} onPrev={goPrev}
                     onStateChange={({ accessMethod, recoveryMethod }) => setState(s => ({ ...s, accessMethod, recoveryMethod }))} />
+                )}
+
+                {/* Privacy Transparency */}
+                {phase === "privacy-transparency" && (
+                  <PrivacyTransparencyStep key="privacy-transparency"
+                    permissionChoices={state.permissionChoices}
+                    onUpdate={choices => setState(s => ({ ...s, permissionChoices: choices }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* Quick Identity */}
+                {phase === "quick-identity" && (
+                  <QuickIdentityStep key="quick-identity"
+                    data={state.quickIdentity}
+                    onUpdate={qi => setState(s => ({ ...s, quickIdentity: qi }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* Deep World Modeling */}
+                {phase === "deep-world-modeling" && (
+                  <DeepWorldModelingStep key="deep-world-modeling"
+                    data={state.worldModel}
+                    onUpdate={wm => setState(s => ({ ...s, worldModel: wm }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* Primary Use Mode */}
+                {phase === "primary-use-mode" && (
+                  <PrimaryUseModeStep key="primary-use-mode"
+                    selected={state.primaryUseMode}
+                    onSelect={mode => setState(s => ({ ...s, primaryUseMode: mode }))}
+                    onNext={goNext} onPrev={goPrev} />
                 )}
 
                 {/* Welcome */}
