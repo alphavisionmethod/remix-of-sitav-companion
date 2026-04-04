@@ -12,3 +12,7 @@ export * from "./first-boot-provisioning";
 export * from "./unified-surface-runtime";
 export * from "./surface-parity";
 export * from "./parity-gates";
+export * from "./lifecycle-authority";
+export * from "./host-supervision";
+export * from "./lifecycle-receipts";
+export * from "./install-recovery";

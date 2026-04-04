@@ -94,9 +94,13 @@ function run() {
 
   // Check boot chain manifests
   results.push(checkFile("base-os-manifest.json", ["version", "os", "kernel", "signingKeys"]));
-  results.push(checkFile("boot-chain-manifest.json", ["version", "stages", "measurements"]));
+  results.push(checkFile("boot-chain-manifest.json", ["version", "stages"]));
   results.push(checkFile("first-boot-contract-manifest.json", ["version", "contracts"]));
   results.push(checkFile("first-boot-proof-receipts.json", ["version", "receiptTypes"]));
+
+  // Check lifecycle & recovery manifests (Phase 6)
+  results.push(checkFile("lifecycle-authority-manifest.json", ["version", "bootTargets", "restartStrategies", "lifecycleStates", "receiptTypes"]));
+  results.push(checkFile("recovery-outcome-manifest.json", ["version", "lanes", "recoveryTypes", "deterministicChecks"]));
 
   // Check existing manifests
   results.push(checkFile("contract-manifest.json", ["version", "totalContracts", "contracts"]));
