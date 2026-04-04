@@ -1,0 +1,106 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:30.763Z",
+  "totalSpaces": 4,
+  "totalRoutes": 10,
+  "spaces": [
+    {
+      "section": "business",
+      "totalRoutes": 3,
+      "deepLinkableCount": 1,
+      "routes": [
+        {
+          "capabilityId": "biz-crm-read",
+          "section": "business",
+          "path": "/business/customers",
+          "panelType": "full",
+          "deepLinkable": true
+        },
+        {
+          "capabilityId": "biz-crm-write",
+          "section": "business",
+          "path": "/business/customers/edit",
+          "panelType": "drawer",
+          "deepLinkable": false
+        },
+        {
+          "capabilityId": "biz-comms-send",
+          "section": "business",
+          "path": "/business/communications",
+          "panelType": "modal",
+          "deepLinkable": false
+        }
+      ]
+    },
+    {
+      "section": "money",
+      "totalRoutes": 3,
+      "deepLinkableCount": 1,
+      "routes": [
+        {
+          "capabilityId": "fin-accounts-read",
+          "section": "money",
+          "path": "/money/accounts",
+          "panelType": "full",
+          "deepLinkable": true
+        },
+        {
+          "capabilityId": "fin-payment-execute",
+          "section": "money",
+          "path": "/money/payments/new",
+          "panelType": "drawer",
+          "deepLinkable": false
+        },
+        {
+          "capabilityId": "fin-transfer",
+          "section": "money",
+          "path": "/money/transfers/new",
+          "panelType": "modal",
+          "deepLinkable": false
+        }
+      ]
+    },
+    {
+      "section": "concierge",
+      "totalRoutes": 2,
+      "deepLinkableCount": 1,
+      "routes": [
+        {
+          "capabilityId": "con-calendar-read",
+          "section": "concierge",
+          "path": "/concierge/calendar",
+          "panelType": "full",
+          "deepLinkable": true
+        },
+        {
+          "capabilityId": "con-booking-create",
+          "section": "concierge",
+          "path": "/concierge/bookings/new",
+          "panelType": "drawer",
+          "deepLinkable": false
+        }
+      ]
+    },
+    {
+      "section": "admin",
+      "totalRoutes": 2,
+      "deepLinkableCount": 2,
+      "routes": [
+        {
+          "capabilityId": "plat-diagnostic",
+          "section": "admin",
+          "path": "/admin/diagnostics",
+          "panelType": "full",
+          "deepLinkable": true
+        },
+        {
+          "capabilityId": "plat-config-write",
+          "section": "admin",
+          "path": "/admin/config",
+          "panelType": "full",
+          "deepLinkable": true
+        }
+      ]
+    }
+  ]
+}

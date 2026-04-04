@@ -29,7 +29,7 @@ import {
   mockCostAnomalies, mockPolicyAnomalies, mockReleaseSafety, mockSafeMode,
   mockProofHistory,
   type SafeModeState,
-} from "@/lib/mocks/advisor-mission-control";
+} from "@/lib/mock-data/advisor-mission-control";
 import { cn } from "@/lib/utils";
 import { FraudSentinelService } from "@/lib/core-services/fraud-sentinel";
 import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
@@ -47,6 +47,7 @@ import { BCPDRDashboard } from "@/components/sita/BCPDRDashboard";
 import { CABWorkflow } from "@/components/sita/CABWorkflow";
 import { AgentCommunicationGraph } from "@/components/sita/AgentCommunicationGraph";
 import { SelfHealingNotifications } from "@/components/sita/SelfHealingNotifications";
+import { MOCK_TOKEN_USAGES } from "@/lib/mock-data";
 import {
   Server, Shield, Activity, Wifi, AlertTriangle, DollarSign, Rocket,
   Lock, RotateCcw, Clock, Eye, CheckCircle, Cpu, Zap, FileText,
@@ -579,16 +580,7 @@ function MCCosts() {
 
   // Seed demo usage so the dashboard has data
   const dashboard = useMemo(() => {
-    const demoUsages: Array<Omit<import("@/lib/types/token-governance.types").TokenUsageRecord, "id" | "timestamp">> = [
-      { requestId: "r1", userId: "owner", domain: "business", model: "gemini-3-flash-preview", tier: "cheap" as const, inputTokens: 4200, outputTokens: 1800, totalTokens: 6000, cost: 0.0009, cached: false, compressed: false, workflowId: "lead-scoring", advisorId: "business-advisor" },
-      { requestId: "r2", userId: "owner", domain: "finance", model: "gpt-4o-mini", tier: "mid" as const, inputTokens: 8500, outputTokens: 3200, totalTokens: 11700, cost: 0.0035, cached: false, compressed: false, workflowId: "cash-timing", advisorId: "money-advisor" },
-      { requestId: "r3", userId: "owner", domain: "boardroom", model: "claude-sonnet-4-20250514", tier: "premium" as const, inputTokens: 18000, outputTokens: 6000, totalTokens: 24000, cost: 0.072, cached: false, compressed: false, workflowId: "boardroom-session", advisorId: "strategy-advisor" },
-      { requestId: "r4", userId: "owner", domain: "concierge", model: "gemini-3-flash-preview", tier: "cheap" as const, inputTokens: 2100, outputTokens: 900, totalTokens: 3000, cost: 0.00045, cached: true, compressed: false, workflowId: "household-prep", advisorId: "concierge-advisor" },
-      { requestId: "r5", userId: "owner", domain: "business", model: "gpt-4o-mini", tier: "mid" as const, inputTokens: 5500, outputTokens: 2200, totalTokens: 7700, cost: 0.0023, cached: false, compressed: false, workflowId: "crm-health-check", advisorId: "business-advisor" },
-      { requestId: "r6", userId: "owner", domain: "finance", model: "structured-state", tier: "no_llm" as const, inputTokens: 0, outputTokens: 0, totalTokens: 0, cost: 0, cached: false, compressed: false, workflowId: "balance-lookup" },
-      { requestId: "r7", userId: "owner", domain: "boardroom", model: "gpt-4o-mini", tier: "mid" as const, inputTokens: 6800, outputTokens: 2800, totalTokens: 9600, cost: 0.0029, cached: false, compressed: false, workflowId: "advisor-synthesis", advisorId: "strategy-advisor" },
-      { requestId: "r8", userId: "owner", domain: "business", model: "gemini-3-flash-preview", tier: "cheap" as const, inputTokens: 3100, outputTokens: 1200, totalTokens: 4300, cost: 0.00065, cached: true, compressed: false, workflowId: "lead-follow-up", advisorId: "business-advisor" },
-    ];
+    const demoUsages = MOCK_TOKEN_USAGES;
     for (const u of demoUsages) tokenEngine.recordUsage(u);
     return tokenEngine.getDashboard("today");
   }, [tokenEngine]);

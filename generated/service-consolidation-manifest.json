@@ -1,0 +1,467 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:39.548Z",
+  "totalServices": 43,
+  "tier1": 22,
+  "tier2": 16,
+  "tier3": 2,
+  "isolated": 3,
+  "parentServices": 9,
+  "entries": [
+    {
+      "serviceId": "api-gateway",
+      "serviceName": "API Gateway",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 1,
+      "children": [
+        "nlp-companion"
+      ],
+      "consolidationStatus": "parent-service",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "policy-engine",
+      "serviceName": "Policy Engine",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 2,
+      "children": [
+        "constitution-compiler",
+        "investment-policy-rules"
+      ],
+      "consolidationStatus": "parent-service",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "approval-service",
+      "serviceName": "Approval Service",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "capability-router",
+      "serviceName": "Capability Router",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 3,
+      "children": [
+        "agent-orchestrator",
+        "lease-manager",
+        "manifest-generator"
+      ],
+      "consolidationStatus": "parent-service",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "executor-service",
+      "serviceName": "Executor Service",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 2,
+      "children": [
+        "payment-execution",
+        "productivity-engine"
+      ],
+      "consolidationStatus": "parent-service",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "receipt-service",
+      "serviceName": "Receipt Service",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "verification-engine",
+      "serviceName": "Verification Engine",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "workflow-engine",
+      "serviceName": "Workflow Engine",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 1,
+      "children": [
+        "governance-simulator"
+      ],
+      "consolidationStatus": "parent-service",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "event-bus",
+      "serviceName": "Event Bus",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "projection-service",
+      "serviceName": "Projection Service",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "entity-graph",
+      "serviceName": "Entity Graph",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "identity-graph",
+      "serviceName": "Identity Service",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "role-permission-engine",
+      "serviceName": "Role Permission Engine",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "trust-state-service",
+      "serviceName": "Trust State Service",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "memory-service",
+      "serviceName": "Memory Service",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 4,
+      "children": [
+        "self-learning-engine",
+        "life-intelligence-engine",
+        "companion-engine",
+        "file-ingestion"
+      ],
+      "consolidationStatus": "parent-service",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "connector-control",
+      "serviceName": "Connector Control Plane",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 1,
+      "children": [
+        "cloud-sync-manager"
+      ],
+      "consolidationStatus": "parent-service",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "connector-runners",
+      "serviceName": "Connector Runners",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "observability",
+      "serviceName": "Observability",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "support-diagnostics",
+      "serviceName": "Support Diagnostics",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "admin-service",
+      "serviceName": "Admin Service",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 1,
+      "children": [
+        "feature-proposal-engine"
+      ],
+      "consolidationStatus": "parent-service",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "analytics-service",
+      "serviceName": "Analytics Service",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "billing-service",
+      "serviceName": "Billing Service",
+      "tier": "tier-1",
+      "parent": null,
+      "childCount": 1,
+      "children": [
+        "budget-automation"
+      ],
+      "consolidationStatus": "parent-service",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "governance-simulator",
+      "serviceName": "Governance Simulator",
+      "tier": "tier-2",
+      "parent": "workflow-engine",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "agent-orchestrator",
+      "serviceName": "Agent Orchestrator",
+      "tier": "tier-2",
+      "parent": "capability-router",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "lease-manager",
+      "serviceName": "Lease Manager",
+      "tier": "tier-2",
+      "parent": "capability-router",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "constitution-compiler",
+      "serviceName": "Constitution Compiler",
+      "tier": "tier-2",
+      "parent": "policy-engine",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "budget-automation",
+      "serviceName": "Budget Automation",
+      "tier": "tier-2",
+      "parent": "billing-service",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "payment-execution",
+      "serviceName": "Payment Execution",
+      "tier": "tier-2",
+      "parent": "executor-service",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "manifest-generator",
+      "serviceName": "Manifest Generator",
+      "tier": "tier-2",
+      "parent": "capability-router",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "self-learning-engine",
+      "serviceName": "Self-Learning Engine",
+      "tier": "tier-2",
+      "parent": "memory-service",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "life-intelligence-engine",
+      "serviceName": "Life Intelligence Engine",
+      "tier": "tier-2",
+      "parent": "memory-service",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "companion-engine",
+      "serviceName": "Companion Engine",
+      "tier": "tier-2",
+      "parent": "memory-service",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "nlp-companion",
+      "serviceName": "NLP Companion",
+      "tier": "tier-2",
+      "parent": "api-gateway",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "productivity-engine",
+      "serviceName": "Productivity Engine",
+      "tier": "tier-2",
+      "parent": "executor-service",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "feature-proposal-engine",
+      "serviceName": "Feature Proposal Engine",
+      "tier": "tier-2",
+      "parent": "admin-service",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "investment-policy-rules",
+      "serviceName": "Investment Policy Rules",
+      "tier": "tier-2",
+      "parent": "policy-engine",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "file-ingestion",
+      "serviceName": "File Ingestion",
+      "tier": "tier-2",
+      "parent": "memory-service",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "cloud-sync-manager",
+      "serviceName": "Cloud Sync Manager",
+      "tier": "tier-2",
+      "parent": "connector-control",
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "merged-into-parent",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "search-fabric",
+      "serviceName": "Search Fabric",
+      "tier": "tier-3",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": true
+    },
+    {
+      "serviceId": "document-system",
+      "serviceName": "Document System",
+      "tier": "tier-3",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": true
+    },
+    {
+      "serviceId": "fraud-sentinel",
+      "serviceName": "Fraud Sentinel",
+      "tier": "isolated",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "self-healing",
+      "serviceName": "Self-Healing Service",
+      "tier": "isolated",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    },
+    {
+      "serviceId": "error-patrol",
+      "serviceName": "Error Patrol",
+      "tier": "isolated",
+      "parent": null,
+      "childCount": 0,
+      "children": [],
+      "consolidationStatus": "standalone",
+      "canConsolidate": false
+    }
+  ]
+}

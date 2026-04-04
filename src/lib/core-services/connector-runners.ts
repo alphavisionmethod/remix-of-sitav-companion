@@ -1,7 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Connector Runners
 // Sandboxed execution of connector adapters with circuit breaker
+// Canonical contracts: ExecutionMode from contracts, merged into connector-control-plane
 // ═══════════════════════════════════════════════════════════════
+
+import type { ExecutionMode as CanonicalExecutionMode } from "@/packages/contracts";
+
+export type { CanonicalExecutionMode };
 
 export type RunnerMode = "real" | "sandbox" | "simulation" | "test";
 export type RunnerStatus = "idle" | "running" | "completed" | "failed" | "circuit-open";

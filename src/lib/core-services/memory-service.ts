@@ -3,15 +3,19 @@
 // Privacy-tiered context storage with sensitive key detection,
 // confidence decay, supersession, role-aware visibility, and
 // forget paths with audit trail
+// Canonical contracts: PrivacyTier from contracts
 // ═══════════════════════════════════════════════════════════════
 
-export type PrivacyTier = "public" | "internal" | "confidential" | "restricted";
+import type { PrivacyTier as CanonicalPrivacyTier } from "@/packages/contracts";
+
+/** @deprecated Use CanonicalPrivacyTier from contracts */
+export type ServicePrivacyTier = CanonicalPrivacyTier;
 
 export interface MemoryEntry {
   id: string;
   key: string;
   value: unknown;
-  privacyTier: PrivacyTier;
+  privacyTier: ServicePrivacyTier;
   confidence: number;         // 0-1, decays over time
   source: string;             // attribution
   createdAt: number;
@@ -31,7 +35,7 @@ export interface MemoryForgetRecord {
   reason: string;
   requestedBy: string;
   timestamp: number;
-  previousTier: PrivacyTier;
+  previousTier: ServicePrivacyTier;
 }
 
 export interface MemoryQuery {
@@ -39,7 +43,7 @@ export interface MemoryQuery {
   tags?: string[];
   entityId?: string;
   minConfidence?: number;
-  privacyTier?: PrivacyTier;
+  privacyTier?: ServicePrivacyTier;
   includeSuperseded?: boolean;
 }
 
@@ -59,7 +63,7 @@ const CONFIDENTIAL_PATTERNS = [
 ];
 
 // Privacy tier visibility by role
-const TIER_VISIBILITY: Record<string, PrivacyTier[]> = {
+const TIER_VISIBILITY: Record<string, ServicePrivacyTier[]> = {
   admin: ["public", "internal", "confidential", "restricted"],
   owner: ["public", "internal", "confidential", "restricted"],
   advisor: ["public", "internal", "confidential"],
@@ -81,7 +85,7 @@ export class MemoryService {
     value: unknown,
     options?: {
       source?: string;
-      privacyTier?: PrivacyTier;
+      privacyTier?: ServicePrivacyTier;
       confidence?: number;
       tags?: string[];
       entityId?: string;
@@ -195,8 +199,8 @@ export class MemoryService {
   }
 
   /** Get memory statistics */
-  getStats(): { total: number; byTier: Record<PrivacyTier, number>; forgotten: number; expired: number } {
-    const byTier: Record<PrivacyTier, number> = { public: 0, internal: 0, confidential: 0, restricted: 0 };
+  getStats(): { total: number; byTier: Record<ServicePrivacyTier, number>; forgotten: number; expired: number } {
+    const byTier: Record<ServicePrivacyTier, number> = { public: 0, internal: 0, confidential: 0, restricted: 0 };
     let expired = 0;
     const now = Date.now();
 
@@ -210,7 +214,7 @@ export class MemoryService {
 
   // ── Private ───────────────────────────────────────────────────
 
-  private detectPrivacyTier(key: string): PrivacyTier {
+  private detectPrivacyTier(key: string): ServicePrivacyTier {
     if (SENSITIVE_PATTERNS.some(p => p.test(key))) return "restricted";
     if (CONFIDENTIAL_PATTERNS.some(p => p.test(key))) return "confidential";
     return "internal";

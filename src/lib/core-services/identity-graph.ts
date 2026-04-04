@@ -1,7 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Identity Service + Household-Org Graph
 // Entity nodes, relationships, permission inheritance, delegations
+// Canonical contracts: TenantScoped, DomainScoped from scaffold
 // ═══════════════════════════════════════════════════════════════
+
+import type { TenantScoped, DomainScoped } from "@/packages/contracts";
+
+export type { TenantScoped, DomainScoped };
 
 export type EntityType = "individual" | "household" | "org" | "team";
 export type VerificationState = "unverified" | "email_verified" | "identity_verified" | "fully_verified";

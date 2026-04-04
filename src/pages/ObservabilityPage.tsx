@@ -17,12 +17,25 @@ import {
   useMissionControlSummary, useFounderCostSummary, useConnectorSummaries,
   useDiagnosticsSummary, useSystemActivity, useTrustSummary,
 } from "@/hooks/use-mission-control-views";
+import { useCountUpFormatted } from "@/hooks/useCountUp";
 import {
   Activity, Wifi, AlertTriangle, Cpu, Zap, Clock, Eye, BarChart3,
   TrendingUp, TrendingDown, Database, Radio, Shield, RefreshCw,
   Server, CheckCircle,
 } from "lucide-react";
-import type { ServiceReliabilityView } from "@/lib/types/admin-view-models";
+import type { ServiceReliabilityView } from "@/packages/contracts";
+
+/* Count-up KPI tile for observability */
+const ObsKPITile = ({ label, value, ok, icon: Icon }: { label: string; value: string; ok: boolean; icon: React.ElementType }) => {
+  const animated = useCountUpFormatted(value);
+  return (
+    <div className={cn("rounded-xl border px-3 py-2.5 text-center", ok ? "border-border bg-card/50" : "border-accent/20 bg-accent/5")}>
+      <Icon className={cn("h-4 w-4 mx-auto mb-1", ok ? "text-muted-foreground" : "text-accent")} />
+      <p className={cn("font-display text-sm font-bold tabular-nums", ok ? "text-foreground" : "text-accent")}>{animated}</p>
+      <p className="text-[9px] text-muted-foreground">{label}</p>
+    </div>
+  );
+};
 
 export default function ObservabilityPage() {
   const [tab, setTab] = useState("overview");
@@ -65,11 +78,7 @@ export default function ObservabilityPage() {
             { label: "Error Rate", value: `${(services.reduce((s, m) => s + m.errorRate, 0) / services.length * 100).toFixed(2)}%`, ok: true, icon: AlertTriangle },
             { label: "SLO Health", value: `${engineData.slos.filter(s => s.status === "met").length}/${engineData.slos.length}`, ok: engineData.slos.every(s => s.status === "met"), icon: Zap },
           ].map(m => (
-            <div key={m.label} className={cn("rounded-xl border px-3 py-2.5 text-center", m.ok ? "border-border bg-card/50" : "border-accent/20 bg-accent/5")}>
-              <m.icon className={cn("h-4 w-4 mx-auto mb-1", m.ok ? "text-muted-foreground" : "text-accent")} />
-              <p className={cn("font-display text-sm font-bold", m.ok ? "text-foreground" : "text-accent")}>{m.value}</p>
-              <p className="text-[9px] text-muted-foreground">{m.label}</p>
-            </div>
+            <ObsKPITile key={m.label} {...m} />
           ))}
         </div>
       </AdminPageHeader>

@@ -3,10 +3,10 @@
 // Maps intent characteristics to execution mode
 // ═══════════════════════════════════════════════════════════════
 
-import type { ParsedIntent, ExecutionMode } from "./orchestrate-intent";
+import type { ParsedIntent, BrainExecutionMode } from "./orchestrate-intent";
 
 export interface ExecutionModeDecision {
-  mode: ExecutionMode;
+  mode: BrainExecutionMode;
   reason: string;
   requiresApproval: boolean;
   approvalType?: "single" | "dual" | "owner-only";
@@ -26,7 +26,7 @@ const RISK_MATRIX: Record<string, Record<string, "low" | "medium" | "high" | "cr
 export function selectExecutionMode(intent: ParsedIntent): ExecutionModeDecision {
   const riskLevel = RISK_MATRIX[intent.type]?.[intent.urgency] || "medium";
 
-  let mode: ExecutionMode;
+  let mode: BrainExecutionMode;
   let requiresApproval = false;
   let approvalType: ExecutionModeDecision["approvalType"];
   let canAutoExecute = false;

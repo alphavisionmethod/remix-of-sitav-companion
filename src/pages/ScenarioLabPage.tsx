@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
-import type { ScenarioTemplate, ScenarioSimulation, ScenarioOutcome } from "@/lib/types/digital-twin.types";
+import type { ScenarioTemplate, ScenarioSimulation, ScenarioOutcome } from "@/packages/contracts";
 
 // ── Template Card ──────────────────────────────────────────────
 function TemplateCard({ template, onRun }: { template: ScenarioTemplate; onRun: () => void }) {

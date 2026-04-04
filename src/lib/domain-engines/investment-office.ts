@@ -1,7 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Investment Office / Family Office Engine
 // 47 deterministic engines — pure functions, no LLM, no side effects
+// Canonical contracts: DomainId, ConfidenceMetadata from contracts
 // ═══════════════════════════════════════════════════════════════
+
+import type { DomainId, ConfidenceMetadata } from "@/packages/contracts";
+
+export type { DomainId as InvestmentDomainId, ConfidenceMetadata as InvestmentConfidence };
 
 // ── Types ────────────────────────────────────────────────────────
 

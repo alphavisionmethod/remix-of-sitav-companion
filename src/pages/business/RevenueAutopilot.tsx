@@ -16,52 +16,17 @@ import {
   detectLeakage, suggestRecoveryActions, rankOpportunities, computeRecoveredValueSummary,
   computeAutopilotSummary, type LeakageItem, type RecoveredValueEntry, type RankedOpportunity
 } from "@/lib/domain-engines/revenue-autopilot";
+import { MOCK_LEAKAGE_INPUT, MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES } from "@/lib/mock-data";
 
 // ── Mock Data ───────────────────────────────────────────────────
 
-const MOCK_LEAKAGE = detectLeakage({
-  leads: [
-    { id: "l1", name: "David Park", status: "new", lastContactDays: 5, estimatedValue: 12000 },
-    { id: "l2", name: "Lisa Chen", status: "new", lastContactDays: 9, estimatedValue: 28000 },
-    { id: "l3", name: "Mike Ross", status: "new", lastContactDays: 3, estimatedValue: 8000 },
-  ],
-  quotes: [
-    { id: "q1", name: "Enterprise Plan — Acme Corp", sentDays: 12, value: 45000, hasResponse: false, closed: false },
-    { id: "q2", name: "Starter Package — StartupXYZ", sentDays: 5, value: 6000, hasResponse: false, closed: false },
-  ],
-  invoices: [
-    { id: "i1", customerName: "Sarah Chen", amount: 8500, overdueDays: 22, chasedRecently: false },
-    { id: "i2", customerName: "TechVentures", amount: 15000, overdueDays: 45, chasedRecently: false },
-  ],
-  customers: [
-    { id: "c1", name: "Johnson & Co", lastInteractionDays: 75, avgMonthlyRevenue: 4200, isRepeat: true },
-    { id: "c2", name: "Premier Design", lastInteractionDays: 45, avgMonthlyRevenue: 2800, isRepeat: true },
-  ],
-  bookings: [
-    { id: "b1", name: "Strategy Session — Alex", confirmed: false, dateTs: Date.now() + 86400000, noShowRisk: 0.55 },
-  ],
-  subscriptions: [
-    { id: "s1", name: "Analytics Pro", monthlyCost: 89, lastUsedDays: 60, utilization: 0.08 },
-    { id: "s2", name: "Design Cloud", monthlyCost: 149, lastUsedDays: 45, utilization: 0.12 },
-  ],
-});
+const MOCK_LEAKAGE = detectLeakage(MOCK_LEAKAGE_INPUT);
 
 const MOCK_RECOVERY_ACTIONS = suggestRecoveryActions(MOCK_LEAKAGE);
 
-const MOCK_RECOVERED: RecoveredValueEntry[] = [
-  { id: "r1", category: "revenue-recovered", amount: 8500, description: "Sarah Chen invoice collected after reminder", source: "invoice-chase", recoveredAt: Date.now() - 3 * 86400000, proofId: "rcpt-001" },
-  { id: "r2", category: "waste-canceled", amount: 1068, description: "Unused Analytics Pro subscription canceled", source: "waste-detection", recoveredAt: Date.now() - 7 * 86400000 },
-  { id: "r3", category: "opportunity-revived", amount: 12000, description: "David Park re-engaged after callback", source: "lead-reactivation", recoveredAt: Date.now() - 14 * 86400000 },
-  { id: "r4", category: "capacity-filled", amount: 3200, description: "Cancellation slot filled with waitlist client", source: "cancellation-fill", recoveredAt: Date.now() - 10 * 86400000 },
-  { id: "r5", category: "fees-avoided", amount: 450, description: "Late payment fee avoided by early reminder", source: "bill-reminder", recoveredAt: Date.now() - 5 * 86400000 },
-];
+const MOCK_RECOVERED = MOCK_RECOVERED_VALUES;
 
-const MOCK_OPPORTUNITIES = rankOpportunities([
-  { id: "o1", name: "Acme Corp enterprise expansion", source: "pipeline", probability: 0.65, estimatedValue: 45000, urgencyScore: 80, effortScore: 40, trustRequirement: "medium", cashImpactDays: 30, suggestedAction: "Send updated proposal" },
-  { id: "o2", name: "Johnson & Co reactivation", source: "reactivation", probability: 0.55, estimatedValue: 12600, urgencyScore: 60, effortScore: 20, trustRequirement: "low", cashImpactDays: 14, suggestedAction: "Launch reactivation email" },
-  { id: "o3", name: "TechVentures overdue collection", source: "leakage", probability: 0.8, estimatedValue: 15000, urgencyScore: 95, effortScore: 30, trustRequirement: "high", cashImpactDays: 7, suggestedAction: "Escalate with collections ladder" },
-  { id: "o4", name: "Premier Design upsell", source: "upsell", probability: 0.4, estimatedValue: 8400, urgencyScore: 40, effortScore: 25, trustRequirement: "low", cashImpactDays: 45, suggestedAction: "Propose premium tier" },
-]);
+const MOCK_OPPORTUNITIES = rankOpportunities(MOCK_RAW_OPPORTUNITIES);
 
 const SUMMARY = computeAutopilotSummary(MOCK_LEAKAGE, MOCK_RECOVERY_ACTIONS, MOCK_RECOVERED);
 

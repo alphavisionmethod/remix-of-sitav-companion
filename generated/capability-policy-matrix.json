@@ -1,0 +1,1447 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:20.556Z",
+  "total": 128,
+  "matrix": [
+    {
+      "capabilityId": "BusinessDomainId",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "BusinessEntityType",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CurrencyCode",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "MonetaryAmount",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "BusinessPriority",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "BusinessMetadata",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "BookingConfirmation",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "BookingStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "Booking",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "RevenueSnapshot",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "BusinessBoardroomPacket",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "KPITrend",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "BusinessKPI",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CallbackOutcome",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CallbackTask",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CapacityMonetizationSignal",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CollectionSequenceStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CollectionSequence",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CollectionStepType",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CollectionChannel",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CollectionStep",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CommunicationPreference",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ContactRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CustomerDashboardView",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CustomerHealthScoreView",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CustomerRiskSummary",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "TimelineEventType",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CustomerTimelineItem",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "NBACategory",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "NextBestAction",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "OnboardingCustomerBootstrapPacket",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ContinuityStatus",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ServiceContinuityView",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CustomerLifecycleStage",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "LifecycleTransitionRule",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "LifecycleEvent",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CustomerHealthDimension",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CustomerHealthScore",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ChurnPredictionInput",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ChurnPrediction",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CustomerLifecycleRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "StaleLeadState",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "OpportunityRankResult",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ReactivationCandidate",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CollectionsEscalationPacket",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "NoShowRecoveryPacket",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "RecoveredValueLedgerEntry",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "RevenueAutopilotKpiSummary",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "LeakCategory",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "RevenueLeakRecord",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "RevenueRecoveryStep",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "RevenueRecoveryPlan",
+      "domain": "business",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CapitalMap",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "EntityCapitalMap",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "LiquiditySummary",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "MarketRegime",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "MarketRegimeResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "PortfolioExposureSummary",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "RiskBudgetResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ScenarioResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "MonteCarloResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "HistoricalReplayResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "AllocationSuggestion",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "RebalanceRecommendation",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ThesisRecord",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ThesisCandidate",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "InvestmentCommitteePacket",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "TradeReviewPacket",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ExecutionIntent",
+      "domain": "finance",
+      "riskTier": "high",
+      "governingPolicies": [
+        "ApprovalBinding",
+        "OutboundCommunicationPolicy",
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": true,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "TradeCostEstimate",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "SlippageFeeResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "StopExitPolicyResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "FactorRiskDecomposition",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "MandateComplianceResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "RobustOptimizationResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "LeverageCapResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CapitalCallPlan",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CommitmentPacing",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "TaxReserveResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "LiquidityLadder",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ReserveProtectionResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ObligationCoverageResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CorrelationMatrixResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "FxExposureSummary",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CryptoExposureSummary",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "VenueRiskSummary",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "WatchlistEntry",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "WatchlistWithRegime",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ResearchContext",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "NetWorthResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "EntityCapitalSeparation",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "DeployableCapitalResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CashPosture",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ReservePosture",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "LiquidityPosture",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "OpportunityScore",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "BrokerageSyncResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "CryptoExchangeSyncResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "MarketDataSnapshot",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "BankSyncResult",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "InvestmentDecisionProof",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "InvestmentTrustMode",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "SinkingFund",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "ReserveHealth",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "RenewalRisk",
+      "domain": "finance",
+      "riskTier": "low",
+      "governingPolicies": [
+        "TruthBoundaryRule",
+        "ConnectorFreshnessPolicy",
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": true
+    },
+    {
+      "capabilityId": "FamilyCalendarItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "ReconciliationConflict",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "PrepItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "EventReminder",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "GiftOpportunity",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "GroceryItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "RecurringSupplyItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "ContinuityAlert",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "HouseholdRole",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "HouseholdMember",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "HouseholdKpiSummary",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "ProviderFollowUp",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "SchoolActivityItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "SchoolFeeItem",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "ReservationRecord",
+      "domain": "concierge",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "ApprovalThreshold",
+      "domain": "policy",
+      "riskTier": "medium",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "MultiStepApproval",
+      "domain": "policy",
+      "riskTier": "medium",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "MultiStepApprovalStep",
+      "domain": "policy",
+      "riskTier": "medium",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "NarrativeVsDeterministicBoundary",
+      "domain": "policy",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "CallAutomationPolicy",
+      "domain": "policy",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "SensitivityTier",
+      "domain": "policy",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "RetentionPolicy",
+      "domain": "policy",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    },
+    {
+      "capabilityId": "RedactionPolicy",
+      "domain": "policy",
+      "riskTier": "low",
+      "governingPolicies": [
+        "RefusalState"
+      ],
+      "requiresApproval": false,
+      "truthBoundaryEnforced": false
+    }
+  ]
+}

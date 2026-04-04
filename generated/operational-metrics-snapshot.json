@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:43.387Z",
+  "totalServices": 131,
+  "averageHealthScore": 60,
+  "servicesWithImplementation": 0,
+  "servicesWithEdgeFunctions": 0,
+  "averageDependencyCount": 0
+}

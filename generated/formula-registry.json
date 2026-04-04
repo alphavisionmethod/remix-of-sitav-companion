@@ -1,16 +1,372 @@
 {
   "version": "1.0.0",
-  "generated_at": "2026-04-02T00:00:00Z",
+  "generatedAt": "2026-04-04T19:58:05.493Z",
+  "total": 73,
   "formulas": [
-    { "id": "lead-score", "name": "Lead Scoring", "domain": "business-os", "type": "deterministic", "inputs": ["engagement", "recency", "fit", "budget", "source"], "output": "score-0-100", "description": "Composite weighted: engagement(30%) × recency(20%) × fit(20%) × budget(15%) × source(15%)" },
-    { "id": "customer-health", "name": "Customer Health Score", "domain": "business-os", "type": "deterministic", "inputs": ["engagement-recency", "revenue-trend", "communication-frequency", "issue-resolution", "satisfaction"], "output": "score-0-100", "description": "Composite: engagement(30%) + revenue(25%) + communication(20%) + issues(15%) + satisfaction(10%)" },
-    { "id": "revenue-forecast", "name": "Revenue Forecast", "domain": "business-os", "type": "deterministic", "inputs": ["historical-revenue", "pipeline-value", "close-rates"], "output": "monthly-projection", "description": "Linear regression on historical with pipeline-weighted adjustment" },
-    { "id": "safe-to-spend", "name": "Safe to Spend", "domain": "finance-os", "type": "deterministic", "inputs": ["balance", "upcoming-obligations", "reserves", "pending-income"], "output": "amount-cents", "description": "balance - obligations - reserves + confirmed_pending_income" },
-    { "id": "tax-estimation", "name": "Tax Estimation (US 2024)", "domain": "finance-os", "type": "deterministic", "inputs": ["taxable-income", "filing-status", "deductions"], "output": "tax-liability", "description": "US 2024 federal bracket calculation, deterministic" },
-    { "id": "burn-multiple", "name": "Burn Multiple", "domain": "finance-os", "type": "deterministic", "inputs": ["net-burn", "net-new-arr"], "output": "ratio", "description": "net_burn / net_new_arr" },
-    { "id": "invoice-aging", "name": "Invoice Aging", "domain": "finance-os", "type": "deterministic", "inputs": ["invoices"], "output": "aging-buckets", "description": "Bucket by 0-30, 31-60, 61-90, 90+ days" },
-    { "id": "budget-health", "name": "Budget Health", "domain": "finance-os", "type": "deterministic", "inputs": ["budget-allocated", "budget-spent", "days-remaining"], "output": "health-score", "description": "Remaining % vs expected remaining % for period" },
-    { "id": "task-priority", "name": "Task Priority Score", "domain": "concierge-os", "type": "deterministic", "inputs": ["urgency", "importance", "deadline-proximity", "dependency-count"], "output": "score-0-100", "description": "Weighted: urgency(35%) + importance(30%) + deadline(25%) + dependencies(10%)" },
-    { "id": "booking-score", "name": "Booking Option Score", "domain": "concierge-os", "type": "deterministic", "inputs": ["price", "convenience", "preference-match", "rating"], "output": "score-0-100", "description": "Normalized composite: price(30%) + convenience(25%) + preference(25%) + rating(20%)" }
+    {
+      "name": "assessBusinessHealth",
+      "domain": "business-os",
+      "source": "src/lib/domain-engines/business-os.ts"
+    },
+    {
+      "name": "analyzePipeline",
+      "domain": "business-os",
+      "source": "src/lib/domain-engines/business-os.ts"
+    },
+    {
+      "name": "scoreLead",
+      "domain": "business-os",
+      "source": "src/lib/domain-engines/business-os.ts"
+    },
+    {
+      "name": "forecastRevenue",
+      "domain": "business-os",
+      "source": "src/lib/domain-engines/business-os.ts"
+    },
+    {
+      "name": "identifyFollowUps",
+      "domain": "business-os",
+      "source": "src/lib/domain-engines/business-os.ts"
+    },
+    {
+      "name": "assessClientHealth",
+      "domain": "business-os",
+      "source": "src/lib/domain-engines/business-os.ts"
+    },
+    {
+      "name": "analyzeCashflow",
+      "domain": "finance-os",
+      "source": "src/lib/domain-engines/finance-os.ts"
+    },
+    {
+      "name": "assessBudgetHealth",
+      "domain": "finance-os",
+      "source": "src/lib/domain-engines/finance-os.ts"
+    },
+    {
+      "name": "estimateTax",
+      "domain": "finance-os",
+      "source": "src/lib/domain-engines/finance-os.ts"
+    },
+    {
+      "name": "analyzeBillCalendar",
+      "domain": "finance-os",
+      "source": "src/lib/domain-engines/finance-os.ts"
+    },
+    {
+      "name": "assessReserves",
+      "domain": "finance-os",
+      "source": "src/lib/domain-engines/finance-os.ts"
+    },
+    {
+      "name": "analyzeInvoiceAging",
+      "domain": "finance-os",
+      "source": "src/lib/domain-engines/finance-os.ts"
+    },
+    {
+      "name": "assessFinancialHealth",
+      "domain": "finance-os",
+      "source": "src/lib/domain-engines/finance-os.ts"
+    },
+    {
+      "name": "calculateBurnMultiple",
+      "domain": "finance-os",
+      "source": "src/lib/domain-engines/finance-os.ts"
+    },
+    {
+      "name": "prioritizeTasks",
+      "domain": "concierge-os",
+      "source": "src/lib/domain-engines/concierge-os.ts"
+    },
+    {
+      "name": "scoreBookingOptions",
+      "domain": "concierge-os",
+      "source": "src/lib/domain-engines/concierge-os.ts"
+    },
+    {
+      "name": "detectConflicts",
+      "domain": "concierge-os",
+      "source": "src/lib/domain-engines/concierge-os.ts"
+    },
+    {
+      "name": "buildItinerary",
+      "domain": "concierge-os",
+      "source": "src/lib/domain-engines/concierge-os.ts"
+    },
+    {
+      "name": "evaluateRoutineHealth",
+      "domain": "concierge-os",
+      "source": "src/lib/domain-engines/concierge-os.ts"
+    },
+    {
+      "name": "optimizeErrands",
+      "domain": "concierge-os",
+      "source": "src/lib/domain-engines/concierge-os.ts"
+    },
+    {
+      "name": "coordinateHousehold",
+      "domain": "concierge-os",
+      "source": "src/lib/domain-engines/concierge-os.ts"
+    },
+    {
+      "name": "buildCapitalMap",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "analyzePortfolioRisk",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "detectRegime",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "calculatePositionSize",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "volatilityTargetSize",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "drawdownFromPeak",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeRiskBudget",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "concentrationRisk",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "correlationMatrix",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "rollingCorrelation",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeLiquidityLadder",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "liquidityBuffer",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "reserveProtectionCheck",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "obligationCoverageRatio",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeLeverageCap",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "runStressScenarios",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "monteCarloStress",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "historicalReplayStress",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeRebalance",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeFactorRisk",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeMandateCompliance",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeRobustOptimization",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeStopExitPolicy",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeSlippageFeeAdjustedReturn",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "estimateTradeCost",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeTaxReserve",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeCapitalCallPlan",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeNetWorth",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeEntityCapitalSeparation",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeDeployableCapital",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeVenueRisk",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeFxExposure",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeCryptoExposure",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeSectorConcentration",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeGeographicConcentration",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeCashPosture",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeReservePosture",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeLiquidityPosture",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeOpportunityScore",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeThesisScore",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "evaluateThesis",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "buildCommitteePacket",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "generateProofArtifact",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "applyWatchlistRegimeOverlay",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "buildResearchContext",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "linkTradeToJournal",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "computeCustodyBreakdown",
+      "domain": "investment-office",
+      "source": "src/lib/domain-engines/investment-office.ts"
+    },
+    {
+      "name": "detectLeakage",
+      "domain": "revenue-autopilot",
+      "source": "src/lib/domain-engines/revenue-autopilot.ts"
+    },
+    {
+      "name": "rankOpportunities",
+      "domain": "revenue-autopilot",
+      "source": "src/lib/domain-engines/revenue-autopilot.ts"
+    },
+    {
+      "name": "suggestRecoveryActions",
+      "domain": "revenue-autopilot",
+      "source": "src/lib/domain-engines/revenue-autopilot.ts"
+    },
+    {
+      "name": "computeRecoveredValueSummary",
+      "domain": "revenue-autopilot",
+      "source": "src/lib/domain-engines/revenue-autopilot.ts"
+    },
+    {
+      "name": "computeAutopilotSummary",
+      "domain": "revenue-autopilot",
+      "source": "src/lib/domain-engines/revenue-autopilot.ts"
+    }
   ]
 }

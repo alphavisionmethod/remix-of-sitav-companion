@@ -3,7 +3,7 @@
 // Trust score history and flag tracking
 // ═══════════════════════════════════════════════════════════════
 
-export interface TrustState {
+export interface MemoryTrustState {
   userId: string;
   overallScore: number;
   factors: TrustFactor[];
@@ -32,10 +32,10 @@ export interface TrustSnapshot {
   reason: string;
 }
 
-const trustStates = new Map<string, TrustState>();
+const trustStates = new Map<string, MemoryTrustState>();
 
-export function initializeTrust(userId: string): TrustState {
-  const state: TrustState = {
+export function initializeTrust(userId: string): MemoryTrustState {
+  const state: MemoryTrustState = {
     userId,
     overallScore: 100,
     factors: [
@@ -53,7 +53,7 @@ export function initializeTrust(userId: string): TrustState {
   return state;
 }
 
-export function updateTrustFactor(userId: string, factorName: string, newScore: number, reason: string): TrustState | null {
+export function updateTrustFactor(userId: string, factorName: string, newScore: number, reason: string): MemoryTrustState | null {
   const state = trustStates.get(userId);
   if (!state) return null;
 
@@ -73,7 +73,7 @@ export function updateTrustFactor(userId: string, factorName: string, newScore: 
   return state;
 }
 
-export function getTrustState(userId: string): TrustState | undefined {
+export function getTrustState(userId: string): MemoryTrustState | undefined {
   return trustStates.get(userId);
 }
 

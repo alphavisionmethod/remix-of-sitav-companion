@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
+import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
 import { KPITile, SitaTabs, EmptyState, ContextDrawer, OpportunityCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { SubscriptionTrendsChart, SubscriptionCategoryChart } from "@/components/sita/SitaCharts";
@@ -190,7 +191,7 @@ const SubscriptionsWaste = () => {
       />
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-16"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>
+        <><KPISkeleton count={4} /><SectionSkeleton cards={3} columns={1} /></>
       ) : subscriptions.length === 0 ? (
         <EmptyState icon={CreditCard} title="No subscriptions yet" description="Add your subscriptions to track spending, detect waste, and find savings" action={<SitaButton variant="primary" onClick={() => setShowForm(true)}><Plus className="h-4 w-4" /> Add Subscription</SitaButton>} />
       ) : (

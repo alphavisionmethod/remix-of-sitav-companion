@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
+import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
@@ -89,7 +90,7 @@ const WorkflowsCenter = () => {
       />
 
       {isLoading ? (
-        <div className="flex justify-center py-12"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>
+        <SectionSkeleton cards={3} columns={1} />
       ) : filtered.length === 0 ? (
         <EmptyState icon={Workflow} title="No workflow runs" description="Workflow runs will appear here as SITA executes automated actions. Set up workflows to get started." />
       ) : (

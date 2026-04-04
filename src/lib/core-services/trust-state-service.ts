@@ -2,11 +2,17 @@
 // SITA OS — Trust State Service
 // Trust scoring (0-100) per entity, security flags, audit logs,
 // automatic downgrade on violations, and recovery paths
+// Canonical contracts: TrustState, TrustFlag from contracts/core
 // ═══════════════════════════════════════════════════════════════
+
+import type { TrustFlag as CanonicalTrustFlag } from "@/packages/contracts";
+import type { TrustState as CanonicalTrustState } from "@/packages/contracts/core/trust-state";
+
+export type { CanonicalTrustFlag, CanonicalTrustState };
 
 export type SecurityFlag = "anomaly" | "breach" | "escalation" | "policy-violation" | "suspicious-activity" | "credential-exposure";
 
-export interface TrustState {
+export interface CoreTrustState {
   entityId: string;
   entityType: "user" | "advisor" | "agent" | "connector" | "workflow" | "device";
   score: number;               // 0-100
@@ -22,8 +28,8 @@ export interface TrustChangeRecord {
   entityId: string;
   previousScore: number;
   newScore: number;
-  previousStatus: TrustState["status"];
-  newStatus: TrustState["status"];
+  previousStatus: CoreTrustState["status"];
+  newStatus: CoreTrustState["status"];
   reason: string;
   source: string;
   flagsAdded: SecurityFlag[];
@@ -54,15 +60,15 @@ const RECOVERY_PER_VERIFICATION = 5;
 const MAX_RECOVERY_PER_DAY = 15;
 
 export class TrustStateService {
-  private states: Map<string, TrustState> = new Map();
+  private states: Map<string, CoreTrustState> = new Map();
   private auditLog: TrustChangeRecord[] = [];
   private maxAuditLog = 5000;
 
   /** Initialize or get trust state for an entity */
-  initialize(entityId: string, entityType: TrustState["entityType"], initialScore: number = 80): TrustState {
+  initialize(entityId: string, entityType: CoreTrustState["entityType"], initialScore: number = 80): CoreTrustState {
     if (this.states.has(entityId)) return this.states.get(entityId)!;
 
-    const state: TrustState = {
+    const state: CoreTrustState = {
       entityId,
       entityType,
       score: Math.min(100, Math.max(0, initialScore)),
@@ -78,12 +84,12 @@ export class TrustStateService {
   }
 
   /** Get current trust state */
-  get(entityId: string): TrustState | null {
+  get(entityId: string): CoreTrustState | null {
     return this.states.get(entityId) ?? null;
   }
 
   /** Report a security flag — automatically downgrades trust score */
-  reportFlag(entityId: string, flag: SecurityFlag, source: string, reason?: string): TrustState | null {
+  reportFlag(entityId: string, flag: SecurityFlag, source: string, reason?: string): CoreTrustState | null {
     const state = this.states.get(entityId);
     if (!state) return null;
 
@@ -114,7 +120,7 @@ export class TrustStateService {
   }
 
   /** Clear a security flag */
-  clearFlag(entityId: string, flag: SecurityFlag, source: string, reason?: string): TrustState | null {
+  clearFlag(entityId: string, flag: SecurityFlag, source: string, reason?: string): CoreTrustState | null {
     const state = this.states.get(entityId);
     if (!state) return null;
 
@@ -139,7 +145,7 @@ export class TrustStateService {
   }
 
   /** Record a successful verification — recovers trust score */
-  recordVerification(entityId: string, source: string): TrustState | null {
+  recordVerification(entityId: string, source: string): CoreTrustState | null {
     const state = this.states.get(entityId);
     if (!state) return null;
 
@@ -177,7 +183,7 @@ export class TrustStateService {
   }
 
   /** Manually set trust score (admin action) */
-  setScore(entityId: string, newScore: number, source: string, reason: string): TrustState | null {
+  setScore(entityId: string, newScore: number, source: string, reason: string): CoreTrustState | null {
     const state = this.states.get(entityId);
     if (!state) return null;
 
@@ -204,12 +210,12 @@ export class TrustStateService {
   }
 
   /** Get all entities with a specific status */
-  getByStatus(status: TrustState["status"]): TrustState[] {
+  getByStatus(status: CoreTrustState["status"]): CoreTrustState[] {
     return Array.from(this.states.values()).filter(s => s.status === status);
   }
 
   /** Get all entities with active flags */
-  getFlagged(): TrustState[] {
+  getFlagged(): CoreTrustState[] {
     return Array.from(this.states.values()).filter(s => s.flags.length > 0);
   }
 
@@ -238,7 +244,7 @@ export class TrustStateService {
 
   // ── Private ───────────────────────────────────────────────────
 
-  private scoreToStatus(score: number): TrustState["status"] {
+  private scoreToStatus(score: number): CoreTrustState["status"] {
     if (score >= TRUST_THRESHOLDS.trusted) return "trusted";
     if (score >= TRUST_THRESHOLDS.provisional) return "provisional";
     if (score >= TRUST_THRESHOLDS.restricted) return "restricted";
@@ -256,6 +262,64 @@ export class TrustStateService {
       this.auditLog = this.auditLog.slice(-this.maxAuditLog);
     }
   }
+}
+
+// ── Accuracy Classifier (merged from accuracy-classifier) ───────────────────
+
+export type ConfidenceBand = "high" | "medium" | "low" | "uncertain";
+
+export interface AccuracyClassification {
+  outputId: string;
+  confidence: number;
+  band: ConfidenceBand;
+  factors: Array<{ name: string; weight: number; score: number }>;
+  recommendation: "accept" | "review" | "reject";
+  timestamp: number;
+}
+
+export function classifyAccuracy(outputId: string, factors: Array<{ name: string; weight: number; score: number }>): AccuracyClassification {
+  const totalWeight = factors.reduce((s, f) => s + f.weight, 0);
+  const weightedScore = totalWeight > 0
+    ? factors.reduce((s, f) => s + f.score * (f.weight / totalWeight), 0)
+    : 0;
+
+  const band: ConfidenceBand = weightedScore >= 0.85 ? "high" : weightedScore >= 0.6 ? "medium" : weightedScore >= 0.35 ? "low" : "uncertain";
+  const recommendation = band === "high" ? "accept" : band === "medium" ? "review" : "reject";
+
+  return { outputId, confidence: weightedScore, band, factors, recommendation, timestamp: Date.now() };
+}
+
+// ── Groundedness Gate (merged from groundedness-gate) ────────────────────────
+
+export interface GroundednessResult {
+  outputId: string;
+  isGrounded: boolean;
+  groundednessScore: number;
+  sourcesCited: number;
+  sourcesVerified: number;
+  unsupportedClaims: string[];
+  verdict: "grounded" | "partially-grounded" | "ungrounded";
+}
+
+export function checkGroundedness(
+  outputId: string,
+  claims: string[],
+  verifiedSources: string[],
+  totalSources: number
+): GroundednessResult {
+  const sourcesVerified = verifiedSources.length;
+  const groundednessScore = totalSources > 0 ? sourcesVerified / totalSources : 0;
+  const unsupportedClaims = claims.filter(c => !verifiedSources.some(s => c.toLowerCase().includes(s.toLowerCase())));
+
+  return {
+    outputId,
+    isGrounded: groundednessScore >= 0.7 && unsupportedClaims.length === 0,
+    groundednessScore,
+    sourcesCited: totalSources,
+    sourcesVerified,
+    unsupportedClaims,
+    verdict: groundednessScore >= 0.8 ? "grounded" : groundednessScore >= 0.5 ? "partially-grounded" : "ungrounded",
+  };
 }
 
 // ── Factory ─────────────────────────────────────────────────────

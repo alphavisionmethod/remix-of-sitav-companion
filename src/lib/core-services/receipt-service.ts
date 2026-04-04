@@ -1,14 +1,20 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Receipt Service
 // Hash-chained cryptographic proof generation
+// Canonical contracts: ReceiptType from contracts
 // ═══════════════════════════════════════════════════════════════
 
-export type ReceiptType = "execution-summary" | "approval-record" | "refusal" | "verification-proof" | "verification-failure";
+import type { ReceiptType as CanonicalReceiptType } from "@/packages/contracts";
+
+export type { CanonicalReceiptType };
+
+/** Local receipt types (domain-specific extensions) */
+export type ServiceReceiptType = "execution-summary" | "approval-record" | "refusal" | "verification-proof" | "verification-failure";
 
 export interface Receipt {
   id: string;
   correlationId: string;
-  receiptType: ReceiptType;
+  receiptType: ServiceReceiptType;
   capabilityId?: string;
   envelopeId?: string;
   data: Record<string, unknown>;
@@ -54,7 +60,7 @@ export class ReceiptService {
 
   async createReceipt(
     correlationId: string,
-    receiptType: ReceiptType,
+    receiptType: ServiceReceiptType,
     data: Record<string, unknown>,
     options?: { capabilityId?: string; envelopeId?: string }
   ): Promise<Receipt> {
@@ -124,7 +130,7 @@ export class ReceiptService {
     return this.receipts.filter((r) => r.correlationId === correlationId);
   }
 
-  getReceiptsByType(receiptType: ReceiptType): Receipt[] {
+  getReceiptsByType(receiptType: ServiceReceiptType): Receipt[] {
     return this.receipts.filter((r) => r.receiptType === receiptType);
   }
 

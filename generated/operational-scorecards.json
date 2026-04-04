@@ -1,0 +1,1455 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:43.386Z",
+  "totalServices": 131,
+  "averageHealth": 60,
+  "gradeDistribution": {
+    "healthy": 0,
+    "fair": 131,
+    "degraded": 0,
+    "critical": 0
+  },
+  "scorecards": [
+    {
+      "serviceName": "agent-governance",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "approval-history",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "approval-requests",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "approval-routing",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "escalation-rules",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "advisor-track-composer",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "carryover",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "decision-memory",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "build-approval-package",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "build-boardroom-request",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "build-explanation",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "build-simulation-request",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "choose-advisors",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "choose-execution-mode",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "councils",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "model-router",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "orchestrate-intent",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "accounts",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "business-boardroom-inputs",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "callback-queue",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "collections-command",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "collections",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "contacts",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "customer-dashboard",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "customer-health",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "customer-timeline",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "follow-up",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "invoice-linking",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "lead-intake",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "lead-scoring",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "leakage-engine",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "no-show-recovery",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "opportunity-engine",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "opportunity-ranking",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "proposals",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "quotes",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "reactivation",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "recovered-value-ledger",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "recovery-engine",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "revenue-autopilot",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "stale-lead-detector",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "website-management",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "capability-registry",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "pack-enablement",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "shell-space-routing",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "activity-prep",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "conflict-detector",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "event-continuity",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "gift-reminders",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "grocery-continuity",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "home-admin",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "household-boardroom-inputs",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "household-ops",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "household-overview",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "load-balance",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "prep-checklist",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "prep-derivation",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "provider-memory",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "reconciliation",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "recurring-supplies",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "reservation-ingest",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "responsibilities",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "school-items",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "travel-continuity",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "trip-overview",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "connector-auth",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "connector-fake-mode",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "connector-health",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "council-automation",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "persistence-adapters",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "event-envelope",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "publish-event",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "subscribe-event",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "execute-action",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "execute-connector-action",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "execute-workflow-step",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "account-summary",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "balance-sync",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "bill-calendar",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "capital-map",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "committee-boardroom-inputs",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "crypto-exposure",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "due-soon-alerts",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "entity-capital",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "execution-review",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "family-office-review",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "finance-boardroom-inputs",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "fx-watchlist",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "investment-office",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "liquidity",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "overview",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "portfolio-risk",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "receivables",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "recurring-obligation",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "regime-engine",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "renewal-risk",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "reserve-engine",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "safe-to-spend",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "sinking-fund",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "subscription-detector",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "subscription-waste",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "thesis-vault",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "transaction-categorizer",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "waste-detector",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "boardroom-memory",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "correction",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "preference-memory",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "profile-memory",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "trust-memory",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "workflow-memory",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "collector",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "persistence",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "approval-requirements",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "outbound-comm-policy",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "sensitive-doc-policy",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "truth-boundaries",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "approval-receipts",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "execution-receipts",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "proof-bundles",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "receipts",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "boardroom-packets",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "support-diagnostics",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "diagnostic-bundle",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "incident-classification",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "replay-metadata",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "support-summary",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "postcondition-checks",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "receipt-verification",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "replay-verification",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "rollback-signals",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    },
+    {
+      "serviceName": "verification",
+      "healthScore": 60,
+      "grade": "fair",
+      "metrics": {
+        "dependencyCount": 0,
+        "hasServiceImplementation": false,
+        "hasEdgeFunction": false,
+        "hasHealthEndpoint": true
+      }
+    }
+  ]
+}

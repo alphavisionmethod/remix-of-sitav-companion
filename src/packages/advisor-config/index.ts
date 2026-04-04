@@ -88,3 +88,7 @@ export function getAdvisorConfig(id: AdvisorId): AdvisorConfig {
 export function getAdvisorsByDomain(domain: AdvisorDomain): AdvisorConfig[] {
   return ADVISOR_CONFIGS.filter(a => a.domain === domain);
 }
+
+// ── Sub-module re-exports ────────────────────────────────────
+export * from "./behavioral-engine";
+export * from "./registry";

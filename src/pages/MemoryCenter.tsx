@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
+import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
@@ -149,7 +150,7 @@ const MemoryCenter = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center py-12"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>
+        <SectionSkeleton cards={3} columns={1} />
       ) : filtered.length === 0 ? (
         <EmptyState icon={Brain} title="No memories found" description={search ? "Try a different search term" : "SITA hasn't learned anything in this category yet. Interact with the OS to build memory."} />
       ) : (

@@ -10,7 +10,8 @@ export type BoardroomType =
   | "pipeline-review"
   | "household-ops"
   | "opportunity-board"
-  | "incident-review";
+  | "incident-review"
+  | "governance";
 
 export const BOARDROOM_META: Record<BoardroomType, { label: string; frequency: string; domains: string[]; purpose: string }> = {
   "morning-briefing": { label: "Morning Briefing", frequency: "Daily", domains: ["All"], purpose: "Day's priorities, alerts, and opportunities" },
@@ -20,6 +21,7 @@ export const BOARDROOM_META: Record<BoardroomType, { label: string; frequency: s
   "household-ops": { label: "Household Ops", frequency: "On-demand", domains: ["Concierge"], purpose: "Task status, routines, coordination" },
   "opportunity-board": { label: "Opportunity Board", frequency: "On-demand", domains: ["All"], purpose: "Open opportunities ranked by value" },
   "incident-review": { label: "Incident Review", frequency: "On-demand", domains: ["All"], purpose: "Active incidents, impact, resolution" },
+  "governance": { label: "Governance", frequency: "On-demand", domains: ["All"], purpose: "Trust debt, execution debt, drag, readiness, delegation" },
 };
 
 // ── Section Types ─────────────────────────────────────────
@@ -71,7 +73,7 @@ export interface ChartData {
 
 export type SectionData = MetricCardData[] | TableData | NarrativeData | AlertData[] | ActionItemData[] | ChartData;
 
-export interface BoardroomSection {
+export interface BoardroomContentSection {
   id: string;
   type: SectionType;
   title: string;
@@ -112,7 +114,7 @@ export interface BoardroomPacket {
   type: BoardroomType;
   generatedAt: string;
   timeHorizon: { start: string; end: string };
-  sections: BoardroomSection[];
+  sections: BoardroomContentSection[];
   alerts: AlertData[];
   opportunities: OpportunitySummary[];
   actionItems: ActionItemData[];
@@ -132,7 +134,7 @@ export interface DomainAssessment {
   domain: string;
   generatedAt: string;
   confidence: number;
-  sections: BoardroomSection[];
+  sections: BoardroomContentSection[];
   alerts: AlertData[];
   opportunities: OpportunitySummary[];
   actionItems: ActionItemData[];

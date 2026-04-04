@@ -9,7 +9,7 @@ import { useEntityContext } from "@/contexts/EntityContext";
 import type { CanonicalChainResult } from "@/lib/core-services/index";
 import type { Receipt } from "@/lib/core-services/receipt-service";
 import type { MemoryEntry } from "@/lib/core-services/memory-service";
-import type { TrustState } from "@/lib/core-services/trust-state-service";
+import type { CoreTrustState } from "@/lib/core-services/trust-state-service";
 
 // ── Context ─────────────────────────────────────────────────────
 
@@ -120,7 +120,7 @@ export function useSharedMemory(key?: string) {
 
 export function useSharedTrust(entityId?: string) {
   const kernel = useSitaKernel();
-  const [trustState, setTrustState] = useState<TrustState | null>(null);
+  const [trustState, setTrustState] = useState<CoreTrustState | null>(null);
 
   useEffect(() => {
     const id = entityId ?? kernel.tenantId;
@@ -242,4 +242,197 @@ export function useKernelStatus() {
   }, [kernel]);
 
   return status;
+}
+
+// ── Workflow Recovery Hook ──────────────────────────────────
+
+export function useWorkflowRecovery() {
+  const kernel = useSitaKernel();
+
+  const createCheckpoint = useCallback((workflowId: string, reason: string) => {
+    const wf = kernel.workflows.getWorkflow(workflowId);
+    if (!wf) return null;
+    return kernel.workflowRecovery.createCheckpoint(wf, reason);
+  }, [kernel]);
+
+  const recoverFromCheckpoint = useCallback((checkpointId: string) => {
+    return kernel.workflowRecovery.recoverFromCheckpoint(kernel.workflows, checkpointId);
+  }, [kernel]);
+
+  return {
+    createCheckpoint,
+    recoverFromCheckpoint,
+    getCheckpoints: kernel.workflowRecovery.getCheckpoints.bind(kernel.workflowRecovery),
+    deadLetterQueue: kernel.workflowRecovery.getDeadLetterQueue(),
+    recoveryManager: kernel.workflowRecovery,
+  };
+}
+
+// ── Workflow Replay Hook ────────────────────────────────────
+
+export function useWorkflowReplay() {
+  const kernel = useSitaKernel();
+
+  const replay = useCallback((workflowId: string) => {
+    return kernel.workflowReplay.replay(kernel.workflows, workflowId);
+  }, [kernel]);
+
+  return { replay, replayEngine: kernel.workflowReplay };
+}
+
+// ── Transition Validator Hook ───────────────────────────────
+
+export function useTransitionValidator() {
+  const kernel = useSitaKernel();
+  const [guards, setGuards] = useState(kernel.transitionValidator.getGuards());
+
+  const addGuard = useCallback((guard: Parameters<typeof kernel.transitionValidator.addGuard>[0]) => {
+    kernel.transitionValidator.addGuard(guard);
+    setGuards(kernel.transitionValidator.getGuards());
+  }, [kernel]);
+
+  const validate = useCallback((workflowId: string, toState: Parameters<typeof kernel.workflows.transition>[1]) => {
+    const wf = kernel.workflows.getWorkflow(workflowId);
+    if (!wf) return { allowed: false, blockers: ["Workflow not found"], warnings: [] };
+    return kernel.transitionValidator.validate(wf, toState);
+  }, [kernel]);
+
+  return { guards, addGuard, validate, validator: kernel.transitionValidator };
+}
+
+// ── Receipt Verification Hook ───────────────────────────────
+
+export function useReceiptVerification() {
+  const kernel = useSitaKernel();
+  return {
+    verifyIntegrity: kernel.receiptVerification.verifyIntegrity.bind(kernel.receiptVerification),
+    validateChain: kernel.receiptVerification.validateChain.bind(kernel.receiptVerification),
+    createReceipt: kernel.receiptVerification.createReceipt.bind(kernel.receiptVerification),
+    detectTamper: kernel.receiptVerification.detectTamper.bind(kernel.receiptVerification),
+    service: kernel.receiptVerification,
+  };
+}
+
+// ── Website Manager Hook ────────────────────────────────────
+
+export function useWebsiteManager() {
+  const kernel = useSitaKernel();
+  const [pages, setPages] = useState(kernel.websiteManager.listPages());
+
+  const refresh = useCallback(() => {
+    setPages(kernel.websiteManager.listPages());
+  }, [kernel]);
+
+  const createPage = useCallback((...args: Parameters<typeof kernel.websiteManager.createPage>) => {
+    const page = kernel.websiteManager.createPage(...args);
+    refresh();
+    return page;
+  }, [kernel, refresh]);
+
+  const updatePage = useCallback((...args: Parameters<typeof kernel.websiteManager.updatePage>) => {
+    const page = kernel.websiteManager.updatePage(...args);
+    refresh();
+    return page;
+  }, [kernel, refresh]);
+
+  const publishPage = useCallback((pageId: string) => {
+    const page = kernel.websiteManager.publishPage(pageId);
+    refresh();
+    return page;
+  }, [kernel, refresh]);
+
+  return {
+    pages,
+    createPage,
+    updatePage,
+    publishPage,
+    archivePage: kernel.websiteManager.archivePage.bind(kernel.websiteManager),
+    getStats: kernel.websiteManager.getStats.bind(kernel.websiteManager),
+    auditSEO: kernel.websiteManager.auditSEO.bind(kernel.websiteManager),
+    domains: kernel.websiteManager.listDomains(),
+    manager: kernel.websiteManager,
+    refresh,
+  };
+}
+
+// ── Cloud Control Plane Hook ────────────────────────────────
+
+export function useCloudControlPlane() {
+  const kernel = useSitaKernel();
+  return {
+    registerRegion: kernel.cloudControlPlane.registerRegion.bind(kernel.cloudControlPlane),
+    getRegion: kernel.cloudControlPlane.getRegion.bind(kernel.cloudControlPlane),
+    listRegions: kernel.cloudControlPlane.listRegions.bind(kernel.cloudControlPlane),
+    setRegionStatus: kernel.cloudControlPlane.setRegionStatus.bind(kernel.cloudControlPlane),
+    getRoutingDecision: kernel.cloudControlPlane.getRoutingDecision.bind(kernel.cloudControlPlane),
+    registerProvider: kernel.cloudControlPlane.registerProvider.bind(kernel.cloudControlPlane),
+    getProviderHealth: kernel.cloudControlPlane.getProviderHealth.bind(kernel.cloudControlPlane),
+    failoverRegion: kernel.cloudControlPlane.failoverRegion.bind(kernel.cloudControlPlane),
+    getTopology: kernel.cloudControlPlane.getEnvironmentTopology.bind(kernel.cloudControlPlane),
+    getCostByRegion: kernel.cloudControlPlane.getCostByRegion.bind(kernel.cloudControlPlane),
+    getDemoTopology: kernel.cloudControlPlane.getDemoTopology.bind(kernel.cloudControlPlane),
+    service: kernel.cloudControlPlane,
+  };
+}
+
+// ── Edge Device Runtime Hook ────────────────────────────────
+
+export function useEdgeDeviceRuntime() {
+  const kernel = useSitaKernel();
+  return {
+    registerRuntime: kernel.edgeDeviceRuntime.registerRuntime.bind(kernel.edgeDeviceRuntime),
+    heartbeat: kernel.edgeDeviceRuntime.heartbeat.bind(kernel.edgeDeviceRuntime),
+    getRuntime: kernel.edgeDeviceRuntime.getRuntime.bind(kernel.edgeDeviceRuntime),
+    listRuntimes: kernel.edgeDeviceRuntime.listRuntimes.bind(kernel.edgeDeviceRuntime),
+    assignTask: kernel.edgeDeviceRuntime.assignTask.bind(kernel.edgeDeviceRuntime),
+    reportTaskResult: kernel.edgeDeviceRuntime.reportTaskResult.bind(kernel.edgeDeviceRuntime),
+    getSyncState: kernel.edgeDeviceRuntime.getSyncState.bind(kernel.edgeDeviceRuntime),
+    markSynced: kernel.edgeDeviceRuntime.markSynced.bind(kernel.edgeDeviceRuntime),
+    getOfflineDevices: kernel.edgeDeviceRuntime.getOfflineDevices.bind(kernel.edgeDeviceRuntime),
+    getFleetSummary: kernel.edgeDeviceRuntime.getFleetSummary.bind(kernel.edgeDeviceRuntime),
+    getDemoRuntimes: kernel.edgeDeviceRuntime.getDemoRuntimes.bind(kernel.edgeDeviceRuntime),
+    service: kernel.edgeDeviceRuntime,
+  };
+}
+
+// ── Fleet OTA Hook ──────────────────────────────────────────
+
+export function useFleetOTA() {
+  const kernel = useSitaKernel();
+  return {
+    createRelease: kernel.fleetOTA.createRelease.bind(kernel.fleetOTA),
+    publishRelease: kernel.fleetOTA.publishRelease.bind(kernel.fleetOTA),
+    getRelease: kernel.fleetOTA.getRelease.bind(kernel.fleetOTA),
+    listReleases: kernel.fleetOTA.listReleases.bind(kernel.fleetOTA),
+    createRolloutPlan: kernel.fleetOTA.createRolloutPlan.bind(kernel.fleetOTA),
+    startRollout: kernel.fleetOTA.startRollout.bind(kernel.fleetOTA),
+    pauseRollout: kernel.fleetOTA.pauseRollout.bind(kernel.fleetOTA),
+    resumeRollout: kernel.fleetOTA.resumeRollout.bind(kernel.fleetOTA),
+    rollbackRollout: kernel.fleetOTA.rollbackRollout.bind(kernel.fleetOTA),
+    reportDeviceUpdate: kernel.fleetOTA.reportDeviceUpdate.bind(kernel.fleetOTA),
+    getRolloutProgress: kernel.fleetOTA.getRolloutProgress.bind(kernel.fleetOTA),
+    getVersionDistribution: kernel.fleetOTA.getVersionDistribution.bind(kernel.fleetOTA),
+    getDemoData: kernel.fleetOTA.getDemoData.bind(kernel.fleetOTA),
+    service: kernel.fleetOTA,
+  };
+}
+
+// ── Incident Management Hook ────────────────────────────────
+
+export function useIncidentManagement() {
+  const kernel = useSitaKernel();
+  return {
+    declareIncident: kernel.incidentManagement.declareIncident.bind(kernel.incidentManagement),
+    triageIncident: kernel.incidentManagement.triageIncident.bind(kernel.incidentManagement),
+    updateStatus: kernel.incidentManagement.updateStatus.bind(kernel.incidentManagement),
+    addTimelineEntry: kernel.incidentManagement.addTimelineEntry.bind(kernel.incidentManagement),
+    resolveIncident: kernel.incidentManagement.resolveIncident.bind(kernel.incidentManagement),
+    createPostmortem: kernel.incidentManagement.createPostmortem.bind(kernel.incidentManagement),
+    getIncident: kernel.incidentManagement.getIncident.bind(kernel.incidentManagement),
+    listIncidents: kernel.incidentManagement.listIncidents.bind(kernel.incidentManagement),
+    getActiveIncidents: kernel.incidentManagement.getActiveIncidents.bind(kernel.incidentManagement),
+    getIncidentMetrics: kernel.incidentManagement.getIncidentMetrics.bind(kernel.incidentManagement),
+    getDemoIncidents: kernel.incidentManagement.getDemoIncidents.bind(kernel.incidentManagement),
+    service: kernel.incidentManagement,
+  };
 }

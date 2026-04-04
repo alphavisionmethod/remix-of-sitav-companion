@@ -1,5 +1,6 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { SitaTabs } from "@/components/sita/SitaComponents";
+import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { lazy, Suspense } from "react";
@@ -132,7 +133,7 @@ const ProductivityHub = () => {
       />
       <AnimatePresence mode="wait">
         <motion.div key={activePage} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }}>
-          <Suspense fallback={<div className="flex items-center justify-center min-h-[40vh]"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>}>
+          <Suspense fallback={<div className="p-6"><SectionSkeleton cards={2} columns={2} /></div>}>
             <PageComponent />
           </Suspense>
         </motion.div>

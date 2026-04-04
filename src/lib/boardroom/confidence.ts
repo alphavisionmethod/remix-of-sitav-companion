@@ -13,6 +13,7 @@ const STALE_THRESHOLDS: Record<BoardroomType, number> = {
   "household-ops": 24 * 60 * 60 * 1000,        // 24h
   "opportunity-board": 7 * 24 * 60 * 60 * 1000, // 7d
   "incident-review": 4 * 60 * 60 * 1000,       // 4h
+  "governance": 24 * 60 * 60 * 1000,             // 24h
 };
 
 export function detectStaleData(

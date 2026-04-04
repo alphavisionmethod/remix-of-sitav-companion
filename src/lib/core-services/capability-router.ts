@@ -1,7 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Capability Router
 // Maps intents to capability executors with policy pre-check
+// Canonical contracts: RiskTier, ExecutionMode from contracts
 // ═══════════════════════════════════════════════════════════════
+
+import type { RiskTier as CanonicalRiskTier, ExecutionMode as CanonicalExecutionMode } from "@/packages/contracts";
+
+export type { CanonicalRiskTier, CanonicalExecutionMode };
 
 export interface CapabilityDefinition {
   id: string;

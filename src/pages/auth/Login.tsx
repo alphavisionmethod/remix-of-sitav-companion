@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Mail, Lock, ArrowRight, Eye, EyeOff, ShieldCheck, Zap, Brain, BarChart3, Receipt } from "lucide-react";
+import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
+import { AuthDivider } from "@/components/auth/AuthDivider";
 import { motion } from "framer-motion";
+import { LockScreen } from "@/components/sita/LockScreen";
+import { FirstBootScreen } from "@/components/sita/FirstBootScreen";
 
 const Login = () => {
   const { signIn, signInAsDemo } = useAuth();
@@ -13,6 +17,38 @@ const Login = () => {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Check if returning user (has a cached email)
+  const [savedEmail] = useState(() => localStorage.getItem("sita-last-email") || "");
+  const [showLockScreen, setShowLockScreen] = useState(!!savedEmail);
+  const [showBoot, setShowBoot] = useState(!!savedEmail);
+
+  // Boot sequence for returning users
+  if (showBoot && savedEmail) {
+    return <FirstBootScreen onComplete={() => setShowBoot(false)} />;
+  }
+
+  // Lock screen for returning users
+  if (showLockScreen && savedEmail) {
+    return (
+      <LockScreen
+        userName={savedEmail.split("@")[0]}
+        onUnlock={async (pw) => {
+          const { error } = await signIn(savedEmail, pw);
+          if (error) return false;
+          localStorage.setItem("sita-last-email", savedEmail);
+          toast.success("Welcome back");
+          navigate("/");
+          return true;
+        }}
+        onForgotPassword={() => navigate("/forgot-password")}
+        onSwitchUser={() => {
+          setShowLockScreen(false);
+          localStorage.removeItem("sita-last-email");
+        }}
+      />
+    );
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -21,6 +57,7 @@ const Login = () => {
     if (error) {
       toast.error(error.message);
     } else {
+      localStorage.setItem("sita-last-email", email);
       navigate("/");
     }
   };
@@ -181,19 +218,19 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Demo access */}
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border/50" /></div>
-            <div className="relative flex justify-center"><span className="bg-background px-3 text-[10px] text-muted-foreground uppercase tracking-wider">or</span></div>
-          </div>
+          {/* Social + Demo */}
+          <AuthDivider />
 
-          <button
-            onClick={handleDemoAccess}
-            className="w-full flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-2.5 text-sm font-medium text-foreground hover:bg-secondary/60 transition-all"
-          >
-            <ShieldCheck className="h-4 w-4 text-primary" />
-            Enter Demo Mode
-          </button>
+          <div className="space-y-2.5">
+            <GoogleSignInButton />
+            <button
+              onClick={handleDemoAccess}
+              className="w-full flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-2.5 text-sm font-medium text-foreground hover:bg-secondary/60 transition-all"
+            >
+              <ShieldCheck className="h-4 w-4 text-primary" />
+              Enter Demo Mode
+            </button>
+          </div>
 
           <p className="text-center text-xs text-muted-foreground">
             Don't have an account? <Link to="/signup" className="text-primary hover:underline font-medium">Create one</Link>

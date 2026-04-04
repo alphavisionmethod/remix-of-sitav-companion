@@ -1,0 +1,200 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T20:00:00.664Z",
+  "totalFunctions": 14,
+  "averageScore": 60,
+  "checklist": [
+    "rls-policies",
+    "auth-middleware",
+    "input-validation",
+    "rate-limiting",
+    "csrf-protection",
+    "xss-prevention",
+    "sql-injection-prevention",
+    "secrets-management"
+  ],
+  "entries": [
+    {
+      "functionName": "admin-api",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "admin-intelligence",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "agent-executor",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "agent-heartbeat",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "agent-intelligence",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "agent-scheduler",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "agent-signal",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "brain-core",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "chat-advisor",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "connector-proxy",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "event-processor",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "file-ingestion",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "seed-user-data",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "self-healing",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    }
+  ]
+}

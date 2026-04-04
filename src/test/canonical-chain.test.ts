@@ -24,7 +24,7 @@ import {
   createWorkflowEngine,
   getStateTransitionMap,
   isTerminalState,
-  type WorkflowState,
+  type ServiceWorkflowState as WorkflowState,
 } from "@/lib/core-services/workflow-engine";
 import {
   ProjectionService,

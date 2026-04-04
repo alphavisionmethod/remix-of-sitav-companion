@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
-import type { TwinType } from "@/lib/types/digital-twin.types";
+import type { TwinType } from "@/packages/contracts";
 
 // ── Seed Demo Twins ────────────────────────────────────────────
 function useDemoTwins() {

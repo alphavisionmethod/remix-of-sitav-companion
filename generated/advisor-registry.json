@@ -1,87 +1,11 @@
 {
-  "version": "1.1.0",
-  "generated_at": "2026-04-03T00:00:00Z",
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:57:59.708Z",
+  "total": 1,
   "advisors": [
     {
-      "id": "business-advisor",
-      "name": "Business Advisor",
-      "domain": "business-os",
-      "council": "customer-facing",
-      "maxAutonomy": "L4-simulate",
-      "capabilities": ["crm-analysis", "pipeline-review", "lead-scoring", "revenue-forecasting", "client-health", "follow-up-detection", "opportunity-identification"],
-      "memoryScope": "business-domain + cross-domain-context",
-      "confidenceThreshold": 0.7,
-      "blockedActions": ["execute-payment", "delete-customer", "send-communication-without-approval"],
-      "boardroomContributions": ["business-boardroom", "executive-review", "opportunity-review"],
-      "handoffTargets": ["money-advisor", "concierge-advisor", "strategy-advisor"],
-      "escalationBehavior": {
-        "onConsensusFailure": "escalate-to-strategy-advisor",
-        "onAutonomyCeiling": "escalate-to-owner",
-        "onPolicyViolation": "escalate-to-trust-policy-advisor"
-      },
-      "performanceKpis": ["recommendation-acceptance-rate", "pipeline-accuracy", "revenue-forecast-calibration", "client-health-prediction"],
-      "maturity": "alpha"
-    },
-    {
-      "id": "money-advisor",
-      "name": "Money Advisor",
-      "domain": "finance-os",
-      "council": "customer-facing",
-      "maxAutonomy": "L5-approval-ready",
-      "capabilities": ["cashflow-analysis", "budget-health", "bill-calendar", "reserve-assessment", "subscription-waste", "invoice-aging", "tax-estimation", "investment-review"],
-      "memoryScope": "finance-domain + confidential-tier",
-      "confidenceThreshold": 0.8,
-      "blockedActions": ["execute-payment-over-500", "modify-account", "transfer-funds"],
-      "boardroomContributions": ["finance-boardroom", "executive-review", "family-office-review"],
-      "handoffTargets": ["business-advisor", "strategy-advisor"],
-      "escalationBehavior": {
-        "onConsensusFailure": "escalate-to-strategy-advisor",
-        "onAutonomyCeiling": "escalate-to-owner",
-        "onPolicyViolation": "escalate-to-trust-policy-advisor",
-        "onCriticalFinance": "escalate-to-owner"
-      },
-      "performanceKpis": ["cashflow-prediction-accuracy", "waste-detection-rate", "reserve-recommendation-quality", "tax-estimation-calibration"],
-      "maturity": "alpha"
-    },
-    {
-      "id": "concierge-advisor",
-      "name": "Concierge Advisor",
-      "domain": "concierge-os",
-      "council": "customer-facing",
-      "maxAutonomy": "L4-simulate",
-      "capabilities": ["task-prioritization", "booking-scoring", "conflict-detection", "itinerary-building", "routine-health", "errand-optimization", "household-coordination"],
-      "memoryScope": "household + calendar + cross-domain-context",
-      "confidenceThreshold": 0.7,
-      "blockedActions": ["book-without-approval", "send-communications", "purchase-over-100"],
-      "boardroomContributions": ["family-boardroom", "executive-review"],
-      "handoffTargets": ["business-advisor", "money-advisor", "strategy-advisor"],
-      "escalationBehavior": {
-        "onConsensusFailure": "escalate-to-strategy-advisor",
-        "onAutonomyCeiling": "escalate-to-owner",
-        "onPolicyViolation": "escalate-to-trust-policy-advisor"
-      },
-      "performanceKpis": ["task-completion-rate", "booking-satisfaction", "conflict-prevention-rate", "household-efficiency"],
-      "maturity": "alpha"
-    },
-    {
-      "id": "strategy-advisor",
-      "name": "Strategy Advisor",
-      "domain": "cross-domain",
-      "council": "customer-facing",
-      "maxAutonomy": "L3-draft",
-      "capabilities": ["cross-domain-opportunity-detection", "risk-synthesis", "boardroom-synthesis", "strategic-recommendation"],
-      "memoryScope": "all-domains-read-only",
-      "confidenceThreshold": 0.8,
-      "blockedActions": ["execute-any-action", "modify-data"],
-      "boardroomContributions": ["executive-review", "opportunity-review"],
-      "handoffTargets": ["business-advisor", "money-advisor", "concierge-advisor"],
-      "escalationBehavior": {
-        "onConsensusFailure": "escalate-to-owner",
-        "onAutonomyCeiling": "escalate-to-owner",
-        "onPolicyViolation": "escalate-to-trust-policy-advisor"
-      },
-      "performanceKpis": ["cross-domain-insight-quality", "risk-prediction-accuracy", "strategic-recommendation-acceptance"],
-      "maturity": "scaffold"
+      "name": "ADVISOR_CONFIGS",
+      "source": "src/packages/advisor-config"
     }
   ]
 }

@@ -9,19 +9,10 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { motion } from "framer-motion";
 import { classifyFile, detectSensitivity, type FileClassification, type SensitivityLevel } from "@/lib/core-services/file-ingestion";
 import { FileUploader } from "@/components/sita/FileUploader";
+import { MOCK_FILES_OVERVIEW } from "@/lib/mock-data";
 
 type ViewVariant = "founder" | "household" | "finance" | "premium";
 
-const MOCK_FILES = [
-  { name: "Q1_Financial_Statement.pdf", mime: "application/pdf", text: "Revenue figures, tax obligations, quarterly earnings report" },
-  { name: "School_Enrollment_Form.pdf", mime: "application/pdf", text: "Student enrollment form for Spring semester" },
-  { name: "Vendor_Contract_Apex.docx", mime: "application/msword", text: "Service agreement NDA with auto-renew clause, Net-30 terms, $24,000/yr" },
-  { name: "Invoice_1042_Marcus.pdf", mime: "application/pdf", text: "Invoice for design services, payment due 04/15/2025" },
-  { name: "Passport_Scan.jpg", mime: "image/jpeg", text: "Passport identification document scan" },
-  { name: "Bank_Statement_Mar.pdf", mime: "application/pdf", text: "Bank statement with account routing and SSN information" },
-  { name: "Travel_Itinerary_Hawaii.pdf", mime: "application/pdf", text: "Flight confirmation and hotel reservation for trip" },
-  { name: "Medical_Records_2024.pdf", mime: "application/pdf", text: "Annual medical checkup results, prescription details" },
-];
 
 const sensitivityColor: Record<SensitivityLevel, string> = {
   public: "text-trust-safe",
@@ -34,7 +25,7 @@ const FilesOverview = () => {
   const [view, setView] = useState<ViewVariant>("founder");
 
   const classifiedFiles = useMemo(() =>
-    MOCK_FILES.map(f => ({
+    MOCK_FILES_OVERVIEW.map(f => ({
       ...f,
       classification: classifyFile(f.name, f.mime, f.text),
       sensitivity: detectSensitivity(f.text),

@@ -1,7 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Billing Service
 // Usage tracking, entitlement enforcement, token cost aggregation
+// Canonical contracts: DomainId from contracts
 // ═══════════════════════════════════════════════════════════════
+
+import type { DomainId } from "@/packages/contracts";
+
+export type { DomainId as BillingDomainId };
 
 export type BillingPlan = "free" | "starter" | "professional" | "enterprise";
 export type EntitlementStatus = "active" | "exceeded" | "expired" | "suspended";

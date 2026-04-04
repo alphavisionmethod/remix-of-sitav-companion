@@ -14,22 +14,9 @@ import { DollarSign, Plus, History, Pencil, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
-interface PricingItem {
-  id: string;
-  name: string;
-  price: number;
-  currency: string;
-  cycle: string;
-  status: "active" | "draft" | "archived";
-  lastChanged?: string;
-}
+import { MOCK_PRICING_ITEMS, type OwnerPricingItem as PricingItem } from "@/lib/mock-data";
 
-const DEMO_ITEMS: PricingItem[] = [
-  { id: "1", name: "Advisory Retainer", price: 2500, currency: "USD", cycle: "monthly", status: "active", lastChanged: "2 days ago" },
-  { id: "2", name: "Strategy Session", price: 500, currency: "USD", cycle: "one-time", status: "active", lastChanged: "1 week ago" },
-  { id: "3", name: "Implementation Package", price: 15000, currency: "USD", cycle: "one-time", status: "active", lastChanged: "3 weeks ago" },
-  { id: "4", name: "Monitoring Plan", price: 750, currency: "USD", cycle: "monthly", status: "draft", lastChanged: "Today" },
-];
+const DEMO_ITEMS = MOCK_PRICING_ITEMS;
 
 const PricingEditor = () => {
   const [items, setItems] = useState<PricingItem[]>(DEMO_ITEMS);
@@ -121,5 +108,6 @@ const PricingEditor = () => {
     </motion.div>
   );
 };
+
 
 export default PricingEditor;

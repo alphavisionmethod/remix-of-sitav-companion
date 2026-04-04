@@ -34,7 +34,7 @@ import {
   type PerspectiveLevel,
   type PerspectiveConfig,
 } from "@/lib/advisor-protocol";
-import type { BoardroomSection } from "@/lib/boardroom/types";
+import type { BoardroomContentSection } from "@/lib/boardroom/types";
 import { generateBoardroomPacket } from "@/lib/boardroom";
 import { ADVISOR_CONFIGS, getAdvisorConfig, getAdvisorsByDomain } from "@/packages/advisor-config";
 import { getAdvisorContract, isActionBlocked } from "@/lib/no-hallucination";
@@ -222,7 +222,7 @@ describe("Disagreement Detection", () => {
 // ═══════════════════════════════════════════════════════════════
 
 describe("Perspective Filtering", () => {
-  const mockSections: BoardroomSection[] = [
+  const mockSections: BoardroomContentSection[] = [
     { id: "s1", type: "metric-card", title: "KPIs", data: [] as any },
     { id: "s2", type: "table", title: "Details", data: { columns: [], rows: [], source: "test" } },
     { id: "s3", type: "narrative", title: "Summary", data: { text: "ok", confidence: 0.9, citations: [] } },

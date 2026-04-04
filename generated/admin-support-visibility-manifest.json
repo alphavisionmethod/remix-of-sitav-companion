@@ -1,0 +1,119 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:41.468Z",
+  "totalEndpoints": 8,
+  "supportVisible": 4,
+  "requiresElevation": 2,
+  "entries": [
+    {
+      "endpointId": "admin-command",
+      "name": "AdminCommand",
+      "domain": "admin",
+      "supportVisible": false,
+      "requiresElevation": false,
+      "auditRequired": true,
+      "visibleFields": [],
+      "redactedFields": []
+    },
+    {
+      "endpointId": "admin-session",
+      "name": "AdminSession",
+      "domain": "admin",
+      "supportVisible": true,
+      "requiresElevation": true,
+      "auditRequired": true,
+      "visibleFields": [
+        "sessionId",
+        "role",
+        "startedAt"
+      ],
+      "redactedFields": [
+        "deviceId",
+        "ipAddress"
+      ]
+    },
+    {
+      "endpointId": "admin-audit-entry",
+      "name": "AdminAuditEntry",
+      "domain": "admin",
+      "supportVisible": true,
+      "requiresElevation": false,
+      "auditRequired": true,
+      "visibleFields": [
+        "id",
+        "action",
+        "timestamp",
+        "result"
+      ],
+      "redactedFields": [
+        "ipAddress",
+        "details"
+      ]
+    },
+    {
+      "endpointId": "admin-policy",
+      "name": "AdminPolicy",
+      "domain": "admin",
+      "supportVisible": false,
+      "requiresElevation": true,
+      "auditRequired": true,
+      "visibleFields": [],
+      "redactedFields": []
+    },
+    {
+      "endpointId": "admin-insight",
+      "name": "AdminInsight",
+      "domain": "admin",
+      "supportVisible": false,
+      "requiresElevation": false,
+      "auditRequired": true,
+      "visibleFields": [],
+      "redactedFields": []
+    },
+    {
+      "endpointId": "admin-intelligence-dashboard",
+      "name": "AdminIntelligenceDashboard",
+      "domain": "admin",
+      "supportVisible": false,
+      "requiresElevation": false,
+      "auditRequired": true,
+      "visibleFields": [],
+      "redactedFields": []
+    },
+    {
+      "endpointId": "diagnostic-bundle",
+      "name": "DiagnosticBundle",
+      "domain": "support",
+      "supportVisible": true,
+      "requiresElevation": false,
+      "auditRequired": true,
+      "visibleFields": [
+        "bundleId",
+        "createdAt",
+        "serviceHealth",
+        "errorSummary"
+      ],
+      "redactedFields": [
+        "userIdentity",
+        "financialData",
+        "personalInfo"
+      ]
+    },
+    {
+      "endpointId": "observability-metrics",
+      "name": "ObservabilityMetrics",
+      "domain": "platform",
+      "supportVisible": true,
+      "requiresElevation": false,
+      "auditRequired": false,
+      "visibleFields": [
+        "serviceId",
+        "latencyP50",
+        "latencyP99",
+        "errorRate",
+        "uptime"
+      ],
+      "redactedFields": []
+    }
+  ]
+}

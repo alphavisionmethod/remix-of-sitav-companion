@@ -1,5 +1,5 @@
 import { Home, Briefcase, DollarSign, Headphones, Workflow, Receipt, BarChart3, FolderOpen, Settings, Shield, LogOut,
-  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw } from "lucide-react";
+  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw, Target, GitBranch, MessageSquare, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
@@ -25,6 +25,8 @@ const primaryNav = [
 
 const intelligenceNav = [
   { title: "Advisors", url: "/advisors", icon: Users },
+  { title: "Outcomes", url: "/outcomes", icon: Target },
+  { title: "Spillovers", url: "/spillovers", icon: GitBranch },
   { title: "Inbox", url: "/inbox", icon: Inbox },
   { title: "Activity", url: "/activity", icon: Activity },
   { title: "Opportunities", url: "/opportunities", icon: Sparkles },
@@ -53,6 +55,8 @@ const controlNav = [
   { title: "Memory", url: "/memory", icon: Eye },
   { title: "Automation", url: "/automation", icon: Zap },
   { title: "Agent Activity", url: "/agent-activity", icon: Activity },
+  { title: "Communications", url: "/communications", icon: MessageSquare },
+  { title: "Notifications", url: "/notifications/settings", icon: Bell },
   { title: "System", url: "/system", icon: Shield },
 ];
 
@@ -60,7 +64,6 @@ const bottomNav = [
   { title: "Pack Store", url: "/store", icon: Package },
   { title: "Enterprise", url: "/enterprise", icon: Globe },
   { title: "Settings", url: "/settings", icon: Settings },
-  { title: "Simple Mode", url: "/owner-mode", icon: Sparkles },
   { title: "Control Room", url: "/owner", icon: Shield },
 ];
 
@@ -71,8 +74,8 @@ const ownerSubNav = [
   { title: "Pricing", url: "/owner/pricing", icon: CreditCard },
   { title: "Packs", url: "/owner/packs", icon: Package },
   { title: "Advisors", url: "/owner/advisors", icon: Cpu },
-  { title: "Policy Simulator", url: "/policy-simulator", icon: Sliders },
-  { title: "Workflow Replay", url: "/workflow-replay", icon: RotateCcw },
+  { title: "Policy Simulator", url: "/mission/policies/simulate", icon: Sliders },
+  { title: "Workflow Replay", url: "/mission/workflows/latest/replay", icon: RotateCcw },
   { title: "Observability", url: "/observability", icon: Activity },
   { title: "Users", url: "/users", icon: Users },
 ];

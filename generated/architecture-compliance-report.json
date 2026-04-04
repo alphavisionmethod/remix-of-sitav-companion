@@ -1,0 +1,669 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T20:00:00.664Z",
+  "totalViolations": 131,
+  "errors": 0,
+  "warnings": 131,
+  "byType": {
+    "boundaryViolations": 0,
+    "circularDependencies": 0,
+    "orphanServices": 131
+  },
+  "violations": [
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    },
+    {
+      "type": "orphan-service",
+      "severity": "warning",
+      "description": "Service \"undefined\" in manifest but has no implementation directory or edge function"
+    }
+  ]
+}

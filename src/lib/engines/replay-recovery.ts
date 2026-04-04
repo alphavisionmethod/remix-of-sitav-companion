@@ -5,7 +5,7 @@
 
 import type {
   ReplayPacket, ReplayTimelineEntry, RollbackPacket, RollbackStep,
-  RecoveryAction, DiagnosticBundle, VerificationResult,
+  RecoveryAction, RecoveryDiagnosticBundle, VerificationResult,
   ApprovalChainEntry, ConnectorActionRecord, PolicySnapshotRef,
 } from "../types/replay-recovery.types";
 import type { ActionRecord, OSDomain, EntityScope } from "../types/os-unified.types";
@@ -13,7 +13,7 @@ import type { ActionRecord, OSDomain, EntityScope } from "../types/os-unified.ty
 export class ReplayRecoveryEngine {
   private packets: Map<string, ReplayPacket> = new Map();
   private rollbacks: Map<string, RollbackPacket> = new Map();
-  private diagnostics: Map<string, DiagnosticBundle> = new Map();
+  private diagnostics: Map<string, RecoveryDiagnosticBundle> = new Map();
 
   // ── Build Replay Packet ───────────────────────────────────────
   buildReplayPacket(record: ActionRecord, options: {
@@ -155,14 +155,14 @@ export class ReplayRecoveryEngine {
   }
 
   // ── Build Diagnostic Bundle ───────────────────────────────────
-  buildDiagnosticBundle(workflowId: string, purpose: DiagnosticBundle["createdFor"]): DiagnosticBundle {
+  buildDiagnosticBundle(workflowId: string, purpose: RecoveryDiagnosticBundle["createdFor"]): RecoveryDiagnosticBundle {
     // Find related replay packet
     const replayPacket = Array.from(this.packets.values()).find(p => p.workflowId === workflowId);
     if (!replayPacket) throw new Error(`No replay packet found for workflow ${workflowId}`);
 
     const rollbackPacket = Array.from(this.rollbacks.values()).find(r => r.workflowId === workflowId);
 
-    const bundle: DiagnosticBundle = {
+    const bundle: RecoveryDiagnosticBundle = {
       id: `diag_${Date.now()}`,
       workflowId,
       correlationId: replayPacket.correlationId,
@@ -192,7 +192,7 @@ export class ReplayRecoveryEngine {
   // ── Queries ───────────────────────────────────────────────────
   getReplayPacket(id: string): ReplayPacket | undefined { return this.packets.get(id); }
   getRollback(id: string): RollbackPacket | undefined { return this.rollbacks.get(id); }
-  getDiagnostic(id: string): DiagnosticBundle | undefined { return this.diagnostics.get(id); }
+  getDiagnostic(id: string): RecoveryDiagnosticBundle | undefined { return this.diagnostics.get(id); }
 
   getPacketsForWorkflow(workflowId: string): ReplayPacket[] {
     return Array.from(this.packets.values()).filter(p => p.workflowId === workflowId);

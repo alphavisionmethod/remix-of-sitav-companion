@@ -16,9 +16,17 @@ const DEFAULT_CHECK_INTERVAL_MS = 30_000;
 
 // ── Fleet Health Service ────────────────────────────────────────
 
+export type HealthDegradedCallback = (serviceId: string, status: ServiceHealthStatus, healthScore: number, metrics: ServiceMetrics) => void;
+
 export class FleetHealthService {
   private services = new Map<string, ServiceHealthRecord>();
   private degradedServices = new Map<string, DegradedService>();
+  private healthDegradedCallbacks: HealthDegradedCallback[] = [];
+
+  /** Register a callback fired when any service transitions to degraded/unhealthy */
+  onHealthDegraded(cb: HealthDegradedCallback): void {
+    this.healthDegradedCallbacks.push(cb);
+  }
 
   // ── Service Registration ──────────────────────────────────
 
@@ -84,6 +92,10 @@ export class FleetHealthService {
     // Handle degraded mode transitions
     if (status === "degraded" || status === "unhealthy") {
       this.enterDegradedMode(serviceId, `Health check: ${status}, score=${healthScore}`);
+      // Fire degraded callbacks for auto-incident declaration
+      for (const cb of this.healthDegradedCallbacks) {
+        try { cb(serviceId, status, healthScore, newMetrics); } catch { /* don't break health checks */ }
+      }
     } else if (status === "healthy") {
       this.checkDegradedExit(serviceId, consecutiveSuccesses);
     }

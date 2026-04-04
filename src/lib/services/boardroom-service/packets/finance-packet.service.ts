@@ -1,8 +1,8 @@
 // SITA OS — Finance Packet Service
 import type { DomainId } from "@/packages/contracts";
-import type { BoardroomPacket } from "./business-packet.service";
+import type { ServiceBoardroomPacket } from "./business-packet.service";
 
-export function generateFinancePacket(): BoardroomPacket {
+export function generateFinancePacket(): ServiceBoardroomPacket {
   return {
     id: crypto.randomUUID(), domain: "finance", generatedAt: new Date().toISOString(), confidence: 0.91,
     staleWarnings: ["Investment positions 6h stale"],

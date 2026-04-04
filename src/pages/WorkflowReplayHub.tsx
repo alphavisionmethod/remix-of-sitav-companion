@@ -13,7 +13,8 @@ import { cn } from "@/lib/utils";
 import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/admin";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useRecoverySummary } from "@/hooks/use-mission-control-views";
-import type { ReplayableWorkflowView } from "@/lib/types/admin-view-models";
+import type { ReplayableWorkflowView } from "@/packages/contracts";
+import { MOCK_REPLAYABLE_WORKFLOWS } from "@/lib/mock-data";
 import {
   RotateCcw, Search, Play, AlertTriangle, CheckCircle, Clock,
   ChevronRight, Shield, Zap, Eye,
@@ -29,15 +30,8 @@ export default function WorkflowReplayHub() {
   // Engine-backed replayable workflows (replaces hardcoded mockReplayable)
   const replayable: ReplayableWorkflowView[] = useMemo(() => {
     // Seed demo data via the engine
-    const demoWorkflows: ReplayableWorkflowView[] = [
-      { id: "wf-001", name: "Invoice Payment — Acme Corp", domain: "finance", status: "failed", failedAt: new Date(Date.now() - 3600000).toISOString(), stuckReason: "Connector timeout", replayCount: 0, riskLevel: "medium" },
-      { id: "wf-002", name: "Lead Follow-up — Enterprise Deal", domain: "business", status: "replayable", replayCount: 1, lastReplay: new Date(Date.now() - 7200000).toISOString(), riskLevel: "low" },
-      { id: "wf-003", name: "Grocery Reorder — Weekly Supplies", domain: "concierge", status: "risky", stuckReason: "Payment method expired", replayCount: 0, riskLevel: "high" },
-      { id: "wf-004", name: "Customer Health Check — Q1 Batch", domain: "business", status: "completed", replayCount: 2, lastReplay: new Date(Date.now() - 86400000).toISOString(), riskLevel: "low" },
-      { id: "wf-005", name: "Budget Reconciliation — March", domain: "finance", status: "replayable", replayCount: 0, riskLevel: "medium" },
-      { id: "wf-006", name: "Subscription Renewal — BigCorp", domain: "business", status: "failed", failedAt: new Date(Date.now() - 7200000).toISOString(), stuckReason: "API rate limit", replayCount: 1, riskLevel: "high" },
-    ];
-    return demoWorkflows;
+    // Mock data imported from central module
+    return MOCK_REPLAYABLE_WORKFLOWS;
   }, [engines.replay]);
 
   const filtered = replayable.filter(w =>

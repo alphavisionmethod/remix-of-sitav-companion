@@ -1,128 +1,37 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Business OS Domain Engine
 // Pure deterministic functions for business intelligence
+// Canonical types: @/packages/contracts/domain-types/business-engine
 // ═══════════════════════════════════════════════════════════════
 
-// ── Types ────────────────────────────────────────────────────────
+import type {
+  BusinessLead,
+  Customer,
+  PipelineOpportunity,
+  BusinessHealthResult,
+  BusinessRisk,
+  BusinessOpportunity,
+  PipelineAnalysis,
+  LeadScoreResult,
+  RevenueForeccast,
+  FollowUpItem,
+  ClientHealthResult,
+} from "@/packages/contracts";
 
-export interface Lead {
-  id: string;
-  name: string;
-  email?: string;
-  source?: string;
-  score?: number;
-  engagementScore: number;   // 0-100
-  recencyDays: number;       // days since last interaction
-  fitScore: number;          // 0-100 (ICP match)
-  estimatedValue: number;    // dollars
-  status: "new" | "contacted" | "qualified" | "nurturing" | "lost";
-  createdAt: number;
-  lastContactAt?: number;
-}
-
-export interface Customer {
-  id: string;
-  name: string;
-  totalRevenue: number;
-  invoiceCount: number;
-  overdueInvoices: number;
-  avgPayDays: number;
-  lastInteractionDays: number;
-  healthScore?: number;
-  churnRisk?: number;
-  tier: "enterprise" | "mid-market" | "smb" | "starter";
-  status: "active" | "at-risk" | "churned" | "onboarding";
-  createdAt: number;
-}
-
-export interface PipelineOpportunity {
-  id: string;
-  name: string;
-  stage: "discovery" | "qualification" | "proposal" | "negotiation" | "closing" | "won" | "lost";
-  valueCents: number;
-  probability: number;      // 0-1
-  expectedCloseDate: number;
-  daysInStage: number;
-  lastActivityDays: number;
-  assignedTo?: string;
-}
-
-export interface BusinessHealthResult {
-  overallScore: number;           // 0-100
-  revenueHealth: number;
-  pipelineHealth: number;
-  customerHealth: number;
-  operationalHealth: number;
-  risks: BusinessRisk[];
-  opportunities: BusinessOpportunity[];
-  summary: string;
-}
-
-export interface BusinessRisk {
-  type: string;
-  severity: "low" | "medium" | "high" | "critical";
-  description: string;
-  affectedEntity?: string;
-  suggestedAction: string;
-}
-
-export interface BusinessOpportunity {
-  type: string;
-  potential: "low" | "medium" | "high";
-  description: string;
-  estimatedValue?: number;
-  suggestedAction: string;
-}
-
-export interface PipelineAnalysis {
-  totalValue: number;
-  weightedValue: number;
-  stageBreakdown: Record<string, { count: number; value: number; weighted: number }>;
-  staleDealCount: number;
-  avgDaysInPipeline: number;
-  conversionRate: number;
-  velocityScore: number;      // 0-100
-  healthIndicator: "healthy" | "sluggish" | "at-risk" | "critical";
-}
-
-export interface LeadScoreResult {
-  totalScore: number;       // 0-100
-  engagementWeight: number;
-  recencyWeight: number;
-  fitWeight: number;
-  valueWeight: number;
-  tier: "hot" | "warm" | "cool" | "cold";
-  suggestedAction: string;
-}
-
-export interface RevenueForeccast {
-  currentMonthProjected: number;
-  nextMonthProjected: number;
-  quarterProjected: number;
-  trend: "growing" | "stable" | "declining";
-  confidence: number;         // 0-1
-  dataPoints: number;
-}
-
-export interface FollowUpItem {
-  entityId: string;
-  entityType: "lead" | "customer" | "opportunity";
-  entityName: string;
-  urgency: "immediate" | "today" | "this-week" | "next-week";
-  reason: string;
-  suggestedAction: string;
-  daysSinceLastContact: number;
-}
-
-export interface ClientHealthResult {
-  id: string;
-  name: string;
-  healthScore: number;       // 0-100
-  churnRisk: number;         // 0-1
-  revenueAtRisk: number;
-  factors: { factor: string; impact: number; direction: "positive" | "negative" }[];
-  suggestedAction: string;
-}
+// Re-export canonical types for consumers
+export type {
+  BusinessLead,
+  Customer,
+  PipelineOpportunity,
+  BusinessHealthResult,
+  BusinessRisk,
+  BusinessOpportunity,
+  PipelineAnalysis,
+  LeadScoreResult,
+  RevenueForeccast,
+  FollowUpItem,
+  ClientHealthResult,
+};
 
 // ── Business Health Assessment ──────────────────────────────────
 
@@ -256,7 +165,7 @@ export function analyzePipeline(opportunities: PipelineOpportunity[]): PipelineA
 
 // ── Lead Scoring ────────────────────────────────────────────────
 
-export function scoreLead(lead: Lead): LeadScoreResult {
+export function scoreLead(lead: BusinessLead): LeadScoreResult {
   // Weights: engagement 30%, recency 25%, fit 25%, value 20%
   const engagementWeight = Math.min(100, lead.engagementScore) * 0.30;
   const recencyWeight = Math.max(0, 100 - lead.recencyDays * 3) * 0.25;
@@ -327,7 +236,7 @@ export function forecastRevenue(revenueHistory: number[]): RevenueForeccast {
 // ── Follow-Up Identification ────────────────────────────────────
 
 export function identifyFollowUps(
-  leads: Lead[],
+  leads: BusinessLead[],
   customers: Customer[],
   opportunities: PipelineOpportunity[]
 ): FollowUpItem[] {

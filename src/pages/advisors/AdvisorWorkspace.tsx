@@ -20,7 +20,7 @@ import {
 import {
   mockAdvisors, mockRecommendations, mockSimulations, mockApprovals,
   mockProofHistory, mockMemoryItems, mockSynthesis,
-} from "@/lib/mocks/advisor-mission-control";
+} from "@/lib/mock-data/advisor-mission-control";
 import {
   Brain, Users, GitCompare, Play, CheckCircle, FileText, Eye,
   BarChart3, Sparkles, ArrowRight, Shield, Clock, TrendingUp,

@@ -7,7 +7,7 @@ import { useMemo, useState } from "react";
 import {
   mockInternalAgents, mockIncidents, mockConnectorHealth, mockStuckWorkflows,
   mockCostAnomalies, mockPolicyAnomalies, mockReleaseSafety, mockSafeMode,
-} from "@/lib/mocks/advisor-mission-control";
+} from "@/lib/mock-data/advisor-mission-control";
 import type {
   MissionControlSummaryView, WhatMattersItem, ConnectorSummaryView,
   ConnectorDetailView, ConnectorLogEntry, ConnectorHealthView,
@@ -15,7 +15,7 @@ import type {
   FounderCostSummaryView, RecoverySummaryView, ReleaseSummaryView,
   PermissionMatrixView, AITeamSummaryView, DiagnosticsSummaryView,
   SystemActivityEntry, ControlMode, PackSummaryView,
-} from "@/lib/types/mission-control.types";
+} from "@/packages/contracts";
 
 // ── Control Mode ────────────────────────────────────────────────
 export function useControlMode() {

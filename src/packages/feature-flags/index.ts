@@ -101,3 +101,53 @@ export interface FlagAuditEntry {
   readonly timestamp: number;
   readonly reason?: string;
 }
+
+// ── Tenant-Scoped Overrides ─────────────────────────────────
+
+export interface TenantFlagOverride {
+  readonly flagKey: string;
+  readonly tenantId: string;
+  readonly enabled: boolean;
+  readonly setAt: number;
+  readonly setBy: string;
+  readonly reason?: string;
+}
+
+const tenantOverrides = new Map<string, TenantFlagOverride>();
+
+function overrideKey(flagKey: string, tenantId: string): string {
+  return `${tenantId}::${flagKey}`;
+}
+
+export const setTenantOverride = (flagKey: string, tenantId: string, enabled: boolean, meta?: { setBy?: string; reason?: string }): TenantFlagOverride => {
+  const override: TenantFlagOverride = {
+    flagKey,
+    tenantId,
+    enabled,
+    setAt: Date.now(),
+    setBy: meta?.setBy ?? "system",
+    reason: meta?.reason,
+  };
+  tenantOverrides.set(overrideKey(flagKey, tenantId), override);
+  return override;
+};
+
+export const removeTenantOverride = (flagKey: string, tenantId: string): boolean => {
+  return tenantOverrides.delete(overrideKey(flagKey, tenantId));
+};
+
+export const getTenantOverrides = (tenantId: string): TenantFlagOverride[] => {
+  return Array.from(tenantOverrides.values()).filter(o => o.tenantId === tenantId);
+};
+
+export const getAllTenantOverrides = (): TenantFlagOverride[] => {
+  return Array.from(tenantOverrides.values());
+};
+
+export const isEnabledForTenant = (key: string, tenantId: string, ctx?: FlagContext): boolean => {
+  // tenant override takes priority
+  const override = tenantOverrides.get(overrideKey(key, tenantId));
+  if (override) return override.enabled;
+  // fall back to global evaluation
+  return isEnabled(key, ctx);
+};

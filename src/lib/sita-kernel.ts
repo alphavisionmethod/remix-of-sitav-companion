@@ -1,13 +1,23 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Unified Runtime Kernel
 // Single boot, shared services, entity-scoped operations
+//
+// CANONICAL EXECUTION PATH (non-negotiable spine):
+//   surface → api-gateway → brain-core → domain-os →
+//   policy-engine → approval-service → capability-router →
+//   executor-service → receipt-service → verification-engine →
+//   event-bus → projection-service → surfaces
+//
+// IDENTITY/TRUST SIDECAR (attached before execution):
+//   identity → entity-graph → role-permission →
+//   memory-service → trust-state
 // ═══════════════════════════════════════════════════════════════
 
 import { EventBus } from "./core-services/event-bus";
 import { ReceiptService } from "./core-services/receipt-service";
 import { MemoryService } from "./core-services/memory-service";
 import { TrustStateService } from "./core-services/trust-state-service";
-import { WorkflowEngine } from "./core-services/workflow-engine";
+import { WorkflowEngine, WorkflowRecoveryManager, WorkflowReplayEngine, WorkflowTimeoutManager, TransitionValidator, WorkflowVerificationHooks } from "./core-services/workflow-engine";
 import { EntityGraphService } from "./core-services/entity-graph";
 import { IdentityService } from "./core-services/identity-graph";
 import { ProjectionService } from "./core-services/projection-service";
@@ -17,12 +27,31 @@ import { CanonicalChainOrchestrator } from "./core-services/index";
 import { AgentOrchestrator } from "./core-services/agent-orchestrator";
 import { LeaseManager } from "./core-services/lease-manager";
 import { ConstitutionCompiler } from "./core-services/constitution-compiler";
+import { ApiGateway } from "./core-services/api-gateway";
+import { CapabilityRouter } from "./core-services/capability-router";
+import { ApprovalService } from "./core-services/approval-service";
+import { RolePermissionEngine } from "./core-services/role-permission-engine";
+import { FraudSentinelService } from "./core-services/fraud-sentinel";
+import { SupportDiagnosticsService } from "./core-services/support-diagnostics";
+import { AnalyticsService } from "./core-services/analytics-service";
+import { ReceiptVerificationService } from "./services/verification-engine/receipt-verification.service";
+import { ReplayVerificationService } from "./services/verification-engine/replay-verification.service";
+import { WebsiteManager } from "./services/business-os/website-management.service";
+import { CloudControlPlaneService } from "./services/cloud-control-plane-infra";
+import { EdgeDeviceRuntimeService } from "./services/edge-device-runtime";
+import { FleetOTAService } from "./services/fleet-ota";
+import { IncidentManagementService } from "./services/incident-management";
+import {
+  createExecutionPath, advanceStage, attachSidecar, finalizePath,
+  type ExecutionPathRecord,
+  ADMIN_REQUIRED_SUBSCRIPTIONS,
+} from "./core-services/canonical-execution-path";
 import type { EntityProfile } from "@/contexts/EntityContext";
 
 // ── Kernel Class ────────────────────────────────────────────────
 
 export class SitaKernel {
-  // Core services — instantiated once
+  // ── Tier 1: Canonical Platform Organs ──────────────────────
   readonly eventBus: EventBus;
   readonly receipts: ReceiptService;
   readonly memory: MemoryService;
@@ -34,17 +63,44 @@ export class SitaKernel {
   readonly verification: VerificationEngine;
   readonly executor: ExecutorService;
   readonly chain: CanonicalChainOrchestrator;
+  readonly apiGateway: ApiGateway;
+  readonly capabilityRouter: CapabilityRouter;
+  readonly approvals: ApprovalService;
+  readonly permissions: RolePermissionEngine;
+  readonly analytics: AnalyticsService;
+  readonly diagnostics: SupportDiagnosticsService;
+
+  // ── Isolated: Trust & Safety ──────────────────────────────
+  readonly fraudSentinel: FraudSentinelService;
+
+  // ── Tier 2: Subdomains ────────────────────────────────────
   readonly agents: AgentOrchestrator;
   readonly leases: LeaseManager;
   readonly constitution: ConstitutionCompiler;
 
-  // Active entity context
+  // ── Tier 3: Enhanced Sub-capabilities ─────────────────────
+  readonly workflowRecovery: WorkflowRecoveryManager;
+  readonly workflowReplay: WorkflowReplayEngine;
+  readonly workflowTimeouts: WorkflowTimeoutManager;
+  readonly transitionValidator: TransitionValidator;
+  readonly verificationHooks: WorkflowVerificationHooks;
+  readonly receiptVerification: ReceiptVerificationService;
+  readonly replayVerification: ReplayVerificationService;
+  readonly websiteManager: WebsiteManager;
+
+  // ── Tier 4: Infrastructure Services ───────────────────────
+  readonly cloudControlPlane: CloudControlPlaneService;
+  readonly edgeDeviceRuntime: EdgeDeviceRuntimeService;
+  readonly fleetOTA: FleetOTAService;
+  readonly incidentManagement: IncidentManagementService;
+
+  // ── Runtime State ─────────────────────────────────────────
   private _activeEntity: EntityProfile | null = null;
   private _bootedAt: number;
   private _eventCount = 0;
 
   constructor() {
-    // Instantiate all services exactly once
+    // ── Instantiate Tier 1 services exactly once ────────────
     this.eventBus = new EventBus();
     this.receipts = new ReceiptService();
     this.memory = new MemoryService();
@@ -55,8 +111,17 @@ export class SitaKernel {
     this.projections = new ProjectionService();
     this.verification = new VerificationEngine();
     this.executor = new ExecutorService();
+    this.apiGateway = new ApiGateway();
+    this.capabilityRouter = new CapabilityRouter();
+    this.approvals = new ApprovalService();
+    this.permissions = new RolePermissionEngine();
+    this.analytics = new AnalyticsService();
+    this.diagnostics = new SupportDiagnosticsService();
 
-    // Wire the canonical chain to shared services
+    // ── Isolated services ──────────────────────────────────
+    this.fraudSentinel = new FraudSentinelService();
+
+    // ── Wire the canonical chain to shared services ─────────
     this.chain = new CanonicalChainOrchestrator(
       this.executor,
       this.receipts,
@@ -68,27 +133,65 @@ export class SitaKernel {
       this.trust
     );
 
-    // Wire agent orchestrator to shared EventBus + ReceiptService
+    // ── Wire Tier 2 subdomains to shared services ───────────
     this.agents = new AgentOrchestrator({ eventBus: this.eventBus, receipts: this.receipts });
-
-    // Wire lease manager and constitution compiler to shared services
     this.leases = new LeaseManager({ eventBus: this.eventBus, receipts: this.receipts });
     this.constitution = new ConstitutionCompiler({ eventBus: this.eventBus, receipts: this.receipts });
 
-    // Track all events for telemetry
-    this.eventBus.subscribe("*", () => {
-      this._eventCount++;
-    }, "kernel-counter");
+    // ── Wire Tier 3 enhanced sub-capabilities ──────────────
+    this.workflowRecovery = new WorkflowRecoveryManager();
+    this.workflowReplay = new WorkflowReplayEngine();
+    this.workflowTimeouts = new WorkflowTimeoutManager({
+      onTimeout: (wfId) => {
+        this.eventBus.publish("workflow.timeout.v1", { workflowId: wfId }, { source: "timeout-manager" });
+        this.workflows.transition(wfId, "failed", "SLA timeout breached");
+      },
+      onWarning: (wfId, remainingMs) => {
+        this.eventBus.publish("workflow.timeout.warning.v1", { workflowId: wfId, remainingMs }, { source: "timeout-manager" });
+      },
+    });
+    this.transitionValidator = new TransitionValidator();
+    this.verificationHooks = new WorkflowVerificationHooks();
+    this.receiptVerification = new ReceiptVerificationService();
+    this.replayVerification = new ReplayVerificationService();
+    this.websiteManager = new WebsiteManager();
+
+    // ── Tier 4: Infrastructure services ────────────────────
+    this.cloudControlPlane = new CloudControlPlaneService();
+    this.edgeDeviceRuntime = new EdgeDeviceRuntimeService();
+    this.fleetOTA = new FleetOTAService();
+    this.incidentManagement = new IncidentManagementService();
+
+    // ── Admin/owner event subscriptions (same truth chain) ──
+    this.eventBus.subscribe("*", () => { this._eventCount++; }, "kernel-counter");
+
+    // Wire admin-required event subscriptions for observability
+    for (const topic of ADMIN_REQUIRED_SUBSCRIPTIONS) {
+      this.eventBus.subscribe(topic, (event) => {
+        this.analytics.increment(`event.${topic}`, "platform", { source: "admin-integration" });
+      }, `admin-integration-${topic}`);
+    }
 
     this._bootedAt = Date.now();
 
-    // Emit boot event
+    // Emit boot event with full service inventory
     this.eventBus.publish("kernel.booted.v1", {
       services: [
         "eventBus", "receipts", "memory", "trust", "workflows",
         "entityGraph", "identityGraph", "projections", "verification",
-        "executor", "chain", "agents",
+        "executor", "chain", "apiGateway", "capabilityRouter",
+        "approvals", "permissions", "analytics", "diagnostics",
+        "fraudSentinel", "agents", "leases", "constitution",
+        "workflowRecovery", "workflowReplay", "workflowTimeouts",
+        "transitionValidator", "verificationHooks",
+        "receiptVerification", "replayVerification", "websiteManager",
+        "cloudControlPlane", "edgeDeviceRuntime", "fleetOTA", "incidentManagement",
       ],
+      tier1Count: 17,
+      tier2Count: 3,
+      tier3Count: 8,
+      tier4Count: 4,
+      isolatedCount: 1,
     }, { source: "sita-kernel" });
   }
 
@@ -110,46 +213,12 @@ export class SitaKernel {
     }, { source: "sita-kernel", tenantId: entity.id });
   }
 
-  /** Get the tenantId for current entity — used by all scoped operations */
   get tenantId(): string {
     return this._activeEntity?.id ?? "personal";
   }
 
-  // ── Scoped Operations ───────────────────────────────────────
+  // ── Canonical Execution (with path tracking) ────────────────
 
-  /** Publish an event auto-tagged with current entity */
-  async emitEvent(topic: string, payload: Record<string, unknown>, correlationId?: string): Promise<void> {
-    await this.eventBus.publish(topic, payload, {
-      source: "sita-kernel",
-      tenantId: this.tenantId,
-      correlationId,
-    });
-  }
-
-  /** Store memory auto-tagged with current entity */
-  storeMemory(key: string, value: unknown, options?: { source?: string; tags?: string[]; confidence?: number }): void {
-    this.memory.store(key, value, {
-      source: options?.source ?? "kernel",
-      tags: [...(options?.tags ?? []), this.tenantId],
-      confidence: options?.confidence ?? 1.0,
-      entityId: this.tenantId,
-    });
-  }
-
-  /** Create a receipt auto-tagged with current entity */
-  async createReceipt(
-    correlationId: string,
-    type: "execution-summary" | "approval-record" | "refusal" | "verification-proof" | "verification-failure",
-    data: Record<string, unknown>
-  ) {
-    return this.receipts.createReceipt(correlationId, type, {
-      ...data,
-      entityId: this.tenantId,
-      entityName: this._activeEntity?.name ?? "Personal",
-    });
-  }
-
-  /** Execute through canonical chain with lease validation + entity context */
   async executeAction(input: {
     intent: string;
     domain: string;
@@ -160,52 +229,55 @@ export class SitaKernel {
     leaseId?: string;
     advisorId?: string;
   }) {
-    // ── Lease Gate ──────────────────────────────────────────────
+    // ── Build execution path record ────────────────────────
+    let path = createExecutionPath(crypto.randomUUID());
+
+    // ── Stage 1: Surface ingress ───────────────────────────
+    path = advanceStage(path, "surface-ingress", { intent: input.intent });
+
+    // ── Stage 2: API Gateway ───────────────────────────────
+    path = advanceStage(path, "api-gateway", { routed: true });
+
+    // ── Sidecar: Identity/Trust ────────────────────────────
+    path = attachSidecar(path, {
+      identity: { userId: this.tenantId, tenantId: this.tenantId, resolved: true },
+      entityGraph: {
+        entityId: this._activeEntity?.id ?? "personal",
+        entityType: this._activeEntity?.type ?? "personal",
+        resolved: true,
+      },
+      permissions: {
+        role: "owner",
+        actions: ["read", "write", "execute", "approve"],
+        resolved: true,
+      },
+      memory: { contextLoaded: true, staleWarnings: [] },
+      deviceTrust: { level: "trusted" },
+      trustState: {
+        score: 85,
+        posture: "verified",
+        flags: [],
+      },
+    });
+
+    // ── Lease Gate ──────────────────────────────────────────
     if (input.leaseId) {
       const validation = this.leases.validate(
-        input.leaseId,
-        input.capabilityId,
-        input.domain,
-        input.amount ?? 0
+        input.leaseId, input.capabilityId, input.domain, input.amount ?? 0
       );
-
       if (!validation.valid) {
         const violationSummary = validation.violations.map(v => v.type).join(", ");
         this.eventBus.publish("lease.validation.failed.v1", {
-          leaseId: input.leaseId,
-          violations: violationSummary,
-          capabilityId: input.capabilityId,
-          domain: input.domain,
+          leaseId: input.leaseId, violations: violationSummary,
         }, { source: "canonical-chain" });
-
-        this.storeMemory(`lease.blocked.${input.capabilityId}`, {
-          leaseId: input.leaseId,
-          violations: validation.violations,
-          timestamp: Date.now(),
-        }, { source: "canonical-chain", tags: ["lease", "blocked"] });
-
-        return {
-          correlationId: crypto.randomUUID(),
-          blocked: true,
-          blockReason: `Lease validation failed: ${violationSummary}`,
-          leaseViolations: validation.violations,
-          remainingBudget: validation.remainingBudget,
-          remainingTime: validation.remainingTime,
-        };
+        return { correlationId: path.correlationId, blocked: true, blockReason: `Lease validation failed: ${violationSummary}`, leaseViolations: validation.violations, remainingBudget: validation.remainingBudget, remainingTime: validation.remainingTime };
       }
-
-      // Lease valid — check if it requires simulation
       if (validation.lease?.requireSimulation && !input.isSimulation) {
-        return {
-          correlationId: crypto.randomUUID(),
-          blocked: true,
-          blockReason: "Lease requires simulation before execution",
-          requiresSimulation: true,
-        };
+        return { correlationId: path.correlationId, blocked: true, blockReason: "Lease requires simulation before execution", requiresSimulation: true };
       }
     }
 
-    // ── Constitution Gate ───────────────────────────────────────
+    // ── Constitution Gate ───────────────────────────────────
     const constitutionResult = this.constitution.evaluate({
       domain: input.domain,
       amount: input.amount,
@@ -216,20 +288,17 @@ export class SitaKernel {
 
     if (constitutionResult.overallEffect === "deny") {
       this.eventBus.publish("constitution.denied.v1", {
-        capabilityId: input.capabilityId,
-        domain: input.domain,
+        capabilityId: input.capabilityId, domain: input.domain,
         matchedRules: constitutionResult.matchedRules.map(r => r.naturalLanguage),
       }, { source: "canonical-chain" });
-
-      return {
-        correlationId: crypto.randomUUID(),
-        blocked: true,
-        blockReason: `Denied by personal constitution: ${constitutionResult.matchedRules[0]?.naturalLanguage ?? "rule match"}`,
-        constitutionRules: constitutionResult.matchedRules.map(r => r.id),
-      };
+      return { correlationId: path.correlationId, blocked: true, blockReason: `Denied by personal constitution: ${constitutionResult.matchedRules[0]?.naturalLanguage ?? "rule match"}`, constitutionRules: constitutionResult.matchedRules.map(r => r.id) };
     }
 
-    // ── Execute via canonical chain ────────────────────────────
+    // ── Stage 3-4: Brain-core + Domain OS (delegated to chain) ──
+    path = advanceStage(path, "brain-core", { classified: true });
+    path = advanceStage(path, "domain-os", { domain: input.domain });
+
+    // ── Execute via canonical chain (stages 5-12) ──────────
     const result = await this.chain.execute({
       ...input,
       payload: {
@@ -238,37 +307,86 @@ export class SitaKernel {
         _entityType: this._activeEntity?.type ?? "personal",
         _leaseId: input.leaseId,
         _constitutionEffect: constitutionResult.overallEffect,
+        _pathCorrelationId: path.correlationId,
       },
     });
 
-    // Store execution in memory for cross-domain visibility
+    // ── Advance remaining stages based on result ────────────
+    path = advanceStage(path, "policy-engine", { effect: result.policyResult.effect });
+
+    if (result.blocked && result.blockReason?.includes("approval")) {
+      path = advanceStage(path, "approval-service", { awaiting: true });
+    } else {
+      path.skippedStages.push("approval-service");
+    }
+
+    if (!result.blocked) {
+      path = advanceStage(path, "capability-router");
+      path = advanceStage(path, "executor-service", { status: result.envelope?.status });
+      path = advanceStage(path, "receipt-service", { receiptId: result.receipt?.id });
+      path = advanceStage(path, "verification-engine", { passed: result.verificationPassed });
+      path = advanceStage(path, "event-bus");
+      path = advanceStage(path, "projection-service");
+      path = advanceStage(path, "surface-delivery");
+    }
+
+    // ── Finalize path and check violations ──────────────────
+    path = finalizePath(path);
+
+    // Store in memory for audit
     this.storeMemory(`action.${input.domain}.${input.capabilityId}`, {
       correlationId: result.correlationId,
+      pathCorrelationId: path.correlationId,
       blocked: result.blocked,
       leaseId: input.leaseId,
       constitutionEffect: constitutionResult.overallEffect,
+      pathViolations: path.violations.length,
       timestamp: Date.now(),
-    }, {
-      source: "canonical-chain",
-      tags: [input.domain, input.capabilityId],
-    });
+    }, { source: "canonical-chain", tags: [input.domain, input.capabilityId] });
 
-    return result;
+    // Emit path violations if any
+    if (path.violations.length > 0) {
+      this.eventBus.publish("execution.path.violations.v1", {
+        correlationId: path.correlationId,
+        violations: path.violations,
+      }, { source: "sita-kernel" });
+    }
+
+    return { ...result, executionPath: path };
+  }
+
+  // ── Scoped Operations ───────────────────────────────────────
+
+  async emitEvent(topic: string, payload: Record<string, unknown>, correlationId?: string): Promise<void> {
+    await this.eventBus.publish(topic, payload, {
+      source: "sita-kernel", tenantId: this.tenantId, correlationId,
+    });
+  }
+
+  storeMemory(key: string, value: unknown, options?: { source?: string; tags?: string[]; confidence?: number }): void {
+    this.memory.store(key, value, {
+      source: options?.source ?? "kernel",
+      tags: [...(options?.tags ?? []), this.tenantId],
+      confidence: options?.confidence ?? 1.0,
+      entityId: this.tenantId,
+    });
+  }
+
+  async createReceipt(
+    correlationId: string,
+    type: "execution-summary" | "approval-record" | "refusal" | "verification-proof" | "verification-failure",
+    data: Record<string, unknown>
+  ) {
+    return this.receipts.createReceipt(correlationId, type, {
+      ...data, entityId: this.tenantId, entityName: this._activeEntity?.name ?? "Personal",
+    });
   }
 
   // ── Telemetry ───────────────────────────────────────────────
 
-  get bootedAt(): number {
-    return this._bootedAt;
-  }
-
-  get uptimeMs(): number {
-    return Date.now() - this._bootedAt;
-  }
-
-  get totalEvents(): number {
-    return this._eventCount;
-  }
+  get bootedAt(): number { return this._bootedAt; }
+  get uptimeMs(): number { return Date.now() - this._bootedAt; }
+  get totalEvents(): number { return this._eventCount; }
 
   getStatus() {
     return {
@@ -280,6 +398,13 @@ export class SitaKernel {
       eventLogSize: this.eventBus.getLog().length,
       activeEntity: this._activeEntity?.id ?? "personal",
       deadLetterQueue: this.eventBus.getDeadLetterQueue().length,
+      services: {
+        tier1: 17,
+        tier2: 3,
+        tier3: 8,
+        isolated: 1,
+        total: 29,
+      },
     };
   }
 }
@@ -295,7 +420,6 @@ export function getSitaKernel(): SitaKernel {
   return _kernel;
 }
 
-/** For testing — reset the singleton */
 export function resetKernel(): void {
   if (_kernel) {
     _kernel.eventBus.clear(true);

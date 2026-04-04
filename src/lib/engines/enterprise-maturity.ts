@@ -9,15 +9,15 @@
 // ────────────────────────────────────────────────────────────────
 
 export type OrgType = "business" | "family-office" | "household" | "enterprise";
-export type VisibilityBoundary = "private" | "shared" | "org-wide" | "cross-entity";
+export type OrgVisibility = "private" | "shared" | "org-wide" | "cross-entity";
 export type DelegationLevel = "owner" | "principal" | "operator" | "delegate" | "viewer";
 
-export interface OrgEntity {
+export interface ControlPlaneOrg {
   id: string;
   name: string;
   type: OrgType;
   parentId?: string;
-  visibility: VisibilityBoundary;
+  visibility: OrgVisibility;
   delegationChain: DelegationGrant[];
   policies: string[];
   boardroomId?: string;
@@ -38,7 +38,7 @@ export interface DelegationGrant {
 }
 
 export interface FamilyOfficeView {
-  entities: OrgEntity[];
+  entities: ControlPlaneOrg[];
   crossEntityCashPosition: number;
   crossEntityObligations: number;
   crossEntityOpportunities: number;
@@ -48,18 +48,18 @@ export interface FamilyOfficeView {
 }
 
 export class EnterpriseControlPlaneEngine {
-  private orgs: Map<string, OrgEntity> = new Map();
+  private orgs: Map<string, ControlPlaneOrg> = new Map();
   private delegations: DelegationGrant[] = [];
 
-  createOrg(org: Omit<OrgEntity, "id" | "createdAt">): OrgEntity {
-    const entity: OrgEntity = { ...org, id: `org_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`, createdAt: new Date().toISOString() };
+  createOrg(org: Omit<ControlPlaneOrg, "id" | "createdAt">): ControlPlaneOrg {
+    const entity: ControlPlaneOrg = { ...org, id: `org_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`, createdAt: new Date().toISOString() };
     this.orgs.set(entity.id, entity);
     return entity;
   }
 
-  getOrg(id: string): OrgEntity | undefined { return this.orgs.get(id); }
+  getOrg(id: string): ControlPlaneOrg | undefined { return this.orgs.get(id); }
 
-  listOrgs(type?: OrgType): OrgEntity[] {
+  listOrgs(type?: OrgType): ControlPlaneOrg[] {
     const all = Array.from(this.orgs.values());
     return type ? all.filter(o => o.type === type) : all;
   }
@@ -143,7 +143,7 @@ export interface SupportCase {
   slaBreached: boolean;
 }
 
-export interface DiagnosticBundle {
+export interface SupportDiagnosticBundle {
   id: string;
   caseId?: string;
   generatedAt: string;
@@ -170,7 +170,7 @@ export interface KnownIssue {
 
 export class SupportDiagnosticsEngine {
   private cases: Map<string, SupportCase> = new Map();
-  private bundles: Map<string, DiagnosticBundle> = new Map();
+  private bundles: Map<string, SupportDiagnosticBundle> = new Map();
   private knownIssues: KnownIssue[] = [
     { id: "ki-001", pattern: "connector_timeout", description: "Connector sync exceeds 30s timeout", remediation: "Check connector health and retry. If persistent, reconnect.", affectedModules: ["connectors", "sync"], autoResolve: false, occurrences: 12, lastSeen: new Date().toISOString() },
     { id: "ki-002", pattern: "approval_stuck", description: "Approval workflow stuck in pending > 24h", remediation: "Escalate to owner or auto-approve if within policy bounds.", affectedModules: ["approvals", "workflows"], autoResolve: true, occurrences: 5, lastSeen: new Date().toISOString() },
@@ -228,8 +228,8 @@ export class SupportDiagnosticsEngine {
     return true;
   }
 
-  generateDiagnosticBundle(caseId?: string, correlationIds: string[] = []): DiagnosticBundle {
-    const bundle: DiagnosticBundle = {
+  generateDiagnosticBundle(caseId?: string, correlationIds: string[] = []): SupportDiagnosticBundle {
+    const bundle: SupportDiagnosticBundle = {
       id: `diag_${Date.now()}`,
       caseId,
       generatedAt: new Date().toISOString(),
@@ -418,7 +418,7 @@ export interface Release {
   status: ReleaseStatus;
   ring: RolloutRing;
   features: string[];
-  killSwitches: KillSwitch[];
+  killSwitches: EnterpriseKillSwitch[];
   confidenceScore: number;
   impactPrediction: { affectedWorkflows: number; affectedConnectors: number; riskLevel: "low" | "medium" | "high" };
   readinessChecklist: { item: string; met: boolean }[];
@@ -429,7 +429,7 @@ export interface Release {
   rolledBackAt?: string;
 }
 
-export interface KillSwitch {
+export interface EnterpriseKillSwitch {
   id: string;
   name: string;
   scope: "global" | "workflow-family" | "connector" | "feature";
@@ -447,11 +447,67 @@ export interface EnvironmentConfig {
   featureFlags: string[];
   frozenUntil?: string;
   incidentFreeze: boolean;
+  deepFrozen?: boolean;
+  deepFreezeRecord?: DeepFreezeRecord;
+}
+
+// ── Ring Progression Gates ─────────────────────────────────
+export type RingGateType = "error-rate" | "latency" | "success-rate" | "duration" | "manual-approval" | "custom";
+export type GateResult = "pass" | "fail" | "pending" | "skipped";
+
+export interface RingGate {
+  readonly id: string;
+  readonly ring: RolloutRing;
+  readonly name: string;
+  readonly type: RingGateType;
+  readonly threshold: number;
+  readonly operator: "lt" | "lte" | "gt" | "gte" | "eq";
+  readonly durationMs: number;
+  readonly required: boolean;
+}
+
+export interface GateEvaluation {
+  readonly gateId: string;
+  readonly gate: RingGate;
+  readonly result: GateResult;
+  readonly currentValue: number;
+  readonly evaluatedAt: number;
+  readonly reason: string;
+}
+
+export interface RingTimelineEntry {
+  readonly releaseId: string;
+  readonly ring: RolloutRing;
+  readonly enteredAt: number;
+  exitedAt?: number;
+  readonly gateResults: GateEvaluation[];
+}
+
+// ── Deep Freeze ────────────────────────────────────────────
+export interface DeepFreezeRecord {
+  readonly id: string;
+  readonly envName: string;
+  readonly reason: string;
+  readonly activatedBy: string;
+  readonly activatedAt: number;
+  readonly durationMs: number;
+  readonly expiresAt: number;
+  deactivatedAt?: number;
+  deactivatedBy?: string;
+  blockedActions: string[];
+}
+
+export interface FreezeHistory {
+  readonly envName: string;
+  records: DeepFreezeRecord[];
+  currentlyFrozen: boolean;
+  totalFreezeCount: number;
+  totalFreezeMs: number;
 }
 
 export class ReleaseSafetyEngine {
   private releases: Map<string, Release> = new Map();
-  private killSwitches: KillSwitch[] = [];
+  private killSwitches: EnterpriseKillSwitch[] = [];
   private environments: EnvironmentConfig[] = [
     { name: "production", type: "production", activeRelease: "v6.0.0", featureFlags: ["premium-boardroom", "digital-twins"], frozenUntil: undefined, incidentFreeze: false },
     { name: "staging", type: "staging", activeRelease: "v6.1.0-rc1", featureFlags: ["premium-boardroom", "digital-twins", "scenario-lab-v2"], frozenUntil: undefined, incidentFreeze: false },
@@ -482,8 +538,8 @@ export class ReleaseSafetyEngine {
     return true;
   }
 
-  activateKillSwitch(name: string, scope: KillSwitch["scope"], scopeValue: string, reason: string): KillSwitch {
-    const ks: KillSwitch = { id: `ks_${Date.now()}`, name, scope, scopeValue, active: true, triggeredBy: "system", triggeredAt: new Date().toISOString(), reason };
+  activateKillSwitch(name: string, scope: EnterpriseKillSwitch["scope"], scopeValue: string, reason: string): EnterpriseKillSwitch {
+    const ks: EnterpriseKillSwitch = { id: `ks_${Date.now()}`, name, scope, scopeValue, active: true, triggeredBy: "system", triggeredAt: new Date().toISOString(), reason };
     this.killSwitches.push(ks);
     return ks;
   }
@@ -494,7 +550,7 @@ export class ReleaseSafetyEngine {
     return false;
   }
 
-  getActiveKillSwitches(): KillSwitch[] { return this.killSwitches.filter(k => k.active); }
+  getActiveKillSwitches(): EnterpriseKillSwitch[] { return this.killSwitches.filter(k => k.active); }
 
   freezeEnvironment(envName: string, until: string): boolean {
     const env = this.environments.find(e => e.name === envName);
@@ -516,6 +572,158 @@ export class ReleaseSafetyEngine {
   }
 
   listReleases(): Release[] { return Array.from(this.releases.values()).sort((a, b) => b.createdAt.localeCompare(a.createdAt)); }
+
+  // ── Ring Progression Gates ──────────────────────────────────
+  private ringGates: RingGate[] = [];
+  private ringTimelines: RingTimelineEntry[] = [];
+  private tenantRingOverrides = new Map<string, RolloutRing>();
+  private deepFreezeHistory: DeepFreezeRecord[] = [];
+
+  addRingGate(ring: RolloutRing, gate: Omit<RingGate, "id" | "ring">): RingGate {
+    const g: RingGate = { ...gate, id: `gate_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`, ring };
+    this.ringGates.push(g);
+    return g;
+  }
+
+  getRingGates(ring: RolloutRing): RingGate[] {
+    return this.ringGates.filter(g => g.ring === ring);
+  }
+
+  evaluateRingGates(releaseId: string, ring: RolloutRing): { allPassed: boolean; results: GateEvaluation[] } {
+    const gates = this.getRingGates(ring);
+    const results: GateEvaluation[] = gates.map(gate => {
+      // Simulate gate evaluation with realistic heuristics
+      const currentValue = gate.type === "error-rate" ? Math.random() * 3
+        : gate.type === "latency" ? 50 + Math.random() * 200
+        : gate.type === "success-rate" ? 95 + Math.random() * 5
+        : gate.type === "duration" ? Date.now() - (this.ringTimelines.find(t => t.releaseId === releaseId && t.ring === ring)?.enteredAt ?? Date.now())
+        : 0;
+
+      const compare = (val: number, thresh: number, op: RingGate["operator"]): boolean => {
+        switch (op) {
+          case "lt": return val < thresh;
+          case "lte": return val <= thresh;
+          case "gt": return val > thresh;
+          case "gte": return val >= thresh;
+          case "eq": return val === thresh;
+        }
+      };
+
+      const passed = gate.type === "manual-approval" ? false : compare(currentValue, gate.threshold, gate.operator);
+      const result: GateResult = gate.type === "manual-approval" ? "pending" : passed ? "pass" : "fail";
+
+      return {
+        gateId: gate.id,
+        gate,
+        result,
+        currentValue: Math.round(currentValue * 100) / 100,
+        evaluatedAt: Date.now(),
+        reason: result === "pass" ? `${gate.name}: ${currentValue.toFixed(2)} ${gate.operator} ${gate.threshold} ✓`
+          : result === "pending" ? `${gate.name}: Awaiting manual approval`
+          : `${gate.name}: ${currentValue.toFixed(2)} ${gate.operator} ${gate.threshold} ✗`,
+      };
+    });
+
+    return { allPassed: results.every(r => r.result === "pass"), results };
+  }
+
+  getRingTimeline(releaseId: string): RingTimelineEntry[] {
+    return this.ringTimelines.filter(t => t.releaseId === releaseId).sort((a, b) => a.enteredAt - b.enteredAt);
+  }
+
+  recordRingEntry(releaseId: string, ring: RolloutRing): void {
+    // close previous ring timeline for this release
+    const prev = this.ringTimelines.find(t => t.releaseId === releaseId && !t.exitedAt);
+    if (prev) prev.exitedAt = Date.now();
+
+    this.ringTimelines.push({ releaseId, ring, enteredAt: Date.now(), gateResults: [] });
+  }
+
+  setTenantRingOverride(tenantId: string, ring: RolloutRing): void {
+    this.tenantRingOverrides.set(tenantId, ring);
+  }
+
+  getTenantRingOverride(tenantId: string): RolloutRing | undefined {
+    return this.tenantRingOverrides.get(tenantId);
+  }
+
+  removeTenantRingOverride(tenantId: string): boolean {
+    return this.tenantRingOverrides.delete(tenantId);
+  }
+
+  // ── Deep Freeze ─────────────────────────────────────────────
+
+  activateDeepFreeze(envName: string, reason: string, durationMs: number, activatedBy = "system"): DeepFreezeRecord | null {
+    const env = this.environments.find(e => e.name === envName);
+    if (!env) return null;
+
+    const now = Date.now();
+    const record: DeepFreezeRecord = {
+      id: `freeze_${now}_${Math.random().toString(36).slice(2, 8)}`,
+      envName,
+      reason,
+      activatedBy,
+      activatedAt: now,
+      durationMs,
+      expiresAt: now + durationMs,
+      blockedActions: ["deploy", "schema-migration", "config-change", "feature-flag-toggle", "secret-rotation"],
+    };
+
+    env.deepFrozen = true;
+    env.deepFreezeRecord = record;
+    env.frozenUntil = new Date(record.expiresAt).toISOString();
+    this.deepFreezeHistory.push(record);
+    return record;
+  }
+
+  deactivateDeepFreeze(envName: string, authorizedBy: string): boolean {
+    const env = this.environments.find(e => e.name === envName);
+    if (!env || !env.deepFrozen) return false;
+
+    env.deepFrozen = false;
+    env.frozenUntil = undefined;
+
+    const record = this.deepFreezeHistory.find(r => r.envName === envName && !r.deactivatedAt);
+    if (record) {
+      record.deactivatedAt = Date.now();
+      record.deactivatedBy = authorizedBy;
+    }
+    env.deepFreezeRecord = undefined;
+    return true;
+  }
+
+  isDeepFrozen(envName: string): boolean {
+    const env = this.environments.find(e => e.name === envName);
+    if (!env?.deepFrozen) return false;
+    // auto-expire
+    if (env.deepFreezeRecord && Date.now() > env.deepFreezeRecord.expiresAt) {
+      this.deactivateDeepFreeze(envName, "system-auto-expire");
+      return false;
+    }
+    return true;
+  }
+
+  getFreezeHistory(envName: string): FreezeHistory {
+    const records = this.deepFreezeHistory.filter(r => r.envName === envName);
+    const totalMs = records.reduce((s, r) => s + ((r.deactivatedAt ?? Date.now()) - r.activatedAt), 0);
+    return {
+      envName,
+      records: records.sort((a, b) => b.activatedAt - a.activatedAt),
+      currentlyFrozen: this.isDeepFrozen(envName),
+      totalFreezeCount: records.length,
+      totalFreezeMs: totalMs,
+    };
+  }
+
+  getFreezeSummary(): Array<{ envName: string; frozen: boolean; since?: number; reason?: string; expiresAt?: number }> {
+    return this.environments.map(env => ({
+      envName: env.name,
+      frozen: this.isDeepFrozen(env.name),
+      since: env.deepFreezeRecord?.activatedAt,
+      reason: env.deepFreezeRecord?.reason,
+      expiresAt: env.deepFreezeRecord?.expiresAt,
+    }));
+  }
 
   getActiveReleases(): Release[] {
     return this.listReleases().filter(r => !["rolled-back", "frozen", "draft"].includes(r.status));
@@ -674,7 +882,7 @@ export class TrustDeviceEngine {
 // ────────────────────────────────────────────────────────────────
 
 export type ProofPacketType = "workflow" | "approval" | "financial" | "boardroom" | "release" | "incident" | "device-signing";
-export type RetentionPolicy = "30d" | "90d" | "1y" | "3y" | "7y" | "permanent";
+export type EnterpriseRetentionPolicy = "30d" | "90d" | "1y" | "3y" | "7y" | "permanent";
 
 export interface ProofPacket {
   id: string;
@@ -684,7 +892,7 @@ export interface ProofPacket {
   generatedAt: string;
   contents: { category: string; items: { label: string; value: string; verified: boolean }[] }[];
   signatureChain: { deviceId: string; signedAt: string; hash: string }[];
-  retentionPolicy: RetentionPolicy;
+  retentionPolicy: EnterpriseRetentionPolicy;
   tamperEvidence: { hash: string; previousHash: string; sequence: number };
   exportable: boolean;
 }

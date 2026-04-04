@@ -10,28 +10,14 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { MOCK_AUTOMATION_RULES, MOCK_DELEGATIONS } from "@/lib/mock-data";
 import {
   Zap, Shield, Clock, CheckCircle, Eye, Lock, Settings, ArrowRight, Sparkles,
   DollarSign, Briefcase, Home, Mail, Calendar, AlertTriangle, RefreshCw, Pause, Play,
   Plus, ToggleLeft, ToggleRight, Trash2
 } from "lucide-react";
 
-const demoRules = [
-  { id: "1", name: "Send invoice reminders", trigger_event: "3 days before due date", steps: [{ action: "Email reminder to customer" }], active: true, domain: "Business" },
-  { id: "2", name: "Auto-approve bills under $200", trigger_event: "New bill detected", steps: [{ action: "Pay if under threshold" }], active: true, domain: "Money" },
-  { id: "3", name: "Grocery restock alerts", trigger_event: "Consumption pattern detected", steps: [{ action: "Create shopping list" }], active: true, domain: "Household" },
-  { id: "4", name: "Lead follow-up drafts", trigger_event: "No contact in 24h", steps: [{ action: "Draft follow-up email" }], active: true, domain: "Business" },
-  { id: "5", name: "Travel conflict detection", trigger_event: "New booking", steps: [{ action: "Alert if conflict" }], active: false, domain: "Concierge" },
-];
 
-const delegations = [
-  { action: "Invoice reminders", level: "Fully delegated", approvalNeeded: false, threshold: "All amounts" },
-  { action: "Bill payments", level: "Threshold-based", approvalNeeded: true, threshold: "Under $200 auto, over $200 approval" },
-  { action: "Lead follow-ups", level: "Draft for review", approvalNeeded: true, threshold: "All outbound comms" },
-  { action: "Grocery orders", level: "Fully delegated", approvalNeeded: false, threshold: "Under $100" },
-  { action: "Calendar scheduling", level: "Suggest only", approvalNeeded: true, threshold: "All changes" },
-  { action: "Subscription cancellations", level: "Approval required", approvalNeeded: true, threshold: "Always" },
-];
 
 const AutomationCenter = () => {
   const location = useLocation();
@@ -42,7 +28,7 @@ const AutomationCenter = () => {
 
   const activeTab = (() => {
     if (location.pathname.includes("/trust")) return "trust";
-    if (location.pathname.includes("/delegations")) return "delegations";
+    if (location.pathname.includes("/MOCK_DELEGATIONS")) return "MOCK_DELEGATIONS";
     return "rules";
   })();
 
@@ -81,7 +67,7 @@ const AutomationCenter = () => {
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["workflows_automation"] }); toast.success("Workflow updated"); },
   });
 
-  const rules = isDemoMode ? demoRules : liveWorkflows.map(w => ({
+  const rules = isDemoMode ? MOCK_AUTOMATION_RULES : liveWorkflows.map(w => ({
     id: w.id,
     name: w.name,
     trigger_event: w.trigger_event,
@@ -112,7 +98,7 @@ const AutomationCenter = () => {
       <SitaTabs
         tabs={[
           { key: "rules", label: "Rules", count: rules.length },
-          { key: "delegations", label: "Delegations", count: delegations.length },
+          { key: "MOCK_DELEGATIONS", label: "Delegations", count: MOCK_DELEGATIONS.length },
           { key: "trust", label: "Trust Levels" },
         ]}
         active={activeTab}
@@ -164,9 +150,9 @@ const AutomationCenter = () => {
         </div>
       )}
 
-      {activeTab === "delegations" && (
+      {activeTab === "MOCK_DELEGATIONS" && (
         <div className="space-y-2">
-          {delegations.map((d, i) => (
+          {MOCK_DELEGATIONS.map((d, i) => (
             <SitaCard key={i} hover={false} className="p-4">
               <div className="flex items-center justify-between">
                 <div>

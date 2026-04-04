@@ -3,7 +3,12 @@
 // Full-stack automation: playbooks, auto-actions, activity feed,
 // next-best-action orchestration, and business digital twins
 // Demo-first, integration-ready architecture
+// Canonical contracts: WorkflowStatus, ExecutionMode from contracts
 // ═══════════════════════════════════════════════════════════════
+
+import type { WorkflowStatus as CanonicalWorkflowStatus, ExecutionMode as CanonicalExecutionMode } from "@/packages/contracts";
+
+export type { CanonicalWorkflowStatus, CanonicalExecutionMode };
 
 // ── Types ────────────────────────────────────────────────────────
 

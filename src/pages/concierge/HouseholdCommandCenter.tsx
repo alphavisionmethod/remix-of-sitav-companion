@@ -1,5 +1,6 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
+import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { useHouseholds, useHouseholdMembers, useCreateHousehold, useAddHouseholdMember, useDeleteHouseholdMember } from "@/hooks/use-household";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -36,7 +37,7 @@ const HouseholdCommandCenter = () => {
     });
   };
 
-  if (isLoading) return <div className="flex justify-center py-16"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
+  if (isLoading) return <div className="space-y-6"><SectionSkeleton cards={3} columns={3} /></div>;
 
   if (!households?.length && !showCreate) {
     return (

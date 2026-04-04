@@ -324,7 +324,7 @@ export function getPerspectiveConfig(level: PerspectiveLevel): PerspectiveConfig
 
 // ── Perspective Filtering ──────────────────────────────────────
 
-import type { BoardroomSection } from "@/lib/boardroom/types";
+import type { BoardroomContentSection } from "@/lib/boardroom/types";
 
 const SECTION_TYPE_MAP: Record<string, keyof PerspectiveConfig> = {
   "metric-card": "showMetricCards",
@@ -336,9 +336,9 @@ const SECTION_TYPE_MAP: Record<string, keyof PerspectiveConfig> = {
 };
 
 export function filterSectionsByPerspective(
-  sections: BoardroomSection[],
+  sections: BoardroomContentSection[],
   level: PerspectiveLevel
-): BoardroomSection[] {
+): BoardroomContentSection[] {
   const config = PERSPECTIVE_CONFIGS[level];
   return sections.filter(section => {
     const configKey = SECTION_TYPE_MAP[section.type];

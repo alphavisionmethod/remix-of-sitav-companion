@@ -9,7 +9,7 @@ import {
   mockHouseholdTasks, mockFamilyEvents, mockGroceryList, mockTravel,
   mockActivity, mockOpportunityInsights, mockMemoryItems,
   mockAutomationRules, mockConnectors, mockAITeam, mockIncidents, mockCosts,
-} from "@/lib/mocks";
+} from "@/lib/mock-data/legacy-display-mocks";
 
 // Generic hook factory: returns mock data in demo mode, queries Supabase in live mode
 function useSitaQuery<T>(
@@ -81,7 +81,7 @@ export function useCommunications() {
 
 // ── Money Hooks ──
 export function useBills() {
-  return useSitaQuery("bills", mockBills, "bills", { orderBy: "due_date", ascending: true });
+  return useSitaQuery("bills", mockBills, "bills", { orderBy: "due_at", ascending: true });
 }
 
 export function useSubscriptions() {
@@ -141,7 +141,7 @@ export function useCashFlow() {
 
 // ── Concierge Hooks ──
 export function useHouseholdTasks() {
-  return useSitaQuery("household-tasks", mockHouseholdTasks, "tasks", { orderBy: "created_at" });
+  return useSitaQuery("household-tasks", mockHouseholdTasks, "household_tasks", { orderBy: "created_at" });
 }
 
 export function useFamilyEvents() {
@@ -178,7 +178,37 @@ export function useOpportunityInsights() {
 
 // ── Memory ──
 export function useMemoryItems() {
-  return useSitaQuery("memory", mockMemoryItems, "user_memory", { orderBy: "created_at" });
+  return useSitaQuery("memory", mockMemoryItems, "sita_memory_entries", { orderBy: "created_at" });
+}
+
+// ── Goals ──
+export function useGoals() {
+  const mockGoals = [
+    { id: "G-001", title: "Stabilize monthly cash flow", domain: "money", target_value: 10000, current_value: 7200, unit: "USD", status: "active" },
+    { id: "G-002", title: "Close 5 new clients this quarter", domain: "business", target_value: 5, current_value: 2, unit: "clients", status: "active" },
+    { id: "G-003", title: "Reduce household task overdue rate", domain: "concierge", target_value: 0, current_value: 3, unit: "overdue tasks", status: "active" },
+  ];
+  return useSitaQuery("goals", mockGoals, "goals", { orderBy: "created_at" });
+}
+
+// ── Workflows ──
+export function useWorkflows() {
+  const mockWorkflows = [
+    { id: "WF-001", name: "Lead Follow-Up Sequence", domain: "business", status: "active", trigger_type: "event", steps: [] },
+    { id: "WF-002", name: "Bill Payment Automation", domain: "money", status: "active", trigger_type: "schedule", steps: [] },
+    { id: "WF-003", name: "Weekly Family Sync", domain: "concierge", status: "paused", trigger_type: "schedule", steps: [] },
+  ];
+  return useSitaQuery("workflows", mockWorkflows, "workflows", { orderBy: "created_at" });
+}
+
+// ── Policies ──
+export function usePolicies() {
+  const mockPolicies = [
+    { id: "POL-001", name: "Auto-approve payments under $100", domain: "money", rule_type: "threshold", enabled: true },
+    { id: "POL-002", name: "Require approval for new subscriptions", domain: "money", rule_type: "approval", enabled: true },
+    { id: "POL-003", name: "Flag leads inactive > 48h", domain: "business", rule_type: "alert", enabled: true },
+  ];
+  return useSitaQuery("policies", mockPolicies, "policies", { orderBy: "created_at" });
 }
 
 // ── System ──
@@ -272,7 +302,7 @@ export function useProofRecords() {
       if (isDemoMode) return mockProof;
       if (!user) return [];
       const { data, error } = await (db as any)
-        .from("proof_records")
+        .from("sita_proof_records")
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
@@ -291,7 +321,7 @@ export function useReceipts() {
     { id: "R-002", type: "bill_paid", domain: "finance", entity_id: "BILL-rent", payload: { amount: 2400, method: "ach" } },
     { id: "R-003", type: "subscription_renewed", domain: "finance", entity_id: "SUB-slack", payload: { amount: 62.50, service: "Slack" } },
   ];
-  return useSitaQuery("receipts", mockReceipts, "receipts", { orderBy: "created_at" });
+  return useSitaQuery("receipts", mockReceipts, "sita_receipts", { orderBy: "created_at" });
 }
 
 // ── Execution Envelopes ──

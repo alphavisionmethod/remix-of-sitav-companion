@@ -7,19 +7,8 @@ import { motion } from "framer-motion";
 import { SearchFabricService, type IndexableItem, type SearchResponse } from "@/lib/core-services/search-fabric";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { MOCK_FILES_SEARCH_INDEX } from "@/lib/mock-data";
 
-const MOCK_INDEX: IndexableItem[] = [
-  { id: "1", type: "document", domain: "business", title: "Service Agreement — Apex Corp", body: "Service agreement with auto-renew clause, Net-30 terms, $24,000/yr annual contract", tags: ["contract", "apex", "auto-renew"], timestamp: Date.now() - 86400000 * 2, metadata: { value: 24000 }, linkedEntities: ["Apex Corp", "Business"], sensitivity: "confidential", actionUrl: "/files" },
-  { id: "2", type: "invoice", domain: "business", title: "Invoice #1038 — Marcus Johnson", body: "Invoice for design services $4,200 payment received via Stripe", tags: ["invoice", "marcus", "design"], timestamp: Date.now() - 86400000, metadata: { value: 4200 }, linkedEntities: ["Marcus Johnson"], sensitivity: "internal", actionUrl: "/money" },
-  { id: "3", type: "document", domain: "finance", title: "Bank Statement — Chase Feb", body: "Bank statement with account ending 4821 showing deposits and withdrawals for February", tags: ["bank", "statement", "chase"], timestamp: Date.now() - 86400000 * 5, metadata: {}, linkedEntities: ["Chase Bank", "Money Center"], sensitivity: "restricted", actionUrl: "/money" },
-  { id: "4", type: "booking", domain: "concierge", title: "Travel Confirmation — Hawaii", body: "Flight confirmation and hotel reservation Marriott Wailea Apr 12-18 $289/night trip", tags: ["travel", "hawaii", "hotel", "trip"], timestamp: Date.now() - 3600000 * 12, metadata: {}, linkedEntities: ["Hawaii Trip", "Travel"], sensitivity: "internal", actionUrl: "/concierge/travel" },
-  { id: "5", type: "customer", domain: "business", title: "Apex Corp — Customer Profile", body: "Enterprise client since 2023, annual contract $24,000, renewal March 2025, primary contact Sarah", tags: ["customer", "apex", "enterprise"], timestamp: Date.now() - 86400000 * 10, metadata: { value: 24000 }, linkedEntities: ["Apex Corp"], sensitivity: "internal", actionUrl: "/business/customers" },
-  { id: "6", type: "bill", domain: "finance", title: "AWS Hosting — Monthly Bill", body: "Amazon Web Services hosting bill $340 monthly recurring auto-pay enabled", tags: ["aws", "hosting", "recurring", "bill"], timestamp: Date.now() - 86400000 * 3, metadata: { value: 340 }, linkedEntities: ["AWS"], sensitivity: "internal", actionUrl: "/money/bills" },
-  { id: "7", type: "task", domain: "concierge", title: "School Enrollment Deadline", body: "Complete school enrollment form by April 15, 2025 for Spring semester", tags: ["school", "deadline", "enrollment"], timestamp: Date.now() - 3600000 * 24, metadata: {}, linkedEntities: ["Family", "School"], sensitivity: "internal", actionUrl: "/concierge/school" },
-  { id: "8", type: "receipt", domain: "finance", title: "Costco Groceries Receipt", body: "Costco wholesale receipt total $342.18 groceries household supplies March 28", tags: ["receipt", "costco", "groceries"], timestamp: Date.now() - 86400000, metadata: { value: 342.18 }, linkedEntities: ["Costco"], sensitivity: "public", actionUrl: "/files" },
-  { id: "9", type: "opportunity", domain: "business", title: "Expansion Opportunity — TechFlow", body: "TechFlow expressed interest in expanded design services, potential $15,000 quarterly engagement", tags: ["opportunity", "techflow", "expansion"], timestamp: Date.now() - 86400000 * 7, metadata: { value: 60000 }, linkedEntities: ["TechFlow"], sensitivity: "confidential", actionUrl: "/business/opportunities" },
-  { id: "10", type: "document", domain: "finance", title: "Insurance Renewal Notice", body: "Insurance policy renewal notice premium increase $120/mo due date April 30, 2025", tags: ["insurance", "renewal", "deadline"], timestamp: Date.now() - 86400000 * 4, metadata: { value: 1440 }, linkedEntities: ["Insurance"], sensitivity: "internal", actionUrl: "/files" },
-];
 
 type FilterType = "all" | "business" | "finance" | "concierge" | "obligations" | "deadlines";
 
@@ -39,7 +28,7 @@ const FilesSearch = () => {
 
   const searchService = useMemo(() => {
     const svc = new SearchFabricService();
-    svc.addBatch(MOCK_INDEX);
+    svc.addBatch(MOCK_FILES_SEARCH_INDEX);
     return svc;
   }, []);
 

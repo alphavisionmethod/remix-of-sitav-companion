@@ -1,7 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Entity Graph
 // Cross-domain entity relationships and resolution
+// Canonical contracts: GraphNode, GraphEdge from contracts/graph
 // ═══════════════════════════════════════════════════════════════
+
+import type { GraphNode as CanonicalGraphNode, GraphEdge as CanonicalGraphEdge } from "@/packages/contracts/graph";
+
+export type { CanonicalGraphNode, CanonicalGraphEdge };
 
 /* Note: GraphGraphEntityNode avoids name collision with GraphEntityNode in identity-graph */
 

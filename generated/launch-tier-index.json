@@ -1,0 +1,814 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:56.988Z",
+  "totalServices": 131,
+  "tierDistribution": {
+    "mvp": 0,
+    "pilot": 0,
+    "ga": 131
+  },
+  "tiers": [
+    {
+      "tier": "mvp",
+      "description": "Minimum viable product — core platform spine",
+      "services": []
+    },
+    {
+      "tier": "pilot",
+      "description": "Early adopter features — domain OS surfaces",
+      "services": []
+    },
+    {
+      "tier": "ga",
+      "description": "General availability — full platform",
+      "services": [
+        {
+          "serviceName": "agent-governance",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "approval-history",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "approval-requests",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "approval-routing",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "escalation-rules",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "advisor-track-composer",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "carryover",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "decision-memory",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "build-approval-package",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "build-boardroom-request",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "build-explanation",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "build-simulation-request",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "choose-advisors",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "choose-execution-mode",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "councils",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "model-router",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "orchestrate-intent",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "accounts",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "business-boardroom-inputs",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "callback-queue",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "collections-command",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "collections",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "contacts",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "customer-dashboard",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "customer-health",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "customer-timeline",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "follow-up",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "invoice-linking",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "lead-intake",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "lead-scoring",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "leakage-engine",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "no-show-recovery",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "opportunity-engine",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "opportunity-ranking",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "proposals",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "quotes",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "reactivation",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "recovered-value-ledger",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "recovery-engine",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "revenue-autopilot",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "stale-lead-detector",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "website-management",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "capability-registry",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "pack-enablement",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "shell-space-routing",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "activity-prep",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "conflict-detector",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "event-continuity",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "gift-reminders",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "grocery-continuity",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "home-admin",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "household-boardroom-inputs",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "household-ops",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "household-overview",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "load-balance",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "prep-checklist",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "prep-derivation",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "provider-memory",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "reconciliation",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "recurring-supplies",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "reservation-ingest",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "responsibilities",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "school-items",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "travel-continuity",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "trip-overview",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "connector-auth",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "connector-fake-mode",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "connector-health",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "council-automation",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "persistence-adapters",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "event-envelope",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "publish-event",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "subscribe-event",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "execute-action",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "execute-connector-action",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "execute-workflow-step",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "account-summary",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "balance-sync",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "bill-calendar",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "capital-map",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "committee-boardroom-inputs",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "crypto-exposure",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "due-soon-alerts",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "entity-capital",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "execution-review",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "family-office-review",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "finance-boardroom-inputs",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "fx-watchlist",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "investment-office",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "liquidity",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "overview",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "portfolio-risk",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "receivables",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "recurring-obligation",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "regime-engine",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "renewal-risk",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "reserve-engine",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "safe-to-spend",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "sinking-fund",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "subscription-detector",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "subscription-waste",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "thesis-vault",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "transaction-categorizer",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "waste-detector",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "boardroom-memory",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "correction",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "preference-memory",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "profile-memory",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "trust-memory",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "workflow-memory",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "collector",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "persistence",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "approval-requirements",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "outbound-comm-policy",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "sensitive-doc-policy",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "truth-boundaries",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "approval-receipts",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "execution-receipts",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "proof-bundles",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "receipts",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "boardroom-packets",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "support-diagnostics",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "diagnostic-bundle",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "incident-classification",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "replay-metadata",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "support-summary",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "postcondition-checks",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "receipt-verification",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "replay-verification",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "rollback-signals",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        },
+        {
+          "serviceName": "verification",
+          "launchTier": "ga",
+          "dependencyCount": 0,
+          "readyForTier": true
+        }
+      ]
+    }
+  ]
+}

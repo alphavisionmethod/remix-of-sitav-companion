@@ -2,7 +2,12 @@
 // SITA OS — Budget Automation Service
 // Automated budget monitoring, alerts, rebalancing, categorization,
 // spending rules, and AI-powered recommendations
+// Canonical contracts: AlertSeverity from contracts/specialized
 // ═══════════════════════════════════════════════════════════════
+
+import type { AlertSeverity as CanonicalAlertSeverity } from "@/packages/contracts/specialized/observability-metric-contracts";
+
+export type { CanonicalAlertSeverity };
 
 export type AlertSeverity = "info" | "warning" | "critical";
 export type AlertType = "over-budget" | "approaching-limit" | "unusual-spend" | "recurring-increase" | "savings-opportunity" | "category-drift";

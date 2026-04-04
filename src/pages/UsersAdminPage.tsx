@@ -10,19 +10,14 @@ import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdminPageHeader, StatusBadge, TrustRibbon } from "@/components/sita/admin";
-import type { UserRowView } from "@/lib/types/admin-view-models";
+import type { UserRowView } from "@/packages/contracts";
 import {
   Users, Search, Shield, Wifi, AlertTriangle, CheckCircle, Eye,
   ChevronRight, CreditCard, Headphones, Star, Clock,
 } from "lucide-react";
+import { MOCK_ADMIN_USERS } from "@/lib/mock-data";
 
-const mockUsers: UserRowView[] = [
-  { id: "u1", name: "Alex Rivera", email: "alex@acme.co", org: "Acme Corp", tier: "enterprise", trustState: "verified", connectorCount: 5, incidentExposure: 0, approvalBurden: 2, supportFlags: 0, lastActive: new Date(Date.now() - 300000).toISOString() },
-  { id: "u2", name: "Jordan Chen", email: "jordan@startup.io", org: "Startup Inc", tier: "professional", trustState: "verified", connectorCount: 3, incidentExposure: 1, approvalBurden: 5, supportFlags: 1, lastActive: new Date(Date.now() - 3600000).toISOString() },
-  { id: "u3", name: "Sam Patel", email: "sam@solo.dev", org: "Solo Dev", tier: "starter", trustState: "new", connectorCount: 1, incidentExposure: 0, approvalBurden: 0, supportFlags: 0, lastActive: new Date(Date.now() - 86400000).toISOString() },
-  { id: "u4", name: "Morgan Lee", email: "morgan@bigcorp.com", org: "BigCorp", tier: "enterprise", trustState: "review", connectorCount: 8, incidentExposure: 2, approvalBurden: 12, supportFlags: 3, lastActive: new Date(Date.now() - 7200000).toISOString() },
-  { id: "u5", name: "Casey Brooks", email: "casey@family.co", org: "Family Office", tier: "professional", trustState: "verified", connectorCount: 4, incidentExposure: 0, approvalBurden: 1, supportFlags: 0, lastActive: new Date(Date.now() - 1800000).toISOString() },
-];
+const mockUsers = MOCK_ADMIN_USERS;
 
 export default function UsersAdminPage() {
   const [search, setSearch] = useState("");

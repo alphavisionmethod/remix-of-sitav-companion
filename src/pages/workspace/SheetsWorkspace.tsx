@@ -14,80 +14,10 @@ import {
   Sigma, Equal, Copy, Trash2, MoreVertical, Maximize2, Minimize2,
   Save, X, PlusCircle, ArrowDown, ArrowUp
 } from "lucide-react";
+import { MOCK_SHEETS, type MockSheet } from "@/lib/mock-data";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-interface Sheet {
-  id: string;
-  name: string;
-  type: "financial" | "planning" | "crm" | "metrics" | "custom";
-  lastModified: string;
-  linkedDomain: string;
-  columns: string[];
-  data: string[][];
-  formulas: Record<string, string>;
-}
 
-const MOCK_SHEETS: Sheet[] = [
-  {
-    id: "1", name: "Revenue Tracker Q1", type: "financial", lastModified: "1h ago", linkedDomain: "Business",
-    columns: ["Month", "Revenue", "Expenses", "Net", "Growth %", "Margin %"],
-    data: [
-      ["Jan 2026", "$42,300", "$28,100", "$14,200", "+8%", "33.6%"],
-      ["Feb 2026", "$45,800", "$29,400", "$16,400", "+15%", "35.8%"],
-      ["Mar 2026", "$51,200", "$31,800", "$19,400", "+18%", "37.9%"],
-      ["Apr 2026", "$48,600", "$30,200", "$18,400", "-5%", "37.9%"],
-    ],
-    formulas: { "D1": "=B1-C1", "E1": "=(B2-B1)/B1*100" },
-  },
-  {
-    id: "2", name: "Lead Scoring Matrix", type: "crm", lastModified: "3h ago", linkedDomain: "Business",
-    columns: ["Lead", "Source", "Score", "Stage", "Value", "Probability", "Expected"],
-    data: [
-      ["Sarah Chen", "Referral", "92", "Proposal", "$84,000", "85%", "$71,400"],
-      ["Marcus Johnson", "Inbound", "78", "Discovery", "$48,000", "40%", "$19,200"],
-      ["Apex Industries", "Outbound", "65", "Qualified", "$120,000", "25%", "$30,000"],
-      ["Dr. Patel", "Referral", "88", "Negotiation", "$36,000", "90%", "$32,400"],
-    ],
-    formulas: { "G1": "=E1*F1" },
-  },
-  {
-    id: "3", name: "Monthly Budget vs Actual", type: "financial", lastModified: "1d ago", linkedDomain: "Finance",
-    columns: ["Category", "Budget", "Actual", "Variance", "% Used", "Status"],
-    data: [
-      ["Housing", "$2,500", "$2,400", "$100", "96%", "✅ Under"],
-      ["Food & Dining", "$1,200", "$1,280", "-$80", "107%", "⚠️ Over"],
-      ["Transportation", "$800", "$640", "$160", "80%", "✅ Under"],
-      ["Subscriptions", "$300", "$380", "-$80", "127%", "⚠️ Over"],
-      ["Savings", "$2,000", "$2,000", "$0", "100%", "✅ On Track"],
-      ["Entertainment", "$400", "$320", "$80", "80%", "✅ Under"],
-    ],
-    formulas: { "D1": "=B1-C1", "E1": "=C1/B1*100" },
-  },
-  {
-    id: "4", name: "Scenario Planner — Expansion", type: "planning", lastModified: "2d ago", linkedDomain: "Business",
-    columns: ["Scenario", "Revenue Impact", "Cost", "Net Impact", "Risk", "Timeline"],
-    data: [
-      ["Hire 2 Sales Reps", "+$180,000/yr", "$140,000/yr", "+$40,000/yr", "Medium", "6 months"],
-      ["Launch Product B", "+$250,000/yr", "$80,000 upfront", "+$170,000/yr", "High", "12 months"],
-      ["Expand to West Coast", "+$120,000/yr", "$60,000/yr", "+$60,000/yr", "Low", "3 months"],
-      ["Increase Pricing 15%", "+$75,000/yr", "$0", "+$75,000/yr", "Medium", "Immediate"],
-    ],
-    formulas: {},
-  },
-  {
-    id: "5", name: "KPI Dashboard Data", type: "metrics", lastModified: "4h ago", linkedDomain: "Boardroom",
-    columns: ["KPI", "Target", "Current", "Trend", "Status", "Owner"],
-    data: [
-      ["Monthly Revenue", "$50,000", "$51,200", "↑ 18%", "✅ Above", "Business"],
-      ["Customer Retention", "95%", "94%", "↓ 1%", "⚠️ Below", "Business"],
-      ["Net Promoter Score", "50", "62", "↑ 8pts", "✅ Above", "Business"],
-      ["Savings Rate", "25%", "27.2%", "↑ 2.2%", "✅ Above", "Finance"],
-      ["Pipeline Coverage", "3x", "3.2x", "↑ 0.2x", "✅ Above", "Business"],
-      ["Task Completion Rate", "90%", "87%", "↓ 3%", "⚠️ Below", "Concierge"],
-    ],
-    formulas: {},
-  },
-];
 
 const SheetsWorkspace = () => {
   const [activeTab, setActiveTab] = useState("all");

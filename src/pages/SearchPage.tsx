@@ -1,11 +1,13 @@
 import { useState, useMemo, useRef, useEffect } from "react";
+import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { useAuth } from "@/contexts/AuthContext";
 import { SitaPageHeader, SitaCard, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { Search, FileText, Users, Receipt, Briefcase, CheckSquare, Loader2, Bot, Shield, Workflow, BarChart3, Filter, X, Clock, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SearchFabricService, type SearchQuery, type SearchResponse, type SearchDomain, type SearchResultType } from "@/lib/core-services/search-fabric";
+import { SearchFabricService, type IndexableItem, type SearchQuery, type SearchResponse, type SearchDomain, type SearchResultType } from "@/lib/core-services/search-fabric";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { MOCK_SEARCH_ITEMS } from "@/lib/mock-data";
 
 const ICONS: Record<string, typeof Search> = {
   lead: Briefcase, customer: Users, invoice: Receipt, task: CheckSquare,
@@ -26,26 +28,9 @@ const SORT_OPTIONS = [
   { key: "value" as const, label: "Value" },
 ];
 
-// Singleton search fabric with demo data
 const searchFabric = new SearchFabricService();
+searchFabric.addBatch(MOCK_SEARCH_ITEMS);
 
-// Seed demo data
-const DEMO_ITEMS = [
-  { id: "d1", type: "customer" as const, domain: "business" as const, title: "Apex Corp", body: "Enterprise client, $48K ARR. Primary contact: Sarah Chen.", tags: ["enterprise", "active"], timestamp: Date.now() - 86400000, metadata: { value: 48000 }, linkedEntities: ["Sarah Chen"], sensitivity: "internal" as const, actionUrl: "/business/customers" },
-  { id: "d2", type: "lead" as const, domain: "business" as const, title: "James Morton — Bloom Design", body: "Interested in retainer package. Proposal sent, awaiting response.", tags: ["retainer", "proposal"], timestamp: Date.now() - 172800000, metadata: { value: 14400 }, linkedEntities: ["Bloom Design"], sensitivity: "internal" as const, actionUrl: "/business/leads" },
-  { id: "d3", type: "invoice" as const, domain: "business" as const, title: "Invoice #1038 — Design Services", body: "Design services invoice for Marcus, $4,200. Status: sent.", tags: ["invoice", "design"], timestamp: Date.now() - 259200000, metadata: { value: 4200 }, linkedEntities: ["Marcus"], sensitivity: "internal" as const, actionUrl: "/money" },
-  { id: "d4", type: "document" as const, domain: "files" as const, title: "Service Agreement — NDA", body: "Master services agreement with non-disclosure clause for Apex Corp.", tags: ["contract", "nda", "legal"], timestamp: Date.now() - 345600000, metadata: {}, linkedEntities: ["Apex Corp"], sensitivity: "confidential" as const, actionUrl: "/files" },
-  { id: "d5", type: "task" as const, domain: "concierge" as const, title: "School Enrollment", body: "Complete enrollment form for academy by April 15 deadline.", tags: ["school", "deadline", "family"], timestamp: Date.now() - 432000000, metadata: {}, linkedEntities: ["Family"], sensitivity: "internal" as const, actionUrl: "/concierge" },
-  { id: "d6", type: "bill" as const, domain: "finance" as const, title: "Insurance Premium — Auto", body: "Monthly auto insurance premium $890. Due date: April 5.", tags: ["insurance", "recurring"], timestamp: Date.now() - 518400000, metadata: { value: 890 }, linkedEntities: [], sensitivity: "internal" as const, actionUrl: "/money/bills" },
-  { id: "d7", type: "workflow" as const, domain: "workflows" as const, title: "Lead Follow-up Automation", body: "Automated follow-up sequence for stale leads. Triggers after 3 days no contact.", tags: ["automation", "leads"], timestamp: Date.now() - 604800000, metadata: {}, linkedEntities: [], sensitivity: "public" as const, actionUrl: "/workflows" },
-  { id: "d8", type: "advisor" as const, domain: "advisors" as const, title: "Cost Guardrail Agent", body: "Monitors fleet compute costs and triggers alerts when thresholds exceed budget.", tags: ["agent", "cost", "monitoring"], timestamp: Date.now() - 691200000, metadata: {}, linkedEntities: [], sensitivity: "internal" as const, actionUrl: "/mission-control?tab=control-panel" },
-  { id: "d9", type: "receipt" as const, domain: "proof" as const, title: "Receipt: Invoice #1037 Sent", body: "Proof of delivery for invoice #1037 to Apex Corp. Verified by advisor.", tags: ["receipt", "proof"], timestamp: Date.now() - 777600000, metadata: { value: 12000 }, linkedEntities: ["Apex Corp"], sensitivity: "internal" as const, actionUrl: "/proof" },
-  { id: "d10", type: "event" as const, domain: "concierge" as const, title: "HVAC Maintenance Appointment", body: "ServicePro scheduled for April 10 at 2:00 PM. Annual maintenance.", tags: ["home", "maintenance"], timestamp: Date.now() - 864000000, metadata: {}, linkedEntities: ["ServicePro"], sensitivity: "public" as const, actionUrl: "/concierge" },
-  { id: "d11", type: "opportunity" as const, domain: "business" as const, title: "Upsell: Apex Corp Premium Tier", body: "Opportunity to upsell Apex Corp to premium support tier. Estimated $18K/yr increase.", tags: ["upsell", "enterprise"], timestamp: Date.now() - 950400000, metadata: { value: 18000 }, linkedEntities: ["Apex Corp"], sensitivity: "internal" as const, actionUrl: "/business/opportunities" },
-  { id: "d12", type: "document" as const, domain: "files" as const, title: "Q1 Financial Report", body: "Quarterly financial summary including revenue, expenses, and cash flow analysis.", tags: ["report", "financial", "quarterly"], timestamp: Date.now() - 1036800000, metadata: {}, linkedEntities: [], sensitivity: "confidential" as const, actionUrl: "/files" },
-];
-
-searchFabric.addBatch(DEMO_ITEMS);
 
 const SearchPage = () => {
   const { user } = useAuth();
@@ -203,19 +188,25 @@ const SearchPage = () => {
 
       {/* Results */}
       {results.length === 0 && query.length > 0 && (
-        <div className="text-center py-12">
-          <Search className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
-          <p className="text-sm text-muted-foreground">No results for "{query}"</p>
-          <p className="text-xs text-muted-foreground/60 mt-1">Try different keywords or remove filters</p>
-        </div>
+        <EmptyStateCTA
+          icon={Search}
+          title={`No results for "${query}"`}
+          description="Try different keywords, remove filters, or broaden your search across all domains."
+          actions={[
+            { label: "Clear Search", onClick: () => { /* handled upstream */ }, variant: "secondary" },
+          ]}
+          tip="SITA searches leads, invoices, agents, files, workflows, and compliance controls"
+        />
       )}
 
       {results.length === 0 && query.length === 0 && !hasFilters && (
-        <div className="text-center py-12">
-          <Search className="h-10 w-10 text-muted-foreground/20 mx-auto mb-3" />
-          <p className="text-sm text-muted-foreground">Start typing to search across all domains</p>
-          <p className="text-xs text-muted-foreground/60 mt-1">Leads, invoices, agents, files, workflows, compliance controls...</p>
-        </div>
+        <EmptyStateCTA
+          icon={Search}
+          title="Search Across All Domains"
+          description="Start typing to search leads, invoices, agents, files, workflows, compliance controls, and more."
+          actions={[]}
+          tip="Use filters to narrow results by domain, type, or date range"
+        />
       )}
 
       {grouped.map(([domain, items]) => {

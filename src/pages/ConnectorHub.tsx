@@ -1,5 +1,6 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
+import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -73,7 +74,7 @@ const ConnectorHub = () => {
       />
 
       {isLoading ? (
-        <div className="flex justify-center py-12"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>
+        <SectionSkeleton cards={4} columns={2} />
       ) : filtered.length === 0 ? (
         <EmptyState icon={Plug} title="No connectors configured" description="Set up connectors to integrate calendar, email, CRM, banking, and other services." />
       ) : (

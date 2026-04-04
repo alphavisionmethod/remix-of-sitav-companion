@@ -4,6 +4,11 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton, SitaMetric } from "@/components/sita/SitaCard";
+import { PrepPack } from "@/components/sita/primitives/PrepPack";
+import { ScenarioComparison } from "@/components/sita/primitives/ScenarioComparison";
+import { ConfidenceBand } from "@/components/sita/primitives/ConfidenceBand";
+import { ExecutionTracker } from "@/components/sita/primitives/ExecutionTracker";
+import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
 import { KPITile, RiskCard, OpportunityCard, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge, StateStep } from "@/components/sita/StateBadge";
@@ -21,9 +26,9 @@ import {
   GitCompare, Lock, Target, TrendingUp, MessageSquare, Calendar
 } from "lucide-react";
 import { useBoardroomPacket } from "@/hooks/use-boardroom";
-import { mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory } from "@/lib/mocks/advisor-mission-control";
+import { mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory } from "@/lib/mock-data/advisor-mission-control";
 import type {
-  BoardroomType, BoardroomPacket, BoardroomSection, MetricCardData,
+  BoardroomType, BoardroomPacket, BoardroomContentSection, MetricCardData,
   TableData, NarrativeData, AlertData, ActionItemData, ChartData, BOARDROOM_META
 } from "@/lib/boardroom/types";
 import { BOARDROOM_META as META } from "@/lib/boardroom/types";
@@ -34,6 +39,7 @@ import type { Receipt, TrustState, ExecutionEnvelope, BoardroomSection as Contra
 import type { ProofPack } from "@/packages/proof-model";
 import type { AdvisorConfig } from "@/packages/advisor-config";
 import { cn } from "@/lib/utils";
+import { useBoardroomData } from "@/hooks/use-boardroom-data";
 
 // ── Section Renderers (preserved from original) ───────────────
 
@@ -538,7 +544,7 @@ const OpportunitiesGrid = ({ opportunities }: { opportunities: BoardroomPacket["
 
 // ── Section Dispatcher ────────────────────────────────────────
 
-const RenderSection = ({ section }: { section: BoardroomSection }) => {
+const RenderSection = ({ section }: { section: BoardroomContentSection }) => {
   switch (section.type) {
     case "metric-card": return <MetricCardGrid data={section.data as MetricCardData[]} title={section.title} />;
     case "table": return <TableSection data={section.data as TableData} title={section.title} />;
@@ -554,6 +560,7 @@ const RenderSection = ({ section }: { section: BoardroomSection }) => {
 const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; perspective?: PerspectiveLevel }) => {
   const { packet, regenerate } = useBoardroomPacket(type);
   const config = getPerspectiveConfig(perspective);
+  const { pendingApprovals, activeGoals, overdueTasks, recentProofs } = useBoardroomData();
 
   const filteredSections = packet.sections.filter(section => {
     if (section.type === "table" && !config.showDetailTables) return false;
@@ -571,12 +578,54 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
     return section;
   });
 
+  // Build PrepPack data from real DB queries
+  const prepPriorities = pendingApprovals.slice(0, 4).map((a: any) => ({
+    title: a.title,
+    detail: a.description || `${a.risk_level} risk · ${a.domain || "general"}`,
+    domain: (a.domain || "general") as "business" | "money" | "concierge" | "general",
+    urgency: (a.risk_level === "high" ? "critical" : a.risk_level === "medium" ? "high" : "medium") as "critical" | "high" | "medium" | "low",
+  }));
+
+  const prepCarryovers = overdueTasks.slice(0, 4).map((t: any) => ({
+    title: t.title,
+    detail: t.due_at ? `Overdue since ${new Date(t.due_at).toLocaleDateString()}` : "No due date",
+    domain: (t.domain || "general") as "business" | "money" | "concierge" | "general",
+    urgency: (t.priority === "high" ? "high" : "medium") as "critical" | "high" | "medium" | "low",
+  }));
+
+  const prepDecisions = pendingApprovals.filter((a: any) => a.risk_level !== "high").slice(0, 2).map((a: any) => ({
+    title: a.title,
+    detail: a.description || "Ready for decision",
+    domain: (a.domain || "general") as "business" | "money" | "concierge" | "general",
+    urgency: "medium" as const,
+  }));
+
+  const whatChanged = [
+    activeGoals.length > 0 ? `${activeGoals.length} active goals tracked` : null,
+    pendingApprovals.length > 0 ? `${pendingApprovals.length} approvals pending` : null,
+    overdueTasks.length > 0 ? `${overdueTasks.length} overdue tasks need attention` : null,
+    recentProofs.length > 0 ? `${recentProofs.filter((p: any) => p.verification_status === "verified").length} proofs verified` : null,
+  ].filter(Boolean) as string[];
+
   return (
     <motion.div key={type} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-5">
       <PacketHeader packet={packet} onRegenerate={regenerate} variant={config.label} />
 
       <StaleWarnings warnings={packet.staleDataWarnings} />
       {config.showContradictions && <ContradictionMarkers report={packet.contradictions} />}
+
+      {/* ── Boardroom 2.0: Pre-Session Prep Pack (wired to DB) ── */}
+      <PrepPack
+        title={`Prep Pack — ${META[type].label}`}
+        generatedAt={new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+        confidence={Math.round(packet.confidence * 100)}
+        whatChanged={whatChanged}
+        priorities={prepPriorities.length > 0 ? prepPriorities : [
+          { title: "No pending priorities", detail: "All approvals resolved", domain: "general", urgency: "low" },
+        ]}
+        unresolvedFromLast={prepCarryovers}
+        readyDecisions={prepDecisions}
+      />
 
       {/* Executive Summary section */}
       {limitedSections.filter(s => s.type === "narrative").map(s => <RenderSection key={s.id} section={s} />)}
@@ -586,6 +635,59 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
 
       {/* Disagreement Cards */}
       <DisagreementCards />
+
+      {/* ── Boardroom 2.0: Confidence Bands ── */}
+      <ConfidenceBand
+        title="Revenue Projection — Confidence Band"
+        subtitle="Weekly revenue with 80% confidence intervals"
+        confidenceLevel={80}
+        points={[
+          { label: "W1", value: 6800, low: 6200, high: 7400 },
+          { label: "W2", value: 7200, low: 6500, high: 7900 },
+          { label: "W3", value: 7900, low: 7000, high: 8800 },
+          { label: "W4", value: 8420, low: 7600, high: 9200 },
+          { label: "W5", value: 8800, low: 7800, high: 9800, isProjection: true },
+          { label: "W6", value: 9200, low: 7500, high: 10900, isProjection: true },
+        ]}
+        unit="$"
+      />
+
+      {/* ── Boardroom 2.0: Scenario Comparison ── */}
+      <ScenarioComparison
+        title="Strategic Scenarios — What-If Analysis"
+        scenarios={[
+          {
+            id: "aggressive", title: "Aggressive Growth", description: "Max outbound, hire contractor, push all proposals",
+            confidence: 72, risk: "high",
+            metrics: [
+              { label: "Revenue", value: "$12.4K", delta: "+48%", trend: "up" },
+              { label: "Cash Runway", value: "3.2 mo", delta: "-1.6", trend: "down" },
+            ],
+            pros: ["Fastest revenue growth", "Pipeline doubles in 30 days"],
+            cons: ["Cash pressure increases", "Team bandwidth risk"],
+          },
+          {
+            id: "balanced", title: "Balanced Execution", description: "Close existing deals, moderate outbound, hold hiring",
+            confidence: 88, risk: "low", recommended: true,
+            metrics: [
+              { label: "Revenue", value: "$9.8K", delta: "+17%", trend: "up" },
+              { label: "Cash Runway", value: "4.8 mo", delta: "—", trend: "flat" },
+            ],
+            pros: ["Sustainable growth", "Maintains cash safety", "Low risk"],
+            cons: ["Slower pipeline expansion"],
+          },
+          {
+            id: "conservative", title: "Cash Preservation", description: "Focus collections, cut waste, pause outbound",
+            confidence: 94, risk: "low",
+            metrics: [
+              { label: "Revenue", value: "$8.2K", delta: "-2%", trend: "down" },
+              { label: "Cash Runway", value: "6.1 mo", delta: "+1.3", trend: "up" },
+            ],
+            pros: ["Maximum cash safety", "Waste eliminated", "Reserve targets met"],
+            cons: ["Pipeline stagnates", "Growth slows"],
+          },
+        ]}
+      />
 
       {/* Metrics & data sections */}
       {limitedSections.filter(s => s.type !== "narrative").map(s => <RenderSection key={s.id} section={s} />)}
@@ -612,6 +714,27 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
 
       {/* Proof Summary */}
       <ProofSummaryBoard />
+
+      {/* ── Boardroom 2.0: Post-Session Execution Tracker (wired to DB) ── */}
+      <ExecutionTracker
+        sessionTitle="Weekly Business Review"
+        sessionDate={new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+        actions={overdueTasks.length > 0 ? overdueTasks.slice(0, 6).map((t: any, i: number) => ({
+          id: t.id,
+          title: t.title,
+          assignee: t.assigned_to || "Owner",
+          decidedAt: t.created_at ? new Date(t.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "—",
+          dueBy: t.due_at ? new Date(t.due_at).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : undefined,
+          status: t.status === "completed" ? "completed" as const : t.status === "blocked" ? "blocked" as const : t.due_at && new Date(t.due_at) < new Date() ? "overdue" as const : "pending" as const,
+          domain: (t.domain === "business" || t.domain === "money" || t.domain === "concierge" ? t.domain : "business") as "business" | "money" | "concierge",
+          progress: t.status === "completed" ? 100 : t.status === "in_progress" ? 50 : 0,
+          proofGenerated: false,
+        })) : [
+          { id: "t1", title: "Call Apex Corp about Quote #1039", assignee: "Owner", decidedAt: "Mar 25", dueBy: "Mar 26", status: "completed" as const, domain: "business" as const, progress: 100, proofGenerated: true },
+          { id: "t2", title: "Send collections escalation to Green Valley", assignee: "SITA (delegated)", decidedAt: "Mar 25", dueBy: "Mar 27", status: "in-progress" as const, domain: "business" as const, progress: 60 },
+          { id: "t3", title: "Cancel Zoom Pro subscription", assignee: "Owner", decidedAt: "Mar 25", dueBy: "Apr 5", status: "pending" as const, domain: "money" as const, progress: 0 },
+        ]}
+      />
 
       {/* Confidence Envelope & Provenance */}
       {config.showConfidenceEnvelope && <ConfidenceEnvelopePanel envelope={packet.confidenceEnvelope} />}
@@ -747,6 +870,7 @@ const TAB_ICONS: Record<BoardroomType, React.ReactNode> = {
   "household-ops": <Home className="h-3.5 w-3.5" />,
   "opportunity-board": <Lightbulb className="h-3.5 w-3.5" />,
   "incident-review": <Activity className="h-3.5 w-3.5" />,
+  "governance": <Scale className="h-3.5 w-3.5" />,
 };
 
 // ── Fullscreen Presentation Mode ──────────────────────────────
@@ -842,6 +966,7 @@ const Boardroom = () => {
     { key: "household-ops", label: "Household Ops" },
     { key: "opportunity-board", label: "Opportunities" },
     { key: "incident-review", label: "Incidents" },
+    { key: "governance", label: "Governance" },
   ];
 
   return (
@@ -867,7 +992,35 @@ const Boardroom = () => {
         <SitaTabs tabs={tabs} active={activeType} onChange={(k) => setActiveType(k as BoardroomType)} />
 
         <AnimatePresence mode="wait">
-          <PacketView key={activeType} type={activeType} perspective={perspective} />
+          {activeType === "governance" ? (
+            <motion.div key="governance" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-4">
+              <div className="grid gap-4 lg:grid-cols-2">
+                <TrustDebtPanel />
+                <ExecutionDebtHeatmap />
+              </div>
+              <div className="grid gap-4 lg:grid-cols-2">
+                <DragIndexRadar entityScope={{ ownerId: "boardroom", visibility: "private" }} />
+                <ReadinessGauge
+                  input={{
+                    proofCompleteness: { rate: 0.85, evidence: ["proof audit"] },
+                    replaySafety: { rate: 0.78, evidence: ["replay scan"] },
+                    rollbackReadiness: { rate: 0.72, evidence: ["rollback tests"] },
+                    policyMaturity: { score: 0.80, evidence: ["policy rules"] },
+                    errorRate: { rate: 0.04, evidence: ["error log"] },
+                    approvalBehavior: { autoApprovalRate: 0.35, evidence: ["approval history"] },
+                    connectorStability: { uptimeRate: 0.97, evidence: ["connector health"] },
+                    observabilityQuality: { coverage: 0.82, evidence: ["SLO coverage"] },
+                    supportBurden: { ticketRate: 0.12, evidence: ["ticket volume"] },
+                    confidenceQuality: { avgConfidence: 0.88, evidence: ["calibration"] },
+                  }}
+                  entityScope={{ ownerId: "boardroom", visibility: "private" }}
+                />
+              </div>
+              <DelegationRegistryTable />
+            </motion.div>
+          ) : (
+            <PacketView key={activeType} type={activeType} perspective={perspective} />
+          )}
         </AnimatePresence>
       </motion.div>
 

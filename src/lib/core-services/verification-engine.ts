@@ -3,7 +3,12 @@
 // Postcondition verification after execution, expected vs actual
 // comparison, verification receipt generation, and auto-rollback
 // recommendation on failure
+// Canonical contracts: VerificationRecord from contracts/proof
 // ═══════════════════════════════════════════════════════════════
+
+import type { VerificationRecord as CanonicalVerificationRecord } from "@/packages/contracts/proof/verification-record";
+
+export type { CanonicalVerificationRecord };
 
 export interface VerificationRule {
   id: string;

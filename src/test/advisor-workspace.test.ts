@@ -3,7 +3,7 @@ import {
   mockAdvisors, mockRecommendations, mockSimulations, mockApprovals,
   mockProofHistory, mockMemoryItems as mockAdvisorMemory, mockSynthesis,
   type AdvisorSummary, type AdvisorRecommendation, type SimulationResult,
-} from "@/lib/mocks/advisor-mission-control";
+} from "@/lib/mock-data/advisor-mission-control";
 
 describe("Advisor Workspace Data", () => {
   describe("Advisor Registry", () => {

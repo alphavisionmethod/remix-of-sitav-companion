@@ -1,7 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Connector Control Plane
 // Lifecycle management, health scoring, sandbox→live promotion
+// Canonical contracts: IntegrationStatus from contracts/runtime
 // ═══════════════════════════════════════════════════════════════
+
+import type { IntegrationStatus as CanonicalIntegrationStatus } from "@/packages/contracts";
+
+export type { CanonicalIntegrationStatus };
 
 export type ConnectorStatus = "registered" | "connected" | "disconnected" | "error";
 export type ConnectorMode = "sandbox" | "live" | "fake";

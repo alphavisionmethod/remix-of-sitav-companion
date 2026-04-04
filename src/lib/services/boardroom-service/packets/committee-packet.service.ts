@@ -1,7 +1,7 @@
 // SITA OS — Committee Packet Service
-import type { BoardroomPacket } from "./business-packet.service";
+import type { ServiceBoardroomPacket } from "./business-packet.service";
 
-export function generateCommitteePacket(): BoardroomPacket {
+export function generateCommitteePacket(): ServiceBoardroomPacket {
   return {
     id: crypto.randomUUID(), domain: "finance", generatedAt: new Date().toISOString(), confidence: 0.85,
     staleWarnings: [],

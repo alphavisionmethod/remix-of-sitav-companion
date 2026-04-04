@@ -1,0 +1,229 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:59.324Z",
+  "totalBaselines": 20,
+  "captured": 0,
+  "pending": 20,
+  "baselines": [
+    {
+      "route": "/reset-password",
+      "component": "ResetPassword",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/onboarding",
+      "component": "Onboarding",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/auth/callback",
+      "component": "EmailVerificationHandler",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/",
+      "component": "DailyPulse",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/life",
+      "component": "LifeDashboard",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/overview",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/leads",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/customers",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/opportunities",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/quotes",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/invoices",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/collections",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/revenue-autopilot",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/autopilot-hub",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/revenue-impact",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/playbook-builder",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/revenue-forecast",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/communications",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    },
+    {
+      "route": "/business/boardroom",
+      "component": "BusinessCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "pending"
+    }
+  ]
+}

@@ -4,12 +4,14 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { ConnectivityProvider } from "@/contexts/ConnectivityContext";
 import { useUserPreferences } from "@/hooks/use-user-preferences";
 import { DataModeProvider } from "@/contexts/DataModeContext";
 import { DisplayModeProvider } from "@/contexts/DisplayModeContext";
 import { InspectorProvider } from "@/contexts/InspectorContext";
 import { EntityContextProvider } from "@/contexts/EntityContext";
 import { SitaKernelProvider } from "@/contexts/SitaKernelContext";
+import { OSRuntimeProvider } from "@/lib/hooks/useOSRuntime";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ShellLayout } from "@/components/sita/ShellLayout";
 import { Suspense, lazy } from "react";
@@ -51,10 +53,14 @@ const AutomationCenter = lazy(() => import("./pages/AutomationCenter"));
 const SystemStatus = lazy(() => import("./pages/SystemStatus"));
 const OwnerCenter = lazy(() => import("./pages/OwnerCenter"));
 const ApprovalsCenter = lazy(() => import("./pages/ApprovalsCenter"));
+const ApprovalChamber = lazy(() => import("./pages/ApprovalChamber"));
 const ProductivityHub = lazy(() => import("./pages/ProductivityHub"));
 const DocsWorkspace = lazy(() => import("./pages/workspace/DocsWorkspace"));
 const SheetsWorkspace = lazy(() => import("./pages/workspace/SheetsWorkspace"));
 const SlidesWorkspace = lazy(() => import("./pages/workspace/SlidesWorkspace"));
+const PrincipalWorkspace = lazy(() => import("./pages/workspace/PrincipalWorkspace"));
+const OperatorWorkspace = lazy(() => import("./pages/workspace/OperatorWorkspace"));
+const GovernanceDashboard = lazy(() => import("./pages/GovernanceDashboard"));
 const PackStorePage = lazy(() => import("./pages/store/PackStorePage"));
 const PackDetailPage = lazy(() => import("./pages/store/PackDetailPage"));
 const PackInstalledPage = lazy(() => import("./pages/store/PackInstalledPage"));
@@ -94,8 +100,18 @@ const DigitalTwinsPage = lazy(() => import("./pages/DigitalTwinsPage"));
 const ScenarioLabPage = lazy(() => import("./pages/ScenarioLabPage"));
 const AIEconomicsPage = lazy(() => import("./pages/AIEconomicsPage"));
 const RecoveredValuePage = lazy(() => import("./pages/RecoveredValuePage"));
+const OutcomeEnginePage = lazy(() => import("./pages/OutcomeEnginePage"));
+const SpilloverDashboard = lazy(() => import("./pages/SpilloverDashboard"));
+const FirstWinActivation = lazy(() => import("./pages/FirstWinActivation"));
+const AIWorkforcePage = lazy(() => import("./pages/AIWorkforcePage"));
+const CapitalAllocationPage = lazy(() => import("./pages/CapitalAllocationPage"));
+const SovereignExportPage = lazy(() => import("./pages/SovereignExportPage"));
+const CommunicationsPage = lazy(() => import("./pages/CommunicationsPage"));
+const NotificationSettingsPage = lazy(() => import("./pages/NotificationSettingsPage"));
+const CustomerHealthPage = lazy(() => import("./pages/CustomerHealthPage"));
+const GeneratedTruthDashboard = lazy(() => import("./pages/admin/GeneratedTruthDashboard"));
+const FleetHealthPage = lazy(() => import("./pages/admin/FleetHealthPage"));
 
-// Mobile Trusted Device
 const MobileHome = lazy(() => import("./pages/mobile/MobileHome"));
 const MobileApprovals = lazy(() => import("./pages/mobile/MobileApprovals"));
 const MobileProof = lazy(() => import("./pages/mobile/MobileProof"));
@@ -108,20 +124,11 @@ const MobileSettings = lazy(() => import("./pages/mobile/MobileSettings"));
 
 const queryClient = new QueryClient();
 
-// Premium loading skeleton
+// Premium loading skeleton — uses PageSkeleton for content-aware loading
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 const PageLoader = () => (
-  <div className="flex items-center justify-center min-h-[60vh]">
-    <div className="flex flex-col items-center gap-4">
-      <div className="relative">
-        <div className="h-10 w-10 rounded-xl gradient-sita animate-pulse" />
-        <div className="absolute inset-0 h-10 w-10 rounded-xl gradient-sita opacity-50 animate-ping" />
-      </div>
-      <div className="flex gap-1">
-        <div className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: "0ms" }} />
-        <div className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: "150ms" }} />
-        <div className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: "300ms" }} />
-      </div>
-    </div>
+  <div className="p-4 md:p-6 max-w-[1400px] mx-auto">
+    <PageSkeleton rows={3} />
   </div>
 );
 
@@ -130,11 +137,21 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { preferences, isLoading: prefsLoading } = useUserPreferences();
   if (loading || prefsLoading) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
   if (!user) return <Navigate to="/login" replace />;
-  // Gate: redirect to onboarding if not completed (skip for demo users)
   if (!isDemo && !preferences.onboardingCompleted && window.location.pathname !== "/onboarding") {
     return <Navigate to="/onboarding" replace />;
   }
   return <>{children}</>;
+};
+
+// Handle email verification — detect ?type=signup in hash and redirect to onboarding
+const EmailVerificationHandler = () => {
+  const { user } = useAuth();
+  const hash = window.location.hash;
+  if (hash.includes("type=signup") || hash.includes("type=email")) {
+    if (user) return <Navigate to="/onboarding" replace />;
+    return <Navigate to="/login" replace />;
+  }
+  return null;
 };
 
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
@@ -151,11 +168,13 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          <ConnectivityProvider>
           <ThemeProvider>
           <DataModeProvider>
           <DisplayModeProvider>
           <EntityContextProvider>
           <SitaKernelProvider>
+          <OSRuntimeProvider>
           <InspectorProvider>
           <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -164,8 +183,9 @@ const App = () => (
             <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/auth/callback" element={<EmailVerificationHandler />} />
+            <Route path="/first-win" element={<ProtectedRoute><FirstWinActivation /></ProtectedRoute>} />
 
-            {/* Mobile Trusted Device — standalone shell (no ShellLayout) */}
             <Route path="/mobile" element={<ProtectedRoute><MobileHome /></ProtectedRoute>} />
             <Route path="/mobile/approvals" element={<ProtectedRoute><MobileApprovals /></ProtectedRoute>} />
             <Route path="/mobile/proof" element={<ProtectedRoute><MobileProof /></ProtectedRoute>} />
@@ -204,6 +224,7 @@ const App = () => (
                     <Route path="/business/files" element={<BusinessCenter />} />
                     <Route path="/business/settings" element={<BusinessCenter />} />
                     <Route path="/business/customers/:id" element={<CustomerDetail />} />
+                    <Route path="/business/customer-health" element={<CustomerHealthPage />} />
 
                     {/* Money — parent container handles sub-routing via tabs */}
                     <Route path="/money" element={<MoneyCenter />} />
@@ -246,12 +267,22 @@ const App = () => (
                     <Route path="/inbox/review" element={<InboxCapture />} />
                     <Route path="/activity" element={<ActivityStream />} />
                     <Route path="/opportunities" element={<OpportunityEngine />} />
+                    <Route path="/outcomes" element={<OutcomeEnginePage />} />
+                    <Route path="/spillovers" element={<SpilloverDashboard />} />
+                    <Route path="/ai-workforce" element={<AIWorkforcePage />} />
+                    <Route path="/capital-allocation" element={<CapitalAllocationPage />} />
+                    <Route path="/sovereign-export" element={<SovereignExportPage />} />
+                    <Route path="/communications" element={<CommunicationsPage />} />
+                    <Route path="/notifications/settings" element={<NotificationSettingsPage />} />
 
                     {/* Approvals — explicit sub-routes */}
                     <Route path="/approvals" element={<ApprovalsCenter />} />
                     <Route path="/approvals/pending" element={<ApprovalsCenter />} />
                     <Route path="/approvals/simulated" element={<ApprovalsCenter />} />
                     <Route path="/approvals/history" element={<ApprovalsCenter />} />
+
+                    {/* Approval Chamber — premium governed surface */}
+                    <Route path="/approval-chamber" element={<ApprovalChamber />} />
 
                     {/* Advisor Workspace — explicit sub-routes + wildcard */}
                     <Route path="/advisors" element={<AdvisorWorkspace />} />
@@ -355,7 +386,6 @@ const App = () => (
                     {/* Agent Activity Dashboard */}
                     <Route path="/agent-activity" element={<AgentActivityDashboard />} />
                     <Route path="/revenue-calling" element={<RevenueCallingPage />} />
-                    <Route path="/service-architecture" element={<ServiceArchitectureDashboard />} />
 
                     {/* Phase 5 — Platform Intelligence */}
                     <Route path="/integration-concierge" element={<IntegrationConcierge />} />
@@ -435,24 +465,39 @@ const App = () => (
                     <Route path="/owner/support" element={<OwnerCenter />} />
                     <Route path="/owner/change-review" element={<OwnerCenter />} />
                     <Route path="/owner/rollback-center" element={<OwnerCenter />} />
+                    <Route path="/owner/governance" element={<OwnerCenter />} />
                     <Route path="/owner/pricing" element={<PricingEditor />} />
                     <Route path="/owner/packs" element={<PackEditorPage />} />
                     <Route path="/owner/advisors" element={<AdvisorConfigPage />} />
                     <Route path="/owner/leases" element={<LeaseDashboard />} />
                     <Route path="/owner/constitution" element={<ConstitutionEditor />} />
 
-                    {/* Owner Mode — Founder-Safe Control Room (Layer 1) */}
-                    <Route path="/owner-mode" element={<OwnerModePage />} />
-                    <Route path="/owner-mode/home" element={<Navigate to="/owner-mode" replace />} />
+                    {/* Owner Mode — redirects to /owner */}
+                    <Route path="/owner-mode" element={<Navigate to="/owner" replace />} />
+                    <Route path="/owner-mode/home" element={<Navigate to="/owner" replace />} />
 
-                    {/* Global Admin Surfaces */}
-                    <Route path="/workflow-replay" element={<WorkflowReplayHub />} />
+                    {/* Workspace — Dual Reality */}
+                    <Route path="/workspace/principal" element={<PrincipalWorkspace />} />
+                    <Route path="/workspace/operator" element={<OperatorWorkspace />} />
+
+                    {/* Governance Dashboard */}
+                    <Route path="/governance" element={<GovernanceDashboard />} />
+                    <Route path="/governance/trust-debt" element={<GovernanceDashboard />} />
+                    <Route path="/governance/execution-debt" element={<GovernanceDashboard />} />
+                    <Route path="/governance/drag" element={<GovernanceDashboard />} />
+                    <Route path="/governance/readiness" element={<GovernanceDashboard />} />
+                    <Route path="/governance/delegation" element={<GovernanceDashboard />} />
+
+                    {/* Global Admin Surfaces — redirected to canonical locations */}
+                    <Route path="/workflow-replay" element={<Navigate to="/mission/workflows/latest/replay" replace />} />
                     <Route path="/observability" element={<ObservabilityPage />} />
                     <Route path="/users" element={<UsersAdminPage />} />
-                    <Route path="/policy-simulator" element={<PolicySimulatorHub />} />
+                    <Route path="/policy-simulator" element={<Navigate to="/mission/policies/simulate" replace />} />
+                    <Route path="/system-status" element={<Navigate to="/observability" replace />} />
+                    <Route path="/service-architecture" element={<Navigate to="/observability" replace />} />
 
                     {/* Redirects — merge rule */}
-                    <Route path="/policies/simulator" element={<Navigate to="/policy-simulator" replace />} />
+                    <Route path="/policies/simulator" element={<Navigate to="/mission/policies/simulate" replace />} />
 
                     <Route path="/enterprise" element={<EnterpriseControlPlane />} />
                     <Route path="/enterprise/roles" element={<EnterpriseControlPlane />} />
@@ -477,6 +522,10 @@ const App = () => (
                     {/* Global Search */}
                     <Route path="/search" element={<SearchPage />} />
 
+                    {/* Admin — Generated Truth */}
+                    <Route path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />
+                    <Route path="/admin/fleet-health" element={<FleetHealthPage />} />
+
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                   </Suspense>
@@ -486,11 +535,13 @@ const App = () => (
           </Routes>
           </Suspense>
           </InspectorProvider>
+          </OSRuntimeProvider>
           </SitaKernelProvider>
           </EntityContextProvider>
           </DisplayModeProvider>
           </DataModeProvider>
           </ThemeProvider>
+          </ConnectivityProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

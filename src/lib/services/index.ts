@@ -1,3 +1,21 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Services Barrel Export
+//
+// ARCHITECTURE ROLE:
+//   Backend-ready service implementations. These contain the
+//   business logic for approval flows, capability routing,
+//   event processing, receipts, verification, projections, etc.
+//
+//   ✅ core-services/ re-exports from here (facade pattern)
+//   ✅ Hooks and context providers may import from here
+//   ✅ Edge functions and persistence adapters use these
+//   ❌ Pages SHOULD NOT import directly — use engines/ or hooks/
+//   ❌ Services MUST NOT import from engines/ (wrong direction)
+//
+//   For page-facing pure engines, use src/lib/engines/
+//   For persistence, use src/lib/persistence/
+// ═══════════════════════════════════════════════════════════════
+
 export * from "./brain-core";
 export * from "./business-os";
 export * from "./finance-os";
@@ -51,3 +69,54 @@ export { generateSupportSummary } from "./support-diagnostics";
 export { captureReplayMetadata, redactReplayForSupport } from "./support-diagnostics";
 export { classifyIncident as classifySupportIncident } from "./support-diagnostics";
 export * from "./sovereign-calculation";
+export { OpportunityGraphService, createOpportunityGraphService } from "./opportunity-graph";
+export { IntegrationConciergeService, createIntegrationConciergeService } from "./integration-concierge";
+export { OSUnificationService, createOSUnificationService } from "./os-unification";
+export { OwnerControlRoomService, createOwnerControlRoomService } from "./owner-control-room";
+export { ObservabilityService, createObservabilityService } from "./observability";
+export { TenantFirewallService, createTenantFirewallService } from "./tenant-firewall";
+export { TrustedDeviceService, createTrustedDeviceService } from "./trusted-device";
+
+// ── Phase 1: Trust & Security ────────────────────────────────
+export { TrustGovernorService, createTrustGovernor } from "./trust-governor";
+export { KeyvaultService, createKeyvault } from "./keyvault";
+export { DuressDetectionService, createDuressDetection } from "./duress-detection";
+export { EmergencyHaltService, createEmergencyHalt } from "./emergency-halt";
+export { InjectionFirewallService, createInjectionFirewall } from "./injection-firewall";
+
+// ── Phase 2: AI Workforce & Intelligence ─────────────────────
+export { AIWorkforceService, createAIWorkforce } from "./ai-workforce";
+export { AIEconomicsService, createAIEconomics } from "./ai-economics";
+export { ModelRouterService, createModelRouter } from "./model-router";
+export { InferenceGatewayService, createInferenceGateway } from "./inference-gateway";
+export { CouncilOrchestratorService, createCouncilOrchestrator } from "./council-orchestrator";
+
+// ── Phase 3: Communication & Workflow ────────────────────────
+export { CommunicationService, createCommunicationService } from "./communication-service";
+export { MessagingGatewayService, createMessagingGateway } from "./messaging-gateway";
+export { NotificationsService, createNotifications } from "./notifications";
+export { BookingSchedulingService, createBookingScheduling } from "./booking-scheduling";
+export { DocumentSignatureService, createDocumentSignature } from "./document-signature";
+export { TimelineCalendarService, createTimelineCalendar } from "./timeline-calendar";
+
+// ── Phase 4: Revenue & Business Intelligence ─────────────────
+export { RevenueAutopilotService, createRevenueAutopilot } from "./revenue-autopilot";
+export { CapitalAllocationService, createCapitalAllocation } from "./capital-allocation";
+export { OutcomeEngineService, createOutcomeEngine } from "./outcome-engine";
+export { DataScopeModelService, createDataScopeModel } from "./data-scope-model";
+
+// ── Phase 5: Platform Infrastructure ─────────────────────────
+export { RealtimeGatewayService, createRealtimeGateway } from "./realtime-gateway";
+export { ServiceRegistryService, createServiceRegistry } from "./service-registry";
+export { SovereignExporterService, createSovereignExporter } from "./sovereign-exporter";
+export { SovereignTimeService, createSovereignTime } from "./sovereign-time";
+export { DatabaseService, createDatabaseService } from "./database";
+
+// ── Phase 6: Admin Consolidation ─────────────────────────────
+export { AdminService, createAdminService } from "./admin-service";
+
+// ── Phase 7: Infrastructure Services ─────────────────────────
+export { CloudControlPlaneService, createCloudControlPlaneInfra } from "./cloud-control-plane-infra";
+export { EdgeDeviceRuntimeService, createEdgeDeviceRuntime } from "./edge-device-runtime";
+export { FleetOTAService, createFleetOTA } from "./fleet-ota";
+export { IncidentManagementService, createIncidentManagement } from "./incident-management";

@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
+import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
 import { KPITile, OpportunityCard, RiskCard, ProofCard, TimelineItem } from "@/components/sita/SitaComponents";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { TrustBadge } from "@/components/sita/TrustBadge";
@@ -81,11 +82,23 @@ const BusinessLeakagePanel = () => {
 const BusinessOverview = () => {
   const navigate = useNavigate();
   const { isDemoMode } = useDataMode();
-  const { data: leads = [] } = useLeads();
-  const { data: customers = [] } = useCustomers();
-  const { data: invoices = [] } = useInvoices();
+  const { data: leads = [], isLoading: leadsLoading } = useLeads();
+  const { data: customers = [], isLoading: custLoading } = useCustomers();
+  const { data: invoices = [], isLoading: invLoading } = useInvoices();
 
+  const isLoading = leadsLoading || custLoading || invLoading;
   const hasLiveData = isDemoMode || leads.length > 0 || customers.length > 0 || invoices.length > 0;
+
+  if (isLoading) {
+    return (
+      <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+        <SitaPageHeader title="Business Center" subtitle="Your operating overview — leads, revenue, and execution" />
+        <KPISkeleton count={8} />
+        <SectionSkeleton cards={2} columns={2} />
+        <SectionSkeleton cards={3} columns={3} />
+      </motion.div>
+    );
+  }
 
   if (!hasLiveData) {
     return (

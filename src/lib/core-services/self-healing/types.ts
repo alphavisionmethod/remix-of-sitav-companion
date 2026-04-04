@@ -5,7 +5,7 @@
 
 // ── Severity & State ────────────────────────────────────────────
 
-export type IncidentSeverity = "P0" | "P1" | "P2" | "P3" | "P4";
+export type SelfHealingIncidentSeverity = "P0" | "P1" | "P2" | "P3" | "P4";
 
 export type IncidentState =
   | "detected"
@@ -96,7 +96,7 @@ export interface Incident {
   readonly correlationId: string;
   readonly title: string;
   readonly description: string;
-  readonly severity: IncidentSeverity;
+  readonly severity: SelfHealingIncidentSeverity;
   readonly state: IncidentState;
   readonly rootCause: RootCauseCategory;
   readonly affectedServices: string[];
@@ -168,7 +168,7 @@ export interface ServiceMetrics {
 // ── Escalation Rules ────────────────────────────────────────────
 
 export interface EscalationRule {
-  readonly severity: IncidentSeverity;
+  readonly severity: SelfHealingIncidentSeverity;
   readonly autoHeal: boolean;
   readonly autonomyLevel: AutonomyLevel;
   readonly requiresCouncilQuorum: boolean;
@@ -181,7 +181,7 @@ export interface EscalationRule {
 
 // ── Diagnostic Bundle ───────────────────────────────────────────
 
-export interface DiagnosticBundle {
+export interface SelfHealingDiagnosticBundle {
   readonly id: string;
   readonly incidentId: string;
   readonly correlationId: string;

@@ -1,0 +1,702 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:59:58.438Z",
+  "totalServices": 56,
+  "passingServices": 38,
+  "averageConformanceScore": 66,
+  "entries": [
+    {
+      "serviceId": "admin-service",
+      "path": "src/lib/services/admin-service",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "ai-economics",
+      "path": "src/lib/services/ai-economics",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "ai-workforce",
+      "path": "src/lib/services/ai-workforce",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "approval-engine",
+      "path": "src/lib/services/approval-engine",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "boardroom-service",
+      "path": "src/lib/services/boardroom-service",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "booking-scheduling",
+      "path": "src/lib/services/booking-scheduling",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "brain-core",
+      "path": "src/lib/services/brain-core",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": false,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing factory function (create*)",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "business-os",
+      "path": "src/lib/services/business-os",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "capability-router",
+      "path": "src/lib/services/capability-router",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": false,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing factory function (create*)",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "capital-allocation",
+      "path": "src/lib/services/capital-allocation",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": false,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing type exports",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "cloud-control-plane-infra",
+      "path": "src/lib/services/cloud-control-plane-infra",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "communication-service",
+      "path": "src/lib/services/communication-service",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "concierge-os",
+      "path": "src/lib/services/concierge-os",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": false,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing factory function (create*)",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "connector-control-plane",
+      "path": "src/lib/services/connector-control-plane",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": false,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing factory function (create*)",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "council-orchestrator",
+      "path": "src/lib/services/council-orchestrator",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "data-scope-model",
+      "path": "src/lib/services/data-scope-model",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "database",
+      "path": "src/lib/services/database",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "document-signature",
+      "path": "src/lib/services/document-signature",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "duress-detection",
+      "path": "src/lib/services/duress-detection",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "edge-device-runtime",
+      "path": "src/lib/services/edge-device-runtime",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "emergency-halt",
+      "path": "src/lib/services/emergency-halt",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "event-bus",
+      "path": "src/lib/services/event-bus",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "executor-service",
+      "path": "src/lib/services/executor-service",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": false,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing factory function (create*)",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "finance-os",
+      "path": "src/lib/services/finance-os",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "fleet-ota",
+      "path": "src/lib/services/fleet-ota",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "incident-management",
+      "path": "src/lib/services/incident-management",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "inference-gateway",
+      "path": "src/lib/services/inference-gateway",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "injection-firewall",
+      "path": "src/lib/services/injection-firewall",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "integration-concierge",
+      "path": "src/lib/services/integration-concierge",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": false,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing type exports",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "keyvault",
+      "path": "src/lib/services/keyvault",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "memory-service",
+      "path": "src/lib/services/memory-service",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": false,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing factory function (create*)",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "messaging-gateway",
+      "path": "src/lib/services/messaging-gateway",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "meta-governance",
+      "path": "src/lib/services/meta-governance",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": false,
+      "hasTypeExports": false,
+      "hasTestFile": false,
+      "conformanceScore": 25,
+      "issues": [
+        "Missing factory function (create*)",
+        "Missing type exports",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "model-router",
+      "path": "src/lib/services/model-router",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "notifications",
+      "path": "src/lib/services/notifications",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "observability",
+      "path": "src/lib/services/observability",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "opportunity-graph",
+      "path": "src/lib/services/opportunity-graph",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": false,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing type exports",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "os-unification",
+      "path": "src/lib/services/os-unification",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": false,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing type exports",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "outcome-engine",
+      "path": "src/lib/services/outcome-engine",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "owner-control-room",
+      "path": "src/lib/services/owner-control-room",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "policy-engine",
+      "path": "src/lib/services/policy-engine",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": false,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing factory function (create*)",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "projections",
+      "path": "src/lib/services/projections",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": false,
+      "hasTypeExports": false,
+      "hasTestFile": false,
+      "conformanceScore": 25,
+      "issues": [
+        "Missing factory function (create*)",
+        "Missing type exports",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "realtime-gateway",
+      "path": "src/lib/services/realtime-gateway",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "receipt-service",
+      "path": "src/lib/services/receipt-service",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": false,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing type exports",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "revenue-autopilot",
+      "path": "src/lib/services/revenue-autopilot",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": false,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing type exports",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "service-registry",
+      "path": "src/lib/services/service-registry",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "shared",
+      "path": "src/lib/services/shared",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": false,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing factory function (create*)",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "sovereign-calculation",
+      "path": "src/lib/services/sovereign-calculation",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": false,
+      "hasTypeExports": false,
+      "hasTestFile": false,
+      "conformanceScore": 25,
+      "issues": [
+        "Missing factory function (create*)",
+        "Missing type exports",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "sovereign-exporter",
+      "path": "src/lib/services/sovereign-exporter",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "sovereign-time",
+      "path": "src/lib/services/sovereign-time",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "support-diagnostics",
+      "path": "src/lib/services/support-diagnostics",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": false,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 50,
+      "issues": [
+        "Missing factory function (create*)",
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "tenant-firewall",
+      "path": "src/lib/services/tenant-firewall",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "timeline-calendar",
+      "path": "src/lib/services/timeline-calendar",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "trust-governor",
+      "path": "src/lib/services/trust-governor",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "trusted-device",
+      "path": "src/lib/services/trusted-device",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    },
+    {
+      "serviceId": "verification-engine",
+      "path": "src/lib/services/verification-engine",
+      "hasBarrelExport": true,
+      "hasFactoryFunction": true,
+      "hasTypeExports": true,
+      "hasTestFile": false,
+      "conformanceScore": 75,
+      "issues": [
+        "Missing test file"
+      ]
+    }
+  ]
+}

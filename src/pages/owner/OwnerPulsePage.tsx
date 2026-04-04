@@ -49,7 +49,7 @@ function PulseGrid({ items }: { items: PulseItem[] }) {
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
       {items.map((item, i) => (
         <motion.div key={item.label} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
-          <div className="rounded-xl border border-border/50 bg-card/60 p-4">
+          <div className="rounded-xl border border-border/50 bg-card/60 p-4 card-hover-lift">
             <p className="font-display text-xl font-bold text-foreground">{item.value}</p>
             <p className="text-[11px] text-muted-foreground mt-1">{item.label}</p>
             {item.trend && (

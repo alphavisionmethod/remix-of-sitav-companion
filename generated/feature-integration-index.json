@@ -1,20 +1,165 @@
 {
   "version": "1.0.0",
-  "generated_at": "2026-04-02T00:00:00Z",
+  "generatedAt": "2026-04-04T19:58:15.686Z",
+  "total": 12,
   "features": [
-    { "id": "daily-pulse", "name": "Daily Pulse", "domain": "home", "status": "implemented", "dependencies": ["business-os", "finance-os", "concierge-os"], "advisors": ["business-advisor", "money-advisor", "concierge-advisor"], "connectors": [] },
-    { "id": "advisor-council", "name": "Advisor Council", "domain": "advisors", "status": "implemented", "dependencies": ["brain-core"], "advisors": ["business-advisor", "money-advisor", "concierge-advisor", "strategy-advisor"], "connectors": [] },
-    { "id": "boardroom", "name": "Boardroom", "domain": "boardroom", "status": "implemented", "dependencies": ["brain-core", "projections", "memory-service"], "advisors": ["business-advisor", "money-advisor", "concierge-advisor", "strategy-advisor"], "connectors": [] },
-    { "id": "crm", "name": "CRM & Customers", "domain": "business", "status": "implemented", "dependencies": ["business-os", "entity-graph"], "advisors": ["business-advisor"], "connectors": ["gmail", "google-calendar"] },
-    { "id": "revenue-autopilot", "name": "Revenue Autopilot", "domain": "business", "status": "implemented", "dependencies": ["business-os", "executor-service"], "advisors": ["business-advisor"], "connectors": ["stripe", "gmail"] },
-    { "id": "quicken-finance", "name": "Quicken-Like Finance", "domain": "money", "status": "implemented", "dependencies": ["finance-os", "sovereign-calculation"], "advisors": ["money-advisor"], "connectors": ["plaid", "stripe"] },
-    { "id": "investment-office", "name": "Investment Office", "domain": "money", "status": "implemented", "dependencies": ["finance-os"], "advisors": ["money-advisor"], "connectors": ["plaid"] },
-    { "id": "household-ops", "name": "Household Operations", "domain": "concierge", "status": "implemented", "dependencies": ["concierge-os"], "advisors": ["concierge-advisor"], "connectors": ["google-calendar"] },
-    { "id": "travel-planning", "name": "Travel Planning", "domain": "concierge", "status": "implemented", "dependencies": ["concierge-os"], "advisors": ["concierge-advisor"], "connectors": ["google-calendar"] },
-    { "id": "file-ingestion", "name": "File Ingestion", "domain": "files", "status": "implemented", "dependencies": ["memory-service", "entity-graph"], "advisors": [], "connectors": ["google-drive"] },
-    { "id": "pack-store", "name": "Pack Store", "domain": "store", "status": "implemented", "dependencies": ["billing"], "advisors": [], "connectors": [] },
-    { "id": "mission-control", "name": "Mission Control", "domain": "admin", "status": "implemented", "dependencies": ["analytics", "support-diagnostics"], "advisors": [], "connectors": [] },
-    { "id": "proof-center", "name": "Proof Center", "domain": "proof", "status": "implemented", "dependencies": ["receipt-service", "verification-engine"], "advisors": [], "connectors": [] },
-    { "id": "productivity-suite", "name": "Productivity Suite", "domain": "productivity", "status": "implemented", "dependencies": [], "advisors": [], "connectors": ["google-drive"] }
+    {
+      "feature": "daily-pulse",
+      "domains": [
+        "business",
+        "finance",
+        "concierge"
+      ],
+      "services": [
+        "brain-core",
+        "cross-domain"
+      ],
+      "pages": [
+        "/"
+      ]
+    },
+    {
+      "feature": "lead-management",
+      "domains": [
+        "business"
+      ],
+      "services": [
+        "lead-scoring",
+        "communication"
+      ],
+      "pages": [
+        "/business/leads"
+      ]
+    },
+    {
+      "feature": "invoice-collections",
+      "domains": [
+        "business",
+        "finance"
+      ],
+      "services": [
+        "revenue-autopilot",
+        "payment-execution"
+      ],
+      "pages": [
+        "/business/invoices",
+        "/business/collections"
+      ]
+    },
+    {
+      "feature": "bill-management",
+      "domains": [
+        "finance"
+      ],
+      "services": [
+        "reserve-engine",
+        "bill-calendar"
+      ],
+      "pages": [
+        "/money/bills"
+      ]
+    },
+    {
+      "feature": "subscription-waste",
+      "domains": [
+        "finance"
+      ],
+      "services": [
+        "subscription-waste"
+      ],
+      "pages": [
+        "/money/subscriptions"
+      ]
+    },
+    {
+      "feature": "household-ops",
+      "domains": [
+        "concierge"
+      ],
+      "services": [
+        "household-ops",
+        "task-prioritization"
+      ],
+      "pages": [
+        "/concierge/tasks"
+      ]
+    },
+    {
+      "feature": "travel-planning",
+      "domains": [
+        "concierge"
+      ],
+      "services": [
+        "travel-continuity"
+      ],
+      "pages": [
+        "/concierge/travel"
+      ]
+    },
+    {
+      "feature": "advisor-council",
+      "domains": [
+        "all"
+      ],
+      "services": [
+        "brain-core",
+        "advisor-protocol"
+      ],
+      "pages": [
+        "/advisors"
+      ]
+    },
+    {
+      "feature": "boardroom",
+      "domains": [
+        "all"
+      ],
+      "services": [
+        "boardroom-packets",
+        "governance-simulator"
+      ],
+      "pages": [
+        "/boardroom"
+      ]
+    },
+    {
+      "feature": "proof-center",
+      "domains": [
+        "all"
+      ],
+      "services": [
+        "receipt-service",
+        "verification-engine"
+      ],
+      "pages": [
+        "/proof"
+      ]
+    },
+    {
+      "feature": "file-ingestion",
+      "domains": [
+        "all"
+      ],
+      "services": [
+        "file-ingestion",
+        "search-fabric"
+      ],
+      "pages": [
+        "/files"
+      ]
+    },
+    {
+      "feature": "mission-control",
+      "domains": [
+        "system"
+      ],
+      "services": [
+        "fraud-sentinel",
+        "trust-state"
+      ],
+      "pages": [
+        "/owner"
+      ]
+    }
   ]
 }

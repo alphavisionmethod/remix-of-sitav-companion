@@ -1,7 +1,7 @@
 // SITA OS — Family Packet Service
-import type { BoardroomPacket } from "./business-packet.service";
+import type { ServiceBoardroomPacket } from "./business-packet.service";
 
-export function generateFamilyPacket(): BoardroomPacket {
+export function generateFamilyPacket(): ServiceBoardroomPacket {
   return {
     id: crypto.randomUUID(), domain: "concierge", generatedAt: new Date().toISOString(), confidence: 0.76,
     staleWarnings: ["Calendar sync 2h stale"],

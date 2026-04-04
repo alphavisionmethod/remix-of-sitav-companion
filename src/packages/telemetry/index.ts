@@ -83,7 +83,7 @@ export interface HealthCheck {
 
 // ── Incident Records ────────────────────────────────────────
 
-export type IncidentSeverity = "critical" | "major" | "minor" | "informational";
+export type TelemetryIncidentSeverity = "critical" | "major" | "minor" | "informational";
 
 export interface IncidentTimelineEntry {
   readonly timestamp: number;
@@ -94,7 +94,7 @@ export interface IncidentTimelineEntry {
 
 export interface IncidentRecord {
   readonly id: string;
-  readonly severity: IncidentSeverity;
+  readonly severity: TelemetryIncidentSeverity;
   readonly serviceId: string;
   readonly title: string;
   readonly status: "open" | "investigating" | "mitigated" | "resolved";
@@ -113,7 +113,7 @@ export interface AlertRule {
   readonly condition: "above" | "below" | "equals";
   readonly threshold: number;
   readonly window: string;
-  readonly severity: IncidentSeverity;
+  readonly severity: TelemetryIncidentSeverity;
   readonly enabled: boolean;
   readonly notifyChannels: string[];
 }

@@ -2,9 +2,13 @@
 // SITA OS — Approval Service
 // Full approval lifecycle with dual-approval, expiry, escalation,
 // delegation chains, and decision recording with proof
+// Canonical contracts: ApprovalStatus from contracts
 // ═══════════════════════════════════════════════════════════════
 
-export type ApprovalStatus = "pending" | "approved" | "rejected" | "expired" | "escalated" | "delegated" | "cancelled";
+import type { ApprovalStatus as CanonicalApprovalStatus } from "@/packages/contracts";
+
+/** Extended approval status (superset of canonical) */
+export type ServiceApprovalStatus = CanonicalApprovalStatus | "cancelled";
 
 export interface ApprovalRequest {
   id: string;
@@ -14,7 +18,7 @@ export interface ApprovalRequest {
   requestedBy: string;
   requestedAt: number;
   expiresAt: number;
-  status: ApprovalStatus;
+  status: ServiceApprovalStatus;
   domain: string;
   riskTier: "low" | "medium" | "high" | "critical";
   requiresDualApproval: boolean;

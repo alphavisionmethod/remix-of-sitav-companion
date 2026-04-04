@@ -1,0 +1,1388 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:47.594Z",
+  "totalServices": 131,
+  "levelDistribution": {
+    "scaffold": 131
+  },
+  "maturityLevels": [
+    {
+      "level": "scaffold",
+      "description": "Interface defined, no implementation",
+      "gates": {
+        "hasTypes": true,
+        "hasImplementation": false,
+        "hasTests": false,
+        "hasEdgeFunction": false,
+        "hasRLS": false
+      },
+      "exitCriteria": [
+        "Define all contract types",
+        "Create barrel export",
+        "Add to service manifest"
+      ]
+    },
+    {
+      "level": "alpha",
+      "description": "Basic implementation, not production-ready",
+      "gates": {
+        "hasTypes": true,
+        "hasImplementation": true,
+        "hasTests": false,
+        "hasEdgeFunction": false,
+        "hasRLS": false
+      },
+      "exitCriteria": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "level": "beta",
+      "description": "Feature-complete, needs hardening",
+      "gates": {
+        "hasTypes": true,
+        "hasImplementation": true,
+        "hasTests": true,
+        "hasEdgeFunction": true,
+        "hasRLS": false
+      },
+      "exitCriteria": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "level": "ga",
+      "description": "Production-ready, fully hardened",
+      "gates": {
+        "hasTypes": true,
+        "hasImplementation": true,
+        "hasTests": true,
+        "hasEdgeFunction": true,
+        "hasRLS": true
+      },
+      "exitCriteria": [
+        "Enable RLS policies",
+        "Pass security review",
+        "Add performance budgets",
+        "Documentation complete"
+      ]
+    }
+  ],
+  "serviceMaturity": [
+    {
+      "serviceName": "agent-governance",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "approval-history",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "approval-requests",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "approval-routing",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "escalation-rules",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "advisor-track-composer",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "carryover",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "decision-memory",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "build-approval-package",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "build-boardroom-request",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "build-explanation",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "build-simulation-request",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "choose-advisors",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "choose-execution-mode",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "councils",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "model-router",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "orchestrate-intent",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "accounts",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "business-boardroom-inputs",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "callback-queue",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "collections-command",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "collections",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "contacts",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "customer-dashboard",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "customer-health",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "customer-timeline",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "follow-up",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "invoice-linking",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "lead-intake",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "lead-scoring",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "leakage-engine",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "no-show-recovery",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "opportunity-engine",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "opportunity-ranking",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "proposals",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "quotes",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "reactivation",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "recovered-value-ledger",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "recovery-engine",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "revenue-autopilot",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "stale-lead-detector",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "website-management",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "capability-registry",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "pack-enablement",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "shell-space-routing",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "activity-prep",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "conflict-detector",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "event-continuity",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "gift-reminders",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "grocery-continuity",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "home-admin",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "household-boardroom-inputs",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "household-ops",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "household-overview",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "load-balance",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "prep-checklist",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "prep-derivation",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "provider-memory",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "reconciliation",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "recurring-supplies",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "reservation-ingest",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "responsibilities",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "school-items",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "travel-continuity",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "trip-overview",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "connector-auth",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "connector-fake-mode",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "connector-health",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "council-automation",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "persistence-adapters",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "event-envelope",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "publish-event",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "subscribe-event",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "execute-action",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "execute-connector-action",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "execute-workflow-step",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "account-summary",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "balance-sync",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "bill-calendar",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "capital-map",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "committee-boardroom-inputs",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "crypto-exposure",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "due-soon-alerts",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "entity-capital",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "execution-review",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "family-office-review",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "finance-boardroom-inputs",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "fx-watchlist",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "investment-office",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "liquidity",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "overview",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "portfolio-risk",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "receivables",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "recurring-obligation",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "regime-engine",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "renewal-risk",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "reserve-engine",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "safe-to-spend",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "sinking-fund",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "subscription-detector",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "subscription-waste",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "thesis-vault",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "transaction-categorizer",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "waste-detector",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "boardroom-memory",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "correction",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "preference-memory",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "profile-memory",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "trust-memory",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "workflow-memory",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "collector",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "persistence",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "approval-requirements",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "outbound-comm-policy",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "sensitive-doc-policy",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "truth-boundaries",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "approval-receipts",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "execution-receipts",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "proof-bundles",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "receipts",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "boardroom-packets",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "support-diagnostics",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "diagnostic-bundle",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "incident-classification",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "replay-metadata",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "support-summary",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "postcondition-checks",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "receipt-verification",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "replay-verification",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "rollback-signals",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    },
+    {
+      "serviceName": "verification",
+      "currentLevel": "scaffold",
+      "nextLevel": "alpha",
+      "blockers": [
+        "Implement core business logic",
+        "Add factory function",
+        "Wire into kernel context"
+      ]
+    }
+  ]
+}

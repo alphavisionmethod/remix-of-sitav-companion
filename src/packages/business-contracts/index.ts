@@ -46,3 +46,17 @@ export interface Invoice {
 export * from "./leads";
 export * from "./opportunities";
 export * from "./revenue-autopilot";
+
+// ── New sub-modules ─────────────────────────────────────────
+export * from "./_contract-scaffold";
+export * from "./booking";
+export * from "./booking-confirmation";
+export * from "./business-boardroom-packet";
+export * from "./business-kpi";
+export * from "./callback-task";
+export * from "./capacity-monetization-signal";
+export * from "./collection-step";
+export * from "./collection-sequence";
+export * from "./contact-record";
+export * from "./customer-lifecycle";
+export * from "./customer-dashboard";

@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 const db: any = supabase;
 import { useQuery } from "@tanstack/react-query";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { generateCalendarDemoEvents } from "@/lib/mock-data";
 import {
   Calendar, ChevronLeft, ChevronRight, Plus, Clock, Users, MapPin, CheckSquare
 } from "lucide-react";
@@ -30,19 +31,7 @@ function useCalendarData(year: number, month: number) {
     queryFn: async (): Promise<CalendarEvent[]> => {
       if (!user?.id || isDemoMode) {
         // Demo data
-        const demoEvents: CalendarEvent[] = [
-          { id: "d1", title: "Soccer practice", date: `${year}-${String(month + 1).padStart(2, "0")}-14`, type: "booking", status: "confirmed", provider: "Riverside Park" },
-          { id: "d2", title: "Piano lesson", date: `${year}-${String(month + 1).padStart(2, "0")}-15`, type: "booking", status: "confirmed", provider: "Music Academy" },
-          { id: "d3", title: "Dentist checkup", date: `${year}-${String(month + 1).padStart(2, "0")}-18`, type: "booking", status: "pending", provider: "Dr. Patel" },
-          { id: "d4", title: "Parent-teacher conf.", date: `${year}-${String(month + 1).padStart(2, "0")}-16`, type: "booking", status: "confirmed" },
-          { id: "d5", title: "Grocery run", date: `${year}-${String(month + 1).padStart(2, "0")}-14`, type: "task", status: "pending" },
-          { id: "d6", title: "Oil change", date: `${year}-${String(month + 1).padStart(2, "0")}-20`, type: "task", status: "pending" },
-          { id: "d7", title: "Family dinner", date: `${year}-${String(month + 1).padStart(2, "0")}-19`, type: "booking", status: "confirmed", provider: "Chez Marie" },
-          { id: "d8", title: "HVAC maintenance", date: `${year}-${String(month + 1).padStart(2, "0")}-22`, type: "booking", status: "pending", provider: "Home" },
-          { id: "d9", title: "Birthday party", date: `${year}-${String(month + 1).padStart(2, "0")}-21`, type: "booking", status: "confirmed" },
-          { id: "d10", title: "Call plumber", date: `${year}-${String(month + 1).padStart(2, "0")}-15`, type: "task", status: "pending" },
-        ];
-        return demoEvents;
+        return generateCalendarDemoEvents(year, month) as CalendarEvent[];
       }
 
       const startDate = `${year}-${String(month + 1).padStart(2, "0")}-01`;

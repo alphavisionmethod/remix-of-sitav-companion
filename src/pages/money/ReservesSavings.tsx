@@ -2,7 +2,8 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton 
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ReserveProgressChart, ReserveOverTimeChart } from "@/components/sita/SitaCharts";
-import { PiggyBank, Target, Shield, TrendingUp, Plus, Sparkles, Loader2 } from "lucide-react";
+import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
+import { PiggyBank, Target, Shield, TrendingUp, Plus, Sparkles } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { motion } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -10,14 +11,8 @@ import { db } from "@/integrations/supabase/db";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
+import { MOCK_RESERVES_SAVINGS } from "@/lib/mock-data";
 
-const mockReserves = [
-  { id: "1", name: "Emergency Fund", current_amount: 12000, target_amount: 15000, category: "emergency", contribution_amount: 500, notes: "Safety net", auto_contribute: true, priority: 1 },
-  { id: "2", name: "Tax Reserve", current_amount: 8400, target_amount: 12000, category: "sinking", contribution_amount: 1200, notes: "Q2 estimated", auto_contribute: true, priority: 2 },
-  { id: "3", name: "Equipment Fund", current_amount: 2800, target_amount: 5000, category: "sinking", contribution_amount: 400, notes: "Business capex", auto_contribute: false, priority: 3 },
-  { id: "4", name: "Vacation Fund", current_amount: 1600, target_amount: 4000, category: "goal", contribution_amount: 300, notes: "Summer trip", auto_contribute: true, priority: 4 },
-  { id: "5", name: "Kids Education", current_amount: 6200, target_amount: 25000, category: "goal", contribution_amount: 500, notes: "529 supplement", auto_contribute: true, priority: 5 },
-];
 
 const ReservesSavings = () => {
   const { user } = useAuth();
@@ -27,13 +22,13 @@ const ReservesSavings = () => {
   const { data: reserves = [], isLoading } = useQuery({
     queryKey: ["reserves", isDemoMode, user?.id],
     queryFn: async () => {
-      if (isDemoMode) return mockReserves;
+      if (isDemoMode) return MOCK_RESERVES_SAVINGS;
       if (!user) return [];
       const { data, error } = await (db as any)
         .from("reserves")
         .select("*")
         .order("priority", { ascending: true });
-      if (error) { console.error("[reserves]", error); return mockReserves; }
+      if (error) { console.error("[reserves]", error); return MOCK_RESERVES_SAVINGS; }
       return data || [];
     },
     staleTime: isDemoMode ? Infinity : 10000,
@@ -61,7 +56,7 @@ const ReservesSavings = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
+        <SectionSkeleton cards={4} columns={1} />
       ) : reserves.length === 0 ? (
         <EmptyState icon={PiggyBank} title="No reserves yet" description="Create your first savings goal to start building financial resilience." />
       ) : (

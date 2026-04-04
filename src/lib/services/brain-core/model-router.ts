@@ -6,14 +6,14 @@
 
 // ── Types ────────────────────────────────────────────────────
 
-export type ModelTier = "nano" | "standard" | "premium" | "reasoning";
+export type BrainModelTier = "nano" | "standard" | "premium" | "reasoning";
 
 export type DomainRiskClass = "low" | "standard" | "elevated" | "critical";
 
 export type IntentComplexity = "trivial" | "simple" | "moderate" | "complex" | "expert";
 
-export interface ModelRoutingDecision {
-  selectedTier: ModelTier;
+export interface BrainModelRoutingDecision {
+  selectedTier: BrainModelTier;
   estimatedCostCents: number;
   estimatedLatencyMs: number;
   reasoning: string;
@@ -46,14 +46,14 @@ const budgetState: BudgetState = {
 
 // ── Cost Model ───────────────────────────────────────────────
 
-const TIER_COST_CENTS: Record<ModelTier, number> = {
+const TIER_COST_CENTS: Record<BrainModelTier, number> = {
   nano: 1,        // ~$0.01 per call
   standard: 5,    // ~$0.05 per call
   premium: 25,    // ~$0.25 per call
   reasoning: 100, // ~$1.00 per call
 };
 
-const TIER_LATENCY_MS: Record<ModelTier, number> = {
+const TIER_LATENCY_MS: Record<BrainModelTier, number> = {
   nano: 200,
   standard: 800,
   premium: 2000,
@@ -74,7 +74,7 @@ function computeIdealTier(
   complexity: IntentComplexity,
   riskClass: DomainRiskClass,
   isSimulation: boolean
-): ModelTier {
+): BrainModelTier {
   // Critical domains always get premium+
   if (riskClass === "critical") {
     return complexity === "expert" ? "reasoning" : "premium";
@@ -96,14 +96,14 @@ function computeIdealTier(
   return "nano";
 }
 
-const TIER_RANK: Record<ModelTier, number> = {
+const TIER_RANK: Record<BrainModelTier, number> = {
   nano: 0,
   standard: 1,
   premium: 2,
   reasoning: 3,
 };
 
-function downgrade(tier: ModelTier): ModelTier {
+function downgrade(tier: BrainModelTier): BrainModelTier {
   if (tier === "reasoning") return "premium";
   if (tier === "premium") return "standard";
   return "nano";
@@ -120,7 +120,7 @@ export function routeToModel(params: {
   riskClass: DomainRiskClass;
   isSimulation?: boolean;
   urgency?: "low" | "standard" | "high" | "critical";
-}): ModelRoutingDecision {
+}): BrainModelRoutingDecision {
   const isSimulation = params.isSimulation ?? false;
   const idealTier = computeIdealTier(params.complexity, params.riskClass, isSimulation);
 
@@ -218,8 +218,8 @@ export function resetDailySpend(): void {
 
 function buildRoutingReasoning(
   params: { complexity: IntentComplexity; riskClass: DomainRiskClass; isSimulation?: boolean },
-  ideal: ModelTier,
-  actual: ModelTier,
+  ideal: BrainModelTier,
+  actual: BrainModelTier,
   downgraded: boolean
 ): string {
   const parts: string[] = [];

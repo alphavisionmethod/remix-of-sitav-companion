@@ -2,7 +2,13 @@
 // SITA OS — Revenue Autopilot Engine
 // Leakage detection, recovery, opportunity ranking, value ledger
 // Pure deterministic functions — no side effects
+// Canonical contracts: RecoveredValueRuntime from contracts/runtime
 // ═══════════════════════════════════════════════════════════════
+
+import type { RecoveredValueRuntime as CanonicalRecoveredValue } from "@/packages/contracts";
+import type { RecoveredValueEntry as CanonicalRecoveredValueEntry } from "@/packages/contracts";
+
+export type { CanonicalRecoveredValue, CanonicalRecoveredValueEntry };
 
 // ── Types ────────────────────────────────────────────────────────
 

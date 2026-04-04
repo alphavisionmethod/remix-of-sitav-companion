@@ -3,8 +3,8 @@
 // Transform mock/live data shapes into domain engine input types
 // ═══════════════════════════════════════════════════════════════
 
-import type { Customer, PipelineOpportunity, Lead as BizLead } from "@/lib/domain-engines/business-os";
-import type { CashflowEntry, Bill as FinBill, Budget, Reserve, Invoice as FinInvoice } from "@/lib/domain-engines/finance-os";
+import type { Customer, PipelineOpportunity, BusinessLead as BizLead } from "@/lib/domain-engines/business-os";
+import type { CashflowEntry, Bill as FinBill, Budget, Reserve, FinanceInvoice as FinInvoice } from "@/lib/domain-engines/finance-os";
 import type { Task } from "@/lib/domain-engines/concierge-os";
 
 // ── Business Adapters ────────────────────────────────────────

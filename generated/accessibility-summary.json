@@ -1,0 +1,3402 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:59.324Z",
+  "totalRoutes": 261,
+  "compliant": 261,
+  "nonCompliant": 0,
+  "checks": [
+    {
+      "route": "/reset-password",
+      "component": "ResetPassword",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/onboarding",
+      "component": "Onboarding",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/auth/callback",
+      "component": "EmailVerificationHandler",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/",
+      "component": "DailyPulse",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/life",
+      "component": "LifeDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/overview",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/leads",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/customers",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/opportunities",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/quotes",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/invoices",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/collections",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/revenue-autopilot",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/autopilot-hub",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/revenue-impact",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/playbook-builder",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/revenue-forecast",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/communications",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/boardroom",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/proof",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/files",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/settings",
+      "component": "BusinessCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/customers/:id",
+      "component": "CustomerDetail",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/business/customer-health",
+      "component": "CustomerHealthPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/overview",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/bills",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/subscriptions",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/reserves",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/cash-timing",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/receivables",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/investment-office",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/family-office",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/approvals",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/proof",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/files",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/documents",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/boardroom",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/money/settings",
+      "component": "MoneyCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/overview",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/calendar",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/tasks",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/school",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/grocery",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/appointments",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/travel",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/providers",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/events",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/workflows",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/proof",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/files",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/boardroom",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/settings",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/inbox",
+      "component": "InboxCapture",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/inbox/capture",
+      "component": "InboxCapture",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/inbox/processed",
+      "component": "InboxCapture",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/inbox/review",
+      "component": "InboxCapture",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/activity",
+      "component": "ActivityStream",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/opportunities",
+      "component": "OpportunityEngine",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/outcomes",
+      "component": "OutcomeEnginePage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/spillovers",
+      "component": "SpilloverDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/ai-workforce",
+      "component": "AIWorkforcePage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/capital-allocation",
+      "component": "CapitalAllocationPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/sovereign-export",
+      "component": "SovereignExportPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/communications",
+      "component": "CommunicationsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/notifications/settings",
+      "component": "NotificationSettingsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/approvals",
+      "component": "ApprovalsCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/approvals/pending",
+      "component": "ApprovalsCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/approvals/simulated",
+      "component": "ApprovalsCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/approvals/history",
+      "component": "ApprovalsCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/approval-chamber",
+      "component": "ApprovalChamber",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/advisors",
+      "component": "AdvisorWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/advisors/council-dashboard",
+      "component": "AdvisorCouncilDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/advisors/overview",
+      "component": "AdvisorWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/advisors/compare",
+      "component": "AdvisorWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/advisors/simulations",
+      "component": "AdvisorWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/advisors/approvals",
+      "component": "AdvisorWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/advisors/proof",
+      "component": "AdvisorWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/advisors/memory",
+      "component": "AdvisorWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/advisors/:advisorId",
+      "component": "AdvisorWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/productivity",
+      "component": "ProductivityHub",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/productivity/docs",
+      "component": "ProductivityHub",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/productivity/sheets",
+      "component": "ProductivityHub",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/productivity/slides",
+      "component": "ProductivityHub",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/docs",
+      "component": "DocsWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/sheets",
+      "component": "SheetsWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/slides",
+      "component": "SlidesWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/store",
+      "component": "PackStorePage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/store/featured",
+      "component": "PackStorePage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/store/installed",
+      "component": "PackInstalledPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/store/analytics",
+      "component": "StoreAnalyticsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/store/packs/:packId",
+      "component": "PackDetailPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/store/apps/:appId",
+      "component": "AppDetailPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/store/founders",
+      "component": "StoreCategoryPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/store/families",
+      "component": "StoreCategoryPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/store/finance",
+      "component": "StoreCategoryPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/store/connectors",
+      "component": "StoreCategoryPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/store/surfaces",
+      "component": "StoreCategoryPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/store/:segment",
+      "component": "StoreCategoryPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/proof",
+      "component": "ProofCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/proof/receipts",
+      "component": "ProofCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/proof/executions",
+      "component": "ProofCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/proof/verifications",
+      "component": "ProofCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/proof/rollbacks",
+      "component": "ProofCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/boardroom",
+      "component": "Boardroom",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/boardroom/business",
+      "component": "Boardroom",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/boardroom/finance",
+      "component": "Boardroom",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/boardroom/family",
+      "component": "Boardroom",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/boardroom/opportunity",
+      "component": "Boardroom",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/boardroom/morning",
+      "component": "Boardroom",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/boardroom/weekly",
+      "component": "Boardroom",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/boardroom/incidents",
+      "component": "Boardroom",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/boardroom/replay",
+      "component": "BoardroomReplay",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/workflows",
+      "component": "WorkflowsCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/workflows/active",
+      "component": "WorkflowsCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/workflows/history",
+      "component": "WorkflowsCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/workflows/templates",
+      "component": "WorkflowsCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/files",
+      "component": "FilesCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/files/overview",
+      "component": "FilesCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/files/all",
+      "component": "FilesCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/files/processing",
+      "component": "FilesCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/files/review",
+      "component": "FilesCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/files/search",
+      "component": "FilesCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/files/memory",
+      "component": "FilesCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/files/memory-review",
+      "component": "FilesCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/files/sensitive",
+      "component": "FilesCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/files/settings",
+      "component": "FilesCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/personalization",
+      "component": "PersonalizationStudio",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/personalization/profile",
+      "component": "PersonalizationStudio",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/personalization/preferences",
+      "component": "PersonalizationStudio",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/personalization/memory",
+      "component": "PersonalizationStudio",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/personalization/automation",
+      "component": "PersonalizationStudio",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/personalization/boardroom",
+      "component": "PersonalizationStudio",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/memory",
+      "component": "MemoryCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/memory/profile",
+      "component": "MemoryCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/memory/business",
+      "component": "MemoryCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/memory/money",
+      "component": "MemoryCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/memory/household",
+      "component": "MemoryCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/memory/workflows",
+      "component": "MemoryCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/memory/preferences",
+      "component": "MemoryCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/automation",
+      "component": "AutomationCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/automation/rules",
+      "component": "AutomationCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/automation/trust",
+      "component": "AutomationCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/automation/delegations",
+      "component": "AutomationCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/system",
+      "component": "SystemStatus",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/system/trust",
+      "component": "SystemStatus",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/system/health",
+      "component": "SystemStatus",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/system/connectors",
+      "component": "SystemStatus",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/system/history",
+      "component": "SystemStatus",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/system/slos",
+      "component": "SystemStatus",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/system/self-healing",
+      "component": "SystemStatus",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/system/incidents",
+      "component": "SystemStatus",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/system/fleet",
+      "component": "SystemStatus",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/agent-activity",
+      "component": "AgentActivityDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/revenue-calling",
+      "component": "RevenueCallingPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/integration-concierge",
+      "component": "IntegrationConcierge",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/integrations",
+      "component": "IntegrationConcierge",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/digital-twins",
+      "component": "DigitalTwinsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/digital-twins/business",
+      "component": "DigitalTwinsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/digital-twins/money",
+      "component": "DigitalTwinsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/digital-twins/household",
+      "component": "DigitalTwinsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/scenario-lab",
+      "component": "ScenarioLabPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/ai-economics",
+      "component": "AIEconomicsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/recovered-value",
+      "component": "RecoveredValuePage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/settings",
+      "component": "SettingsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/settings/trust",
+      "component": "SettingsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/settings/profile",
+      "component": "SettingsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/settings/connectors",
+      "component": "SettingsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/settings/permissions",
+      "component": "SettingsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/settings/billing",
+      "component": "SettingsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/settings/notifications",
+      "component": "SettingsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/settings/privacy",
+      "component": "SettingsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/settings/appearance",
+      "component": "SettingsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission-control",
+      "component": "MissionControl",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission-control/agents",
+      "component": "MissionControl",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission-control/incidents",
+      "component": "MissionControl",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission-control/connectors",
+      "component": "MissionControl",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission-control/workflows",
+      "component": "MissionControl",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission-control/costs",
+      "component": "MissionControl",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission-control/policies",
+      "component": "MissionControl",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission-control/releases",
+      "component": "MissionControl",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission-control/safe-mode",
+      "component": "MissionControl",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission-control/permissions",
+      "component": "MissionControl",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission/overview",
+      "component": "MissionOverview",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission/connectors/:connectorId",
+      "component": "ConnectorDetail",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission/connectors/:connectorId/health",
+      "component": "ConnectorDetail",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission/connectors/:connectorId/logs",
+      "component": "ConnectorDetail",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission/incidents/:incidentId",
+      "component": "IncidentDetail",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission/policies/simulate",
+      "component": "PolicySimulator",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission/registry",
+      "component": "MissionRegistryPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission/releases/:releaseId",
+      "component": "MissionReleaseDetailPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission/workflows/:workflowId/replay",
+      "component": "MissionWorkflowReplayPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/mission/error",
+      "component": "MissionError",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/incidents",
+      "component": "Navigate",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/home",
+      "component": "Navigate",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/health",
+      "component": "Navigate",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/pulse",
+      "component": "OwnerPulsePage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/trust",
+      "component": "Navigate",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/approvals",
+      "component": "OwnerApprovalsPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/ai-team",
+      "component": "Navigate",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/ai-team/updates",
+      "component": "OwnerAiTeamUpdatesPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/incidents",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/intelligence",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/policies",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/fleet",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/council",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/audit",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/connector-health",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/connectors",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/costs",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/internal-agents",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/workflow-control",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/trust-center",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/autopilot",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/billing",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/releases",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/model-routing",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/system-map",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/knowledge",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/support",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/change-review",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/rollback-center",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/governance",
+      "component": "OwnerCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/pricing",
+      "component": "PricingEditor",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/packs",
+      "component": "PackEditorPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/advisors",
+      "component": "AdvisorConfigPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/leases",
+      "component": "LeaseDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner/constitution",
+      "component": "ConstitutionEditor",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner-mode",
+      "component": "Navigate",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/owner-mode/home",
+      "component": "Navigate",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/workspace/principal",
+      "component": "PrincipalWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/workspace/operator",
+      "component": "OperatorWorkspace",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/governance",
+      "component": "GovernanceDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/governance/trust-debt",
+      "component": "GovernanceDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/governance/execution-debt",
+      "component": "GovernanceDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/governance/drag",
+      "component": "GovernanceDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/governance/readiness",
+      "component": "GovernanceDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/governance/delegation",
+      "component": "GovernanceDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/workflow-replay",
+      "component": "Navigate",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/observability",
+      "component": "ObservabilityPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/users",
+      "component": "UsersAdminPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/policy-simulator",
+      "component": "Navigate",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/system-status",
+      "component": "Navigate",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/service-architecture",
+      "component": "Navigate",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/policies/simulator",
+      "component": "Navigate",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/enterprise",
+      "component": "EnterpriseControlPlane",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/enterprise/roles",
+      "component": "EnterpriseControlPlane",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/enterprise/compliance",
+      "component": "EnterpriseControlPlane",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/enterprise/sla",
+      "component": "EnterpriseControlPlane",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/enterprise/fleet",
+      "component": "EnterpriseControlPlane",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/enterprise/maturity",
+      "component": "EnterpriseMaturityDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/enterprise-maturity",
+      "component": "EnterpriseMaturityDashboard",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/policies",
+      "component": "PolicyEditor",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/connectors",
+      "component": "ConnectorHub",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/advisors/registry",
+      "component": "AdvisorRegistry",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/concierge/household",
+      "component": "ConciergeCenter",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "/search",
+      "component": "SearchPage",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    },
+    {
+      "route": "*",
+      "component": "NotFound",
+      "checks": {
+        "hasAriaLabels": true,
+        "hasKeyboardNav": true,
+        "hasFocusManagement": true,
+        "hasColorContrast": true,
+        "hasScreenReaderSupport": true
+      },
+      "score": 100,
+      "status": "compliant"
+    }
+  ]
+}

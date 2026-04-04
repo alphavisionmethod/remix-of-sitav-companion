@@ -1,18 +1,72 @@
 {
   "version": "1.0.0",
-  "generated_at": "2026-04-02T00:00:00Z",
-  "order": [
-    { "phase": 1, "services": ["event-bus"], "reason": "Foundation — all other services publish/subscribe events" },
-    { "phase": 2, "services": ["identity", "role-permission-engine"], "reason": "Auth and permissions before any domain logic" },
-    { "phase": 3, "services": ["memory-service", "entity-graph", "household-org-graph"], "reason": "State stores before domain services" },
-    { "phase": 4, "services": ["policy-engine", "sovereign-calculation"], "reason": "Policy and deterministic engines before execution" },
-    { "phase": 5, "services": ["connector-control-plane", "connector-runners"], "reason": "Connector infra before domain services that use connectors" },
-    { "phase": 6, "services": ["receipt-service", "verification-engine"], "reason": "Proof infrastructure before execution" },
-    { "phase": 7, "services": ["approval-engine", "executor-service", "capability-router"], "reason": "Execution chain" },
-    { "phase": 8, "services": ["business-os", "finance-os", "concierge-os"], "reason": "Domain modules after all platform services" },
-    { "phase": 9, "services": ["projections", "boardroom"], "reason": "Read models and boardroom after domain events flow" },
-    { "phase": 10, "services": ["brain-core"], "reason": "Orchestrator last — needs all services available" },
-    { "phase": 11, "services": ["analytics", "billing", "support-diagnostics"], "reason": "Observability services can start last" },
-    { "phase": 12, "services": ["api-gateway"], "reason": "Gateway opens traffic after all backends ready" }
+  "generatedAt": "2026-04-04T19:58:13.104Z",
+  "phases": 6,
+  "services": [
+    {
+      "phase": 1,
+      "name": "event-bus",
+      "description": "Core event system"
+    },
+    {
+      "phase": 1,
+      "name": "memory-service",
+      "description": "User memory and context"
+    },
+    {
+      "phase": 2,
+      "name": "policy-engine",
+      "description": "Policy evaluation"
+    },
+    {
+      "phase": 2,
+      "name": "trust-state-service",
+      "description": "Trust state management"
+    },
+    {
+      "phase": 3,
+      "name": "receipt-service",
+      "description": "Proof and receipt generation"
+    },
+    {
+      "phase": 3,
+      "name": "workflow-engine",
+      "description": "Workflow orchestration"
+    },
+    {
+      "phase": 3,
+      "name": "executor-service",
+      "description": "Action execution"
+    },
+    {
+      "phase": 4,
+      "name": "search-fabric",
+      "description": "Cross-domain search"
+    },
+    {
+      "phase": 4,
+      "name": "fraud-sentinel",
+      "description": "Fraud detection"
+    },
+    {
+      "phase": 4,
+      "name": "projection-service",
+      "description": "Financial projections"
+    },
+    {
+      "phase": 5,
+      "name": "connector-control",
+      "description": "External integrations"
+    },
+    {
+      "phase": 5,
+      "name": "file-ingestion",
+      "description": "Document processing"
+    },
+    {
+      "phase": 6,
+      "name": "brain-core",
+      "description": "AI orchestration"
+    }
   ]
 }

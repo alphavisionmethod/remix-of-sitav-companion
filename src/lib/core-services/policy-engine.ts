@@ -1,7 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Policy Engine
 // Constitutional rules evaluation, deterministic, no DB needed
+// Canonical contracts: RiskTier from contracts
 // ═══════════════════════════════════════════════════════════════
+
+import type { RiskTier as CanonicalRiskTier } from "@/packages/contracts";
+
+export type { CanonicalRiskTier };
 
 export type PolicyEffect =
   | "allow"
@@ -10,7 +15,8 @@ export type PolicyEffect =
   | "require-dual-approval"
   | "require-simulation";
 
-export type RiskTier = "low" | "medium" | "high" | "critical";
+/** Local risk tier (more granular than canonical) */
+export type ServiceRiskTier = "low" | "medium" | "high" | "critical";
 
 export interface PolicyRule {
   id: string;
@@ -30,7 +36,7 @@ export interface PolicyCondition {
 export interface PolicyContext {
   domain?: string;
   capabilityId?: string;
-  riskTier?: RiskTier;
+  riskTier?: ServiceRiskTier;
   amount?: number;
   autonomyLevel?: string;
   userId?: string;
@@ -202,7 +208,7 @@ export function evaluatePolicy(
   };
 }
 
-export function classifyRiskTier(domain: string, capabilityId: string, amount?: number): RiskTier {
+export function classifyRiskTier(domain: string, capabilityId: string, amount?: number): ServiceRiskTier {
   if (domain === "finance" && amount && amount > 5000) return "critical";
   if (domain === "finance" && amount && amount > 500) return "high";
   if (domain === "finance") return "medium";

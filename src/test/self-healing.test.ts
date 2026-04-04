@@ -11,7 +11,7 @@ import {
   ESCALATION_RULES, HEALING_CAPABILITY_MAP, ROOT_CAUSE_HEALING_MAP,
   AUTO_ALLOWED_ACTIONS, NEVER_AUTO_ACTIONS, DEGRADED_MODES,
 } from "@/lib/core-services/self-healing/types";
-import type { IncidentSeverity, RootCauseCategory } from "@/lib/core-services/self-healing/types";
+import type { SelfHealingIncidentSeverity, RootCauseCategory } from "@/lib/core-services/self-healing/types";
 
 // ── Self-Healing Service Tests ──────────────────────────────────
 

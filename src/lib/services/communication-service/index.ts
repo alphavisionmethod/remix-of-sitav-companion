@@ -1,0 +1,147 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Communication Service
+// Email, SMS, push notification orchestration with policy gates
+// ═══════════════════════════════════════════════════════════════
+
+import type { Message, NotificationPreferences, CommunicationTemplate, DeliveryReport, ChannelType, DeliveryStatus, MessageCategory, MessagePriority } from "@/packages/contracts/domain-types/communication";
+
+export type { Message, NotificationPreferences, CommunicationTemplate, DeliveryReport, ChannelType, DeliveryStatus, MessageCategory, MessagePriority };
+
+export interface SendRequest {
+  channel: ChannelType;
+  category: MessageCategory;
+  priority: MessagePriority;
+  recipientId: string;
+  recipientAddress: string;
+  subject?: string;
+  body: string;
+  htmlBody?: string;
+  templateId?: string;
+  templateData?: Record<string, unknown>;
+  scheduledAt?: string;
+  domain: Message["domain"];
+  correlationId: string;
+}
+
+export interface SendResult {
+  messageId: string;
+  status: DeliveryStatus;
+  channel: ChannelType;
+  scheduledAt?: string;
+  error?: string;
+}
+
+export class CommunicationService {
+  private messages: Map<string, Message> = new Map();
+  private templates: Map<string, CommunicationTemplate> = new Map();
+  private preferences: Map<string, NotificationPreferences> = new Map();
+  private deliveryReports: DeliveryReport[] = [];
+
+  async send(request: SendRequest): Promise<SendResult> {
+    // Check preferences
+    const prefs = this.preferences.get(request.recipientId);
+    if (prefs && !prefs.channels[request.channel]) {
+      return { messageId: "", status: "failed", channel: request.channel, error: "Channel disabled by user preferences" };
+    }
+
+    // Check quiet hours
+    if (prefs?.quietHours.enabled && request.priority !== "urgent") {
+      const now = new Date();
+      const hour = now.getHours();
+      const start = parseInt(prefs.quietHours.start);
+      const end = parseInt(prefs.quietHours.end);
+      if (hour >= start || hour < end) {
+        return { messageId: "", status: "queued", channel: request.channel, scheduledAt: prefs.quietHours.end };
+      }
+    }
+
+    // Apply template
+    let body = request.body;
+    let htmlBody = request.htmlBody;
+    if (request.templateId) {
+      const template = this.templates.get(request.templateId);
+      if (template) {
+        body = this.applyTemplate(template.body, request.templateData ?? {});
+        htmlBody = template.htmlBody ? this.applyTemplate(template.htmlBody, request.templateData ?? {}) : undefined;
+      }
+    }
+
+    const message: Message = {
+      id: crypto.randomUUID(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      tenantId: "",
+      channel: request.channel,
+      category: request.category,
+      priority: request.priority,
+      recipientId: request.recipientId,
+      recipientAddress: request.recipientAddress,
+      subject: request.subject,
+      body,
+      htmlBody,
+      templateId: request.templateId,
+      templateData: request.templateData,
+      status: "queued",
+      retryCount: 0,
+      maxRetries: 3,
+      domain: request.domain,
+      correlationId: request.correlationId,
+      metadata: {},
+    };
+
+    this.messages.set(message.id, message);
+
+    // Simulate delivery
+    message.status = "delivered";
+    message.sentAt = new Date().toISOString();
+    message.deliveredAt = new Date().toISOString();
+
+    this.deliveryReports.push({
+      messageId: message.id,
+      channel: message.channel,
+      status: "delivered",
+      timestamp: new Date().toISOString(),
+      latencyMs: Math.random() * 500 + 100,
+    });
+
+    return { messageId: message.id, status: "delivered", channel: message.channel };
+  }
+
+  setPreferences(userId: string, prefs: NotificationPreferences): void {
+    this.preferences.set(userId, prefs);
+  }
+
+  getPreferences(userId: string): NotificationPreferences | null {
+    return this.preferences.get(userId) ?? null;
+  }
+
+  registerTemplate(template: CommunicationTemplate): void {
+    this.templates.set(template.id, template);
+  }
+
+  getMessageHistory(recipientId: string, limit: number = 50): Message[] {
+    return Array.from(this.messages.values())
+      .filter(m => m.recipientId === recipientId)
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(0, limit);
+  }
+
+  getDeliveryStats(): { total: number; delivered: number; failed: number; bounced: number; avgLatency: number } {
+    const reports = this.deliveryReports;
+    return {
+      total: reports.length,
+      delivered: reports.filter(r => r.status === "delivered").length,
+      failed: reports.filter(r => r.status === "failed").length,
+      bounced: reports.filter(r => r.status === "bounced").length,
+      avgLatency: reports.length > 0 ? reports.reduce((s, r) => s + r.latencyMs, 0) / reports.length : 0,
+    };
+  }
+
+  private applyTemplate(template: string, data: Record<string, unknown>): string {
+    return template.replace(/\{\{(\w+)\}\}/g, (_, key) => String(data[key] ?? `{{${key}}}`));
+  }
+}
+
+export function createCommunicationService(): CommunicationService {
+  return new CommunicationService();
+}

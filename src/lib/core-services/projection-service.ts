@@ -1,7 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Projection Service
 // Event-sourced materialized views with LRU cache
+// Canonical contracts: DomainId from contracts
 // ═══════════════════════════════════════════════════════════════
+
+import type { DomainId } from "@/packages/contracts";
+
+export type { DomainId };
 
 export type ProjectionType =
   | "customer-360"

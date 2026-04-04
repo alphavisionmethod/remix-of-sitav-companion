@@ -1,0 +1,5506 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:28.395Z",
+  "totalContracts": 902,
+  "totalPackages": 12,
+  "packageSummary": [
+    {
+      "package": "approval-contracts",
+      "totalExports": 0,
+      "interfaces": 0,
+      "types": 0,
+      "constants": 0
+    },
+    {
+      "package": "audit-contracts",
+      "totalExports": 0,
+      "interfaces": 0,
+      "types": 0,
+      "constants": 0
+    },
+    {
+      "package": "boardroom-contracts",
+      "totalExports": 0,
+      "interfaces": 0,
+      "types": 0,
+      "constants": 0
+    },
+    {
+      "package": "business-contracts",
+      "totalExports": 71,
+      "interfaces": 41,
+      "types": 16,
+      "constants": 8
+    },
+    {
+      "package": "concierge-contracts",
+      "totalExports": 28,
+      "interfaces": 26,
+      "types": 2,
+      "constants": 0
+    },
+    {
+      "package": "contracts",
+      "totalExports": 625,
+      "interfaces": 432,
+      "types": 136,
+      "constants": 57
+    },
+    {
+      "package": "enterprise-contracts",
+      "totalExports": 5,
+      "interfaces": 4,
+      "types": 1,
+      "constants": 0
+    },
+    {
+      "package": "finance-contracts",
+      "totalExports": 73,
+      "interfaces": 70,
+      "types": 3,
+      "constants": 0
+    },
+    {
+      "package": "moat-contracts",
+      "totalExports": 14,
+      "interfaces": 13,
+      "types": 1,
+      "constants": 0
+    },
+    {
+      "package": "policy-contracts",
+      "totalExports": 23,
+      "interfaces": 16,
+      "types": 3,
+      "constants": 4
+    },
+    {
+      "package": "proof-model",
+      "totalExports": 18,
+      "interfaces": 17,
+      "types": 1,
+      "constants": 0
+    },
+    {
+      "package": "reality-contracts",
+      "totalExports": 45,
+      "interfaces": 35,
+      "types": 10,
+      "constants": 0
+    }
+  ],
+  "contracts": [
+    {
+      "name": "MonetaryAmount",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "BusinessMetadata",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "BusinessDomainId",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "BusinessEntityType",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "CurrencyCode",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "BusinessPriority",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "BookingConfirmation",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/booking-confirmation.ts"
+    },
+    {
+      "name": "Booking",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/booking.ts"
+    },
+    {
+      "name": "BookingStatus",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/booking.ts"
+    },
+    {
+      "name": "RevenueSnapshot",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/business-boardroom-packet.ts"
+    },
+    {
+      "name": "BusinessBoardroomPacket",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/business-boardroom-packet.ts"
+    },
+    {
+      "name": "BusinessKPI",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/business-kpi.ts"
+    },
+    {
+      "name": "KPITrend",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/business-kpi.ts"
+    },
+    {
+      "name": "CallbackTask",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/callback-task.ts"
+    },
+    {
+      "name": "CallbackOutcome",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/callback-task.ts"
+    },
+    {
+      "name": "CapacityMonetizationSignal",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/capacity-monetization-signal.ts"
+    },
+    {
+      "name": "CollectionSequence",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/collection-sequence.ts"
+    },
+    {
+      "name": "CollectionSequenceStatus",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/collection-sequence.ts"
+    },
+    {
+      "name": "CollectionStep",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/collection-step.ts"
+    },
+    {
+      "name": "CollectionStepType",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/collection-step.ts"
+    },
+    {
+      "name": "CollectionChannel",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/collection-step.ts"
+    },
+    {
+      "name": "ContactRecord",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/contact-record.ts"
+    },
+    {
+      "name": "CommunicationPreference",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/contact-record.ts"
+    },
+    {
+      "name": "CustomerDashboardView",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/customer-dashboard-view.ts"
+    },
+    {
+      "name": "CustomerHealthScoreView",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/customer-health-score.ts"
+    },
+    {
+      "name": "CustomerRiskSummary",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/customer-risk-summary.ts"
+    },
+    {
+      "name": "CustomerTimelineItem",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/customer-timeline-item.ts"
+    },
+    {
+      "name": "TimelineEventType",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/customer-timeline-item.ts"
+    },
+    {
+      "name": "NextBestAction",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/next-best-action.ts"
+    },
+    {
+      "name": "NBACategory",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/next-best-action.ts"
+    },
+    {
+      "name": "OnboardingCustomerBootstrapPacket",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/onboarding-customer-bootstrap-packet.ts"
+    },
+    {
+      "name": "ServiceContinuityView",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/service-continuity-view.ts"
+    },
+    {
+      "name": "ContinuityStatus",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/service-continuity-view.ts"
+    },
+    {
+      "name": "CustomerHealthScoreSchema",
+      "kind": "const",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/zod.ts"
+    },
+    {
+      "name": "CustomerRiskSummarySchema",
+      "kind": "const",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/zod.ts"
+    },
+    {
+      "name": "CustomerTimelineItemSchema",
+      "kind": "const",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/zod.ts"
+    },
+    {
+      "name": "NextBestActionSchema",
+      "kind": "const",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/zod.ts"
+    },
+    {
+      "name": "CustomerDashboardViewSchema",
+      "kind": "const",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/zod.ts"
+    },
+    {
+      "name": "OnboardingCustomerBootstrapPacketSchema",
+      "kind": "const",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/zod.ts"
+    },
+    {
+      "name": "ServiceContinuityViewSchema",
+      "kind": "const",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-dashboard/zod.ts"
+    },
+    {
+      "name": "LifecycleTransitionRule",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "LifecycleEvent",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "CustomerHealthDimension",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "CustomerHealthScore",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "ChurnPredictionInput",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "ChurnPrediction",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "CustomerLifecycleRecord",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "CustomerLifecycleStage",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "LIFECYCLE_TRANSITIONS",
+      "kind": "const",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "computeHealthGrade",
+      "kind": "function",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "computeOverallHealth",
+      "kind": "function",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "computeChurnRisk",
+      "kind": "function",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "isValidTransition",
+      "kind": "function",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "getAvailableTransitions",
+      "kind": "function",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "getTransitionRule",
+      "kind": "function",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-lifecycle.ts"
+    },
+    {
+      "name": "Lead",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/index.ts"
+    },
+    {
+      "name": "CRMContact",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/index.ts"
+    },
+    {
+      "name": "CRMAccount",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/index.ts"
+    },
+    {
+      "name": "Quote",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/index.ts"
+    },
+    {
+      "name": "Invoice",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/index.ts"
+    },
+    {
+      "name": "StaleLeadState",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/leads/stale-lead-state.ts"
+    },
+    {
+      "name": "OpportunityRankResult",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/opportunities/opportunity-rank-result.ts"
+    },
+    {
+      "name": "ReactivationCandidate",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/opportunities/reactivation-candidate.ts"
+    },
+    {
+      "name": "CollectionsEscalationPacket",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-autopilot/collections-escalation-packet.ts"
+    },
+    {
+      "name": "NoShowRecoveryPacket",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-autopilot/no-show-recovery-packet.ts"
+    },
+    {
+      "name": "RecoveredValueLedgerEntry",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-autopilot/recovered-value-ledger-entry.ts"
+    },
+    {
+      "name": "RevenueAutopilotKpiSummary",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-autopilot/revenue-autopilot-kpi-summary.ts"
+    },
+    {
+      "name": "RevenueLeakRecord",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-autopilot/revenue-leak-record.ts"
+    },
+    {
+      "name": "LeakCategory",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-autopilot/revenue-leak-record.ts"
+    },
+    {
+      "name": "RevenueRecoveryStep",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-autopilot/revenue-recovery-plan.ts"
+    },
+    {
+      "name": "RevenueRecoveryPlan",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-autopilot/revenue-recovery-plan.ts"
+    },
+    {
+      "name": "FamilyCalendarItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/calendar/types.ts"
+    },
+    {
+      "name": "ReconciliationConflict",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/calendar/types.ts"
+    },
+    {
+      "name": "PrepItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/calendar/types.ts"
+    },
+    {
+      "name": "EventReminder",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/events/types.ts"
+    },
+    {
+      "name": "GiftOpportunity",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/events/types.ts"
+    },
+    {
+      "name": "GroceryItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/grocery/types.ts"
+    },
+    {
+      "name": "RecurringSupplyItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/grocery/types.ts"
+    },
+    {
+      "name": "ContinuityAlert",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/grocery/types.ts"
+    },
+    {
+      "name": "HouseholdMember",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/household/types.ts"
+    },
+    {
+      "name": "HouseholdKpiSummary",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/household/types.ts"
+    },
+    {
+      "name": "HouseholdRole",
+      "kind": "type",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/household/types.ts"
+    },
+    {
+      "name": "Reminder",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "SharedReminder",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "HouseholdTask",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "FamilyObligation",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "ItineraryItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "TripSummary",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "TripPrepChecklist",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "PrepChecklistItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "ServiceProviderRecord",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "PersonalAdminTracker",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "HealthSafeChecklistItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "BookingOption",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "TaskCategory",
+      "kind": "type",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/index.ts"
+    },
+    {
+      "name": "ProviderFollowUp",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/providers/provider-follow-up.ts"
+    },
+    {
+      "name": "SchoolActivityItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/school/types.ts"
+    },
+    {
+      "name": "SchoolFeeItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/school/types.ts"
+    },
+    {
+      "name": "ReservationRecord",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/travel/reservation-record.ts"
+    },
+    {
+      "name": "BaseContract",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "Timestamped",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "TenantScoped",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "DomainScoped",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "CorrelationContext",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "ConfidenceMetadata",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "DomainId",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "UserRole",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "PrivacyTier",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "RiskTier",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "ApprovalType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "ExecutionMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "ExecutionStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "WorkflowStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "ApprovalStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "TrustFlag",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "ReceiptType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/_contract-scaffold.ts"
+    },
+    {
+      "name": "AdminCommand",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/admin/admin-command.ts"
+    },
+    {
+      "name": "AdminCommandType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/admin/admin-command.ts"
+    },
+    {
+      "name": "AdminSession",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/admin/admin-contracts.ts"
+    },
+    {
+      "name": "AdminAuditEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/admin/admin-contracts.ts"
+    },
+    {
+      "name": "AdminPolicy",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/admin/admin-contracts.ts"
+    },
+    {
+      "name": "AdminInsight",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/admin/admin-intelligence-contracts.ts"
+    },
+    {
+      "name": "AdminIntelligenceDashboard",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/admin/admin-intelligence-contracts.ts"
+    },
+    {
+      "name": "InsightSeverity",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/admin/admin-intelligence-contracts.ts"
+    },
+    {
+      "name": "InsightCategory",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/admin/admin-intelligence-contracts.ts"
+    },
+    {
+      "name": "AdvisorDissent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/advisor/advisor-dissent.ts"
+    },
+    {
+      "name": "DissentSeverity",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/advisor/advisor-dissent.ts"
+    },
+    {
+      "name": "AdvisorRegistryEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/advisor/advisor-registry-entry.ts"
+    },
+    {
+      "name": "AdvisorSession",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/advisor/advisor-session.ts"
+    },
+    {
+      "name": "AdvisorSessionStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/advisor/advisor-session.ts"
+    },
+    {
+      "name": "AdvisorVote",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/advisor/advisor-vote.ts"
+    },
+    {
+      "name": "CouncilDeliberation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/advisor/council-deliberation.ts"
+    },
+    {
+      "name": "DeliberationStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/advisor/council-deliberation.ts"
+    },
+    {
+      "name": "CouncilOrchestration",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/advisor/council-orchestration.ts"
+    },
+    {
+      "name": "ApprovalBinding",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/approval-binding.ts"
+    },
+    {
+      "name": "ApprovalBindingType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/approval-binding.ts"
+    },
+    {
+      "name": "ApprovalReceipt",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/approval-receipt.ts"
+    },
+    {
+      "name": "ApprovalDecision",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/approval-request.ts"
+    },
+    {
+      "name": "ApprovalRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/approval-request.ts"
+    },
+    {
+      "name": "AutonomyEnvelope",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/autonomy-envelope.ts"
+    },
+    {
+      "name": "AutonomyConstraint",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/autonomy-envelope.ts"
+    },
+    {
+      "name": "ConsentGrant",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/consent.ts"
+    },
+    {
+      "name": "ConsentCondition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/consent.ts"
+    },
+    {
+      "name": "ConsentPrompt",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/consent.ts"
+    },
+    {
+      "name": "ConsentAlternative",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/consent.ts"
+    },
+    {
+      "name": "PermissionFreeze",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/consent.ts"
+    },
+    {
+      "name": "DelegationRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/consent.ts"
+    },
+    {
+      "name": "ConsentScope",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/consent.ts"
+    },
+    {
+      "name": "ConsentDuration",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/consent.ts"
+    },
+    {
+      "name": "ConsentDomain",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/approval/consent.ts"
+    },
+    {
+      "name": "CapabilityAutonomyTier",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/capability/capability-autonomy-tier.ts"
+    },
+    {
+      "name": "AutonomyTier",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/capability/capability-autonomy-tier.ts"
+    },
+    {
+      "name": "CapabilityContract",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/capability/capability-contract.ts"
+    },
+    {
+      "name": "CapabilityManifestEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/capability/capability-manifest.ts"
+    },
+    {
+      "name": "CapabilityManifest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/capability/capability-manifest.ts"
+    },
+    {
+      "name": "CapabilityRequirement",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/capability/capability-requirements.ts"
+    },
+    {
+      "name": "CapabilityRequirements",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/capability/capability-requirements.ts"
+    },
+    {
+      "name": "CapabilityRiskTier",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/capability/capability-risk-tier.ts"
+    },
+    {
+      "name": "EventEnvelope",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/event-envelope.ts"
+    },
+    {
+      "name": "IntentEnvelope",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/intent-envelope.ts"
+    },
+    {
+      "name": "IntentSource",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/intent-envelope.ts"
+    },
+    {
+      "name": "IntentUrgency",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/intent-envelope.ts"
+    },
+    {
+      "name": "PolicyConstraint",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/policy-decision.ts"
+    },
+    {
+      "name": "PolicyDecision",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/policy-decision.ts"
+    },
+    {
+      "name": "PolicySnapshotRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/policy-snapshot.ts"
+    },
+    {
+      "name": "PolicySnapshot",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/policy-snapshot.ts"
+    },
+    {
+      "name": "TenantContext",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/tenant-context.ts"
+    },
+    {
+      "name": "TrustChange",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/trust-state.ts"
+    },
+    {
+      "name": "TrustState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/trust-state.ts"
+    },
+    {
+      "name": "TrustTransition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/trust-transition.ts"
+    },
+    {
+      "name": "TrustTransitionTrigger",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/trust-transition.ts"
+    },
+    {
+      "name": "WorkflowStep",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/workflow-state.ts"
+    },
+    {
+      "name": "WorkflowState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/workflow-state.ts"
+    },
+    {
+      "name": "OwnerModeView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "RevenueSummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "RiskSummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "HealthSummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "ModuleHealthView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "RolloutStateView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "RingView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "PlatformMaturityView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "ProofLedgerView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "ProofReceiptView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "ObservabilityView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "ServiceReliabilityView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "ConnectorLatencyView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "AnomalyView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "UsersAdminView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "UserRowView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "WorkflowReplayQueueView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "ReplayableWorkflowView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "ReplaySafetyView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "HighTrustAction",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "ActionPreviewResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "UndoAdminChangeView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "AdminChangeView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts"
+    },
+    {
+      "name": "AdvisorDefinition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "AdvisorCapability",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "EscalationRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "HandoffProtocol",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "CollaborationFrame",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "AdvisorContribution",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "AdvisorConsensus",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "AdvisorDisagreement",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "AdvisorPerformance",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "AdvisorSimulationResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "AdvisorId",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "AdvisorTier",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "EscalationTrigger",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/advisor-orchestration.ts"
+    },
+    {
+      "name": "AgentDefinition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/ai-workforce.ts"
+    },
+    {
+      "name": "AgentCapability",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/ai-workforce.ts"
+    },
+    {
+      "name": "AgentTask",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/ai-workforce.ts"
+    },
+    {
+      "name": "AgentTeam",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/ai-workforce.ts"
+    },
+    {
+      "name": "AgentKPI",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/ai-workforce.ts"
+    },
+    {
+      "name": "CouncilDefinition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/ai-workforce.ts"
+    },
+    {
+      "name": "AgentAutonomyLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/ai-workforce.ts"
+    },
+    {
+      "name": "AgentStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/ai-workforce.ts"
+    },
+    {
+      "name": "AgentCapabilityType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/ai-workforce.ts"
+    },
+    {
+      "name": "BusinessLead",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/business-engine.ts"
+    },
+    {
+      "name": "Customer",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/business-engine.ts"
+    },
+    {
+      "name": "PipelineOpportunity",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/business-engine.ts"
+    },
+    {
+      "name": "BusinessHealthResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/business-engine.ts"
+    },
+    {
+      "name": "BusinessRisk",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/business-engine.ts"
+    },
+    {
+      "name": "BusinessOpportunity",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/business-engine.ts"
+    },
+    {
+      "name": "PipelineAnalysis",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/business-engine.ts"
+    },
+    {
+      "name": "LeadScoreResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/business-engine.ts"
+    },
+    {
+      "name": "RevenueForeccast",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/business-engine.ts"
+    },
+    {
+      "name": "FollowUpItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/business-engine.ts"
+    },
+    {
+      "name": "ClientHealthResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/business-engine.ts"
+    },
+    {
+      "name": "Portfolio",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/capital-allocation.ts"
+    },
+    {
+      "name": "Allocation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/capital-allocation.ts"
+    },
+    {
+      "name": "TargetAllocation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/capital-allocation.ts"
+    },
+    {
+      "name": "RebalanceOrder",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/capital-allocation.ts"
+    },
+    {
+      "name": "RebalanceTrade",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/capital-allocation.ts"
+    },
+    {
+      "name": "RebalanceSimulation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/capital-allocation.ts"
+    },
+    {
+      "name": "AssetClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/capital-allocation.ts"
+    },
+    {
+      "name": "AllocationStrategy",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/capital-allocation.ts"
+    },
+    {
+      "name": "RebalanceStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/capital-allocation.ts"
+    },
+    {
+      "name": "Message",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/communication.ts"
+    },
+    {
+      "name": "NotificationPreferences",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/communication.ts"
+    },
+    {
+      "name": "CommunicationTemplate",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/communication.ts"
+    },
+    {
+      "name": "DeliveryReport",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/communication.ts"
+    },
+    {
+      "name": "ChannelType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/communication.ts"
+    },
+    {
+      "name": "DeliveryStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/communication.ts"
+    },
+    {
+      "name": "MessagePriority",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/communication.ts"
+    },
+    {
+      "name": "MessageCategory",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/communication.ts"
+    },
+    {
+      "name": "Task",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "BookingOption",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "CalendarEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "ItineraryDay",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "ItineraryItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "Routine",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "Errand",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "ConciergeHouseholdMember",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "TaskPrioritization",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "BookingScoreResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "ConflictResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "RoutineHealthResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "ErrandOptimization",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "HouseholdCoordination",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "ConstitutionRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/constitution.ts"
+    },
+    {
+      "name": "ConstitutionCondition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/constitution.ts"
+    },
+    {
+      "name": "ConstitutionAction",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/constitution.ts"
+    },
+    {
+      "name": "ConstitutionEvaluation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/constitution.ts"
+    },
+    {
+      "name": "CompiledConstitution",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/constitution.ts"
+    },
+    {
+      "name": "ConstitutionRuleCategory",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/constitution.ts"
+    },
+    {
+      "name": "ConstitutionEnforcementMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/constitution.ts"
+    },
+    {
+      "name": "ConstitutionRulePriority",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/constitution.ts"
+    },
+    {
+      "name": "DigitalTwin",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "TwinSignal",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "TwinProjection",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "TwinBottleneck",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "TwinRisk",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "BoardroomSession",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "BoardroomAgendaItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "BoardroomDecision",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "BoardroomAction",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "BoardroomTemplate",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "BoardroomPacket",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "ScenarioSimulation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "ScenarioOutcome",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "ScenarioTemplate",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "TwinType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "BoardroomType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "ScenarioType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/digital-twin.ts"
+    },
+    {
+      "name": "Entity",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "PersonEntity",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "PersonPreferences",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "HouseholdEntity",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "GraphHouseholdMember",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "OrgEntity",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "OrgMember",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "GraphRoleAssignment",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "GraphDelegatedAuthority",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "DelegationScope",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "VisibilityBoundary",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "DeviceEntity",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "RelationshipEdge",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "PermissionQuery",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "PermissionResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "EntityType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "HouseholdRole",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "HouseholdPermission",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "OrgRole",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "OrgPermission",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "RelationshipType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "IngestionJob",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/file-ingestion.ts"
+    },
+    {
+      "name": "ParseResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/file-ingestion.ts"
+    },
+    {
+      "name": "ParsedTable",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/file-ingestion.ts"
+    },
+    {
+      "name": "ClassifiedDocument",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/file-ingestion.ts"
+    },
+    {
+      "name": "ExtractedEntity",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/file-ingestion.ts"
+    },
+    {
+      "name": "IngestionStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/file-ingestion.ts"
+    },
+    {
+      "name": "DocumentClassification",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/file-ingestion.ts"
+    },
+    {
+      "name": "CashflowEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/finance-engine.ts"
+    },
+    {
+      "name": "Bill",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/finance-engine.ts"
+    },
+    {
+      "name": "Budget",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/finance-engine.ts"
+    },
+    {
+      "name": "Reserve",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/finance-engine.ts"
+    },
+    {
+      "name": "FinanceInvoice",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/finance-engine.ts"
+    },
+    {
+      "name": "CashflowAnalysis",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/finance-engine.ts"
+    },
+    {
+      "name": "BudgetHealthResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/finance-engine.ts"
+    },
+    {
+      "name": "TaxEstimate",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/finance-engine.ts"
+    },
+    {
+      "name": "BillCalendarResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/finance-engine.ts"
+    },
+    {
+      "name": "ReserveAssessment",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/finance-engine.ts"
+    },
+    {
+      "name": "InvoiceAgingResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/finance-engine.ts"
+    },
+    {
+      "name": "FinancialHealthResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/finance-engine.ts"
+    },
+    {
+      "name": "MemoryEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/memory-governance.ts"
+    },
+    {
+      "name": "MemoryLineage",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/memory-governance.ts"
+    },
+    {
+      "name": "MemoryContradiction",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/memory-governance.ts"
+    },
+    {
+      "name": "MemoryPersistenceRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/memory-governance.ts"
+    },
+    {
+      "name": "MemoryCorrection",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/memory-governance.ts"
+    },
+    {
+      "name": "MemoryForgetRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/memory-governance.ts"
+    },
+    {
+      "name": "MemoryConflictResolution",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/memory-governance.ts"
+    },
+    {
+      "name": "MemoryGovernanceConfig",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/memory-governance.ts"
+    },
+    {
+      "name": "MemoryAuditEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/memory-governance.ts"
+    },
+    {
+      "name": "MemoryType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/memory-governance.ts"
+    },
+    {
+      "name": "MemoryPrivacy",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/memory-governance.ts"
+    },
+    {
+      "name": "MemorySource",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/memory-governance.ts"
+    },
+    {
+      "name": "TrendWindow",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "AgingModel",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "DebtSource",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "DebtEvidence",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "GovernanceBoardroomSection",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "TrustDebtRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "ExecutionDebtRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "DragEvidence",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "DragEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "DragDimensionScore",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "DragIndex",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "DragRecommendation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "ReadinessSubscore",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "ReadinessScore",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "DelegationProofRequirement",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "RecurringDelegationRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "InvisibleLaborEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "LaborBurdenScore",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "LaborEqualizationSuggestion",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "LaborTrackingConsent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "FounderBottleneckEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "CostModel",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "DelegationCandidate",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "ViewModelFilter",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "WorkspaceHandoff",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "EscalationRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "TrendDirection",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "AgingTier",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "RemediationStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "TrustDebtCategory",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "TrustDimension",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "ExecutionDebtCategory",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "DragDimension",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "DelegationTier",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "InvisibleLaborType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "FounderBottleneckType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "WorkspaceViewMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "MetaGovernanceEventType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "DELEGATION_TIER_THRESHOLDS",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/meta-governance.ts"
+    },
+    {
+      "name": "MissionControlSummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "WhatMattersItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "ConnectorSummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "ConnectorDetailView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "ConnectorHealthView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "ConnectorLogEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "IncidentSummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "IncidentDetailView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "TrustSummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "FounderCostSummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "RecoverySummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "RecoveryItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "ReleaseSummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "PermissionMatrixView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "PermissionEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "PolicySimulationView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "PolicyScenario",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "PolicySimulationResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "AITeamSummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "AIPodView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "AIAgentView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "PackSummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "DiagnosticsSummaryView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "SystemActivityEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "SystemHealthStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "ControlMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "UrgencyLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "ConnectorStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "OpsIncidentSeverity",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "IncidentStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "ActionStateTransition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "ActionRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "EntityScope",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "ProofRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "ProofChain",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "TrustState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "TrustIncident",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "TimelineEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "OpportunityNode",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "OSRuntimeContext",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "ActionState",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "OSDomain",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "ProofType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "TrustPosture",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "TimelineEntryType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "OpportunityType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "PaymentIntent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/payment-execution.ts"
+    },
+    {
+      "name": "PaymentResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/payment-execution.ts"
+    },
+    {
+      "name": "PaymentReconciliation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/payment-execution.ts"
+    },
+    {
+      "name": "PaymentDiscrepancy",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/payment-execution.ts"
+    },
+    {
+      "name": "PaymentMethod",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/payment-execution.ts"
+    },
+    {
+      "name": "PaymentStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/payment-execution.ts"
+    },
+    {
+      "name": "PaymentDirection",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/payment-execution.ts"
+    },
+    {
+      "name": "PolicyRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "PolicyCondition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "PolicyInheritanceChain",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "PolicyConflict",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "PolicyAuditEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "PolicyVersionHistory",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "ConsentRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "PolicyConsentPrompt",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "ConsentOption",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "PolicyTemplate",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "EmergencyPolicyFreeze",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "PolicyScope",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "PolicyEffect",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "ConsentMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "ReplayPacket",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/replay-recovery.ts"
+    },
+    {
+      "name": "ReplayTimelineEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/replay-recovery.ts"
+    },
+    {
+      "name": "PolicySnapshotRef",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/replay-recovery.ts"
+    },
+    {
+      "name": "ApprovalChainEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/replay-recovery.ts"
+    },
+    {
+      "name": "ConnectorActionRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/replay-recovery.ts"
+    },
+    {
+      "name": "VerificationResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/replay-recovery.ts"
+    },
+    {
+      "name": "RollbackPacket",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/replay-recovery.ts"
+    },
+    {
+      "name": "RollbackStep",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/replay-recovery.ts"
+    },
+    {
+      "name": "ManualResolution",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/replay-recovery.ts"
+    },
+    {
+      "name": "RecoveryAction",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/replay-recovery.ts"
+    },
+    {
+      "name": "RecoveryDiagnosticBundle",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/replay-recovery.ts"
+    },
+    {
+      "name": "PipelineStage",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-autopilot.ts"
+    },
+    {
+      "name": "PlaybookRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-autopilot.ts"
+    },
+    {
+      "name": "PlaybookAction",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-autopilot.ts"
+    },
+    {
+      "name": "RecoveryLoop",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-autopilot.ts"
+    },
+    {
+      "name": "RecoveryTouchpoint",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-autopilot.ts"
+    },
+    {
+      "name": "LeadScore",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-autopilot.ts"
+    },
+    {
+      "name": "LeadSignal",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-autopilot.ts"
+    },
+    {
+      "name": "PipelineStageType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-autopilot.ts"
+    },
+    {
+      "name": "PlaybookTrigger",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-autopilot.ts"
+    },
+    {
+      "name": "RecoveryLoopStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-autopilot.ts"
+    },
+    {
+      "name": "LeakageSignal",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-engine.ts"
+    },
+    {
+      "name": "RecoveredValue",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-engine.ts"
+    },
+    {
+      "name": "RecoveredValueLedger",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-engine.ts"
+    },
+    {
+      "name": "OpportunityRanking",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-engine.ts"
+    },
+    {
+      "name": "CapacitySlot",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-engine.ts"
+    },
+    {
+      "name": "NegotiationOpportunity",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-engine.ts"
+    },
+    {
+      "name": "RevenueAutopilotConfig",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-engine.ts"
+    },
+    {
+      "name": "OutcomeRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-engine.ts"
+    },
+    {
+      "name": "LeakageType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/revenue-engine.ts"
+    },
+    {
+      "name": "LearningEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/self-learning.ts"
+    },
+    {
+      "name": "CorrectionRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/self-learning.ts"
+    },
+    {
+      "name": "PatternMatch",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/self-learning.ts"
+    },
+    {
+      "name": "LearningProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/self-learning.ts"
+    },
+    {
+      "name": "LearningEventType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/self-learning.ts"
+    },
+    {
+      "name": "PatternConfidence",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/self-learning.ts"
+    },
+    {
+      "name": "ModelRoute",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/token-governance.ts"
+    },
+    {
+      "name": "ModelRoutingDecision",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/token-governance.ts"
+    },
+    {
+      "name": "TokenBudget",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/token-governance.ts"
+    },
+    {
+      "name": "TokenUsageRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/token-governance.ts"
+    },
+    {
+      "name": "InferenceAnomaly",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/token-governance.ts"
+    },
+    {
+      "name": "ContextCompression",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/token-governance.ts"
+    },
+    {
+      "name": "TokenSpendDashboard",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/token-governance.ts"
+    },
+    {
+      "name": "TokenGovernanceConfig",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/token-governance.ts"
+    },
+    {
+      "name": "ModelTier",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/token-governance.ts"
+    },
+    {
+      "name": "TrustStateEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/trust-state.ts"
+    },
+    {
+      "name": "TrustProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/trust-state.ts"
+    },
+    {
+      "name": "TrustRecoveryPlan",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/trust-state.ts"
+    },
+    {
+      "name": "TrustRecoveryAction",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/trust-state.ts"
+    },
+    {
+      "name": "TrustStateDimension",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/trust-state.ts"
+    },
+    {
+      "name": "TrustStatePosture",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/trust-state.ts"
+    },
+    {
+      "name": "ExceptionRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/exception.ts"
+    },
+    {
+      "name": "RecoveryPlan",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/exception.ts"
+    },
+    {
+      "name": "RecoveryStep",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/exception.ts"
+    },
+    {
+      "name": "RollbackEligibility",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/exception.ts"
+    },
+    {
+      "name": "FallbackRoute",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/exception.ts"
+    },
+    {
+      "name": "DegradedModeConfig",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/exception.ts"
+    },
+    {
+      "name": "ExceptionSeverity",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/exception.ts"
+    },
+    {
+      "name": "ExceptionCategory",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/exception.ts"
+    },
+    {
+      "name": "ExceptionResolution",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/exception.ts"
+    },
+    {
+      "name": "ExecutionEnvelope",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/execution-envelope.ts"
+    },
+    {
+      "name": "ExecutionPlanStep",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/execution-plan.ts"
+    },
+    {
+      "name": "ExecutionPlan",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/execution-plan.ts"
+    },
+    {
+      "name": "ExecutionReceipt",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/execution/execution-receipt.ts"
+    },
+    {
+      "name": "ContinuityThread",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/continuity-fabric.ts"
+    },
+    {
+      "name": "ContinuityFabric",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/continuity-fabric.ts"
+    },
+    {
+      "name": "DeviceAttestation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/device-attestation.ts"
+    },
+    {
+      "name": "DeviceTrustLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/device-attestation.ts"
+    },
+    {
+      "name": "GraphEdge",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/graph-edge.ts"
+    },
+    {
+      "name": "GraphNode",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/graph-node.ts"
+    },
+    {
+      "name": "HandoffPacket",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/handoff-packet.ts"
+    },
+    {
+      "name": "NearbyExecutionRelay",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/nearby-execution-relay.ts"
+    },
+    {
+      "name": "RelayStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/nearby-execution-relay.ts"
+    },
+    {
+      "name": "OrganizationNode",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/organization.ts"
+    },
+    {
+      "name": "EntityRelationship",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/organization.ts"
+    },
+    {
+      "name": "EntityPermission",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/organization.ts"
+    },
+    {
+      "name": "DelegatedAuthority",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/organization.ts"
+    },
+    {
+      "name": "DelegationConstraint",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/organization.ts"
+    },
+    {
+      "name": "RoleAssignment",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/organization.ts"
+    },
+    {
+      "name": "VisibilityRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/organization.ts"
+    },
+    {
+      "name": "EntityRelationType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/organization.ts"
+    },
+    {
+      "name": "SessionResumeToken",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/graph/session-resume-token.ts"
+    },
+    {
+      "name": "EntityScope",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/index.ts"
+    },
+    {
+      "name": "MemoryGovernanceRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/memory-governance.ts"
+    },
+    {
+      "name": "MemoryCorrectionRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/memory-governance.ts"
+    },
+    {
+      "name": "MemoryForgetRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/memory-governance.ts"
+    },
+    {
+      "name": "MemoryGovernanceConfig",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/memory-governance.ts"
+    },
+    {
+      "name": "MemoryRetentionPolicy",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/memory-governance.ts"
+    },
+    {
+      "name": "MemoryAccessLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/memory-governance.ts"
+    },
+    {
+      "name": "MemoryCorrectionType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/memory-governance.ts"
+    },
+    {
+      "name": "MemoryObject",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/memory-object.ts"
+    },
+    {
+      "name": "ConfidenceState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/confidence-state.ts"
+    },
+    {
+      "name": "HallucinationRiskClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/confidence-state.ts"
+    },
+    {
+      "name": "DowngradeLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/confidence-state.ts"
+    },
+    {
+      "name": "ContradictionItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/contradiction-report.ts"
+    },
+    {
+      "name": "ContradictionReport",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/contradiction-report.ts"
+    },
+    {
+      "name": "GroundingSource",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/grounding-report.ts"
+    },
+    {
+      "name": "GroundingReport",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/grounding-report.ts"
+    },
+    {
+      "name": "RequiredSourceType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/grounding-report.ts"
+    },
+    {
+      "name": "RefusalState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/refusal-state.ts"
+    },
+    {
+      "name": "SourceFreshness",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/staleness-state.ts"
+    },
+    {
+      "name": "StalenessState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/staleness-state.ts"
+    },
+    {
+      "name": "FreshnessLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/staleness-state.ts"
+    },
+    {
+      "name": "TruthBoundaryRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/truth-boundary.ts"
+    },
+    {
+      "name": "AdvisorGroundingConfig",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/truth-boundary.ts"
+    },
+    {
+      "name": "OutputClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/no-hallucination/truth-boundary.ts"
+    },
+    {
+      "name": "EvidenceItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/evidence-bundle.ts"
+    },
+    {
+      "name": "EvidenceBundle",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/evidence-bundle.ts"
+    },
+    {
+      "name": "EvidenceType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/evidence-bundle.ts"
+    },
+    {
+      "name": "Postcondition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/postcondition-verification.ts"
+    },
+    {
+      "name": "PostconditionVerification",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/postcondition-verification.ts"
+    },
+    {
+      "name": "PostconditionResult",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/postcondition-verification.ts"
+    },
+    {
+      "name": "Receipt",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/proof-pack.ts"
+    },
+    {
+      "name": "ProofBundle",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/proof-pack.ts"
+    },
+    {
+      "name": "ProofPack",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/proof-pack.ts"
+    },
+    {
+      "name": "ProofMetadata",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/proof-types.ts"
+    },
+    {
+      "name": "ProofType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/proof-types.ts"
+    },
+    {
+      "name": "ProofIntegrity",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/proof-types.ts"
+    },
+    {
+      "name": "ProposalRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/proposal-record.ts"
+    },
+    {
+      "name": "ProposalStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/proposal-record.ts"
+    },
+    {
+      "name": "RefusalReceipt",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/refusal-receipt.ts"
+    },
+    {
+      "name": "SimulationOutcome",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/simulation-receipt.ts"
+    },
+    {
+      "name": "SimulationReceipt",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/simulation-receipt.ts"
+    },
+    {
+      "name": "VerificationRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/verification-record.ts"
+    },
+    {
+      "name": "IncidentSummary",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/incident-summary.ts"
+    },
+    {
+      "name": "IncidentSeverityLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/incident-summary.ts"
+    },
+    {
+      "name": "OwnerSummary",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/owner-summary.ts"
+    },
+    {
+      "name": "ProjectionQuery",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/projections.ts"
+    },
+    {
+      "name": "ProjectionResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/projections.ts"
+    },
+    {
+      "name": "ProjectionSubscription",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/projections.ts"
+    },
+    {
+      "name": "ReceiptSummaryItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/receipt-summary.ts"
+    },
+    {
+      "name": "ReceiptSummary",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/receipt-summary.ts"
+    },
+    {
+      "name": "TodayViewItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/today-view.ts"
+    },
+    {
+      "name": "TodayView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/today-view.ts"
+    },
+    {
+      "name": "StatusChip",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/ui-projection-models.ts"
+    },
+    {
+      "name": "MetricCard",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/ui-projection-models.ts"
+    },
+    {
+      "name": "TimelineEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/ui-projection-models.ts"
+    },
+    {
+      "name": "NavigationBadge",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/read-models/ui-projection-models.ts"
+    },
+    {
+      "name": "AdvisorOrchestrationRuntime",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/advisor-orchestration-runtime.ts"
+    },
+    {
+      "name": "OrchestratorMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/advisor-orchestration-runtime.ts"
+    },
+    {
+      "name": "AIModelCost",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/ai-economics-runtime.ts"
+    },
+    {
+      "name": "AISpendState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/ai-economics-runtime.ts"
+    },
+    {
+      "name": "AIEconomicsRuntime",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/ai-economics-runtime.ts"
+    },
+    {
+      "name": "TwinDataPoint",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/digital-twin-runtime.ts"
+    },
+    {
+      "name": "DigitalTwinRuntime",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/digital-twin-runtime.ts"
+    },
+    {
+      "name": "RuntimeTwinType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/digital-twin-runtime.ts"
+    },
+    {
+      "name": "ConnectorState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/integration-concierge-runtime.ts"
+    },
+    {
+      "name": "IntegrationConciergeRuntime",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/integration-concierge-runtime.ts"
+    },
+    {
+      "name": "IntegrationStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/integration-concierge-runtime.ts"
+    },
+    {
+      "name": "OpportunityNode",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/opportunity-graph-runtime.ts"
+    },
+    {
+      "name": "OpportunityEdge",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/opportunity-graph-runtime.ts"
+    },
+    {
+      "name": "OpportunityGraphRuntime",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/opportunity-graph-runtime.ts"
+    },
+    {
+      "name": "ActiveSurface",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/os-unification-runtime.ts"
+    },
+    {
+      "name": "OSUnificationRuntime",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/os-unification-runtime.ts"
+    },
+    {
+      "name": "SurfaceType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/os-unification-runtime.ts"
+    },
+    {
+      "name": "RecoveredValueEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/recovered-value-runtime.ts"
+    },
+    {
+      "name": "RecoveredValueRuntime",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/recovered-value-runtime.ts"
+    },
+    {
+      "name": "ScenarioVariable",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/scenario-intelligence-runtime.ts"
+    },
+    {
+      "name": "ScenarioResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/scenario-intelligence-runtime.ts"
+    },
+    {
+      "name": "ScenarioIntelligenceRuntime",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/scenario-intelligence-runtime.ts"
+    },
+    {
+      "name": "RuntimeScenarioType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/scenario-intelligence-runtime.ts"
+    },
+    {
+      "name": "TrustedBootSequence",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/trusted-boot-runtime.ts"
+    },
+    {
+      "name": "BootPhaseRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/trusted-boot-runtime.ts"
+    },
+    {
+      "name": "BootRecoveryEnvelope",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/trusted-boot-runtime.ts"
+    },
+    {
+      "name": "BootPhase",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/trusted-boot-runtime.ts"
+    },
+    {
+      "name": "AccessibilityProfile",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/trusted-boot-runtime.ts"
+    },
+    {
+      "name": "WorkspacePane",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/workspace-runtime.ts"
+    },
+    {
+      "name": "WorkspaceRuntime",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/workspace-runtime.ts"
+    },
+    {
+      "name": "SchemaRegistryEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/schema-registry.ts"
+    },
+    {
+      "name": "ContractLayer",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/schema-registry.ts"
+    },
+    {
+      "name": "SchemaRegistry",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/schema-registry.ts"
+    },
+    {
+      "name": "BoardroomSection",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/boardroom-packet.ts"
+    },
+    {
+      "name": "AdvisorTrack",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/boardroom-packet.ts"
+    },
+    {
+      "name": "Disagreement",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/boardroom-packet.ts"
+    },
+    {
+      "name": "CarryoverItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/boardroom-packet.ts"
+    },
+    {
+      "name": "DecisionRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/boardroom-packet.ts"
+    },
+    {
+      "name": "SpecializedBoardroomPacket",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/boardroom-packet.ts"
+    },
+    {
+      "name": "DiagnosticBundle",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/diagnostic-bundle.ts"
+    },
+    {
+      "name": "IntegrationReadinessItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/integration-readiness.ts"
+    },
+    {
+      "name": "IntegrationReadiness",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/integration-readiness.ts"
+    },
+    {
+      "name": "ReadinessStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/integration-readiness.ts"
+    },
+    {
+      "name": "ObservabilityMetric",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/observability-metric-contracts.ts"
+    },
+    {
+      "name": "SLODefinition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/observability-metric-contracts.ts"
+    },
+    {
+      "name": "AlertRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/observability-metric-contracts.ts"
+    },
+    {
+      "name": "MetricType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/observability-metric-contracts.ts"
+    },
+    {
+      "name": "AlertSeverity",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/observability-metric-contracts.ts"
+    },
+    {
+      "name": "OnboardingStep",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/onboarding.ts"
+    },
+    {
+      "name": "OnboardingState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/onboarding.ts"
+    },
+    {
+      "name": "OnboardingPhase",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/onboarding.ts"
+    },
+    {
+      "name": "Opportunity",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/opportunity.ts"
+    },
+    {
+      "name": "OutcomeObject",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/outcome-object.ts"
+    },
+    {
+      "name": "OutcomeStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/outcome-object.ts"
+    },
+    {
+      "name": "AppointmentConfirmationPacket",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/reservations-and-calling/appointment-confirmation-packet.ts"
+    },
+    {
+      "name": "PostCallSummary",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/reservations-and-calling/post-call-summary.ts"
+    },
+    {
+      "name": "ProviderResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/reservations-and-calling/provider-response.ts"
+    },
+    {
+      "name": "ReservationRequestPacket",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/reservations-and-calling/reservation-request-packet.ts"
+    },
+    {
+      "name": "PhaseStatusUX",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "PhaseTimeoutConfig",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "SetupBranchCondition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "SetupBackgroundTask",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "SetupPhaseDefinition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "SetupPhaseState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "SetupRollbackPoint",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "HardwareCapabilities",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "SetupSession",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "SetupSessionSnapshot",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "SetupPhaseId",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "SetupPhaseStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "PhaseIconState",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "SetupPhaseAction",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "BranchConditionType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "SetupBranchPath",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "VALID_PHASE_TRANSITIONS",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "RESOLVED_STATUSES",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-orchestration.ts"
+    },
+    {
+      "name": "SupportCase",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/support-case.ts"
+    },
+    {
+      "name": "SupportCasePriority",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/support-case.ts"
+    },
+    {
+      "name": "SupportCaseStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/support-case.ts"
+    },
+    {
+      "name": "VerticalTemplate",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/verticalization.ts"
+    },
+    {
+      "name": "VerticalModule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/verticalization.ts"
+    },
+    {
+      "name": "VerticalWorkflowTemplate",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/verticalization.ts"
+    },
+    {
+      "name": "VerticalKPI",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/verticalization.ts"
+    },
+    {
+      "name": "VerticalOnboardingStep",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/verticalization.ts"
+    },
+    {
+      "name": "VerticalRole",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/verticalization.ts"
+    },
+    {
+      "name": "VerticalCommTemplate",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/verticalization.ts"
+    },
+    {
+      "name": "VerticalApprovalDefault",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/verticalization.ts"
+    },
+    {
+      "name": "VerticalDashboard",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/verticalization.ts"
+    },
+    {
+      "name": "VerticalRegistryEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/verticalization.ts"
+    },
+    {
+      "name": "VerticalId",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/verticalization.ts"
+    },
+    {
+      "name": "VERTICAL_REGISTRY",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/verticalization.ts"
+    },
+    {
+      "name": "DomainIdSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "UserRoleSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "PrivacyTierSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "RiskTierSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ApprovalTypeSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ExecutionModeSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ExecutionStatusSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "WorkflowStatusSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ApprovalStatusSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "TrustFlagSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ReceiptTypeSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "CorrelationContextSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ConfidenceMetadataSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "TenantContextSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "EntityScopeSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "EventEnvelopeSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "IntentEnvelopeSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "PolicyConstraintSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "PolicyDecisionSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "WorkflowStepSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "WorkflowStateSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "TrustChangeSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "TrustStateSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "TrustTransitionSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "PolicySnapshotSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ExecutionEnvelopeSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ExecutionPlanSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ExecutionReceiptSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ExceptionRecordSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "RecoveryPlanSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ReceiptSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ProofBundleSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "VerificationRecordSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ApprovalDecisionSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ApprovalRequestSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ApprovalReceiptSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "ConsentGrantSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "CapabilityContractSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "CapabilityManifestSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "AdvisorRegistryEntrySchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "AdvisorSessionSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "AdvisorVoteSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "DeliberationStatusSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "CouncilDeliberationSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "MemoryGovernanceRuleSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "MemoryObjectSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "GraphNodeSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "GraphEdgeSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "DeviceAttestationSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "AdminCommandSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "DiagnosticBundleSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "TrustedBootSequenceSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/zod-schemas.ts"
+    },
+    {
+      "name": "TenantFirewallRule",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "EnterpriseAuditReview",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "RolePermissionGrant",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "ControlPlaneEvent",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "ControlPlaneEventType",
+      "kind": "type",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "CapitalMap",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/family-office/types.ts"
+    },
+    {
+      "name": "EntityCapitalMap",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/family-office/types.ts"
+    },
+    {
+      "name": "LiquiditySummary",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/family-office/types.ts"
+    },
+    {
+      "name": "FinancialAccount",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "AccountSummary",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "TransactionRecord",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "CategorizedSpend",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "ReserveModel",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "ObligationRecord",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "SubscriptionRecord",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "WasteOpportunity",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "Receivable",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "SafeToSpendResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "BudgetHealth",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "TaxEstimation",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "TaxBracketResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "FinanceBoardroomPacket",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "FamilyOfficeReviewPacket",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "EntityPerformance",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "AssetAllocation",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "InvestmentSummary",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "TreasuryScenarioResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "AccountType",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/index.ts"
+    },
+    {
+      "name": "MarketRegimeResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "PortfolioExposureSummary",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "RiskBudgetResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "ScenarioResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "MonteCarloResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "HistoricalReplayResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "AllocationSuggestion",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "RebalanceRecommendation",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "ThesisRecord",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "ThesisCandidate",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "InvestmentCommitteePacket",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "TradeReviewPacket",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "ExecutionIntent",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "TradeCostEstimate",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "SlippageFeeResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "StopExitPolicyResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "FactorRiskDecomposition",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "MandateComplianceResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "RobustOptimizationResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "LeverageCapResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "CapitalCallPlan",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "CommitmentPacing",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "TaxReserveResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "LiquidityLadder",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "ReserveProtectionResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "ObligationCoverageResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "CorrelationMatrixResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "FxExposureSummary",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "CryptoExposureSummary",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "VenueRiskSummary",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "WatchlistEntry",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "WatchlistWithRegime",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "ResearchContext",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "NetWorthResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "EntityCapitalSeparation",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "DeployableCapitalResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "CashPosture",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "ReservePosture",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "LiquidityPosture",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "OpportunityScore",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "BrokerageSyncResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "CryptoExchangeSyncResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "MarketDataSnapshot",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "BankSyncResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "InvestmentDecisionProof",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "MarketRegime",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "InvestmentTrustMode",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "SinkingFund",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/reserves/types.ts"
+    },
+    {
+      "name": "ReserveHealth",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/reserves/types.ts"
+    },
+    {
+      "name": "RenewalRisk",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/subscriptions/renewal-risk.ts"
+    },
+    {
+      "name": "MoatContractMeta",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "MoatEvent",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "SimulationToLiveConversion",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "SovereignExportPack",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "ExportReadinessScore",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "ExportIntegrityReport",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "CompetitiveGapAnalysis",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "BoardroomPremiumValue",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "ProofOfDensityProfile",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "TrustPostureReport",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "DataSovereigntyReport",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "GovernedExecutionSummary",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "AdoptionMetric",
+      "kind": "interface",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "MoatEventCategory",
+      "kind": "type",
+      "package": "moat-contracts",
+      "file": "src/packages/moat-contracts/types.ts"
+    },
+    {
+      "name": "ApprovalThreshold",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/approvals/types.ts"
+    },
+    {
+      "name": "MultiStepApproval",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/approvals/types.ts"
+    },
+    {
+      "name": "MultiStepApprovalStep",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/approvals/types.ts"
+    },
+    {
+      "name": "TruthBoundaryRule",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "Contradiction",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "ContradictionReport",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "RefusalState",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "ConnectorFreshnessPolicy",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "SensitiveDocumentPolicy",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "OutboundCommunicationPolicy",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "AccessAuditEntry",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "RedactionRules",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "RequiredSourceType",
+      "kind": "type",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "DowngradeLevel",
+      "kind": "type",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "TRUTH_BOUNDARIES",
+      "kind": "const",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "CONNECTOR_FRESHNESS_POLICIES",
+      "kind": "const",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "SENSITIVE_DOCUMENT_POLICIES",
+      "kind": "const",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "OUTBOUND_POLICIES",
+      "kind": "const",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "NarrativeVsDeterministicBoundary",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/outbound/types.ts"
+    },
+    {
+      "name": "CallAutomationPolicy",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/outbound/types.ts"
+    },
+    {
+      "name": "RetentionPolicy",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/sensitive-docs/types.ts"
+    },
+    {
+      "name": "RedactionPolicy",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/sensitive-docs/types.ts"
+    },
+    {
+      "name": "SensitivityTier",
+      "kind": "type",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/sensitive-docs/types.ts"
+    },
+    {
+      "name": "InvestmentProof",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/agentic-and-investment-proof/types.ts"
+    },
+    {
+      "name": "SimulationProof",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/agentic-and-investment-proof/types.ts"
+    },
+    {
+      "name": "ExecutionIntentProof",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/agentic-and-investment-proof/types.ts"
+    },
+    {
+      "name": "RegimeReviewProof",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/agentic-and-investment-proof/types.ts"
+    },
+    {
+      "name": "ProofPack",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
+      "name": "ActionReceipt",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
+      "name": "ApprovalProof",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
+      "name": "ExecutionProof",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
+      "name": "VerificationProof",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
+      "name": "RollbackProof",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
+      "name": "BoardroomDecisionProof",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
+      "name": "CommunicationReceipt",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
+      "name": "PaymentReceipt",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
+      "name": "SystemReceipt",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
+      "name": "RefusalProofReceipt",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
+      "name": "TypedReceipt",
+      "kind": "type",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
+      "name": "BaseReceiptFields",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/receipts/base.ts"
+    },
+    {
+      "name": "FileIngestionReceipt",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/receipts/file-ingestion-receipt.ts"
+    },
+    {
+      "name": "AuditAnchorReference",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/audit-anchor-reference.ts"
+    },
+    {
+      "name": "AutonomyDowngradeRecord",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/autonomy-downgrade-record.ts"
+    },
+    {
+      "name": "AutonomyPromotionRecord",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/autonomy-promotion-record.ts"
+    },
+    {
+      "name": "ConfidenceScore",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/confidence-score.ts"
+    },
+    {
+      "name": "ConfidenceTrend",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/confidence-trend.ts"
+    },
+    {
+      "name": "CounterfactualSet",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/counterfactual-set.ts"
+    },
+    {
+      "name": "CryptoShredEligibility",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/crypto-shred-eligibility.ts"
+    },
+    {
+      "name": "DriftDetection",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/drift-detection.ts"
+    },
+    {
+      "name": "DriftIncident",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/drift-incident.ts"
+    },
+    {
+      "name": "DriftSeverityDefinition",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/drift-severity.ts"
+    },
+    {
+      "name": "EvidenceGrade",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/evidence-grade.ts"
+    },
+    {
+      "name": "EvidenceLineage",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/evidence-lineage.ts"
+    },
+    {
+      "name": "EvidenceSource",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/evidence-source.ts"
+    },
+    {
+      "name": "FinalityDecision",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/finality-decision.ts"
+    },
+    {
+      "name": "FinalityLevelDefinition",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/finality-level.ts"
+    },
+    {
+      "name": "IrreversibilityClassDefinition",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/irreversibility-class.ts"
+    },
+    {
+      "name": "NightlyDriftSummary",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/nightly-drift-summary.ts"
+    },
+    {
+      "name": "NightlyReconciliationSummary",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/nightly-reconciliation-summary.ts"
+    },
+    {
+      "name": "Postcondition",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/postcondition.ts"
+    },
+    {
+      "name": "RealityContractMeta",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/primitives.ts"
+    },
+    {
+      "name": "RealityLane",
+      "kind": "type",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/primitives.ts"
+    },
+    {
+      "name": "FinalityLevel",
+      "kind": "type",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/primitives.ts"
+    },
+    {
+      "name": "IrreversibilityClass",
+      "kind": "type",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/primitives.ts"
+    },
+    {
+      "name": "DriftSeverity",
+      "kind": "type",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/primitives.ts"
+    },
+    {
+      "name": "EvidenceGradeLevel",
+      "kind": "type",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/primitives.ts"
+    },
+    {
+      "name": "RealityVerificationStatus",
+      "kind": "type",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/primitives.ts"
+    },
+    {
+      "name": "SensitivityClassification",
+      "kind": "type",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/primitives.ts"
+    },
+    {
+      "name": "RetentionClass",
+      "kind": "type",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/primitives.ts"
+    },
+    {
+      "name": "AutonomyLevel",
+      "kind": "type",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/primitives.ts"
+    },
+    {
+      "name": "ReconciliationStatus",
+      "kind": "type",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/primitives.ts"
+    },
+    {
+      "name": "RealityExportPack",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/reality-export-pack.ts"
+    },
+    {
+      "name": "RealitySwitch",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/reality-switch.ts"
+    },
+    {
+      "name": "ReconciliationCheckpoint",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/reconciliation-checkpoint.ts"
+    },
+    {
+      "name": "ReconciliationGap",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/reconciliation-gap.ts"
+    },
+    {
+      "name": "ReconciliationResult",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/reconciliation-result.ts"
+    },
+    {
+      "name": "ReversibilityWindow",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/reversibility-window.ts"
+    },
+    {
+      "name": "ScenarioComparison",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/scenario-comparison.ts"
+    },
+    {
+      "name": "ShadowExecutionRecord",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/shadow-execution-record.ts"
+    },
+    {
+      "name": "SimulationInput",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/simulation-input.ts"
+    },
+    {
+      "name": "SimulationResult",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/simulation-result.ts"
+    },
+    {
+      "name": "SimulationScenario",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/simulation-scenario.ts"
+    },
+    {
+      "name": "TrustRecalibrationSignal",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/trust-recalibration-signal.ts"
+    },
+    {
+      "name": "UncertaintyBand",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/uncertainty-band.ts"
+    },
+    {
+      "name": "VerificationAssertion",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/verification-assertion.ts"
+    },
+    {
+      "name": "VerificationOutcome",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/verification-outcome.ts"
+    }
+  ]
+}

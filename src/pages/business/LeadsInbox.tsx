@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
+import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
 import { KPITile, CustomerRow, EmptyState, SitaTabs, AdvisorCard, TimelineItem, OpportunityCard } from "@/components/sita/SitaComponents";
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
@@ -163,7 +164,8 @@ const LeadsInbox = () => {
     return (
       <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
         <SitaPageHeader title="Leads Inbox" subtitle="Capture, qualify, and convert" />
-        <div className="flex items-center justify-center py-20"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>
+        <KPISkeleton count={4} />
+        <SectionSkeleton cards={4} columns={2} />
       </motion.div>
     );
   }

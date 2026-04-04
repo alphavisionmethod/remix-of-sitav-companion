@@ -3,8 +3,8 @@
 // Pure read-only fan-out to each domain for structured assessments
 // ============================================================
 
-import type { DomainAssessment, AlertData, OpportunitySummary, ActionItemData, BoardroomSection, DataSource } from "./types";
-import { mockLeads, mockInvoices, mockCashFlow, mockBills, mockSubscriptions, mockHouseholdTasks, mockFamilyEvents, mockIncidents, mockOpportunityInsights } from "@/lib/mocks";
+import type { DomainAssessment, AlertData, OpportunitySummary, ActionItemData, BoardroomContentSection, DataSource } from "./types";
+import { mockLeads, mockInvoices, mockCashFlow, mockBills, mockSubscriptions, mockHouseholdTasks, mockFamilyEvents, mockIncidents, mockOpportunityInsights } from "@/lib/mock-data/legacy-display-mocks";
 
 const now = () => new Date().toISOString();
 
@@ -28,7 +28,7 @@ export function generateFinanceAssessment(): DomainAssessment {
     alerts.push({ severity: "warning", title: `${overdueBills.length} overdue bill(s)`, description: overdueBills.map(b => b.name).join(", "), source: "bills" });
   }
 
-  const sections: BoardroomSection[] = [
+  const sections: BoardroomContentSection[] = [
     {
       id: "fin-kpis", type: "metric-card", title: "Financial Snapshot",
       data: [
@@ -117,7 +117,7 @@ export function generateBusinessAssessment(): DomainAssessment {
     alerts.push({ severity: "warning", title: `${staleLeads.length} leads going cold`, description: `$${atRisk.toLocaleString()} pipeline at risk`, source: "lead-tracker" });
   }
 
-  const sections: BoardroomSection[] = [
+  const sections: BoardroomContentSection[] = [
     {
       id: "biz-kpis", type: "metric-card", title: "Pipeline Snapshot",
       data: [
@@ -184,7 +184,7 @@ export function generateConciergeAssessment(): DomainAssessment {
     alerts.push({ severity: "warning", title: `${highPriority.length} high-priority tasks pending`, description: highPriority.map(t => t.title).join("; "), source: "task-engine" });
   }
 
-  const sections: BoardroomSection[] = [
+  const sections: BoardroomContentSection[] = [
     {
       id: "con-kpis", type: "metric-card", title: "Household Status",
       data: [
@@ -257,7 +257,7 @@ export function generateIncidentAssessment(): DomainAssessment {
     title: inc.title, description: `Impact: ${inc.impact}`, source: "incident-system",
   }));
 
-  const sections: BoardroomSection[] = [
+  const sections: BoardroomContentSection[] = [
     {
       id: "inc-kpis", type: "metric-card", title: "Incident Overview",
       data: [

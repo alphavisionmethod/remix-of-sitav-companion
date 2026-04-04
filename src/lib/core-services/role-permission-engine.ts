@@ -1,7 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Role & Permission Engine
 // RBAC/ABAC engine for surface-level permission checks
+// Canonical contracts: UserRole from _contract-scaffold
 // ═══════════════════════════════════════════════════════════════
+
+import type { UserRole as CanonicalUserRole } from "@/packages/contracts";
+
+export type { CanonicalUserRole };
 
 export type PermissionAction = "read" | "write" | "execute" | "approve" | "admin" | "delegate";
 export type ResourceDomain = "business" | "finance" | "concierge" | "platform" | "boardroom" | "connectors";

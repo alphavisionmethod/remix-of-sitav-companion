@@ -1,7 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — API Gateway
 // HTTP ingress, intent routing, zero-trust guard, rate limiting
+// Canonical contracts: CorrelationContext, TenantContext
 // ═══════════════════════════════════════════════════════════════
+
+import type { CorrelationContext } from "@/packages/contracts";
+import type { TenantContext } from "@/packages/contracts/core/tenant-context";
+
+export type { CorrelationContext, TenantContext };
 
 export type GatewayRequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 export type GatewayAuthLevel = "public" | "authenticated" | "owner" | "admin";

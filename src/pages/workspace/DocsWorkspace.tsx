@@ -7,7 +7,9 @@
 import { useState, useMemo } from "react";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { SitaTabs } from "@/components/sita/SitaComponents";
+import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { motion, AnimatePresence } from "framer-motion";
+import { MOCK_DOCS, type MockDoc } from "@/lib/mock-data";
 import ReactMarkdown from "react-markdown";
 import {
   FileText, Plus, Search, Clock, Users, Shield, Workflow,
@@ -18,30 +20,7 @@ import {
   Maximize2, Minimize2, Download, Printer, CheckCircle2
 } from "lucide-react";
 
-interface Doc {
-  id: string;
-  title: string;
-  type: "document" | "proposal" | "report" | "boardroom-packet" | "note";
-  status: "draft" | "review" | "approved" | "published" | "archived";
-  lastModified: string;
-  author: string;
-  linkedEntity?: string;
-  linkedWorkflow?: string;
-  version: number;
-  privacy: "personal" | "team" | "client" | "public" | "restricted";
-  content: string;
-  governed: boolean;
-  tags: string[];
-}
 
-const MOCK_DOCS: Doc[] = [
-  { id: "1", title: "Q1 Business Review Packet", type: "boardroom-packet", status: "approved", lastModified: "2h ago", author: "SITA", linkedEntity: "Weekly Review", linkedWorkflow: "boardroom-gen-042", version: 3, privacy: "team", content: "# Q1 Business Review\n\n## Revenue Summary\n\nTotal revenue for Q1 2026: **$189,400**\n\n### Key Highlights\n\n- Revenue grew 18% QoQ\n- Customer retention at 94%\n- 3 new enterprise clients onboarded\n- Pipeline value: $420,000\n\n## Recommendations\n\n1. Expand outreach to mid-market segment\n2. Invest in automation for onboarding\n3. Review pricing strategy for Q2", governed: false, tags: ["quarterly", "review"] },
-  { id: "2", title: "Proposal — Sarah Chen Expansion", type: "proposal", status: "draft", lastModified: "4h ago", author: "You", linkedEntity: "Sarah Chen", linkedWorkflow: "quote-to-proposal-018", version: 1, privacy: "client", content: "# Proposal: Sarah Chen — Service Expansion\n\n## Executive Summary\n\nFollowing the successful initial engagement, we propose expanding our services to include strategic advisory and operational optimization.\n\n## Scope of Work\n\n- Monthly strategy sessions\n- Process automation audit\n- Financial modeling and forecasting\n- Quarterly business reviews\n\n## Pricing\n\n| Service | Monthly | Annual |\n|---------|---------|--------|\n| Strategic Advisory | $3,500 | $42,000 |\n| Process Audit | $2,000 | $24,000 |\n| Financial Modeling | $1,500 | $18,000 |\n\n**Total Annual Value: $84,000**\n\n## Timeline\n\nEngagement begins upon signature. Initial assessment within 2 weeks.", governed: false, tags: ["proposal", "expansion"] },
-  { id: "3", title: "Service Agreement Template", type: "document", status: "published", lastModified: "3d ago", author: "You", version: 5, privacy: "team", content: "# Service Agreement\n\nThis agreement is between {{company_name}} and {{client_name}}.\n\n## Terms\n\n1. Services to be provided as described in attached SOW\n2. Payment terms: Net 30\n3. Confidentiality: All information shared is confidential\n4. Term: 12 months from execution date", governed: false, tags: ["template", "legal"] },
-  { id: "4", title: "Monthly Financial Summary", type: "report", status: "review", lastModified: "1d ago", author: "SITA", linkedEntity: "Finance Boardroom", linkedWorkflow: "finance-report-012", version: 2, privacy: "personal", content: "# Monthly Financial Summary — March 2026\n\n## Overview\n\n- Total Income: $52,300\n- Total Expenses: $38,100\n- Net: $14,200\n- Savings Rate: 27.2%\n\n## Category Breakdown\n\n| Category | Amount | Budget | Status |\n|----------|--------|--------|--------|\n| Housing | $2,400 | $2,500 | ✅ Under |\n| Food | $1,280 | $1,200 | ⚠️ Over |\n| Transport | $640 | $800 | ✅ Under |\n| Subscriptions | $380 | $300 | ⚠️ Over |\n\n## Alerts\n\n- 2 subscriptions flagged as potential waste\n- Emergency fund at 78% of 6-month target", governed: false, tags: ["financial", "monthly"] },
-  { id: "5", title: "Meeting Notes — Marcus Johnson", type: "note", status: "draft", lastModified: "6h ago", author: "You", linkedEntity: "Marcus Johnson", version: 1, privacy: "personal", content: "# Meeting Notes: Marcus Johnson\n\n**Date:** April 2, 2026\n**Type:** Discovery Call\n\n## Discussion\n\n- Marcus is interested in full-service package\n- Current pain points: manual invoicing, no CRM\n- Budget: $3,000-5,000/month\n- Decision timeline: 2 weeks\n\n## Action Items\n\n- [ ] Send proposal by April 5\n- [ ] Schedule follow-up for April 9\n- [ ] Share case studies from similar clients", governed: false, tags: ["meeting", "prospect"] },
-  { id: "6", title: "Confidential — Tax Documents 2025", type: "document", status: "draft", lastModified: "1d ago", author: "You", version: 1, privacy: "restricted", content: "# Tax Filing Summary 2025\n\n**SSN:** 123-45-6789\n**EIN:** 12-3456789\n\n## Income Summary\n\n- W2 Income: $180,000\n- 1099 Income: $42,000\n- Investment Income: $8,500\n\n## Deductions\n\n- Home Office: $4,800\n- Business Expenses: $12,300\n- Health Insurance: $9,600", governed: true, tags: ["tax", "sensitive", "2025"] },
-];
 
 const statusColors: Record<string, string> = {
   draft: "bg-secondary text-muted-foreground",
@@ -76,7 +55,7 @@ const TOOLBAR_ACTIONS = [
 const DocsWorkspace = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [editingDoc, setEditingDoc] = useState<Doc | null>(null);
+  const [editingDoc, setEditingDoc] = useState<MockDoc | null>(null);
   const [editorContent, setEditorContent] = useState("");
   const [editorTitle, setEditorTitle] = useState("");
   const [showPreview, setShowPreview] = useState(true);
@@ -105,7 +84,7 @@ const DocsWorkspace = () => {
     [activeTab, searchQuery]
   );
 
-  const openEditor = (doc: Doc) => {
+  const openEditor = (doc: MockDoc) => {
     setEditingDoc(doc);
     setEditorContent(doc.content);
     setEditorTitle(doc.title);
@@ -122,8 +101,8 @@ const DocsWorkspace = () => {
     setEditorContent(prev => prev + md);
   };
 
-  const createNewDoc = (type: Doc["type"] = "document") => {
-    const newDoc: Doc = {
+  const createNewDoc = (type: MockDoc["type"] = "document") => {
+    const newDoc: MockDoc = {
       id: `new-${Date.now()}`,
       title: "Untitled Document",
       type,
@@ -418,13 +397,13 @@ const DocsWorkspace = () => {
         })}
 
         {filteredDocs.length === 0 && (
-          <div className="text-center py-12">
-            <FileText className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
-            <p className="text-sm text-muted-foreground">No documents found</p>
-            <button onClick={() => createNewDoc()} className="mt-3 text-xs text-primary hover:underline">
-              Create a new document
-            </button>
-          </div>
+          <EmptyStateCTA
+            icon={FileText}
+            title="No Documents Yet"
+            description="Create your first document to get started with the workspace."
+            actions={[{ label: "Create Document", onClick: () => createNewDoc(), variant: "primary" }]}
+            tip="Documents are auto-saved and version-tracked"
+          />
         )}
       </div>
     </div>

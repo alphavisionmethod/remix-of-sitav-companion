@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
+import { MOCK_INBOX_ITEMS } from "@/lib/mock-data";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useState } from "react";
@@ -14,17 +15,6 @@ import {
   Inbox, FileText, Receipt, Camera, Mic, StickyNote, Mail, Clock,
   CheckCircle, ArrowRight, Sparkles, DollarSign, Send
 } from "lucide-react";
-
-const demoItems = [
-  { id: "1", type: "receipt", content: "Office supplies receipt — $142.50 from Staples", source: "Photo capture", status: "classified", routed_to: "Money", time: "12m ago", confidence: 95 },
-  { id: "2", type: "note", content: "Sarah Chen wants to discuss expanded scope — retainer model", source: "Quick note", status: "routed", routed_to: "Business", time: "1h ago", confidence: 88 },
-  { id: "3", type: "email", content: "Travel confirmation: LAX → SFO Mar 28, United UA-1142", source: "Email forward", status: "classified", routed_to: "Concierge", time: "2h ago", confidence: 92 },
-  { id: "4", type: "bill", content: "Electric bill due Apr 5 — $186.40", source: "Mail scan", status: "routed", routed_to: "Money", time: "3h ago", confidence: 97 },
-  { id: "5", type: "idea", content: "Offer monthly retainer packages for small businesses", source: "Voice note", status: "processing", time: "4h ago" },
-  { id: "6", type: "reminder", content: "Pick up dry cleaning Thursday before 6 PM", source: "Quick capture", status: "classified", routed_to: "Concierge", time: "5h ago", confidence: 90 },
-  { id: "7", type: "screenshot", content: "Competitor pricing comparison — web design packages", source: "Screenshot", status: "new", time: "6h ago" },
-  { id: "8", type: "voice", content: "Meeting notes: James Rodriguez wants Q2 project kickoff in April", source: "Voice memo", status: "routed", routed_to: "Business", time: "Yesterday" },
-];
 
 const typeIcons: Record<string, typeof FileText> = {
   note: StickyNote, receipt: Receipt, screenshot: Camera, voice: Mic,
@@ -86,7 +76,7 @@ const InboxCapture = () => {
     confidence: undefined as number | undefined,
   }));
 
-  const items = isDemoMode ? demoItems : liveItems;
+  const items = isDemoMode ? MOCK_INBOX_ITEMS : liveItems;
   const filtered = activeTab === "all" ? items
     : activeTab === "processed" ? items.filter(i => ["classified", "routed"].includes(i.status))
     : items.filter(i => i.status === "new" || i.status === "processing");

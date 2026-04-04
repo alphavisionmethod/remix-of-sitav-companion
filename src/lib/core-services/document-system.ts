@@ -2,7 +2,12 @@
 // SITA OS — Document System Service
 // Document management, versioning, templates, governed mode, and
 // premium editor capabilities
+// Canonical contracts: PrivacyTier from contracts
 // ═══════════════════════════════════════════════════════════════
+
+import type { PrivacyTier as CanonicalPrivacyTier } from "@/packages/contracts";
+
+export type { CanonicalPrivacyTier };
 
 export type DocType = "document" | "proposal" | "report" | "boardroom-packet" | "note" | "spreadsheet" | "presentation" | "template";
 export type DocStatus = "draft" | "review" | "approved" | "published" | "archived" | "restricted";

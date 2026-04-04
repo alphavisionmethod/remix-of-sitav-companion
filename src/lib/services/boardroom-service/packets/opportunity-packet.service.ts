@@ -1,7 +1,7 @@
 // SITA OS — Opportunity Packet Service
-import type { BoardroomPacket } from "./business-packet.service";
+import type { ServiceBoardroomPacket } from "./business-packet.service";
 
-export function generateOpportunityPacket(): BoardroomPacket {
+export function generateOpportunityPacket(): ServiceBoardroomPacket {
   return {
     id: crypto.randomUUID(), domain: "cross-domain", generatedAt: new Date().toISOString(), confidence: 0.72,
     staleWarnings: [],

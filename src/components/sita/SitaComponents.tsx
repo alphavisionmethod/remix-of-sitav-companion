@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { LucideIcon, ArrowRight, Sparkles, AlertTriangle, Clock, CheckCircle, FileText, Receipt, ShieldCheck } from "lucide-react";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { TrustBadge, TrustLevel } from "./TrustBadge";
 import { StateBadge, ExecutionState } from "./StateBadge";
 
@@ -164,26 +164,55 @@ export const ErrorState = ({ title = "Something went wrong", message, onRetry, d
   </div>
 );
 
+/* =============== KPI COUNT-UP HOOK =============== */
+function useCountUp(target: number, duration = 800): number {
+  const [current, setCurrent] = useState(0);
+  const raf = useRef<number>();
+  useEffect(() => {
+    const start = performance.now();
+    const animate = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      setCurrent(Math.round(target * eased));
+      if (progress < 1) raf.current = requestAnimationFrame(animate);
+    };
+    raf.current = requestAnimationFrame(animate);
+    return () => { if (raf.current) cancelAnimationFrame(raf.current); };
+  }, [target, duration]);
+  return current;
+}
+
 /* =============== KPI TILE =============== */
-export const KPITile = ({ label, value, trend, icon: Icon, sub, className }: {
-  label: string; value: string | number; trend?: "up" | "down" | "flat"; icon?: LucideIcon; sub?: string; className?: string;
-}) => (
-  <div className={cn("group rounded-xl border border-border bg-card p-4 transition-all duration-300 hover:shadow-card-hover hover:border-primary/15", className)}>
-    <div className="flex items-start justify-between">
-      <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
-      {Icon && <Icon className="h-4 w-4 text-muted-foreground/60 group-hover:text-primary/60 transition-colors" />}
+export const KPITile = ({ label, value, trend, icon: Icon, sub, className, animate }: {
+  label: string; value: string | number; trend?: "up" | "down" | "flat"; icon?: LucideIcon; sub?: string; className?: string; animate?: boolean;
+}) => {
+  // Extract numeric portion for count-up
+  const numericTarget = typeof value === "number" ? value : parseFloat(String(value).replace(/[^0-9.]/g, "")) || 0;
+  const prefix = typeof value === "string" ? (value.match(/^[^0-9]*/)?.[0] || "") : "";
+  const suffix = typeof value === "string" ? (value.match(/[^0-9.]*$/)?.[0] || "") : "";
+  const animatedNum = useCountUp(animate !== false ? numericTarget : numericTarget, 800);
+  const displayValue = animate !== false && numericTarget > 0
+    ? `${prefix}${animatedNum.toLocaleString()}${suffix}`
+    : value;
+
+  return (
+    <div className={cn("group rounded-xl border border-border bg-card p-4 card-hover-lift", className)}>
+      <div className="flex items-start justify-between">
+        <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
+        {Icon && <Icon className="h-4 w-4 text-muted-foreground/60 group-hover:text-primary/60 transition-colors" />}
+      </div>
+      <div className="mt-2 flex items-baseline gap-2">
+        <p className="font-display text-2xl font-bold tracking-tight text-foreground tabular-nums kpi-count-up">{displayValue}</p>
+        {trend && (
+          <span className={cn("text-xs font-semibold tabular-nums", trend === "up" ? "text-trust-safe" : trend === "down" ? "text-urgency-high" : "text-muted-foreground")}>
+            {trend === "up" ? "↑" : trend === "down" ? "↓" : "—"}
+          </span>
+        )}
+      </div>
+      {sub && <p className="mt-1 text-[11px] text-muted-foreground">{sub}</p>}
     </div>
-    <div className="mt-2 flex items-baseline gap-2">
-      <p className="font-display text-2xl font-bold tracking-tight text-foreground tabular-nums">{value}</p>
-      {trend && (
-        <span className={cn("text-xs font-semibold tabular-nums", trend === "up" ? "text-trust-safe" : trend === "down" ? "text-urgency-high" : "text-muted-foreground")}>
-          {trend === "up" ? "↑" : trend === "down" ? "↓" : "—"}
-        </span>
-      )}
-    </div>
-    {sub && <p className="mt-1 text-[11px] text-muted-foreground">{sub}</p>}
-  </div>
-);
+  );
+};
 
 /* =============== URGENCY BADGE =============== */
 export const UrgencyBadge = ({ level, className }: { level: "critical" | "high" | "medium" | "low" | "none"; className?: string }) => {
@@ -264,5 +293,18 @@ export const SitaTabs = ({ tabs, active, onChange, className }: {
         )}
       </button>
     ))}
+  </div>
+);
+
+/* =============== SECTION HEADER =============== */
+export const SectionHeader = ({ title, subtitle, action, className }: {
+  title: string; subtitle?: string; action?: ReactNode; className?: string;
+}) => (
+  <div className={cn("flex items-end justify-between", className)}>
+    <div>
+      <h3 className="font-display text-base font-bold tracking-tight text-foreground">{title}</h3>
+      {subtitle && <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>}
+    </div>
+    {action}
   </div>
 );

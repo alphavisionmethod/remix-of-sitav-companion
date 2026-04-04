@@ -17,7 +17,7 @@ import {
 import type {
   InternalAgentSummary, IncidentSummary, ConnectorHealthItem,
   StuckWorkflow, CostAnomaly, PolicyAnomaly, ReleaseSafetyState, SafeModeState,
-} from "@/lib/mocks/advisor-mission-control";
+} from "@/lib/mock-data/advisor-mission-control";
 
 const healthColor = (h: string) =>
   h === "healthy" ? "trust-verified" : h === "degraded" ? "trust-degraded" : h === "critical" ? "urgency-critical" : "muted-foreground";

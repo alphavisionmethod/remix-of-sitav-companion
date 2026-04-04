@@ -1,68 +1,775 @@
 {
-  "version": "1.0.0",
-  "generated_at": "2026-04-03T00:00:00Z",
+  "version": "2.0.0",
+  "generatedAt": "2026-04-04T19:57:47.150Z",
+  "total": 128,
   "capabilities": [
-    { "id": "crm-lead-management", "domain": "business-os", "family": "crm", "riskTier": "standard", "requiresApproval": false, "description": "Lead capture, scoring, routing, and lifecycle management" },
-    { "id": "crm-customer-health", "domain": "business-os", "family": "crm", "riskTier": "standard", "requiresApproval": false, "description": "Customer health scoring and at-risk detection" },
-    { "id": "crm-opportunity-management", "domain": "business-os", "family": "crm", "riskTier": "standard", "requiresApproval": false, "description": "Deal pipeline, stage tracking, probability forecasting" },
-    { "id": "revenue-forecasting", "domain": "business-os", "family": "revenue", "riskTier": "standard", "requiresApproval": false, "description": "Revenue projection via deterministic regression" },
-    { "id": "revenue-autopilot", "domain": "business-os", "family": "revenue", "riskTier": "elevated", "requiresApproval": true, "description": "Automated follow-up, reactivation, and revenue recovery" },
-    { "id": "invoice-management", "domain": "business-os", "family": "billing", "riskTier": "elevated", "requiresApproval": true, "description": "Invoice creation, send, and collections" },
-    { "id": "outbound-communication", "domain": "business-os", "family": "communication", "riskTier": "elevated", "requiresApproval": true, "description": "Email, SMS, and call outbound" },
-    { "id": "quote-proposal-management", "domain": "business-os", "family": "billing", "riskTier": "standard", "requiresApproval": false, "description": "Quote creation, revision tracking, and proposal delivery" },
-    { "id": "collections-management", "domain": "business-os", "family": "billing", "riskTier": "elevated", "requiresApproval": true, "description": "Collections escalation, aging tracking, recovery" },
-    { "id": "website-lead-capture", "domain": "business-os", "family": "crm", "riskTier": "standard", "requiresApproval": false, "description": "Website form capture, routing, and auto-response" },
-    { "id": "cashflow-analysis", "domain": "finance-os", "family": "finance", "riskTier": "standard", "requiresApproval": false, "description": "Cash position, timing, and projection analysis" },
-    { "id": "bill-management", "domain": "finance-os", "family": "finance", "riskTier": "elevated", "requiresApproval": true, "description": "Bill tracking, payment scheduling, and autopay" },
-    { "id": "subscription-management", "domain": "finance-os", "family": "finance", "riskTier": "standard", "requiresApproval": false, "description": "Subscription detection, waste analysis, cancellation recommendations" },
-    { "id": "reserve-management", "domain": "finance-os", "family": "finance", "riskTier": "elevated", "requiresApproval": true, "description": "Reserve allocation, rebalancing, and health assessment" },
-    { "id": "tax-estimation", "domain": "finance-os", "family": "finance", "riskTier": "critical", "requiresApproval": false, "description": "Deterministic tax estimation (US 2024 brackets)" },
-    { "id": "investment-management", "domain": "finance-os", "family": "investment", "riskTier": "critical", "requiresApproval": true, "description": "Portfolio tracking, rebalancing recommendations" },
-    { "id": "payment-execution", "domain": "finance-os", "family": "execution", "riskTier": "critical", "requiresApproval": true, "description": "Actual payment execution via connectors" },
-    { "id": "safe-to-spend", "domain": "finance-os", "family": "finance", "riskTier": "standard", "requiresApproval": false, "description": "Safe-to-spend calculation after obligations" },
-    { "id": "budget-health", "domain": "finance-os", "family": "finance", "riskTier": "standard", "requiresApproval": false, "description": "Budget tracking and overspend detection" },
-    { "id": "family-office-review", "domain": "finance-os", "family": "investment", "riskTier": "critical", "requiresApproval": false, "description": "Family office consolidated review and reporting" },
-    { "id": "task-prioritization", "domain": "concierge-os", "family": "household", "riskTier": "standard", "requiresApproval": false, "description": "Household task scoring and prioritization" },
-    { "id": "booking-management", "domain": "concierge-os", "family": "travel", "riskTier": "elevated", "requiresApproval": true, "description": "Travel search, scoring, booking, and tracking" },
-    { "id": "calendar-management", "domain": "concierge-os", "family": "scheduling", "riskTier": "standard", "requiresApproval": false, "description": "Calendar reconciliation, conflict detection" },
-    { "id": "grocery-management", "domain": "concierge-os", "family": "household", "riskTier": "standard", "requiresApproval": false, "description": "Grocery planning, list management, reorder automation" },
-    { "id": "household-coordination", "domain": "concierge-os", "family": "household", "riskTier": "standard", "requiresApproval": false, "description": "Family member task coordination and logistics" },
-    { "id": "school-activity-planning", "domain": "concierge-os", "family": "household", "riskTier": "standard", "requiresApproval": false, "description": "School calendar tracking and activity coordination" },
-    { "id": "service-provider-management", "domain": "concierge-os", "family": "household", "riskTier": "standard", "requiresApproval": false, "description": "Provider tracking, follow-ups, quality scoring" },
-    { "id": "event-planning", "domain": "concierge-os", "family": "scheduling", "riskTier": "standard", "requiresApproval": false, "description": "Event planning, gift tracking, RSVP management" },
-    { "id": "travel-itinerary", "domain": "concierge-os", "family": "travel", "riskTier": "standard", "requiresApproval": false, "description": "Travel itinerary assembly and continuity" },
-    { "id": "file-ingestion", "domain": "platform", "family": "files", "riskTier": "standard", "requiresApproval": false, "description": "Upload, classify, extract, index, route" },
-    { "id": "sensitive-document-handling", "domain": "platform", "family": "files", "riskTier": "critical", "requiresApproval": false, "description": "Governed mode for SSN, medical, legal documents" },
-    { "id": "boardroom-generation", "domain": "platform", "family": "boardroom", "riskTier": "standard", "requiresApproval": false, "description": "Boardroom packet assembly and presentation" },
-    { "id": "pack-management", "domain": "platform", "family": "store", "riskTier": "elevated", "requiresApproval": true, "description": "Pack install, update, uninstall, trial management" },
-    { "id": "workflow-execution", "domain": "platform", "family": "execution", "riskTier": "elevated", "requiresApproval": false, "description": "Workflow create, run, step, complete lifecycle" },
-    { "id": "approval-processing", "domain": "platform", "family": "execution", "riskTier": "elevated", "requiresApproval": false, "description": "Approval queue management and decision recording" },
-    { "id": "proof-generation", "domain": "platform", "family": "trust", "riskTier": "standard", "requiresApproval": false, "description": "Proof record creation and verification" },
-    { "id": "memory-management", "domain": "platform", "family": "memory", "riskTier": "standard", "requiresApproval": false, "description": "User memory store, recall, expiration" },
-    { "id": "connector-management", "domain": "platform", "family": "connectors", "riskTier": "elevated", "requiresApproval": true, "description": "Connector config, credential, and sync management" },
-    { "id": "search-fabric", "domain": "platform", "family": "search", "riskTier": "standard", "requiresApproval": false, "description": "Unified cross-domain search and ranking" },
-    { "id": "incident-detection", "domain": "platform", "family": "self-healing", "riskTier": "standard", "requiresApproval": false, "description": "Continuous health monitoring and incident detection from signals" },
-    { "id": "incident-classification", "domain": "platform", "family": "self-healing", "riskTier": "standard", "requiresApproval": false, "description": "Root cause categorization across 16 failure categories" },
-    { "id": "incident-triage", "domain": "platform", "family": "self-healing", "riskTier": "standard", "requiresApproval": false, "description": "Severity assignment (P0-P4) and escalation rule lookup" },
-    { "id": "healing-plan-generation", "domain": "platform", "family": "self-healing", "riskTier": "elevated", "requiresApproval": false, "description": "Generate healing action plan from 11-capability table based on root cause" },
-    { "id": "healing-execution", "domain": "platform", "family": "self-healing", "riskTier": "critical", "requiresApproval": true, "description": "Execute healing actions with circuit breaker (max 3 attempts, 30s cooldown)" },
-    { "id": "healing-verification", "domain": "platform", "family": "self-healing", "riskTier": "standard", "requiresApproval": false, "description": "Post-heal health check to confirm recovery" },
-    { "id": "circuit-breaker-management", "domain": "platform", "family": "self-healing", "riskTier": "elevated", "requiresApproval": false, "description": "Circuit breaker state management (closed/open/half-open), 30-min window" },
-    { "id": "fleet-health-monitoring", "domain": "platform", "family": "self-healing", "riskTier": "standard", "requiresApproval": false, "description": "Fleet-wide health aggregation, per-service health scores (0-100)" },
-    { "id": "degraded-mode-management", "domain": "platform", "family": "self-healing", "riskTier": "elevated", "requiresApproval": false, "description": "Enter/exit degraded mode, 3-consecutive-healthy exit rule" },
-    { "id": "quarantine-management", "domain": "platform", "family": "self-healing", "riskTier": "elevated", "requiresApproval": false, "description": "Service quarantine, auto-release, offense tracking" },
-    { "id": "immune-rule-matching", "domain": "platform", "family": "self-healing", "riskTier": "standard", "requiresApproval": false, "description": "Pattern matching known failure modes to healing capabilities" },
-    { "id": "diagnostic-bundle-generation", "domain": "platform", "family": "self-healing", "riskTier": "standard", "requiresApproval": false, "description": "Support-readable diagnostic bundle with evidence, probable cause, recommendations" },
-    { "id": "recovery-sequencing", "domain": "platform", "family": "self-healing", "riskTier": "elevated", "requiresApproval": false, "description": "Topological sort of affected services, upstream-first healing" },
-    { "id": "cascade-prediction", "domain": "platform", "family": "self-healing", "riskTier": "standard", "requiresApproval": false, "description": "Predict downstream impact from a failing service via dependency graph" },
-    { "id": "connector-failover", "domain": "platform", "family": "self-healing", "riskTier": "elevated", "requiresApproval": true, "description": "Automatic failover to backup connector on provider outage" },
-    { "id": "workflow-unstick", "domain": "platform", "family": "self-healing", "riskTier": "elevated", "requiresApproval": false, "description": "Detect and recover stuck workflows via replay or compensation" },
-    { "id": "model-swap-routing", "domain": "platform", "family": "self-healing", "riskTier": "elevated", "requiresApproval": false, "description": "Swap to alternative AI model on latency spike or failure" },
-    { "id": "rollback-execution", "domain": "platform", "family": "self-healing", "riskTier": "critical", "requiresApproval": true, "description": "Recommendation-first, simulation-first rollback with full logging" },
-    { "id": "model-routing", "domain": "platform", "family": "intelligence", "riskTier": "standard", "requiresApproval": false, "description": "Budget-aware model tier selection based on intent complexity, domain risk, and cost constraints" },
-    { "id": "advisor-handoff", "domain": "platform", "family": "intelligence", "riskTier": "standard", "requiresApproval": false, "description": "Formal context transfer between advisors with proof chain continuity" },
-    { "id": "council-escalation", "domain": "platform", "family": "intelligence", "riskTier": "elevated", "requiresApproval": false, "description": "Escalation routing when councils fail consensus or hit policy boundaries" },
-    { "id": "advisor-performance-evaluation", "domain": "platform", "family": "intelligence", "riskTier": "standard", "requiresApproval": false, "description": "Advisor scorecard computation, promotion/demotion recommendation" },
-    { "id": "refusal-proof-generation", "domain": "platform", "family": "trust", "riskTier": "standard", "requiresApproval": false, "description": "Negative receipt generation for refused actions with policy reference" }
+    {
+      "name": "BusinessDomainId",
+      "domain": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BusinessEntityType",
+      "domain": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CurrencyCode",
+      "domain": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MonetaryAmount",
+      "domain": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BusinessPriority",
+      "domain": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BusinessMetadata",
+      "domain": "business",
+      "source": "src/packages/business-contracts/_contract-scaffold.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BookingConfirmation",
+      "domain": "business",
+      "source": "src/packages/business-contracts/booking-confirmation.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BookingStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/booking.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "Booking",
+      "domain": "business",
+      "source": "src/packages/business-contracts/booking.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueSnapshot",
+      "domain": "business",
+      "source": "src/packages/business-contracts/business-boardroom-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BusinessBoardroomPacket",
+      "domain": "business",
+      "source": "src/packages/business-contracts/business-boardroom-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "KPITrend",
+      "domain": "business",
+      "source": "src/packages/business-contracts/business-kpi.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BusinessKPI",
+      "domain": "business",
+      "source": "src/packages/business-contracts/business-kpi.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CallbackOutcome",
+      "domain": "business",
+      "source": "src/packages/business-contracts/callback-task.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CallbackTask",
+      "domain": "business",
+      "source": "src/packages/business-contracts/callback-task.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CapacityMonetizationSignal",
+      "domain": "business",
+      "source": "src/packages/business-contracts/capacity-monetization-signal.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionSequenceStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/collection-sequence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionSequence",
+      "domain": "business",
+      "source": "src/packages/business-contracts/collection-sequence.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionStepType",
+      "domain": "business",
+      "source": "src/packages/business-contracts/collection-step.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionChannel",
+      "domain": "business",
+      "source": "src/packages/business-contracts/collection-step.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionStep",
+      "domain": "business",
+      "source": "src/packages/business-contracts/collection-step.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CommunicationPreference",
+      "domain": "business",
+      "source": "src/packages/business-contracts/contact-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ContactRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/contact-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerDashboardView",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-dashboard-view.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerHealthScoreView",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-health-score.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerRiskSummary",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-risk-summary.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TimelineEventType",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-timeline-item.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerTimelineItem",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/customer-timeline-item.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "NBACategory",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/next-best-action.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "NextBestAction",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/next-best-action.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OnboardingCustomerBootstrapPacket",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/onboarding-customer-bootstrap-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ContinuityStatus",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/service-continuity-view.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ServiceContinuityView",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-dashboard/service-continuity-view.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerLifecycleStage",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LifecycleTransitionRule",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LifecycleEvent",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerHealthDimension",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerHealthScore",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ChurnPredictionInput",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ChurnPrediction",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CustomerLifecycleRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/customer-lifecycle.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "StaleLeadState",
+      "domain": "business",
+      "source": "src/packages/business-contracts/leads/stale-lead-state.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OpportunityRankResult",
+      "domain": "business",
+      "source": "src/packages/business-contracts/opportunities/opportunity-rank-result.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReactivationCandidate",
+      "domain": "business",
+      "source": "src/packages/business-contracts/opportunities/reactivation-candidate.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CollectionsEscalationPacket",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/collections-escalation-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "NoShowRecoveryPacket",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/no-show-recovery-packet.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RecoveredValueLedgerEntry",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/recovered-value-ledger-entry.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueAutopilotKpiSummary",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-autopilot-kpi-summary.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LeakCategory",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-leak-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueLeakRecord",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-leak-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueRecoveryStep",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-recovery-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RevenueRecoveryPlan",
+      "domain": "business",
+      "source": "src/packages/business-contracts/revenue-autopilot/revenue-recovery-plan.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CapitalMap",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/family-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EntityCapitalMap",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/family-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LiquiditySummary",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/family-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MarketRegime",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MarketRegimeResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PortfolioExposureSummary",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RiskBudgetResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ScenarioResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MonteCarloResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HistoricalReplayResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "AllocationSuggestion",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RebalanceRecommendation",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ThesisRecord",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ThesisCandidate",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "InvestmentCommitteePacket",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TradeReviewPacket",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ExecutionIntent",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "high"
+    },
+    {
+      "name": "TradeCostEstimate",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SlippageFeeResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "StopExitPolicyResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FactorRiskDecomposition",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MandateComplianceResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RobustOptimizationResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LeverageCapResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CapitalCallPlan",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CommitmentPacing",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "TaxReserveResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LiquidityLadder",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReserveProtectionResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ObligationCoverageResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CorrelationMatrixResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FxExposureSummary",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CryptoExposureSummary",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "VenueRiskSummary",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "WatchlistEntry",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "WatchlistWithRegime",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ResearchContext",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "NetWorthResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EntityCapitalSeparation",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "DeployableCapitalResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CashPosture",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReservePosture",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "LiquidityPosture",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "OpportunityScore",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BrokerageSyncResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CryptoExchangeSyncResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "MarketDataSnapshot",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "BankSyncResult",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "InvestmentDecisionProof",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "InvestmentTrustMode",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/investment-office/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SinkingFund",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/reserves/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReserveHealth",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/reserves/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RenewalRisk",
+      "domain": "finance",
+      "source": "src/packages/finance-contracts/subscriptions/renewal-risk.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "FamilyCalendarItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/calendar/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReconciliationConflict",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/calendar/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "PrepItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/calendar/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "EventReminder",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/events/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "GiftOpportunity",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/events/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "GroceryItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/grocery/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RecurringSupplyItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/grocery/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ContinuityAlert",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/grocery/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HouseholdRole",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/household/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HouseholdMember",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/household/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "HouseholdKpiSummary",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/household/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ProviderFollowUp",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/providers/provider-follow-up.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SchoolActivityItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/school/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SchoolFeeItem",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/school/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ReservationRecord",
+      "domain": "concierge",
+      "source": "src/packages/concierge-contracts/travel/reservation-record.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "ApprovalThreshold",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/approvals/types.ts",
+      "riskTier": "medium"
+    },
+    {
+      "name": "MultiStepApproval",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/approvals/types.ts",
+      "riskTier": "medium"
+    },
+    {
+      "name": "MultiStepApprovalStep",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/approvals/types.ts",
+      "riskTier": "medium"
+    },
+    {
+      "name": "NarrativeVsDeterministicBoundary",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/outbound/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "CallAutomationPolicy",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/outbound/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "SensitivityTier",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/sensitive-docs/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RetentionPolicy",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/sensitive-docs/types.ts",
+      "riskTier": "low"
+    },
+    {
+      "name": "RedactionPolicy",
+      "domain": "policy",
+      "source": "src/packages/policy-contracts/sensitive-docs/types.ts",
+      "riskTier": "low"
+    }
   ]
 }

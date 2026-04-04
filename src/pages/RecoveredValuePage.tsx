@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { useCountUpFormatted } from "@/hooks/useCountUp";
 
 // ── Seed demo recovered values ─────────────────────────────────
 function useDemoRecoveries() {
@@ -47,6 +48,19 @@ function useDemoRecoveries() {
 }
 
 // ── Main Page ──────────────────────────────────────────────────
+/* Animated score card */
+const RecoveredKPI = ({ label, value, color, delay }: { label: string; value: string | number; color: string; delay: number }) => {
+  const animated = useCountUpFormatted(value);
+  return (
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }}
+      className="rounded-xl border border-border/30 bg-card/60 p-3 text-center"
+    >
+      <p className={cn("text-xl font-bold font-display tabular-nums", color)}>{animated}</p>
+      <p className="text-[9px] text-muted-foreground">{label}</p>
+    </motion.div>
+  );
+};
+
 export default function RecoveredValuePage() {
   const { stats, rankings, ledger, outcomeSummary } = useDemoRecoveries();
 
@@ -70,7 +84,7 @@ export default function RecoveredValuePage() {
             <p className="text-sm text-muted-foreground">Measurable value SITA has created — money recovered, waste removed, opportunities captured</p>
           </div>
           <div className="hidden md:block text-right">
-            <p className="text-3xl font-bold font-display text-sita-gold">${ledger.totalRecovered.toLocaleString()}</p>
+            <p className="text-3xl font-bold font-display text-sita-gold tabular-nums">{useCountUpFormatted(`$${ledger.totalRecovered.toLocaleString()}`)}</p>
             <p className="text-[10px] text-muted-foreground">Total Recovered</p>
           </div>
         </div>
@@ -85,12 +99,7 @@ export default function RecoveredValuePage() {
           { label: "Potential Value", value: `$${(stats.totalPotentialValue / 1000).toFixed(1)}k`, color: "text-sita-gold" },
           { label: "Automation Rate", value: `${Math.round(ledger.automatedPercent)}%`, color: "text-primary" },
         ].map((card, i) => (
-          <motion.div key={card.label} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-            className="rounded-xl border border-border/30 bg-card/60 p-3 text-center"
-          >
-            <p className={cn("text-xl font-bold font-display", card.color)}>{card.value}</p>
-            <p className="text-[9px] text-muted-foreground">{card.label}</p>
-          </motion.div>
+          <RecoveredKPI key={card.label} label={card.label} value={card.value} color={card.color} delay={i * 0.05} />
         ))}
       </div>
 

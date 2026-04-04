@@ -1,10 +1,14 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Analytics Service
 // Event aggregation, usage metrics, and domain dashboards
+// Canonical contracts: MetricType, DomainId from contracts
 // ═══════════════════════════════════════════════════════════════
 
-export type MetricType = "counter" | "gauge" | "histogram" | "summary";
-export type MetricDomain = "business" | "finance" | "concierge" | "platform" | "system";
+import type { MetricType as CanonicalMetricType, DomainId } from "@/packages/contracts";
+
+/** @deprecated Use CanonicalMetricType from @/packages/contracts */
+export type MetricType = CanonicalMetricType;
+export type MetricDomain = DomainId | "system";
 
 export interface Metric {
   id: string;

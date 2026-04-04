@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
+import { MOCK_DECKS, type MockDeck, type MockSlide } from "@/lib/mock-data";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
@@ -15,58 +16,8 @@ import {
   Monitor, ArrowRight
 } from "lucide-react";
 
-interface Slide {
-  id: string;
-  content: string;
-  notes: string;
-  layout: "title" | "content" | "two-column" | "image" | "metrics" | "quote";
-}
 
-interface Deck {
-  id: string;
-  title: string;
-  slides: Slide[];
-  type: "boardroom" | "proposal" | "investor" | "internal" | "custom";
-  status: "draft" | "ready" | "presented";
-  lastModified: string;
-  linkedBoardroom?: string;
-  privacy: "personal" | "team" | "client";
-}
 
-const MOCK_DECKS: Deck[] = [
-  {
-    id: "1", title: "Weekly Business Review", type: "boardroom", status: "ready", lastModified: "1h ago", linkedBoardroom: "weekly-review", privacy: "team",
-    slides: [
-      { id: "s1", content: "# Weekly Business Review\n\n**Q1 2026 — Week 14**\n\nPrepared by SITA", notes: "Opening slide — set the tone", layout: "title" },
-      { id: "s2", content: "## Revenue Summary\n\n| Metric | Value | Trend |\n|--------|-------|-------|\n| Revenue | $51,200 | ↑ 18% |\n| Expenses | $31,800 | ↑ 5% |\n| Net | $19,400 | ↑ 28% |\n| Pipeline | $420K | ↑ 12% |", notes: "Highlight the net growth", layout: "metrics" },
-      { id: "s3", content: "## Key Wins\n\n- **Sarah Chen** expansion proposal sent ($84K)\n- **Dr. Patel** moved to negotiation stage\n- 3 new inbound leads this week\n- Customer retention holding at 94%", notes: "Celebrate wins before challenges", layout: "content" },
-      { id: "s4", content: "## Challenges & Actions\n\n### Challenges\n- Food budget slightly over\n- 2 subscriptions flagged as waste\n\n### Actions\n1. Follow up on Sarah Chen by Friday\n2. Review subscription usage data\n3. Schedule Marcus Johnson discovery call", notes: "Be specific on action items", layout: "two-column" },
-      { id: "s5", content: "## Next Week Focus\n\n> \"Close Sarah Chen, qualify Marcus Johnson, review Q2 pricing strategy.\"\n\n— SITA Recommendation", notes: "End with clear direction", layout: "quote" },
-    ],
-  },
-  {
-    id: "2", title: "Sarah Chen — Expansion Proposal", type: "proposal", status: "draft", lastModified: "4h ago", privacy: "client",
-    slides: [
-      { id: "s1", content: "# Service Expansion Proposal\n\n**Prepared for: Sarah Chen**\n\nApril 2026", notes: "", layout: "title" },
-      { id: "s2", content: "## Our Partnership\n\n- 6 months of successful collaboration\n- 23% revenue growth achieved\n- 4.9/5 satisfaction rating", notes: "", layout: "content" },
-      { id: "s3", content: "## Proposed Services\n\n| Service | Monthly |\n|---------|--------|\n| Strategic Advisory | $3,500 |\n| Process Audit | $2,000 |\n| Financial Modeling | $1,500 |\n\n**Total: $7,000/month**", notes: "", layout: "metrics" },
-    ],
-  },
-  {
-    id: "3", title: "Q1 Investor Update", type: "investor", status: "presented", lastModified: "5d ago", privacy: "personal",
-    slides: [
-      { id: "s1", content: "# Q1 2026 Investor Update\n\n**Confidential**", notes: "", layout: "title" },
-      { id: "s2", content: "## Highlights\n\n- Revenue up 18% QoQ\n- 3 new enterprise clients\n- Pipeline at $420K\n- Runway: 18 months", notes: "", layout: "content" },
-    ],
-  },
-  {
-    id: "4", title: "Financial Health Summary", type: "boardroom", status: "ready", lastModified: "2d ago", linkedBoardroom: "financial-health", privacy: "team",
-    slides: [
-      { id: "s1", content: "# Financial Health Report\n\n**March 2026**", notes: "", layout: "title" },
-      { id: "s2", content: "## Cash Position\n\n- Operating Account: $48,200\n- Reserves: $32,400 (78% of target)\n- Investments: $124,500\n\n**Net Worth: $205,100**", notes: "", layout: "metrics" },
-    ],
-  },
-];
 
 const typeColors: Record<string, string> = {
   boardroom: "bg-primary/10 text-primary",
@@ -77,14 +28,14 @@ const typeColors: Record<string, string> = {
 };
 
 const SlidesWorkspace = () => {
-  const [selectedDeck, setSelectedDeck] = useState<Deck | null>(null);
+  const [selectedDeck, setSelectedDeck] = useState<MockDeck | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPresenting, setIsPresenting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState("");
   const [showNotes, setShowNotes] = useState(true);
 
-  const openDeck = (deck: Deck) => {
+  const openDeck = (deck: MockDeck) => {
     setSelectedDeck(deck);
     setCurrentSlide(0);
   };

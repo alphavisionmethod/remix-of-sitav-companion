@@ -14,7 +14,7 @@ import {
   ArrowLeft, Shield, Play, Plus, Trash2, AlertTriangle, CheckCircle,
   XCircle, Zap, Activity, Lock, Eye,
 } from "lucide-react";
-import type { PolicyScenario } from "@/lib/types/mission-control.types";
+import type { PolicyScenario } from "@/packages/contracts";
 
 interface ScenarioInput {
   id: string;

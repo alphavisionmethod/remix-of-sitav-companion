@@ -1,0 +1,1343 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:20.556Z",
+  "total": 128,
+  "matrix": [
+    {
+      "capabilityId": "BusinessDomainId",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "BusinessEntityType",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CurrencyCode",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "MonetaryAmount",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "BusinessPriority",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "BusinessMetadata",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "BookingConfirmation",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "BookingStatus",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "Booking",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RevenueSnapshot",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "BusinessBoardroomPacket",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "KPITrend",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "BusinessKPI",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CallbackOutcome",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CallbackTask",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CapacityMonetizationSignal",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CollectionSequenceStatus",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CollectionSequence",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CollectionStepType",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CollectionChannel",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CollectionStep",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CommunicationPreference",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "CommunicationReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ContactRecord",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CustomerDashboardView",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CustomerHealthScoreView",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CustomerRiskSummary",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "TimelineEventType",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CustomerTimelineItem",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "NBACategory",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "NextBestAction",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "OnboardingCustomerBootstrapPacket",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ContinuityStatus",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ServiceContinuityView",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CustomerLifecycleStage",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "LifecycleTransitionRule",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "LifecycleEvent",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CustomerHealthDimension",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CustomerHealthScore",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ChurnPredictionInput",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ChurnPrediction",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CustomerLifecycleRecord",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "StaleLeadState",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "OpportunityRankResult",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ReactivationCandidate",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CollectionsEscalationPacket",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "NoShowRecoveryPacket",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RecoveredValueLedgerEntry",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RevenueAutopilotKpiSummary",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "LeakCategory",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RevenueLeakRecord",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RevenueRecoveryStep",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RevenueRecoveryPlan",
+      "domain": "business",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CapitalMap",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "EntityCapitalMap",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "LiquiditySummary",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "MarketRegime",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "MarketRegimeResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "PortfolioExposureSummary",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RiskBudgetResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ScenarioResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "MonteCarloResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "HistoricalReplayResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "AllocationSuggestion",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RebalanceRecommendation",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ThesisRecord",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ThesisCandidate",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "InvestmentCommitteePacket",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "TradeReviewPacket",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ExecutionIntent",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ApprovalProof",
+        "VerificationProof",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": true,
+      "verificationRequired": true
+    },
+    {
+      "capabilityId": "TradeCostEstimate",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "SlippageFeeResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "StopExitPolicyResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "FactorRiskDecomposition",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "MandateComplianceResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RobustOptimizationResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "LeverageCapResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CapitalCallPlan",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CommitmentPacing",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "TaxReserveResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "LiquidityLadder",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ReserveProtectionResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ObligationCoverageResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CorrelationMatrixResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "FxExposureSummary",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CryptoExposureSummary",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "VenueRiskSummary",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "WatchlistEntry",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "WatchlistWithRegime",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ResearchContext",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "NetWorthResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "EntityCapitalSeparation",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "DeployableCapitalResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CashPosture",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ReservePosture",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "LiquidityPosture",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "OpportunityScore",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "BrokerageSyncResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CryptoExchangeSyncResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "MarketDataSnapshot",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "BankSyncResult",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "InvestmentDecisionProof",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "InvestmentTrustMode",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "SinkingFund",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ReserveHealth",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RenewalRisk",
+      "domain": "finance",
+      "receiptTypes": [
+        "ActionReceipt",
+        "PaymentReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "FamilyCalendarItem",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ReconciliationConflict",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "PrepItem",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "EventReminder",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "GiftOpportunity",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "GroceryItem",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RecurringSupplyItem",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ContinuityAlert",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "HouseholdRole",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "HouseholdMember",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "HouseholdKpiSummary",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ProviderFollowUp",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "SchoolActivityItem",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "SchoolFeeItem",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ReservationRecord",
+      "domain": "concierge",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "ApprovalThreshold",
+      "domain": "policy",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "MultiStepApproval",
+      "domain": "policy",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "MultiStepApprovalStep",
+      "domain": "policy",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "NarrativeVsDeterministicBoundary",
+      "domain": "policy",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "CallAutomationPolicy",
+      "domain": "policy",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "SensitivityTier",
+      "domain": "policy",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RetentionPolicy",
+      "domain": "policy",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    },
+    {
+      "capabilityId": "RedactionPolicy",
+      "domain": "policy",
+      "receiptTypes": [
+        "ActionReceipt",
+        "ExecutionProof"
+      ],
+      "proofPackRequired": false,
+      "verificationRequired": false
+    }
+  ]
+}

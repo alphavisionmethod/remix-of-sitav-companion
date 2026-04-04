@@ -2,7 +2,13 @@
 // SITA OS — Governance Simulator Service
 // Policy simulation, what-if analysis, impact projection,
 // rollout modeling, and governance compliance testing
+// Merged into workflow-engine as simulation subdomain
+// Canonical contracts: ScenarioType from contracts/runtime
 // ═══════════════════════════════════════════════════════════════
+
+import type { ScenarioType as CanonicalScenarioType } from "@/packages/contracts";
+
+export type { CanonicalScenarioType };
 
 import { evaluatePolicy, type PolicyContext, type PolicyEvaluationResult } from "./policy-engine";
 

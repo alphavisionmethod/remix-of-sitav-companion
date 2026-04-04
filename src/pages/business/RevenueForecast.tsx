@@ -241,7 +241,7 @@ const RevenueForecast = () => {
   const { data: liveTwins } = useQuery({
     queryKey: ["digital-twins"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("digital_twins").select("*");
+      const { data, error } = await (supabase.from as any)("digital_twins").select("*");
       if (error) throw error;
       return data?.length ? data.map((t: any) => ({
         id: t.id,
@@ -261,7 +261,7 @@ const RevenueForecast = () => {
   const { data: livePlaybooks } = useQuery({
     queryKey: ["playbook-metrics"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("playbook_metrics").select("*");
+      const { data, error } = await (supabase.from as any)("playbook_metrics").select("*");
       if (error) throw error;
       return data?.length ? data.map((p: any) => ({
         id: p.playbook_id,

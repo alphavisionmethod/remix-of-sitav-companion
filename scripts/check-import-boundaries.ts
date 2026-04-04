@@ -44,6 +44,27 @@ for (const [domain, paths] of Object.entries(DOMAIN_DIRS)) {
   }
 }
 
+// Check core-services and domain-engines don't import from @/lib/types/
+const canonicalDirs = ["src/lib/core-services", "src/lib/domain-engines"];
+for (const cd of canonicalDirs) {
+  for (const f of scanDir(cd)) {
+    const content = fs.readFileSync(f, "utf-8");
+    const rel = path.relative(process.cwd(), f);
+    if (/from\s+["']@\/lib\/types\//.test(content)) {
+      violations.push({ file: rel, rule: "NON_CANONICAL_IMPORT", detail: "Must import types from @/packages/contracts, not @/lib/types/" });
+    }
+  }
+}
+
+// Check contracts don't import from core-services or domain-engines (no circular)
+for (const f of scanDir("src/packages/contracts")) {
+  const content = fs.readFileSync(f, "utf-8");
+  const rel = path.relative(process.cwd(), f);
+  if (/from\s+["']@\/lib\/core-services\//.test(content) || /from\s+["']@\/lib\/domain-engines\//.test(content)) {
+    violations.push({ file: rel, rule: "CIRCULAR_CONTRACT", detail: "Contracts must not import from core-services or domain-engines" });
+  }
+}
+
 // Check edge functions don't import page components
 const efFiles = scanDir("supabase/functions");
 for (const f of efFiles) {

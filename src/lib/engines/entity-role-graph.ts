@@ -5,7 +5,7 @@
 
 import type {
   Entity, PersonEntity, HouseholdEntity, OrgEntity, DeviceEntity,
-  RoleAssignment, DelegatedAuthority, VisibilityBoundary,
+  GraphRoleAssignment, GraphDelegatedAuthority, VisibilityBoundary,
   RelationshipEdge, PermissionQuery, PermissionResult,
   HouseholdRole, OrgRole,
 } from "../types/entity-graph.types";
@@ -13,8 +13,8 @@ import type {
 export class EntityRoleGraph {
   private entities: Map<string, Entity> = new Map();
   private relationships: RelationshipEdge[] = [];
-  private roles: RoleAssignment[] = [];
-  private delegations: DelegatedAuthority[] = [];
+  private roles: GraphRoleAssignment[] = [];
+  private delegations: GraphDelegatedAuthority[] = [];
   private visibilityRules: VisibilityBoundary[] = [];
 
   // ── Entity Management ───────────────────────────────────────
@@ -48,7 +48,7 @@ export class EntityRoleGraph {
   }
 
   // ── Role Management ─────────────────────────────────────────
-  assignRole(assignment: RoleAssignment): void {
+  assignRole(assignment: GraphRoleAssignment): void {
     this.roles.push(assignment);
   }
 
@@ -61,7 +61,7 @@ export class EntityRoleGraph {
     }
   }
 
-  getActiveRoles(entityId: string): RoleAssignment[] {
+  getActiveRoles(entityId: string): GraphRoleAssignment[] {
     return this.roles.filter(r =>
       r.entityId === entityId && !r.revoked &&
       (!r.expiresAt || new Date(r.expiresAt) > new Date())
@@ -69,7 +69,7 @@ export class EntityRoleGraph {
   }
 
   // ── Delegation Management ───────────────────────────────────
-  createDelegation(delegation: DelegatedAuthority): void {
+  createDelegation(delegation: GraphDelegatedAuthority): void {
     this.delegations.push(delegation);
   }
 
@@ -78,7 +78,7 @@ export class EntityRoleGraph {
     if (d) d.revoked = true;
   }
 
-  getActiveDelegations(entityId: string): DelegatedAuthority[] {
+  getActiveDelegations(entityId: string): GraphDelegatedAuthority[] {
     return this.delegations.filter(d =>
       (d.fromEntityId === entityId || d.toEntityId === entityId) &&
       !d.revoked &&

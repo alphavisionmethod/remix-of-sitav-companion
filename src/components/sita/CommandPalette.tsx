@@ -43,6 +43,9 @@ const SEARCH_INDEX: SearchableItem[] = [
   { id: "nav-store", label: "Pack Store", sublabel: "Extensions & packs", icon: Package, path: "/store", category: "navigate", keywords: ["store", "packs", "extensions", "marketplace"] },
   { id: "nav-owner", label: "Owner Panel", sublabel: "Admin & governance", icon: Shield, path: "/owner", category: "navigate", keywords: ["owner", "admin", "governance"] },
   { id: "nav-replay", label: "Boardroom Replay", sublabel: "Auto-generated review slides", icon: BarChart3, path: "/boardroom/replay", category: "navigate", keywords: ["replay", "presentation", "slides"] },
+  { id: "nav-outcomes", label: "Outcome Engine", sublabel: "Goal-centric progress & blockers", icon: Target, path: "/outcomes", category: "navigate", keywords: ["outcomes", "goals", "blockers", "progress", "engine"] },
+  { id: "nav-spillovers", label: "Spillover Dashboard", sublabel: "Cross-domain intelligence", icon: Activity, path: "/spillovers", category: "navigate", keywords: ["spillover", "cross-domain", "intelligence", "impact", "correlation"] },
+  { id: "nav-approval-chamber", label: "Approval Chamber", sublabel: "Premium governed approvals", icon: Shield, path: "/approval-chamber", category: "navigate", keywords: ["approval", "chamber", "simulation", "policy", "trust", "sign"] },
 
   // ── Business Sub-Pages ──
   { id: "nav-leads", label: "Leads Inbox", sublabel: "New & active leads", icon: UserPlus, path: "/business/leads", category: "navigate", domain: "business", keywords: ["leads", "prospects", "pipeline"] },

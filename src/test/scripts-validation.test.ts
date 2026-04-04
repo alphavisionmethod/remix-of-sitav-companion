@@ -12,6 +12,7 @@ describe("Validation & Generation Scripts", () => {
     "scripts/check-edge-function-health.ts",
     "scripts/check-package-exports.ts",
     "scripts/check-contract-completeness.ts",
+    "scripts/check-canonical-imports.ts",
   ];
 
   const generationScripts = [
@@ -28,6 +29,25 @@ describe("Validation & Generation Scripts", () => {
     "scripts/generate-startup-order.ts",
     "scripts/generate-feature-integration-index.ts",
     "scripts/generate-boardroom-template-index.ts",
+    // Phase A-F new generators
+    "scripts/generate-capability-matrices.ts",
+    "scripts/generate-capability-family-index.ts",
+    "scripts/generate-capability-quality-metric.ts",
+    "scripts/generate-contract-manifest.ts",
+    "scripts/generate-shell-space-registry.ts",
+    "scripts/generate-subscription-replacement-matrix.ts",
+    "scripts/generate-runtime-conformance.ts",
+    "scripts/generate-runtime-ports.ts",
+    "scripts/generate-service-consolidation.ts",
+    "scripts/generate-admin-support-visibility.ts",
+    "scripts/generate-operational-scorecards.ts",
+    "scripts/generate-ownership-manifest.ts",
+    "scripts/generate-maturity-thresholds.ts",
+    "scripts/generate-release-gate-thresholds.ts",
+    "scripts/generate-surface-performance-budget.ts",
+    "scripts/generate-validation-summary.ts",
+    "scripts/generate-architecture-compliance.ts",
+    "scripts/generate-launch-tier-index.ts",
   ];
 
   const masterScripts = [
@@ -44,9 +64,9 @@ describe("Validation & Generation Scripts", () => {
     });
   }
 
-  it("all 24 scripts accounted for", () => {
+  it("all 42 scripts accounted for", () => {
     const total = validationScripts.length + generationScripts.length + masterScripts.length;
-    expect(total).toBe(24);
+    expect(total).toBe(42);
   });
 });
 
@@ -65,6 +85,33 @@ describe("Generated JSON Files", () => {
     "generated/startup-order.json",
     "generated/feature-integration-index.json",
     "generated/boardroom-template-index.json",
+    // New generated files
+    "generated/capability-event-matrix.json",
+    "generated/capability-owner-map.json",
+    "generated/capability-policy-matrix.json",
+    "generated/capability-receipt-matrix.json",
+    "generated/capability-surface-matrix.json",
+    "generated/capability-family-index.json",
+    "generated/capability-quality-metric.json",
+    "generated/contract-manifest.json",
+    "generated/shell-space-registry.json",
+    "generated/subscription-replacement-matrix.json",
+    "generated/runtime-conformance-manifest.json",
+    "generated/runtime-ports.json",
+    "generated/service-consolidation-manifest.json",
+    "generated/admin-support-visibility-manifest.json",
+    "generated/operational-scorecards.json",
+    "generated/operational-metrics-snapshot.json",
+    "generated/ownership-manifest.json",
+    "generated/maturity-thresholds.json",
+    "generated/release-gate-thresholds.json",
+    "generated/surface-performance-budget.json",
+    "generated/validation-summary.json",
+    "generated/accessibility-summary.json",
+    "generated/visual-regression-baseline.json",
+    "generated/architecture-compliance-report.json",
+    "generated/security-review-manifest.json",
+    "generated/launch-tier-index.json",
   ];
 
   for (const file of generatedFiles) {

@@ -3,11 +3,11 @@
 // Assembles packets from domain assessments with enrichment
 // ============================================================
 
-import type { BoardroomType, BoardroomPacket, DomainAssessment, BoardroomSection, AlertData, ActionItemData, OpportunitySummary, DataSource } from "./types";
+import type { BoardroomType, BoardroomPacket, DomainAssessment, BoardroomContentSection, AlertData, ActionItemData, OpportunitySummary, DataSource } from "./types";
 import { generateFinanceAssessment, generateBusinessAssessment, generateConciergeAssessment, generateIncidentAssessment } from "./assessments";
 import { scoreConfidence, detectStaleData, generatePacketHash } from "./confidence";
 import { evaluateCrossDomainIntelligence } from "@/lib/cross-domain";
-import { mockLeads, mockInvoices, mockCashFlow, mockHouseholdTasks, mockBills, mockSubscriptions, mockOpportunityInsights } from "@/lib/mocks";
+import { mockLeads, mockInvoices, mockCashFlow, mockHouseholdTasks, mockBills, mockSubscriptions, mockOpportunityInsights } from "@/lib/mock-data/legacy-display-mocks";
 import { createConfidenceEnvelope, classifyRisk } from "@/lib/no-hallucination/confidence";
 import { evaluateStaleness } from "@/lib/no-hallucination/staleness";
 import { buildGroundingReport } from "@/lib/no-hallucination/grounding";
@@ -58,7 +58,7 @@ function getDomainAssessments(type: BoardroomType): DomainAssessment[] {
   }
 }
 
-function enrichWithCrossDomain(type: BoardroomType): { sections: BoardroomSection[]; opportunities: OpportunitySummary[] } {
+function enrichWithCrossDomain(type: BoardroomType): { sections: BoardroomContentSection[]; opportunities: OpportunitySummary[] } {
   if (type === "incident-review") return { sections: [], opportunities: [] };
 
   const insights = evaluateCrossDomainIntelligence({
@@ -66,7 +66,7 @@ function enrichWithCrossDomain(type: BoardroomType): { sections: BoardroomSectio
     householdTasks: mockHouseholdTasks, bills: mockBills, subscriptions: mockSubscriptions,
   });
 
-  const alertSection: BoardroomSection = {
+  const alertSection: BoardroomContentSection = {
     id: "xd-alerts", type: "alert", title: "Cross-Domain Intelligence",
     data: insights.slice(0, 4).map(i => ({
       severity: i.severity === "critical" ? "critical" as const : i.severity === "warning" ? "warning" as const : "info" as const,
@@ -93,7 +93,7 @@ export function generateBoardroomPacket(type: BoardroomType): BoardroomPacket {
   const assessments = getDomainAssessments(type);
 
   // Merge all domain results
-  const allSections: BoardroomSection[] = [];
+  const allSections: BoardroomContentSection[] = [];
   const allAlerts: AlertData[] = [];
   const allActionItems: ActionItemData[] = [];
   const allOpportunities: OpportunitySummary[] = [];

@@ -3,6 +3,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Mail, Lock, User, ArrowRight, Eye, EyeOff, ShieldCheck, Brain, Receipt, BarChart3, Zap, CheckCircle } from "lucide-react";
+import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
+import { AuthDivider } from "@/components/auth/AuthDivider";
 import { motion } from "framer-motion";
 
 const Signup = () => {
@@ -191,6 +193,9 @@ const Signup = () => {
               )}
             </button>
           </form>
+
+          <AuthDivider />
+          <GoogleSignInButton label="Sign up with Google" />
 
           <p className="text-center text-xs text-muted-foreground">
             Already have an account? <Link to="/login" className="text-primary hover:underline font-medium">Sign in</Link>

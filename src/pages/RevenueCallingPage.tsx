@@ -7,6 +7,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -22,117 +23,12 @@ import {
   ArrowRight, Hash, Zap, XCircle, Calendar, User,
 } from "lucide-react";
 
-// ── Types ───────────────────────────────────────────────────────
-
-interface Contact {
-  id: string;
-  name: string;
-  company: string;
-  phone: string;
-  email: string;
-  stage: "new" | "contacted" | "qualified" | "proposal" | "negotiation";
-  value: number;
-  lastContact: number | null;
-  notes: string;
-  priority: "hot" | "warm" | "cold";
-  callCount: number;
-}
-
-interface CallLog {
-  id: string;
-  contactId: string;
-  contactName: string;
-  phone: string;
-  direction: "outbound" | "inbound";
-  status: "completed" | "no-answer" | "busy" | "voicemail" | "failed";
-  duration: number; // seconds
-  outcome: "interested" | "callback" | "not-interested" | "voicemail" | "no-answer" | "closed-won" | "closed-lost";
-  notes: string;
-  recordingUrl: string | null;
-  timestamp: number;
-  revenue: number | null;
-}
-
-interface CallScript {
-  id: string;
-  name: string;
-  stage: string;
-  opener: string;
-  talkingPoints: string[];
-  objectionHandlers: { objection: string; response: string }[];
-  closer: string;
-}
+import {
+  MOCK_CONTACTS, MOCK_CALL_LOGS, MOCK_CALL_SCRIPTS as MOCK_SCRIPTS,
+  type CallingContact as Contact, type CallingCallLog as CallLog, type CallingCallScript as CallScript,
+} from "@/lib/mock-data";
 
 type DialerState = "idle" | "dialing" | "connected" | "wrapping-up";
-
-// ── Mock Data ───────────────────────────────────────────────────
-
-const MOCK_CONTACTS: Contact[] = [
-  { id: "c1", name: "James Morton", company: "Bloom Design", phone: "+15551234567", email: "james@bloomdesign.com", stage: "proposal", value: 14400, lastContact: Date.now() - 432000000, notes: "Waiting on retainer decision. Follow up on pricing.", priority: "hot", callCount: 3 },
-  { id: "c2", name: "Sarah Chen", company: "Apex Corp", phone: "+15559876543", email: "sarah@apexcorp.com", stage: "negotiation", value: 48000, lastContact: Date.now() - 172800000, notes: "Premium tier discussion. Decision by end of month.", priority: "hot", callCount: 7 },
-  { id: "c3", name: "Marcus Williams", company: "TechVentures", phone: "+15554567890", email: "marcus@techventures.io", stage: "qualified", value: 8500, lastContact: Date.now() - 604800000, notes: "Interested in design services. Needs portfolio review.", priority: "warm", callCount: 2 },
-  { id: "c4", name: "Elena Rodriguez", company: "GrowthScale", phone: "+15557654321", email: "elena@growthscale.co", stage: "new", value: 12000, lastContact: null, notes: "Inbound lead from website. Requested consultation.", priority: "warm", callCount: 0 },
-  { id: "c5", name: "David Park", company: "NovaTech", phone: "+15553456789", email: "david@novatech.com", stage: "contacted", value: 6000, lastContact: Date.now() - 1209600000, notes: "Initial call went well. Needs follow-up with case studies.", priority: "cold", callCount: 1 },
-  { id: "c6", name: "Lisa Chen", company: "UrbanHub", phone: "+15558765432", email: "lisa@urbanhub.co", stage: "new", value: 22000, lastContact: null, notes: "Referred by Apex Corp. Enterprise prospect.", priority: "hot", callCount: 0 },
-];
-
-const MOCK_CALL_LOGS: CallLog[] = [
-  { id: "cl1", contactId: "c2", contactName: "Sarah Chen", phone: "+15559876543", direction: "outbound", status: "completed", duration: 1260, outcome: "interested", notes: "Discussed premium tier. Will send proposal by Friday.", recordingUrl: "rec_001", timestamp: Date.now() - 172800000, revenue: null },
-  { id: "cl2", contactId: "c1", contactName: "James Morton", phone: "+15551234567", direction: "outbound", status: "completed", duration: 480, outcome: "callback", notes: "In a meeting. Callback scheduled for Thursday 2pm.", recordingUrl: "rec_002", timestamp: Date.now() - 259200000, revenue: null },
-  { id: "cl3", contactId: "c3", contactName: "Marcus Williams", phone: "+15554567890", direction: "outbound", status: "voicemail", duration: 30, outcome: "voicemail", notes: "Left voicemail with portfolio link.", recordingUrl: null, timestamp: Date.now() - 604800000, revenue: null },
-  { id: "cl4", contactId: "c5", contactName: "David Park", phone: "+15553456789", direction: "outbound", status: "completed", duration: 900, outcome: "interested", notes: "Good conversation. Sending case studies.", recordingUrl: "rec_003", timestamp: Date.now() - 1209600000, revenue: null },
-  { id: "cl5", contactId: "c2", contactName: "Sarah Chen", phone: "+15559876543", direction: "inbound", status: "completed", duration: 600, outcome: "closed-won", notes: "Confirmed premium tier upgrade! $48K ARR.", recordingUrl: "rec_004", timestamp: Date.now() - 86400000, revenue: 48000 },
-];
-
-const MOCK_SCRIPTS: CallScript[] = [
-  {
-    id: "s1", name: "New Lead Introduction", stage: "new",
-    opener: "Hi [Name], this is [Your Name] from SITA. I noticed you [trigger event]. I'd love to learn more about what you're working on.",
-    talkingPoints: [
-      "Ask about their current challenges and pain points",
-      "Share a brief relevant success story (30 seconds max)",
-      "Identify decision-making process and timeline",
-      "Qualify budget range without being pushy",
-    ],
-    objectionHandlers: [
-      { objection: "I'm busy right now", response: "Totally understand! When would be a better time? I can keep it to 15 minutes." },
-      { objection: "We already have a provider", response: "That's great that you have something in place. Many clients find value in a second perspective. Could I share a quick comparison?" },
-      { objection: "Send me an email", response: "Absolutely! I'll send that right over. Just to make it most relevant — what's your biggest priority right now?" },
-    ],
-    closer: "Based on what you've shared, I think we can really help with [specific pain point]. Can I set up a deeper dive with our specialist this week?",
-  },
-  {
-    id: "s2", name: "Follow-Up / Proposal Review", stage: "proposal",
-    opener: "Hi [Name], following up on our conversation about [topic]. I wanted to check in on the proposal we sent over.",
-    talkingPoints: [
-      "Confirm they received and reviewed the proposal",
-      "Address any questions or concerns about pricing",
-      "Reinforce key value propositions specific to their needs",
-      "Create urgency with limited-time offer or slot availability",
-    ],
-    objectionHandlers: [
-      { objection: "The price is too high", response: "I understand budget is important. Let me show you the ROI breakdown — most clients see 3x return within 6 months." },
-      { objection: "Need to discuss with team", response: "Of course! Would it help if I joined a brief call with your team to answer any questions directly?" },
-      { objection: "We're not ready yet", response: "No problem. Can I check — is it timing, budget, or something else? I want to make sure we're aligned when you are ready." },
-    ],
-    closer: "Great, so we're aligned on [key points]. To lock in the [offer], I just need a verbal yes today and we can start onboarding next week. Sound good?",
-  },
-  {
-    id: "s3", name: "Closing / Negotiation", stage: "negotiation",
-    opener: "Hi [Name], I know you've been evaluating options. I wanted to have a final conversation to see how we can make this work.",
-    talkingPoints: [
-      "Summarize agreed-upon scope and deliverables",
-      "Address final objections head-on",
-      "Present flexible payment options if needed",
-      "Use social proof — similar companies that chose us",
-    ],
-    objectionHandlers: [
-      { objection: "Competitor offered lower", response: "I appreciate you sharing that. Let me show you what's included in our pricing that others often charge extra for." },
-      { objection: "Contract terms too long", response: "We can definitely explore shorter terms. Our 90-day pilot is popular — you see results before committing long-term." },
-    ],
-    closer: "I'm confident this will deliver [specific outcome]. I can have the agreement ready today — shall I send it over for signature?",
-  },
-];
 
 // ── Helpers ─────────────────────────────────────────────────────
 
@@ -442,10 +338,16 @@ const RevenueCallingPage = () => {
       )}
 
       {activeView === "dialer" && !dialerContact && (
-        <div className="text-center py-12 rounded-xl border border-dashed border-border">
-          <Phone className="h-10 w-10 text-muted-foreground/20 mx-auto mb-3" />
-          <p className="text-sm text-muted-foreground">No active call. Select a contact or start the power dialer.</p>
-        </div>
+        <EmptyStateCTA
+          icon={Phone}
+          title="No Active Call"
+          description="Select a contact from the queue or start the power dialer to begin outbound calling."
+          actions={[
+            { label: "Start Power Dialer", onClick: () => {}, variant: "primary" },
+            { label: "View Queue", onClick: () => {}, variant: "secondary" },
+          ]}
+          tip="The power dialer auto-advances through prioritized leads"
+        />
       )}
 
       {/* Call Queue */}

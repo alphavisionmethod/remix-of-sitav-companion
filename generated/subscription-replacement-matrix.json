@@ -1,0 +1,514 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:33.264Z",
+  "totalEvents": 46,
+  "canonical": 43,
+  "deprecated": 3,
+  "byDomain": {
+    "lead": [
+      "lead.captured",
+      "lead.scored",
+      "lead.converted"
+    ],
+    "customer": [
+      "customer.created",
+      "customer.health-changed"
+    ],
+    "opportunity": [
+      "opportunity.created",
+      "opportunity.stage-changed"
+    ],
+    "invoice": [
+      "invoice.created",
+      "invoice.paid",
+      "invoice.overdue"
+    ],
+    "communication": [
+      "communication.sent"
+    ],
+    "account": [
+      "account.synced"
+    ],
+    "transaction": [
+      "transaction.categorized"
+    ],
+    "bill": [
+      "bill.upcoming",
+      "bill.paid"
+    ],
+    "subscription": [
+      "subscription.detected",
+      "subscription.flagged-waste"
+    ],
+    "reserve": [
+      "reserve.allocated"
+    ],
+    "payment": [
+      "payment.executed",
+      "payment.failed"
+    ],
+    "task": [
+      "task.created",
+      "task.completed"
+    ],
+    "booking": [
+      "booking.confirmed"
+    ],
+    "calendar": [
+      "calendar.conflict-detected"
+    ],
+    "reminder": [
+      "reminder.triggered"
+    ],
+    "file": [
+      "file.uploaded",
+      "file.classified"
+    ],
+    "workflow": [
+      "workflow.started",
+      "workflow.completed",
+      "workflow.failed"
+    ],
+    "approval": [
+      "approval.requested",
+      "approval.decided"
+    ],
+    "receipt": [
+      "receipt.created"
+    ],
+    "boardroom": [
+      "boardroom.session-started",
+      "boardroom.decision-recorded"
+    ],
+    "advisor": [
+      "advisor.recommendation-generated",
+      "advisor.disagreement-surfaced"
+    ],
+    "agent": [
+      "agent.finding-reported",
+      "agent.action-taken",
+      "agent.escalated"
+    ],
+    "pack": [
+      "pack.installed",
+      "pack.updated",
+      "pack.uninstalled"
+    ]
+  },
+  "matrix": [
+    {
+      "eventType": "lead.captured",
+      "domain": "lead",
+      "action": "captured",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "lead.scored",
+      "domain": "lead",
+      "action": "scored",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "lead.converted",
+      "domain": "lead",
+      "action": "converted",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "customer.created",
+      "domain": "customer",
+      "action": "created",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "customer.health-changed",
+      "domain": "customer",
+      "action": "health-changed",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "opportunity.created",
+      "domain": "opportunity",
+      "action": "created",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "opportunity.stage-changed",
+      "domain": "opportunity",
+      "action": "stage-changed",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "invoice.created",
+      "domain": "invoice",
+      "action": "created",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "invoice.paid",
+      "domain": "invoice",
+      "action": "paid",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "invoice.overdue",
+      "domain": "invoice",
+      "action": "overdue",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "communication.sent",
+      "domain": "communication",
+      "action": "sent",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "account.synced",
+      "domain": "account",
+      "action": "synced",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "transaction.categorized",
+      "domain": "transaction",
+      "action": "categorized",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "bill.upcoming",
+      "domain": "bill",
+      "action": "upcoming",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "bill.paid",
+      "domain": "bill",
+      "action": "paid",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "subscription.detected",
+      "domain": "subscription",
+      "action": "detected",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "subscription.flagged-waste",
+      "domain": "subscription",
+      "action": "flagged-waste",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "reserve.allocated",
+      "domain": "reserve",
+      "action": "allocated",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "payment.executed",
+      "domain": "payment",
+      "action": "executed",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "payment.failed",
+      "domain": "payment",
+      "action": "failed",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "task.created",
+      "domain": "task",
+      "action": "created",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "task.completed",
+      "domain": "task",
+      "action": "completed",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "booking.confirmed",
+      "domain": "booking",
+      "action": "confirmed",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "calendar.conflict-detected",
+      "domain": "calendar",
+      "action": "conflict-detected",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "reminder.triggered",
+      "domain": "reminder",
+      "action": "triggered",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "file.uploaded",
+      "domain": "file",
+      "action": "uploaded",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "file.classified",
+      "domain": "file",
+      "action": "classified",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "workflow.started",
+      "domain": "workflow",
+      "action": "started",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "workflow.completed",
+      "domain": "workflow",
+      "action": "completed",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "workflow.failed",
+      "domain": "workflow",
+      "action": "failed",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "approval.requested",
+      "domain": "approval",
+      "action": "requested",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "approval.decided",
+      "domain": "approval",
+      "action": "decided",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "receipt.created",
+      "domain": "receipt",
+      "action": "created",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "boardroom.session-started",
+      "domain": "boardroom",
+      "action": "session-started",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "boardroom.decision-recorded",
+      "domain": "boardroom",
+      "action": "decision-recorded",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "advisor.recommendation-generated",
+      "domain": "advisor",
+      "action": "recommendation-generated",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "advisor.disagreement-surfaced",
+      "domain": "advisor",
+      "action": "disagreement-surfaced",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "agent.finding-reported",
+      "domain": "agent",
+      "action": "finding-reported",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "agent.action-taken",
+      "domain": "agent",
+      "action": "action-taken",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "agent.escalated",
+      "domain": "agent",
+      "action": "escalated",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "pack.installed",
+      "domain": "pack",
+      "action": "installed",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "pack.updated",
+      "domain": "pack",
+      "action": "updated",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "pack.uninstalled",
+      "domain": "pack",
+      "action": "uninstalled",
+      "status": "canonical",
+      "replacedBy": null,
+      "deprecatedAt": null,
+      "migrationNotes": null
+    },
+    {
+      "eventType": "customer.updated",
+      "domain": "customer",
+      "action": "updated",
+      "status": "deprecated",
+      "replacedBy": "customer.health-changed",
+      "deprecatedAt": "2026-03-01",
+      "migrationNotes": "Use health-changed for state transitions"
+    },
+    {
+      "eventType": "payment.initiated",
+      "domain": "payment",
+      "action": "initiated",
+      "status": "deprecated",
+      "replacedBy": "payment.executed",
+      "deprecatedAt": "2026-03-01",
+      "migrationNotes": "Renamed for clarity"
+    },
+    {
+      "eventType": "task.assigned",
+      "domain": "task",
+      "action": "assigned",
+      "status": "deprecated",
+      "replacedBy": "task.created",
+      "deprecatedAt": "2026-02-15",
+      "migrationNotes": "Assignment now part of creation payload"
+    }
+  ]
+}

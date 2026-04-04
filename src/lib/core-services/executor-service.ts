@@ -1,9 +1,15 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Executor Service
 // Mode-aware execution with circuit breaker & idempotency
+// Canonical contracts: ExecutionMode, ExecutionStatus from contracts
 // ═══════════════════════════════════════════════════════════════
 
-export type ExecutionMode = "real" | "shadow" | "simulation" | "draft";
+import type { ExecutionMode as CanonicalExecutionMode, ExecutionStatus as CanonicalExecutionStatus } from "@/packages/contracts";
+
+export type { CanonicalExecutionMode, CanonicalExecutionStatus };
+
+/** Local execution mode (extended) */
+export type ServiceExecutionMode = "real" | "shadow" | "simulation" | "draft";
 export type EnvelopeStatus = "pending" | "executing" | "completed" | "failed" | "rolled_back";
 
 export interface ExecutionEnvelope {
@@ -11,7 +17,7 @@ export interface ExecutionEnvelope {
   correlationId: string;
   capabilityId: string;
   idempotencyKey?: string;
-  mode: ExecutionMode;
+  mode: ServiceExecutionMode;
   status: EnvelopeStatus;
   payload: Record<string, unknown>;
   result?: Record<string, unknown>;
@@ -222,7 +228,7 @@ export function createEnvelope(
   options?: {
     correlationId?: string;
     idempotencyKey?: string;
-    mode?: ExecutionMode;
+    mode?: ServiceExecutionMode;
     policyProof?: Record<string, unknown>;
     approvalProof?: Record<string, unknown>;
   }

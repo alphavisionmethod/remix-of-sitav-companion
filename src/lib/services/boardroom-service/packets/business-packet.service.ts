@@ -1,10 +1,10 @@
 // SITA OS — Business Packet Service
 import type { DomainId } from "@/packages/contracts";
-export interface BoardroomPacket { id: string; domain: DomainId; generatedAt: string; sections: PacketSection[]; advisorTracks: AdvisorTrack[]; confidence: number; staleWarnings: string[] }
+export interface ServiceBoardroomPacket { id: string; domain: DomainId; generatedAt: string; sections: PacketSection[]; advisorTracks: AdvisorTrack[]; confidence: number; staleWarnings: string[] }
 export interface PacketSection { title: string; content: string; dataPoints: Record<string, unknown>; confidence: number }
 export interface AdvisorTrack { advisorId: string; position: string; confidence: number; dissent?: string }
 
-export function generateBusinessPacket(): BoardroomPacket {
+export function generateBusinessPacket(): ServiceBoardroomPacket {
   return {
     id: crypto.randomUUID(), domain: "business", generatedAt: new Date().toISOString(), confidence: 0.84,
     staleWarnings: [],

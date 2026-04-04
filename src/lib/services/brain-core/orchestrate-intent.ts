@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 export type IntentType = "query" | "action" | "simulation" | "approval" | "boardroom" | "diagnostic";
-export type ExecutionMode = "observe" | "recommend" | "draft" | "simulate" | "execute" | "approval-required";
+export type BrainExecutionMode = "observe" | "recommend" | "draft" | "simulate" | "execute" | "approval-required";
 
 export interface ParsedIntent {
   id: string;
@@ -20,7 +20,7 @@ export interface ParsedIntent {
 export interface OrchestrationPlan {
   intentId: string;
   selectedAdvisors: string[];
-  executionMode: ExecutionMode;
+  executionMode: BrainExecutionMode;
   policyChecks: { policyId: string; passed: boolean; reason: string }[];
   requiresApproval: boolean;
   approvalType?: "single" | "dual" | "owner-only";
@@ -84,7 +84,7 @@ export function parseIntent(rawInput: string): ParsedIntent {
   };
 }
 
-export function chooseExecutionMode(intent: ParsedIntent): ExecutionMode {
+export function chooseExecutionMode(intent: ParsedIntent): BrainExecutionMode {
   switch (intent.type) {
     case "query": return "observe";
     case "simulation": return "simulate";

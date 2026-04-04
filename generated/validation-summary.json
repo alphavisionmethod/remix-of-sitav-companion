@@ -1,0 +1,190 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:59.324Z",
+  "totalChecks": 36,
+  "passing": 36,
+  "failing": 0,
+  "passRate": 100,
+  "checks": [
+    {
+      "file": "service-manifest.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "route-manifest.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "capability-index.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "prompt-index.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "connector-catalog.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "advisor-registry.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "internal-agent-registry.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "formula-registry.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "outcome-index.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "subject-manifest.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "startup-order.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "feature-integration-index.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "boardroom-template-index.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "capability-event-matrix.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "capability-owner-map.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "capability-policy-matrix.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "capability-receipt-matrix.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "capability-surface-matrix.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "capability-family-index.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "capability-quality-metric.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "contract-manifest.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "shell-space-registry.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "subscription-replacement-matrix.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "runtime-conformance-manifest.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "runtime-ports.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "service-consolidation-manifest.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "admin-support-visibility-manifest.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "operational-scorecards.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "operational-metrics-snapshot.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "ownership-manifest.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "maturity-thresholds.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "release-gate-thresholds.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "surface-performance-budget.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "launch-tier-index.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "architecture-compliance-report.json",
+      "exists": true,
+      "validJson": true
+    },
+    {
+      "file": "security-review-manifest.json",
+      "exists": true,
+      "validJson": true
+    }
+  ]
+}

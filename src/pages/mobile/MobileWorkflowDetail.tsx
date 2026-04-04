@@ -6,15 +6,8 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { useParams } from "react-router-dom";
 import { CheckCircle2, Clock, ArrowRight, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { MOCK_MOBILE_WORKFLOW_STEPS } from "@/lib/mock-data";
 
-const mockSteps = [
-  { id: 1, label: "Intent parsed", status: "completed" as const, time: "2m ago", detail: "Domain: business, Type: action" },
-  { id: 2, label: "Policy check passed", status: "completed" as const, time: "2m ago", detail: "truth-boundary: within scope" },
-  { id: 3, label: "Advisor consulted", status: "completed" as const, time: "1m ago", detail: "business-advisor, confidence: 82%" },
-  { id: 4, label: "Approval requested", status: "active" as const, time: "now", detail: "Single approval required from owner" },
-  { id: 5, label: "Execution", status: "pending" as const, detail: "Awaiting approval" },
-  { id: 6, label: "Receipt generated", status: "pending" as const, detail: "Will generate immutable receipt" },
-];
 
 const statusIcon = {
   completed: <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))]" />,
@@ -40,11 +33,11 @@ const MobileWorkflowDetail = () => {
       {/* Step timeline */}
       <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Steps</h3>
       <div className="space-y-0">
-        {mockSteps.map((step, i) => (
+        {MOCK_MOBILE_WORKFLOW_STEPS.map((step, i) => (
           <div key={step.id} className="flex gap-3">
             <div className="flex flex-col items-center">
               {statusIcon[step.status]}
-              {i < mockSteps.length - 1 && (
+              {i < MOCK_MOBILE_WORKFLOW_STEPS.length - 1 && (
                 <div className={cn(
                   "w-px flex-1 my-1",
                   step.status === "completed" ? "bg-[hsl(var(--trust-safe))]/40" : "bg-border"

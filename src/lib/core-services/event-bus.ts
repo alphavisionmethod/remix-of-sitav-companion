@@ -2,7 +2,12 @@
 // SITA OS — Event Bus
 // Client-side immutable event log with subscriptions, dead-letter
 // queue, wildcard matching, replay, and tenant scoping
+// Canonical contracts: CorrelationContext from contracts
 // ═══════════════════════════════════════════════════════════════
+
+import type { CorrelationContext } from "@/packages/contracts";
+
+export type { CorrelationContext };
 
 export interface BusEvent {
   id: string;

@@ -14,27 +14,7 @@ import {
   Users, Zap, Eye, Lock, ThumbsUp, ThumbsDown, RotateCcw,
 } from "lucide-react";
 
-interface ApprovalItem {
-  id: string;
-  title: string;
-  domain: string;
-  requestedBy: string;
-  riskTier: "low" | "medium" | "high" | "critical";
-  status: "pending" | "approved" | "rejected" | "delegated";
-  requestedAt: string;
-  amount?: number;
-  reason?: string;
-}
-
-const mockApprovals: ApprovalItem[] = [
-  { id: "a1", title: "Transfer $12,000 to vendor account", domain: "finance", requestedBy: "Money Advisor", riskTier: "critical", status: "pending", requestedAt: new Date(Date.now() - 1800000).toISOString(), amount: 12000 },
-  { id: "a2", title: "Enable new Stripe connector", domain: "connector", requestedBy: "System", riskTier: "high", status: "pending", requestedAt: new Date(Date.now() - 3600000).toISOString() },
-  { id: "a3", title: "Send bulk follow-up emails (200)", domain: "business", requestedBy: "Business Advisor", riskTier: "medium", status: "pending", requestedAt: new Date(Date.now() - 7200000).toISOString(), amount: 200 },
-  { id: "a4", title: "Update monthly budget to $9K", domain: "finance", requestedBy: "Money Advisor", riskTier: "medium", status: "approved", requestedAt: new Date(Date.now() - 86400000).toISOString(), amount: 9000 },
-  { id: "a5", title: "Deploy v2.4.1 to production", domain: "system", requestedBy: "Release Agent", riskTier: "high", status: "approved", requestedAt: new Date(Date.now() - 172800000).toISOString() },
-  { id: "a6", title: "Export customer PII data", domain: "business", requestedBy: "Support Agent", riskTier: "critical", status: "rejected", requestedAt: new Date(Date.now() - 259200000).toISOString(), reason: "Not authorized for bulk PII export" },
-  { id: "a7", title: "Recurring invoice processing", domain: "finance", requestedBy: "Money Advisor", riskTier: "low", status: "delegated", requestedAt: new Date(Date.now() - 43200000).toISOString() },
-];
+import { MOCK_OWNER_APPROVALS, type OwnerApprovalItem as ApprovalItem } from "@/lib/mock-data";
 
 const riskStyles: Record<string, string> = {
   critical: "bg-destructive/10 text-destructive",
@@ -56,9 +36,10 @@ function ApprovalList({ items }: { items: ApprovalItem[] }) {
   return (
     <div className="space-y-2">
       {items.length === 0 ? (
-        <div className="rounded-xl border border-border/50 bg-card/50 p-6 text-center">
-          <CheckCircle className="h-6 w-6 text-trust-safe mx-auto mb-2" />
-          <p className="text-xs text-muted-foreground">No items in this category</p>
+        <div className="rounded-xl border border-dashed border-border/60 bg-gradient-to-b from-secondary/20 to-transparent p-8 text-center">
+          <CheckCircle className="h-8 w-8 text-trust-safe mx-auto mb-3" />
+          <p className="text-sm font-semibold text-foreground mb-1">All Clear</p>
+          <p className="text-xs text-muted-foreground">No pending items in this category</p>
         </div>
       ) : items.map((item, i) => (
         <motion.div key={item.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
@@ -95,6 +76,9 @@ function ApprovalList({ items }: { items: ApprovalItem[] }) {
     </div>
   );
 }
+
+const mockApprovals = MOCK_OWNER_APPROVALS;
+
 
 export default function OwnerApprovalsPage() {
   const pending = mockApprovals.filter(a => a.status === "pending");

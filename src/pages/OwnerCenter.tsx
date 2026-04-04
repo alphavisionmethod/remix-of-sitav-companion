@@ -2,6 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton 
 import { KPITile, SitaTabs, TimelineItem, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
+import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
 import { useState, useEffect, useMemo } from "react";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useKernelEventStream } from "@/hooks/use-kernel-events";
@@ -16,6 +17,7 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { buildMockSimResult } from "@/lib/mock-data";
 // Engine-backed cost data (replaces @/lib/mocks import)
 const ENGINE_COSTS = [
   { service: "AI Model Calls", cost: "$12.40", percentage: 45, trend: "up" as const },
@@ -55,7 +57,7 @@ import {
 } from "lucide-react";
 
 type OwnerPage = "overview" | "workforce" | "incidents" | "connectors" | "costs" | "policies" | "audit" | "fleet" | "intelligence" | "council"
-  | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing";
+  | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing" | "governance";
 
 const subpageFromPath = (path: string): OwnerPage => {
   const last = path.split("/").pop() || "";
@@ -67,7 +69,7 @@ const subpageFromPath = (path: string): OwnerPage => {
     "trust-center": "trust-center", "releases": "releases", "model-routing": "model-routing",
     "knowledge": "knowledge", "support": "support", "change-review": "change-review",
     "rollback-center": "rollback-center", "system-map": "system-map",
-    "autopilot": "autopilot", "billing": "billing",
+    "autopilot": "autopilot", "billing": "billing", "governance": "governance",
   };
   return map[last] || "overview";
 };
@@ -253,7 +255,7 @@ const OwnerCenter = () => {
       council: "/owner/council", "trust-center": "/owner/trust-center", releases: "/owner/releases",
       "model-routing": "/owner/model-routing", knowledge: "/owner/knowledge", support: "/owner/support",
       "change-review": "/owner/change-review", "rollback-center": "/owner/rollback-center",
-      "system-map": "/owner/system-map",
+      "system-map": "/owner/system-map", governance: "/owner/governance",
     };
     navigate(routeMap[key] || "/owner");
   };
@@ -279,6 +281,7 @@ const OwnerCenter = () => {
     { key: "change-review", label: "Changes" },
     { key: "rollback-center", label: "Rollback" },
     { key: "system-map", label: "System Map" },
+    { key: "governance", label: "Governance" },
   ];
 
   const councilIcons: Record<string, typeof Bot> = {
@@ -609,32 +612,60 @@ const OwnerCenter = () => {
         )}
 
         {/* ══════════════════════════════════════════ */}
-        {/* INTELLIGENCE */}
+        {/* INTELLIGENCE — Live Engine-Powered */}
         {/* ══════════════════════════════════════════ */}
         {activePage === "intelligence" && (
           <motion.div key="intelligence" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-6">
+            {/* Engine Status Banner */}
+            <div className="rounded-xl border border-primary/20 bg-primary/5 p-3 flex items-center gap-3">
+              <div className="rounded-lg bg-primary/15 p-2"><Brain className="h-4 w-4 text-primary" /></div>
+              <div className="flex-1">
+                <p className="text-xs font-semibold text-foreground">Live Intelligence Engine</p>
+                <p className="text-[10px] text-muted-foreground">Anomaly detection, forecasting, and optimization computed in real-time via AdminService engines • Refreshing every 15s</p>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="h-2 w-2 rounded-full bg-trust-safe animate-pulse" />
+                <span className="text-[10px] text-trust-safe font-semibold">Active</span>
+              </div>
+            </div>
+
             {/* Anomaly Detection */}
             <div>
-              <SitaSectionHeader title="Anomaly Detection" subtitle="Statistical outliers detected via 6-sigma analysis" />
+              <SitaSectionHeader title="Anomaly Detection" subtitle="Statistical outliers detected via z-score analysis across all telemetry streams" />
+              <div className="grid grid-cols-3 gap-3 mb-4">
+                <SitaCard hover={false} className="p-4 text-center">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Metrics Scanned</p>
+                  <p className="font-display text-3xl font-bold text-foreground mt-1">{Object.keys(intelligenceData?.anomalies?.metrics ?? {}).length}</p>
+                </SitaCard>
+                <SitaCard hover={false} className="p-4 text-center">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Anomalies Found</p>
+                  <p className="font-display text-3xl font-bold text-destructive mt-1">{intelligenceData?.anomalies?.total_anomalies ?? 0}</p>
+                </SitaCard>
+                <SitaCard hover={false} className="p-4 text-center">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Critical</p>
+                  <p className="font-display text-3xl font-bold text-amber-500 mt-1">{intelligenceData?.anomalies?.severity_summary?.critical ?? 0}</p>
+                </SitaCard>
+              </div>
               <div className="grid gap-3 sm:grid-cols-3 mb-4">
-                {["latency", "tokens", "confidence"].map(metric => {
-                  const data = intelligenceData?.anomalies?.metrics?.[metric];
+                {Object.entries(intelligenceData?.anomalies?.metrics ?? {}).map(([metric, data]: [string, any]) => {
                   if (!data) return null;
                   return (
                     <SitaCard key={metric} hover={false} className="p-4">
                       <div className="flex items-center justify-between mb-2">
                         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{metric}</p>
-                        {data.anomalies.length > 0 && (
+                        {data.anomalies.length > 0 ? (
                           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${data.anomalies.some((a: any) => a.severity === "critical") ? "bg-destructive/10 text-destructive" : "bg-amber-500/10 text-amber-500"}`}>
                             {data.anomalies.length} anomal{data.anomalies.length === 1 ? "y" : "ies"}
                           </span>
+                        ) : (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-trust-safe/10 text-trust-safe">Normal</span>
                         )}
                       </div>
-                      <p className="font-display text-2xl font-bold text-foreground">{metric === "confidence" ? data.stats.mean.toFixed(2) : data.stats.mean}</p>
-                      <p className="text-[11px] text-muted-foreground">σ = {data.stats.stddev}{metric === "latency" ? "ms" : metric === "tokens" ? " tokens" : ""}</p>
+                      <p className="font-display text-2xl font-bold text-foreground">{typeof data.stats.mean === "number" && data.stats.mean < 1 ? data.stats.mean.toFixed(3) : data.stats.mean}</p>
+                      <p className="text-[11px] text-muted-foreground">σ = {typeof data.stats.stddev === "number" && data.stats.stddev < 1 ? data.stats.stddev.toFixed(3) : data.stats.stddev}</p>
                       {data.anomalies.length > 0 && (
                         <div className="mt-2 space-y-1">
-                          {data.anomalies.slice(0, 2).map((a: any, i: number) => (
+                          {data.anomalies.slice(0, 3).map((a: any, i: number) => (
                             <div key={i} className="flex items-center justify-between text-[10px]">
                               <span className="text-muted-foreground">Peak: {a.value}</span>
                               <span className={`font-bold ${a.severity === "critical" ? "text-destructive" : "text-amber-500"}`}>{a.sigma}σ</span>
@@ -650,12 +681,12 @@ const OwnerCenter = () => {
 
             {/* Forecasts */}
             <div>
-              <SitaSectionHeader title="Incident Forecasts" subtitle="Predictive analysis based on metric trends" />
-              <div className="grid gap-3 sm:grid-cols-2">
+              <SitaSectionHeader title="Predictive Forecasts" subtitle="Linear regression projections with confidence intervals — computed live" />
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {(intelligenceData?.forecasts || []).map((f: any) => (
                   <SitaCard key={f.id} hover={false} className="p-5" lane={f.severity === "warning" ? "action" : undefined}>
                     <div className="flex items-start gap-3 mb-3">
-                      <div className={`rounded-xl p-2.5 ${f.severity === "warning" ? "bg-amber-500/10" : f.severity === "critical" ? "bg-destructive/10" : "bg-blue-500/10"}`}>
+                      <div className={`rounded-xl p-2.5 ${f.severity === "warning" ? "bg-amber-500/10" : f.type === "all-clear" ? "bg-trust-safe/10" : "bg-blue-500/10"}`}>
                         {f.type === "all-clear" ? <CheckCircle className="h-5 w-5 text-trust-safe" /> : <TrendingUp className={`h-5 w-5 ${f.severity === "warning" ? "text-amber-500" : "text-blue-500"}`} />}
                       </div>
                       <div className="flex-1">
@@ -663,18 +694,42 @@ const OwnerCenter = () => {
                         <p className="text-xs text-muted-foreground mt-0.5">{f.description}</p>
                       </div>
                     </div>
+                    {f.projectedValues && f.projectedValues.length > 0 && (
+                      <div className="mb-3 flex items-end gap-1 h-10">
+                        {f.projectedValues.map((pv: any, i: number) => {
+                          const max = Math.max(...f.projectedValues.map((p: any) => p.upperBound));
+                          const min = Math.min(...f.projectedValues.map((p: any) => p.lowerBound));
+                          const range = max - min || 1;
+                          const height = ((pv.value - min) / range) * 100;
+                          return (
+                            <div key={i} className="flex-1 flex flex-col items-center" title={`Period ${pv.period}: ${pv.value}`}>
+                              <div className="w-full rounded-sm bg-primary/20 relative" style={{ height: `${Math.max(height, 10)}%` }}>
+                                <div className="absolute inset-x-0 bottom-0 rounded-sm bg-primary/60" style={{ height: `${Math.max(height * 0.7, 5)}%` }} />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                     <div className="flex items-center gap-3 mb-3">
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-[10px] text-muted-foreground">Probability</span>
+                          <span className="text-[10px] text-muted-foreground">Confidence</span>
                           <span className="text-[10px] font-bold text-foreground">{Math.round(f.probability * 100)}%</span>
                         </div>
                         <Progress value={f.probability * 100} className="h-2" />
                       </div>
                       <span className="text-[10px] font-semibold text-muted-foreground bg-secondary px-2 py-1 rounded-md">{f.timeWindow}</span>
                     </div>
+                    <div className="flex items-center gap-2">
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                        f.trend === "stable" ? "bg-trust-safe/10 text-trust-safe" :
+                        f.trend === "increasing" ? "bg-blue-500/10 text-blue-500" :
+                        "bg-amber-500/10 text-amber-500"
+                      }`}>{f.trend}</span>
+                    </div>
                     {f.preventiveMeasures.length > 0 && (
-                      <div className="space-y-1">
+                      <div className="space-y-1 mt-3">
                         <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Preventive Measures</p>
                         {f.preventiveMeasures.map((m: string, i: number) => (
                           <div key={i} className="flex items-center gap-2 text-[11px] text-foreground">
@@ -688,9 +743,18 @@ const OwnerCenter = () => {
               </div>
             </div>
 
-            {/* Cost Optimization */}
+            {/* Resource Optimization */}
             <div>
-              <SitaSectionHeader title="Cost Optimization" subtitle="AI-powered suggestions to reduce spend" />
+              <SitaSectionHeader title="Resource Optimization" subtitle="Greedy allocation engine rebalances by efficiency — recomputed every refresh" />
+              {intelligenceData?.optimization?.totalSavings && (
+                <div className="rounded-xl border border-accent/20 bg-accent/5 p-3 flex items-center gap-3 mb-4">
+                  <DollarSign className="h-5 w-5 text-accent" />
+                  <div>
+                    <p className="text-xs font-semibold text-foreground">Total potential savings: <span className="text-accent">{intelligenceData.optimization.totalSavings}</span></p>
+                    <p className="text-[10px] text-muted-foreground">Based on {intelligenceData.optimization.suggestions?.length ?? 0} rebalancing suggestions</p>
+                  </div>
+                </div>
+              )}
               <div className="grid gap-3 sm:grid-cols-2">
                 {(intelligenceData?.optimization?.suggestions || []).map((s: any) => (
                   <SitaCard key={s.id} hover={false} className="p-5">
@@ -703,6 +767,24 @@ const OwnerCenter = () => {
                         <p className="text-xs text-muted-foreground mt-0.5">{s.description}</p>
                       </div>
                     </div>
+                    {s.currentAllocation !== undefined && s.suggestedAllocation !== undefined && (
+                      <div className="mb-3 space-y-1.5">
+                        <div className="flex items-center justify-between text-[10px]">
+                          <span className="text-muted-foreground">Current</span>
+                          <span className="font-semibold text-foreground">{s.currentAllocation}</span>
+                        </div>
+                        <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
+                          <div className="h-full rounded-full bg-muted-foreground/40" style={{ width: `${Math.min(100, (s.currentAllocation / Math.max(s.currentAllocation, s.suggestedAllocation)) * 100)}%` }} />
+                        </div>
+                        <div className="flex items-center justify-between text-[10px]">
+                          <span className="text-accent font-medium">Suggested</span>
+                          <span className="font-semibold text-accent">{s.suggestedAllocation}</span>
+                        </div>
+                        <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
+                          <div className="h-full rounded-full bg-accent/60" style={{ width: `${Math.min(100, (s.suggestedAllocation / Math.max(s.currentAllocation, s.suggestedAllocation)) * 100)}%` }} />
+                        </div>
+                      </div>
+                    )}
                     <div className="flex items-center justify-between rounded-lg bg-accent/5 border border-accent/10 p-2.5">
                       <div>
                         <p className="text-[10px] font-semibold uppercase tracking-wider text-accent">Projected Savings</p>
@@ -2042,6 +2124,41 @@ const OwnerCenter = () => {
           </motion.div>
         )}
 
+        {/* ══════════════════════════════════════════ */}
+        {/* GOVERNANCE — Meta-Governance Panels */}
+        {/* ══════════════════════════════════════════ */}
+        {activePage === "governance" && (
+          <motion.div key="governance" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
+            <SitaSectionHeader title="Trust & Execution Debt" />
+            <div className="grid gap-4 lg:grid-cols-2">
+              <TrustDebtPanel />
+              <ExecutionDebtHeatmap />
+            </div>
+            <SitaSectionHeader title="Operational Health" />
+            <div className="grid gap-4 lg:grid-cols-2">
+              <DragIndexRadar entityScope={{ ownerId: "owner", visibility: "private" }} />
+              <ReadinessGauge
+                input={{
+                  proofCompleteness: { rate: 0.85, evidence: ["proof audit"] },
+                  replaySafety: { rate: 0.78, evidence: ["replay scan"] },
+                  rollbackReadiness: { rate: 0.72, evidence: ["rollback tests"] },
+                  policyMaturity: { score: 0.80, evidence: ["policy rules"] },
+                  errorRate: { rate: 0.04, evidence: ["error log"] },
+                  approvalBehavior: { autoApprovalRate: 0.35, evidence: ["approval history"] },
+                  connectorStability: { uptimeRate: 0.97, evidence: ["connector health"] },
+                  observabilityQuality: { coverage: 0.82, evidence: ["SLO coverage"] },
+                  supportBurden: { ticketRate: 0.12, evidence: ["ticket volume"] },
+                  confidenceQuality: { avgConfidence: 0.88, evidence: ["calibration"] },
+                }}
+                entityScope={{ ownerId: "owner", visibility: "private" }}
+              />
+            </div>
+            <SitaSectionHeader title="Delegation Registry" />
+            <DelegationRegistryTable />
+          </motion.div>
+        )}
+
+
       </AnimatePresence>
 
       {/* ══════════════════════════════════════════ */}
@@ -2184,18 +2301,7 @@ const OwnerCenter = () => {
             </div>
             <SitaButton variant="accent" className="w-full" onClick={() => {
               if (isDemoMode) {
-                // Demo simulation
-                const mockResult = {
-                  simulation: {
-                    input: simInput,
-                    final_effect: simInput.amount > 500 ? "deny" : "allow",
-                    evaluated_policies: 3,
-                    results: [
-                      { policy_name: "Auto-pay under $500", effect: simInput.amount > 500 ? "deny" : "allow", reasons: simInput.amount > 500 ? [`Amount $${simInput.amount} exceeds max $500`] : ["Within auto-pay limit"] },
-                    ],
-                  },
-                };
-                setSimResult(mockResult);
+                setSimResult(buildMockSimResult(simInput));
               } else {
                 simulatePolicy.mutate(simInput, { onSuccess: (data) => setSimResult(data) });
               }
@@ -2309,8 +2415,9 @@ const LiveActivityFeed = () => {
       </div>
 
       {events.length === 0 ? (
-        <div className="text-center py-8">
-          <p className="text-xs text-muted-foreground">Waiting for system events…</p>
+        <div className="flex flex-col items-center text-center py-8 rounded-xl border border-dashed border-border/60 bg-secondary/10 px-4">
+          <Activity className="h-6 w-6 text-muted-foreground/30 mb-2" />
+          <p className="text-xs text-muted-foreground font-medium">Waiting for system events…</p>
           <p className="text-[10px] text-muted-foreground/50 mt-1">Navigate other pages to see activity here</p>
         </div>
       ) : (

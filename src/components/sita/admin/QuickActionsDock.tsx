@@ -19,10 +19,10 @@ export interface QuickAction {
 
 const defaultActions: QuickAction[] = [
   { label: "Owner Dashboard", route: "/owner", icon: BarChart3, description: "Advanced controls" },
-  { label: "Simple Mode", route: "/owner-mode", icon: Sparkles, description: "Founder-safe view" },
+  { label: "Owner Dashboard", route: "/owner", icon: Sparkles, description: "Founder-safe view" },
   { label: "Mission Control", route: "/mission-control", icon: Cpu, description: "System operations" },
-  { label: "Policy Simulator", route: "/policy-simulator", icon: Shield, description: "What-if scenarios" },
-  { label: "Workflow Replay", route: "/workflow-replay", icon: RotateCcw, description: "Replay & recover" },
+  { label: "Policy Simulator", route: "/mission/policies/simulate", icon: Shield, description: "What-if scenarios" },
+  { label: "Workflow Replay", route: "/mission/workflows/latest/replay", icon: RotateCcw, description: "Replay & recover" },
   { label: "Observability", route: "/observability", icon: Eye, description: "Telemetry & health" },
   { label: "Users", route: "/users", icon: Users, description: "User management" },
   { label: "Leases", route: "/owner/leases", icon: Key, description: "Capability leases" },

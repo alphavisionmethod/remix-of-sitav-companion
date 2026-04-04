@@ -4,9 +4,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type {
-  Incident, IncidentSeverity, IncidentState, RootCauseCategory,
+  Incident, SelfHealingIncidentSeverity, IncidentState, RootCauseCategory,
   HealingCapability, HealingAction, HealingPlan, CircuitBreakerState,
-  DiagnosticBundle, EscalationRule, IncidentTimelineEntry,
+  SelfHealingDiagnosticBundle, EscalationRule, IncidentTimelineEntry,
 } from "./types";
 import {
   ESCALATION_RULES, ROOT_CAUSE_HEALING_MAP, AUTO_ALLOWED_ACTIONS,
@@ -39,7 +39,7 @@ export class SelfHealingService {
   detect(signal: {
     title: string;
     description: string;
-    severity: IncidentSeverity;
+    severity: SelfHealingIncidentSeverity;
     rootCause: RootCauseCategory;
     affectedServices: string[];
     affectedEntities?: string[];
@@ -329,11 +329,11 @@ export class SelfHealingService {
 
   // ── Diagnostic Bundle Generation ────────────────────────────
 
-  generateDiagnosticBundle(incidentId: string): DiagnosticBundle | null {
+  generateDiagnosticBundle(incidentId: string): SelfHealingDiagnosticBundle | null {
     const incident = this.incidents.get(incidentId);
     if (!incident) return null;
 
-    const bundle: DiagnosticBundle = {
+    const bundle: SelfHealingDiagnosticBundle = {
       id: crypto.randomUUID(),
       incidentId,
       correlationId: incident.correlationId,
@@ -368,7 +368,7 @@ export class SelfHealingService {
   runPipeline(signal: {
     title: string;
     description: string;
-    severity: IncidentSeverity;
+    severity: SelfHealingIncidentSeverity;
     rootCause: RootCauseCategory;
     affectedServices: string[];
     evidence?: Record<string, unknown>[];
@@ -421,7 +421,7 @@ export class SelfHealingService {
     return Array.from(this.incidents.values()).filter(i => i.state === state);
   }
 
-  getIncidentsBySeverity(severity: IncidentSeverity): Incident[] {
+  getIncidentsBySeverity(severity: SelfHealingIncidentSeverity): Incident[] {
     return Array.from(this.incidents.values()).filter(i => i.severity === severity);
   }
 
@@ -437,7 +437,7 @@ export class SelfHealingService {
 
   getStats(): {
     total: number; active: number; resolved: number; escalated: number;
-    bySeverity: Record<IncidentSeverity, number>;
+    bySeverity: Record<SelfHealingIncidentSeverity, number>;
     byState: Record<IncidentState, number>;
   } {
     const incidents = Array.from(this.incidents.values());
@@ -479,7 +479,7 @@ export class SelfHealingService {
     return updated;
   }
 
-  private getEscalationRule(severity: IncidentSeverity): EscalationRule {
+  private getEscalationRule(severity: SelfHealingIncidentSeverity): EscalationRule {
     return ESCALATION_RULES.find(r => r.severity === severity) ?? ESCALATION_RULES[ESCALATION_RULES.length - 1];
   }
 

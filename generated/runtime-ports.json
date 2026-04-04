@@ -1,0 +1,929 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:37.364Z",
+  "totalPorts": 131,
+  "portRange": {
+    "min": 3000,
+    "max": 3099
+  },
+  "collisions": [],
+  "assignments": [
+    {
+      "serviceName": "agent-governance",
+      "port": 3000,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "approval-history",
+      "port": 3001,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "approval-requests",
+      "port": 3002,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "approval-routing",
+      "port": 3003,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "escalation-rules",
+      "port": 3004,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "advisor-track-composer",
+      "port": 3005,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "carryover",
+      "port": 3006,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "decision-memory",
+      "port": 3007,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "build-approval-package",
+      "port": 3008,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "build-boardroom-request",
+      "port": 3009,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "build-explanation",
+      "port": 3010,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "build-simulation-request",
+      "port": 3011,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "choose-advisors",
+      "port": 3012,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "choose-execution-mode",
+      "port": 3013,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "councils",
+      "port": 3014,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "model-router",
+      "port": 3015,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "orchestrate-intent",
+      "port": 3016,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "accounts",
+      "port": 3017,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "business-boardroom-inputs",
+      "port": 3018,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "callback-queue",
+      "port": 3019,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "collections-command",
+      "port": 3020,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "collections",
+      "port": 3021,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "contacts",
+      "port": 3022,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "customer-dashboard",
+      "port": 3023,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "customer-health",
+      "port": 3024,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "customer-timeline",
+      "port": 3025,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "follow-up",
+      "port": 3026,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "invoice-linking",
+      "port": 3027,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "lead-intake",
+      "port": 3028,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "lead-scoring",
+      "port": 3029,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "leakage-engine",
+      "port": 3030,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "no-show-recovery",
+      "port": 3031,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "opportunity-engine",
+      "port": 3032,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "opportunity-ranking",
+      "port": 3033,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "proposals",
+      "port": 3034,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "quotes",
+      "port": 3035,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "reactivation",
+      "port": 3036,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "recovered-value-ledger",
+      "port": 3037,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "recovery-engine",
+      "port": 3038,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "revenue-autopilot",
+      "port": 3039,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "stale-lead-detector",
+      "port": 3040,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "website-management",
+      "port": 3041,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "capability-registry",
+      "port": 3042,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "pack-enablement",
+      "port": 3043,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "shell-space-routing",
+      "port": 3044,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "activity-prep",
+      "port": 3045,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "conflict-detector",
+      "port": 3046,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "event-continuity",
+      "port": 3047,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "gift-reminders",
+      "port": 3048,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "grocery-continuity",
+      "port": 3049,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "home-admin",
+      "port": 3050,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "household-boardroom-inputs",
+      "port": 3051,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "household-ops",
+      "port": 3052,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "household-overview",
+      "port": 3053,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "load-balance",
+      "port": 3054,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "prep-checklist",
+      "port": 3055,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "prep-derivation",
+      "port": 3056,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "provider-memory",
+      "port": 3057,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "reconciliation",
+      "port": 3058,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "recurring-supplies",
+      "port": 3059,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "reservation-ingest",
+      "port": 3060,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "responsibilities",
+      "port": 3061,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "school-items",
+      "port": 3062,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "travel-continuity",
+      "port": 3063,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "trip-overview",
+      "port": 3064,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "connector-auth",
+      "port": 3065,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "connector-fake-mode",
+      "port": 3066,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "connector-health",
+      "port": 3067,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "council-automation",
+      "port": 3068,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "persistence-adapters",
+      "port": 3069,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "event-envelope",
+      "port": 3070,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "publish-event",
+      "port": 3071,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "subscribe-event",
+      "port": 3072,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "execute-action",
+      "port": 3073,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "execute-connector-action",
+      "port": 3074,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "execute-workflow-step",
+      "port": 3075,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "account-summary",
+      "port": 3076,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "balance-sync",
+      "port": 3077,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "bill-calendar",
+      "port": 3078,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "capital-map",
+      "port": 3079,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "committee-boardroom-inputs",
+      "port": 3080,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "crypto-exposure",
+      "port": 3081,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "due-soon-alerts",
+      "port": 3082,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "entity-capital",
+      "port": 3083,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "execution-review",
+      "port": 3084,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "family-office-review",
+      "port": 3085,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "finance-boardroom-inputs",
+      "port": 3086,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "fx-watchlist",
+      "port": 3087,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "investment-office",
+      "port": 3088,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "liquidity",
+      "port": 3089,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "overview",
+      "port": 3090,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "portfolio-risk",
+      "port": 3091,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "receivables",
+      "port": 3092,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "recurring-obligation",
+      "port": 3093,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "regime-engine",
+      "port": 3094,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "renewal-risk",
+      "port": 3095,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "reserve-engine",
+      "port": 3096,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "safe-to-spend",
+      "port": 3097,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "sinking-fund",
+      "port": 3098,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "subscription-detector",
+      "port": 3099,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "subscription-waste",
+      "port": 3100,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "thesis-vault",
+      "port": 3101,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "transaction-categorizer",
+      "port": 3102,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "waste-detector",
+      "port": 3103,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "boardroom-memory",
+      "port": 3104,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "correction",
+      "port": 3105,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "preference-memory",
+      "port": 3106,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "profile-memory",
+      "port": 3107,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "trust-memory",
+      "port": 3108,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "workflow-memory",
+      "port": 3109,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "collector",
+      "port": 3110,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "persistence",
+      "port": 3111,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "approval-requirements",
+      "port": 3112,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "outbound-comm-policy",
+      "port": 3113,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "sensitive-doc-policy",
+      "port": 3114,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "truth-boundaries",
+      "port": 3115,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "approval-receipts",
+      "port": 3116,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "execution-receipts",
+      "port": 3117,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "proof-bundles",
+      "port": 3118,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "receipts",
+      "port": 3119,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "boardroom-packets",
+      "port": 3120,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "support-diagnostics",
+      "port": 3121,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "diagnostic-bundle",
+      "port": 3122,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "incident-classification",
+      "port": 3123,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "replay-metadata",
+      "port": 3124,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "support-summary",
+      "port": 3125,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "postcondition-checks",
+      "port": 3126,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "receipt-verification",
+      "port": 3127,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "replay-verification",
+      "port": 3128,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "rollback-signals",
+      "port": 3129,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    },
+    {
+      "serviceName": "verification",
+      "port": 3130,
+      "protocol": "http",
+      "healthEndpoint": "/health",
+      "metricsEndpoint": "/metrics"
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
+import { MOCK_ACTIVITY_TIMELINE } from "@/lib/mock-data";
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { StateBadge } from "@/components/sita/StateBadge";
+import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 const db: any = supabase;
@@ -36,18 +38,6 @@ const borderMap: Record<string, string> = {
   default: "border-l-muted",
 };
 
-const demoTimeline = [
-  { icon: Sparkles, color: "text-accent", title: "SITA recommended: Follow up with Sarah Chen", subtitle: "Based on lead aging pattern — 48h no contact", time: "15m ago", type: "recommendation", border: "border-l-accent" },
-  { icon: CheckCircle, color: "text-trust-verified", title: "Invoice #1038 payment received", subtitle: "Marcus Johnson — $4,200 via Stripe", time: "1h ago", type: "execution", border: "border-l-trust-verified" },
-  { icon: Shield, color: "text-primary", title: "Approval granted: Quote #1042", subtitle: "You approved — sent to Sarah Chen", time: "2h ago", type: "approval", border: "border-l-primary" },
-  { icon: Eye, color: "text-state-simulated", title: "SITA simulated: Bill payment schedule", subtitle: "Result: All bills covered with $1,200 buffer", time: "3h ago", type: "simulation", border: "border-l-state-simulated" },
-  { icon: AlertTriangle, color: "text-urgency-high", title: "Risk detected: Invoice #1035 overdue", subtitle: "7 days past due — $1,800 from David Kim", time: "4h ago", type: "detection", border: "border-l-urgency-high" },
-  { icon: Brain, color: "text-primary", title: "SITA learned: You prefer Monday money reviews", subtitle: "Pattern detected from 8 consecutive Mondays", time: "5h ago", type: "learning", border: "border-l-primary" },
-  { icon: Zap, color: "text-accent", title: "Automated: Invoice reminder sent", subtitle: "David Kim — payment overdue reminder #2", time: "6h ago", type: "automation", border: "border-l-accent" },
-  { icon: Users, color: "text-primary", title: "New lead captured: Michael Park", subtitle: "Website form — web design inquiry", time: "8h ago", type: "capture", border: "border-l-primary" },
-  { icon: DollarSign, color: "text-trust-verified", title: "Bill paid: AWS hosting — $340", subtitle: "Auto-approved under $500 threshold", time: "Yesterday", type: "execution", border: "border-l-trust-verified" },
-  { icon: RotateCcw, color: "text-trust-recovered", title: "Workflow recovered: Email delivery retry", subtitle: "Initial failure — succeeded on retry #2", time: "Yesterday", type: "recovery", border: "border-l-trust-recovered" },
-];
 
 const timeSince = (date: string) => {
   const ms = Date.now() - new Date(date).getTime();
@@ -62,7 +52,7 @@ const ActivityStream = () => {
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
 
-  const { data: liveEvents = [] } = useQuery({
+  const { data: liveEvents = [], isLoading } = useQuery({
     queryKey: ["events_stream", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
@@ -89,7 +79,7 @@ const ActivityStream = () => {
     };
   });
 
-  const timeline = isDemoMode ? demoTimeline : liveTimeline;
+  const timeline = isDemoMode ? MOCK_ACTIVITY_TIMELINE : liveTimeline;
 
   return (
     <motion.div className="mx-auto max-w-4xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -123,7 +113,9 @@ const ActivityStream = () => {
         </SitaCard>
       )}
 
-      {timeline.length === 0 ? (
+      {isLoading && !isDemoMode ? (
+        <SectionSkeleton cards={6} columns={1} />
+      ) : timeline.length === 0 ? (
         <EmptyState icon={Activity} title="No activity yet" description="Events will appear here as SITA processes actions, workflows, and integrations." />
       ) : (
         <div className="space-y-2">

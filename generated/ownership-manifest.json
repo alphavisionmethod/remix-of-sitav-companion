@@ -1,0 +1,615 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T19:58:45.434Z",
+  "totalEntries": 100,
+  "teamSummary": {
+    "platform-admin": 4,
+    "platform-core": 85,
+    "concierge": 5,
+    "business": 3,
+    "finance": 2,
+    "platform-security": 1
+  },
+  "entries": [
+    {
+      "path": "src/lib/services/admin-service",
+      "ownerTeam": "platform-admin",
+      "domain": "admin",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/ai-economics",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/ai-workforce",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/approval-engine",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/boardroom-service",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/booking-scheduling",
+      "ownerTeam": "concierge",
+      "domain": "concierge-os",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/brain-core",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/business-os",
+      "ownerTeam": "business",
+      "domain": "business-os",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/capability-router",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/capital-allocation",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/cloud-control-plane-infra",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/communication-service",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/concierge-os",
+      "ownerTeam": "concierge",
+      "domain": "concierge-os",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/connector-control-plane",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/council-orchestrator",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/data-scope-model",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/database",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/document-signature",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/duress-detection",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/edge-device-runtime",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/emergency-halt",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/event-bus",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/executor-service",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/finance-os",
+      "ownerTeam": "finance",
+      "domain": "finance-os",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/fleet-ota",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/incident-management",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/inference-gateway",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/injection-firewall",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/integration-concierge",
+      "ownerTeam": "concierge",
+      "domain": "concierge-os",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/keyvault",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/memory-service",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/messaging-gateway",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/meta-governance",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/model-router",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/notifications",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/observability",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/opportunity-graph",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/os-unification",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/outcome-engine",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/owner-control-room",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/policy-engine",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/projections",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/realtime-gateway",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/receipt-service",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/revenue-autopilot",
+      "ownerTeam": "business",
+      "domain": "business-os",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/service-registry",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/shared",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/sovereign-calculation",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/sovereign-exporter",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/sovereign-time",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/support-diagnostics",
+      "ownerTeam": "platform-admin",
+      "domain": "admin",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/tenant-firewall",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/timeline-calendar",
+      "ownerTeam": "concierge",
+      "domain": "concierge-os",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/trust-governor",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/trusted-device",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/lib/services/verification-engine",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "service"
+    },
+    {
+      "path": "src/packages/advisor-config",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/approval-contracts",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/audit-contracts",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/auth",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/auth-permissions",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/boardroom-contracts",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/business-contracts",
+      "ownerTeam": "business",
+      "domain": "business-os",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/client-sdk",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/concierge-contracts",
+      "ownerTeam": "concierge",
+      "domain": "concierge-os",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/contracts",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/database-schemas",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/design-tokens",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/enterprise-contracts",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/entitlements",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/event-types",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/feature-flags",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/feature-governance",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/finance-contracts",
+      "ownerTeam": "finance",
+      "domain": "finance-os",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/internal-agent-config",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/microinteraction-engine",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/moat-contracts",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/pack-manifests",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/policy-contracts",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/proof-model",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/reality-contracts",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/shell-grammar",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/store-metadata",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/telemetry",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/template-registry",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "src/packages/workflow-primitives",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "package"
+    },
+    {
+      "path": "supabase/functions/admin-api",
+      "ownerTeam": "platform-admin",
+      "domain": "admin",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/admin-intelligence",
+      "ownerTeam": "platform-admin",
+      "domain": "admin",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/agent-executor",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/agent-heartbeat",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/agent-intelligence",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/agent-scheduler",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/agent-signal",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/brain-core",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/chat-advisor",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/connector-proxy",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/event-processor",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/file-ingestion",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/seed-user-data",
+      "ownerTeam": "platform-core",
+      "domain": "platform",
+      "classification": "edge-function"
+    },
+    {
+      "path": "supabase/functions/self-healing",
+      "ownerTeam": "platform-security",
+      "domain": "security",
+      "classification": "edge-function"
+    }
+  ]
+}

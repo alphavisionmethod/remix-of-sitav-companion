@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { evaluateCrossDomainIntelligence } from "@/lib/cross-domain";
-import { mockLeads, mockInvoices, mockCashFlow, mockHouseholdTasks, mockBills, mockSubscriptions } from "@/lib/mocks";
+import { mockLeads, mockInvoices, mockCashFlow, mockHouseholdTasks, mockBills, mockSubscriptions } from "@/lib/mock-data/legacy-display-mocks";
 
 describe("Cross-Domain Intelligence", () => {
   it("produces insights from multi-domain data", () => {

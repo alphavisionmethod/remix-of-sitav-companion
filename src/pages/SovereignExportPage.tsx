@@ -1,0 +1,107 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Download, Shield, FileArchive, Clock, CheckCircle, AlertTriangle, Trash2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Checkbox } from "@/components/ui/checkbox";
+
+const EXPORTABLE_TABLES = [
+  { name: "Profiles", rows: 1, size: "2 KB" },
+  { name: "Connector Configs", rows: 5, size: "8 KB" },
+  { name: "Workflows", rows: 34, size: "45 KB" },
+  { name: "Receipts & Proofs", rows: 128, size: "156 KB" },
+  { name: "Approvals", rows: 23, size: "18 KB" },
+  { name: "Memory Store", rows: 67, size: "89 KB" },
+  { name: "AI Agent Tasks", rows: 234, size: "312 KB" },
+  { name: "Communication Log", rows: 89, size: "67 KB" },
+];
+
+const PAST_EXPORTS = [
+  { id: "1", date: "2026-03-28", format: "JSON", size: "1.2 MB", status: "completed" as const },
+  { id: "2", date: "2026-02-15", format: "CSV", size: "890 KB", status: "completed" as const },
+];
+
+export default function SovereignExportPage() {
+  const [selectedTables, setSelectedTables] = useState<string[]>(EXPORTABLE_TABLES.map(t => t.name));
+  const [exporting, setExporting] = useState(false);
+
+  const toggleTable = (name: string) => {
+    setSelectedTables(prev => prev.includes(name) ? prev.filter(t => t !== name) : [...prev, name]);
+  };
+
+  return (
+    <div className="space-y-6 p-6">
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><FileArchive className="h-6 w-6 text-primary" /> Sovereign Data Export</h1>
+        <p className="text-muted-foreground text-sm mt-1">Your data belongs to you. Export everything, anytime. GDPR compliant.</p>
+      </motion.div>
+
+      <div className="grid md:grid-cols-3 gap-4">
+        <Card className="border-border/50"><CardContent className="p-4 flex items-center gap-3">
+          <Shield className="h-5 w-5 text-emerald-500" /><div><p className="text-xs text-muted-foreground">Compliance</p><p className="text-sm font-bold text-emerald-500">GDPR Ready</p></div>
+        </CardContent></Card>
+        <Card className="border-border/50"><CardContent className="p-4 flex items-center gap-3">
+          <Clock className="h-5 w-5 text-blue-500" /><div><p className="text-xs text-muted-foreground">Last Export</p><p className="text-sm font-bold text-foreground">Mar 28, 2026</p></div>
+        </CardContent></Card>
+        <Card className="border-border/50"><CardContent className="p-4 flex items-center gap-3">
+          <Download className="h-5 w-5 text-purple-500" /><div><p className="text-xs text-muted-foreground">Total Data</p><p className="text-sm font-bold text-foreground">697 KB</p></div>
+        </CardContent></Card>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card className="border-border/50">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-sm">Select Data to Export</CardTitle>
+            <Button variant="ghost" size="sm" onClick={() => setSelectedTables(
+              selectedTables.length === EXPORTABLE_TABLES.length ? [] : EXPORTABLE_TABLES.map(t => t.name)
+            )}>{selectedTables.length === EXPORTABLE_TABLES.length ? "Deselect All" : "Select All"}</Button>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {EXPORTABLE_TABLES.map(table => (
+              <div key={table.name} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/30 transition-colors">
+                <div className="flex items-center gap-3">
+                  <Checkbox checked={selectedTables.includes(table.name)} onCheckedChange={() => toggleTable(table.name)} />
+                  <div><p className="text-sm text-foreground">{table.name}</p><p className="text-xs text-muted-foreground">{table.rows} records · {table.size}</p></div>
+                </div>
+              </div>
+            ))}
+            <div className="pt-4 flex gap-2">
+              <Button className="gap-2 flex-1" disabled={selectedTables.length === 0 || exporting} onClick={() => setExporting(true)}>
+                <Download className="h-4 w-4" /> Export as JSON
+              </Button>
+              <Button variant="outline" className="gap-2" disabled={selectedTables.length === 0 || exporting}>CSV</Button>
+            </div>
+            {exporting && <div className="pt-2"><Progress value={65} className="h-2" /><p className="text-xs text-muted-foreground mt-1">Extracting data... 65%</p></div>}
+          </CardContent>
+        </Card>
+
+        <div className="space-y-4">
+          <Card className="border-border/50">
+            <CardHeader><CardTitle className="text-sm">Export History</CardTitle></CardHeader>
+            <CardContent className="space-y-3">
+              {PAST_EXPORTS.map(exp => (
+                <div key={exp.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-emerald-500" />
+                    <div><p className="text-sm text-foreground">{exp.date}</p><p className="text-xs text-muted-foreground">{exp.format} · {exp.size}</p></div>
+                  </div>
+                  <Button variant="ghost" size="sm"><Download className="h-4 w-4" /></Button>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          <Card className="border-border/50 border-destructive/20">
+            <CardHeader><CardTitle className="text-sm text-destructive flex items-center gap-2"><AlertTriangle className="h-4 w-4" /> Data Deletion</CardTitle></CardHeader>
+            <CardContent>
+              <p className="text-xs text-muted-foreground mb-3">Request permanent deletion of all your data. This action is irreversible and will be processed within 30 days per GDPR requirements.</p>
+              <Button variant="destructive" size="sm" className="gap-2"><Trash2 className="h-4 w-4" /> Request Deletion</Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}

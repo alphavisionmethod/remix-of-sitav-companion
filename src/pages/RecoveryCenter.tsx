@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
+import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
@@ -105,7 +106,7 @@ const RecoveryCenter = () => {
       />
 
       {isLoading ? (
-        <div className="flex justify-center py-12"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>
+        <SectionSkeleton cards={3} columns={1} />
       ) : allItems.length === 0 ? (
         <EmptyState icon={CheckCircle} title="All clear" description="No failed workflows, stuck processes, or open incidents. Everything is running smoothly." />
       ) : (

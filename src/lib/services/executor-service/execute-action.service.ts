@@ -3,13 +3,13 @@
 // Wraps actions in ExecutionEnvelope with idempotency + mode
 // ═══════════════════════════════════════════════════════════════
 
-export type ExecutionMode = "live" | "dry-run" | "simulation";
+export type ActionExecutionMode = "live" | "dry-run" | "simulation";
 export type ExecutionStatus = "pending" | "running" | "completed" | "failed" | "rolled-back";
 
 export interface ExecutionEnvelope {
   id: string;
   capabilityId: string;
-  mode: ExecutionMode;
+  mode: ActionExecutionMode;
   idempotencyKey: string;
   status: ExecutionStatus;
   input: Record<string, unknown>;
@@ -26,7 +26,7 @@ const idempotencyIndex = new Map<string, string>(); // key → envelope id
 
 export function executeAction(params: {
   capabilityId: string;
-  mode: ExecutionMode;
+  mode: ActionExecutionMode;
   input: Record<string, unknown>;
   idempotencyKey?: string;
   correlationId?: string;
