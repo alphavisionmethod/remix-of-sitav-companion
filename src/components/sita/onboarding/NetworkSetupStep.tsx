@@ -247,12 +247,17 @@ export function NetworkSetupStep({ onNext, onPrev, onStateChange }: Props) {
                     <div className="space-y-2">
                       <div>
                         <label className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">EAP Type</label>
-                        <select className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none">
-                          <option>PEAP</option>
-                          <option>EAP-TLS</option>
-                          <option>EAP-TTLS</option>
-                          <option>EAP-FAST</option>
-                        </select>
+                        <div className="mt-1.5 flex flex-wrap gap-1.5">
+                          {["PEAP", "EAP-TLS", "EAP-TTLS", "EAP-FAST"].map(eap => (
+                            <button key={eap}
+                              className={cn(
+                                "rounded-full px-3 py-1.5 text-xs font-medium transition-all border",
+                                "bg-primary/15 border-primary/40 text-primary first:bg-primary/15"
+                              )}>
+                              {eap}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                       <input placeholder="Identity / Username"
                         className="w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary/40 focus:outline-none" />
