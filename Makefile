@@ -6,7 +6,7 @@ COMPOSE = docker compose
 COMPOSE_FILE = docker-compose.yml
 PROJECT = sita
 
-.PHONY: help build up down restart logs status clean reset studio db-shell
+.PHONY: help build up down restart logs status clean reset studio db-shell iso ova
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
