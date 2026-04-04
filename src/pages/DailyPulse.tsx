@@ -124,6 +124,9 @@ const DailyPulse = () => {
   const { isDemoMode } = useDataMode();
   const { inspect } = useInspector();
   const { missionMode } = useDisplayMode();
+  const [showPostArrival, setShowPostArrival] = useState(() => {
+    return !localStorage.getItem("sita-post-arrival-seen") && sessionStorage.getItem("sita-post-arrival-trigger") === "true";
+  });
   const hour = new Date().getHours();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
