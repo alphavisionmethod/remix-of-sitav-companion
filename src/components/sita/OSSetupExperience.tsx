@@ -449,6 +449,16 @@ export function OSSetupExperience() {
   const [showResumeBanner, setShowResumeBanner] = useState(isResumed);
 
   const [state, setState] = useState<SetupState>({
+    language: "en",
+    region: "US",
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
+    dateFormat: "MM/DD/YYYY",
+    currency: "USD",
+    operatingMode: "",
+    operatingModel: null,
+    autonomyLevel: 50,
+    thresholds: {},
+    activeAdvisors: [],
     displayName: "",
     role: "",
     enabledDomains: ["business", "money", "concierge"],
