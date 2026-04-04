@@ -174,7 +174,11 @@ export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onConnect
         .eq("user_id", user.id)
         .eq("connector_id", connector.id);
 
-      setConnected(prev => new Set([...prev, connector.id]));
+      setConnected(prev => {
+        const next = new Set([...prev, connector.id]);
+        onConnectedChange?.(next.size);
+        return next;
+      });
     } catch (err) {
       console.error("Connection error:", err);
       toast.error(`Could not connect ${connector.name}. You can try again later.`);
