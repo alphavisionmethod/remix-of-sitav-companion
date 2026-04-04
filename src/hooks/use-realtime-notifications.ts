@@ -11,6 +11,10 @@ const URGENCY_STYLES: Record<string, { icon: string; type: "success" | "error" |
   low: { icon: "✅", type: "success" },
 };
 
+function isElectron(): boolean {
+  return typeof window !== "undefined" && !!(window as any).electron;
+}
+
 export function useRealtimeNotifications() {
   const { user } = useAuth();
   const qc = useQueryClient();
@@ -32,6 +36,7 @@ export function useRealtimeNotifications() {
           const n = payload.new as { title: string; body?: string; urgency?: string; domain?: string; action_url?: string };
           const style = URGENCY_STYLES[n.urgency || "low"] || URGENCY_STYLES.low;
 
+          // Web toast notification
           toast[style.type](`${style.icon} ${n.title}`, {
             description: n.body || undefined,
             action: n.action_url
@@ -39,6 +44,18 @@ export function useRealtimeNotifications() {
               : undefined,
             duration: n.urgency === "critical" ? 10000 : 5000,
           });
+
+          // Native Electron notification
+          if (isElectron()) {
+            try {
+              (window as any).electron.sendNotification(
+                `${style.icon} ${n.title}`,
+                n.body || ""
+              );
+            } catch {
+              // Electron bridge not available
+            }
+          }
 
           qc.invalidateQueries({ queryKey: ["notifications"] });
         }
