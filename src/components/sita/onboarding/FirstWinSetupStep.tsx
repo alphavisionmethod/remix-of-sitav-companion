@@ -10,6 +10,7 @@ import {
   ListChecks, Target, Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export interface FirstWinData {
   category: string;

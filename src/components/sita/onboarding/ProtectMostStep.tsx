@@ -4,6 +4,7 @@ import {
   Users, FileText, ChevronRight, Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const options = [
   { key: "leads-clients", icon: UserCheck, label: "Leads & clients" },

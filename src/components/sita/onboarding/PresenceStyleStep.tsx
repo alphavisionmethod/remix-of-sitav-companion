@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { EyeOff, Eye, Zap, Mic, ChevronRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const styles = [
   { key: "quiet", icon: EyeOff, title: "Quiet and mostly in the background", desc: "SITA works silently. You check in when you want." },

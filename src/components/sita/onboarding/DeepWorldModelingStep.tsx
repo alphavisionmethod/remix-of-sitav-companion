@@ -5,6 +5,7 @@ import {
   ChevronRight, ChevronDown, Check, Heart, Brain, Zap, Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export interface WorldModelData {
   routines: { morningType: number; weekday: string[]; weekend: string[] };

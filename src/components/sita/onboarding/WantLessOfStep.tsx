@@ -4,6 +4,7 @@ import {
   Target, TrendingUp, BellOff, ChevronRight, Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const options = [
   { key: "forgetting", icon: Brain, label: "Forgetting things" },

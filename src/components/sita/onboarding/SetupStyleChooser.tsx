@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Zap, Sparkles, Settings, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 type SetupStyle = "express" | "guided" | "advanced";
 

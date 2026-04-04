@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { MessageCircle, Sliders, BookOpen, Briefcase, ChevronRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const styles = [
   { key: "simple", icon: MessageCircle, title: "Simple and calm", desc: "Short answers, no jargon. SITA speaks plainly." },

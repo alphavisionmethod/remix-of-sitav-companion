@@ -7,6 +7,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { persistSetupState, loadPersistedSetupState, clearPersistedSetupState } from "@/components/sita/setup/SetupPersistenceManager";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -529,11 +530,13 @@ export function OSSetupExperience() {
 
   const goNext = useCallback(() => {
     orchGoNext();
-  }, [orchGoNext]);
+    persistSetupState(state, phase);
+  }, [orchGoNext, state, phase]);
 
   const goPrev = useCallback(() => {
     orchGoPrev();
-  }, [orchGoPrev]);
+    persistSetupState(state, phase);
+  }, [orchGoPrev, state, phase]);
 
   const toggleArrayField = (field: "painPoints" | "protectionPriorities" | "rituals", key: string) => {
     setState(prev => ({
@@ -672,6 +675,7 @@ export function OSSetupExperience() {
       }
 
       SetupOrchestrationEngine.clearLocalStorage();
+      clearPersistedSetupState();
 
       try {
         await supabase.functions.invoke("seed-user-data");

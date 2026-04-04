@@ -10,6 +10,7 @@ import {
   AlertTriangle, Users, Briefcase, Shield, Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export interface TrustCalibrationData {
   level: number;

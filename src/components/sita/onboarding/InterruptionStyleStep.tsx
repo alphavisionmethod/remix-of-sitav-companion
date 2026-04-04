@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Bell, BellRing, Sliders, Zap, ChevronRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const styles = [
   { key: "urgent-only", icon: Bell, title: "Only urgent", desc: "SITA stays quiet unless something is critical." },
