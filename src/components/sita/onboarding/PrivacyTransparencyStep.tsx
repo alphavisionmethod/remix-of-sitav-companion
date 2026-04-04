@@ -115,14 +115,13 @@ export function PrivacyTransparencyStep({ permissionChoices, onUpdate, onNext, o
       {/* Left — Permission Cards */}
       <div className="flex-1 min-w-0">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.05 }}
-          className="flex items-center gap-3 mb-2">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20">
-            <Shield className="h-6 w-6 text-primary-foreground" />
-          </div>
-          <div>
-            <h2 className="font-display text-2xl font-bold tracking-tight text-foreground">Your data, your control</h2>
-            <p className="text-sm text-muted-foreground">Choose how SITA can learn, personalize, and assist</p>
-          </div>
+          className="mb-2">
+          <SetupStageHeader
+            icon={Shield}
+            title="Your data, your control"
+            subtitle="Choose how SITA can learn, personalize, and assist"
+            align="left"
+          />
         </motion.div>
 
         <p className="text-xs text-muted-foreground/70 mb-6">
