@@ -686,6 +686,10 @@ export function OSSetupExperience() {
     if (phase === "identity") return state.displayName.length > 0 && state.role.length > 0;
     if (phase === "domains") return state.enabledDomains.length > 0;
     if (phase === "primary-use-mode") return state.primaryUseMode.length > 0;
+    if (phase === "trust-calibration") return state.trustCalibration.level > 0;
+    if (phase === "advisor-activation") return state.advisorActivation.some(a => a.enabled);
+    if (phase === "first-win-setup") return state.firstWin.approved;
+    if (phase === "desktop-transition") return true; // auto-advances
     return true;
   };
 
