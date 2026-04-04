@@ -1,196 +1,208 @@
 
 
-# SITA OS — Phases 2.12–2.17: Trust Calibration, Advisor Activation, Connections, First Win, Arrival, Desktop Transition
+# Audit: Missing Setup Infrastructure — Reusable Components, Resilience Systems, Anti-Pattern Fixes
 
-## Summary
+## Findings
 
-Create 4 new premium setup phases and fully rewrite 2 existing ones to match the spec. This covers the final stretch of onboarding from trust calibration through the ceremonial desktop entry.
+### A. 30 Required Reusable Components — 0 exist as standalone components
 
-## What exists vs what's needed
+All functionality currently lives inline inside each step component. None of the 30 named components from the spec exist as importable primitives. They need to be extracted/created in `src/components/sita/setup/` so every step can share them consistently.
 
-| Phase | Status | Action |
-|-------|--------|--------|
-| 2.12 Trust & Autonomy Calibration | Missing | **Create** new component + DAG entry |
-| 2.13 Advisor Activation | Missing | **Create** new component + DAG entry |
-| 2.14 First Connections | Exists but basic | **Rewrite** with world-model-based recommendations, "why it matters", value previews |
-| 2.15 First Win Setup | Missing | **Create** new component + DAG entry |
-| 2.16 Arrival Preparation | Exists but basic | **Rewrite** with full summary, desktop preview, module illumination, deferred items |
-| 2.17 Desktop Transition | Missing | **Create** new component + DAG entry |
+### B. Reduced-Motion Support — Missing from ALL 17 onboarding step components
 
-## Files to Create/Modify
+`prefers-reduced-motion` is respected in FirstBootScreen, LockScreen, WelcomeScreen, EnterpriseFlow, RestoreFlow — but **zero** of the onboarding steps (TrustCalibrationStep, AdvisorActivationStep, PrivacyTransparencyStep, QuickIdentityStep, DeepWorldModelingStep, PrimaryUseModeStep, FirstConnectionsStep, FirstWinSetupStep, ArrivalPrepStep, DesktopTransitionStep, CinematicIntro, SetupStyleChooser, WantLessOfStep, ProtectMostStep, ExplanationStyleStep, PresenceStyleStep, InterruptionStyleStep, RitualsStep, etc.) check for it.
 
-| File | Action |
+### C. Setup Persistence/Checkpointing — Only exists for boot phase
+
+Boot state persistence (`bootStatePersistence.ts`) handles the boot screen. But setup phase progress (which step the user is on, what they've filled in) is **not** persisted to sessionStorage or the orchestration engine's local snapshot. If the user reloads mid-setup, they restart from `welcome`.
+
+### D. Anti-Pattern: `<select>` dropdowns in HouseholdGraphStep and NetworkSetupStep
+
+The spec explicitly forbids "too many dropdowns." Two files use raw `<select>` elements.
+
+### E. Missing family/shared path, managed device path, deferred completion center
+
+No branching for family vs managed device setup paths beyond a single string field. No "deferred completion center" where users can return to finish skipped items.
+
+---
+
+## Plan
+
+### Step 1: Create `src/components/sita/setup/` — 30 reusable primitives
+
+Create a `setup/` folder with thin, composable components extracted from inline patterns. Each is 20–80 lines, purely presentational, accepting props and callbacks. Grouped by purpose:
+
+**Shell & Layout (4 files)**
+- `SetupShell.tsx` — fullscreen dark container with ambient glow, overflow scroll, reduced-motion-aware
+- `SetupStageHeader.tsx` — title + subtitle + optional icon, consistent spacing
+- `PremiumProgressRail.tsx` — the dot-stepper rail (extract from OSSetupExperience `PhaseProgressRail`)
+- `AmbientFormationCanvas.tsx` — the ambient blur orbs background (extract from OSSetupExperience)
+
+**Information & Trust (3 files)**
+- `TrustInfoCard.tsx` — icon + title + description card with expandable detail section
+- `AdvancedDetailsDisclosure.tsx` — collapsible "Fine-tune" / "Advanced" section with AnimatePresence
+- `RecoveryStateCard.tsx` — shows recovery/resume state with action buttons
+
+**Status & Preview (3 files)**
+- `SystemStatusPreview.tsx` — miniature desktop preview widget (extract from ArrivalPrepStep)
+- `StageTransitionController.tsx` — Back/Continue/Skip footer with canAdvance logic
+- `SetupPersistenceManager.tsx` — hook/component that auto-persists setup state to sessionStorage every phase change
+
+**Boot Phase Panels (5 files)**
+- `NetworkSelectionPanel.tsx` — re-export/wrapper around NetworkSetupStep internals
+- `UpdateProgressExperience.tsx` — animated progress for background update tasks
+- `OwnershipModeSelector.tsx` — card selector for personal/family/work/managed (extract from DeviceOwnershipStep)
+- `AccountPathChooser.tsx` — account path cards (extract from AccountEnvironmentStep)
+- `RestorePreviewCard.tsx` — restore environment preview card
+
+**Security Panels (3 files)**
+- `AccessProtectionFlow.tsx` — password + biometric + recovery method flow (extract from AccessProtectionStep)
+- `BiometricEnrollmentPanel.tsx` — biometric setup UI
+- `RecoveryMethodCard.tsx` — recovery method selector card
+
+**Privacy & Identity (4 files)**
+- `PrivacyPermissionCards.tsx` — expandable permission card with toggle (extract from PrivacyTransparencyStep)
+- `TransparencyPreviewCard.tsx` — proof model preview (extract from PrivacyTransparencyStep)
+- `QuickIdentityCardStack.tsx` — progressive-reveal question cards (extract from QuickIdentityStep)
+- `WorldModelConversationPanels.tsx` — collapsible domain chapter accordion (extract from DeepWorldModelingStep)
+
+**Preview & Selection (4 files)**
+- `LiveEnvironmentModelPreview.tsx` — animated world model side viz (extract from DeepWorldModelingStep)
+- `UseModeSelectionCards.tsx` — 5 mode cards with glow selection (extract from PrimaryUseModeStep)
+- `TrustLadderControl.tsx` — 5-level vertical trust ladder (extract from TrustCalibrationStep)
+- `TrustWorkflowPreview.tsx` — Draft→Preview→Approval→Execute→Proof pipeline (extract from TrustCalibrationStep)
+
+**Advisor & Connections (4 files)**
+- `AdvisorActivationGrid.tsx` — advisor card grid (extract from AdvisorActivationStep)
+- `AdvisorActivityControl.tsx` — quiet/normal/active selector per advisor
+- `RecommendedConnectionsPanel.tsx` — sorted connection cards (extract from FirstConnectionsStep)
+- `ConnectionValuePreviewCard.tsx` — post-connection value reveal
+
+**Arrival (4 files)**
+- `FirstWinRecommendationCard.tsx` — first-win option card with preview flow
+- `SetupSummaryExperience.tsx` — full summary grid (extract from ArrivalPrepStep)
+- `DesktopArrivalTransitionController.tsx` — orchestrated 10-stage transition (extract from DesktopTransitionStep)
+- `WelcomeStateComposer.tsx` — welcome card + first priorities + advisor presence
+
+### Step 2: Add reduced-motion support to all onboarding steps
+
+Create a shared hook `useReducedMotion()` in `src/hooks/useReducedMotion.ts` that returns a boolean. Every onboarding step component imports it and:
+- Disables spring animations (uses `duration: 0`)
+- Removes decorative animated elements (glow pulses, floating orbs)
+- Keeps functional transitions but instant
+
+Update all 17+ onboarding step files to use this hook.
+
+### Step 3: Setup state checkpointing & recovery
+
+Create `src/components/sita/setup/setupStatePersistence.ts`:
+- `persistSetupState(state: SetupData, phase: SetupPhaseId)` → writes to sessionStorage
+- `loadPersistedSetupState()` → reads + validates + returns state + phase
+- `clearPersistedSetupState()` → clears
+- 5-minute staleness check (same pattern as boot persistence)
+
+Wire into `OSSetupExperience.tsx`:
+- On every `goNext`/`goPrev`, persist current state + phase
+- On mount, check for persisted state; if found, show resume banner and restore
+- On `finishSetup`, clear persisted state
+
+### Step 4: Replace `<select>` dropdowns with chip/card selectors
+
+- `HouseholdGraphStep.tsx` — replace `<select>` role picker with chip row
+- `NetworkSetupStep.tsx` — replace EAP type `<select>` with styled card selector
+
+### Step 5: Add deferred completion center
+
+Create `src/components/sita/onboarding/LearnLaterHub.tsx` enhancement:
+- Already exists but needs to show deferred connections, skipped phases, and incomplete setup items
+- Wire `deferredConnections` and `skippedPhases` from setup state into it
+
+### Step 6: Low-power / degraded-performance fallback
+
+Add to `useReducedMotion` hook: also detect `navigator.deviceMemory < 4` or `navigator.hardwareConcurrency < 4` and auto-enable reduced mode. The `AmbientFormationCanvas` component skips blur orbs in this mode.
+
+### Step 7: Wire reusable components into existing steps
+
+Update each step component to import and use the new primitives instead of inline implementations. This is a refactor — no behavior changes, just extraction.
+
+---
+
+## Files Created
+
+| File | Lines | Purpose |
+|------|-------|---------|
+| `src/hooks/useReducedMotion.ts` | ~20 | Shared reduced-motion + low-perf detection hook |
+| `src/components/sita/setup/SetupShell.tsx` | ~40 | Fullscreen dark setup container |
+| `src/components/sita/setup/SetupStageHeader.tsx` | ~30 | Title + subtitle header |
+| `src/components/sita/setup/PremiumProgressRail.tsx` | ~50 | Dot-stepper progress rail |
+| `src/components/sita/setup/AmbientFormationCanvas.tsx` | ~35 | Ambient blur orbs background |
+| `src/components/sita/setup/TrustInfoCard.tsx` | ~45 | Expandable info card |
+| `src/components/sita/setup/AdvancedDetailsDisclosure.tsx` | ~40 | Collapsible advanced section |
+| `src/components/sita/setup/RecoveryStateCard.tsx` | ~35 | Recovery/resume card |
+| `src/components/sita/setup/SystemStatusPreview.tsx` | ~60 | Miniature desktop preview |
+| `src/components/sita/setup/StageTransitionController.tsx` | ~50 | Back/Continue/Skip footer |
+| `src/components/sita/setup/SetupPersistenceManager.ts` | ~60 | Setup state sessionStorage persistence |
+| `src/components/sita/setup/NetworkSelectionPanel.tsx` | ~30 | Network UI wrapper |
+| `src/components/sita/setup/UpdateProgressExperience.tsx` | ~40 | Background task progress |
+| `src/components/sita/setup/OwnershipModeSelector.tsx` | ~40 | Personal/family/work cards |
+| `src/components/sita/setup/AccountPathChooser.tsx` | ~40 | Account path cards |
+| `src/components/sita/setup/RestorePreviewCard.tsx` | ~35 | Restore preview |
+| `src/components/sita/setup/AccessProtectionFlow.tsx` | ~50 | Password + biometric flow |
+| `src/components/sita/setup/BiometricEnrollmentPanel.tsx` | ~40 | Biometric enrollment UI |
+| `src/components/sita/setup/RecoveryMethodCard.tsx` | ~35 | Recovery method selector |
+| `src/components/sita/setup/PrivacyPermissionCards.tsx` | ~60 | Expandable permission cards |
+| `src/components/sita/setup/TransparencyPreviewCard.tsx` | ~50 | Proof model preview |
+| `src/components/sita/setup/QuickIdentityCardStack.tsx` | ~50 | Progressive-reveal cards |
+| `src/components/sita/setup/WorldModelConversationPanels.tsx` | ~50 | Domain chapter accordion |
+| `src/components/sita/setup/LiveEnvironmentModelPreview.tsx` | ~60 | Animated world model viz |
+| `src/components/sita/setup/UseModeSelectionCards.tsx` | ~50 | Mode selection cards |
+| `src/components/sita/setup/TrustLadderControl.tsx` | ~60 | 5-level trust ladder |
+| `src/components/sita/setup/TrustWorkflowPreview.tsx` | ~50 | Workflow pipeline preview |
+| `src/components/sita/setup/AdvisorActivationGrid.tsx` | ~50 | Advisor card grid |
+| `src/components/sita/setup/AdvisorActivityControl.tsx` | ~35 | Quiet/normal/active selector |
+| `src/components/sita/setup/RecommendedConnectionsPanel.tsx` | ~50 | Sorted connection cards |
+| `src/components/sita/setup/ConnectionValuePreviewCard.tsx` | ~40 | Post-connection value reveal |
+| `src/components/sita/setup/FirstWinRecommendationCard.tsx` | ~50 | First-win option card |
+| `src/components/sita/setup/SetupSummaryExperience.tsx` | ~60 | Summary grid |
+| `src/components/sita/setup/DesktopArrivalTransitionController.tsx` | ~50 | 10-stage transition |
+| `src/components/sita/setup/WelcomeStateComposer.tsx` | ~50 | Welcome card + priorities |
+| `src/components/sita/setup/index.ts` | ~35 | Barrel exports |
+
+## Files Modified
+
+| File | Change |
 |------|--------|
-| `src/packages/contracts/specialized/setup-orchestration.ts` | Add 4 new phase IDs: `trust-calibration`, `advisor-activation`, `first-win-setup`, `desktop-transition` |
-| `src/lib/engines/setup-phase-definitions.ts` | Add 4 new phase definitions; reorder DAG so flow is: `primary-use-mode` → `trust-calibration` → `advisor-activation` → ... → `first-connections` → `first-win-setup` → ... → `arrival-prep` → `desktop-transition` → `system-check` |
-| `src/components/sita/onboarding/TrustCalibrationStep.tsx` | **Create** (~450 lines) |
-| `src/components/sita/onboarding/AdvisorActivationStep.tsx` | **Create** (~400 lines) |
-| `src/components/sita/onboarding/FirstConnectionsStep.tsx` | **Rewrite** (~350 lines) |
-| `src/components/sita/onboarding/FirstWinSetupStep.tsx` | **Create** (~380 lines) |
-| `src/components/sita/onboarding/ArrivalPrepStep.tsx` | **Rewrite** (~400 lines) |
-| `src/components/sita/onboarding/DesktopTransitionStep.tsx` | **Create** (~300 lines) |
-| `src/components/sita/OSSetupExperience.tsx` | Add imports, state fields, phase rendering, canAdvance, finishSetup persistence |
-
-## DAG Insertion Order
-
-```text
-... → primary-use-mode
-    → trust-calibration (5.5, depends: primary-use-mode)
-    → advisor-activation (5.6, depends: trust-calibration)
-    → welcome (6, depends: advisor-activation) ← updated dependency
-    → cinematic-intro → setup-style → identity → ...
-    → first-connections (20, updated: uses world model + use mode)
-    → first-win-setup (20.5, depends: first-connections, new)
-    → ... → arrival-prep (25, rewritten)
-    → desktop-transition (25.5, depends: arrival-prep, new)
-    → system-check (26, depends: desktop-transition) ← updated dependency
-    → trust-certificate (27)
-```
-
-## Component Designs
-
-### TrustCalibrationStep (~450 lines)
-- Title: "Choose how SITA should help"
-- Subtitle: "You control what SITA can suggest, simulate, and handle"
-- **Trust ladder** — 5 levels as vertical stepped cards with animated connector lines:
-  1. Observe only — "SITA watches, never acts"
-  2. Suggest — "SITA recommends, you decide"
-  3. Simulate before action — "SITA previews outcomes, asks before proceeding"
-  4. Ask before acting — "SITA prepares actions, executes only on approval"
-  5. Handle routine tasks automatically — "SITA manages repetitive tasks, flags exceptions"
-- **Right panel: Workflow preview** — animated pipeline showing Draft → Preview → Approval → Execute → Proof, highlighting which stages are active based on selected trust level
-- **Additional trust controls** (collapsible "Fine-tune" section):
-  - Spending threshold slider ($0–$500)
-  - Financial approvals toggle
-  - Calendar change approvals toggle
-  - Outbound communication approvals toggle
-  - Reminder frequency selector (minimal / balanced / frequent)
-  - Escalation behavior (silent / notify / urgent)
-  - Family permissions toggle
-  - Business workflow permissions toggle
-- State: `trustCalibration: { level: number; spendingThreshold: number; financialApprovals: boolean; calendarApprovals: boolean; communicationApprovals: boolean; reminderFrequency: string; escalationBehavior: string; familyPermissions: boolean; businessPermissions: boolean }`
-- canAdvance: trust level must be selected
-
-### AdvisorActivationStep (~400 lines)
-- Title: "Meet your advisory team"
-- Subtitle: "Choose who should be active from day one"
-- 6 advisor cards derived from `ADVISOR_CONFIGS` plus Life/Growth advisors:
-  - Life Advisor, Money Advisor, Business Advisor, Family Advisor, Concierge Advisor, Growth Advisor
-- Each card shows: role, when it appears, what it helps with, activity level (quiet/normal/active), example recommendation, where in OS
-- Based on prior selections (primaryUseMode, quickIdentity, worldModel), some advisors pre-highlighted as "recommended"
-- Controls per advisor: enable/disable toggle, priority selector (quiet/normal/active), "Preview sample interaction" expandable
-- **Right panel: System map** — shows OS regions (Business OS, Finance OS, Concierge OS, Trust Center, Boardroom). As advisors are enabled, their regions illuminate with staggered glow. Desktop preview and boardroom preview update.
-- State: `activeAdvisors: { id: string; enabled: boolean; priority: string }[]`
-- canAdvance: at least 1 advisor enabled
-
-### FirstConnectionsStep — Rewrite (~350 lines)
-- Title: "Connect what matters first"
-- Subtitle: "Start with the systems that will help SITA support you immediately"
-- 10 connection categories: Calendar, Email, Files/docs, Bank/finance, CRM/leads, Messaging, Household tools, Notes/reminders, Contacts, Cloud storage
-- **Recommendation logic**: filter and sort based on `primaryUseMode` and `worldModel` — Business mode highlights CRM/Email, Money mode highlights Bank, Family mode highlights Calendar/Household
-- Each connection card shows:
-  - Why it matters now (derived from world model)
-  - What SITA can do after connection
-  - Trust boundary note ("Read-only access. You approve all actions.")
-  - Connect now / Later toggle
-- **Immediate value preview**: after each connection, inline animated reveal: "SITA can now detect overdue follow-ups" / "SITA can now build your bill calendar" etc.
-- State: extends existing `connected` set + `deferredConnections: string[]`
-
-### FirstWinSetupStep (~380 lines)
-- Title: "Let's set up your first win"
-- Subtitle: "Choose one useful thing for SITA to prepare first"
-- **Dynamic recommendations** based on primaryUseMode:
-  - Business: recover missed leads, build callback queue, prepare first boardroom review
-  - Money: build bill calendar, create spending pulse, set savings focus
-  - Household: unify family calendar, create shared task rhythm, prepare household board
-  - Personal: create daily pulse, identify slipping tasks, prepare weekly plan
-- **Flow**: Recommend → Preview → Approve → Prepare → Confirm
-  - Step 1: User selects a first win
-  - Step 2: Animated preview of what SITA will prepare
-  - Step 3: "Approve this first win" button
-  - Step 4: Brief preparation animation
-  - Step 5: Confirmation of what will appear on desktop
-- State: `firstWin: { category: string; action: string; approved: boolean; prepared: boolean }`
-- canAdvance: must approve a first win
-
-### ArrivalPrepStep — Rewrite (~400 lines)
-- Title: "Your environment is ready"
-- Shows full summary of: active advisors, selected use mode, trust mode, connected systems, first workflow prepared, privacy baseline, deferred setup items, first boardroom readiness
-- **Visual treatment** — the most beautiful screen:
-  - Fully assembled environment map (animated nodes for each OS domain)
-  - Desktop preview widget (miniature mock showing sidebar + main content area)
-  - Illuminated modules with staggered glow
-  - Advisor presence indicators
-  - Elegant summary cards with icons and completion badges
-- **CTAs**: Primary "Enter SITA", Secondary row: "Review settings" / "Make changes" / "Learn the basics"
-- Receives all state fields as props to show comprehensive summary
-
-### DesktopTransitionStep (~300 lines)
-- Title: none (fullscreen cinematic)
-- **Transition sequence** (timed, ~5-6 seconds total):
-  1. Arrival summary holds briefly (0.5s)
-  2. Background shifts to full desktop color
-  3. Setup shell dissolves (fade + scale)
-  4. Wallpaper gradient resolves
-  5. Top system bar slides down from top
-  6. Dock slides up from bottom
-  7. Boardroom/home intelligence surface fades in center
-  8. Welcome card appears with gentle scale-in
-  9. First priorities surface softly
-  10. Advisor presence becomes visible (small avatar indicators)
-- All animated with framer-motion orchestrated sequence using `delay` chains
-- **Welcome state visible**: welcome card, first boardroom summary, first-win module ready, top priorities, quiet advisor presence, visible trust mode indicator
-- After sequence completes (~5s), auto-advances to system-check
-- Fullscreen, no back button
-
-## OSSetupExperience Integration
-
-### New state fields
-```ts
-trustCalibration: {
-  level: number;
-  spendingThreshold: number;
-  financialApprovals: boolean;
-  calendarApprovals: boolean;
-  communicationApprovals: boolean;
-  reminderFrequency: string;
-  escalationBehavior: string;
-  familyPermissions: boolean;
-  businessPermissions: boolean;
-};
-advisorActivation: { id: string; enabled: boolean; priority: string }[];
-deferredConnections: string[];
-firstWin: { category: string; action: string; approved: boolean; prepared: boolean };
-```
-
-### Phase exclusions
-- `trust-calibration`, `advisor-activation` added to `showLearningPanel` and session progress bar exclusion (they are early boot phases)
-- `desktop-transition` added to both exclusion lists (fullscreen cinematic)
-
-### canAdvance updates
-- `trust-calibration`: level must be > 0
-- `advisor-activation`: at least 1 advisor enabled
-- `first-win-setup`: firstWin.approved must be true
-- `desktop-transition`: auto-advances (no manual advance)
-
-### finishSetup persistence
-Add: `trust_calibration`, `advisor_activation`, `deferred_connections`, `first_win` to user_memory upsert array
-
-## Design & Animation Patterns
-- All use existing `motion.div` spring: `damping: 28, stiffness: 280`
-- Colors: `bg-primary/8` selected, `border-primary/50` active, SITA brand colors throughout
-- Trust ladder uses vertical stepper with animated connection lines between levels
-- Advisor cards use the same `whileHover={{ scale: 1.02 }}` pattern
-- Desktop transition uses orchestrated `delay` chains with `AnimatePresence`
-- All icons from `lucide-react`, no external dependencies
-- `cn()` utility for conditional classes throughout
+| `src/components/sita/OSSetupExperience.tsx` | Import reusable components, wire persistence manager, use SetupShell/StageTransitionController |
+| `src/components/sita/onboarding/TrustCalibrationStep.tsx` | Import useReducedMotion, use TrustLadderControl + TrustWorkflowPreview |
+| `src/components/sita/onboarding/AdvisorActivationStep.tsx` | Import useReducedMotion, use AdvisorActivationGrid |
+| `src/components/sita/onboarding/PrivacyTransparencyStep.tsx` | Import useReducedMotion, use PrivacyPermissionCards |
+| `src/components/sita/onboarding/QuickIdentityStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/DeepWorldModelingStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/PrimaryUseModeStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/FirstConnectionsStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/FirstWinSetupStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/ArrivalPrepStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/DesktopTransitionStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/HouseholdGraphStep.tsx` | Replace `<select>` with chip selector |
+| `src/components/sita/onboarding/NetworkSetupStep.tsx` | Replace `<select>` with styled cards |
+| `src/components/sita/onboarding/CinematicIntro.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/WantLessOfStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/ProtectMostStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/ExplanationStyleStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/PresenceStyleStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/InterruptionStyleStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/RitualsStep.tsx` | Import useReducedMotion |
+| `src/components/sita/onboarding/LearnLaterHub.tsx` | Accept deferred connections + skipped phases as props |
 
 ## Implementation Order
-1. Add 4 new phase IDs to contract
-2. Add 4 phase definitions to DAG, update dependencies for `welcome` and `system-check`
-3. Create `TrustCalibrationStep` and `AdvisorActivationStep` (parallel)
-4. Rewrite `FirstConnectionsStep` and create `FirstWinSetupStep` (parallel)
-5. Rewrite `ArrivalPrepStep` and create `DesktopTransitionStep` (parallel)
-6. Wire all into `OSSetupExperience` (imports, state, render, canAdvance, persist)
-7. Verify with `tsc --noEmit`
+
+1. Create `useReducedMotion` hook
+2. Create all 30 setup primitives + barrel export (parallel batch)
+3. Wire reduced-motion into all 17 onboarding steps (parallel batch)
+4. Create setup state persistence manager
+5. Wire persistence into OSSetupExperience (checkpoint on phase change, restore on mount)
+6. Replace `<select>` dropdowns in HouseholdGraphStep + NetworkSetupStep
+7. Enhance LearnLaterHub with deferred items
+8. Refactor step components to use new primitives
+9. Verify with `tsc --noEmit`
 
