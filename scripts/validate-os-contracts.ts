@@ -53,8 +53,8 @@ async function run() {
       throw new Error("runtime-conformance-manifest.json not found");
     }
     const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
-    if (!manifest.runtimes || !Array.isArray(manifest.runtimes)) {
-      throw new Error("Invalid manifest structure: missing runtimes array");
+    if (!manifest.entries || !Array.isArray(manifest.entries)) {
+      throw new Error("Invalid manifest structure: missing entries array");
     }
   }, "runtime-contract-drift");
 

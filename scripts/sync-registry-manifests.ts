@@ -99,8 +99,8 @@ function run() {
   results.push(checkFile("first-boot-proof-receipts.json", ["version", "receiptTypes"]));
 
   // Check existing manifests
-  results.push(checkFile("contract-manifest.json", ["version"]));
-  results.push(checkFile("runtime-conformance-manifest.json", ["runtimes"]));
+  results.push(checkFile("contract-manifest.json", ["version", "totalContracts", "contracts"]));
+  results.push(checkFile("runtime-conformance-manifest.json", ["version", "entries"]));
   results.push(checkFile("startup-order.json", ["version"]));
 
   // Check docs
