@@ -45,6 +45,8 @@ export function AmbientFormationCanvas({
     };
   }, [emotionalPhase, legacyPrimary, legacySecondary]);
 
+  if (reduced) return null;
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       <motion.div
