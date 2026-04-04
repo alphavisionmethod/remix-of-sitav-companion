@@ -36,7 +36,11 @@ const demoConnectors: ConnectorStatus[] = [
 ];
 
 export function DataModeProvider({ children }: { children: React.ReactNode }) {
+  // VITE_DEMO_MODE=true forces demo mode for presentations/demos in production
+  const envDemoMode = import.meta.env.VITE_DEMO_MODE === "true";
+
   const [mode, setModeState] = useState<DataMode>(() => {
+    if (envDemoMode) return "demo";
     try {
       return (localStorage.getItem(STORAGE_KEY) as DataMode) || "demo";
     } catch {
