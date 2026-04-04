@@ -555,7 +555,11 @@ export function OSSetupExperience() {
         { user_id: user.id, key: "access_method", value: JSON.stringify(state.accessMethod), category: "security" },
         { user_id: user.id, key: "recovery_method", value: JSON.stringify(state.recoveryMethod), category: "security" },
         { user_id: user.id, key: "account_path", value: JSON.stringify(state.accountPath), category: "preference" },
-      ].filter(m => m.value && m.value !== '""' && m.value !== '[]');
+        { user_id: user.id, key: "permission_choices", value: JSON.stringify(state.permissionChoices), category: "privacy" },
+        { user_id: user.id, key: "quick_identity", value: JSON.stringify(state.quickIdentity), category: "preference" },
+        { user_id: user.id, key: "world_model", value: JSON.stringify(state.worldModel), category: "preference" },
+        { user_id: user.id, key: "primary_use_mode", value: JSON.stringify(state.primaryUseMode), category: "preference" },
+      ].filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
 
       await (supabase as any).from("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
       await (supabase as any).from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
@@ -690,7 +694,7 @@ export function OSSetupExperience() {
       </AnimatePresence>
 
       {/* Session Progress Bar */}
-      {phase !== "boot" && phase !== "network-setup" && phase !== "device-readiness" && phase !== "device-ownership" && phase !== "account-environment" && phase !== "access-protection" && phase !== "welcome" && (
+      {phase !== "boot" && phase !== "network-setup" && phase !== "device-readiness" && phase !== "device-ownership" && phase !== "account-environment" && phase !== "access-protection" && phase !== "privacy-transparency" && phase !== "quick-identity" && phase !== "deep-world-modeling" && phase !== "primary-use-mode" && phase !== "welcome" && (
         <div className="fixed top-0 left-0 right-0 z-[160]">
           <Progress value={sessionProgress} className="h-0.5 rounded-none" />
         </div>

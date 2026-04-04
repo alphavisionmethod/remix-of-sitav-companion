@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Globe, Clock, Users, Briefcase, DollarSign, MessageSquare, Target,
-  ChevronRight, ChevronDown, Check,
+  ChevronRight, ChevronDown, Check, Heart, Brain, Zap, Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -23,12 +23,12 @@ interface Props {
 }
 
 const CHAPTERS = [
-  { id: "routines", icon: Clock, title: "My Life & Routines", desc: "Daily rhythm and patterns" },
-  { id: "household", icon: Users, title: "My Household", desc: "Who SITA coordinates around" },
-  { id: "work", icon: Briefcase, title: "My Work or Business", desc: "Professional context" },
-  { id: "money", icon: DollarSign, title: "My Money Priorities", desc: "Financial visibility" },
-  { id: "communication", icon: MessageSquare, title: "My Communication Style", desc: "How you interact" },
-  { id: "goals", icon: Target, title: "My Goals & Stress Points", desc: "What matters most" },
+  { id: "routines", icon: Clock, title: "My Life & Routines", desc: "Daily rhythm and patterns", color: "text-primary" },
+  { id: "household", icon: Users, title: "My Household", desc: "Who SITA coordinates around", color: "text-[hsl(var(--trust-safe))]" },
+  { id: "work", icon: Briefcase, title: "My Work or Business", desc: "Professional context", color: "text-[hsl(var(--sita-gold))]" },
+  { id: "money", icon: DollarSign, title: "My Money Priorities", desc: "Financial visibility", color: "text-[hsl(38,85%,58%)]" },
+  { id: "communication", icon: MessageSquare, title: "My Communication Style", desc: "How you interact", color: "text-primary" },
+  { id: "goals", icon: Target, title: "My Goals & Stress Points", desc: "What matters most", color: "text-[hsl(345,65%,55%)]" },
 ];
 
 const WEEKDAY_CHIPS = ["Office / studio", "Remote work", "Hybrid", "Meetings-heavy", "Deep focus", "Client-facing", "Field work"];
@@ -42,6 +42,15 @@ const FINANCIAL_GOALS = ["Debt free", "Emergency fund", "Investing", "Budgeting"
 const CHANNELS = ["Email", "Text / SMS", "Phone calls", "Slack / Teams", "In-person", "Video calls"];
 const TOP_GOALS = ["Grow revenue", "Save more", "Better work-life balance", "Automate admin", "Delegate more", "Health & wellness", "Family time", "Career growth"];
 const STRESS_POINTS = ["Too many tasks", "Cash flow pressure", "Missed deadlines", "Information overload", "Decision fatigue", "Admin burden", "Context switching"];
+
+// Advisor suggestions derived from world model
+const ADVISOR_SUGGESTIONS: { condition: (d: WorldModelData) => boolean; name: string; icon: typeof Brain; reason: string }[] = [
+  { condition: d => d.work.industry.length > 0, name: "Business Advisor", icon: Briefcase, reason: "Industry context detected" },
+  { condition: d => d.money.goals.length > 0, name: "Money Advisor", icon: DollarSign, reason: "Financial goals set" },
+  { condition: d => d.household.size !== "" && d.household.size !== "Just me", name: "Family Advisor", icon: Users, reason: "Household members found" },
+  { condition: d => d.goals.topGoals.includes("Health & wellness"), name: "Wellness Advisor", icon: Heart, reason: "Wellness goal selected" },
+  { condition: d => d.goals.stressPoints.length >= 2, name: "Productivity Advisor", icon: Zap, reason: "Multiple stressors identified" },
+];
 
 const spring = { type: "spring" as const, damping: 28, stiffness: 280 };
 
@@ -74,6 +83,29 @@ export function DeepWorldModelingStep({ data, onUpdate, onNext, onPrev }: Props)
     const [section, field] = path.split(".");
     onUpdate({ ...data, [section]: { ...(data as any)[section], [field]: value } });
   };
+
+  // Derived advisor matches
+  const matchedAdvisors = ADVISOR_SUGGESTIONS.filter(a => a.condition(data));
+
+  // World model completeness as a percentage per domain
+  const domainScores = CHAPTERS.map(ch => ({
+    id: ch.id,
+    icon: ch.icon,
+    title: ch.title.replace("My ", ""),
+    color: ch.color,
+    complete: chapterComplete(ch.id),
+    depth: (() => {
+      switch (ch.id) {
+        case "routines": return Math.min(100, (data.routines.weekday.length + data.routines.weekend.length) * 12);
+        case "household": return Math.min(100, (data.household.size ? 30 : 0) + data.household.responsibilities.length * 10);
+        case "work": return Math.min(100, data.work.industry.length * 15 + (data.work.teamSize ? 20 : 0) + data.work.tools.length * 8);
+        case "money": return Math.min(100, data.money.goals.length * 15 + 10);
+        case "communication": return Math.min(100, data.communication.channels.length * 15 + 10);
+        case "goals": return Math.min(100, data.goals.topGoals.length * 20 + data.goals.stressPoints.length * 10);
+        default: return 0;
+      }
+    })(),
+  }));
 
   return (
     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
@@ -234,34 +266,92 @@ export function DeepWorldModelingStep({ data, onUpdate, onNext, onPrev }: Props)
         </div>
       </div>
 
-      {/* Right — World Model Viz */}
+      {/* Right — Animated World Model */}
       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, ...spring }}
-        className="lg:w-72 shrink-0 hidden lg:block">
+        className="lg:w-80 shrink-0 hidden lg:block space-y-4">
+        
+        {/* Domain Depth Visualization */}
         <div className="rounded-2xl border border-border/30 bg-card/60 p-6 sticky top-8" style={{ backdropFilter: "blur(12px)" }}>
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">World Model</p>
           <div className="space-y-3">
-            {CHAPTERS.map(ch => {
-              const done = chapterComplete(ch.id);
-              return (
-                <div key={ch.id} className="flex items-center gap-3">
-                  <motion.div animate={{ scale: done ? 1.05 : 1 }}
-                    className={cn("flex h-8 w-8 items-center justify-center rounded-lg",
-                      done ? "bg-[hsl(var(--trust-safe))]/15" : "bg-secondary/30")}>
-                    {done ? <Check className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : <ch.icon className="h-3.5 w-3.5 text-muted-foreground/40" />}
-                  </motion.div>
-                  <span className={cn("text-xs", done ? "text-foreground font-medium" : "text-muted-foreground/50")}>
-                    {ch.title.replace("My ", "")}
-                  </span>
+            {domainScores.map(ds => (
+              <motion.div key={ds.id} layout layoutId={`domain-${ds.id}`}
+                className="flex items-center gap-3">
+                <motion.div animate={{ scale: ds.complete ? 1.05 : 1 }}
+                  className={cn("flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
+                    ds.complete ? "bg-[hsl(var(--trust-safe))]/15" : "bg-secondary/30")}>
+                  {ds.complete ? <Check className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : <ds.icon className="h-3.5 w-3.5 text-muted-foreground/40" />}
+                </motion.div>
+                <div className="flex-1 min-w-0">
+                  <p className={cn("text-xs font-medium", ds.complete ? "text-foreground" : "text-muted-foreground/50")}>
+                    {ds.title}
+                  </p>
+                  <div className="h-1.5 w-full rounded-full bg-secondary/40 mt-1 overflow-hidden">
+                    <motion.div className="h-full rounded-full bg-primary/60"
+                      animate={{ width: `${ds.depth}%` }}
+                      transition={{ duration: 0.5, ease: "easeOut" }} />
+                  </div>
                 </div>
-              );
-            })}
+              </motion.div>
+            ))}
           </div>
-          <div className="mt-6 pt-4 border-t border-border/20">
+
+          <div className="mt-5 pt-4 border-t border-border/20">
             <p className="text-xs text-muted-foreground">
               <span className="text-foreground font-semibold">{completedCount}/6</span> chapters mapped
             </p>
           </div>
         </div>
+
+        {/* Advisor Matches */}
+        <AnimatePresence>
+          {matchedAdvisors.length > 0 && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              className="rounded-2xl border border-border/30 bg-card/60 p-5" style={{ backdropFilter: "blur(12px)" }}>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Suggested Advisors</p>
+              <div className="space-y-2">
+                {matchedAdvisors.map((adv, i) => (
+                  <motion.div key={adv.name} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.08 }} layout layoutId={`advisor-${adv.name}`}
+                    className="flex items-center gap-2.5 rounded-xl bg-primary/[0.06] border border-primary/10 p-2.5">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/15">
+                      <adv.icon className="h-3.5 w-3.5 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-[11px] font-semibold text-foreground">{adv.name}</p>
+                      <p className="text-[10px] text-muted-foreground">{adv.reason}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Calendar Rhythm Preview */}
+        <AnimatePresence>
+          {(data.routines.weekday.length > 0 || data.routines.weekend.length > 0) && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              className="rounded-2xl border border-border/30 bg-card/60 p-5" style={{ backdropFilter: "blur(12px)" }}>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Calendar Rhythm</p>
+              <div className="flex gap-1">
+                {["M", "T", "W", "T", "F", "S", "S"].map((day, i) => {
+                  const isWeekend = i >= 5;
+                  const hasActivity = isWeekend ? data.routines.weekend.length > 0 : data.routines.weekday.length > 0;
+                  const intensity = hasActivity ? (isWeekend ? data.routines.weekend.length : data.routines.weekday.length) : 0;
+                  return (
+                    <motion.div key={i} animate={{ opacity: hasActivity ? 1 : 0.3 }}
+                      className="flex-1 text-center">
+                      <p className="text-[9px] text-muted-foreground mb-1">{day}</p>
+                      <motion.div animate={{ height: Math.max(8, intensity * 6) }}
+                        className={cn("w-full rounded-sm", hasActivity ? "bg-primary/40" : "bg-secondary/30")} />
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </motion.div>
   );
