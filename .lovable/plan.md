@@ -1,99 +1,79 @@
 
 
-# Implement ISO Builder, OVF/OVA Packager, and PWA Manifest
+# Full Database Schema + Triggers + RLS + Edge Functions Deployment
 
-## Overview
+## Current State
 
-Three gaps to close: (1) a real ISO builder script with cloud-init auto-install, (2) a proper OVF/OVA packager that produces VMware-compliant artifacts, and (3) PWA installability via a web manifest (no service worker — per project constraints, only a manifest for Add-to-Home-Screen).
+The database is **completely empty** — 0 tables, 0 functions, 0 triggers. However, **25 migration files** already exist with all table definitions, RLS policies, and the profile auto-creation trigger. The migrations just haven't been applied yet.
 
----
+All 14 edge functions have complete code in `supabase/functions/`.
 
-## 1. ISO Builder — `scripts/release/build-iso.sh`
+## What's Needed
 
-Replace the stub `generate-vmware-iso-image.ts` with a real bash script that uses `xorriso`/`genisoimage` to build a bootable ISO.
+### 1. Apply All Existing Migrations (CRITICAL)
 
-**What it does:**
-- Downloads Ubuntu Server 24.04 mini ISO (or uses a cached copy)
-- Injects a full cloud-init `autoinstall` config (`user-data`, `meta-data`, `network-config`)
-- Autoinstall provisions: disk partitioning (A/B root + encrypted data), Docker + Docker Compose install, SITA OS Docker images pre-loaded, systemd auto-start service, network config wizard via cloud-init
-- Outputs `sita-os-{version}.iso` ready to boot on VMware/bare-metal
-- Reads from `generated/base-os-manifest.json` for OS version, partition scheme, kernel features
+Run a single consolidated migration that applies all the schema in the correct order. The existing 25 migration files define:
 
-**New files:**
-| File | Purpose |
-|------|---------|
-| `scripts/release/build-iso.sh` | Main ISO builder (~200 lines) |
-| `scripts/release/iso/autoinstall/user-data` | Cloud-init autoinstall config |
-| `scripts/release/iso/autoinstall/meta-data` | Instance metadata |
-| `scripts/release/iso/autoinstall/network-config` | Network YAML |
-| `scripts/release/iso/sita-first-boot.sh` | First-boot script: loads Docker images, starts stack |
-| `scripts/release/iso/sita-os.service` | Systemd unit for auto-start |
+- **48+ tables** with RLS enabled on every one
+- **`has_role()` SECURITY DEFINER function** for role-based access
+- **`on_auth_user_created` trigger** for auto-creating profiles
+- **`audit_sensitive_change()` trigger** on approval_queue, connector_credentials, policies, user_roles
+- **`update_updated_at_column()` trigger** on 20+ tables
 
-**Autoinstall covers:**
-- Disk: 512MB EFI, 20GB root-A (dm-verity), 20GB root-B, rest as encrypted data (LUKS2)
-- Packages: docker.io, docker-compose-plugin, tpm2-tools, cryptsetup
-- Users: `sita` user with sudo, SSH key injection
-- Post-install: copies Docker images from ISO media, runs `docker compose up -d`
+### 2. Add Missing Triggers (NEW)
 
----
+Three triggers referenced in the spec don't exist in any migration:
 
-## 2. OVF/OVA Packager — `scripts/release/build-ova.sh`
+| Trigger | On Table | Action |
+|---------|----------|--------|
+| `on_incident_created` | `incidents` | Auto-insert into `notifications_queue` with urgency based on severity |
+| `on_approval_status_changed` | `approval_queue` | Auto-notify requester when status changes from `pending` |
+| `on_workflow_run_failed` | `workflow_runs` | Auto-create incident when a workflow fails |
 
-Replace the current tarball-only `scripts/build-ova.sh` with a proper OVA builder.
+### 3. Edge Function Deployment
 
-**What it does:**
-- Creates a VMDK virtual disk using `qemu-img` (or raw dd + VBoxManage conversion)
-- Generates a standards-compliant `.ovf` XML descriptor with proper namespaces (CIM, OVF, RASD, VSSD)
-- Computes SHA256 checksums into a `.mf` manifest file
-- Bundles `.ovf` + `.vmdk` + `.mf` into a `.ova` TAR archive (in correct order per OVF spec)
-- Configurable: CPU count, RAM, disk size, network adapter type via CLI flags
+All 14 functions are already coded. They will auto-deploy via Lovable Cloud. No code changes needed — they already reference the correct tables.
 
-**New/modified files:**
-| File | Purpose |
-|------|---------|
-| `scripts/release/build-ova.sh` | Replaces `scripts/build-ova.sh` — full OVA packager (~250 lines) |
-| `scripts/release/templates/sita-os.ovf.template` | OVF XML template with placeholders |
+## Implementation Plan
 
-**OVF descriptor includes:**
-- VirtualSystemType: vmx-21 (ESXi 8.0 compatible)
-- 4 vCPU, 8GB RAM defaults (configurable)
-- 80GB thin-provisioned VMDK
-- VMXNET3 network adapter on `sita-net`
-- ProductSection with SITA OS metadata, version, vendor URL
-- EulaSection placeholder
-- DeploymentOptionSection: pilot (2 vCPU/4GB) vs production (4 vCPU/8GB)
+### Step 1: Create a single new migration with the 3 missing triggers
 
----
+```sql
+-- on_incident_created → auto-notify
+CREATE OR REPLACE FUNCTION public.notify_on_incident()
+RETURNS TRIGGER AS $$ ... $$;
+CREATE TRIGGER on_incident_created AFTER INSERT ON public.incidents
+  FOR EACH ROW EXECUTE FUNCTION public.notify_on_incident();
 
-## 3. PWA Manifest (no service worker)
+-- on_approval_status_changed → auto-notify requester  
+CREATE OR REPLACE FUNCTION public.notify_on_approval_change()
+RETURNS TRIGGER AS $$ ... $$;
+CREATE TRIGGER on_approval_status_changed AFTER UPDATE OF status ON public.approval_queue
+  FOR EACH ROW WHEN (OLD.status = 'pending' AND NEW.status IS DISTINCT FROM OLD.status)
+  EXECUTE FUNCTION public.notify_on_approval_change();
 
-Per project constraints, we add only a `manifest.webmanifest` for installability — no `vite-plugin-pwa`, no service worker. The existing `PWAInstallPrompt` component is already wired into `ShellLayout`.
+-- on_workflow_run_failed → auto-create incident
+CREATE OR REPLACE FUNCTION public.incident_on_workflow_failure()
+RETURNS TRIGGER AS $$ ... $$;
+CREATE TRIGGER on_workflow_run_failed AFTER UPDATE OF status ON public.workflow_runs
+  FOR EACH ROW WHEN (NEW.status = 'failed' AND OLD.status IS DISTINCT FROM NEW.status)
+  EXECUTE FUNCTION public.incident_on_workflow_failure();
+```
 
-**New/modified files:**
-| File | Purpose |
-|------|---------|
-| `public/manifest.webmanifest` | Web app manifest with SITA OS branding |
-| `public/icons/icon-192.png` | Generated placeholder icon (192x192) |
-| `public/icons/icon-512.png` | Generated placeholder icon (512x512) |
-| `index.html` | Add `<link rel="manifest">` + theme-color meta + apple-touch-icon |
+### Step 2: Deploy all 14 edge functions
 
-**Manifest contents:**
-- `name`: "SITA OS", `short_name`: "SITA"
-- `display`: "standalone", `orientation`: "any"
-- `start_url`: "/", `scope`: "/"`
-- `theme_color`: "#0F172A" (dark bg), `background_color`: "#0F172A"
-- Icons at 192 and 512 sizes
-- `categories`: ["productivity", "business"]
+Use `supabase--deploy_edge_functions` for all 14 functions to ensure they're live.
 
----
+### Step 3: Verify
 
-## Implementation Order
+- Run security scan to confirm RLS coverage
+- Run linter to check for issues
+- Verify edge function logs
 
-1. Create PWA manifest + icons + update `index.html`
-2. Create ISO builder autoinstall configs
-3. Create ISO builder script (`build-iso.sh`)
-4. Create OVF template
-5. Create OVA packager script (`build-ova.sh` replacement)
-6. Update `Makefile` with `make iso` and `make ova` targets
-7. Verify TypeScript compilation
+## Technical Details
+
+- All trigger functions use `SECURITY DEFINER` so they can insert into notification/incident tables regardless of the invoking user's RLS
+- `search_path = public` is set on all SECURITY DEFINER functions to prevent search_path attacks
+- Notification urgency is mapped from incident severity: critical→critical, high→high, medium→normal, low→low
+- Edge functions already exist and auto-deploy — the only database gap is the 3 missing triggers
 
