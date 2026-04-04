@@ -72,14 +72,12 @@ export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCa
         {/* Left: Trust ladder + controls */}
         <div className="lg:col-span-3 space-y-5">
           {/* Header */}
-          <div className="text-center lg:text-left">
-            <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}
-              className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20 mb-4">
-              <Shield className="h-7 w-7 text-primary-foreground" />
-            </motion.div>
-            <h2 className="font-display text-2xl font-bold text-foreground">Choose how SITA should help</h2>
-            <p className="mt-1.5 text-sm text-muted-foreground">You control what SITA can suggest, simulate, and handle</p>
-          </div>
+          <SetupStageHeader
+            icon={Shield}
+            title="Choose how SITA should help"
+            subtitle="You control what SITA can suggest, simulate, and handle"
+            align="left"
+          />
 
           {/* Trust Ladder */}
           <div className="space-y-1">
