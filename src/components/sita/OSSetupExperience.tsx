@@ -530,11 +530,13 @@ export function OSSetupExperience() {
 
   const goNext = useCallback(() => {
     orchGoNext();
-  }, [orchGoNext]);
+    persistSetupState(state, phase);
+  }, [orchGoNext, state, phase]);
 
   const goPrev = useCallback(() => {
     orchGoPrev();
-  }, [orchGoPrev]);
+    persistSetupState(state, phase);
+  }, [orchGoPrev, state, phase]);
 
   const toggleArrayField = (field: "painPoints" | "protectionPriorities" | "rituals", key: string) => {
     setState(prev => ({
