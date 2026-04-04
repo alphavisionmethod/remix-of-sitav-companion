@@ -53,3 +53,12 @@ export { FirstWinRecommendationCard } from "./FirstWinRecommendationCard";
 export { SetupSummaryExperience } from "./SetupSummaryExperience";
 export { DesktopArrivalTransitionController } from "./DesktopArrivalTransitionController";
 export { WelcomeStateComposer } from "./WelcomeStateComposer";
+
+// Wow & Polish (new)
+export { SignatureWowMoment } from "./SignatureWowMoment";
+export type { WowMomentId } from "./SignatureWowMoment";
+export { ChapterTransition } from "./ChapterTransition";
+export { ConfidenceIndicator, computeConfidenceLevel } from "./ConfidenceIndicator";
+export type { ConfidenceLevel } from "./ConfidenceIndicator";
+export { DeferredCompletionCenter, buildDeferredItems } from "./DeferredCompletionCenter";
+export type { DeferredItem } from "./DeferredCompletionCenter";
