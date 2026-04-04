@@ -188,7 +188,11 @@ export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onConnect
   };
 
   const handleDefer = (id: string) => {
-    setDeferred(prev => new Set([...prev, id]));
+    setDeferred(prev => {
+      const next = new Set([...prev, id]);
+      onDeferredChange?.([...next]);
+      return next;
+    });
   };
 
   return (
