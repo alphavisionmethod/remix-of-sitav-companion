@@ -254,23 +254,16 @@ export function AdvisorActivationStep({ advisors, onUpdate, primaryUseMode, onNe
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-between pt-2">
-            <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
-            <div className="flex items-center gap-3">
-              {enabledAdvisors.length > 0 && (
+          <StageTransitionController
+            onPrev={onPrev}
+            onNext={onNext}
+            canAdvance={canAdvance}
+            extra={
+              enabledAdvisors.length > 0 ? (
                 <span className="text-xs text-muted-foreground">{enabledAdvisors.length} advisor{enabledAdvisors.length !== 1 ? "s" : ""} active</span>
-              )}
-              <button onClick={onNext} disabled={!canAdvance}
-                className={cn(
-                  "rounded-xl px-6 py-2.5 text-sm font-semibold transition-all flex items-center gap-2",
-                  canAdvance
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                    : "bg-muted text-muted-foreground cursor-not-allowed"
-                )}>
-                Continue <ChevronRight className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          </div>
+              ) : undefined
+            }
+          />
         </div>
 
         {/* Right: System map */}
