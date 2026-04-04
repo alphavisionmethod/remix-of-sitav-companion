@@ -46,6 +46,7 @@ interface Props {
 }
 
 export function DeviceOwnershipStep({ selected, onSelect, onNext, onPrev }: Props) {
+  const [showImpact, setShowImpact] = useState(false);
   const activeOption = OPTIONS.find(o => o.key === selected);
 
   return (
