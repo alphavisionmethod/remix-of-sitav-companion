@@ -118,6 +118,11 @@ interface SetupData {
   accountPath: string;
   accessMethod: string;
   recoveryMethod: string;
+  // New phase 2.8-2.11 fields
+  permissionChoices: Record<string, boolean>;
+  quickIdentity: QuickIdentityData;
+  worldModel: WorldModelData;
+  primaryUseMode: string;
 }
 
 // ── Phase Status Indicator ──────────────────────────────────
