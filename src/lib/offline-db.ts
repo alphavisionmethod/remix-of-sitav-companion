@@ -167,7 +167,7 @@ export async function clearSyncedActions(): Promise<void> {
   const db = await openDB();
   const store = tx(db, 'pending-actions', 'readwrite');
   const index = store.index('synced');
-  const synced = await reqToPromise<OfflineAction[]>(index.getAll(true));
+  const synced = await reqToPromise<OfflineAction[]>(index.getAll(IDBKeyRange.only(1)));
   for (const a of synced) {
     store.delete(a.id);
   }
