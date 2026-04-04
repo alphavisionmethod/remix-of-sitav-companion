@@ -129,3 +129,22 @@ setup: ## First-time setup: copy env, build, start
 	@echo "  Studio:  http://localhost:3100"
 	@echo "  Kong:    http://localhost:8000"
 	@echo "═══════════════════════════════════════════"
+
+# ── Release ──────────────────────────────────────────────────
+
+iso: ## Build bootable SITA OS ISO image
+	@echo "Building SITA OS ISO..."
+	bash scripts/release/build-iso.sh --version $(or $(VERSION),1.0.0)
+
+iso-full: ## Build ISO with embedded Docker images
+	bash scripts/release/build-iso.sh --version $(or $(VERSION),1.0.0) --include-images
+
+ova: ## Build VMware OVA appliance
+	@echo "Building SITA OS OVA..."
+	bash scripts/release/build-ova.sh --version $(or $(VERSION),1.0.0)
+
+ova-from-iso: ## Build OVA from ISO (full pipeline)
+	bash scripts/release/build-ova.sh --version $(or $(VERSION),1.0.0) --from-iso dist/sita-os-$(or $(VERSION),1.0.0).iso
+
+ova-pilot: ## Build pilot-sized OVA (2 vCPU, 4GB RAM, 40GB disk)
+	CPU_COUNT=2 RAM_MB=4096 DISK_SIZE_GB=40 bash scripts/release/build-ova.sh --version $(or $(VERSION),1.0.0)
