@@ -734,7 +734,7 @@ export function OSSetupExperience() {
       )}
 
       {/* Boot */}
-      {phase === "boot" && <FirstBootScreen onComplete={() => setCurrentPhase("network-setup")} />}
+      {phase === "boot" && <FirstBootScreen onComplete={() => { engine.completeCurrentAndAdvance(); }} />}
 
       {/* Preview example modal */}
       <AnimatePresence>
