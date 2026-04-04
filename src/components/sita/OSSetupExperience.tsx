@@ -53,7 +53,21 @@ import { DeviceReadinessStep } from "@/components/sita/onboarding/DeviceReadines
 import { DeviceOwnershipStep } from "@/components/sita/onboarding/DeviceOwnershipStep";
 import { AccountEnvironmentStep } from "@/components/sita/onboarding/AccountEnvironmentStep";
 import { AccessProtectionStep } from "@/components/sita/onboarding/AccessProtectionStep";
+import { PrivacyTransparencyStep } from "@/components/sita/onboarding/PrivacyTransparencyStep";
+import { QuickIdentityStep } from "@/components/sita/onboarding/QuickIdentityStep";
+import type { QuickIdentityData } from "@/components/sita/onboarding/QuickIdentityStep";
+import { DeepWorldModelingStep } from "@/components/sita/onboarding/DeepWorldModelingStep";
+import type { WorldModelData } from "@/components/sita/onboarding/DeepWorldModelingStep";
+import { PrimaryUseModeStep } from "@/components/sita/onboarding/PrimaryUseModeStep";
 import { Progress } from "@/components/ui/progress";
+
+interface OperatingModelData {
+  routines: string[];
+  household: string[];
+  work: string[];
+  finances: string[];
+  preferences: string[];
+}
 
 // ── Types ───────────────────────────────────────────────────
 
