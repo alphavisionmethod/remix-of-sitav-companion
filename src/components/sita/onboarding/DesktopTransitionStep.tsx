@@ -10,6 +10,7 @@ import {
   DollarSign, Briefcase, Calendar, Bell,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface DesktopTransitionStepProps {
   displayName: string;

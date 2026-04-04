@@ -9,6 +9,7 @@ import {
   ChevronRight, ChevronDown, Check, Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export interface AdvisorActivation {
   id: string;

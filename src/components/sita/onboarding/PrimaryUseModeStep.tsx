@@ -4,6 +4,7 @@ import {
   Calendar, MessageSquare, Shield, Brain, Bell, BarChart3, Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface Props {
   selected: string;

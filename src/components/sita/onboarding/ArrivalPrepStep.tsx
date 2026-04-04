@@ -10,6 +10,7 @@ import {
   TrendingUp, Bell, Plug, Trophy, Clock, Settings, BookOpen,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface ArrivalPrepStepProps {
   displayName: string;
