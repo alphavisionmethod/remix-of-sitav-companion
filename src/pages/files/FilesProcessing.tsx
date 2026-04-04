@@ -5,17 +5,9 @@ import { Loader2, CheckCircle, AlertTriangle, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { FileIngestionService } from "@/lib/core-services/file-ingestion";
+import { DEMO_PROCESSING_FILES } from "@/lib/demo-data";
 
-const DEMO_FILES = [
-  { filename: "Receipt_Costco_Mar28.jpg", mimeType: "image/jpeg", sizeBytes: 2400000, textContent: "Costco Wholesale receipt total $342.18 grocery items household supplies", uploadedBy: "owner" },
-  { filename: "Vendor_NDA_TechFlow.pdf", mimeType: "application/pdf", sizeBytes: 450000, textContent: "Mutual NDA agreement confidential information 2-year term", uploadedBy: "owner" },
-  { filename: "Bank_Statement_Chase_Mar.pdf", mimeType: "application/pdf", sizeBytes: 890000, textContent: "Bank statement account routing number SSN ending 4821 February deposits", uploadedBy: "owner" },
-  { filename: "Kid_Activity_Schedule.png", mimeType: "image/png", sizeBytes: 1200000, textContent: "Soccer practice Tuesday Thursday 4pm swimming lessons Wednesday", uploadedBy: "owner" },
-  { filename: "Insurance_Renewal_Notice.pdf", mimeType: "application/pdf", sizeBytes: 320000, textContent: "Insurance renewal date 04/30/2025 premium increase $120/mo policy NDA confidential", uploadedBy: "owner" },
-  { filename: "Invoice_1039_DavisGroup.pdf", mimeType: "application/pdf", sizeBytes: 280000, textContent: "Invoice for design services $8,500 Net-30 payment due 05/01/2025", uploadedBy: "owner" },
-  { filename: "School_Report_Card_Q3.pdf", mimeType: "application/pdf", sizeBytes: 150000, textContent: "Student report card GPA 3.8 teacher notes excellent progress", uploadedBy: "owner" },
-  { filename: "Travel_Hotel_Confirmation.pdf", mimeType: "application/pdf", sizeBytes: 200000, textContent: "Hotel reservation Marriott Wailea Apr 12-18 $289/night confirmation", uploadedBy: "owner" },
-];
+const DEMO_FILES = DEMO_PROCESSING_FILES;
 
 const stageMap: Record<string, ProcessingStage> = {
   "Receipt_Costco_Mar28.jpg": "ocr",
