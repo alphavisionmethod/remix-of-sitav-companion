@@ -654,7 +654,7 @@ export function OSSetupExperience() {
     return true;
   };
 
-  const showLearningPanel = !["boot", "network-setup", "device-readiness", "device-ownership", "account-environment", "access-protection", "welcome", "restore", "enterprise", "cinematic-intro", "trust-certificate"].includes(phase);
+  const showLearningPanel = !["boot", "network-setup", "device-readiness", "device-ownership", "account-environment", "access-protection", "privacy-transparency", "quick-identity", "deep-world-modeling", "primary-use-mode", "welcome", "restore", "enterprise", "cinematic-intro", "trust-certificate"].includes(phase);
   const canSkipCurrent = !isPhaseRequired(phase);
   const showRollbackBtn = state.setupStyle === "advanced";
   const currentBgTasks = backgroundTasks.filter(t => t.phaseId === phase);
