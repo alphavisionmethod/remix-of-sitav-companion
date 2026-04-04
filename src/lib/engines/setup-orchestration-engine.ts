@@ -296,8 +296,17 @@ export class SetupOrchestrationEngine {
     const current = this.session.currentPhaseId;
     const status = this.getPhaseStatus(current);
 
-    // Force-activate if still in preparing/idle/warning/blocked state
+    // Force-activate if still in a non-resolved, non-active state
     if (!RESOLVED_STATUSES.includes(status) && status !== "active" && status !== "validating" && status !== "success") {
+      // blocked/degraded/warning need resumed first
+      if (status === "blocked" || status === "degraded" || status === "warning") {
+        this.transitionPhaseStatus(current, "resumed");
+      }
+      // idle needs preparing first
+      if (this.getPhaseStatus(current) === "idle") {
+        this.transitionPhaseStatus(current, "preparing");
+      }
+      // preparing/resumed → active
       this.transitionPhaseStatus(current, "active");
     }
 
