@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Sun, Clock, Moon, BarChart3, Calendar, ChevronRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const rituals = [
   { key: "morning-pulse", icon: Sun, title: "Morning Pulse", desc: "Start the day with priorities, calendar, and anything that needs attention." },

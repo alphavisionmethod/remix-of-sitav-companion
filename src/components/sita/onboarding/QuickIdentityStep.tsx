@@ -5,6 +5,7 @@ import {
   Brain, Shield, Users, DollarSign, Briefcase, Bell, Zap, Layout,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export interface QuickIdentityData {
   runFirst: string[];

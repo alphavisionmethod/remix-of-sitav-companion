@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { UserCheck, DollarSign, Users, Shield, BarChart3, ChevronRight } from "lucide-react";
 
 const vignettes = [

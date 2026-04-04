@@ -6,6 +6,7 @@ import {
   ArrowRight, AlertTriangle, CheckCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface Props {
   permissionChoices: Record<string, boolean>;
