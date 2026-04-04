@@ -7,9 +7,9 @@ _format_version: "2.1"
 _transform: true
 
 services:
-  # ── PostgREST ──────────────────────────────────────────────────
+  # ── PostgREST (REST API) ───────────────────────────────────────
   - name: rest-v1
-    url: http://sita-supabase-db:3000
+    url: http://sita-supabase-rest:3000
     routes:
       - name: rest-v1-route
         strip_path: true
@@ -34,7 +34,7 @@ services:
 
   # ── Realtime ───────────────────────────────────────────────────
   - name: realtime-v1
-    url: http://sita-supabase-db:4000
+    url: http://sita-supabase-realtime:4000
     routes:
       - name: realtime-v1-route
         strip_path: true
@@ -57,9 +57,9 @@ services:
         config:
           hide_credentials: false
 
-  # ── Meta / Health ──────────────────────────────────────────────
+  # ── PostgREST Meta / Health ────────────────────────────────────
   - name: meta
-    url: http://sita-supabase-db:8080
+    url: http://sita-supabase-rest:3000
     routes:
       - name: meta-route
         strip_path: true
