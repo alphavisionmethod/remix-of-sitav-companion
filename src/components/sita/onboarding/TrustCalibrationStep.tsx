@@ -46,7 +46,16 @@ const ESCALATION_OPTIONS = ["silent", "notify", "urgent"];
 
 export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCalibrationStepProps) {
   const [showFineTune, setShowFineTune] = useState(false);
+  const [prevLevel, setPrevLevel] = useState(data.level);
+  const directionRef = useRef<"up" | "down">("up");
   const selectedLevel = TRUST_LEVELS.find(t => t.level === data.level);
+  const prefersReduced = useReducedMotion();
+
+  // Track direction of trust level change for directional animations
+  if (data.level !== prevLevel) {
+    directionRef.current = data.level > prevLevel ? "up" : "down";
+    setPrevLevel(data.level);
+  }
 
   const update = (partial: Partial<TrustCalibrationData>) => onUpdate({ ...data, ...partial });
 
