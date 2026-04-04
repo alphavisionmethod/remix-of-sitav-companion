@@ -46,6 +46,8 @@ services:
       - SUPABASE_URL=http://sita-supabase-kong:8000
       - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
       - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      - EDGE_FUNCTIONS_URL=http://sita-supabase-functions:9000
+      - SITE_URL=${SITE_URL:-http://localhost:8080}
     depends_on:
       sita-supabase-db:
         condition: service_healthy
