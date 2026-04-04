@@ -272,27 +272,45 @@ export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCa
             <div className="space-y-2">
               {WORKFLOW_STAGES.map((stage, i) => {
                 const isActive = selectedLevel ? selectedLevel.stages[i] : false;
+                const stageDirection = directionRef.current;
                 return (
                   <motion.div
                     key={stage}
-                    animate={{ opacity: isActive ? 1 : 0.3, scale: isActive ? 1 : 0.97 }}
-                    transition={{ type: "spring", damping: 20, stiffness: 300 }}
+                    layout={!prefersReduced}
+                    animate={{
+                      opacity: isActive ? 1 : 0.3,
+                      scale: isActive ? 1 : 0.95,
+                      x: isActive ? 0 : 4,
+                      filter: isActive ? "blur(0px)" : "blur(1px)",
+                    }}
+                    transition={{
+                      type: "spring",
+                      damping: 22,
+                      stiffness: 260,
+                      delay: prefersReduced ? 0 : i * 0.06,
+                    }}
                     className={cn(
-                      "rounded-xl border p-3 transition-all",
+                      "rounded-xl border p-3 transition-colors duration-300",
                       isActive
                         ? "border-primary/30 bg-primary/5"
                         : "border-border/30 bg-secondary/10"
                     )}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={cn(
-                        "h-8 w-8 rounded-lg flex items-center justify-center text-xs font-bold transition-colors",
-                        isActive ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"
-                      )}>
-                        {i + 1}
-                      </div>
-                      <div>
-                        <p className={cn("text-sm font-semibold", isActive ? "text-foreground" : "text-muted-foreground")}>{stage}</p>
+                      <motion.div
+                        animate={{
+                          backgroundColor: isActive
+                            ? "hsl(var(--primary) / 0.15)"
+                            : "hsl(var(--muted))",
+                          scale: isActive ? 1 : 0.9,
+                        }}
+                        transition={{ type: "spring", damping: 18, stiffness: 300, delay: prefersReduced ? 0 : i * 0.06 }}
+                        className="h-8 w-8 rounded-lg flex items-center justify-center text-xs font-bold"
+                      >
+                        <span className={cn(isActive ? "text-primary" : "text-muted-foreground")}>{i + 1}</span>
+                      </motion.div>
+                      <div className="flex-1 min-w-0">
+                        <p className={cn("text-sm font-semibold transition-colors duration-200", isActive ? "text-foreground" : "text-muted-foreground")}>{stage}</p>
                         <p className="text-[10px] text-muted-foreground">
                           {i === 0 && "SITA prepares the action"}
                           {i === 1 && "Review before execution"}
@@ -301,14 +319,48 @@ export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCa
                           {i === 4 && "Verified proof recorded"}
                         </p>
                       </div>
-                      {isActive && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          className="ml-auto h-2 w-2 rounded-full bg-[hsl(var(--trust-safe))]"
-                        />
-                      )}
+                      <AnimatePresence mode="wait">
+                        {isActive && (
+                          <motion.div
+                            key={`dot-${stage}-active`}
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0, opacity: 0 }}
+                            transition={{
+                              type: "spring",
+                              damping: 15,
+                              stiffness: 400,
+                              delay: prefersReduced ? 0 : i * 0.08,
+                            }}
+                            className="ml-auto flex items-center gap-1.5"
+                          >
+                            <motion.div
+                              animate={{ scale: [1, 1.4, 1] }}
+                              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
+                              className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--trust-safe))]/40"
+                            />
+                            <div className="h-2 w-2 rounded-full bg-[hsl(var(--trust-safe))]" />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
+                    {/* Progress bar within active stages */}
+                    <motion.div
+                      className="mt-2 h-0.5 rounded-full bg-primary/20 overflow-hidden"
+                      animate={{ opacity: isActive ? 1 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <motion.div
+                        className="h-full rounded-full bg-gradient-to-r from-primary/60 to-[hsl(var(--trust-safe))]"
+                        initial={{ width: "0%" }}
+                        animate={{ width: isActive ? "100%" : "0%" }}
+                        transition={{
+                          duration: prefersReduced ? 0.1 : 0.8,
+                          ease: "easeOut",
+                          delay: prefersReduced ? 0 : 0.15 + i * 0.1,
+                        }}
+                      />
+                    </motion.div>
                   </motion.div>
                 );
               })}
