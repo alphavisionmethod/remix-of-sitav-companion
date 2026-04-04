@@ -829,6 +829,23 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
+                {/* Trust Calibration */}
+                {phase === "trust-calibration" && (
+                  <TrustCalibrationStep key="trust-calibration"
+                    data={state.trustCalibration}
+                    onUpdate={tc => setState(s => ({ ...s, trustCalibration: tc }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* Advisor Activation */}
+                {phase === "advisor-activation" && (
+                  <AdvisorActivationStep key="advisor-activation"
+                    advisors={state.advisorActivation}
+                    onUpdate={aa => setState(s => ({ ...s, advisorActivation: aa }))}
+                    primaryUseMode={state.primaryUseMode}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
                 {/* Welcome */}
                 {phase === "welcome" && (
                   <FirstWelcomeScreen key="welcome" onSetup={goNext}
