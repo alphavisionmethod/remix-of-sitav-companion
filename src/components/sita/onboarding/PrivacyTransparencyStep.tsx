@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
 
 interface Props {
   permissionChoices: Record<string, boolean>;
