@@ -117,3 +117,35 @@ export function createRefusalReceipt(params: {
 export function getReceiptById(id: string): TypedReceipt | undefined {
   return receiptChain.find((r) => r.id === id);
 }
+
+export function createFirstBootReceipt(params: {
+  phase: import("@/packages/proof-model/receipts/first-boot-receipt").FirstBootReceiptPhase;
+  deviceId: string;
+  attestationHash: string;
+  trustBaselineScore: number;
+  secureBootVerified: boolean;
+  tpmPresent: boolean;
+  outcome: "success" | "degraded" | "failed";
+  details: Record<string, unknown>;
+  tenantId: string;
+}): import("@/packages/proof-model/receipts/first-boot-receipt").FirstBootReceipt {
+  const previousHash = getLastHash();
+  const receipt = {
+    type: "first-boot" as const,
+    id: crypto.randomUUID(),
+    timestamp: new Date().toISOString(),
+    hash: computeHash(`${previousHash}:first-boot:${params.phase}:${params.attestationHash}`),
+    previousHash,
+    tenantId: params.tenantId,
+    phase: params.phase,
+    deviceId: params.deviceId,
+    attestationHash: params.attestationHash,
+    trustBaselineScore: params.trustBaselineScore,
+    secureBootVerified: params.secureBootVerified,
+    tpmPresent: params.tpmPresent,
+    outcome: params.outcome,
+    details: params.details,
+  };
+  receiptChain.push(receipt);
+  return receipt;
+}

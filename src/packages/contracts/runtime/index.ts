@@ -8,3 +8,7 @@ export * from "./scenario-intelligence-runtime";
 export * from "./os-unification-runtime";
 export * from "./workspace-runtime";
 export * from "./trusted-boot-runtime";
+export * from "./first-boot-provisioning";
+export * from "./unified-surface-runtime";
+export * from "./surface-parity";
+export * from "./parity-gates";

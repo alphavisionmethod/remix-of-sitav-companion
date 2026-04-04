@@ -62,3 +62,47 @@ export interface ElectronBridgeAPI {
   getAppVersion: () => string;
   platform: string;
 }
+
+// ── Native Capability Bridge ─────────────────────────────────
+// Maps IPC channels to contract-level operations
+
+export interface NativeCapabilityBridge {
+  trustAttestation: {
+    channel: "trust-attestation";
+    request: { nonce: string };
+    response: { attestationHash: string; tpmPresent: boolean; secureBootVerified: boolean; trustScore: number };
+  };
+  proofEmit: {
+    channel: "proof-emit";
+    request: { receiptType: string; payload: Record<string, unknown> };
+    response: { receiptId: string; chainHash: string; accepted: boolean };
+  };
+  capabilityQuery: {
+    channel: "capability-query";
+    request: { capabilityId: string };
+    response: { available: boolean; degraded: boolean; fallback?: string };
+  };
+  degradedMode: {
+    channel: "degraded-mode";
+    request: { query: true };
+    response: { active: boolean; reasons: string[]; affectedCapabilities: string[] };
+  };
+  policyCheck: {
+    channel: "policy-check";
+    request: { action: string; target: string; trustScore: number };
+    response: { allowed: boolean; requiresApproval: boolean; approvalType?: string; reason?: string };
+  };
+}
+
+// ── Desktop Host Config ──────────────────────────────────────
+// What the native host owns vs renderer — no policy/execution in surfaces
+
+export interface DesktopHostConfigIPC {
+  hostOwns: string[];
+  rendererOwns: string[];
+  boundary: Array<{
+    channel: ElectronIPCChannel;
+    direction: "host-to-renderer" | "renderer-to-host" | "bidirectional";
+    proofRequired: boolean;
+  }>;
+}

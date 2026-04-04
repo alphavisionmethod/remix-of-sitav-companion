@@ -133,3 +133,7 @@ export interface RefusalProofReceipt extends BaseReceipt {
 // ── Sub-module re-exports ────────────────────────────────────
 export * from "./receipts";
 export * from "./agentic-and-investment-proof";
+
+// Re-export FirstBootReceipt from receipts
+import type { FirstBootReceipt } from "./receipts/first-boot-receipt";
+export type { FirstBootReceipt };

@@ -3,7 +3,7 @@
 // Cross-surface continuity and shared context handoff
 // ═══════════════════════════════════════════════════════════════
 
-export type SurfaceType = "web" | "mobile" | "admin" | "api" | "voice" | "notification";
+export type SurfaceType = "web" | "mobile" | "admin" | "api" | "voice" | "notification" | "desktop";
 
 export interface ActiveSurface {
   surfaceId: string;
