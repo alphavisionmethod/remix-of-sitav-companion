@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogIn, RotateCcw, Plus, WifiOff, Building2, ChevronRight, ChevronLeft, User, Calendar, Monitor, Check } from "lucide-react";
+import { LogIn, RotateCcw, Plus, WifiOff, Building2, ChevronRight, ChevronLeft, User, Calendar, Monitor, Check, FlaskConical } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
+const IS_DEV = import.meta.env.DEV || import.meta.env.VITE_DEMO_MODE === "true";
 
 type AccountPath = "signin" | "restore" | "create" | "offline" | "managed" | "";
 type SubView = "paths" | "signin-form" | "create-form" | "managed-form";
