@@ -77,12 +77,11 @@ function checkContractManifestSync(): SyncResult {
   }
   try {
     const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
-    // Check that required contract families are listed
-    const expectedFamilies = ["core", "runtime", "execution", "native"];
-    const families = manifest.families?.map((f: { name: string }) => f.name) || [];
-    const missing = expectedFamilies.filter((f) => !families.includes(f));
+    // Check that required fields exist
+    const expectedFields = ["version", "totalContracts", "contracts"];
+    const missing = expectedFields.filter((f) => !(f in manifest));
     if (missing.length > 0) {
-      return { artifact: "contract-manifest.json", status: "drift-detected", details: `Missing families: ${missing.join(", ")}` };
+      return { artifact: "contract-manifest.json", status: "drift-detected", details: `Missing fields: ${missing.join(", ")}` };
     }
     return { artifact: "contract-manifest.json", status: "in-sync" };
   } catch (e) {
@@ -100,8 +99,8 @@ function run() {
   results.push(checkFile("first-boot-proof-receipts.json", ["version", "receiptTypes"]));
 
   // Check existing manifests
-  results.push(checkFile("contract-manifest.json", ["version"]));
-  results.push(checkFile("runtime-conformance-manifest.json", ["runtimes"]));
+  results.push(checkFile("contract-manifest.json", ["version", "totalContracts", "contracts"]));
+  results.push(checkFile("runtime-conformance-manifest.json", ["version", "entries"]));
   results.push(checkFile("startup-order.json", ["version"]));
 
   // Check docs
