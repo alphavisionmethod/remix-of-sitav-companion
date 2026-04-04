@@ -6,11 +6,12 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Eye, MessageSquare, FlaskConical, ShieldCheck, Zap,
-  ChevronRight, ChevronDown, DollarSign, Calendar, Mail, Bell,
+  ChevronDown, DollarSign, Calendar, Mail, Bell,
   AlertTriangle, Users, Briefcase, Shield, Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SetupStageHeader, StageTransitionController, TrustLadderControl } from "@/components/sita/setup";
 
 export interface TrustCalibrationData {
   level: number;
