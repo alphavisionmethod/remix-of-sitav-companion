@@ -87,13 +87,13 @@ export function PrimaryUseModeStep({ selected, onSelect, onNext, onPrev }: Props
       transition={spring} className="w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-8">
 
       <div className="flex-1 min-w-0">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center mb-8">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20 mx-auto mb-4">
-            <Sparkles className="h-7 w-7 text-primary-foreground" />
-          </div>
-          <h2 className="font-display text-2xl font-bold tracking-tight text-foreground">What should SITA help you run first?</h2>
-          <p className="text-sm text-muted-foreground mt-1.5">Choose your primary mode. You can always expand later.</p>
-        </motion.div>
+        <div className="mb-8">
+          <SetupStageHeader
+            icon={Sparkles}
+            title="What should SITA help you run first?"
+            subtitle="Choose your primary mode. You can always expand later."
+          />
+        </div>
 
         <div className="space-y-3">
           {MODES.map((mode, i) => {
