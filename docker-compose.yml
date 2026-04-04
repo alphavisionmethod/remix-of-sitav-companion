@@ -224,6 +224,69 @@ services:
     networks:
       - sita-net
 
+  # ── Supabase: Postgres Meta ─────────────────────────────────────
+  sita-supabase-meta:
+    image: supabase/postgres-meta:v0.80.0
+    container_name: sita-supabase-meta
+    environment:
+      PG_META_PORT: 8080
+      PG_META_DB_HOST: sita-supabase-db
+      PG_META_DB_PORT: 5432
+      PG_META_DB_NAME: postgres
+      PG_META_DB_USER: supabase_admin
+      PG_META_DB_PASSWORD: ${POSTGRES_PASSWORD:-sita-secure-pwd-change-me}
+    depends_on:
+      sita-supabase-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/health > /dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"
+    networks:
+      - sita-net
+
+  # ── Supabase: Edge Functions Runtime ───────────────────────────
+  sita-supabase-functions:
+    image: supabase/edge-runtime:v1.54.6
+    container_name: sita-supabase-functions
+    command: ["start", "--main-service", "/home/deno/functions/main"]
+    ports:
+      - "9000:9000"
+    environment:
+      SUPABASE_URL: http://sita-supabase-kong:8000
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_KEY}
+      SUPABASE_DB_URL: postgres://supabase_admin:${POSTGRES_PASSWORD:-sita-secure-pwd-change-me}@sita-supabase-db:5432/postgres
+      JWT_SECRET: ${JWT_SECRET}
+      DENO_SERVE_ADDRESS: 0.0.0.0:9000
+    volumes:
+      - ./supabase/functions:/home/deno/functions:ro
+    depends_on:
+      sita-supabase-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9000/health > /dev/null || true"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1.0"
+    networks:
+      - sita-net
+
   # ── Supabase: Kong API Gateway ──────────────────────────────────
   sita-supabase-kong:
     image: kong:2.8.1
