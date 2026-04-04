@@ -507,6 +507,15 @@ export function OSSetupExperience() {
       goals: { topGoals: [], stressPoints: [] },
     },
     primaryUseMode: "",
+    trustCalibration: {
+      level: 0, spendingThreshold: 100, financialApprovals: true, calendarApprovals: false,
+      communicationApprovals: true, reminderFrequency: "balanced", escalationBehavior: "notify",
+      familyPermissions: false, businessPermissions: false,
+    },
+    advisorActivation: [],
+    deferredConnections: [],
+    firstWin: { category: "", action: "", approved: false, prepared: false },
+    connectedSystems: 0,
   });
 
   // Sync setup state to engine for branch evaluation
