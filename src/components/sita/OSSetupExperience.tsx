@@ -580,6 +580,10 @@ export function OSSetupExperience() {
         { user_id: user.id, key: "quick_identity", value: JSON.stringify(state.quickIdentity), category: "preference" },
         { user_id: user.id, key: "world_model", value: JSON.stringify(state.worldModel), category: "preference" },
         { user_id: user.id, key: "primary_use_mode", value: JSON.stringify(state.primaryUseMode), category: "preference" },
+        { user_id: user.id, key: "trust_calibration", value: JSON.stringify(state.trustCalibration), category: "preference" },
+        { user_id: user.id, key: "advisor_activation", value: JSON.stringify(state.advisorActivation), category: "preference" },
+        { user_id: user.id, key: "deferred_connections", value: JSON.stringify(state.deferredConnections), category: "preference" },
+        { user_id: user.id, key: "first_win", value: JSON.stringify(state.firstWin), category: "preference" },
       ].filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
 
       await (supabase as any).from("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
