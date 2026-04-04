@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "sourceMap": true,
+    "lib": ["ES2022"],
+    "paths": {
+      "@brain-core/*": ["../../src/lib/services/brain-core/*"]
+    }
+  },
+  "include": ["*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
