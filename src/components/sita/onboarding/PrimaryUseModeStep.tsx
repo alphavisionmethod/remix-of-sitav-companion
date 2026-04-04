@@ -1,10 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Heart, Users, Briefcase, DollarSign, Sparkles, ChevronRight, Check,
+  Heart, Users, Briefcase, DollarSign, Sparkles, Check,
   Calendar, MessageSquare, Shield, Brain, Bell, BarChart3, Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
 
 interface Props {
   selected: string;
