@@ -143,8 +143,22 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     statusUX: defaultStatusUX("Primary Use Mode"),
   },
   {
-    id: "welcome", title: "Welcome", description: "First welcome screen with restore/enterprise options",
+    id: "trust-calibration", title: "Trust Calibration", description: "Choose how SITA should help — autonomy spectrum and controls",
     dependencies: ["primary-use-mode"], blocking: true, required: true,
+    backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 5.5, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Trust Calibration"),
+  },
+  {
+    id: "advisor-activation", title: "Advisor Activation", description: "Meet and activate your advisory team",
+    dependencies: ["trust-calibration"], blocking: true, required: true,
+    backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 5.6, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Advisor Activation"),
+  },
+  {
+    id: "welcome", title: "Welcome", description: "First welcome screen with restore/enterprise options",
+    dependencies: ["advisor-activation"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
     timeout: DEFAULT_TIMEOUT, order: 6, excludedFromSteps: true,
