@@ -1156,16 +1156,6 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* Desktop Transition */}
-                {phase === "desktop-transition" && (
-                  <DesktopTransitionStep key="desktop-transition"
-                    displayName={state.displayName}
-                    trustLevel={state.trustLevel}
-                    activeAdvisors={state.advisorActivation}
-                    primaryUseMode={state.primaryUseMode}
-                    firstWinAction={state.firstWin.action}
-                    onComplete={goNext} />
-                )}
 
                 {/* System Check */}
                 {phase === "system-check" && (
