@@ -1092,6 +1092,16 @@ export function OSSetupExperience() {
                 {phase === "first-connections" && (
                   <FirstConnectionsStep key="first-connections"
                     enabledDomains={state.enabledDomains}
+                    primaryUseMode={state.primaryUseMode}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* First Win Setup */}
+                {phase === "first-win-setup" && (
+                  <FirstWinSetupStep key="first-win-setup"
+                    data={state.firstWin}
+                    onUpdate={fw => setState(s => ({ ...s, firstWin: fw }))}
+                    primaryUseMode={state.primaryUseMode}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
