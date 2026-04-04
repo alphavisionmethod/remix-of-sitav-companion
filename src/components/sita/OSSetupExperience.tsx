@@ -59,6 +59,13 @@ import type { QuickIdentityData } from "@/components/sita/onboarding/QuickIdenti
 import { DeepWorldModelingStep } from "@/components/sita/onboarding/DeepWorldModelingStep";
 import type { WorldModelData } from "@/components/sita/onboarding/DeepWorldModelingStep";
 import { PrimaryUseModeStep } from "@/components/sita/onboarding/PrimaryUseModeStep";
+import { TrustCalibrationStep } from "@/components/sita/onboarding/TrustCalibrationStep";
+import type { TrustCalibrationData } from "@/components/sita/onboarding/TrustCalibrationStep";
+import { AdvisorActivationStep } from "@/components/sita/onboarding/AdvisorActivationStep";
+import type { AdvisorActivation } from "@/components/sita/onboarding/AdvisorActivationStep";
+import { FirstWinSetupStep } from "@/components/sita/onboarding/FirstWinSetupStep";
+import type { FirstWinData } from "@/components/sita/onboarding/FirstWinSetupStep";
+import { DesktopTransitionStep } from "@/components/sita/onboarding/DesktopTransitionStep";
 import { Progress } from "@/components/ui/progress";
 
 interface OperatingModelData {
