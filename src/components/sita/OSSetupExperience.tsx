@@ -1130,7 +1130,24 @@ export function OSSetupExperience() {
                     trustLevel={state.trustLevel}
                     rituals={state.rituals}
                     aiStyle={state.aiStyle}
+                    primaryUseMode={state.primaryUseMode}
+                    activeAdvisors={state.advisorActivation}
+                    connectedSystems={state.connectedSystems}
+                    firstWinAction={state.firstWin.action}
+                    permissionChoices={state.permissionChoices}
+                    deferredCount={state.deferredConnections.length}
                     onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* Desktop Transition */}
+                {phase === "desktop-transition" && (
+                  <DesktopTransitionStep key="desktop-transition"
+                    displayName={state.displayName}
+                    trustLevel={state.trustLevel}
+                    activeAdvisors={state.advisorActivation}
+                    primaryUseMode={state.primaryUseMode}
+                    firstWinAction={state.firstWin.action}
+                    onComplete={goNext} />
                 )}
 
                 {/* System Check */}
