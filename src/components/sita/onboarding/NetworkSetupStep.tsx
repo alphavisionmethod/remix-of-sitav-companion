@@ -90,7 +90,8 @@ export function NetworkSetupStep({ onNext, onPrev, onStateChange }: Props) {
 
   useEffect(() => {
     onStateChange({ connectionState, selectedNetwork });
-  }, [connectionState, selectedNetwork, onStateChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connectionState, selectedNetwork]);
 
   const connectToNetwork = useCallback((network: Network) => {
     setSelectedNetwork(network.ssid);
