@@ -71,6 +71,8 @@ interface OperatingModelData {
 
 // ── Types ───────────────────────────────────────────────────
 
+type SetupState = SetupData;
+
 type Phase = SetupPhaseId;
 
 interface SetupData {
