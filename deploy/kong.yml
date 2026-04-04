@@ -57,14 +57,27 @@ services:
         config:
           hide_credentials: false
 
-  # ── PostgREST Meta / Health ────────────────────────────────────
+  # ── Postgres Meta ───────────────────────────────────────────────
   - name: meta
-    url: http://sita-supabase-rest:3000
+    url: http://sita-supabase-meta:8080
     routes:
       - name: meta-route
         strip_path: true
         paths:
           - /pg/
+    plugins:
+      - name: cors
+
+  # ── Edge Functions ────────────────────────────────────────────
+  - name: functions-v1
+    url: http://sita-supabase-functions:9000
+    routes:
+      - name: functions-v1-route
+        strip_path: true
+        paths:
+          - /functions/v1/
+    plugins:
+      - name: cors
 
 consumers:
   - username: anon

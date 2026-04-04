@@ -132,6 +132,43 @@ app.post("/api/simulation", (c) => proxyToBrain(c, "/brain/simulation"));
 // Approval
 app.post("/api/approval", (c) => proxyToBrain(c, "/brain/approval"));
 
+// ── Edge Functions Proxy ────────────────────────────────────
+
+const EDGE_FUNCTIONS_URL = process.env.EDGE_FUNCTIONS_URL || "http://sita-supabase-functions:9000";
+
+app.all("/api/functions/*", async (c) => {
+  try {
+    const fnPath = c.req.path.replace("/api/functions", "");
+    const url = `${EDGE_FUNCTIONS_URL}${fnPath}`;
+    const method = c.req.raw.method;
+
+    const headers: Record<string, string> = {
+      Authorization: c.req.header("Authorization") || `Bearer ${SUPABASE_ANON_KEY}`,
+    };
+
+    const contentType = c.req.header("Content-Type");
+    if (contentType) headers["Content-Type"] = contentType;
+
+    const init: RequestInit = { method, headers };
+    if (method !== "GET" && method !== "HEAD") {
+      init.body = await c.req.raw.text();
+    }
+
+    const response = await fetch(url, init);
+    const data = await response.text();
+
+    return new Response(data, {
+      status: response.status,
+      headers: {
+        "Content-Type": response.headers.get("Content-Type") || "application/json",
+      },
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Edge functions unreachable";
+    return c.json({ error: "Edge Functions Proxy Error", message }, 502);
+  }
+});
+
 // ── Supabase Proxy ──────────────────────────────────────────
 
 app.all("/api/supabase/*", async (c) => {
