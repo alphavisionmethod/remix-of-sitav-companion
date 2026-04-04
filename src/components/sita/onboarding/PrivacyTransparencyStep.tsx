@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Calendar, MessageSquare, FileText, DollarSign, Users, Brain, Bell,
   Shield, ChevronDown, ChevronRight, Check, Eye, Lock, RefreshCw,
+  ArrowRight, AlertTriangle, CheckCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -73,9 +74,17 @@ const SECTION_META = [
 
 const spring = { type: "spring" as const, damping: 28, stiffness: 280 };
 
+// Proof model preview steps
+const PROOF_STEPS = [
+  { icon: AlertTriangle, label: "Overlapping meetings detected", detail: "Board call + investor lunch at 2pm Tuesday", color: "text-[hsl(var(--sita-gold))]" },
+  { icon: Brain, label: "Suggestion generated", detail: "Move investor lunch to Wednesday 12:30pm — both calendars free", color: "text-primary" },
+  { icon: Lock, label: "Approval required before action", detail: "SITA will not reschedule without your explicit approval", color: "text-[hsl(var(--trust-safe))]" },
+];
+
 export function PrivacyTransparencyStep({ permissionChoices, onUpdate, onNext, onPrev }: Props) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [reviewed, setReviewed] = useState<Set<string>>(new Set());
+  const [proofStep, setProofStep] = useState(0);
 
   const toggleExpand = (id: string) => {
     setReviewed(prev => new Set(prev).add(id));
@@ -88,6 +97,14 @@ export function PrivacyTransparencyStep({ permissionChoices, onUpdate, onNext, o
 
   const allReviewed = reviewed.size >= PERMISSIONS.length;
   const enabledCount = Object.values(permissionChoices).filter(Boolean).length;
+
+  // Animate proof steps
+  useState(() => {
+    const interval = setInterval(() => {
+      setProofStep(prev => (prev + 1) % (PROOF_STEPS.length + 1));
+    }, 2500);
+    return () => clearInterval(interval);
+  });
 
   return (
     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
@@ -138,7 +155,6 @@ export function PrivacyTransparencyStep({ permissionChoices, onUpdate, onNext, o
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    {/* Toggle */}
                     <div onClick={e => { e.stopPropagation(); togglePermission(perm.id); }}
                       className={cn("relative h-6 w-11 rounded-full cursor-pointer transition-colors",
                         isEnabled ? "bg-primary" : "bg-muted")}>
@@ -149,7 +165,6 @@ export function PrivacyTransparencyStep({ permissionChoices, onUpdate, onNext, o
                   </div>
                 </button>
 
-                {/* Expandable Detail */}
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
@@ -198,10 +213,11 @@ export function PrivacyTransparencyStep({ permissionChoices, onUpdate, onNext, o
         </div>
       </div>
 
-      {/* Right — Transparency Map */}
+      {/* Right — Transparency Map + Proof Preview */}
       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, ...spring }}
-        className="lg:w-72 shrink-0 hidden lg:block">
-        <div className="rounded-2xl border border-border/30 bg-card/60 p-6 sticky top-8" style={{ backdropFilter: "blur(12px)" }}>
+        className="lg:w-80 shrink-0 hidden lg:block space-y-4">
+        {/* Transparency Map */}
+        <div className="rounded-2xl border border-border/30 bg-card/60 p-6" style={{ backdropFilter: "blur(12px)" }}>
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Transparency Map</p>
           <div className="space-y-3">
             {PERMISSIONS.map(perm => {
@@ -213,25 +229,85 @@ export function PrivacyTransparencyStep({ permissionChoices, onUpdate, onNext, o
                       isEnabled ? "bg-primary/15" : "bg-secondary/30")}>
                     <perm.icon className={cn("h-3.5 w-3.5", isEnabled ? "text-primary" : "text-muted-foreground/40")} />
                   </motion.div>
-                  <span className={cn("text-xs", isEnabled ? "text-foreground font-medium" : "text-muted-foreground/50")}>
+                  <span className={cn("text-xs flex-1", isEnabled ? "text-foreground font-medium" : "text-muted-foreground/50")}>
                     {perm.title.split(" ")[0]}
                   </span>
                   {isEnabled && (
                     <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
-                      className="ml-auto h-2 w-2 rounded-full bg-[hsl(var(--trust-safe))]" />
+                      className="h-2 w-2 rounded-full bg-[hsl(var(--trust-safe))]" />
                   )}
                 </div>
               );
             })}
           </div>
-          <div className="mt-6 pt-4 border-t border-border/20">
+          {/* Connection lines between enabled domains */}
+          <AnimatePresence>
+            {enabledCount >= 2 && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                className="mt-4 pt-3 border-t border-border/20">
+                <p className="text-[10px] text-muted-foreground/70 mb-2">Cross-domain intelligence</p>
+                <div className="flex flex-wrap gap-1">
+                  {Object.entries(permissionChoices).filter(([, v]) => v).map(([k], i, arr) => {
+                    if (i >= arr.length - 1) return null;
+                    const nextKey = arr[i + 1]?.[0];
+                    return (
+                      <motion.div key={`${k}-${nextKey}`} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+                        className="rounded-lg bg-primary/[0.06] border border-primary/10 px-2 py-0.5 text-[9px] text-primary">
+                        {k.slice(0, 4)} ↔ {nextKey?.slice(0, 4)}
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <div className="mt-4 pt-3 border-t border-border/20">
             <div className="flex items-center gap-2">
-              <Shield className={cn("h-4 w-4", enabledCount === 7 ? "text-[hsl(var(--trust-safe))]" : "text-muted-foreground")} />
+              <motion.div animate={{ scale: enabledCount === 7 ? [1, 1.15, 1] : 1 }}
+                transition={{ duration: 1.5, repeat: enabledCount === 7 ? Infinity : 0 }}>
+                <Shield className={cn("h-4 w-4", enabledCount === 7 ? "text-[hsl(var(--trust-safe))]" : "text-muted-foreground")} />
+              </motion.div>
               <p className="text-xs text-muted-foreground">
                 <span className="text-foreground font-semibold">{enabledCount}/7</span> domains enabled
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Proof Model Preview */}
+        <div className="rounded-2xl border border-border/30 bg-card/60 p-5" style={{ backdropFilter: "blur(12px)" }}>
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">How SITA works</p>
+          <div className="space-y-3">
+            {PROOF_STEPS.map((step, i) => (
+              <motion.div key={i}
+                animate={{ opacity: proofStep >= i ? 1 : 0.3, y: proofStep >= i ? 0 : 4 }}
+                transition={{ duration: 0.4 }}
+                className="flex items-start gap-3">
+                <div className={cn("flex h-7 w-7 items-center justify-center rounded-lg shrink-0",
+                  proofStep >= i ? "bg-primary/10" : "bg-secondary/30")}>
+                  {proofStep > i ? (
+                    <CheckCircle className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" />
+                  ) : (
+                    <step.icon className={cn("h-3.5 w-3.5", proofStep >= i ? step.color : "text-muted-foreground/30")} />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className={cn("text-[11px] font-semibold", proofStep >= i ? "text-foreground" : "text-muted-foreground/40")}>
+                    {step.label}
+                  </p>
+                  <p className={cn("text-[10px]", proofStep >= i ? "text-muted-foreground" : "text-muted-foreground/30")}>
+                    {step.detail}
+                  </p>
+                </div>
+                {i < PROOF_STEPS.length - 1 && (
+                  <ArrowRight className={cn("h-3 w-3 mt-1 shrink-0", proofStep > i ? "text-primary/40" : "text-muted-foreground/20")} />
+                )}
+              </motion.div>
+            ))}
+          </div>
+          <p className="text-[9px] text-muted-foreground/50 mt-3 text-center">
+            Every action follows: detect → suggest → approve → act
+          </p>
         </div>
       </motion.div>
     </motion.div>
