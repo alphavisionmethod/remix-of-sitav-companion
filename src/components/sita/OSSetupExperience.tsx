@@ -703,7 +703,7 @@ export function OSSetupExperience() {
     return true;
   };
 
-  const showLearningPanel = !["boot", "network-setup", "device-readiness", "device-ownership", "account-environment", "access-protection", "privacy-transparency", "quick-identity", "deep-world-modeling", "primary-use-mode", "trust-calibration", "advisor-activation", "welcome", "restore", "enterprise", "cinematic-intro", "trust-certificate", "desktop-transition"].includes(phase);
+  const showLearningPanel = !["boot", "secure-foundation", "language-region", "network-setup", "device-readiness", "device-ownership", "account-environment", "access-protection", "privacy-transparency", "quick-identity", "deep-world-modeling", "primary-use-mode", "trust-calibration", "advisor-activation", "welcome", "restore", "enterprise", "cinematic-intro", "trust-certificate", "desktop-transition"].includes(phase);
   const canSkipCurrent = !isPhaseRequired(phase);
   const showRollbackBtn = state.setupStyle === "advanced";
   const currentBgTasks = backgroundTasks.filter(t => t.phaseId === phase);
