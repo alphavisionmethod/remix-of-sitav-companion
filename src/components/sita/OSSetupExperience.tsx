@@ -1153,6 +1153,7 @@ export function OSSetupExperience() {
                     firstWinAction={state.firstWin.action}
                     permissionChoices={state.permissionChoices}
                     deferredCount={state.deferredConnections.length}
+                    trustCalibrationLevel={state.trustCalibration.level}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
