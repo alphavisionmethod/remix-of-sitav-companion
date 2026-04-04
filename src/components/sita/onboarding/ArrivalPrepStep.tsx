@@ -40,6 +40,14 @@ const trustLabels: Record<string, string> = {
   guarded: "Guarded — approval before every action",
 };
 
+const calibrationLabels: Record<number, string> = {
+  1: "Observe only — SITA watches, never acts",
+  2: "Suggest — SITA recommends, you decide",
+  3: "Simulate — SITA previews outcomes first",
+  4: "Ask before acting — approval required",
+  5: "Auto-routine — handles repetitive tasks",
+};
+
 const advisorIcons: Record<string, typeof Heart> = {
   life: Heart, money: DollarSign, business: Briefcase,
   family: Users, concierge: Sparkles, growth: TrendingUp,
