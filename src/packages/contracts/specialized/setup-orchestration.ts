@@ -5,7 +5,7 @@
 
 /** All 27 setup phases from OSSetupExperience */
 export type SetupPhaseId =
-  | "boot" | "network-setup" | "device-readiness" | "device-ownership"
+  | "boot" | "secure-foundation" | "language-region" | "network-setup" | "device-readiness" | "device-ownership"
   | "account-environment" | "access-protection"
   | "privacy-transparency" | "quick-identity" | "deep-world-modeling" | "primary-use-mode"
   | "trust-calibration" | "advisor-activation"

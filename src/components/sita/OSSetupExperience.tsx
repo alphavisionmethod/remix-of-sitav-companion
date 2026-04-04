@@ -48,6 +48,8 @@ import { HomeCompositionStep } from "@/components/sita/onboarding/HomeCompositio
 import { RecoverFirstStep } from "@/components/sita/onboarding/RecoverFirstStep";
 import { PreviewExampleModal, PreviewButton } from "@/components/sita/onboarding/PreviewExampleModal";
 import { ArrivalPrepStep } from "@/components/sita/onboarding/ArrivalPrepStep";
+import { SecureFoundationStep } from "@/components/sita/onboarding/SecureFoundationStep";
+import { SetupLanguageRegion } from "@/components/sita/setup/SetupLanguageRegion";
 import { FirstConnectionsStep } from "@/components/sita/onboarding/FirstConnectionsStep";
 import { NetworkSetupStep } from "@/components/sita/onboarding/NetworkSetupStep";
 import { DeviceReadinessStep } from "@/components/sita/onboarding/DeviceReadinessStep";
@@ -701,7 +703,7 @@ export function OSSetupExperience() {
     return true;
   };
 
-  const showLearningPanel = !["boot", "network-setup", "device-readiness", "device-ownership", "account-environment", "access-protection", "privacy-transparency", "quick-identity", "deep-world-modeling", "primary-use-mode", "trust-calibration", "advisor-activation", "welcome", "restore", "enterprise", "cinematic-intro", "trust-certificate", "desktop-transition"].includes(phase);
+  const showLearningPanel = !["boot", "secure-foundation", "language-region", "network-setup", "device-readiness", "device-ownership", "account-environment", "access-protection", "privacy-transparency", "quick-identity", "deep-world-modeling", "primary-use-mode", "trust-calibration", "advisor-activation", "welcome", "restore", "enterprise", "cinematic-intro", "trust-certificate", "desktop-transition"].includes(phase);
   const canSkipCurrent = !isPhaseRequired(phase);
   const showRollbackBtn = state.setupStyle === "advanced";
   const currentBgTasks = backgroundTasks.filter(t => t.phaseId === phase);
@@ -727,7 +729,7 @@ export function OSSetupExperience() {
       </AnimatePresence>
 
       {/* Session Progress Bar */}
-      {phase !== "boot" && phase !== "network-setup" && phase !== "device-readiness" && phase !== "device-ownership" && phase !== "account-environment" && phase !== "access-protection" && phase !== "privacy-transparency" && phase !== "quick-identity" && phase !== "deep-world-modeling" && phase !== "primary-use-mode" && phase !== "trust-calibration" && phase !== "advisor-activation" && phase !== "welcome" && phase !== "desktop-transition" && (
+      {phase !== "boot" && phase !== "secure-foundation" && phase !== "language-region" && phase !== "network-setup" && phase !== "device-readiness" && phase !== "device-ownership" && phase !== "account-environment" && phase !== "access-protection" && phase !== "privacy-transparency" && phase !== "quick-identity" && phase !== "deep-world-modeling" && phase !== "primary-use-mode" && phase !== "trust-calibration" && phase !== "advisor-activation" && phase !== "welcome" && phase !== "desktop-transition" && (
         <div className="fixed top-0 left-0 right-0 z-[160]">
           <Progress value={sessionProgress} className="h-0.5 rounded-none" />
         </div>
@@ -736,6 +738,28 @@ export function OSSetupExperience() {
       {/* Boot */}
       {phase === "boot" && <FirstBootScreen onComplete={() => { engine.completeCurrentAndAdvance(); }} />}
 
+      {/* Secure Foundation — standalone phase */}
+      {phase === "secure-foundation" && <SecureFoundationStep key="secure-foundation" onNext={goNext} onPrev={goPrev} />}
+
+      {/* Language & Region */}
+      {phase === "language-region" && (
+        <div className="fixed inset-0 z-[150] flex items-center justify-center overflow-y-auto p-4 sm:p-8" style={{ backgroundColor: "#0B0D10" }}>
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full blur-[120px]" style={{ background: "hsl(265 55% 58% / 0.04)" }} />
+          </div>
+          <div className="relative z-10 w-full">
+            <SetupLanguageRegion
+              onNext={({ language, region, timezone, dateFormat, currency }) => {
+                setState(s => ({ ...s, language, region, timezone, dateFormat, currency }));
+                goNext();
+              }}
+              onBack={goPrev}
+              step={currentStepNum}
+              total={totalSteps}
+            />
+          </div>
+        </div>
+      )}
       {/* Preview example modal */}
       <AnimatePresence>
         {previewExample && (
@@ -755,7 +779,7 @@ export function OSSetupExperience() {
       )}
 
       {/* Setup phases */}
-      {phase !== "boot" && phase !== "desktop-transition" && (
+      {phase !== "boot" && phase !== "secure-foundation" && phase !== "language-region" && phase !== "desktop-transition" && (
         <div className="fixed inset-0 z-[150] flex items-center justify-center overflow-y-auto p-4 sm:p-8"
           style={{ backgroundColor: "#0B0D10" }}>
           {/* Ambient glow */}

@@ -46,6 +46,7 @@ interface Props {
 }
 
 export function DeviceOwnershipStep({ selected, onSelect, onNext, onPrev }: Props) {
+  const [showImpact, setShowImpact] = useState(false);
   const activeOption = OPTIONS.find(o => o.key === selected);
 
   return (
@@ -123,17 +124,46 @@ export function DeviceOwnershipStep({ selected, onSelect, onNext, onPrev }: Prop
                 <p className="text-xs text-muted-foreground italic">Select an option to see how it shapes your environment</p>
               )}
             </div>
-          </div>
+            </div>
 
+            {/* Mobile impact panel (toggled by "Learn what this changes") */}
+            {showImpact && activeOption && (
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
+                className="md:hidden space-y-3 pt-3 border-t border-border mt-3">
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Selection impact</p>
+                {[
+                  { icon: Lock, label: "Privacy model", value: activeOption.impacts.privacy },
+                  { icon: Users, label: "Sharing model", value: activeOption.impacts.sharing },
+                  { icon: Shield, label: "Trust model", value: activeOption.impacts.trust },
+                  { icon: Eye, label: "Recommendations", value: activeOption.impacts.recs },
+                ].map((impact, i) => (
+                  <div key={impact.label} className="space-y-0.5">
+                    <div className="flex items-center gap-1.5">
+                      <impact.icon className="h-3 w-3 text-primary" />
+                      <span className="text-[10px] font-medium text-foreground">{impact.label}</span>
+                    </div>
+                    <p className="text-[10px] text-muted-foreground leading-relaxed pl-[18px]">{impact.value}</p>
+                  </div>
+                ))}
+              </motion.div>
+            )}
           {/* Navigation */}
           <div className="flex items-center justify-between pt-6 mt-4 border-t border-border">
             <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
-            <button onClick={onNext} disabled={!selected}
-              className={cn("rounded-xl px-6 py-2.5 text-sm font-semibold transition-all flex items-center gap-2",
-                selected ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-muted text-muted-foreground cursor-not-allowed"
-              )}>
-              Continue <ChevronRight className="h-3.5 w-3.5" />
-            </button>
+            <div className="flex items-center gap-3">
+              {selected && (
+                <button onClick={() => setShowImpact(prev => !prev)}
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors underline-offset-2 hover:underline">
+                  Learn what this changes
+                </button>
+              )}
+              <button onClick={onNext} disabled={!selected}
+                className={cn("rounded-xl px-6 py-2.5 text-sm font-semibold transition-all flex items-center gap-2",
+                  selected ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-muted text-muted-foreground cursor-not-allowed"
+                )}>
+                Continue <ChevronRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>

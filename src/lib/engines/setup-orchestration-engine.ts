@@ -683,6 +683,26 @@ export class SetupOrchestrationEngine {
     return this.session;
   }
 
+  /** Compute global setup state based on phase progress */
+  getGlobalSetupState(): string {
+    const current = this.session.currentPhaseId;
+    const allActive = this.getActivePhaseIds();
+    const resolvedCount = allActive.filter(id => {
+      const s = this.session.phaseStates[id];
+      return s && RESOLVED_STATUSES.includes(s.status);
+    }).length;
+
+    if (this.session.interrupted) return "resumed_from_restart";
+    if (current === "boot") return "boot_preparing";
+    if (["secure-foundation", "language-region", "network-setup", "device-readiness"].includes(current)) return "machine_foundation_in_progress";
+    if (current === "desktop-transition" || current === "arrival-prep") return "setup_ready_for_arrival";
+    if (resolvedCount === allActive.length) {
+      const hasDeferred = this.getSessionData<string[]>("deferredItems")?.length ?? 0;
+      return hasDeferred > 0 ? "completed_with_deferred_items" : "completed";
+    }
+    return "user_setup_in_progress";
+  }
+
   getPhaseDefinition(phaseId: SetupPhaseId): SetupPhaseDefinition | undefined {
     return this.definitions.get(phaseId);
   }
