@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { PostArrivalDesktop } from "@/components/sita/PostArrivalDesktop";
 import { useInspector, type InspectorEntity } from "@/contexts/InspectorContext";
 import { SitaPageHeader, SitaButton, SitaSectionHeader, SitaCard } from "@/components/sita/SitaCard";
 import { ApprovalGate } from "@/components/sita/primitives/ApprovalGate";
@@ -123,6 +124,9 @@ const DailyPulse = () => {
   const { isDemoMode } = useDataMode();
   const { inspect } = useInspector();
   const { missionMode } = useDisplayMode();
+  const [showPostArrival, setShowPostArrival] = useState(() => {
+    return !localStorage.getItem("sita-post-arrival-seen") && sessionStorage.getItem("sita-post-arrival-trigger") === "true";
+  });
   const hour = new Date().getHours();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
@@ -233,6 +237,16 @@ const DailyPulse = () => {
     actions: <KPITile key="actions" label="Pending Actions" value={String(actionCount)} sub={`${pendingApprovals.length} approvals · ${taskPrioritization.prioritized.length} tasks`} icon={Workflow} />,
   };
   const orderedKpis = modeConfig.kpiOrder.map(k => kpiTiles[k as keyof typeof kpiTiles]);
+
+  // Post-arrival first desktop state — shown once after setup
+  if (showPostArrival) {
+    return (
+      <PostArrivalDesktop onDismiss={() => {
+        sessionStorage.removeItem("sita-post-arrival-trigger");
+        setShowPostArrival(false);
+      }} />
+    );
+  }
 
   if (!hasAnyData) {
     return (

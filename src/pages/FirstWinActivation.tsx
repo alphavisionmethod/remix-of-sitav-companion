@@ -270,11 +270,9 @@ export default function FirstWinActivation() {
   const handleComplete = () => {
     // Signal the shell to show desktop entry ceremony
     sessionStorage.setItem("sita-desktop-entry", "true");
-    if (workflow) {
-      navigate(workflow.destination, { replace: true });
-    } else {
-      navigate("/", { replace: true });
-    }
+    // Signal DailyPulse to show post-arrival first desktop state
+    sessionStorage.setItem("sita-post-arrival-trigger", "true");
+    navigate("/", { replace: true });
   };
 
   if (!workflow) {
