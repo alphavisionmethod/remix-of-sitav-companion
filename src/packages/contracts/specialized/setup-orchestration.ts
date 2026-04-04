@@ -8,6 +8,7 @@ export type SetupPhaseId =
   | "boot" | "network-setup" | "device-readiness" | "device-ownership"
   | "account-environment" | "access-protection"
   | "privacy-transparency" | "quick-identity" | "deep-world-modeling" | "primary-use-mode"
+  | "trust-calibration" | "advisor-activation"
   | "welcome" | "restore" | "enterprise"
   | "cinematic-intro" | "setup-style"
   | "identity" | "want-less-of" | "protect-most"
@@ -17,6 +18,7 @@ export type SetupPhaseId =
   | "home-composition" | "first-connections" | "desktop-preview"
   | "first-simulation" | "first-actions"
   | "recover-first" | "arrival-prep"
+  | "first-win-setup" | "desktop-transition"
   | "system-check" | "trust-certificate";
 
 /** 12-state per-phase status */

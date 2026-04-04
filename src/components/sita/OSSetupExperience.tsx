@@ -59,6 +59,13 @@ import type { QuickIdentityData } from "@/components/sita/onboarding/QuickIdenti
 import { DeepWorldModelingStep } from "@/components/sita/onboarding/DeepWorldModelingStep";
 import type { WorldModelData } from "@/components/sita/onboarding/DeepWorldModelingStep";
 import { PrimaryUseModeStep } from "@/components/sita/onboarding/PrimaryUseModeStep";
+import { TrustCalibrationStep } from "@/components/sita/onboarding/TrustCalibrationStep";
+import type { TrustCalibrationData } from "@/components/sita/onboarding/TrustCalibrationStep";
+import { AdvisorActivationStep } from "@/components/sita/onboarding/AdvisorActivationStep";
+import type { AdvisorActivation } from "@/components/sita/onboarding/AdvisorActivationStep";
+import { FirstWinSetupStep } from "@/components/sita/onboarding/FirstWinSetupStep";
+import type { FirstWinData } from "@/components/sita/onboarding/FirstWinSetupStep";
+import { DesktopTransitionStep } from "@/components/sita/onboarding/DesktopTransitionStep";
 import { Progress } from "@/components/ui/progress";
 
 interface OperatingModelData {
@@ -123,6 +130,11 @@ interface SetupData {
   quickIdentity: QuickIdentityData;
   worldModel: WorldModelData;
   primaryUseMode: string;
+  trustCalibration: TrustCalibrationData;
+  advisorActivation: AdvisorActivation[];
+  deferredConnections: string[];
+  firstWin: FirstWinData;
+  connectedSystems: number;
 }
 
 // ── Phase Status Indicator ──────────────────────────────────
@@ -495,6 +507,15 @@ export function OSSetupExperience() {
       goals: { topGoals: [], stressPoints: [] },
     },
     primaryUseMode: "",
+    trustCalibration: {
+      level: 0, spendingThreshold: 100, financialApprovals: true, calendarApprovals: false,
+      communicationApprovals: true, reminderFrequency: "balanced", escalationBehavior: "notify",
+      familyPermissions: false, businessPermissions: false,
+    },
+    advisorActivation: [],
+    deferredConnections: [],
+    firstWin: { category: "", action: "", approved: false, prepared: false },
+    connectedSystems: 0,
   });
 
   // Sync setup state to engine for branch evaluation
@@ -559,6 +580,10 @@ export function OSSetupExperience() {
         { user_id: user.id, key: "quick_identity", value: JSON.stringify(state.quickIdentity), category: "preference" },
         { user_id: user.id, key: "world_model", value: JSON.stringify(state.worldModel), category: "preference" },
         { user_id: user.id, key: "primary_use_mode", value: JSON.stringify(state.primaryUseMode), category: "preference" },
+        { user_id: user.id, key: "trust_calibration", value: JSON.stringify(state.trustCalibration), category: "preference" },
+        { user_id: user.id, key: "advisor_activation", value: JSON.stringify(state.advisorActivation), category: "preference" },
+        { user_id: user.id, key: "deferred_connections", value: JSON.stringify(state.deferredConnections), category: "preference" },
+        { user_id: user.id, key: "first_win", value: JSON.stringify(state.firstWin), category: "preference" },
       ].filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
 
       await (supabase as any).from("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
@@ -665,10 +690,14 @@ export function OSSetupExperience() {
     if (phase === "identity") return state.displayName.length > 0 && state.role.length > 0;
     if (phase === "domains") return state.enabledDomains.length > 0;
     if (phase === "primary-use-mode") return state.primaryUseMode.length > 0;
+    if (phase === "trust-calibration") return state.trustCalibration.level > 0;
+    if (phase === "advisor-activation") return state.advisorActivation.some(a => a.enabled);
+    if (phase === "first-win-setup") return state.firstWin.approved;
+    if (phase === "desktop-transition") return true; // auto-advances
     return true;
   };
 
-  const showLearningPanel = !["boot", "network-setup", "device-readiness", "device-ownership", "account-environment", "access-protection", "privacy-transparency", "quick-identity", "deep-world-modeling", "primary-use-mode", "welcome", "restore", "enterprise", "cinematic-intro", "trust-certificate"].includes(phase);
+  const showLearningPanel = !["boot", "network-setup", "device-readiness", "device-ownership", "account-environment", "access-protection", "privacy-transparency", "quick-identity", "deep-world-modeling", "primary-use-mode", "trust-calibration", "advisor-activation", "welcome", "restore", "enterprise", "cinematic-intro", "trust-certificate", "desktop-transition"].includes(phase);
   const canSkipCurrent = !isPhaseRequired(phase);
   const showRollbackBtn = state.setupStyle === "advanced";
   const currentBgTasks = backgroundTasks.filter(t => t.phaseId === phase);
@@ -694,7 +723,7 @@ export function OSSetupExperience() {
       </AnimatePresence>
 
       {/* Session Progress Bar */}
-      {phase !== "boot" && phase !== "network-setup" && phase !== "device-readiness" && phase !== "device-ownership" && phase !== "account-environment" && phase !== "access-protection" && phase !== "privacy-transparency" && phase !== "quick-identity" && phase !== "deep-world-modeling" && phase !== "primary-use-mode" && phase !== "welcome" && (
+      {phase !== "boot" && phase !== "network-setup" && phase !== "device-readiness" && phase !== "device-ownership" && phase !== "account-environment" && phase !== "access-protection" && phase !== "privacy-transparency" && phase !== "quick-identity" && phase !== "deep-world-modeling" && phase !== "primary-use-mode" && phase !== "trust-calibration" && phase !== "advisor-activation" && phase !== "welcome" && phase !== "desktop-transition" && (
         <div className="fixed top-0 left-0 right-0 z-[160]">
           <Progress value={sessionProgress} className="h-0.5 rounded-none" />
         </div>
@@ -801,6 +830,23 @@ export function OSSetupExperience() {
                   <PrimaryUseModeStep key="primary-use-mode"
                     selected={state.primaryUseMode}
                     onSelect={mode => setState(s => ({ ...s, primaryUseMode: mode }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* Trust Calibration */}
+                {phase === "trust-calibration" && (
+                  <TrustCalibrationStep key="trust-calibration"
+                    data={state.trustCalibration}
+                    onUpdate={tc => setState(s => ({ ...s, trustCalibration: tc }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* Advisor Activation */}
+                {phase === "advisor-activation" && (
+                  <AdvisorActivationStep key="advisor-activation"
+                    advisors={state.advisorActivation}
+                    onUpdate={aa => setState(s => ({ ...s, advisorActivation: aa }))}
+                    primaryUseMode={state.primaryUseMode}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
@@ -1050,6 +1096,16 @@ export function OSSetupExperience() {
                 {phase === "first-connections" && (
                   <FirstConnectionsStep key="first-connections"
                     enabledDomains={state.enabledDomains}
+                    primaryUseMode={state.primaryUseMode}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* First Win Setup */}
+                {phase === "first-win-setup" && (
+                  <FirstWinSetupStep key="first-win-setup"
+                    data={state.firstWin}
+                    onUpdate={fw => setState(s => ({ ...s, firstWin: fw }))}
+                    primaryUseMode={state.primaryUseMode}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
@@ -1078,7 +1134,24 @@ export function OSSetupExperience() {
                     trustLevel={state.trustLevel}
                     rituals={state.rituals}
                     aiStyle={state.aiStyle}
+                    primaryUseMode={state.primaryUseMode}
+                    activeAdvisors={state.advisorActivation}
+                    connectedSystems={state.connectedSystems}
+                    firstWinAction={state.firstWin.action}
+                    permissionChoices={state.permissionChoices}
+                    deferredCount={state.deferredConnections.length}
                     onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* Desktop Transition */}
+                {phase === "desktop-transition" && (
+                  <DesktopTransitionStep key="desktop-transition"
+                    displayName={state.displayName}
+                    trustLevel={state.trustLevel}
+                    activeAdvisors={state.advisorActivation}
+                    primaryUseMode={state.primaryUseMode}
+                    firstWinAction={state.firstWin.action}
+                    onComplete={goNext} />
                 )}
 
                 {/* System Check */}
