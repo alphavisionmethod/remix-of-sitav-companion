@@ -109,6 +109,48 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  # ── Electron Desktop Build ────────────────────────────────
+  build-electron:
+    name: Build Electron (Linux)
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Electron deps
+        run: npm install --save-dev electron @electron/packager
+
+      - name: Build frontend (Electron mode)
+        run: ELECTRON_BUILD=1 npx vite build
+        env:
+          VITE_SUPABASE_URL: http://localhost:8000
+          VITE_SUPABASE_PUBLISHABLE_KEY: dummy-key-for-ci
+          VITE_SUPABASE_PROJECT_ID: ci-project
+
+      - name: Package Electron (Linux x64)
+        run: |
+          npx @electron/packager . "SITA-OS" \
+            --platform=linux --arch=x64 \
+            --out=electron-release --overwrite \
+            --ignore='node_modules' \
+            --ignore='^/src' --ignore='^/public' \
+            --ignore='^/scripts' --ignore='^/deploy' \
+            --ignore='^/supabase' --ignore='^/e2e' \
+            --ignore='^/tests' --ignore='^/\.github' \
+            --ignore='^/electron-release'
+
+      - name: Verify Electron output
+        run: |
+          ls -la electron-release/
+          test -d electron-release/SITA-OS-linux-x64
+
   # ── Docker Compose Validation ──────────────────────────────
   validate-compose:
     name: Validate Docker Compose
@@ -119,7 +161,7 @@ jobs:
       - name: Create dummy .env
         run: |
           cat > .env << 'EOF'
-          POSTGRES_PASSWORD=ci-test-password
+          POSTGRES_PASSWORD=ci-test-password-secure-enough
           JWT_SECRET=ci-test-jwt-secret-must-be-32-chars-long
           SUPABASE_ANON_KEY=ci-anon-key
           SUPABASE_SERVICE_KEY=ci-service-key
@@ -149,7 +191,7 @@ jobs:
       - name: Create .env
         run: |
           cat > .env << 'EOF'
-          POSTGRES_PASSWORD=integration-test-pwd
+          POSTGRES_PASSWORD=integration-test-pwd-secure
           JWT_SECRET=integration-test-jwt-secret-32chars
           SUPABASE_ANON_KEY=test-anon-key
           SUPABASE_SERVICE_KEY=test-service-key

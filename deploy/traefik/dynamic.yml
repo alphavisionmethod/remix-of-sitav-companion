@@ -1,0 +1,110 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Traefik Dynamic Configuration
+# Routing rules, middleware, and TLS options
+# ═══════════════════════════════════════════════════════════════
+
+http:
+  middlewares:
+    # Security headers
+    security-headers:
+      headers:
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        stsPreload: true
+        forceSTSHeader: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        frameDeny: true
+        referrerPolicy: "strict-origin-when-cross-origin"
+        customResponseHeaders:
+          X-Powered-By: "SITA OS"
+          Permissions-Policy: "camera=(), microphone=(), geolocation=()"
+
+    # Global rate limit
+    global-ratelimit:
+      rateLimit:
+        average: 1000
+        burst: 200
+        period: 1m
+
+    # Auth endpoint rate limit (stricter)
+    auth-ratelimit:
+      rateLimit:
+        average: 20
+        burst: 5
+        period: 1m
+
+    # IP whitelist for studio (optional)
+    studio-ipwhitelist:
+      ipAllowList:
+        sourceRange:
+          - "127.0.0.1/32"
+          - "10.0.0.0/8"
+          - "172.16.0.0/12"
+          - "192.168.0.0/16"
+
+  routers:
+    # Web frontend
+    sita-web:
+      rule: "PathPrefix(`/`)"
+      service: sita-web
+      entryPoints:
+        - websecure
+      middlewares:
+        - security-headers
+        - global-ratelimit
+      tls:
+        certResolver: letsencrypt
+
+    # API Gateway
+    sita-api:
+      rule: "PathPrefix(`/api`)"
+      service: sita-api
+      entryPoints:
+        - websecure
+      middlewares:
+        - security-headers
+        - global-ratelimit
+      tls:
+        certResolver: letsencrypt
+      priority: 100
+
+    # Kong (Supabase API)
+    sita-kong:
+      rule: "PathPrefix(`/rest`) || PathPrefix(`/auth`) || PathPrefix(`/realtime`) || PathPrefix(`/storage`) || PathPrefix(`/functions`)"
+      service: sita-kong
+      entryPoints:
+        - websecure
+      middlewares:
+        - security-headers
+        - global-ratelimit
+      tls:
+        certResolver: letsencrypt
+      priority: 90
+
+  services:
+    sita-web:
+      loadBalancer:
+        servers:
+          - url: "http://sita-web:80"
+
+    sita-api:
+      loadBalancer:
+        servers:
+          - url: "http://sita-api-gateway:3000"
+
+    sita-kong:
+      loadBalancer:
+        servers:
+          - url: "http://sita-supabase-kong:8000"
+
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+      cipherSuites:
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+      sniStrict: false

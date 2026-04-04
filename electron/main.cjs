@@ -1,9 +1,15 @@
 const { app, BrowserWindow, Menu, Tray, ipcMain, nativeImage } = require('electron');
 const path = require('path');
 const os = require('os');
+const { initCrashReporter, setupCrashReporterIPC } = require('./crash-reporter.cjs');
+const { initAutoUpdater, setupAutoUpdaterIPC } = require('./auto-updater.cjs');
+const { setupFSBridge } = require('./fs-bridge.cjs');
 
 let mainWindow;
 let tray;
+
+// ── Initialize crash reporter early ─────────────────────────
+initCrashReporter();
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -25,6 +31,23 @@ function createWindow() {
   });
 
   mainWindow.loadFile(path.join(__dirname, '..', 'dist', 'index.html'));
+
+  // Initialize auto-updater with window reference
+  initAutoUpdater(mainWindow);
+
+  // Setup file system bridge with window reference
+  setupFSBridge(mainWindow);
+
+  // Capture renderer crashes
+  mainWindow.webContents.on('render-process-gone', (_, details) => {
+    const { addCrashEntry } = require('./crash-reporter.cjs');
+    addCrashEntry({
+      type: 'renderer-crash',
+      reason: details.reason,
+      exitCode: details.exitCode,
+      timestamp: new Date().toISOString(),
+    });
+  });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -58,6 +81,17 @@ function buildMenu() {
           label: 'Quick Add',
           accelerator: 'CmdOrCtrl+N',
           click: () => mainWindow?.webContents.send('menu-action', 'quick-add'),
+        },
+        { type: 'separator' },
+        {
+          label: 'Export Backup...',
+          accelerator: 'CmdOrCtrl+Shift+E',
+          click: () => mainWindow?.webContents.send('menu-action', 'export-backup'),
+        },
+        {
+          label: 'Import Backup...',
+          accelerator: 'CmdOrCtrl+Shift+I',
+          click: () => mainWindow?.webContents.send('menu-action', 'import-backup'),
         },
         { type: 'separator' },
         isMac ? { role: 'close' } : { role: 'quit' },
@@ -119,6 +153,10 @@ function buildMenu() {
           },
         },
         {
+          label: 'Check for Updates...',
+          click: () => mainWindow?.webContents.send('menu-action', 'check-updates'),
+        },
+        {
           label: 'Keyboard Shortcuts',
           accelerator: 'CmdOrCtrl+/',
           click: () => mainWindow?.webContents.send('menu-action', 'keyboard-shortcuts'),
@@ -172,11 +210,6 @@ function setupIPC() {
     appVersion: app.getVersion(),
   }));
 
-  ipcMain.handle('check-for-updates', () => ({
-    available: false,
-    currentVersion: app.getVersion(),
-  }));
-
   ipcMain.on('window-control', (_, action) => {
     if (!mainWindow) return;
     switch (action) {
@@ -194,6 +227,12 @@ function setupIPC() {
       new Notification({ title, body }).show();
     }
   });
+
+  // Auto-updater IPC
+  setupAutoUpdaterIPC();
+
+  // Crash reporter IPC
+  setupCrashReporterIPC();
 }
 
 // ── Deep Link Protocol ──────────────────────────────────────────
