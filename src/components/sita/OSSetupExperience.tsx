@@ -1097,6 +1097,8 @@ export function OSSetupExperience() {
                   <FirstConnectionsStep key="first-connections"
                     enabledDomains={state.enabledDomains}
                     primaryUseMode={state.primaryUseMode}
+                    onConnectedChange={count => setState(s => ({ ...s, connectedSystems: count }))}
+                    onDeferredChange={d => setState(s => ({ ...s, deferredConnections: d }))}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
