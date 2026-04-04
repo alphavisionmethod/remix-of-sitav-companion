@@ -779,7 +779,7 @@ export function OSSetupExperience() {
       )}
 
       {/* Setup phases */}
-      {phase !== "boot" && phase !== "desktop-transition" && (
+      {phase !== "boot" && phase !== "secure-foundation" && phase !== "language-region" && phase !== "desktop-transition" && (
         <div className="fixed inset-0 z-[150] flex items-center justify-center overflow-y-auto p-4 sm:p-8"
           style={{ backgroundColor: "#0B0D10" }}>
           {/* Ambient glow */}
