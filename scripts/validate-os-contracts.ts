@@ -41,6 +41,12 @@ async function run() {
 
     // Shell grammar
     validate("shell-grammar", () => import("../src/packages/shell-grammar")),
+
+    // Lifecycle contracts (Phases 1-4)
+    validate("lifecycle-authority", () => import("../src/packages/contracts/runtime/lifecycle-authority")),
+    validate("host-supervision", () => import("../src/packages/contracts/runtime/host-supervision")),
+    validate("lifecycle-receipts", () => import("../src/packages/contracts/runtime/lifecycle-receipts")),
+    validate("install-recovery", () => import("../src/packages/contracts/runtime/install-recovery")),
   ]);
 
   // ── Runtime contract drift checks ────────────────────────
