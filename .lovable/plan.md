@@ -1,46 +1,93 @@
 
 
-# Fix All Merge Conflicts — Plan
+# SITA OS — Phases 2.8–2.11: Privacy, Quick Identity, Deep World Modeling, Primary Use Mode
 
-## Problem
-17 files have unresolved git merge conflict markers (`<<<<<<< HEAD` / `=======` / `>>>>>>>`), plus 1 Deno type error. This breaks the entire build.
+## Summary
+Create 4 new premium setup phases inserted after `access-protection` and before `welcome`. Also fix the `SetupState` type bug (references undefined type — should be `SetupData`).
 
-## Resolution Strategy
+## File Changes
 
-For every conflict, **keep the HEAD version** — it's the richer, more complete implementation with the orchestration engine, onboarding steps, and existing `MOCK_*` data imports that all resolve correctly.
+### 1. `src/packages/contracts/specialized/setup-orchestration.ts`
+Add 4 new phase IDs to the `SetupPhaseId` union type:
+- `"privacy-transparency"`
+- `"quick-identity"`
+- `"deep-world-modeling"`
+- `"primary-use-mode"`
 
-### File-by-file resolutions
+### 2. `src/lib/engines/setup-phase-definitions.ts`
+Insert 4 new phase definitions after `access-protection` (order 5) and before `welcome` (order 6):
+- `privacy-transparency`: depends on `["access-protection"]`, blocking, required, order 5.1, excludedFromSteps: true
+- `quick-identity`: depends on `["privacy-transparency"]`, blocking, required, order 5.2, excludedFromSteps: true
+- `deep-world-modeling`: depends on `["quick-identity"]`, blocking, required, order 5.3, excludedFromSteps: true
+- `primary-use-mode`: depends on `["deep-world-modeling"]`, blocking, required, order 5.4, excludedFromSteps: true
 
-**1. `src/components/sita/OSSetupExperience.tsx`** (largest — 7 conflict regions)
-- Keep HEAD for all 7 conflicts:
-  - Imports: keep orchestration engine, onboarding components, RestoreFlow, EnterpriseFlow, Progress, etc.
-  - Phase type: keep `SetupPhaseId` from orchestration contract
-  - SetupData: keep full state with all fields (role, domains, painPoints, householdNodes, etc.)
-  - Main component body: keep orchestration hook, state sync, resume banner, learning panel
-  - finishSetup: keep HEAD's full persistence (device enrollment, boot logs, setup sessions, seed-user-data)
-  - Navigation: keep `navigate("/first-win")` and `canAdvance()` logic
-  - Render: keep two-column layout with PhaseProgressRail, all onboarding phases, LearningPanel
-- Remove the simpler incoming branch code (SetupLanguageRegion/SetupOperatingMode/etc. are still importable but not used in this version)
+Update `welcome` dependency from `["access-protection"]` to `["primary-use-mode"]`.
 
-**2. 10 page files** (simple — 1 conflict each)
-- Keep HEAD version for all. Each keeps `MOCK_*` import from `@/lib/mock-data` and removes the `DEMO_*` alias from `@/lib/demo-data`:
-  - `src/pages/ActivityStream.tsx` — keep HEAD (removes unused `ICON_LOOKUP`/`demoTimeline` block)
-  - `src/pages/AutomationCenter.tsx` — keep HEAD (removes unused `demoRules`/`delegations` aliases)
-  - `src/pages/InboxCapture.tsx` — keep HEAD (removes unused `demoItems` alias)
-  - `src/pages/files/FilesOverview.tsx` — keep HEAD `MOCK_FILES_OVERVIEW`
-  - `src/pages/files/FilesProcessing.tsx` — keep HEAD `MOCK_FILES_PROCESSING`
-  - `src/pages/mobile/MobileAlerts.tsx` — keep HEAD `MOCK_MOBILE_ALERTS`
-  - `src/pages/mobile/MobileApprovals.tsx` — keep HEAD `MOCK_MOBILE_APPROVALS`
-  - `src/pages/mobile/MobileProof.tsx` — keep HEAD `MOCK_MOBILE_PROOFS`
-  - `src/pages/mobile/MobileWorkflowDetail.tsx` — keep HEAD `MOCK_MOBILE_WORKFLOW_STEPS`
-  - `src/pages/money/ReservesSavings.tsx` — keep HEAD `MOCK_RESERVES_SAVINGS`
+### 3. `src/components/sita/onboarding/PrivacyTransparencyStep.tsx` (Create ~400 lines)
+- Screen title: "Your data, your control"
+- 7 expandable permission cards (Calendar, Communication, Files, Money, Household, Behavior, Notifications)
+- Each card has 4 sections: "What SITA can see", "What it can do", "What requires approval", "Can be changed later"
+- Toggle per permission with AnimatePresence expand/collapse
+- Right-side transparency map visualization: nodes light up as permissions are enabled, connections form between domains
+- Proof model preview: animated demo showing overlapping meetings → suggestion → approval required
+- State: `permissionChoices: Record<string, boolean>` (7 keys)
+- canAdvance: all 7 cards must be reviewed (expanded at least once)
 
-**3. `supabase/functions/seed-user-data/index.ts`** (Deno type error)
-- Line 221: `err` is `unknown`. Fix: `(err as Error).message`
+### 4. `src/components/sita/onboarding/QuickIdentityStep.tsx` (Create ~300 lines)
+- Screen title: "Help SITA understand where to begin"
+- 5 progressive-reveal questions (appear one at a time as previous answered):
+  1. "What should SITA help you run first?" — chip selector
+  2. "Where do things most often slip?" — chip selector
+  3. "What kind of support feels right?" — card selector
+  4. "How do you prefer information?" — chip selector
+  5. "What would you most like SITA to make easier first?" — optional text input
+- Right-side live preview panel showing suggested advisors, first-win candidates, desktop emphasis
+- State: `quickIdentity: { runFirst: string[]; slipPoints: string[]; supportStyle: string; infoPreference: string[]; easierFirst: string }`
+- canAdvance: at least 2 questions answered
 
-### Implementation order
-1. Fix all 10 simple page files in parallel (strip conflict markers, keep HEAD)
-2. Rewrite `OSSetupExperience.tsx` — strip all conflict markers, keep HEAD version throughout
-3. Fix `seed-user-data/index.ts` type error
-4. Verify with `npx tsc --noEmit`
+### 5. `src/components/sita/onboarding/DeepWorldModelingStep.tsx` (Create ~450 lines)
+- Screen title: "Help SITA understand your world"
+- 6 domain chapters as collapsible accordion sections with completion indicators:
+  1. My life & routines — morning type slider, weekday chips, weekend priorities
+  2. My household — size selector, shared responsibilities chips
+  3. My work or business — industry chips, team size, primary tools
+  4. My money priorities — saving/spending slider, financial goals chips
+  5. My communication style — response time slider, preferred channels
+  6. My goals & stress points — top 3 goals cards, stress indicators chips
+- Side visualization: animated world model with household nodes, business lane, money lane, advisor suggestions
+- State: `worldModel: { routines: object; household: object; work: object; money: object; communication: object; goals: object }`
+- canAdvance: at least 1 chapter completed
+
+### 6. `src/components/sita/onboarding/PrimaryUseModeStep.tsx` (Create ~280 lines)
+- Screen title: "What should SITA help you run first?"
+- 5 premium mode cards: Personal Life (Heart), Family/Household (Users), Business/Operator (Briefcase), Money/Financial (DollarSign), Full SITA (Sparkles)
+- Each card: gradient icon background, title, description, example priorities
+- Selection triggers animated response: selected card glows, unselected dim, module preview updates
+- State: `primaryUseMode: string`
+- canAdvance: selection required
+
+### 7. `src/components/sita/OSSetupExperience.tsx`
+- Fix: rename `SetupData` interface to `SetupState` (or add `type SetupState = SetupData`)
+- Add new fields to `SetupState`: `permissionChoices`, `quickIdentity`, `worldModel`, `primaryUseMode`
+- Import 4 new step components
+- Add 4 new phase IDs to `showLearningPanel` exclusion list
+- Add 4 new phase IDs to session progress bar exclusion
+- Add 4 phase render blocks between `access-protection` and `welcome`
+- Add `canAdvance` logic for each new phase
+- Add new state fields to `finishSetup` persistence array
+
+## Design Patterns
+- All components use existing `motion.div` spring: `initial={{ opacity: 0, y: 30 }}, damping: 28, stiffness: 280`
+- Colors: `bg-primary/8` selected, `border-primary/50` active borders, `bg-secondary/20` inactive
+- Chips use existing `cn()` toggle pattern from WantLessOfStep
+- All icons from `lucide-react`
+- No new dependencies
+
+## Implementation Order
+1. Add phase IDs to contract
+2. Add phase definitions to DAG + update welcome dependency
+3. Create 4 components in parallel
+4. Wire into OSSetupExperience (imports, state, render, persist, canAdvance)
+5. Fix SetupState type bug
+6. Verify with `tsc --noEmit`
 
