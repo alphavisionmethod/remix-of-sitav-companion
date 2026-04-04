@@ -147,7 +147,7 @@ export async function getPendingActions(): Promise<OfflineAction[]> {
   const db = await openDB();
   const store = tx(db, 'pending-actions', 'readonly');
   const index = store.index('synced');
-  const result = await reqToPromise<OfflineAction[]>(index.getAll(false));
+  const result = await reqToPromise<OfflineAction[]>(index.getAll(IDBKeyRange.only(0)));
   db.close();
   return result;
 }
