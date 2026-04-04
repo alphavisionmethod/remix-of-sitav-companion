@@ -9,7 +9,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { DEMO_MOBILE_APPROVALS } from "@/lib/demo-data";
 
-const mockApprovals: ApprovalItem[] = DEMO_MOBILE_APPROVALS;
+const mockApprovals = DEMO_MOBILE_APPROVALS as unknown as ApprovalItem[];
 
 const filters = ["All", "Critical", "Finance", "Business", "Concierge"];
 
