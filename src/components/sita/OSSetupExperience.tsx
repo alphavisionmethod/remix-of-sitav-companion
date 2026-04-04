@@ -474,6 +474,17 @@ export function OSSetupExperience() {
     accountPath: "",
     accessMethod: "",
     recoveryMethod: "",
+    permissionChoices: { calendar: false, communication: false, files: false, money: false, household: false, behavior: false, notifications: false },
+    quickIdentity: { runFirst: [], slipPoints: [], supportStyle: "", infoPreference: [], easierFirst: "" },
+    worldModel: {
+      routines: { morningType: 50, weekday: [], weekend: [] },
+      household: { size: "", responsibilities: [] },
+      work: { industry: [], teamSize: "", tools: [] },
+      money: { savingSpending: 50, goals: [] },
+      communication: { responseTime: 50, channels: [] },
+      goals: { topGoals: [], stressPoints: [] },
+    },
+    primaryUseMode: "",
   });
 
   // Sync setup state to engine for branch evaluation
