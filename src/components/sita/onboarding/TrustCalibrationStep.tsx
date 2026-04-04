@@ -367,41 +367,67 @@ export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCa
             </div>
 
             {/* Trust summary */}
-            {data.level > 0 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="rounded-xl bg-primary/5 border border-primary/20 p-4"
-              >
-                <p className="text-xs text-foreground font-semibold mb-1">
-                  {selectedLevel?.title}
-                </p>
-                <p className="text-[10px] text-muted-foreground leading-relaxed">
-                  {data.level === 1 && "SITA observes patterns and learns, but takes no action. You maintain full manual control."}
-                  {data.level === 2 && "SITA drafts suggestions and surfaces insights. Every action requires your explicit decision."}
-                  {data.level === 3 && "SITA simulates outcomes before proposing actions. You see what would happen before approving."}
-                  {data.level === 4 && "SITA prepares and queues actions. Each one waits for your approval before executing."}
-                  {data.level === 5 && "SITA handles routine tasks automatically. Exceptions and high-impact actions still need approval."}
-                </p>
-              </motion.div>
-            )}
+            <AnimatePresence mode="wait">
+              {data.level > 0 && (
+                <motion.div
+                  key={`summary-${data.level}`}
+                  initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                  transition={{ type: "spring", damping: 24, stiffness: 300 }}
+                  className="rounded-xl bg-primary/5 border border-primary/20 p-4"
+                >
+                  <p className="text-xs text-foreground font-semibold mb-1">
+                    {selectedLevel?.title}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground leading-relaxed">
+                    {data.level === 1 && "SITA observes patterns and learns, but takes no action. You maintain full manual control."}
+                    {data.level === 2 && "SITA drafts suggestions and surfaces insights. Every action requires your explicit decision."}
+                    {data.level === 3 && "SITA simulates outcomes before proposing actions. You see what would happen before approving."}
+                    {data.level === 4 && "SITA prepares and queues actions. Each one waits for your approval before executing."}
+                    {data.level === 5 && "SITA handles routine tasks automatically. Exceptions and high-impact actions still need approval."}
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Example workflow */}
-            {data.level > 0 && (
-              <div className="space-y-2">
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Example</p>
-                <div className="rounded-lg bg-secondary/30 p-3 space-y-1.5">
-                  <p className="text-[11px] text-foreground font-medium">💳 Subscription renewal detected</p>
-                  <div className="space-y-1">
-                    {data.level >= 1 && <p className="text-[10px] text-muted-foreground">→ SITA detects the charge pattern</p>}
-                    {data.level >= 2 && <p className="text-[10px] text-muted-foreground">→ Suggests "Cancel unused service"</p>}
-                    {data.level >= 3 && <p className="text-[10px] text-muted-foreground">→ Simulates savings: $14.99/month</p>}
-                    {data.level >= 4 && <p className="text-[10px] text-muted-foreground">→ Drafts cancellation, awaits approval</p>}
-                    {data.level >= 5 && <p className="text-[10px] text-[hsl(var(--trust-safe))]">→ Auto-cancels with proof receipt</p>}
+            <AnimatePresence mode="wait">
+              {data.level > 0 && (
+                <motion.div
+                  key={`example-${data.level}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ type: "spring", damping: 24, stiffness: 260, delay: 0.05 }}
+                  className="space-y-2"
+                >
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Example</p>
+                  <div className="rounded-lg bg-secondary/30 p-3 space-y-1.5">
+                    <p className="text-[11px] text-foreground font-medium">💳 Subscription renewal detected</p>
+                    <div className="space-y-1">
+                      {[
+                        { min: 1, text: "→ SITA detects the charge pattern", color: "text-muted-foreground" },
+                        { min: 2, text: '→ Suggests "Cancel unused service"', color: "text-muted-foreground" },
+                        { min: 3, text: "→ Simulates savings: $14.99/month", color: "text-muted-foreground" },
+                        { min: 4, text: "→ Drafts cancellation, awaits approval", color: "text-muted-foreground" },
+                        { min: 5, text: "→ Auto-cancels with proof receipt", color: "text-[hsl(var(--trust-safe))]" },
+                      ].filter(step => data.level >= step.min).map((step, idx) => (
+                        <motion.p
+                          key={step.min}
+                          initial={{ opacity: 0, x: -8 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: prefersReduced ? 0 : idx * 0.07, duration: 0.3 }}
+                          className={cn("text-[10px]", step.color)}
+                        >
+                          {step.text}
+                        </motion.p>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
