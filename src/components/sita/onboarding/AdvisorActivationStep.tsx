@@ -128,14 +128,12 @@ export function AdvisorActivationStep({ advisors, onUpdate, primaryUseMode, onNe
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Left: Advisor cards */}
         <div className="lg:col-span-3 space-y-5">
-          <div className="text-center lg:text-left">
-            <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}
-              className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20 mb-4">
-              <Shield className="h-7 w-7 text-primary-foreground" />
-            </motion.div>
-            <h2 className="font-display text-2xl font-bold text-foreground">Meet your advisory team</h2>
-            <p className="mt-1.5 text-sm text-muted-foreground">Choose who should be active from day one</p>
-          </div>
+          <SetupStageHeader
+            icon={Shield}
+            title="Meet your advisory team"
+            subtitle="Choose who should be active from day one"
+            align="left"
+          />
 
           <div className="space-y-2.5">
             {ADVISORS.map((advisor, i) => {
