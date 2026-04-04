@@ -2,7 +2,7 @@
 // SITA OS — Trust & Autonomy Calibration Step (Phase 2.12)
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Eye, MessageSquare, FlaskConical, ShieldCheck, Zap,
