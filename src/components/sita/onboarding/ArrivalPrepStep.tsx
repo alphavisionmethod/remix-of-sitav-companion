@@ -61,7 +61,7 @@ const useModeLabels: Record<string, string> = {
 export const ArrivalPrepStep = ({
   displayName, enabledDomains, trustLevel, rituals, aiStyle,
   primaryUseMode, activeAdvisors, connectedSystems, firstWinAction,
-  permissionChoices, deferredCount, onNext, onPrev,
+  permissionChoices, deferredCount, trustCalibrationLevel, onNext, onPrev,
 }: ArrivalPrepStepProps) => {
   const enabledAdvisors = activeAdvisors.filter(a => a.enabled);
   const enabledPermissions = Object.values(permissionChoices).filter(Boolean).length;
