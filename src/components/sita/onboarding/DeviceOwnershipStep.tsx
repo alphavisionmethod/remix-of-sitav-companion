@@ -124,8 +124,29 @@ export function DeviceOwnershipStep({ selected, onSelect, onNext, onPrev }: Prop
                 <p className="text-xs text-muted-foreground italic">Select an option to see how it shapes your environment</p>
               )}
             </div>
-          </div>
+            </div>
 
+            {/* Mobile impact panel (toggled by "Learn what this changes") */}
+            {showImpact && activeOption && (
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
+                className="md:hidden space-y-3 pt-3 border-t border-border mt-3">
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Selection impact</p>
+                {[
+                  { icon: Lock, label: "Privacy model", value: activeOption.impacts.privacy },
+                  { icon: Users, label: "Sharing model", value: activeOption.impacts.sharing },
+                  { icon: Shield, label: "Trust model", value: activeOption.impacts.trust },
+                  { icon: Eye, label: "Recommendations", value: activeOption.impacts.recs },
+                ].map((impact, i) => (
+                  <div key={impact.label} className="space-y-0.5">
+                    <div className="flex items-center gap-1.5">
+                      <impact.icon className="h-3 w-3 text-primary" />
+                      <span className="text-[10px] font-medium text-foreground">{impact.label}</span>
+                    </div>
+                    <p className="text-[10px] text-muted-foreground leading-relaxed pl-[18px]">{impact.value}</p>
+                  </div>
+                ))}
+              </motion.div>
+            )}
           {/* Navigation */}
           <div className="flex items-center justify-between pt-6 mt-4 border-t border-border">
             <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>

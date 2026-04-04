@@ -358,17 +358,29 @@ export function NetworkSetupStep({ onNext, onPrev, onStateChange }: Props) {
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-between pt-6 mt-4 border-t border-border">
-            <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
-            <button onClick={onNext}
-              disabled={!isOnline && connectionState !== "offline_mode_selected" && connectionState !== "weak_signal"}
-              className={cn("rounded-xl px-6 py-2.5 text-sm font-semibold transition-all flex items-center gap-2",
-                (isOnline || connectionState === "offline_mode_selected" || connectionState === "weak_signal")
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "bg-muted text-muted-foreground cursor-not-allowed"
-              )}>
-              Continue <ChevronRight className="h-3.5 w-3.5" />
-            </button>
+          <div className="flex flex-col gap-3 pt-6 mt-4 border-t border-border">
+            <div className="flex items-center justify-between">
+              <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
+              <button onClick={onNext}
+                disabled={!isOnline && connectionState !== "offline_mode_selected" && connectionState !== "weak_signal"}
+                className={cn("rounded-xl px-6 py-2.5 text-sm font-semibold transition-all flex items-center gap-2",
+                  (isOnline || connectionState === "offline_mode_selected" || connectionState === "weak_signal")
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                    : "bg-muted text-muted-foreground cursor-not-allowed"
+                )}>
+                Continue <ChevronRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+            <div className="flex items-center justify-center gap-4">
+              {!isOnline && (
+                <button onClick={() => setNetworks([])} className="text-[10px] text-muted-foreground hover:text-foreground transition-colors">
+                  Rescan networks
+                </button>
+              )}
+              <button onClick={() => setShowProxy(!showProxy)} className="text-[10px] text-muted-foreground hover:text-foreground transition-colors">
+                Advanced setup
+              </button>
+            </div>
           </div>
         </div>
       </div>
