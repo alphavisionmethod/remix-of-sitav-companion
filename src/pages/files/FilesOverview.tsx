@@ -9,10 +9,18 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { motion } from "framer-motion";
 import { classifyFile, detectSensitivity, type FileClassification, type SensitivityLevel } from "@/lib/core-services/file-ingestion";
 import { FileUploader } from "@/components/sita/FileUploader";
+<<<<<<< HEAD
 import { MOCK_FILES_OVERVIEW } from "@/lib/mock-data";
 
 type ViewVariant = "founder" | "household" | "finance" | "premium";
 
+=======
+import { DEMO_FILE_ITEMS } from "@/lib/demo-data";
+
+type ViewVariant = "founder" | "household" | "finance" | "premium";
+
+const MOCK_FILES = DEMO_FILE_ITEMS;
+>>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
 
 const sensitivityColor: Record<SensitivityLevel, string> = {
   public: "text-trust-safe",

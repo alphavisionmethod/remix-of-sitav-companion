@@ -20,7 +20,7 @@ export * from "./brain-core";
 export * from "./business-os";
 export * from "./finance-os";
 export * from "./concierge-os";
-export * from "./shared";
+
 export { evaluateTruthBoundaries, getBoundaryRule, listProtectedFields, isFieldProtected } from "./policy-engine";
 export { resolveApprovalRequirements, getThresholdsForDomain } from "./policy-engine";
 export { classifyDocument, getRedactionRules, bulkClassify } from "./policy-engine";

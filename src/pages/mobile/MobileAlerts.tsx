@@ -6,8 +6,14 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { AlertCard, type AlertItem } from "@/components/mobile/AlertCard";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+<<<<<<< HEAD
 import { MOCK_MOBILE_ALERTS } from "@/lib/mock-data";
 
+=======
+import { DEMO_MOBILE_ALERTS } from "@/lib/demo-data";
+
+const mockAlerts: AlertItem[] = DEMO_MOBILE_ALERTS;
+>>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
 
 const MobileAlerts = () => {
   const [filter, setFilter] = useState<"all" | "unread">("all");

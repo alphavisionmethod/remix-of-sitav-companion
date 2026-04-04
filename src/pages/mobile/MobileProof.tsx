@@ -5,8 +5,14 @@
 import { MobileShell } from "@/components/mobile/MobileShell";
 import { ProofCard, type ProofItem } from "@/components/mobile/ProofCard";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import { MOCK_MOBILE_PROOFS } from "@/lib/mock-data";
 
+=======
+import { DEMO_MOBILE_PROOFS } from "@/lib/demo-data";
+
+const mockProofs: ProofItem[] = DEMO_MOBILE_PROOFS;
+>>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
 
 const MobileProof = () => {
   const navigate = useNavigate();
