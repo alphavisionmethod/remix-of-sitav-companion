@@ -1,5 +1,4 @@
 // ═══════════════════════════════════════════════════════════════
-<<<<<<< HEAD
 // SITA OS — Premium OS Setup Experience (World-Class Onboarding)
 // macOS-like first-run with cinematic intro, adaptive phases,
 // live learning panel, simulations, and trust certificate
@@ -9,20 +8,10 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-=======
-// SITA OS — Premium OS Setup Experience
-// Full premium setup flow: boot → welcome → language → mode →
-// model → trust → advisors → environment prep → ready
-// ═══════════════════════════════════════════════════════════════
-
-import { useState, useCallback } from "react";
-import { AnimatePresence } from "framer-motion";
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-<<<<<<< HEAD
 import {
   Brain, Shield, Zap, Globe, Eye, Lock, Sparkles, Check, ChevronRight,
   Briefcase, DollarSign, Headphones, Building, Home, BarChart3,
@@ -69,28 +58,6 @@ import { Progress } from "@/components/ui/progress";
 // ── Types ───────────────────────────────────────────────────
 
 type Phase = SetupPhaseId;
-=======
-import { FirstBootScreen } from "@/components/sita/FirstBootScreen";
-import { FirstWelcomeScreen } from "@/components/sita/FirstWelcomeScreen";
-import { SetupLanguageRegion } from "@/components/sita/setup/SetupLanguageRegion";
-import { SetupOperatingMode } from "@/components/sita/setup/SetupOperatingMode";
-import { SetupOperatingModel, type OperatingModelData } from "@/components/sita/setup/SetupOperatingModel";
-import { SetupTrustAutonomy } from "@/components/sita/setup/SetupTrustAutonomy";
-import { SetupAdvisorTeam } from "@/components/sita/setup/SetupAdvisorTeam";
-import { SetupEnvironmentPrep } from "@/components/sita/setup/SetupEnvironmentPrep";
-
-// ── Types ───────────────────────────────────────────────────
-
-type Phase =
-  | "boot"
-  | "welcome"
-  | "language-region"
-  | "operating-mode"
-  | "operating-model"
-  | "trust-autonomy"
-  | "advisor-team"
-  | "environment-prep";
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
 
 interface SetupData {
   // Language & Region
@@ -110,7 +77,6 @@ interface SetupData {
   activeAdvisors: string[];
   // Identity (from welcome flow — placeholder for now)
   displayName: string;
-<<<<<<< HEAD
   role: string;
   enabledDomains: string[];
   trustLevel: "open" | "balanced" | "guarded";
@@ -354,11 +320,6 @@ function SystemCheck({ onComplete, backgroundTasks }: { onComplete: () => void; 
     </div>
   );
 }
-=======
-}
-
-const TOTAL_STEPS = 6; // language, mode, model, trust, advisors, prep
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
 
 // ── Nav Buttons ─────────────────────────────────────────────
 
@@ -455,7 +416,6 @@ function BackgroundTaskBar({ tasks }: { tasks: any[] }) {
 export function OSSetupExperience() {
   const { user } = useAuth();
   const navigate = useNavigate();
-<<<<<<< HEAD
 
   const orch = useSetupOrchestration();
   const { currentPhase: phase, phaseStatus, goNext: orchGoNext, goPrev: orchGoPrev,
@@ -528,30 +488,10 @@ export function OSSetupExperience() {
     }));
   };
 
-=======
-  const [phase, setPhase] = useState<Phase>("boot");
-  const [data, setData] = useState<SetupData>({
-    language: "en",
-    region: "US",
-    timezone: "America/New_York",
-    dateFormat: "MM/DD/YYYY",
-    currency: "USD",
-    operatingMode: "",
-    operatingModel: null,
-    autonomyLevel: 3,
-    thresholds: {},
-    activeAdvisors: [],
-    displayName: "",
-  });
-
-  const goTo = useCallback((p: Phase) => setPhase(p), []);
-
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
   const finishSetup = async () => {
     if (!user) { navigate("/"); return; }
     try {
       const memoryItems = [
-<<<<<<< HEAD
         { user_id: user.id, key: "display_name", value: JSON.stringify(state.displayName), category: "profile" },
         { user_id: user.id, key: "role", value: JSON.stringify(state.role), category: "preference" },
         { user_id: user.id, key: "enabled_domains", value: JSON.stringify(state.enabledDomains), category: "preference" },
@@ -668,25 +608,10 @@ export function OSSetupExperience() {
         console.warn("Seed data skipped:", seedErr);
       }
 
-=======
-        { user_id: user.id, key: "language", value: JSON.stringify(data.language), category: "preference" },
-        { user_id: user.id, key: "region", value: JSON.stringify(data.region), category: "preference" },
-        { user_id: user.id, key: "timezone", value: JSON.stringify(data.timezone), category: "preference" },
-        { user_id: user.id, key: "operating_mode", value: JSON.stringify(data.operatingMode), category: "preference" },
-        { user_id: user.id, key: "operating_model", value: JSON.stringify(data.operatingModel), category: "preference" },
-        { user_id: user.id, key: "autonomy_level", value: JSON.stringify(data.autonomyLevel), category: "preference" },
-        { user_id: user.id, key: "trust_thresholds", value: JSON.stringify(data.thresholds), category: "preference" },
-        { user_id: user.id, key: "active_advisors", value: JSON.stringify(data.activeAdvisors), category: "preference" },
-      ].filter(m => m.value && m.value !== '""' && m.value !== 'null');
-
-      await (supabase as any).from("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
-      await (supabase as any).from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
       toast.success("SITA OS configured successfully");
     } catch (e) {
       console.error(e);
     }
-<<<<<<< HEAD
     navigate("/first-win", { replace: true });
   };
 
@@ -712,11 +637,6 @@ export function OSSetupExperience() {
     window.location.reload();
   }, []);
 
-=======
-    navigate("/");
-  };
-
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
   return (
     <>
       {/* Resume Banner */}
@@ -755,7 +675,6 @@ export function OSSetupExperience() {
               style={{ background: "hsl(38 85% 58% / 0.03)" }} />
           </div>
 
-<<<<<<< HEAD
           {/* Two-column layout: content + learning panel */}
           <div className="relative z-10 flex items-start gap-6 w-full max-w-4xl justify-center">
             <div className="flex-1 min-w-0">
@@ -1107,98 +1026,6 @@ export function OSSetupExperience() {
             {showLearningPanel && (
               <LearningPanel state={state} />
             )}
-=======
-          <div className="relative z-10 w-full">
-            <AnimatePresence mode="wait">
-              {/* Welcome */}
-              {phase === "welcome" && (
-                <FirstWelcomeScreen key="welcome" onSetup={() => goTo("language-region")} />
-              )}
-
-              {/* Language & Region */}
-              {phase === "language-region" && (
-                <SetupLanguageRegion
-                  key="language"
-                  step={0}
-                  total={TOTAL_STEPS}
-                  onBack={() => goTo("welcome")}
-                  onNext={(locale) => {
-                    setData(d => ({ ...d, ...locale }));
-                    goTo("operating-mode");
-                  }}
-                />
-              )}
-
-              {/* Operating Mode */}
-              {phase === "operating-mode" && (
-                <SetupOperatingMode
-                  key="mode"
-                  step={1}
-                  total={TOTAL_STEPS}
-                  onBack={() => goTo("language-region")}
-                  onNext={(mode) => {
-                    setData(d => ({ ...d, operatingMode: mode }));
-                    goTo("operating-model");
-                  }}
-                />
-              )}
-
-              {/* Operating Model */}
-              {phase === "operating-model" && (
-                <SetupOperatingModel
-                  key="model"
-                  operatingMode={data.operatingMode}
-                  step={2}
-                  total={TOTAL_STEPS}
-                  onBack={() => goTo("operating-mode")}
-                  onNext={(model) => {
-                    setData(d => ({ ...d, operatingModel: model }));
-                    goTo("trust-autonomy");
-                  }}
-                />
-              )}
-
-              {/* Trust & Autonomy */}
-              {phase === "trust-autonomy" && (
-                <SetupTrustAutonomy
-                  key="trust"
-                  step={3}
-                  total={TOTAL_STEPS}
-                  onBack={() => goTo("operating-model")}
-                  onNext={({ autonomyLevel, thresholds }) => {
-                    setData(d => ({ ...d, autonomyLevel, thresholds }));
-                    goTo("advisor-team");
-                  }}
-                />
-              )}
-
-              {/* Advisor Team */}
-              {phase === "advisor-team" && (
-                <SetupAdvisorTeam
-                  key="advisors"
-                  operatingMode={data.operatingMode}
-                  step={4}
-                  total={TOTAL_STEPS}
-                  onBack={() => goTo("trust-autonomy")}
-                  onNext={(advisors) => {
-                    setData(d => ({ ...d, activeAdvisors: advisors }));
-                    goTo("environment-prep");
-                  }}
-                />
-              )}
-
-              {/* Environment Prep + Ready */}
-              {phase === "environment-prep" && (
-                <SetupEnvironmentPrep
-                  key="prep"
-                  displayName={data.displayName}
-                  activeAdvisors={data.activeAdvisors}
-                  autonomyLevel={data.autonomyLevel}
-                  onFinish={finishSetup}
-                />
-              )}
-            </AnimatePresence>
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
           </div>
         </div>
       )}
