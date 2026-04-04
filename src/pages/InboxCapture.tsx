@@ -17,11 +17,6 @@ import {
 } from "lucide-react";
 import { DEMO_INBOX_ITEMS } from "@/lib/demo-data";
 
-<<<<<<< HEAD
-=======
-const demoItems = DEMO_INBOX_ITEMS;
-
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
 const typeIcons: Record<string, typeof FileText> = {
   note: StickyNote, receipt: Receipt, screenshot: Camera, voice: Mic,
   email: Mail, idea: Sparkles, reminder: Clock, bill: DollarSign,

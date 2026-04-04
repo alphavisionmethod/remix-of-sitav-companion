@@ -5,14 +5,8 @@ import { Loader2, CheckCircle, AlertTriangle, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { FileIngestionService } from "@/lib/core-services/file-ingestion";
-<<<<<<< HEAD
 import { MOCK_FILES_PROCESSING } from "@/lib/mock-data";
 
-=======
-import { DEMO_PROCESSING_FILES } from "@/lib/demo-data";
-
-const DEMO_FILES = DEMO_PROCESSING_FILES;
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
 
 const stageMap: Record<string, ProcessingStage> = {
   "Receipt_Costco_Mar28.jpg": "ocr",

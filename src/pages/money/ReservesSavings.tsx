@@ -11,14 +11,8 @@ import { db } from "@/integrations/supabase/db";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
-<<<<<<< HEAD
 import { MOCK_RESERVES_SAVINGS } from "@/lib/mock-data";
 
-=======
-import { DEMO_RESERVES } from "@/lib/demo-data";
-
-const mockReserves = DEMO_RESERVES;
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
 
 const ReservesSavings = () => {
   const { user } = useAuth();
