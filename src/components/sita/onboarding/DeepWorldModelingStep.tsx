@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Globe, Clock, Users, Briefcase, DollarSign, MessageSquare, Target,
-  ChevronDown, Check, Heart, Brain, Zap, Shield,
+  ChevronRight, ChevronDown, Check, Heart, Brain, Zap, Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
