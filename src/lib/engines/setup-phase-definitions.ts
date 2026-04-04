@@ -368,6 +368,14 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     statusUX: defaultStatusUX("Recovery Setup"),
   },
   {
+    id: "first-win-setup", title: "First Win Setup", description: "Choose your first win for immediate value",
+    dependencies: ["first-connections"], blocking: true, required: true,
+    backgroundTaskIds: [],
+    branchConditions: [], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 20.5, excludedFromSteps: false,
+    statusUX: defaultStatusUX("First Win Setup"),
+  },
+  {
     id: "arrival-prep", title: "Arrival Preparation", description: "Final pre-launch preparation",
     dependencies: [],  // computed dynamically — all non-excluded completed/skipped
     blocking: true, required: true,
@@ -377,8 +385,16 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     statusUX: defaultStatusUX("Arrival Preparation"),
   },
   {
-    id: "system-check", title: "System Check", description: "Verify all subsystems are operational",
+    id: "desktop-transition", title: "Desktop Transition", description: "Cinematic transition into the desktop",
     dependencies: ["arrival-prep"], blocking: true, required: true,
+    backgroundTaskIds: [],
+    branchConditions: [], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 25.5, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Desktop Transition"),
+  },
+  {
+    id: "system-check", title: "System Check", description: "Verify all subsystems are operational",
+    dependencies: ["desktop-transition"], blocking: true, required: true,
     backgroundTaskIds: [
       "check-advisor-intelligence", "check-trust-governance", "check-proof-ledger",
       "check-memory-subsystem", "check-connector-framework", "check-budget-automation",
