@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Users, Building2, Shield, Lock, Eye, ChevronRight, Check } from "lucide-react";
+import { User, Users, Building2, Shield, Lock, Eye, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
 
 type OwnershipType = "personal" | "family" | "work";
 
