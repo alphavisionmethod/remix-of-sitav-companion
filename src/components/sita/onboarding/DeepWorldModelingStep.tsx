@@ -114,14 +114,13 @@ export function DeepWorldModelingStep({ data, onUpdate, onNext, onPrev }: Props)
       transition={spring} className="w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-8">
 
       <div className="flex-1 min-w-0">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3 mb-6">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20">
-            <Globe className="h-6 w-6 text-primary-foreground" />
-          </div>
-          <div>
-            <h2 className="font-display text-2xl font-bold tracking-tight text-foreground">Help SITA understand your world</h2>
-            <p className="text-sm text-muted-foreground">We'll use this to shape your environment, advisors, and first workflows</p>
-          </div>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6">
+          <SetupStageHeader
+            icon={Globe}
+            title="Help SITA understand your world"
+            subtitle="We'll use this to shape your environment, advisors, and first workflows"
+            align="left"
+          />
         </motion.div>
 
         <div className="space-y-2">
