@@ -2,10 +2,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Globe, Clock, Users, Briefcase, DollarSign, MessageSquare, Target,
-  ChevronRight, ChevronDown, Check, Heart, Brain, Zap, Shield,
+  ChevronDown, Check, Heart, Brain, Zap, Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
 
 export interface WorldModelData {
   routines: { morningType: number; weekday: string[]; weekend: string[] };
