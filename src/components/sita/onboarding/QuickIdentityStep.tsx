@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Compass, ChevronRight, Check, Sparkles, BarChart3, MessageSquare,
+  Compass, Check, Sparkles, BarChart3, MessageSquare,
   Brain, Shield, Users, DollarSign, Briefcase, Bell, Zap, Layout,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
 
 export interface QuickIdentityData {
   runFirst: string[];
