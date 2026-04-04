@@ -1,12 +1,38 @@
 version: "3.8"
 
 services:
+  # ── Traefik Reverse Proxy (TLS Termination) ────────────────────
+  sita-traefik:
+    image: traefik:v3.0
+    container_name: sita-traefik
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./deploy/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./deploy/traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
+      - traefik-certs:/letsencrypt
+    environment:
+      - ACME_EMAIL=${ACME_EMAIL:-admin@sita.local}
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"
+    networks:
+      - sita-frontend
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
   # ── Frontend ────────────────────────────────────────────────────
   sita-web:
     image: nginx:alpine
     container_name: sita-web
-    ports:
-      - "8080:80"
     volumes:
       - ./dist:/usr/share/nginx/html:ro
       - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
@@ -29,7 +55,12 @@ services:
           memory: 256M
           cpus: "0.5"
     networks:
-      - sita-net
+      - sita-frontend
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ── API Gateway ─────────────────────────────────────────────────
   sita-api-gateway:
@@ -37,8 +68,6 @@ services:
       context: .
       dockerfile: deploy/Dockerfile.api
     container_name: sita-api-gateway
-    ports:
-      - "3000:3000"
     environment:
       - NODE_ENV=production
       - PORT=3000
@@ -48,6 +77,8 @@ services:
       - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
       - EDGE_FUNCTIONS_URL=http://sita-supabase-functions:9000
       - SITE_URL=${SITE_URL:-http://localhost:8080}
+      - RATE_LIMIT_MAX=${RATE_LIMIT_MAX:-500}
+      - RATE_LIMIT_WINDOW_MS=${RATE_LIMIT_WINDOW_MS:-60000}
     depends_on:
       sita-supabase-db:
         condition: service_healthy
@@ -64,7 +95,13 @@ services:
           memory: 512M
           cpus: "1.0"
     networks:
-      - sita-net
+      - sita-frontend
+      - sita-backend
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
 
   # ── Brain Core ──────────────────────────────────────────────────
   sita-brain-core:
@@ -72,8 +109,6 @@ services:
       context: .
       dockerfile: deploy/Dockerfile.brain
     container_name: sita-brain-core
-    ports:
-      - "3001:3001"
     environment:
       - NODE_ENV=production
       - PORT=3001
@@ -99,16 +134,18 @@ services:
           memory: 1G
           cpus: "2.0"
     networks:
-      - sita-net
+      - sita-backend
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
 
   # ── NATS JetStream ─────────────────────────────────────────────
   sita-nats:
     image: nats:2.10-alpine
     container_name: sita-nats
     command: ["--jetstream", "--store_dir=/data", "-p", "4222", "-m", "8222"]
-    ports:
-      - "4222:4222"
-      - "8222:8222"
     volumes:
       - nats-data:/data
     healthcheck:
@@ -124,16 +161,20 @@ services:
           memory: 512M
           cpus: "1.0"
     networks:
-      - sita-net
+      - sita-backend
+      - sita-data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ── Supabase: PostgreSQL ────────────────────────────────────────
   sita-supabase-db:
     image: supabase/postgres:15.1.1.78
     container_name: sita-supabase-db
-    ports:
-      - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sita-secure-pwd-change-me}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: postgres
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXP: 3600
@@ -153,16 +194,19 @@ services:
           memory: 1G
           cpus: "2.0"
     networks:
-      - sita-net
+      - sita-data
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
 
   # ── Supabase: PostgREST ────────────────────────────────────────
   sita-supabase-rest:
     image: postgrest/postgrest:v12.0.2
     container_name: sita-supabase-rest
-    ports:
-      - "3100:3000"
     environment:
-      PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD:-sita-secure-pwd-change-me}@sita-supabase-db:5432/postgres
+      PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD}@sita-supabase-db:5432/postgres
       PGRST_DB_SCHEMAS: ${PGRST_DB_SCHEMAS:-public,storage,graphql_public}
       PGRST_DB_EXTRA_SEARCH_PATH: ${PGRST_DB_EXTRA_SEARCH_PATH:-public,extensions}
       PGRST_DB_ANON_ROLE: anon
@@ -184,20 +228,24 @@ services:
           memory: 256M
           cpus: "0.5"
     networks:
-      - sita-net
+      - sita-backend
+      - sita-data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ── Supabase: Realtime ─────────────────────────────────────────
   sita-supabase-realtime:
     image: supabase/realtime:v2.28.32
     container_name: sita-supabase-realtime
-    ports:
-      - "4000:4000"
     environment:
       PORT: 4000
       DB_HOST: sita-supabase-db
       DB_PORT: 5432
       DB_USER: supabase_admin
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-sita-secure-pwd-change-me}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
       DB_NAME: postgres
       DB_AFTER_CONNECT_QUERY: "SET search_path TO _realtime"
       DB_ENC_KEY: supabaserealtime
@@ -224,7 +272,13 @@ services:
           memory: 512M
           cpus: "1.0"
     networks:
-      - sita-net
+      - sita-backend
+      - sita-data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ── Supabase: Postgres Meta ─────────────────────────────────────
   sita-supabase-meta:
@@ -236,7 +290,7 @@ services:
       PG_META_DB_PORT: 5432
       PG_META_DB_NAME: postgres
       PG_META_DB_USER: supabase_admin
-      PG_META_DB_PASSWORD: ${POSTGRES_PASSWORD:-sita-secure-pwd-change-me}
+      PG_META_DB_PASSWORD: ${POSTGRES_PASSWORD}
     depends_on:
       sita-supabase-db:
         condition: service_healthy
@@ -253,20 +307,24 @@ services:
           memory: 256M
           cpus: "0.5"
     networks:
-      - sita-net
+      - sita-backend
+      - sita-data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ── Supabase: Edge Functions Runtime ───────────────────────────
   sita-supabase-functions:
     image: supabase/edge-runtime:v1.54.6
     container_name: sita-supabase-functions
     command: ["start", "--main-service", "/home/deno/functions/main"]
-    ports:
-      - "9000:9000"
     environment:
       SUPABASE_URL: http://sita-supabase-kong:8000
       SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
       SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_KEY}
-      SUPABASE_DB_URL: postgres://supabase_admin:${POSTGRES_PASSWORD:-sita-secure-pwd-change-me}@sita-supabase-db:5432/postgres
+      SUPABASE_DB_URL: postgres://supabase_admin:${POSTGRES_PASSWORD}@sita-supabase-db:5432/postgres
       JWT_SECRET: ${JWT_SECRET}
       DENO_SERVE_ADDRESS: 0.0.0.0:9000
     volumes:
@@ -287,20 +345,23 @@ services:
           memory: 512M
           cpus: "1.0"
     networks:
-      - sita-net
+      - sita-backend
+      - sita-data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ── Supabase: Kong API Gateway ──────────────────────────────────
   sita-supabase-kong:
     image: kong:2.8.1
     container_name: sita-supabase-kong
-    ports:
-      - "8000:8000"
-      - "8443:8443"
     environment:
       KONG_DATABASE: "off"
       KONG_DECLARATIVE_CONFIG: /var/lib/kong/kong.yml
       KONG_DNS_ORDER: LAST,A,CNAME
-      KONG_PLUGINS: request-transformer,cors,key-auth,acl
+      KONG_PLUGINS: request-transformer,cors,key-auth,acl,rate-limiting
       SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
       SUPABASE_SERVICE_KEY: ${SUPABASE_SERVICE_KEY}
     volumes:
@@ -321,20 +382,25 @@ services:
           memory: 256M
           cpus: "0.5"
     networks:
-      - sita-net
+      - sita-frontend
+      - sita-backend
+      - sita-data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ── Supabase: GoTrue Auth ──────────────────────────────────────
   sita-supabase-auth:
     image: supabase/gotrue:v2.143.0
     container_name: sita-supabase-auth
-    ports:
-      - "9999:9999"
     environment:
       GOTRUE_API_HOST: 0.0.0.0
       GOTRUE_API_PORT: 9999
       API_EXTERNAL_URL: ${API_EXTERNAL_URL:-http://localhost:8000}
       GOTRUE_DB_DRIVER: postgres
-      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${POSTGRES_PASSWORD:-sita-secure-pwd-change-me}@sita-supabase-db:5432/postgres
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${POSTGRES_PASSWORD}@sita-supabase-db:5432/postgres
       GOTRUE_SITE_URL: ${SITE_URL:-http://localhost:8080}
       GOTRUE_JWT_SECRET: ${JWT_SECRET}
       GOTRUE_JWT_EXP: 3600
@@ -356,18 +422,22 @@ services:
           memory: 256M
           cpus: "0.5"
     networks:
-      - sita-net
+      - sita-backend
+      - sita-data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ── Supabase: Storage ──────────────────────────────────────────
   sita-supabase-storage:
     image: supabase/storage-api:v0.46.4
     container_name: sita-supabase-storage
-    ports:
-      - "5000:5000"
     environment:
       ANON_KEY: ${SUPABASE_ANON_KEY}
       SERVICE_KEY: ${SUPABASE_SERVICE_KEY}
-      DATABASE_URL: postgres://supabase_storage_admin:${POSTGRES_PASSWORD:-sita-secure-pwd-change-me}@sita-supabase-db:5432/postgres
+      DATABASE_URL: postgres://supabase_storage_admin:${POSTGRES_PASSWORD}@sita-supabase-db:5432/postgres
       STORAGE_BACKEND: file
       FILE_STORAGE_BACKEND_PATH: /var/lib/storage
       TENANT_ID: stub
@@ -387,14 +457,20 @@ services:
           memory: 256M
           cpus: "0.5"
     networks:
-      - sita-net
+      - sita-backend
+      - sita-data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ── Supabase: Studio (Database UI) ─────────────────────────────
   sita-supabase-studio:
     image: supabase/studio:20240101-8e4a094
     container_name: sita-supabase-studio
-    ports:
-      - "3100:3000"
+    profiles:
+      - studio
     environment:
       STUDIO_PG_META_URL: http://sita-supabase-meta:8080
       SUPABASE_URL: http://sita-supabase-kong:8000
@@ -422,15 +498,33 @@ services:
           memory: 512M
           cpus: "1.0"
     networks:
-      - sita-net
+      - sita-frontend
+      - sita-backend
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
+volumes:
   supabase-db-data:
     driver: local
   supabase-storage-data:
     driver: local
   nats-data:
     driver: local
+  traefik-certs:
+    driver: local
 
 networks:
-  sita-net:
+  sita-frontend:
     driver: bridge
+    name: sita-frontend
+  sita-backend:
+    driver: bridge
+    name: sita-backend
+    internal: true
+  sita-data:
+    driver: bridge
+    name: sita-data
+    internal: true

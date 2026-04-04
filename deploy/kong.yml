@@ -1,6 +1,6 @@
 # ═══════════════════════════════════════════════════════════════
 # SITA OS — Kong Declarative Configuration
-# Routes requests to Supabase services (Auth, REST, Realtime, Storage)
+# Routes requests to Supabase services with rate limiting
 # ═══════════════════════════════════════════════════════════════
 
 _format_version: "2.1"
@@ -20,6 +20,12 @@ services:
       - name: key-auth
         config:
           hide_credentials: false
+      - name: rate-limiting
+        config:
+          minute: 500
+          policy: local
+          fault_tolerant: true
+          hide_client_headers: false
 
   # ── GoTrue Auth ────────────────────────────────────────────────
   - name: auth-v1
@@ -31,6 +37,12 @@ services:
           - /auth/v1/
     plugins:
       - name: cors
+      - name: rate-limiting
+        config:
+          minute: 20
+          policy: local
+          fault_tolerant: true
+          hide_client_headers: false
 
   # ── Realtime ───────────────────────────────────────────────────
   - name: realtime-v1
@@ -56,6 +68,11 @@ services:
       - name: key-auth
         config:
           hide_credentials: false
+      - name: rate-limiting
+        config:
+          minute: 300
+          policy: local
+          fault_tolerant: true
 
   # ── Postgres Meta ───────────────────────────────────────────────
   - name: meta
@@ -67,6 +84,11 @@ services:
           - /pg/
     plugins:
       - name: cors
+      - name: rate-limiting
+        config:
+          minute: 100
+          policy: local
+          fault_tolerant: true
 
   # ── Edge Functions ────────────────────────────────────────────
   - name: functions-v1
@@ -78,6 +100,11 @@ services:
           - /functions/v1/
     plugins:
       - name: cors
+      - name: rate-limiting
+        config:
+          minute: 200
+          policy: local
+          fault_tolerant: true
 
 consumers:
   - username: anon
@@ -88,6 +115,7 @@ consumers:
       - key: ${SUPABASE_SERVICE_KEY}
 
 plugins:
+  # Global CORS
   - name: cors
     config:
       origins:
@@ -109,8 +137,18 @@ plugins:
         - Content-Range
       max_age: 3600
       credentials: true
+
+  # Global request ID
   - name: request-transformer
     config:
       add:
         headers:
           - "X-Request-Id:$(uuid)"
+
+  # Global rate limit fallback (1000 req/min per IP)
+  - name: rate-limiting
+    config:
+      minute: 1000
+      policy: local
+      fault_tolerant: true
+      hide_client_headers: false

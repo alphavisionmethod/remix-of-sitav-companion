@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — API Gateway Server
 // Lightweight Hono gateway: auth, brain-core proxy, Supabase proxy
+// With rate limiting middleware
 // ═══════════════════════════════════════════════════════════════
 
 import { Hono } from "hono";
@@ -17,8 +18,37 @@ const SUPABASE_URL = process.env.SUPABASE_URL || "http://sita-supabase-kong:8000
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || "";
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || "";
 const SITE_URL = process.env.SITE_URL || "http://localhost:8080";
+const RATE_LIMIT_MAX = parseInt(process.env.RATE_LIMIT_MAX || "500", 10);
+const RATE_LIMIT_WINDOW_MS = parseInt(process.env.RATE_LIMIT_WINDOW_MS || "60000", 10);
 
 const startedAt = Date.now();
+
+// ── Rate Limiter (in-memory) ────────────────────────────────
+
+interface RateLimitEntry {
+  count: number;
+  resetAt: number;
+}
+
+const rateLimitStore = new Map<string, RateLimitEntry>();
+
+// Clean up expired entries every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of rateLimitStore) {
+    if (entry.resetAt <= now) {
+      rateLimitStore.delete(key);
+    }
+  }
+}, 300000);
+
+function getClientIP(req: Request): string {
+  const forwarded = req.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  const real = req.headers.get("x-real-ip");
+  if (real) return real;
+  return "unknown";
+}
 
 // ── App ──────────────────────────────────────────────────────
 
@@ -35,6 +65,51 @@ app.use(
     credentials: true,
   })
 );
+
+// Rate limiting middleware
+app.use("*", async (c, next) => {
+  const path = c.req.path;
+  // Skip rate limiting for health check
+  if (path === "/health") return next();
+
+  const ip = getClientIP(c.req.raw);
+  const now = Date.now();
+
+  // Use stricter limit for auth-related paths
+  const isAuthPath = path.includes("/auth") || path.includes("/login");
+  const maxRequests = isAuthPath ? 20 : RATE_LIMIT_MAX;
+  const windowMs = isAuthPath ? 60000 : RATE_LIMIT_WINDOW_MS;
+
+  const key = `${ip}:${isAuthPath ? "auth" : "general"}`;
+  const entry = rateLimitStore.get(key);
+
+  if (!entry || entry.resetAt <= now) {
+    rateLimitStore.set(key, { count: 1, resetAt: now + windowMs });
+    c.header("X-RateLimit-Limit", String(maxRequests));
+    c.header("X-RateLimit-Remaining", String(maxRequests - 1));
+    return next();
+  }
+
+  entry.count++;
+  const remaining = Math.max(0, maxRequests - entry.count);
+
+  c.header("X-RateLimit-Limit", String(maxRequests));
+  c.header("X-RateLimit-Remaining", String(remaining));
+  c.header("X-RateLimit-Reset", String(Math.ceil(entry.resetAt / 1000)));
+
+  if (entry.count > maxRequests) {
+    return c.json(
+      {
+        error: "Too Many Requests",
+        message: `Rate limit exceeded. Try again in ${Math.ceil((entry.resetAt - now) / 1000)}s`,
+        retryAfter: Math.ceil((entry.resetAt - now) / 1000),
+      },
+      429
+    );
+  }
+
+  return next();
+});
 
 // ── Health ───────────────────────────────────────────────────
 
@@ -115,21 +190,11 @@ async function proxyToBrain(
 
 // Intent orchestration
 app.post("/api/intent", (c) => proxyToBrain(c, "/brain/intent"));
-
-// Council orchestration
 app.post("/api/council", (c) => proxyToBrain(c, "/brain/council"));
-
-// Model routing
 app.post("/api/model/route", (c) => proxyToBrain(c, "/brain/model/route"));
 app.get("/api/model/budget", (c) => proxyToBrain(c, "/brain/model/budget"));
-
-// Advisor selection
 app.post("/api/advisors", (c) => proxyToBrain(c, "/brain/advisors"));
-
-// Simulation
 app.post("/api/simulation", (c) => proxyToBrain(c, "/brain/simulation"));
-
-// Approval
 app.post("/api/approval", (c) => proxyToBrain(c, "/brain/approval"));
 
 // ── Edge Functions Proxy ────────────────────────────────────
@@ -235,5 +300,5 @@ serve({ fetch: app.fetch, port: PORT }, (info) => {
   console.log(`[SITA API Gateway] Listening on http://0.0.0.0:${info.port}`);
   console.log(`[SITA API Gateway] Brain Core URL: ${BRAIN_CORE_URL}`);
   console.log(`[SITA API Gateway] Supabase URL: ${SUPABASE_URL}`);
-  console.log(`[SITA API Gateway] Edge Functions URL: ${EDGE_FUNCTIONS_URL}`);
+  console.log(`[SITA API Gateway] Rate Limit: ${RATE_LIMIT_MAX} req/${RATE_LIMIT_WINDOW_MS}ms`);
 });
