@@ -1,0 +1,42 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Network Configuration (cloud-init network-config v2)
+# Supports VMware (ens160/ens192), KVM (eth0), and Hyper-V (eth0)
+# ═══════════════════════════════════════════════════════════════
+network:
+  version: 2
+  renderer: networkd
+
+  ethernets:
+    # VMware primary NIC (VMXNET3)
+    ens160:
+      dhcp4: true
+      dhcp6: false
+      optional: true
+      nameservers:
+        addresses:
+          - 1.1.1.1
+          - 8.8.8.8
+        search:
+          - sita.local
+
+    # VMware secondary NIC (if present)
+    ens192:
+      dhcp4: true
+      dhcp6: false
+      optional: true
+
+    # KVM / Hyper-V / Generic
+    eth0:
+      dhcp4: true
+      dhcp6: false
+      optional: true
+      nameservers:
+        addresses:
+          - 1.1.1.1
+          - 8.8.8.8
+
+    # Cloud / VirtIO
+    enp0s3:
+      dhcp4: true
+      dhcp6: false
+      optional: true

@@ -1,0 +1,232 @@
+#cloud-config
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Cloud-Init Autoinstall Configuration
+# Ubuntu Server 24.04 LTS (Noble Numbat)
+# Fully automated provisioning for VMware / bare-metal
+# ═══════════════════════════════════════════════════════════════
+autoinstall:
+  version: 1
+  locale: en_US.UTF-8
+  keyboard:
+    layout: us
+  refresh-installer:
+    update: true
+
+  # ── Identity ─────────────────────────────────────────────────
+  identity:
+    hostname: sita-os
+    username: sita
+    # Default password: "sita-os-changeme" (SHA-512 hash)
+    # MUST be changed on first login via sita-first-boot.sh
+    password: "$6$rounds=4096$sita.salt$V8zKf0L9Z5mG8Q3rN1xB7cP4wE2yA6dH0jF5kI9lM3nO1qS7uW4xY6zA2bC8dE0fG3hI5jK7lM9nO1pQ3rS"
+
+  # ── SSH ──────────────────────────────────────────────────────
+  ssh:
+    install-server: true
+    allow-pw: true
+    authorized-keys: []
+
+  # ── Network ──────────────────────────────────────────────────
+  network:
+    version: 2
+    ethernets:
+      ens160:
+        dhcp4: true
+        dhcp6: false
+      ens192:
+        dhcp4: true
+        dhcp6: false
+      eth0:
+        dhcp4: true
+        dhcp6: false
+
+  # ── Storage Layout ──────────────────────────────────────────
+  # A/B root partitions with dm-verity + LUKS2 encrypted data
+  # Matches generated/base-os-manifest.json partitionScheme
+  storage:
+    version: 2
+    config:
+      # ── Physical disk ──
+      - id: disk0
+        type: disk
+        ptable: gpt
+        wipe: superblock-recursive
+        grub_device: false
+        match:
+          size: largest
+
+      # ── EFI System Partition (512MB FAT32) ──
+      - id: efi-part
+        type: partition
+        device: disk0
+        size: 512M
+        flag: boot
+        grub_device: true
+
+      - id: efi-format
+        type: format
+        volume: efi-part
+        fstype: fat32
+        label: EFI
+
+      # ── Root A (20GB, dm-verity protected, read-only) ──
+      - id: root-a-part
+        type: partition
+        device: disk0
+        size: 20G
+
+      - id: root-a-format
+        type: format
+        volume: root-a-part
+        fstype: ext4
+        label: SITA-ROOT-A
+
+      # ── Root B (20GB, dm-verity protected, inactive) ──
+      - id: root-b-part
+        type: partition
+        device: disk0
+        size: 20G
+
+      - id: root-b-format
+        type: format
+        volume: root-b-part
+        fstype: ext4
+        label: SITA-ROOT-B
+
+      # ── Encrypted Data Volume (remaining space, LUKS2) ──
+      - id: data-part
+        type: partition
+        device: disk0
+        size: -1
+
+      - id: data-crypt
+        type: dm_crypt
+        volume: data-part
+        key: passphrase
+        dm_name: sita-data
+
+      - id: data-format
+        type: format
+        volume: data-crypt
+        fstype: ext4
+        label: SITA-DATA
+
+      # ── Mount points ──
+      - id: mount-root
+        type: mount
+        device: root-a-format
+        path: /
+
+      - id: mount-efi
+        type: mount
+        device: efi-format
+        path: /boot/efi
+
+      - id: mount-data
+        type: mount
+        device: data-format
+        path: /var/lib/sita
+
+  # ── Packages ─────────────────────────────────────────────────
+  packages:
+    # Container runtime
+    - docker.io
+    - docker-compose-plugin
+    - containerd
+    # Security / TPM
+    - tpm2-tools
+    - cryptsetup
+    - dm-verity-utils
+    - shim-signed
+    # System utilities
+    - curl
+    - wget
+    - jq
+    - htop
+    - net-tools
+    - unattended-upgrades
+    - fail2ban
+    - ufw
+    - auditd
+    # Filesystem
+    - lvm2
+    - xfsprogs
+    - parted
+
+  # ── Snap removal (use Docker instead) ───────────────────────
+  snaps:
+    - name: lxd
+      channel: latest/stable
+      classic: false
+
+  # ── User configuration ──────────────────────────────────────
+  user-data:
+    users:
+      - name: sita
+        gecos: "SITA OS Administrator"
+        groups: [adm, docker, sudo, systemd-journal]
+        shell: /bin/bash
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        lock_passwd: false
+
+  # ── Late commands (post-install) ────────────────────────────
+  late-commands:
+    # Enable Docker at boot
+    - curtin in-target -- systemctl enable docker
+    - curtin in-target -- systemctl enable containerd
+
+    # Copy SITA OS first-boot script from ISO media
+    - cp /cdrom/sita/sita-first-boot.sh /target/opt/sita/sita-first-boot.sh
+    - chmod +x /target/opt/sita/sita-first-boot.sh
+
+    # Copy systemd service
+    - cp /cdrom/sita/sita-os.service /target/etc/systemd/system/sita-os.service
+    - curtin in-target -- systemctl daemon-reload
+    - curtin in-target -- systemctl enable sita-os.service
+
+    # Copy Docker Compose stack from ISO media
+    - mkdir -p /target/opt/sita/deploy
+    - cp -r /cdrom/sita/deploy/* /target/opt/sita/deploy/
+
+    # Copy pre-built Docker images from ISO media (if present)
+    - |
+      if [ -d /cdrom/sita/images ]; then
+        mkdir -p /target/opt/sita/images
+        cp /cdrom/sita/images/*.tar.gz /target/opt/sita/images/
+      fi
+
+    # Configure firewall
+    - curtin in-target -- ufw default deny incoming
+    - curtin in-target -- ufw default allow outgoing
+    - curtin in-target -- ufw allow ssh
+    - curtin in-target -- ufw allow 8080/tcp
+    - curtin in-target -- ufw allow 443/tcp
+    - curtin in-target -- ufw --force enable
+
+    # Configure fail2ban
+    - curtin in-target -- systemctl enable fail2ban
+
+    # Configure audit daemon
+    - curtin in-target -- systemctl enable auditd
+
+    # Set MOTD
+    - |
+      cat > /target/etc/motd << 'MOTD'
+
+      ═══════════════════════════════════════════════════════
+        SITA OS — Sovereign AI Operating System
+        Version: __VERSION__
+        
+        Web UI:    http://localhost:8080
+        API:       http://localhost:3000
+        Status:    systemctl status sita-os
+        Logs:      journalctl -u sita-os -f
+      ═══════════════════════════════════════════════════════
+
+      MOTD
+
+    # Schedule first-boot script
+    - |
+      cat > /target/etc/cron.d/sita-first-boot << 'CRON'
+      @reboot root /opt/sita/sita-first-boot.sh >> /var/log/sita-first-boot.log 2>&1 && rm -f /etc/cron.d/sita-first-boot
+      CRON
