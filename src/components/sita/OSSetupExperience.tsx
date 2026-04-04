@@ -675,6 +675,7 @@ export function OSSetupExperience() {
       }
 
       SetupOrchestrationEngine.clearLocalStorage();
+      clearPersistedSetupState();
 
       try {
         await supabase.functions.invoke("seed-user-data");
