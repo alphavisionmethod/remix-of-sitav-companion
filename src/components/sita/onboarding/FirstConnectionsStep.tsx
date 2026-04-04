@@ -124,11 +124,13 @@ const CONNECTORS: Connector[] = [
 interface FirstConnectionsStepProps {
   enabledDomains: string[];
   primaryUseMode: string;
+  onConnectedChange?: (count: number) => void;
+  onDeferredChange?: (deferred: string[]) => void;
   onNext: () => void;
   onPrev: () => void;
 }
 
-export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onNext, onPrev }: FirstConnectionsStepProps) {
+export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onConnectedChange, onDeferredChange, onNext, onPrev }: FirstConnectionsStepProps) {
   const { user } = useAuth();
   const [connecting, setConnecting] = useState<string | null>(null);
   const [connected, setConnected] = useState<Set<string>>(new Set());
