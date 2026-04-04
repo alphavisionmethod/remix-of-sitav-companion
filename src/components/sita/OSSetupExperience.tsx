@@ -130,6 +130,11 @@ interface SetupData {
   quickIdentity: QuickIdentityData;
   worldModel: WorldModelData;
   primaryUseMode: string;
+  trustCalibration: TrustCalibrationData;
+  advisorActivation: AdvisorActivation[];
+  deferredConnections: string[];
+  firstWin: FirstWinData;
+  connectedSystems: number;
 }
 
 // ── Phase Status Indicator ──────────────────────────────────
