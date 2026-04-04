@@ -235,4 +235,5 @@ serve({ fetch: app.fetch, port: PORT }, (info) => {
   console.log(`[SITA API Gateway] Listening on http://0.0.0.0:${info.port}`);
   console.log(`[SITA API Gateway] Brain Core URL: ${BRAIN_CORE_URL}`);
   console.log(`[SITA API Gateway] Supabase URL: ${SUPABASE_URL}`);
+  console.log(`[SITA API Gateway] Edge Functions URL: ${EDGE_FUNCTIONS_URL}`);
 });
