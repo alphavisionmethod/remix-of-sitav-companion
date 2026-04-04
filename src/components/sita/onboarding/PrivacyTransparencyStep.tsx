@@ -204,14 +204,11 @@ export function PrivacyTransparencyStep({ permissionChoices, onUpdate, onNext, o
           })}
         </div>
 
-        <div className="flex items-center justify-between pt-6">
-          <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
-          <button onClick={onNext} disabled={!allReviewed}
-            className={cn("rounded-xl px-6 py-2.5 text-sm font-semibold transition-all flex items-center gap-2",
-              allReviewed ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-muted text-muted-foreground cursor-not-allowed")}>
-            Continue <ChevronRight className="h-3.5 w-3.5" />
-          </button>
-        </div>
+        <StageTransitionController
+          onPrev={onPrev}
+          onNext={onNext}
+          canAdvance={allReviewed}
+        />
       </div>
 
       {/* Right — Transparency Map + Proof Preview */}
