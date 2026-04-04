@@ -18,6 +18,7 @@ export type SetupPhaseId =
   | "home-composition" | "first-connections" | "desktop-preview"
   | "first-simulation" | "first-actions"
   | "recover-first" | "arrival-prep"
+  | "first-win-setup" | "desktop-transition"
   | "system-check" | "trust-certificate";
 
 /** 12-state per-phase status */
