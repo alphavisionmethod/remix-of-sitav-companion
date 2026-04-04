@@ -238,6 +238,16 @@ const DailyPulse = () => {
   };
   const orderedKpis = modeConfig.kpiOrder.map(k => kpiTiles[k as keyof typeof kpiTiles]);
 
+  // Post-arrival first desktop state — shown once after setup
+  if (showPostArrival) {
+    return (
+      <PostArrivalDesktop onDismiss={() => {
+        sessionStorage.removeItem("sita-post-arrival-trigger");
+        setShowPostArrival(false);
+      }} />
+    );
+  }
+
   if (!hasAnyData) {
     return (
       <div className="mx-auto max-w-6xl space-y-8">
