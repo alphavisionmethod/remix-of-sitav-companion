@@ -28,7 +28,8 @@ export type TypedReceipt =
   | CommunicationReceipt
   | PaymentReceipt
   | SystemReceipt
-  | RefusalProofReceipt;
+  | RefusalProofReceipt
+  | FirstBootReceipt;
 
 interface BaseReceipt {
   id: string;
