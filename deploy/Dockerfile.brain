@@ -1,16 +1,23 @@
 # ── SITA OS — Brain Core Container ──
+# Build context: project root (docker-compose context: .)
 FROM node:20-alpine AS builder
 WORKDIR /app
-COPY deploy/brain-core/package.json deploy/brain-core/package-lock.json* ./
-RUN npm ci
-COPY deploy/brain-core/ ./
+
+# Install deps
+COPY deploy/brain-core/package.json ./package.json
+RUN npm install
+
+# Copy source and compile
+COPY deploy/brain-core/tsconfig.json ./tsconfig.json
+COPY deploy/brain-core/server.ts ./server.ts
 RUN npx tsc
 
 FROM node:20-alpine AS runner
 WORKDIR /app
 COPY --from=builder /app/package.json ./
-RUN npm ci --omit=dev
+RUN npm install --omit=dev
 COPY --from=builder /app/dist/ ./dist/
+
 ENV NODE_ENV=production
 EXPOSE 3001
 CMD ["node", "dist/server.js"]
