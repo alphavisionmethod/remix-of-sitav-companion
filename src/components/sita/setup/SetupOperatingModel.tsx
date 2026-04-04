@@ -87,7 +87,7 @@ export function SetupOperatingModel({ operatingMode, onNext, onBack, step, total
 
   const handleContinue = () => {
     if (isLast) {
-      onNext(selections as OperatingModelData);
+      onNext(selections as unknown as OperatingModelData);
     } else {
       setSectionIdx(i => i + 1);
     }
