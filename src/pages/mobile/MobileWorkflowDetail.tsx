@@ -6,14 +6,8 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { useParams } from "react-router-dom";
 import { CheckCircle2, Clock, ArrowRight, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
-<<<<<<< HEAD
 import { MOCK_MOBILE_WORKFLOW_STEPS } from "@/lib/mock-data";
 
-=======
-import { DEMO_WORKFLOW_STEPS } from "@/lib/demo-data";
-
-const mockSteps = DEMO_WORKFLOW_STEPS;
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
 
 const statusIcon = {
   completed: <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))]" />,

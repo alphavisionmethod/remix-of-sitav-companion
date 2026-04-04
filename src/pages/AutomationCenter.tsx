@@ -18,12 +18,6 @@ import {
 } from "lucide-react";
 import { DEMO_AUTOMATION_RULES, DEMO_DELEGATIONS } from "@/lib/demo-data";
 
-<<<<<<< HEAD
-
-=======
-const demoRules = DEMO_AUTOMATION_RULES;
-const delegations = DEMO_DELEGATIONS;
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
 
 const AutomationCenter = () => {
   const location = useLocation();

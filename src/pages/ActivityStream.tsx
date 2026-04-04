@@ -40,24 +40,6 @@ const borderMap: Record<string, string> = {
   default: "border-l-muted",
 };
 
-<<<<<<< HEAD
-=======
-const ICON_LOOKUP: Record<string, typeof Activity> = {
-  sparkles: Sparkles, check: CheckCircle, shield: Shield, eye: Eye,
-  alert: AlertTriangle, brain: Brain, zap: Zap, users: Users,
-  dollar: DollarSign, rotate: RotateCcw,
-};
-
-const demoTimeline = DEMO_ACTIVITY_TIMELINE.map(item => ({
-  icon: ICON_LOOKUP[item.iconKey] || Activity,
-  color: `text-${item.colorKey}`,
-  title: item.title,
-  subtitle: item.subtitle,
-  time: item.time,
-  type: item.type,
-  border: `border-l-${item.borderKey}`,
-}));
->>>>>>> 622190ca50c098af187c5feed1ffac931cae5666
 
 const timeSince = (date: string) => {
   const ms = Date.now() - new Date(date).getTime();
