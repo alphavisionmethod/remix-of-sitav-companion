@@ -1,0 +1,63 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Audit Rules
+# Monitor critical system paths and operations
+# ═══════════════════════════════════════════════════════════════
+
+# Delete any pre-existing rules
+-D
+
+# Set buffer size
+-b 8192
+
+# Failure mode: 1=print, 2=panic
+-f 1
+
+# ── File Access Monitoring ───────────────────────────────────
+
+# Monitor SITA OS installation directory
+-w /opt/sita -p rwxa -k sita-files
+
+# Monitor Docker socket access
+-w /var/run/docker.sock -p rwxa -k docker-socket
+
+# Monitor system configuration changes
+-w /etc/passwd -p wa -k identity
+-w /etc/group -p wa -k identity
+-w /etc/shadow -p wa -k identity
+-w /etc/sudoers -p wa -k sudo-changes
+-w /etc/ssh/sshd_config -p wa -k ssh-config
+
+# ── Privilege Escalation ─────────────────────────────────────
+
+# Monitor su/sudo usage
+-a always,exit -F arch=b64 -S execve -F path=/usr/bin/su -k privilege-escalation
+-a always,exit -F arch=b64 -S execve -F path=/usr/bin/sudo -k privilege-escalation
+
+# Monitor setuid/setgid
+-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -k permission-change
+
+# ── Container Operations ─────────────────────────────────────
+
+# Monitor docker/podman CLI usage
+-w /usr/bin/docker -p x -k container-tools
+-w /usr/bin/docker-compose -p x -k container-tools
+-w /usr/local/bin/docker-compose -p x -k container-tools
+
+# ── Network Changes ──────────────────────────────────────────
+
+# Monitor network configuration
+-a always,exit -F arch=b64 -S sethostname -S setdomainname -k network-config
+-w /etc/hosts -p wa -k network-config
+-w /etc/resolv.conf -p wa -k network-config
+
+# ── SITA-Specific ────────────────────────────────────────────
+
+# Monitor .env files (secrets)
+-w /opt/sita/deploy/.env -p rwa -k sita-secrets
+-w /opt/sita/deploy/.env-backups -p rwa -k sita-secrets-backup
+
+# Monitor certificate files
+-w /opt/sita/certs -p rwa -k sita-certs
+
+# Make rules immutable (requires reboot to change)
+-e 2

@@ -1,0 +1,58 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Traefik Static Configuration
+# TLS termination with Let's Encrypt + self-signed fallback
+# ═══════════════════════════════════════════════════════════════
+
+api:
+  dashboard: false
+
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+
+  websecure:
+    address: ":443"
+    http:
+      tls:
+        certResolver: letsencrypt
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: sita-frontend
+  file:
+    filename: /etc/traefik/dynamic.yml
+    watch: true
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: "${ACME_EMAIL:-admin@sita.local}"
+      storage: /letsencrypt/acme.json
+      httpChallenge:
+        entryPoint: web
+
+  selfsigned:
+    acme:
+      storage: /letsencrypt/selfsigned.json
+
+log:
+  level: WARN
+  format: json
+
+accessLog:
+  format: json
+  filters:
+    statusCodes:
+      - "400-599"
+
+metrics:
+  prometheus:
+    entryPoint: websecure
