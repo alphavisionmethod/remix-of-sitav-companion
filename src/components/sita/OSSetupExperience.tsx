@@ -738,6 +738,28 @@ export function OSSetupExperience() {
       {/* Boot */}
       {phase === "boot" && <FirstBootScreen onComplete={() => { engine.completeCurrentAndAdvance(); }} />}
 
+      {/* Secure Foundation — standalone phase */}
+      {phase === "secure-foundation" && <SecureFoundationStep key="secure-foundation" onNext={goNext} onPrev={goPrev} />}
+
+      {/* Language & Region */}
+      {phase === "language-region" && (
+        <div className="fixed inset-0 z-[150] flex items-center justify-center overflow-y-auto p-4 sm:p-8" style={{ backgroundColor: "#0B0D10" }}>
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full blur-[120px]" style={{ background: "hsl(265 55% 58% / 0.04)" }} />
+          </div>
+          <div className="relative z-10 w-full">
+            <SetupLanguageRegion
+              onNext={({ language, region, timezone, dateFormat, currency }) => {
+                setState(s => ({ ...s, language, region, timezone, dateFormat, currency }));
+                goNext();
+              }}
+              onBack={goPrev}
+              step={currentStepNum}
+              total={totalSteps}
+            />
+          </div>
+        </div>
+      )}
       {/* Preview example modal */}
       <AnimatePresence>
         {previewExample && (
