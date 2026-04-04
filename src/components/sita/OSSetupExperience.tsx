@@ -27,6 +27,14 @@ import { EnterpriseFlow } from "@/components/sita/EnterpriseFlow";
 import { useSetupOrchestration } from "@/hooks/useSetupOrchestration";
 import { SetupOrchestrationEngine } from "@/lib/engines/setup-orchestration-engine";
 import type { SetupPhaseId, SetupPhaseStatus } from "@/packages/contracts/specialized/setup-orchestration";
+import { getEmotionalTarget, isChapterTransition, getChapter } from "@/lib/setup/emotional-arc";
+import { generateReflections } from "@/lib/setup/reflection-copy";
+import { RestorePreviewStep } from "@/components/sita/onboarding/RestorePreviewStep";
+import { SignatureWowMoment } from "@/components/sita/setup/SignatureWowMoment";
+import type { WowMomentId } from "@/components/sita/setup/SignatureWowMoment";
+import { ChapterTransition } from "@/components/sita/setup/ChapterTransition";
+import type { ChapterName } from "@/lib/setup/emotional-arc";
+import { ConfidenceIndicator, computeConfidenceLevel } from "@/components/sita/setup/ConfidenceIndicator";
 
 // Onboarding components
 import { CinematicIntro } from "@/components/sita/onboarding/CinematicIntro";
