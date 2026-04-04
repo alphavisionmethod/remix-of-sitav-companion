@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
-import { Zap, Sparkles, Settings, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { Zap, Sparkles, Settings } from "lucide-react";
+import { SetupStageHeader, StageTransitionController, TrustInfoCard } from "@/components/sita/setup";
 
 type SetupStyle = "express" | "guided" | "advanced";
 
@@ -27,48 +26,29 @@ export function SetupStyleChooser({ selected, onSelect, onNext, onPrev }: SetupS
       transition={{ type: "spring", damping: 28, stiffness: 280 }}
       className="w-full max-w-xl mx-auto space-y-6"
     >
-      <div className="text-center">
-        <h2 className="font-display text-2xl font-bold text-foreground">Choose your setup style</h2>
-        <p className="mt-1.5 text-sm text-muted-foreground">How deep do you want to go right now?</p>
-      </div>
+      <SetupStageHeader
+        title="Choose your setup style"
+        subtitle="How deep do you want to go right now?"
+      />
 
       <div className="space-y-3">
-        {styles.map((s, i) => (
-          <button
+        {styles.map(s => (
+          <TrustInfoCard
             key={s.key}
+            icon={s.icon}
+            title={`${s.title} (${s.time})`}
+            description={s.desc}
+            selected={selected === s.key}
             onClick={() => onSelect(s.key)}
-            className={cn(
-              "w-full rounded-2xl border p-5 text-left transition-all duration-200 group",
-              selected === s.key
-                ? "border-primary/50 bg-primary/8 shadow-sm shadow-primary/10"
-                : "border-border bg-card hover:border-primary/20"
-            )}
-          >
-            <div className="flex items-start gap-4">
-              <div className={cn("rounded-xl p-3 transition-colors", selected === s.key ? "bg-primary/15" : "bg-secondary")}>
-                <s.icon className={cn("h-5 w-5", selected === s.key ? "text-primary" : "text-muted-foreground")} />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <p className="text-sm font-bold text-foreground">{s.title}</p>
-                  <span className="text-[10px] text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">{s.time}</span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">{s.desc}</p>
-              </div>
-            </div>
-          </button>
+          />
         ))}
       </div>
 
-      <div className="flex items-center justify-between pt-2">
-        <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
-        <button
-          onClick={onNext}
-          className="rounded-xl px-6 py-2.5 text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-2"
-        >
-          Continue <ChevronRight className="h-3.5 w-3.5" />
-        </button>
-      </div>
+      <StageTransitionController
+        onPrev={onPrev}
+        onNext={onNext}
+        canAdvance={true}
+      />
     </motion.div>
   );
 }

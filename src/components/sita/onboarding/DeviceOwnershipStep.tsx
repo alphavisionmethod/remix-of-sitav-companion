@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Users, Building2, Shield, Lock, Eye, ChevronRight, Check } from "lucide-react";
+import { User, Users, Building2, Shield, Lock, Eye, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
 
 type OwnershipType = "personal" | "family" | "work";
 
@@ -54,12 +55,12 @@ export function DeviceOwnershipStep({ selected, onSelect, onNext, onPrev }: Prop
       className="w-full max-w-2xl mx-auto">
       <div className="rounded-2xl border border-border bg-card shadow-2xl shadow-primary/5 overflow-hidden">
         <div className="p-8 pb-0">
-          <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}
-            className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20 mb-4">
-            <Shield className="h-7 w-7 text-primary-foreground" />
-          </motion.div>
-          <h2 className="font-display text-2xl font-bold tracking-tight text-foreground">How will this device be used?</h2>
-          <p className="mt-1.5 text-sm text-muted-foreground">This helps SITA choose the right privacy, sharing, and support model from the start</p>
+          <SetupStageHeader
+            icon={Shield}
+            title="How will this device be used?"
+            subtitle="This helps SITA choose the right privacy, sharing, and support model from the start"
+            align="left"
+          />
         </div>
 
         <div className="p-8 pt-6">
@@ -148,23 +149,19 @@ export function DeviceOwnershipStep({ selected, onSelect, onNext, onPrev }: Prop
               </motion.div>
             )}
           {/* Navigation */}
-          <div className="flex items-center justify-between pt-6 mt-4 border-t border-border">
-            <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
-            <div className="flex items-center gap-3">
-              {selected && (
+          <StageTransitionController
+            onPrev={onPrev}
+            onNext={onNext}
+            canAdvance={!!selected}
+            extra={
+              selected ? (
                 <button onClick={() => setShowImpact(prev => !prev)}
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors underline-offset-2 hover:underline">
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors underline-offset-2 hover:underline md:hidden">
                   Learn what this changes
                 </button>
-              )}
-              <button onClick={onNext} disabled={!selected}
-                className={cn("rounded-xl px-6 py-2.5 text-sm font-semibold transition-all flex items-center gap-2",
-                  selected ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-muted text-muted-foreground cursor-not-allowed"
-                )}>
-                Continue <ChevronRight className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          </div>
+              ) : undefined
+            }
+          />
         </div>
       </div>
     </motion.div>

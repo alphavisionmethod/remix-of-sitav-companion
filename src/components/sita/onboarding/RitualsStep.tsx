@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { Sun, Clock, Moon, BarChart3, Calendar, ChevronRight, Check } from "lucide-react";
+import { Sun, Clock, Moon, BarChart3, Calendar, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SetupStageHeader, StageTransitionController, TrustInfoCard } from "@/components/sita/setup";
 
 const rituals = [
   { key: "morning-pulse", icon: Sun, title: "Morning Pulse", desc: "Start the day with priorities, calendar, and anything that needs attention." },
@@ -27,45 +27,29 @@ export function RitualsStep({ selected, onToggle, onNext, onPrev }: RitualsStepP
       transition={{ type: "spring", damping: 28, stiffness: 280 }}
       className="w-full max-w-xl mx-auto space-y-6"
     >
-      <div className="text-center">
-        <h2 className="font-display text-2xl font-bold text-foreground">How should SITA support your rhythm?</h2>
-        <p className="mt-1.5 text-sm text-muted-foreground">SITA is a living operating system with rituals, not a static dashboard.</p>
-      </div>
+      <SetupStageHeader
+        title="How should SITA support your rhythm?"
+        subtitle="SITA is a living operating system with rituals, not a static dashboard."
+      />
 
       <div className="space-y-3">
-        {rituals.map(r => {
-          const active = selected.includes(r.key);
-          return (
-            <button key={r.key} onClick={() => onToggle(r.key)}
-              className={cn("w-full rounded-xl border p-4 text-left transition-all duration-200",
-                active ? "border-primary/50 bg-primary/8" : "border-border bg-card hover:border-primary/20")}>
-              <div className="flex items-start gap-3">
-                <div className={cn("rounded-lg p-2", active ? "bg-primary/15" : "bg-secondary")}>
-                  <r.icon className={cn("h-4 w-4", active ? "text-primary" : "text-muted-foreground")} />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-foreground">{r.title}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{r.desc}</p>
-                </div>
-                {active && (
-                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
-                    className="flex h-5 w-5 items-center justify-center rounded-full bg-primary">
-                    <Check className="h-3 w-3 text-primary-foreground" />
-                  </motion.div>
-                )}
-              </div>
-            </button>
-          );
-        })}
+        {rituals.map(r => (
+          <TrustInfoCard
+            key={r.key}
+            icon={r.icon}
+            title={r.title}
+            description={r.desc}
+            selected={selected.includes(r.key)}
+            onClick={() => onToggle(r.key)}
+          />
+        ))}
       </div>
 
-      <div className="flex items-center justify-between pt-2">
-        <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
-        <button onClick={onNext}
-          className="rounded-xl px-6 py-2.5 text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-2">
-          Continue <ChevronRight className="h-3.5 w-3.5" />
-        </button>
-      </div>
+      <StageTransitionController
+        onPrev={onPrev}
+        onNext={onNext}
+        canAdvance={true}
+      />
     </motion.div>
   );
 }

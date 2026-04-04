@@ -6,11 +6,12 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Eye, MessageSquare, FlaskConical, ShieldCheck, Zap,
-  ChevronRight, ChevronDown, DollarSign, Calendar, Mail, Bell,
+  ChevronDown, DollarSign, Calendar, Mail, Bell,
   AlertTriangle, Users, Briefcase, Shield, Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SetupStageHeader, StageTransitionController, TrustLadderControl } from "@/components/sita/setup";
 
 export interface TrustCalibrationData {
   level: number;
@@ -71,14 +72,12 @@ export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCa
         {/* Left: Trust ladder + controls */}
         <div className="lg:col-span-3 space-y-5">
           {/* Header */}
-          <div className="text-center lg:text-left">
-            <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}
-              className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20 mb-4">
-              <Shield className="h-7 w-7 text-primary-foreground" />
-            </motion.div>
-            <h2 className="font-display text-2xl font-bold text-foreground">Choose how SITA should help</h2>
-            <p className="mt-1.5 text-sm text-muted-foreground">You control what SITA can suggest, simulate, and handle</p>
-          </div>
+          <SetupStageHeader
+            icon={Shield}
+            title="Choose how SITA should help"
+            subtitle="You control what SITA can suggest, simulate, and handle"
+            align="left"
+          />
 
           {/* Trust Ladder */}
           <div className="space-y-1">
@@ -246,18 +245,11 @@ export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCa
           </AnimatePresence>
 
           {/* Navigation */}
-          <div className="flex items-center justify-between pt-2">
-            <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
-            <button onClick={onNext} disabled={data.level === 0}
-              className={cn(
-                "rounded-xl px-6 py-2.5 text-sm font-semibold transition-all flex items-center gap-2",
-                data.level > 0
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "bg-muted text-muted-foreground cursor-not-allowed"
-              )}>
-              Continue <ChevronRight className="h-3.5 w-3.5" />
-            </button>
-          </div>
+          <StageTransitionController
+            onPrev={onPrev}
+            onNext={onNext}
+            canAdvance={data.level > 0}
+          />
         </div>
 
         {/* Right: Workflow preview */}

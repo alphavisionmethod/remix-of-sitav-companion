@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Compass, ChevronRight, Check, Sparkles, BarChart3, MessageSquare,
+  Compass, Check, Sparkles, BarChart3, MessageSquare,
   Brain, Shield, Users, DollarSign, Briefcase, Bell, Zap, Layout,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
 
 export interface QuickIdentityData {
   runFirst: string[];
@@ -103,14 +104,13 @@ export function QuickIdentityStep({ data, onUpdate, onNext, onPrev }: Props) {
 
       <div className="flex-1 min-w-0">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.05 }}
-          className="flex items-center gap-3 mb-6">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20">
-            <Compass className="h-6 w-6 text-primary-foreground" />
-          </div>
-          <div>
-            <h2 className="font-display text-2xl font-bold tracking-tight text-foreground">Help SITA understand where to begin</h2>
-            <p className="text-sm text-muted-foreground">A few quick choices will shape your environment</p>
-          </div>
+          className="mb-6">
+          <SetupStageHeader
+            icon={Compass}
+            title="Help SITA understand where to begin"
+            subtitle="A few quick choices will shape your environment"
+            align="left"
+          />
         </motion.div>
 
         <div className="space-y-6">
@@ -195,14 +195,11 @@ export function QuickIdentityStep({ data, onUpdate, onNext, onPrev }: Props) {
           </AnimatePresence>
         </div>
 
-        <div className="flex items-center justify-between pt-6">
-          <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
-          <button onClick={onNext} disabled={!canAdvance}
-            className={cn("rounded-xl px-6 py-2.5 text-sm font-semibold transition-all flex items-center gap-2",
-              canAdvance ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-muted text-muted-foreground cursor-not-allowed")}>
-            Continue <ChevronRight className="h-3.5 w-3.5" />
-          </button>
-        </div>
+        <StageTransitionController
+          onPrev={onPrev}
+          onNext={onNext}
+          canAdvance={canAdvance}
+        />
       </div>
 
       {/* Right — Rich Live Preview */}

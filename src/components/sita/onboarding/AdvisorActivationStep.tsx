@@ -6,10 +6,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart, DollarSign, Briefcase, Users, Sparkles, TrendingUp,
-  ChevronRight, ChevronDown, Check, Shield,
+  ChevronDown, Check, Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
 
 export interface AdvisorActivation {
   id: string;
@@ -127,14 +128,12 @@ export function AdvisorActivationStep({ advisors, onUpdate, primaryUseMode, onNe
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Left: Advisor cards */}
         <div className="lg:col-span-3 space-y-5">
-          <div className="text-center lg:text-left">
-            <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}
-              className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20 mb-4">
-              <Shield className="h-7 w-7 text-primary-foreground" />
-            </motion.div>
-            <h2 className="font-display text-2xl font-bold text-foreground">Meet your advisory team</h2>
-            <p className="mt-1.5 text-sm text-muted-foreground">Choose who should be active from day one</p>
-          </div>
+          <SetupStageHeader
+            icon={Shield}
+            title="Meet your advisory team"
+            subtitle="Choose who should be active from day one"
+            align="left"
+          />
 
           <div className="space-y-2.5">
             {ADVISORS.map((advisor, i) => {
@@ -255,23 +254,16 @@ export function AdvisorActivationStep({ advisors, onUpdate, primaryUseMode, onNe
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-between pt-2">
-            <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
-            <div className="flex items-center gap-3">
-              {enabledAdvisors.length > 0 && (
+          <StageTransitionController
+            onPrev={onPrev}
+            onNext={onNext}
+            canAdvance={canAdvance}
+            extra={
+              enabledAdvisors.length > 0 ? (
                 <span className="text-xs text-muted-foreground">{enabledAdvisors.length} advisor{enabledAdvisors.length !== 1 ? "s" : ""} active</span>
-              )}
-              <button onClick={onNext} disabled={!canAdvance}
-                className={cn(
-                  "rounded-xl px-6 py-2.5 text-sm font-semibold transition-all flex items-center gap-2",
-                  canAdvance
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                    : "bg-muted text-muted-foreground cursor-not-allowed"
-                )}>
-                Continue <ChevronRight className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          </div>
+              ) : undefined
+            }
+          />
         </div>
 
         {/* Right: System map */}
