@@ -130,6 +130,29 @@ export function AccountEnvironmentStep({ onNext, onPrev, onPathChange, selectedP
                     </div>
                   </motion.button>
                 ))}
+
+                {/* Dev/Demo mode bypass */}
+                {IS_DEV && (
+                  <motion.button initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: PATH_OPTIONS.length * 0.06 }}
+                    onClick={() => {
+                      onPathChange("offline");
+                      toast.success("Demo mode — skipping authentication");
+                      onNext();
+                    }}
+                    className="w-full rounded-xl border border-dashed border-amber-500/40 bg-amber-500/5 p-4 text-left hover:border-amber-500/60 hover:bg-amber-500/10 transition-all group">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg p-2 bg-amber-500/10 group-hover:bg-amber-500/20 transition-colors">
+                        <FlaskConical className="h-4 w-4 text-amber-500" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-amber-400">Demo / Dev Mode</p>
+                        <p className="text-xs text-amber-500/70">Skip auth — explore the full setup flow without an account</p>
+                      </div>
+                      <ChevronRight className="h-4 w-4 text-amber-500/50 group-hover:text-amber-400 transition-colors" />
+                    </div>
+                  </motion.button>
+                )}
               </motion.div>
             )}
 
