@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Users, Plus, X, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const roles = ["Partner", "Family", "Team", "Assistant", "Client", "Advisor", "Entity"];
 
@@ -20,6 +21,7 @@ interface HouseholdGraphStepProps {
 export function HouseholdGraphStep({ nodes, onUpdate, onNext, onPrev }: HouseholdGraphStepProps) {
   const [name, setName] = useState("");
   const [role, setRole] = useState(roles[0]);
+  const reduced = useReducedMotion();
 
   const addNode = () => {
     if (!name.trim()) return;
@@ -33,15 +35,33 @@ export function HouseholdGraphStep({ nodes, onUpdate, onNext, onPrev }: Househol
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={reduced ? {} : { opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
+      exit={reduced ? {} : { opacity: 0, y: -20 }}
       transition={{ type: "spring", damping: 28, stiffness: 280 }}
       className="w-full max-w-xl mx-auto space-y-6"
     >
       <div className="text-center">
         <h2 className="font-display text-2xl font-bold text-foreground">Your world</h2>
         <p className="mt-1.5 text-sm text-muted-foreground">Add the people and entities that matter. This builds your relationship graph.</p>
+      </div>
+
+      {/* Role chips */}
+      <div>
+        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">Role</p>
+        <div className="flex flex-wrap gap-1.5">
+          {roles.map(r => (
+            <button key={r} onClick={() => setRole(r)}
+              className={cn(
+                "rounded-full px-3.5 py-1.5 text-xs font-medium transition-all border",
+                role === r
+                  ? "bg-primary/15 border-primary/40 text-primary"
+                  : "bg-secondary/30 border-border text-muted-foreground hover:border-primary/20"
+              )}>
+              {r}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Add form */}
@@ -53,13 +73,6 @@ export function HouseholdGraphStep({ nodes, onUpdate, onNext, onPrev }: Househol
           placeholder="Name..."
           className="flex-1 rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary/40 focus:ring-2 focus:ring-primary/20 focus:outline-none"
         />
-        <select
-          value={role}
-          onChange={e => setRole(e.target.value)}
-          className="rounded-xl border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground focus:border-primary/40 focus:ring-2 focus:ring-primary/20 focus:outline-none"
-        >
-          {roles.map(r => <option key={r} value={r}>{r}</option>)}
-        </select>
         <button onClick={addNode} disabled={!name.trim()}
           className="rounded-xl bg-primary p-2.5 text-primary-foreground hover:bg-primary/90 disabled:opacity-40 transition-all">
           <Plus className="h-4 w-4" />
@@ -79,9 +92,9 @@ export function HouseholdGraphStep({ nodes, onUpdate, onNext, onPrev }: Househol
               {nodes.map((n, i) => (
                 <motion.div
                   key={`${n.name}-${i}`}
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={reduced ? {} : { opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
+                  exit={reduced ? {} : { opacity: 0, scale: 0.8 }}
                   className="flex items-center gap-2 rounded-full border border-border bg-secondary/40 pl-3 pr-1.5 py-1.5"
                 >
                   <span className="text-xs font-semibold text-foreground">{n.name}</span>
