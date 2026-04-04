@@ -1,101 +1,141 @@
 
 
-# Align Setup Flow to 19-Screen Spec
+# Phases 0–8: OS End-State Implementation Plan
 
-## Current State vs Spec
+## Audit Summary
 
-| Spec Screen | Phase ID | Status |
-|---|---|---|
-| 1. Boot Awakening | `boot` | Exists — has hardware detect + secure init combined |
-| 2. Secure Foundation | — | **Missing as standalone phase** (buried inside FirstBootScreen's `SECURE_INIT` sub-phase) |
-| 3. Language, Region, Input | — | **Component exists** (`SetupLanguageRegion.tsx`) but **not wired into DAG** |
-| 4. Network Setup | `network-setup` | Exists |
-| 5. Updates & Readiness | `device-readiness` | Exists |
-| 6. Device Ownership | `device-ownership` | Exists |
-| 7. Account / Restore / New | `account-environment` | Exists |
-| 8. Restore Preview | `restore` | Exists but basic — needs "Restore this environment" card UI per spec |
-| 9. Access Protection | `access-protection` | Exists |
-| 10. Privacy & Transparency | `privacy-transparency` | Exists |
-| 11. Quick Identity | `quick-identity` | Exists |
-| 12. Deep World Modeling | `deep-world-modeling` | Exists |
-| 13. Primary Use Mode | `primary-use-mode` | Exists |
-| 14. Trust Calibration | `trust-calibration` | Exists |
-| 15. Advisor Activation | `advisor-activation` | Exists |
-| 16. First Connections | `first-connections` | Exists |
-| 17. First Win Setup | `first-win-setup` | Exists |
-| 18. Arrival Preparation | `arrival-prep` | Exists |
-| 19. Desktop Transition | `desktop-transition` | Exists |
+| Phase | Status | Gap |
+|-------|--------|-----|
+| 0: Validation baseline | **Missing** | No validation bundle script exists |
+| 1: Base OS authority | **Missing** | No `infra/docs/`, no `ARQ_PLAN_FINAL.md` |
+| 2: Generated truth for boot chain | **Missing** | 4 manifest files don't exist in `generated/` |
+| 3: First-boot provisioning contracts | **Missing** | No first-boot envelope/network/trust/secrets contracts; no first-boot proof receipts |
+| 4: Unified runtime contract | **Partial** | `os-unification-runtime.ts` exists but missing `"desktop"` surface type, no shared command/proof/approval/degraded semantics contract |
+| 5: Desktop thin-host runtime | **Partial** | `electron-ipc.ts` exists but has no capability bridge to policy/proof/trust contracts |
+| 6: Cross-surface degraded/proof parity | **Partial** | `DegradedModeConfig` exists in execution contracts but no per-surface degraded state map or proof-state parity enforcement |
+| 7: Parity gates | **Missing** | No parity test files exist |
+| 8: Registry + generated + docs sync | **Missing** | No sync script or lockstep validation |
 
-**Also in DAG but NOT in spec's 19 screens:** `welcome`, `cinematic-intro`, `setup-style`, `identity`, `want-less-of`, `protect-most`, `domains`, `trust`, `explanation-style`, `presence-style`, `ai-personality`, `interruption-style`, `rituals`, `appearance`, `household-graph`, `memory-consent`, `home-composition`, `desktop-preview`, `first-simulation`, `first-actions`, `recover-first`, `system-check`, `trust-certificate`
+## Implementation Plan
 
-These extra phases are the "post-welcome guided/advanced setup" — they fill in details after the spec's 19-screen core flow. They're not in the spec but they're valuable. The spec's 19 screens are the **core path**; the extras are branched detail phases.
+### Phase 0 — Validation baseline script
+Create `scripts/validate-os-contracts.ts` that:
+- Imports all contract barrels and checks parse/import success
+- Validates runtime conformance manifest entries against actual service files
+- Validates proof-model receipt types against receipt-service implementations
+- Outputs classified failures: `parse-import`, `runtime-contract-drift`, `proof-receipt-drift`
 
-## Gaps to Fix
+### Phase 1 — Base OS authority docs
+Create `infra/docs/ARQ_PLAN_FINAL.md` with:
+- Base OS: Ubuntu 24.04 LTS, kernel 6.8+, systemd-boot
+- Secure-boot posture: UEFI Secure Boot required, MOK for custom modules
+- Hardware assumptions: TPM 2.0 preferred (software fallback), 4GB+ RAM, 64-bit
+- Kernel/initramfs policy: immutable initramfs, dm-verity root, measured boot chain
 
-### 1. Missing: Secure Foundation as standalone phase (Screen 2)
-Currently `SecureInitCeremony` runs as a sub-phase inside `FirstBootScreen`. The spec wants it as its own screen with title "Securing your system", trust explainer card, and specific states (checking, encryption_preparing, integrity_verifying, recovery_preparing, ready, degraded, blocked).
+### Phase 2 — Generated boot chain manifests (4 files)
+- `generated/base-os-manifest.json` — OS version, kernel, packages, signing keys
+- `generated/boot-chain-manifest.json` — UEFI → shim → bootloader → kernel → initramfs → systemd → SITA runtime stages with hashes
+- `generated/first-boot-contract-manifest.json` — lists every contract type consumed during first boot
+- `generated/first-boot-proof-receipts.json` — expected receipt types emitted during first boot with schema refs
 
-**Action:** Create `SecureFoundationStep.tsx` — a standalone phase that wraps and elevates `SecureInitCeremony` with the spec's title, states, and fallback cards. Add `secure-foundation` to the DAG between `boot` and `language-region`.
+### Phase 3 — First-boot provisioning contracts + proof emission
+Create `src/packages/contracts/runtime/first-boot-provisioning.ts`:
+- `FirstBootEnvelope` — wraps entire first-boot lifecycle (device ID, tenant binding, timestamps, outcome)
+- `FirstBootNetworkContract` — network discovery, captive portal, connectivity proof
+- `FirstBootTrustContract` — TPM attestation, secure-boot verification, trust baseline establishment
+- `FirstBootSecretsContract` — key generation, vault initialization, recovery key derivation
+- `FirstBootRuntimeBootstrap` — service startup order, capability loading, proof chain initialization
 
-### 2. Missing: Language/Region/Input wired into DAG (Screen 3)
-`SetupLanguageRegion.tsx` exists but isn't in the phase definitions or rendered in `OSSetupExperience`. The spec wants it with title "Let's make this yours", live preview panel (clock, date, currency, greeting), autodetect, and "Use detected settings" CTA.
+Create `src/packages/proof-model/receipts/first-boot-receipt.ts`:
+- `FirstBootReceipt` extending `BaseReceipt` with `type: "first-boot"`, phase, attestation hash, trust baseline score
 
-**Action:** Add `language-region` phase to contract + DAG (between `secure-foundation` and `network-setup`). Wire into `OSSetupExperience` render + state.
+Wire into `receipt-service/receipts.service.ts`: add `createFirstBootReceipt()` factory.
 
-### 3. DAG order correction
-The spec's 19-screen flow is linear: boot → secure-foundation → language-region → network → readiness → ownership → account → access-protection → privacy → quick-identity → world-modeling → primary-use-mode → trust-calibration → advisor-activation → first-connections → first-win → arrival → desktop-transition.
+Update `src/packages/proof-model/index.ts` to include `FirstBootReceipt` in `TypedReceipt` union.
 
-Current DAG puts `welcome` after `advisor-activation`, then branches to `cinematic-intro` → `setup-style` → `identity` etc. This is intentional — the spec's 19 screens are the boot-to-desktop core, and the extra phases are the detailed personalization.
+### Phase 4 — Unified runtime contract
+Create `src/packages/contracts/runtime/unified-surface-runtime.ts`:
+- `SurfaceId` = `"web" | "admin" | "desktop" | "mobile"`
+- `UnifiedCommand` — surface-agnostic command envelope (action, target, proof-required, approval-required, degraded-fallback)
+- `UnifiedProofRequirement` — per-command proof emission rules
+- `UnifiedApprovalRequirement` — per-command approval gate rules
+- `UnifiedDegradedSemantics` — what each surface does when degraded (cache-only, queue, refuse, fallback)
+- Imports and reuses `ShellFrame` from shell-grammar, `TrustFlag`/`ApprovalType` from scaffold, proof types from proof-model
 
-**Issue:** The spec doesn't show `welcome`, `cinematic-intro`, or `setup-style` as standalone screens. The "welcome" screen (screen 7 in spec) is `account-environment`. The spec wants the flow to go directly from advisor-activation → first-connections without a welcome/cinematic/setup-style detour.
+Update `os-unification-runtime.ts`: add `"desktop"` to `SurfaceType`.
 
-**Action:** Re-order DAG so the 19 core screens flow linearly. Move `welcome`/`cinematic-intro`/`setup-style` to BEFORE `identity`, and `identity`+ detail phases to between `advisor-activation` and `first-connections`. This preserves existing functionality while matching spec order.
+### Phase 5 — Desktop thin-host runtime closure
+Expand `src/packages/contracts/native/electron-ipc.ts`:
+- Add channels: `"trust-attestation"`, `"proof-emit"`, `"capability-query"`, `"degraded-mode"`, `"policy-check"`
+- Add `NativeCapabilityBridge` interface mapping IPC channels to contract types
+- Add `DesktopHostConfig` — what the native host owns vs what the renderer owns (no policy/execution in surfaces)
 
-### 4. Missing secondary/tertiary CTAs on several screens
-Many screens are missing spec-required CTAs:
-- Boot: missing "View accessibility options" as secondary CTA (it exists as component but needs exposure)
-- Network: has "Continue with limited offline setup" ✓ but missing "Other network" / "Advanced setup"
-- Device Ownership: missing "Learn what this changes" CTA
-- All screens: missing consistent "Adjust later" pattern
+Create `src/packages/contracts/native/desktop-host-runtime.ts`:
+- `DesktopHostCapabilities` — file system, biometrics, notifications, tray, auto-update, deep-link
+- `DesktopProofRelay` — how the host relays proofs to the canonical proof chain
+- `DesktopDegradedMode` — offline, no-cloud, limited-trust modes
 
-**Action:** Add missing CTAs to each affected step component.
+### Phase 6 — Cross-surface degraded/proof parity
+Create `src/packages/contracts/runtime/surface-parity.ts`:
+- `SurfaceDegradedStateMap` — per-surface × per-capability degraded behavior matrix
+- `SurfaceProofStateMap` — per-surface proof emission requirements (identical across surfaces)
+- `ParityViolation` — type for detected divergences
+- `SurfaceCapabilityMatrix` — what each surface can/cannot do, with explicit "not supported" vs "degraded"
 
-### 5. Missing global setup state tracking
-Spec requires global states: `boot_preparing`, `machine_foundation_in_progress`, `user_setup_in_progress`, `restarting_for_continuation`, `resumed_from_restart`, `setup_ready_for_arrival`, `completed_with_deferred_items`.
+### Phase 7 — Parity gates (test contracts)
+Create `src/packages/contracts/runtime/parity-gates.ts`:
+- `ParityTestCase` — command + expected proof + expected approval + expected degraded behavior
+- `PARITY_TEST_CASES: ParityTestCase[]` — canonical test cases proving equivalence
+- `ParityGateResult` — pass/fail per surface per test case
 
-**Action:** Add a `globalSetupState` field to the orchestration engine session, computed from phase progress. Surface in the UI via a status indicator.
+### Phase 8 — Registry + generated + docs sync
+Create `scripts/sync-registry-manifests.ts`:
+- Reads all contract barrels, generates updated `contract-manifest.json`
+- Reads boot chain contracts, generates boot chain manifests
+- Reads `ARQ_PLAN_FINAL.md`, validates consistency with generated manifests
+- Outputs sync report: in-sync / drift-detected per artifact
 
-### 6. Restore Preview needs spec-compliant UI (Screen 8)
-Current `RestoreFlow` is functional but doesn't match spec: needs profile image, "Last used on...", restorable categories list, "Restore this environment" primary CTA, "Start fresh instead" secondary.
+Update `generated/` barrel: add 4 new manifest files to the set.
 
-**Action:** Enhance `RestoreFlow` with spec-matching UI elements.
-
-## Files to Create
+## Files to Create (14)
 
 | File | Purpose |
 |---|---|
-| `src/components/sita/onboarding/SecureFoundationStep.tsx` | Screen 2: standalone secure foundation phase (~200 lines) |
+| `scripts/validate-os-contracts.ts` | Phase 0 validation runner |
+| `infra/docs/ARQ_PLAN_FINAL.md` | Phase 1 base OS authority |
+| `generated/base-os-manifest.json` | Phase 2 OS manifest |
+| `generated/boot-chain-manifest.json` | Phase 2 boot chain |
+| `generated/first-boot-contract-manifest.json` | Phase 2 first-boot contracts index |
+| `generated/first-boot-proof-receipts.json` | Phase 2 first-boot receipts index |
+| `src/packages/contracts/runtime/first-boot-provisioning.ts` | Phase 3 contracts |
+| `src/packages/proof-model/receipts/first-boot-receipt.ts` | Phase 3 receipt type |
+| `src/packages/contracts/runtime/unified-surface-runtime.ts` | Phase 4 unified contract |
+| `src/packages/contracts/native/desktop-host-runtime.ts` | Phase 5 desktop host |
+| `src/packages/contracts/runtime/surface-parity.ts` | Phase 6 parity contracts |
+| `src/packages/contracts/runtime/parity-gates.ts` | Phase 7 test contracts |
+| `scripts/sync-registry-manifests.ts` | Phase 8 sync script |
+| `src/packages/contracts/native/index.ts` | Barrel for native contracts |
 
-## Files to Modify
+## Files to Modify (5)
 
 | File | Change |
 |---|---|
-| `src/packages/contracts/specialized/setup-orchestration.ts` | Add `secure-foundation` and `language-region` to `SetupPhaseId` |
-| `src/lib/engines/setup-phase-definitions.ts` | Add 2 new phase definitions, re-order DAG: boot(0) → secure-foundation(0.5) → language-region(0.8) → network(1) |
-| `src/components/sita/OSSetupExperience.tsx` | Wire `SecureFoundationStep` and `SetupLanguageRegion` into render + state; add them to exclusion lists |
-| `src/components/sita/onboarding/DeviceOwnershipStep.tsx` | Add "Learn what this changes" secondary CTA |
-| `src/components/sita/onboarding/NetworkSetupStep.tsx` | Add "Advanced setup" tertiary CTA |
-| `src/components/sita/RestoreFlow.tsx` | Enhance with spec-compliant restore preview UI (profile, categories, CTAs) |
-| `src/lib/engines/setup-orchestration-engine.ts` | Add `globalSetupState` computed property |
+| `src/packages/contracts/runtime/os-unification-runtime.ts` | Add `"desktop"` to `SurfaceType` |
+| `src/packages/contracts/runtime/index.ts` | Add exports for 4 new runtime files |
+| `src/packages/contracts/native/electron-ipc.ts` | Add 5 new IPC channels + `NativeCapabilityBridge` |
+| `src/packages/proof-model/index.ts` | Add `FirstBootReceipt` to `TypedReceipt` union |
+| `src/lib/services/receipt-service/receipts.service.ts` | Add `createFirstBootReceipt()` |
 
 ## Implementation Order
 
-1. Add 2 new phase IDs to contract
-2. Create `SecureFoundationStep.tsx`
-3. Add 2 phase definitions to DAG with correct ordering
-4. Wire both into `OSSetupExperience` (imports, render, state, exclusions)
-5. Add missing CTAs to DeviceOwnershipStep, NetworkSetupStep
-6. Enhance RestoreFlow with spec-compliant preview UI
-7. Add globalSetupState to orchestration engine
-8. Verify with `tsc --noEmit`
+1. Phase 1: Create `ARQ_PLAN_FINAL.md`
+2. Phase 3: Create first-boot contracts + receipt type + wire into proof model and receipt service
+3. Phase 4: Create unified surface runtime, update `SurfaceType`
+4. Phase 5: Expand electron-ipc, create desktop-host-runtime + native barrel
+5. Phase 6: Create surface-parity contracts
+6. Phase 7: Create parity-gates test contracts
+7. Phase 2: Generate 4 manifest files (depends on Phase 3 contracts existing)
+8. Phase 0: Create validation script (depends on all contracts existing)
+9. Phase 8: Create sync script
+10. Verify with `tsc --noEmit`
 
