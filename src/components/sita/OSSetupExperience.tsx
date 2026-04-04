@@ -719,7 +719,7 @@ export function OSSetupExperience() {
       </AnimatePresence>
 
       {/* Session Progress Bar */}
-      {phase !== "boot" && phase !== "network-setup" && phase !== "device-readiness" && phase !== "device-ownership" && phase !== "account-environment" && phase !== "access-protection" && phase !== "privacy-transparency" && phase !== "quick-identity" && phase !== "deep-world-modeling" && phase !== "primary-use-mode" && phase !== "welcome" && (
+      {phase !== "boot" && phase !== "network-setup" && phase !== "device-readiness" && phase !== "device-ownership" && phase !== "account-environment" && phase !== "access-protection" && phase !== "privacy-transparency" && phase !== "quick-identity" && phase !== "deep-world-modeling" && phase !== "primary-use-mode" && phase !== "trust-calibration" && phase !== "advisor-activation" && phase !== "welcome" && phase !== "desktop-transition" && (
         <div className="fixed top-0 left-0 right-0 z-[160]">
           <Progress value={sessionProgress} className="h-0.5 rounded-none" />
         </div>
