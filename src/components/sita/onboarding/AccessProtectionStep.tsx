@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Fingerprint, Key, Mail, Shield, Check, ChevronRight, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
 
 type AccessMethod = "pin" | "password" | "";
 type RecoveryMethod = "email" | "key" | "";
