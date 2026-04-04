@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Wifi, WifiOff, Cable, Lock, Signal, ChevronDown, ChevronRight, Eye, EyeOff, Globe, Cloud, RefreshCw, Check, AlertTriangle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 type ConnectionState =
   | "scanning" | "connecting" | "connected" | "failed_password"
