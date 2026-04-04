@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import {
   Brain, UserCheck, Users, DollarSign, Layers, ListTodo,
-  Target, TrendingUp, BellOff, ChevronRight, Check,
+  Target, TrendingUp, BellOff, Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
 
 const options = [
   { key: "forgetting", icon: Brain, label: "Forgetting things" },
@@ -34,10 +34,10 @@ export function WantLessOfStep({ selected, onToggle, onNext, onPrev }: WantLessO
       transition={{ type: "spring", damping: 28, stiffness: 280 }}
       className="w-full max-w-xl mx-auto space-y-6"
     >
-      <div className="text-center">
-        <h2 className="font-display text-2xl font-bold text-foreground">What do you want less of?</h2>
-        <p className="mt-1.5 text-sm text-muted-foreground">Select everything that resonates. This shapes how SITA prioritizes.</p>
-      </div>
+      <SetupStageHeader
+        title="What do you want less of?"
+        subtitle="Select everything that resonates. This shapes how SITA prioritizes."
+      />
 
       <div className="grid grid-cols-3 gap-2">
         {options.map(o => {
@@ -66,13 +66,11 @@ export function WantLessOfStep({ selected, onToggle, onNext, onPrev }: WantLessO
         })}
       </div>
 
-      <div className="flex items-center justify-between pt-2">
-        <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
-        <button onClick={onNext}
-          className="rounded-xl px-6 py-2.5 text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-2">
-          Continue <ChevronRight className="h-3.5 w-3.5" />
-        </button>
-      </div>
+      <StageTransitionController
+        onPrev={onPrev}
+        onNext={onNext}
+        canAdvance={true}
+      />
     </motion.div>
   );
 }
