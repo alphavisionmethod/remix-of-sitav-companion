@@ -310,6 +310,10 @@ services:
         condition: service_healthy
       sita-supabase-rest:
         condition: service_healthy
+      sita-supabase-meta:
+        condition: service_healthy
+      sita-supabase-auth:
+        condition: service_healthy
     restart: unless-stopped
     deploy:
       resources:
