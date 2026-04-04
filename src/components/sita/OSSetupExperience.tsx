@@ -48,6 +48,8 @@ import { HomeCompositionStep } from "@/components/sita/onboarding/HomeCompositio
 import { RecoverFirstStep } from "@/components/sita/onboarding/RecoverFirstStep";
 import { PreviewExampleModal, PreviewButton } from "@/components/sita/onboarding/PreviewExampleModal";
 import { ArrivalPrepStep } from "@/components/sita/onboarding/ArrivalPrepStep";
+import { SecureFoundationStep } from "@/components/sita/onboarding/SecureFoundationStep";
+import { SetupLanguageRegion } from "@/components/sita/setup/SetupLanguageRegion";
 import { FirstConnectionsStep } from "@/components/sita/onboarding/FirstConnectionsStep";
 import { NetworkSetupStep } from "@/components/sita/onboarding/NetworkSetupStep";
 import { DeviceReadinessStep } from "@/components/sita/onboarding/DeviceReadinessStep";
