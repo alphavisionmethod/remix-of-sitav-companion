@@ -1,0 +1,4 @@
+# SITA OS — Cloud-Init Instance Metadata
+# This file is intentionally minimal; cloud-init requires it to exist.
+instance-id: sita-os-installer
+local-hostname: sita-os

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ═══════════════════════════════════════════════════════════════
+  SITA OS — OVF Virtual Machine Descriptor
+  OVF 2.0 Compliant / VMware ESXi 8.0+ Compatible (vmx-21)
+  ═══════════════════════════════════════════════════════════════
+-->
+<Envelope
+  xmlns="http://schemas.dmtf.org/ovf/envelope/2"
+  xmlns:cim="http://schemas.dmtf.org/wbem/wscim/1/common"
+  xmlns:ovf="http://schemas.dmtf.org/ovf/envelope/2"
+  xmlns:rasd="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData"
+  xmlns:vmw="http://www.vmware.com/schema/ovf"
+  xmlns:vssd="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <!-- ── References ────────────────────────────────────────── -->
+  <References>
+    <File ovf:href="__VMDK_FILENAME__" ovf:id="vmdk0" ovf:size="__VMDK_SIZE__"/>
+  </References>
+
+  <!-- ── Disk Section ──────────────────────────────────────── -->
+  <DiskSection>
+    <Info>Virtual disk information</Info>
+    <Disk
+      ovf:capacity="__DISK_CAPACITY_BYTES__"
+      ovf:capacityAllocationUnits="byte"
+      ovf:diskId="vmdisk0"
+      ovf:fileRef="vmdk0"
+      ovf:format="http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized"
+      ovf:populatedSize="__VMDK_SIZE__"/>
+  </DiskSection>
+
+  <!-- ── Network Section ───────────────────────────────────── -->
+  <NetworkSection>
+    <Info>Virtual network requirements</Info>
+    <Network ovf:name="sita-net">
+      <Description>SITA OS primary network — bridges to host network</Description>
+    </Network>
+  </NetworkSection>
+
+  <!-- ── Deployment Options ────────────────────────────────── -->
+  <DeploymentOptionSection>
+    <Info>Deployment sizing options</Info>
+    <Configuration ovf:id="pilot" ovf:default="false">
+      <Label>Pilot</Label>
+      <Description>Development/testing: 2 vCPU, 4 GB RAM, 40 GB disk</Description>
+    </Configuration>
+    <Configuration ovf:id="production" ovf:default="true">
+      <Label>Production</Label>
+      <Description>Production workload: __CPU_COUNT__ vCPU, __RAM_MB__ MB RAM, __DISK_SIZE_GB__ GB disk</Description>
+    </Configuration>
+  </DeploymentOptionSection>
+
+  <!-- ── Virtual System ────────────────────────────────────── -->
+  <VirtualSystem ovf:id="sita-os">
+    <Info>SITA OS — Sovereign AI Operating System</Info>
+    <Name>SITA OS</Name>
+
+    <!-- ── Product Information ──────────────────────────────── -->
+    <ProductSection>
+      <Info>SITA OS product details</Info>
+      <Product>SITA OS</Product>
+      <Vendor>SITA</Vendor>
+      <Version>__VERSION__</Version>
+      <FullVersion>__VERSION__ (build __GIT_HASH__)</FullVersion>
+      <ProductUrl>https://sita.dev</ProductUrl>
+      <VendorUrl>https://sita.dev</VendorUrl>
+      <Category>Sovereign AI Operating System</Category>
+    </ProductSection>
+
+    <!-- ── EULA ─────────────────────────────────────────────── -->
+    <EulaSection>
+      <Info>End User License Agreement</Info>
+      <License>
+SITA OS — End User License Agreement
+
+Copyright (c) __YEAR__ SITA. All rights reserved.
+
+This software is provided under the terms of the SITA OS License Agreement.
+By deploying this virtual appliance, you agree to the terms and conditions
+outlined at https://sita.dev/license.
+
+THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.
+      </License>
+    </EulaSection>
+
+    <!-- ── Annotation ───────────────────────────────────────── -->
+    <AnnotationSection>
+      <Info>VM description</Info>
+      <Annotation>
+SITA OS v__VERSION__
+Built: __BUILD_DATE__
+Git: __GIT_HASH__
+
+A trust-bearing operating system for life, business, money, family, and follow-through.
+
+Services included:
+- Web UI (port 8080)
+- API Gateway (port 3000)
+- Brain Core AI Engine (port 3001)
+- Supabase Stack (Auth, DB, Kong, Studio)
+- NATS JetStream messaging
+- Edge Function Runtime
+
+Default credentials:
+  SSH: sita / (set during install)
+  Web: Configure on first launch
+      </Annotation>
+    </AnnotationSection>
+
+    <!-- ── Operating System ─────────────────────────────────── -->
+    <OperatingSystemSection ovf:id="101" vmw:osType="ubuntu64Guest">
+      <Info>Ubuntu 24.04 LTS (64-bit)</Info>
+      <Description>Ubuntu 24.04 LTS Noble Numbat — HWE kernel 6.8+</Description>
+    </OperatingSystemSection>
+
+    <!-- ── Virtual Hardware ─────────────────────────────────── -->
+    <VirtualHardwareSection>
+      <Info>Virtual hardware requirements</Info>
+
+      <System>
+        <vssd:ElementName>Virtual Hardware Family</vssd:ElementName>
+        <vssd:InstanceID>0</vssd:InstanceID>
+        <vssd:VirtualSystemIdentifier>sita-os</vssd:VirtualSystemIdentifier>
+        <vssd:VirtualSystemType>vmx-21</vssd:VirtualSystemType>
+      </System>
+
+      <!-- vCPU -->
+      <Item>
+        <rasd:AllocationUnits>hertz * 10^6</rasd:AllocationUnits>
+        <rasd:Description>Number of virtual CPUs</rasd:Description>
+        <rasd:ElementName>__CPU_COUNT__ virtual CPU(s)</rasd:ElementName>
+        <rasd:InstanceID>1</rasd:InstanceID>
+        <rasd:ResourceType>3</rasd:ResourceType>
+        <rasd:VirtualQuantity>__CPU_COUNT__</rasd:VirtualQuantity>
+        <vmw:CoresPerSocket ovf:required="false">__CPU_COUNT__</vmw:CoresPerSocket>
+      </Item>
+
+      <!-- Memory -->
+      <Item>
+        <rasd:AllocationUnits>byte * 2^20</rasd:AllocationUnits>
+        <rasd:Description>Memory Size</rasd:Description>
+        <rasd:ElementName>__RAM_MB__ MB of memory</rasd:ElementName>
+        <rasd:InstanceID>2</rasd:InstanceID>
+        <rasd:ResourceType>4</rasd:ResourceType>
+        <rasd:VirtualQuantity>__RAM_MB__</rasd:VirtualQuantity>
+      </Item>
+
+      <!-- SCSI Controller (LSI Logic SAS) -->
+      <Item>
+        <rasd:Address>0</rasd:Address>
+        <rasd:Description>SCSI Controller</rasd:Description>
+        <rasd:ElementName>SCSI Controller 0</rasd:ElementName>
+        <rasd:InstanceID>3</rasd:InstanceID>
+        <rasd:ResourceSubType>lsilogicsas</rasd:ResourceSubType>
+        <rasd:ResourceType>6</rasd:ResourceType>
+      </Item>
+
+      <!-- Virtual Disk -->
+      <Item>
+        <rasd:AddressOnParent>0</rasd:AddressOnParent>
+        <rasd:Description>Hard Disk</rasd:Description>
+        <rasd:ElementName>Hard Disk 0</rasd:ElementName>
+        <rasd:HostResource>ovf:/disk/vmdisk0</rasd:HostResource>
+        <rasd:InstanceID>4</rasd:InstanceID>
+        <rasd:Parent>3</rasd:Parent>
+        <rasd:ResourceType>17</rasd:ResourceType>
+      </Item>
+
+      <!-- Network Adapter (VMXNET3) -->
+      <Item>
+        <rasd:AddressOnParent>0</rasd:AddressOnParent>
+        <rasd:AutomaticAllocation>true</rasd:AutomaticAllocation>
+        <rasd:Connection>sita-net</rasd:Connection>
+        <rasd:Description>VMXNET3 Ethernet adapter</rasd:Description>
+        <rasd:ElementName>Network adapter 0</rasd:ElementName>
+        <rasd:InstanceID>5</rasd:InstanceID>
+        <rasd:ResourceSubType>VmxNet3</rasd:ResourceSubType>
+        <rasd:ResourceType>10</rasd:ResourceType>
+      </Item>
+
+      <!-- CD/DVD Drive -->
+      <Item ovf:required="false">
+        <rasd:AddressOnParent>0</rasd:AddressOnParent>
+        <rasd:AutomaticAllocation>false</rasd:AutomaticAllocation>
+        <rasd:Description>CD/DVD Drive</rasd:Description>
+        <rasd:ElementName>CD/DVD Drive 0</rasd:ElementName>
+        <rasd:InstanceID>6</rasd:InstanceID>
+        <rasd:ResourceSubType>vmware.cdrom.remotepassthrough</rasd:ResourceSubType>
+        <rasd:ResourceType>15</rasd:ResourceType>
+      </Item>
+
+      <!-- USB Controller -->
+      <Item ovf:required="false">
+        <rasd:AutomaticAllocation>false</rasd:AutomaticAllocation>
+        <rasd:Description>USB Controller (XHCI)</rasd:Description>
+        <rasd:ElementName>USB Controller</rasd:ElementName>
+        <rasd:InstanceID>7</rasd:InstanceID>
+        <rasd:ResourceSubType>vmware.usb.xhci</rasd:ResourceSubType>
+        <rasd:ResourceType>23</rasd:ResourceType>
+      </Item>
+
+      <!-- Video Card -->
+      <Item ovf:required="false">
+        <rasd:AutomaticAllocation>false</rasd:AutomaticAllocation>
+        <rasd:Description>Video Card</rasd:Description>
+        <rasd:ElementName>Video Card</rasd:ElementName>
+        <rasd:InstanceID>8</rasd:InstanceID>
+        <rasd:ResourceType>24</rasd:ResourceType>
+        <vmw:Config ovf:required="false" vmw:key="enable3DSupport" vmw:value="false"/>
+        <vmw:Config ovf:required="false" vmw:key="videoRamSizeInKB" vmw:value="8192"/>
+      </Item>
+    </VirtualHardwareSection>
+  </VirtualSystem>
+</Envelope>

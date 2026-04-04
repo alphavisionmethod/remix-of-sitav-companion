@@ -1,0 +1,51 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Systemd Service Unit
+# Auto-starts the full Docker Compose stack on boot
+# ═══════════════════════════════════════════════════════════════
+[Unit]
+Description=SITA OS — Sovereign AI Operating System
+Documentation=https://sita.dev/docs
+After=network-online.target docker.service containerd.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/opt/sita/deploy
+
+# Pre-start: ensure Docker network exists
+ExecStartPre=/bin/bash -c 'docker network create sita-net 2>/dev/null || true'
+
+# Start the full stack
+ExecStart=/usr/bin/docker compose up -d --remove-orphans
+
+# Graceful stop
+ExecStop=/usr/bin/docker compose down --timeout 30
+
+# Restart policy
+Restart=on-failure
+RestartSec=30
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+
+# Security hardening
+ProtectSystem=strict
+ReadWritePaths=/opt/sita /var/lib/docker /var/run/docker.sock
+ProtectHome=true
+NoNewPrivileges=false
+PrivateTmp=true
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sita-os
+
+# Timeout
+TimeoutStartSec=300
+TimeoutStopSec=120
+
+[Install]
+WantedBy=multi-user.target
