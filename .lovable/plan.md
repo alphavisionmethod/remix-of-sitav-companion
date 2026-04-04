@@ -1,134 +1,145 @@
 
+# SITA OS — Complete Setup Ceremony Implementation
 
-# Electron Desktop Hardening + Docker Security Gaps — Full Implementation
+## What Already Exists (Extensive)
 
-## Overview
+The project has a mature setup system with:
+- **42 setup phases** defined in `SetupPhaseId` with a 12-state status machine
+- **Full orchestration engine** (`SetupOrchestrationEngine`) with DAG-based sequencing, branching, rollback, persistence, resume
+- **40 setup components** in `src/components/sita/setup/` (shells, panels, cards, controls)
+- **36 onboarding step components** in `src/components/sita/onboarding/`
+- **1218-line orchestrator** (`OSSetupExperience.tsx`) wiring all phases together
+- **PostArrivalDesktop** component with welcome card, boardroom brief, priorities
+- **DesktopTransitionStep** with 10-stage cinematic animation
 
-Two areas to implement: (1) complete the Electron desktop app with missing infrastructure (auto-updater, offline DB, crash reporter, file system bridge, build scripts, code signing config), and (2) harden the Docker deployment stack with TLS, network segmentation, rate limiting, secrets rotation, and audit logging.
+## What's Missing
 
-## Current State
+### A. Missing Screens (3 screens)
+1. **Restore Preview** (`restore-preview` phase) — referenced in contracts but no step component exists. Need `RestorePreviewStep.tsx` showing profile, last-used info, restorable categories, selective restore
+2. **Essential Updates / Device Readiness** — `DeviceReadinessStep` exists but is minimal; needs update status, battery awareness, reboot continuation
+3. **Deferred Completion Center** — no component exists. Post-arrival hub for skipped items
 
-| Component | Status |
-|-----------|--------|
-| `electron/main.cjs` + `preload.cjs` | Exist, functional |
-| `package.json` missing `"main"` field | Missing |
-| `vite.config.ts` missing `base: './'` | Missing (breaks Electron) |
-| Auto-updater | Not implemented |
-| File system bridge | Not implemented |
-| Offline database (IndexedDB) | Not implemented |
-| Native notifications wiring | IPC exists, not connected to app notification system |
-| Build scripts (macOS/Win/Linux) | Not implemented |
-| Code signing config | Not implemented |
-| Crash reporter | Not implemented |
-| Docker TLS/SSL | Not implemented |
-| Docker network segmentation | Single flat network |
-| Rate limiting | Not implemented |
-| Secrets rotation | Not implemented |
-| `docker-compose.yml` volumes section | Malformed (under services instead of top-level) |
+### B. Missing Experience Layers (7 systems)
+1. **Emotional Arc Controller** — pacing metadata per phase (mystery → safety → ownership → personalization → confidence → delight → arrival)
+2. **Signature Wow Moments** — 7 hero animations at key transitions (boot formation, timezone light map, secure stabilization, restore return, world model assembly, trust spectrum, desktop reveal)
+3. **Reflection Copy Engine** — generates personalized summary text reflecting user choices throughout ("You chose quiet guidance — we'll keep things calm")
+4. **Progressive Confidence Visualization** — subtle "environment understanding" indicator evolving from basic → forming → understanding → ready
+5. **Chapter Transition Choreography** — animated transitions between major phase groups (Preparing → Securing → Connecting → Personalizing → Activating → Arriving)
+6. **"Why Recommended" Layer** — visible reasoning for every recommendation throughout setup
+7. **Ambient Maturity System** — background visuals that evolve from abstract/cool to warm/structured as setup progresses
 
----
-
-## Part 1: Electron Desktop Hardening
-
-### 1.1 `package.json` — Add `"main"` field
-- Add `"main": "electron/main.cjs"` after `"version"`
-
-### 1.2 `vite.config.ts` — Conditional `base` for Electron
-- Add `base: process.env.ELECTRON_BUILD ? './' : '/'` to vite config
-- This ensures Electron file:// loading works while keeping web deployment unchanged
-
-### 1.3 Auto-Updater (`electron/auto-updater.cjs`)
-- Create module using `electron-updater` (from `electron-builder` ecosystem)
-- Configurable update feed URL via environment variable or `app-update.yml`
-- IPC channels: `check-for-updates`, `download-update`, `install-update`
-- Wire into `preload.cjs` with `checkForUpdates()`, `downloadUpdate()`, `installUpdate()`
-- Wire into `useElectronBridge.ts` hook with new return values
-
-### 1.4 File System Bridge (`electron/fs-bridge.cjs`)
-- Secure file system operations exposed via IPC
-- Operations: `export-backup` (JSON dump to user-chosen path), `import-backup`, `save-file`, `read-file`
-- Uses `dialog.showSaveDialog` / `dialog.showOpenDialog` for safe path selection
-- Sandboxed to prevent arbitrary file access
-- Wire into `preload.cjs` and add `useFileSystemBridge` hook
-
-### 1.5 Offline Database (`src/lib/offline-db.ts`)
-- IndexedDB-based persistence using `idb` (lightweight wrapper)
-- Stores: `pending-actions`, `cached-data`, `user-preferences`, `offline-queue`
-- Sync manager that replays queued mutations when online
-- `useOfflineStore` hook for components
-- Integrates with existing Supabase client — wraps queries with cache-first strategy
-
-### 1.6 Native Notifications Integration
-- Connect the existing `notifications_queue` table subscription to Electron's native `Notification` API
-- In `useRealtimeNotifications` hook, detect Electron and call `sendNotification` from the bridge
-- Map notification urgency to Electron notification urgency levels
-
-### 1.7 Build Scripts (`scripts/release/build-electron.sh`)
-- Cross-platform build using `@electron/packager`
-- Targets: `--platform=linux --arch=x64`, `--platform=darwin --arch=x64`, `--platform=win32 --arch=x64`
-- Archives output as `.tar.gz` (Linux), `.zip` (macOS/Windows)
-- Makefile targets: `make electron-linux`, `make electron-mac`, `make electron-win`, `make electron-all`
-
-### 1.8 Code Signing Config (`electron/forge.config.cjs`)
-- Configuration file for macOS (`identity`), Windows (`certificateFile`, `certificatePassword`), Linux (AppImage)
-- Environment variable references for CI/CD — `APPLE_IDENTITY`, `CSC_LINK`, `CSC_KEY_PASSWORD`
-- Added to CI pipeline as an optional step gated on secrets presence
-
-### 1.9 Crash Reporter (`electron/crash-reporter.cjs`)
-- Uses Electron's built-in `crashReporter.start()`
-- Configurable submit URL (defaults to local file dump if no server)
-- Captures: main process crashes, renderer crashes, unhandled rejections
-- Writes crash dumps to `userData/crashes/`
-- IPC channel to surface last crash info to the UI
+### C. Missing Integration Points (3 items)
+1. **World Model → Recommendation Engine** — quick identity + deep world model outputs should drive advisor, connection, and first-win recommendations with visible reasoning
+2. **Setup → Deferred Completion Center** — all skipped/deferred items should flow to a post-arrival hub
+3. **Restore Preview Phase** — add to orchestration DAG between `account-environment` and `access-protection`
 
 ---
 
-## Part 2: Docker Security Hardening
+## Implementation Plan
 
-### 2.1 TLS/SSL with Traefik (`deploy/traefik/`)
-- Add Traefik reverse proxy container to `docker-compose.yml`
-- `traefik.yml` static config: entrypoints (80→redirect, 443→TLS), Let's Encrypt ACME resolver, self-signed fallback
-- Dynamic config via Docker labels on each service
-- Replaces direct port exposure — only Traefik exposes 80/443
-- Self-signed cert generation script for air-gapped deployments
+### Phase 1: Missing Screens (3 new components)
 
-### 2.2 Network Segmentation
-- Split `sita-net` into 3 networks:
-  - `sita-frontend` — web, traefik
-  - `sita-backend` — api-gateway, brain-core, kong, edge-functions
-  - `sita-data` — postgres, storage, nats
-- Services connect to only the networks they need (e.g., api-gateway on frontend+backend, kong on backend+data)
+**1.1 RestorePreviewStep** (`src/components/sita/onboarding/RestorePreviewStep.tsx`)
+- Profile image, environment name, "Last used on..." timestamp
+- Restorable category cards (advisors, trust settings, boards, desktop layout, connections, routines)
+- Selective restore toggles
+- CTAs: "Restore this environment", "Start fresh instead", "Restore later"
+- States: preview_ready, partial_restore_only, restore_validating, restore_confirmed
+- Wire into `OSSetupExperience.tsx` as `restore-preview` phase after `account-environment`
 
-### 2.3 Rate Limiting
-- Add Kong rate-limiting plugin to `kong.yml` (global + per-route)
-- Global: 1000 req/min per IP
-- Auth endpoints: 20 req/min per IP
-- REST API: 500 req/min per consumer
-- API gateway: add `hono-rate-limiter` middleware with in-memory store
+**1.2 DeferredCompletionCenter** (`src/components/sita/setup/DeferredCompletionCenter.tsx`)
+- "Finish setup your way" heading
+- Cards for: biometrics, optional connections, deeper personalization, advisor tuning, recovery completion
+- Each card shows what was skipped and why it matters
+- Non-nagging design — elegant, tucked away
+- Wire into `PostArrivalDesktop.tsx` as expandable section
+- Also accessible from Settings sidebar
 
-### 2.4 Kong Secrets — Remove env var substitution
-- Move Kong consumer keys out of `kong.yml`
-- Use Kong admin API init script to inject keys at startup from env vars
-- Or use `envsubst` in a docker entrypoint wrapper script
+**1.3 Enhanced DeviceReadinessStep** — update existing component
+- Add battery awareness (low battery hold state)
+- Add update progress categories (Security, Stability, Device readiness, Recovery)
+- Add reboot continuation support via `SetupPersistenceManager`
 
-### 2.5 Secrets Rotation Script (`scripts/security/rotate-secrets.sh`)
-- Generates new JWT_SECRET, POSTGRES_PASSWORD, service keys
-- Updates `.env` file
-- Restarts affected services
-- Logs rotation event to audit
+### Phase 2: Emotional Arc & Wow System (4 new modules)
 
-### 2.6 Audit Logging (`deploy/auditd/`)
-- `auditd.conf` for VM-level access logging
-- Docker container event logging via `--log-driver=json-file` with rotation
-- Audit rules for: file access to /opt/sita, Docker socket access, privilege escalation
+**2.1 Emotional Arc Controller** (`src/lib/setup/emotional-arc.ts`)
+- Map each phase to an emotional target: mystery, safety, ownership, personalization, confidence, delight, arrival
+- Export `getEmotionalTarget(phase)` → returns arc metadata (energy level, warmth, ambient hue shift)
+- Used by `AmbientFormationCanvas` to evolve background visuals
 
-### 2.7 Postgres Password Enforcement
-- Remove default password from `docker-compose.yml`
-- Add first-boot check in `sita-first-boot.sh` that generates and sets password
-- Fail-fast if `POSTGRES_PASSWORD` is still the default value
+**2.2 Signature Wow Moments** (`src/components/sita/setup/SignatureWowMoment.tsx`)
+- 7 hero transition animations triggered at phase boundaries:
+  1. Boot formation — particles coalescing into SITA mark
+  2. Secure stabilization — shield pulse with trust confirmation
+  3. Timezone light map — globe with light/shadow shifting to user timezone
+  4. Restore return — "your world is returning" with module icons reassembling
+  5. World model assembly — live visualization of user profile building
+  6. Trust spectrum — autonomy dial animation with workflow preview
+  7. Desktop arrival — full cinematic reveal (enhance existing `DesktopTransitionStep`)
+- Each moment is 1.5-3s, skippable, respects reduced motion
 
-### 2.8 Fix docker-compose.yml volumes
-- Move `supabase-db-data`, `supabase-storage-data`, `nats-data` to top-level `volumes:` block (currently malformed under services)
+**2.3 Reflection Copy Engine** (`src/lib/setup/reflection-copy.ts`)
+- Takes current `SetupData` state, returns contextual copy strings
+- Examples: "You chose quiet guidance — SITA will keep things calm", "Since follow-through matters most, support is being prepared there first"
+- Used in: arrival prep summary, learning panel, chapter transitions, advisor activation
+- 30-40 copy templates keyed by state combinations
+
+**2.4 Progressive Confidence Indicator** (`src/components/sita/setup/ConfidenceIndicator.tsx`)
+- Subtle indicator in progress rail area
+- Levels: basic (0-20%) → forming (20-50%) → understanding (50-80%) → ready (80-100%)
+- Computed from: completed phases, data completeness, connections, world model depth
+- Not gamified — premium readiness feeling
+
+### Phase 3: Chapter Transitions & Ambient Maturity (3 items)
+
+**3.1 Chapter Transition Controller** (`src/components/sita/setup/ChapterTransition.tsx`)
+- 6 chapter boundaries with distinct animations:
+  - Foundation (boot → ownership)
+  - Identity (account → access protection)
+  - Personalization (privacy → world modeling)
+  - Intelligence (use mode → advisor activation)
+  - Activation (connections → first win)
+  - Arrival (arrival prep → desktop)
+- Each: 1-2s cinematic bridge with chapter title, ambient shift, optional sound cue
+- Triggered by `OSSetupExperience` when crossing chapter boundaries
+
+**3.2 Ambient Maturity System** — enhance `AmbientFormationCanvas`
+- Accept `emotionalPhase` prop from emotional arc controller
+- Background evolves: cold/abstract → warmer → structured → personalized → alive → ready
+- Hue, blur radius, position, and opacity shift gradually across phases
+
+**3.3 "Why Recommended" Layer** — enhance existing recommendation components
+- Add `reasoning` prop to `UseModeSelectionCards`, `AdvisorActivationStep`, `FirstWinSetupStep`, `RecommendedConnectionsPanel`
+- `reflection-copy.ts` generates reasoning strings based on world model + quick identity data
+- Display as subtle italic text beneath recommended badges
+
+### Phase 4: Integration & Wiring (5 items)
+
+**4.1 Add `restore-preview` phase to orchestration**
+- Add to `SetupPhaseId` union type
+- Add `SetupPhaseDefinition` in `setup-phase-definitions.ts`
+- Conditional: only shown if `accountPath === "restore"` (branch evaluator)
+- Wire in `OSSetupExperience.tsx`
+
+**4.2 Wire Deferred Items Pipeline**
+- Track all skipped phases in orchestration engine (already tracks `skippedPhases`)
+- Map skipped phases to deferred completion items
+- Pass to `PostArrivalDesktop` and `DeferredCompletionCenter`
+- Persist to `user_memory` table with key `deferred_items`
+
+**4.3 Wire Reflection Copy into existing steps**
+- `ArrivalPrepStep` — show 3-4 reflection lines summarizing choices
+- `LearningPanel` — show evolving reflection text
+- `AdvisorActivationStep` — "Recommended because..."
+- `FirstWinSetupStep` — "Based on your priorities..."
+
+**4.4 Wire Confidence Indicator into PhaseProgressRail**
+- Compute confidence from setup state completeness
+- Show as subtle label/meter beneath progress rail
+
+**4.5 Wire Chapter Transitions into OSSetupExperience**
+- Detect chapter boundary crossings in `goNext`
+- Inject `ChapterTransition` overlay before rendering next phase
 
 ---
 
@@ -136,45 +147,34 @@ Two areas to implement: (1) complete the Electron desktop app with missing infra
 
 | File | Action |
 |------|--------|
-| `package.json` | Add `"main"` field |
-| `vite.config.ts` | Add conditional `base` |
-| `electron/auto-updater.cjs` | New — auto-update module |
-| `electron/fs-bridge.cjs` | New — file system bridge |
-| `electron/crash-reporter.cjs` | New — crash reporting |
-| `electron/forge.config.cjs` | New — code signing config |
-| `electron/preload.cjs` | Update — expose new IPC channels |
-| `electron/main.cjs` | Update — integrate updater, crash reporter, fs-bridge |
-| `src/lib/offline-db.ts` | New — IndexedDB persistence layer |
-| `src/hooks/useOfflineStore.ts` | New — offline data hook |
-| `src/hooks/useFileSystemBridge.ts` | New — file system hook |
-| `src/hooks/useElectronBridge.ts` | Update — add updater, crash, fs methods |
-| `src/hooks/use-realtime-notifications.ts` | Update — wire to native notifications |
-| `scripts/release/build-electron.sh` | New — cross-platform build script |
-| `deploy/traefik/traefik.yml` | New — Traefik TLS config |
-| `deploy/traefik/dynamic.yml` | New — Traefik routing rules |
-| `deploy/kong.yml` | Update — add rate limiting plugins |
-| `deploy/api-gateway/server.ts` | Update — add rate limiting middleware |
-| `deploy/nginx.conf` | Update — remove direct port exposure |
-| `docker-compose.yml` | Update — add Traefik, network segmentation, fix volumes, remove default password |
-| `scripts/security/rotate-secrets.sh` | New — secrets rotation |
-| `scripts/release/iso/sita-first-boot.sh` | Update — enforce password generation |
-| `.env.example` | Update — add Electron/TLS/signing vars |
-| `.github/workflows/ci.yml` | Update — add Electron build job |
-| `Makefile` | Update — add electron build targets |
+| `src/components/sita/onboarding/RestorePreviewStep.tsx` | New |
+| `src/components/sita/setup/DeferredCompletionCenter.tsx` | New |
+| `src/lib/setup/emotional-arc.ts` | New |
+| `src/lib/setup/reflection-copy.ts` | New |
+| `src/components/sita/setup/SignatureWowMoment.tsx` | New |
+| `src/components/sita/setup/ConfidenceIndicator.tsx` | New |
+| `src/components/sita/setup/ChapterTransition.tsx` | New |
+| `src/components/sita/setup/AmbientFormationCanvas.tsx` | Update — add emotional phase props |
+| `src/components/sita/setup/index.ts` | Update — add new exports |
+| `src/components/sita/OSSetupExperience.tsx` | Update — wire restore-preview, chapter transitions, confidence, reflection copy |
+| `src/components/sita/PostArrivalDesktop.tsx` | Update — add deferred completion section |
+| `src/components/sita/onboarding/DeviceReadinessStep.tsx` | Update — battery, update categories |
+| `src/components/sita/onboarding/AdvisorActivationStep.tsx` | Update — add reasoning prop |
+| `src/components/sita/onboarding/FirstWinSetupStep.tsx` | Update — add reasoning prop |
+| `src/components/sita/onboarding/ArrivalPrepStep.tsx` | Update — add reflection copy |
+| `src/components/sita/onboarding/LearningPanel.tsx` | Update — add reflection text |
+| `src/packages/contracts/specialized/setup-orchestration.ts` | Update — add `restore-preview` to SetupPhaseId |
+| `src/lib/engines/setup-phase-definitions.ts` | Update — add restore-preview definition |
 
 ## Implementation Order
 
-1. Fix `package.json` + `vite.config.ts` (Electron basics)
-2. Create Electron modules (auto-updater, fs-bridge, crash-reporter, forge config)
-3. Update `electron/main.cjs` + `preload.cjs` to integrate new modules
-4. Create offline DB layer + hooks
-5. Wire native notifications
-6. Create build scripts + Makefile targets
-7. Fix `docker-compose.yml` (volumes, default password, network segmentation)
-8. Add Traefik TLS container + config
-9. Update Kong with rate limiting
-10. Add API gateway rate limiting
-11. Create secrets rotation script
-12. Update CI pipeline
-13. Verify TypeScript compilation
-
+1. Create `emotional-arc.ts` + `reflection-copy.ts` (foundational data modules)
+2. Create `RestorePreviewStep.tsx` + wire into orchestration
+3. Create `DeferredCompletionCenter.tsx` + wire into PostArrivalDesktop
+4. Create `SignatureWowMoment.tsx` + `ChapterTransition.tsx` + `ConfidenceIndicator.tsx`
+5. Enhance `AmbientFormationCanvas` with emotional phase support
+6. Wire chapter transitions + confidence into `OSSetupExperience.tsx`
+7. Wire reflection copy into `ArrivalPrepStep`, `LearningPanel`, advisor/first-win steps
+8. Enhance `DeviceReadinessStep` with battery/update categories
+9. Update barrel exports
+10. Verify TypeScript compilation
