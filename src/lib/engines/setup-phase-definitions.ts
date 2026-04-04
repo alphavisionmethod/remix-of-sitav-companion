@@ -11,7 +11,7 @@ import type {
 // ── Helpers ─────────────────────────────────────────────────
 
 const DEFAULT_TIMEOUT: PhaseTimeoutConfig = {
-  timeoutMs: 60_000,
+  timeoutMs: 300_000, // 5 minutes — user-interactive phases need generous time
   autoRetry: false,
   maxRetries: 0,
   backoffBaseMs: 1000,
