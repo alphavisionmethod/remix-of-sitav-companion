@@ -23,7 +23,6 @@ export function AmbientFormationCanvas({
   emotionalPhase,
 }: AmbientFormationCanvasProps) {
   const reduced = useReducedMotion();
-  if (reduced) return null;
 
   const { primary, secondary, tertiaryOpacity } = useMemo(() => {
     if (!emotionalPhase) {
