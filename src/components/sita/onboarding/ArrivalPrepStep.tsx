@@ -23,6 +23,7 @@ interface ArrivalPrepStepProps {
   firstWinAction: string;
   permissionChoices: Record<string, boolean>;
   deferredCount: number;
+  trustCalibrationLevel?: number;
   onNext: () => void;
   onPrev: () => void;
 }
