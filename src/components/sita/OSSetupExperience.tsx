@@ -7,6 +7,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { persistSetupState, loadPersistedSetupState, clearPersistedSetupState } from "@/components/sita/setup/SetupPersistenceManager";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
