@@ -6,10 +6,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart, DollarSign, Briefcase, Users, Sparkles, TrendingUp,
-  ChevronRight, ChevronDown, Check, Shield,
+  ChevronDown, Check, Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
 
 export interface AdvisorActivation {
   id: string;
