@@ -1,0 +1,71 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T00:00:00Z",
+  "contracts": [
+    {
+      "name": "FirstBootEnvelope",
+      "source": "src/packages/contracts/runtime/first-boot-provisioning.ts",
+      "purpose": "Wraps entire first-boot lifecycle as auditable unit",
+      "consumedInPhases": ["all"]
+    },
+    {
+      "name": "FirstBootNetworkContract",
+      "source": "src/packages/contracts/runtime/first-boot-provisioning.ts",
+      "purpose": "Network discovery, captive portal, connectivity proof",
+      "consumedInPhases": ["network-setup"]
+    },
+    {
+      "name": "FirstBootTrustContract",
+      "source": "src/packages/contracts/runtime/first-boot-provisioning.ts",
+      "purpose": "TPM attestation, secure-boot verification, trust baseline",
+      "consumedInPhases": ["hardware-detection", "secure-foundation"]
+    },
+    {
+      "name": "FirstBootSecretsContract",
+      "source": "src/packages/contracts/runtime/first-boot-provisioning.ts",
+      "purpose": "Key generation, vault initialization, recovery key derivation",
+      "consumedInPhases": ["secure-foundation", "access-protection"]
+    },
+    {
+      "name": "FirstBootRuntimeBootstrap",
+      "source": "src/packages/contracts/runtime/first-boot-provisioning.ts",
+      "purpose": "Service startup order, capability loading, proof chain init",
+      "consumedInPhases": ["hardware-detection", "desktop-transition"]
+    },
+    {
+      "name": "UnifiedCommand",
+      "source": "src/packages/contracts/runtime/unified-surface-runtime.ts",
+      "purpose": "Surface-agnostic command envelope",
+      "consumedInPhases": ["desktop-transition"]
+    },
+    {
+      "name": "SurfaceRuntimeConfig",
+      "source": "src/packages/contracts/runtime/unified-surface-runtime.ts",
+      "purpose": "Complete runtime configuration per surface",
+      "consumedInPhases": ["desktop-transition"]
+    },
+    {
+      "name": "DesktopHostCapabilities",
+      "source": "src/packages/contracts/native/desktop-host-runtime.ts",
+      "purpose": "Native capabilities for Electron host",
+      "consumedInPhases": ["hardware-detection", "desktop-transition"]
+    },
+    {
+      "name": "DesktopHostConfig",
+      "source": "src/packages/contracts/native/desktop-host-runtime.ts",
+      "purpose": "Host vs renderer domain ownership boundary",
+      "consumedInPhases": ["desktop-transition"]
+    }
+  ],
+  "dependencyGraph": {
+    "FirstBootEnvelope": [],
+    "FirstBootTrustContract": ["FirstBootEnvelope"],
+    "FirstBootSecretsContract": ["FirstBootTrustContract"],
+    "FirstBootNetworkContract": ["FirstBootEnvelope"],
+    "FirstBootRuntimeBootstrap": ["FirstBootTrustContract", "FirstBootSecretsContract"],
+    "UnifiedCommand": ["FirstBootRuntimeBootstrap"],
+    "SurfaceRuntimeConfig": ["UnifiedCommand"],
+    "DesktopHostCapabilities": [],
+    "DesktopHostConfig": ["DesktopHostCapabilities"]
+  }
+}

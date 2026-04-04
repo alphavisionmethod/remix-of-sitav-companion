@@ -1,0 +1,58 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-04T00:00:00Z",
+  "os": {
+    "distribution": "Ubuntu",
+    "release": "24.04 LTS",
+    "codename": "Noble Numbat",
+    "architecture": "x86_64",
+    "futureTargets": ["aarch64"]
+  },
+  "kernel": {
+    "version": "6.8+",
+    "track": "HWE",
+    "features": ["dm-verity", "LUKS2", "measured-boot", "secure-boot"],
+    "modules": {
+      "signing": "MOK",
+      "policy": "only-signed-modules"
+    }
+  },
+  "initSystem": {
+    "type": "systemd",
+    "bootloader": "systemd-boot",
+    "initramfs": {
+      "immutable": true,
+      "signed": true,
+      "contents": ["cryptsetup", "systemd-init", "hardware-probe", "sita-first-boot-hook"]
+    }
+  },
+  "packages": {
+    "core": [
+      "systemd-boot",
+      "cryptsetup",
+      "tpm2-tools",
+      "dm-verity-utils",
+      "shim-signed"
+    ],
+    "runtime": [
+      "nodejs-lts",
+      "electron-runtime",
+      "sita-runtime-service"
+    ]
+  },
+  "signingKeys": {
+    "uefi": "Canonical UEFI CA",
+    "kernel": "Canonical Kernel Signing Key",
+    "mok": "SITA OS Machine Owner Key",
+    "initramfs": "SITA OS Initramfs Signing Key"
+  },
+  "partitionScheme": {
+    "type": "A/B",
+    "efi": "512MB FAT32",
+    "rootA": "dm-verity protected, read-only",
+    "rootB": "dm-verity protected, read-only (inactive)",
+    "overlay": "writable, encrypted",
+    "home": "LUKS2 encrypted",
+    "swap": "encrypted"
+  }
+}
