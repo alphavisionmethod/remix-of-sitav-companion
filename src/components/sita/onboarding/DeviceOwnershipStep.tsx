@@ -55,12 +55,12 @@ export function DeviceOwnershipStep({ selected, onSelect, onNext, onPrev }: Prop
       className="w-full max-w-2xl mx-auto">
       <div className="rounded-2xl border border-border bg-card shadow-2xl shadow-primary/5 overflow-hidden">
         <div className="p-8 pb-0">
-          <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}
-            className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20 mb-4">
-            <Shield className="h-7 w-7 text-primary-foreground" />
-          </motion.div>
-          <h2 className="font-display text-2xl font-bold tracking-tight text-foreground">How will this device be used?</h2>
-          <p className="mt-1.5 text-sm text-muted-foreground">This helps SITA choose the right privacy, sharing, and support model from the start</p>
+          <SetupStageHeader
+            icon={Shield}
+            title="How will this device be used?"
+            subtitle="This helps SITA choose the right privacy, sharing, and support model from the start"
+            align="left"
+          />
         </div>
 
         <div className="p-8 pt-6">
