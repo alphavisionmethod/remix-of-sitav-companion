@@ -296,8 +296,13 @@ export class SetupOrchestrationEngine {
     const current = this.session.currentPhaseId;
     const status = this.getPhaseStatus(current);
 
+    // Force-activate if still in preparing/idle/warning/blocked state
+    if (!RESOLVED_STATUSES.includes(status) && status !== "active" && status !== "validating" && status !== "success") {
+      this.transitionPhaseStatus(current, "active");
+    }
+
     // Transition through validation → success → completed
-    if (status === "active") {
+    if (this.getPhaseStatus(current) === "active") {
       this.transitionPhaseStatus(current, "validating");
     }
     if (this.getPhaseStatus(current) === "validating") {
