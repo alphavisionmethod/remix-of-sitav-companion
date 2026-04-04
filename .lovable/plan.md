@@ -1,68 +1,99 @@
 
 
-# Add Missing Self-Hosted Infrastructure: pg-meta, Edge Function Runtime, Full Integration
+# Implement ISO Builder, OVF/OVA Packager, and PWA Manifest
 
-## Current State
+## Overview
 
-| Component | Status |
-|---|---|
-| PostgREST (`sita-supabase-rest`) | Already in docker-compose.yml |
-| Realtime (`sita-supabase-realtime`) | Already in docker-compose.yml |
-| Kong routes to `sita-supabase-rest:3000` | Already correct in kong.yml |
-| Kong routes to `sita-supabase-realtime:4000` | Already correct in kong.yml |
-| **pg-meta container** | **MISSING** — Kong `/pg/` route points to PostgREST, but a proper pg-meta service would be better |
-| **Edge Function runtime** | **MISSING** — 14 Deno edge functions have no self-hosted container |
+Three gaps to close: (1) a real ISO builder script with cloud-init auto-install, (2) a proper OVF/OVA packager that produces VMware-compliant artifacts, and (3) PWA installability via a web manifest (no service worker — per project constraints, only a manifest for Add-to-Home-Screen).
 
-PostgREST and Realtime are already implemented. The two real gaps are pg-meta and edge functions.
+---
 
-## What to Build
+## 1. ISO Builder — `scripts/release/build-iso.sh`
 
-### 1. Supabase pg-meta Container
+Replace the stub `generate-vmware-iso-image.ts` with a real bash script that uses `xorriso`/`genisoimage` to build a bootable ISO.
 
-Add `sita-supabase-meta` using `supabase/postgres-meta:v0.80.0`. This provides the `/pg/` metadata API (table introspection, schema info) that Kong routes to.
+**What it does:**
+- Downloads Ubuntu Server 24.04 mini ISO (or uses a cached copy)
+- Injects a full cloud-init `autoinstall` config (`user-data`, `meta-data`, `network-config`)
+- Autoinstall provisions: disk partitioning (A/B root + encrypted data), Docker + Docker Compose install, SITA OS Docker images pre-loaded, systemd auto-start service, network config wizard via cloud-init
+- Outputs `sita-os-{version}.iso` ready to boot on VMware/bare-metal
+- Reads from `generated/base-os-manifest.json` for OS version, partition scheme, kernel features
 
-- Port 8080 internal
-- Connects to Postgres via `PG_META_DB_HOST=sita-supabase-db`
-- Update `deploy/kong.yml` meta service URL from `sita-supabase-rest:3000` to `sita-supabase-meta:8080`
+**New files:**
+| File | Purpose |
+|------|---------|
+| `scripts/release/build-iso.sh` | Main ISO builder (~200 lines) |
+| `scripts/release/iso/autoinstall/user-data` | Cloud-init autoinstall config |
+| `scripts/release/iso/autoinstall/meta-data` | Instance metadata |
+| `scripts/release/iso/autoinstall/network-config` | Network YAML |
+| `scripts/release/iso/sita-first-boot.sh` | First-boot script: loads Docker images, starts stack |
+| `scripts/release/iso/sita-os.service` | Systemd unit for auto-start |
 
-### 2. Self-Hosted Edge Function Runtime
+**Autoinstall covers:**
+- Disk: 512MB EFI, 20GB root-A (dm-verity), 20GB root-B, rest as encrypted data (LUKS2)
+- Packages: docker.io, docker-compose-plugin, tpm2-tools, cryptsetup
+- Users: `sita` user with sudo, SSH key injection
+- Post-install: copies Docker images from ISO media, runs `docker compose up -d`
 
-Add `sita-supabase-functions` using `supabase/edge-runtime:v1.54.6` to run all 14 edge functions in self-hosted mode.
+---
 
-- Mount `./supabase/functions` into the container
-- Expose on port 9000
-- Add Kong route for `/functions/v1/` → `sita-supabase-functions:9000`
-- Pass required env vars (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, etc.)
+## 2. OVF/OVA Packager — `scripts/release/build-ova.sh`
 
-### 3. API Gateway Edge Function Proxy
+Replace the current tarball-only `scripts/build-ova.sh` with a proper OVA builder.
 
-Add `/api/functions/*` route on the API gateway that proxies to the edge function runtime, so the SPA can call edge functions via the same gateway.
+**What it does:**
+- Creates a VMDK virtual disk using `qemu-img` (or raw dd + VBoxManage conversion)
+- Generates a standards-compliant `.ovf` XML descriptor with proper namespaces (CIM, OVF, RASD, VSSD)
+- Computes SHA256 checksums into a `.mf` manifest file
+- Bundles `.ovf` + `.vmdk` + `.mf` into a `.ova` TAR archive (in correct order per OVF spec)
+- Configurable: CPU count, RAM, disk size, network adapter type via CLI flags
 
-### 4. Configuration Updates
+**New/modified files:**
+| File | Purpose |
+|------|---------|
+| `scripts/release/build-ova.sh` | Replaces `scripts/build-ova.sh` — full OVA packager (~250 lines) |
+| `scripts/release/templates/sita-os.ovf.template` | OVF XML template with placeholders |
 
-- **kong.yml**: Add `functions-v1` service + route, fix `meta` service URL
-- **docker-compose.yml**: Add 2 new services (`sita-supabase-meta`, `sita-supabase-functions`)
-- **nginx.conf**: Add `/functions/` proxy location
-- **.env.example**: Add edge runtime env vars
-- **deploy/api-gateway/server.ts**: Add edge function proxy route
+**OVF descriptor includes:**
+- VirtualSystemType: vmx-21 (ESXi 8.0 compatible)
+- 4 vCPU, 8GB RAM defaults (configurable)
+- 80GB thin-provisioned VMDK
+- VMXNET3 network adapter on `sita-net`
+- ProductSection with SITA OS metadata, version, vendor URL
+- EulaSection placeholder
+- DeploymentOptionSection: pilot (2 vCPU/4GB) vs production (4 vCPU/8GB)
 
-## Files Changed
+---
 
-| File | Change |
-|---|---|
-| `docker-compose.yml` | Add `sita-supabase-meta` + `sita-supabase-functions` services |
-| `deploy/kong.yml` | Fix meta URL, add functions-v1 service/route |
-| `deploy/nginx.conf` | Add `/functions/` proxy block |
-| `deploy/api-gateway/server.ts` | Add `/api/functions/*` proxy route |
-| `.env.example` | Add `EDGE_RUNTIME_*` vars |
+## 3. PWA Manifest (no service worker)
+
+Per project constraints, we add only a `manifest.webmanifest` for installability — no `vite-plugin-pwa`, no service worker. The existing `PWAInstallPrompt` component is already wired into `ShellLayout`.
+
+**New/modified files:**
+| File | Purpose |
+|------|---------|
+| `public/manifest.webmanifest` | Web app manifest with SITA OS branding |
+| `public/icons/icon-192.png` | Generated placeholder icon (192x192) |
+| `public/icons/icon-512.png` | Generated placeholder icon (512x512) |
+| `index.html` | Add `<link rel="manifest">` + theme-color meta + apple-touch-icon |
+
+**Manifest contents:**
+- `name`: "SITA OS", `short_name`: "SITA"
+- `display`: "standalone", `orientation`: "any"
+- `start_url`: "/", `scope`: "/"`
+- `theme_color`: "#0F172A" (dark bg), `background_color`: "#0F172A"
+- Icons at 192 and 512 sizes
+- `categories`: ["productivity", "business"]
+
+---
 
 ## Implementation Order
 
-1. Add pg-meta service to docker-compose.yml
-2. Add edge-runtime service to docker-compose.yml
-3. Update kong.yml (meta URL fix + functions route)
-4. Update nginx.conf with functions proxy
-5. Update API gateway with functions proxy route
-6. Update .env.example
+1. Create PWA manifest + icons + update `index.html`
+2. Create ISO builder autoinstall configs
+3. Create ISO builder script (`build-iso.sh`)
+4. Create OVF template
+5. Create OVA packager script (`build-ova.sh` replacement)
+6. Update `Makefile` with `make iso` and `make ova` targets
 7. Verify TypeScript compilation
 
