@@ -8,6 +8,7 @@ export type SetupPhaseId =
   | "boot" | "network-setup" | "device-readiness" | "device-ownership"
   | "account-environment" | "access-protection"
   | "privacy-transparency" | "quick-identity" | "deep-world-modeling" | "primary-use-mode"
+  | "trust-calibration" | "advisor-activation"
   | "welcome" | "restore" | "enterprise"
   | "cinematic-intro" | "setup-style"
   | "identity" | "want-less-of" | "protect-most"
