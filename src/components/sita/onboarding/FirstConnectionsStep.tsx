@@ -124,11 +124,13 @@ const CONNECTORS: Connector[] = [
 interface FirstConnectionsStepProps {
   enabledDomains: string[];
   primaryUseMode: string;
+  onConnectedChange?: (count: number) => void;
+  onDeferredChange?: (deferred: string[]) => void;
   onNext: () => void;
   onPrev: () => void;
 }
 
-export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onNext, onPrev }: FirstConnectionsStepProps) {
+export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onConnectedChange, onDeferredChange, onNext, onPrev }: FirstConnectionsStepProps) {
   const { user } = useAuth();
   const [connecting, setConnecting] = useState<string | null>(null);
   const [connected, setConnected] = useState<Set<string>>(new Set());
@@ -172,7 +174,11 @@ export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onNext, o
         .eq("user_id", user.id)
         .eq("connector_id", connector.id);
 
-      setConnected(prev => new Set([...prev, connector.id]));
+      setConnected(prev => {
+        const next = new Set([...prev, connector.id]);
+        onConnectedChange?.(next.size);
+        return next;
+      });
     } catch (err) {
       console.error("Connection error:", err);
       toast.error(`Could not connect ${connector.name}. You can try again later.`);
@@ -182,7 +188,11 @@ export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onNext, o
   };
 
   const handleDefer = (id: string) => {
-    setDeferred(prev => new Set([...prev, id]));
+    setDeferred(prev => {
+      const next = new Set([...prev, id]);
+      onDeferredChange?.([...next]);
+      return next;
+    });
   };
 
   return (

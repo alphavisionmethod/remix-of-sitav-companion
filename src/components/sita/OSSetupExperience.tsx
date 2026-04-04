@@ -739,8 +739,19 @@ export function OSSetupExperience() {
         )}
       </AnimatePresence>
 
+      {/* Desktop Transition — fullscreen, outside standard layout */}
+      {phase === "desktop-transition" && (
+        <DesktopTransitionStep key="desktop-transition"
+          displayName={state.displayName}
+          trustLevel={state.trustLevel}
+          activeAdvisors={state.advisorActivation}
+          primaryUseMode={state.primaryUseMode}
+          firstWinAction={state.firstWin.action}
+          onComplete={goNext} />
+      )}
+
       {/* Setup phases */}
-      {phase !== "boot" && (
+      {phase !== "boot" && phase !== "desktop-transition" && (
         <div className="fixed inset-0 z-[150] flex items-center justify-center overflow-y-auto p-4 sm:p-8"
           style={{ backgroundColor: "#0B0D10" }}>
           {/* Ambient glow */}
@@ -1097,6 +1108,8 @@ export function OSSetupExperience() {
                   <FirstConnectionsStep key="first-connections"
                     enabledDomains={state.enabledDomains}
                     primaryUseMode={state.primaryUseMode}
+                    onConnectedChange={count => setState(s => ({ ...s, connectedSystems: count }))}
+                    onDeferredChange={d => setState(s => ({ ...s, deferredConnections: d }))}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
@@ -1140,19 +1153,10 @@ export function OSSetupExperience() {
                     firstWinAction={state.firstWin.action}
                     permissionChoices={state.permissionChoices}
                     deferredCount={state.deferredConnections.length}
+                    trustCalibrationLevel={state.trustCalibration.level}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* Desktop Transition */}
-                {phase === "desktop-transition" && (
-                  <DesktopTransitionStep key="desktop-transition"
-                    displayName={state.displayName}
-                    trustLevel={state.trustLevel}
-                    activeAdvisors={state.advisorActivation}
-                    primaryUseMode={state.primaryUseMode}
-                    firstWinAction={state.firstWin.action}
-                    onComplete={goNext} />
-                )}
 
                 {/* System Check */}
                 {phase === "system-check" && (

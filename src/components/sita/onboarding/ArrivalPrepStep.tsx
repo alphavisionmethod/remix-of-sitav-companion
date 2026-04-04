@@ -23,6 +23,7 @@ interface ArrivalPrepStepProps {
   firstWinAction: string;
   permissionChoices: Record<string, boolean>;
   deferredCount: number;
+  trustCalibrationLevel?: number;
   onNext: () => void;
   onPrev: () => void;
 }
@@ -39,6 +40,14 @@ const trustLabels: Record<string, string> = {
   guarded: "Guarded — approval before every action",
 };
 
+const calibrationLabels: Record<number, string> = {
+  1: "Observe only — SITA watches, never acts",
+  2: "Suggest — SITA recommends, you decide",
+  3: "Simulate — SITA previews outcomes first",
+  4: "Ask before acting — approval required",
+  5: "Auto-routine — handles repetitive tasks",
+};
+
 const advisorIcons: Record<string, typeof Heart> = {
   life: Heart, money: DollarSign, business: Briefcase,
   family: Users, concierge: Sparkles, growth: TrendingUp,
@@ -52,7 +61,7 @@ const useModeLabels: Record<string, string> = {
 export const ArrivalPrepStep = ({
   displayName, enabledDomains, trustLevel, rituals, aiStyle,
   primaryUseMode, activeAdvisors, connectedSystems, firstWinAction,
-  permissionChoices, deferredCount, onNext, onPrev,
+  permissionChoices, deferredCount, trustCalibrationLevel, onNext, onPrev,
 }: ArrivalPrepStepProps) => {
   const enabledAdvisors = activeAdvisors.filter(a => a.enabled);
   const enabledPermissions = Object.values(permissionChoices).filter(Boolean).length;
@@ -73,7 +82,11 @@ export const ArrivalPrepStep = ({
     {
       label: "Trust Mode",
       icon: Shield,
-      items: [trustLabels[trustLevel] || trustLevel],
+      items: [
+        trustCalibrationLevel && calibrationLabels[trustCalibrationLevel]
+          ? calibrationLabels[trustCalibrationLevel]
+          : trustLabels[trustLevel] || trustLevel
+      ],
     },
     {
       label: "Active Domains",
