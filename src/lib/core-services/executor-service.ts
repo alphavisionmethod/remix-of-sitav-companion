@@ -67,28 +67,36 @@ export class ExecutorService {
   async execute(envelope: ExecutionEnvelope): Promise<ExecutionEnvelope> {
     const lineage = getActionLineageService();
     const eventBus = getEventBus();
+    const now = new Date().toISOString();
+    const domainRaw = envelope.capabilityId.split(".")[0] || "system";
+
+    // Helper to create transition objects matching ActionStateTransition contract
+    const mkTransition = (from: string, to: string, reason: string) => ({
+      from: from as any,
+      to: to as any,
+      triggeredBy: "executor-service",
+      timestamp: new Date().toISOString(),
+      reason,
+      confidence: 1.0,
+    });
 
     // Create action lineage record at start of execution
     const actionRecord = {
       id: envelope.id,
       workflowId: envelope.correlationId,
-      domain: envelope.capabilityId.split(".")[0] || "general",
+      domain: domainRaw as any,
       currentState: "proposed" as const,
-      stateHistory: [{
-        from: "proposed" as const,
-        to: "proposed" as const,
-        timestamp: Date.now(),
-        actor: "executor-service",
-        reason: "Execution initiated",
-      }],
-      assignedAdvisor: null,
-      entityScope: envelope.payload,
+      stateHistory: [mkTransition("proposed", "proposed", "Execution initiated")],
+      assignedAdvisor: "executor-service",
+      entityScope: { ownerId: "", visibility: "private" as const },
       rollbackEligible: envelope.mode !== "simulation",
       replayable: !!envelope.idempotencyKey,
       blockingReasons: [] as string[],
       dependsOn: [] as string[],
       confidenceScore: 1.0,
       proofIds: [] as string[],
+      createdAt: now,
+      updatedAt: now,
     };
 
     lineage.initiateAction(actionRecord, {
@@ -111,10 +119,9 @@ export class ExecutorService {
           code: "CIRCUIT_OPEN",
           message: `Circuit breaker open for ${envelope.capabilityId}. Retry after cooldown.`,
         });
-        lineage.transitionAction(envelope.id, "blocked", {
-          from: "proposed", to: "blocked", timestamp: Date.now(),
-          actor: "executor-service", reason: "Circuit breaker open",
-        }).catch(() => {});
+        lineage.transitionAction(envelope.id, "escalated",
+          mkTransition("proposed", "escalated", "Circuit breaker open")
+        ).catch(() => {});
         return failed;
       }
       cb.state = "half-open";
@@ -127,10 +134,9 @@ export class ExecutorService {
         message: "Plan-only, no execution performed",
         payload: envelope.payload,
       });
-      lineage.transitionAction(envelope.id, "simulated", {
-        from: "proposed", to: "simulated", timestamp: Date.now(),
-        actor: "executor-service", reason: "Draft mode — no execution",
-      }).catch(() => {});
+      lineage.transitionAction(envelope.id, "simulated",
+        mkTransition("proposed", "simulated", "Draft mode — no execution")
+      ).catch(() => {});
       return result;
     }
 
@@ -141,10 +147,9 @@ export class ExecutorService {
         message: "Dry-run completed, no side effects",
         simulatedResult: { wouldExecute: envelope.capabilityId, payload: envelope.payload },
       });
-      lineage.transitionAction(envelope.id, "simulated", {
-        from: "proposed", to: "simulated", timestamp: Date.now(),
-        actor: "executor-service", reason: "Simulation completed",
-      }).catch(() => {});
+      lineage.transitionAction(envelope.id, "simulated",
+        mkTransition("proposed", "simulated", "Simulation completed")
+      ).catch(() => {});
       return result;
     }
 
@@ -155,18 +160,16 @@ export class ExecutorService {
         code: "NO_HANDLER",
         message: `No handler registered for capability: ${envelope.capabilityId}`,
       });
-      lineage.transitionAction(envelope.id, "blocked", {
-        from: "proposed", to: "blocked", timestamp: Date.now(),
-        actor: "executor-service", reason: "No handler registered",
-      }).catch(() => {});
+      lineage.transitionAction(envelope.id, "failed",
+        mkTransition("proposed", "failed", "No handler registered")
+      ).catch(() => {});
       return failed;
     }
 
     // Transition to executing
-    lineage.transitionAction(envelope.id, "executing", {
-      from: "proposed", to: "executing", timestamp: Date.now(),
-      actor: "executor-service", reason: "Handler found, executing",
-    }).catch(() => {});
+    lineage.transitionAction(envelope.id, "executing",
+      mkTransition("proposed", "executing", "Handler found, executing")
+    ).catch(() => {});
 
     const start = performance.now();
     envelope.status = "executing";
@@ -182,12 +185,10 @@ export class ExecutorService {
           message: "Capability handler returned failure",
           handlerResult: result.result,
         });
-        lineage.transitionAction(envelope.id, "failed", {
-          from: "executing", to: "failed", timestamp: Date.now(),
-          actor: "executor-service", reason: "Handler returned failure",
-        }).catch(() => {});
+        lineage.transitionAction(envelope.id, "failed",
+          mkTransition("executing", "failed", "Handler returned failure")
+        ).catch(() => {});
 
-        // Emit failure event
         eventBus.publish("execution.failed.v1", {
           envelopeId: envelope.id,
           capabilityId: envelope.capabilityId,
@@ -195,7 +196,7 @@ export class ExecutorService {
         }, {
           source: "executor-service",
           correlationId: envelope.correlationId,
-          domain: actionRecord.domain,
+          domain: domainRaw,
         }).catch(() => {});
 
         return failed;
@@ -214,11 +215,10 @@ export class ExecutorService {
         completed.result = { ...completed.result, shadowMode: true, persisted: false };
       }
 
-      // Transition to executed + emit event
-      lineage.transitionAction(envelope.id, "executed", {
-        from: "executing", to: "executed", timestamp: Date.now(),
-        actor: "executor-service", reason: `Completed in ${durationMs}ms`,
-      }).catch(() => {});
+      // Transition to completed + emit event
+      lineage.transitionAction(envelope.id, "completed",
+        mkTransition("executing", "completed", `Completed in ${durationMs}ms`)
+      ).catch(() => {});
 
       eventBus.publish("execution.completed.v1", {
         envelopeId: envelope.id,
@@ -228,7 +228,7 @@ export class ExecutorService {
       }, {
         source: "executor-service",
         correlationId: envelope.correlationId,
-        domain: actionRecord.domain,
+        domain: domainRaw,
       }).catch(() => {});
 
       return completed;
@@ -238,10 +238,9 @@ export class ExecutorService {
         code: "HANDLER_ERROR",
         message: error instanceof Error ? error.message : "Unknown execution error",
       });
-      lineage.transitionAction(envelope.id, "failed", {
-        from: "executing", to: "failed", timestamp: Date.now(),
-        actor: "executor-service", reason: error instanceof Error ? error.message : "Unknown error",
-      }).catch(() => {});
+      lineage.transitionAction(envelope.id, "failed",
+        mkTransition("executing", "failed", error instanceof Error ? error.message : "Unknown error")
+      ).catch(() => {});
       return failed;
     }
   }
