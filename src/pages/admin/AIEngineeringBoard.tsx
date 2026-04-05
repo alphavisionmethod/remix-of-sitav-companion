@@ -2,14 +2,17 @@ import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import {
   Brain, AlertTriangle, CheckCircle2, Shield, Zap, Clock, TrendingUp,
   Users, Wrench, Eye, RotateCcw, Sparkles, Activity, ArrowUpRight,
   Bug, Gauge, Rocket, ShieldCheck, FileCheck, Target, Palette,
-  GitBranch, Network, History, MessageSquare, BookOpen, FileText, XCircle
+  GitBranch, Network, History, MessageSquare, BookOpen, FileText, XCircle,
+  Plug, ArrowDown, ArrowUp, Minus, Star
 } from "lucide-react";
+import { generateChiefSynthesis } from "@/lib/ai-engineering";
+import { getIntegrationHealthSummary, getIntegrationsByCategory } from "@/lib/ai-engineering/platform-integration";
 
 // ═══════════════════════════════════════════════════════════════
 // DATA — Engineering Overview Band
