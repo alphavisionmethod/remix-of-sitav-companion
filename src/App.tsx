@@ -218,6 +218,22 @@ const PlatformMaturityDashboard = lazy(() => import("./pages/admin/PlatformMatur
 const BuilderKnowledgeBase = lazy(() => import("./pages/admin/BuilderKnowledgeBase"));
 const DeliveryWavePlanner = lazy(() => import("./pages/admin/DeliveryWavePlanner"));
 
+// FIP — Feature Integration Protocol Enforcement System
+const FIPIntakeDesk = lazy(() => import("./pages/admin/fip/FIPIntakeDesk"));
+const FIPSpecStudio = lazy(() => import("./pages/admin/fip/FIPSpecStudio"));
+const FIPOwnerBoundary = lazy(() => import("./pages/admin/fip/FIPOwnerBoundary"));
+const FIPCapabilityRegistry = lazy(() => import("./pages/admin/fip/FIPCapabilityRegistry"));
+const FIPComplianceBoard = lazy(() => import("./pages/admin/fip/FIPComplianceBoard"));
+const FIPExecutionExplorer = lazy(() => import("./pages/admin/fip/FIPExecutionExplorer"));
+const FIPPolicyTrustBoard = lazy(() => import("./pages/admin/fip/FIPPolicyTrustBoard"));
+const FIPMemoryGraphStudio = lazy(() => import("./pages/admin/fip/FIPMemoryGraphStudio"));
+const FIPObservabilityCenter = lazy(() => import("./pages/admin/fip/FIPObservabilityCenter"));
+const FIPRolloutPlanner = lazy(() => import("./pages/admin/fip/FIPRolloutPlanner"));
+const FIPGeneratedTruthBoard = lazy(() => import("./pages/admin/fip/FIPGeneratedTruthBoard"));
+const FIPReadinessGateReview = lazy(() => import("./pages/admin/fip/FIPReadinessGateReview"));
+const FIPDeprecationManager = lazy(() => import("./pages/admin/fip/FIPDeprecationManager"));
+const FIPBuilderConsole = lazy(() => import("./pages/admin/fip/FIPBuilderConsole"));
+
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
