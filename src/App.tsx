@@ -543,9 +543,19 @@ const App = () => (
                     {/* Global Search */}
                     <Route path="/search" element={<SearchPage />} />
 
-                    {/* Admin — Generated Truth */}
+                    {/* Admin */}
                     <Route path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />
                     <Route path="/admin/fleet-health" element={<FleetHealthPage />} />
+                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin/team" element={<TeamManagement />} />
+
+                    {/* OS Apps */}
+                    <Route path="/apps/email" element={<EmailApp />} />
+                    <Route path="/apps/messenger" element={<MessengerApp />} />
+                    <Route path="/apps/vault" element={<VaultApp />} />
+                    <Route path="/apps/health" element={<HealthApp />} />
+                    <Route path="/apps/gallery" element={<GalleryApp />} />
+                    <Route path="/apps/weather-news" element={<WeatherNewsApp />} />
 
                     {/* New Workspaces */}
                     <Route path="/calendar" element={<CalendarWorkspace />} />
