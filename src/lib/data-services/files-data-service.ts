@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { MOCK_FILES_OVERVIEW, MOCK_FILES_PROCESSING, MOCK_FILES_SEARCH_INDEX } from "@/lib/mock-data/files";
-import type { IndexableItem } from "@/lib/core-services/search-fabric";
+import type { IndexableItem, SearchDomain } from "@/lib/core-services/search-fabric";
 
 async function getUser() {
   const { data: { user } } = await supabase.auth.getUser();
