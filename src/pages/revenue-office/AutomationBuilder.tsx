@@ -220,7 +220,7 @@ export default function AutomationBuilder() {
                 </div>
                 <div className="p-2 rounded bg-background/50 border border-border/30">
                   <p className="text-[10px] text-muted-foreground font-medium mb-1">Revenue Ops Advisor</p>
-                  <p className="text-xs text-foreground">The approval step for >$2K deals is smart. Consider also adding an approval for leads with existing open quotes to avoid conflicting messages.</p>
+                  <p className="text-xs text-foreground"><p className="text-xs text-foreground">{"The approval step for >$2K deals is smart. Consider also adding an approval for leads with existing open quotes to avoid conflicting messages."}</p> Consider also adding an approval for leads with existing open quotes to avoid conflicting messages.</p>
                 </div>
                 <div className="p-2 rounded bg-background/50 border border-border/30">
                   <p className="text-[10px] text-muted-foreground font-medium mb-1">Campaign Advisor</p>
