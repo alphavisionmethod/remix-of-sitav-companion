@@ -263,6 +263,14 @@ const PresenceAnalytics = lazy(() => import("./pages/digital-presence/PresenceAn
 const DomainPublishManager = lazy(() => import("./pages/digital-presence/DomainPublishManager"));
 const DPOOnboarding = lazy(() => import("./pages/digital-presence/DPOOnboarding"));
 
+// ── ATLAS Gap Closure ──
+const ProjectionControlCenter = lazy(() => import("./pages/atlas/ProjectionControlCenter"));
+const ProofCoverageBoard = lazy(() => import("./pages/atlas/ProofCoverageBoard"));
+const DeploymentTruthCenter = lazy(() => import("./pages/atlas/DeploymentTruthCenter"));
+const OperationsCommandCenter = lazy(() => import("./pages/atlas/OperationsCommandCenter"));
+const ConnectorControlCenter = lazy(() => import("./pages/atlas/ConnectorControlCenter"));
+const ConciergeCommandCenter = lazy(() => import("./pages/atlas/ConciergeCommandCenter"));
+
 const queryClient = createQueryClient();
 
 // Premium loading skeleton — uses PageSkeleton for content-aware loading
