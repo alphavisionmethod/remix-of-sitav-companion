@@ -130,6 +130,67 @@ const LifeDashboard = () => {
         />
       </motion.div>
 
+      {/* Life Score + Opportunity Radar + Simulator Link */}
+      <motion.div variants={fadeUp} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Compound Life Score */}
+        <div className="rounded-xl border border-sita-purple/20 bg-gradient-to-br from-sita-purple/5 to-card p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="w-4 h-4 text-sita-purple" />
+            <h3 className="text-sm font-semibold text-foreground">Life Score</h3>
+          </div>
+          <div className="text-center py-2">
+            <p className="text-4xl font-bold text-sita-purple">742</p>
+            <p className="text-[10px] text-muted-foreground mt-1">of 1,000 · <span className="text-trust-safe">↑ 18 this month</span></p>
+          </div>
+          <div className="grid grid-cols-4 gap-1 mt-3">
+            {['Financial', 'Business', 'Health', 'Goals'].map((d, i) => (
+              <div key={d} className="text-center">
+                <div className="h-1 rounded-full bg-secondary overflow-hidden mb-1">
+                  <div className="h-full rounded-full bg-sita-purple" style={{ width: `${[78, 65, 82, 71][i]}%` }} />
+                </div>
+                <span className="text-[8px] text-muted-foreground">{d}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Opportunity Radar */}
+        <div className="rounded-xl border border-sita-gold/20 bg-gradient-to-br from-sita-gold/5 to-card p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <Radar className="w-4 h-4 text-sita-gold" />
+            <h3 className="text-sm font-semibold text-foreground">Opportunities</h3>
+          </div>
+          <div className="space-y-2">
+            {[
+              { label: 'Debt restructure', value: '$8,400/yr', type: 'savings' },
+              { label: 'Skill match found', value: '$5K saved', type: 'synergy' },
+              { label: 'Contract renewal', value: '23 days', type: 'timing' },
+            ].map((opp, i) => (
+              <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-secondary/30">
+                <span className="text-[11px] text-foreground">{opp.label}</span>
+                <span className="text-[10px] font-semibold text-sita-gold">{opp.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Life Simulator CTA */}
+        <Link to="/life-simulator" className="block">
+          <div className="rounded-xl border border-accent/20 bg-gradient-to-br from-accent/5 to-card p-5 h-full flex flex-col justify-between hover:border-accent/40 transition-colors cursor-pointer">
+            <div className="flex items-center gap-2 mb-3">
+              <FileSearch className="w-4 h-4 text-accent" />
+              <h3 className="text-sm font-semibold text-foreground">Life Simulator</h3>
+            </div>
+            <p className="text-[11px] text-muted-foreground mb-3">
+              What happens if you lose your job? Have a baby? Market crashes? Simulate cross-domain impacts.
+            </p>
+            <div className="flex items-center gap-1 text-xs font-medium text-accent">
+              Run simulation <ArrowRight className="w-3.5 h-3.5" />
+            </div>
+          </div>
+        </Link>
+      </motion.div>
+
       {/* Life Health Radar + Cross-Domain Insights */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <motion.div variants={fadeUp} className="lg:col-span-1 rounded-xl border border-border bg-card p-5">
