@@ -345,13 +345,22 @@ const App = () => (
                     <Route path="/store/installed" element={<PackInstalledPage />} />
                     <Route path="/store/analytics" element={<StoreAnalyticsPage />} />
                     <Route path="/store/packs/:packId" element={<PackDetailPage />} />
-                    <Route path="/store/apps/:appId" element={<AppDetailPage />} />
+                    <Route path="/store/apps/:appId" element={<OldAppDetailPage />} />
                     <Route path="/store/founders" element={<StoreCategoryPage />} />
                     <Route path="/store/families" element={<StoreCategoryPage />} />
                     <Route path="/store/finance" element={<StoreCategoryPage />} />
                     <Route path="/store/connectors" element={<StoreCategoryPage />} />
                     <Route path="/store/surfaces" element={<StoreCategoryPage />} />
                     <Route path="/store/:segment" element={<StoreCategoryPage />} />
+
+                    {/* App Platform */}
+                    <Route path="/app-store" element={<AppStorePage />} />
+                    <Route path="/app-store/app/:appId" element={<AppPlatformDetailPage />} />
+                    <Route path="/app-store/bundle/:bundleId" element={<BundleDetailPage />} />
+                    <Route path="/app-store/library" element={<AppLibraryPage />} />
+                    <Route path="/app-store/updates" element={<AppUpdatesPage />} />
+                    <Route path="/app-store/permissions" element={<AppPermissionsCenterPage />} />
+                    <Route path="/app-store/associations" element={<AppAssociationsPage />} />
 
                     {/* Proof Center — explicit sub-routes */}
                     <Route path="/proof" element={<ProofCenter />} />
