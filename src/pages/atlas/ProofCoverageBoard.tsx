@@ -101,6 +101,7 @@ export default function ProofCoverageBoard() {
             { value: "matrix", label: "Coverage Matrix", icon: Shield },
             { value: "chain", label: "Chain Explorer", icon: GitBranch },
             { value: "replay", label: "Replay Verification", icon: RotateCcw },
+            { value: "rollback", label: "Rollback Verification", icon: Zap },
             { value: "breaks", label: "Chain Breaks", icon: AlertTriangle },
           ].map(t => (
             <TabsTrigger key={t.value} value={t.value} className="text-[10px] h-7 px-2.5 gap-1"><t.icon className="h-3 w-3" />{t.label}</TabsTrigger>
