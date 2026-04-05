@@ -4,12 +4,12 @@
 // warn → throttle → pause → halt
 // ═══════════════════════════════════════════════════════════════
 
-export type CostBreakerState = "closed" | "warn" | "throttle" | "pause" | "halt";
-export type CostBudgetPeriod = "hourly" | "daily" | "monthly";
+export type CostCostBreakerState = "closed" | "warn" | "throttle" | "pause" | "halt";
+export type CostCostBudgetPeriod = "hourly" | "daily" | "monthly";
 
 export interface BudgetConfig {
   agentId: string;
-  period: BudgetPeriod;
+  period: CostBudgetPeriod;
   budgetCents: number;
   warnThreshold: number;       // 0-1, e.g. 0.7 = 70%
   throttleThreshold: number;   // 0-1, e.g. 0.85
@@ -20,12 +20,12 @@ export interface BudgetConfig {
 
 export interface BudgetState {
   agentId: string;
-  period: BudgetPeriod;
+  period: CostBudgetPeriod;
   periodStart: string;
   spentCents: number;
   budgetCents: number;
   utilizationPercent: number;
-  breakerState: BreakerState;
+  breakerState: CostBreakerState;
   throttleRate: number;        // 0-1, 1 = no throttle
   modelOverride?: string;      // downgraded model
   invocationCount: number;
@@ -50,7 +50,7 @@ export interface FleetBudgetSummary {
   totalSpentCents: number;
   utilizationPercent: number;
   agentCount: number;
-  breakerStates: Record<BreakerState, number>;
+  breakerStates: Record<CostBreakerState, number>;
   violations24h: number;
   projectedOverrunCents: number;
 }
@@ -98,7 +98,7 @@ export class CostCircuitBreakerService {
 
   // ── Cost Recording ────────────────────────────────────────────
 
-  recordCost(agentId: string, costCents: number): BreakerState {
+  recordCost(agentId: string, costCents: number): CostBreakerState {
     const config = this.configs.get(agentId);
     const state = this.states.get(agentId);
     if (!config || !state) {
@@ -209,7 +209,7 @@ export class CostCircuitBreakerService {
 
   getFleetSummary(): FleetBudgetSummary {
     const states = Array.from(this.states.values());
-    const breakerCounts: Record<BreakerState, number> = { closed: 0, warn: 0, throttle: 0, pause: 0, halt: 0 };
+    const breakerCounts: Record<CostBreakerState, number> = { closed: 0, warn: 0, throttle: 0, pause: 0, halt: 0 };
     let totalSpent = 0;
     let totalBudget = 0;
 
