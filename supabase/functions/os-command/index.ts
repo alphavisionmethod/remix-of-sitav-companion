@@ -27,7 +27,7 @@ serve(async (req) => {
       // Store command for device to poll
       await adminClient.from("agent_signals").insert({
         agent_id: device_id,
-        user_id: user.id,
+        user_id: auth.user.id,
         signal_type: `os_command:${command}`,
         payload: { command, params: params || {}, issued_by: user.id, issued_at: new Date().toISOString() },
         priority: command === "update-now" ? "high" : "normal",
