@@ -55,6 +55,11 @@ export const useCreateAllocation = makeMutation('ai_portfolio_allocations', 'por
 
 export const useComplianceViolations = makeHook('ai_compliance_violations', 'violations');
 
+export const useEfficiencyScores = makeHook('ai_efficiency_scores', 'efficiency');
+export const useSelfHealingRules = makeHook('ai_self_healing_rules', 'healing');
+export const useCreateSelfHealingRule = makeMutation('ai_self_healing_rules', 'healing', 'Self-healing rule created');
+export const useCostLedger = makeHook('ai_cost_ledger', 'cost-ledger');
+
 // ─── Aggregated Stats ───
 export const useGatewayStats = () => useQuery({
   queryKey: ['sag', 'stats'],
