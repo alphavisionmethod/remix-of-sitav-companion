@@ -228,6 +228,7 @@ const App = () => (
                     <Route path="/" element={<DailyPulse />} />
                     <Route path="/life" element={<LifeDashboard />} />
                     <Route path="/life-simulator" element={<LifeSimulator />} />
+                    <Route path="/my-activity" element={<MyActivity />} />
 
                     {/* Business — parent container handles sub-routing via tabs */}
                     <Route path="/business" element={<BusinessCenter />} />
