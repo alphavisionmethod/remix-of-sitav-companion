@@ -1,5 +1,5 @@
 import React from "react";
-import AdminPageLayout from "@/components/admin/AdminPageLayout";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -34,7 +34,7 @@ export default function CN03AccountLinkageBoard() {
   });
 
   return (
-    <AdminPageLayout title="Account Linkage Board" description="User-linked connector accounts and their connection states.">
+    <div className="space-y-6 p-6"  >
       <Card className="bg-card border-border">
         <CardHeader><CardTitle>Linked Accounts</CardTitle></CardHeader>
         <CardContent>
@@ -64,6 +64,6 @@ export default function CN03AccountLinkageBoard() {
           )}
         </CardContent>
       </Card>
-    </AdminPageLayout>
+    </div>
   );
 }

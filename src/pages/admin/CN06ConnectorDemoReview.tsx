@@ -1,5 +1,5 @@
 import React from "react";
-import AdminPageLayout from "@/components/admin/AdminPageLayout";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,7 @@ export default function CN06ConnectorDemoReview() {
   });
 
   return (
-    <AdminPageLayout title="Connector Demo Review" description="Demo-mode connector bindings, synthetic data, and scenario management.">
+    <div className="space-y-6 p-6"  >
       <div className="space-y-6">
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={() => activateMutation.mutate("demo_google_drive")} disabled={activateMutation.isPending}>
@@ -102,6 +102,6 @@ export default function CN06ConnectorDemoReview() {
           ))
         )}
       </div>
-    </AdminPageLayout>
+    </div>
   );
 }

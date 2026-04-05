@@ -1,5 +1,5 @@
 import React from "react";
-import AdminPageLayout from "@/components/admin/AdminPageLayout";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
@@ -35,7 +35,7 @@ export default function CN07ConnectorLaunchGate() {
   const totalConnectors = readiness.length;
 
   return (
-    <AdminPageLayout title="Connector Launch Gate" description="Evidence-based launch readiness for every connector. Blocks over-claims.">
+    <div className="space-y-6 p-6"  >
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="bg-card border-border"><CardContent className="pt-4">
@@ -118,6 +118,6 @@ export default function CN07ConnectorLaunchGate() {
           </Card>
         )}
       </div>
-    </AdminPageLayout>
+    </div>
   );
 }

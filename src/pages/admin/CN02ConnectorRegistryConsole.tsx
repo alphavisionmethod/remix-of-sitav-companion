@@ -1,5 +1,5 @@
 import React from "react";
-import AdminPageLayout from "@/components/admin/AdminPageLayout";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
@@ -19,7 +19,7 @@ export default function CN02ConnectorRegistryConsole() {
   });
 
   return (
-    <AdminPageLayout title="Connector Registry Console" description="All registered connector types, their capabilities, and policy profiles.">
+    <div className="space-y-6 p-6"  >
       <Card className="bg-card border-border">
         <CardHeader><CardTitle>Connector Types</CardTitle></CardHeader>
         <CardContent>
@@ -59,6 +59,6 @@ export default function CN02ConnectorRegistryConsole() {
           </Table>
         </CardContent>
       </Card>
-    </AdminPageLayout>
+    </div>
   );
 }

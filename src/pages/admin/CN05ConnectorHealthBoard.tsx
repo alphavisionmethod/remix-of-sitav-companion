@@ -1,5 +1,5 @@
 import React from "react";
-import AdminPageLayout from "@/components/admin/AdminPageLayout";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -42,7 +42,7 @@ export default function CN05ConnectorHealthBoard() {
   }, {});
 
   return (
-    <AdminPageLayout title="Connector Health Board" description="Degradation, token expiry, consecutive failures, and health trends.">
+    <div className="space-y-6 p-6"  >
       <div className="space-y-6">
         <Button onClick={() => healthCheckMutation.mutate()} disabled={healthCheckMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${healthCheckMutation.isPending ? "animate-spin" : ""}`} /> Run Health Check
@@ -78,6 +78,6 @@ export default function CN05ConnectorHealthBoard() {
           <Card className="bg-card border-border"><CardContent className="pt-6 text-center text-muted-foreground">No health records. Run a health check to generate data.</CardContent></Card>
         )}
       </div>
-    </AdminPageLayout>
+    </div>
   );
 }

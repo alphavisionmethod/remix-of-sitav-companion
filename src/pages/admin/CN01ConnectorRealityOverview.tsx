@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AdminPageLayout from "@/components/admin/AdminPageLayout";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -72,7 +72,7 @@ export default function CN01ConnectorRealityOverview() {
   const connectedAccounts = accounts.filter((a: any) => a.status === "connected" || a.status === "demo_simulated" || a.status === "internal_test");
 
   return (
-    <AdminPageLayout
+    <div className="space-y-6 p-6"
       title="Connector Reality Overview"
       description="Real connectors, demo connectors, internal test connectors, linked accounts, sync health, and launch honesty."
     >
@@ -161,6 +161,6 @@ export default function CN01ConnectorRealityOverview() {
           </Card>
         )}
       </div>
-    </AdminPageLayout>
+    </div>
   );
 }

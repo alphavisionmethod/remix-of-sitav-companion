@@ -1,5 +1,5 @@
 import React from "react";
-import AdminPageLayout from "@/components/admin/AdminPageLayout";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -45,7 +45,7 @@ export default function CN04SyncTruthCenter() {
   const totalRecords = syncRuns.reduce((acc: number, s: any) => acc + (s.records_imported || 0), 0);
 
   return (
-    <AdminPageLayout title="Sync Truth Center" description="Actual sync runs, outcomes, records, and performance.">
+    <div className="space-y-6 p-6"  >
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-sm text-muted-foreground">Total Syncs</p><p className="text-2xl font-bold">{syncRuns.length}</p></CardContent></Card>
@@ -100,6 +100,6 @@ export default function CN04SyncTruthCenter() {
           </CardContent>
         </Card>
       </div>
-    </AdminPageLayout>
+    </div>
   );
 }
