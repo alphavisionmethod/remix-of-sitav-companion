@@ -133,7 +133,24 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
       </div>
 
       {/* Actions */}
-      <ProofActionsBar item={item} />
+      <div className="flex items-center gap-2">
+        <SitaButton variant="secondary" size="sm" onClick={() => {
+          if (item.correlation_id) {
+            const blob = new Blob([JSON.stringify(item, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `proof-${(item.id || "unknown").slice(0, 8)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }
+        }}>
+          <Download className="h-3 w-3 mr-1" /> Export
+        </SitaButton>
+        <SitaButton variant="secondary" size="sm">
+          <Link2 className="h-3 w-3 mr-1" /> Chain
+        </SitaButton>
+      </div>
     </motion.div>
   );
 };
