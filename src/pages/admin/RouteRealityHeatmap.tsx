@@ -16,10 +16,12 @@ export default function RouteRealityHeatmap() {
   const { data: classifications = [] } = useRealityClassifications();
 
   const domainGroups = useMemo(() => {
-    const map = new Map<string, typeof classifications>();
+    const map: Record<string, typeof classifications> = {};
     classifications.forEach(c => {
-      const list = map.get(c.domain) ?? [];
-      list.push(c);
+      if (!map[c.domain]) map[c.domain] = [];
+      map[c.domain].push(c);
+    });
+    return Object.entries(map).sort((a, b) => a[0].localeCompare(b[0]));
       map.set(c.domain, list);
     });
     return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
