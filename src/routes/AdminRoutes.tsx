@@ -23,6 +23,20 @@ const ZeroWastePromptView = lazy(() => import("@/pages/admin/intelligence/ZeroWa
 const SmartDigestCenter = lazy(() => import("@/pages/admin/intelligence/SmartDigestCenter"));
 const CrossTenantGovernance = lazy(() => import("@/pages/admin/intelligence/CrossTenantGovernance"));
 
+// Part 3: Strategic Intelligence Screens
+const IntelligenceCapitalDashboard = lazy(() => import("@/pages/admin/strategic/IntelligenceCapitalDashboard"));
+const CostToConfidenceDashboard = lazy(() => import("@/pages/admin/strategic/CostToConfidenceDashboard"));
+const QualityFloorDashboard = lazy(() => import("@/pages/admin/strategic/QualityFloorDashboard"));
+const IntelligenceInsuranceDashboard = lazy(() => import("@/pages/admin/strategic/IntelligenceInsuranceDashboard"));
+const IntelligenceMarketDashboard = lazy(() => import("@/pages/admin/strategic/IntelligenceMarketDashboard"));
+const TimeToTruthDashboard = lazy(() => import("@/pages/admin/strategic/TimeToTruthDashboard"));
+const ReasoningReplayDashboard = lazy(() => import("@/pages/admin/strategic/ReasoningReplayDashboard"));
+const DecayMonitorDashboard = lazy(() => import("@/pages/admin/strategic/DecayMonitorDashboard"));
+const PortfolioAllocationDashboard = lazy(() => import("@/pages/admin/strategic/PortfolioAllocationDashboard"));
+const BenchmarkLabDashboard = lazy(() => import("@/pages/admin/strategic/BenchmarkLabDashboard"));
+const ValueRiskDashboard = lazy(() => import("@/pages/admin/strategic/ValueRiskDashboard"));
+const OperatorTasteDashboard = lazy(() => import("@/pages/admin/strategic/OperatorTasteDashboard"));
+
 export const AdminRoutes = () => (
   <>
     <Route path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />
@@ -46,5 +60,19 @@ export const AdminRoutes = () => (
     <Route path="/admin/intelligence/prompts" element={<ZeroWastePromptView />} />
     <Route path="/admin/intelligence/digests" element={<SmartDigestCenter />} />
     <Route path="/admin/intelligence/cross-tenant" element={<CrossTenantGovernance />} />
+
+    {/* Part 3: Strategic Intelligence */}
+    <Route path="/admin/strategic/capital" element={<IntelligenceCapitalDashboard />} />
+    <Route path="/admin/strategic/cost-confidence" element={<CostToConfidenceDashboard />} />
+    <Route path="/admin/strategic/quality-floor" element={<QualityFloorDashboard />} />
+    <Route path="/admin/strategic/insurance" element={<IntelligenceInsuranceDashboard />} />
+    <Route path="/admin/strategic/market" element={<IntelligenceMarketDashboard />} />
+    <Route path="/admin/strategic/time-to-truth" element={<TimeToTruthDashboard />} />
+    <Route path="/admin/strategic/reasoning-replay" element={<ReasoningReplayDashboard />} />
+    <Route path="/admin/strategic/decay" element={<DecayMonitorDashboard />} />
+    <Route path="/admin/strategic/portfolio" element={<PortfolioAllocationDashboard />} />
+    <Route path="/admin/strategic/benchmark" element={<BenchmarkLabDashboard />} />
+    <Route path="/admin/strategic/value-risk" element={<ValueRiskDashboard />} />
+    <Route path="/admin/strategic/operator-taste" element={<OperatorTasteDashboard />} />
   </>
 );
