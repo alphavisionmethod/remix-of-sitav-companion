@@ -558,9 +558,11 @@ const RenderSection = ({ section }: { section: BoardroomContentSection }) => {
 // ── Packet View with Advisor Enhancements ─────────────────────
 
 const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; perspective?: PerspectiveLevel }) => {
-  const { packet, regenerate } = useBoardroomPacket(type);
+  const { packet, isLoading, regenerate } = useBoardroomPacket(type);
   const config = getPerspectiveConfig(perspective);
   const { pendingApprovals, activeGoals, overdueTasks, recentProofs } = useBoardroomData();
+
+  if (isLoading || !packet) return <div className="p-8 text-center text-muted-foreground">Generating boardroom packet…</div>;
 
   const filteredSections = packet.sections.filter(section => {
     if (section.type === "table" && !config.showDetailTables) return false;
@@ -878,14 +880,14 @@ const TAB_ICONS: Record<BoardroomType, React.ReactNode> = {
 type PresentationMode = "executive" | "analyst" | "owner";
 
 const FullscreenPresentation = ({ type, onExit }: { type: BoardroomType; onExit: () => void }) => {
-  const { packet } = useBoardroomPacket(type);
+  const { packet, isLoading } = useBoardroomPacket(type);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [autoAdvance, setAutoAdvance] = useState(true);
   const [elapsed, setElapsed] = useState(0);
   const [presMode, setPresMode] = useState<PresentationMode>("executive");
   const SLIDE_DURATION = 30;
 
-  const slides = packet.sections;
+  const slides = packet?.sections ?? [];
   const totalSlides = slides.length;
 
   useEffect(() => {
@@ -910,6 +912,12 @@ const FullscreenPresentation = ({ type, onExit }: { type: BoardroomType; onExit:
   }, [totalSlides, onExit]);
 
   const meta = META[type];
+
+  if (isLoading || !packet) return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-[60] flex items-center justify-center bg-background">
+      <p className="text-muted-foreground">Generating presentation…</p>
+    </motion.div>
+  );
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[60] flex flex-col bg-background">
