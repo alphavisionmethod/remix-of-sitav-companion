@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,10 +12,61 @@ import {
   CheckCircle, AlertTriangle, Clock, RefreshCw, Cpu, MemoryStick,
   Lock, Eye, Zap, Archive
 } from "lucide-react";
-import { SystemUpdateService, type UpdateDevice, type UpdateRelease, type UpdateLogEntry } from "@/lib/services/system-updates";
+import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { format } from "date-fns";
+import { toast } from "sonner";
 
 const SystemManagement = () => {
+  const { isAdmin, loading: adminLoading } = useRequireAdmin();
+  const { session } = useAuth();
+  const [tab, setTab] = useState("devices");
+  const queryClient = useQueryClient();
+
+  const { data: devices = [], isLoading: devicesLoading } = useQuery({
+    queryKey: ["admin-devices"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("device_statuses").select("*").order("last_seen", { ascending: false });
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: isAdmin,
+  });
+
+  const { data: signals = [] } = useQuery({
+    queryKey: ["admin-signals"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("agent_signals")
+        .select("*")
+        .like("signal_type", "os_command:%")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: isAdmin,
+  });
+
+  const sendCommand = useMutation({
+    mutationFn: async ({ deviceId, command }: { deviceId: string; command: string }) => {
+      const { data, error } = await supabase.functions.invoke("os-command", {
+        body: { device_id: deviceId, command },
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      toast.success("Command queued successfully");
+      queryClient.invalidateQueries({ queryKey: ["admin-signals"] });
+    },
+    onError: (e) => toast.error(e.message),
+  });
+
+  if (adminLoading) return <PageSkeleton rows={3} />;
+  if (!isAdmin) return null;
   const [tab, setTab] = useState("updates");
   const [devices, setDevices] = useState<UpdateDevice[]>([]);
   const [latestUpdate, setLatestUpdate] = useState<UpdateRelease | null>(null);
