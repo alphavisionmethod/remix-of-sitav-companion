@@ -591,6 +591,20 @@ const App = () => (
                     <Route path="/revenue-office/calls" element={<CallDesk />} />
                     <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
 
+                    {/* SAG — Sovereign AI Gateway */}
+                    <Route path="/admin/sag/overview" element={<SAGOverview />} />
+                    <Route path="/admin/sag/models" element={<SAGModelRegistry />} />
+                    <Route path="/admin/sag/routing" element={<SAGRoutingPolicy />} />
+                    <Route path="/admin/sag/health" element={<SAGProviderHealth />} />
+                    <Route path="/admin/sag/prompts" element={<SAGPromptRegistry />} />
+                    <Route path="/admin/sag/economics" element={<SAGEconomicsBoard />} />
+                    <Route path="/admin/sag/cost-confidence" element={<SAGCostConfidenceLab />} />
+                    <Route path="/admin/sag/multi-stage" element={<SAGMultiStageExplorer />} />
+                    <Route path="/admin/sag/receipts" element={<SAGReceiptExplorer />} />
+                    <Route path="/admin/sag/fallback" element={<SAGFallbackCenter />} />
+                    <Route path="/admin/sag/builder" element={<SAGBuilderConsole />} />
+                    <Route path="/admin/sag/compliance" element={<SAGComplianceGate />} />
+
 
                     {/* Digital Presence Office */}
                     <Route path="/digital-presence" element={<PresenceGate />} />
