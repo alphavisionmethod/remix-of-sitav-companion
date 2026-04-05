@@ -1038,4 +1038,12 @@ export class ComplianceAuditEngine {
       { id: "a8", timestamp: new Date(now - 7200000).toISOString(), actor: "System", actorType: "system", action: "proof.generated", resource: "Financial proof packet", outcome: "success", metadata: { type: "financial" } },
     ];
   }
+
+  serialize(): Record<string, unknown> {
+    return { proofPackets: this.proofPackets, auditTimeline: this.auditTimeline.slice(-500) };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.proofPackets) this.proofPackets = state.proofPackets as any;
+    if (state.auditTimeline) this.auditTimeline = state.auditTimeline as any;
+  }
 }
