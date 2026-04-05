@@ -15,7 +15,7 @@ import {
   Save, X, PlusCircle, ArrowDown, ArrowUp
 } from "lucide-react";
 import { useSheets } from "@/hooks/use-domain-data";
-import type { MockSheet } from "@/lib/data-services/workspace-data-service";
+import type { MockSheet } from "@/lib/mock-data/workspace";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 

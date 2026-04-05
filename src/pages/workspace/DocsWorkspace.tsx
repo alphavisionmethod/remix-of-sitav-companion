@@ -10,7 +10,7 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDocs } from "@/hooks/use-domain-data";
-import type { MockDoc } from "@/lib/data-services/workspace-data-service";
+import type { MockDoc } from "@/lib/mock-data/workspace";
 import ReactMarkdown from "react-markdown";
 import {
   FileText, Plus, Search, Clock, Users, Shield, Workflow,
