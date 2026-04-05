@@ -1,0 +1,84 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Sovereign AI Gateway Data Hooks
+// ═══════════════════════════════════════════════════════════════
+
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+
+const getUser = async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  return user;
+};
+
+const makeHook = (table: string, key: string) => () => useQuery({
+  queryKey: ['sag', key],
+  queryFn: async () => {
+    const { data, error } = await supabase.from(table as any).select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    return data as any[];
+  }
+});
+
+const makeMutation = (table: string, key: string, successMsg: string) => () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (record: Record<string, any>) => {
+      const user = await getUser();
+      if (!user) throw new Error('Not authenticated');
+      const { data, error } = await supabase.from(table as any).insert({ ...record, user_id: user.id }).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['sag'] }); toast.success(successMsg); },
+    onError: (e: any) => toast.error(e.message),
+  });
+};
+
+export const useModelRegistry = makeHook('ai_model_registry', 'models');
+export const useCreateModel = makeMutation('ai_model_registry', 'models', 'Model registered');
+
+export const usePromptFamilies = makeHook('ai_prompt_families', 'prompts');
+export const useCreatePromptFamily = makeMutation('ai_prompt_families', 'prompts', 'Prompt family created');
+
+export const useRoutingPolicies = makeHook('ai_routing_policies', 'routing');
+export const useCreateRoutingPolicy = makeMutation('ai_routing_policies', 'routing', 'Routing policy created');
+
+export const useTaskRequests = makeHook('ai_task_requests', 'tasks');
+export const useInferenceReceipts = makeHook('ai_inference_receipts', 'receipts');
+
+export const useProviderHealth = makeHook('ai_provider_health', 'health');
+export const useCreateProviderHealth = makeMutation('ai_provider_health', 'health', 'Provider health updated');
+
+export const usePortfolioAllocations = makeHook('ai_portfolio_allocations', 'portfolio');
+export const useCreateAllocation = makeMutation('ai_portfolio_allocations', 'portfolio', 'Allocation created');
+
+export const useComplianceViolations = makeHook('ai_compliance_violations', 'violations');
+
+// ─── Aggregated Stats ───
+export const useGatewayStats = () => useQuery({
+  queryKey: ['sag', 'stats'],
+  queryFn: async () => {
+    const [tasks, receipts, health, portfolio, violations] = await Promise.all([
+      supabase.from('ai_task_requests' as any).select('*').order('created_at', { ascending: false }).limit(500),
+      supabase.from('ai_inference_receipts' as any).select('*').order('created_at', { ascending: false }).limit(500),
+      supabase.from('ai_provider_health' as any).select('*'),
+      supabase.from('ai_portfolio_allocations' as any).select('*'),
+      supabase.from('ai_compliance_violations' as any).select('*').eq('resolved', false),
+    ]);
+    const t = (tasks.data || []) as any[];
+    const r = (receipts.data || []) as any[];
+    const totalCost = t.reduce((s: number, x: any) => s + (x.cost_actual_cents || 0), 0);
+    const cacheHits = t.filter((x: any) => x.cache_hit).length;
+    const fallbacks = t.filter((x: any) => x.fallback_used).length;
+    const providers: Record<string, number> = {};
+    t.forEach((x: any) => { if (x.provider_chosen) providers[x.provider_chosen] = (providers[x.provider_chosen] || 0) + 1; });
+    return {
+      totalRequests: t.length, totalCost, cacheHitRate: t.length ? cacheHits / t.length : 0,
+      fallbackRate: t.length ? fallbacks / t.length : 0, providers,
+      receipts: r.length, healthRecords: (health.data || []).length,
+      allocations: (portfolio.data || []).length, violations: (violations.data || []).length,
+      premiumRate: t.length ? t.filter((x: any) => x.model_chosen?.includes('pro') || x.model_chosen?.includes('premium')).length / t.length : 0,
+    };
+  }
+});

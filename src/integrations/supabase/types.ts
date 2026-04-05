@@ -632,6 +632,63 @@ export type Database = {
           },
         ]
       }
+      ai_compliance_violations: {
+        Row: {
+          blocks_launch: boolean | null
+          capability_id: string | null
+          created_at: string
+          description: string
+          evidence: Json | null
+          feature_id: string | null
+          id: string
+          metadata: Json | null
+          remediation: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          severity: string | null
+          source_file: string | null
+          updated_at: string
+          user_id: string
+          violation_type: string
+        }
+        Insert: {
+          blocks_launch?: boolean | null
+          capability_id?: string | null
+          created_at?: string
+          description: string
+          evidence?: Json | null
+          feature_id?: string | null
+          id?: string
+          metadata?: Json | null
+          remediation?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+          source_file?: string | null
+          updated_at?: string
+          user_id: string
+          violation_type: string
+        }
+        Update: {
+          blocks_launch?: boolean | null
+          capability_id?: string | null
+          created_at?: string
+          description?: string
+          evidence?: Json | null
+          feature_id?: string | null
+          id?: string
+          metadata?: Json | null
+          remediation?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+          source_file?: string | null
+          updated_at?: string
+          user_id?: string
+          violation_type?: string
+        }
+        Relationships: []
+      }
       ai_cost_ledger: {
         Row: {
           cost_cents: number | null
@@ -905,6 +962,104 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_inference_receipts: {
+        Row: {
+          action_refs: Json | null
+          cache_hits: number | null
+          cached_tokens: number | null
+          capability_id: string | null
+          context_sources_used: Json | null
+          cost_actual_cents: number | null
+          cost_estimate_cents: number | null
+          created_at: string
+          fallback_chain: Json | null
+          hash: string | null
+          id: string
+          input_tokens: number | null
+          latency_ms: number | null
+          model: string
+          output_schema_used: string | null
+          output_tokens: number | null
+          policy_decision_ref: string | null
+          previous_hash: string | null
+          prompt_family_id: string | null
+          provider: string
+          redaction_applied: boolean | null
+          reuse_artifacts: string[] | null
+          route_reason: string | null
+          task_request_id: string | null
+          user_id: string
+          verification_confidence: number | null
+          verification_outcome: string | null
+        }
+        Insert: {
+          action_refs?: Json | null
+          cache_hits?: number | null
+          cached_tokens?: number | null
+          capability_id?: string | null
+          context_sources_used?: Json | null
+          cost_actual_cents?: number | null
+          cost_estimate_cents?: number | null
+          created_at?: string
+          fallback_chain?: Json | null
+          hash?: string | null
+          id?: string
+          input_tokens?: number | null
+          latency_ms?: number | null
+          model: string
+          output_schema_used?: string | null
+          output_tokens?: number | null
+          policy_decision_ref?: string | null
+          previous_hash?: string | null
+          prompt_family_id?: string | null
+          provider: string
+          redaction_applied?: boolean | null
+          reuse_artifacts?: string[] | null
+          route_reason?: string | null
+          task_request_id?: string | null
+          user_id: string
+          verification_confidence?: number | null
+          verification_outcome?: string | null
+        }
+        Update: {
+          action_refs?: Json | null
+          cache_hits?: number | null
+          cached_tokens?: number | null
+          capability_id?: string | null
+          context_sources_used?: Json | null
+          cost_actual_cents?: number | null
+          cost_estimate_cents?: number | null
+          created_at?: string
+          fallback_chain?: Json | null
+          hash?: string | null
+          id?: string
+          input_tokens?: number | null
+          latency_ms?: number | null
+          model?: string
+          output_schema_used?: string | null
+          output_tokens?: number | null
+          policy_decision_ref?: string | null
+          previous_hash?: string | null
+          prompt_family_id?: string | null
+          provider?: string
+          redaction_applied?: boolean | null
+          reuse_artifacts?: string[] | null
+          route_reason?: string | null
+          task_request_id?: string | null
+          user_id?: string
+          verification_confidence?: number | null
+          verification_outcome?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_inference_receipts_task_request_id_fkey"
+            columns: ["task_request_id"]
+            isOneToOne: false
+            referencedRelation: "ai_task_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_learning_patterns: {
         Row: {
           action_taken: string | null
@@ -956,6 +1111,387 @@ export type Database = {
           status?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      ai_model_registry: {
+        Row: {
+          allowed_domains: string[] | null
+          context_length: number | null
+          cost_per_1k_input: number | null
+          cost_per_1k_output: number | null
+          cost_tier: string | null
+          created_at: string
+          deprecated: boolean | null
+          deprecated_at: string | null
+          disallowed_domains: string[] | null
+          fallback_suitability: string | null
+          health_score: number | null
+          id: string
+          latency_tier: string | null
+          launch_stage: string | null
+          metadata: Json | null
+          model_class: string
+          model_id: string
+          preferred_task_classes: string[] | null
+          provider: string
+          provider_model_name: string
+          reasoning_strength: string | null
+          reliability_score: number | null
+          safety_notes: string | null
+          structured_output_support: boolean | null
+          tool_calling_support: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allowed_domains?: string[] | null
+          context_length?: number | null
+          cost_per_1k_input?: number | null
+          cost_per_1k_output?: number | null
+          cost_tier?: string | null
+          created_at?: string
+          deprecated?: boolean | null
+          deprecated_at?: string | null
+          disallowed_domains?: string[] | null
+          fallback_suitability?: string | null
+          health_score?: number | null
+          id?: string
+          latency_tier?: string | null
+          launch_stage?: string | null
+          metadata?: Json | null
+          model_class?: string
+          model_id: string
+          preferred_task_classes?: string[] | null
+          provider: string
+          provider_model_name: string
+          reasoning_strength?: string | null
+          reliability_score?: number | null
+          safety_notes?: string | null
+          structured_output_support?: boolean | null
+          tool_calling_support?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allowed_domains?: string[] | null
+          context_length?: number | null
+          cost_per_1k_input?: number | null
+          cost_per_1k_output?: number | null
+          cost_tier?: string | null
+          created_at?: string
+          deprecated?: boolean | null
+          deprecated_at?: string | null
+          disallowed_domains?: string[] | null
+          fallback_suitability?: string | null
+          health_score?: number | null
+          id?: string
+          latency_tier?: string | null
+          launch_stage?: string | null
+          metadata?: Json | null
+          model_class?: string
+          model_id?: string
+          preferred_task_classes?: string[] | null
+          provider?: string
+          provider_model_name?: string
+          reasoning_strength?: string | null
+          reliability_score?: number | null
+          safety_notes?: string | null
+          structured_output_support?: boolean | null
+          tool_calling_support?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_portfolio_allocations: {
+        Row: {
+          allocation_class: string
+          avg_cost_per_request: number | null
+          budget_cents: number
+          created_at: string
+          current_premium_pct: number | null
+          domain: string | null
+          efficiency_score: number | null
+          id: string
+          max_premium_pct: number | null
+          metadata: Json | null
+          notes: string | null
+          period: string | null
+          priority: number | null
+          request_count: number | null
+          spent_cents: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allocation_class: string
+          avg_cost_per_request?: number | null
+          budget_cents?: number
+          created_at?: string
+          current_premium_pct?: number | null
+          domain?: string | null
+          efficiency_score?: number | null
+          id?: string
+          max_premium_pct?: number | null
+          metadata?: Json | null
+          notes?: string | null
+          period?: string | null
+          priority?: number | null
+          request_count?: number | null
+          spent_cents?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allocation_class?: string
+          avg_cost_per_request?: number | null
+          budget_cents?: number
+          created_at?: string
+          current_premium_pct?: number | null
+          domain?: string | null
+          efficiency_score?: number | null
+          id?: string
+          max_premium_pct?: number | null
+          metadata?: Json | null
+          notes?: string | null
+          period?: string | null
+          priority?: number | null
+          request_count?: number | null
+          spent_cents?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_prompt_families: {
+        Row: {
+          allowed_capability_classes: string[] | null
+          context_sources: Json | null
+          cost_profile: string | null
+          created_at: string
+          deprecated: boolean | null
+          domain: string | null
+          feature_ids: string[] | null
+          grounding_requirements: Json | null
+          hallucination_containment: string | null
+          id: string
+          max_context_tokens: number | null
+          metadata: Json | null
+          name: string
+          output_schema: Json | null
+          owner: string
+          prompt_family_id: string
+          quality_notes: string | null
+          redaction_strategy: string | null
+          system_prompt: string | null
+          test_fixtures: Json | null
+          updated_at: string
+          user_id: string
+          version: number | null
+        }
+        Insert: {
+          allowed_capability_classes?: string[] | null
+          context_sources?: Json | null
+          cost_profile?: string | null
+          created_at?: string
+          deprecated?: boolean | null
+          domain?: string | null
+          feature_ids?: string[] | null
+          grounding_requirements?: Json | null
+          hallucination_containment?: string | null
+          id?: string
+          max_context_tokens?: number | null
+          metadata?: Json | null
+          name: string
+          output_schema?: Json | null
+          owner: string
+          prompt_family_id: string
+          quality_notes?: string | null
+          redaction_strategy?: string | null
+          system_prompt?: string | null
+          test_fixtures?: Json | null
+          updated_at?: string
+          user_id: string
+          version?: number | null
+        }
+        Update: {
+          allowed_capability_classes?: string[] | null
+          context_sources?: Json | null
+          cost_profile?: string | null
+          created_at?: string
+          deprecated?: boolean | null
+          domain?: string | null
+          feature_ids?: string[] | null
+          grounding_requirements?: Json | null
+          hallucination_containment?: string | null
+          id?: string
+          max_context_tokens?: number | null
+          metadata?: Json | null
+          name?: string
+          output_schema?: Json | null
+          owner?: string
+          prompt_family_id?: string
+          quality_notes?: string | null
+          redaction_strategy?: string | null
+          system_prompt?: string | null
+          test_fixtures?: Json | null
+          updated_at?: string
+          user_id?: string
+          version?: number | null
+        }
+        Relationships: []
+      }
+      ai_provider_health: {
+        Row: {
+          availability: number | null
+          avg_latency_ms: number | null
+          cost_drift_pct: number | null
+          created_at: string
+          error_rate: number | null
+          id: string
+          incident_description: string | null
+          incident_status: string | null
+          last_checked_at: string | null
+          metadata: Json | null
+          model: string | null
+          p95_latency_ms: number | null
+          provider: string
+          rate_limit_pressure: number | null
+          structured_output_success_rate: number | null
+          total_failures: number | null
+          total_requests: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          availability?: number | null
+          avg_latency_ms?: number | null
+          cost_drift_pct?: number | null
+          created_at?: string
+          error_rate?: number | null
+          id?: string
+          incident_description?: string | null
+          incident_status?: string | null
+          last_checked_at?: string | null
+          metadata?: Json | null
+          model?: string | null
+          p95_latency_ms?: number | null
+          provider: string
+          rate_limit_pressure?: number | null
+          structured_output_success_rate?: number | null
+          total_failures?: number | null
+          total_requests?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          availability?: number | null
+          avg_latency_ms?: number | null
+          cost_drift_pct?: number | null
+          created_at?: string
+          error_rate?: number | null
+          id?: string
+          incident_description?: string | null
+          incident_status?: string | null
+          last_checked_at?: string | null
+          metadata?: Json | null
+          model?: string | null
+          p95_latency_ms?: number | null
+          provider?: string
+          rate_limit_pressure?: number | null
+          structured_output_success_rate?: number | null
+          total_failures?: number | null
+          total_requests?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_routing_policies: {
+        Row: {
+          allowed_providers: string[] | null
+          async_eligible: boolean | null
+          budget_class: string | null
+          capability_id: string
+          confidence_target: number | null
+          created_at: string
+          default_model: string | null
+          default_provider: string | null
+          disallowed_providers: string[] | null
+          domain: string | null
+          enabled: boolean | null
+          fallback_chain: Json | null
+          fallback_model: string | null
+          fallback_provider: string | null
+          id: string
+          latency_target_ms: number | null
+          max_cost_cents: number | null
+          metadata: Json | null
+          premium_escalation_conditions: Json | null
+          reuse_eligible: boolean | null
+          risk_tier: string | null
+          structured_output_required: boolean | null
+          task_class: string
+          updated_at: string
+          user_id: string
+          verification_policy: string | null
+        }
+        Insert: {
+          allowed_providers?: string[] | null
+          async_eligible?: boolean | null
+          budget_class?: string | null
+          capability_id: string
+          confidence_target?: number | null
+          created_at?: string
+          default_model?: string | null
+          default_provider?: string | null
+          disallowed_providers?: string[] | null
+          domain?: string | null
+          enabled?: boolean | null
+          fallback_chain?: Json | null
+          fallback_model?: string | null
+          fallback_provider?: string | null
+          id?: string
+          latency_target_ms?: number | null
+          max_cost_cents?: number | null
+          metadata?: Json | null
+          premium_escalation_conditions?: Json | null
+          reuse_eligible?: boolean | null
+          risk_tier?: string | null
+          structured_output_required?: boolean | null
+          task_class?: string
+          updated_at?: string
+          user_id: string
+          verification_policy?: string | null
+        }
+        Update: {
+          allowed_providers?: string[] | null
+          async_eligible?: boolean | null
+          budget_class?: string | null
+          capability_id?: string
+          confidence_target?: number | null
+          created_at?: string
+          default_model?: string | null
+          default_provider?: string | null
+          disallowed_providers?: string[] | null
+          domain?: string | null
+          enabled?: boolean | null
+          fallback_chain?: Json | null
+          fallback_model?: string | null
+          fallback_provider?: string | null
+          id?: string
+          latency_target_ms?: number | null
+          max_cost_cents?: number | null
+          metadata?: Json | null
+          premium_escalation_conditions?: Json | null
+          reuse_eligible?: boolean | null
+          risk_tier?: string | null
+          structured_output_required?: boolean | null
+          task_class?: string
+          updated_at?: string
+          user_id?: string
+          verification_policy?: string | null
         }
         Relationships: []
       }
@@ -1022,6 +1558,114 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verification_method?: string | null
+        }
+        Relationships: []
+      }
+      ai_task_requests: {
+        Row: {
+          autonomy_tier: string | null
+          cache_hit: boolean | null
+          capability_id: string | null
+          completed_at: string | null
+          cost_actual_cents: number | null
+          cost_estimate_cents: number | null
+          created_at: string
+          domain: string | null
+          error: string | null
+          fallback_provider: string | null
+          fallback_used: boolean | null
+          feature_id: string | null
+          id: string
+          input_hash: string | null
+          input_summary: string | null
+          input_tokens: number | null
+          latency_ms: number | null
+          metadata: Json | null
+          model_chosen: string | null
+          output_summary: string | null
+          output_tokens: number | null
+          prompt_family_id: string | null
+          provider_chosen: string | null
+          request_id: string
+          reuse_hit: boolean | null
+          risk_tier: string | null
+          route_decision: Json | null
+          status: string | null
+          structured_output_valid: boolean | null
+          task_class: string
+          user_id: string
+          verification_confidence: number | null
+          verification_result: string | null
+        }
+        Insert: {
+          autonomy_tier?: string | null
+          cache_hit?: boolean | null
+          capability_id?: string | null
+          completed_at?: string | null
+          cost_actual_cents?: number | null
+          cost_estimate_cents?: number | null
+          created_at?: string
+          domain?: string | null
+          error?: string | null
+          fallback_provider?: string | null
+          fallback_used?: boolean | null
+          feature_id?: string | null
+          id?: string
+          input_hash?: string | null
+          input_summary?: string | null
+          input_tokens?: number | null
+          latency_ms?: number | null
+          metadata?: Json | null
+          model_chosen?: string | null
+          output_summary?: string | null
+          output_tokens?: number | null
+          prompt_family_id?: string | null
+          provider_chosen?: string | null
+          request_id?: string
+          reuse_hit?: boolean | null
+          risk_tier?: string | null
+          route_decision?: Json | null
+          status?: string | null
+          structured_output_valid?: boolean | null
+          task_class?: string
+          user_id: string
+          verification_confidence?: number | null
+          verification_result?: string | null
+        }
+        Update: {
+          autonomy_tier?: string | null
+          cache_hit?: boolean | null
+          capability_id?: string | null
+          completed_at?: string | null
+          cost_actual_cents?: number | null
+          cost_estimate_cents?: number | null
+          created_at?: string
+          domain?: string | null
+          error?: string | null
+          fallback_provider?: string | null
+          fallback_used?: boolean | null
+          feature_id?: string | null
+          id?: string
+          input_hash?: string | null
+          input_summary?: string | null
+          input_tokens?: number | null
+          latency_ms?: number | null
+          metadata?: Json | null
+          model_chosen?: string | null
+          output_summary?: string | null
+          output_tokens?: number | null
+          prompt_family_id?: string | null
+          provider_chosen?: string | null
+          request_id?: string
+          reuse_hit?: boolean | null
+          risk_tier?: string | null
+          route_decision?: Json | null
+          status?: string | null
+          structured_output_valid?: boolean | null
+          task_class?: string
+          user_id?: string
+          verification_confidence?: number | null
+          verification_result?: string | null
         }
         Relationships: []
       }
