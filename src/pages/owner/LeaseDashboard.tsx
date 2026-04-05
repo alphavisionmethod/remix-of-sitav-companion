@@ -307,15 +307,13 @@ function LeaseInspector({ lease, onClose }: { lease: CapabilityLease | null; onC
 
 // ── Seed demo leases ────────────────────────────────────────────
 
-function useSeedLeases() {
+function useSeedLeases(leasesData: any[]) {
   const { leaseManager } = useCapabilityLease();
   const [seeded, setSeeded] = useState(false);
 
-  if (!seeded && leaseManager.getAllLeases().length === 0) {
+  if (!seeded && leaseManager.getAllLeases().length === 0 && leasesData.length > 0) {
     // Seed demo leases
-    const demos = leasesData;
-
-    demos.forEach(d => leaseManager.issueLease(d));
+    leasesData.forEach(d => leaseManager.issueLease(d));
 
     // Expire one, revoke one
     const all = leaseManager.getAllLeases();
@@ -338,7 +336,7 @@ export default function LeaseDashboard() {
   const { data: leasesData = [] } = useLeases();
 
   const { leaseManager, revokeLease: revokeLeaseHook } = useCapabilityLease();
-  useSeedLeases();
+  useSeedLeases(leasesData);
 
   const [inspecting, setInspecting] = useState<CapabilityLease | null>(null);
   const [tab, setTab] = useState("all");

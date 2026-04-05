@@ -3,7 +3,7 @@
 // Premium inline pricing management with preview-before-save
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SitaPageHeader, SitaCard } from "@/components/sita/SitaCard";
 import { AdminActionCard } from "@/components/sita/AdminActionCard";
 import { Input } from "@/components/ui/input";
@@ -17,14 +17,19 @@ import { motion } from "framer-motion";
 import { usePricingItems } from "@/hooks/use-domain-data";
 import type { OwnerPricingItem as PricingItem } from "@/lib/mock-data/owner";
 
-const DEMO_ITEMS = pricingData;
-
 const PricingEditor = () => {
   const { data: pricingData = [] } = usePricingItems();
 
-  const [items, setItems] = useState<PricingItem[]>(DEMO_ITEMS);
+  const [items, setItems] = useState<PricingItem[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editValues, setEditValues] = useState<Partial<PricingItem>>({});
+
+  // Sync from hook data on load
+  useEffect(() => {
+    if (pricingData.length > 0 && items.length === 0) {
+      setItems(pricingData);
+    }
+  }, [pricingData]);
 
   const startEdit = (item: PricingItem) => {
     setEditingId(item.id);
@@ -111,6 +116,5 @@ const PricingEditor = () => {
     </motion.div>
   );
 };
-
 
 export default PricingEditor;

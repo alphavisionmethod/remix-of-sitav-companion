@@ -72,7 +72,7 @@ const FilesOverview = () => {
       {/* Classification breakdown */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {Object.entries(classificationCounts).slice(0, 4).map(([cls, count]) => (
-          <KPITile key={cls} label={cls.charAt(0).toUpperCase() + cls.slice(1).replace("-", " ")} value={count} icon={FileText} />
+          <KPITile key={cls} label={cls.charAt(0).toUpperCase() + cls.slice(1).replace("-", " ")} value={count as number} icon={FileText} />
         ))}
       </div>
 
