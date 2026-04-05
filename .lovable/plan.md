@@ -1,57 +1,35 @@
-# SITA OS — Dual Reality System Implementation Plan
 
-## Phase 1: Database Schema (Migration)
-Create all 14 tables from the prompt's data model:
-- `reality_modes` — mode registry (real/demo/sandbox/dev_demo)
-- `reality_mode_resolutions` — how mode was resolved per session
-- `demo_scenarios` — scenario packs
-- `demo_scenario_entities` — synthetic entities in scenarios
-- `demo_scenario_relationships` — entity relationships
-- `demo_scenario_artifacts` — generated scenario artifacts
-- `mode_aware_providers` — provider contract registry
-- `demo_policy_profiles` — demo-safe policy definitions
-- `demo_actions` — tracked demo actions
-- `demo_receipts` — demo proof objects
-- `demo_analytics` — segregated demo events
-- `mode_access_policies` — who can enter which mode
-- `scenario_launch_profiles` — how scenarios launch
-- `mode_truth_labels` — labeling/truth semantics
+## Cron / Scheduler / Automation Reality
 
-All with RLS, timestamps, user_id scoping.
+### Database (Migration)
+1. **`scheduled_jobs`** — canonical job registry (id, name, domain, cron_expression, target_function, job_class, risk_tier, autonomy_tier, state, policy_family, kill_switch_class, last_run_at, next_run_at, retry_policy, max_retries, environment, metadata)
+2. **`job_executions`** — durable execution history (id, job_id, started_at, completed_at, status, attempt_number, output, error, duration_ms, policy_decision, verification_result, triggered_by)
+3. **`automation_kill_switches`** — global/domain/job kill switches (id, scope, scope_id, enabled, reason, activated_by, activated_at)
+4. RLS policies for all tables
 
-## Phase 2: Core Runtime Architecture (~6 files)
-- **Reality Mode Registry** — canonical mode definitions + resolver
-- **Reality Mode Context** — React context providing current mode to entire app
-- **Mode-Aware Provider System** — generic provider resolution by domain + mode
-- **Demo Policy Engine** — side-effect blocking, safety controls, kill switches
-- **Demo Scenario Loader** — loads scenario packs with entities/relationships/artifacts
-- **Demo Analytics Segregation** — labels all demo events, prevents contamination
+### Edge Function
+5. **`scheduler-dispatch`** — the dispatcher that:
+   - Reads due jobs from `scheduled_jobs`
+   - Checks kill switches
+   - Checks policy gates
+   - Invokes target functions
+   - Records execution in `job_executions`
+   - Handles retries with backoff
+   - Respects demo/real mode
 
-## Phase 3: Provider Interfaces + Demo Providers (~8 domain providers)
-Create provider interfaces and demo implementations for:
-- Boardroom, Investment, Money, Business, Workspace, Owner, Calendar, Advisor
+### pg_cron Setup
+6. Schedule `scheduler-dispatch` to run every minute via pg_cron + pg_net
 
-Each gets: interface → real provider stub → demo scenario provider
+### Seed Data
+7. Register canonical jobs: self-healing check, agent heartbeat, system maintenance, budget enforcement, digest generation
 
-## Phase 4: Admin Workspaces (10 pages)
-- DRS01: Reality Mode Overview
-- DRS02: Mode Registry Console
-- DRS03: Scenario Library
-- DRS04: Scenario Entity Graph
-- DRS05: Provider Console
-- DRS06: Demo Policy & Safety Board
-- DRS07: Demo AI Control Center
-- DRS08: Analytics Segregation Board
-- DRS09: Truth & Labeling Review
-- DRS10: Dual Reality Launch Gate
-
-## Phase 5: Seed Data
-Insert default reality modes (real, demo, sandbox) and a flagship investor demo scenario pack.
-
-## Estimated Changes
-- **1 migration** — all 14 tables
-- **~6 core runtime files** — mode system
-- **~16 provider files** — 8 domains × (interface + demo impl)
-- **10 admin pages** — DRS01–DRS10
-- **Route updates** — App.tsx
-- **~35 files total**
+### Admin Pages (9 pages, routed under /admin/automation/*)
+8. **AR01** — Automation Reality Overview
+9. **AR02** — Scheduled Job Registry
+10. **AR03** — Self-Healing Execution Board
+11. **AR04** — Agent Scheduler Control Plane
+12. **AR05** — System Maintenance Board
+13. **AR06** — Execution Trace Explorer
+14. **AR07** — Retry / Failure Center
+15. **AR08** — Kill Switch & Safety Center
+16. **AR09** — Automation Launch Gate
