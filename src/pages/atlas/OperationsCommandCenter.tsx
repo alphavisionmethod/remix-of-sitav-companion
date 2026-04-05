@@ -90,6 +90,7 @@ export default function OperationsCommandCenter() {
             { value: "slos", label: "SLO Burn", icon: Gauge },
             { value: "alerts", label: "Alert Triage", icon: AlertTriangle },
             { value: "incidents", label: "Incidents", icon: Radio },
+            { value: "queues", label: "Queues & Lag", icon: BarChart3 },
             { value: "runbooks", label: "Runbooks", icon: BookOpen },
           ].map(t => (
             <TabsTrigger key={t.value} value={t.value} className="text-[10px] h-7 px-2.5 gap-1"><t.icon className="h-3 w-3" />{t.label}</TabsTrigger>
@@ -176,6 +177,32 @@ export default function OperationsCommandCenter() {
                   </div>
                 </CardContent>
               </Card>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="queues">
+            <h3 className="text-xs font-semibold mb-3">Queue Depths & Lag</h3>
+            {[
+              { name: "Approval Queue", depth: 2, lag: "0s", pressure: "low", owner: "approval-engine" },
+              { name: "Event Bus", depth: 0, lag: "12ms", pressure: "none", owner: "event-bus" },
+              { name: "Notification Queue", depth: 5, lag: "200ms", pressure: "low", owner: "notification-service" },
+              { name: "Connector Sync Queue", depth: 1, lag: "0s", pressure: "none", owner: "connector-gateway" },
+              { name: "Agent Signal Queue", depth: 0, lag: "0ms", pressure: "none", owner: "agent-runtime" },
+              { name: "Projection Rebuild Queue", depth: 0, lag: "0ms", pressure: "none", owner: "projection-engine" },
+            ].map(q => (
+              <div key={q.name} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
+                <div className="flex items-center gap-3">
+                  <BarChart3 className={cn("w-4 h-4", q.pressure === "none" ? "text-green-400" : q.pressure === "low" ? "text-blue-400" : "text-amber-400")} />
+                  <div>
+                    <p className="text-xs font-medium text-foreground">{q.name}</p>
+                    <p className="text-[10px] text-muted-foreground">Owner: {q.owner} • Lag: {q.lag}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant={q.depth === 0 ? "default" : "secondary"} className="text-[9px]">{q.depth} items</Badge>
+                  <Badge variant="outline" className={cn("text-[8px] capitalize", q.pressure === "none" ? "text-green-400" : q.pressure === "low" ? "text-blue-400" : "text-amber-400")}>{q.pressure}</Badge>
+                </div>
+              </div>
             ))}
           </TabsContent>
 
