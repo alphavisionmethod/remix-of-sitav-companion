@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
@@ -14,6 +14,8 @@ import { SitaKernelProvider } from "@/contexts/SitaKernelContext";
 import { OSRuntimeProvider } from "@/lib/hooks/useOSRuntime";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ShellLayout } from "@/components/sita/ShellLayout";
+import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
+import { createQueryClient } from "@/lib/query-config";
 import { Suspense, lazy } from "react";
 
 // ═══════════════════════════════════════════════════
