@@ -113,9 +113,9 @@ const KNOWN_MOCK_SOURCES: Array<{
 // ── Known In-Memory Services ──
 
 const KNOWN_MEMORY_SERVICES: PersistenceGapDetection[] = [
-  { id: "svc-eventbus", serviceName: "EventBus", currentBacking: "memory-only", affectedDomains: ["system", "all"], stateLossSeverity: "high", persistenceTarget: "agent_signals", detectedAt: new Date().toISOString() },
-  { id: "svc-memory", serviceName: "MemoryService", currentBacking: "memory-only", affectedDomains: ["advisors", "mission-control"], stateLossSeverity: "high", persistenceTarget: "advisor_memories", detectedAt: new Date().toISOString() },
-  { id: "svc-policy", serviceName: "PolicyEngine", currentBacking: "memory-only", affectedDomains: ["owner", "approvals", "governance"], stateLossSeverity: "critical", persistenceTarget: "owner_policies", detectedAt: new Date().toISOString() },
+  { id: "svc-eventbus", serviceName: "EventBus", currentBacking: "hybrid", affectedDomains: ["system", "all"], stateLossSeverity: "low", persistenceTarget: "os_event_log", detectedAt: new Date().toISOString() },
+  { id: "svc-memory", serviceName: "MemoryService", currentBacking: "hybrid", affectedDomains: ["advisors", "mission-control"], stateLossSeverity: "low", persistenceTarget: "os_memory_scoped", detectedAt: new Date().toISOString() },
+  { id: "svc-policy", serviceName: "PolicyEngine", currentBacking: "hybrid", affectedDomains: ["owner", "approvals", "governance"], stateLossSeverity: "low", persistenceTarget: "os_policy_evaluations", detectedAt: new Date().toISOString() },
   { id: "svc-setup", serviceName: "SetupPersistence", currentBacking: "localStorage", affectedDomains: ["onboarding"], stateLossSeverity: "medium", persistenceTarget: "user_preferences", detectedAt: new Date().toISOString() },
   { id: "svc-invest", serviceName: "InvestmentEngine", currentBacking: "memory-only", affectedDomains: ["investment", "money"], stateLossSeverity: "high", persistenceTarget: "positions + allocations", detectedAt: new Date().toISOString() },
   { id: "svc-revenue", serviceName: "RevenueEngine", currentBacking: "memory-only", affectedDomains: ["business", "revenue"], stateLossSeverity: "high", persistenceTarget: "invoices + leakage", detectedAt: new Date().toISOString() },
