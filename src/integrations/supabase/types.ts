@@ -513,6 +513,125 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_agent_debate_records: {
+        Row: {
+          consensus_score: number | null
+          created_at: string
+          id: string
+          participants: Json | null
+          resolution: string | null
+          status: string
+          topic: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          consensus_score?: number | null
+          created_at?: string
+          id?: string
+          participants?: Json | null
+          resolution?: string | null
+          status?: string
+          topic: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          consensus_score?: number | null
+          created_at?: string
+          id?: string
+          participants?: Json | null
+          resolution?: string | null
+          status?: string
+          topic?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_change_plans: {
+        Row: {
+          affected_services: string[] | null
+          applied_at: string | null
+          approval_required: boolean | null
+          autonomy_mode: string
+          confidence: number | null
+          created_at: string
+          deployment_scope: string | null
+          description: string | null
+          evidence_refs: Json | null
+          id: string
+          intended_effect: string | null
+          mission_id: string | null
+          proposed_by_agent: string | null
+          reviewed_by: string | null
+          rollback_strategy: string | null
+          status: string
+          target_files: string[] | null
+          target_surfaces: string[] | null
+          tests_needed: string[] | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          affected_services?: string[] | null
+          applied_at?: string | null
+          approval_required?: boolean | null
+          autonomy_mode?: string
+          confidence?: number | null
+          created_at?: string
+          deployment_scope?: string | null
+          description?: string | null
+          evidence_refs?: Json | null
+          id?: string
+          intended_effect?: string | null
+          mission_id?: string | null
+          proposed_by_agent?: string | null
+          reviewed_by?: string | null
+          rollback_strategy?: string | null
+          status?: string
+          target_files?: string[] | null
+          target_surfaces?: string[] | null
+          tests_needed?: string[] | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          affected_services?: string[] | null
+          applied_at?: string | null
+          approval_required?: boolean | null
+          autonomy_mode?: string
+          confidence?: number | null
+          created_at?: string
+          deployment_scope?: string | null
+          description?: string | null
+          evidence_refs?: Json | null
+          id?: string
+          intended_effect?: string | null
+          mission_id?: string | null
+          proposed_by_agent?: string | null
+          reviewed_by?: string | null
+          rollback_strategy?: string | null
+          status?: string
+          target_files?: string[] | null
+          target_surfaces?: string[] | null
+          tests_needed?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_change_plans_mission_id_fkey"
+            columns: ["mission_id"]
+            isOneToOne: false
+            referencedRelation: "ai_engineering_missions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_cost_ledger: {
         Row: {
           cost_cents: number | null
@@ -549,6 +668,306 @@ export type Database = {
           provider?: string | null
           purpose?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      ai_design_diffs: {
+        Row: {
+          after_state: Json | null
+          area: string | null
+          before_state: Json | null
+          confidence: number | null
+          consistency_score: number | null
+          created_at: string
+          design_tokens_used: string[] | null
+          id: string
+          impact_level: string | null
+          proposed_by_agent: string | null
+          rationale: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          after_state?: Json | null
+          area?: string | null
+          before_state?: Json | null
+          confidence?: number | null
+          consistency_score?: number | null
+          created_at?: string
+          design_tokens_used?: string[] | null
+          id?: string
+          impact_level?: string | null
+          proposed_by_agent?: string | null
+          rationale?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          after_state?: Json | null
+          area?: string | null
+          before_state?: Json | null
+          confidence?: number | null
+          consistency_score?: number | null
+          created_at?: string
+          design_tokens_used?: string[] | null
+          id?: string
+          impact_level?: string | null
+          proposed_by_agent?: string | null
+          rationale?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_engineering_missions: {
+        Row: {
+          assigned_agents: string[] | null
+          autonomy_mode: string
+          blast_radius: string | null
+          completed_at: string | null
+          confidence: number | null
+          created_at: string
+          description: string | null
+          evidence: Json | null
+          id: string
+          mission_type: string
+          priority: string
+          progress: number | null
+          rollback_plan: string | null
+          started_at: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_agents?: string[] | null
+          autonomy_mode?: string
+          blast_radius?: string | null
+          completed_at?: string | null
+          confidence?: number | null
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          id?: string
+          mission_type?: string
+          priority?: string
+          progress?: number | null
+          rollback_plan?: string | null
+          started_at?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_agents?: string[] | null
+          autonomy_mode?: string
+          blast_radius?: string | null
+          completed_at?: string | null
+          confidence?: number | null
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          id?: string
+          mission_type?: string
+          priority?: string
+          progress?: number | null
+          rollback_plan?: string | null
+          started_at?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_fix_proposals: {
+        Row: {
+          affected_area: string | null
+          approval_needed: boolean | null
+          auto_fix_eligible: boolean | null
+          confidence: number | null
+          created_at: string
+          description: string | null
+          detected_by_agent: string | null
+          error_cluster_id: string | null
+          id: string
+          proposed_patch: string | null
+          rollback_safety: string | null
+          root_cause: string | null
+          severity: string
+          status: string
+          test_impact: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          affected_area?: string | null
+          approval_needed?: boolean | null
+          auto_fix_eligible?: boolean | null
+          confidence?: number | null
+          created_at?: string
+          description?: string | null
+          detected_by_agent?: string | null
+          error_cluster_id?: string | null
+          id?: string
+          proposed_patch?: string | null
+          rollback_safety?: string | null
+          root_cause?: string | null
+          severity?: string
+          status?: string
+          test_impact?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          affected_area?: string | null
+          approval_needed?: boolean | null
+          auto_fix_eligible?: boolean | null
+          confidence?: number | null
+          created_at?: string
+          description?: string | null
+          detected_by_agent?: string | null
+          error_cluster_id?: string | null
+          id?: string
+          proposed_patch?: string | null
+          rollback_safety?: string | null
+          root_cause?: string | null
+          severity?: string
+          status?: string
+          test_impact?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_learning_patterns: {
+        Row: {
+          action_taken: string | null
+          confidence: number | null
+          contributing_events: Json | null
+          created_at: string
+          domain: string
+          first_detected_at: string | null
+          frequency: string | null
+          id: string
+          impact_result: string | null
+          last_seen_at: string | null
+          pattern_description: string
+          pattern_type: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_taken?: string | null
+          confidence?: number | null
+          contributing_events?: Json | null
+          created_at?: string
+          domain?: string
+          first_detected_at?: string | null
+          frequency?: string | null
+          id?: string
+          impact_result?: string | null
+          last_seen_at?: string | null
+          pattern_description: string
+          pattern_type?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_taken?: string | null
+          confidence?: number | null
+          contributing_events?: Json | null
+          created_at?: string
+          domain?: string
+          first_detected_at?: string | null
+          frequency?: string | null
+          id?: string
+          impact_result?: string | null
+          last_seen_at?: string | null
+          pattern_description?: string
+          pattern_type?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_self_healing_rules: {
+        Row: {
+          action_type: string
+          created_at: string
+          description: string | null
+          downgrade_reason: string | null
+          downgraded_at: string | null
+          enabled: boolean | null
+          id: string
+          last_triggered_at: string | null
+          max_frequency: string | null
+          risk_level: string
+          rule_name: string
+          scope_boundary: string | null
+          total_failures: number | null
+          total_successes: number | null
+          total_triggers: number | null
+          trigger_condition: string
+          updated_at: string
+          user_id: string
+          verification_method: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          description?: string | null
+          downgrade_reason?: string | null
+          downgraded_at?: string | null
+          enabled?: boolean | null
+          id?: string
+          last_triggered_at?: string | null
+          max_frequency?: string | null
+          risk_level?: string
+          rule_name: string
+          scope_boundary?: string | null
+          total_failures?: number | null
+          total_successes?: number | null
+          total_triggers?: number | null
+          trigger_condition: string
+          updated_at?: string
+          user_id: string
+          verification_method?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          description?: string | null
+          downgrade_reason?: string | null
+          downgraded_at?: string | null
+          enabled?: boolean | null
+          id?: string
+          last_triggered_at?: string | null
+          max_frequency?: string | null
+          risk_level?: string
+          rule_name?: string
+          scope_boundary?: string | null
+          total_failures?: number | null
+          total_successes?: number | null
+          total_triggers?: number | null
+          trigger_condition?: string
+          updated_at?: string
+          user_id?: string
+          verification_method?: string | null
         }
         Relationships: []
       }
