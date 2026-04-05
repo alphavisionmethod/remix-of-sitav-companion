@@ -22,9 +22,6 @@ export default function RouteRealityHeatmap() {
       map[c.domain].push(c);
     });
     return Object.entries(map).sort((a, b) => a[0].localeCompare(b[0]));
-      map.set(c.domain, list);
-    });
-    return Object.entries(map).sort((a, b) => a[0].localeCompare(b[0]));
   }, [classifications]);
 
   return (
