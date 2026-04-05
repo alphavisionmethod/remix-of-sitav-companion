@@ -391,6 +391,42 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     timeout: DEFAULT_TIMEOUT, order: 20.5, excludedFromSteps: false,
     statusUX: defaultStatusUX("First Win Setup"),
   },
+  // ── New Personalization Ceremony Phases ──────────────────
+  {
+    id: "life-rhythm", title: "Life Rhythm", description: "Understand your weekly flow and planning cadence",
+    dependencies: ["deep-world-modeling"], blocking: false, required: false,
+    backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 5.35, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Life Rhythm"),
+  },
+  {
+    id: "stress-slippage", title: "Stress & Slippage", description: "Map where support matters most",
+    dependencies: ["deep-world-modeling"], blocking: false, required: false,
+    backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 5.36, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Stress & Slippage"),
+  },
+  {
+    id: "communications-context", title: "Communications", description: "Understand your communication load",
+    dependencies: ["deep-world-modeling"], blocking: false, required: false,
+    backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 5.37, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Communications"),
+  },
+  {
+    id: "planning-style", title: "Planning Style", description: "How you think and plan best",
+    dependencies: ["deep-world-modeling"], blocking: false, required: false,
+    backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 5.38, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Planning Style"),
+  },
+  {
+    id: "environment-summary", title: "Environment Summary", description: "Review your shaped environment before arrival",
+    dependencies: ["advisor-activation"], blocking: true, required: true,
+    backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 5.65, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Environment Summary"),
+  },
   {
     id: "arrival-prep", title: "Arrival Preparation", description: "Final pre-launch preparation",
     dependencies: [],  // computed dynamically — all non-excluded completed/skipped
