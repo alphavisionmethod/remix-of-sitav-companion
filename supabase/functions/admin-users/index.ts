@@ -86,12 +86,7 @@ serve(async (req) => {
       }
 
       if (postAction === "assign_role") {
-        const { role } = body;
-        if (!role) {
-          return new Response(JSON.stringify({ error: "role required" }), {
-            status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-          });
-        }
+        if (!role) return corsError("role required", 400);
         const { error } = await adminClient.from("user_roles").upsert(
           { user_id: target_user_id, role },
           { onConflict: "user_id,role" }
