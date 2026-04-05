@@ -24,6 +24,7 @@ import { toast } from "sonner";
 interface SitaTopBarProps {
   onNotifOpen: () => void;
   onTimelineOpen: () => void;
+  onCommandOpen?: () => void;
   pendingApprovals?: number;
   activeIncidents?: number;
 }
