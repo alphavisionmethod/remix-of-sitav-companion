@@ -127,7 +127,7 @@ export class BusinessModelAdvisor {
     expectedChurnPercent: number;
     currentCustomers: number;
     implementationCostCents: number;
-  }): ScenarioResult {
+  }): BusinessScenarioResult {
     const churnedCustomers = Math.round(params.currentCustomers * params.expectedChurnPercent / 100);
     const netCustomers = params.currentCustomers - churnedCustomers + params.expectedNewCustomers;
     const newMonthly = netCustomers * params.newPriceCents;
