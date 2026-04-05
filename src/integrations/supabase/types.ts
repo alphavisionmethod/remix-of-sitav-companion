@@ -3779,6 +3779,767 @@ export type Database = {
         }
         Relationships: []
       }
+      revenue_advisor_stances: {
+        Row: {
+          advisor_name: string
+          confidence: number | null
+          created_at: string
+          domain: string
+          id: string
+          recommendation: string | null
+          stance: string
+          stance_type: string | null
+          updated_at: string
+          user_id: string
+          watching: Json | null
+        }
+        Insert: {
+          advisor_name: string
+          confidence?: number | null
+          created_at?: string
+          domain: string
+          id?: string
+          recommendation?: string | null
+          stance: string
+          stance_type?: string | null
+          updated_at?: string
+          user_id: string
+          watching?: Json | null
+        }
+        Update: {
+          advisor_name?: string
+          confidence?: number | null
+          created_at?: string
+          domain?: string
+          id?: string
+          recommendation?: string | null
+          stance?: string
+          stance_type?: string | null
+          updated_at?: string
+          user_id?: string
+          watching?: Json | null
+        }
+        Relationships: []
+      }
+      revenue_booking_services: {
+        Row: {
+          conversion_rate: number | null
+          created_at: string
+          currency: string | null
+          duration_minutes: number
+          id: string
+          price_cents: number | null
+          service_name: string
+          status: string | null
+          total_bookings: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          conversion_rate?: number | null
+          created_at?: string
+          currency?: string | null
+          duration_minutes?: number
+          id?: string
+          price_cents?: number | null
+          service_name: string
+          status?: string | null
+          total_bookings?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          conversion_rate?: number | null
+          created_at?: string
+          currency?: string | null
+          duration_minutes?: number
+          id?: string
+          price_cents?: number | null
+          service_name?: string
+          status?: string | null
+          total_bookings?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      revenue_bookings: {
+        Row: {
+          contact_email: string | null
+          contact_name: string
+          created_at: string
+          duration_minutes: number | null
+          id: string
+          mode: string | null
+          notes: string | null
+          scheduled_at: string
+          service_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          contact_email?: string | null
+          contact_name: string
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          mode?: string | null
+          notes?: string | null
+          scheduled_at: string
+          service_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          contact_email?: string | null
+          contact_name?: string
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          mode?: string | null
+          notes?: string | null
+          scheduled_at?: string
+          service_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "revenue_bookings_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "revenue_booking_services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      revenue_campaigns: {
+        Row: {
+          campaign_name: string
+          campaign_type: string
+          click_rate: number | null
+          completion_rate: number | null
+          conversions: number | null
+          created_at: string
+          id: string
+          open_rate: number | null
+          revenue_cents: number | null
+          segment_id: string | null
+          status: string
+          steps_count: number | null
+          subscribers: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          campaign_name: string
+          campaign_type?: string
+          click_rate?: number | null
+          completion_rate?: number | null
+          conversions?: number | null
+          created_at?: string
+          id?: string
+          open_rate?: number | null
+          revenue_cents?: number | null
+          segment_id?: string | null
+          status?: string
+          steps_count?: number | null
+          subscribers?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          campaign_name?: string
+          campaign_type?: string
+          click_rate?: number | null
+          completion_rate?: number | null
+          conversions?: number | null
+          created_at?: string
+          id?: string
+          open_rate?: number | null
+          revenue_cents?: number | null
+          segment_id?: string | null
+          status?: string
+          steps_count?: number | null
+          subscribers?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      revenue_experiment_variants: {
+        Row: {
+          conversions: number | null
+          created_at: string
+          experiment_id: string
+          id: string
+          rate: number | null
+          user_id: string
+          variant_name: string
+          visitors: number | null
+        }
+        Insert: {
+          conversions?: number | null
+          created_at?: string
+          experiment_id: string
+          id?: string
+          rate?: number | null
+          user_id: string
+          variant_name: string
+          visitors?: number | null
+        }
+        Update: {
+          conversions?: number | null
+          created_at?: string
+          experiment_id?: string
+          id?: string
+          rate?: number | null
+          user_id?: string
+          variant_name?: string
+          visitors?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "revenue_experiment_variants_experiment_id_fkey"
+            columns: ["experiment_id"]
+            isOneToOne: false
+            referencedRelation: "revenue_experiments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      revenue_experiments: {
+        Row: {
+          completed_at: string | null
+          confidence: number | null
+          created_at: string
+          experiment_name: string
+          id: string
+          lift: string | null
+          started_at: string | null
+          status: string
+          updated_at: string
+          user_id: string
+          winner_variant: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          confidence?: number | null
+          created_at?: string
+          experiment_name: string
+          id?: string
+          lift?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          winner_variant?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          confidence?: number | null
+          created_at?: string
+          experiment_name?: string
+          id?: string
+          lift?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          winner_variant?: string | null
+        }
+        Relationships: []
+      }
+      revenue_funnel_steps: {
+        Row: {
+          conversion_rate: number | null
+          conversions: number | null
+          created_at: string
+          funnel_id: string
+          id: string
+          page_type: string | null
+          step_name: string
+          step_order: number
+          user_id: string
+          visitors: number | null
+        }
+        Insert: {
+          conversion_rate?: number | null
+          conversions?: number | null
+          created_at?: string
+          funnel_id: string
+          id?: string
+          page_type?: string | null
+          step_name: string
+          step_order?: number
+          user_id: string
+          visitors?: number | null
+        }
+        Update: {
+          conversion_rate?: number | null
+          conversions?: number | null
+          created_at?: string
+          funnel_id?: string
+          id?: string
+          page_type?: string | null
+          step_name?: string
+          step_order?: number
+          user_id?: string
+          visitors?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "revenue_funnel_steps_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "revenue_funnels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      revenue_funnels: {
+        Row: {
+          conversion_rate: number | null
+          created_at: string
+          funnel_name: string
+          id: string
+          status: string
+          steps: Json | null
+          total_optins: number | null
+          total_revenue_cents: number | null
+          total_sales: number | null
+          total_visitors: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          conversion_rate?: number | null
+          created_at?: string
+          funnel_name: string
+          id?: string
+          status?: string
+          steps?: Json | null
+          total_optins?: number | null
+          total_revenue_cents?: number | null
+          total_sales?: number | null
+          total_visitors?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          conversion_rate?: number | null
+          created_at?: string
+          funnel_name?: string
+          id?: string
+          status?: string
+          steps?: Json | null
+          total_optins?: number | null
+          total_revenue_cents?: number | null
+          total_sales?: number | null
+          total_visitors?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      revenue_journey_touchpoints: {
+        Row: {
+          conversion_rate: number | null
+          created_at: string
+          entered_count: number | null
+          exited_count: number | null
+          id: string
+          label: string
+          stage: string
+          touchpoint_type: string
+          user_id: string
+        }
+        Insert: {
+          conversion_rate?: number | null
+          created_at?: string
+          entered_count?: number | null
+          exited_count?: number | null
+          id?: string
+          label: string
+          stage: string
+          touchpoint_type: string
+          user_id: string
+        }
+        Update: {
+          conversion_rate?: number | null
+          created_at?: string
+          entered_count?: number | null
+          exited_count?: number | null
+          id?: string
+          label?: string
+          stage?: string
+          touchpoint_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      revenue_leak_items: {
+        Row: {
+          action_needed: string | null
+          category: string
+          created_at: string
+          days_stale: number | null
+          id: string
+          item_name: string
+          resolved: boolean | null
+          revenue_at_risk_cents: number | null
+          severity: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_needed?: string | null
+          category: string
+          created_at?: string
+          days_stale?: number | null
+          id?: string
+          item_name: string
+          resolved?: boolean | null
+          revenue_at_risk_cents?: number | null
+          severity?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_needed?: string | null
+          category?: string
+          created_at?: string
+          days_stale?: number | null
+          id?: string
+          item_name?: string
+          resolved?: boolean | null
+          revenue_at_risk_cents?: number | null
+          severity?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      revenue_memory_events: {
+        Row: {
+          acknowledged_at: string | null
+          created_at: string
+          event_type: string
+          id: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          severity: string | null
+          summary: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          severity?: string | null
+          summary?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          severity?: string | null
+          summary?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      revenue_offer_sales: {
+        Row: {
+          amount_cents: number
+          contact_email: string | null
+          contact_name: string | null
+          id: string
+          metadata: Json | null
+          offer_id: string
+          purchased_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_cents?: number
+          contact_email?: string | null
+          contact_name?: string | null
+          id?: string
+          metadata?: Json | null
+          offer_id: string
+          purchased_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_cents?: number
+          contact_email?: string | null
+          contact_name?: string | null
+          id?: string
+          metadata?: Json | null
+          offer_id?: string
+          purchased_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "revenue_offer_sales_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "revenue_offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      revenue_offers: {
+        Row: {
+          category: string | null
+          created_at: string
+          currency: string | null
+          description: string | null
+          id: string
+          metadata: Json | null
+          offer_name: string
+          offer_type: string
+          price_cents: number | null
+          recurring_interval: string | null
+          status: string
+          total_revenue_cents: number | null
+          total_sales: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          offer_name: string
+          offer_type?: string
+          price_cents?: number | null
+          recurring_interval?: string | null
+          status?: string
+          total_revenue_cents?: number | null
+          total_sales?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          offer_name?: string
+          offer_type?: string
+          price_cents?: number | null
+          recurring_interval?: string | null
+          status?: string
+          total_revenue_cents?: number | null
+          total_sales?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      revenue_reputation_metrics: {
+        Row: {
+          avg_rating: number | null
+          id: string
+          nps_score: number | null
+          period: string | null
+          recorded_at: string
+          response_rate: number | null
+          total_reviews: number | null
+          user_id: string
+        }
+        Insert: {
+          avg_rating?: number | null
+          id?: string
+          nps_score?: number | null
+          period?: string | null
+          recorded_at?: string
+          response_rate?: number | null
+          total_reviews?: number | null
+          user_id: string
+        }
+        Update: {
+          avg_rating?: number | null
+          id?: string
+          nps_score?: number | null
+          period?: string | null
+          recorded_at?: string
+          response_rate?: number | null
+          total_reviews?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      revenue_retention_signals: {
+        Row: {
+          acknowledged: boolean | null
+          contact_id: string | null
+          contact_name: string | null
+          created_at: string
+          details: Json | null
+          id: string
+          severity: string | null
+          signal_type: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged?: boolean | null
+          contact_id?: string | null
+          contact_name?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          severity?: string | null
+          signal_type: string
+          user_id: string
+        }
+        Update: {
+          acknowledged?: boolean | null
+          contact_id?: string | null
+          contact_name?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          severity?: string | null
+          signal_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      revenue_reviews: {
+        Row: {
+          created_at: string
+          id: string
+          platform: string | null
+          rating: number
+          responded: boolean | null
+          response_text: string | null
+          review_date: string
+          review_text: string | null
+          reviewer_name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          platform?: string | null
+          rating?: number
+          responded?: boolean | null
+          response_text?: string | null
+          review_date?: string
+          review_text?: string | null
+          reviewer_name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          platform?: string | null
+          rating?: number
+          responded?: boolean | null
+          response_text?: string | null
+          review_date?: string
+          review_text?: string | null
+          reviewer_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      revenue_segments: {
+        Row: {
+          contact_count: number | null
+          created_at: string
+          filter_criteria: Json | null
+          growth_rate: string | null
+          id: string
+          segment_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          contact_count?: number | null
+          created_at?: string
+          filter_criteria?: Json | null
+          growth_rate?: string | null
+          id?: string
+          segment_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          contact_count?: number | null
+          created_at?: string
+          filter_criteria?: Json | null
+          growth_rate?: string | null
+          id?: string
+          segment_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      revenue_winback_queue: {
+        Row: {
+          churn_reason: string | null
+          churned_at: string | null
+          contact_email: string | null
+          contact_name: string
+          created_at: string
+          id: string
+          ltv_cents: number | null
+          status: string | null
+          updated_at: string
+          user_id: string
+          winback_strategy: string | null
+        }
+        Insert: {
+          churn_reason?: string | null
+          churned_at?: string | null
+          contact_email?: string | null
+          contact_name: string
+          created_at?: string
+          id?: string
+          ltv_cents?: number | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+          winback_strategy?: string | null
+        }
+        Update: {
+          churn_reason?: string | null
+          churned_at?: string | null
+          contact_email?: string | null
+          contact_name?: string
+          created_at?: string
+          id?: string
+          ltv_cents?: number | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+          winback_strategy?: string | null
+        }
+        Relationships: []
+      }
       setup_sessions: {
         Row: {
           completed_at: string | null
