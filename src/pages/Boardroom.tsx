@@ -913,6 +913,12 @@ const FullscreenPresentation = ({ type, onExit }: { type: BoardroomType; onExit:
 
   const meta = META[type];
 
+  if (isLoading || !packet) return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-[60] flex items-center justify-center bg-background">
+      <p className="text-muted-foreground">Generating presentation…</p>
+    </motion.div>
+  );
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[60] flex flex-col bg-background">
       <div className="h-1 bg-secondary w-full"><motion.div className="h-full gradient-sita" style={{ width: `${(elapsed / SLIDE_DURATION) * 100}%` }} /></div>
