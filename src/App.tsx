@@ -247,6 +247,9 @@ const DRS07DemoAIControl = lazy(() => import("./pages/admin/DRS07DemoAIControl")
 const DRS08AnalyticsSegregation = lazy(() => import("./pages/admin/DRS08AnalyticsSegregation"));
 const DRS09TruthLabeling = lazy(() => import("./pages/admin/DRS09TruthLabeling"));
 const DRS10DualRealityLaunchGate = lazy(() => import("./pages/admin/DRS10DualRealityLaunchGate"));
+const MockEliminationCenter = lazy(() => import("./pages/admin/MockEliminationCenter"));
+const DomainRealityBoard = lazy(() => import("./pages/admin/DomainRealityBoard"));
+const RouteSourceDiagnostics = lazy(() => import("./pages/admin/RouteSourceDiagnostics"));
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
