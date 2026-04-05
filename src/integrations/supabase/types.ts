@@ -3267,6 +3267,407 @@ export type Database = {
         }
         Relationships: []
       }
+      demo_actions: {
+        Row: {
+          action_type: string
+          actor_id: string | null
+          created_at: string
+          execution_mode: string
+          feature_id: string | null
+          id: string
+          outcome_summary: string | null
+          receipt_id: string | null
+          route: string | null
+          scenario_id: string | null
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          actor_id?: string | null
+          created_at?: string
+          execution_mode?: string
+          feature_id?: string | null
+          id?: string
+          outcome_summary?: string | null
+          receipt_id?: string | null
+          route?: string | null
+          scenario_id?: string | null
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          actor_id?: string | null
+          created_at?: string
+          execution_mode?: string
+          feature_id?: string | null
+          id?: string
+          outcome_summary?: string | null
+          receipt_id?: string | null
+          route?: string | null
+          scenario_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "demo_actions_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "demo_scenarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      demo_analytics: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          event_name: string
+          id: string
+          metadata: Json
+          mode: string
+          route: string | null
+          scenario_id: string | null
+          session_id: string | null
+          user_id: string
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          event_name: string
+          id?: string
+          metadata?: Json
+          mode?: string
+          route?: string | null
+          scenario_id?: string | null
+          session_id?: string | null
+          user_id: string
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          event_name?: string
+          id?: string
+          metadata?: Json
+          mode?: string
+          route?: string | null
+          scenario_id?: string | null
+          session_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "demo_analytics_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "demo_scenarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      demo_policy_profiles: {
+        Row: {
+          ai_execution_mode: string
+          analytics_mode: string
+          approval_executes_live: boolean
+          billing_live: boolean
+          connector_writes_allowed: boolean
+          created_at: string
+          external_writes_allowed: boolean
+          id: string
+          name: string
+          notifications_live: boolean
+          receipt_mode: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_execution_mode?: string
+          analytics_mode?: string
+          approval_executes_live?: boolean
+          billing_live?: boolean
+          connector_writes_allowed?: boolean
+          created_at?: string
+          external_writes_allowed?: boolean
+          id?: string
+          name: string
+          notifications_live?: boolean
+          receipt_mode?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_execution_mode?: string
+          analytics_mode?: string
+          approval_executes_live?: boolean
+          billing_live?: boolean
+          connector_writes_allowed?: boolean
+          created_at?: string
+          external_writes_allowed?: boolean
+          id?: string
+          name?: string
+          notifications_live?: boolean
+          receipt_mode?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      demo_receipts: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          feature_id: string | null
+          id: string
+          receipt_type: string
+          scenario_id: string | null
+          simulated: boolean
+          summary: string | null
+          user_id: string
+          visible_to_roles: string[]
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          feature_id?: string | null
+          id?: string
+          receipt_type: string
+          scenario_id?: string | null
+          simulated?: boolean
+          summary?: string | null
+          user_id: string
+          visible_to_roles?: string[]
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          feature_id?: string | null
+          id?: string
+          receipt_type?: string
+          scenario_id?: string | null
+          simulated?: boolean
+          summary?: string | null
+          user_id?: string
+          visible_to_roles?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "demo_receipts_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "demo_scenarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      demo_scenario_artifacts: {
+        Row: {
+          artifact_ref: string | null
+          artifact_type: string
+          confidence_language: string | null
+          content: Json
+          created_at: string
+          deterministic: boolean
+          generated_at: string | null
+          id: string
+          label: string
+          scenario_id: string
+          user_id: string
+        }
+        Insert: {
+          artifact_ref?: string | null
+          artifact_type: string
+          confidence_language?: string | null
+          content?: Json
+          created_at?: string
+          deterministic?: boolean
+          generated_at?: string | null
+          id?: string
+          label: string
+          scenario_id: string
+          user_id: string
+        }
+        Update: {
+          artifact_ref?: string | null
+          artifact_type?: string
+          confidence_language?: string | null
+          content?: Json
+          created_at?: string
+          deterministic?: boolean
+          generated_at?: string | null
+          id?: string
+          label?: string
+          scenario_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "demo_scenario_artifacts_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "demo_scenarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      demo_scenario_entities: {
+        Row: {
+          created_at: string
+          description: string | null
+          entity_key: string
+          entity_type: string
+          id: string
+          label: string
+          metadata: Json
+          scenario_id: string
+          source_ref: string | null
+          user_id: string
+          visibility_scope: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          entity_key: string
+          entity_type: string
+          id?: string
+          label: string
+          metadata?: Json
+          scenario_id: string
+          source_ref?: string | null
+          user_id: string
+          visibility_scope?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          entity_key?: string
+          entity_type?: string
+          id?: string
+          label?: string
+          metadata?: Json
+          scenario_id?: string
+          source_ref?: string | null
+          user_id?: string
+          visibility_scope?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "demo_scenario_entities_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "demo_scenarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      demo_scenario_relationships: {
+        Row: {
+          created_at: string
+          from_entity_id: string
+          id: string
+          metadata: Json
+          relationship_type: string
+          scenario_id: string
+          to_entity_id: string
+          user_id: string
+          visibility_scope: string
+        }
+        Insert: {
+          created_at?: string
+          from_entity_id: string
+          id?: string
+          metadata?: Json
+          relationship_type: string
+          scenario_id: string
+          to_entity_id: string
+          user_id: string
+          visibility_scope?: string
+        }
+        Update: {
+          created_at?: string
+          from_entity_id?: string
+          id?: string
+          metadata?: Json
+          relationship_type?: string
+          scenario_id?: string
+          to_entity_id?: string
+          user_id?: string
+          visibility_scope?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "demo_scenario_relationships_from_entity_id_fkey"
+            columns: ["from_entity_id"]
+            isOneToOne: false
+            referencedRelation: "demo_scenario_entities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "demo_scenario_relationships_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "demo_scenarios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "demo_scenario_relationships_to_entity_id_fkey"
+            columns: ["to_entity_id"]
+            isOneToOne: false
+            referencedRelation: "demo_scenario_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      demo_scenarios: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          description: string | null
+          domain_coverage: string[]
+          id: string
+          name: string
+          narrative_summary: string | null
+          scenario_key: string
+          status: string
+          target_audience: string | null
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string | null
+          domain_coverage?: string[]
+          id?: string
+          name: string
+          narrative_summary?: string | null
+          scenario_key: string
+          status?: string
+          target_audience?: string | null
+          updated_at?: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string | null
+          domain_coverage?: string[]
+          id?: string
+          name?: string
+          narrative_summary?: string | null
+          scenario_key?: string
+          status?: string
+          target_audience?: string | null
+          updated_at?: string
+          user_id?: string
+          version?: number
+        }
+        Relationships: []
+      }
       dependency_maps: {
         Row: {
           blueprint_id: string | null
@@ -7046,6 +7447,120 @@ export type Database = {
         }
         Relationships: []
       }
+      mode_access_policies: {
+        Row: {
+          allowed_roles: string[]
+          allowed_tenants: string[]
+          created_at: string
+          id: string
+          mode_key: string
+          requires_demo_token: boolean
+          requires_operator_approval: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allowed_roles?: string[]
+          allowed_tenants?: string[]
+          created_at?: string
+          id?: string
+          mode_key: string
+          requires_demo_token?: boolean
+          requires_operator_approval?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allowed_roles?: string[]
+          allowed_tenants?: string[]
+          created_at?: string
+          id?: string
+          mode_key?: string
+          requires_demo_token?: boolean
+          requires_operator_approval?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      mode_aware_providers: {
+        Row: {
+          created_at: string
+          current_version: number
+          demo_implementation_ref: string | null
+          domain: string
+          id: string
+          provider_interface_name: string
+          real_implementation_ref: string | null
+          sandbox_implementation_ref: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_version?: number
+          demo_implementation_ref?: string | null
+          domain: string
+          id?: string
+          provider_interface_name: string
+          real_implementation_ref?: string | null
+          sandbox_implementation_ref?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_version?: number
+          demo_implementation_ref?: string | null
+          domain?: string
+          id?: string
+          provider_interface_name?: string
+          real_implementation_ref?: string | null
+          sandbox_implementation_ref?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      mode_truth_labels: {
+        Row: {
+          analytics_segregation_label: string
+          banner_style: string
+          created_at: string
+          disclosure_level: string
+          id: string
+          launch_claim_class: string
+          mode_key: string
+          proof_label_style: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          analytics_segregation_label?: string
+          banner_style?: string
+          created_at?: string
+          disclosure_level?: string
+          id?: string
+          launch_claim_class?: string
+          mode_key: string
+          proof_label_style?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          analytics_segregation_label?: string
+          banner_style?: string
+          created_at?: string
+          disclosure_level?: string
+          id?: string
+          launch_claim_class?: string
+          mode_key?: string
+          proof_label_style?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           action_url: string | null
@@ -9800,6 +10315,102 @@ export type Database = {
         }
         Relationships: []
       }
+      reality_mode_resolutions: {
+        Row: {
+          ai_policy_profile_id: string | null
+          analytics_profile_id: string | null
+          created_at: string
+          id: string
+          policy_profile_id: string | null
+          resolution_source: string
+          resolved_mode: string
+          route: string | null
+          scenario_id: string | null
+          session_id: string | null
+          tenant_id: string | null
+          user_id: string
+          workspace_id: string | null
+        }
+        Insert: {
+          ai_policy_profile_id?: string | null
+          analytics_profile_id?: string | null
+          created_at?: string
+          id?: string
+          policy_profile_id?: string | null
+          resolution_source?: string
+          resolved_mode?: string
+          route?: string | null
+          scenario_id?: string | null
+          session_id?: string | null
+          tenant_id?: string | null
+          user_id: string
+          workspace_id?: string | null
+        }
+        Update: {
+          ai_policy_profile_id?: string | null
+          analytics_profile_id?: string | null
+          created_at?: string
+          id?: string
+          policy_profile_id?: string | null
+          resolution_source?: string
+          resolved_mode?: string
+          route?: string | null
+          scenario_id?: string | null
+          session_id?: string | null
+          tenant_id?: string | null
+          user_id?: string
+          workspace_id?: string | null
+        }
+        Relationships: []
+      }
+      reality_modes: {
+        Row: {
+          active: boolean
+          created_at: string
+          default_ai_policy_profile_id: string | null
+          default_analytics_profile_id: string | null
+          default_policy_profile_id: string | null
+          description: string | null
+          id: string
+          launch_honesty_class: string
+          mode_key: string
+          name: string
+          side_effect_policy_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          default_ai_policy_profile_id?: string | null
+          default_analytics_profile_id?: string | null
+          default_policy_profile_id?: string | null
+          description?: string | null
+          id?: string
+          launch_honesty_class?: string
+          mode_key: string
+          name: string
+          side_effect_policy_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          default_ai_policy_profile_id?: string | null
+          default_analytics_profile_id?: string | null
+          default_policy_profile_id?: string | null
+          description?: string | null
+          id?: string
+          launch_honesty_class?: string
+          mode_key?: string
+          name?: string
+          side_effect_policy_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       reasoning_escalation_records: {
         Row: {
           approved: boolean | null
@@ -10785,6 +11396,53 @@ export type Database = {
           winback_strategy?: string | null
         }
         Relationships: []
+      }
+      scenario_launch_profiles: {
+        Row: {
+          created_at: string
+          default_landing_route: string | null
+          enabled_domains: string[]
+          hidden_domains: string[]
+          id: string
+          launch_path: string | null
+          route_set: string[]
+          scenario_id: string
+          startup_context: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          default_landing_route?: string | null
+          enabled_domains?: string[]
+          hidden_domains?: string[]
+          id?: string
+          launch_path?: string | null
+          route_set?: string[]
+          scenario_id: string
+          startup_context?: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          default_landing_route?: string | null
+          enabled_domains?: string[]
+          hidden_domains?: string[]
+          id?: string
+          launch_path?: string | null
+          route_set?: string[]
+          scenario_id?: string
+          startup_context?: Json
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scenario_launch_profiles_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "demo_scenarios"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       setup_sessions: {
         Row: {

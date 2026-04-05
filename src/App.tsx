@@ -237,6 +237,16 @@ const FIPBuilderConsole = lazy(() => import("./pages/admin/fip/FIPBuilderConsole
 // SAG — Sovereign AI Gateway
 const AIRuntimeStatus = lazy(() => import("./pages/admin/AIRuntimeStatus"));
 const PersistenceStatus = lazy(() => import("./pages/admin/PersistenceStatus"));
+const DRS01RealityModeOverview = lazy(() => import("./pages/admin/DRS01RealityModeOverview"));
+const DRS02ModeRegistryConsole = lazy(() => import("./pages/admin/DRS02ModeRegistryConsole"));
+const DRS03ScenarioLibrary = lazy(() => import("./pages/admin/DRS03ScenarioLibrary"));
+const DRS04ScenarioEntityGraph = lazy(() => import("./pages/admin/DRS04ScenarioEntityGraph"));
+const DRS05ProviderConsole = lazy(() => import("./pages/admin/DRS05ProviderConsole"));
+const DRS06DemoPolicySafety = lazy(() => import("./pages/admin/DRS06DemoPolicySafety"));
+const DRS07DemoAIControl = lazy(() => import("./pages/admin/DRS07DemoAIControl"));
+const DRS08AnalyticsSegregation = lazy(() => import("./pages/admin/DRS08AnalyticsSegregation"));
+const DRS09TruthLabeling = lazy(() => import("./pages/admin/DRS09TruthLabeling"));
+const DRS10DualRealityLaunchGate = lazy(() => import("./pages/admin/DRS10DualRealityLaunchGate"));
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
@@ -596,6 +606,16 @@ const App = () => (
                     {/* AI Runtime */}
                     <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
                     <Route path="/admin/persistence-status" element={<PersistenceStatus />} />
+                    <Route path="/admin/drs/overview" element={<DRS01RealityModeOverview />} />
+                    <Route path="/admin/drs/registry" element={<DRS02ModeRegistryConsole />} />
+                    <Route path="/admin/drs/scenarios" element={<DRS03ScenarioLibrary />} />
+                    <Route path="/admin/drs/entities" element={<DRS04ScenarioEntityGraph />} />
+                    <Route path="/admin/drs/providers" element={<DRS05ProviderConsole />} />
+                    <Route path="/admin/drs/safety" element={<DRS06DemoPolicySafety />} />
+                    <Route path="/admin/drs/ai-control" element={<DRS07DemoAIControl />} />
+                    <Route path="/admin/drs/analytics" element={<DRS08AnalyticsSegregation />} />
+                    <Route path="/admin/drs/truth" element={<DRS09TruthLabeling />} />
+                    <Route path="/admin/drs/launch-gate" element={<DRS10DualRealityLaunchGate />} />
 
                     {/* SAG — Sovereign AI Gateway */}
                     <Route path="/admin/sag/overview" element={<SAGOverview />} />
