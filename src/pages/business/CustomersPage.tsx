@@ -19,7 +19,8 @@ import CustomerAutopilotPanel from "@/components/autopilot/CustomerAutopilotPane
 import { useInspector } from "@/contexts/InspectorContext";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 
-import { MOCK_DEMO_CUSTOMERS, type MockCustomer } from "@/lib/mock-data";
+import { useCustomers } from "@/hooks/use-domain-data";
+import type { MockCustomer } from "@/lib/data-services/business-data-service";
 
 type Customer = MockCustomer;
 
