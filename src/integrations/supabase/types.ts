@@ -56,6 +56,120 @@ export type Database = {
         }
         Relationships: []
       }
+      advisor_feedback: {
+        Row: {
+          advisor_id: string
+          category: string | null
+          comment: string | null
+          corrected_response: string | null
+          created_at: string
+          feedback_type: string
+          id: string
+          message_id: string | null
+          original_response: string | null
+          rating: number | null
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          category?: string | null
+          comment?: string | null
+          corrected_response?: string | null
+          created_at?: string
+          feedback_type?: string
+          id?: string
+          message_id?: string | null
+          original_response?: string | null
+          rating?: number | null
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          category?: string | null
+          comment?: string | null
+          corrected_response?: string | null
+          created_at?: string
+          feedback_type?: string
+          id?: string
+          message_id?: string | null
+          original_response?: string | null
+          rating?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      advisor_knowledge: {
+        Row: {
+          advisor_id: string
+          confidence: number
+          content: string
+          created_at: string
+          id: string
+          source: string
+          status: string
+          tags: string[]
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          confidence?: number
+          content: string
+          created_at?: string
+          id?: string
+          source?: string
+          status?: string
+          tags?: string[]
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          confidence?: number
+          content?: string
+          created_at?: string
+          id?: string
+          source?: string
+          status?: string
+          tags?: string[]
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      advisor_memories: {
+        Row: {
+          advisor_id: string
+          content: string
+          created_at: string
+          id: string
+          memory_type: string
+          metadata: Json
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          content: string
+          created_at?: string
+          id?: string
+          memory_type?: string
+          metadata?: Json
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          memory_type?: string
+          metadata?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
       advisor_registry: {
         Row: {
           active: boolean
