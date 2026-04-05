@@ -226,6 +226,15 @@ const GrowthDNA = lazy(() => import("./pages/revenue-office/GrowthDNA"));
 const GrowthOperatingModes = lazy(() => import("./pages/revenue-office/GrowthOperatingModes"));
 const ChiefRevenueSynthesis = lazy(() => import("./pages/revenue-office/ChiefRevenueSynthesis"));
 const CommercialMemoryFeed = lazy(() => import("./pages/revenue-office/CommercialMemoryFeed"));
+const AutomationOffice = lazy(() => import("./pages/revenue-office/AutomationOffice"));
+const AutomationBuilder = lazy(() => import("./pages/revenue-office/AutomationBuilder"));
+const AutomationTemplates = lazy(() => import("./pages/revenue-office/AutomationTemplates"));
+const AutomationSimLab = lazy(() => import("./pages/revenue-office/AutomationSimLab"));
+const AutomationHealth = lazy(() => import("./pages/revenue-office/AutomationHealth"));
+const AutomationReceipts = lazy(() => import("./pages/revenue-office/AutomationReceipts"));
+const AutomationPolicy = lazy(() => import("./pages/revenue-office/AutomationPolicy"));
+const QuoteStudio = lazy(() => import("./pages/revenue-office/QuoteStudio"));
+const CallDesk = lazy(() => import("./pages/revenue-office/CallDesk"));
 
 const queryClient = createQueryClient();
 
