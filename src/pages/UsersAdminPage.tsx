@@ -15,9 +15,7 @@ import {
   Users, Search, Shield, Wifi, AlertTriangle, CheckCircle, Eye,
   ChevronRight, CreditCard, Headphones, Star, Clock,
 } from "lucide-react";
-import { MOCK_ADMIN_USERS } from "@/lib/mock-data";
-
-const mockUsers = MOCK_ADMIN_USERS;
+import { useAdminUsers } from "@/hooks/use-domain-data";
 
 export default function UsersAdminPage() {
   const [search, setSearch] = useState("");
