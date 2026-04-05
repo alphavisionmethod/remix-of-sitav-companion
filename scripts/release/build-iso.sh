@@ -159,6 +159,16 @@ if [ -d "${PROJECT_ROOT}/deploy/db-init" ]; then
   cp "${PROJECT_ROOT}/deploy/db-init/"*.sql "${SITA_DST}/deploy/db-init/" 2>/dev/null || true
 fi
 
+# Copy Supabase migrations (required for DB init)
+if [ -d "${PROJECT_ROOT}/supabase/migrations" ]; then
+  mkdir -p "${SITA_DST}/deploy/supabase/migrations"
+  cp "${PROJECT_ROOT}/supabase/migrations/"*.sql "${SITA_DST}/deploy/supabase/migrations/" 2>/dev/null || true
+  MIGRATION_COUNT=$(ls -1 "${SITA_DST}/deploy/supabase/migrations/"*.sql 2>/dev/null | wc -l)
+  echo "  ✅ ${MIGRATION_COUNT} Supabase migrations bundled"
+else
+  echo "  ⚠ No supabase/migrations/ found — DB tables may be missing"
+fi
+
 # Copy EULA
 if [ -f "${PROJECT_ROOT}/deploy/sita-eula.sh" ]; then
   cp "${PROJECT_ROOT}/deploy/sita-eula.sh" "${SITA_DST}/"
