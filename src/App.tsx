@@ -100,13 +100,7 @@ const CommunicationsPage = lazy(() => import("./pages/CommunicationsPage"));
 const NotificationSettingsPage = lazy(() => import("./pages/NotificationSettingsPage"));
 const NotificationCenter = lazy(() => import("./pages/NotificationCenter"));
 const CustomerHealthPage = lazy(() => import("./pages/CustomerHealthPage"));
-const GeneratedTruthDashboard = lazy(() => import("./pages/admin/GeneratedTruthDashboard"));
-const FleetHealthPage = lazy(() => import("./pages/admin/FleetHealthPage"));
-const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
-const TeamManagement = lazy(() => import("./pages/admin/TeamManagement"));
-const SystemManagement = lazy(() => import("./pages/admin/SystemManagement"));
-const UserManagement = lazy(() => import("./pages/admin/UserManagement"));
-const AITokenDashboard = lazy(() => import("./pages/admin/AITokenDashboard"));
+// Admin lazy imports moved to AdminRoutes.tsx
 const PersonalBrain = lazy(() => import("./pages/PersonalBrain"));
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
