@@ -1,35 +1,33 @@
+## Wave 5 — CI / E2E / Behavioral Truth / Launch Gate
 
-## Cron / Scheduler / Automation Reality
+### Phase 1: Database Schema
+Create tables for: `ci_runs`, `ci_jobs`, `e2e_journeys`, `e2e_runs`, `e2e_steps`, `runtime_probes`, `runtime_probe_runs`, `launch_gates`, `launch_gate_criteria`, `launch_blockers`, `route_truth_records`, `behavioral_regressions`
 
-### Database (Migration)
-1. **`scheduled_jobs`** — canonical job registry (id, name, domain, cron_expression, target_function, job_class, risk_tier, autonomy_tier, state, policy_family, kill_switch_class, last_run_at, next_run_at, retry_policy, max_retries, environment, metadata)
-2. **`job_executions`** — durable execution history (id, job_id, started_at, completed_at, status, attempt_number, output, error, duration_ms, policy_decision, verification_result, triggered_by)
-3. **`automation_kill_switches`** — global/domain/job kill switches (id, scope, scope_id, enabled, reason, activated_by, activated_at)
-4. RLS policies for all tables
+### Phase 2: GitHub Actions CI Pipeline
+- `.github/workflows/ci.yml` — typecheck, lint, unit tests, build, e2e
+- Artifact upload for Playwright reports
 
-### Edge Function
-5. **`scheduler-dispatch`** — the dispatcher that:
-   - Reads due jobs from `scheduled_jobs`
-   - Checks kill switches
-   - Checks policy gates
-   - Invokes target functions
-   - Records execution in `job_executions`
-   - Handles retries with backoff
-   - Respects demo/real mode
+### Phase 3: Playwright E2E Suite (P0 Journeys)
+- Auth: sign-in, protected routes, logout
+- Files: upload, browse, persistence
+- AI Chat: send message, degraded state handling
+- Core routes: home, admin, flagship routes load without crash
+- Command palette: open, navigate
+- Critical forms: settings persistence
 
-### pg_cron Setup
-6. Schedule `scheduler-dispatch` to run every minute via pg_cron + pg_net
+### Phase 4: Runtime Probes Edge Function
+- `runtime-probes` edge function checking: route health, edge function health, AI health, auth health, scheduler health
 
-### Seed Data
-7. Register canonical jobs: self-healing check, agent heartbeat, system maintenance, budget enforcement, digest generation
+### Phase 5: Admin Surfaces (LT01–LT07)
+- LT01: Behavioral Truth Overview
+- LT02: CI Pipeline Center
+- LT03: E2E Journey Board
+- LT04: Runtime Probe Center
+- LT05: Launch Gate Board
+- LT06: P0 Route & Interaction Truth Board
+- LT07: Truth Regression Radar
 
-### Admin Pages (9 pages, routed under /admin/automation/*)
-8. **AR01** — Automation Reality Overview
-9. **AR02** — Scheduled Job Registry
-10. **AR03** — Self-Healing Execution Board
-11. **AR04** — Agent Scheduler Control Plane
-12. **AR05** — System Maintenance Board
-13. **AR06** — Execution Trace Explorer
-14. **AR07** — Retry / Failure Center
-15. **AR08** — Kill Switch & Safety Center
-16. **AR09** — Automation Launch Gate
+### Phase 6: Launch Gate Logic
+- Evidence-based launch state calculation
+- Promotion blocking rules
+- Wire to truth surfaces
