@@ -1,134 +1,115 @@
 
+# SITA OS — Premium Shell Surfaces Implementation
 
-# SITA OS — Complete Setup Ceremony Implementation
+## What Exists (Keep & Enhance)
+- `LockScreen.tsx` — basic password lock, needs trust-aware states, privacy modes, approval indicators, ambient upgrade
+- `PostArrivalDesktop.tsx` — first-arrival view, needs to evolve into the persistent living desktop
+- `CommandPalette.tsx` — basic cmdk search, needs intent/simulation/capture/trust-aware modes
+- `ShellLayout.tsx` — shell frame with sidebar/topbar, needs ambient background system + shell state machine
+- `SitaTopBar.tsx` — functional top bar, needs trust indicator, approval badge, refined layout
+- `MacDock.tsx` — basic dock, needs workspace pinning + continuity indicators
+- `DesktopEntryCeremony.tsx` — transition animation, keep as-is
+- Full design token system in `index.css` — excellent foundation
 
-## What Already Exists (Extensive)
+## Implementation Plan (7 Tasks)
 
-The project has a mature setup system with:
-- **42 setup phases** defined in `SetupPhaseId` with a 12-state status machine
-- **Full orchestration engine** (`SetupOrchestrationEngine`) with DAG-based sequencing, branching, rollback, persistence, resume
-- **40 setup components** in `src/components/sita/setup/` (shells, panels, cards, controls)
-- **36 onboarding step components** in `src/components/sita/onboarding/`
-- **1218-line orchestrator** (`OSSetupExperience.tsx`) wiring all phases together
-- **PostArrivalDesktop** component with welcome card, boardroom brief, priorities
-- **DesktopTransitionStep** with 10-stage cinematic animation
+### 1. Shell Ambient Background System
+Create `src/components/sita/shell/ShellAmbientBackground.tsx`
+- Shared ambient canvas used by Lock Screen, Desktop, and Setup
+- Responds to time-of-day, trust state, and display mode
+- Subtle gradient orbs with breathing animation
+- `useReducedMotion` aware
+- CSS variables for ambient colors so all surfaces share DNA
 
-## What's Missing
+### 2. Enhanced Lock Screen
+Rewrite `LockScreen.tsx` with:
+- **Trust state indicator** (secure/approval-waiting/attention-needed/quiet/offline)
+- **Pending approvals count** badge
+- **Urgent alerts summary** (bills due, calendar conflicts, critical follow-ups)
+- **Privacy-aware modes**: personal (show details), shared (counts only), managed (policy alerts)
+- **Notification summary** strip at bottom
+- **Day glance** (next meeting, top priority)
+- **Unlock states**: idle → biometric_ready → scanning → success/failed → unlocking
+- **Ambient background** from shared system
+- **Smooth unlock→desktop dissolve** transition (not hard cut)
+- **Network/connectivity status** chip
+- **Calendar quick-view** if privacy allows
 
-### A. Missing Screens (3 screens)
-1. **Restore Preview** — referenced in contracts but no step component. Needs profile, last-used info, restorable categories, selective restore
-2. **Deferred Completion Center** — no component. Post-arrival hub for skipped items
-3. **Enhanced Device Readiness** — exists but needs battery awareness, update categories, reboot continuation
+### 3. Living Desktop Surface
+Create `src/components/sita/shell/DesktopSurface.tsx` — the primary home screen replacing current `/` route content:
+- **Top system bar** stays (SitaTopBar, already exists)
+- **Center canvas** with adaptive modules:
+  - Boardroom preview card (compact domain health)
+  - Today summary card (meetings, tasks, bills, follow-ups)
+  - Active workflows card
+  - Continuity card ("You were working on…", "Drafts prepared")
+  - Advisor insights strip
+- **Quick actions row** (Start day review, Enter boardroom, Review approvals, Capture note)
+- **Trust mode indicator** (suggest/preview-first/approval-required/quiet)
+- **Personalization**: adapts card ordering based on `primaryUseMode` from setup
+- **States**: first_arrival, returning_user, quiet_mode, offline_mode, empty_state, approvals_waiting
+- **Empty state**: useful even with no data (surfaces planning, starter workflows)
+- Dock remains at bottom via ShellLayout
 
-### B. Missing Experience Layers (7 systems)
-1. **Emotional Arc Controller** — pacing metadata per phase (mystery → safety → ownership → personalization → confidence → delight → arrival)
-2. **Signature Wow Moments** — 7 hero animations at key transitions
-3. **Reflection Copy Engine** — personalized text reflecting user choices ("You chose quiet guidance — we'll keep things calm")
-4. **Progressive Confidence Visualization** — subtle "environment understanding" indicator
-5. **Chapter Transition Choreography** — animated transitions between major phase groups
-6. **"Why Recommended" Layer** — visible reasoning for every recommendation
-7. **Ambient Maturity System** — background visuals evolving across phases
+### 4. Universal Command Surface
+Rewrite `CommandPalette.tsx` as `src/components/sita/shell/UniversalCommandSurface.tsx`:
+- **4 modes in one**:
+  - Instant command (direct actions)
+  - Intent understanding (natural language → structured result)
+  - Search (cross-entity retrieval)
+  - Simulation preview (trust-aware action preview)
+- **Trust-aware execution**: low-risk → instant, medium → preview, high → approval gate
+- **Quick capture**: "note: …", "remind me …", "new lead …" parsed into actions
+- **Command suggestions** adaptive by context, time-of-day, workspace
+- **Result categories**: Actions, Workspaces, People, Tasks, Calendar, Files, Finance, Proof, Settings
+- **Simulation panel**: shows affected entities, policy implications, proof that will be created
+- **Recent commands** section
+- **Rich result cards** with domain colors and status badges
+- **Keyboard-first**: arrow nav, category jump, hotkeys
+- **States**: closed → opening → active → searching → previewing → executing → result_ready
 
-### C. Missing Integration Points (3 items)
-1. World Model → Recommendation reasoning
-2. Setup → Deferred Completion Center pipeline
-3. Restore Preview phase in orchestration DAG
+### 5. Shell State Machine & Integration Layer
+Create `src/components/sita/shell/useShellState.ts`:
+- Shell state: `locked | unlocking | desktop | command_open | workspace_active`
+- Trust posture: derives from trust profile + pending approvals + active incidents
+- Notification digest: aggregates notification counts by domain
+- Continuity context: tracks last workspace, draft state, pending items
+- Connects lock→desktop→command transitions
+- Shared by all shell surfaces
 
----
+### 6. Shell Surface Wiring
+Update `ShellLayout.tsx`:
+- Integrate `ShellAmbientBackground` behind content
+- Wire `UniversalCommandSurface` replacing old `CommandPalette`
+- Add shell state context
+- Update `SitaTopBar` with trust indicator chip and approval badge
+- Ensure lock→desktop dissolve works via shell state
 
-## Implementation Plan
+### 7. Desktop Route Integration
+Update home route to use `DesktopSurface` instead of current `DailyPulse` or existing home content:
+- Wire to existing data hooks (notifications, approvals, workflows)
+- Connect boardroom summary
+- Connect advisor insights
+- Ensure PostArrivalDesktop is shown on first visit, then DesktopSurface on return
 
-### Phase 1: Foundational Data Modules
-
-**1.1 Emotional Arc Controller** (`src/lib/setup/emotional-arc.ts`)
-- Map each of 42 phases to emotional target: mystery, safety, ownership, personalization, confidence, delight, arrival
-- Export `getEmotionalTarget(phase)` returning arc metadata (energy, warmth, ambient hue, chapter name)
-
-**1.2 Reflection Copy Engine** (`src/lib/setup/reflection-copy.ts`)
-- Takes `SetupData` state, returns contextual summary strings
-- 30-40 copy templates keyed by state combinations
-- Used in arrival prep, learning panel, advisor activation, first-win
-
-### Phase 2: Missing Screens
-
-**2.1 RestorePreviewStep** (`src/components/sita/onboarding/RestorePreviewStep.tsx`)
-- Profile image, environment name, "Last used on..." timestamp
-- Restorable category cards with selective toggles
-- CTAs: Restore / Start fresh / Restore later
-- Add `restore-preview` to `SetupPhaseId` and phase definitions
-- Conditional on `accountPath === "restore"`
-
-**2.2 DeferredCompletionCenter** (`src/components/sita/setup/DeferredCompletionCenter.tsx`)
-- "Finish setup your way" heading
-- Cards for each skipped item (biometrics, connections, personalization, recovery)
-- Non-nagging, elegant design
-- Wire into PostArrivalDesktop as expandable section
-
-**2.3 Enhanced DeviceReadinessStep**
-- Battery awareness with low-battery hold
-- Update categories: Security, Stability, Device readiness, Recovery
-- Reboot continuation via persistence manager
-
-### Phase 3: Wow & Polish Components
-
-**3.1 Signature Wow Moments** (`src/components/sita/setup/SignatureWowMoment.tsx`)
-- 7 hero animations: boot formation, secure stabilization, timezone light map, restore return, world model assembly, trust spectrum, desktop reveal
-- Each 1.5-3s, skippable, respects reduced motion
-
-**3.2 Chapter Transition Controller** (`src/components/sita/setup/ChapterTransition.tsx`)
-- 6 chapter boundaries with cinematic bridge animations
-- Foundation → Identity → Personalization → Intelligence → Activation → Arrival
-
-**3.3 Progressive Confidence Indicator** (`src/components/sita/setup/ConfidenceIndicator.tsx`)
-- Levels: basic → forming → understanding → ready
-- Computed from phase completion + data completeness
-
-**3.4 Enhanced Ambient Formation Canvas**
-- Accept `emotionalPhase` prop
-- Background evolves: cold/abstract → warm/structured → personalized → alive
-
-### Phase 4: Integration & Wiring
-
-- Wire restore-preview into `OSSetupExperience.tsx` and orchestration DAG
-- Wire deferred items from `skippedPhases` to completion center
-- Wire reflection copy into ArrivalPrepStep, LearningPanel, AdvisorActivationStep, FirstWinSetupStep
-- Wire confidence indicator into PhaseProgressRail
-- Wire chapter transitions between phase groups in `goNext`
-- Add "Why recommended" reasoning to recommendation components
-- Update barrel exports in `setup/index.ts`
-- Verify TypeScript compilation
-
----
-
-## Files
-
+## Files Created/Modified
 | File | Action |
 |------|--------|
-| `src/lib/setup/emotional-arc.ts` | New |
-| `src/lib/setup/reflection-copy.ts` | New |
-| `src/components/sita/onboarding/RestorePreviewStep.tsx` | New |
-| `src/components/sita/setup/DeferredCompletionCenter.tsx` | New |
-| `src/components/sita/setup/SignatureWowMoment.tsx` | New |
-| `src/components/sita/setup/ChapterTransition.tsx` | New |
-| `src/components/sita/setup/ConfidenceIndicator.tsx` | New |
-| `src/components/sita/setup/AmbientFormationCanvas.tsx` | Update |
-| `src/components/sita/setup/index.ts` | Update |
-| `src/components/sita/OSSetupExperience.tsx` | Update |
-| `src/components/sita/PostArrivalDesktop.tsx` | Update |
-| `src/components/sita/onboarding/DeviceReadinessStep.tsx` | Update |
-| `src/components/sita/onboarding/AdvisorActivationStep.tsx` | Update |
-| `src/components/sita/onboarding/FirstWinSetupStep.tsx` | Update |
-| `src/components/sita/onboarding/ArrivalPrepStep.tsx` | Update |
-| `src/components/sita/onboarding/LearningPanel.tsx` | Update |
-| `src/packages/contracts/specialized/setup-orchestration.ts` | Update |
-| `src/lib/engines/setup-phase-definitions.ts` | Update |
+| `src/components/sita/shell/ShellAmbientBackground.tsx` | Create |
+| `src/components/sita/shell/useShellState.ts` | Create |
+| `src/components/sita/shell/DesktopSurface.tsx` | Create |
+| `src/components/sita/shell/UniversalCommandSurface.tsx` | Create |
+| `src/components/sita/shell/index.ts` | Create |
+| `src/components/sita/LockScreen.tsx` | Rewrite |
+| `src/components/sita/ShellLayout.tsx` | Update |
+| `src/components/sita/SitaTopBar.tsx` | Update |
+| `src/pages/Index.tsx` | Update (wire DesktopSurface) |
 
 ## Order
-1. Foundational modules (emotional-arc, reflection-copy)
-2. New screens (RestorePreview, DeferredCompletionCenter)
-3. Wow components (SignatureWowMoment, ChapterTransition, ConfidenceIndicator)
-4. Enhanced existing (AmbientFormationCanvas, DeviceReadinessStep)
-5. Full wiring into OSSetupExperience + PostArrivalDesktop
-6. Recommendation reasoning layer
-7. Barrel exports + TypeScript verification
-
+1. Shell ambient background + useShellState (foundations)
+2. Lock Screen enhancement
+3. Desktop Surface
+4. Universal Command Surface
+5. Shell Layout wiring + TopBar updates
+6. Route integration
+7. TypeScript verification
