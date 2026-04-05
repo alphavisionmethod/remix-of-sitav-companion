@@ -830,6 +830,11 @@ const App = () => (
                     <Route path="/admin/system" element={<SystemManagement />} />
                     <Route path="/admin/users" element={<UserManagement />} />
                     <Route path="/admin/ai-tokens" element={<AITokenDashboard />} />
+                    <Route path="/admin/incidents" element={<IncidentCommandCenter />} />
+                    <Route path="/admin/deployment" element={<AdminDeploymentTruthCenter />} />
+                    <Route path="/admin/proof-matrix" element={<ProofMatrixExplorer />} />
+                    <Route path="/admin/connectors" element={<ConnectorGovernanceCenter />} />
+                    <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
