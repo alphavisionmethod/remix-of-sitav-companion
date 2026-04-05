@@ -1,14 +1,13 @@
-import { SitaPageHeader, SitaSectionHeader, SitaButton, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaPageHeader, SitaSectionHeader, SitaButton, SitaCard } from "@/components/sita/SitaCard";
 import { SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
-import { RetrievalResultCard } from "@/components/sita/FilesComponents";
 import { useState, useMemo } from "react";
-import { Search, Filter, FileText } from "lucide-react";
+import { Search, FileText } from "lucide-react";
 import { motion } from "framer-motion";
-import { SearchFabricService, type IndexableItem, type SearchResponse } from "@/lib/core-services/search-fabric";
+import { SearchFabricService, type SearchResponse } from "@/lib/core-services/search-fabric";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useFilesSearchIndex } from "@/hooks/use-domain-data";
-
+import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 
 type FilterType = "all" | "business" | "finance" | "concierge" | "obligations" | "deadlines";
 
@@ -22,7 +21,7 @@ const domainFilterMap: Record<FilterType, string[] | undefined> = {
 };
 
 const FilesSearch = () => {
-  const { data: searchData = [] } = useFilesSearchIndex();
+  const { data: searchData = [], isLoading } = useFilesSearchIndex();
 
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<FilterType>("all");
@@ -32,7 +31,7 @@ const FilesSearch = () => {
     const svc = new SearchFabricService();
     svc.addBatch(searchData);
     return svc;
-  }, []);
+  }, [searchData]);
 
   const handleSearch = (q?: string) => {
     const searchQuery = q ?? query;
@@ -110,13 +109,14 @@ const FilesSearch = () => {
         </div>
       </div>
 
-      {searchResponse ? (
+      {isLoading ? (
+        <SectionSkeleton cards={3} columns={1} />
+      ) : searchResponse ? (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <SitaSectionHeader title="Results" subtitle={`${searchResponse.facets.totalResults} items matched in ${searchResponse.took}ms`} />
           </div>
 
-          {/* Facets */}
           {searchResponse.facets.totalResults > 0 && (
             <div className="flex flex-wrap gap-2">
               {Object.entries(searchResponse.facets.byDomain).map(([domain, count]) => (
