@@ -576,20 +576,6 @@ const App = () => (
                     <Route path="/revenue-office/calls" element={<CallDesk />} />
                     <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
 
-// SAG — Sovereign AI Gateway
-const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
-const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
-const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
-const SAGProviderHealth = lazy(() => import("./pages/admin/sag/SAGProviderHealth"));
-const SAGPromptRegistry = lazy(() => import("./pages/admin/sag/SAGPromptRegistry"));
-const SAGEconomicsBoard = lazy(() => import("./pages/admin/sag/SAGEconomicsBoard"));
-const SAGCostConfidenceLab = lazy(() => import("./pages/admin/sag/SAGCostConfidenceLab"));
-const SAGMultiStageExplorer = lazy(() => import("./pages/admin/sag/SAGMultiStageExplorer"));
-const SAGReceiptExplorer = lazy(() => import("./pages/admin/sag/SAGReceiptExplorer"));
-const SAGFallbackCenter = lazy(() => import("./pages/admin/sag/SAGFallbackCenter"));
-const SAGBuilderConsole = lazy(() => import("./pages/admin/sag/SAGBuilderConsole"));
-const SAGComplianceGate = lazy(() => import("./pages/admin/sag/SAGComplianceGate"));
-
 
                     {/* Digital Presence Office */}
                     <Route path="/digital-presence" element={<PresenceGate />} />
