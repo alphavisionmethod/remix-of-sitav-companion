@@ -518,8 +518,8 @@ describe("No-Hallucination Contract Integration", () => {
 // ═══════════════════════════════════════════════════════════════
 
 describe("Boardroom Packet E2E", () => {
-  it("morning briefing packet has all required fields", () => {
-    const packet = generateBoardroomPacket("morning-briefing");
+  it("morning briefing packet has all required fields", async () => {
+    const packet = await generateBoardroomPacket("morning-briefing");
     expect(packet.packetId).toBeTruthy();
     expect(packet.type).toBe("morning-briefing");
     expect(packet.sections.length).toBeGreaterThan(0);
@@ -529,28 +529,28 @@ describe("Boardroom Packet E2E", () => {
     expect(packet.receipt.generationTimeMs).toBeGreaterThanOrEqual(0);
   });
 
-  it("financial health packet only includes finance domain", () => {
-    const packet = generateBoardroomPacket("financial-health");
+  it("financial health packet only includes finance domain", async () => {
+    const packet = await generateBoardroomPacket("financial-health");
     expect(packet.sections.some(s => s.id.startsWith("fin-"))).toBe(true);
     expect(packet.dataSources.every(ds => ds.domain === "finance")).toBe(true);
   });
 
-  it("packet receipt chain is valid", () => {
-    const packet = generateBoardroomPacket("morning-briefing");
+  it("packet receipt chain is valid", async () => {
+    const packet = await generateBoardroomPacket("morning-briefing");
     expect(packet.receipt.receiptId).toContain(packet.packetId);
     expect(packet.receipt.sectionsGenerated).toBe(packet.sections.length);
     expect(packet.receipt.dataSourcesQueried).toBe(packet.dataSources.length);
   });
 
-  it("packet includes no-hallucination contracts", () => {
-    const packet = generateBoardroomPacket("morning-briefing");
+  it("packet includes no-hallucination contracts", async () => {
+    const packet = await generateBoardroomPacket("morning-briefing");
     expect(packet.confidenceEnvelope).toBeDefined();
     expect(packet.groundingReport).toBeDefined();
     expect(packet.contradictions).toBeDefined();
   });
 
-  it("perspective filtering integrates with packets", () => {
-    const packet = generateBoardroomPacket("morning-briefing");
+  it("perspective filtering integrates with packets", async () => {
+    const packet = await generateBoardroomPacket("morning-briefing");
     const exec = filterSectionsByPerspective(packet.sections, "executive");
     const analyst = filterSectionsByPerspective(packet.sections, "analyst");
     expect(exec.length).toBeLessThanOrEqual(analyst.length);
