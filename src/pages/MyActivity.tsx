@@ -153,7 +153,6 @@ const MyActivity = () => {
       <SitaPageHeader
         title="My Activity"
         subtitle="Your usage patterns and system engagement"
-        icon={<Activity className="h-5 w-5 text-primary" />}
       />
 
       {/* Summary cards */}
