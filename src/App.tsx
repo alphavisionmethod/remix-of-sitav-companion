@@ -200,6 +200,21 @@ const CapitalPurpose = lazy(() => import("./pages/investment-office/CapitalPurpo
 const WhatWouldBreak = lazy(() => import("./pages/investment-office/WhatWouldBreak"));
 const DisagreementEngine = lazy(() => import("./pages/investment-office/DisagreementEngine"));
 const FamilyOffice = lazy(() => import("./pages/investment-office/FamilyOffice"));
+const RevenueGate = lazy(() => import("./pages/revenue-office/RevenueGate"));
+const GrowthBoardroom = lazy(() => import("./pages/revenue-office/GrowthBoardroom"));
+const RelationshipCenter = lazy(() => import("./pages/revenue-office/RelationshipCenter"));
+const PipelineStudio = lazy(() => import("./pages/revenue-office/PipelineStudio"));
+const FunnelBuilder = lazy(() => import("./pages/revenue-office/FunnelBuilder"));
+const CampaignOrchestrator = lazy(() => import("./pages/revenue-office/CampaignOrchestrator"));
+const BookingCenter = lazy(() => import("./pages/revenue-office/BookingCenter"));
+const OffersWorkspace = lazy(() => import("./pages/revenue-office/OffersWorkspace"));
+const ReputationEngine = lazy(() => import("./pages/revenue-office/ReputationEngine"));
+const RevenueIntelligence = lazy(() => import("./pages/revenue-office/RevenueIntelligence"));
+const RetentionOffice = lazy(() => import("./pages/revenue-office/RetentionOffice"));
+const GrowthAdvisorBoard = lazy(() => import("./pages/revenue-office/GrowthAdvisorBoard"));
+const JourneyTwin = lazy(() => import("./pages/revenue-office/JourneyTwin"));
+const LeakDetector = lazy(() => import("./pages/revenue-office/LeakDetector"));
+const ConversionLab = lazy(() => import("./pages/revenue-office/ConversionLab"));
 
 const queryClient = createQueryClient();
 
