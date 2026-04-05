@@ -250,6 +250,15 @@ const DRS10DualRealityLaunchGate = lazy(() => import("./pages/admin/DRS10DualRea
 const MockEliminationCenter = lazy(() => import("./pages/admin/MockEliminationCenter"));
 const DomainRealityBoard = lazy(() => import("./pages/admin/DomainRealityBoard"));
 const RouteSourceDiagnostics = lazy(() => import("./pages/admin/RouteSourceDiagnostics"));
+const AR01AutomationOverview = lazy(() => import("./pages/admin/AR01AutomationOverview"));
+const AR02ScheduledJobRegistry = lazy(() => import("./pages/admin/AR02ScheduledJobRegistry"));
+const AR03SelfHealingBoard = lazy(() => import("./pages/admin/AR03SelfHealingBoard"));
+const AR04AgentScheduler = lazy(() => import("./pages/admin/AR04AgentScheduler"));
+const AR05SystemMaintenanceBoard = lazy(() => import("./pages/admin/AR05SystemMaintenanceBoard"));
+const AR06ExecutionTraceExplorer = lazy(() => import("./pages/admin/AR06ExecutionTraceExplorer"));
+const AR07RetryFailureCenter = lazy(() => import("./pages/admin/AR07RetryFailureCenter"));
+const AR08KillSwitchCenter = lazy(() => import("./pages/admin/AR08KillSwitchCenter"));
+const AR09AutomationLaunchGate = lazy(() => import("./pages/admin/AR09AutomationLaunchGate"));
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
