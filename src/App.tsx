@@ -619,6 +619,9 @@ const App = () => (
                     <Route path="/admin/drs/analytics" element={<DRS08AnalyticsSegregation />} />
                     <Route path="/admin/drs/truth" element={<DRS09TruthLabeling />} />
                     <Route path="/admin/drs/launch-gate" element={<DRS10DualRealityLaunchGate />} />
+                    <Route path="/admin/mock-elimination" element={<MockEliminationCenter />} />
+                    <Route path="/admin/domain-reality" element={<DomainRealityBoard />} />
+                    <Route path="/admin/route-diagnostics" element={<RouteSourceDiagnostics />} />
 
                     {/* SAG — Sovereign AI Gateway */}
                     <Route path="/admin/sag/overview" element={<SAGOverview />} />
