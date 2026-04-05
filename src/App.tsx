@@ -879,6 +879,14 @@ const App = () => (
                     <Route path="/admin/integration-concierge" element={<IntegrationConciergePage />} />
                     <Route path="/admin/revenue-autopilot" element={<RevenueAutopilotMonitor />} />
                     <Route path="/admin/proof-ledger" element={<InvestorProofLedger />} />
+                    <Route path="/admin/ai-engineering" element={<AIEngineeringBoard />} />
+                    <Route path="/admin/ai-team-roster" element={<AITeamRoster />} />
+                    <Route path="/admin/ai-missions" element={<AIMissionCenter />} />
+                    <Route path="/admin/ai-fix-center" element={<AIFixCenter />} />
+                    <Route path="/admin/ai-self-healing" element={<AISelfHealing />} />
+                    <Route path="/admin/ai-design-studio" element={<AIDesignStudio />} />
+                    <Route path="/admin/ai-learning" element={<AILearningCenter />} />
+                    <Route path="/admin/ai-approvals" element={<AIApprovalDesk />} />
                     <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
