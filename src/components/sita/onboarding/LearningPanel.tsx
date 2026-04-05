@@ -8,11 +8,11 @@ interface SetupSnapshot {
   enabledDomains: string[];
   trustLevel: string;
   aiStyle: string;
-  painPoints: string[];
-  protectionPriorities: string[];
-  presenceStyle: string;
-  rituals: string[];
-  homeComposition: string;
+  painPoints?: string[];
+  protectionPriorities?: string[];
+  presenceStyle?: string;
+  rituals?: string[];
+  homeComposition?: string;
 }
 
 interface LearningPanelProps {
