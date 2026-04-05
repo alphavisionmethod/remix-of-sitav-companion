@@ -47,17 +47,12 @@ serve(async (req) => {
       return corsResponse({ success: true, message: `Command '${command}' queued for device ${device_id}` });
     }
 
-    // GET: list pending commands for a device (polled by OS agent)
     if (req.method === "GET") {
       const url = new URL(req.url);
       const deviceId = url.searchParams.get("device_id");
-      if (!deviceId) {
-        return new Response(JSON.stringify({ error: "device_id required" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
+      if (!deviceId) return corsError("device_id required", 400);
 
-      const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+      const adminClient = getServiceClient();
       const { data: commands } = await adminClient.from("agent_signals")
         .select("*")
         .eq("agent_id", deviceId)
@@ -65,18 +60,12 @@ serve(async (req) => {
         .eq("processed", false)
         .order("created_at", { ascending: true });
 
-      return new Response(JSON.stringify({ commands: commands || [] }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return corsResponse({ commands: commands || [] });
     }
 
-    return new Response(JSON.stringify({ error: "Method not allowed" }), {
-      status: 405, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return corsError("Method not allowed", 405);
   } catch (e) {
     console.error("os-command error:", e);
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown" }), {
-      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return corsError(e instanceof Error ? e.message : "Unknown", 500);
   }
 });
