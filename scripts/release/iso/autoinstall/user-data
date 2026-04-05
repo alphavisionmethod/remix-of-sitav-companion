@@ -211,7 +211,7 @@ autoinstall:
     # Configure audit daemon
     - curtin in-target -- systemctl enable auditd
 
-    # Set MOTD
+    # Set MOTD (version substituted by build-iso.sh via sed)
     - |
       cat > /target/etc/motd << 'MOTD'
 
@@ -226,6 +226,22 @@ autoinstall:
       ═══════════════════════════════════════════════════════
 
       MOTD
+
+    # Install EULA prompt
+    - |
+      if [ -f /cdrom/sita/sita-eula.sh ]; then
+        cp /cdrom/sita/sita-eula.sh /target/etc/profile.d/sita-eula.sh
+        chmod +x /target/etc/profile.d/sita-eula.sh
+      fi
+
+    # Install logrotate config
+    - |
+      if [ -f /cdrom/sita/logrotate-sita.conf ]; then
+        cp /cdrom/sita/logrotate-sita.conf /target/etc/logrotate.d/sita
+      fi
+
+    # Enable open-vm-tools
+    - curtin in-target -- systemctl enable open-vm-tools 2>/dev/null || true
 
     # Schedule first-boot script
     - |
