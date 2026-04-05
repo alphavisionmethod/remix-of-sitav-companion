@@ -1,12 +1,16 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useRealityClassifications, useClassificationStats } from "@/hooks/useRealityClassifications";
 import { useMockReplacements, useMockReplacementStats } from "@/hooks/useMockReplacements";
 import { useDetectionReport, useIntegrationStatuses } from "@/hooks/useRealityDetection";
-import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Layers, Rocket, Scan, Link2 } from "lucide-react";
+import { autoSeedAll } from "@/lib/detection/auto-seed";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Layers, Rocket, Scan, Link2, Zap } from "lucide-react";
 
 const STATE_COLORS = {
   presentational: { bg: "bg-muted", text: "text-muted-foreground", icon: Eye, label: "Presentational" },
@@ -22,6 +26,22 @@ export default function RealityConversionOverview() {
   const mStats = useMockReplacementStats(mockReplacements);
   const { data: detectionReport } = useDetectionReport();
   const { data: integrations = [] } = useIntegrationStatuses();
+  const qc = useQueryClient();
+  const [seeding, setSeeding] = useState(false);
+
+  const handleAutoSeed = async () => {
+    setSeeding(true);
+    try {
+      const result = await autoSeedAll();
+      toast.success(`Seeded ${result.classifications.seeded} classifications + ${result.replacements.seeded} mock replacements (${result.classifications.skipped + result.replacements.skipped} skipped)`);
+      qc.invalidateQueries({ queryKey: ["reality-classifications"] });
+      qc.invalidateQueries({ queryKey: ["mock-replacements"] });
+    } catch (e: any) {
+      toast.error(e.message || "Seed failed");
+    } finally {
+      setSeeding(false);
+    }
+  };
 
   const domainRollup = useMemo(() => {
     const map = new Map<string, { total: number; proven: number; simulated: number }>();
@@ -47,9 +67,14 @@ export default function RealityConversionOverview() {
 
   return (
     <div className="space-y-6 p-6">
-      <div>
-        <h1 className="text-2xl font-bold">Reality Conversion Overview</h1>
-        <p className="text-sm text-muted-foreground">Executive overview of platform reality state — RCP01</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Reality Conversion Overview</h1>
+          <p className="text-sm text-muted-foreground">Executive overview of platform reality state — RCP01</p>
+        </div>
+        <Button onClick={handleAutoSeed} disabled={seeding} variant="outline" size="sm" className="gap-2">
+          <Zap className="h-4 w-4" />{seeding ? "Seeding..." : "Auto-Seed from Audit"}
+        </Button>
       </div>
 
       {/* State Distribution Band */}
