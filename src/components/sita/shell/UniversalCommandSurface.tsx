@@ -186,6 +186,7 @@ export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfa
   const [commandState, setCommandState] = useState<CommandState>("ready");
   const [captureData, setCaptureData] = useState<{ type: string; value: string } | null>(null);
   const [previewItem, setPreviewItem] = useState<SearchResult | null>(null);
+  const [aiAnswer, setAiAnswer] = useState("");
   const [recentCommands, setRecentCommands] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem("sita-recent-cmds") || "[]").slice(0, 6); } catch { return []; }
   });
