@@ -20,6 +20,8 @@ export default function RealityConversionOverview() {
   const { data: mockReplacements = [] } = useMockReplacements();
   const cStats = useClassificationStats(classifications);
   const mStats = useMockReplacementStats(mockReplacements);
+  const { data: detectionReport } = useDetectionReport();
+  const { data: integrations = [] } = useIntegrationStatuses();
 
   const domainRollup = useMemo(() => {
     const map = new Map<string, { total: number; proven: number; simulated: number }>();
