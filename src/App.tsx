@@ -115,6 +115,7 @@ const GeneratedTruthDashboard = lazy(() => import("./pages/admin/GeneratedTruthD
 const FleetHealthPage = lazy(() => import("./pages/admin/FleetHealthPage"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const TeamManagement = lazy(() => import("./pages/admin/TeamManagement"));
+const SystemManagement = lazy(() => import("./pages/admin/SystemManagement"));
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
