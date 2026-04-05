@@ -3442,12 +3442,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cleanup_expired_signals: { Args: never; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      update_ai_budget_usage: {
+        Args: { p_cost: number; p_tokens: number; p_user_id: string }
+        Returns: Json
       }
     }
     Enums: {

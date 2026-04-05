@@ -6,11 +6,13 @@ import { Progress } from "@/components/ui/progress";
 import {
   Activity, Users, Server, Cpu, DollarSign, Shield, Zap, BarChart3,
   ArrowUpRight, ArrowDownRight, Clock, CheckCircle, AlertTriangle,
-  Settings, Eye, RefreshCw, TrendingUp, Globe, Database, HardDrive,
-  Wifi, Lock, Bell, FileText, GitBranch, Layers
+  Settings, Eye, RefreshCw, Globe, Database, HardDrive,
+  Wifi, Lock, Bell, FileText
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const fadeUp = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -22,10 +24,9 @@ interface MetricCardProps {
   trend?: "up" | "down" | "neutral";
   icon: React.ElementType;
   color: string;
-  sparkline?: number[];
 }
 
-const MetricCard = ({ title, value, change, trend, icon: Icon, color, sparkline }: MetricCardProps) => (
+const MetricCard = ({ title, value, change, trend, icon: Icon, color }: MetricCardProps) => (
   <motion.div variants={fadeUp}>
     <Card className="relative overflow-hidden group hover:shadow-md transition-shadow">
       <CardContent className="p-4">
@@ -44,15 +45,6 @@ const MetricCard = ({ title, value, change, trend, icon: Icon, color, sparkline 
             <Icon className="h-5 w-5" />
           </div>
         </div>
-        {sparkline && (
-          <div className="mt-3 flex items-end gap-0.5 h-8">
-            {sparkline.map((v, i) => (
-              <div key={i} className="flex-1 rounded-sm bg-primary/20" style={{ height: `${(v / Math.max(...sparkline)) * 100}%` }}>
-                <div className="w-full rounded-sm bg-primary/60" style={{ height: `${(v / Math.max(...sparkline)) * 100}%` }} />
-              </div>
-            ))}
-          </div>
-        )}
       </CardContent>
     </Card>
   </motion.div>
@@ -75,41 +67,91 @@ export default function AdminDashboard() {
   const [now, setNow] = useState(new Date());
   useEffect(() => { const t = setInterval(() => setNow(new Date()), 60000); return () => clearInterval(t); }, []);
 
-  const uptime = "99.97%";
-  const activeUsers = 24;
-  const apiCalls24h = "12.4K";
-  const storageUsed = "2.1 GB";
-  const tokenSpend = "$4.32";
-  const edgeFnCount = 8;
-  const pendingApprovals = 3;
-  const openIncidents = 1;
+  // Real data queries
+  const { data: tokenData } = useQuery({
+    queryKey: ["admin-token-spend"],
+    queryFn: async () => {
+      const today = new Date().toISOString().split("T")[0];
+      const { data, error } = await supabase
+        .from("ai_token_usage")
+        .select("cost_cents")
+        .gte("created_at", today);
+      if (error) throw error;
+      const totalCents = (data || []).reduce((s, r) => s + (Number(r.cost_cents) || 0), 0);
+      return { totalCents, count: data?.length || 0 };
+    },
+  });
 
-  const recentActions = [
-    { actor: "System", action: "Deployed edge function: chat-advisor", time: "2m ago", icon: Zap },
-    { actor: "Admin", action: "Updated RLS policy on advisor_knowledge", time: "15m ago", icon: Shield },
-    { actor: "AI Agent", action: "Auto-healed connector: stripe-sync", time: "1h ago", icon: RefreshCw },
-    { actor: "System", action: "Backup completed successfully", time: "3h ago", icon: Database },
-    { actor: "Admin", action: "Added new advisor: Tax Strategist", time: "5h ago", icon: Cpu },
-  ];
+  const { data: pendingApprovals } = useQuery({
+    queryKey: ["admin-pending-approvals"],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from("approval_queue")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "pending");
+      if (error) throw error;
+      return count || 0;
+    },
+  });
 
-  const services = [
-    { name: "Database", status: "healthy" as const, latency: "12ms" },
-    { name: "Auth", status: "healthy" as const, latency: "45ms" },
-    { name: "Edge Functions", status: "healthy" as const, latency: "89ms" },
-    { name: "Storage", status: "healthy" as const, latency: "23ms" },
-    { name: "Realtime", status: "warning" as const, latency: "156ms" },
-  ];
+  const { data: openIncidents } = useQuery({
+    queryKey: ["admin-open-incidents"],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from("incidents")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "open");
+      if (error) throw error;
+      return count || 0;
+    },
+  });
 
-  const agentStats = [
-    { name: "Healthy", count: 34, color: "bg-emerald-500" },
-    { name: "Active", count: 8, color: "bg-blue-500" },
-    { name: "Paused", count: 2, color: "bg-amber-500" },
-    { name: "Degraded", count: 1, color: "bg-red-500" },
-  ];
+  const { data: recentAuditLogs } = useQuery({
+    queryKey: ["admin-recent-actions"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("audit_logs")
+        .select("action, actor, created_at, category, severity")
+        .order("created_at", { ascending: false })
+        .limit(5);
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  const { data: advisorPerf } = useQuery({
+    queryKey: ["admin-advisor-perf"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("advisor_performance")
+        .select("advisor_id, total_calls, avg_satisfaction, total_tokens")
+        .order("total_calls", { ascending: false })
+        .limit(10);
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  const tokenSpend = tokenData ? `$${(tokenData.totalCents / 100).toFixed(2)}` : "$0.00";
+  const totalAdvisorCalls = advisorPerf?.reduce((s, a) => s + (a.total_calls || 0), 0) || 0;
+  const avgSatisfaction = advisorPerf?.length
+    ? Math.round(advisorPerf.reduce((s, a) => s + (Number(a.avg_satisfaction) || 0), 0) / advisorPerf.length)
+    : 0;
+
+  const actionIcons: Record<string, React.ElementType> = {
+    security: Shield, admin: Zap, system: RefreshCw, default: Database,
+  };
+
+  const timeAgo = (d: string) => {
+    const diff = Math.floor((Date.now() - new Date(d).getTime()) / 60000);
+    if (diff < 1) return "just now";
+    if (diff < 60) return `${diff}m ago`;
+    if (diff < 1440) return `${Math.floor(diff / 60)}h ago`;
+    return `${Math.floor(diff / 1440)}d ago`;
+  };
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
@@ -117,7 +159,8 @@ export default function AdminDashboard() {
         </div>
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="gap-1.5 text-emerald-500 border-emerald-500/30">
-            <StatusDot status="healthy" /> All Systems Operational
+            <StatusDot status={(openIncidents || 0) > 0 ? "warning" : "healthy"} />
+            {(openIncidents || 0) > 0 ? `${openIncidents} Open Incidents` : "All Systems Operational"}
           </Badge>
           <Button variant="outline" size="sm" asChild>
             <Link to="/mission-control"><Eye className="h-3.5 w-3.5 mr-1.5" /> Mission Control</Link>
@@ -125,17 +168,15 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Top metrics */}
       <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <MetricCard title="Uptime" value={uptime} change="+0.02% vs last month" trend="up" icon={Activity} color="bg-emerald-500/10 text-emerald-500" sparkline={[98, 99, 100, 99, 100, 100, 99]} />
-        <MetricCard title="Active Users" value={String(activeUsers)} change="+12% this week" trend="up" icon={Users} color="bg-blue-500/10 text-blue-500" sparkline={[15, 18, 22, 20, 24, 19, 24]} />
-        <MetricCard title="API Calls (24h)" value={apiCalls24h} change="+8% vs yesterday" trend="up" icon={Server} color="bg-purple-500/10 text-purple-500" sparkline={[8, 11, 9, 13, 10, 12, 14]} />
-        <MetricCard title="AI Spend Today" value={tokenSpend} change="-15% vs avg" trend="down" icon={DollarSign} color="bg-amber-500/10 text-amber-500" sparkline={[6, 5, 7, 4, 5, 4, 3]} />
+        <MetricCard title="AI Spend Today" value={tokenSpend} icon={DollarSign} color="bg-amber-500/10 text-amber-500" />
+        <MetricCard title="Advisor Calls" value={String(totalAdvisorCalls)} icon={Cpu} color="bg-purple-500/10 text-purple-500" />
+        <MetricCard title="Avg Satisfaction" value={avgSatisfaction ? `${avgSatisfaction}%` : "—"} icon={Activity} color="bg-emerald-500/10 text-emerald-500" />
+        <MetricCard title="API Calls (24h)" value={String(tokenData?.count || 0)} icon={Server} color="bg-blue-500/10 text-blue-500" />
       </motion.div>
 
-      {/* Second row: Services + AI Team + Quick Config */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Service Health */}
+        {/* Service Health - static since we can't query Supabase infra */}
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -143,34 +184,36 @@ export default function AdminDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {services.map(s => (
+            {[
+              { name: "Database", status: "healthy" as const },
+              { name: "Auth", status: "healthy" as const },
+              { name: "Edge Functions", status: "healthy" as const },
+              { name: "Storage", status: "healthy" as const },
+              { name: "Realtime", status: "healthy" as const },
+            ].map(s => (
               <div key={s.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <StatusDot status={s.status} />
                   <span className="text-sm text-foreground">{s.name}</span>
                 </div>
-                <span className="text-xs text-muted-foreground">{s.latency}</span>
               </div>
             ))}
           </CardContent>
         </Card>
 
-        {/* AI Team Summary */}
+        {/* AI Team from real data */}
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
-              <Cpu className="h-4 w-4 text-primary" /> AI Engineer Team
+              <Cpu className="h-4 w-4 text-primary" /> AI Advisor Team
             </CardTitle>
-            <CardDescription className="text-xs">40 agents across 6 councils</CardDescription>
+            <CardDescription className="text-xs">{advisorPerf?.length || 0} advisors tracked</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3">
-            {agentStats.map(a => (
-              <div key={a.name} className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className={`h-2.5 w-2.5 rounded-full ${a.color}`} />
-                  <span className="text-sm text-foreground">{a.name}</span>
-                </div>
-                <span className="text-sm font-semibold text-foreground">{a.count}</span>
+          <CardContent className="space-y-2">
+            {(advisorPerf || []).slice(0, 5).map(a => (
+              <div key={a.advisor_id} className="flex items-center justify-between text-xs">
+                <span className="text-foreground font-medium capitalize">{a.advisor_id}</span>
+                <span className="text-muted-foreground">{a.total_calls || 0} calls</span>
               </div>
             ))}
             <Button variant="outline" size="sm" className="w-full mt-2" asChild>
@@ -199,48 +242,28 @@ export default function AdminDashboard() {
         </Card>
       </div>
 
-      {/* Third row: Usage + Actions timeline */}
+      {/* Recent Actions from audit_logs */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Usage Meters */}
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
-              <BarChart3 className="h-4 w-4 text-primary" /> Usage & Billing
+              <BarChart3 className="h-4 w-4 text-primary" /> AI Token Budget
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
-                <span className="text-muted-foreground">Storage</span>
-                <span className="font-medium text-foreground">{storageUsed} / 10 GB</span>
+                <span className="text-muted-foreground">Today's Spend</span>
+                <span className="font-medium text-foreground">{tokenSpend}</span>
               </div>
-              <Progress value={21} className="h-2" />
+              <Progress value={Math.min((tokenData?.totalCents || 0) / 50, 100)} className="h-2" />
             </div>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs">
-                <span className="text-muted-foreground">Edge Functions</span>
-                <span className="font-medium text-foreground">{edgeFnCount} / 25</span>
-              </div>
-              <Progress value={32} className="h-2" />
-            </div>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs">
-                <span className="text-muted-foreground">API Calls</span>
-                <span className="font-medium text-foreground">12.4K / 100K</span>
-              </div>
-              <Progress value={12} className="h-2" />
-            </div>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs">
-                <span className="text-muted-foreground">AI Token Budget</span>
-                <span className="font-medium text-foreground">$4.32 / $50</span>
-              </div>
-              <Progress value={9} className="h-2" />
-            </div>
+            <Button variant="outline" size="sm" className="w-full" asChild>
+              <Link to="/admin/ai-tokens">View Token Dashboard →</Link>
+            </Button>
           </CardContent>
         </Card>
 
-        {/* Recent Admin Actions */}
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -249,23 +272,29 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {recentActions.map((a, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <div className="p-1.5 rounded-lg bg-muted/50 mt-0.5">
-                    <a.icon className="h-3.5 w-3.5 text-muted-foreground" />
+              {(recentAuditLogs || []).map((a, i) => {
+                const IconComp = actionIcons[a.category] || actionIcons.default;
+                return (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className="p-1.5 rounded-lg bg-muted/50 mt-0.5">
+                      <IconComp className="h-3.5 w-3.5 text-muted-foreground" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-foreground truncate">{a.action}</p>
+                      <p className="text-[10px] text-muted-foreground">{a.actor} · {timeAgo(a.created_at)}</p>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs text-foreground truncate">{a.action}</p>
-                    <p className="text-[10px] text-muted-foreground">{a.actor} · {a.time}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
+              {(!recentAuditLogs || recentAuditLogs.length === 0) && (
+                <p className="text-xs text-muted-foreground text-center py-4">No recent actions</p>
+              )}
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Bottom row: Alerts */}
+      {/* Bottom alerts */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="border-amber-500/20">
           <CardContent className="p-4 flex items-center gap-3">
@@ -273,19 +302,23 @@ export default function AdminDashboard() {
               <AlertTriangle className="h-5 w-5 text-amber-500" />
             </div>
             <div>
-              <p className="text-sm font-medium text-foreground">{pendingApprovals} Pending Approvals</p>
+              <p className="text-sm font-medium text-foreground">{pendingApprovals || 0} Pending Approvals</p>
               <Link to="/approvals" className="text-xs text-primary hover:underline">Review now →</Link>
             </div>
           </CardContent>
         </Card>
-        <Card className="border-red-500/20">
+        <Card className={`${(openIncidents || 0) > 0 ? "border-red-500/20" : "border-emerald-500/20"}`}>
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-red-500/10">
-              <Bell className="h-5 w-5 text-red-500" />
+            <div className={`p-2 rounded-xl ${(openIncidents || 0) > 0 ? "bg-red-500/10" : "bg-emerald-500/10"}`}>
+              <Bell className={`h-5 w-5 ${(openIncidents || 0) > 0 ? "text-red-500" : "text-emerald-500"}`} />
             </div>
             <div>
-              <p className="text-sm font-medium text-foreground">{openIncidents} Open Incident</p>
-              <Link to="/mission-control/incidents" className="text-xs text-primary hover:underline">Investigate →</Link>
+              <p className="text-sm font-medium text-foreground">
+                {(openIncidents || 0) > 0 ? `${openIncidents} Open Incidents` : "No Open Incidents"}
+              </p>
+              <Link to="/mission-control/incidents" className="text-xs text-primary hover:underline">
+                {(openIncidents || 0) > 0 ? "Investigate →" : "View history →"}
+              </Link>
             </div>
           </CardContent>
         </Card>
@@ -295,7 +328,7 @@ export default function AdminDashboard() {
               <CheckCircle className="h-5 w-5 text-emerald-500" />
             </div>
             <div>
-              <p className="text-sm font-medium text-foreground">Security Score: 94/100</p>
+              <p className="text-sm font-medium text-foreground">System Healthy</p>
               <Link to="/trust" className="text-xs text-primary hover:underline">View details →</Link>
             </div>
           </CardContent>
