@@ -20,6 +20,8 @@ const primaryNav = [
   { title: "Life Dashboard", url: "/life", icon: Heart },
   { title: "Business", url: "/business", icon: Briefcase },
   { title: "Money", url: "/money", icon: DollarSign },
+  { title: "Revenue Office", url: "/revenue-office", icon: TrendingUp },
+  { title: "Investment Office", url: "/money/investments", icon: Landmark },
   { title: "Concierge", url: "/concierge", icon: Headphones },
   { title: "Files", url: "/files", icon: FolderOpen },
 ];
