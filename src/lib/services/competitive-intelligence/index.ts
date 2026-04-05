@@ -81,7 +81,7 @@ class CompetitiveIntelligenceService {
       .from('user_memory')
       .delete()
       .eq('user_id', userId)
-      .eq('memory_key', `competitor_${competitorId}`);
+      .eq('key', `competitor_${competitorId}`);
   }
 
   addInsight(insight: Omit<CompetitiveInsight, 'id' | 'detectedAt'>): CompetitiveInsight {

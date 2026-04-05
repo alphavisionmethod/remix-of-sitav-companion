@@ -116,7 +116,7 @@ class AIMemoryGraphService {
   async updateNode(userId: string, nodeId: string, newValue: string): Promise<boolean> {
     const { error } = await supabase
       .from('user_memory')
-      .update({ memory_value: newValue })
+      .update({ value: newValue as any })
       .eq('user_id', userId)
       .eq('id', nodeId);
     return !error;

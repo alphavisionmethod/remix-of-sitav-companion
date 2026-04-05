@@ -99,12 +99,12 @@ class PredictiveIntentEngine {
   async loadPatterns(userId: string): Promise<void> {
     const { data } = await supabase
       .from('user_memory')
-      .select('memory_key, memory_value')
+      .select('key, value')
       .eq('user_id', userId)
       .eq('category', 'predictive_intent');
 
     if (data) {
-      const patterns: TimePattern[] = data.map((row) => JSON.parse(row.memory_value as string));
+      const patterns: TimePattern[] = data.map((row) => JSON.parse(row.value as string));
       this.patterns.set(userId, patterns);
     }
   }
