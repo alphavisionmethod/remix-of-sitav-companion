@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, ArrowRight, X, Sparkles, ChevronRight, Plus,
@@ -170,7 +171,7 @@ const DOMAIN_COLORS: Record<string, string> = {
 
 // ── Command State ───────────────────────────────────────────
 
-type CommandState = "ready" | "searching" | "interpreting" | "previewing" | "approval_required" | "capture" | "no_results";
+type CommandState = "ready" | "searching" | "interpreting" | "previewing" | "approval_required" | "capture" | "no_results" | "ai_thinking" | "ai_answer";
 
 // ── Component ───────────────────────────────────────────────
 
@@ -185,6 +186,7 @@ export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfa
   const [commandState, setCommandState] = useState<CommandState>("ready");
   const [captureData, setCaptureData] = useState<{ type: string; value: string } | null>(null);
   const [previewItem, setPreviewItem] = useState<SearchResult | null>(null);
+  const [aiAnswer, setAiAnswer] = useState("");
   const [recentCommands, setRecentCommands] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem("sita-recent-cmds") || "[]").slice(0, 6); } catch { return []; }
   });
@@ -301,6 +303,9 @@ export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfa
       e.preventDefault();
       if (commandState === "capture" && captureData) {
         handleCapture(captureData);
+      } else if (intent === "ask" && query.trim()) {
+        // AI mode — ask personal-brain
+        handleAIAsk(query);
       } else if (allItems[selectedIdx]) {
         const item = allItems[selectedIdx];
         if (item.kind === "command") handleSelectCommand(item.item as CommandItem);
@@ -342,6 +347,21 @@ export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfa
     const paths: Record<string, string> = { note: "/inbox", task: "/concierge", reminder: "/concierge", lead: "/business?action=new-lead" };
     navigate(paths[data.type] || "/inbox");
     onClose();
+  };
+
+  const handleAIAsk = async (q: string) => {
+    setCommandState("ai_thinking");
+    setAiAnswer("");
+    try {
+      const { data } = await supabase.functions.invoke("personal-brain", {
+        body: { intent: q, context: { source: "command-surface" } },
+      });
+      setAiAnswer(data?.recommendation || data?.response || "I couldn't find an answer.");
+      setCommandState("ai_answer");
+    } catch {
+      setAiAnswer("Connection issue — try again.");
+      setCommandState("ai_answer");
+    }
   };
 
   const suggestions = useMemo(() => getContextSuggestions(location.pathname, indicators), [location.pathname, indicators]);
@@ -549,7 +569,35 @@ export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfa
                   </div>
                 )}
 
-                {/* No results */}
+                {/* AI Thinking / Answer */}
+                {commandState === "ai_thinking" && (
+                  <div className="py-10 text-center">
+                    <Loader2 className="h-6 w-6 text-primary animate-spin mx-auto mb-3" />
+                    <p className="text-sm text-muted-foreground">Thinking…</p>
+                    <div className="mt-3 mx-auto w-48 h-1.5 rounded-full bg-muted overflow-hidden">
+                      <div className="h-full bg-primary/40 rounded-full animate-pulse" style={{ width: "60%" }} />
+                    </div>
+                  </div>
+                )}
+                {commandState === "ai_answer" && aiAnswer && (
+                  <div className="p-4">
+                    <div className="rounded-xl border border-primary/20 bg-primary/5 p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Brain className="h-4 w-4 text-primary" />
+                        <span className="text-[10px] font-semibold text-primary uppercase tracking-wider">AI Answer</span>
+                      </div>
+                      <p className="text-sm text-foreground whitespace-pre-wrap">{aiAnswer}</p>
+                      <button
+                        onClick={() => { navigate("/brain"); onClose(); }}
+                        className="mt-3 text-[11px] text-primary hover:underline flex items-center gap-1"
+                      >
+                        Continue in Brain <ArrowRight className="h-2.5 w-2.5" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+
                 {commandState === "no_results" && (
                   <div className="py-10 text-center">
                     <Search className="h-6 w-6 text-muted-foreground/20 mx-auto mb-2" />

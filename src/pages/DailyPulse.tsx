@@ -7,6 +7,7 @@ import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
 import { KPITile, OpportunityCard, RiskCard, TimelineItem, ProofCard } from "@/components/sita/SitaComponents";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
+import { WidgetGrid } from "@/components/sita/WidgetGrid";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useNavigate } from "react-router-dom";
@@ -672,6 +673,9 @@ const DailyPulse = () => {
           )}
         </div>
       </div>
+
+      {/* Widget Grid — customizable desktop widgets */}
+      <WidgetGrid />
 
       {/* Quick Access App Grid */}
       {showSection("quick-access") && (
