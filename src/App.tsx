@@ -163,6 +163,16 @@ const RevenueAutopilotMonitor = lazy(() => import("./pages/admin/RevenueAutopilo
 const InvestorProofLedger = lazy(() => import("./pages/admin/InvestorProofLedger"));
 const RealityClassificationMatrix = lazy(() => import("./pages/admin/RealityClassificationMatrix"));
 const MockReplacementProgram = lazy(() => import("./pages/admin/MockReplacementProgram"));
+const RealityConversionOverview = lazy(() => import("./pages/admin/RealityConversionOverview"));
+const FeatureRealityDetail = lazy(() => import("./pages/admin/FeatureRealityDetail"));
+const MockSourceInventory = lazy(() => import("./pages/admin/MockSourceInventory"));
+const SimulatedCoreServicesBoard = lazy(() => import("./pages/admin/SimulatedCoreServicesBoard"));
+const RouteRealityHeatmap = lazy(() => import("./pages/admin/RouteRealityHeatmap"));
+const ContractBackendReadiness = lazy(() => import("./pages/admin/ContractBackendReadiness"));
+const LaunchHonestyBoard = lazy(() => import("./pages/admin/LaunchHonestyBoard"));
+const MigrationWavePlanner = lazy(() => import("./pages/admin/MigrationWavePlanner"));
+const RealityProgressTimeline = lazy(() => import("./pages/admin/RealityProgressTimeline"));
+const RuntimeRealityValidation = lazy(() => import("./pages/admin/RuntimeRealityValidation"));
 const PersonalBrain = lazy(() => import("./pages/PersonalBrain"));
 
 // ── AI Engineering Board ──
