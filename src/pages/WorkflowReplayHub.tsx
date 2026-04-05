@@ -14,7 +14,7 @@ import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/adm
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useRecoverySummary } from "@/hooks/use-mission-control-views";
 import type { ReplayableWorkflowView } from "@/packages/contracts";
-import { MOCK_REPLAYABLE_WORKFLOWS } from "@/lib/mock-data";
+import { useReplayableWorkflows } from "@/hooks/use-domain-data";
 import {
   RotateCcw, Search, Play, AlertTriangle, CheckCircle, Clock,
   ChevronRight, Shield, Zap, Eye,
