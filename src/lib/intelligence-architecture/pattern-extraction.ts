@@ -42,7 +42,7 @@ export interface PatternExtractionInput {
 
 // ── Fingerprint comparison ──────────────────────────────────
 
-function fingerprintSimilarity(a: Record<string, unknown>, b: Record<string, unknown>): number {
+export function fingerprintSimilarity(a: Record<string, unknown>, b: Record<string, unknown>): number {
   const keysA = Object.keys(a);
   const keysB = Object.keys(b);
   const allKeys = new Set([...keysA, ...keysB]);
