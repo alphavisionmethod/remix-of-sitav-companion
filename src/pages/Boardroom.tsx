@@ -880,14 +880,14 @@ const TAB_ICONS: Record<BoardroomType, React.ReactNode> = {
 type PresentationMode = "executive" | "analyst" | "owner";
 
 const FullscreenPresentation = ({ type, onExit }: { type: BoardroomType; onExit: () => void }) => {
-  const { packet } = useBoardroomPacket(type);
+  const { packet, isLoading } = useBoardroomPacket(type);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [autoAdvance, setAutoAdvance] = useState(true);
   const [elapsed, setElapsed] = useState(0);
   const [presMode, setPresMode] = useState<PresentationMode>("executive");
   const SLIDE_DURATION = 30;
 
-  const slides = packet.sections;
+  const slides = packet?.sections ?? [];
   const totalSlides = slides.length;
 
   useEffect(() => {
