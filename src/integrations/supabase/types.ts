@@ -725,6 +725,60 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_efficiency_scores: {
+        Row: {
+          acceptance_rate: number | null
+          cache_contribution_rate: number | null
+          composite_efficiency_score: number | null
+          cost_efficiency_score: number | null
+          downstream_value_score: number | null
+          false_positive_rate: number | null
+          id: string
+          measured_at: string
+          override_rate: number | null
+          quality_score: number | null
+          reuse_rate: number | null
+          scope_id: string
+          scope_type: string
+          user_id: string
+          verification_success_rate: number | null
+        }
+        Insert: {
+          acceptance_rate?: number | null
+          cache_contribution_rate?: number | null
+          composite_efficiency_score?: number | null
+          cost_efficiency_score?: number | null
+          downstream_value_score?: number | null
+          false_positive_rate?: number | null
+          id?: string
+          measured_at?: string
+          override_rate?: number | null
+          quality_score?: number | null
+          reuse_rate?: number | null
+          scope_id: string
+          scope_type?: string
+          user_id: string
+          verification_success_rate?: number | null
+        }
+        Update: {
+          acceptance_rate?: number | null
+          cache_contribution_rate?: number | null
+          composite_efficiency_score?: number | null
+          cost_efficiency_score?: number | null
+          downstream_value_score?: number | null
+          false_positive_rate?: number | null
+          id?: string
+          measured_at?: string
+          override_rate?: number | null
+          quality_score?: number | null
+          reuse_rate?: number | null
+          scope_id?: string
+          scope_type?: string
+          user_id?: string
+          verification_success_rate?: number | null
+        }
+        Relationships: []
+      }
       ai_engineering_missions: {
         Row: {
           assigned_agents: string[] | null
@@ -2122,6 +2176,53 @@ export type Database = {
         }
         Relationships: []
       }
+      cross_tenant_pattern_learning_records: {
+        Row: {
+          anonymization_method: string | null
+          approved_for_use: boolean | null
+          confidence: number | null
+          created_at: string
+          domain: string
+          id: string
+          pattern_id: string | null
+          restrictions: string[] | null
+          source_tenant_count: number | null
+          user_id: string
+        }
+        Insert: {
+          anonymization_method?: string | null
+          approved_for_use?: boolean | null
+          confidence?: number | null
+          created_at?: string
+          domain: string
+          id?: string
+          pattern_id?: string | null
+          restrictions?: string[] | null
+          source_tenant_count?: number | null
+          user_id: string
+        }
+        Update: {
+          anonymization_method?: string | null
+          approved_for_use?: boolean | null
+          confidence?: number | null
+          created_at?: string
+          domain?: string
+          id?: string
+          pattern_id?: string | null
+          restrictions?: string[] | null
+          source_tenant_count?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cross_tenant_pattern_learning_records_pattern_id_fkey"
+            columns: ["pattern_id"]
+            isOneToOne: false
+            referencedRelation: "intelligence_patterns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customers: {
         Row: {
           company: string | null
@@ -2244,6 +2345,57 @@ export type Database = {
           os?: string | null
           status?: string
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      differential_reasoning_records: {
+        Row: {
+          created_at: string
+          current_state_ref: string | null
+          detected_changes: Json | null
+          domain: string
+          id: string
+          invalidated_assets: string[] | null
+          materiality_score: number | null
+          owner_id: string | null
+          owner_type: string | null
+          preserved_assets: string[] | null
+          previous_state_ref: string | null
+          reasoning_savings_estimate: number | null
+          recommended_reasoning_mode: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_state_ref?: string | null
+          detected_changes?: Json | null
+          domain: string
+          id?: string
+          invalidated_assets?: string[] | null
+          materiality_score?: number | null
+          owner_id?: string | null
+          owner_type?: string | null
+          preserved_assets?: string[] | null
+          previous_state_ref?: string | null
+          reasoning_savings_estimate?: number | null
+          recommended_reasoning_mode?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_state_ref?: string | null
+          detected_changes?: Json | null
+          domain?: string
+          id?: string
+          invalidated_assets?: string[] | null
+          materiality_score?: number | null
+          owner_id?: string | null
+          owner_type?: string | null
+          preserved_assets?: string[] | null
+          previous_state_ref?: string | null
+          reasoning_savings_estimate?: number | null
+          recommended_reasoning_mode?: string | null
           user_id?: string
         }
         Relationships: []
@@ -3354,6 +3506,356 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      intelligence_asset_usages: {
+        Row: {
+          agent_id: string | null
+          applicability_score: number | null
+          cost_avoided_estimate: number | null
+          created_at: string
+          id: string
+          intelligence_asset_id: string | null
+          mission_id: string | null
+          outcome_quality: number | null
+          reuse_confidence: number | null
+          tenant_id: string | null
+          usage_mode: string
+          user_id: string
+          workspace: string | null
+        }
+        Insert: {
+          agent_id?: string | null
+          applicability_score?: number | null
+          cost_avoided_estimate?: number | null
+          created_at?: string
+          id?: string
+          intelligence_asset_id?: string | null
+          mission_id?: string | null
+          outcome_quality?: number | null
+          reuse_confidence?: number | null
+          tenant_id?: string | null
+          usage_mode?: string
+          user_id: string
+          workspace?: string | null
+        }
+        Update: {
+          agent_id?: string | null
+          applicability_score?: number | null
+          cost_avoided_estimate?: number | null
+          created_at?: string
+          id?: string
+          intelligence_asset_id?: string | null
+          mission_id?: string | null
+          outcome_quality?: number | null
+          reuse_confidence?: number | null
+          tenant_id?: string | null
+          usage_mode?: string
+          user_id?: string
+          workspace?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "intelligence_asset_usages_intelligence_asset_id_fkey"
+            columns: ["intelligence_asset_id"]
+            isOneToOne: false
+            referencedRelation: "intelligence_assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      intelligence_assets: {
+        Row: {
+          asset_type: string
+          confidence_score: number | null
+          created_at: string
+          domain: string
+          evidence_refs: string[] | null
+          freshness_score: number | null
+          id: string
+          invalidation_triggers: string[] | null
+          last_used_at: string | null
+          reuse_eligibility: boolean | null
+          source_action_refs: string[] | null
+          source_entity_refs: string[] | null
+          source_environment: string | null
+          structured_payload: Json | null
+          summary: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          verification_state: string | null
+        }
+        Insert: {
+          asset_type?: string
+          confidence_score?: number | null
+          created_at?: string
+          domain?: string
+          evidence_refs?: string[] | null
+          freshness_score?: number | null
+          id?: string
+          invalidation_triggers?: string[] | null
+          last_used_at?: string | null
+          reuse_eligibility?: boolean | null
+          source_action_refs?: string[] | null
+          source_entity_refs?: string[] | null
+          source_environment?: string | null
+          structured_payload?: Json | null
+          summary?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+          verification_state?: string | null
+        }
+        Update: {
+          asset_type?: string
+          confidence_score?: number | null
+          created_at?: string
+          domain?: string
+          evidence_refs?: string[] | null
+          freshness_score?: number | null
+          id?: string
+          invalidation_triggers?: string[] | null
+          last_used_at?: string | null
+          reuse_eligibility?: boolean | null
+          source_action_refs?: string[] | null
+          source_entity_refs?: string[] | null
+          source_environment?: string | null
+          structured_payload?: Json | null
+          summary?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          verification_state?: string | null
+        }
+        Relationships: []
+      }
+      intelligence_digests: {
+        Row: {
+          cache_status: string | null
+          confidence: number | null
+          digest_type: string
+          evidence_refs: string[] | null
+          expires_at: string | null
+          generated_at: string
+          id: string
+          summary: string | null
+          tenant_id: string | null
+          user_id: string
+          workspace: string | null
+        }
+        Insert: {
+          cache_status?: string | null
+          confidence?: number | null
+          digest_type?: string
+          evidence_refs?: string[] | null
+          expires_at?: string | null
+          generated_at?: string
+          id?: string
+          summary?: string | null
+          tenant_id?: string | null
+          user_id: string
+          workspace?: string | null
+        }
+        Update: {
+          cache_status?: string | null
+          confidence?: number | null
+          digest_type?: string
+          evidence_refs?: string[] | null
+          expires_at?: string | null
+          generated_at?: string
+          id?: string
+          summary?: string | null
+          tenant_id?: string | null
+          user_id?: string
+          workspace?: string | null
+        }
+        Relationships: []
+      }
+      intelligence_packets: {
+        Row: {
+          active_constraints: Json | null
+          active_risks: Json | null
+          confidence_profile: Json | null
+          created_at: string
+          evidence_refs: string[] | null
+          freshness_state: string | null
+          id: string
+          packet_type: string
+          prior_recommendations: Json | null
+          recent_changes: Json | null
+          scope_id: string | null
+          scope_type: string | null
+          summarized_state: Json | null
+          tenant_id: string | null
+          unresolved_questions: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_constraints?: Json | null
+          active_risks?: Json | null
+          confidence_profile?: Json | null
+          created_at?: string
+          evidence_refs?: string[] | null
+          freshness_state?: string | null
+          id?: string
+          packet_type?: string
+          prior_recommendations?: Json | null
+          recent_changes?: Json | null
+          scope_id?: string | null
+          scope_type?: string | null
+          summarized_state?: Json | null
+          tenant_id?: string | null
+          unresolved_questions?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_constraints?: Json | null
+          active_risks?: Json | null
+          confidence_profile?: Json | null
+          created_at?: string
+          evidence_refs?: string[] | null
+          freshness_state?: string | null
+          id?: string
+          packet_type?: string
+          prior_recommendations?: Json | null
+          recent_changes?: Json | null
+          scope_id?: string | null
+          scope_type?: string | null
+          summarized_state?: Json | null
+          tenant_id?: string | null
+          unresolved_questions?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      intelligence_patterns: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          description: string | null
+          domain: string
+          false_positive_rate: number | null
+          fingerprint_data: Json | null
+          id: string
+          label: string
+          pattern_type: string
+          privacy_class: string | null
+          reusable_across_tenants: boolean | null
+          source_count: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          description?: string | null
+          domain?: string
+          false_positive_rate?: number | null
+          fingerprint_data?: Json | null
+          id?: string
+          label: string
+          pattern_type?: string
+          privacy_class?: string | null
+          reusable_across_tenants?: boolean | null
+          source_count?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          description?: string | null
+          domain?: string
+          false_positive_rate?: number | null
+          fingerprint_data?: Json | null
+          id?: string
+          label?: string
+          pattern_type?: string
+          privacy_class?: string | null
+          reusable_across_tenants?: boolean | null
+          source_count?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      intelligence_quality_feedback: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          feedback_type: string
+          id: string
+          reason: string | null
+          scope_id: string
+          scope_type: string
+          user_id: string
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          feedback_type?: string
+          id?: string
+          reason?: string | null
+          scope_id: string
+          scope_type: string
+          user_id: string
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          feedback_type?: string
+          id?: string
+          reason?: string | null
+          scope_id?: string
+          scope_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      intelligence_reuse_opportunities: {
+        Row: {
+          candidate_asset_ids: string[] | null
+          created_at: string
+          current_task_ref: string | null
+          domain: string | null
+          expected_cost_avoided: number | null
+          expected_quality_gain: number | null
+          id: string
+          recommendation_state: string | null
+          similarity_score: number | null
+          tenant_id: string | null
+          user_id: string
+        }
+        Insert: {
+          candidate_asset_ids?: string[] | null
+          created_at?: string
+          current_task_ref?: string | null
+          domain?: string | null
+          expected_cost_avoided?: number | null
+          expected_quality_gain?: number | null
+          id?: string
+          recommendation_state?: string | null
+          similarity_score?: number | null
+          tenant_id?: string | null
+          user_id: string
+        }
+        Update: {
+          candidate_asset_ids?: string[] | null
+          created_at?: string
+          current_task_ref?: string | null
+          domain?: string | null
+          expected_cost_avoided?: number | null
+          expected_quality_gain?: number | null
+          id?: string
+          recommendation_state?: string | null
+          similarity_score?: number | null
+          tenant_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       investment_accounts: {
         Row: {
@@ -4562,6 +5064,104 @@ export type Database = {
             columns: ["customer_id"]
             isOneToOne: false
             referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      outcome_economics_records: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          domain: string
+          id: string
+          mission_id: string | null
+          outcome_type: string
+          payback_ratio: number | null
+          success_state: string | null
+          tenant_id: string | null
+          total_ai_cost_estimate: number | null
+          total_cost_estimate: number | null
+          user_id: string
+          value_estimate: number | null
+          verification_cost_estimate: number | null
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          domain: string
+          id?: string
+          mission_id?: string | null
+          outcome_type?: string
+          payback_ratio?: number | null
+          success_state?: string | null
+          tenant_id?: string | null
+          total_ai_cost_estimate?: number | null
+          total_cost_estimate?: number | null
+          user_id: string
+          value_estimate?: number | null
+          verification_cost_estimate?: number | null
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          domain?: string
+          id?: string
+          mission_id?: string | null
+          outcome_type?: string
+          payback_ratio?: number | null
+          success_state?: string | null
+          tenant_id?: string | null
+          total_ai_cost_estimate?: number | null
+          total_cost_estimate?: number | null
+          user_id?: string
+          value_estimate?: number | null
+          verification_cost_estimate?: number | null
+        }
+        Relationships: []
+      }
+      packet_compilation_records: {
+        Row: {
+          compile_cost_estimate: number | null
+          compile_latency_ms: number | null
+          compiler_version: string | null
+          compression_ratio: number | null
+          created_at: string
+          id: string
+          intelligence_packet_id: string | null
+          quality_score: number | null
+          source_refs: string[] | null
+          user_id: string
+        }
+        Insert: {
+          compile_cost_estimate?: number | null
+          compile_latency_ms?: number | null
+          compiler_version?: string | null
+          compression_ratio?: number | null
+          created_at?: string
+          id?: string
+          intelligence_packet_id?: string | null
+          quality_score?: number | null
+          source_refs?: string[] | null
+          user_id: string
+        }
+        Update: {
+          compile_cost_estimate?: number | null
+          compile_latency_ms?: number | null
+          compiler_version?: string | null
+          compression_ratio?: number | null
+          created_at?: string
+          id?: string
+          intelligence_packet_id?: string | null
+          quality_score?: number | null
+          source_refs?: string[] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "packet_compilation_records_intelligence_packet_id_fkey"
+            columns: ["intelligence_packet_id"]
+            isOneToOne: false
+            referencedRelation: "intelligence_packets"
             referencedColumns: ["id"]
           },
         ]
@@ -6503,6 +7103,102 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      reasoning_escalation_records: {
+        Row: {
+          approved: boolean | null
+          created_at: string
+          domain: string | null
+          estimated_incremental_cost: number | null
+          expected_value: number | null
+          id: string
+          justification: string | null
+          new_reasoning_level: string | null
+          previous_reasoning_level: string | null
+          task_id: string | null
+          tenant_id: string | null
+          trigger_type: string
+          user_id: string
+        }
+        Insert: {
+          approved?: boolean | null
+          created_at?: string
+          domain?: string | null
+          estimated_incremental_cost?: number | null
+          expected_value?: number | null
+          id?: string
+          justification?: string | null
+          new_reasoning_level?: string | null
+          previous_reasoning_level?: string | null
+          task_id?: string | null
+          tenant_id?: string | null
+          trigger_type?: string
+          user_id: string
+        }
+        Update: {
+          approved?: boolean | null
+          created_at?: string
+          domain?: string | null
+          estimated_incremental_cost?: number | null
+          expected_value?: number | null
+          id?: string
+          justification?: string | null
+          new_reasoning_level?: string | null
+          previous_reasoning_level?: string | null
+          task_id?: string | null
+          tenant_id?: string | null
+          trigger_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reasoning_path_performance_records: {
+        Row: {
+          average_cost: number | null
+          average_latency: number | null
+          average_quality: number | null
+          domain: string | null
+          escalation_rate: number | null
+          id: string
+          measured_window: string | null
+          operator_acceptance_rate: number | null
+          path_label: string
+          reuse_rate: number | null
+          task_type: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          average_cost?: number | null
+          average_latency?: number | null
+          average_quality?: number | null
+          domain?: string | null
+          escalation_rate?: number | null
+          id?: string
+          measured_window?: string | null
+          operator_acceptance_rate?: number | null
+          path_label: string
+          reuse_rate?: number | null
+          task_type?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          average_cost?: number | null
+          average_latency?: number | null
+          average_quality?: number | null
+          domain?: string | null
+          escalation_rate?: number | null
+          id?: string
+          measured_window?: string | null
+          operator_acceptance_rate?: number | null
+          path_label?: string
+          reuse_rate?: number | null
+          task_type?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       receipts: {
         Row: {
@@ -8636,6 +9332,57 @@ export type Database = {
           steps?: Json
           trigger_config?: Json
           trigger_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      zero_waste_prompt_profiles: {
+        Row: {
+          active: boolean | null
+          average_cost_reduction: number | null
+          domain: string
+          id: string
+          max_context_class: string | null
+          packet_driven: boolean | null
+          prompt_template_version: string | null
+          quality_impact_score: number | null
+          redundancy_score: number | null
+          retrieval_mode: string | null
+          reusable_instruction_refs: string[] | null
+          task_type: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          average_cost_reduction?: number | null
+          domain: string
+          id?: string
+          max_context_class?: string | null
+          packet_driven?: boolean | null
+          prompt_template_version?: string | null
+          quality_impact_score?: number | null
+          redundancy_score?: number | null
+          retrieval_mode?: string | null
+          reusable_instruction_refs?: string[] | null
+          task_type?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          average_cost_reduction?: number | null
+          domain?: string
+          id?: string
+          max_context_class?: string | null
+          packet_driven?: boolean | null
+          prompt_template_version?: string | null
+          quality_impact_score?: number | null
+          redundancy_score?: number | null
+          retrieval_mode?: string | null
+          reusable_instruction_refs?: string[] | null
+          task_type?: string | null
           updated_at?: string
           user_id?: string
         }
