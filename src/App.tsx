@@ -195,6 +195,11 @@ const CrossAssetStoryEngine = lazy(() => import("./pages/investment-office/Cross
 const ConvictionEngine = lazy(() => import("./pages/investment-office/ConvictionEngine"));
 const PositionSizingCoach = lazy(() => import("./pages/investment-office/PositionSizingCoach"));
 const OperatingModes = lazy(() => import("./pages/investment-office/OperatingModes"));
+const DecisionReadiness = lazy(() => import("./pages/investment-office/DecisionReadiness"));
+const CapitalPurpose = lazy(() => import("./pages/investment-office/CapitalPurpose"));
+const WhatWouldBreak = lazy(() => import("./pages/investment-office/WhatWouldBreak"));
+const DisagreementEngine = lazy(() => import("./pages/investment-office/DisagreementEngine"));
+const FamilyOffice = lazy(() => import("./pages/investment-office/FamilyOffice"));
 
 const queryClient = createQueryClient();
 
@@ -354,6 +359,11 @@ const App = () => (
                     <Route path="/investments/conviction" element={<ConvictionEngine />} />
                     <Route path="/investments/sizing" element={<PositionSizingCoach />} />
                     <Route path="/investments/modes" element={<OperatingModes />} />
+                    <Route path="/investments/readiness" element={<DecisionReadiness />} />
+                    <Route path="/investments/capital-purpose" element={<CapitalPurpose />} />
+                    <Route path="/investments/what-would-break" element={<WhatWouldBreak />} />
+                    <Route path="/investments/disagreements" element={<DisagreementEngine />} />
+                    <Route path="/investments/family-office" element={<FamilyOffice />} />
                     <Route path="/money/investments" element={<InvestmentGate />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
