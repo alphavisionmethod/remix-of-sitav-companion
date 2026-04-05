@@ -409,10 +409,15 @@ export class ObservabilityEngine {
       { dimension: "Device Trust", current: 88, target: 90, trend: "up", incidents: 1 },
     ];
   }
-}
 
-// ────────────────────────────────────────────────────────────────
-// SECTION 4 — Release Safety & Rollout Control
+  serialize(): Record<string, unknown> {
+    return { traces: this.traces.slice(-500), anomalies: this.anomalies };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.traces) this.traces = state.traces as any;
+    if (state.anomalies) this.anomalies = state.anomalies as any;
+  }
+}
 // ────────────────────────────────────────────────────────────────
 
 export type RolloutRing = "canary" | "early-adopter" | "general" | "conservative";
