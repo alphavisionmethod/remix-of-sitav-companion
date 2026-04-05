@@ -1,5 +1,5 @@
 import { Home, Briefcase, DollarSign, Headphones, Workflow, Receipt, BarChart3, FolderOpen, Settings, Shield, LogOut,
-  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw, Target, GitBranch, MessageSquare, Bell, Mail, Lock, Image, Cloud, LayoutDashboard } from "lucide-react";
+  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw, Target, GitBranch, MessageSquare, Bell, Mail, Lock, Image, Cloud, LayoutDashboard, TrendingUp, Landmark } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
@@ -20,6 +20,8 @@ const primaryNav = [
   { title: "Life Dashboard", url: "/life", icon: Heart },
   { title: "Business", url: "/business", icon: Briefcase },
   { title: "Money", url: "/money", icon: DollarSign },
+  { title: "Revenue Office", url: "/revenue-office", icon: TrendingUp },
+  { title: "Investment Office", url: "/money/investments", icon: Landmark },
   { title: "Concierge", url: "/concierge", icon: Headphones },
   { title: "Files", url: "/files", icon: FolderOpen },
 ];
