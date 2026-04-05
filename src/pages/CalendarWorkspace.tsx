@@ -134,8 +134,8 @@ const CalendarWorkspace = () => {
             ))}
           </div>
           <SitaTabs tabs={[
-            { id: "day", label: "Day" }, { id: "week", label: "Week" },
-            { id: "month", label: "Month" }, { id: "agenda", label: "Agenda" }
+            { key: "day", label: "Day" }, { key: "week", label: "Week" },
+            { key: "month", label: "Month" }, { key: "agenda", label: "Agenda" }
           ]} active={view} onChange={(v) => setView(v as CalView)} />
         </div>
       </div>

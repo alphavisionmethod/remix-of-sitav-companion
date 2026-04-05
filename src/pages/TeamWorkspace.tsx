@@ -47,9 +47,9 @@ const TeamWorkspace = () => {
       </div>
 
       <SitaTabs tabs={[
-        { id: "workload", label: "Workload" },
-        { id: "delegations", label: "Delegations" },
-        { id: "activity", label: "Activity" },
+        { key: "workload", label: "Workload" },
+        { key: "delegations", label: "Delegations" },
+        { key: "activity", label: "Activity" },
       ]} active={tab} onChange={setTab} className="mb-4" />
 
       {tab === "workload" && (
