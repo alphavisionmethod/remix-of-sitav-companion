@@ -59,6 +59,15 @@ export default function FrictionScreen({ state, setState }: ScreenProps) {
           </CardContent>
         </Card>
       )}
+      {state.growthBottlenecks.length >= 2 && (
+        <div>
+          <SectionTitle>What would feel like the biggest relief in 30 days?</SectionTitle>
+          <SingleSelect value={state.branchAnswers["relief_priority"]?.[0] || ""} onChange={v => handleBranch("relief_priority", v)} options={reliefOptions} />
+        </div>
+      )}
+      {state.setupDepth === "deep" && branchQuestions.length > 0 && (
+        <BranchingQuestionsPanel questions={branchQuestions} answers={state.branchAnswers} onAnswer={handleBranch} />
+      )}
     </div>
   );
 }

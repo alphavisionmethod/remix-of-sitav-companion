@@ -51,6 +51,9 @@ export default function RevenueModelScreen({ state, setState }: ScreenProps) {
           </div>
         </div>
       )}
+      {state.setupDepth === "deep" && branchQuestions.length > 0 && (
+        <BranchingQuestionsPanel questions={branchQuestions} answers={state.branchAnswers} onAnswer={handleBranch} />
+      )}
     </div>
   );
 }
