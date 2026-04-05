@@ -581,7 +581,7 @@ describe("Council Protocol E2E with Mission Mode", () => {
     }
   });
 
-  it("full deliberation chain: mode → council → disagreements → synthesis → perspective", () => {
+  it("full deliberation chain: mode → council → disagreements → synthesis → perspective", async () => {
     // 1. Set mission mode
     const updated = setMissionMode("collections-recovery");
     const active = updated.find(m => m.active)!;
@@ -601,7 +601,7 @@ describe("Council Protocol E2E with Mission Mode", () => {
     expect(synth.overallConfidence).toBeGreaterThan(0);
 
     // 5. Generate packet
-    const packet = generateBoardroomPacket(active.boardroomPacketType as any);
+    const packet = await generateBoardroomPacket(active.boardroomPacketType as any);
     expect(packet.sections.length).toBeGreaterThan(0);
 
     // 6. Filter by perspective
