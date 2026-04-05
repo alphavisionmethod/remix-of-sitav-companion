@@ -75,7 +75,18 @@ export const SitaTopBar = ({
         <SidebarTrigger className="h-7 w-7 text-muted-foreground hover:text-foreground" />
         <ContextSwitcher />
         <div className="hidden md:block">
-          <CommandPalette />
+          {onCommandOpen ? (
+            <button
+              onClick={onCommandOpen}
+              className="flex items-center gap-2.5 rounded-xl border border-border/50 glass-panel px-3.5 py-2 text-xs text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground hover:border-border w-64"
+            >
+              <Search className="h-3.5 w-3.5" />
+              <span className="flex-1 text-left">Search or do anything...</span>
+              <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] font-medium">⌘K</kbd>
+            </button>
+          ) : (
+            <CommandPalette />
+          )}
         </div>
       </div>
 
