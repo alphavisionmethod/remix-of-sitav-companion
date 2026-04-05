@@ -191,7 +191,7 @@ export class AgentHealthMonitorService {
     }
 
     // Auto-detect incidents
-    if (snap.errorRate > ERROR_RATE_THRESHOLD && snap.status !== "restarting") {
+    if (snap.errorRate > ERROR_RATE_THRESHOLD && (snap.status as MutableHealthStatus) !== "restarting") {
       this.createIncident(agentId, "error_spike", "warning", { errorRate: snap.errorRate });
     }
     if (snap.avgLatencyMs > LATENCY_SPIKE_MS) {

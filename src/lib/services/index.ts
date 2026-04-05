@@ -163,7 +163,7 @@ export { FraudSentinelService as FraudSentinelImpl, createFraudSentinel as creat
 export { GovernanceSimulatorService as GovSimImpl, createGovernanceSimulator as createGovSimImpl } from "./governance-simulator";
 export { HouseholdOrgGraphService as HouseholdOrgGraphImpl, createHouseholdOrgGraph as createHouseholdOrgGraphImpl } from "./household-org-graph";
 export { IdentityService as IdentityServiceImpl, createIdentityService as createIdentityServiceImpl } from "./identity";
-export { ImmuneControllerService as ImmuneControllerImpl, createImmuneController as createImmuneControllerImpl } from "./immune-controller";
+export { ImmuneController as ImmuneControllerImpl, createImmuneController as createImmuneControllerImpl } from "./immune-controller";
 export { AuditLedgerService, createAuditLedger as createAuditLedgerService } from "./audit-ledger";
 export { PaymentExecutionService as PaymentExecImpl, createPaymentExecution as createPaymentExecImpl } from "./payment-execution-service";
 export { RolePermissionEngineService as RolePermImpl, createRolePermissionEngine as createRolePermImpl } from "./role-permission-engine";
