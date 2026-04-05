@@ -297,6 +297,27 @@ cat > "${SITA_DIR}/first-boot-complete.json" << EOF
 EOF
 
 if [ "$ALL_HEALTHY" = true ]; then
+  # ── Install OTA agent and timer ─────────────────────────────
+  log "[POST] Installing OTA update agent..."
+  cp "${SITA_DIR}/sita-ota-agent.sh" /opt/sita/sita-ota-agent.sh 2>/dev/null || true
+  chmod +x /opt/sita/sita-ota-agent.sh 2>/dev/null || true
+  cp "${SITA_DIR}/iso/sita-ota.service" /etc/systemd/system/ 2>/dev/null || true
+  cp "${SITA_DIR}/iso/sita-ota.timer" /etc/systemd/system/ 2>/dev/null || true
+  systemctl daemon-reload 2>/dev/null || true
+  systemctl enable --now sita-ota.timer 2>/dev/null || true
+  log "  ✅ OTA timer enabled (every 6h)"
+
+  # Register device with cloud update service
+  DEVICE_ID=$(cat /etc/machine-id 2>/dev/null || hostname)
+  HW_PROFILE=$(cat <<HWEOF
+{"cpu":"$(lscpu 2>/dev/null | grep 'Model name' | sed 's/.*: *//')","cores":$(nproc 2>/dev/null || echo 1),"ram_mb":$(free -m 2>/dev/null | awk '/Mem:/{print $2}' || echo 0),"tpm":$([ -c /dev/tpm0 ] && echo true || echo false)}
+HWEOF
+  )
+  cat > "${SITA_DIR}/ota-config.json" <<OTAEOF
+{"supabase_url":"${SUPABASE_URL:-}","anon_key":"${SUPABASE_ANON_KEY:-}","device_id":"${DEVICE_ID}","user_id":"system","channel":"stable","auto_update":true}
+OTAEOF
+  log "  ✅ OTA config written"
+
   log ""
   log "═══════════════════════════════════════════════════════"
   log "  ✅ SITA OS is fully operational!"
