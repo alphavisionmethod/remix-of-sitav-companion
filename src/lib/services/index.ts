@@ -179,3 +179,10 @@ export { SessionResumeService, getSessionResumeService } from "./session-resume"
 export { useSurfaceType, detectSurfaceType, buildActiveSurface, getDeviceId, getDeviceName } from "./surface-detection";
 export * from "./handoff";
 export * from "./offline-queue";
+
+// ── Phase 10: Enhanced AI Team & Admin ────────────────────────
+export { AgentHealthMonitorService, createAgentHealthMonitor } from "./ai-workforce/agent-health-monitor";
+export { CostCircuitBreakerService, createCostCircuitBreaker } from "./ai-economics/cost-circuit-breaker";
+export { HealthAggregatorService, createHealthAggregator } from "./observability/health-aggregator";
+export { InvestmentOfficeRuntimeService, createInvestmentOfficeRuntime } from "./finance-os/investment-office-runtime";
+export { AgentControlService, createAgentControl } from "./admin-service/agent-control";
