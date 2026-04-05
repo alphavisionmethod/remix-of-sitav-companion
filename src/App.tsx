@@ -667,6 +667,15 @@ const App = () => (
                     <Route path="/admin/sag/builder" element={<SAGBuilderConsole />} />
                     <Route path="/admin/sag/compliance" element={<SAGComplianceGate />} />
 
+                    {/* LT — Launch Truth / CI / E2E / Probes / Gates */}
+                    <Route path="/admin/truth/behavioral" element={<LT01BehavioralTruthOverview />} />
+                    <Route path="/admin/truth/ci-pipeline" element={<LT02CIPipelineCenter />} />
+                    <Route path="/admin/truth/e2e-journeys" element={<LT03E2EJourneyBoard />} />
+                    <Route path="/admin/truth/runtime-probes" element={<LT04RuntimeProbeCenter />} />
+                    <Route path="/admin/truth/launch-gate" element={<LT05LaunchGateBoard />} />
+                    <Route path="/admin/truth/route-interaction" element={<LT06RouteInteractionTruth />} />
+                    <Route path="/admin/truth/regression-radar" element={<LT07TruthRegressionRadar />} />
+
 
                     {/* Digital Presence Office */}
                     <Route path="/digital-presence" element={<PresenceGate />} />
