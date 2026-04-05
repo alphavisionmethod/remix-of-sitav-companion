@@ -152,7 +152,7 @@ const AutomationCenter = () => {
         </div>
       )}
 
-      {activeTab === "MOCK_DELEGATIONS" && (
+      {activeTab === "delegations" && (
         <div className="space-y-2">
           {MOCK_DELEGATIONS.map((d, i) => (
             <SitaCard key={i} hover={false} className="p-4">
