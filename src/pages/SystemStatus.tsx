@@ -146,8 +146,12 @@ const StateBadgeInline = ({ state }: { state: string }) => {
 
 // ── Main Component ──────────────────────────────────────────────
 
-// Recent approvals now pulled from Supabase via governance summary
-// (hardcoded fallback only shown when no data available)
+const FALLBACK_APPROVALS = [
+  { action: "Bill payment: AWS — $340", result: "Auto-approved", time: "1h ago", trust: "verified" as const },
+  { action: "Quote #1042 to Sarah Chen — $2,500", result: "User approved", time: "3h ago", trust: "verified" as const },
+  { action: "Follow-up email to Emily Watson", result: "Pending review", time: "4h ago", trust: "review" as const },
+  { action: "Subscription cancellation: Adobe CC", result: "Awaiting approval", time: "Yesterday", trust: "approval" as const },
+];
 
 const SystemStatus = () => {
   const location = useLocation();
