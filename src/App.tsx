@@ -162,6 +162,16 @@ const IntegrationConciergePage = lazy(() => import("./pages/admin/IntegrationCon
 const RevenueAutopilotMonitor = lazy(() => import("./pages/admin/RevenueAutopilotMonitor"));
 const InvestorProofLedger = lazy(() => import("./pages/admin/InvestorProofLedger"));
 const PersonalBrain = lazy(() => import("./pages/PersonalBrain"));
+
+// ── AI Engineering Board ──
+const AIEngineeringBoard = lazy(() => import("./pages/admin/AIEngineeringBoard"));
+const AITeamRoster = lazy(() => import("./pages/admin/AITeamRoster"));
+const AIMissionCenter = lazy(() => import("./pages/admin/AIMissionCenter"));
+const AIFixCenter = lazy(() => import("./pages/admin/AIFixCenter"));
+const AISelfHealing = lazy(() => import("./pages/admin/AISelfHealing"));
+const AIDesignStudio = lazy(() => import("./pages/admin/AIDesignStudio"));
+const AILearningCenter = lazy(() => import("./pages/admin/AILearningCenter"));
+const AIApprovalDesk = lazy(() => import("./pages/admin/AIApprovalDesk"));
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
@@ -869,6 +879,14 @@ const App = () => (
                     <Route path="/admin/integration-concierge" element={<IntegrationConciergePage />} />
                     <Route path="/admin/revenue-autopilot" element={<RevenueAutopilotMonitor />} />
                     <Route path="/admin/proof-ledger" element={<InvestorProofLedger />} />
+                    <Route path="/admin/ai-engineering" element={<AIEngineeringBoard />} />
+                    <Route path="/admin/ai-team-roster" element={<AITeamRoster />} />
+                    <Route path="/admin/ai-missions" element={<AIMissionCenter />} />
+                    <Route path="/admin/ai-fix-center" element={<AIFixCenter />} />
+                    <Route path="/admin/ai-self-healing" element={<AISelfHealing />} />
+                    <Route path="/admin/ai-design-studio" element={<AIDesignStudio />} />
+                    <Route path="/admin/ai-learning" element={<AILearningCenter />} />
+                    <Route path="/admin/ai-approvals" element={<AIApprovalDesk />} />
                     <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
