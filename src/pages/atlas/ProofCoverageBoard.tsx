@@ -189,6 +189,39 @@ export default function ProofCoverageBoard() {
             })}
           </TabsContent>
 
+          <TabsContent value="rollback">
+            <h3 className="text-xs font-semibold mb-3">Rollback Verification Center</h3>
+            {proofDomains.map(d => {
+              const rollbackable = d.capabilities.filter(c => c.rollbackable);
+              const nonRollbackable = d.capabilities.filter(c => !c.rollbackable);
+              if (rollbackable.length === 0 && nonRollbackable.length === 0) return null;
+              return (
+                <Card key={d.domain} className="bg-card/50 border-border/50 mb-2">
+                  <CardContent className="p-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-xs font-semibold text-foreground capitalize">{d.domain}</p>
+                      <span className="text-[9px] text-muted-foreground">{rollbackable.length}/{d.capabilities.length} rollbackable</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {rollbackable.map(c => (
+                        <div key={c.name} className="flex items-center gap-1 px-2 py-1 bg-green-500/10 border border-green-500/20 rounded text-[9px]">
+                          <CheckCircle className="w-2.5 h-2.5 text-green-400" />
+                          <span className="text-foreground">{c.name}</span>
+                        </div>
+                      ))}
+                      {nonRollbackable.map(c => (
+                        <div key={c.name} className="flex items-center gap-1 px-2 py-1 bg-muted/20 border border-border/30 rounded text-[9px]">
+                          <XCircle className="w-2.5 h-2.5 text-red-400/50" />
+                          <span className="text-muted-foreground">{c.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </TabsContent>
+
           <TabsContent value="breaks">
             <h3 className="text-xs font-semibold mb-3">Chain Break Investigation</h3>
             {chainEntries.filter(e => e.integrity === "break").length === 0 ? (
