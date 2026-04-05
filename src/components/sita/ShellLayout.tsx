@@ -171,6 +171,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
       {/* Keyboard Shortcuts Overlay */}
       <KeyboardShortcuts />
+
+      {/* Behavioral Interaction Tracker — invisible */}
+      <InteractionTracker />
     </SidebarProvider>
   );
 };
