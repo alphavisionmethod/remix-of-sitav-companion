@@ -235,6 +235,7 @@ const AutomationReceipts = lazy(() => import("./pages/revenue-office/AutomationR
 const AutomationPolicy = lazy(() => import("./pages/revenue-office/AutomationPolicy"));
 const QuoteStudio = lazy(() => import("./pages/revenue-office/QuoteStudio"));
 const CallDesk = lazy(() => import("./pages/revenue-office/CallDesk"));
+const BusinessOnboarding = lazy(() => import("./pages/revenue-office/BusinessOnboarding"));
 
 const queryClient = createQueryClient();
 
