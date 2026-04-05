@@ -1,99 +1,66 @@
 
 
-# SITA OS — Admin Backend, ISO Profiles, AI Token Governance, Personal Brain & OS-App Bridge
+# SITA OS — Remaining Gaps & World-Class Hardening Plan
 
-## Status: Previously Approved Plan Was Never Implemented
+## Current State After Previous Rounds
 
-The plan approved in the previous conversation (12 new files, 7 edits, 1 migration) was never built. This plan implements all of it.
+GlobalErrorBoundary, query-config, real-data AdminDashboard/TeamManagement, DB indexes, dedup triggers, and atomic budget RPC are all in place. The Supabase linter shows zero issues.
 
-## What Gets Built
+## Remaining Gaps (Ordered by Impact)
 
-### Part 1: Database Migration (4 new tables)
+### 1. Zero Input Validation on All 22 Edge Functions
+No edge function uses Zod or any schema validation. Raw `req.json()` is trusted everywhere — personal-brain, chat-advisor, admin-users, os-command, etc. One malformed payload crashes the function.
 
-```sql
-ai_token_usage        -- every LLM call logged: user, advisor, model, tokens, cost
-user_ai_budgets       -- per-user monthly/daily token & cost limits
-advisor_performance   -- accuracy, satisfaction, corrections per advisor per period
-system_config         -- key/value feature flags & defaults, admin-editable
-```
+**Fix**: Create `supabase/functions/_shared/validate.ts` with reusable CORS headers, auth helper, and Zod-like validation (lightweight, no npm — manual schema checks for Deno). Update all edge functions to validate input shape and reject oversized bodies (>100KB).
 
-All with RLS: users see own data, admins see everything via `has_role()`.
+### 2. SystemManagement Still Uses Local Service Stubs
+`SystemManagement.tsx` calls `SystemUpdateService.getDevices()` etc. — these are in-memory stubs returning hardcoded data. No admin guard either.
 
-### Part 2: Edge Functions (5 new, 1 edit)
+**Fix**: Wire to real `device_statuses` table + `os-command` edge function. Add `useRequireAdmin` guard.
 
-| Function | Purpose |
-|----------|---------|
-| `admin-users` | User CRUD: list, suspend, promote, impersonate (admin-only) |
-| `device-telemetry` | Receives heartbeats from ISO devices, writes metrics |
-| `personal-brain` | General-purpose AI companion — learn, build, create, think modes. Injects cross-advisor memory. Uses Lovable AI gateway |
-| `os-status` | Receives CPU/RAM/disk/docker metrics from local agent |
-| `os-command` | Admin-only remote commands: restart-service, update-now, run-backup |
-| `chat-advisor` (edit) | Add pre-call budget check against `user_ai_budgets`, post-call insert into `ai_token_usage` |
+### 3. AdminDashboard Missing Admin Guard
+`AdminDashboard.tsx` has no `useRequireAdmin` check — any authenticated user can view it.
 
-### Part 3: Frontend Pages (4 new)
+**Fix**: Add admin guard like UserManagement/AITokenDashboard already have.
 
-| Page | Description |
-|------|-------------|
-| `UserManagement.tsx` | Real user list with search, suspend, role assignment, impersonation |
-| `AITokenDashboard.tsx` | Token spend analytics: by user, advisor, model. Budget editor. Anomaly alerts. Forecasted month-end cost |
-| `PersonalBrain.tsx` | Full-screen chat with mode tabs (Think/Learn/Build/Create). Shows token spend badge. Cross-references all advisor knowledge |
-| `AdminDashboard.tsx` (edit) | Wire real data from new tables instead of mocks |
+### 4. 19 Mock Data Files Still Feeding Production Pages
+`src/lib/mock-data/` has 19 files (customers, revenue, inbox, etc.) used by pages like InboxCapture, ImportExportCenter, ReservesSavings. Demo mode should use them; live mode should query Supabase.
 
-### Part 4: Admin Guard Hook
+**Fix**: Audit the top 5 most-used mock files and wire their consuming pages to use real DB queries when `isDemoMode === false`. Pages already have the pattern (ReservesSavings does it partially).
 
-`src/hooks/useRequireAdmin.ts` — checks `has_role(uid, 'admin')`, redirects non-admins.
+### 5. App.tsx Route Bloat (606 lines, 100+ lazy imports)
+Single file with every route — hard to maintain, slow to parse.
 
-### Part 5: ISO Dual-Profile Build
+**Fix**: Split into route group files: `AdminRoutes.tsx`, `WorkspaceRoutes.tsx`, `MobileRoutes.tsx`, `OwnerRoutes.tsx`. App.tsx becomes ~150 lines.
 
-- `build-iso.sh` gains `--profile admin|user` flag
-- New `scripts/release/iso/profiles/admin.json` and `user.json`
-- `sita-first-boot.sh` reads profile, assigns admin role via Supabase Admin API on first user creation
-- Admin ISO: Mission Control unlocked, all admin pages, advanced mode default
-- User ISO: standard onboarding, personalization-first, no admin access
+### 6. Edge Function CORS + Auth Boilerplate Duplicated 22x
+Every edge function copy-pastes the same CORS headers and auth check pattern.
 
-### Part 6: OS-App Bridge
+**Fix**: Shared `_shared/cors.ts` and `_shared/auth.ts` imported by all functions.
 
-- `scripts/release/iso/sita-metrics-agent.sh` — systemd timer (5min), reports CPU/RAM/disk/docker to `os-status` edge function
-- Admin can trigger remote commands (restart, backup, update) from SystemManagement page via `os-command` edge function
-- Personal Brain "Create" mode can submit feature requests that appear in Mission Control
+### 7. No Rate Limiting on AI Endpoints
+`chat-advisor` and `personal-brain` have no throttle — a user could burn unlimited tokens.
 
-### Part 7: Sidebar & Routing
+**Fix**: Add simple in-DB rate check: count requests in last minute from `ai_token_usage`, reject if >20/min.
 
-- Add "Brain" to primary nav (alongside Home, Business, Finance, Concierge)
-- Add `/admin/users`, `/admin/ai-tokens`, `/personal-brain` routes
-- Wire update to `AppSidebar.tsx`
+## Implementation Priority (What to Build Now)
 
-## File Summary
+| # | Task | Files |
+|---|------|-------|
+| 1 | Shared edge function utilities (CORS, auth, validation) | `_shared/cors.ts`, `_shared/auth.ts`, `_shared/validate.ts` — 3 new |
+| 2 | Harden all edge functions with validation + size limits | 22 edge function edits (apply shared utils) |
+| 3 | Add admin guard to AdminDashboard + SystemManagement | 2 page edits |
+| 4 | Wire SystemManagement to real DB + os-command | 1 page rewrite |
+| 5 | Split App.tsx into route groups | `AdminRoutes.tsx`, `WorkspaceRoutes.tsx`, `MobileRoutes.tsx`, `OwnerRoutes.tsx` — 4 new, 1 edit |
+| 6 | Add rate limiting to chat-advisor + personal-brain | 2 edge function edits |
+| 7 | Wire top mock-dependent pages to real DB (InboxCapture, ImportExportCenter) | 2 page edits |
 
-| # | File | Action |
-|---|------|--------|
-| 1 | Migration: 4 tables | New |
-| 2 | `supabase/functions/admin-users/index.ts` | New |
-| 3 | `supabase/functions/device-telemetry/index.ts` | New |
-| 4 | `supabase/functions/personal-brain/index.ts` | New |
-| 5 | `supabase/functions/os-status/index.ts` | New |
-| 6 | `supabase/functions/os-command/index.ts` | New |
-| 7 | `supabase/functions/chat-advisor/index.ts` | Edit — budget check + token logging |
-| 8 | `src/hooks/useRequireAdmin.ts` | New |
-| 9 | `src/pages/admin/UserManagement.tsx` | New |
-| 10 | `src/pages/admin/AITokenDashboard.tsx` | New |
-| 11 | `src/pages/admin/AdminDashboard.tsx` | Edit — real data |
-| 12 | `src/pages/PersonalBrain.tsx` | New |
-| 13 | `scripts/release/build-iso.sh` | Edit — `--profile` flag |
-| 14 | `scripts/release/iso/profiles/admin.json` | New |
-| 15 | `scripts/release/iso/profiles/user.json` | New |
-| 16 | `scripts/release/iso/sita-first-boot.sh` | Edit — profile-based role provisioning |
-| 17 | `scripts/release/iso/sita-metrics-agent.sh` | New |
-| 18 | `src/components/sita/AppSidebar.tsx` | Edit — add Brain + admin links |
-| 19 | `src/App.tsx` | Edit — add routes |
-
-**Total: 12 new files, 7 edits, 1 migration.**
+**Total: 7 new files, ~28 edits. No new migration needed — all tables already exist.**
 
 ## Technical Notes
 
-- Personal Brain uses Lovable AI gateway (`google/gemini-3-flash-preview`) via edge function — no new API keys needed
-- Budget enforcement: `chat-advisor` checks `user_ai_budgets` before calling AI; if over limit, auto-downgrades to cheaper model or blocks
-- Token logging: every LLM call inserts into `ai_token_usage` with user, advisor, model, token counts, cost
-- Self-learning cost: tagged separately in `ai_token_usage` so admin can cap learning budget independently
-- ISO profiles: same Docker image, different `/opt/sita/profile.json` — first-boot reads it to assign roles
+- Deno edge functions cannot use npm Zod — validation will be manual type-checking functions in `_shared/validate.ts`
+- Rate limiting uses existing `ai_token_usage` table (count recent rows) — no new table needed
+- Route splitting preserves all existing paths — zero breaking changes
+- Mock data files are kept for demo mode — only live-mode paths change
 
