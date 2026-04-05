@@ -69,9 +69,8 @@ serve(async (req) => {
           ban_duration: "876000h",
         });
         if (error) throw error;
-
         await adminClient.from("audit_logs").insert({
-          user_id: user.id, action: "suspend_user", category: "admin",
+          user_id: auth.user.id, action: "suspend_user", category: "admin",
           actor: "admin", target_type: "user", target_id: target_user_id, severity: "high",
         });
 
