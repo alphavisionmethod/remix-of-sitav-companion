@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Setup Phase Definitions Registry
-// All 27 phases with deps, branching, timeouts, bg tasks
+// Clean 24-phase flow: boot → trust-certificate
 // ═══════════════════════════════════════════════════════════════
 
 import type {
@@ -11,7 +11,7 @@ import type {
 // ── Helpers ─────────────────────────────────────────────────
 
 const DEFAULT_TIMEOUT: PhaseTimeoutConfig = {
-  timeoutMs: 300_000, // 5 minutes — user-interactive phases need generous time
+  timeoutMs: 300_000,
   autoRetry: false,
   maxRetries: 0,
   backoffBaseMs: 1000,
@@ -51,21 +51,14 @@ function defaultStatusUX(title: string): Record<SetupPhaseStatus, PhaseStatusUX>
 
 // ── Branch condition factories ──────────────────────────────
 
-function roleCondition(roles: string[], include = true): SetupBranchCondition {
-  return { type: "role", description: `Include for roles: ${roles.join(", ")}`, evaluatorKey: `role:${roles.join(",")}`, includeWhen: include };
-}
-
 function setupStyleCondition(styles: string[]): SetupBranchCondition {
   return { type: "setup-style", description: `Include for styles: ${styles.join(", ")}`, evaluatorKey: `style:${styles.join(",")}`, includeWhen: true };
-}
-
-function domainCondition(domains: string[]): SetupBranchCondition {
-  return { type: "domain-selection", description: `Include if domains: ${domains.join(", ")}`, evaluatorKey: `domain:${domains.join(",")}`, includeWhen: true };
 }
 
 // ── Phase Definitions ───────────────────────────────────────
 
 export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
+  // ── Phase 0: Boot & Foundation ──
   {
     id: "boot", title: "System Boot", description: "Hardware detection and device attestation",
     dependencies: [], blocking: true, required: true,
@@ -79,15 +72,17 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     dependencies: ["boot"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
-    timeout: SYSTEM_TIMEOUT, order: 0.5, excludedFromSteps: true,
+    timeout: SYSTEM_TIMEOUT, order: 1, excludedFromSteps: true,
     statusUX: defaultStatusUX("Secure Foundation"),
   },
+
+  // ── Phase 1: Machine Readiness ──
   {
     id: "language-region", title: "Language & Region", description: "Set language, region, timezone, and input preferences",
     dependencies: ["secure-foundation"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 0.8, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 2, excludedFromSteps: true,
     statusUX: defaultStatusUX("Language & Region"),
   },
   {
@@ -95,7 +90,7 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     dependencies: ["language-region"], blocking: true, required: true,
     backgroundTaskIds: ["wifi-scan", "ethernet-detect"],
     branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 1, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 3, excludedFromSteps: true,
     statusUX: defaultStatusUX("Network Setup"),
   },
   {
@@ -103,7 +98,7 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     dependencies: ["network-setup"], blocking: true, required: true,
     backgroundTaskIds: ["check-updates", "driver-check"],
     branchConditions: [], requiredHardware: [],
-    timeout: { ...DEFAULT_TIMEOUT, timeoutMs: 120_000 }, order: 2, excludedFromSteps: true,
+    timeout: { ...DEFAULT_TIMEOUT, timeoutMs: 120_000 }, order: 4, excludedFromSteps: true,
     statusUX: defaultStatusUX("Device Readiness"),
   },
   {
@@ -111,329 +106,141 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     dependencies: ["device-readiness"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 3, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 5, excludedFromSteps: true,
     statusUX: defaultStatusUX("Device Ownership"),
   },
+
+  // ── Phase 2: Identity & Trust Baseline ──
   {
     id: "account-environment", title: "Account / Environment", description: "Sign in, restore, or create a new SITA environment",
     dependencies: ["device-ownership"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 4, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 6, excludedFromSteps: true,
     statusUX: defaultStatusUX("Account / Environment"),
   },
   {
-    id: "access-protection", title: "Access Protection", description: "Protect access with PIN, password, and recovery",
+    id: "setup-style", title: "Setup Style", description: "Choose express, guided, or advanced setup",
     dependencies: ["account-environment"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 7, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Setup Style"),
+  },
+  {
+    id: "access-protection", title: "Access Protection", description: "Protect access with PIN, password, and recovery",
+    dependencies: ["setup-style"], blocking: true, required: true,
+    backgroundTaskIds: [],
+    branchConditions: [], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 8, excludedFromSteps: true,
     statusUX: defaultStatusUX("Access Protection"),
   },
   {
     id: "privacy-transparency", title: "Privacy & Transparency", description: "Choose how SITA can learn, personalize, and assist",
     dependencies: ["access-protection"], blocking: true, required: true,
     backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5.1, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 9, excludedFromSteps: true,
     statusUX: defaultStatusUX("Privacy & Transparency"),
   },
+
+  // ── Phase 3: Personalization Ceremony ──
   {
     id: "quick-identity", title: "Quick Identity", description: "Help SITA understand where to begin",
     dependencies: ["privacy-transparency"], blocking: true, required: true,
     backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5.2, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 10, excludedFromSteps: true,
     statusUX: defaultStatusUX("Quick Identity"),
   },
   {
     id: "deep-world-modeling", title: "World Modeling", description: "Help SITA understand your world",
     dependencies: ["quick-identity"], blocking: true, required: true,
     backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5.3, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 11, excludedFromSteps: true,
     statusUX: defaultStatusUX("World Modeling"),
   },
-  {
-    id: "primary-use-mode", title: "Primary Use Mode", description: "Choose what SITA should help you run first",
-    dependencies: ["deep-world-modeling"], blocking: true, required: true,
-    backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5.4, excludedFromSteps: true,
-    statusUX: defaultStatusUX("Primary Use Mode"),
-  },
-  {
-    id: "trust-calibration", title: "Trust Calibration", description: "Choose how SITA should help — autonomy spectrum and controls",
-    dependencies: ["primary-use-mode"], blocking: true, required: true,
-    backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5.5, excludedFromSteps: true,
-    statusUX: defaultStatusUX("Trust Calibration"),
-  },
-  {
-    id: "advisor-activation", title: "Advisor Activation", description: "Meet and activate your advisory team",
-    dependencies: ["trust-calibration"], blocking: true, required: true,
-    backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5.6, excludedFromSteps: true,
-    statusUX: defaultStatusUX("Advisor Activation"),
-  },
-  {
-    id: "welcome", title: "Welcome", description: "First welcome screen with restore/enterprise options",
-    dependencies: ["advisor-activation"], blocking: true, required: true,
-    backgroundTaskIds: [],
-    branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 6, excludedFromSteps: true,
-    statusUX: defaultStatusUX("Welcome"),
-  },
-  {
-    id: "restore", title: "Restore", description: "Restore from backup flow",
-    dependencies: ["welcome"], blocking: true, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [{ type: "custom", description: "User chose restore", evaluatorKey: "user-chose-restore", includeWhen: true }],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 2, excludedFromSteps: true,
-    statusUX: defaultStatusUX("Restore"),
-  },
-  {
-    id: "enterprise", title: "Enterprise", description: "Enterprise onboarding flow",
-    dependencies: ["welcome"], blocking: true, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [{ type: "custom", description: "User chose enterprise", evaluatorKey: "user-chose-enterprise", includeWhen: true }],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 3, excludedFromSteps: true,
-    statusUX: defaultStatusUX("Enterprise"),
-  },
-  {
-    id: "cinematic-intro", title: "Cinematic Intro", description: "Animated brand introduction",
-    dependencies: ["welcome"], blocking: false, required: true,
-    backgroundTaskIds: ["preload-identity-form"],
-    branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 4, excludedFromSteps: true,
-    statusUX: defaultStatusUX("Cinematic Intro"),
-  },
-  {
-    id: "setup-style", title: "Setup Style", description: "Choose express, guided, or advanced setup",
-    dependencies: ["cinematic-intro"], blocking: true, required: true,
-    backgroundTaskIds: [],
-    branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Setup Style"),
-  },
-  {
-    id: "identity", title: "Identity", description: "Name and role selection",
-    dependencies: ["setup-style"], blocking: true, required: true,
-    backgroundTaskIds: [],
-    branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 6, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Identity"),
-  },
-  {
-    id: "want-less-of", title: "Pain Points", description: "What do you want less of?",
-    dependencies: ["identity"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [setupStyleCondition(["guided", "advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 7, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Pain Points"),
-  },
-  {
-    id: "protect-most", title: "Protection Priorities", description: "What matters most to protect?",
-    dependencies: ["identity"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [setupStyleCondition(["guided", "advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 8, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Protection Priorities"),
-  },
-  {
-    id: "domains", title: "Domains", description: "Enable business, money, concierge modules",
-    dependencies: ["identity"], blocking: true, required: true,
-    backgroundTaskIds: [],
-    branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 9, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Domains"),
-  },
-  {
-    id: "trust", title: "Trust & Autonomy", description: "Set AI autonomy level",
-    dependencies: ["domains"], blocking: false, required: true,
-    backgroundTaskIds: [],
-    branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 10, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Trust & Autonomy"),
-  },
-  {
-    id: "explanation-style", title: "Explanation Style", description: "How detailed should explanations be?",
-    dependencies: ["trust"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [setupStyleCondition(["guided", "advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 11, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Explanation Style"),
-  },
-  {
-    id: "presence-style", title: "Presence Style", description: "How present should SITA be?",
-    dependencies: ["trust"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [setupStyleCondition(["advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 12, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Presence Style"),
-  },
-  {
-    id: "ai-personality", title: "AI Personality", description: "Communication style and depth",
-    dependencies: ["trust"], blocking: false, required: true,
-    backgroundTaskIds: [],
-    branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 13, excludedFromSteps: false,
-    statusUX: defaultStatusUX("AI Personality"),
-  },
-  {
-    id: "interruption-style", title: "Interruption Style", description: "When should SITA interrupt you?",
-    dependencies: ["ai-personality"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [setupStyleCondition(["advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 14, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Interruption Style"),
-  },
-  {
-    id: "rituals", title: "Rituals", description: "Set up recurring check-ins",
-    dependencies: ["ai-personality"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [setupStyleCondition(["guided", "advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 15, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Rituals"),
-  },
-  {
-    id: "appearance", title: "Appearance", description: "Theme and accent color",
-    dependencies: ["setup-style"], blocking: false, required: true,
-    backgroundTaskIds: [],
-    branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 16, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Appearance"),
-  },
-  {
-    id: "household-graph", title: "Household Graph", description: "Map people in your household",
-    dependencies: ["domains"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [
-      roleCondition(["family-office", "personal"]),
-      setupStyleCondition(["advanced"]),
-    ],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 17, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Household Graph"),
-  },
-  {
-    id: "memory-consent", title: "Memory Consent", description: "Configure memory retention policy",
-    dependencies: ["trust"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [setupStyleCondition(["advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 18, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Memory Consent"),
-  },
-  {
-    id: "home-composition", title: "Home Composition", description: "Choose your dashboard layout",
-    dependencies: ["domains"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [setupStyleCondition(["advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 19, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Home Composition"),
-  },
-  {
-    id: "first-connections", title: "First Connections", description: "Connect email, calendar, payments",
-    dependencies: ["domains"], blocking: false, required: false,
-    backgroundTaskIds: ["connector-readiness-check"],
-    branchConditions: [setupStyleCondition(["guided", "advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 20, excludedFromSteps: false,
-    statusUX: defaultStatusUX("First Connections"),
-  },
-  {
-    id: "desktop-preview", title: "Desktop Preview", description: "Preview your configured workspace",
-    dependencies: ["domains", "appearance"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [setupStyleCondition(["advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 21, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Desktop Preview"),
-  },
-  {
-    id: "first-simulation", title: "First Simulation", description: "Run a simulated workflow",
-    dependencies: ["domains", "trust"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [setupStyleCondition(["guided", "advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 22, excludedFromSteps: false,
-    statusUX: defaultStatusUX("First Simulation"),
-  },
-  {
-    id: "first-actions", title: "First Actions", description: "See SITA's first recommendations",
-    dependencies: ["domains", "trust"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [setupStyleCondition(["guided", "advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 23, excludedFromSteps: false,
-    statusUX: defaultStatusUX("First Actions"),
-  },
-  {
-    id: "recover-first", title: "Recovery Setup", description: "Prepare recovery and restore hooks",
-    dependencies: ["trust"], blocking: false, required: false,
-    backgroundTaskIds: [],
-    branchConditions: [setupStyleCondition(["advanced"])],
-    requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 24, excludedFromSteps: false,
-    statusUX: defaultStatusUX("Recovery Setup"),
-  },
-  {
-    id: "first-win-setup", title: "First Win Setup", description: "Choose your first win for immediate value",
-    dependencies: ["first-connections"], blocking: true, required: true,
-    backgroundTaskIds: [],
-    branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 20.5, excludedFromSteps: false,
-    statusUX: defaultStatusUX("First Win Setup"),
-  },
-  // ── New Personalization Ceremony Phases ──────────────────
   {
     id: "life-rhythm", title: "Life Rhythm", description: "Understand your weekly flow and planning cadence",
     dependencies: ["deep-world-modeling"], blocking: false, required: false,
     backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5.35, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 12, excludedFromSteps: true,
     statusUX: defaultStatusUX("Life Rhythm"),
   },
   {
     id: "stress-slippage", title: "Stress & Slippage", description: "Map where support matters most",
     dependencies: ["deep-world-modeling"], blocking: false, required: false,
     backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5.36, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 13, excludedFromSteps: true,
     statusUX: defaultStatusUX("Stress & Slippage"),
   },
   {
     id: "communications-context", title: "Communications", description: "Understand your communication load",
     dependencies: ["deep-world-modeling"], blocking: false, required: false,
     backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5.37, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 14, excludedFromSteps: true,
     statusUX: defaultStatusUX("Communications"),
   },
   {
     id: "planning-style", title: "Planning Style", description: "How you think and plan best",
     dependencies: ["deep-world-modeling"], blocking: false, required: false,
     backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5.38, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 15, excludedFromSteps: true,
     statusUX: defaultStatusUX("Planning Style"),
+  },
+  {
+    id: "primary-use-mode", title: "Primary Use Mode", description: "Choose what SITA should help you run first",
+    dependencies: ["deep-world-modeling"], blocking: true, required: true,
+    backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 16, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Primary Use Mode"),
+  },
+  {
+    id: "trust-calibration", title: "Trust Calibration", description: "Choose how SITA should help — autonomy spectrum and controls",
+    dependencies: ["primary-use-mode"], blocking: true, required: true,
+    backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 17, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Trust Calibration"),
+  },
+  {
+    id: "advisor-activation", title: "Advisor Activation", description: "Meet and activate your advisory team",
+    dependencies: ["trust-calibration"], blocking: true, required: true,
+    backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 18, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Advisor Activation"),
   },
   {
     id: "environment-summary", title: "Environment Summary", description: "Review your shaped environment before arrival",
     dependencies: ["advisor-activation"], blocking: true, required: true,
     backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 5.65, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 19, excludedFromSteps: true,
     statusUX: defaultStatusUX("Environment Summary"),
   },
+
+  // ── Phase 4: Connections & First Value ──
   {
-    id: "arrival-prep", title: "Arrival Preparation", description: "Final pre-launch preparation",
-    dependencies: [],  // computed dynamically — all non-excluded completed/skipped
-    blocking: true, required: true,
+    id: "first-connections", title: "First Connections", description: "Connect email, calendar, payments",
+    dependencies: ["environment-summary"], blocking: false, required: false,
+    backgroundTaskIds: ["connector-readiness-check"],
+    branchConditions: [setupStyleCondition(["guided", "advanced"])],
+    requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 20, excludedFromSteps: true,
+    statusUX: defaultStatusUX("First Connections"),
+  },
+  {
+    id: "first-win-setup", title: "First Win Setup", description: "Choose your first win for immediate value",
+    dependencies: ["environment-summary"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 25, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 21, excludedFromSteps: true,
+    statusUX: defaultStatusUX("First Win Setup"),
+  },
+
+  // ── Phase 5: Arrival ──
+  {
+    id: "arrival-prep", title: "Arrival Preparation", description: "Final pre-launch preparation",
+    dependencies: ["first-win-setup"], blocking: true, required: true,
+    backgroundTaskIds: [],
+    branchConditions: [], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 22, excludedFromSteps: true,
     statusUX: defaultStatusUX("Arrival Preparation"),
   },
   {
@@ -441,7 +248,7 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     dependencies: ["arrival-prep"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 25.5, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 23, excludedFromSteps: true,
     statusUX: defaultStatusUX("Desktop Transition"),
   },
   {
@@ -453,7 +260,7 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
       "check-fraud-sentinel", "check-workflow-engine",
     ],
     branchConditions: [], requiredHardware: [],
-    timeout: SYSTEM_TIMEOUT, order: 26, excludedFromSteps: true,
+    timeout: SYSTEM_TIMEOUT, order: 24, excludedFromSteps: true,
     statusUX: defaultStatusUX("System Check"),
   },
   {
@@ -461,7 +268,7 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     dependencies: ["system-check"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 27, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 25, excludedFromSteps: true,
     statusUX: defaultStatusUX("Trust Certificate"),
   },
 ];
@@ -522,20 +329,11 @@ export const BACKGROUND_TASK_FACTORIES: Record<string, BackgroundTaskFactory> = 
       onProgress(40); await new Promise(r => setTimeout(r, 350)); onProgress(100);
     },
   },
-  "preload-identity-form": {
-    id: "preload-identity-form", label: "Pre-loading identity form", blocking: false,
-    execute: async (onProgress) => {
-      onProgress(50); await new Promise(r => setTimeout(r, 200)); onProgress(100);
-    },
-  },
   "connector-readiness-check": {
     id: "connector-readiness-check", label: "Checking connector readiness", blocking: false,
     execute: async (onProgress) => {
-      onProgress(25);
-      await new Promise(r => setTimeout(r, 600));
-      onProgress(75);
-      await new Promise(r => setTimeout(r, 300));
-      onProgress(100);
+      onProgress(25); await new Promise(r => setTimeout(r, 600));
+      onProgress(75); await new Promise(r => setTimeout(r, 300)); onProgress(100);
     },
   },
   "check-advisor-intelligence": {
