@@ -61,11 +61,11 @@ class AIMemoryGraphService {
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
 
-    const nodes: MemoryNode[] = (memories || []).map((m: any) => ({
+    const nodes: MemoryNode[] = (memories || []).map((m) => ({
       id: m.id,
-      label: m.memory_key,
+      label: m.key,
       category: m.category || 'general',
-      value: typeof m.memory_value === 'string' ? m.memory_value : JSON.stringify(m.memory_value),
+      value: typeof m.value === 'string' ? m.value : JSON.stringify(m.value),
       confidence: m.confidence ?? 0.8,
       source: (m.category === 'behavioral' ? 'inferred' : 'explicit') as 'explicit' | 'inferred',
       connections: [],
