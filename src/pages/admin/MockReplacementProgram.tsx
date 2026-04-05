@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { useState, useMemo } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,37 +9,78 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMockReplacements, useUpsertMockReplacement, useUpdateMockStatus, useDeleteMockReplacement, useMockReplacementStats } from "@/hooks/useMockReplacements";
-import { Plus, Trash2, Search, ArrowRight, AlertTriangle, CheckCircle2, Clock, Ban, CircleDot } from "lucide-react";
+import { Plus, Trash2, Search, ArrowRight, AlertTriangle, CheckCircle2, Clock, Ban, CircleDot, Pencil, BarChart3, Flame } from "lucide-react";
 import type { MockReplacement } from "@/lib/persistence/mock-replacement-persistence";
 
 const STATUS_CONFIG: Record<MockReplacement["migration_status"], { label: string; color: string; icon: any }> = {
   identified: { label: "Identified", color: "bg-muted text-muted-foreground", icon: CircleDot },
   planned: { label: "Planned", color: "bg-blue-500/20 text-blue-400", icon: Clock },
   in_progress: { label: "In Progress", color: "bg-yellow-500/20 text-yellow-400", icon: ArrowRight },
-  blocked: { label: "Blocked", color: "bg-red-500/20 text-red-400", icon: Ban },
+  blocked: { label: "Blocked", color: "bg-destructive/20 text-destructive", icon: Ban },
   completed: { label: "Completed", color: "bg-emerald-500/20 text-emerald-400", icon: CheckCircle2 },
   validated: { label: "Validated", color: "bg-emerald-600/20 text-emerald-300", icon: CheckCircle2 },
 };
 
-const PRIORITY_COLORS: Record<string, string> = { critical: "text-red-400 border-red-400/30", high: "text-orange-400 border-orange-400/30", medium: "text-yellow-400 border-yellow-400/30", low: "text-muted-foreground" };
+const PRIORITY_COLORS: Record<string, string> = {
+  critical: "text-destructive border-destructive/30",
+  high: "text-orange-400 border-orange-400/30",
+  medium: "text-yellow-400 border-yellow-400/30",
+  low: "text-muted-foreground",
+};
 
 const MOCK_TYPES = ["hardcoded", "local_array", "localstorage", "in_memory_engine", "pure_function", "demo_flow"] as const;
 const STATUSES = ["identified", "planned", "in_progress", "blocked", "completed", "validated"] as const;
 const PRIORITIES = ["critical", "high", "medium", "low"] as const;
 
-function AddMockDialog({ onSave }: { onSave: (d: any) => void }) {
+interface MockFormData {
+  feature_name: string;
+  page_path: string;
+  mock_source: string;
+  mock_type: MockReplacement["mock_type"];
+  real_backend_target: string;
+  expected_contract: string;
+  migration_priority: MockReplacement["migration_priority"];
+  migration_owner: string;
+  blockers_text: string;
+}
+
+const EMPTY_FORM: MockFormData = {
+  feature_name: "", page_path: "", mock_source: "", mock_type: "hardcoded",
+  real_backend_target: "", expected_contract: "", migration_priority: "medium",
+  migration_owner: "", blockers_text: "",
+};
+
+function MockFormDialog({
+  trigger,
+  initial,
+  onSave,
+}: {
+  trigger: React.ReactNode;
+  initial?: MockFormData;
+  onSave: (d: any) => void;
+}) {
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({ feature_name: "", page_path: "", mock_source: "", mock_type: "hardcoded" as const, real_backend_target: "", migration_priority: "medium" as const, expected_contract: "", blockers_text: "" });
+  const [form, setForm] = useState<MockFormData>(initial ?? EMPTY_FORM);
+
+  const handleOpen = (v: boolean) => {
+    if (v && initial) setForm(initial);
+    else if (v) setForm(EMPTY_FORM);
+    setOpen(v);
+  };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Track Mock</Button></DialogTrigger>
+    <Dialog open={open} onOpenChange={handleOpen}>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="max-w-lg">
-        <DialogHeader><DialogTitle>Track Mock for Replacement</DialogTitle></DialogHeader>
-        <div className="grid gap-3">
-          <div><Label>Feature Name</Label><Input value={form.feature_name} onChange={e => setForm(f => ({ ...f, feature_name: e.target.value }))} placeholder="Customer List" /></div>
-          <div><Label>Page Path</Label><Input value={form.page_path} onChange={e => setForm(f => ({ ...f, page_path: e.target.value }))} placeholder="/business/customers" /></div>
+        <DialogHeader><DialogTitle>{initial ? "Edit Mock Entry" : "Track Mock for Replacement"}</DialogTitle></DialogHeader>
+        <div className="grid gap-3 max-h-[70vh] overflow-y-auto pr-1">
+          <div className="grid grid-cols-2 gap-3">
+            <div><Label>Feature Name</Label><Input value={form.feature_name} onChange={e => setForm(f => ({ ...f, feature_name: e.target.value }))} placeholder="Customer List" /></div>
+            <div><Label>Page Path</Label><Input value={form.page_path} onChange={e => setForm(f => ({ ...f, page_path: e.target.value }))} placeholder="/business/customers" /></div>
+          </div>
           <div className="grid grid-cols-2 gap-3">
             <div><Label>Mock Source</Label><Input value={form.mock_source} onChange={e => setForm(f => ({ ...f, mock_source: e.target.value }))} placeholder="MOCK_DEMO_CUSTOMERS" /></div>
             <div>
@@ -50,24 +91,102 @@ function AddMockDialog({ onSave }: { onSave: (d: any) => void }) {
               </Select>
             </div>
           </div>
-          <div><Label>Real Backend Target</Label><Input value={form.real_backend_target} onChange={e => setForm(f => ({ ...f, real_backend_target: e.target.value }))} placeholder="supabase.customers table" /></div>
+          <div><Label>Real Backend Target</Label><Input value={form.real_backend_target} onChange={e => setForm(f => ({ ...f, real_backend_target: e.target.value }))} placeholder="supabase.customers table + RLS" /></div>
           <div><Label>Expected Contract</Label><Input value={form.expected_contract} onChange={e => setForm(f => ({ ...f, expected_contract: e.target.value }))} placeholder="CustomerRecord from contracts" /></div>
-          <div>
-            <Label>Priority</Label>
-            <Select value={form.migration_priority} onValueChange={v => setForm(f => ({ ...f, migration_priority: v as any }))}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent>{PRIORITIES.map(p => <SelectItem key={p} value={p} className="capitalize">{p}</SelectItem>)}</SelectContent>
-            </Select>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label>Priority</Label>
+              <Select value={form.migration_priority} onValueChange={v => setForm(f => ({ ...f, migration_priority: v as any }))}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>{PRIORITIES.map(p => <SelectItem key={p} value={p} className="capitalize">{p}</SelectItem>)}</SelectContent>
+              </Select>
+            </div>
+            <div><Label>Migration Owner</Label><Input value={form.migration_owner} onChange={e => setForm(f => ({ ...f, migration_owner: e.target.value }))} placeholder="team/person" /></div>
           </div>
-          <div><Label>Blockers (comma-separated)</Label><Textarea value={form.blockers_text} onChange={e => setForm(f => ({ ...f, blockers_text: e.target.value }))} placeholder="Needs schema migration, API not ready" /></div>
+          <div><Label>Blockers (comma-separated)</Label><Textarea value={form.blockers_text} onChange={e => setForm(f => ({ ...f, blockers_text: e.target.value }))} placeholder="Needs schema migration, API not ready" rows={2} /></div>
           <Button onClick={() => {
             const { blockers_text, ...rest } = form;
-            onSave({ ...rest, blockers: blockers_text ? blockers_text.split(",").map(b => b.trim()) : [] });
+            onSave({ ...rest, blockers: blockers_text ? blockers_text.split(",").map(b => b.trim()).filter(Boolean) : [] });
             setOpen(false);
           }}>Save</Button>
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function toFormData(r: MockReplacement): MockFormData {
+  return {
+    feature_name: r.feature_name,
+    page_path: r.page_path,
+    mock_source: r.mock_source,
+    mock_type: r.mock_type,
+    real_backend_target: r.real_backend_target ?? "",
+    expected_contract: r.expected_contract ?? "",
+    migration_priority: r.migration_priority,
+    migration_owner: r.migration_owner ?? "",
+    blockers_text: (r.blockers ?? []).join(", "),
+  };
+}
+
+function PriorityBreakdownCard({ data }: { data: MockReplacement[] }) {
+  const byPriority = useMemo(() => {
+    const map: Record<string, { total: number; done: number; blocked: number }> = {};
+    PRIORITIES.forEach(p => { map[p] = { total: 0, done: 0, blocked: 0 }; });
+    data.forEach(d => {
+      map[d.migration_priority].total++;
+      if (d.migration_status === "completed" || d.migration_status === "validated") map[d.migration_priority].done++;
+      if (d.migration_status === "blocked") map[d.migration_priority].blocked++;
+    });
+    return map;
+  }, [data]);
+
+  return (
+    <Card>
+      <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Flame className="h-4 w-4" />Priority Breakdown</CardTitle></CardHeader>
+      <CardContent className="space-y-3">
+        {PRIORITIES.map(p => {
+          const { total, done, blocked } = byPriority[p];
+          if (total === 0) return null;
+          const pct = Math.round((done / total) * 100);
+          return (
+            <div key={p} className="space-y-1">
+              <div className="flex items-center justify-between">
+                <Badge variant="outline" className={`capitalize ${PRIORITY_COLORS[p]}`}>{p}</Badge>
+                <span className="text-xs text-muted-foreground">{done}/{total} done{blocked > 0 ? `, ${blocked} blocked` : ""}</span>
+              </div>
+              <Progress value={pct} className="h-1.5" />
+            </div>
+          );
+        })}
+      </CardContent>
+    </Card>
+  );
+}
+
+function BlockerSummaryCard({ data }: { data: MockReplacement[] }) {
+  const blocked = data.filter(d => d.migration_status === "blocked" || (d.blockers && d.blockers.length > 0));
+
+  return (
+    <Card>
+      <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4" />Blocker Summary</CardTitle></CardHeader>
+      <CardContent>
+        {blocked.length === 0 ? (
+          <p className="text-xs text-muted-foreground">No blockers — clear path to completion</p>
+        ) : (
+          <div className="space-y-2">
+            {blocked.map(b => (
+              <div key={b.id} className="p-2 rounded bg-muted/50 space-y-0.5">
+                <p className="text-xs font-medium text-foreground">{b.feature_name}</p>
+                {b.blockers.map((bl, i) => (
+                  <p key={i} className="text-[10px] text-muted-foreground">• {bl}</p>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -79,10 +198,12 @@ export default function MockReplacementProgram() {
   const stats = useMockReplacementStats(data);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [filterPriority, setFilterPriority] = useState<string>("all");
 
   const filtered = (data ?? []).filter(d => {
     if (search && !d.feature_name.toLowerCase().includes(search.toLowerCase()) && !d.page_path.toLowerCase().includes(search.toLowerCase())) return false;
     if (filterStatus !== "all" && d.migration_status !== filterStatus) return false;
+    if (filterPriority !== "all" && d.migration_priority !== filterPriority) return false;
     return true;
   });
 
@@ -91,9 +212,12 @@ export default function MockReplacementProgram() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Mock Replacement Program</h1>
-          <p className="text-sm text-muted-foreground">Track and eliminate mock/demo data from production routes</p>
+          <p className="text-sm text-muted-foreground">Track and eliminate mock/demo data from production routes — the demo-to-real conversion engine</p>
         </div>
-        <AddMockDialog onSave={(d) => upsert.mutate(d)} />
+        <MockFormDialog
+          trigger={<Button size="sm"><Plus className="h-4 w-4 mr-1" />Track Mock</Button>}
+          onSave={(d) => upsert.mutate(d)}
+        />
       </div>
 
       {/* Stats */}
@@ -112,81 +236,127 @@ export default function MockReplacementProgram() {
         })}
         <Card className="border-border/50">
           <CardContent className="p-3 text-center">
-            <p className="text-xs text-muted-foreground mb-1">Completion</p>
+            <BarChart3 className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
             <p className="text-xl font-bold text-foreground">{stats.completionRate}%</p>
             <Progress value={stats.completionRate} className="h-1 mt-1" />
+            <p className="text-[10px] text-muted-foreground">Complete</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Filters */}
-      <div className="flex gap-3">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input className="pl-9" placeholder="Search features..." value={search} onChange={e => setSearch(e.target.value)} />
-        </div>
-        <Select value={filterStatus} onValueChange={setFilterStatus}>
-          <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            {STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}
-          </SelectContent>
-        </Select>
-      </div>
+      <Tabs defaultValue="table">
+        <TabsList>
+          <TabsTrigger value="table">Replacement Board</TabsTrigger>
+          <TabsTrigger value="priority">Priority View</TabsTrigger>
+          <TabsTrigger value="blockers">Blockers</TabsTrigger>
+        </TabsList>
 
-      {/* Table */}
-      <Card>
-        <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Feature</TableHead>
-                <TableHead>Page</TableHead>
-                <TableHead>Mock Source</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Target</TableHead>
-                <TableHead>Priority</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Blockers</TableHead>
-                <TableHead className="w-20"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                <TableRow><TableCell colSpan={9} className="text-center text-muted-foreground py-8">Loading…</TableCell></TableRow>
-              ) : filtered.length === 0 ? (
-                <TableRow><TableCell colSpan={9} className="text-center text-muted-foreground py-8">No mocks tracked yet. Start by identifying mock data sources.</TableCell></TableRow>
-              ) : filtered.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell className="font-medium text-foreground">{row.feature_name}</TableCell>
-                  <TableCell className="text-xs font-mono text-muted-foreground">{row.page_path}</TableCell>
-                  <TableCell className="text-xs font-mono">{row.mock_source}</TableCell>
-                  <TableCell><Badge variant="outline" className="text-[10px]">{row.mock_type.replace(/_/g, " ")}</Badge></TableCell>
-                  <TableCell className="text-xs">{row.real_backend_target || "—"}</TableCell>
-                  <TableCell><Badge variant="outline" className={`capitalize ${PRIORITY_COLORS[row.migration_priority]}`}>{row.migration_priority}</Badge></TableCell>
-                  <TableCell>
-                    <Select value={row.migration_status} onValueChange={v => updateStatus.mutate({ id: row.id, status: v as any })}>
-                      <SelectTrigger className="h-7 text-xs w-[120px]"><SelectValue /></SelectTrigger>
-                      <SelectContent>{STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}</SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    {row.blockers.length > 0 ? (
-                      <div className="flex items-center gap-1">
-                        <AlertTriangle className="h-3 w-3 text-yellow-400" />
-                        <span className="text-xs text-muted-foreground">{row.blockers.length}</span>
-                      </div>
-                    ) : <span className="text-xs text-muted-foreground">—</span>}
-                  </TableCell>
-                  <TableCell>
-                    <Button variant="ghost" size="icon" onClick={() => remove.mutate(row.id)}><Trash2 className="h-3 w-3" /></Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+        <TabsContent value="table" className="space-y-4">
+          {/* Filters */}
+          <div className="flex gap-3">
+            <div className="relative flex-1 max-w-sm">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input className="pl-9" placeholder="Search features..." value={search} onChange={e => setSearch(e.target.value)} />
+            </div>
+            <Select value={filterStatus} onValueChange={setFilterStatus}>
+              <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                {STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <Select value={filterPriority} onValueChange={setFilterPriority}>
+              <SelectTrigger className="w-[130px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Priorities</SelectItem>
+                {PRIORITIES.map(p => <SelectItem key={p} value={p} className="capitalize">{p}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <Card>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Feature</TableHead>
+                    <TableHead>Page</TableHead>
+                    <TableHead>Mock Source</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Target</TableHead>
+                    <TableHead>Owner</TableHead>
+                    <TableHead>Priority</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Blockers</TableHead>
+                    <TableHead className="w-20"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {isLoading ? (
+                    <TableRow><TableCell colSpan={10} className="text-center text-muted-foreground py-8">Loading…</TableCell></TableRow>
+                  ) : filtered.length === 0 ? (
+                    <TableRow><TableCell colSpan={10} className="text-center text-muted-foreground py-8">No mocks tracked yet. Start by identifying mock data sources.</TableCell></TableRow>
+                  ) : filtered.map((row) => (
+                    <TableRow key={row.id}>
+                      <TableCell className="font-medium text-foreground">{row.feature_name}</TableCell>
+                      <TableCell className="text-xs font-mono text-muted-foreground">{row.page_path}</TableCell>
+                      <TableCell className="text-xs font-mono">{row.mock_source}</TableCell>
+                      <TableCell><Badge variant="outline" className="text-[10px]">{row.mock_type.replace(/_/g, " ")}</Badge></TableCell>
+                      <TableCell className="text-xs max-w-[100px] truncate">{row.real_backend_target || "—"}</TableCell>
+                      <TableCell className="text-xs text-muted-foreground">{row.migration_owner || "—"}</TableCell>
+                      <TableCell><Badge variant="outline" className={`capitalize ${PRIORITY_COLORS[row.migration_priority]}`}>{row.migration_priority}</Badge></TableCell>
+                      <TableCell>
+                        <Select value={row.migration_status} onValueChange={v => updateStatus.mutate({ id: row.id, status: v as any })}>
+                          <SelectTrigger className="h-7 text-xs w-[120px]"><SelectValue /></SelectTrigger>
+                          <SelectContent>{STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}</SelectContent>
+                        </Select>
+                      </TableCell>
+                      <TableCell>
+                        {row.blockers && row.blockers.length > 0 ? (
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <Badge variant="outline" className="bg-destructive/10 text-destructive text-[10px]">
+                                <AlertTriangle className="h-2.5 w-2.5 mr-1" />{row.blockers.length}
+                              </Badge>
+                            </TooltipTrigger>
+                            <TooltipContent><div className="text-xs space-y-0.5">{row.blockers.map((b, i) => <p key={i}>• {b}</p>)}</div></TooltipContent>
+                          </Tooltip>
+                        ) : <span className="text-xs text-muted-foreground">—</span>}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex gap-1">
+                          <MockFormDialog
+                            trigger={<Button variant="ghost" size="icon"><Pencil className="h-3 w-3" /></Button>}
+                            initial={toFormData(row)}
+                            onSave={(d) => upsert.mutate(d)}
+                          />
+                          <Button variant="ghost" size="icon" onClick={() => remove.mutate(row.id)}><Trash2 className="h-3 w-3" /></Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="priority">
+          {data && data.length > 0 ? (
+            <PriorityBreakdownCard data={data} />
+          ) : (
+            <Card><CardContent className="p-8 text-center text-muted-foreground">Track mocks to see priority breakdown</CardContent></Card>
+          )}
+        </TabsContent>
+
+        <TabsContent value="blockers">
+          {data ? (
+            <BlockerSummaryCard data={data} />
+          ) : (
+            <Card><CardContent className="p-8 text-center text-muted-foreground">Loading…</CardContent></Card>
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
