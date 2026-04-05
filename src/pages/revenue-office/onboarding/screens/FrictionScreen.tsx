@@ -1,0 +1,50 @@
+import { useMemo } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Flame, Users, MessageSquare, Target, Phone, DollarSign, Package, Heart, Star, RefreshCw, AlertTriangle, Eye, Brain } from "lucide-react";
+import { Toggle, ScreenHeader } from "../primitives";
+import type { ScreenProps } from "../types";
+import { useCallback } from "react";
+
+const bottlenecks = [
+  { id: "lead_flow", label: "Not enough leads coming in", desc: "Pipeline feels empty or unpredictable", icon: Users },
+  { id: "lead_followup", label: "Leads fall through the cracks", desc: "Inquiries arrive but follow-up is inconsistent", icon: MessageSquare },
+  { id: "conversion", label: "Leads don't convert", desc: "Interest exists but deals don't close", icon: Target },
+  { id: "no_shows", label: "No-shows and cancellations", desc: "Appointments booked but attendance is poor", icon: Phone },
+  { id: "pricing", label: "Pricing confusion or undercharging", desc: "Not sure what to charge or leaving money on table", icon: DollarSign },
+  { id: "delivery", label: "Delivery bottleneck", desc: "Can't scale without quality dropping", icon: Package },
+  { id: "retention_gap", label: "Customers leave too quickly", desc: "Churn is high, repeat business is low", icon: Heart },
+  { id: "review_gap", label: "Not enough reviews", desc: "Happy clients but no social proof", icon: Star },
+  { id: "reactivation", label: "Past customers never come back", desc: "Existing base goes cold", icon: RefreshCw },
+  { id: "time_chaos", label: "Overwhelmed / too many hats", desc: "Founder doing everything, no systems", icon: AlertTriangle },
+  { id: "visibility", label: "No clear visibility", desc: "Can't see pipeline, revenue, or customer health", icon: Eye },
+  { id: "handoff", label: "Internal handoff problems", desc: "Things drop between team members", icon: Users },
+  { id: "campaigns", label: "Inconsistent campaigns", desc: "Marketing is sporadic, not systematic", icon: Star },
+];
+
+export default function FrictionScreen({ state, setState }: ScreenProps) {
+  const toggle = useCallback((v: string) => {
+    setState(p => ({ ...p, growthBottlenecks: p.growthBottlenecks.includes(v) ? p.growthBottlenecks.filter(x => x !== v) : [...p.growthBottlenecks, v] }));
+  }, [setState]);
+
+  return (
+    <div className="space-y-6">
+      <ScreenHeader icon={Flame} title="Where does momentum usually get lost?" subtitle="Be honest — this is where SITA can make the biggest impact fastest" color="text-amber-400" />
+      <div className="grid md:grid-cols-2 gap-2">
+        {bottlenecks.map(b => <Toggle key={b.id} label={b.label} desc={b.desc} icon={b.icon} selected={state.growthBottlenecks.includes(b.id)} onToggle={() => toggle(b.id)} />)}
+      </div>
+      {state.growthBottlenecks.length > 0 && (
+        <Card className="bg-amber-500/5 border-amber-500/15">
+          <CardContent className="p-4">
+            <div className="flex items-start gap-2">
+              <Brain className="h-4 w-4 text-amber-400 mt-0.5" />
+              <div>
+                <p className="text-sm text-foreground font-medium">SITA will prioritize these</p>
+                <p className="text-xs text-muted-foreground mt-1">{state.growthBottlenecks.length} bottleneck{state.growthBottlenecks.length !== 1 ? "s" : ""} identified — leak detection, advisors, and first-win suggestions will focus here.</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
