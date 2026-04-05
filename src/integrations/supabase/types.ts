@@ -1985,6 +1985,63 @@ export type Database = {
         }
         Relationships: []
       }
+      behavioral_regressions: {
+        Row: {
+          created_at: string
+          description: string | null
+          domain: string | null
+          first_seen_at: string
+          id: string
+          journey_id: string | null
+          last_seen_at: string
+          linked_commit: string | null
+          occurrence_count: number | null
+          regression_type: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          route: string | null
+          severity: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          domain?: string | null
+          first_seen_at?: string
+          id?: string
+          journey_id?: string | null
+          last_seen_at?: string
+          linked_commit?: string | null
+          occurrence_count?: number | null
+          regression_type?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          route?: string | null
+          severity?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          domain?: string | null
+          first_seen_at?: string
+          id?: string
+          journey_id?: string | null
+          last_seen_at?: string
+          linked_commit?: string | null
+          occurrence_count?: number | null
+          regression_type?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          route?: string | null
+          severity?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       bills: {
         Row: {
           amount: number
@@ -2640,6 +2697,104 @@ export type Database = {
           recommended_next_step?: string | null
           strongest_opportunity?: string | null
           strongest_risk?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ci_jobs: {
+        Row: {
+          artifact_urls: Json | null
+          ci_run_id: string | null
+          created_at: string
+          duration_ms: number | null
+          exit_code: number | null
+          id: string
+          job_name: string
+          log_excerpt: string | null
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          artifact_urls?: Json | null
+          ci_run_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          exit_code?: number | null
+          id?: string
+          job_name: string
+          log_excerpt?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          artifact_urls?: Json | null
+          ci_run_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          exit_code?: number | null
+          id?: string
+          job_name?: string
+          log_excerpt?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ci_jobs_ci_run_id_fkey"
+            columns: ["ci_run_id"]
+            isOneToOne: false
+            referencedRelation: "ci_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ci_runs: {
+        Row: {
+          artifact_urls: Json | null
+          branch: string | null
+          commit_sha: string | null
+          completed_at: string | null
+          created_at: string
+          environment: string | null
+          id: string
+          started_at: string | null
+          status: string | null
+          summary: Json | null
+          trigger_type: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          artifact_urls?: Json | null
+          branch?: string | null
+          commit_sha?: string | null
+          completed_at?: string | null
+          created_at?: string
+          environment?: string | null
+          id?: string
+          started_at?: string | null
+          status?: string | null
+          summary?: Json | null
+          trigger_type?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          artifact_urls?: Json | null
+          branch?: string | null
+          commit_sha?: string | null
+          completed_at?: string | null
+          created_at?: string
+          environment?: string | null
+          id?: string
+          started_at?: string | null
+          status?: string | null
+          summary?: Json | null
+          trigger_type?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -4163,6 +4318,176 @@ export type Database = {
           verification_flows?: Json
         }
         Relationships: []
+      }
+      e2e_journeys: {
+        Row: {
+          created_at: string
+          criticality: string | null
+          description: string | null
+          domain: string | null
+          enabled: boolean | null
+          feature_id: string | null
+          id: string
+          journey_id: string
+          mode: string | null
+          name: string
+          route_family: string | null
+          steps_count: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          criticality?: string | null
+          description?: string | null
+          domain?: string | null
+          enabled?: boolean | null
+          feature_id?: string | null
+          id?: string
+          journey_id: string
+          mode?: string | null
+          name: string
+          route_family?: string | null
+          steps_count?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          criticality?: string | null
+          description?: string | null
+          domain?: string | null
+          enabled?: boolean | null
+          feature_id?: string | null
+          id?: string
+          journey_id?: string
+          mode?: string | null
+          name?: string
+          route_family?: string | null
+          steps_count?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      e2e_runs: {
+        Row: {
+          ci_run_id: string | null
+          created_at: string
+          duration_ms: number | null
+          environment: string | null
+          error_message: string | null
+          id: string
+          journey_id: string | null
+          screenshot_urls: Json | null
+          status: string | null
+          steps_failed: number | null
+          steps_passed: number | null
+          user_id: string
+          video_url: string | null
+        }
+        Insert: {
+          ci_run_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          environment?: string | null
+          error_message?: string | null
+          id?: string
+          journey_id?: string | null
+          screenshot_urls?: Json | null
+          status?: string | null
+          steps_failed?: number | null
+          steps_passed?: number | null
+          user_id: string
+          video_url?: string | null
+        }
+        Update: {
+          ci_run_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          environment?: string | null
+          error_message?: string | null
+          id?: string
+          journey_id?: string | null
+          screenshot_urls?: Json | null
+          status?: string | null
+          steps_failed?: number | null
+          steps_passed?: number | null
+          user_id?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "e2e_runs_ci_run_id_fkey"
+            columns: ["ci_run_id"]
+            isOneToOne: false
+            referencedRelation: "ci_runs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "e2e_runs_journey_id_fkey"
+            columns: ["journey_id"]
+            isOneToOne: false
+            referencedRelation: "e2e_journeys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      e2e_steps: {
+        Row: {
+          action: string
+          actual_outcome: string | null
+          created_at: string
+          duration_ms: number | null
+          e2e_run_id: string | null
+          error_message: string | null
+          expected_outcome: string | null
+          id: string
+          screenshot_url: string | null
+          selector: string | null
+          status: string | null
+          step_index: number
+          user_id: string
+        }
+        Insert: {
+          action: string
+          actual_outcome?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          e2e_run_id?: string | null
+          error_message?: string | null
+          expected_outcome?: string | null
+          id?: string
+          screenshot_url?: string | null
+          selector?: string | null
+          status?: string | null
+          step_index: number
+          user_id: string
+        }
+        Update: {
+          action?: string
+          actual_outcome?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          e2e_run_id?: string | null
+          error_message?: string | null
+          expected_outcome?: string | null
+          id?: string
+          screenshot_url?: string | null
+          selector?: string | null
+          status?: string | null
+          step_index?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "e2e_steps_e2e_run_id_fkey"
+            columns: ["e2e_run_id"]
+            isOneToOne: false
+            referencedRelation: "e2e_runs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       encrypted_secrets: {
         Row: {
@@ -7305,6 +7630,163 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      launch_blockers: {
+        Row: {
+          created_at: string
+          description: string | null
+          gate_id: string | null
+          id: string
+          resolution_notes: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          severity: string | null
+          source: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          gate_id?: string | null
+          id?: string
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+          source: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          gate_id?: string | null
+          id?: string
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+          source?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "launch_blockers_gate_id_fkey"
+            columns: ["gate_id"]
+            isOneToOne: false
+            referencedRelation: "launch_gates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      launch_gate_criteria: {
+        Row: {
+          category: string
+          created_at: string
+          evidence_refs: Json | null
+          gate_id: string | null
+          id: string
+          last_checked_at: string | null
+          name: string
+          notes: string | null
+          required: boolean | null
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          evidence_refs?: Json | null
+          gate_id?: string | null
+          id?: string
+          last_checked_at?: string | null
+          name: string
+          notes?: string | null
+          required?: boolean | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          evidence_refs?: Json | null
+          gate_id?: string | null
+          id?: string
+          last_checked_at?: string | null
+          name?: string
+          notes?: string | null
+          required?: boolean | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "launch_gate_criteria_gate_id_fkey"
+            columns: ["gate_id"]
+            isOneToOne: false
+            referencedRelation: "launch_gates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      launch_gates: {
+        Row: {
+          blockers_count: number | null
+          created_at: string
+          criteria_met: number | null
+          criteria_total: number | null
+          current_truth_score: number | null
+          environment: string | null
+          id: string
+          last_evaluated_at: string | null
+          metadata: Json | null
+          name: string
+          state: string | null
+          truth_threshold: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blockers_count?: number | null
+          created_at?: string
+          criteria_met?: number | null
+          criteria_total?: number | null
+          current_truth_score?: number | null
+          environment?: string | null
+          id?: string
+          last_evaluated_at?: string | null
+          metadata?: Json | null
+          name?: string
+          state?: string | null
+          truth_threshold?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blockers_count?: number | null
+          created_at?: string
+          criteria_met?: number | null
+          criteria_total?: number | null
+          current_truth_score?: number | null
+          environment?: string | null
+          id?: string
+          last_evaluated_at?: string | null
+          metadata?: Json | null
+          name?: string
+          state?: string | null
+          truth_threshold?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       launch_records: {
         Row: {
@@ -11516,6 +11998,155 @@ export type Database = {
           updated_at?: string
           user_id?: string
           winback_strategy?: string | null
+        }
+        Relationships: []
+      }
+      route_truth_records: {
+        Row: {
+          created_at: string
+          diagnostics: Json | null
+          environment: string | null
+          failure_notes: string | null
+          id: string
+          interaction_type: string | null
+          journey_id: string | null
+          latency_ms: number | null
+          provider_mode: string | null
+          route: string
+          status: string | null
+          user_id: string
+          verified_at: string
+        }
+        Insert: {
+          created_at?: string
+          diagnostics?: Json | null
+          environment?: string | null
+          failure_notes?: string | null
+          id?: string
+          interaction_type?: string | null
+          journey_id?: string | null
+          latency_ms?: number | null
+          provider_mode?: string | null
+          route: string
+          status?: string | null
+          user_id: string
+          verified_at?: string
+        }
+        Update: {
+          created_at?: string
+          diagnostics?: Json | null
+          environment?: string | null
+          failure_notes?: string | null
+          id?: string
+          interaction_type?: string | null
+          journey_id?: string | null
+          latency_ms?: number | null
+          provider_mode?: string | null
+          route?: string
+          status?: string | null
+          user_id?: string
+          verified_at?: string
+        }
+        Relationships: []
+      }
+      runtime_probe_runs: {
+        Row: {
+          created_at: string
+          environment: string | null
+          error_message: string | null
+          id: string
+          latency_ms: number | null
+          probe_id: string | null
+          response_snapshot: Json | null
+          status: string | null
+          trace_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          environment?: string | null
+          error_message?: string | null
+          id?: string
+          latency_ms?: number | null
+          probe_id?: string | null
+          response_snapshot?: Json | null
+          status?: string | null
+          trace_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          environment?: string | null
+          error_message?: string | null
+          id?: string
+          latency_ms?: number | null
+          probe_id?: string | null
+          response_snapshot?: Json | null
+          status?: string | null
+          trace_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "runtime_probe_runs_probe_id_fkey"
+            columns: ["probe_id"]
+            isOneToOne: false
+            referencedRelation: "runtime_probes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      runtime_probes: {
+        Row: {
+          cadence_seconds: number | null
+          created_at: string
+          enabled: boolean | null
+          environment: string | null
+          failure_criteria: string | null
+          id: string
+          launch_impact: string | null
+          name: string
+          owner: string | null
+          probe_id: string
+          severity: string | null
+          success_criteria: string | null
+          target_system: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cadence_seconds?: number | null
+          created_at?: string
+          enabled?: boolean | null
+          environment?: string | null
+          failure_criteria?: string | null
+          id?: string
+          launch_impact?: string | null
+          name: string
+          owner?: string | null
+          probe_id: string
+          severity?: string | null
+          success_criteria?: string | null
+          target_system: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cadence_seconds?: number | null
+          created_at?: string
+          enabled?: boolean | null
+          environment?: string | null
+          failure_criteria?: string | null
+          id?: string
+          launch_impact?: string | null
+          name?: string
+          owner?: string | null
+          probe_id?: string
+          severity?: string | null
+          success_criteria?: string | null
+          target_system?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

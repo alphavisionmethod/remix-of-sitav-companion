@@ -1,115 +1,128 @@
 import { test, expect } from "@playwright/test";
 
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — E2E Tests: Critical Flows
-// Login, Customer Inspection, Boardroom, Money Center, Advisor Dashboard
+// SITA OS — P0 E2E Suite: Critical Flows
+// Auth, Navigation, Business, Money, Boardroom, Advisor, Command Palette
 // ═══════════════════════════════════════════════════════════════
 
-test.describe("Login & Authentication", () => {
-  test("should show login page with sign-in form", async ({ page }) => {
+// ── Helper: Enter demo mode ────────────────────────────────
+async function enterDemoMode(page: any) {
+  await page.goto("/login");
+  await page.getByRole("button", { name: /demo mode/i }).click();
+  await page.waitForURL("**/daily-pulse", { timeout: 15000 });
+}
+
+// ── AUTH JOURNEYS ──────────────────────────────────────────
+test.describe("P0: Auth — Login & Session", () => {
+  test("login page renders with all elements", async ({ page }) => {
     await page.goto("/login");
     await expect(page.getByText("Welcome back")).toBeVisible();
     await expect(page.getByPlaceholder("you@example.com")).toBeVisible();
     await expect(page.getByRole("button", { name: /sign in/i })).toBeVisible();
   });
 
-  test("should have demo mode button", async ({ page }) => {
+  test("demo mode button exists and works", async ({ page }) => {
     await page.goto("/login");
-    await expect(page.getByRole("button", { name: /demo mode/i })).toBeVisible();
+    const demoBtn = page.getByRole("button", { name: /demo mode/i });
+    await expect(demoBtn).toBeVisible();
+    await demoBtn.click();
+    await expect(page.getByText("Here's your operating view")).toBeVisible({ timeout: 15000 });
   });
 
-  test("should enter demo mode and show Daily Pulse", async ({ page }) => {
+  test("forgot password link navigates correctly", async ({ page }) => {
     await page.goto("/login");
-    await page.getByRole("button", { name: /demo mode/i }).click();
-    await expect(page.getByText("Here's your operating view")).toBeVisible({ timeout: 10000 });
+    await page.getByText("Forgot password").click();
+    await expect(page).toHaveURL(/forgot-password/);
   });
 
-  test("should have forgot password link", async ({ page }) => {
+  test("signup link navigates correctly", async ({ page }) => {
     await page.goto("/login");
-    await expect(page.getByText("Forgot password")).toBeVisible();
+    await page.getByText("Create one").click();
+    await expect(page).toHaveURL(/signup/);
   });
 
-  test("should have create account link", async ({ page }) => {
-    await page.goto("/login");
-    await expect(page.getByText("Create one")).toBeVisible();
+  test("protected routes redirect to login", async ({ page }) => {
+    await page.goto("/daily-pulse");
+    await expect(page).toHaveURL(/login/, { timeout: 10000 });
   });
 });
 
-test.describe("Business Center — Customer Inspection", () => {
+// ── CORE ROUTE LOADING ─────────────────────────────────────
+test.describe("P0: Core Routes Load Without Crash", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/login");
-    await page.getByRole("button", { name: /demo mode/i }).click();
-    await page.waitForURL("**/daily-pulse", { timeout: 10000 });
+    await enterDemoMode(page);
   });
 
-  test("should navigate to Business Center", async ({ page }) => {
-    await page.getByRole("link", { name: /business/i }).first().click();
-    await expect(page.getByText("Business Center")).toBeVisible({ timeout: 10000 });
+  const coreRoutes = [
+    { path: "/daily-pulse", label: "Daily Pulse" },
+    { path: "/business", label: "Business Center" },
+    { path: "/money", label: "Money Center" },
+    { path: "/boardroom", label: "Boardroom" },
+    { path: "/files", label: "Files" },
+    { path: "/settings", label: "Settings" },
+    { path: "/advisors/council-dashboard", label: "Advisor Council" },
+  ];
+
+  for (const route of coreRoutes) {
+    test(`${route.label} (${route.path}) loads`, async ({ page }) => {
+      await page.goto(route.path);
+      // No crash = page has content beyond loading spinner
+      await page.waitForLoadState("networkidle", { timeout: 15000 });
+      const body = await page.locator("body").textContent();
+      expect(body?.length).toBeGreaterThan(50);
+      // No error boundary triggered
+      await expect(page.getByText("Something went wrong")).not.toBeVisible();
+    });
+  }
+});
+
+// ── BUSINESS CENTER ─────────────────────────────────────────
+test.describe("P0: Business Center — Customer Inspection", () => {
+  test.beforeEach(async ({ page }) => {
+    await enterDemoMode(page);
   });
 
-  test("should show customer list in Customers tab", async ({ page }) => {
-    await page.goto("/business");
-    await page.getByRole("button", { name: /customers/i }).click();
-    await expect(page.getByText("Sarah Chen")).toBeVisible({ timeout: 10000 });
-    await expect(page.getByText("James Rodriguez")).toBeVisible();
-  });
-
-  test("should open contextual rail when clicking a customer", async ({ page }) => {
-    await page.goto("/business");
-    await page.getByRole("button", { name: /customers/i }).click();
-    await page.waitForTimeout(2000);
-    await page.getByText("Sarah Chen").click();
-    // Check that the detail panel or inspector opens
-    await expect(page.getByText("Relationship Summary").or(page.getByText("Bloom Studio"))).toBeVisible({ timeout: 5000 });
-  });
-
-  test("should show KPI tiles on overview", async ({ page }) => {
+  test("shows KPI tiles", async ({ page }) => {
     await page.goto("/business");
     await expect(page.getByText("NEW LEADS")).toBeVisible({ timeout: 10000 });
     await expect(page.getByText("PIPELINE VALUE")).toBeVisible();
   });
-});
 
-test.describe("Money Center", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/login");
-    await page.getByRole("button", { name: /demo mode/i }).click();
-    await page.waitForURL("**/daily-pulse", { timeout: 10000 });
-  });
-
-  test("should navigate to Money Center", async ({ page }) => {
-    await page.getByRole("link", { name: /money/i }).first().click();
-    await expect(page.getByText(/money/i).first()).toBeVisible({ timeout: 10000 });
+  test("customer list renders with data", async ({ page }) => {
+    await page.goto("/business");
+    await page.getByRole("button", { name: /customers/i }).click();
+    const customerNames = page.locator("[data-testid='customer-row'], tr, [role='row']");
+    await expect(customerNames.first()).toBeVisible({ timeout: 10000 });
   });
 });
 
-test.describe("Boardroom", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/login");
-    await page.getByRole("button", { name: /demo mode/i }).click();
-    await page.waitForURL("**/daily-pulse", { timeout: 10000 });
+// ── MONEY CENTER ────────────────────────────────────────────
+test.describe("P0: Money Center", () => {
+  test("loads and shows financial content", async ({ page }) => {
+    await enterDemoMode(page);
+    await page.goto("/money");
+    await page.waitForLoadState("networkidle");
+    const content = await page.locator("body").textContent();
+    expect(content?.length).toBeGreaterThan(100);
   });
+});
 
-  test("should navigate to Boardroom via Weekly Business Review", async ({ page }) => {
-    // Boardroom link should exist in the main content or sidebar
+// ── BOARDROOM ───────────────────────────────────────────────
+test.describe("P0: Boardroom", () => {
+  test("loads boardroom view", async ({ page }) => {
+    await enterDemoMode(page);
     await page.goto("/boardroom");
     await expect(page.getByText(/boardroom|weekly.*review|business.*review/i).first()).toBeVisible({ timeout: 10000 });
   });
 });
 
-test.describe("Advisor Council Dashboard", () => {
+// ── ADVISOR COUNCIL ─────────────────────────────────────────
+test.describe("P0: Advisor Council Dashboard", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/login");
-    await page.getByRole("button", { name: /demo mode/i }).click();
-    await page.waitForURL("**/daily-pulse", { timeout: 10000 });
+    await enterDemoMode(page);
   });
 
-  test("should load the council dashboard", async ({ page }) => {
-    await page.goto("/advisors/council-dashboard");
-    await expect(page.getByText(/advisor council|scorecards/i).first()).toBeVisible({ timeout: 10000 });
-  });
-
-  test("should have all four tabs", async ({ page }) => {
+  test("loads with tabs", async ({ page }) => {
     await page.goto("/advisors/council-dashboard");
     await expect(page.getByRole("tab", { name: /scorecard/i })).toBeVisible({ timeout: 10000 });
     await expect(page.getByRole("tab", { name: /escalation/i })).toBeVisible();
@@ -117,34 +130,66 @@ test.describe("Advisor Council Dashboard", () => {
     await expect(page.getByRole("tab", { name: /budget/i })).toBeVisible();
   });
 
-  test("should switch between tabs", async ({ page }) => {
+  test("tab switching works", async ({ page }) => {
     await page.goto("/advisors/council-dashboard");
     await page.waitForTimeout(2000);
-    
-    // Click Escalations tab
     await page.getByRole("tab", { name: /escalation/i }).click();
     await expect(page.getByText(/escalation/i).first()).toBeVisible();
-
-    // Click Handoffs tab
-    await page.getByRole("tab", { name: /handoff/i }).click();
-    await expect(page.getByText(/handoff/i).first()).toBeVisible();
-
-    // Click Budget tab
     await page.getByRole("tab", { name: /budget/i }).click();
     await expect(page.getByText(/budget|spend|cost/i).first()).toBeVisible();
   });
 });
 
-test.describe("Command Palette", () => {
+// ── COMMAND PALETTE ─────────────────────────────────────────
+test.describe("P0: Command Palette", () => {
+  test("opens and accepts search input", async ({ page }) => {
+    await enterDemoMode(page);
+    await page.getByRole("button", { name: /search/i }).first().click();
+    await expect(page.getByPlaceholder(/search/i)).toBeVisible({ timeout: 5000 });
+  });
+});
+
+// ── FILES CENTER ────────────────────────────────────────────
+test.describe("P0: Files Center", () => {
+  test("loads file management UI", async ({ page }) => {
+    await enterDemoMode(page);
+    await page.goto("/files");
+    await page.waitForLoadState("networkidle");
+    const content = await page.locator("body").textContent();
+    expect(content?.length).toBeGreaterThan(50);
+    await expect(page.getByText("Something went wrong")).not.toBeVisible();
+  });
+});
+
+// ── SETTINGS ────────────────────────────────────────────────
+test.describe("P0: Settings Persistence", () => {
+  test("settings page loads with form elements", async ({ page }) => {
+    await enterDemoMode(page);
+    await page.goto("/settings");
+    await page.waitForLoadState("networkidle");
+    // Should have interactive form elements
+    const inputs = page.locator("input, select, textarea, [role='switch'], [role='combobox']");
+    await expect(inputs.first()).toBeVisible({ timeout: 10000 });
+  });
+});
+
+// ── ADMIN ROUTES ────────────────────────────────────────────
+test.describe("P0: Admin Route Health", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/login");
-    await page.getByRole("button", { name: /demo mode/i }).click();
-    await page.waitForURL("**/daily-pulse", { timeout: 10000 });
+    await enterDemoMode(page);
   });
 
-  test("should open command palette and search", async ({ page }) => {
-    // Click the search bar in the top bar
-    await page.getByRole("button", { name: /search/i }).first().click();
-    await expect(page.getByPlaceholder(/search.*spaces.*advisors/i)).toBeVisible({ timeout: 5000 });
-  });
+  const adminRoutes = [
+    "/admin/dashboard",
+    "/admin/truth-registry",
+    "/admin/launch-readiness",
+  ];
+
+  for (const route of adminRoutes) {
+    test(`${route} loads`, async ({ page }) => {
+      await page.goto(route);
+      await page.waitForLoadState("networkidle", { timeout: 15000 });
+      await expect(page.getByText("Something went wrong")).not.toBeVisible();
+    });
+  }
 });

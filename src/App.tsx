@@ -259,6 +259,16 @@ const AR06ExecutionTraceExplorer = lazy(() => import("./pages/admin/AR06Executio
 const AR07RetryFailureCenter = lazy(() => import("./pages/admin/AR07RetryFailureCenter"));
 const AR08KillSwitchCenter = lazy(() => import("./pages/admin/AR08KillSwitchCenter"));
 const AR09AutomationLaunchGate = lazy(() => import("./pages/admin/AR09AutomationLaunchGate"));
+
+// LT — Launch Truth / CI / E2E / Behavioral Truth / Launch Gate
+const LT01BehavioralTruthOverview = lazy(() => import("./pages/admin/LT01BehavioralTruthOverview"));
+const LT02CIPipelineCenter = lazy(() => import("./pages/admin/LT02CIPipelineCenter"));
+const LT03E2EJourneyBoard = lazy(() => import("./pages/admin/LT03E2EJourneyBoard"));
+const LT04RuntimeProbeCenter = lazy(() => import("./pages/admin/LT04RuntimeProbeCenter"));
+const LT05LaunchGateBoard = lazy(() => import("./pages/admin/LT05LaunchGateBoard"));
+const LT06RouteInteractionTruth = lazy(() => import("./pages/admin/LT06RouteInteractionTruth"));
+const LT07TruthRegressionRadar = lazy(() => import("./pages/admin/LT07TruthRegressionRadar"));
+
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
@@ -656,6 +666,15 @@ const App = () => (
                     <Route path="/admin/sag/fallback" element={<SAGFallbackCenter />} />
                     <Route path="/admin/sag/builder" element={<SAGBuilderConsole />} />
                     <Route path="/admin/sag/compliance" element={<SAGComplianceGate />} />
+
+                    {/* LT — Launch Truth / CI / E2E / Probes / Gates */}
+                    <Route path="/admin/truth/behavioral" element={<LT01BehavioralTruthOverview />} />
+                    <Route path="/admin/truth/ci-pipeline" element={<LT02CIPipelineCenter />} />
+                    <Route path="/admin/truth/e2e-journeys" element={<LT03E2EJourneyBoard />} />
+                    <Route path="/admin/truth/runtime-probes" element={<LT04RuntimeProbeCenter />} />
+                    <Route path="/admin/truth/launch-gate" element={<LT05LaunchGateBoard />} />
+                    <Route path="/admin/truth/route-interaction" element={<LT06RouteInteractionTruth />} />
+                    <Route path="/admin/truth/regression-radar" element={<LT07TruthRegressionRadar />} />
 
 
                     {/* Digital Presence Office */}
