@@ -24,6 +24,14 @@ export default function RevenueModelScreen({ state, setState }: ScreenProps) {
   }, [setState]);
 
   const selectedSources = sources.filter(s => state.revenueSources.includes(s.id));
+  const branchQuestions = useMemo(() => getRevenueEngineBranch(state), [state.revenueSources]);
+  const handleBranch = useCallback((qId: string, oId: string) => {
+    setState(p => {
+      const current = p.branchAnswers[qId] || [];
+      const next = current.includes(oId) ? current.filter(x => x !== oId) : [...current, oId];
+      return { ...p, branchAnswers: { ...p.branchAnswers, [qId]: next } };
+    });
+  }, [setState]);
 
   return (
     <div className="space-y-6">
