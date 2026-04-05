@@ -762,10 +762,19 @@ export class ReleaseSafetyEngine {
       },
     ];
   }
-}
 
-// ────────────────────────────────────────────────────────────────
-// SECTION 5 — Trust Device & Secure Signing
+  serialize(): Record<string, unknown> {
+    return { releases: Array.from(this.releases.entries()), killSwitches: this.killSwitches, environments: this.environments, ringGates: this.ringGates, ringTimelines: this.ringTimelines, deepFreezeHistory: this.deepFreezeHistory };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.releases) this.releases = new Map(state.releases as any);
+    if (state.killSwitches) this.killSwitches = state.killSwitches as any;
+    if (state.environments) this.environments = state.environments as any;
+    if (state.ringGates) this.ringGates = state.ringGates as any;
+    if (state.ringTimelines) this.ringTimelines = state.ringTimelines as any;
+    if (state.deepFreezeHistory) this.deepFreezeHistory = state.deepFreezeHistory as any;
+  }
+}
 // ────────────────────────────────────────────────────────────────
 
 export type DeviceTrustLevel = "untrusted" | "basic" | "verified" | "trusted" | "secure-enclave";
