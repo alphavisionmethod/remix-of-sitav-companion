@@ -17,7 +17,7 @@ export interface AdvisorMemory {
 
 export class AdvisorMemoryService {
   async saveConversationSummary(advisorId: string, userId: string, summary: string, metadata?: Record<string, unknown>): Promise<void> {
-    await supabase.from("advisor_memories").insert({
+    await (supabase.from("advisor_memories") as any).insert({
       advisor_id: advisorId,
       user_id: userId,
       memory_type: "summary",
