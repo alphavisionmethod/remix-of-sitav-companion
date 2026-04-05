@@ -235,6 +235,7 @@ const FIPDeprecationManager = lazy(() => import("./pages/admin/fip/FIPDeprecatio
 const FIPBuilderConsole = lazy(() => import("./pages/admin/fip/FIPBuilderConsole"));
 
 // SAG — Sovereign AI Gateway
+const AIRuntimeStatus = lazy(() => import("./pages/admin/AIRuntimeStatus"));
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
