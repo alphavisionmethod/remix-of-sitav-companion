@@ -2,7 +2,7 @@
 // SITA OS — Architecture Layer Barrel Export
 // ═══════════════════════════════════════════════════════════════
 
-// ── Canonical Service Registry ──────────────────────────────
+// ── 1. Canonical Service Registry ───────────────────────────
 export {
   CANONICAL_SERVICES, SERVICE_COUNT,
   getService, getServicesByTier, getAbsorbedServices,
@@ -10,7 +10,7 @@ export {
 } from "./canonical-service-registry";
 export type { CanonicalService, ServiceTier } from "./canonical-service-registry";
 
-// ── Domain Hierarchy ────────────────────────────────────────
+// ── 2. Domain Hierarchy ─────────────────────────────────────
 export {
   DOMAIN_HIERARCHY,
   isDomainModule, isSubmoduleOf, getSubmoduleDomain,
@@ -18,26 +18,64 @@ export {
 } from "./domain-hierarchy";
 export type { DomainModule, DomainSubmodule } from "./domain-hierarchy";
 
-// ── Canonical Execution Chain ───────────────────────────────
+// ── 3. Canonical Execution Chain (8-stage abstract) ─────────
 export {
   EXECUTION_CHAIN,
   validateEnvelope, isStageReachable,
 } from "./canonical-execution-chain";
-export type { ExecutionStage, ExecutionEnvelope, ExecutionReceipt, RefusalReceipt } from "./canonical-execution-chain";
+export type {
+  ExecutionStage,
+  ExecutionEnvelope as AbstractExecutionEnvelope,
+  ExecutionReceipt as AbstractExecutionReceipt,
+  RefusalReceipt as AbstractRefusalReceipt,
+} from "./canonical-execution-chain";
 
-// ── Unified Proof Layer ─────────────────────────────────────
+// ── 4. Full 16-Stage Canonical Pipeline ─────────────────────
+export {
+  PIPELINE_STAGES,
+  createPipelineExecution, advancePipeline,
+} from "./canonical-pipeline";
+export type {
+  CanonicalIntent, ResolvedIdentity, PolicyDecision,
+  ProposalPackage, ProposalOption, ExecutionMode, ModeDecision,
+  FullExecutionEnvelope, ReceiptCategory, FullReceipt,
+  PostconditionResult, PostconditionCheck, GovernanceUpdate,
+  PipelineStage, PipelineExecution,
+} from "./canonical-pipeline";
+
+// ── 5. Immutable Event Taxonomy ─────────────────────────────
+export {
+  createEvent, filterByCorrelation, filterByClass, replayFrom,
+  EVENT_TAXONOMY,
+} from "./immutable-event-taxonomy";
+export type {
+  EventClass, ImmutableEvent, EventStream,
+} from "./immutable-event-taxonomy";
+
+// ── 6. Unified Proof Layer ──────────────────────────────────
 export {
   createProofRecord, chainProofs,
 } from "./unified-proof-layer";
 export type { ProofRecord, ProofType, EvidenceGrade, EvidenceBundle, ReplayableProjection } from "./unified-proof-layer";
 
-// ── Unified Memory System ───────────────────────────────────
+// ── 7. Unified Memory System ────────────────────────────────
 export {
   createMemory, correctMemory, forgetMemory, detectConflict,
 } from "./unified-memory-system";
 export type { MemoryRecord, MemoryType, PrivacyTier, MemoryConfidence, MemorySource, MemoryConflict, MemoryCorrection } from "./unified-memory-system";
 
-// ── Workflow State Machine ──────────────────────────────────
+// ── 8. Identity / Role / Relationship Graph ─────────────────
+export { cascadeRevocation } from "./identity-relationship-graph";
+export type {
+  Principal, RoleTemplate, RoleAssignment,
+  Permission, PermissionAction, PermissionCondition,
+  DelegatedAuthority, HouseholdGraph, HouseholdMember,
+  OrganizationGraph, OrgMember, OrgTeam,
+  DeviceTrustRecord, RelationshipType, RelationshipEdge,
+  PermissionQuery, PermissionResolution, RevocationEvent,
+} from "./identity-relationship-graph";
+
+// ── 9. Workflow State Machine ───────────────────────────────
 export {
   WORKFLOW_TRANSITIONS,
   canTransition, getValidTransitions, getTransitionDef,
@@ -45,7 +83,7 @@ export {
 } from "./workflow-state-machine";
 export type { WorkflowState, WorkflowTransition, WorkflowInstance, WorkflowTransitionLog } from "./workflow-state-machine";
 
-// ── Exception & Recovery ────────────────────────────────────
+// ── 10. Exception & Recovery ────────────────────────────────
 export {
   createException, createRecoveryPlan,
 } from "./exception-recovery";
@@ -55,7 +93,7 @@ export type {
   CompensationRecord, PostmortemReceipt,
 } from "./exception-recovery";
 
-// ── Policy Versioning ───────────────────────────────────────
+// ── 11. Policy Versioning ───────────────────────────────────
 export {
   hashPolicyBundle, classifyChange, createPolicyChange,
 } from "./policy-versioning";
@@ -64,7 +102,7 @@ export type {
   PolicyChange, PolicyRegressionTest,
 } from "./policy-versioning";
 
-// ── Capability Contract System ──────────────────────────────
+// ── 12. Capability Contract System ──────────────────────────
 export {
   resolveApprovalTier, validateCapabilityContract,
 } from "./capability-contract-system";
@@ -75,16 +113,14 @@ export type {
   ResolvedApprovalTier,
 } from "./capability-contract-system";
 
-// ── Cost & Token Governance ─────────────────────────────────
-export {
-  routeModel, checkBudget,
-} from "./cost-token-governance";
+// ── 13. Risk-Tiered Approval ────────────────────────────────
+export { resolveApproval } from "./approval-tiers";
 export type {
-  BudgetScope, ModelTier, BudgetPolicy, BudgetUsage,
-  ModelRoutingDecision, ConnectorCostRecord,
-} from "./cost-token-governance";
+  ApprovalClass, ApprovalContext, ApprovalDecision,
+  FinancialApprovalThresholds,
+} from "./approval-tiers";
 
-// ── Connector Governance ────────────────────────────────────
+// ── 14. Connector Governance ────────────────────────────────
 export {
   certifyConnector, killConnector, validateConnectorAction,
 } from "./connector-governance";
@@ -93,7 +129,14 @@ export type {
   ConnectorHealthReport,
 } from "./connector-governance";
 
-// ── Truth Validation ────────────────────────────────────────
+// ── 15. Cost & Token Governance ─────────────────────────────
+export { routeModel, checkBudget } from "./cost-token-governance";
+export type {
+  BudgetScope, ModelTier, BudgetPolicy, BudgetUsage,
+  ModelRoutingDecision, ConnectorCostRecord,
+} from "./cost-token-governance";
+
+// ── 16. Truth Validation ────────────────────────────────────
 export {
   validateTruthClaim, canExecuteBasedOnEvidence,
   wrapModelOutput, promoteToFact,
@@ -102,39 +145,39 @@ export type {
   TruthSource, CertaintyLevel, TruthEnvelope, ActionRecommendation,
 } from "./truth-validation";
 
-// ── Risk-Tiered Approval ────────────────────────────────────
-export {
-  resolveApproval,
-} from "./approval-tiers";
+// ── 17. Observability & Diagnostics ─────────────────────────
+export { createExplanation } from "./observability-diagnostics";
 export type {
-  ApprovalClass, ApprovalContext, ApprovalDecision,
-  FinancialApprovalThresholds,
-} from "./approval-tiers";
+  ExecutionTrace, TraceStage, PolicyTrace, AdvisorLog,
+  ConnectorHealthDashboard, UserExplanation, OperatorDiagnostic,
+} from "./observability-diagnostics";
 
-// ── Multi-Tenant Sovereignty ────────────────────────────────
+// ── 18. Boardroom Architecture ──────────────────────────────
+export { createActionPackage } from "./boardroom-architecture";
+export type {
+  BoardroomSession, BoardroomParticipant, BoardroomProposal,
+  BoardroomDissent, BoardroomSimulation, BoardroomDecision,
+  BoardroomMinutes, FollowThroughItem, BoardroomActionPackage,
+} from "./boardroom-architecture";
+
+// ── 19. Multi-Tenant Sovereignty ────────────────────────────
 export {
   validateTenantIsolation, scopeQuery, createTenantSafeView,
 } from "./tenant-sovereignty";
-export type {
-  TenantBoundary, TenantScope, TenantSafeView,
-} from "./tenant-sovereignty";
+export type { TenantBoundary, TenantScope, TenantSafeView } from "./tenant-sovereignty";
 
-// ── Advisor Orchestration ───────────────────────────────────
-export {
-  routeToAdvisors, synthesizeCouncil,
-} from "./advisor-orchestration";
+// ── 20. Advisor Orchestration ───────────────────────────────
+export { routeToAdvisors, synthesizeCouncil } from "./advisor-orchestration";
 export type {
   AdvisorDeclaration, CouncilSession, AdvisorParticipation,
   CouncilSynthesis, AdvisorRoutingRule,
 } from "./advisor-orchestration";
 
-// ── Self-Learning Constraints ───────────────────────────────
-export {
-  validateLearningAction, createLearningProposal,
-} from "./self-learning-constraints";
+// ── 21. Self-Learning Constraints ───────────────────────────
+export { validateLearningAction, createLearningProposal } from "./self-learning-constraints";
 export type { LearningAction, LearningProposal } from "./self-learning-constraints";
 
-// ── OS Unification Layer ────────────────────────────────────
+// ── 22. OS Unification Layer ────────────────────────────────
 export {
   WEB_SURFACE_CONTRACT, MOBILE_SURFACE_CONTRACT, ADMIN_SURFACE_CONTRACT,
   DOMAIN_MODULE_CONTRACT,
@@ -144,3 +187,10 @@ export type {
   PlatformContract, PlatformContractCategory,
   SurfaceType, SurfaceContract, DomainModuleContract,
 } from "./os-unification-layer";
+
+// ── 23. Phased Rollout Plan ─────────────────────────────────
+export {
+  ROLLOUT_PLAN,
+  getPhaseItems, getP0Items, checkDependenciesMet, getReadinessScore,
+} from "./phased-rollout-plan";
+export type { RolloutPhase, RolloutPriority, RolloutItem } from "./phased-rollout-plan";
