@@ -14,7 +14,7 @@ import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/adm
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useRecoverySummary } from "@/hooks/use-mission-control-views";
 import type { ReplayableWorkflowView } from "@/packages/contracts";
-import { MOCK_REPLAYABLE_WORKFLOWS } from "@/lib/mock-data";
+import { useReplayableWorkflows } from "@/hooks/use-domain-data";
 import {
   RotateCcw, Search, Play, AlertTriangle, CheckCircle, Clock,
   ChevronRight, Shield, Zap, Eye,
@@ -27,12 +27,11 @@ export default function WorkflowReplayHub() {
   const recovery = useRecoverySummary();
   const { engines } = useOSRuntime();
 
-  // Engine-backed replayable workflows (replaces hardcoded mockReplayable)
+  const { data: replayableData = [] } = useReplayableWorkflows();
+  // Engine-backed replayable workflows
   const replayable: ReplayableWorkflowView[] = useMemo(() => {
-    // Seed demo data via the engine
-    // Mock data imported from central module
-    return MOCK_REPLAYABLE_WORKFLOWS;
-  }, [engines.replay]);
+    return replayableData as ReplayableWorkflowView[];
+  }, [replayableData]);
 
   const filtered = replayable.filter(w =>
     (filter === "all" || w.status === filter) &&

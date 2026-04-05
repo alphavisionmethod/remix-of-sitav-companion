@@ -10,7 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { MOCK_AUTOMATION_RULES, MOCK_DELEGATIONS } from "@/lib/mock-data";
+import { useAutomationRules, useDelegations } from "@/hooks/use-domain-data";
 import {
   Zap, Shield, Clock, CheckCircle, Eye, Lock, Settings, ArrowRight, Sparkles,
   DollarSign, Briefcase, Home, Mail, Calendar, AlertTriangle, RefreshCw, Pause, Play,
@@ -25,10 +25,12 @@ const AutomationCenter = () => {
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
   const qc = useQueryClient();
+  const { data: MOCK_AUTOMATION_RULES = [] } = useAutomationRules();
+  const { data: MOCK_DELEGATIONS = [] } = useDelegations();
 
   const activeTab = (() => {
     if (location.pathname.includes("/trust")) return "trust";
-    if (location.pathname.includes("/MOCK_DELEGATIONS")) return "MOCK_DELEGATIONS";
+    if (location.pathname.includes("/delegations")) return "delegations";
     return "rules";
   })();
 
@@ -98,7 +100,7 @@ const AutomationCenter = () => {
       <SitaTabs
         tabs={[
           { key: "rules", label: "Rules", count: rules.length },
-          { key: "MOCK_DELEGATIONS", label: "Delegations", count: MOCK_DELEGATIONS.length },
+          { key: "delegations", label: "Delegations", count: MOCK_DELEGATIONS.length },
           { key: "trust", label: "Trust Levels" },
         ]}
         active={activeTab}
@@ -150,7 +152,7 @@ const AutomationCenter = () => {
         </div>
       )}
 
-      {activeTab === "MOCK_DELEGATIONS" && (
+      {activeTab === "delegations" && (
         <div className="space-y-2">
           {MOCK_DELEGATIONS.map((d, i) => (
             <SitaCard key={i} hover={false} className="p-4">

@@ -10,6 +10,7 @@ import { fetchCalendarEvents } from "@/lib/data-services/calendar-data-service";
 import { fetchInboxItems, fetchActivityTimeline } from "@/lib/data-services/activity-data-service";
 import { fetchAutomationRules, fetchDelegations, fetchReplayableWorkflows, fetchAdminUsers, fetchTokenUsages, fetchAdminIncidents } from "@/lib/data-services/admin-data-service";
 import { fetchRevenueLeakage } from "@/lib/data-services/revenue-data-service";
+import { fetchCapitalBuckets, fetchPositions, fetchTheses } from "@/lib/data-services/investment-data-service";
 
 // Business
 export function useCustomers() { return useQuery({ queryKey: ["customers"], queryFn: fetchCustomers }); }
@@ -65,3 +66,8 @@ export function useAdminIncidents() { return useQuery({ queryKey: ["admin-incide
 
 // Revenue
 export function useRevenueLeakage() { return useQuery({ queryKey: ["revenue-leakage"], queryFn: fetchRevenueLeakage }); }
+
+// Investment
+export function useCapitalBuckets() { return useQuery({ queryKey: ["capital-buckets"], queryFn: fetchCapitalBuckets }); }
+export function usePositions() { return useQuery({ queryKey: ["positions"], queryFn: fetchPositions }); }
+export function useTheses() { return useQuery({ queryKey: ["theses"], queryFn: fetchTheses }); }
