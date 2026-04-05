@@ -1,10 +1,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+import { handleCors, corsHeaders, corsError } from "../_shared/cors.ts";
+import { requireAuth } from "../_shared/auth.ts";
+import { validateBody } from "../_shared/validate.ts";
 
 // ═══════════════════════════════════════════════════════════════
 // Deep Advisor Personalities — unique expertise per advisor
@@ -319,39 +317,35 @@ async function logTokenUsage(
 // ═══════════════════════════════════════════════════════════════
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  const cors = handleCors(req);
+  if (cors) return cors;
 
   try {
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    const auth = await requireAuth(req);
+    if (auth instanceof Response) return auth;
+    const user = auth.user;
+    const supabaseClient = auth.supabase;
+
+    const body = await validateBody(req, {
+      messages: { type: "array", required: true },
+      advisor: { type: "string", maxLength: 50 },
+      context: { type: "object" },
+    });
+    if (body instanceof Response) return body;
+    const { messages, advisor = "general", context } = body as { messages: unknown[]; advisor?: string; context?: Record<string, unknown> };
+    if (!Array.isArray(messages) || messages.length === 0) return corsError("messages array required", 400);
+
+    // Rate limit: max 20 requests/min
+    const { count } = await supabaseClient
+      .from("ai_token_usage")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", user.id)
+      .eq("advisor_id", advisor)
+      .gte("created_at", new Date(Date.now() - 60000).toISOString());
+    if ((count ?? 0) >= 20) return corsError("Rate limit exceeded — max 20 requests per minute", 429);
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
     const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      global: { headers: { Authorization: authHeader } },
-    });
-
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) {
-      return new Response(JSON.stringify({ error: "Invalid token" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const { messages, advisor = "general", context } = await req.json();
-    if (!messages || !Array.isArray(messages)) {
-      return new Response(JSON.stringify({ error: "messages array required" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");

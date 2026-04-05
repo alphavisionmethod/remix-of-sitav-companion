@@ -13,6 +13,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 
 const fadeUp = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -64,8 +66,12 @@ const quickLinks = [
 ];
 
 export default function AdminDashboard() {
+  const { isAdmin, loading: adminLoading } = useRequireAdmin();
   const [now, setNow] = useState(new Date());
   useEffect(() => { const t = setInterval(() => setNow(new Date()), 60000); return () => clearInterval(t); }, []);
+
+  if (adminLoading) return <PageSkeleton rows={3} />;
+  if (!isAdmin) return null;
 
   // Real data queries
   const { data: tokenData } = useQuery({

@@ -1,45 +1,17 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+import { handleCors, corsResponse, corsError } from "../_shared/cors.ts";
+import { requireAdmin, getServiceClient } from "../_shared/auth.ts";
+import { validateBody } from "../_shared/validate.ts";
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  const cors = handleCors(req);
+  if (cors) return cors;
 
   try {
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    const auth = await requireAdmin(req);
+    if (auth instanceof Response) return auth;
 
-    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-
-    const userClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      global: { headers: { Authorization: authHeader } },
-    });
-    const { data: { user } } = await userClient.auth.getUser();
-    if (!user) {
-      return new Response(JSON.stringify({ error: "Invalid token" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // Check admin role
-    const { data: isAdmin } = await userClient.rpc("has_role", { _user_id: user.id, _role: "admin" });
-    if (!isAdmin) {
-      return new Response(JSON.stringify({ error: "Admin access required" }), {
-        status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+    const adminClient = getServiceClient();
     const url = new URL(req.url);
     const action = url.searchParams.get("action") || "list";
 
@@ -80,35 +52,29 @@ serve(async (req) => {
         roles: roleMap[u.id] || [],
       }));
 
-      return new Response(JSON.stringify({ users: result, total: result.length }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return corsResponse({ users: result, total: result.length });
     }
 
     if (req.method === "POST") {
-      const body = await req.json();
-      const { action: postAction, target_user_id } = body;
-
-      if (!target_user_id) {
-        return new Response(JSON.stringify({ error: "target_user_id required" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
+      const body = await validateBody(req, {
+        action: { type: "string", required: true, enum: ["suspend", "unsuspend", "assign_role", "revoke_role"] },
+        target_user_id: { type: "string", required: true, maxLength: 255 },
+        role: { type: "string", maxLength: 50 },
+      });
+      if (body instanceof Response) return body;
+      const { action: postAction, target_user_id, role } = body as { action: string; target_user_id: string; role?: string };
 
       if (postAction === "suspend") {
         const { error } = await adminClient.auth.admin.updateUserById(target_user_id, {
           ban_duration: "876000h",
         });
         if (error) throw error;
-
         await adminClient.from("audit_logs").insert({
-          user_id: user.id, action: "suspend_user", category: "admin",
+          user_id: auth.user.id, action: "suspend_user", category: "admin",
           actor: "admin", target_type: "user", target_id: target_user_id, severity: "high",
         });
 
-        return new Response(JSON.stringify({ success: true }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return corsResponse({ success: true });
       }
 
       if (postAction === "unsuspend") {
@@ -116,18 +82,11 @@ serve(async (req) => {
           ban_duration: "none",
         });
         if (error) throw error;
-        return new Response(JSON.stringify({ success: true }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return corsResponse({ success: true });
       }
 
       if (postAction === "assign_role") {
-        const { role } = body;
-        if (!role) {
-          return new Response(JSON.stringify({ error: "role required" }), {
-            status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-          });
-        }
+        if (!role) return corsError("role required", 400);
         const { error } = await adminClient.from("user_roles").upsert(
           { user_id: target_user_id, role },
           { onConflict: "user_id,role" }
@@ -135,38 +94,28 @@ serve(async (req) => {
         if (error) throw error;
 
         await adminClient.from("audit_logs").insert({
-          user_id: user.id, action: "assign_role", category: "admin",
+          user_id: auth.user.id, action: "assign_role", category: "admin",
           actor: "admin", target_type: "user", target_id: target_user_id, severity: "high",
           details: { role },
         });
 
-        return new Response(JSON.stringify({ success: true }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return corsResponse({ success: true });
       }
 
       if (postAction === "revoke_role") {
-        const { role } = body;
+        if (!role) return corsError("role required", 400);
         const { error } = await adminClient.from("user_roles")
           .delete().eq("user_id", target_user_id).eq("role", role);
         if (error) throw error;
-        return new Response(JSON.stringify({ success: true }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return corsResponse({ success: true });
       }
 
-      return new Response(JSON.stringify({ error: "Unknown action" }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return corsError("Unknown action", 400);
     }
 
-    return new Response(JSON.stringify({ error: "Method not allowed" }), {
-      status: 405, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return corsError("Method not allowed", 405);
   } catch (e) {
     console.error("admin-users error:", e);
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
-      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return corsError(e instanceof Error ? e.message : "Unknown error", 500);
   }
 });

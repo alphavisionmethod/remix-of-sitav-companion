@@ -88,11 +88,8 @@ const ConstitutionEditor = lazy(() => import("./pages/owner/ConstitutionEditor")
 const OwnerPulsePage = lazy(() => import("./pages/owner/OwnerPulsePage"));
 const OwnerApprovalsPage = lazy(() => import("./pages/owner/OwnerApprovalsPage"));
 const OwnerAiTeamUpdatesPage = lazy(() => import("./pages/owner/OwnerAiTeamUpdatesPage"));
-const OwnerModePage = lazy(() => import("./pages/owner-mode/OwnerModePage"));
-const WorkflowReplayHub = lazy(() => import("./pages/WorkflowReplayHub"));
 const ObservabilityPage = lazy(() => import("./pages/ObservabilityPage"));
 const UsersAdminPage = lazy(() => import("./pages/UsersAdminPage"));
-const PolicySimulatorHub = lazy(() => import("./pages/PolicySimulatorHub"));
 const MissionRegistryPage = lazy(() => import("./pages/mission/MissionRegistryPage"));
 const MissionReleaseDetailPage = lazy(() => import("./pages/mission/MissionReleaseDetailPage"));
 const MissionWorkflowReplayPage = lazy(() => import("./pages/mission/MissionWorkflowReplayPage"));
