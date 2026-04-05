@@ -252,6 +252,10 @@ const ErrorRadar = lazy(() => import("./pages/digital-presence/ErrorRadar"));
 const ContentFreshness = lazy(() => import("./pages/digital-presence/ContentFreshness"));
 const LaunchWarRoom = lazy(() => import("./pages/digital-presence/LaunchWarRoom"));
 const PresenceTimeMachine = lazy(() => import("./pages/digital-presence/PresenceTimeMachine"));
+const SelfHealingQueue = lazy(() => import("./pages/digital-presence/SelfHealingQueue"));
+const AppExperienceStudio = lazy(() => import("./pages/digital-presence/AppExperienceStudio"));
+const PresenceAnalytics = lazy(() => import("./pages/digital-presence/PresenceAnalytics"));
+const DomainPublishManager = lazy(() => import("./pages/digital-presence/DomainPublishManager"));
 
 const queryClient = createQueryClient();
 
