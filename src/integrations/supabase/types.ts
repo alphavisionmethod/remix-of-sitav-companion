@@ -3402,6 +3402,54 @@ export type Database = {
         }
         Relationships: []
       }
+      file_settings: {
+        Row: {
+          auto_classify: boolean
+          auto_extract: boolean
+          auto_link: boolean
+          boardroom_attach: boolean
+          created_at: string
+          default_retention: string
+          default_sensitivity: string
+          generate_suggestions: boolean
+          governed_threshold: string[]
+          id: string
+          memory_write_permission: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auto_classify?: boolean
+          auto_extract?: boolean
+          auto_link?: boolean
+          boardroom_attach?: boolean
+          created_at?: string
+          default_retention?: string
+          default_sensitivity?: string
+          generate_suggestions?: boolean
+          governed_threshold?: string[]
+          id?: string
+          memory_write_permission?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auto_classify?: boolean
+          auto_extract?: boolean
+          auto_link?: boolean
+          boardroom_attach?: boolean
+          created_at?: string
+          default_retention?: string
+          default_sensitivity?: string
+          generate_suggestions?: boolean
+          governed_threshold?: string[]
+          id?: string
+          memory_write_permission?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       financial_documents: {
         Row: {
           category: string

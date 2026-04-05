@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchCustomers, fetchCollectionsAccounts } from "@/lib/data-services/business-data-service";
-import { fetchFilesOverview, fetchFilesProcessing, fetchFilesSearchIndex } from "@/lib/data-services/files-data-service";
+import { fetchFilesOverview, fetchFilesProcessing, fetchFilesSearchIndex, fetchAllFiles, fetchFilesByStatus, fetchFilesBySensitivity, fetchFileSettings } from "@/lib/data-services/files-data-service";
 import { fetchReservesSavings } from "@/lib/data-services/money-data-service";
 import { fetchMobileAlerts, fetchMobileApprovals, fetchMobileProofs, fetchMobileWorkflowSteps } from "@/lib/data-services/mobile-data-service";
 import { fetchLeases, fetchOwnerApprovals, fetchPricingItems } from "@/lib/data-services/owner-data-service";
@@ -20,6 +20,10 @@ export function useCollectionsAccounts() { return useQuery({ queryKey: ["collect
 export function useFilesOverview() { return useQuery({ queryKey: ["files-overview"], queryFn: fetchFilesOverview }); }
 export function useFilesProcessing() { return useQuery({ queryKey: ["files-processing"], queryFn: fetchFilesProcessing }); }
 export function useFilesSearchIndex() { return useQuery({ queryKey: ["files-search-index"], queryFn: fetchFilesSearchIndex }); }
+export function useAllFiles() { return useQuery({ queryKey: ["all-files"], queryFn: fetchAllFiles }); }
+export function useFilesByStatus(status: string) { return useQuery({ queryKey: ["files-by-status", status], queryFn: () => fetchFilesByStatus(status) }); }
+export function useFilesBySensitivity(sensitivities: string[]) { return useQuery({ queryKey: ["files-by-sensitivity", sensitivities], queryFn: () => fetchFilesBySensitivity(sensitivities) }); }
+export function useFileSettings() { return useQuery({ queryKey: ["file-settings"], queryFn: fetchFileSettings }); }
 
 // Money
 export function useReservesSavings() { return useQuery({ queryKey: ["reserves-savings"], queryFn: fetchReservesSavings }); }
@@ -48,11 +52,9 @@ export function useAdvisorApprovals() { return useQuery({ queryKey: ["advisor-ap
 export function useProofHistory() { return useQuery({ queryKey: ["proof-history"], queryFn: fetchProofHistory }); }
 
 // Calendar
-export function useCalendarEvents(year: number, month: number) {
-  return useQuery({ queryKey: ["calendar-events", year, month], queryFn: () => fetchCalendarEvents(year, month) });
-}
+export function useCalendarEvents(year: number, month: number) { return useQuery({ queryKey: ["calendar-events", year, month], queryFn: () => fetchCalendarEvents(year, month) }); }
 
-// Activity / Inbox
+// Activity
 export function useInboxItems() { return useQuery({ queryKey: ["inbox-items"], queryFn: fetchInboxItems }); }
 export function useActivityTimeline() { return useQuery({ queryKey: ["activity-timeline"], queryFn: fetchActivityTimeline }); }
 
