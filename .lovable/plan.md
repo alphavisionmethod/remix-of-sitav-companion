@@ -1,53 +1,57 @@
+# SITA OS — Dual Reality System Implementation Plan
 
-# Core Persistence Wiring — Targeted Fix Plan
+## Phase 1: Database Schema (Migration)
+Create all 14 tables from the prompt's data model:
+- `reality_modes` — mode registry (real/demo/sandbox/dev_demo)
+- `reality_mode_resolutions` — how mode was resolved per session
+- `demo_scenarios` — scenario packs
+- `demo_scenario_entities` — synthetic entities in scenarios
+- `demo_scenario_relationships` — entity relationships
+- `demo_scenario_artifacts` — generated scenario artifacts
+- `mode_aware_providers` — provider contract registry
+- `demo_policy_profiles` — demo-safe policy definitions
+- `demo_actions` — tracked demo actions
+- `demo_receipts` — demo proof objects
+- `demo_analytics` — segregated demo events
+- `mode_access_policies` — who can enter which mode
+- `scenario_launch_profiles` — how scenarios launch
+- `mode_truth_labels` — labeling/truth semantics
 
-## Audit Result
+All with RLS, timestamps, user_id scoping.
 
-**3 of 5 services are ALREADY fully wired:**
-- ✅ EventBus → `persistEvent`, `persistDeadLetter`, `replayFromStorage` — all operational
-- ✅ MemoryService → `persistMemoryEntry`, `supersedeMemoryEntry`, `forgetScopedMemory`, `hydrate()` — all operational
-- ✅ PolicyEngine → `persistPolicyEvaluation` for deny/approval/simulation — operational
+## Phase 2: Core Runtime Architecture (~6 files)
+- **Reality Mode Registry** — canonical mode definitions + resolver
+- **Reality Mode Context** — React context providing current mode to entire app
+- **Mode-Aware Provider System** — generic provider resolution by domain + mode
+- **Demo Policy Engine** — side-effect blocking, safety controls, kill switches
+- **Demo Scenario Loader** — loads scenario packs with entities/relationships/artifacts
+- **Demo Analytics Segregation** — labels all demo events, prevents contamination
 
-**2 services need wiring:**
-- ❌ ReceiptService — purely in-memory `this.receipts[]`, no persistence adapter imported
-- ❌ Action Lineage — adapter exists (`action-lineage-persistence.ts`) but nothing calls it
+## Phase 3: Provider Interfaces + Demo Providers (~8 domain providers)
+Create provider interfaces and demo implementations for:
+- Boardroom, Investment, Money, Business, Workspace, Owner, Calendar, Advisor
 
-## Implementation
+Each gets: interface → real provider stub → demo scenario provider
 
-### 1. Wire ReceiptService to `sita_receipts` persistence
+## Phase 4: Admin Workspaces (10 pages)
+- DRS01: Reality Mode Overview
+- DRS02: Mode Registry Console
+- DRS03: Scenario Library
+- DRS04: Scenario Entity Graph
+- DRS05: Provider Console
+- DRS06: Demo Policy & Safety Board
+- DRS07: Demo AI Control Center
+- DRS08: Analytics Segregation Board
+- DRS09: Truth & Labeling Review
+- DRS10: Dual Reality Launch Gate
 
-Update `src/lib/core-services/receipt-service.ts`:
-- Import `persistReceipt`, `fetchReceipts` from `supabase-adapters.ts`
-- On every `createReceipt()` call: persist durably after in-memory append
-- Add `hydrate()` method to load receipts from DB on init
-- Add `getPersistedReceipts()` for durable queries
-- Keep in-memory chain for hot-path hash verification
+## Phase 5: Seed Data
+Insert default reality modes (real, demo, sandbox) and a flagship investor demo scenario pack.
 
-### 2. Create Action Lineage orchestration service
-
-Create `src/lib/core-services/action-lineage-service.ts`:
-- Import all functions from `action-lineage-persistence.ts`
-- Provide `initiateAction()`, `transitionAction()`, `linkEvent()`, `linkReceipt()`, `linkPolicy()`
-- Export singleton factory
-- This gives services a clean API to record action lifecycle
-
-### 3. Wire Action Lineage into key flows
-
-Update `src/lib/core-services/executor-service.ts` (or canonical-execution-path):
-- On execution start: call `persistActionRecord()`
-- On state transitions: call `persistActionTransition()`
-- On receipt creation: call `linkReceiptToAction()`
-- On event emission: call `linkEventToAction()`
-- On policy evaluation: call `linkPolicyToAction()`
-
-### 4. Add Core Persistence Status admin page
-
-Create `/admin/persistence-status` showing:
-- All 5 services and their wiring status
-- Recent writes per service
-- Hydration health
-- Orphaned adapter resolution status
-
-### 5. Remove incorrect `@persistence: none` annotations
-
-The index files for event-bus, memory-service, policy-engine, receipt-service were incorrectly annotated as `@persistence: none` during the bulk annotation pass. Fix these.
+## Estimated Changes
+- **1 migration** — all 14 tables
+- **~6 core runtime files** — mode system
+- **~16 provider files** — 8 domains × (interface + demo impl)
+- **10 admin pages** — DRS01–DRS10
+- **Route updates** — App.tsx
+- **~35 files total**
