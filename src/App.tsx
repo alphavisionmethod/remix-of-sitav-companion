@@ -116,6 +116,9 @@ const FleetHealthPage = lazy(() => import("./pages/admin/FleetHealthPage"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const TeamManagement = lazy(() => import("./pages/admin/TeamManagement"));
 const SystemManagement = lazy(() => import("./pages/admin/SystemManagement"));
+const UserManagement = lazy(() => import("./pages/admin/UserManagement"));
+const AITokenDashboard = lazy(() => import("./pages/admin/AITokenDashboard"));
+const PersonalBrain = lazy(() => import("./pages/PersonalBrain"));
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
@@ -550,6 +553,9 @@ const App = () => (
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
                     <Route path="/admin/team" element={<TeamManagement />} />
                     <Route path="/admin/system" element={<SystemManagement />} />
+                    <Route path="/admin/users" element={<UserManagement />} />
+                    <Route path="/admin/ai-tokens" element={<AITokenDashboard />} />
+                    <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
                     <Route path="/apps/email" element={<EmailApp />} />

@@ -170,6 +170,51 @@ export type Database = {
         }
         Relationships: []
       }
+      advisor_performance: {
+        Row: {
+          advisor_id: string
+          avg_satisfaction: number | null
+          correction_count: number | null
+          created_at: string | null
+          id: string
+          period: string | null
+          self_learning_events: number | null
+          total_calls: number | null
+          total_cost_cents: number | null
+          total_tokens: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          avg_satisfaction?: number | null
+          correction_count?: number | null
+          created_at?: string | null
+          id?: string
+          period?: string | null
+          self_learning_events?: number | null
+          total_calls?: number | null
+          total_cost_cents?: number | null
+          total_tokens?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          avg_satisfaction?: number | null
+          correction_count?: number | null
+          created_at?: string | null
+          id?: string
+          period?: string | null
+          self_learning_events?: number | null
+          total_calls?: number | null
+          total_cost_cents?: number | null
+          total_tokens?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       advisor_registry: {
         Row: {
           active: boolean
@@ -503,6 +548,57 @@ export type Database = {
           output_tokens?: number | null
           provider?: string | null
           purpose?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_token_usage: {
+        Row: {
+          advisor_id: string
+          cached: boolean | null
+          category: string | null
+          cost_cents: number | null
+          created_at: string | null
+          domain: string | null
+          id: string
+          input_tokens: number | null
+          model: string
+          output_tokens: number | null
+          provider: string | null
+          session_id: string | null
+          total_tokens: number | null
+          user_id: string
+        }
+        Insert: {
+          advisor_id?: string
+          cached?: boolean | null
+          category?: string | null
+          cost_cents?: number | null
+          created_at?: string | null
+          domain?: string | null
+          id?: string
+          input_tokens?: number | null
+          model: string
+          output_tokens?: number | null
+          provider?: string | null
+          session_id?: string | null
+          total_tokens?: number | null
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          cached?: boolean | null
+          category?: string | null
+          cost_cents?: number | null
+          created_at?: string | null
+          domain?: string | null
+          id?: string
+          input_tokens?: number | null
+          model?: string
+          output_tokens?: number | null
+          provider?: string | null
+          session_id?: string | null
+          total_tokens?: number | null
           user_id?: string
         }
         Relationships: []
@@ -2766,6 +2862,39 @@ export type Database = {
         }
         Relationships: []
       }
+      system_config: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          key: string
+          updated_at: string | null
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          key: string
+          updated_at?: string | null
+          updated_by?: string | null
+          value?: Json
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          key?: string
+          updated_at?: string | null
+          updated_by?: string | null
+          value?: Json
+        }
+        Relationships: []
+      }
       system_update_devices: {
         Row: {
           auto_update_enabled: boolean | null
@@ -3054,6 +3183,51 @@ export type Database = {
           id?: string
           impact_score?: number | null
           metadata?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_ai_budgets: {
+        Row: {
+          auto_downgrade_model: boolean | null
+          created_at: string | null
+          hard_limit: boolean | null
+          id: string
+          limit_cost_cents: number | null
+          limit_tokens: number | null
+          period: string
+          reset_at: string | null
+          updated_at: string | null
+          used_cost_cents: number | null
+          used_tokens: number | null
+          user_id: string
+        }
+        Insert: {
+          auto_downgrade_model?: boolean | null
+          created_at?: string | null
+          hard_limit?: boolean | null
+          id?: string
+          limit_cost_cents?: number | null
+          limit_tokens?: number | null
+          period?: string
+          reset_at?: string | null
+          updated_at?: string | null
+          used_cost_cents?: number | null
+          used_tokens?: number | null
+          user_id: string
+        }
+        Update: {
+          auto_downgrade_model?: boolean | null
+          created_at?: string | null
+          hard_limit?: boolean | null
+          id?: string
+          limit_cost_cents?: number | null
+          limit_tokens?: number | null
+          period?: string
+          reset_at?: string | null
+          updated_at?: string | null
+          used_cost_cents?: number | null
+          used_tokens?: number | null
           user_id?: string
         }
         Relationships: []

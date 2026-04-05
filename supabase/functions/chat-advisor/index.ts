@@ -131,7 +131,6 @@ async function buildPrompt(
 ): Promise<string> {
   const basePersonality = ADVISOR_PERSONALITIES[advisorId] ?? ADVISOR_PERSONALITIES.general;
 
-  // Fetch knowledge, memories, corrections, and cross-advisor facts in parallel
   const [knowledgeRes, memoriesRes, factsRes, correctionsRes, crossFactsRes, prefsRes] = await Promise.all([
     supabaseClient
       .from("advisor_knowledge")
@@ -184,7 +183,6 @@ async function buildPrompt(
 
   let prompt = basePersonality;
 
-  // Inject knowledge context
   const knowledge = knowledgeRes.data ?? [];
   if (knowledge.length > 0) {
     prompt += "\n\n## Domain Knowledge\n";
@@ -193,7 +191,6 @@ async function buildPrompt(
     }
   }
 
-  // Inject conversation memory
   const memories = memoriesRes.data ?? [];
   if (memories.length > 0) {
     prompt += "\n\n## Recent Conversation History\n";
@@ -202,7 +199,6 @@ async function buildPrompt(
     }
   }
 
-  // Inject user facts
   const facts = factsRes.data ?? [];
   if (facts.length > 0) {
     prompt += "\n\n## Known Facts About This User\n";
@@ -211,7 +207,6 @@ async function buildPrompt(
     }
   }
 
-  // Inject user preferences
   const prefs = prefsRes.data ?? [];
   if (prefs.length > 0) {
     prompt += "\n\n## User Communication Preferences\n";
@@ -220,7 +215,6 @@ async function buildPrompt(
     }
   }
 
-  // Inject cross-advisor context
   const crossFacts = crossFactsRes.data ?? [];
   if (crossFacts.length > 0) {
     prompt += "\n\n## Cross-Domain Context (from other advisors)\n";
@@ -229,7 +223,6 @@ async function buildPrompt(
     }
   }
 
-  // Inject correction guardrails
   const corrections = correctionsRes.data ?? [];
   if (corrections.length > 0) {
     prompt += "\n\n## Past Corrections (avoid repeating these mistakes)\n";
@@ -241,6 +234,91 @@ async function buildPrompt(
   }
 
   return prompt;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Budget Check
+// ═══════════════════════════════════════════════════════════════
+
+interface BudgetResult {
+  allowed: boolean;
+  model: string;
+  reason?: string;
+}
+
+async function checkBudget(
+  supabaseClient: ReturnType<typeof createClient>,
+  userId: string,
+  defaultModel: string
+): Promise<BudgetResult> {
+  const { data: budget } = await supabaseClient
+    .from("user_ai_budgets")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("period", "monthly")
+    .maybeSingle();
+
+  if (!budget) return { allowed: true, model: defaultModel };
+
+  const overBudget = budget.used_cost_cents >= budget.limit_cost_cents ||
+                     budget.used_tokens >= budget.limit_tokens;
+
+  if (overBudget && budget.hard_limit) {
+    return { allowed: false, model: defaultModel, reason: "Monthly AI budget exceeded" };
+  }
+
+  if (overBudget && budget.auto_downgrade_model) {
+    return { allowed: true, model: "google/gemini-3-flash-preview" };
+  }
+
+  return { allowed: true, model: defaultModel };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Token Usage Logger
+// ═══════════════════════════════════════════════════════════════
+
+async function logTokenUsage(
+  adminClient: ReturnType<typeof createClient>,
+  userId: string,
+  advisorId: string,
+  model: string,
+  inputTokensApprox: number,
+  domain: string
+) {
+  try {
+    await adminClient.from("ai_token_usage").insert({
+      user_id: userId,
+      advisor_id: advisorId,
+      model,
+      provider: "google",
+      input_tokens: Math.ceil(inputTokensApprox),
+      output_tokens: 0,
+      cost_cents: Math.ceil(inputTokensApprox * 0.00001 * 100),
+      domain,
+      category: "inference",
+    });
+
+    // Update budget counters
+    await adminClient.rpc("update_ai_budget_usage", {
+      p_user_id: userId,
+      p_tokens: Math.ceil(inputTokensApprox),
+      p_cost_cents: Math.ceil(inputTokensApprox * 0.00001 * 100),
+    }).catch(() => {
+      // RPC may not exist yet, fallback
+      adminClient.from("user_ai_budgets")
+        .update({
+          used_tokens: Math.ceil(inputTokensApprox),
+          used_cost_cents: Math.ceil(inputTokensApprox * 0.00001 * 100),
+        })
+        .eq("user_id", userId)
+        .eq("period", "monthly")
+        .then(() => {})
+        .catch(() => {});
+    });
+  } catch (e) {
+    console.error("Token logging error:", e);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -261,6 +339,7 @@ serve(async (req) => {
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       global: { headers: { Authorization: authHeader } },
     });
@@ -284,6 +363,15 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
+    // Budget check
+    const budgetResult = await checkBudget(supabaseClient, user.id, "google/gemini-3-flash-preview");
+    if (!budgetResult.allowed) {
+      return new Response(JSON.stringify({ error: budgetResult.reason }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // Build dynamic prompt with knowledge, memory, corrections
     const lastUserMsg = [...messages].reverse().find((m: { role: string }) => m.role === "user")?.content ?? "";
     const systemPrompt = await buildPrompt(supabaseClient, advisor, user.id, lastUserMsg);
@@ -296,7 +384,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: budgetResult.model,
         messages: [
           { role: "system", content: systemPrompt + contextSuffix },
           ...messages,
@@ -325,6 +413,11 @@ serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    // Log token usage asynchronously
+    const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+    const inputApprox = JSON.stringify(messages).length / 4;
+    logTokenUsage(adminClient, user.id, advisor, budgetResult.model, inputApprox, advisor);
 
     return new Response(response.body, {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
