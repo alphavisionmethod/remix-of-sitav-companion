@@ -21,10 +21,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/contexts/AuthContext";
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
 import {
   Receipt, ShieldCheck, Clock, AlertTriangle, Eye, RotateCcw, FileDown, Filter,
   Link2, Search, ChevronDown, ChevronRight, Shield, CheckCircle, XCircle,
