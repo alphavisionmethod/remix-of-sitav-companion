@@ -45,6 +45,26 @@ const AppStorePage = () => {
     <div className="mx-auto max-w-6xl space-y-8">
       <StoreHero installedCount={installed.length} appsAvailable={APP_CATALOG.length} />
 
+      {/* Quick Nav */}
+      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
+        {[
+          { label: "Library", path: "/app-store/library" },
+          { label: "Updates", path: "/app-store/updates" },
+          { label: "Permissions", path: "/app-store/permissions" },
+          { label: "Associations", path: "/app-store/associations" },
+          { label: "Install from Web", path: "/app-store/web-install" },
+          { label: "External Package", path: "/app-store/external-install" },
+          { label: "Dev Tools", path: "/app-store/dev-tools" },
+          { label: "Enterprise", path: "/app-store/enterprise" },
+          { label: "Receipts", path: "/app-store/receipts" },
+        ].map(link => (
+          <button key={link.path} onClick={() => navigate(link.path)}
+            className="shrink-0 rounded-lg bg-secondary px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
+            {link.label}
+          </button>
+        ))}
+      </div>
+
       {/* Search */}
       <div className="relative">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />

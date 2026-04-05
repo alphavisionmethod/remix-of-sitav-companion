@@ -10,9 +10,12 @@ import {
   Shield, ShieldCheck, ShieldAlert, Building, Users, HelpCircle, Star,
   Download, Check, ChevronRight, ExternalLink, Sparkles, Clock, Globe,
   Lock, Smartphone, Monitor, Zap, Bell, FileText, Link2, Package,
-  ArrowRight, X, Loader2, AlertTriangle, CheckCircle2,
+  ArrowRight, X, Loader2, AlertTriangle, CheckCircle2, Pin, RefreshCw,
 } from "lucide-react";
-import type { AppDefinition, AppBundle, AppTrustLevel, AppClass, AppInstallStatus, AppPermission } from "@/lib/app-platform/types";
+import type {
+  AppDefinition, AppBundle, AppTrustLevel, AppClass, AppInstallStatus,
+  AppPermission, AppSourceOrigin, AppSandboxLevel, AppInstallScope, AppPackageType,
+} from "@/lib/app-platform/types";
 
 // ── Trust Badge ──
 
@@ -242,8 +245,9 @@ export function CategoryStrip({ categories, active, onSelect }: {
 export function InstallSheet({ app, onClose, onInstall }: {
   app: AppDefinition; onClose: () => void; onInstall: () => void;
 }) {
-  const [status, setStatus] = useState<"review" | "permissions" | "installing" | "installed">("review");
+  const [status, setStatus] = useState<"review" | "permissions" | "scope" | "installing" | "installed">("review");
   const [progress, setProgress] = useState(0);
+  const [installScope, setInstallScope] = useState<AppInstallScope>("user");
 
   const handleInstall = () => {
     setStatus("installing");
@@ -358,6 +362,15 @@ export function InstallSheet({ app, onClose, onInstall }: {
                     <AlertTriangle className="h-4 w-4 text-[hsl(var(--trust-warn))] shrink-0 mt-0.5" />
                     <p className="text-[11px] text-foreground">This app requests <strong>{highRiskPerms.length} elevated permission{highRiskPerms.length > 1 ? "s" : ""}</strong>. Review carefully before installing.</p>
                   </div>
+                )}
+
+                {/* Install Scope */}
+                <InstallScopeSelector scope={installScope} onSelect={setInstallScope}
+                  allowedScopes={app.trustLevel === "unknown-source" || app.trustLevel === "local-unverified" ? ["user", "sandbox"] : ["user", "system", "sandbox"]} />
+
+                {/* Sandbox recommendation for untrusted */}
+                {(app.trustLevel === "unknown-source" || app.trustLevel === "local-unverified") && (
+                  <SandboxRecommendationCard level="restricted" recommended />
                 )}
               </>
             )}
@@ -496,3 +509,343 @@ export function AppReceiptCard({ receipt }: { receipt: AppDefinition["receipts"]
     </div>
   );
 }
+
+// ═══════════════════════════════════════════════════════════════
+// RUX — Runtime / Packaging UX Components
+// ═══════════════════════════════════════════════════════════════
+
+// ── RUX02: Source Origin Label ──
+
+const SOURCE_ORIGIN_CONFIG: Record<AppSourceOrigin, { label: string; icon: typeof Globe }> = {
+  "sita-store": { label: "SITA Store", icon: ShieldCheck },
+  "publisher-direct": { label: "Publisher Direct", icon: ExternalLink },
+  "web-install": { label: "Web Install", icon: Globe },
+  "private-catalog": { label: "Private Catalog", icon: Building },
+  "external-file": { label: "External File", icon: Package },
+  "external-url": { label: "External URL", icon: ExternalLink },
+  "local-sideload": { label: "Local Sideload", icon: Monitor },
+  "system-preinstalled": { label: "Preinstalled", icon: Zap },
+};
+
+export function SourceOriginLabel({ origin, size = "sm" }: { origin: AppSourceOrigin; size?: "sm" | "md" }) {
+  const c = SOURCE_ORIGIN_CONFIG[origin];
+  const Icon = c.icon;
+  return (
+    <div className={cn("inline-flex items-center gap-1 text-muted-foreground", size === "md" && "text-sm")}>
+      <Icon className={cn(size === "sm" ? "h-3 w-3" : "h-3.5 w-3.5")} />
+      <span className={cn(size === "sm" ? "text-[10px]" : "text-xs")}>{c.label}</span>
+    </div>
+  );
+}
+
+// ── RUX04: Package Type Label ──
+
+const PACKAGE_TYPE_LABELS: Record<AppPackageType, string> = {
+  "native-application": "Native application",
+  "web-app": "Web app",
+  "wrapped-web-app": "Wrapped web app",
+  "internal-tool": "Internal tool",
+  "capability-pack": "Capability pack",
+  "external-package": "External application package",
+};
+
+export function PackageTypeLabel({ type }: { type: AppPackageType }) {
+  return (
+    <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+      <Package className="h-2.5 w-2.5" /> {PACKAGE_TYPE_LABELS[type]}
+    </span>
+  );
+}
+
+// ── RUX03: Trust Install Behavior Card ──
+
+export function TrustInstallBehavior({ level }: { level: AppTrustLevel }) {
+  const behaviors: Record<AppTrustLevel, { friction: string; desc: string; color: string }> = {
+    "sita-verified": { friction: "Lowest friction", desc: "One-click install with full confidence", color: "border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5" },
+    "publisher-verified": { friction: "Smooth install", desc: "Publisher signature verified, review permissions", color: "border-primary/20 bg-primary/5" },
+    "enterprise-approved": { friction: "Policy-managed", desc: "Internal support owner, managed updates", color: "border-accent/20 bg-accent/5" },
+    "community-reviewed": { friction: "Extra review", desc: "Community-reviewed, check source and permissions", color: "border-border bg-secondary/30" },
+    "unknown-source": { friction: "Caution required", desc: "Unknown publisher, consider restricted install", color: "border-[hsl(var(--trust-warn))]/20 bg-[hsl(var(--trust-warn))]/5" },
+    "local-unverified": { friction: "Manual review", desc: "Unverified local package, inspect before installing", color: "border-[hsl(var(--trust-warn))]/20 bg-[hsl(var(--trust-warn))]/5" },
+  };
+  const b = behaviors[level];
+  return (
+    <div className={cn("rounded-xl border p-3", b.color)}>
+      <div className="flex items-center gap-2">
+        <Shield className="h-3.5 w-3.5 text-muted-foreground" />
+        <span className="text-xs font-medium text-foreground">{b.friction}</span>
+      </div>
+      <p className="text-[10px] text-muted-foreground mt-1">{b.desc}</p>
+    </div>
+  );
+}
+
+// ── RUX05: Install Scope Selector ──
+
+const SCOPE_OPTIONS: { value: AppInstallScope; label: string; desc: string; icon: typeof Monitor }[] = [
+  { value: "user", label: "This user only", desc: "Available to your account", icon: Users },
+  { value: "system", label: "System-wide", desc: "Available to all users on this device", icon: Monitor },
+  { value: "sandbox", label: "Restricted sandbox", desc: "Limited access to files and system", icon: Lock },
+  { value: "enterprise-managed", label: "Enterprise managed", desc: "Controlled by organization policy", icon: Building },
+];
+
+export function InstallScopeSelector({ scope, onSelect, allowedScopes }: {
+  scope: AppInstallScope; onSelect: (s: AppInstallScope) => void; allowedScopes?: AppInstallScope[];
+}) {
+  const available = allowedScopes || ["user", "sandbox"];
+  return (
+    <div className="space-y-2">
+      <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">Install scope</h4>
+      {SCOPE_OPTIONS.filter(o => available.includes(o.value)).map(opt => {
+        const Icon = opt.icon;
+        const selected = scope === opt.value;
+        return (
+          <button key={opt.value} onClick={() => onSelect(opt.value)}
+            className={cn("w-full flex items-center gap-3 rounded-xl border p-3 text-left transition-all",
+              selected ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/15")}>
+            <Icon className={cn("h-4 w-4", selected ? "text-primary" : "text-muted-foreground")} />
+            <div className="flex-1">
+              <p className="text-xs font-medium text-foreground">{opt.label}</p>
+              <p className="text-[10px] text-muted-foreground">{opt.desc}</p>
+            </div>
+            <div className={cn("h-4 w-4 rounded-full border-2 flex items-center justify-center",
+              selected ? "border-primary" : "border-muted-foreground/30")}>
+              {selected && <div className="h-2 w-2 rounded-full bg-primary" />}
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── RUX06: Sandbox Recommendation Card ──
+
+const SANDBOX_LABELS: Record<AppSandboxLevel, { label: string; desc: string; icon: typeof Lock }> = {
+  standard: { label: "Standard access", desc: "Full access to allowed resources", icon: Check as any },
+  restricted: { label: "Restricted sandbox", desc: "Limited to its own data and selected files", icon: Lock },
+  "limited-files": { label: "Limited file access", desc: "Can open documents you choose", icon: FileText },
+  "enterprise-managed": { label: "Managed by your organization", desc: "Policy controls what this app can do", icon: Building },
+  "approval-required": { label: "Approval required", desc: "Elevated actions need your approval first", icon: Shield },
+};
+
+export function SandboxRecommendationCard({ level, recommended }: { level: AppSandboxLevel; recommended?: boolean }) {
+  const s = SANDBOX_LABELS[level];
+  const Icon = s.icon;
+  return (
+    <div className={cn("rounded-xl border p-3 flex items-start gap-3",
+      recommended ? "border-primary/20 bg-primary/5" : "border-border bg-secondary/20")}>
+      <Icon className={cn("h-4 w-4 mt-0.5", recommended ? "text-primary" : "text-muted-foreground")} />
+      <div>
+        <div className="flex items-center gap-2">
+          <p className="text-xs font-medium text-foreground">{s.label}</p>
+          {recommended && (
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-bold text-primary">Recommended</span>
+          )}
+        </div>
+        <p className="text-[10px] text-muted-foreground mt-0.5">{s.desc}</p>
+      </div>
+    </div>
+  );
+}
+
+// ── RUX06: Sandbox Display (inline) ──
+
+export function SandboxLevelBadge({ level }: { level: AppSandboxLevel }) {
+  const colors: Record<AppSandboxLevel, string> = {
+    standard: "text-[hsl(var(--trust-safe))] bg-[hsl(var(--trust-safe))]/10",
+    restricted: "text-[hsl(var(--trust-warn))] bg-[hsl(var(--trust-warn))]/10",
+    "limited-files": "text-primary bg-primary/10",
+    "enterprise-managed": "text-accent bg-accent/10",
+    "approval-required": "text-[hsl(var(--trust-warn))] bg-[hsl(var(--trust-warn))]/10",
+  };
+  return (
+    <span className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium", colors[level])}>
+      <Lock className="h-2.5 w-2.5" /> {SANDBOX_LABELS[level].label}
+    </span>
+  );
+}
+
+// ── RUX07: Post-Install Integration Prompts ──
+
+export function DockPinPrompt({ appName, onPin, onSkip }: { appName: string; onPin: () => void; onSkip: () => void }) {
+  return (
+    <div className="rounded-xl border border-border bg-card p-4 flex items-center gap-3">
+      <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+        <Pin className="h-5 w-5 text-primary" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-foreground">Pin {appName} to Dock?</p>
+        <p className="text-[10px] text-muted-foreground">Quick access from the dock bar</p>
+      </div>
+      <div className="flex gap-1.5 shrink-0">
+        <button onClick={onPin} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors">Pin</button>
+        <button onClick={onSkip} className="rounded-lg bg-secondary px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">Skip</button>
+      </div>
+    </div>
+  );
+}
+
+export function DefaultAppPrompt({ appName, role, onSet, onSkip }: { appName: string; role: string; onSet: () => void; onSkip: () => void }) {
+  return (
+    <div className="rounded-xl border border-border bg-card p-4 flex items-center gap-3">
+      <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+        <Star className="h-5 w-5 text-accent" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-foreground">Make {appName} your default {role}?</p>
+        <p className="text-[10px] text-muted-foreground">Opens {role} files and links with {appName}</p>
+      </div>
+      <div className="flex gap-1.5 shrink-0">
+        <button onClick={onSet} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors">Set</button>
+        <button onClick={onSkip} className="rounded-lg bg-secondary px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">Skip</button>
+      </div>
+    </div>
+  );
+}
+
+export function WorkspaceAttachPrompt({ appName, onAttach, onSkip }: { appName: string; onAttach: () => void; onSkip: () => void }) {
+  return (
+    <div className="rounded-xl border border-border bg-card p-4 flex items-center gap-3">
+      <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center shrink-0">
+        <Monitor className="h-5 w-5 text-muted-foreground" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-foreground">Add {appName} to workspace?</p>
+        <p className="text-[10px] text-muted-foreground">Attach to your current workspace view</p>
+      </div>
+      <div className="flex gap-1.5 shrink-0">
+        <button onClick={onAttach} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors">Add</button>
+        <button onClick={onSkip} className="rounded-lg bg-secondary px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">Skip</button>
+      </div>
+    </div>
+  );
+}
+
+// ── RUX04: Runtime Class Card ──
+
+export function RuntimeClassCard({ appClass, packageType }: { appClass: AppClass; packageType?: AppPackageType }) {
+  const classInfo = APP_CLASS_LABELS[appClass];
+  const Icon = classInfo.icon;
+  return (
+    <div className="rounded-xl border border-border bg-secondary/20 p-3 flex items-center gap-3">
+      <Icon className="h-5 w-5 text-primary" />
+      <div>
+        <p className="text-xs font-medium text-foreground">{classInfo.label}</p>
+        {packageType && <p className="text-[10px] text-muted-foreground">{PACKAGE_TYPE_LABELS[packageType]}</p>}
+      </div>
+    </div>
+  );
+}
+
+// ── RUX10: Source Verification Card ──
+
+export function SourceVerificationCard({ trustLevel, publisher, sourceOrigin }: {
+  trustLevel: AppTrustLevel; publisher: string; sourceOrigin?: AppSourceOrigin;
+}) {
+  const trust = TRUST_CONFIG[trustLevel];
+  const TrustIcon = trust.icon;
+  const isVerified = trustLevel === "sita-verified" || trustLevel === "publisher-verified";
+  return (
+    <div className={cn("rounded-xl border p-4 space-y-2",
+      isVerified ? "border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5" : "border-[hsl(var(--trust-warn))]/20 bg-[hsl(var(--trust-warn))]/5")}>
+      <div className="flex items-center gap-2">
+        <TrustIcon className={cn("h-5 w-5", isVerified ? "text-[hsl(var(--trust-safe))]" : "text-[hsl(var(--trust-warn))]")} />
+        <span className="text-sm font-semibold text-foreground">{trust.label}</span>
+      </div>
+      <div className="text-xs text-muted-foreground space-y-1">
+        <p>Publisher: <span className="text-foreground">{publisher}</span></p>
+        {sourceOrigin && <p>Source: <span className="text-foreground">{SOURCE_ORIGIN_CONFIG[sourceOrigin].label}</span></p>}
+        {isVerified ? (
+          <p className="flex items-center gap-1 text-[hsl(var(--trust-safe))]"><Check className="h-3 w-3" /> Identity verified</p>
+        ) : (
+          <p className="flex items-center gap-1 text-[hsl(var(--trust-warn))]"><AlertTriangle className="h-3 w-3" /> Source not verified</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── RUX08: Update Source Info ──
+
+export function UpdateSourceInfo({ updateSource, autoUpdate = true }: { updateSource: string; autoUpdate?: boolean }) {
+  return (
+    <div className="rounded-xl border border-border bg-secondary/20 p-3 space-y-1.5">
+      <div className="flex items-center gap-2 text-xs">
+        <RefreshCw className="h-3.5 w-3.5 text-primary" />
+        <span className="font-medium text-foreground capitalize">{updateSource.replace(/-/g, " ")}</span>
+      </div>
+      <p className="text-[10px] text-muted-foreground">
+        {autoUpdate ? "Updates automatically when available" : "Manual update required"}
+        {updateSource === "publisher-managed" && " · Publisher controls update timing"}
+        {updateSource === "enterprise-managed" && " · IT policy controls update channel"}
+      </p>
+    </div>
+  );
+}
+
+// ── RUX13: Enterprise App Badge ──
+
+export function EnterpriseAppBadge({ orgName }: { orgName?: string }) {
+  return (
+    <div className="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent/5 px-2.5 py-1 text-[10px] font-medium text-accent">
+      <Building className="h-3 w-3" />
+      {orgName || "Enterprise"} managed
+    </div>
+  );
+}
+
+// ── RUX14: Capability Pack Card ──
+
+export function CapabilityPackCard({ name, description, unlocks, icon }: {
+  name: string; description: string; unlocks: string[]; icon: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-border bg-card p-5 space-y-3 hover:border-primary/15 transition-all">
+      <div className="flex items-start gap-3">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 text-2xl">{icon}</div>
+        <div className="flex-1">
+          <h3 className="text-sm font-semibold text-foreground">{name}</h3>
+          <p className="text-[11px] text-muted-foreground">{description}</p>
+        </div>
+        <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-bold text-primary">
+          <Package className="h-2.5 w-2.5" /> Pack
+        </span>
+      </div>
+      {unlocks.length > 0 && (
+        <div className="space-y-1">
+          <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Unlocks</p>
+          <div className="flex flex-wrap gap-1">
+            {unlocks.map(u => (
+              <span key={u} className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-[10px] text-foreground">
+                <Sparkles className="h-2.5 w-2.5 text-primary" /> {u}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── RUX15: File Association Prompt (non-modal) ──
+
+export function FileAssociationPrompt({ appName, fileType, onSet, onSkip }: {
+  appName: string; fileType: string; onSet: () => void; onSkip: () => void;
+}) {
+  return (
+    <div className="rounded-xl border border-primary/15 bg-primary/5 p-4 flex items-center gap-3">
+      <FileText className="h-5 w-5 text-primary shrink-0" />
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-foreground">Open {fileType} files with {appName}?</p>
+        <p className="text-[10px] text-muted-foreground">Set as default handler for {fileType}</p>
+      </div>
+      <div className="flex gap-1.5 shrink-0">
+        <button onClick={onSet} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors">Yes</button>
+        <button onClick={onSkip} className="rounded-lg bg-secondary px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">No</button>
+      </div>
+    </div>
+  );
+}
+
+// Pin and RefreshCw imported at top
