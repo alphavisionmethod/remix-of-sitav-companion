@@ -35,3 +35,11 @@ export type {
   CacheEntry, CacheStats,
   DeepReasoningMode, DeepReasoningRequest,
 } from "./context-compression";
+
+export {
+  checkBudget, forecastSpend, createEnvelope,
+} from "./budget-policy-engine";
+export type {
+  BudgetScope, BudgetEnvelope, BudgetStatus,
+  BudgetCheckResult, BudgetSpendEvent, SpendForecast,
+} from "./budget-policy-engine";
