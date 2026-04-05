@@ -553,6 +553,9 @@ const App = () => (
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
                     <Route path="/admin/team" element={<TeamManagement />} />
                     <Route path="/admin/system" element={<SystemManagement />} />
+                    <Route path="/admin/users" element={<UserManagement />} />
+                    <Route path="/admin/ai-tokens" element={<AITokenDashboard />} />
+                    <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
                     <Route path="/apps/email" element={<EmailApp />} />
