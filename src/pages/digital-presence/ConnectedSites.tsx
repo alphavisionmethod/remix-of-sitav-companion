@@ -1,0 +1,117 @@
+import { motion } from "framer-motion";
+import { Globe, Link2, RefreshCw, Shield, AlertTriangle, CheckCircle, Plus, Settings, Activity } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+const PLATFORMS = [
+  { name: "Shopify", icon: "🛒", connected: true, url: "mystore.myshopify.com", health: 94, lastSync: "2 min ago", products: 48, issues: 1 },
+  { name: "WordPress", icon: "📝", connected: true, url: "blog.mybusiness.com", health: 78, lastSync: "1 hr ago", products: 0, issues: 3 },
+  { name: "Webflow", icon: "🎨", connected: false, url: null, health: 0, lastSync: null, products: 0, issues: 0 },
+  { name: "Wix", icon: "🌐", connected: false, url: null, health: 0, lastSync: null, products: 0, issues: 0 },
+  { name: "Squarespace", icon: "◼️", connected: false, url: null, health: 0, lastSync: null, products: 0, issues: 0 },
+  { name: "Custom Site", icon: "🔧", connected: true, url: "mybusiness.com", health: 85, lastSync: "30 min ago", products: 0, issues: 2 },
+];
+
+const AUDIT_FINDINGS = [
+  { site: "WordPress", finding: "3 plugins need security updates", severity: "high", category: "Security" },
+  { site: "WordPress", finding: "SSL certificate expiring in 14 days", severity: "medium", category: "Technical" },
+  { site: "WordPress", finding: "7 images not optimized for web", severity: "low", category: "Performance" },
+  { site: "Shopify", finding: "Product 'Summer Tee' missing description", severity: "low", category: "Content" },
+  { site: "Custom Site", finding: "Contact page returns 404 on mobile", severity: "high", category: "UX" },
+  { site: "Custom Site", finding: "Meta description missing on 4 pages", severity: "medium", category: "SEO" },
+];
+
+const AI_RECOMMENDATIONS = [
+  { action: "Update WordPress plugins", risk: "low", impact: "Fixes 3 known vulnerabilities", autoFixable: true },
+  { action: "Add product descriptions to 5 Shopify items", risk: "low", impact: "Improves SEO and conversion", autoFixable: false },
+  { action: "Fix mobile 404 on contact page", risk: "low", impact: "Restores lead capture path", autoFixable: true },
+  { action: "Compress 7 images on WordPress", risk: "none", impact: "30% faster page load", autoFixable: true },
+];
+
+export default function ConnectedSites() {
+  return (
+    <div className="min-h-screen bg-background p-6 space-y-6">
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+        <h1 className="text-2xl font-bold text-foreground">Connected Website Manager</h1>
+        <p className="text-sm text-muted-foreground">Connect, audit, monitor and optimize your web platforms</p>
+      </motion.div>
+
+      {/* Connected Platforms */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {PLATFORMS.map(p => (
+          <Card key={p.name} className={`bg-card/50 border-border/50 ${p.connected ? "hover:border-primary/30" : "opacity-60"} transition-all`}>
+            <CardContent className="p-5">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">{p.icon}</span>
+                  <h3 className="text-sm font-semibold text-foreground">{p.name}</h3>
+                </div>
+                {p.connected ? (
+                  <Badge variant="default" className="text-[10px]"><CheckCircle className="w-3 h-3 mr-1" /> Connected</Badge>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-7 text-xs"><Plus className="w-3 h-3 mr-1" /> Connect</Button>
+                )}
+              </div>
+              {p.connected && (
+                <>
+                  <p className="text-[10px] font-mono text-muted-foreground mb-2">{p.url}</p>
+                  <div className="flex items-center justify-between text-[10px] text-muted-foreground">
+                    <span>Health: <span className={p.health >= 85 ? "text-green-400" : "text-amber-400"}>{p.health}%</span></span>
+                    <span>Synced {p.lastSync}</span>
+                    {p.issues > 0 && <Badge variant="destructive" className="text-[10px]">{p.issues} issues</Badge>}
+                  </div>
+                  <div className="flex gap-2 mt-3">
+                    <Button variant="ghost" size="sm" className="h-6 text-[10px]"><RefreshCw className="w-3 h-3 mr-1" /> Sync</Button>
+                    <Button variant="ghost" size="sm" className="h-6 text-[10px]"><Activity className="w-3 h-3 mr-1" /> Audit</Button>
+                    <Button variant="ghost" size="sm" className="h-6 text-[10px]"><Settings className="w-3 h-3 mr-1" /> Manage</Button>
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Audit Findings */}
+        <Card className="bg-card/50 border-border/50">
+          <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-amber-400" /> Audit Findings</CardTitle></CardHeader>
+          <CardContent className="space-y-2">
+            {AUDIT_FINDINGS.map((f, i) => (
+              <div key={i} className="p-3 bg-muted/30 rounded-lg">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary" className="text-[10px]">{f.site}</Badge>
+                    <Badge variant={f.severity === "high" ? "destructive" : "secondary"} className="text-[10px]">{f.severity}</Badge>
+                  </div>
+                  <Badge variant="secondary" className="text-[10px]">{f.category}</Badge>
+                </div>
+                <p className="text-xs text-foreground">{f.finding}</p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* AI Recommendations */}
+        <Card className="bg-card/50 border-border/50">
+          <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" /> AI Recommendations</CardTitle></CardHeader>
+          <CardContent className="space-y-2">
+            {AI_RECOMMENDATIONS.map((r, i) => (
+              <div key={i} className="p-3 bg-muted/30 rounded-lg flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-medium text-foreground">{r.action}</p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{r.impact}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary" className="text-[10px]">Risk: {r.risk}</Badge>
+                  {r.autoFixable && <Button size="sm" variant="outline" className="h-6 text-[10px]">Auto-fix</Button>}
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

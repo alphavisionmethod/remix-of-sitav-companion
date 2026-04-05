@@ -237,6 +237,22 @@ const QuoteStudio = lazy(() => import("./pages/revenue-office/QuoteStudio"));
 const CallDesk = lazy(() => import("./pages/revenue-office/CallDesk"));
 const BusinessOnboarding = lazy(() => import("./pages/revenue-office/BusinessOnboarding"));
 
+// ── Digital Presence Office ──
+const PresenceGate = lazy(() => import("./pages/digital-presence/PresenceGate"));
+const PresenceBoardroom = lazy(() => import("./pages/digital-presence/PresenceBoardroom"));
+const WebsiteTwin = lazy(() => import("./pages/digital-presence/WebsiteTwin"));
+const SiteBuilder = lazy(() => import("./pages/digital-presence/SiteBuilder"));
+const BrandStudio = lazy(() => import("./pages/digital-presence/BrandStudio"));
+const ConnectedSites = lazy(() => import("./pages/digital-presence/ConnectedSites"));
+const CROOffice = lazy(() => import("./pages/digital-presence/CROOffice"));
+const EcommerceOffice = lazy(() => import("./pages/digital-presence/EcommerceOffice"));
+const PromotionsOffice = lazy(() => import("./pages/digital-presence/PromotionsOffice"));
+const AIWebTeam = lazy(() => import("./pages/digital-presence/AIWebTeam"));
+const ErrorRadar = lazy(() => import("./pages/digital-presence/ErrorRadar"));
+const ContentFreshness = lazy(() => import("./pages/digital-presence/ContentFreshness"));
+const LaunchWarRoom = lazy(() => import("./pages/digital-presence/LaunchWarRoom"));
+const PresenceTimeMachine = lazy(() => import("./pages/digital-presence/PresenceTimeMachine"));
+
 const queryClient = createQueryClient();
 
 // Premium loading skeleton — uses PageSkeleton for content-aware loading
@@ -439,6 +455,23 @@ const App = () => (
                     <Route path="/revenue-office/quotes" element={<QuoteStudio />} />
                     <Route path="/revenue-office/calls" element={<CallDesk />} />
                     <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
+
+
+                    {/* Digital Presence Office */}
+                    <Route path="/digital-presence" element={<PresenceGate />} />
+                    <Route path="/digital-presence/boardroom" element={<PresenceBoardroom />} />
+                    <Route path="/digital-presence/website-twin" element={<WebsiteTwin />} />
+                    <Route path="/digital-presence/builder" element={<SiteBuilder />} />
+                    <Route path="/digital-presence/brand-studio" element={<BrandStudio />} />
+                    <Route path="/digital-presence/connected-sites" element={<ConnectedSites />} />
+                    <Route path="/digital-presence/cro" element={<CROOffice />} />
+                    <Route path="/digital-presence/ecommerce" element={<EcommerceOffice />} />
+                    <Route path="/digital-presence/promotions" element={<PromotionsOffice />} />
+                    <Route path="/digital-presence/ai-team" element={<AIWebTeam />} />
+                    <Route path="/digital-presence/radar" element={<ErrorRadar />} />
+                    <Route path="/digital-presence/content-freshness" element={<ContentFreshness />} />
+                    <Route path="/digital-presence/launch" element={<LaunchWarRoom />} />
+                    <Route path="/digital-presence/time-machine" element={<PresenceTimeMachine />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
