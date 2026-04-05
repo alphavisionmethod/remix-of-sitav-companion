@@ -918,6 +918,36 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
+                {/* Life Rhythm */}
+                {phase === "life-rhythm" && (
+                  <LifeRhythmStep key="life-rhythm" data={state.lifeRhythm}
+                    onUpdate={lr => setState(s => ({ ...s, lifeRhythm: lr }))} onNext={goNext} onPrev={goPrev} />
+                )}
+                {/* Stress & Slippage */}
+                {phase === "stress-slippage" && (
+                  <StressSlippageStep key="stress-slippage" data={state.stressMap}
+                    onUpdate={sm => setState(s => ({ ...s, stressMap: sm }))} onNext={goNext} onPrev={goPrev} />
+                )}
+                {/* Communications Context */}
+                {phase === "communications-context" && (
+                  <CommunicationsContextStep key="comms-context" data={state.commsContext}
+                    onUpdate={cc => setState(s => ({ ...s, commsContext: cc }))} onNext={goNext} onPrev={goPrev} />
+                )}
+                {/* Planning Style */}
+                {phase === "planning-style" && (
+                  <PlanningStyleStep key="planning-style" data={state.planningStyle}
+                    onUpdate={ps => setState(s => ({ ...s, planningStyle: ps }))} onNext={goNext} onPrev={goPrev} />
+                )}
+                {/* Environment Summary */}
+                {phase === "environment-summary" && (
+                  <EnvironmentSummaryStep key="env-summary" displayName={state.displayName} trustLevel={state.trustLevel}
+                    primaryUseMode={state.primaryUseMode} enabledDomains={state.enabledDomains}
+                    activeAdvisors={state.advisorActivation} lifeRhythm={state.lifeRhythm}
+                    stressMap={state.stressMap} commsContext={state.commsContext} planningStyle={state.planningStyle}
+                    connectedSystems={state.connectedSystems} firstWinAction={state.firstWin.action}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
                 {/* Welcome */}
                 {phase === "welcome" && (
                   <FirstWelcomeScreen key="welcome" onSetup={goNext}
