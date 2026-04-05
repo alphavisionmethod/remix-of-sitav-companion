@@ -4,8 +4,8 @@
 // warn → throttle → pause → halt
 // ═══════════════════════════════════════════════════════════════
 
-export type BreakerState = "closed" | "warn" | "throttle" | "pause" | "halt";
-export type BudgetPeriod = "hourly" | "daily" | "monthly";
+export type CostBreakerState = "closed" | "warn" | "throttle" | "pause" | "halt";
+export type CostBudgetPeriod = "hourly" | "daily" | "monthly";
 
 export interface BudgetConfig {
   agentId: string;
