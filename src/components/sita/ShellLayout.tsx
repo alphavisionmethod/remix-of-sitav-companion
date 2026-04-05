@@ -169,6 +169,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       {/* SITA Companion Bar — always present */}
       <SitaCompanionBar />
 
+      {/* AI Copilot Bar — always-on assistant */}
+      <CopilotBar />
+
       {/* Mobile Bottom Nav */}
       <MobileBottomNav />
 
