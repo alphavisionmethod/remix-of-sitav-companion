@@ -2,14 +2,17 @@ import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import {
   Brain, AlertTriangle, CheckCircle2, Shield, Zap, Clock, TrendingUp,
   Users, Wrench, Eye, RotateCcw, Sparkles, Activity, ArrowUpRight,
   Bug, Gauge, Rocket, ShieldCheck, FileCheck, Target, Palette,
-  GitBranch, Network, History, MessageSquare, BookOpen, FileText, XCircle
+  GitBranch, Network, History, MessageSquare, BookOpen, FileText, XCircle,
+  Plug, ArrowDown, ArrowUp, Minus, Star
 } from "lucide-react";
+import { generateChiefSynthesis } from "@/lib/ai-engineering";
+import { getIntegrationHealthSummary, getIntegrationsByCategory } from "@/lib/ai-engineering/platform-integration";
 
 // ═══════════════════════════════════════════════════════════════
 // DATA — Engineering Overview Band
@@ -121,9 +124,78 @@ const attentionColor = (severity: string) =>
 const AIEngineeringBoard = () => {
   const [tab, setTab] = useState("overview");
 
+  const chiefSynthesis = useMemo(() => generateChiefSynthesis({
+    activeMissions: 5, blockedMissions: 1, completedMissions: 12,
+    criticalIssues: 2, selfHealSuccessRate: 92, releaseConfidence: 82,
+    topRisk: "Projection cache corruption affecting admin dashboards",
+    topOpportunity: "Self-healing maturity allows expanding auto-heal to low-risk UI fixes",
+    agentDisagreements: [
+      { topic: "Admin shell optimization approach", positions: [
+        { agent: "Performance Optimizer", position: "Lazy imports + Suspense boundaries" },
+        { agent: "Frontend Engineer", position: "Route-level code splitting first" },
+      ]},
+    ],
+  }), []);
+
+  const integrationHealth = useMemo(() => getIntegrationHealthSummary(), []);
+
   return (
     <div className="space-y-6 p-6">
       <AdminPageHeader icon={Brain} title="AI Engineering Board" subtitle="Your AI engineering department — goals, fixes, healing, approvals, and release confidence" accent="primary" />
+
+      {/* ── Chief Engineering Synthesis ── */}
+      <div className="rounded-xl border-2 border-primary/20 bg-primary/5 p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Star className="h-5 w-5 text-primary" />
+            <span className="text-sm font-bold">Chief Engineering Synthesis</span>
+          </div>
+          <div className="flex items-center gap-2">
+            {chiefSynthesis.releaseConfidenceDirection === "rising" && <ArrowUp className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" />}
+            {chiefSynthesis.releaseConfidenceDirection === "falling" && <ArrowDown className="h-3.5 w-3.5 text-destructive" />}
+            {chiefSynthesis.releaseConfidenceDirection === "stable" && <Minus className="h-3.5 w-3.5 text-muted-foreground" />}
+            <Badge variant="outline" className="text-xs">Release: {chiefSynthesis.releaseConfidenceScore}%</Badge>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="space-y-1.5">
+            <p className="text-xs font-semibold text-primary">What Matters Now</p>
+            <p className="text-sm">{chiefSynthesis.whatMattersNow}</p>
+          </div>
+          <div className="space-y-1.5">
+            <p className="text-xs font-semibold text-primary">Next Best Action</p>
+            <p className="text-sm">{chiefSynthesis.nextBestOperatorAction}</p>
+          </div>
+          <div className="space-y-1.5">
+            <p className="text-xs font-semibold text-destructive">Biggest Risk</p>
+            <p className="text-sm">{chiefSynthesis.biggestRisk}</p>
+          </div>
+          <div className="space-y-1.5">
+            <p className="text-xs font-semibold text-[hsl(var(--trust-safe))]">Biggest Opportunity</p>
+            <p className="text-sm">{chiefSynthesis.biggestOpportunity}</p>
+          </div>
+        </div>
+        {chiefSynthesis.agentDisagreements.length > 0 && (
+          <div className="rounded-lg bg-background/50 p-3 space-y-1">
+            <p className="text-xs font-semibold text-amber-500">Agent Disagreements</p>
+            {chiefSynthesis.agentDisagreements.map((d, i) => (
+              <div key={i} className="text-xs">
+                <span className="font-medium">{d.topic}:</span>{" "}
+                {d.positions.map((p, j) => (
+                  <span key={j}>{j > 0 && " vs "}<span className="text-muted-foreground">{p.agent}:</span> {p.position}</span>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+          <span>Active: {chiefSynthesis.missionSummary.active}</span>
+          <span>Blocked: {chiefSynthesis.missionSummary.blocked}</span>
+          <span>Completed: {chiefSynthesis.missionSummary.completed}</span>
+          <span>Critical: {chiefSynthesis.criticalIssueCount}</span>
+          <span>Self-Heal: {chiefSynthesis.selfHealHealth}</span>
+        </div>
+      </div>
 
       {/* A. Engineering Overview Band */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
@@ -420,6 +492,28 @@ const AIEngineeringBoard = () => {
           </Link>
         </TabsContent>
       </Tabs>
+
+      {/* ── Platform Integration Status ── */}
+      <div className="rounded-xl border border-border/40 bg-card p-4">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Plug className="h-4 w-4 text-primary" />
+            <span className="text-sm font-semibold">Platform Integrations</span>
+          </div>
+          <div className="flex items-center gap-2 text-xs">
+            <span className="text-[hsl(var(--trust-safe))]">{integrationHealth.healthy} connected</span>
+            <span className="text-muted-foreground">· {integrationHealth.crossReferenceCount} data flows</span>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+          {(Object.entries(integrationHealth.byCategory) as [string, { total: number; healthy: number }][]).map(([cat, data]) => (
+            <div key={cat} className="rounded-lg border border-border/20 p-2.5 text-center">
+              <p className="text-xs font-bold">{data.healthy}/{data.total}</p>
+              <p className="text-[10px] text-muted-foreground leading-tight">{cat.replace(/-/g, " ")}</p>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Quick Links */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
