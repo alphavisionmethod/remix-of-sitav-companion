@@ -234,6 +234,21 @@ const FIPReadinessGateReview = lazy(() => import("./pages/admin/fip/FIPReadiness
 const FIPDeprecationManager = lazy(() => import("./pages/admin/fip/FIPDeprecationManager"));
 const FIPBuilderConsole = lazy(() => import("./pages/admin/fip/FIPBuilderConsole"));
 
+// SAG — Sovereign AI Gateway
+const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
+const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
+const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
+const SAGProviderHealth = lazy(() => import("./pages/admin/sag/SAGProviderHealth"));
+const SAGPromptRegistry = lazy(() => import("./pages/admin/sag/SAGPromptRegistry"));
+const SAGEconomicsBoard = lazy(() => import("./pages/admin/sag/SAGEconomicsBoard"));
+const SAGCostConfidenceLab = lazy(() => import("./pages/admin/sag/SAGCostConfidenceLab"));
+const SAGMultiStageExplorer = lazy(() => import("./pages/admin/sag/SAGMultiStageExplorer"));
+const SAGReceiptExplorer = lazy(() => import("./pages/admin/sag/SAGReceiptExplorer"));
+const SAGFallbackCenter = lazy(() => import("./pages/admin/sag/SAGFallbackCenter"));
+const SAGBuilderConsole = lazy(() => import("./pages/admin/sag/SAGBuilderConsole"));
+const SAGComplianceGate = lazy(() => import("./pages/admin/sag/SAGComplianceGate"));
+
+
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
