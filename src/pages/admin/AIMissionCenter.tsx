@@ -127,7 +127,7 @@ const AIMissionCenter = () => {
           { l: "Active", v: MISSIONS.filter(m => ["in_progress","simulated","ready_for_approval"].includes(m.status)).length },
           { l: "Awaiting Approval", v: MISSIONS.filter(m => m.status === "ready_for_approval").length },
           { l: "P0 Critical", v: MISSIONS.filter(m => m.priority === "P0").length, c: "text-destructive" },
-          { l: "Applied", v: MISSIONS.filter(m => m.status === "applied").length },
+          { l: "Learned From", v: MISSIONS.filter(m => m.status === "learned_from").length },
           { l: "Avg Confidence", v: `${Math.round(MISSIONS.reduce((a,m) => a + m.confidence, 0) / MISSIONS.length)}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
