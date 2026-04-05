@@ -925,6 +925,19 @@ const App = () => (
                     <Route path="/admin/wave-planner" element={<MigrationWavePlanner />} />
                     <Route path="/admin/reality-progress" element={<RealityProgressTimeline />} />
                     <Route path="/admin/runtime-validation" element={<RuntimeRealityValidation />} />
+
+                    {/* CPS: Core Persistence Substrate */}
+                    <Route path="/admin/core-persistence" element={<CorePersistenceOverview />} />
+                    <Route path="/admin/event-stream" element={<EventStreamExplorer />} />
+                    <Route path="/admin/memory-continuity" element={<MemoryContinuityCenter />} />
+                    <Route path="/admin/policy-ledger" element={<PolicyDecisionLedger />} />
+                    <Route path="/admin/intelligence-library" element={<IntelligenceArtifactLibrary />} />
+                    <Route path="/admin/action-lineage" element={<ActionLineageExplorer />} />
+                    <Route path="/admin/replay-console" element={<ReplayRecoveryConsole />} />
+                    <Route path="/admin/service-migration" element={<CoreServiceMigrationBoard />} />
+                    <Route path="/admin/persistence-drift" element={<PersistenceDriftRadar />} />
+                    <Route path="/admin/runtime-continuity" element={<RuntimeContinuityBoard />} />
+
                     <Route path="/admin/ai-engineering" element={<AIEngineeringBoard />} />
                     <Route path="/admin/ai-team-roster" element={<AITeamRoster />} />
                     <Route path="/admin/ai-missions" element={<AIMissionCenter />} />
