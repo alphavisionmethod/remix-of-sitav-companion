@@ -10,6 +10,7 @@ import { fetchCalendarEvents } from "@/lib/data-services/calendar-data-service";
 import { fetchInboxItems, fetchActivityTimeline } from "@/lib/data-services/activity-data-service";
 import { fetchAutomationRules, fetchDelegations, fetchReplayableWorkflows, fetchAdminUsers, fetchTokenUsages, fetchAdminIncidents } from "@/lib/data-services/admin-data-service";
 import { fetchRevenueLeakage } from "@/lib/data-services/revenue-data-service";
+import { fetchCapitalBuckets, fetchPositions, fetchTheses } from "@/lib/data-services/investment-data-service";
 
 // Business
 export function useCustomers() { return useQuery({ queryKey: ["customers"], queryFn: fetchCustomers }); }
