@@ -50,6 +50,14 @@ export interface OnboardingState {
   // Trust & automation
   automationLevel: string;
   humanOnlyTasks: string[];
+  // Advisor activation
+  activeAdvisors: string[];
+  advisorIntensity: Record<string, "low" | "medium" | "high">;
+  // Branching answers
+  branchAnswers: Record<string, string[]>;
+  // Multi-brand/client
+  multiBrand: boolean;
+  multiClient: boolean;
   // First wins
   selectedFirstWins: string[];
 }
