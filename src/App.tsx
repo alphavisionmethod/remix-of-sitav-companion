@@ -161,6 +161,8 @@ const ComputeGovernanceBoard = lazy(() => import("./pages/admin/ComputeGovernanc
 const IntegrationConciergePage = lazy(() => import("./pages/admin/IntegrationConciergePage"));
 const RevenueAutopilotMonitor = lazy(() => import("./pages/admin/RevenueAutopilotMonitor"));
 const InvestorProofLedger = lazy(() => import("./pages/admin/InvestorProofLedger"));
+const RealityClassificationMatrix = lazy(() => import("./pages/admin/RealityClassificationMatrix"));
+const MockReplacementProgram = lazy(() => import("./pages/admin/MockReplacementProgram"));
 const PersonalBrain = lazy(() => import("./pages/PersonalBrain"));
 
 // ── AI Engineering Board ──
@@ -888,6 +890,8 @@ const App = () => (
                     <Route path="/admin/integration-concierge" element={<IntegrationConciergePage />} />
                     <Route path="/admin/revenue-autopilot" element={<RevenueAutopilotMonitor />} />
                     <Route path="/admin/proof-ledger" element={<InvestorProofLedger />} />
+                    <Route path="/admin/reality-matrix" element={<RealityClassificationMatrix />} />
+                    <Route path="/admin/mock-replacement" element={<MockReplacementProgram />} />
                     <Route path="/admin/ai-engineering" element={<AIEngineeringBoard />} />
                     <Route path="/admin/ai-team-roster" element={<AITeamRoster />} />
                     <Route path="/admin/ai-missions" element={<AIMissionCenter />} />

@@ -5060,6 +5060,63 @@ export type Database = {
         }
         Relationships: []
       }
+      mock_replacements: {
+        Row: {
+          blockers: string[] | null
+          created_at: string
+          done_at: string | null
+          expected_contract: string | null
+          feature_name: string
+          id: string
+          migration_owner: string | null
+          migration_priority: string
+          migration_status: string
+          mock_source: string
+          mock_type: string
+          page_path: string
+          real_backend_target: string | null
+          updated_at: string
+          user_id: string
+          validation_evidence: Json | null
+        }
+        Insert: {
+          blockers?: string[] | null
+          created_at?: string
+          done_at?: string | null
+          expected_contract?: string | null
+          feature_name: string
+          id?: string
+          migration_owner?: string | null
+          migration_priority?: string
+          migration_status?: string
+          mock_source: string
+          mock_type?: string
+          page_path: string
+          real_backend_target?: string | null
+          updated_at?: string
+          user_id: string
+          validation_evidence?: Json | null
+        }
+        Update: {
+          blockers?: string[] | null
+          created_at?: string
+          done_at?: string | null
+          expected_contract?: string | null
+          feature_name?: string
+          id?: string
+          migration_owner?: string | null
+          migration_priority?: string
+          migration_status?: string
+          mock_source?: string
+          mock_type?: string
+          page_path?: string
+          real_backend_target?: string | null
+          updated_at?: string
+          user_id?: string
+          validation_evidence?: Json | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           action_url: string | null
@@ -7361,6 +7418,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      reality_classifications: {
+        Row: {
+          backend_target: string | null
+          classification: string
+          classified_by: string | null
+          contract_status: string | null
+          created_at: string
+          domain: string
+          feature_name: string
+          id: string
+          last_verified_at: string | null
+          mock_sources: string[] | null
+          notes: string | null
+          readiness_score: number | null
+          route_path: string
+          updated_at: string
+          user_id: string
+          verification_evidence: Json | null
+        }
+        Insert: {
+          backend_target?: string | null
+          classification?: string
+          classified_by?: string | null
+          contract_status?: string | null
+          created_at?: string
+          domain?: string
+          feature_name: string
+          id?: string
+          last_verified_at?: string | null
+          mock_sources?: string[] | null
+          notes?: string | null
+          readiness_score?: number | null
+          route_path: string
+          updated_at?: string
+          user_id: string
+          verification_evidence?: Json | null
+        }
+        Update: {
+          backend_target?: string | null
+          classification?: string
+          classified_by?: string | null
+          contract_status?: string | null
+          created_at?: string
+          domain?: string
+          feature_name?: string
+          id?: string
+          last_verified_at?: string | null
+          mock_sources?: string[] | null
+          notes?: string | null
+          readiness_score?: number | null
+          route_path?: string
+          updated_at?: string
+          user_id?: string
+          verification_evidence?: Json | null
+        }
+        Relationships: []
       }
       reasoning_escalation_records: {
         Row: {
