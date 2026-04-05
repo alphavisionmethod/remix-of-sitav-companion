@@ -133,7 +133,7 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
       </div>
 
       {/* Actions */}
-      <ProofActions item={item} />
+      <ProofActionsBar item={item} />
     </motion.div>
   );
 };
