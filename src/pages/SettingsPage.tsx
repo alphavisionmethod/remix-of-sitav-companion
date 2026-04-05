@@ -201,7 +201,7 @@ const SettingsPage = () => {
                 { key: "never", label: "Skip" },
               ]} />
               <div className="py-4">
-                <SitaButton variant="outline" size="sm" onClick={runAudit}>
+                <SitaButton variant="secondary" size="sm" onClick={runAudit}>
                   <ShieldAlert className="h-3.5 w-3.5 mr-1" /> Run Compliance Audit
                 </SitaButton>
                 {auditResult && (

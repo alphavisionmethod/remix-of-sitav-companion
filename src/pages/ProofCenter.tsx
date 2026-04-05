@@ -120,10 +120,10 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
 
       {/* Actions */}
       <div className="flex items-center gap-2">
-        <SitaButton variant="outline" size="sm">
+        <SitaButton variant="secondary" size="sm">
           <Download className="h-3 w-3 mr-1" /> Export
         </SitaButton>
-        <SitaButton variant="outline" size="sm">
+        <SitaButton variant="secondary" size="sm">
           <Link2 className="h-3 w-3 mr-1" /> Related
         </SitaButton>
       </div>
