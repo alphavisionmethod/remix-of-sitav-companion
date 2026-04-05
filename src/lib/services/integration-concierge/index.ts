@@ -5,6 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type {
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
   IntegrationConciergeRuntime,
   ConnectorState,
   IntegrationStatus,
@@ -92,6 +94,29 @@ export class IntegrationConciergeService {
       recommendations: [...this.recommendations],
       onboardingProgress: this.computeOnboardingProgress(),
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("integration-concierge", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      connectors: Array.from(this.connectors.entries()),
+      pendingSetups: this.pendingSetups,
+      recommendations: this.recommendations,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.connectors) this.connectors = new Map(state.connectors as any);
+    if (state.pendingSetups) this.pendingSetups = state.pendingSetups as any;
+    if (state.recommendations) this.recommendations = state.recommendations as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("integration-concierge");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

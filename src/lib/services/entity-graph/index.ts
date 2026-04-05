@@ -3,6 +3,8 @@
 // Knowledge graph for entities, relationships, and context
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface GraphEntity { id: string; type: string; name: string; properties: Record<string, unknown>; createdAt: string; updatedAt: string; }
 export interface GraphRelation { id: string; fromId: string; toId: string; type: string; weight: number; properties: Record<string, unknown>; createdAt: string; }
 
@@ -26,6 +28,27 @@ export class EntityGraphService {
     return [...visited].filter(id => id !== entityId).map(id => this.entities.get(id)!).filter(Boolean);
   }
   getStats() { return { entities: this.entities.size, relations: this.relations.length, types: [...new Set([...this.entities.values()].map(e => e.type))] }; }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("entity-graph", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      entities: Array.from(this.entities.entries()),
+      relations: this.relations,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.entities) this.entities = new Map(state.entities as any);
+    if (state.relations) this.relations = state.relations as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("entity-graph");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 
 export const createEntityGraph = () => new EntityGraphService();

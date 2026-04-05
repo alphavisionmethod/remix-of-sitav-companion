@@ -3,6 +3,8 @@
 // Usage metering, subscription management, invoice generation
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface BillingPlan { id: string; name: string; tier: 'free' | 'starter' | 'pro' | 'enterprise'; price: number; currency: string; features: string[]; limits: Record<string, number>; }
 export interface UsageRecord { metricName: string; quantity: number; recordedAt: string; userId: string; }
 export interface BillingInvoice { id: string; userId: string; planId: string; amount: number; currency: string; periodStart: string; periodEnd: string; status: 'draft' | 'issued' | 'paid' | 'overdue'; lineItems: { description: string; amount: number; quantity: number }[]; createdAt: string; }
@@ -35,6 +37,29 @@ export class BillingService {
     const limit = plan?.limits[metric] ?? Infinity;
     const used = this.usage.filter(u => u.userId === userId && u.metricName === metric).reduce((s, u) => s + u.quantity, 0);
     return { within: used < limit, used, limit };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("billing", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      plans: Array.from(this.plans.entries()),
+      usage: this.usage,
+      invoices: this.invoices,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.plans) this.plans = new Map(state.plans as any);
+    if (state.usage) this.usage = state.usage as any;
+    if (state.invoices) this.invoices = state.invoices as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("billing");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

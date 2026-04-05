@@ -4,6 +4,8 @@
 // retry logic, simulation, and governance integration
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type WorkflowStatus = 'pending' | 'running' | 'paused' | 'completed' | 'failed' | 'cancelled' | 'awaiting-approval';
 export type StepStatus = 'pending' | 'running' | 'completed' | 'failed' | 'skipped' | 'awaiting-approval';
 
@@ -146,6 +148,27 @@ export class WorkflowEngineService {
       byStatus: runs.reduce((a, r) => { a[r.status] = (a[r.status] || 0) + 1; return a; }, {} as Record<string, number>),
       definitions: this.definitions.size,
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("workflow-engine", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      definitions: Array.from(this.definitions.entries()),
+      runs: Array.from(this.runs.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.definitions) this.definitions = new Map(state.definitions as any);
+    if (state.runs) this.runs = new Map(state.runs as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("workflow-engine");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

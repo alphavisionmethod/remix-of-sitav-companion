@@ -2,6 +2,7 @@
 // SITA OS — Self-Healing Service (Re-export from core-services)
 // Wire to the advanced 528-line self-healing engine
 // ═══════════════════════════════════════════════════════════════
+// @persistence: none — stateless module, no durable state to persist
 
 export {
   SelfHealingService,

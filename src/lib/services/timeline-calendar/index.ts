@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { DomainId } from "@/packages/contracts";
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 
 export type TimelineEventType = "booking" | "payment" | "task" | "notification" | "milestone" | "connector-sync" | "workflow" | "system" | "custom";
 
@@ -137,6 +139,27 @@ export class TimelineCalendarService {
         confidence: 0.9,
       });
     }
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("timeline-calendar", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      events: Array.from(this.events.entries()),
+      correlations: this.correlations,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.events) this.events = new Map(state.events as any);
+    if (state.correlations) this.correlations = state.correlations as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("timeline-calendar");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

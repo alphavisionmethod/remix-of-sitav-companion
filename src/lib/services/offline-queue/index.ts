@@ -3,6 +3,8 @@
 // Queues mutations when offline, replays when back online
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface QueuedMutation {
   id: string;
   table: string;
@@ -120,6 +122,25 @@ export class OfflineQueueService {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this.queue));
       }
     }
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("offline-queue", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      queue: this.queue,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.queue) this.queue = state.queue as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("offline-queue");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

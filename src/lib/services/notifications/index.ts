@@ -3,6 +3,8 @@
 // Backend notification routing, delivery tracking, preferences
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type NotificationType = "info" | "success" | "warning" | "error" | "action-required" | "reminder";
 
 export type NotificationChannel = "in-app" | "push" | "email" | "sms";
@@ -122,6 +124,25 @@ export class NotificationsService {
       }
     });
     return count;
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("notifications", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      notifications: Array.from(this.notifications.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.notifications) this.notifications = new Map(state.notifications as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("notifications");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

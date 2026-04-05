@@ -4,6 +4,8 @@
 // Classifies AI response accuracy and grounds trust scoring
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type AccuracyTier = 'verified' | 'high-confidence' | 'moderate' | 'low' | 'unverified' | 'contradicted';
 
 export interface AccuracyClassification {
@@ -94,6 +96,25 @@ export class AccuracyClassifierService {
     const byTier = this.history.reduce((a, c) => { a[c.tier] = (a[c.tier] || 0) + 1; return a; }, {} as Record<string, number>);
     const avgScore = total > 0 ? this.history.reduce((s, c) => s + c.score, 0) / total : 0;
     return { total, byTier, avgScore };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("accuracy-classifier", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      config: this.config,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.config) this.config = state.config as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("accuracy-classifier");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

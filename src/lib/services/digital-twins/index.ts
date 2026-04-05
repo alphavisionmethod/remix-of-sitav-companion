@@ -3,6 +3,8 @@
 // Customer/entity digital twin management and simulation
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface DigitalTwin { id: string; entityType: string; name: string; segment: string; healthScore: number; churnProbability: number; predictedRevenue: number; revenueAtRisk: number; trend: 'improving' | 'stable' | 'declining'; lastActivity?: string; signals: TwinSignal[]; projections: TwinProjection[]; updatedAt: string; }
 export interface TwinSignal { type: string; value: number; source: string; timestamp: string; }
 export interface TwinProjection { metric: string; current: number; projected: number; confidence: number; horizon: string; }
@@ -32,6 +34,25 @@ export class DigitalTwinsService {
     const segments: Record<string, { count: number; totalHealth: number; totalRevenue: number }> = {};
     this.twins.forEach(t => { if (!segments[t.segment]) segments[t.segment] = { count: 0, totalHealth: 0, totalRevenue: 0 }; segments[t.segment].count++; segments[t.segment].totalHealth += t.healthScore; segments[t.segment].totalRevenue += t.predictedRevenue; });
     return Object.fromEntries(Object.entries(segments).map(([k, v]) => [k, { count: v.count, avgHealth: v.totalHealth / v.count, totalRevenue: v.totalRevenue }]));
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("digital-twins", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      twins: Array.from(this.twins.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.twins) this.twins = new Map(state.twins as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("digital-twins");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

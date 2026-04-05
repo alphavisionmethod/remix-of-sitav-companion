@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { DomainId, PrivacyTier } from "@/packages/contracts";
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 
 export type AccessLevel = "none" | "read" | "write" | "admin";
 
@@ -121,6 +123,25 @@ export class DataScopeModelService {
       byPrivacy,
       totalRules: scopes.reduce((s, sc) => s + sc.accessRules.length, 0),
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("data-scope-model", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      scopes: Array.from(this.scopes.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.scopes) this.scopes = new Map(state.scopes as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("data-scope-model");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

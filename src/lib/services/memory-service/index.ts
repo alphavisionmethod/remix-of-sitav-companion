@@ -1,3 +1,4 @@
+// @persistence: none — stateless module, no durable state to persist
 export * from "./profile-memory.service";
 export * from "./workflow-memory.service";
 export * from "./preference-memory.service";

@@ -3,6 +3,8 @@
 // E-signature workflow with approval chain integration
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type SignatureStatus = "draft" | "pending-signatures" | "partially-signed" | "completed" | "expired" | "voided";
 
 export type SignerStatus = "pending" | "signed" | "declined" | "expired";
@@ -143,6 +145,27 @@ export class DocumentSignatureService {
       timestamp: new Date().toISOString(),
       ipAddress,
     });
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("document-signature", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      requests: Array.from(this.requests.entries()),
+      auditLog: this.auditLog,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.requests) this.requests = new Map(state.requests as any);
+    if (state.auditLog) this.auditLog = state.auditLog as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("document-signature");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

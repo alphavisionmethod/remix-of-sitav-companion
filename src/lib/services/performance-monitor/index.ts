@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Performance Monitor (Web Vitals + Slow Render Detection)
 // ═══════════════════════════════════════════════════════════════
+// @persistence: none — stateless module, no durable state to persist
 
 interface PerfEntry {
   name: string;

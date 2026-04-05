@@ -1,3 +1,4 @@
+// @persistence: none — stateless module, no durable state to persist
 export * from "./reserve-engine.service";
 export * from "./subscription-waste.service";
 export * from "./investment-office.service";

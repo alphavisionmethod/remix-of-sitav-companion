@@ -3,6 +3,8 @@
 // Multi-channel message routing (email, Slack, WhatsApp)
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type GatewayChannel = "email" | "slack" | "whatsapp" | "sms" | "push" | "webhook";
 
 export type GatewayStatus = "connected" | "disconnected" | "error" | "rate-limited";
@@ -134,6 +136,29 @@ export class MessagingGatewayService {
 
   resetRateLimits(): void {
     this.channels.forEach(c => { c.currentRate = 0; if (c.status === "rate-limited") c.status = "connected"; });
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("messaging-gateway", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      channels: Array.from(this.channels.entries()),
+      outbound: this.outbound,
+      inbound: this.inbound,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.channels) this.channels = new Map(state.channels as any);
+    if (state.outbound) this.outbound = state.outbound as any;
+    if (state.inbound) this.inbound = state.inbound as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("messaging-gateway");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

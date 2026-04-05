@@ -2,6 +2,7 @@
 // SITA OS — Biometric Auth Bridge (WebAuthn/Passkey)
 // Passwordless authentication via platform authenticators
 // ═══════════════════════════════════════════════════════════════
+// @persistence: none — stateless module, no durable state to persist
 
 export interface PasskeyCredential {
   id: string;

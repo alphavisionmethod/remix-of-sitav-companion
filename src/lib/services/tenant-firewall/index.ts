@@ -6,6 +6,8 @@
 
 import type { TenantContext } from "@/packages/contracts/core/tenant-context";
 import type { DomainId, PrivacyTier } from "@/packages/contracts";
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -130,6 +132,29 @@ export class TenantFirewallService {
       violations: this.getViolations().length,
       lastEnforcedAt: new Date().toISOString(),
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("tenant-firewall", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      rules: Array.from(this.rules.entries()),
+      auditLog: this.auditLog,
+      activeTenants: Array.from(this.activeTenants),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.rules) this.rules = new Map(state.rules as any);
+    if (state.auditLog) this.auditLog = state.auditLog as any;
+    if (state.activeTenants) this.activeTenants = new Set(state.activeTenants as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("tenant-firewall");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

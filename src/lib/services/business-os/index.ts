@@ -1,3 +1,4 @@
+// @persistence: none — stateless module, no durable state to persist
 export { scoreLead, detectStaleLead } from "./lead-scoring.service";
 export type { ScoredLeadResult } from "./lead-scoring.service";
 export * from "./customer-dashboard.service";

@@ -6,6 +6,8 @@
 import type { SessionResumeToken } from "@/packages/contracts/graph/session-resume-token";
 import { getDeviceId } from "@/lib/services/surface-detection";
 import { detectSurfaceType } from "@/lib/services/surface-detection";
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 
 export class SessionResumeService {
   private tokens = new Map<string, SessionResumeToken>();
@@ -73,6 +75,25 @@ export class SessionResumeService {
       (t) => now - new Date(t.createdAt).getTime() < 5 * 60 * 1000
     );
     return Math.round((freshTokens.length / active.length) * 100);
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("session-resume", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      tokens: Array.from(this.tokens.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.tokens) this.tokens = new Map(state.tokens as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("session-resume");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

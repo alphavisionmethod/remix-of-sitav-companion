@@ -1,4 +1,6 @@
 // SITA OS — Prompt Assembler (merge: brain-core)
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface PromptTemplate { id: string; name: string; domain: string; template: string; variables: string[]; version: string; }
 export interface AssembledPrompt { templateId: string; content: string; tokenEstimate: number; assembledAt: string; }
 export class PromptAssemblerService {
@@ -13,5 +15,24 @@ export class PromptAssemblerService {
   }
   listTemplates(): PromptTemplate[] { return [...this.templates.values()]; }
   getTemplate(id: string): PromptTemplate | undefined { return this.templates.get(id); }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("prompt-assembler", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      templates: Array.from(this.templates.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.templates) this.templates = new Map(state.templates as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("prompt-assembler");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 export const createPromptAssembler = () => new PromptAssemblerService();

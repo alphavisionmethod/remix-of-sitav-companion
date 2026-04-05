@@ -12,6 +12,8 @@ import type {
   AlertSeverity,
 } from "@/packages/contracts/specialized/observability-metric-contracts";
 import type { DomainId } from "@/packages/contracts";
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -148,6 +150,35 @@ export class ObservabilityService {
       triggeredAlerts: [...this.triggeredAlerts],
       health: this.computeHealth(),
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("observability", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      metrics: Array.from(this.metrics.entries()),
+      slos: Array.from(this.slos.entries()),
+      alerts: Array.from(this.alerts.entries()),
+      triggeredAlerts: this.triggeredAlerts,
+      records: this.records,
+      traces: this.traces,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.metrics) this.metrics = new Map(state.metrics as any);
+    if (state.slos) this.slos = new Map(state.slos as any);
+    if (state.alerts) this.alerts = new Map(state.alerts as any);
+    if (state.triggeredAlerts) this.triggeredAlerts = state.triggeredAlerts as any;
+    if (state.records) this.records = state.records as any;
+    if (state.traces) this.traces = state.traces as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("observability");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

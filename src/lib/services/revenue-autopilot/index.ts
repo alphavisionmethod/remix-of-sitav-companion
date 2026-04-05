@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { PipelineStage, PlaybookRule, RecoveryLoop, LeadScore, LeadSignal } from "@/packages/contracts/domain-types/revenue-autopilot";
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 
 export type { PipelineStage, PlaybookRule, RecoveryLoop, LeadScore, LeadSignal };
 
@@ -106,6 +108,31 @@ export class RevenueAutopilotService {
 
   getHotLeads(): LeadScore[] {
     return Array.from(this.leadScores.values()).filter(l => l.segment === "hot").sort((a, b) => b.score - a.score);
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("revenue-autopilot", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      stages: Array.from(this.stages.entries()),
+      playbooks: Array.from(this.playbooks.entries()),
+      recoveryLoops: Array.from(this.recoveryLoops.entries()),
+      leadScores: Array.from(this.leadScores.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.stages) this.stages = new Map(state.stages as any);
+    if (state.playbooks) this.playbooks = new Map(state.playbooks as any);
+    if (state.recoveryLoops) this.recoveryLoops = new Map(state.recoveryLoops as any);
+    if (state.leadScores) this.leadScores = new Map(state.leadScores as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("revenue-autopilot");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

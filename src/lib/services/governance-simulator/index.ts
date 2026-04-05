@@ -1,4 +1,6 @@
 // SITA OS — Governance Simulator (merge: workflow-engine)
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface SimulationScenario { id: string; name: string; domain: string; inputs: Record<string, unknown>; expectedOutcome: string; }
 export interface SimulationResult { scenarioId: string; outcome: string; passed: boolean; details: Record<string, unknown>; duration: number; simulatedAt: string; }
 export class GovernanceSimulatorService {
@@ -9,5 +11,26 @@ export class GovernanceSimulatorService {
   simulateAll(): SimulationResult[] { return [...this.scenarios.keys()].map(id => this.simulate(id)); }
   getResults(): SimulationResult[] { return [...this.results]; }
   listScenarios(): SimulationScenario[] { return [...this.scenarios.values()]; }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("governance-simulator", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      scenarios: Array.from(this.scenarios.entries()),
+      results: this.results,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.scenarios) this.scenarios = new Map(state.scenarios as any);
+    if (state.results) this.results = state.results as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("governance-simulator");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 export const createGovernanceSimulator = () => new GovernanceSimulatorService();

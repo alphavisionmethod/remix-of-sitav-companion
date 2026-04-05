@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { DomainId } from "@/packages/contracts";
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 
 export type VotingPolicy = "majority" | "unanimous" | "weighted" | "supervisor-override";
 
@@ -196,6 +198,27 @@ export class CouncilOrchestratorService {
       approvedBy: approvals.map(a => a.memberId),
       rejectedBy: rejections.map(r => r.memberId),
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("council-orchestrator", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      sessions: Array.from(this.sessions.entries()),
+      conflicts: this.conflicts,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.sessions) this.sessions = new Map(state.sessions as any);
+    if (state.conflicts) this.conflicts = state.conflicts as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("council-orchestrator");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

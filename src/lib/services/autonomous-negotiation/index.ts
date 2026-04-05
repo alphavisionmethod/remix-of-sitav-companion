@@ -3,6 +3,8 @@
 // AI-powered negotiation strategies with BATNA analysis
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type NegotiationStrategy = 'anchor-high' | 'best-alternative' | 'value-decomposition' | 'time-pressure' | 'bundle-leverage';
 export type NegotiationStatus = 'research' | 'strategy' | 'contact' | 'counter' | 'accept' | 'escalate' | 'closed';
 export type NegotiationCategory = 'insurance' | 'subscription' | 'service-contract' | 'salary' | 'vendor' | 'medical-bill' | 'rent' | 'utility';
@@ -231,6 +233,25 @@ export class NegotiationEngine {
   }
 
   listNegotiations(): NegotiationRecord[] { return [...this.negotiations.values()]; }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("autonomous-negotiation", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      negotiations: Array.from(this.negotiations.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.negotiations) this.negotiations = new Map(state.negotiations as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("autonomous-negotiation");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 
 export const createNegotiationEngine = () => new NegotiationEngine();

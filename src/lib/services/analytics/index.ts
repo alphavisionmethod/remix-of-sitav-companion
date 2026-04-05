@@ -2,6 +2,8 @@
 // SITA OS — Analytics Service (merge target: observability)
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface AnalyticsEvent { name: string; domain: string; properties: Record<string, unknown>; timestamp: string; userId: string; sessionId: string; }
 export interface AnalyticsMetric { name: string; value: number; unit: string; dimensions: Record<string, string>; recordedAt: string; }
 export interface AnalyticsQuery { metric: string; from: string; to: string; granularity: 'minute' | 'hour' | 'day' | 'week' | 'month'; dimensions?: Record<string, string>; }
@@ -27,6 +29,27 @@ export class AnalyticsService {
   getEventCount(name?: string): number { return name ? this.events.filter(e => e.name === name).length : this.events.length; }
   getRecentEvents(limit: number = 50): AnalyticsEvent[] { return this.events.slice(-limit); }
   getDomainBreakdown(): Record<string, number> { return this.events.reduce((a, e) => { a[e.domain] = (a[e.domain] || 0) + 1; return a; }, {} as Record<string, number>); }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("analytics", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      events: this.events,
+      metrics: this.metrics,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.events) this.events = state.events as any;
+    if (state.metrics) this.metrics = state.metrics as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("analytics");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 
 export const createAnalytics = () => new AnalyticsService();

@@ -1,4 +1,6 @@
 // SITA OS — Trust State Service (target parent: trust-evaluation-consolidation)
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface TrustScore { entityId: string; entityType: string; score: number; level: 'full' | 'elevated' | 'standard' | 'reduced' | 'untrusted'; factors: TrustFactor[]; computedAt: string; }
 export interface TrustFactor { name: string; weight: number; value: number; source: string; }
 export class TrustStateService {
@@ -16,5 +18,24 @@ export class TrustStateService {
   listStates(): TrustScore[] { return [...this.states.values()]; }
   getByLevel(level: string): TrustScore[] { return [...this.states.values()].filter(s => s.level === level); }
   getUntrusted(): TrustScore[] { return this.getByLevel('untrusted'); }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("trust-state-service", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      states: Array.from(this.states.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.states) this.states = new Map(state.states as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("trust-state-service");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 export const createTrustStateService = () => new TrustStateService();

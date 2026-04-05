@@ -4,6 +4,8 @@
 // device version tracking for the SITA device fleet
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type RolloutStrategy = "immediate" | "canary-then-all" | "ring-based" | "scheduled";
 export type RolloutStatus = "draft" | "active" | "paused" | "completed" | "rolled-back" | "failed";
 export type DeviceUpdateStatus = "pending" | "downloading" | "installing" | "verifying" | "completed" | "failed" | "rolled-back";
@@ -287,6 +289,31 @@ export class FleetOTAService {
         { version: "1.9.1", count: 1, percentage: 4, isLatest: false },
       ],
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("fleet-ota", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      releases: Array.from(this.releases.entries()),
+      plans: Array.from(this.plans.entries()),
+      reports: this.reports,
+      deviceVersions: Array.from(this.deviceVersions.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.releases) this.releases = new Map(state.releases as any);
+    if (state.plans) this.plans = new Map(state.plans as any);
+    if (state.reports) this.reports = state.reports as any;
+    if (state.deviceVersions) this.deviceVersions = new Map(state.deviceVersions as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("fleet-ota");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

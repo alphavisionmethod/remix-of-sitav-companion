@@ -3,6 +3,8 @@
 // GDPR data export, portable archive, table-by-table extraction
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type ExportStatus = "pending" | "extracting" | "packaging" | "completed" | "failed";
 export type ExportFormat = "json" | "csv" | "sqlite" | "zip";
 
@@ -154,6 +156,27 @@ export class SovereignExporterService {
 
   getDeletionRequest(requestId: string): DataDeletionRequest | undefined {
     return this.deletionRequests.get(requestId);
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("sovereign-exporter", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      jobs: Array.from(this.jobs.entries()),
+      deletionRequests: Array.from(this.deletionRequests.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.jobs) this.jobs = new Map(state.jobs as any);
+    if (state.deletionRequests) this.deletionRequests = new Map(state.deletionRequests as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("sovereign-exporter");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

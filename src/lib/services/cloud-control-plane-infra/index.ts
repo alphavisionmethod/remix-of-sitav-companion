@@ -3,6 +3,8 @@
 // Multi-cloud region management, provider abstraction, failover
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type RegionStatus = "active" | "degraded" | "offline" | "draining" | "provisioning";
 export type CloudProviderType = "aws" | "azure" | "gcp" | "on-prem" | "edge";
 
@@ -247,6 +249,31 @@ export class CloudControlPlaneService {
       failoverChain: ["reg_on_prem", "reg_us_east", "reg_eu_west"],
       healthScore: 100,
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("cloud-control-plane-infra", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      regions: Array.from(this.regions.entries()),
+      providers: Array.from(this.providers.entries()),
+      failoverHistory: this.failoverHistory,
+      routingCache: Array.from(this.routingCache.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.regions) this.regions = new Map(state.regions as any);
+    if (state.providers) this.providers = new Map(state.providers as any);
+    if (state.failoverHistory) this.failoverHistory = state.failoverHistory as any;
+    if (state.routingCache) this.routingCache = new Map(state.routingCache as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("cloud-control-plane-infra");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

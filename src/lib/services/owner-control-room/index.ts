@@ -6,6 +6,8 @@
 
 import type { WorkspaceRuntime, WorkspacePane } from "@/packages/contracts";
 import type { DomainId } from "@/packages/contracts";
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -129,6 +131,29 @@ export class OwnerControlRoomService {
       activeWorkflows: this.activeWorkflows,
       mode: this.mode,
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("owner-control-room", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      delegations: Array.from(this.delegations.entries()),
+      rhythms: this.rhythms,
+      patterns: Array.from(this.patterns.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.delegations) this.delegations = new Map(state.delegations as any);
+    if (state.rhythms) this.rhythms = state.rhythms as any;
+    if (state.patterns) this.patterns = new Map(state.patterns as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("owner-control-room");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

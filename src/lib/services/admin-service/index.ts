@@ -5,6 +5,8 @@
 // intelligence engines, council decisions
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type IncidentSeverity = "low" | "medium" | "high" | "critical";
 export type IncidentStatus = "open" | "investigating" | "mitigating" | "resolved" | "closed";
 export type PolicyCategory = "trust" | "access" | "spending" | "automation" | "data" | "communication";
@@ -495,6 +497,37 @@ export class AdminService {
         priority,
       };
     });
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("admin-service", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      auditLog: this.auditLog,
+      dashboards: Array.from(this.dashboards.entries()),
+      hints: this.hints,
+      incidents: Array.from(this.incidents.entries()),
+      policies: Array.from(this.policies.entries()),
+      insights: this.insights,
+      councilDecisions: Array.from(this.councilDecisions.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.auditLog) this.auditLog = state.auditLog as any;
+    if (state.dashboards) this.dashboards = new Map(state.dashboards as any);
+    if (state.hints) this.hints = state.hints as any;
+    if (state.incidents) this.incidents = new Map(state.incidents as any);
+    if (state.policies) this.policies = new Map(state.policies as any);
+    if (state.insights) this.insights = state.insights as any;
+    if (state.councilDecisions) this.councilDecisions = new Map(state.councilDecisions as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("admin-service");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 
