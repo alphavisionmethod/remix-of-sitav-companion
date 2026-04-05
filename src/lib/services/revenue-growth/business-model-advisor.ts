@@ -41,7 +41,7 @@ export interface UnitEconomics {
   recommendations: string[];
 }
 
-export interface ScenarioResult {
+export interface BusinessScenarioResult {
   scenarioName: string;
   monthlyRevenueCents: number;
   annualRevenueCents: number;
