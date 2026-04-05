@@ -1,0 +1,4 @@
+
+-- Enable required extensions for scheduled automation
+CREATE EXTENSION IF NOT EXISTS pg_cron SCHEMA pg_catalog;
+CREATE EXTENSION IF NOT EXISTS pg_net SCHEMA extensions;
