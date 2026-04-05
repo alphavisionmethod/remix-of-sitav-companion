@@ -578,13 +578,13 @@ function MCRecovery() {
 function MCCosts() {
   const { runtime } = useMCAdmin();
   const tokenEngine = runtime.engines.tokens;
+  const { data: tokenUsages = [] } = useTokenUsages();
 
   // Seed demo usage so the dashboard has data
   const dashboard = useMemo(() => {
-    const demoUsages = MOCK_TOKEN_USAGES;
-    for (const u of demoUsages) tokenEngine.recordUsage(u);
+    for (const u of tokenUsages) tokenEngine.recordUsage(u);
     return tokenEngine.getDashboard("today");
-  }, [tokenEngine]);
+  }, [tokenEngine, tokenUsages]);
 
   const modelRoutes = useMemo(() => {
     return (tokenEngine as any).routes as Array<{ id: string; name: string; tier: string; model: string; costPer1kTokens: number; latencyMs: number; active: boolean }>;
