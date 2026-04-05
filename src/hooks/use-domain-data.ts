@@ -66,3 +66,8 @@ export function useAdminIncidents() { return useQuery({ queryKey: ["admin-incide
 
 // Revenue
 export function useRevenueLeakage() { return useQuery({ queryKey: ["revenue-leakage"], queryFn: fetchRevenueLeakage }); }
+
+// Investment
+export function useCapitalBuckets() { return useQuery({ queryKey: ["capital-buckets"], queryFn: fetchCapitalBuckets }); }
+export function usePositions() { return useQuery({ queryKey: ["positions"], queryFn: fetchPositions }); }
+export function useTheses() { return useQuery({ queryKey: ["theses"], queryFn: fetchTheses }); }
