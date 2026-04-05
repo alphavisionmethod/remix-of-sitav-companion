@@ -8,6 +8,7 @@ const UserManagement = lazy(() => import("@/pages/admin/UserManagement"));
 const AITokenDashboard = lazy(() => import("@/pages/admin/AITokenDashboard"));
 const GeneratedTruthDashboard = lazy(() => import("@/pages/admin/GeneratedTruthDashboard"));
 const FleetHealthPage = lazy(() => import("@/pages/admin/FleetHealthPage"));
+const IntelligenceEfficiencyBoard = lazy(() => import("@/pages/admin/IntelligenceEfficiencyBoard"));
 
 export const AdminRoutes = () => (
   <>
@@ -18,5 +19,6 @@ export const AdminRoutes = () => (
     <Route path="/admin/system" element={<SystemManagement />} />
     <Route path="/admin/users" element={<UserManagement />} />
     <Route path="/admin/ai-tokens" element={<AITokenDashboard />} />
+    <Route path="/admin/intelligence-efficiency" element={<IntelligenceEfficiencyBoard />} />
   </>
 );
