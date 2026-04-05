@@ -112,7 +112,16 @@ const NotificationCenter = lazy(() => import("./pages/NotificationCenter"));
 const CustomerHealthPage = lazy(() => import("./pages/CustomerHealthPage"));
 const GeneratedTruthDashboard = lazy(() => import("./pages/admin/GeneratedTruthDashboard"));
 const FleetHealthPage = lazy(() => import("./pages/admin/FleetHealthPage"));
-
+const CalendarWorkspace = lazy(() => import("./pages/CalendarWorkspace"));
+const NotesWorkspace = lazy(() => import("./pages/NotesWorkspace"));
+const PeopleWorkspace = lazy(() => import("./pages/PeopleWorkspace"));
+const TeamWorkspace = lazy(() => import("./pages/TeamWorkspace"));
+const DocumentEditor = lazy(() => import("./pages/DocumentEditor"));
+const ReportingWorkspace = lazy(() => import("./pages/ReportingWorkspace"));
+const TrustCenter = lazy(() => import("./pages/TrustCenter"));
+const MediaWorkspace = lazy(() => import("./pages/MediaWorkspace"));
+const TemplateCenter = lazy(() => import("./pages/TemplateCenter"));
+const ImportExportCenter = lazy(() => import("./pages/ImportExportCenter"));
 const MobileHome = lazy(() => import("./pages/mobile/MobileHome"));
 const MobileApprovals = lazy(() => import("./pages/mobile/MobileApprovals"));
 const MobileProof = lazy(() => import("./pages/mobile/MobileProof"));
@@ -527,6 +536,18 @@ const App = () => (
                     {/* Admin — Generated Truth */}
                     <Route path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />
                     <Route path="/admin/fleet-health" element={<FleetHealthPage />} />
+
+                    {/* New Workspaces */}
+                    <Route path="/calendar" element={<CalendarWorkspace />} />
+                    <Route path="/notes" element={<NotesWorkspace />} />
+                    <Route path="/people" element={<PeopleWorkspace />} />
+                    <Route path="/team" element={<TeamWorkspace />} />
+                    <Route path="/editor" element={<DocumentEditor />} />
+                    <Route path="/reporting" element={<ReportingWorkspace />} />
+                    <Route path="/trust" element={<TrustCenter />} />
+                    <Route path="/media" element={<MediaWorkspace />} />
+                    <Route path="/templates" element={<TemplateCenter />} />
+                    <Route path="/import-export" element={<ImportExportCenter />} />
 
                     <Route path="*" element={<NotFound />} />
                   </Routes>
