@@ -270,6 +270,9 @@ const DeploymentTruthCenter = lazy(() => import("./pages/atlas/DeploymentTruthCe
 const OperationsCommandCenter = lazy(() => import("./pages/atlas/OperationsCommandCenter"));
 const ConnectorControlCenter = lazy(() => import("./pages/atlas/ConnectorControlCenter"));
 const ConciergeCommandCenter = lazy(() => import("./pages/atlas/ConciergeCommandCenter"));
+const PlatformTruthRegistry = lazy(() => import("./pages/atlas/PlatformTruthRegistry"));
+const DataProtectionPosture = lazy(() => import("./pages/atlas/DataProtectionPosture"));
+const ValidationCommandCenter = lazy(() => import("./pages/atlas/ValidationCommandCenter"));
 
 const queryClient = createQueryClient();
 
@@ -717,6 +720,9 @@ const App = () => (
                     <Route path="/atlas/operations" element={<OperationsCommandCenter />} />
                     <Route path="/atlas/connectors" element={<ConnectorControlCenter />} />
                     <Route path="/atlas/concierge" element={<ConciergeCommandCenter />} />
+                    <Route path="/atlas/truth-registry" element={<PlatformTruthRegistry />} />
+                    <Route path="/atlas/data-protection" element={<DataProtectionPosture />} />
+                    <Route path="/atlas/validation" element={<ValidationCommandCenter />} />
 
                     <Route path="/incidents" element={<Navigate to="/mission-control" replace />} />
 
