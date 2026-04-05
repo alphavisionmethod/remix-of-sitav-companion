@@ -9,8 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { COST_CLASS_SPECS, PLANS, DEFAULT_MODELS, CLASS_COMPRESSION, createEnvelope, forecastSpend } from "@/lib/compute-governance";
-import type { CostClass, ComputeModelTier, BudgetEnvelope } from "@/lib/compute-governance";
+import { COST_CLASS_SPECS, PLANS, UPSELL_ADDONS, FAIR_USE_POLICY, DEFAULT_MODELS, CLASS_COMPRESSION, createEnvelope, forecastSpend, evaluateFairUse, getApplicableAddons } from "@/lib/compute-governance";
+import type { CostClass, ComputeModelTier, BudgetEnvelope, PlanTier } from "@/lib/compute-governance";
 
 // ── Mock Data ───────────────────────────────────────────────
 
