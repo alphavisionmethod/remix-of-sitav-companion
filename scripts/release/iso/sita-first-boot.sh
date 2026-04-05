@@ -297,6 +297,34 @@ cat > "${SITA_DIR}/first-boot-complete.json" << EOF
 EOF
 
 if [ "$ALL_HEALTHY" = true ]; then
+  # ── Read profile and assign role ────────────────────────────
+  PROFILE_FILE="${SITA_DIR}/profile.json"
+  if [ -f "$PROFILE_FILE" ]; then
+    PROFILE_ROLE=$(jq -r '.role // "user"' "$PROFILE_FILE")
+    log "[POST] Profile detected: ${PROFILE_ROLE}"
+    if [ "$PROFILE_ROLE" = "admin" ]; then
+      log "  Admin profile — first user will receive admin role"
+      cat > "${SITA_DIR}/assign-admin-on-first-login.sh" << 'ADMINEOF'
+#!/usr/bin/env bash
+# Called by a trigger or cron to assign admin role to first user
+SUPABASE_URL=$(jq -r '.supabase_url' /opt/sita/ota-config.json)
+SERVICE_KEY=$(cat /opt/sita/secrets/service-role-key 2>/dev/null || echo "")
+if [ -n "$SERVICE_KEY" ]; then
+  FIRST_USER=$(curl -s -H "Authorization: Bearer ${SERVICE_KEY}" -H "apikey: ${SERVICE_KEY}" \
+    "${SUPABASE_URL}/auth/v1/admin/users?page=1&per_page=1" | jq -r '.users[0].id // empty')
+  if [ -n "$FIRST_USER" ]; then
+    curl -s -X POST "${SUPABASE_URL}/rest/v1/user_roles" \
+      -H "Authorization: Bearer ${SERVICE_KEY}" \
+      -H "apikey: ${SERVICE_KEY}" \
+      -H "Content-Type: application/json" \
+      -d "{\"user_id\":\"${FIRST_USER}\",\"role\":\"admin\"}"
+  fi
+fi
+ADMINEOF
+      chmod +x "${SITA_DIR}/assign-admin-on-first-login.sh"
+    fi
+  fi
+
   # ── Install OTA agent and timer ─────────────────────────────
   log "[POST] Installing OTA update agent..."
   cp "${SITA_DIR}/sita-ota-agent.sh" /opt/sita/sita-ota-agent.sh 2>/dev/null || true
@@ -306,6 +334,36 @@ if [ "$ALL_HEALTHY" = true ]; then
   systemctl daemon-reload 2>/dev/null || true
   systemctl enable --now sita-ota.timer 2>/dev/null || true
   log "  ✅ OTA timer enabled (every 6h)"
+
+  # ── Install metrics agent ───────────────────────────────────
+  log "[POST] Installing metrics agent..."
+  cp "${SITA_DIR}/iso/sita-metrics-agent.sh" /opt/sita/sita-metrics-agent.sh 2>/dev/null || true
+  chmod +x /opt/sita/sita-metrics-agent.sh 2>/dev/null || true
+  cat > /etc/systemd/system/sita-metrics.service << 'METRICSVC'
+[Unit]
+Description=SITA OS Metrics Reporter
+After=network-online.target docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/sita/sita-metrics-agent.sh
+User=root
+METRICSVC
+  cat > /etc/systemd/system/sita-metrics.timer << 'METRICTMR'
+[Unit]
+Description=SITA OS Metrics Timer (every 5 min)
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+METRICTMR
+  systemctl daemon-reload 2>/dev/null || true
+  systemctl enable --now sita-metrics.timer 2>/dev/null || true
+  log "  ✅ Metrics agent enabled (every 5min)"
 
   # Register device with cloud update service
   DEVICE_ID=$(cat /etc/machine-id 2>/dev/null || hostname)
