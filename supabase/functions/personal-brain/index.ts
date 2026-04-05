@@ -75,6 +75,9 @@ serve(async (req) => {
   const cors = handleCors(req);
   if (cors) return cors;
 
+  const correlationId = crypto.randomUUID();
+  const requestStartTime = Date.now();
+
   try {
     const auth = await requireAuth(req);
     if (auth instanceof Response) return auth;
@@ -96,10 +99,18 @@ serve(async (req) => {
       .eq("user_id", user.id)
       .eq("advisor_id", "personal-brain")
       .gte("created_at", new Date(Date.now() - 60000).toISOString());
-    if ((count ?? 0) >= 20) return corsError("Rate limit exceeded — max 20 requests per minute", 429);
+    if ((count ?? 0) >= 20) {
+      return new Response(JSON.stringify({ error: "Rate limit exceeded — max 20 requests per minute", code: "RATE_LIMITED", correlation_id: correlationId }), {
+        status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    if (!LOVABLE_API_KEY) {
+      return new Response(JSON.stringify({ error: "AI provider not configured", code: "PROVIDER_MISSING", correlation_id: correlationId }), {
+        status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     // Check budget
     const { data: budget } = await supabaseClient
@@ -111,12 +122,14 @@ serve(async (req) => {
 
     let model = "google/gemini-3-flash-preview";
     if (budget && budget.hard_limit && budget.used_cost_cents >= budget.limit_cost_cents) {
-      return corsError("Monthly AI budget exceeded. Upgrade or wait for reset.", 429);
+      return new Response(JSON.stringify({ error: "Monthly AI budget exceeded. Upgrade or wait for reset.", code: "BUDGET_EXCEEDED", correlation_id: correlationId }), {
+        status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const systemPrompt = await buildBrainContext(supabaseClient, user.id, mode);
 
-    const startTime = Date.now();
+    const aiCallStart = Date.now();
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -129,16 +142,20 @@ serve(async (req) => {
         stream: true,
       }),
     });
+    const aiLatencyMs = Date.now() - aiCallStart;
 
     if (!response.ok) {
       const t = await response.text();
-      console.error("AI gateway error:", response.status, t);
-      return new Response(JSON.stringify({ error: response.status === 429 ? "Rate limited" : "AI service error" }), {
-        status: response.status, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      const errorCode = response.status === 429 ? "PROVIDER_RATE_LIMITED" : response.status === 402 ? "CREDITS_EXHAUSTED" : "PROVIDER_ERROR";
+      const errorMsg = response.status === 429 ? "Rate limited — try again shortly." : response.status === 402 ? "AI credits exhausted. Add funds in Settings → Workspace → Usage." : "AI service error";
+      console.error(`personal-brain [${correlationId}] AI gateway error:`, response.status, t.slice(0, 200));
+      return new Response(JSON.stringify({ error: errorMsg, code: errorCode, correlation_id: correlationId }), {
+        status: response.status === 429 || response.status === 402 ? response.status : 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Log token usage (approximate — streaming doesn't give exact counts)
+    // Log token usage
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
@@ -153,14 +170,25 @@ serve(async (req) => {
       cost_cents: 0,
       domain: mode,
       category: "inference",
+      session_id: correlationId,
     }).then(() => {}).catch(e => console.error("Token log error:", e));
 
     return new Response(response.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "text/event-stream",
+        "X-Correlation-Id": correlationId,
+        "X-Latency-Ms": aiLatencyMs.toString(),
+      },
     });
   } catch (e) {
-    console.error("personal-brain error:", e);
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
+    const totalLatency = Date.now() - requestStartTime;
+    console.error(`personal-brain [${correlationId}] error (${totalLatency}ms):`, e);
+    return new Response(JSON.stringify({
+      error: e instanceof Error ? e.message : "Unknown error",
+      code: "INTERNAL_ERROR",
+      correlation_id: correlationId,
+    }), {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }

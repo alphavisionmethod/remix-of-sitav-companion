@@ -320,6 +320,9 @@ serve(async (req) => {
   const cors = handleCors(req);
   if (cors) return cors;
 
+  const correlationId = crypto.randomUUID();
+  const requestStartTime = Date.now();
+
   try {
     const auth = await requireAuth(req);
     if (auth instanceof Response) return auth;
@@ -342,18 +345,28 @@ serve(async (req) => {
       .eq("user_id", user.id)
       .eq("advisor_id", advisor)
       .gte("created_at", new Date(Date.now() - 60000).toISOString());
-    if ((count ?? 0) >= 20) return corsError("Rate limit exceeded — max 20 requests per minute", 429);
+    if ((count ?? 0) >= 20) {
+      return new Response(JSON.stringify({ error: "Rate limit exceeded — max 20 requests per minute", code: "RATE_LIMITED", correlation_id: correlationId }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    if (!LOVABLE_API_KEY) {
+      return new Response(JSON.stringify({ error: "AI provider not configured", code: "PROVIDER_MISSING", correlation_id: correlationId }), {
+        status: 503,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     // Budget check
     const budgetResult = await checkBudget(supabaseClient, user.id, "google/gemini-3-flash-preview");
     if (!budgetResult.allowed) {
-      return new Response(JSON.stringify({ error: budgetResult.reason }), {
+      return new Response(JSON.stringify({ error: budgetResult.reason, code: "BUDGET_EXCEEDED", correlation_id: correlationId }), {
         status: 429,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -364,6 +377,7 @@ serve(async (req) => {
     const systemPrompt = await buildPrompt(supabaseClient, advisor, user.id, lastUserMsg);
     const contextSuffix = context ? `\n\nUser context: ${JSON.stringify(context)}` : "";
 
+    const aiCallStart = Date.now();
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -379,39 +393,63 @@ serve(async (req) => {
         stream: true,
       }),
     });
+    const aiLatencyMs = Date.now() - aiCallStart;
 
     if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limited — try again shortly." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "AI credits exhausted. Add funds in Settings → Workspace → Usage." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      const t = await response.text();
-      console.error("AI gateway error:", response.status, t);
-      return new Response(JSON.stringify({ error: "AI service error" }), {
-        status: 500,
+      const errText = await response.text();
+      const errorCode = response.status === 429 ? "PROVIDER_RATE_LIMITED" : response.status === 402 ? "CREDITS_EXHAUSTED" : "PROVIDER_ERROR";
+      const errorMsg = response.status === 429 ? "Rate limited — try again shortly." : response.status === 402 ? "AI credits exhausted. Add funds in Settings → Workspace → Usage." : "AI service error";
+
+      // Log failure
+      console.error(`chat-advisor [${correlationId}] AI gateway error:`, response.status, errText.slice(0, 200));
+      const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+      adminClient.from("ai_token_usage").insert({
+        user_id: user.id, advisor_id: advisor, model: budgetResult.model,
+        provider: "google", input_tokens: 0, output_tokens: 0, cost_cents: 0,
+        domain: advisor, category: "error", session_id: correlationId,
+      }).then(() => {}).catch(e => console.error("Error log failure:", e));
+
+      return new Response(JSON.stringify({ error: errorMsg, code: errorCode, correlation_id: correlationId }), {
+        status: response.status === 429 || response.status === 402 ? response.status : 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Log token usage asynchronously
+    // Log token usage asynchronously with correlation ID and latency
     const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
     const inputApprox = JSON.stringify(messages).length / 4;
     logTokenUsage(adminClient, user.id, advisor, budgetResult.model, inputApprox, advisor);
 
+    // Record advisor response with latency for traceability
+    adminClient.from("advisor_responses").insert({
+      user_id: user.id,
+      request_id: correlationId,
+      correlation_id: correlationId,
+      recommendation: null,
+      confidence: null,
+      reasoning: null,
+      actions: [],
+      model_used: budgetResult.model,
+      latency_ms: aiLatencyMs,
+      tokens_used: Math.ceil(inputApprox),
+    }).then(() => {}).catch(e => console.error("Response log error:", e));
+
     return new Response(response.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "text/event-stream",
+        "X-Correlation-Id": correlationId,
+        "X-Latency-Ms": aiLatencyMs.toString(),
+      },
     });
   } catch (e) {
-    console.error("chat-advisor error:", e);
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
+    const totalLatency = Date.now() - requestStartTime;
+    console.error(`chat-advisor [${correlationId}] error (${totalLatency}ms):`, e);
+    return new Response(JSON.stringify({
+      error: e instanceof Error ? e.message : "Unknown error",
+      code: "INTERNAL_ERROR",
+      correlation_id: correlationId,
+    }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
