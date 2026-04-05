@@ -161,6 +161,8 @@ const ComputeGovernanceBoard = lazy(() => import("./pages/admin/ComputeGovernanc
 const IntegrationConciergePage = lazy(() => import("./pages/admin/IntegrationConciergePage"));
 const RevenueAutopilotMonitor = lazy(() => import("./pages/admin/RevenueAutopilotMonitor"));
 const InvestorProofLedger = lazy(() => import("./pages/admin/InvestorProofLedger"));
+const RealityClassificationMatrix = lazy(() => import("./pages/admin/RealityClassificationMatrix"));
+const MockReplacementProgram = lazy(() => import("./pages/admin/MockReplacementProgram"));
 const PersonalBrain = lazy(() => import("./pages/PersonalBrain"));
 
 // ── AI Engineering Board ──
