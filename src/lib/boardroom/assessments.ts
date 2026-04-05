@@ -1,20 +1,22 @@
 // ============================================================
 // SITA OS — Domain Assessment Generators
-// Pure read-only fan-out to each domain for structured assessments
+// Accepts data bundle from data-service (DB-backed or fallback)
 // ============================================================
 
 import type { DomainAssessment, AlertData, OpportunitySummary, ActionItemData, BoardroomContentSection, DataSource } from "./types";
-import { mockLeads, mockInvoices, mockCashFlow, mockBills, mockSubscriptions, mockHouseholdTasks, mockFamilyEvents, mockIncidents, mockOpportunityInsights } from "@/lib/mock-data/legacy-display-mocks";
+import type { BoardroomDataBundle } from "./data-service";
 
 const now = () => new Date().toISOString();
 
 // ── Finance Assessment ────────────────────────────────────
 
-export function generateFinanceAssessment(): DomainAssessment {
-  const overdueInvoices = mockInvoices.filter(i => i.status === "overdue");
-  const pendingInvoices = mockInvoices.filter(i => i.status === "pending");
-  const overdueBills = mockBills.filter(b => b.status === "overdue");
-  const wasteSubs = mockSubscriptions.filter(s => s.status === "waste" || s.status === "underused");
+export function generateFinanceAssessment(bundle: BoardroomDataBundle): DomainAssessment {
+  const { invoices, bills, subscriptions, cashFlow, opportunityInsights } = bundle;
+
+  const overdueInvoices = invoices.filter(i => i.status === "overdue");
+  const pendingInvoices = invoices.filter(i => i.status === "pending");
+  const overdueBills = bills.filter(b => b.status === "overdue");
+  const wasteSubs = subscriptions.filter(s => s.status === "waste" || s.status === "underused");
 
   const totalReceivables = [...overdueInvoices, ...pendingInvoices].reduce(
     (s, i) => s + parseFloat(i.amount.replace(/[$,]/g, "")), 0
@@ -32,18 +34,18 @@ export function generateFinanceAssessment(): DomainAssessment {
     {
       id: "fin-kpis", type: "metric-card", title: "Financial Snapshot",
       data: [
-        { label: "Available Cash", value: mockCashFlow.available, trend: "up" as const, source: "cash-flow" },
-        { label: "Incoming (30d)", value: mockCashFlow.incoming, trend: "up" as const, source: "cash-flow" },
-        { label: "Outgoing", value: mockCashFlow.outgoing, source: "cash-flow" },
-        { label: "Safe to Spend", value: mockCashFlow.safeToSpend, trend: "up" as const, source: "cash-flow" },
+        { label: "Available Cash", value: cashFlow.available, trend: "up" as const, source: "cash-flow" },
+        { label: "Incoming (30d)", value: cashFlow.incoming, trend: "up" as const, source: "cash-flow" },
+        { label: "Outgoing", value: cashFlow.outgoing, source: "cash-flow" },
+        { label: "Safe to Spend", value: cashFlow.safeToSpend, trend: "up" as const, source: "cash-flow" },
         { label: "Total Receivables", value: `$${totalReceivables.toLocaleString()}`, trend: overdueInvoices.length > 0 ? "down" as const : "flat" as const, source: "invoices" },
-        { label: "Runway", value: mockCashFlow.runway, source: "cash-flow" },
+        { label: "Runway", value: cashFlow.runway, source: "cash-flow" },
       ],
     },
     {
       id: "fin-narrative", type: "narrative", title: "Financial Summary",
       data: {
-        text: `Cash position is ${parseFloat(mockCashFlow.available.replace(/[$,]/g, "")) > 20000 ? "strong" : "moderate"} at ${mockCashFlow.available}. ${overdueInvoices.length > 0 ? `${overdueInvoices.length} invoice(s) are overdue, impacting receivables.` : "All invoices are current."} ${overdueBills.length > 0 ? `${overdueBills.length} bill(s) need immediate attention.` : ""} Next major expense: ${mockCashFlow.nextBigExpense.name} (${mockCashFlow.nextBigExpense.amount}) on ${mockCashFlow.nextBigExpense.date}.`,
+        text: `Cash position is ${parseFloat(cashFlow.available.replace(/[$,]/g, "")) > 20000 ? "strong" : "moderate"} at ${cashFlow.available}. ${overdueInvoices.length > 0 ? `${overdueInvoices.length} invoice(s) are overdue, impacting receivables.` : "All invoices are current."} ${overdueBills.length > 0 ? `${overdueBills.length} bill(s) need immediate attention.` : ""} Next major expense: ${cashFlow.nextBigExpense.name} (${cashFlow.nextBigExpense.amount}) on ${cashFlow.nextBigExpense.date}.`,
         confidence: overdueInvoices.length === 0 ? 0.95 : 0.82,
         citations: ["cash-flow-service", "invoice-ledger", "bill-tracker"],
       },
@@ -55,7 +57,7 @@ export function generateFinanceAssessment(): DomainAssessment {
           { key: "id", label: "Invoice" }, { key: "client", label: "Client" },
           { key: "amount", label: "Amount" }, { key: "status", label: "Status" }, { key: "dueDate", label: "Due" },
         ],
-        rows: mockInvoices.map(i => ({ ...i })),
+        rows: invoices.map(i => ({ ...i })),
         source: "invoice-ledger",
       },
     },
@@ -66,7 +68,7 @@ export function generateFinanceAssessment(): DomainAssessment {
           { key: "name", label: "Bill" }, { key: "amount", label: "Amount" },
           { key: "dueDate", label: "Due" }, { key: "status", label: "Status" },
         ],
-        rows: mockBills.map(b => ({ ...b })),
+        rows: bills.map(b => ({ ...b })),
         source: "bill-tracker",
       },
     },
@@ -87,11 +89,12 @@ export function generateFinanceAssessment(): DomainAssessment {
   overdueBills.forEach(b => actionItems.push({ text: `Pay overdue ${b.name} (${b.amount})`, priority: "high", domain: "finance", dueDate: "Today" }));
   wasteSubs.forEach(s => actionItems.push({ text: `Review ${s.name} subscription — only ${s.usage} usage`, priority: "medium", domain: "finance" }));
 
+  const freshness = bundle.dataFreshness;
   const dataSources: DataSource[] = [
-    { id: "ds-cashflow", name: "Cash Flow Service", domain: "finance", lastUpdated: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), recordCount: 1 },
-    { id: "ds-invoices", name: "Invoice Ledger", domain: "finance", lastUpdated: new Date(Date.now() - 30 * 60 * 1000).toISOString(), recordCount: mockInvoices.length },
-    { id: "ds-bills", name: "Bill Tracker", domain: "finance", lastUpdated: new Date(Date.now() - 60 * 60 * 1000).toISOString(), recordCount: mockBills.length },
-    { id: "ds-subs", name: "Subscription Tracker", domain: "finance", lastUpdated: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(), recordCount: mockSubscriptions.length },
+    { id: "ds-cashflow", name: "Cash Flow Service", domain: "finance", lastUpdated: freshness.cashflow || new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), recordCount: 1 },
+    { id: "ds-invoices", name: "Invoice Ledger", domain: "finance", lastUpdated: freshness.invoices || new Date(Date.now() - 30 * 60 * 1000).toISOString(), recordCount: invoices.length },
+    { id: "ds-bills", name: "Bill Tracker", domain: "finance", lastUpdated: freshness.bills || new Date(Date.now() - 60 * 60 * 1000).toISOString(), recordCount: bills.length },
+    { id: "ds-subs", name: "Subscription Tracker", domain: "finance", lastUpdated: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(), recordCount: subscriptions.length },
   ];
 
   return {
@@ -106,10 +109,12 @@ export function generateFinanceAssessment(): DomainAssessment {
 
 // ── Business Assessment ───────────────────────────────────
 
-export function generateBusinessAssessment(): DomainAssessment {
-  const newLeads = mockLeads.filter(l => l.status === "new");
-  const staleLeads = mockLeads.filter(l => l.status === "cooling");
-  const pipelineValue = mockLeads.reduce((s, l) => s + parseFloat(l.value.replace(/[$,]/g, "")), 0);
+export function generateBusinessAssessment(bundle: BoardroomDataBundle): DomainAssessment {
+  const { leads, opportunityInsights } = bundle;
+
+  const newLeads = leads.filter(l => l.status === "new");
+  const staleLeads = leads.filter(l => l.status === "cooling");
+  const pipelineValue = leads.reduce((s, l) => s + parseFloat(l.value.replace(/[$,]/g, "")), 0);
 
   const alerts: AlertData[] = [];
   if (staleLeads.length > 0) {
@@ -130,7 +135,7 @@ export function generateBusinessAssessment(): DomainAssessment {
     {
       id: "biz-narrative", type: "narrative", title: "Business Summary",
       data: {
-        text: `Pipeline stands at $${pipelineValue.toLocaleString()} across ${mockLeads.length} active leads. ${newLeads.length} new lead(s) this week with ${staleLeads.length > 0 ? `${staleLeads.length} going cold and needing re-engagement` : "strong momentum across all stages"}. Conversion rate trending up at 34%.`,
+        text: `Pipeline stands at $${pipelineValue.toLocaleString()} across ${leads.length} active leads. ${newLeads.length} new lead(s) this week with ${staleLeads.length > 0 ? `${staleLeads.length} going cold and needing re-engagement` : "strong momentum across all stages"}. Conversion rate trending up at 34%.`,
         confidence: 0.88,
         citations: ["lead-tracker", "crm-analytics", "pipeline-model"],
       },
@@ -143,7 +148,7 @@ export function generateBusinessAssessment(): DomainAssessment {
           { key: "value", label: "Value" }, { key: "status", label: "Stage" },
           { key: "score", label: "Score" }, { key: "lastTouch", label: "Last Touch" },
         ],
-        rows: mockLeads.map(l => ({ ...l })),
+        rows: leads.map(l => ({ ...l })),
         source: "lead-tracker",
       },
     },
@@ -154,8 +159,9 @@ export function generateBusinessAssessment(): DomainAssessment {
     ...staleLeads.map(l => ({ text: `Re-engage ${l.name} before lead goes cold`, priority: "medium" as const, domain: "business" })),
   ];
 
+  const freshness = bundle.dataFreshness;
   const dataSources: DataSource[] = [
-    { id: "ds-leads", name: "Lead Tracker", domain: "business", lastUpdated: new Date(Date.now() - 15 * 60 * 1000).toISOString(), recordCount: mockLeads.length },
+    { id: "ds-leads", name: "Lead Tracker", domain: "business", lastUpdated: freshness.leads || new Date(Date.now() - 15 * 60 * 1000).toISOString(), recordCount: leads.length },
     { id: "ds-crm", name: "CRM Analytics", domain: "business", lastUpdated: new Date(Date.now() - 45 * 60 * 1000).toISOString(), recordCount: 24 },
   ];
 
@@ -164,7 +170,7 @@ export function generateBusinessAssessment(): DomainAssessment {
     generatedAt: now(),
     confidence: staleLeads.length > 1 ? 0.80 : 0.91,
     sections, alerts, actionItems, dataSources,
-    opportunities: mockOpportunityInsights.filter(o => o.domain === "business").map((o, i) => ({
+    opportunities: opportunityInsights.filter(o => o.domain === "business").map((o, i) => ({
       id: `biz-opp-${i}`, title: o.title, description: o.description,
       domain: "business", projectedValue: o.savings, confidence: o.impact === "high" ? 0.85 : 0.65,
     })),
@@ -174,10 +180,12 @@ export function generateBusinessAssessment(): DomainAssessment {
 
 // ── Concierge Assessment ──────────────────────────────────
 
-export function generateConciergeAssessment(): DomainAssessment {
-  const pendingTasks = mockHouseholdTasks.filter(t => t.status === "pending");
+export function generateConciergeAssessment(bundle: BoardroomDataBundle): DomainAssessment {
+  const { householdTasks, familyEvents, opportunityInsights } = bundle;
+
+  const pendingTasks = householdTasks.filter(t => t.status === "pending");
   const highPriority = pendingTasks.filter(t => t.priority === "high");
-  const inProgress = mockHouseholdTasks.filter(t => t.status === "in-progress");
+  const inProgress = householdTasks.filter(t => t.status === "in-progress");
 
   const alerts: AlertData[] = [];
   if (highPriority.length >= 2) {
@@ -191,13 +199,13 @@ export function generateConciergeAssessment(): DomainAssessment {
         { label: "Pending Tasks", value: pendingTasks.length, source: "task-engine" },
         { label: "In Progress", value: inProgress.length, source: "task-engine" },
         { label: "High Priority", value: highPriority.length, trend: highPriority.length > 1 ? "down" as const : "flat" as const, source: "task-engine" },
-        { label: "Upcoming Events", value: mockFamilyEvents.length, source: "calendar" },
+        { label: "Upcoming Events", value: familyEvents.length, source: "calendar" },
       ],
     },
     {
       id: "con-narrative", type: "narrative", title: "Household Summary",
       data: {
-        text: `${pendingTasks.length} household tasks pending, ${highPriority.length} at high priority. ${inProgress.length} task(s) in progress. ${mockFamilyEvents.length} family events scheduled. ${highPriority.length >= 2 ? "Household load is elevated — consider delegating." : "Load is manageable."}`,
+        text: `${pendingTasks.length} household tasks pending, ${highPriority.length} at high priority. ${inProgress.length} task(s) in progress. ${familyEvents.length} family events scheduled. ${highPriority.length >= 2 ? "Household load is elevated — consider delegating." : "Load is manageable."}`,
         confidence: 0.90,
         citations: ["task-engine", "family-calendar", "routine-tracker"],
       },
@@ -209,7 +217,7 @@ export function generateConciergeAssessment(): DomainAssessment {
           { key: "title", label: "Task" }, { key: "assignee", label: "Assignee" },
           { key: "due", label: "Due" }, { key: "priority", label: "Priority" }, { key: "status", label: "Status" },
         ],
-        rows: mockHouseholdTasks.map(t => ({ ...t })),
+        rows: householdTasks.map(t => ({ ...t })),
         source: "task-engine",
       },
     },
@@ -220,7 +228,7 @@ export function generateConciergeAssessment(): DomainAssessment {
           { key: "title", label: "Event" }, { key: "who", label: "Who" },
           { key: "when", label: "When" }, { key: "location", label: "Location" },
         ],
-        rows: mockFamilyEvents.map(e => ({ ...e })),
+        rows: familyEvents.map(e => ({ ...e })),
         source: "family-calendar",
       },
     },
@@ -231,8 +239,8 @@ export function generateConciergeAssessment(): DomainAssessment {
   }));
 
   const dataSources: DataSource[] = [
-    { id: "ds-tasks", name: "Task Engine", domain: "concierge", lastUpdated: new Date(Date.now() - 10 * 60 * 1000).toISOString(), recordCount: mockHouseholdTasks.length },
-    { id: "ds-calendar", name: "Family Calendar", domain: "concierge", lastUpdated: new Date(Date.now() - 20 * 60 * 1000).toISOString(), recordCount: mockFamilyEvents.length },
+    { id: "ds-tasks", name: "Task Engine", domain: "concierge", lastUpdated: new Date(Date.now() - 10 * 60 * 1000).toISOString(), recordCount: householdTasks.length },
+    { id: "ds-calendar", name: "Family Calendar", domain: "concierge", lastUpdated: new Date(Date.now() - 20 * 60 * 1000).toISOString(), recordCount: familyEvents.length },
   ];
 
   return {
@@ -240,7 +248,7 @@ export function generateConciergeAssessment(): DomainAssessment {
     generatedAt: now(),
     confidence: 0.92,
     sections, alerts, actionItems, dataSources,
-    opportunities: mockOpportunityInsights.filter(o => o.domain === "concierge").map((o, i) => ({
+    opportunities: opportunityInsights.filter(o => o.domain === "concierge").map((o, i) => ({
       id: `con-opp-${i}`, title: o.title, description: o.description,
       domain: "concierge", projectedValue: o.savings, confidence: o.impact === "high" ? 0.82 : 0.60,
     })),
@@ -250,8 +258,10 @@ export function generateConciergeAssessment(): DomainAssessment {
 
 // ── Incident Assessment ───────────────────────────────────
 
-export function generateIncidentAssessment(): DomainAssessment {
-  const openIncidents = mockIncidents.filter(i => i.status === "open");
+export function generateIncidentAssessment(bundle: BoardroomDataBundle): DomainAssessment {
+  const { incidents } = bundle;
+
+  const openIncidents = incidents.filter(i => i.status === "open");
   const alerts: AlertData[] = openIncidents.map(inc => ({
     severity: inc.severity === "medium" ? "warning" as const : "info" as const,
     title: inc.title, description: `Impact: ${inc.impact}`, source: "incident-system",
@@ -262,15 +272,15 @@ export function generateIncidentAssessment(): DomainAssessment {
       id: "inc-kpis", type: "metric-card", title: "Incident Overview",
       data: [
         { label: "Open Incidents", value: openIncidents.length, trend: openIncidents.length > 0 ? "down" as const : "flat" as const, source: "incident-system" },
-        { label: "Resolved (7d)", value: mockIncidents.filter(i => i.status === "resolved").length, trend: "up" as const, source: "incident-system" },
+        { label: "Resolved (7d)", value: incidents.filter(i => i.status === "resolved").length, trend: "up" as const, source: "incident-system" },
         { label: "MTTR", value: "2.4h", source: "incident-system" },
-        { label: "Total Incidents", value: mockIncidents.length, source: "incident-system" },
+        { label: "Total Incidents", value: incidents.length, source: "incident-system" },
       ],
     },
     {
       id: "inc-narrative", type: "narrative", title: "Incident Summary",
       data: {
-        text: `${openIncidents.length} incident(s) currently open. ${mockIncidents.filter(i => i.status === "resolved").length} resolved in the last 7 days with mean time to resolution of 2.4 hours. ${openIncidents.length > 0 ? `Active: ${openIncidents.map(i => i.title).join("; ")}.` : "All systems operating normally."}`,
+        text: `${openIncidents.length} incident(s) currently open. ${incidents.filter(i => i.status === "resolved").length} resolved in the last 7 days with mean time to resolution of 2.4 hours. ${openIncidents.length > 0 ? `Active: ${openIncidents.map(i => i.title).join("; ")}.` : "All systems operating normally."}`,
         confidence: 0.95,
         citations: ["incident-system", "observability-platform"],
       },
@@ -283,11 +293,13 @@ export function generateIncidentAssessment(): DomainAssessment {
           { key: "severity", label: "Severity" }, { key: "status", label: "Status" },
           { key: "time", label: "Time" }, { key: "impact", label: "Impact" },
         ],
-        rows: mockIncidents.map(i => ({ ...i })),
+        rows: incidents.map(i => ({ ...i })),
         source: "incident-system",
       },
     },
   ];
+
+  const freshness = bundle.dataFreshness;
 
   return {
     domain: "incidents",
@@ -296,7 +308,7 @@ export function generateIncidentAssessment(): DomainAssessment {
     sections, alerts,
     actionItems: openIncidents.map(i => ({ text: `Resolve: ${i.title}`, priority: i.severity === "medium" ? "high" as const : "medium" as const, domain: "ops" })),
     dataSources: [
-      { id: "ds-incidents", name: "Incident System", domain: "ops", lastUpdated: new Date(Date.now() - 5 * 60 * 1000).toISOString(), recordCount: mockIncidents.length },
+      { id: "ds-incidents", name: "Incident System", domain: "ops", lastUpdated: freshness.incidents || new Date(Date.now() - 5 * 60 * 1000).toISOString(), recordCount: incidents.length },
     ],
     opportunities: [],
     staleFields: [],
