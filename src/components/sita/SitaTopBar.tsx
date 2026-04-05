@@ -16,7 +16,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ContextSwitcher } from "./ContextSwitcher";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
-  Bell, Clock, Eye, EyeOff, Shield, Check, Sun, Moon, Monitor,
+  Bell, Clock, Eye, EyeOff, Shield, Check, Sun, Moon, Monitor, Search,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
