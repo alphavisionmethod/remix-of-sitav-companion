@@ -32,7 +32,7 @@ export class AdvisorMemoryService {
     const isDuplicate = existing.some(m => m.content.toLowerCase() === fact.toLowerCase());
     if (isDuplicate) return;
 
-    await supabase.from("advisor_memories").insert({
+    await (supabase.from("advisor_memories") as any).insert({
       advisor_id: advisorId,
       user_id: userId,
       memory_type: "fact",
