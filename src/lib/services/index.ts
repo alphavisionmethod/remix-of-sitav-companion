@@ -149,12 +149,12 @@ export { ProofOrchestratorService, createProofOrchestrator } from "./proof-orche
 export { SimulatorService, createSimulator } from "./simulator";
 export { SitaModesService, createSitaModes } from "./sita-modes";
 export { WebsiteManagementService, createWebsiteManagement } from "./website-management";
-export { WorkflowEngineService, createWorkflowEngine } from "./workflow-engine";
-// Re-export from new service dirs (names unique to avoid core-services conflicts)
-export { ActionQueueService, createActionQueue } from "./action-queue";
-export { AnalyticsService, createAnalytics } from "./analytics";
-export { APIGatewayService, createAPIGateway } from "./api-gateway";
-export { BillingService as BillingMeteringService, createBillingService } from "./billing";
+export { WorkflowEngineService, createWorkflowEngine as createWorkflowEngineService } from "./workflow-engine";
+// Re-export from new service dirs (aliased to avoid core-services conflicts)
+export { ActionQueueService, createActionQueue as createActionQueueService } from "./action-queue";
+export { AnalyticsService as AnalyticsTrackingService, createAnalytics } from "./analytics";
+export { APIGatewayService, createAPIGateway as createAPIGatewayService } from "./api-gateway";
+export { BillingService as BillingMeteringService, createBillingService as createBillingMeteringService } from "./billing";
 export { ConnectorRunnersService as ConnectorRunnersImpl, createConnectorRunners as createConnectorRunnersImpl } from "./connector-runners";
 export { EntityGraphService as EntityGraphImpl, createEntityGraph as createEntityGraphImpl } from "./entity-graph";
 export { FileIngestionService as FileIngestionImpl, createFileIngestion as createFileIngestionImpl } from "./file-ingestion";
