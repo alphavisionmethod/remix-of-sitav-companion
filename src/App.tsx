@@ -144,6 +144,16 @@ const TeamManagement = lazy(() => import("./pages/admin/TeamManagement"));
 const SystemManagement = lazy(() => import("./pages/admin/SystemManagement"));
 const UserManagement = lazy(() => import("./pages/admin/UserManagement"));
 const AITokenDashboard = lazy(() => import("./pages/admin/AITokenDashboard"));
+const MissionControlHome = lazy(() => import("./pages/admin/MissionControlHome"));
+const AdminDurabilityBoardPage = lazy(() => import("./pages/admin/AdminDurabilityBoard"));
+const AdminProjectionControl = lazy(() => import("./pages/admin/ProjectionControlCenter"));
+const AdminOperationsCommand = lazy(() => import("./pages/admin/OperationsCommandCenter"));
+const SecurityPostureBoard = lazy(() => import("./pages/admin/SecurityPostureBoard"));
+const AdminTruthRegistry = lazy(() => import("./pages/admin/PlatformTruthRegistry"));
+const ConciergeRuntimeBoard = lazy(() => import("./pages/admin/ConciergeRuntimeBoard"));
+const AlertTriageBoard = lazy(() => import("./pages/admin/AlertTriageBoard"));
+const AdminPolicySimulator = lazy(() => import("./pages/admin/PolicySimulator"));
+const WorkflowReplayAudit = lazy(() => import("./pages/admin/WorkflowReplayAudit"));
 const PersonalBrain = lazy(() => import("./pages/PersonalBrain"));
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
@@ -835,6 +845,16 @@ const App = () => (
                     <Route path="/admin/proof-matrix" element={<ProofMatrixExplorer />} />
                     <Route path="/admin/connectors" element={<ConnectorGovernanceCenter />} />
                     <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
+                    <Route path="/admin/mission-control" element={<MissionControlHome />} />
+                    <Route path="/admin/durability" element={<AdminDurabilityBoardPage />} />
+                    <Route path="/admin/projections" element={<AdminProjectionControl />} />
+                    <Route path="/admin/operations" element={<AdminOperationsCommand />} />
+                    <Route path="/admin/security-posture" element={<SecurityPostureBoard />} />
+                    <Route path="/admin/truth-registry" element={<AdminTruthRegistry />} />
+                    <Route path="/admin/concierge-runtime" element={<ConciergeRuntimeBoard />} />
+                    <Route path="/admin/alert-triage" element={<AlertTriageBoard />} />
+                    <Route path="/admin/policy-simulator" element={<AdminPolicySimulator />} />
+                    <Route path="/admin/workflow-replay" element={<WorkflowReplayAudit />} />
                     <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
