@@ -193,6 +193,19 @@ const AISelfLearningLedger = lazy(() => import("./pages/admin/AISelfLearningLedg
 const AIChangePlanViewer = lazy(() => import("./pages/admin/AIChangePlanViewer"));
 const AIHumanBoundaryControls = lazy(() => import("./pages/admin/AIHumanBoundaryControls"));
 const AIEvidenceBundleComposer = lazy(() => import("./pages/admin/AIEvidenceBundleComposer"));
+
+// ── CPS: Core Persistence Substrate Admin Pages ──
+const CorePersistenceOverview = lazy(() => import("./pages/admin/CorePersistenceOverview"));
+const EventStreamExplorer = lazy(() => import("./pages/admin/EventStreamExplorer"));
+const MemoryContinuityCenter = lazy(() => import("./pages/admin/MemoryContinuityCenter"));
+const PolicyDecisionLedger = lazy(() => import("./pages/admin/PolicyDecisionLedger"));
+const IntelligenceArtifactLibrary = lazy(() => import("./pages/admin/IntelligenceArtifactLibrary"));
+const ActionLineageExplorer = lazy(() => import("./pages/admin/ActionLineageExplorer"));
+const ReplayRecoveryConsole = lazy(() => import("./pages/admin/ReplayRecoveryConsole"));
+const CoreServiceMigrationBoard = lazy(() => import("./pages/admin/CoreServiceMigrationBoard"));
+const PersistenceDriftRadar = lazy(() => import("./pages/admin/PersistenceDriftRadar"));
+const RuntimeContinuityBoard = lazy(() => import("./pages/admin/RuntimeContinuityBoard"));
+
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
@@ -912,6 +925,19 @@ const App = () => (
                     <Route path="/admin/wave-planner" element={<MigrationWavePlanner />} />
                     <Route path="/admin/reality-progress" element={<RealityProgressTimeline />} />
                     <Route path="/admin/runtime-validation" element={<RuntimeRealityValidation />} />
+
+                    {/* CPS: Core Persistence Substrate */}
+                    <Route path="/admin/core-persistence" element={<CorePersistenceOverview />} />
+                    <Route path="/admin/event-stream" element={<EventStreamExplorer />} />
+                    <Route path="/admin/memory-continuity" element={<MemoryContinuityCenter />} />
+                    <Route path="/admin/policy-ledger" element={<PolicyDecisionLedger />} />
+                    <Route path="/admin/intelligence-library" element={<IntelligenceArtifactLibrary />} />
+                    <Route path="/admin/action-lineage" element={<ActionLineageExplorer />} />
+                    <Route path="/admin/replay-console" element={<ReplayRecoveryConsole />} />
+                    <Route path="/admin/service-migration" element={<CoreServiceMigrationBoard />} />
+                    <Route path="/admin/persistence-drift" element={<PersistenceDriftRadar />} />
+                    <Route path="/admin/runtime-continuity" element={<RuntimeContinuityBoard />} />
+
                     <Route path="/admin/ai-engineering" element={<AIEngineeringBoard />} />
                     <Route path="/admin/ai-team-roster" element={<AITeamRoster />} />
                     <Route path="/admin/ai-missions" element={<AIMissionCenter />} />
