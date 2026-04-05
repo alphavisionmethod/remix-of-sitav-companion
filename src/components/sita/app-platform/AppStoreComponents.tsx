@@ -363,6 +363,15 @@ export function InstallSheet({ app, onClose, onInstall }: {
                     <p className="text-[11px] text-foreground">This app requests <strong>{highRiskPerms.length} elevated permission{highRiskPerms.length > 1 ? "s" : ""}</strong>. Review carefully before installing.</p>
                   </div>
                 )}
+
+                {/* Install Scope */}
+                <InstallScopeSelector scope={installScope} onSelect={setInstallScope}
+                  allowedScopes={app.trustLevel === "unknown-source" || app.trustLevel === "local-unverified" ? ["user", "sandbox"] : ["user", "system", "sandbox"]} />
+
+                {/* Sandbox recommendation for untrusted */}
+                {(app.trustLevel === "unknown-source" || app.trustLevel === "local-unverified") && (
+                  <SandboxRecommendationCard level="restricted" recommended />
+                )}
               </>
             )}
 
