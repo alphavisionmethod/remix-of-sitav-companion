@@ -236,6 +236,7 @@ const FIPBuilderConsole = lazy(() => import("./pages/admin/fip/FIPBuilderConsole
 
 // SAG — Sovereign AI Gateway
 const AIRuntimeStatus = lazy(() => import("./pages/admin/AIRuntimeStatus"));
+const PersistenceStatus = lazy(() => import("./pages/admin/PersistenceStatus"));
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
@@ -594,6 +595,7 @@ const App = () => (
 
                     {/* AI Runtime */}
                     <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
+                    <Route path="/admin/persistence-status" element={<PersistenceStatus />} />
 
                     {/* SAG — Sovereign AI Gateway */}
                     <Route path="/admin/sag/overview" element={<SAGOverview />} />

@@ -1,10 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Receipt Service
-// Hash-chained cryptographic proof generation
+// SITA OS — Receipt Service (Durable)
+// Hash-chained cryptographic proof generation with durable
+// persistence to sita_receipts via Supabase
 // Canonical contracts: ReceiptType from contracts
 // ═══════════════════════════════════════════════════════════════
 
 import type { ReceiptType as CanonicalReceiptType } from "@/packages/contracts";
+import { persistReceipt, fetchReceipts } from "@/lib/persistence/supabase-adapters";
 
 export type { CanonicalReceiptType };
 
@@ -43,7 +45,6 @@ async function computeHash(data: string): Promise<string> {
       .map((b) => b.toString(16).padStart(2, "0"))
       .join("");
   }
-  // Fallback: simple deterministic hash for environments without Web Crypto
   let hash = 0;
   for (let i = 0; i < data.length; i++) {
     const char = data.charCodeAt(i);
@@ -57,12 +58,14 @@ async function computeHash(data: string): Promise<string> {
 export class ReceiptService {
   private receipts: Receipt[] = [];
   private sequenceCounter = 0;
+  private persistenceEnabled = true;
+  private persistenceErrors = 0;
 
   async createReceipt(
     correlationId: string,
     receiptType: ServiceReceiptType,
     data: Record<string, unknown>,
-    options?: { capabilityId?: string; envelopeId?: string }
+    options?: { capabilityId?: string; envelopeId?: string; domain?: string }
   ): Promise<Receipt> {
     const previousHash =
       this.receipts.length > 0
@@ -95,7 +98,34 @@ export class ReceiptService {
       createdAt: Date.now(),
     };
 
+    // In-memory append (hot chain for hash verification)
     this.receipts.push(receipt);
+
+    // Durable persistence (fire-and-forget, non-blocking)
+    if (this.persistenceEnabled) {
+      persistReceipt({
+        correlation_id: correlationId,
+        receipt_type: receiptType,
+        capability_id: options?.capabilityId,
+        domain: options?.domain,
+        payload: {
+          ...data,
+          hash,
+          previousHash,
+          sequenceNumber,
+          envelopeId: options?.envelopeId,
+        },
+        metadata: {
+          receipt_id: receipt.id,
+          status: receipt.status,
+          created_at: receipt.createdAt,
+        },
+      }).catch((err) => {
+        this.persistenceErrors++;
+        console.error("[receipt-service] persistence failed:", err);
+      });
+    }
+
     return receipt;
   }
 
@@ -122,6 +152,48 @@ export class ReceiptService {
     };
   }
 
+  /** Hydrate in-memory receipt chain from durable storage */
+  async hydrate(opts?: { limit?: number }): Promise<number> {
+    try {
+      const persisted = await fetchReceipts({ limit: opts?.limit ?? 500 });
+      let loaded = 0;
+
+      for (const p of persisted) {
+        const existsInMemory = this.receipts.some(r => r.id === p.payload?.receipt_id);
+        if (!existsInMemory) {
+          const receipt: Receipt = {
+            id: (p.payload?.receipt_id as string) ?? p.id,
+            correlationId: p.correlation_id,
+            receiptType: p.receipt_type as ServiceReceiptType,
+            capabilityId: p.capability_id,
+            envelopeId: p.payload?.envelopeId as string | undefined,
+            data: p.payload ?? {},
+            hash: (p.payload?.hash as string) ?? "",
+            previousHash: (p.payload?.previousHash as string) ?? null,
+            sequenceNumber: (p.payload?.sequenceNumber as number) ?? 0,
+            status: (p.metadata?.status as "valid") ?? "valid",
+            createdAt: new Date(p.created_at).getTime(),
+          };
+          this.receipts.push(receipt);
+          loaded++;
+        }
+      }
+
+      // Update sequence counter
+      if (this.receipts.length > 0) {
+        this.sequenceCounter = Math.max(
+          this.sequenceCounter,
+          ...this.receipts.map(r => r.sequenceNumber)
+        );
+      }
+
+      return loaded;
+    } catch (err) {
+      console.error("[receipt-service] hydration failed:", err);
+      return 0;
+    }
+  }
+
   getReceipts(): Receipt[] {
     return [...this.receipts];
   }
@@ -136,6 +208,20 @@ export class ReceiptService {
 
   getChainLength(): number {
     return this.receipts.length;
+  }
+
+  /** Get persistence health status */
+  getPersistenceHealth(): { enabled: boolean; errors: number; chainLength: number } {
+    return {
+      enabled: this.persistenceEnabled,
+      errors: this.persistenceErrors,
+      chainLength: this.receipts.length,
+    };
+  }
+
+  /** Enable/disable persistence */
+  setPersistence(enabled: boolean): void {
+    this.persistenceEnabled = enabled;
   }
 }
 
