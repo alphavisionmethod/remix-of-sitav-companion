@@ -12,7 +12,10 @@ import {
   Lock, Smartphone, Monitor, Zap, Bell, FileText, Link2, Package,
   ArrowRight, X, Loader2, AlertTriangle, CheckCircle2,
 } from "lucide-react";
-import type { AppDefinition, AppBundle, AppTrustLevel, AppClass, AppInstallStatus, AppPermission } from "@/lib/app-platform/types";
+import type {
+  AppDefinition, AppBundle, AppTrustLevel, AppClass, AppInstallStatus,
+  AppPermission, AppSourceOrigin, AppSandboxLevel, AppInstallScope, AppPackageType,
+} from "@/lib/app-platform/types";
 
 // ── Trust Badge ──
 
