@@ -1,0 +1,145 @@
+import {
+  Sparkles, AlertTriangle, Activity, TrendingDown,
+  Target, Layers, BarChart3,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+
+const mockProfiles = [
+  { domain: "engineering", taskType: "root-cause", version: "v3.2", maxContext: "B", packetDriven: true, redundancy: 8, costReduction: 42, qualityImpact: 2, active: true },
+  { domain: "engineering", taskType: "fix-plan", version: "v2.8", maxContext: "B", packetDriven: true, redundancy: 12, costReduction: 38, qualityImpact: 1, active: true },
+  { domain: "revenue-business", taskType: "lead-scoring", version: "v2.1", maxContext: "A", packetDriven: true, redundancy: 5, costReduction: 55, qualityImpact: 0, active: true },
+  { domain: "revenue-business", taskType: "strategy", version: "v1.5", maxContext: "C", packetDriven: false, redundancy: 28, costReduction: 15, qualityImpact: -3, active: true },
+  { domain: "digital-presence", taskType: "seo-audit", version: "v2.0", maxContext: "B", packetDriven: true, redundancy: 15, costReduction: 35, qualityImpact: 1, active: true },
+  { domain: "digital-presence", taskType: "conversion-analysis", version: "v1.8", maxContext: "C", packetDriven: false, redundancy: 32, costReduction: 10, qualityImpact: -2, active: true },
+  { domain: "investment-finance", taskType: "thesis-generation", version: "v2.4", maxContext: "C", packetDriven: true, redundancy: 18, costReduction: 28, qualityImpact: 0, active: true },
+  { domain: "investment-finance", taskType: "risk-assessment", version: "v3.0", maxContext: "B", packetDriven: true, redundancy: 6, costReduction: 48, qualityImpact: 3, active: true },
+  { domain: "compliance-trust", taskType: "policy-check", version: "v2.6", maxContext: "A", packetDriven: true, redundancy: 3, costReduction: 62, qualityImpact: 5, active: true },
+  { domain: "admin-ops", taskType: "synthesis", version: "v1.2", maxContext: "D", packetDriven: false, redundancy: 45, costReduction: 5, qualityImpact: -5, active: false },
+];
+
+const offenders = mockProfiles
+  .filter(p => p.redundancy > 20)
+  .sort((a, b) => b.redundancy - a.redundancy);
+
+const avgCostReduction = Math.round(mockProfiles.reduce((s, p) => s + p.costReduction, 0) / mockProfiles.length);
+const packetDrivenPct = Math.round((mockProfiles.filter(p => p.packetDriven).length / mockProfiles.length) * 100);
+
+const ZeroWastePromptView = () => {
+  const { isAdmin, loading } = useRequireAdmin();
+  if (loading || !isAdmin) return null;
+
+  return (
+    <div className="min-h-screen bg-background p-6 space-y-6">
+      <SitaPageHeader
+        icon={<Sparkles className="h-6 w-6" />}
+        title="Zero-Waste Prompt Architecture"
+        subtitle="Inspect prompt efficiency, redundancy, and packet-driven architecture quality"
+      />
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {[
+          { label: "Prompt Profiles", value: String(mockProfiles.length) },
+          { label: "Avg Cost Reduction", value: `${avgCostReduction}%`, color: "text-emerald-400" },
+          { label: "Packet-Driven", value: `${packetDrivenPct}%` },
+          { label: "Offenders", value: String(offenders.length), color: offenders.length > 0 ? "text-amber-400" : "text-emerald-400" },
+        ].map(m => (
+          <Card key={m.label} className="bg-card/80 border-border/50">
+            <CardContent className="p-3 text-center">
+              <p className={`text-2xl font-bold ${m.color || "text-foreground"}`}>{m.value}</p>
+              <p className="text-[10px] text-muted-foreground">{m.label}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Profile Table */}
+      <Card className="bg-card/80 border-border/50">
+        <CardHeader className="pb-2"><CardTitle className="text-sm">Prompt Profile Table</CardTitle></CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="text-xs">Domain</TableHead>
+                <TableHead className="text-xs">Task Type</TableHead>
+                <TableHead className="text-xs">Version</TableHead>
+                <TableHead className="text-xs">Context Class</TableHead>
+                <TableHead className="text-xs text-center">Packet-Driven</TableHead>
+                <TableHead className="text-xs text-right">Redundancy</TableHead>
+                <TableHead className="text-xs text-right">Cost Reduction</TableHead>
+                <TableHead className="text-xs text-right">Quality Impact</TableHead>
+                <TableHead className="text-xs">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {mockProfiles.map((p, i) => (
+                <TableRow key={i}>
+                  <TableCell className="text-xs font-medium text-foreground">{p.domain}</TableCell>
+                  <TableCell className="text-xs text-muted-foreground">{p.taskType}</TableCell>
+                  <TableCell className="text-xs font-mono">{p.version}</TableCell>
+                  <TableCell><Badge variant="outline" className="text-[9px]">Class {p.maxContext}</Badge></TableCell>
+                  <TableCell className="text-center">{p.packetDriven ? <span className="text-emerald-400 text-xs">✓</span> : <span className="text-muted-foreground text-xs">✗</span>}</TableCell>
+                  <TableCell className="text-xs text-right">
+                    <span className={p.redundancy > 20 ? "text-amber-400" : p.redundancy > 10 ? "text-foreground" : "text-emerald-400"}>{p.redundancy}%</span>
+                  </TableCell>
+                  <TableCell className="text-xs text-right font-mono text-emerald-400">{p.costReduction}%</TableCell>
+                  <TableCell className="text-xs text-right">
+                    <span className={p.qualityImpact > 0 ? "text-emerald-400" : p.qualityImpact < 0 ? "text-rose-400" : "text-foreground"}>{p.qualityImpact > 0 ? "+" : ""}{p.qualityImpact}%</span>
+                  </TableCell>
+                  <TableCell><Badge variant={p.active ? "secondary" : "destructive"} className="text-[9px]">{p.active ? "active" : "disabled"}</Badge></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      {/* Offender List */}
+      {offenders.length > 0 && (
+        <Card className="bg-card/80 border-amber-500/20">
+          <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Oversized Prompt Offenders</CardTitle></CardHeader>
+          <CardContent className="space-y-2">
+            {offenders.map((o, i) => (
+              <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-amber-500/5">
+                <div>
+                  <p className="text-xs font-medium text-foreground">{o.domain} / {o.taskType}</p>
+                  <p className="text-[10px] text-muted-foreground">Redundancy: {o.redundancy}% · Not packet-driven · Quality impact: {o.qualityImpact}%</p>
+                </div>
+                <Badge variant="outline" className="text-[9px] text-amber-400">optimize</Badge>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Redundancy Heatmap */}
+      <Card className="bg-card/80 border-border/50">
+        <CardHeader className="pb-2"><CardTitle className="text-sm">Redundancy by Domain</CardTitle></CardHeader>
+        <CardContent className="space-y-2">
+          {Object.entries(
+            mockProfiles.reduce<Record<string, number[]>>((acc, p) => {
+              if (!acc[p.domain]) acc[p.domain] = [];
+              acc[p.domain].push(p.redundancy);
+              return acc;
+            }, {})
+          ).map(([domain, values]) => {
+            const avg = Math.round(values.reduce((s, v) => s + v, 0) / values.length);
+            return (
+              <div key={domain} className="flex items-center gap-3">
+                <span className="text-xs text-muted-foreground w-[160px] truncate">{domain}</span>
+                <Progress value={avg} className="flex-1 h-2" />
+                <span className={`text-xs font-mono w-[40px] text-right ${avg > 20 ? "text-amber-400" : "text-emerald-400"}`}>{avg}%</span>
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default ZeroWastePromptView;
