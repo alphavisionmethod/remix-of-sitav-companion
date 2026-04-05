@@ -72,35 +72,31 @@ async function buildBrainContext(
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  const cors = handleCors(req);
+  if (cors) return cors;
 
   try {
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    const auth = await requireAuth(req);
+    if (auth instanceof Response) return auth;
+    const user = auth.user;
+    const supabaseClient = auth.supabase;
 
-    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      global: { headers: { Authorization: authHeader } },
+    const body = await validateBody(req, {
+      messages: { type: "array", required: true },
+      mode: { type: "string", enum: ["think", "learn", "build", "create"] },
     });
+    if (body instanceof Response) return body;
+    const { messages, mode = "think" } = body as { messages: unknown[]; mode?: string };
+    if (!Array.isArray(messages) || messages.length === 0) return corsError("messages array required", 400);
 
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) {
-      return new Response(JSON.stringify({ error: "Invalid token" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const { messages, mode = "think" } = await req.json();
-    if (!messages || !Array.isArray(messages)) {
-      return new Response(JSON.stringify({ error: "messages array required" }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    // Rate limit: max 20 requests/min
+    const { count } = await supabaseClient
+      .from("ai_token_usage")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", user.id)
+      .eq("advisor_id", "personal-brain")
+      .gte("created_at", new Date(Date.now() - 60000).toISOString());
+    if ((count ?? 0) >= 20) return corsError("Rate limit exceeded — max 20 requests per minute", 429);
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
