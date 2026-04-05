@@ -2,9 +2,11 @@ import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useRealityClassifications, useClassificationStats } from "@/hooks/useRealityClassifications";
 import { useMockReplacements, useMockReplacementStats } from "@/hooks/useMockReplacements";
-import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Layers, Rocket } from "lucide-react";
+import { useDetectionReport, useIntegrationStatuses } from "@/hooks/useRealityDetection";
+import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Layers, Rocket, Scan, Link2 } from "lucide-react";
 
 const STATE_COLORS = {
   presentational: { bg: "bg-muted", text: "text-muted-foreground", icon: Eye, label: "Presentational" },
