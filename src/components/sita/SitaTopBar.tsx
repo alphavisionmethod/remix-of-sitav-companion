@@ -32,6 +32,7 @@ interface SitaTopBarProps {
 export const SitaTopBar = ({
   onNotifOpen,
   onTimelineOpen,
+  onCommandOpen,
   pendingApprovals = 3,
   activeIncidents = 1,
 }: SitaTopBarProps) => {
