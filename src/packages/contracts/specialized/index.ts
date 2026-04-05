@@ -9,3 +9,4 @@ export * from "./observability-metric-contracts";
 export * from "./integration-readiness";
 export * from "./reservations-and-calling";
 export * from "./verticalization";
+export * from "./generated-manifest-entry";
