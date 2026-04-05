@@ -303,6 +303,9 @@ export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfa
       e.preventDefault();
       if (commandState === "capture" && captureData) {
         handleCapture(captureData);
+      } else if (intent === "ask" && query.trim()) {
+        // AI mode — ask personal-brain
+        handleAIAsk(query);
       } else if (allItems[selectedIdx]) {
         const item = allItems[selectedIdx];
         if (item.kind === "command") handleSelectCommand(item.item as CommandItem);
