@@ -48,7 +48,7 @@ import { CABWorkflow } from "@/components/sita/CABWorkflow";
 import { AgentCommunicationGraph } from "@/components/sita/AgentCommunicationGraph";
 import { SelfHealingNotifications } from "@/components/sita/SelfHealingNotifications";
 import PlatformTruthDashboard from "./PlatformTruthDashboard";
-import { MOCK_TOKEN_USAGES } from "@/lib/mock-data";
+import { useTokenUsages } from "@/hooks/use-domain-data";
 import {
   Server, Shield, Activity, Wifi, AlertTriangle, DollarSign, Rocket,
   Lock, RotateCcw, Clock, Eye, CheckCircle, Cpu, Zap, FileText,
