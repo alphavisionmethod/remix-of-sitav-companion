@@ -2,6 +2,7 @@
 // SITA OS — Immune Controller (Re-export from core-services)
 // Wire to the advanced 204-line immune controller
 // ═══════════════════════════════════════════════════════════════
+// @persistence: none — stateless module, no durable state to persist
 
 export {
   ImmuneController,

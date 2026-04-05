@@ -3,6 +3,8 @@
 // Supabase Realtime channel management, presence, event fan-out
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type ChannelStatus = "connecting" | "connected" | "disconnected" | "error";
 export type PresenceState = "online" | "away" | "busy" | "offline";
 
@@ -159,6 +161,31 @@ export class RealtimeGatewayService {
         latencyMs: Math.round(Math.random() * 15 + 5),
       },
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("realtime-gateway", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      channels: Array.from(this.channels.entries()),
+      presence: Array.from(this.presence.entries()),
+      subscriptions: Array.from(this.subscriptions.entries()),
+      eventLog: this.eventLog,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.channels) this.channels = new Map(state.channels as any);
+    if (state.presence) this.presence = new Map(state.presence as any);
+    if (state.subscriptions) this.subscriptions = new Map(state.subscriptions as any);
+    if (state.eventLog) this.eventLog = state.eventLog as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("realtime-gateway");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

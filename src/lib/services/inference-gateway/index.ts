@@ -3,6 +3,8 @@
 // Unified inference API abstraction over multiple LLM providers
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type InferenceProvider = "openai" | "anthropic" | "google" | "mistral" | "local";
 
 export interface InferenceRequest {
@@ -160,6 +162,29 @@ export class InferenceGatewayService {
 
   private estimateTokens(text: string): number {
     return Math.ceil(text.length / 4);
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("inference-gateway", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      providers: Array.from(this.providers.entries()),
+      cache: Array.from(this.cache.entries()),
+      history: this.history,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.providers) this.providers = new Map(state.providers as any);
+    if (state.cache) this.cache = new Map(state.cache as any);
+    if (state.history) this.history = state.history as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("inference-gateway");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

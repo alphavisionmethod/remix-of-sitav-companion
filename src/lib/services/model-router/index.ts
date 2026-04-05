@@ -3,6 +3,8 @@
 // LLM model selection, fallback routing, cost-quality optimization
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type ModelProvider = "openai" | "anthropic" | "google" | "mistral" | "local";
 
 export type TaskComplexity = "trivial" | "simple" | "moderate" | "complex" | "expert";
@@ -179,6 +181,27 @@ export class ModelRouterService {
       current = this.endpoints.get(current.fallbackId);
     }
     return chain;
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("model-router", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      endpoints: Array.from(this.endpoints.entries()),
+      routingHistory: this.routingHistory,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.endpoints) this.endpoints = new Map(state.endpoints as any);
+    if (state.routingHistory) this.routingHistory = state.routingHistory as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("model-router");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

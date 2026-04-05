@@ -3,6 +3,8 @@
 // Behavioral anomaly detection for forced/coerced actions
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type DuressSignal = "rapid-escalation" | "unusual-hours" | "geo-anomaly" | "pattern-break" | "forced-approval" | "bulk-action" | "credential-dump";
 
 export type DuressLevel = "none" | "low" | "medium" | "high" | "critical";
@@ -149,6 +151,29 @@ export class DuressDetectionService {
     if (confidence >= 0.4) return "medium";
     if (confidence >= 0.15) return "low";
     return "none";
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("duress-detection", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      baselines: Array.from(this.baselines.entries()),
+      evaluations: this.evaluations,
+      recentActions: Array.from(this.recentActions.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.baselines) this.baselines = new Map(state.baselines as any);
+    if (state.evaluations) this.evaluations = state.evaluations as any;
+    if (state.recentActions) this.recentActions = new Map(state.recentActions as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("duress-detection");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

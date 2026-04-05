@@ -1,3 +1,4 @@
+// @persistence: none — stateless module, no durable state to persist
 export * from "./orchestrate-intent";
 export * from "./councils";
 export * from "./choose-advisors";

@@ -1,4 +1,6 @@
 // SITA OS — Proof Orchestrator (merge: support-diagnostics)
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface ProofChain { id: string; entries: ProofEntry[]; domain: string; verified: boolean; createdAt: string; }
 export interface ProofEntry { action: string; hash: string; actor: string; timestamp: string; evidence: Record<string, unknown>; parentHash?: string; }
 export class ProofOrchestratorService {
@@ -10,5 +12,24 @@ export class ProofOrchestratorService {
   getChain(id: string): ProofChain | undefined { return this.chains.get(id); }
   listChains(): ProofChain[] { return [...this.chains.values()]; }
   getVerified(): ProofChain[] { return [...this.chains.values()].filter(c => c.verified); }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("proof-orchestrator", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      chains: Array.from(this.chains.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.chains) this.chains = new Map(state.chains as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("proof-orchestrator");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 export const createProofOrchestrator = () => new ProofOrchestratorService();

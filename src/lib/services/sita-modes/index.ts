@@ -1,4 +1,6 @@
 // SITA OS — SITA Modes (merge: owner-control-room)
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type SitaMode = 'standard' | 'focus' | 'executive' | 'stealth' | 'family' | 'travel' | 'emergency';
 export interface ModeConfig { mode: SitaMode; surfaces: string[]; notifications: 'all' | 'critical-only' | 'none'; aiLevel: 'full' | 'advisory' | 'silent'; theme?: string; }
 export class SitaModesService {
@@ -17,5 +19,24 @@ export class SitaModesService {
   getModeConfig(): ModeConfig { return this.configs.get(this.currentMode)!; }
   listModes(): ModeConfig[] { return [...this.configs.values()]; }
   customizeMode(mode: SitaMode, config: Partial<ModeConfig>): void { const c = this.configs.get(mode); if (c) Object.assign(c, config); }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("sita-modes", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      configs: Array.from(this.configs.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.configs) this.configs = new Map(state.configs as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("sita-modes");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 export const createSitaModes = () => new SitaModesService();

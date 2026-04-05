@@ -2,6 +2,7 @@
 // SITA OS — Fleet Health (Re-export from core-services)
 // Wire to the advanced 305-line fleet health service
 // ═══════════════════════════════════════════════════════════════
+// @persistence: none — stateless module, no durable state to persist
 
 export {
   FleetHealthService,

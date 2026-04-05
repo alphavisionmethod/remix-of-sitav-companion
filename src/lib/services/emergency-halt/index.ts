@@ -3,6 +3,8 @@
 // System-wide kill switch for all autonomous actions
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type HaltScope = "global" | "domain" | "agent" | "connector" | "workflow" | "payment";
 
 export type HaltReason = "security-breach" | "policy-violation" | "manual-override" | "budget-exceeded" | "duress-detected" | "system-error" | "regulatory-hold";
@@ -129,6 +131,25 @@ export class EmergencyHaltService {
       case "payment": return ["payment-execution", "finance-os"];
       default: return [];
     }
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("emergency-halt", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      orders: Array.from(this.orders.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.orders) this.orders = new Map(state.orders as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("emergency-halt");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

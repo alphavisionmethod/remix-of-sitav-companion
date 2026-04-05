@@ -4,6 +4,8 @@
 // mitigate → resolve → postmortem
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type IncidentSeverity = "critical" | "high" | "medium" | "low";
 export type IncidentStatus = "declared" | "triaging" | "investigating" | "mitigating" | "resolved" | "postmortem" | "closed";
 
@@ -266,6 +268,27 @@ export class IncidentManagementService {
       { id: "inc_demo_1", title: "Event bus latency spike", description: "P95 latency exceeded 500ms on event-bus for 12 minutes", severity: "high" as const, status: "resolved" as const, assignee: "ops-team", priority: 2, impactScope: "all-services", affectedServices: ["event-bus", "brain-core", "projections"], timeline: [], tags: ["performance", "event-bus"], relatedIncidents: [], declaredAt: now - 3600000 * 4, acknowledgedAt: now - 3600000 * 3.9, resolvedAt: now - 3600000 * 3, resolution: "Scaled event-bus replicas from 3 to 5", resolvedBy: "ops-team", ttaMs: 360000, ttrMs: 3600000 },
       { id: "inc_demo_2", title: "Auth service certificate expiry warning", description: "TLS certificate expires in 72 hours", severity: "medium" as const, status: "investigating" as const, assignee: "security-team", priority: 3, impactScope: "auth-service", affectedServices: ["auth", "api-gateway"], timeline: [], tags: ["security", "certificate"], relatedIncidents: [], declaredAt: now - 3600000, acknowledgedAt: now - 3500000, ttaMs: 100000 },
     ];
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("incident-management", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      incidents: Array.from(this.incidents.entries()),
+      postmortems: Array.from(this.postmortems.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.incidents) this.incidents = new Map(state.incidents as any);
+    if (state.postmortems) this.postmortems = new Map(state.postmortems as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("incident-management");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

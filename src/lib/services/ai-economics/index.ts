@@ -3,6 +3,8 @@
 // Cost tracking, budget enforcement, model routing economics
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type CostCategory = "inference" | "embedding" | "fine-tuning" | "storage" | "bandwidth" | "tool-call";
 
 export type BudgetPeriod = "hourly" | "daily" | "weekly" | "monthly";
@@ -212,6 +214,31 @@ export class AIEconomicsService {
       case "weekly": { const d = new Date(now); d.setDate(d.getDate() - d.getDay()); d.setHours(0, 0, 0, 0); return d.toISOString(); }
       case "monthly": { const d = new Date(now); d.setDate(1); d.setHours(0, 0, 0, 0); return d.toISOString(); }
     }
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("ai-economics", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      entries: this.entries,
+      budgets: Array.from(this.budgets.entries()),
+      modelCosts: Array.from(this.modelCosts.entries()),
+      alerts: this.alerts,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.entries) this.entries = state.entries as any;
+    if (state.budgets) this.budgets = new Map(state.budgets as any);
+    if (state.modelCosts) this.modelCosts = new Map(state.modelCosts as any);
+    if (state.alerts) this.alerts = state.alerts as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("ai-economics");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

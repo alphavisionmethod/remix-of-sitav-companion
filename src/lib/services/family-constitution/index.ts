@@ -3,6 +3,8 @@
 // Codified family values that govern AI decision-making
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface FamilyValue {
   id: string;
   name: string;
@@ -161,6 +163,29 @@ export class FamilyConstitutionEngine {
   getValues(): FamilyValue[] { return [...this.values.values()]; }
   getArticles(): ConstitutionArticle[] { return [...this.articles.values()]; }
   getAmendments(): Amendment[] { return [...this.amendments.values()]; }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("family-constitution", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      values: Array.from(this.values.entries()),
+      articles: Array.from(this.articles.entries()),
+      amendments: Array.from(this.amendments.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.values) this.values = new Map(state.values as any);
+    if (state.articles) this.articles = new Map(state.articles as any);
+    if (state.amendments) this.amendments = new Map(state.amendments as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("family-constitution");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 
 export const createFamilyConstitution = () => new FamilyConstitutionEngine();

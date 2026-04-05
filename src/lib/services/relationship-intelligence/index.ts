@@ -3,6 +3,8 @@
 // Network-as-wealth with reciprocity accounting
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface RelationshipNode {
   id: string;
   name: string;
@@ -129,6 +131,25 @@ export class RelationshipGraph {
   getNode(id: string): RelationshipNode | undefined { return this.nodes.get(id); }
   listAll(): RelationshipNode[] { return [...this.nodes.values()]; }
   getSize(): number { return this.nodes.size; }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("relationship-intelligence", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      nodes: Array.from(this.nodes.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.nodes) this.nodes = new Map(state.nodes as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("relationship-intelligence");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 
 export const createRelationshipGraph = () => new RelationshipGraph();

@@ -3,6 +3,8 @@
 // Cross-domain opportunity detection
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type OpportunityType = 'synergy' | 'cost-saving' | 'revenue' | 'skill-match' | 'timing' | 'restructure';
 
 export interface CrossDomainOpportunity {
@@ -166,6 +168,25 @@ export class OpportunityRadarEngine {
 
   private create(type: OpportunityType, title: string, description: string, value: number, confidence: number, domains: string[], actions: string[], expiresIn?: number): CrossDomainOpportunity {
     return { id: `opp-${++this.counter}`, type, title, description, estimatedValue: value, confidence, domains, actionSteps: actions, expiresIn };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("opportunity-radar", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      opportunities: Array.from(this.opportunities.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.opportunities) this.opportunities = new Map(state.opportunities as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("opportunity-radar");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

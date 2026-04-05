@@ -3,6 +3,8 @@
 // Encrypted credential storage abstraction for connector secrets
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type SecretScope = "connector" | "user" | "system" | "integration";
 
 export type SecretStatus = "active" | "rotated" | "expired" | "revoked";
@@ -191,6 +193,29 @@ export class KeyvaultService {
       reason,
     });
     if (this.accessLog.length > 5000) this.accessLog = this.accessLog.slice(-5000);
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("keyvault", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      entries: Array.from(this.entries.entries()),
+      accessLog: this.accessLog,
+      rotationPolicies: Array.from(this.rotationPolicies.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.entries) this.entries = new Map(state.entries as any);
+    if (state.accessLog) this.accessLog = state.accessLog as any;
+    if (state.rotationPolicies) this.rotationPolicies = new Map(state.rotationPolicies as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("keyvault");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

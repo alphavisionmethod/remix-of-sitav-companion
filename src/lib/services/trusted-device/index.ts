@@ -5,6 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type {
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
   DeviceAttestation,
   DeviceTrustLevel,
 } from "@/packages/contracts/graph/device-attestation";
@@ -120,6 +122,27 @@ export class TrustedDeviceService {
       revokedCount: all.filter(d => d.isRevoked).length,
       pendingAttestations: [...this.pendingAttestations],
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("trusted-device", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      devices: Array.from(this.devices.entries()),
+      pendingAttestations: this.pendingAttestations,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.devices) this.devices = new Map(state.devices as any);
+    if (state.pendingAttestations) this.pendingAttestations = state.pendingAttestations as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("trusted-device");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

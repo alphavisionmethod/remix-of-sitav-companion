@@ -5,6 +5,8 @@
 
 import type { TrustProfile, TrustStateEvent, TrustRecoveryPlan, TrustRecoveryAction, TrustStateDimension, TrustStatePosture } from "@/packages/contracts/domain-types/trust-state";
 import type { CorrelationContext } from "@/packages/contracts";
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 
 export type { TrustProfile, TrustStateEvent, TrustRecoveryPlan, TrustRecoveryAction, TrustStateDimension, TrustStatePosture };
 
@@ -169,6 +171,27 @@ export class TrustGovernorService {
     if (score >= 50) return "provisional";
     if (score >= 25) return "restricted";
     return "suspended";
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("trust-governor", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      profiles: Array.from(this.profiles.entries()),
+      events: this.events,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.profiles) this.profiles = new Map(state.profiles as any);
+    if (state.events) this.events = state.events as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("trust-governor");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

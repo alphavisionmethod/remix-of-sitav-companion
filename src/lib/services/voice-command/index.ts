@@ -2,6 +2,8 @@
 // SITA OS — Voice Command Engine
 // Hands-free OS control via Web Speech API with wake word
 // ═══════════════════════════════════════════════════════════════
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — stateful module, persist via universal adapter
 
 export type VoiceCommandStatus = 'idle' | 'listening' | 'processing' | 'speaking' | 'error';
 

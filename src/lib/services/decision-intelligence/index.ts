@@ -3,6 +3,8 @@
 // Values-weighted formal decision framework
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface DecisionOption {
   name: string;
   pros: string[];
@@ -175,6 +177,25 @@ export class DecisionIntelligenceEngine {
       avgSatisfaction: reviewed.length > 0 ? reviewed.reduce((s, e) => s + (e.satisfaction ?? 0), 0) / reviewed.length : 0,
       reviewedPct: entries.length > 0 ? Math.round((reviewed.length / entries.length) * 100) : 0,
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("decision-intelligence", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      journal: Array.from(this.journal.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.journal) this.journal = new Map(state.journal as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("decision-intelligence");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

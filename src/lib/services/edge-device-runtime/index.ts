@@ -4,6 +4,8 @@
 // Distinct from TrustedDeviceService (trust/attestation)
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type EdgeCapability = "compute" | "storage" | "gpu" | "sensor" | "camera" | "biometric" | "secure-enclave" | "offline-exec";
 export type EdgeRuntimeStatus = "online" | "offline" | "degraded" | "syncing" | "updating";
 export type EdgeTaskStatus = "queued" | "assigned" | "running" | "completed" | "failed" | "cancelled";
@@ -240,6 +242,29 @@ export class EdgeDeviceRuntimeService {
       { id: "edge_2", deviceId: "dev-remote-002", capabilities: ["compute", "sensor", "camera"], status: "online", lastHeartbeat: Date.now() - 15000, heartbeatIntervalMs: 30000, osVersion: "raspbian-12", runtimeVersion: "2.0.3", cpuUsage: 78, memoryUsage: 41, diskUsage: 33, taskQueue: [], registeredAt: Date.now() - 86400000 * 30 },
       { id: "edge_3", deviceId: "dev-mobile-003", capabilities: ["compute", "biometric", "offline-exec"], status: "degraded", lastHeartbeat: Date.now() - 120000, heartbeatIntervalMs: 30000, osVersion: "android-14", runtimeVersion: "1.9.1", cpuUsage: 92, memoryUsage: 88, diskUsage: 71, taskQueue: [], registeredAt: Date.now() - 86400000 * 14 },
     ];
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("edge-device-runtime", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      runtimes: Array.from(this.runtimes.entries()),
+      syncStates: Array.from(this.syncStates.entries()),
+      taskResults: this.taskResults,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.runtimes) this.runtimes = new Map(state.runtimes as any);
+    if (state.syncStates) this.syncStates = new Map(state.syncStates as any);
+    if (state.taskResults) this.taskResults = state.taskResults as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("edge-device-runtime");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

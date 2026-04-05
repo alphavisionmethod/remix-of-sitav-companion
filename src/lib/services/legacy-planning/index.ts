@@ -3,6 +3,8 @@
 // Multi-generational wealth + knowledge + values transfer
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type VaultItemType = 'financial' | 'knowledge' | 'values' | 'legal' | 'personal';
 export type AccessTrigger = 'age' | 'event' | 'date' | 'manual';
 
@@ -147,6 +149,25 @@ export class LegacyPlanningEngine {
         plan: undocumented.map(k => `Document "${k}" — schedule 30min recording session`),
       };
     }).sort((a, b) => a.documentedPct - b.documentedPct);
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("legacy-planning", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      vault: Array.from(this.vault.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.vault) this.vault = new Map(state.vault as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("legacy-planning");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

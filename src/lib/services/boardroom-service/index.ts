@@ -1,3 +1,4 @@
+// @persistence: none — stateless module, no durable state to persist
 export * from "./packets/business-packet.service";
 export * from "./packets/finance-packet.service";
 export * from "./packets/family-packet.service";

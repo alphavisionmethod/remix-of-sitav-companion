@@ -5,6 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type {
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
   OSUnificationRuntime,
   ActiveSurface,
   SurfaceType,
@@ -92,6 +94,27 @@ export class OSUnificationService {
       continuityScore: this.computeContinuityScore(),
       lastSyncAt: this.lastSyncAt,
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("os-unification", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      surfaces: Array.from(this.surfaces.entries()),
+      unresolvedQueues: this.unresolvedQueues,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.surfaces) this.surfaces = new Map(state.surfaces as any);
+    if (state.unresolvedQueues) this.unresolvedQueues = state.unresolvedQueues as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("os-unification");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

@@ -3,6 +3,8 @@
 // One number capturing how your entire life is trending
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface LifeScoreDimension {
   name: string;
   weight: number;
@@ -107,6 +109,25 @@ export class CompoundLifeScoreEngine {
   }
 
   getHistory(): number[] { return [...this.history]; }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("compound-life-score", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      history: this.history,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.history) this.history = state.history as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("compound-life-score");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 
 export const createCompoundLifeScore = () => new CompoundLifeScoreEngine();

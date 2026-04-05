@@ -3,6 +3,8 @@
 // Dynamic service discovery, health aggregation, dependency graph
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type ServiceStatus = "healthy" | "degraded" | "down" | "unknown";
 export type ServiceTierLevel = "tier-1" | "tier-2" | "tier-3" | "isolated";
 
@@ -120,6 +122,25 @@ export class ServiceRegistryService {
       dependencyGraph: this.buildDependencyGraph(),
       lastUpdated: new Date().toISOString(),
     };
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("service-registry", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      services: Array.from(this.services.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.services) this.services = new Map(state.services as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("service-registry");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

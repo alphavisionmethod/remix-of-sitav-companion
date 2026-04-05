@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { DomainId } from "@/packages/contracts";
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 
 export type OutcomeStatus = "active" | "on-track" | "at-risk" | "behind" | "completed" | "abandoned";
 
@@ -134,6 +136,27 @@ export class OutcomeEngineService {
     if (progress >= expectedProgress * 0.9) return "on-track";
     if (progress >= expectedProgress * 0.6) return "at-risk";
     return "behind";
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("outcome-engine", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      outcomes: Array.from(this.outcomes.entries()),
+      impacts: this.impacts,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.outcomes) this.outcomes = new Map(state.outcomes as any);
+    if (state.impacts) this.impacts = state.impacts as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("outcome-engine");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

@@ -2,6 +2,8 @@
 // SITA OS — Multi-Language Runtime
 // Real-time UI translation based on user locale
 // ═══════════════════════════════════════════════════════════════
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — stateful module, persist via universal adapter
 
 export type SupportedLocale = 'en' | 'es' | 'fr' | 'de' | 'pt' | 'ar' | 'zh' | 'ja' | 'hi' | 'ko';
 

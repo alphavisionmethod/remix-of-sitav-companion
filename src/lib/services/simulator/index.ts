@@ -1,4 +1,6 @@
 // SITA OS — Simulator (merge: workflow-engine)
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface SimulationRun { id: string; scenario: string; inputs: Record<string, unknown>; outputs: Record<string, unknown>; duration: number; status: 'running' | 'completed' | 'failed'; startedAt: string; }
 export class SimulatorService {
   private runs: SimulationRun[] = [];
@@ -8,5 +10,24 @@ export class SimulatorService {
   fail(id: string): void { const r = this.runs.find(x => x.id === id); if (r) r.status = 'failed'; }
   getRun(id: string): SimulationRun | undefined { return this.runs.find(r => r.id === id); }
   listRuns(): SimulationRun[] { return [...this.runs]; }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("simulator", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      runs: this.runs,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.runs) this.runs = state.runs as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("simulator");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 export const createSimulator = () => new SimulatorService();

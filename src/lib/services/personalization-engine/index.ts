@@ -4,6 +4,8 @@
 //   explicit (user-set) > inferred (behavioral) > default
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export { BehavioralLearningEngine, createBehavioralLearningEngine } from "./behavioral-learning.service";
 export type { BehavioralEvent, BehavioralEventType, InferredPattern } from "./behavioral-learning.service";
 
@@ -259,6 +261,27 @@ export class PersonalizationEngineService {
       }
       target[parts[parts.length - 1]] = lv.value;
     }
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("personalization-engine", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      explicit: Array.from(this.explicit.entries()),
+      inferred: Array.from(this.inferred.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.explicit) this.explicit = new Map(state.explicit as any);
+    if (state.inferred) this.inferred = new Map(state.inferred as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("personalization-engine");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { Portfolio, Allocation, RebalanceOrder, RebalanceSimulation, TargetAllocation, AssetClass } from "@/packages/contracts/domain-types/capital-allocation";
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 
 export type { Portfolio, Allocation, RebalanceOrder, RebalanceSimulation, TargetAllocation, AssetClass };
 
@@ -126,6 +128,27 @@ export class CapitalAllocationService {
     portfolio.allocations.forEach(a => {
       a.weight = total > 0 ? (a.currentValue / total) * 100 : 0;
     });
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("capital-allocation", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      portfolios: Array.from(this.portfolios.entries()),
+      rebalanceOrders: Array.from(this.rebalanceOrders.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.portfolios) this.portfolios = new Map(state.portfolios as any);
+    if (state.rebalanceOrders) this.rebalanceOrders = new Map(state.rebalanceOrders as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("capital-allocation");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

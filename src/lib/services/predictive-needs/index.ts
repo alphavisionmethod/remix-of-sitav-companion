@@ -3,6 +3,8 @@
 // Proactive cross-domain need anticipation
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type NeedCategory = 'financial' | 'business' | 'household' | 'health' | 'legal' | 'education';
 export type NeedUrgency = 'immediate' | 'this-week' | 'this-month' | 'this-quarter';
 
@@ -169,6 +171,29 @@ export class PredictiveNeedsEngine {
   }
 
   listPredictions(): PredictedNeed[] { return [...this.predictions.values()]; }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("predictive-needs", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      predictions: Array.from(this.predictions.entries()),
+      patterns: this.patterns,
+      outcomes: this.outcomes,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.predictions) this.predictions = new Map(state.predictions as any);
+    if (state.patterns) this.patterns = state.patterns as any;
+    if (state.outcomes) this.outcomes = state.outcomes as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("predictive-needs");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 
 export const createPredictiveNeeds = () => new PredictiveNeedsEngine();

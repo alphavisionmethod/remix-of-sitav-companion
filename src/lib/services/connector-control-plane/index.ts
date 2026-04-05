@@ -1,3 +1,4 @@
+// @persistence: none — stateless module, no durable state to persist
 export * from "./connectors/gmail.connector";
 export * from "./connectors/calendar.connector";
 export * from "./connectors/crm.connector";

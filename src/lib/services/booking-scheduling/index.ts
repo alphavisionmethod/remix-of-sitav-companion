@@ -3,6 +3,8 @@
 // Calendar-aware booking, appointment scheduling, conflict resolution
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type BookingStatus = "proposed" | "confirmed" | "cancelled" | "rescheduled" | "completed" | "no-show";
 
 export type ConflictResolution = "reject" | "suggest-alternative" | "double-book" | "waitlist";
@@ -160,6 +162,27 @@ export class BookingSchedulingService {
       }
     });
     return conflicts;
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("booking-scheduling", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      bookings: Array.from(this.bookings.entries()),
+      availability: Array.from(this.availability.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.bookings) this.bookings = new Map(state.bookings as any);
+    if (state.availability) this.availability = new Map(state.availability as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("booking-scheduling");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

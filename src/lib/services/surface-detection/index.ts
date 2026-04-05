@@ -3,6 +3,7 @@
 // Detects the current runtime surface (Electron, PWA, Capacitor, Web)
 // and provides a React hook for consuming surface info
 // ═══════════════════════════════════════════════════════════════
+// @persistence: none — stateless module, no durable state to persist
 
 import { useState, useEffect } from "react";
 import type { SurfaceType, ActiveSurface } from "@/packages/contracts/runtime/os-unification-runtime";

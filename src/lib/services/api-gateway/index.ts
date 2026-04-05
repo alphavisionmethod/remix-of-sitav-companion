@@ -3,6 +3,8 @@
 // Ingress routing, rate limiting, auth validation
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface RouteConfig { path: string; method: string; service: string; handler: string; auth: boolean; rateLimit: number; timeout: number; trustLevel: string; }
 export interface RateLimitState { key: string; count: number; windowStart: string; limit: number; remaining: number; }
 export interface GatewayRequest { path: string; method: string; headers: Record<string, string>; body?: unknown; userId?: string; ip: string; timestamp: string; }
@@ -32,6 +34,27 @@ export class APIGatewayService {
 
   getRoutes(): RouteConfig[] { return [...this.routes]; }
   getHealth(): { routes: number; rateLimitEntries: number } { return { routes: this.routes.length, rateLimitEntries: this.rateLimits.size }; }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("api-gateway", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      routes: this.routes,
+      rateLimits: Array.from(this.rateLimits.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.routes) this.routes = state.routes as any;
+    if (state.rateLimits) this.rateLimits = new Map(state.rateLimits as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("api-gateway");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 
 export const createAPIGateway = () => new APIGatewayService();

@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { Message, NotificationPreferences, CommunicationTemplate, DeliveryReport, ChannelType, DeliveryStatus, MessageCategory, MessagePriority } from "@/packages/contracts/domain-types/communication";
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 
 export type { Message, NotificationPreferences, CommunicationTemplate, DeliveryReport, ChannelType, DeliveryStatus, MessageCategory, MessagePriority };
 
@@ -139,6 +141,31 @@ export class CommunicationService {
 
   private applyTemplate(template: string, data: Record<string, unknown>): string {
     return template.replace(/\{\{(\w+)\}\}/g, (_, key) => String(data[key] ?? `{{${key}}}`));
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("communication-service", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      messages: Array.from(this.messages.entries()),
+      templates: Array.from(this.templates.entries()),
+      preferences: Array.from(this.preferences.entries()),
+      deliveryReports: this.deliveryReports,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.messages) this.messages = new Map(state.messages as any);
+    if (state.templates) this.templates = new Map(state.templates as any);
+    if (state.preferences) this.preferences = new Map(state.preferences as any);
+    if (state.deliveryReports) this.deliveryReports = state.deliveryReports as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("communication-service");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

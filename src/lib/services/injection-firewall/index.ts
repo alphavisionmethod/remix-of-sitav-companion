@@ -3,6 +3,8 @@
 // Prompt injection and input sanitization guard
 // ═══════════════════════════════════════════════════════════════
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export type ThreatType = "prompt-injection" | "sql-injection" | "xss" | "path-traversal" | "command-injection" | "data-exfiltration" | "jailbreak";
 
 export type ThreatSeverity = "critical" | "high" | "medium" | "low" | "info";
@@ -141,6 +143,25 @@ export class InjectionFirewallService {
       sanitized = sanitized.substring(0, threat.position.start) + "[FILTERED]" + sanitized.substring(threat.position.end);
     }
     return sanitized;
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("injection-firewall", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      scanHistory: this.scanHistory,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.scanHistory) this.scanHistory = state.scanHistory as any;
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("injection-firewall");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

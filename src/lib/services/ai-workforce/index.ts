@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type {
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
   AgentDefinition, AgentTask, AgentTeam, AgentCapability,
   AgentStatus, AgentAutonomyLevel, CouncilDefinition, AgentKPI,
 } from "@/packages/contracts/domain-types/ai-workforce";
@@ -188,6 +190,31 @@ export class AIWorkforceService {
 
   private getActiveTaskCount(agentId: string): number {
     return Array.from(this.tasks.values()).filter(t => t.agentId === agentId && (t.status === "assigned" || t.status === "executing")).length;
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("ai-workforce", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      agents: Array.from(this.agents.entries()),
+      tasks: Array.from(this.tasks.entries()),
+      teams: Array.from(this.teams.entries()),
+      councils: Array.from(this.councils.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.agents) this.agents = new Map(state.agents as any);
+    if (state.tasks) this.tasks = new Map(state.tasks as any);
+    if (state.teams) this.teams = new Map(state.teams as any);
+    if (state.councils) this.councils = new Map(state.councils as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("ai-workforce");
+    if (state) this.hydrate(state as Record<string, unknown>);
   }
 }
 

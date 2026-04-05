@@ -1,4 +1,6 @@
 // SITA OS — Pack Management Service (merge: enterprise-control-plane)
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 export interface VerticalPack { id: string; name: string; domain: string; version: string; modules: string[]; schemas: string[]; active: boolean; installedAt?: string; }
 export class PackManagementService {
   private packs: Map<string, VerticalPack> = new Map();
@@ -10,5 +12,24 @@ export class PackManagementService {
   listPacks(): VerticalPack[] { return [...this.packs.values()]; }
   getActive(): VerticalPack[] { return [...this.packs.values()].filter(p => p.active); }
   getByDomain(domain: string): VerticalPack[] { return [...this.packs.values()].filter(p => p.domain === domain); }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("pack-management-service", this.serialize());
+
+  serialize(): Record<string, unknown> {
+    return {
+      packs: Array.from(this.packs.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.packs) this.packs = new Map(state.packs as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("pack-management-service");
+    if (state) this.hydrate(state as Record<string, unknown>);
+  }
 }
 export const createPackManagement = () => new PackManagementService();
