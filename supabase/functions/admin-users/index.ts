@@ -110,18 +110,12 @@ serve(async (req) => {
         return corsResponse({ success: true });
       }
 
-      return new Response(JSON.stringify({ error: "Unknown action" }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return corsError("Unknown action", 400);
     }
 
-    return new Response(JSON.stringify({ error: "Method not allowed" }), {
-      status: 405, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return corsError("Method not allowed", 405);
   } catch (e) {
     console.error("admin-users error:", e);
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
-      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return corsError(e instanceof Error ? e.message : "Unknown error", 500);
   }
 });
