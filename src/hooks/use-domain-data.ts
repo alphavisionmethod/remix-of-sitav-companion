@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchCustomers, fetchCollections, type CollectionsAccount } from "@/lib/data-services/business-data-service";
+import { fetchCustomers, fetchCollections } from "@/lib/data-services/business-data-service";
 import { fetchFilesOverview, fetchFilesProcessing, fetchFilesSearchIndex, fetchAllFiles, fetchFilesByStatus, fetchFilesBySensitivity, fetchFileSettings } from "@/lib/data-services/files-data-service";
 import { fetchReservesSavings } from "@/lib/data-services/money-data-service";
 import { fetchMobileAlerts, fetchMobileApprovals, fetchMobileProofs, fetchMobileWorkflowSteps } from "@/lib/data-services/mobile-data-service";
@@ -13,7 +13,7 @@ import { fetchRevenueLeakage } from "@/lib/data-services/revenue-data-service";
 import { fetchCapitalBuckets, fetchPositions, fetchTheses } from "@/lib/data-services/investment-data-service";
 
 // Helper: unwrap ModeAwareResult to just the data for backward compat
-const unwrap = async <T,>(fn: () => Promise<{ data: T }>): Promise<T> => {
+const unwrap = async (fn: () => Promise<{ data: any }>): Promise<any> => {
   const result = await fn();
   return result.data;
 };
