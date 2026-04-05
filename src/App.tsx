@@ -73,6 +73,7 @@ const ConnectorHub = lazy(() => import("./pages/ConnectorHub"));
 const AdvisorRegistry = lazy(() => import("./pages/advisors/AdvisorRegistry"));
 const RecoveryCenter = lazy(() => import("./pages/RecoveryCenter"));
 const LifeDashboard = lazy(() => import("./pages/LifeDashboard"));
+const LifeSimulator = lazy(() => import("./pages/LifeSimulator"));
 const PermissionsCenter = lazy(() => import("./pages/PermissionsCenter"));
 const AgentActivityDashboard = lazy(() => import("./pages/AgentActivityDashboard"));
 const RevenueCallingPage = lazy(() => import("./pages/RevenueCallingPage"));
@@ -213,6 +214,7 @@ const App = () => (
                   <Routes>
                     <Route path="/" element={<DailyPulse />} />
                     <Route path="/life" element={<LifeDashboard />} />
+                    <Route path="/life-simulator" element={<LifeSimulator />} />
 
                     {/* Business — parent container handles sub-routing via tabs */}
                     <Route path="/business" element={<BusinessCenter />} />
