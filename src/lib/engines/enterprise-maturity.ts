@@ -896,10 +896,15 @@ export class TrustDeviceEngine {
       },
     ];
   }
-}
 
-// ────────────────────────────────────────────────────────────────
-// SECTION 6 — Compliance, Audit & Proof Maturity
+  serialize(): Record<string, unknown> {
+    return { devices: Array.from(this.devices.entries()), signings: this.signings.slice(-500) };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.devices) this.devices = new Map(state.devices as any);
+    if (state.signings) this.signings = state.signings as any;
+  }
+}
 // ────────────────────────────────────────────────────────────────
 
 export type ProofPacketType = "workflow" | "approval" | "financial" | "boardroom" | "release" | "incident" | "device-signing";
