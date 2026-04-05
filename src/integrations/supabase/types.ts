@@ -4191,6 +4191,251 @@ export type Database = {
           },
         ]
       }
+      platform_admin_durability_states: {
+        Row: {
+          created_at: string
+          degraded: boolean
+          durable_store_ref: string | null
+          id: string
+          last_checked_at: string
+          lineage_complete: boolean
+          mutation_id: string | null
+          persistence_confirmed: boolean
+          projection_observed: boolean
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          degraded?: boolean
+          durable_store_ref?: string | null
+          id?: string
+          last_checked_at?: string
+          lineage_complete?: boolean
+          mutation_id?: string | null
+          persistence_confirmed?: boolean
+          projection_observed?: boolean
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          degraded?: boolean
+          durable_store_ref?: string | null
+          id?: string
+          last_checked_at?: string
+          lineage_complete?: boolean
+          mutation_id?: string | null
+          persistence_confirmed?: boolean
+          projection_observed?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_admin_durability_states_mutation_id_fkey"
+            columns: ["mutation_id"]
+            isOneToOne: false
+            referencedRelation: "platform_admin_mutations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_admin_mutations: {
+        Row: {
+          actor_id: string
+          actor_type: string
+          canonical_write_path_used: boolean
+          created_at: string
+          durability_status: string
+          id: string
+          mutation_type: string
+          notes: string | null
+          persisted_at: string | null
+          policy_decision_ref: string | null
+          projection_impact_refs: string[] | null
+          receipt_ref: string | null
+          rollback_eligible: boolean
+          rollback_ref: string | null
+          submitted_at: string
+          surface: string
+          target_id: string
+          target_type: string
+          user_id: string
+        }
+        Insert: {
+          actor_id: string
+          actor_type?: string
+          canonical_write_path_used?: boolean
+          created_at?: string
+          durability_status?: string
+          id?: string
+          mutation_type: string
+          notes?: string | null
+          persisted_at?: string | null
+          policy_decision_ref?: string | null
+          projection_impact_refs?: string[] | null
+          receipt_ref?: string | null
+          rollback_eligible?: boolean
+          rollback_ref?: string | null
+          submitted_at?: string
+          surface: string
+          target_id: string
+          target_type: string
+          user_id: string
+        }
+        Update: {
+          actor_id?: string
+          actor_type?: string
+          canonical_write_path_used?: boolean
+          created_at?: string
+          durability_status?: string
+          id?: string
+          mutation_type?: string
+          notes?: string | null
+          persisted_at?: string | null
+          policy_decision_ref?: string | null
+          projection_impact_refs?: string[] | null
+          receipt_ref?: string | null
+          rollback_eligible?: boolean
+          rollback_ref?: string | null
+          submitted_at?: string
+          surface?: string
+          target_id?: string
+          target_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_concierge_continuity: {
+        Row: {
+          broken_at: string | null
+          continuity_state: string
+          created_at: string
+          household_id: string | null
+          id: string
+          journey_type: string
+          notes: string | null
+          receipt_refs: string[] | null
+          restored_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          broken_at?: string | null
+          continuity_state?: string
+          created_at?: string
+          household_id?: string | null
+          id?: string
+          journey_type?: string
+          notes?: string | null
+          receipt_refs?: string[] | null
+          restored_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          broken_at?: string | null
+          continuity_state?: string
+          created_at?: string
+          household_id?: string | null
+          id?: string
+          journey_type?: string
+          notes?: string | null
+          receipt_refs?: string[] | null
+          restored_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_connector_health: {
+        Row: {
+          capability_losses: string[] | null
+          connector_id: string
+          created_at: string
+          degraded: boolean
+          error_rate: number | null
+          id: string
+          last_checked_at: string
+          last_healthy_at: string | null
+          sync_state: string
+          user_id: string
+        }
+        Insert: {
+          capability_losses?: string[] | null
+          connector_id: string
+          created_at?: string
+          degraded?: boolean
+          error_rate?: number | null
+          id?: string
+          last_checked_at?: string
+          last_healthy_at?: string | null
+          sync_state?: string
+          user_id: string
+        }
+        Update: {
+          capability_losses?: string[] | null
+          connector_id?: string
+          created_at?: string
+          degraded?: boolean
+          error_rate?: number | null
+          id?: string
+          last_checked_at?: string
+          last_healthy_at?: string | null
+          sync_state?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_connector_lifecycle: {
+        Row: {
+          approved_actions: string[] | null
+          blocked_actions: string[] | null
+          connector_id: string
+          created_at: string
+          degraded_mode: boolean
+          health_refs: string[] | null
+          id: string
+          last_transition_at: string
+          policy_refs: string[] | null
+          state: string
+          state_reason: string | null
+          updated_at: string
+          user_id: string
+          version: string | null
+        }
+        Insert: {
+          approved_actions?: string[] | null
+          blocked_actions?: string[] | null
+          connector_id: string
+          created_at?: string
+          degraded_mode?: boolean
+          health_refs?: string[] | null
+          id?: string
+          last_transition_at?: string
+          policy_refs?: string[] | null
+          state?: string
+          state_reason?: string | null
+          updated_at?: string
+          user_id: string
+          version?: string | null
+        }
+        Update: {
+          approved_actions?: string[] | null
+          blocked_actions?: string[] | null
+          connector_id?: string
+          created_at?: string
+          degraded_mode?: boolean
+          health_refs?: string[] | null
+          id?: string
+          last_transition_at?: string
+          policy_refs?: string[] | null
+          state?: string
+          state_reason?: string | null
+          updated_at?: string
+          user_id?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
       platform_degraded_states: {
         Row: {
           affected_capabilities: string[] | null
@@ -4245,6 +4490,138 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_deployment_gates: {
+        Row: {
+          created_at: string
+          environment: string
+          evidence_ref: string | null
+          gate_type: string
+          id: string
+          last_updated_at: string
+          owner: string | null
+          release_id: string
+          state: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          environment: string
+          evidence_ref?: string | null
+          gate_type: string
+          id?: string
+          last_updated_at?: string
+          owner?: string | null
+          release_id: string
+          state?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          environment?: string
+          evidence_ref?: string | null
+          gate_type?: string
+          id?: string
+          last_updated_at?: string
+          owner?: string | null
+          release_id?: string
+          state?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_docs_runtime_drift: {
+        Row: {
+          acknowledged: boolean
+          claim_summary: string | null
+          created_at: string
+          doc_ref: string
+          evidence_summary: string | null
+          id: string
+          resolved_at: string | null
+          runtime_scope: string
+          severity: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged?: boolean
+          claim_summary?: string | null
+          created_at?: string
+          doc_ref: string
+          evidence_summary?: string | null
+          id?: string
+          resolved_at?: string | null
+          runtime_scope: string
+          severity?: string
+          user_id: string
+        }
+        Update: {
+          acknowledged?: boolean
+          claim_summary?: string | null
+          created_at?: string
+          doc_ref?: string
+          evidence_summary?: string | null
+          id?: string
+          resolved_at?: string | null
+          runtime_scope?: string
+          severity?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_environment_truth: {
+        Row: {
+          config_integrity_state: string
+          created_at: string
+          deployment_state: string
+          dr_ready: boolean
+          environment: string
+          ha_ready: boolean
+          id: string
+          last_validated_at: string | null
+          load_state: string
+          release_id: string
+          rollback_ready: boolean
+          secret_integrity_state: string
+          smoke_state: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          config_integrity_state?: string
+          created_at?: string
+          deployment_state?: string
+          dr_ready?: boolean
+          environment: string
+          ha_ready?: boolean
+          id?: string
+          last_validated_at?: string | null
+          load_state?: string
+          release_id: string
+          rollback_ready?: boolean
+          secret_integrity_state?: string
+          smoke_state?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          config_integrity_state?: string
+          created_at?: string
+          deployment_state?: string
+          dr_ready?: boolean
+          environment?: string
+          ha_ready?: boolean
+          id?: string
+          last_validated_at?: string | null
+          load_state?: string
+          release_id?: string
+          rollback_ready?: boolean
+          secret_integrity_state?: string
+          smoke_state?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       platform_health_snapshots: {
         Row: {
           check_duration_ms: number | null
@@ -4283,6 +4660,51 @@ export type Database = {
           health_score?: number | null
           health_status?: string
           id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_launch_blockers: {
+        Row: {
+          created_at: string
+          description: string | null
+          domain: string
+          evidence_missing: string[] | null
+          id: string
+          owner: string | null
+          resolved_at: string | null
+          ring_impact: string[] | null
+          scope_ref: string | null
+          severity: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          domain: string
+          evidence_missing?: string[] | null
+          id?: string
+          owner?: string | null
+          resolved_at?: string | null
+          ring_impact?: string[] | null
+          scope_ref?: string | null
+          severity?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          domain?: string
+          evidence_missing?: string[] | null
+          id?: string
+          owner?: string | null
+          resolved_at?: string | null
+          ring_impact?: string[] | null
+          scope_ref?: string | null
+          severity?: string
+          title?: string
           user_id?: string
         }
         Relationships: []
@@ -4413,6 +4835,57 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_operator_incidents: {
+        Row: {
+          affected_scopes: string[] | null
+          alert_refs: string[] | null
+          created_at: string
+          current_state: string
+          detected_by: string | null
+          id: string
+          mitigation_refs: string[] | null
+          resolved_at: string | null
+          runbook_refs: string[] | null
+          severity: string
+          start_at: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          affected_scopes?: string[] | null
+          alert_refs?: string[] | null
+          created_at?: string
+          current_state?: string
+          detected_by?: string | null
+          id?: string
+          mitigation_refs?: string[] | null
+          resolved_at?: string | null
+          runbook_refs?: string[] | null
+          severity?: string
+          start_at?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          affected_scopes?: string[] | null
+          alert_refs?: string[] | null
+          created_at?: string
+          current_state?: string
+          detected_by?: string | null
+          id?: string
+          mitigation_refs?: string[] | null
+          resolved_at?: string | null
+          runbook_refs?: string[] | null
+          severity?: string
+          start_at?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       platform_projection_states: {
         Row: {
           confidence_level: number | null
@@ -4470,6 +4943,407 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_promotion_readiness: {
+        Row: {
+          approved_by: string | null
+          approved_for_promotion: boolean
+          blocker_refs: string[] | null
+          created_at: string
+          decided_at: string | null
+          environment: string
+          id: string
+          readiness_score: number | null
+          release_id: string
+          required_evidence_refs: string[] | null
+          ring: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approved_by?: string | null
+          approved_for_promotion?: boolean
+          blocker_refs?: string[] | null
+          created_at?: string
+          decided_at?: string | null
+          environment: string
+          id?: string
+          readiness_score?: number | null
+          release_id: string
+          required_evidence_refs?: string[] | null
+          ring: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approved_by?: string | null
+          approved_for_promotion?: boolean
+          blocker_refs?: string[] | null
+          created_at?: string
+          decided_at?: string | null
+          environment?: string
+          id?: string
+          readiness_score?: number | null
+          release_id?: string
+          required_evidence_refs?: string[] | null
+          ring?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_proof_chains: {
+        Row: {
+          action_id: string
+          approval_step_ref: string | null
+          canonical_chain_version: number
+          capability_id: string
+          created_at: string
+          event_step_refs: string[] | null
+          execution_step_ref: string | null
+          id: string
+          policy_step_ref: string | null
+          projection_step_refs: string[] | null
+          proof_integrity_status: string
+          receipt_step_ref: string | null
+          user_id: string
+        }
+        Insert: {
+          action_id: string
+          approval_step_ref?: string | null
+          canonical_chain_version?: number
+          capability_id: string
+          created_at?: string
+          event_step_refs?: string[] | null
+          execution_step_ref?: string | null
+          id?: string
+          policy_step_ref?: string | null
+          projection_step_refs?: string[] | null
+          proof_integrity_status?: string
+          receipt_step_ref?: string | null
+          user_id: string
+        }
+        Update: {
+          action_id?: string
+          approval_step_ref?: string | null
+          canonical_chain_version?: number
+          capability_id?: string
+          created_at?: string
+          event_step_refs?: string[] | null
+          execution_step_ref?: string | null
+          id?: string
+          policy_step_ref?: string | null
+          projection_step_refs?: string[] | null
+          proof_integrity_status?: string
+          receipt_step_ref?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_proof_coverage: {
+        Row: {
+          approval_coverage: boolean
+          branch_coverage: number | null
+          capability_id: string
+          coverage_status: string
+          created_at: string
+          degraded_branch_coverage: number | null
+          id: string
+          last_validated_at: string | null
+          receipt_coverage: boolean
+          replay_coverage: boolean
+          rollback_coverage: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_coverage?: boolean
+          branch_coverage?: number | null
+          capability_id: string
+          coverage_status?: string
+          created_at?: string
+          degraded_branch_coverage?: number | null
+          id?: string
+          last_validated_at?: string | null
+          receipt_coverage?: boolean
+          replay_coverage?: boolean
+          rollback_coverage?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_coverage?: boolean
+          branch_coverage?: number | null
+          capability_id?: string
+          coverage_status?: string
+          created_at?: string
+          degraded_branch_coverage?: number | null
+          id?: string
+          last_validated_at?: string | null
+          receipt_coverage?: boolean
+          replay_coverage?: boolean
+          rollback_coverage?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_read_model_health: {
+        Row: {
+          created_at: string
+          dependency_refs: string[] | null
+          error_count: number
+          id: string
+          read_model_name: string
+          rebuild_eligible: boolean
+          rebuild_last_attempt_at: string | null
+          rebuild_last_result: string | null
+          stale_surface_count: number
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dependency_refs?: string[] | null
+          error_count?: number
+          id?: string
+          read_model_name: string
+          rebuild_eligible?: boolean
+          rebuild_last_attempt_at?: string | null
+          rebuild_last_result?: string | null
+          stale_surface_count?: number
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dependency_refs?: string[] | null
+          error_count?: number
+          id?: string
+          read_model_name?: string
+          rebuild_eligible?: boolean
+          rebuild_last_attempt_at?: string | null
+          rebuild_last_result?: string | null
+          stale_surface_count?: number
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_replay_verifications: {
+        Row: {
+          branch_type: string
+          capability_id: string
+          created_at: string
+          evidence_refs: string[] | null
+          id: string
+          mismatch_summary: string | null
+          replay_status: string
+          scenario_id: string
+          user_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          branch_type?: string
+          capability_id: string
+          created_at?: string
+          evidence_refs?: string[] | null
+          id?: string
+          mismatch_summary?: string | null
+          replay_status?: string
+          scenario_id: string
+          user_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          branch_type?: string
+          capability_id?: string
+          created_at?: string
+          evidence_refs?: string[] | null
+          id?: string
+          mismatch_summary?: string | null
+          replay_status?: string
+          scenario_id?: string
+          user_id?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      platform_rollback_verifications: {
+        Row: {
+          capability_id: string
+          created_at: string
+          evidence_refs: string[] | null
+          id: string
+          partial_rollback_risk: boolean
+          rollback_status: string
+          scenario_id: string
+          user_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          capability_id: string
+          created_at?: string
+          evidence_refs?: string[] | null
+          id?: string
+          partial_rollback_risk?: boolean
+          rollback_status?: string
+          scenario_id: string
+          user_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          capability_id?: string
+          created_at?: string
+          evidence_refs?: string[] | null
+          id?: string
+          partial_rollback_risk?: boolean
+          rollback_status?: string
+          scenario_id?: string
+          user_id?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      platform_runbook_executions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          escalations: string[] | null
+          evidence_captured: string[] | null
+          id: string
+          incident_id: string | null
+          result: string | null
+          runbook_name: string
+          started_at: string
+          steps_completed: string[] | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          escalations?: string[] | null
+          evidence_captured?: string[] | null
+          id?: string
+          incident_id?: string | null
+          result?: string | null
+          runbook_name: string
+          started_at?: string
+          steps_completed?: string[] | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          escalations?: string[] | null
+          evidence_captured?: string[] | null
+          id?: string
+          incident_id?: string | null
+          result?: string | null
+          runbook_name?: string
+          started_at?: string
+          steps_completed?: string[] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_runbook_executions_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "platform_operator_incidents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_security_posture: {
+        Row: {
+          created_at: string
+          data_classification_state: string
+          encryption_at_rest_state: string
+          id: string
+          last_verified_at: string | null
+          policy_protection_state: string
+          scope_id: string
+          scope_type: string
+          secret_integrity_state: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data_classification_state?: string
+          encryption_at_rest_state?: string
+          id?: string
+          last_verified_at?: string | null
+          policy_protection_state?: string
+          scope_id: string
+          scope_type: string
+          secret_integrity_state?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data_classification_state?: string
+          encryption_at_rest_state?: string
+          id?: string
+          last_verified_at?: string | null
+          policy_protection_state?: string
+          scope_id?: string
+          scope_type?: string
+          secret_integrity_state?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_truth_manifests: {
+        Row: {
+          claim_refs: string[] | null
+          created_at: string
+          drift_status: string
+          drift_summary: string | null
+          generated_at: string
+          id: string
+          runtime_evidence_refs: string[] | null
+          scope_id: string
+          scope_type: string
+          source_of_truth_refs: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          claim_refs?: string[] | null
+          created_at?: string
+          drift_status?: string
+          drift_summary?: string | null
+          generated_at?: string
+          id?: string
+          runtime_evidence_refs?: string[] | null
+          scope_id: string
+          scope_type: string
+          source_of_truth_refs?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          claim_refs?: string[] | null
+          created_at?: string
+          drift_status?: string
+          drift_summary?: string | null
+          generated_at?: string
+          id?: string
+          runtime_evidence_refs?: string[] | null
+          scope_id?: string
+          scope_type?: string
+          source_of_truth_refs?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       platform_truth_sync_log: {
         Row: {
           artifact_path: string
@@ -4514,6 +5388,51 @@ export type Database = {
           metadata?: Json | null
           source_hash?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_validation_scores: {
+        Row: {
+          blocker_count: number
+          computed_at: string
+          created_at: string
+          deployment_truth_score: number | null
+          evidence_completeness_score: number | null
+          id: string
+          proof_coverage_score: number | null
+          readiness_score: number | null
+          scope_id: string
+          scope_type: string
+          test_coverage_score: number | null
+          user_id: string
+        }
+        Insert: {
+          blocker_count?: number
+          computed_at?: string
+          created_at?: string
+          deployment_truth_score?: number | null
+          evidence_completeness_score?: number | null
+          id?: string
+          proof_coverage_score?: number | null
+          readiness_score?: number | null
+          scope_id: string
+          scope_type: string
+          test_coverage_score?: number | null
+          user_id: string
+        }
+        Update: {
+          blocker_count?: number
+          computed_at?: string
+          created_at?: string
+          deployment_truth_score?: number | null
+          evidence_completeness_score?: number | null
+          id?: string
+          proof_coverage_score?: number | null
+          readiness_score?: number | null
+          scope_id?: string
+          scope_type?: string
+          test_coverage_score?: number | null
           user_id?: string
         }
         Relationships: []
