@@ -29,3 +29,6 @@ export type { LearningEvent, LearningEventType, AgentRoutingWeight, LearnedPatte
 
 export { SelfHealingEngine } from "./self-healing-engine";
 export type { SelfHealingRule, HealingAttempt, HealingPolicy, HealingMode } from "./self-healing-engine";
+
+export { AGENT_SPECIFICATIONS, getAgentSpec, getAgentSpecByRole, getAgentsRequiredForRelease, getAgentsWithVetoPower, getAutoHealCapableAgents, generateChiefSynthesis } from "./agent-specifications";
+export type { AgentSpecification, ChiefEngineeringSynthesis } from "./agent-specifications";
