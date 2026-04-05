@@ -235,6 +235,7 @@ const AutomationReceipts = lazy(() => import("./pages/revenue-office/AutomationR
 const AutomationPolicy = lazy(() => import("./pages/revenue-office/AutomationPolicy"));
 const QuoteStudio = lazy(() => import("./pages/revenue-office/QuoteStudio"));
 const CallDesk = lazy(() => import("./pages/revenue-office/CallDesk"));
+const BusinessOnboarding = lazy(() => import("./pages/revenue-office/BusinessOnboarding"));
 
 const queryClient = createQueryClient();
 
@@ -437,6 +438,7 @@ const App = () => (
                     <Route path="/revenue-office/automation/policy" element={<AutomationPolicy />} />
                     <Route path="/revenue-office/quotes" element={<QuoteStudio />} />
                     <Route path="/revenue-office/calls" element={<CallDesk />} />
+                    <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
