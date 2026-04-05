@@ -139,6 +139,64 @@ const AIEngineeringBoard = () => {
 
   const integrationHealth = useMemo(() => getIntegrationHealthSummary(), []);
 
+  return (
+    <div className="space-y-6 p-6">
+      <AdminPageHeader icon={Brain} title="AI Engineering Board" subtitle="Your AI engineering department — goals, fixes, healing, approvals, and release confidence" accent="primary" />
+
+      {/* ── Chief Engineering Synthesis ── */}
+      <div className="rounded-xl border-2 border-primary/20 bg-primary/5 p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Star className="h-5 w-5 text-primary" />
+            <span className="text-sm font-bold">Chief Engineering Synthesis</span>
+          </div>
+          <div className="flex items-center gap-2">
+            {chiefSynthesis.releaseConfidenceDirection === "rising" && <ArrowUp className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" />}
+            {chiefSynthesis.releaseConfidenceDirection === "falling" && <ArrowDown className="h-3.5 w-3.5 text-destructive" />}
+            {chiefSynthesis.releaseConfidenceDirection === "stable" && <Minus className="h-3.5 w-3.5 text-muted-foreground" />}
+            <Badge variant="outline" className="text-xs">Release: {chiefSynthesis.releaseConfidenceScore}%</Badge>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="space-y-1.5">
+            <p className="text-xs font-semibold text-primary">What Matters Now</p>
+            <p className="text-sm">{chiefSynthesis.whatMattersNow}</p>
+          </div>
+          <div className="space-y-1.5">
+            <p className="text-xs font-semibold text-primary">Next Best Action</p>
+            <p className="text-sm">{chiefSynthesis.nextBestOperatorAction}</p>
+          </div>
+          <div className="space-y-1.5">
+            <p className="text-xs font-semibold text-destructive">Biggest Risk</p>
+            <p className="text-sm">{chiefSynthesis.biggestRisk}</p>
+          </div>
+          <div className="space-y-1.5">
+            <p className="text-xs font-semibold text-[hsl(var(--trust-safe))]">Biggest Opportunity</p>
+            <p className="text-sm">{chiefSynthesis.biggestOpportunity}</p>
+          </div>
+        </div>
+        {chiefSynthesis.agentDisagreements.length > 0 && (
+          <div className="rounded-lg bg-background/50 p-3 space-y-1">
+            <p className="text-xs font-semibold text-amber-500">Agent Disagreements</p>
+            {chiefSynthesis.agentDisagreements.map((d, i) => (
+              <div key={i} className="text-xs">
+                <span className="font-medium">{d.topic}:</span>{" "}
+                {d.positions.map((p, j) => (
+                  <span key={j}>{j > 0 && " vs "}<span className="text-muted-foreground">{p.agent}:</span> {p.position}</span>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+          <span>Active: {chiefSynthesis.missionSummary.active}</span>
+          <span>Blocked: {chiefSynthesis.missionSummary.blocked}</span>
+          <span>Completed: {chiefSynthesis.missionSummary.completed}</span>
+          <span>Critical: {chiefSynthesis.criticalIssueCount}</span>
+          <span>Self-Heal: {chiefSynthesis.selfHealHealth}</span>
+        </div>
+      </div>
+
       {/* A. Engineering Overview Band */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
         {OVERVIEW_BAND.map(c => (
