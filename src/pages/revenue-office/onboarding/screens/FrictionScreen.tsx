@@ -27,6 +27,19 @@ export default function FrictionScreen({ state, setState }: ScreenProps) {
     setState(p => ({ ...p, growthBottlenecks: p.growthBottlenecks.includes(v) ? p.growthBottlenecks.filter(x => x !== v) : [...p.growthBottlenecks, v] }));
   }, [setState]);
 
+  const branchQuestions = useMemo(() => getBottleneckBranch(state), [state.growthBottlenecks]);
+  const handleBranch = useCallback((qId: string, oId: string) => {
+    setState(p => {
+      const current = p.branchAnswers[qId] || [];
+      const next = current.includes(oId) ? current.filter(x => x !== oId) : [...current, oId];
+      return { ...p, branchAnswers: { ...p.branchAnswers, [qId]: next } };
+    });
+  }, [setState]);
+
+  const reliefOptions = useMemo(() =>
+    state.growthBottlenecks.map(id => bottlenecks.find(b => b.id === id)).filter(Boolean).map(b => ({ id: b!.id, label: b!.label }))
+  , [state.growthBottlenecks]);
+
   return (
     <div className="space-y-6">
       <ScreenHeader icon={Flame} title="Where does momentum usually get lost?" subtitle="Be honest — this is where SITA can make the biggest impact fastest" color="text-amber-400" />
