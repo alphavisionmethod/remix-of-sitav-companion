@@ -52,9 +52,7 @@ serve(async (req) => {
         roles: roleMap[u.id] || [],
       }));
 
-      return new Response(JSON.stringify({ users: result, total: result.length }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return corsResponse({ users: result, total: result.length });
     }
 
     if (req.method === "POST") {
