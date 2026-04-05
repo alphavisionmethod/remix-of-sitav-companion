@@ -1,0 +1,15 @@
+{
+  "role": "user",
+  "missionControl": false,
+  "advancedMode": false,
+  "features": {
+    "userManagement": false,
+    "aiTokenDashboard": false,
+    "systemManagement": false,
+    "osCommands": false,
+    "fleetHealth": false,
+    "allAdminPages": false
+  },
+  "defaultChannel": "stable",
+  "autoUpdate": true
+}

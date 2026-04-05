@@ -1,0 +1,15 @@
+{
+  "role": "admin",
+  "missionControl": true,
+  "advancedMode": true,
+  "features": {
+    "userManagement": true,
+    "aiTokenDashboard": true,
+    "systemManagement": true,
+    "osCommands": true,
+    "fleetHealth": true,
+    "allAdminPages": true
+  },
+  "defaultChannel": "canary",
+  "autoUpdate": false
+}
