@@ -19,7 +19,8 @@ export type SetupPhaseId =
   | "first-simulation" | "first-actions"
   | "recover-first" | "arrival-prep"
   | "first-win-setup" | "desktop-transition"
-  | "system-check" | "trust-certificate";
+  | "system-check" | "trust-certificate"
+  | "life-rhythm" | "stress-slippage" | "communications-context" | "planning-style" | "environment-summary";
 
 /** 12-state per-phase status */
 export type SetupPhaseStatus =
