@@ -101,10 +101,10 @@ export function NetworkSetupStep({ onNext, onPrev, onStateChange }: Props) {
 
   // Simulate network scanning
   useEffect(() => {
-    if (detectedType === "ethernet") return;
+    if (detectedType === ("ethernet" as ConnectionType)) return;
     const timer = setTimeout(() => {
       setNetworks(MOCK_NETWORKS);
-      if (navigator.onLine && detectedType !== "ethernet") {
+      if (navigator.onLine && detectedType !== ("ethernet" as ConnectionType)) {
         // Browser is online — auto-detect WiFi connection
         setConnectionState("connected");
         setSelectedNetwork("Detected Network");
