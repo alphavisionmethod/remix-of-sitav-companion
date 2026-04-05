@@ -273,6 +273,8 @@ const ConciergeCommandCenter = lazy(() => import("./pages/atlas/ConciergeCommand
 const PlatformTruthRegistry = lazy(() => import("./pages/atlas/PlatformTruthRegistry"));
 const DataProtectionPosture = lazy(() => import("./pages/atlas/DataProtectionPosture"));
 const ValidationCommandCenter = lazy(() => import("./pages/atlas/ValidationCommandCenter"));
+const AdminDurabilityBoard = lazy(() => import("./pages/atlas/AdminDurabilityBoard"));
+const AtlasHub = lazy(() => import("./pages/atlas/AtlasHub"));
 
 const queryClient = createQueryClient();
 
