@@ -269,6 +269,14 @@ const LT05LaunchGateBoard = lazy(() => import("./pages/admin/LT05LaunchGateBoard
 const LT06RouteInteractionTruth = lazy(() => import("./pages/admin/LT06RouteInteractionTruth"));
 const LT07TruthRegressionRadar = lazy(() => import("./pages/admin/LT07TruthRegressionRadar"));
 
+const CN01ConnectorRealityOverview = lazy(() => import("./pages/admin/CN01ConnectorRealityOverview"));
+const CN02ConnectorRegistryConsole = lazy(() => import("./pages/admin/CN02ConnectorRegistryConsole"));
+const CN03AccountLinkageBoard = lazy(() => import("./pages/admin/CN03AccountLinkageBoard"));
+const CN04SyncTruthCenter = lazy(() => import("./pages/admin/CN04SyncTruthCenter"));
+const CN05ConnectorHealthBoard = lazy(() => import("./pages/admin/CN05ConnectorHealthBoard"));
+const CN06ConnectorDemoReview = lazy(() => import("./pages/admin/CN06ConnectorDemoReview"));
+const CN07ConnectorLaunchGate = lazy(() => import("./pages/admin/CN07ConnectorLaunchGate"));
+
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
@@ -1026,6 +1034,13 @@ const App = () => (
                     <Route path="/admin/deployment" element={<AdminDeploymentTruthCenter />} />
                     <Route path="/admin/proof-matrix" element={<ProofMatrixExplorer />} />
                     <Route path="/admin/connectors" element={<ConnectorGovernanceCenter />} />
+                    <Route path="/admin/connectors/overview" element={<CN01ConnectorRealityOverview />} />
+                    <Route path="/admin/connectors/registry" element={<CN02ConnectorRegistryConsole />} />
+                    <Route path="/admin/connectors/accounts" element={<CN03AccountLinkageBoard />} />
+                    <Route path="/admin/connectors/sync" element={<CN04SyncTruthCenter />} />
+                    <Route path="/admin/connectors/health" element={<CN05ConnectorHealthBoard />} />
+                    <Route path="/admin/connectors/demo" element={<CN06ConnectorDemoReview />} />
+                    <Route path="/admin/connectors/launch-gate" element={<CN07ConnectorLaunchGate />} />
                     <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/admin/mission-control" element={<MissionControlHome />} />
                     <Route path="/admin/durability" element={<AdminDurabilityBoardPage />} />
