@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Flame, Users, MessageSquare, Target, Phone, DollarSign, Package, Heart, Star, RefreshCw, AlertTriangle, Eye, Brain } from "lucide-react";
-import { Toggle, ScreenHeader } from "../primitives";
+import { Toggle, ScreenHeader, SectionTitle, SingleSelect } from "../primitives";
+import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
+import { getBottleneckBranch } from "../branching";
 import type { ScreenProps } from "../types";
-import { useCallback } from "react";
 
 const bottlenecks = [
   { id: "lead_flow", label: "Not enough leads coming in", desc: "Pipeline feels empty or unpredictable", icon: Users },
@@ -26,6 +27,19 @@ export default function FrictionScreen({ state, setState }: ScreenProps) {
     setState(p => ({ ...p, growthBottlenecks: p.growthBottlenecks.includes(v) ? p.growthBottlenecks.filter(x => x !== v) : [...p.growthBottlenecks, v] }));
   }, [setState]);
 
+  const branchQuestions = useMemo(() => getBottleneckBranch(state), [state.growthBottlenecks]);
+  const handleBranch = useCallback((qId: string, oId: string) => {
+    setState(p => {
+      const current = p.branchAnswers[qId] || [];
+      const next = current.includes(oId) ? current.filter(x => x !== oId) : [...current, oId];
+      return { ...p, branchAnswers: { ...p.branchAnswers, [qId]: next } };
+    });
+  }, [setState]);
+
+  const reliefOptions = useMemo(() =>
+    state.growthBottlenecks.map(id => bottlenecks.find(b => b.id === id)).filter(Boolean).map(b => ({ id: b!.id, label: b!.label }))
+  , [state.growthBottlenecks]);
+
   return (
     <div className="space-y-6">
       <ScreenHeader icon={Flame} title="Where does momentum usually get lost?" subtitle="Be honest — this is where SITA can make the biggest impact fastest" color="text-amber-400" />
@@ -44,6 +58,15 @@ export default function FrictionScreen({ state, setState }: ScreenProps) {
             </div>
           </CardContent>
         </Card>
+      )}
+      {state.growthBottlenecks.length >= 2 && (
+        <div>
+          <SectionTitle>What would feel like the biggest relief in 30 days?</SectionTitle>
+          <SingleSelect value={state.branchAnswers["relief_priority"]?.[0] || ""} onChange={v => handleBranch("relief_priority", v)} options={reliefOptions} />
+        </div>
+      )}
+      {state.setupDepth === "deep" && branchQuestions.length > 0 && (
+        <BranchingQuestionsPanel questions={branchQuestions} answers={state.branchAnswers} onAnswer={handleBranch} />
       )}
     </div>
   );

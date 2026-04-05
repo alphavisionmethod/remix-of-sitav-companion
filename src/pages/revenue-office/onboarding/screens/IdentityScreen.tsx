@@ -1,7 +1,9 @@
 import { Building2, Briefcase, Users, GraduationCap, PenTool, ShoppingCart, MapPin, Heart, Layers, Sparkles } from "lucide-react";
 import { Toggle, SectionTitle, SingleSelect, ChapterBanner } from "../primitives";
+import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
+import { getBusinessTypeBranch } from "../branching";
 import type { ScreenProps } from "../types";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 const businessTypes = [
   { id: "service", label: "Service Business", desc: "Appointments, proposals, delivery milestones, reviews", icon: Briefcase },
@@ -18,6 +20,15 @@ const businessTypes = [
 export default function IdentityScreen({ state, setState }: ScreenProps) {
   const toggle = useCallback((v: string) => {
     setState(p => ({ ...p, businessTypes: p.businessTypes.includes(v) ? p.businessTypes.filter(x => x !== v) : [...p.businessTypes, v] }));
+  }, [setState]);
+
+  const branchQuestions = useMemo(() => getBusinessTypeBranch(state), [state.businessTypes]);
+  const handleBranch = useCallback((qId: string, oId: string) => {
+    setState(p => {
+      const current = p.branchAnswers[qId] || [];
+      const next = current.includes(oId) ? current.filter(x => x !== oId) : [...current, oId];
+      return { ...p, branchAnswers: { ...p.branchAnswers, [qId]: next } };
+    });
   }, [setState]);
 
   return (
@@ -46,6 +57,21 @@ export default function IdentityScreen({ state, setState }: ScreenProps) {
             options={[{ id: "starting", label: "Just starting" }, { id: "growing", label: "Growing" }, { id: "established", label: "Established" }, { id: "scaling", label: "Scaling / optimizing" }]} />
         </div>
       </div>
+      {state.teamSize === "multi" && (
+        <div className="grid grid-cols-2 gap-4">
+          <label className="flex items-center gap-3 p-3 rounded-xl bg-card/50 border border-border/50 cursor-pointer">
+            <input type="checkbox" checked={state.multiBrand} onChange={e => setState(p => ({ ...p, multiBrand: e.target.checked }))} className="accent-primary" />
+            <div><p className="text-xs font-medium text-foreground">Multiple brands</p><p className="text-[9px] text-muted-foreground">I manage separate business brands</p></div>
+          </label>
+          <label className="flex items-center gap-3 p-3 rounded-xl bg-card/50 border border-border/50 cursor-pointer">
+            <input type="checkbox" checked={state.multiClient} onChange={e => setState(p => ({ ...p, multiClient: e.target.checked }))} className="accent-primary" />
+            <div><p className="text-xs font-medium text-foreground">Multiple clients</p><p className="text-[9px] text-muted-foreground">I serve clients as an agency</p></div>
+          </label>
+        </div>
+      )}
+      {state.setupDepth === "deep" && branchQuestions.length > 0 && (
+        <BranchingQuestionsPanel questions={branchQuestions} answers={state.branchAnswers} onAnswer={handleBranch} />
+      )}
     </div>
   );
 }

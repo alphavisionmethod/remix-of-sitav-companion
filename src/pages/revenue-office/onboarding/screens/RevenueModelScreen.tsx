@@ -1,7 +1,9 @@
 import { DollarSign, Phone, FileText, RefreshCw, Package, Heart, ShoppingBag, MapPin, Users, Megaphone, Layers } from "lucide-react";
 import { Toggle, SectionTitle, ScreenHeader, SingleSelect } from "../primitives";
+import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
+import { getRevenueEngineBranch } from "../branching";
 import type { ScreenProps } from "../types";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 const sources = [
   { id: "appointments", label: "Booked calls / appointments", icon: Phone },
@@ -22,6 +24,14 @@ export default function RevenueModelScreen({ state, setState }: ScreenProps) {
   }, [setState]);
 
   const selectedSources = sources.filter(s => state.revenueSources.includes(s.id));
+  const branchQuestions = useMemo(() => getRevenueEngineBranch(state), [state.revenueSources]);
+  const handleBranch = useCallback((qId: string, oId: string) => {
+    setState(p => {
+      const current = p.branchAnswers[qId] || [];
+      const next = current.includes(oId) ? current.filter(x => x !== oId) : [...current, oId];
+      return { ...p, branchAnswers: { ...p.branchAnswers, [qId]: next } };
+    });
+  }, [setState]);
 
   return (
     <div className="space-y-6">
@@ -40,6 +50,9 @@ export default function RevenueModelScreen({ state, setState }: ScreenProps) {
             <SingleSelect value={state.revenueWeakest} onChange={v => setState(p => ({ ...p, revenueWeakest: v }))} options={selectedSources.map(s => ({ id: s.id, label: s.label }))} />
           </div>
         </div>
+      )}
+      {state.setupDepth === "deep" && branchQuestions.length > 0 && (
+        <BranchingQuestionsPanel questions={branchQuestions} answers={state.branchAnswers} onAnswer={handleBranch} />
       )}
     </div>
   );

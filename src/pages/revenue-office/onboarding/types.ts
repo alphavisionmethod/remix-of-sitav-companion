@@ -50,6 +50,14 @@ export interface OnboardingState {
   // Trust & automation
   automationLevel: string;
   humanOnlyTasks: string[];
+  // Advisor activation
+  activeAdvisors: string[];
+  advisorIntensity: Record<string, "low" | "medium" | "high">;
+  // Branching answers
+  branchAnswers: Record<string, string[]>;
+  // Multi-brand/client
+  multiBrand: boolean;
+  multiClient: boolean;
   // First wins
   selectedFirstWins: string[];
 }
@@ -89,6 +97,11 @@ export const defaultOnboardingState: OnboardingState = {
   reconActions: {},
   automationLevel: "draft_review",
   humanOnlyTasks: [],
+  activeAdvisors: [],
+  advisorIntensity: {},
+  branchAnswers: {},
+  multiBrand: false,
+  multiClient: false,
   selectedFirstWins: [],
 };
 
@@ -117,6 +130,7 @@ export const STAGES = [
   { id: "url_intake", label: "URL Intake", chapter: "Import" },
   { id: "reconciliation", label: "Reconciliation", chapter: "Import" },
   { id: "automation", label: "Trust & Auto", chapter: "Trust" },
+  { id: "advisors", label: "Advisor Board", chapter: "Trust" },
   { id: "firstwin", label: "First Wins", chapter: "Launch" },
   { id: "reveal", label: "Office Reveal", chapter: "Launch" },
 ] as const;

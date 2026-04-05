@@ -23,6 +23,7 @@ import ArtifactScreen from "./screens/ArtifactScreen";
 import URLIntakeScreen from "./screens/URLIntakeScreen";
 import ReconciliationScreen from "./screens/ReconciliationScreen";
 import AutomationScreen from "./screens/AutomationScreen";
+import AdvisorActivationScreen from "./screens/AdvisorActivationScreen";
 import FirstWinScreen from "./screens/FirstWinScreen";
 import RevealScreen from "./screens/RevealScreen";
 
@@ -44,6 +45,7 @@ const screenMap: Record<StageId, React.ComponentType<any>> = {
   url_intake: URLIntakeScreen,
   reconciliation: ReconciliationScreen,
   automation: AutomationScreen,
+  advisors: AdvisorActivationScreen,
   firstwin: FirstWinScreen,
   reveal: RevealScreen,
 };
