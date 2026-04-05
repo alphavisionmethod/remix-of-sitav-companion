@@ -209,7 +209,7 @@ export class CostCircuitBreakerService {
 
   getFleetSummary(): FleetBudgetSummary {
     const states = Array.from(this.states.values());
-    const breakerCounts: Record<CostBreakerState, number> = { closed: 0, warn: 0, throttle: 0, pause: 0, halt: 0 };
+    const breakerCounts: Record<BreakerState, number> = { closed: 0, warn: 0, throttle: 0, pause: 0, halt: 0 };
     let totalSpent = 0;
     let totalBudget = 0;
 
