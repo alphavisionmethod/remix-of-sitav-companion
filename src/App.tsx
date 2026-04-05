@@ -347,6 +347,13 @@ const App = () => (
                     <Route path="/investments/behavioral" element={<BehavioralFirewall />} />
                     <Route path="/investments/memory" element={<MarketMemoryFeed />} />
                     <Route path="/investments/dossier" element={<IntelligenceDossier />} />
+                    <Route path="/investments/probability-lab" element={<EventProbabilityLab />} />
+                    <Route path="/investments/strategy-dna" element={<StrategyDNA />} />
+                    <Route path="/investments/post-trade" element={<PostTradeLoop />} />
+                    <Route path="/investments/cross-asset" element={<CrossAssetStoryEngine />} />
+                    <Route path="/investments/conviction" element={<ConvictionEngine />} />
+                    <Route path="/investments/sizing" element={<PositionSizingCoach />} />
+                    <Route path="/investments/modes" element={<OperatingModes />} />
                     <Route path="/money/investments" element={<InvestmentGate />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
