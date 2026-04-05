@@ -600,6 +600,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
+  </GlobalErrorBoundary>
 );
 
 export default App;
