@@ -2,9 +2,11 @@ import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useRealityClassifications, useClassificationStats } from "@/hooks/useRealityClassifications";
 import { useMockReplacements, useMockReplacementStats } from "@/hooks/useMockReplacements";
-import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Layers, Rocket } from "lucide-react";
+import { useDetectionReport, useIntegrationStatuses } from "@/hooks/useRealityDetection";
+import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Layers, Rocket, Scan, Link2 } from "lucide-react";
 
 const STATE_COLORS = {
   presentational: { bg: "bg-muted", text: "text-muted-foreground", icon: Eye, label: "Presentational" },
@@ -18,6 +20,8 @@ export default function RealityConversionOverview() {
   const { data: mockReplacements = [] } = useMockReplacements();
   const cStats = useClassificationStats(classifications);
   const mStats = useMockReplacementStats(mockReplacements);
+  const { data: detectionReport } = useDetectionReport();
+  const { data: integrations = [] } = useIntegrationStatuses();
 
   const domainRollup = useMemo(() => {
     const map = new Map<string, { total: number; proven: number; simulated: number }>();
@@ -132,6 +136,54 @@ export default function RealityConversionOverview() {
               </div>
             ))}
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Detection Summary */}
+      {detectionReport && (
+        <Card>
+          <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Scan className="h-4 w-4" />Detection Summary</CardTitle></CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-5 gap-3">
+              {[
+                { label: "Mock Imports", count: detectionReport.summary.mockImportCount, color: "text-yellow-400" },
+                { label: "Persistence Gaps", count: detectionReport.summary.persistenceGapCount, color: "text-orange-400" },
+                { label: "Contract Gaps", count: detectionReport.summary.contractGapCount, color: "text-destructive" },
+                { label: "Runtime Gaps", count: detectionReport.summary.runtimeGapCount, color: "text-blue-400" },
+                { label: "Critical", count: detectionReport.summary.criticalCount, color: "text-destructive" },
+              ].map(d => (
+                <div key={d.label} className="text-center">
+                  <div className={`text-xl font-bold ${d.color}`}>{d.count}</div>
+                  <div className="text-xs text-muted-foreground">{d.label}</div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Integration Status */}
+      <Card>
+        <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Link2 className="h-4 w-4" />System Integrations</CardTitle></CardHeader>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>System</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Data Points</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {integrations.map(i => (
+                <TableRow key={i.system}>
+                  <TableCell className="text-sm">{i.system}</TableCell>
+                  <TableCell><Badge variant="outline" className={i.connected ? "text-emerald-400" : "text-muted-foreground"}>{i.connected ? "Connected" : "Pending"}</Badge></TableCell>
+                  <TableCell>{i.dataPoints}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </div>
