@@ -130,6 +130,7 @@ export const STAGES = [
   { id: "url_intake", label: "URL Intake", chapter: "Import" },
   { id: "reconciliation", label: "Reconciliation", chapter: "Import" },
   { id: "automation", label: "Trust & Auto", chapter: "Trust" },
+  { id: "advisors", label: "Advisor Board", chapter: "Trust" },
   { id: "firstwin", label: "First Wins", chapter: "Launch" },
   { id: "reveal", label: "Office Reveal", chapter: "Launch" },
 ] as const;
