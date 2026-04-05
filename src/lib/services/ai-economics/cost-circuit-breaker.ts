@@ -73,7 +73,7 @@ export class CostCircuitBreakerService {
 
   // ── Configuration ─────────────────────────────────────────────
 
-  configureBudget(config: BudgetConfig): void {
+  configureBudget(config: BreakerBudgetConfig): void {
     this.configs.set(config.agentId, config);
     if (!this.states.has(config.agentId)) {
       this.states.set(config.agentId, {
