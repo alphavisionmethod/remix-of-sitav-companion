@@ -1,9 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Premium OS Setup Experience (World-Class Onboarding)
-// macOS-like first-run with cinematic intro, adaptive phases,
-// live learning panel, simulations, and trust certificate
-// Powered by SetupOrchestrationEngine (DAG, state machine,
-// persistence, branching, rollback, background tasks)
+// Clean 24-phase flow powered by SetupOrchestrationEngine
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback, useMemo } from "react";
@@ -21,40 +18,12 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FirstBootScreen } from "@/components/sita/FirstBootScreen";
-import { FirstWelcomeScreen } from "@/components/sita/FirstWelcomeScreen";
-import { RestoreFlow } from "@/components/sita/RestoreFlow";
-import { EnterpriseFlow } from "@/components/sita/EnterpriseFlow";
 import { useSetupOrchestration } from "@/hooks/useSetupOrchestration";
 import { SetupOrchestrationEngine } from "@/lib/engines/setup-orchestration-engine";
 import type { SetupPhaseId, SetupPhaseStatus } from "@/packages/contracts/specialized/setup-orchestration";
-import { getEmotionalTarget, isChapterTransition, getChapter } from "@/lib/setup/emotional-arc";
-import { generateReflections } from "@/lib/setup/reflection-copy";
-import { RestorePreviewStep } from "@/components/sita/onboarding/RestorePreviewStep";
-import { SignatureWowMoment } from "@/components/sita/setup/SignatureWowMoment";
-import type { WowMomentId } from "@/components/sita/setup/SignatureWowMoment";
-import { ChapterTransition } from "@/components/sita/setup/ChapterTransition";
-import type { ChapterName } from "@/lib/setup/emotional-arc";
-import { ConfidenceIndicator, computeConfidenceLevel } from "@/components/sita/setup/ConfidenceIndicator";
-
-// Onboarding components
-import { CinematicIntro } from "@/components/sita/onboarding/CinematicIntro";
 import { SetupStyleChooser } from "@/components/sita/onboarding/SetupStyleChooser";
 import { LearningPanel } from "@/components/sita/onboarding/LearningPanel";
-import { WantLessOfStep } from "@/components/sita/onboarding/WantLessOfStep";
-import { ProtectMostStep } from "@/components/sita/onboarding/ProtectMostStep";
-import { ExplanationStyleStep } from "@/components/sita/onboarding/ExplanationStyleStep";
-import { PresenceStyleStep } from "@/components/sita/onboarding/PresenceStyleStep";
-import { InterruptionStyleStep } from "@/components/sita/onboarding/InterruptionStyleStep";
-import { RitualsStep } from "@/components/sita/onboarding/RitualsStep";
-import { HouseholdGraphStep } from "@/components/sita/onboarding/HouseholdGraphStep";
-import { MemoryConsentStep } from "@/components/sita/onboarding/MemoryConsentStep";
-import { DesktopPreviewStep } from "@/components/sita/onboarding/DesktopPreviewStep";
-import { FirstSimulationStep } from "@/components/sita/onboarding/FirstSimulationStep";
-import { FirstActionsStep } from "@/components/sita/onboarding/FirstActionsStep";
 import { TrustCertificateStep } from "@/components/sita/onboarding/TrustCertificateStep";
-import { HomeCompositionStep } from "@/components/sita/onboarding/HomeCompositionStep";
-import { RecoverFirstStep } from "@/components/sita/onboarding/RecoverFirstStep";
-import { PreviewExampleModal, PreviewButton } from "@/components/sita/onboarding/PreviewExampleModal";
 import { ArrivalPrepStep } from "@/components/sita/onboarding/ArrivalPrepStep";
 import { SecureFoundationStep } from "@/components/sita/onboarding/SecureFoundationStep";
 import { SetupLanguageRegion } from "@/components/sita/setup/SetupLanguageRegion";
@@ -88,37 +57,18 @@ import type { PlanningStyleData } from "@/components/sita/onboarding/PlanningSty
 import { EnvironmentSummaryStep } from "@/components/sita/onboarding/EnvironmentSummaryStep";
 import { Progress } from "@/components/ui/progress";
 
-interface OperatingModelData {
-  routines: string[];
-  household: string[];
-  work: string[];
-  finances: string[];
-  preferences: string[];
-}
-
 // ── Types ───────────────────────────────────────────────────
 
-type SetupState = SetupData;
-
-type Phase = SetupPhaseId;
-
 interface SetupData {
-  // Language & Region
   language: string;
   region: string;
   timezone: string;
   dateFormat: string;
   currency: string;
-  // Operating Mode
   operatingMode: string;
-  // Operating Model
-  operatingModel: OperatingModelData | null;
-  // Trust
   autonomyLevel: number;
   thresholds: Record<string, string>;
-  // Advisors
   activeAdvisors: string[];
-  // Identity (from welcome flow — placeholder for now)
   displayName: string;
   role: string;
   enabledDomains: string[];
@@ -128,24 +78,12 @@ interface SetupData {
   theme: "dark" | "light" | "auto";
   accentColor: string;
   setupStyle: "express" | "guided" | "advanced";
-  painPoints: string[];
-  protectionPriorities: string[];
-  explanationStyle: string;
-  presenceStyle: string;
-  interruptionStyle: string;
-  rituals: string[];
-  householdNodes: { name: string; role: string }[];
-  memoryConsent: string;
-  homeComposition: string;
-  firstRecovery: string;
-  // New phase 2.3-2.7 fields
   networkState: string;
   networkSSID: string;
   deviceOwnership: "personal" | "family" | "work" | "";
   accountPath: string;
   accessMethod: string;
   recoveryMethod: string;
-  // New phase 2.8-2.11 fields
   permissionChoices: Record<string, boolean>;
   quickIdentity: QuickIdentityData;
   worldModel: WorldModelData;
@@ -155,7 +93,6 @@ interface SetupData {
   deferredConnections: string[];
   firstWin: FirstWinData;
   connectedSystems: number;
-  // New personalization ceremony fields
   lifeRhythm: LifeRhythmData;
   stressMap: StressMapData;
   commsContext: CommsContextData;
@@ -204,7 +141,6 @@ function PhaseProgressRail({ steppablePhases, currentIndex, allPhaseStates }: {
 
         return (
           <div key={phaseId} className="flex-1 flex flex-col items-center gap-1 group relative">
-            {/* Status dot */}
             <div className="flex items-center justify-center h-3">
               {isCompleted ? (
                 <div className="h-2.5 w-2.5 rounded-full bg-trust-safe flex items-center justify-center">
@@ -222,7 +158,6 @@ function PhaseProgressRail({ steppablePhases, currentIndex, allPhaseStates }: {
                 <div className="h-2 w-2 rounded-full bg-muted" />
               )}
             </div>
-            {/* Progress bar segment */}
             <div className={cn(
               "h-1 w-full rounded-full transition-all duration-500",
               isCompleted ? "bg-trust-safe" :
@@ -231,7 +166,6 @@ function PhaseProgressRail({ steppablePhases, currentIndex, allPhaseStates }: {
               isActive ? "bg-primary/60" :
               "bg-muted"
             )} />
-            {/* Tooltip on hover */}
             <div className="absolute -top-7 left-1/2 -translate-x-1/2 hidden group-hover:block z-50">
               <div className="rounded-md bg-popover border border-border px-2 py-0.5 text-[9px] text-popover-foreground whitespace-nowrap shadow-lg">
                 {phaseId.replace(/-/g, " ")} · <span className="capitalize">{status}</span>
@@ -285,53 +219,6 @@ function PhaseCard({ children, title, subtitle, icon: Icon, step, total, phaseSt
         <div className="p-8 pt-6">{children}</div>
       </div>
     </motion.div>
-  );
-}
-
-// ── Selection Components ────────────────────────────────────
-
-function OptionCard({ selected, onClick, icon: Icon, title, desc }: {
-  selected: boolean; onClick: () => void; icon: typeof Brain; title: string; desc: string;
-}) {
-  return (
-    <button onClick={onClick} className={cn(
-      "relative rounded-xl border p-4 text-left transition-all duration-200 group",
-      selected ? "border-primary/50 bg-primary/8 shadow-sm shadow-primary/10" : "border-border bg-secondary/20 hover:border-primary/20 hover:bg-secondary/40"
-    )}>
-      <div className="flex items-start gap-3">
-        <div className={cn("rounded-lg p-2 transition-colors", selected ? "bg-primary/15" : "bg-secondary")}>
-          <Icon className={cn("h-4 w-4", selected ? "text-primary" : "text-muted-foreground")} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-foreground">{title}</p>
-          <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
-        </div>
-        {selected && (
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
-            className="flex h-5 w-5 items-center justify-center rounded-full bg-primary">
-            <Check className="h-3 w-3 text-primary-foreground" />
-          </motion.div>
-        )}
-      </div>
-    </button>
-  );
-}
-
-function DomainToggle({ label, icon: Icon, enabled, onToggle, desc, color }: {
-  label: string; icon: typeof Brain; enabled: boolean; onToggle: () => void; desc: string; color: string;
-}) {
-  return (
-    <button onClick={onToggle} className={cn(
-      "rounded-xl border p-5 text-left transition-all duration-300",
-      enabled ? `border-${color}/30 bg-${color}/5` : "border-border bg-secondary/20 opacity-60 hover:opacity-80"
-    )}>
-      <div className="flex items-center justify-between mb-2">
-        <Icon className={cn("h-5 w-5", enabled ? `text-${color}` : "text-muted-foreground")} />
-        <div className={cn("h-3 w-3 rounded-full transition-colors", enabled ? `bg-${color}` : "bg-muted")} />
-      </div>
-      <p className="text-sm font-semibold text-foreground">{label}</p>
-      <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
-    </button>
   );
 }
 
@@ -469,6 +356,9 @@ function BackgroundTaskBar({ tasks }: { tasks: any[] }) {
   );
 }
 
+// ── Fullscreen phases (rendered outside the standard layout) ──
+const FULLSCREEN_PHASES: SetupPhaseId[] = ["boot", "secure-foundation", "language-region", "desktop-transition"];
+
 // ── Main Setup Component ────────────────────────────────────
 
 export function OSSetupExperience() {
@@ -482,20 +372,15 @@ export function OSSetupExperience() {
     setSessionData, isPhaseRequired, backgroundTasks, allPhaseStates,
     engine } = orch;
 
-  const [previewExample, setPreviewExample] = useState<string | null>(null);
   const [showResumeBanner, setShowResumeBanner] = useState(isResumed);
-  const [activeWowMoment, setActiveWowMoment] = useState<WowMomentId | null>(null);
-  const [activeChapterTransition, setActiveChapterTransition] = useState<{ from: ChapterName; to: ChapterName } | null>(null);
-  const [lastPhase, setLastPhase] = useState<string>(phase);
 
-  const [state, setState] = useState<SetupState>({
+  const [state, setState] = useState<SetupData>({
     language: "en",
     region: "US",
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
     dateFormat: "MM/DD/YYYY",
     currency: "USD",
     operatingMode: "",
-    operatingModel: null,
     autonomyLevel: 50,
     thresholds: {},
     activeAdvisors: [],
@@ -508,16 +393,6 @@ export function OSSetupExperience() {
     theme: "dark",
     accentColor: "purple",
     setupStyle: "guided",
-    painPoints: [],
-    protectionPriorities: [],
-    explanationStyle: "balanced",
-    presenceStyle: "present",
-    interruptionStyle: "balanced",
-    rituals: ["morning-pulse", "weekly-boardroom"],
-    householdNodes: [],
-    memoryConsent: "balanced",
-    homeComposition: "",
-    firstRecovery: "",
     networkState: "",
     networkSSID: "",
     deviceOwnership: "",
@@ -569,22 +444,6 @@ export function OSSetupExperience() {
     persistSetupState(state, phase);
   }, [orchGoPrev, state, phase]);
 
-  const toggleArrayField = (field: "painPoints" | "protectionPriorities" | "rituals", key: string) => {
-    setState(prev => ({
-      ...prev,
-      [field]: prev[field].includes(key) ? prev[field].filter(x => x !== key) : [...prev[field], key],
-    }));
-  };
-
-  const toggleDomain = (d: string) => {
-    setState(prev => ({
-      ...prev,
-      enabledDomains: prev.enabledDomains.includes(d)
-        ? prev.enabledDomains.filter(x => x !== d)
-        : [...prev.enabledDomains, d],
-    }));
-  };
-
   const finishSetup = async () => {
     if (!user) { navigate("/"); return; }
     try {
@@ -596,16 +455,6 @@ export function OSSetupExperience() {
         { user_id: user.id, key: "ai_style", value: JSON.stringify(state.aiStyle), category: "preference" },
         { user_id: user.id, key: "explanation_depth", value: JSON.stringify(state.explanationDepth), category: "preference" },
         { user_id: user.id, key: "setup_style", value: JSON.stringify(state.setupStyle), category: "preference" },
-        { user_id: user.id, key: "pain_points", value: JSON.stringify(state.painPoints), category: "preference" },
-        { user_id: user.id, key: "protection_priorities", value: JSON.stringify(state.protectionPriorities), category: "preference" },
-        { user_id: user.id, key: "explanation_style", value: JSON.stringify(state.explanationStyle), category: "preference" },
-        { user_id: user.id, key: "presence_style", value: JSON.stringify(state.presenceStyle), category: "preference" },
-        { user_id: user.id, key: "interruption_style", value: JSON.stringify(state.interruptionStyle), category: "preference" },
-        { user_id: user.id, key: "rituals", value: JSON.stringify(state.rituals), category: "preference" },
-        { user_id: user.id, key: "household_nodes", value: JSON.stringify(state.householdNodes), category: "preference" },
-        { user_id: user.id, key: "memory_consent", value: JSON.stringify(state.memoryConsent), category: "preference" },
-        { user_id: user.id, key: "home_composition", value: JSON.stringify(state.homeComposition), category: "preference" },
-        { user_id: user.id, key: "first_recovery", value: JSON.stringify(state.firstRecovery), category: "preference" },
         { user_id: user.id, key: "device_ownership", value: JSON.stringify(state.deviceOwnership), category: "preference" },
         { user_id: user.id, key: "access_method", value: JSON.stringify(state.accessMethod), category: "security" },
         { user_id: user.id, key: "recovery_method", value: JSON.stringify(state.recoveryMethod), category: "security" },
@@ -618,12 +467,15 @@ export function OSSetupExperience() {
         { user_id: user.id, key: "advisor_activation", value: JSON.stringify(state.advisorActivation), category: "preference" },
         { user_id: user.id, key: "deferred_connections", value: JSON.stringify(state.deferredConnections), category: "preference" },
         { user_id: user.id, key: "first_win", value: JSON.stringify(state.firstWin), category: "preference" },
+        { user_id: user.id, key: "life_rhythm", value: JSON.stringify(state.lifeRhythm), category: "preference" },
+        { user_id: user.id, key: "stress_map", value: JSON.stringify(state.stressMap), category: "preference" },
+        { user_id: user.id, key: "comms_context", value: JSON.stringify(state.commsContext), category: "preference" },
+        { user_id: user.id, key: "planning_style", value: JSON.stringify(state.planningStyle), category: "preference" },
       ].filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
 
       await (supabase as any).from("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
       await (supabase as any).from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
 
-      // Mark setup session as complete
       const snapshot = engine.toSnapshot();
       await (supabase as any).from("setup_sessions").upsert({
         id: snapshot.id,
@@ -636,7 +488,7 @@ export function OSSetupExperience() {
         updated_at: new Date().toISOString(),
       }, { onConflict: "id" });
 
-      // Boot → Device Trust bridge: enroll this device on setup completion
+      // Boot → Device Trust bridge
       try {
         const { getDeviceId, getDeviceName, detectSurfaceType } = await import("@/lib/services/surface-detection");
         const { TrustDeviceEngine } = await import("@/lib/engines");
@@ -665,7 +517,6 @@ export function OSSetupExperience() {
           queuedActions: 0,
         });
 
-        // Persist device enrollment to device_statuses
         await (supabase as any).from("device_statuses").upsert({
           device_id: deviceId,
           user_id: user.id,
@@ -691,8 +542,7 @@ export function OSSetupExperience() {
           deviceId: getDeviceId(),
           sessionId: snapshot.id,
         });
-        // Persist all completed phases
-        const phaseNames = ["boot", "welcome", "identity", "domains", "trust", "ai-preferences", "theme", "trust-certificate"];
+        const phaseNames = ["boot", "setup-style", "quick-identity", "primary-use-mode", "trust-calibration", "advisor-activation", "trust-certificate"];
         for (const phaseName of phaseNames) {
           await bootService.persistPhase({
             phase: phaseName as any,
@@ -721,32 +571,42 @@ export function OSSetupExperience() {
     navigate("/first-win", { replace: true });
   };
 
+  // ── Validation ────────────────────────────────────────────
   const canAdvance = () => {
-    if (phase === "identity") return state.displayName.length > 0 && state.role.length > 0;
-    if (phase === "domains") return state.enabledDomains.length > 0;
-    if (phase === "primary-use-mode") return state.primaryUseMode.length > 0;
-    if (phase === "trust-calibration") return state.trustCalibration.level > 0;
-    if (phase === "advisor-activation") return state.advisorActivation.some(a => a.enabled);
-    if (phase === "first-win-setup") return state.firstWin.approved;
-    if (phase === "desktop-transition") return true; // auto-advances
-    return true;
+    switch (phase) {
+      case "device-ownership": return state.deviceOwnership !== "";
+      case "primary-use-mode": return state.primaryUseMode.length > 0;
+      case "trust-calibration": return state.trustCalibration.level > 0;
+      case "advisor-activation": return state.advisorActivation.some(a => a.enabled);
+      case "first-win-setup": return state.firstWin.approved;
+      case "life-rhythm": return state.lifeRhythm.weekStructure !== "";
+      case "stress-slippage": return state.stressMap.heavierThanShould.length > 0;
+      case "communications-context": return state.commsContext.communicationStress !== "";
+      case "planning-style": return state.planningStyle.viewPreference !== "";
+      default: return true;
+    }
   };
 
-  const showLearningPanel = !["boot", "secure-foundation", "language-region", "network-setup", "device-readiness", "device-ownership", "account-environment", "access-protection", "privacy-transparency", "quick-identity", "deep-world-modeling", "primary-use-mode", "trust-calibration", "advisor-activation", "welcome", "restore", "enterprise", "cinematic-intro", "trust-certificate", "desktop-transition"].includes(phase);
+  // Show learning panel only on personalization phases (not boot/system phases)
+  const SYSTEM_PHASES: SetupPhaseId[] = [
+    "boot", "secure-foundation", "language-region", "network-setup", "device-readiness",
+    "device-ownership", "account-environment", "setup-style", "access-protection",
+    "desktop-transition", "system-check", "trust-certificate", "arrival-prep",
+  ];
+  const showLearningPanel = !SYSTEM_PHASES.includes(phase);
   const canSkipCurrent = !isPhaseRequired(phase);
   const showRollbackBtn = state.setupStyle === "advanced";
   const currentBgTasks = backgroundTasks.filter(t => t.phaseId === phase);
 
-  // Handle resume
-  const handleResume = useCallback(() => {
-    setShowResumeBanner(false);
-  }, []);
-
+  const handleResume = useCallback(() => { setShowResumeBanner(false); }, []);
   const handleRestart = useCallback(() => {
     SetupOrchestrationEngine.clearLocalStorage();
     setShowResumeBanner(false);
     window.location.reload();
   }, []);
+
+  // Show session progress bar on personalization+ phases only
+  const showProgressBar = !SYSTEM_PHASES.includes(phase) && phase !== "environment-summary" && phase !== "first-connections" && phase !== "first-win-setup";
 
   return (
     <>
@@ -758,19 +618,15 @@ export function OSSetupExperience() {
       </AnimatePresence>
 
       {/* Session Progress Bar */}
-      {phase !== "boot" && phase !== "secure-foundation" && phase !== "language-region" && phase !== "network-setup" && phase !== "device-readiness" && phase !== "device-ownership" && phase !== "account-environment" && phase !== "access-protection" && phase !== "privacy-transparency" && phase !== "quick-identity" && phase !== "deep-world-modeling" && phase !== "primary-use-mode" && phase !== "trust-calibration" && phase !== "advisor-activation" && phase !== "welcome" && phase !== "desktop-transition" && (
+      {showProgressBar && (
         <div className="fixed top-0 left-0 right-0 z-[160]">
           <Progress value={sessionProgress} className="h-0.5 rounded-none" />
         </div>
       )}
 
-      {/* Boot */}
+      {/* ── Fullscreen phases ── */}
       {phase === "boot" && <FirstBootScreen onComplete={() => { engine.completeCurrentAndAdvance(); }} />}
-
-      {/* Secure Foundation — standalone phase */}
       {phase === "secure-foundation" && <SecureFoundationStep key="secure-foundation" onNext={goNext} onPrev={goPrev} />}
-
-      {/* Language & Region */}
       {phase === "language-region" && (
         <div className="fixed inset-0 z-[150] flex items-center justify-center overflow-y-auto p-4 sm:p-8" style={{ backgroundColor: "#0B0D10" }}>
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -789,14 +645,6 @@ export function OSSetupExperience() {
           </div>
         </div>
       )}
-      {/* Preview example modal */}
-      <AnimatePresence>
-        {previewExample && (
-          <PreviewExampleModal exampleKey={previewExample} onClose={() => setPreviewExample(null)} />
-        )}
-      </AnimatePresence>
-
-      {/* Desktop Transition — fullscreen, outside standard layout */}
       {phase === "desktop-transition" && (
         <DesktopTransitionStep key="desktop-transition"
           displayName={state.displayName}
@@ -807,8 +655,8 @@ export function OSSetupExperience() {
           onComplete={goNext} />
       )}
 
-      {/* Setup phases */}
-      {phase !== "boot" && phase !== "secure-foundation" && phase !== "language-region" && phase !== "desktop-transition" && (
+      {/* ── Standard layout phases ── */}
+      {!FULLSCREEN_PHASES.includes(phase) && (
         <div className="fixed inset-0 z-[150] flex items-center justify-center overflow-y-auto p-4 sm:p-8"
           style={{ backgroundColor: "#0B0D10" }}>
           {/* Ambient glow */}
@@ -819,13 +667,10 @@ export function OSSetupExperience() {
               style={{ background: "hsl(38 85% 58% / 0.03)" }} />
           </div>
 
-          {/* Two-column layout: content + learning panel */}
           <div className="relative z-10 flex items-start gap-6 w-full max-w-4xl justify-center">
             <div className="flex-1 min-w-0">
-              {/* Background task progress */}
               <BackgroundTaskBar tasks={currentBgTasks} />
 
-              {/* Phase warning/blocked banner */}
               {(phaseStatus === "warning" || phaseStatus === "blocked" || phaseStatus === "degraded") && (
                 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
                   className={cn("mb-4 rounded-xl border p-3 flex items-center gap-3",
@@ -840,36 +685,36 @@ export function OSSetupExperience() {
               )}
 
               <AnimatePresence mode="wait">
-                {/* Network Setup */}
                 {phase === "network-setup" && (
                   <NetworkSetupStep key="network-setup" onNext={goNext} onPrev={goPrev}
                     onStateChange={({ connectionState, selectedNetwork }) => setState(s => ({ ...s, networkState: connectionState, networkSSID: selectedNetwork }))} />
                 )}
 
-                {/* Device Readiness */}
                 {phase === "device-readiness" && (
                   <DeviceReadinessStep key="device-readiness" onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* Device Ownership */}
                 {phase === "device-ownership" && (
                   <DeviceOwnershipStep key="device-ownership" selected={state.deviceOwnership}
                     onSelect={type => setState(s => ({ ...s, deviceOwnership: type }))} onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* Account / Environment */}
                 {phase === "account-environment" && (
                   <AccountEnvironmentStep key="account-environment" selectedPath={state.accountPath as any}
                     onPathChange={path => setState(s => ({ ...s, accountPath: path }))} onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* Access Protection */}
+                {phase === "setup-style" && (
+                  <SetupStyleChooser key="setup-style" selected={state.setupStyle}
+                    onSelect={s => setState(prev => ({ ...prev, setupStyle: s }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
                 {phase === "access-protection" && (
                   <AccessProtectionStep key="access-protection" onNext={goNext} onPrev={goPrev}
                     onStateChange={({ accessMethod, recoveryMethod }) => setState(s => ({ ...s, accessMethod, recoveryMethod }))} />
                 )}
 
-                {/* Privacy Transparency */}
                 {phase === "privacy-transparency" && (
                   <PrivacyTransparencyStep key="privacy-transparency"
                     permissionChoices={state.permissionChoices}
@@ -877,7 +722,6 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* Quick Identity */}
                 {phase === "quick-identity" && (
                   <QuickIdentityStep key="quick-identity"
                     data={state.quickIdentity}
@@ -885,7 +729,6 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* Deep World Modeling */}
                 {phase === "deep-world-modeling" && (
                   <DeepWorldModelingStep key="deep-world-modeling"
                     data={state.worldModel}
@@ -893,7 +736,26 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* Primary Use Mode */}
+                {phase === "life-rhythm" && (
+                  <LifeRhythmStep key="life-rhythm" data={state.lifeRhythm}
+                    onUpdate={lr => setState(s => ({ ...s, lifeRhythm: lr }))} onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "stress-slippage" && (
+                  <StressSlippageStep key="stress-slippage" data={state.stressMap}
+                    onUpdate={sm => setState(s => ({ ...s, stressMap: sm }))} onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "communications-context" && (
+                  <CommunicationsContextStep key="comms-context" data={state.commsContext}
+                    onUpdate={cc => setState(s => ({ ...s, commsContext: cc }))} onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "planning-style" && (
+                  <PlanningStyleStep key="planning-style" data={state.planningStyle}
+                    onUpdate={ps => setState(s => ({ ...s, planningStyle: ps }))} onNext={goNext} onPrev={goPrev} />
+                )}
+
                 {phase === "primary-use-mode" && (
                   <PrimaryUseModeStep key="primary-use-mode"
                     selected={state.primaryUseMode}
@@ -901,7 +763,6 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* Trust Calibration */}
                 {phase === "trust-calibration" && (
                   <TrustCalibrationStep key="trust-calibration"
                     data={state.trustCalibration}
@@ -909,7 +770,6 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* Advisor Activation */}
                 {phase === "advisor-activation" && (
                   <AdvisorActivationStep key="advisor-activation"
                     advisors={state.advisorActivation}
@@ -918,27 +778,6 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* Life Rhythm */}
-                {phase === "life-rhythm" && (
-                  <LifeRhythmStep key="life-rhythm" data={state.lifeRhythm}
-                    onUpdate={lr => setState(s => ({ ...s, lifeRhythm: lr }))} onNext={goNext} onPrev={goPrev} />
-                )}
-                {/* Stress & Slippage */}
-                {phase === "stress-slippage" && (
-                  <StressSlippageStep key="stress-slippage" data={state.stressMap}
-                    onUpdate={sm => setState(s => ({ ...s, stressMap: sm }))} onNext={goNext} onPrev={goPrev} />
-                )}
-                {/* Communications Context */}
-                {phase === "communications-context" && (
-                  <CommunicationsContextStep key="comms-context" data={state.commsContext}
-                    onUpdate={cc => setState(s => ({ ...s, commsContext: cc }))} onNext={goNext} onPrev={goPrev} />
-                )}
-                {/* Planning Style */}
-                {phase === "planning-style" && (
-                  <PlanningStyleStep key="planning-style" data={state.planningStyle}
-                    onUpdate={ps => setState(s => ({ ...s, planningStyle: ps }))} onNext={goNext} onPrev={goPrev} />
-                )}
-                {/* Environment Summary */}
                 {phase === "environment-summary" && (
                   <EnvironmentSummaryStep key="env-summary" displayName={state.displayName} trustLevel={state.trustLevel}
                     primaryUseMode={state.primaryUseMode} enabledDomains={state.enabledDomains}
@@ -948,249 +787,6 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* Welcome */}
-                {phase === "welcome" && (
-                  <FirstWelcomeScreen key="welcome" onSetup={goNext}
-                    onRestore={() => setCurrentPhase("restore")} onEnterprise={() => setCurrentPhase("enterprise")} />
-                )}
-
-                {/* Restore / Enterprise */}
-                {phase === "restore" && <RestoreFlow key="restore" onBack={() => setCurrentPhase("welcome")} onComplete={() => navigate("/")} />}
-                {phase === "enterprise" && <EnterpriseFlow key="enterprise" onBack={() => setCurrentPhase("welcome")} onComplete={() => setCurrentPhase("identity")} />}
-
-                {/* Cinematic Intro */}
-                {phase === "cinematic-intro" && <CinematicIntro key="cinematic" onComplete={goNext} />}
-
-                {/* Setup Style */}
-                {phase === "setup-style" && (
-                  <SetupStyleChooser key="setup-style" selected={state.setupStyle}
-                    onSelect={s => setState(prev => ({ ...prev, setupStyle: s }))}
-                    onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* Identity */}
-                {phase === "identity" && (
-                  <PhaseCard key="identity" title="Who are you?" subtitle="This personalizes your entire experience" icon={Fingerprint}
-                    step={currentStepNum} total={totalSteps} phaseStatus={phaseStatus} steppablePhases={steppablePhases} allPhaseStates={allPhaseStates}>
-                    <div className="space-y-5">
-                      <div>
-                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Your Name</label>
-                        <input value={state.displayName} onChange={e => setState(s => ({ ...s, displayName: e.target.value }))}
-                          className="mt-1.5 w-full rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary/40 focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all"
-                          placeholder="How should SITA address you?" autoFocus />
-                      </div>
-                      <div>
-                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Primary Role</label>
-                        <div className="mt-2 grid grid-cols-2 gap-2">
-                          {[
-                            { key: "founder", icon: Briefcase, title: "Founder", desc: "Running a business" },
-                            { key: "executive", icon: BarChart3, title: "Executive", desc: "Managing operations" },
-                            { key: "family-office", icon: Building, title: "Family Office", desc: "Full-service operations" },
-                            { key: "personal", icon: Home, title: "Personal", desc: "Life management" },
-                          ].map(r => (
-                            <OptionCard key={r.key} selected={state.role === r.key} onClick={() => setState(s => ({ ...s, role: r.key }))}
-                              icon={r.icon} title={r.title} desc={r.desc} />
-                          ))}
-                        </div>
-                      </div>
-                      <NavButtons onPrev={goPrev} onNext={goNext} canAdvance={canAdvance()} />
-                    </div>
-                  </PhaseCard>
-                )}
-
-                {/* Want Less Of */}
-                {phase === "want-less-of" && (
-                  <WantLessOfStep key="want-less-of" selected={state.painPoints}
-                    onToggle={k => toggleArrayField("painPoints", k)} onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* Protect Most */}
-                {phase === "protect-most" && (
-                  <ProtectMostStep key="protect-most" selected={state.protectionPriorities}
-                    onToggle={k => toggleArrayField("protectionPriorities", k)} onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* Domains */}
-                {phase === "domains" && (
-                  <PhaseCard key="domains" title="Choose Your Domains" subtitle="Enable the areas SITA should manage for you" icon={Globe}
-                    step={currentStepNum} total={totalSteps} phaseStatus={phaseStatus} steppablePhases={steppablePhases} allPhaseStates={allPhaseStates}>
-                    <div className="space-y-5">
-                      <div className="grid grid-cols-1 gap-3">
-                        <DomainToggle icon={Briefcase} label="Business" desc="Leads, customers, revenue, invoices, CRM"
-                          enabled={state.enabledDomains.includes("business")} onToggle={() => toggleDomain("business")} color="primary" />
-                        <DomainToggle icon={DollarSign} label="Money" desc="Bills, subscriptions, reserves, investments, budgets"
-                          enabled={state.enabledDomains.includes("money")} onToggle={() => toggleDomain("money")} color="accent" />
-                        <DomainToggle icon={Headphones} label="Concierge" desc="Calendar, tasks, household, travel, appointments"
-                          enabled={state.enabledDomains.includes("concierge")} onToggle={() => toggleDomain("concierge")} color="trust-safe" />
-                      </div>
-                      <p className="text-center text-[11px] text-muted-foreground">You can enable more domains later from Settings</p>
-                      <NavButtons onPrev={goPrev} onNext={goNext} canAdvance={canAdvance()}
-                        showSkip={canSkipCurrent} onSkip={skipPhase}
-                        extra={<PreviewButton onClick={() => setPreviewExample("recovered-lead")} />} />
-                    </div>
-                  </PhaseCard>
-                )}
-
-                {/* Trust */}
-                {phase === "trust" && (
-                  <PhaseCard key="trust" title="Trust & Autonomy" subtitle="How much should SITA act on its own?" icon={Shield}
-                    step={currentStepNum} total={totalSteps} phaseStatus={phaseStatus} steppablePhases={steppablePhases} allPhaseStates={allPhaseStates}>
-                    <div className="space-y-4">
-                      {[
-                        { key: "open", icon: Zap, title: "Open — Act freely", desc: "SITA handles routine actions automatically. You review later via proof trail." },
-                        { key: "balanced", icon: Shield, title: "Balanced — Ask for important things", desc: "Low-risk actions run automatically. High-impact actions need your approval." },
-                        { key: "guarded", icon: Lock, title: "Guarded — Ask before acting", desc: "SITA proposes everything, acts only when you approve. Maximum control." },
-                      ].map(t => (
-                        <OptionCard key={t.key} selected={state.trustLevel === t.key}
-                          onClick={() => setState(s => ({ ...s, trustLevel: t.key as any }))}
-                          icon={t.icon} title={t.title} desc={t.desc} />
-                      ))}
-                      <NavButtons onPrev={goPrev} onNext={goNext} canAdvance={true}
-                        showSkip={canSkipCurrent} onSkip={skipPhase}
-                        showRollback={showRollbackBtn} onRollback={() => rollbackTo("identity")}
-                        extra={<PreviewButton onClick={() => setPreviewExample("trust")} />} />
-                    </div>
-                  </PhaseCard>
-                )}
-
-                {/* Explanation Style */}
-                {phase === "explanation-style" && (
-                  <ExplanationStyleStep key="explanation-style" selected={state.explanationStyle}
-                    onSelect={s => setState(prev => ({ ...prev, explanationStyle: s }))} onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* Presence Style */}
-                {phase === "presence-style" && (
-                  <PresenceStyleStep key="presence-style" selected={state.presenceStyle}
-                    onSelect={s => setState(prev => ({ ...prev, presenceStyle: s }))} onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* AI Personality */}
-                {phase === "ai-personality" && (
-                  <PhaseCard key="ai-personality" title="AI Communication Style" subtitle="How should your advisors communicate?" icon={Sparkles}
-                    step={currentStepNum} total={totalSteps} phaseStatus={phaseStatus} steppablePhases={steppablePhases} allPhaseStates={allPhaseStates}>
-                    <div className="space-y-5">
-                      <div>
-                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 block">Communication Style</label>
-                        <div className="space-y-2">
-                          {[
-                            { key: "proactive", title: "Proactive", desc: "Advisors surface insights and suggestions without being asked" },
-                            { key: "balanced", title: "Balanced", desc: "Important findings are surfaced; routine info stays in background" },
-                            { key: "reserved", title: "Reserved", desc: "Advisors respond when asked. Minimal unsolicited communication" },
-                          ].map(s => (
-                            <OptionCard key={s.key} selected={state.aiStyle === s.key}
-                              onClick={() => setState(prev => ({ ...prev, aiStyle: s.key as any }))}
-                              icon={Brain} title={s.title} desc={s.desc} />
-                          ))}
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 block">Explanation Depth</label>
-                        <div className="grid grid-cols-3 gap-2">
-                          {[
-                            { key: "brief", label: "Brief", desc: "Just the answer" },
-                            { key: "standard", label: "Standard", desc: "Answer + context" },
-                            { key: "detailed", label: "Detailed", desc: "Full reasoning" },
-                          ].map(d => (
-                            <button key={d.key} onClick={() => setState(s => ({ ...s, explanationDepth: d.key as any }))}
-                              className={cn("rounded-xl border p-3 text-center transition-all",
-                                state.explanationDepth === d.key ? "border-primary/50 bg-primary/8" : "border-border bg-secondary/20 hover:border-primary/20"
-                              )}>
-                              <p className="text-xs font-semibold text-foreground">{d.label}</p>
-                              <p className="text-[10px] text-muted-foreground">{d.desc}</p>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                      <NavButtons onPrev={goPrev} onNext={goNext} canAdvance={true}
-                        showSkip={canSkipCurrent} onSkip={skipPhase} />
-                    </div>
-                  </PhaseCard>
-                )}
-
-                {/* Interruption Style */}
-                {phase === "interruption-style" && (
-                  <InterruptionStyleStep key="interruption-style" selected={state.interruptionStyle}
-                    onSelect={s => setState(prev => ({ ...prev, interruptionStyle: s }))} onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* Rituals */}
-                {phase === "rituals" && (
-                  <RitualsStep key="rituals" selected={state.rituals}
-                    onToggle={k => toggleArrayField("rituals", k)} onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* Appearance */}
-                {phase === "appearance" && (
-                  <PhaseCard key="appearance" title="Appearance" subtitle="Make SITA feel like yours" icon={Sun}
-                    step={currentStepNum} total={totalSteps} phaseStatus={phaseStatus} steppablePhases={steppablePhases} allPhaseStates={allPhaseStates}>
-                    <div className="space-y-5">
-                      <div>
-                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 block">Theme</label>
-                        <div className="grid grid-cols-3 gap-2">
-                          {[
-                            { key: "dark", icon: Moon, label: "Dark" },
-                            { key: "light", icon: Sun, label: "Light" },
-                            { key: "auto", icon: Monitor, label: "Auto" },
-                          ].map(t => (
-                            <button key={t.key} onClick={() => setState(s => ({ ...s, theme: t.key as any }))}
-                              className={cn("rounded-xl border p-4 text-center transition-all",
-                                state.theme === t.key ? "border-primary/50 bg-primary/8" : "border-border bg-secondary/20 hover:border-primary/20"
-                              )}>
-                              <t.icon className={cn("h-5 w-5 mx-auto mb-1.5", state.theme === t.key ? "text-primary" : "text-muted-foreground")} />
-                              <p className="text-xs font-semibold text-foreground">{t.label}</p>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 block">Accent Color</label>
-                        <div className="flex gap-2 justify-center">
-                          {[
-                            { key: "purple", color: "bg-[hsl(265,55%,58%)]" },
-                            { key: "blue", color: "bg-[hsl(215,70%,55%)]" },
-                            { key: "green", color: "bg-[hsl(152,55%,48%)]" },
-                            { key: "gold", color: "bg-[hsl(38,85%,58%)]" },
-                            { key: "rose", color: "bg-[hsl(345,65%,55%)]" },
-                          ].map(c => (
-                            <button key={c.key} onClick={() => setState(s => ({ ...s, accentColor: c.key }))}
-                              className={cn("h-9 w-9 rounded-full transition-all", c.color,
-                                state.accentColor === c.key ? "ring-2 ring-offset-2 ring-primary ring-offset-card scale-110" : "hover:scale-105"
-                              )} />
-                          ))}
-                        </div>
-                      </div>
-                      <NavButtons onPrev={goPrev} onNext={goNext} canAdvance={true}
-                        showSkip={canSkipCurrent} onSkip={skipPhase} />
-                    </div>
-                  </PhaseCard>
-                )}
-
-                {/* Household Graph */}
-                {phase === "household-graph" && (
-                  <HouseholdGraphStep key="household-graph" nodes={state.householdNodes}
-                    onUpdate={nodes => setState(prev => ({ ...prev, householdNodes: nodes }))}
-                    onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* Memory Consent */}
-                {phase === "memory-consent" && (
-                  <MemoryConsentStep key="memory-consent" selected={state.memoryConsent}
-                    onSelect={s => setState(prev => ({ ...prev, memoryConsent: s }))} onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* Home Composition */}
-                {phase === "home-composition" && (
-                  <HomeCompositionStep key="home-composition" selected={state.homeComposition}
-                    onSelect={s => setState(prev => ({ ...prev, homeComposition: s }))} onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* Desktop Preview */}
-                {phase === "desktop-preview" && (
-                  <DesktopPreviewStep key="desktop-preview" onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* First Connections */}
                 {phase === "first-connections" && (
                   <FirstConnectionsStep key="first-connections"
                     enabledDomains={state.enabledDomains}
@@ -1200,7 +796,6 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* First Win Setup */}
                 {phase === "first-win-setup" && (
                   <FirstWinSetupStep key="first-win-setup"
                     data={state.firstWin}
@@ -1209,30 +804,12 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {/* First Simulation */}
-                {phase === "first-simulation" && (
-                  <FirstSimulationStep key="first-simulation" onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* First Actions */}
-                {phase === "first-actions" && (
-                  <FirstActionsStep key="first-actions" enabledDomains={state.enabledDomains}
-                    protectionPriorities={state.protectionPriorities} onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* Recover First */}
-                {phase === "recover-first" && (
-                  <RecoverFirstStep key="recover-first" selected={state.firstRecovery}
-                    onSelect={s => setState(prev => ({ ...prev, firstRecovery: s }))} onNext={goNext} onPrev={goPrev} />
-                )}
-
-                {/* Arrival Preparation */}
                 {phase === "arrival-prep" && (
                   <ArrivalPrepStep key="arrival-prep"
                     displayName={state.displayName}
                     enabledDomains={state.enabledDomains}
                     trustLevel={state.trustLevel}
-                    rituals={state.rituals}
+                    rituals={[]}
                     aiStyle={state.aiStyle}
                     primaryUseMode={state.primaryUseMode}
                     activeAdvisors={state.advisorActivation}
@@ -1244,8 +821,6 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-
-                {/* System Check */}
                 {phase === "system-check" && (
                   <PhaseCard key="system-check" title="Initializing Your System" subtitle="Running final checks..." icon={Cpu}
                     step={currentStepNum} total={totalSteps} phaseStatus={phaseStatus} steppablePhases={steppablePhases} allPhaseStates={allPhaseStates}>
@@ -1253,19 +828,17 @@ export function OSSetupExperience() {
                   </PhaseCard>
                 )}
 
-                {/* Trust Certificate */}
                 {phase === "trust-certificate" && (
                   <TrustCertificateStep key="trust-certificate"
                     displayName={state.displayName}
                     trustLevel={state.trustLevel}
                     enabledDomains={state.enabledDomains}
-                    rituals={state.rituals}
+                    rituals={[]}
                     onFinish={finishSetup} />
                 )}
               </AnimatePresence>
             </div>
 
-            {/* Learning Panel — right side on lg+ */}
             {showLearningPanel && (
               <LearningPanel state={state} />
             )}

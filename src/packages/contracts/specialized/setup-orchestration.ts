@@ -3,24 +3,15 @@
 // Full type system for the setup lifecycle engine
 // ═══════════════════════════════════════════════════════════════
 
-/** All 27 setup phases from OSSetupExperience */
+/** Clean 24-phase setup flow */
 export type SetupPhaseId =
   | "boot" | "secure-foundation" | "language-region" | "network-setup" | "device-readiness" | "device-ownership"
-  | "account-environment" | "access-protection"
-  | "privacy-transparency" | "quick-identity" | "deep-world-modeling" | "primary-use-mode"
-  | "trust-calibration" | "advisor-activation"
-  | "welcome" | "restore" | "enterprise"
-  | "cinematic-intro" | "setup-style"
-  | "identity" | "want-less-of" | "protect-most"
-  | "domains" | "trust" | "explanation-style" | "presence-style"
-  | "ai-personality" | "interruption-style" | "rituals"
-  | "appearance" | "household-graph" | "memory-consent"
-  | "home-composition" | "first-connections" | "desktop-preview"
-  | "first-simulation" | "first-actions"
-  | "recover-first" | "arrival-prep"
-  | "first-win-setup" | "desktop-transition"
-  | "system-check" | "trust-certificate"
-  | "life-rhythm" | "stress-slippage" | "communications-context" | "planning-style" | "environment-summary";
+  | "account-environment" | "setup-style" | "access-protection"
+  | "privacy-transparency" | "quick-identity" | "deep-world-modeling"
+  | "life-rhythm" | "stress-slippage" | "communications-context" | "planning-style"
+  | "primary-use-mode" | "trust-calibration" | "advisor-activation"
+  | "environment-summary" | "first-connections" | "first-win-setup"
+  | "arrival-prep" | "desktop-transition" | "system-check" | "trust-certificate";
 
 /** 12-state per-phase status */
 export type SetupPhaseStatus =
