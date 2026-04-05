@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchCustomers, fetchCollectionsAccounts } from "@/lib/data-services/business-data-service";
+import { fetchCustomers, fetchCollections } from "@/lib/data-services/business-data-service";
 import { fetchFilesOverview, fetchFilesProcessing, fetchFilesSearchIndex, fetchAllFiles, fetchFilesByStatus, fetchFilesBySensitivity, fetchFileSettings } from "@/lib/data-services/files-data-service";
 import { fetchReservesSavings } from "@/lib/data-services/money-data-service";
 import { fetchMobileAlerts, fetchMobileApprovals, fetchMobileProofs, fetchMobileWorkflowSteps } from "@/lib/data-services/mobile-data-service";
@@ -13,8 +13,8 @@ import { fetchRevenueLeakage } from "@/lib/data-services/revenue-data-service";
 import { fetchCapitalBuckets, fetchPositions, fetchTheses } from "@/lib/data-services/investment-data-service";
 
 // Business
-export function useCustomers() { return useQuery({ queryKey: ["customers"], queryFn: fetchCustomers }); }
-export function useCollectionsAccounts() { return useQuery({ queryKey: ["collections-accounts"], queryFn: fetchCollectionsAccounts }); }
+export function useCustomers() { return useQuery({ queryKey: ["customers"], queryFn: () => fetchCustomers() }); }
+export function useCollectionsAccounts() { return useQuery({ queryKey: ["collections-accounts"], queryFn: () => fetchCollections() }); }
 
 // Files
 export function useFilesOverview() { return useQuery({ queryKey: ["files-overview"], queryFn: fetchFilesOverview }); }
@@ -26,7 +26,7 @@ export function useFilesBySensitivity(sensitivities: string[]) { return useQuery
 export function useFileSettings() { return useQuery({ queryKey: ["file-settings"], queryFn: fetchFileSettings }); }
 
 // Money
-export function useReservesSavings() { return useQuery({ queryKey: ["reserves-savings"], queryFn: fetchReservesSavings }); }
+export function useReservesSavings() { return useQuery({ queryKey: ["reserves-savings"], queryFn: () => fetchReservesSavings() }); }
 
 // Mobile
 export function useMobileAlerts() { return useQuery({ queryKey: ["mobile-alerts"], queryFn: fetchMobileAlerts }); }
@@ -35,14 +35,14 @@ export function useMobileProofs() { return useQuery({ queryKey: ["mobile-proofs"
 export function useMobileWorkflowSteps() { return useQuery({ queryKey: ["mobile-workflow-steps"], queryFn: fetchMobileWorkflowSteps }); }
 
 // Owner
-export function useLeases() { return useQuery({ queryKey: ["leases"], queryFn: fetchLeases }); }
-export function useOwnerApprovals() { return useQuery({ queryKey: ["owner-approvals"], queryFn: fetchOwnerApprovals }); }
-export function usePricingItems() { return useQuery({ queryKey: ["pricing-items"], queryFn: fetchPricingItems }); }
+export function useLeases() { return useQuery({ queryKey: ["leases"], queryFn: () => fetchLeases() }); }
+export function useOwnerApprovals() { return useQuery({ queryKey: ["owner-approvals"], queryFn: () => fetchOwnerApprovals() }); }
+export function usePricingItems() { return useQuery({ queryKey: ["pricing-items"], queryFn: () => fetchPricingItems() }); }
 
 // Workspace
-export function useDocs() { return useQuery({ queryKey: ["workspace-docs"], queryFn: fetchDocs }); }
-export function useSheets() { return useQuery({ queryKey: ["workspace-sheets"], queryFn: fetchSheets }); }
-export function useDecks() { return useQuery({ queryKey: ["workspace-decks"], queryFn: fetchDecks }); }
+export function useDocs() { return useQuery({ queryKey: ["workspace-docs"], queryFn: () => fetchDocs() }); }
+export function useSheets() { return useQuery({ queryKey: ["workspace-sheets"], queryFn: () => fetchSheets() }); }
+export function useDecks() { return useQuery({ queryKey: ["workspace-decks"], queryFn: () => fetchDecks() }); }
 
 // Mission Control / Advisors
 export function useAdvisorProfiles() { return useQuery({ queryKey: ["advisor-profiles"], queryFn: fetchAdvisorProfiles }); }
@@ -55,8 +55,8 @@ export function useProofHistory() { return useQuery({ queryKey: ["proof-history"
 export function useCalendarEvents(year: number, month: number) { return useQuery({ queryKey: ["calendar-events", year, month], queryFn: () => fetchCalendarEvents(year, month) }); }
 
 // Activity
-export function useInboxItems() { return useQuery({ queryKey: ["inbox-items"], queryFn: fetchInboxItems }); }
-export function useActivityTimeline() { return useQuery({ queryKey: ["activity-timeline"], queryFn: fetchActivityTimeline }); }
+export function useInboxItems() { return useQuery({ queryKey: ["inbox-items"], queryFn: () => fetchInboxItems() }); }
+export function useActivityTimeline() { return useQuery({ queryKey: ["activity-timeline"], queryFn: () => fetchActivityTimeline() }); }
 
 // Admin
 export function useAutomationRules() { return useQuery({ queryKey: ["automation-rules"], queryFn: fetchAutomationRules }); }
@@ -67,9 +67,9 @@ export function useTokenUsages() { return useQuery({ queryKey: ["token-usages"],
 export function useAdminIncidents() { return useQuery({ queryKey: ["admin-incidents"], queryFn: fetchAdminIncidents }); }
 
 // Revenue
-export function useRevenueLeakage() { return useQuery({ queryKey: ["revenue-leakage"], queryFn: fetchRevenueLeakage }); }
+export function useRevenueLeakage() { return useQuery({ queryKey: ["revenue-leakage"], queryFn: () => fetchRevenueLeakage() }); }
 
 // Investment
-export function useCapitalBuckets() { return useQuery({ queryKey: ["capital-buckets"], queryFn: fetchCapitalBuckets }); }
-export function usePositions() { return useQuery({ queryKey: ["positions"], queryFn: fetchPositions }); }
-export function useTheses() { return useQuery({ queryKey: ["theses"], queryFn: fetchTheses }); }
+export function useCapitalBuckets() { return useQuery({ queryKey: ["capital-buckets"], queryFn: () => fetchCapitalBuckets() }); }
+export function usePositions() { return useQuery({ queryKey: ["positions"], queryFn: () => fetchPositions() }); }
+export function useTheses() { return useQuery({ queryKey: ["theses"], queryFn: () => fetchTheses() }); }
