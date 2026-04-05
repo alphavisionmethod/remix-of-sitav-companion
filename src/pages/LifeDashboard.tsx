@@ -142,7 +142,7 @@ const LifeDashboard = () => {
               <PolarGrid stroke="hsl(var(--border))" />
               <PolarAngleAxis dataKey="domain" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }} />
               <PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} />
-              <Radar dataKey="value" stroke="hsl(var(--sita-purple))" fill="hsl(var(--sita-purple))" fillOpacity={0.2} strokeWidth={2} />
+              <RechartsRadar dataKey="value" stroke="hsl(var(--sita-purple))" fill="hsl(var(--sita-purple))" fillOpacity={0.2} strokeWidth={2} />
             </RadarChart>
           </ResponsiveContainer>
         </motion.div>
