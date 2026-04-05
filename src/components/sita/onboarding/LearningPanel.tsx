@@ -32,7 +32,7 @@ export function LearningPanel({ state }: LearningPanelProps) {
     items.push({ icon: Shield, label: "Trust Mode", value: trustLabels[state.trustLevel] || "Not set" });
 
     // Detected priorities
-    if (state.painPoints.length > 0) {
+    if (state.painPoints && state.painPoints.length > 0) {
       items.push({ icon: Activity, label: "Detected Priorities", value: state.painPoints.slice(0, 2).join(", ") });
     }
 
