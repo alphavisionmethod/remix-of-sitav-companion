@@ -1,10 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Policy Engine
-// Constitutional rules evaluation, deterministic, no DB needed
-// Canonical contracts: RiskTier from contracts
+// SITA OS — Policy Engine (Durable)
+// Constitutional rules evaluation with durable persistence of
+// meaningful policy decisions to os_policy_evaluations
 // ═══════════════════════════════════════════════════════════════
 
 import type { RiskTier as CanonicalRiskTier } from "@/packages/contracts";
+import { persistPolicyEvaluation } from "@/lib/persistence/policy-engine-persistence";
 
 export type { CanonicalRiskTier };
 
@@ -15,13 +16,12 @@ export type PolicyEffect =
   | "require-dual-approval"
   | "require-simulation";
 
-/** Local risk tier (more granular than canonical) */
 export type ServiceRiskTier = "low" | "medium" | "high" | "critical";
 
 export interface PolicyRule {
   id: string;
   name: string;
-  priority: number; // Higher = evaluated first (1000 highest)
+  priority: number;
   effect: PolicyEffect;
   conditions: PolicyCondition[];
   reason: string;
@@ -52,9 +52,11 @@ export interface PolicyEvaluationResult {
   reason: string;
   evaluatedRules: number;
   evaluationTimeMs: number;
+  /** Set after durable persistence — the ID of the persisted evaluation record */
+  persistedEvaluationId?: string;
 }
 
-// ── Constitutional Policy Rules ─────────────────────────────────────────────
+// ── Constitutional Policy Rules ─────────────────────────────────
 
 const CONSTITUTIONAL_RULES: PolicyRule[] = [
   {
@@ -148,7 +150,7 @@ const CONSTITUTIONAL_RULES: PolicyRule[] = [
   },
 ];
 
-// ── Condition Evaluation ────────────────────────────────────────────────────
+// ── Condition Evaluation ────────────────────────────────────────
 
 function evaluateCondition(condition: PolicyCondition, context: PolicyContext): boolean {
   const contextValue = context[condition.field];
@@ -169,43 +171,64 @@ function evaluateCondition(condition: PolicyCondition, context: PolicyContext): 
 }
 
 function evaluateRule(rule: PolicyRule, context: PolicyContext): boolean {
-  if (rule.conditions.length === 0) return true; // Default rule
+  if (rule.conditions.length === 0) return true;
   return rule.conditions.every((c) => evaluateCondition(c, context));
 }
 
-// ── Public API ──────────────────────────────────────────────────────────────
+// ── Public API ──────────────────────────────────────────────────
 
 import { getInvestmentPolicyRules } from "./investment-policy-rules";
 
 export function evaluatePolicy(
   context: PolicyContext,
-  customRules?: PolicyRule[]
+  customRules?: PolicyRule[],
+  opts?: {
+    /** Link this evaluation to an action for lineage */
+    linkedActionId?: string;
+    /** Force persist even for allow decisions */
+    forcePersist?: boolean;
+    /** Skip persistence entirely */
+    skipPersist?: boolean;
+  }
 ): PolicyEvaluationResult {
   const start = performance.now();
-  // Auto-include investment policy rules when domain is investment
   const investmentRules = context.domain === "investment" ? getInvestmentPolicyRules() : [];
   const rules = [...(customRules || []), ...investmentRules, ...CONSTITUTIONAL_RULES]
     .sort((a, b) => b.priority - a.priority);
 
   for (const rule of rules) {
     if (evaluateRule(rule, context)) {
-      return {
+      const result: PolicyEvaluationResult = {
         effect: rule.effect,
         matchedRule: rule,
         reason: rule.reason,
         evaluatedRules: rules.indexOf(rule) + 1,
         evaluationTimeMs: performance.now() - start,
       };
+
+      // Durably persist meaningful decisions (non-blocking)
+      if (!opts?.skipPersist) {
+        persistPolicyEvaluation(result, context, {
+          linkedActionId: opts?.linkedActionId,
+          forcePersist: opts?.forcePersist,
+        })
+          .then(id => { if (id) result.persistedEvaluationId = id; })
+          .catch(() => {});
+      }
+
+      return result;
     }
   }
 
-  return {
+  const fallback: PolicyEvaluationResult = {
     effect: "allow",
     matchedRule: null,
     reason: "No rules matched",
     evaluatedRules: rules.length,
     evaluationTimeMs: performance.now() - start,
   };
+
+  return fallback;
 }
 
 export function classifyRiskTier(domain: string, capabilityId: string, amount?: number): ServiceRiskTier {

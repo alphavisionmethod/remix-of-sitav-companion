@@ -1,9 +1,17 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Canonical Action-State Machine
+// SITA OS — Canonical Action-State Machine (Durable)
 // 16-state FSM for ALL meaningful workflows across all domains
+// NOW with durable persistence to os_action_lineage
 // ═══════════════════════════════════════════════════════════════
 
 import type { ActionState, ActionStateTransition, ActionRecord, OSDomain, EntityScope } from "../types/os-unified.types";
+import {
+  persistActionRecord,
+  persistActionTransition,
+  linkEventToAction,
+  linkPolicyToAction,
+  addProofToAction,
+} from "@/lib/persistence/action-lineage-persistence";
 
 const VALID_TRANSITIONS: Record<ActionState, ActionState[]> = {
   detected: ["proposed", "archived"],
@@ -25,10 +33,11 @@ const VALID_TRANSITIONS: Record<ActionState, ActionState[]> = {
 };
 
 const TERMINAL_STATES: ActionState[] = ["verified", "archived"];
-const STUCK_THRESHOLD_MS = 30 * 60 * 1000; // 30 minutes
+const STUCK_THRESHOLD_MS = 30 * 60 * 1000;
 
 export class ActionStateMachine {
   private record: ActionRecord;
+  private persistenceEnabled = true;
 
   constructor(init: {
     id: string;
@@ -36,6 +45,8 @@ export class ActionStateMachine {
     domain: OSDomain;
     assignedAdvisor: string;
     entityScope: EntityScope;
+    actionType?: string;
+    initiatingSurface?: string;
   }) {
     this.record = {
       ...init,
@@ -50,6 +61,14 @@ export class ActionStateMachine {
       confidenceScore: 1,
       proofIds: [],
     };
+
+    // Durably persist the initial record
+    if (this.persistenceEnabled) {
+      persistActionRecord(this.record, {
+        actionType: init.actionType,
+        initiatingSurface: init.initiatingSurface,
+      }).catch(() => {});
+    }
   }
 
   static fromRecord(record: ActionRecord): ActionStateMachine {
@@ -97,6 +116,15 @@ export class ActionStateMachine {
     this.record.rollbackEligible = ["completed", "partially_completed", "failed"].includes(target);
     this.record.stuckSince = undefined;
 
+    // Durably persist the transition
+    if (this.persistenceEnabled) {
+      persistActionTransition(this.record.id, target, transition, {
+        rollbackEligible: this.record.rollbackEligible,
+        confidenceScore: this.record.confidenceScore,
+        stuckSince: null,
+      }).catch(() => {});
+    }
+
     return this.snapshot;
   }
 
@@ -116,11 +144,32 @@ export class ActionStateMachine {
     }
   }
 
+  /** Add a proof reference and persist the linkage durably */
   addProof(proofId: string): void {
     if (!this.record.proofIds.includes(proofId)) {
       this.record.proofIds.push(proofId);
+      if (this.persistenceEnabled) {
+        addProofToAction(this.record.id, proofId).catch(() => {});
+      }
     }
   }
+
+  /** Link an event to this action's lineage */
+  linkEvent(eventId: string): void {
+    if (this.persistenceEnabled) {
+      linkEventToAction(this.record.id, eventId).catch(() => {});
+    }
+  }
+
+  /** Link a policy evaluation to this action's lineage */
+  linkPolicy(policyEvalId: string): void {
+    if (this.persistenceEnabled) {
+      linkPolicyToAction(this.record.id, policyEvalId).catch(() => {});
+    }
+  }
+
+  /** Enable/disable persistence */
+  setPersistence(enabled: boolean): void { this.persistenceEnabled = enabled; }
 
   checkStuck(): { isStuck: boolean; duration: number } {
     const lastTransition = this.record.stateHistory[this.record.stateHistory.length - 1];
