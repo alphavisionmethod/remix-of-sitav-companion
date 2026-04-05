@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 export type AgentHealthStatus = "healthy" | "degraded" | "critical" | "unresponsive" | "restarting";
+type MutableHealthStatus = AgentHealthStatus;
 
 export interface AgentHealthSnapshot {
   agentId: string;
