@@ -22,6 +22,15 @@ export default function IdentityScreen({ state, setState }: ScreenProps) {
     setState(p => ({ ...p, businessTypes: p.businessTypes.includes(v) ? p.businessTypes.filter(x => x !== v) : [...p.businessTypes, v] }));
   }, [setState]);
 
+  const branchQuestions = useMemo(() => getBusinessTypeBranch(state), [state.businessTypes]);
+  const handleBranch = useCallback((qId: string, oId: string) => {
+    setState(p => {
+      const current = p.branchAnswers[qId] || [];
+      const next = current.includes(oId) ? current.filter(x => x !== oId) : [...current, oId];
+      return { ...p, branchAnswers: { ...p.branchAnswers, [qId]: next } };
+    });
+  }, [setState]);
+
   return (
     <div className="space-y-6">
       <ChapterBanner chapter="Chapter 1: Formation" subtitle="Let SITA understand who you are and what you do" />
