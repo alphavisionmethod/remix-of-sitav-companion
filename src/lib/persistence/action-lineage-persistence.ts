@@ -68,7 +68,7 @@ export async function persistActionRecord(
       current_state: record.currentState,
       state_history: record.stateHistory,
       assigned_advisor: record.assignedAdvisor,
-      entity_scope: record.entityScope as Record<string, unknown>,
+      entity_scope: record.entityScope as unknown as Record<string, unknown>,
       rollback_eligible: record.rollbackEligible,
       replayable: record.replayable,
       blocking_reasons: record.blockingReasons,
