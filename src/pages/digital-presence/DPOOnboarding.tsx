@@ -7,7 +7,7 @@ import {
   CheckCircle, Upload, Link, Sparkles, Shield, Zap,
   Monitor, Smartphone, ShoppingCart, Calendar, Download,
   FileText, Image, Star, Building, Briefcase, MapPin,
-  TrendingUp, Lock, Brain, Rocket
+  TrendingUp, Lock, Brain, Rocket, AlertTriangle
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
