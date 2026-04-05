@@ -148,6 +148,8 @@ autoinstall:
     - fail2ban
     - ufw
     - auditd
+    # VMware guest integration
+    - open-vm-tools
     # Filesystem
     - lvm2
     - xfsprogs
