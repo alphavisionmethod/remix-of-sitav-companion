@@ -5064,6 +5064,7 @@ export type Database = {
         Row: {
           blockers: string[] | null
           created_at: string
+          dependencies: string[]
           done_at: string | null
           expected_contract: string | null
           feature_name: string
@@ -5075,6 +5076,9 @@ export type Database = {
           mock_type: string
           page_path: string
           real_backend_target: string | null
+          runtime_evidence: Json
+          runtime_validated: boolean
+          sequence_order: number
           updated_at: string
           user_id: string
           validation_evidence: Json | null
@@ -5082,6 +5086,7 @@ export type Database = {
         Insert: {
           blockers?: string[] | null
           created_at?: string
+          dependencies?: string[]
           done_at?: string | null
           expected_contract?: string | null
           feature_name: string
@@ -5093,6 +5098,9 @@ export type Database = {
           mock_type?: string
           page_path: string
           real_backend_target?: string | null
+          runtime_evidence?: Json
+          runtime_validated?: boolean
+          sequence_order?: number
           updated_at?: string
           user_id: string
           validation_evidence?: Json | null
@@ -5100,6 +5108,7 @@ export type Database = {
         Update: {
           blockers?: string[] | null
           created_at?: string
+          dependencies?: string[]
           done_at?: string | null
           expected_contract?: string | null
           feature_name?: string
@@ -5111,6 +5120,9 @@ export type Database = {
           mock_type?: string
           page_path?: string
           real_backend_target?: string | null
+          runtime_evidence?: Json
+          runtime_validated?: boolean
+          sequence_order?: number
           updated_at?: string
           user_id?: string
           validation_evidence?: Json | null
@@ -7422,54 +7434,78 @@ export type Database = {
       reality_classifications: {
         Row: {
           backend_target: string | null
+          blockers: string[]
           classification: string
           classified_by: string | null
+          confidence: number
           contract_status: string | null
           created_at: string
           domain: string
+          evidence_inputs: Json
           feature_name: string
           id: string
           last_verified_at: string | null
+          launch_impact: string
+          missing_requirements: Json
           mock_sources: string[] | null
           notes: string | null
+          owner: string | null
+          progression_criteria: Json
           readiness_score: number | null
           route_path: string
+          scope_level: string
           updated_at: string
           user_id: string
           verification_evidence: Json | null
         }
         Insert: {
           backend_target?: string | null
+          blockers?: string[]
           classification?: string
           classified_by?: string | null
+          confidence?: number
           contract_status?: string | null
           created_at?: string
           domain?: string
+          evidence_inputs?: Json
           feature_name: string
           id?: string
           last_verified_at?: string | null
+          launch_impact?: string
+          missing_requirements?: Json
           mock_sources?: string[] | null
           notes?: string | null
+          owner?: string | null
+          progression_criteria?: Json
           readiness_score?: number | null
           route_path: string
+          scope_level?: string
           updated_at?: string
           user_id: string
           verification_evidence?: Json | null
         }
         Update: {
           backend_target?: string | null
+          blockers?: string[]
           classification?: string
           classified_by?: string | null
+          confidence?: number
           contract_status?: string | null
           created_at?: string
           domain?: string
+          evidence_inputs?: Json
           feature_name?: string
           id?: string
           last_verified_at?: string | null
+          launch_impact?: string
+          missing_requirements?: Json
           mock_sources?: string[] | null
           notes?: string | null
+          owner?: string | null
+          progression_criteria?: Json
           readiness_score?: number | null
           route_path?: string
+          scope_level?: string
           updated_at?: string
           user_id?: string
           verification_evidence?: Json | null
