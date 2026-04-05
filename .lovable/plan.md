@@ -1,110 +1,102 @@
 
 
-# SITA OS — Advanced Auto-Personalization System
+# Advisor Specialization, Individual Knowledge & Self-Learning
 
-## Current State
+## Current Gaps
 
-- **Personalization Engine**: 10-line stub — stores theme/language/timezone in a `Map`. No persistence, no learning, no adaptation.
-- **PersonalizationStudio page**: 274 lines of hardcoded mock data (fake learnings, fake preferences, fake memory counts). Nothing reads from `user_memory` table or any real source.
-- **Preference Memory Service**: Static defaults in a `Map`. No behavioral tracking.
-- **user_memory table**: Exists in Supabase, stores key/value pairs per user — but only written during onboarding. Never updated from behavioral signals.
-- **Missing entirely**: Behavioral tracking, adaptive learning engine, automatic preference inference, real-time personalization feedback loop.
+1. **Edge function `chat-advisor`** uses 6 generic one-paragraph system prompts. All advisors get the same shallow personality. No domain knowledge, no user-specific context injection, no memory of past conversations.
+2. **Self-learning service** is a 13-line in-memory stub. No persistence, no per-advisor learning, no correction tracking, no feedback loop.
+3. **No per-advisor knowledge base** — advisors cannot accumulate domain expertise, remember user corrections, or adapt their behavior over time.
+4. **No conversation memory** — each chat session starts fresh. Advisors forget everything between sessions.
+5. **No correction/feedback pipeline** — when a user says "that's wrong" or thumbs-down a response, nothing is captured or used to improve future responses.
 
 ## What We Build
 
-### 1. Behavioral Learning Engine — `src/lib/services/personalization-engine/behavioral-learning.service.ts`
+### 1. Advisor Knowledge Base Service — `src/lib/services/advisor-knowledge/index.ts`
 
-Tracks every meaningful user interaction and infers preferences automatically:
+Per-advisor persistent knowledge store. Each advisor accumulates domain-specific knowledge articles that get injected into their system prompt as context.
 
-- **Event ingestion**: `trackEvent(userId, event)` — accepts navigation, click, approval, dismissal, timing events
-- **Pattern detection**: Rolling window analysis (last 30 days) to detect:
-  - Time-of-day preferences (when user is most active per domain)
-  - Navigation patterns (which surfaces visited first, most often)
-  - Approval patterns (auto-approve threshold, preferred review times)
-  - Communication style (response length, emoji usage, formality)
-  - Content density preference (how much data they want to see)
-- **Confidence scoring**: Each inference has a confidence (0-1) based on sample size and consistency
-- **Auto-apply rules**: When confidence > 0.85 and user has "fully automated" mode, preferences apply automatically. Otherwise queued as suggestions.
+- `addKnowledge(advisorId, article)` — stores a knowledge entry (title, content, tags, source, confidence)
+- `getRelevantKnowledge(advisorId, query, limit)` — retrieves top-N articles matching the query by tag/keyword overlap
+- `promoteKnowledge(id)` / `deprecateKnowledge(id)` — lifecycle management
+- Persisted to `advisor_knowledge` Supabase table (new migration)
+- Each advisor starts with seed knowledge from their `capabilities` and `description` in the registry
 
-### 2. Adaptive Personalization Engine — Rewrite `src/lib/services/personalization-engine/index.ts`
+### 2. Advisor Memory Service — `src/lib/services/advisor-memory/index.ts`
 
-Replace the 10-line stub with a full engine:
+Per-advisor, per-user conversational memory. Advisors remember past interactions, decisions, and user preferences.
 
-- **Deep preference model**: 40+ preference dimensions across communication, display, workflow, trust, scheduling, financial, household
-- **Layered preferences**: `explicit` (user-set) > `inferred` (behavioral) > `default` — explicit always wins
-- **Domain-specific profiles**: Different preferences per domain (business vs. concierge vs. money)
-- **Time-aware adaptation**: Morning vs. evening modes, weekday vs. weekend, seasonal
-- **Household-aware**: Per-family-member preferences when in concierge mode
-- **Persistence hook**: `syncToSupabase(userId)` writes to `user_memory` table; `loadFromSupabase(userId)` hydrates on login
+- `saveConversationSummary(advisorId, userId, summary)` — stores a compressed summary of each conversation
+- `getRecentMemories(advisorId, userId, limit)` — retrieves last N conversation summaries
+- `saveUserFact(advisorId, userId, fact)` — stores a learned fact about the user ("prefers conservative investments", "has 3 kids")
+- `getUserFacts(advisorId, userId)` — retrieves all known facts for context injection
+- Persisted to `advisor_memories` Supabase table (new migration)
 
-### 3. Real-Time Personalization Hook — `src/hooks/use-adaptive-personalization.ts`
+### 3. Advisor Correction & Feedback Service — `src/lib/services/advisor-feedback/index.ts`
 
-React hook that connects the engine to the UI:
+Captures user corrections and feedback to improve advisor responses over time.
 
-- Loads preferences from Supabase on mount
-- Exposes `preferences`, `learnings`, `automationRules`
-- `trackInteraction(event)` method for components to report behavior
-- Auto-syncs inferred preferences to Supabase every 5 minutes (debounced)
-- Returns personalization "suggestions" the user can accept/dismiss
+- `recordCorrection(advisorId, userId, originalResponse, correction, category)` — stores what went wrong
+- `recordRating(advisorId, userId, messageId, rating, comment)` — thumbs up/down with optional comment
+- `getCorrections(advisorId, limit)` — retrieves recent corrections to inject as "anti-patterns" in system prompt
+- `getAdvisorScore(advisorId)` — computes rolling satisfaction score from ratings
+- `generateLearningFromCorrections(advisorId)` — synthesizes corrections into knowledge articles (calls AI to extract patterns)
+- Persisted to `advisor_feedback` table (new migration)
 
-### 4. Personalization Studio — Rewrite `src/pages/PersonalizationStudio.tsx`
+### 4. Enhanced Self-Learning Engine — Rewrite `src/lib/services/self-learning/index.ts`
 
-Replace all hardcoded data with real data:
+Replace the 13-line stub with a full per-advisor self-learning engine.
 
-- **Profile tab**: Reads/writes real preferences from `user_memory` via the hook. Edit mode persists to Supabase.
-- **Learnings**: Shows real inferred patterns from the behavioral engine with real confidence scores. User can "confirm" (promotes to explicit) or "dismiss" (suppresses inference).
-- **Preferences tab**: Real domain-specific preferences with live editing
-- **Memory tab**: Reads from `user_memory` table (already exists in MemoryCenter, reuse pattern)
-- **Automation tab**: Real automation rules with toggles that persist. Each rule shows: action, current level (suggest/draft/auto), trust badge, override controls.
-- **Auto-Pilot toggle**: Master switch — when ON, SITA auto-applies all high-confidence learnings without asking. Shows what it would change before enabling.
+- Per-advisor learning profiles with domain-specific pattern tracking
+- Correction-driven learning: when corrections accumulate (3+ similar), auto-generate a knowledge article
+- Outcome tracking: advisor predictions vs. actual outcomes (e.g., revenue forecast accuracy)
+- Confidence calibration: adjusts advisor confidence thresholds based on historical accuracy
+- Learning decay: old patterns lose weight over time unless reinforced
+- Persists learning signals to `user_memory` with category `advisor_learning`
 
-### 5. Interaction Tracker Integration — `src/components/sita/InteractionTracker.tsx`
+### 5. Deep System Prompts — Rewrite `chat-advisor/index.ts`
 
-Invisible wrapper component placed at shell level that:
+Replace the 6 generic prompts with a dynamic prompt builder that assembles per-advisor context:
 
-- Tracks page navigation events (which pages, how long, what order)
-- Tracks sidebar clicks, command palette usage, advisor interactions
-- Tracks approval accept/reject patterns with amounts
-- Tracks time-of-day activity patterns
-- Feeds all events to the behavioral learning engine
-- Respects privacy mode — no tracking in `managed` or when user opts out
-- All data stays local + in user's own `user_memory` rows (sovereign data)
+- **Base personality**: Deep, unique personality and expertise description per advisor (2000+ chars each for all 26 advisors)
+- **Knowledge injection**: Top 10 relevant knowledge articles from `advisor_knowledge` table
+- **Memory injection**: Last 5 conversation summaries + all user facts from `advisor_memories`
+- **Correction guardrails**: Recent corrections formatted as "AVOID: [pattern]" instructions
+- **Cross-advisor context**: Key facts from other advisors that are relevant (e.g., Money Advisor knows business revenue context)
+- **User preferences**: Communication style, detail level, formality from personalization engine
+- Dynamic prompt assembly: `buildAdvisorPrompt(advisorId, userId, query)` constructs the full system prompt
 
-### 6. Auto-Personalization Rules Engine — `src/lib/services/personalization-engine/auto-rules.service.ts`
+### 6. Conversation Summarizer — `src/lib/services/advisor-memory/summarizer.ts`
 
-Automatic actions triggered by learned preferences:
+After each conversation ends (or every 10 messages), calls AI to compress the conversation into a structured summary:
 
-- **Display**: Auto-switch to calm mode after 9 PM if user consistently reduces density at night
-- **Notifications**: Auto-mute non-urgent during detected focus hours
-- **Dashboard**: Reorder surface cards based on actual usage frequency
-- **Advisors**: Route to preferred advisor based on topic + time pattern
-- **Scheduling**: Suggest meeting times based on user's actual availability patterns
-- **Financial**: Adjust safe-to-spend alerts based on spending behavior variance
-- Each rule has: trigger condition, confidence threshold, action, user-override flag
+- Key decisions made
+- Facts learned about the user
+- Action items generated
+- Unresolved questions
+- Stored via the Advisor Memory Service for future context injection
 
-### 7. Barrel Export — Edit `src/lib/services/personalization-engine/index.ts`
+### 7. Database Migration
 
-Re-export all new modules from the barrel.
+New tables with RLS:
+
+- `advisor_knowledge` — id, advisor_id, user_id, title, content, tags[], source, confidence, status, created_at, updated_at
+- `advisor_memories` — id, advisor_id, user_id, memory_type (summary/fact/preference), content, metadata, created_at
+- `advisor_feedback` — id, advisor_id, user_id, message_id, feedback_type (correction/rating), original_response, corrected_response, rating, category, created_at
+
+All with RLS: users can only access their own rows.
 
 ## File Summary
 
 | # | File | Type |
 |---|------|------|
-| 1 | `src/lib/services/personalization-engine/index.ts` | Rewrite (stub → full engine) |
-| 2 | `src/lib/services/personalization-engine/behavioral-learning.service.ts` | New |
-| 3 | `src/lib/services/personalization-engine/auto-rules.service.ts` | New |
-| 4 | `src/hooks/use-adaptive-personalization.ts` | New |
-| 5 | `src/components/sita/InteractionTracker.tsx` | New |
-| 6 | `src/pages/PersonalizationStudio.tsx` | Rewrite (mock → real data) |
+| 1 | Migration: `advisor_knowledge`, `advisor_memories`, `advisor_feedback` tables | New |
+| 2 | `src/lib/services/advisor-knowledge/index.ts` | New |
+| 3 | `src/lib/services/advisor-memory/index.ts` | New |
+| 4 | `src/lib/services/advisor-memory/summarizer.ts` | New |
+| 5 | `src/lib/services/advisor-feedback/index.ts` | New |
+| 6 | `src/lib/services/self-learning/index.ts` | Rewrite |
+| 7 | `supabase/functions/chat-advisor/index.ts` | Rewrite (dynamic prompts + memory + knowledge injection) |
 
-**Total: 3 new files, 2 rewrites, 1 new component. All pure TypeScript, no external dependencies. All data stored in user's own `user_memory` rows — fully sovereign.**
-
-## Technical Notes
-
-- Behavioral events stored in-memory with periodic flush to `user_memory` (category: "behavioral")
-- Pattern detection uses simple statistical methods (frequency counting, time binning, exponential moving average) — no ML dependencies
-- Confidence = `min(1, sampleCount / requiredSamples) * consistencyRatio`
-- Auto-apply requires: confidence >= 0.85, user auto-pilot ON, no explicit override for that preference
-- Privacy: InteractionTracker checks `privacyMode` from shell state; disabled in `managed` mode
-- All preferences follow the layered model: explicit > inferred > default — user always has final say
+**Total: 4 new service files, 2 rewrites, 1 migration. Each advisor becomes a unique specialist that learns, remembers, and improves from every interaction.**
 
