@@ -544,6 +544,10 @@ export function OSSetupExperience() {
     deferredConnections: [],
     firstWin: { category: "", action: "", approved: false, prepared: false },
     connectedSystems: 0,
+    lifeRhythm: { weekStructure: "", overloadMoments: [], planningHorizon: "", planningSupport: [] },
+    stressMap: { heavierThanShould: [], affectedFirst: [] },
+    commsContext: { communicationStress: "", supportNeeds: [] },
+    planningStyle: { viewPreference: "", focusPreference: "" },
   });
 
   // Sync setup state to engine for branch evaluation
