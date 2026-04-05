@@ -889,6 +889,50 @@ export type Database = {
         }
         Relationships: []
       }
+      connector_sync_history: {
+        Row: {
+          completed_at: string | null
+          connector_id: string
+          created_at: string
+          error: string | null
+          id: string
+          records_synced: number
+          started_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          connector_id: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          records_synced?: number
+          started_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          connector_id?: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          records_synced?: number
+          started_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connector_sync_history_connector_id_fkey"
+            columns: ["connector_id"]
+            isOneToOne: false
+            referencedRelation: "connector_configs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       council_decisions: {
         Row: {
           consensus_score: number | null
@@ -1828,6 +1872,39 @@ export type Database = {
         }
         Relationships: []
       }
+      operator_actions: {
+        Row: {
+          action_type: string
+          created_at: string
+          id: string
+          payload: Json
+          result: Json | null
+          target_id: string | null
+          target_table: string | null
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          id?: string
+          payload?: Json
+          result?: Json | null
+          target_id?: string | null
+          target_table?: string | null
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          id?: string
+          payload?: Json
+          result?: Json | null
+          target_id?: string | null
+          target_table?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       opportunities: {
         Row: {
           blockers: string | null
@@ -1959,6 +2036,44 @@ export type Database = {
         }
         Relationships: []
       }
+      policy_versions: {
+        Row: {
+          changed_by: string
+          created_at: string
+          diff_json: Json
+          id: string
+          policy_id: string
+          user_id: string
+          version_number: number
+        }
+        Insert: {
+          changed_by: string
+          created_at?: string
+          diff_json?: Json
+          id?: string
+          policy_id: string
+          user_id: string
+          version_number?: number
+        }
+        Update: {
+          changed_by?: string
+          created_at?: string
+          diff_json?: Json
+          id?: string
+          policy_id?: string
+          user_id?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_versions_policy_id_fkey"
+            columns: ["policy_id"]
+            isOneToOne: false
+            referencedRelation: "policies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -2033,6 +2148,7 @@ export type Database = {
           domain: string | null
           hash: string | null
           id: string
+          parent_proof_id: string | null
           policy_id: string | null
           result: string | null
           updated_at: string
@@ -2050,6 +2166,7 @@ export type Database = {
           domain?: string | null
           hash?: string | null
           id?: string
+          parent_proof_id?: string | null
           policy_id?: string | null
           result?: string | null
           updated_at?: string
@@ -2067,6 +2184,7 @@ export type Database = {
           domain?: string | null
           hash?: string | null
           id?: string
+          parent_proof_id?: string | null
           policy_id?: string | null
           result?: string | null
           updated_at?: string
@@ -2080,6 +2198,13 @@ export type Database = {
             columns: ["advisor_request_id"]
             isOneToOne: false
             referencedRelation: "advisor_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "proof_records_parent_proof_id_fkey"
+            columns: ["parent_proof_id"]
+            isOneToOne: false
+            referencedRelation: "proof_records"
             referencedColumns: ["id"]
           },
           {
