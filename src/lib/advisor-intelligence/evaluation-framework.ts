@@ -4,8 +4,8 @@
 // and quality scoring for the advisor council
 // ═══════════════════════════════════════════════════════════════
 
-import type { RecommendationV2, AdvisorSpecializationContract, CalibratedConfidence } from "./types";
-import type { AdvisorReliabilityRecord } from "./confidence-model-v2";
+import type { RecommendationV2, AdvisorSpecializationContract } from "./types";
+import type { CalibratedConfidence, AdvisorReliabilityRecord } from "./confidence-model-v2";
 
 // ── Eval Suite Types ──────────────────────────────────────
 
