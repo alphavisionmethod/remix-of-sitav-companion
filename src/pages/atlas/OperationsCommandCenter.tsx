@@ -1,0 +1,202 @@
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import { SitaPageHeader } from "@/components/sita/SitaCard";
+import { DegradedStateBanner } from "@/components/sita/truth/DegradedStateBanner";
+import { StalenessIndicator } from "@/components/sita/truth/StalenessIndicator";
+import {
+  Activity, Shield, AlertTriangle, CheckCircle, XCircle, Clock, Cpu, HardDrive,
+  Database, Wifi, Zap, BarChart3, BookOpen, Play, RotateCcw, Server, Gauge, Radio
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+
+const now = new Date();
+const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
+
+const services = [
+  { name: "Supabase Database", status: "healthy", latency: 12, uptime: 99.98, lastCheck: h(0.02) },
+  { name: "Supabase Auth", status: "healthy", latency: 45, uptime: 99.95, lastCheck: h(0.02) },
+  { name: "Edge Functions", status: "healthy", latency: 120, uptime: 99.9, lastCheck: h(0.05) },
+  { name: "Storage", status: "healthy", latency: 85, uptime: 99.99, lastCheck: h(0.02) },
+  { name: "Realtime", status: "degraded", latency: 350, uptime: 99.5, lastCheck: h(0.02) },
+  { name: "Connector Gateway", status: "healthy", latency: 200, uptime: 99.8, lastCheck: h(0.1) },
+];
+
+const slos = [
+  { name: "API Availability", target: 99.9, current: 99.95, burnRate: 0.3, budget: 95, window: "30d" },
+  { name: "Auth Latency P95", target: 200, current: 145, burnRate: 0.1, budget: 98, window: "30d", unit: "ms" },
+  { name: "Edge Function P95", target: 500, current: 380, burnRate: 0.2, budget: 92, window: "7d", unit: "ms" },
+  { name: "DB Query P95", target: 100, current: 42, burnRate: 0.05, budget: 99, window: "30d", unit: "ms" },
+  { name: "Error Rate", target: 0.1, current: 0.02, burnRate: 0.15, budget: 97, window: "7d", unit: "%" },
+];
+
+const alerts = [
+  { id: "a1", severity: "warning" as const, title: "Realtime latency elevated", source: "Supabase Realtime", time: h(0.5), acknowledged: false, runbookId: "rb-realtime-latency" },
+  { id: "a2", severity: "info" as const, title: "Edge function cold starts increased", source: "Edge Functions", time: h(2), acknowledged: true, runbookId: "rb-cold-start" },
+  { id: "a3", severity: "info" as const, title: "Storage usage approaching 80%", source: "Storage", time: h(6), acknowledged: true, runbookId: "rb-storage-pressure" },
+];
+
+const runbooks = [
+  { id: "rb-realtime-latency", name: "Realtime Latency Spike", steps: 5, lastUsed: h(168), status: "available" },
+  { id: "rb-cold-start", name: "Edge Function Cold Starts", steps: 4, lastUsed: h(72), status: "available" },
+  { id: "rb-storage-pressure", name: "Storage Pressure Response", steps: 3, lastUsed: null, status: "available" },
+  { id: "rb-db-pool", name: "DB Pool Exhaustion", steps: 6, lastUsed: h(720), status: "available" },
+  { id: "rb-memory-leak", name: "Memory Leak Response", steps: 7, lastUsed: null, status: "available" },
+  { id: "rb-error-rate", name: "High Error Rate Response", steps: 5, lastUsed: h(336), status: "available" },
+  { id: "rb-approval-backlog", name: "Approval Queue Backlog", steps: 4, lastUsed: h(48), status: "available" },
+  { id: "rb-api-latency", name: "API Latency Spike", steps: 5, lastUsed: h(168), status: "available" },
+];
+
+const incidents = [
+  { id: "inc-1", title: "Realtime websocket connection drops", severity: "medium", status: "investigating", started: h(0.5), assignee: "system", relatedAlert: "a1" },
+];
+
+export default function OperationsCommandCenter() {
+  const [tab, setTab] = useState("health");
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
+      <SitaPageHeader title="Operations Command Center" subtitle="Service health, SLO burn rates, alert triage, incident drilldown, and runbook management" />
+
+      {alerts.filter(a => !a.acknowledged).length > 0 && (
+        <DegradedStateBanner severity="warning" reason={`${alerts.filter(a => !a.acknowledged).length} unacknowledged alert(s)`} impact="Operator attention required" dismissible />
+      )}
+
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+        {[
+          { label: "Services Healthy", value: `${services.filter(s => s.status === "healthy").length}/${services.length}`, color: services.every(s => s.status === "healthy") ? "text-green-400" : "text-amber-400" },
+          { label: "SLO Budget Avg", value: `${Math.round(slos.reduce((s, l) => s + l.budget, 0) / slos.length)}%`, color: "text-green-400" },
+          { label: "Active Alerts", value: alerts.filter(a => !a.acknowledged).length, color: alerts.some(a => !a.acknowledged) ? "text-amber-400" : "text-green-400" },
+          { label: "Active Incidents", value: incidents.filter(i => i.status !== "resolved").length, color: incidents.some(i => i.status !== "resolved") ? "text-amber-400" : "text-green-400" },
+          { label: "Runbooks", value: runbooks.length, color: "text-blue-400" },
+        ].map((k, i) => (
+          <Card key={i} className="bg-card/50 border-border/50">
+            <CardContent className="p-3 text-center">
+              <p className={cn("text-2xl font-bold", k.color)}>{k.value}</p>
+              <p className="text-[9px] text-muted-foreground">{k.label}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <Tabs value={tab} onValueChange={setTab}>
+        <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5 flex-wrap">
+          {[
+            { value: "health", label: "Service Health", icon: Activity },
+            { value: "slos", label: "SLO Burn", icon: Gauge },
+            { value: "alerts", label: "Alert Triage", icon: AlertTriangle },
+            { value: "incidents", label: "Incidents", icon: Radio },
+            { value: "runbooks", label: "Runbooks", icon: BookOpen },
+          ].map(t => (
+            <TabsTrigger key={t.value} value={t.value} className="text-[10px] h-7 px-2.5 gap-1"><t.icon className="h-3 w-3" />{t.label}</TabsTrigger>
+          ))}
+        </TabsList>
+
+        <div className="mt-4 space-y-3">
+          <TabsContent value="health">
+            {services.map(svc => (
+              <div key={svc.name} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
+                <div className="flex items-center gap-3">
+                  <div className={cn("w-2 h-2 rounded-full", svc.status === "healthy" ? "bg-green-400" : "bg-amber-400")} />
+                  <div>
+                    <p className="text-xs font-medium text-foreground">{svc.name}</p>
+                    <p className="text-[10px] text-muted-foreground">{svc.uptime}% uptime • {svc.latency}ms P95</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant={svc.status === "healthy" ? "default" : "secondary"} className="text-[9px] capitalize">{svc.status}</Badge>
+                  <StalenessIndicator lastUpdated={svc.lastCheck} thresholdSeconds={300} />
+                </div>
+              </div>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="slos">
+            {slos.map(slo => (
+              <Card key={slo.name} className="bg-card/50 border-border/50 mb-2">
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <p className="text-xs font-medium text-foreground">{slo.name}</p>
+                      <p className="text-[10px] text-muted-foreground">Target: {slo.target}{slo.unit || "%"} • Current: {slo.current}{slo.unit || "%"} • {slo.window}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className={cn("text-sm font-bold", slo.budget > 50 ? "text-green-400" : slo.budget > 20 ? "text-amber-400" : "text-red-400")}>{slo.budget}%</p>
+                      <p className="text-[9px] text-muted-foreground">budget remaining</p>
+                    </div>
+                  </div>
+                  <Progress value={slo.budget} className="h-1.5" />
+                  <div className="flex items-center justify-between mt-1">
+                    <span className="text-[9px] text-muted-foreground">Burn rate: {slo.burnRate}x</span>
+                    {slo.burnRate > 1 && <Badge variant="destructive" className="text-[8px]">Fast burn!</Badge>}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="alerts">
+            {alerts.map(alert => (
+              <div key={alert.id} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
+                <div className="flex items-center gap-3">
+                  <AlertTriangle className={cn("w-4 h-4", alert.severity === "critical" ? "text-red-400" : alert.severity === "warning" ? "text-amber-400" : "text-blue-400")} />
+                  <div>
+                    <p className="text-xs font-medium text-foreground">{alert.title}</p>
+                    <p className="text-[10px] text-muted-foreground">{alert.source}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  {alert.runbookId && <Button variant="ghost" size="sm" className="text-[10px] h-5 gap-0.5"><BookOpen className="w-2.5 h-2.5" />Runbook</Button>}
+                  <Badge variant={alert.acknowledged ? "secondary" : "destructive"} className="text-[9px]">{alert.acknowledged ? "Ack'd" : "New"}</Badge>
+                  <StalenessIndicator lastUpdated={alert.time} thresholdSeconds={3600} />
+                </div>
+              </div>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="incidents">
+            {incidents.map(inc => (
+              <Card key={inc.id} className="bg-card/50 border-border/50 mb-2">
+                <CardContent className="p-3 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Radio className="w-4 h-4 text-amber-400" />
+                      <span className="text-xs font-medium text-foreground">{inc.title}</span>
+                    </div>
+                    <Badge variant="secondary" className="text-[9px] capitalize">{inc.status}</Badge>
+                  </div>
+                  <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+                    <span>Severity: {inc.severity}</span>
+                    <span>Assignee: {inc.assignee}</span>
+                    <StalenessIndicator lastUpdated={inc.started} thresholdSeconds={3600} />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="runbooks">
+            <div className="grid gap-2 sm:grid-cols-2">
+              {runbooks.map(rb => (
+                <div key={rb.id} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <BookOpen className="w-3.5 h-3.5 text-primary" />
+                    <div>
+                      <p className="text-xs font-medium text-foreground">{rb.name}</p>
+                      <p className="text-[10px] text-muted-foreground">{rb.steps} steps • {rb.lastUsed ? `Used ${Math.round((Date.now() - new Date(rb.lastUsed).getTime()) / 86400000)}d ago` : "Never used"}</p>
+                    </div>
+                  </div>
+                  <Button variant="ghost" size="sm" className="text-[10px] h-6 gap-0.5"><Play className="w-2.5 h-2.5" />Launch</Button>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+        </div>
+      </Tabs>
+    </motion.div>
+  );
+}
