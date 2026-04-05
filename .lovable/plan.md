@@ -1,49 +1,39 @@
 
-# SITA OS — Revenue Office Implementation Plan
+# ATLAS Closure & Platform Truth Hardening
 
-## Current State
-- Existing `BusinessCenter` with 15 sub-pages (leads, customers, opportunities, quotes, invoices, communications, boardroom, proof, revenue-autopilot, collections, etc.)
-- Existing DB tables: `customers`, `leads`, `opportunities`, `deals`, `invoices`, `quotes`, `communications`, `bookings`
+## Phase 1 — Truth Infrastructure (DB + Core Services)
+1. **DB Migration**: Create platform truth tables:
+   - `platform_projection_states` — tracks every projection's freshness, source, confidence, staleness
+   - `platform_mutation_receipts` — universal receipt for any admin/operator mutation
+   - `platform_health_snapshots` — point-in-time system health materialization
+   - `platform_degraded_states` — active degradation records with reason/scope
+   - `platform_launch_gates` — evidence-backed launch readiness gates
+   - `platform_truth_sync_log` — generated artifact synchronization tracking
+2. **Truth metadata service** — service that tracks projection freshness, staleness thresholds, degraded state
 
-## Strategy
-**Evolve BusinessCenter → Revenue Office** rather than creating a parallel workspace. The existing business pages become sub-surfaces of the Revenue Office with new flagship surfaces added.
+## Phase 2 — Operator Truth Dashboard (Mission Control)
+3. **Platform Truth Dashboard** — new Mission Control tab showing:
+   - All projection states with freshness/staleness indicators
+   - Active degraded states across services
+   - Mutation receipt coverage percentage
+   - Proof chain integrity status
+   - Launch gate evidence status
+   - Connector health control plane
+4. **Inline truth indicators** — reusable components:
+   - `<TruthBadge>` — shows freshness, source, confidence on any data surface
+   - `<DegradedStateBanner>` — shows when surface is rendering partial/stale truth
+   - `<StalenessIndicator>` — time-since-refresh with threshold coloring
 
-## New Route: `/revenue-office/*`
+## Phase 3 — Audit & Proof Closure
+5. **Universal mutation audit** — ensure all admin mutations flow through audit ledger
+6. **Proof matrix dashboard** — visual coverage map of which capabilities have receipts
+7. **Replay verification surface** — timeline view of cross-service action reconstruction
 
-### Phase 1 — Core Revenue Office (this implementation)
-Create `src/pages/revenue-office/` directory with these surfaces:
+## Phase 4 — Deployment & Launch Truth
+8. **Launch ring gating** — evidence-backed promotion gates with pass/fail status
+9. **Connector control plane** — health scoring, staleness detection, circuit breaker status
+10. **Observability runbook surface** — operational runbooks with execution tracking
 
-1. **RevenueGate** (`/revenue-office`) — Entry point with growth overview, mode selector, what-changed, advisor preview
-2. **GrowthBoardroom** (`/revenue-office/boardroom`) — Executive growth command center with pipeline, revenue, leaks, advisor rail
-3. **RelationshipCenter** (`/revenue-office/relationships`) — Upgraded CRM with lifecycle stages, health scores, journey timeline
-4. **PipelineStudio** (`/revenue-office/pipeline`) — Visual pipeline with stages, deal flow, conversion rates, leak detection
-5. **FunnelBuilder** (`/revenue-office/funnels`) — Visual funnel/journey builder with pages, forms, checkouts, conversion tracking
-6. **CampaignOrchestrator** (`/revenue-office/campaigns`) — Email/SMS lifecycle automation with segments, triggers, sequences
-7. **BookingCenter** (`/revenue-office/bookings`) — Appointment scheduling, availability, service catalog
-8. **OffersWorkspace** (`/revenue-office/offers`) — Products, services, packages, memberships, courses, pricing
-9. **ReputationEngine** (`/revenue-office/reputation`) — Reviews, testimonials, NPS, reputation monitoring
-10. **RevenueIntelligence** (`/revenue-office/intelligence`) — Revenue leakage, forecasting, cohort analysis, LTV
-11. **RetentionOffice** (`/revenue-office/retention`) — Churn detection, win-back, engagement health, loyalty
-12. **GrowthAdvisorBoard** (`/revenue-office/advisors`) — Revenue advisor council (Growth, Sales, Marketing, Retention, Pricing advisors)
-13. **JourneyTwin** (`/revenue-office/journey-twin`) — Visual customer journey digital twin showing every touchpoint
-14. **LeakDetector** (`/revenue-office/leaks`) — Where revenue is leaking: abandoned carts, stale leads, missed follow-ups
-15. **ConversionLab** (`/revenue-office/conversion-lab`) — A/B testing ideas, conversion optimization, funnel experiments
-
-### Phase 2 (future)
-- White-label / multi-client agency mode
-- Course/membership delivery platform
-- Advanced automation visual builder
-- Proposal/contract signing workflow
-
-## DB Migration
-New tables for Revenue Office entities not already covered by existing tables (funnels, campaigns, offers, reputation, etc.)
-
-## Files to Create
-- 15 new page components in `src/pages/revenue-office/`
-- Update `src/App.tsx` with lazy routes
-- Reuse existing business components where possible
-
-## Design
-- Premium dark mode, shell-native
-- Semantic tokens from design system
-- Cards, grids, advisor rails consistent with Investment Office style
+## Phase 5 — Testing & Verification
+11. **Platform verification expansion** — architecture check results surfaced in Mission Control
+12. **Generated truth sync** — validation that generated manifests match source reality
