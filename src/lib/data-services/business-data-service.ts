@@ -43,3 +43,6 @@ export async function fetchCustomers(mode: RealityModeKey = "real"): Promise<Mod
 export async function fetchCollections(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CollectionsAccount[]>> {
   return resolveByMode({ mode, realData: null, demoData: DEMO_COLLECTIONS, emptyDefault: [] });
 }
+
+// Re-export original rich type for backward compat
+export type { CollectionsAccount as CollectionsAccountOriginal } from "@/lib/mock-data/collections";
