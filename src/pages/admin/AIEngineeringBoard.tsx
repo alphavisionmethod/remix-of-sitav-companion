@@ -356,6 +356,8 @@ const AIEngineeringBoard = () => {
           { label: "Design Diff Theater", icon: Eye, path: "/admin/ai-design-diffs" },
           { label: "Time Machine", icon: History, path: "/admin/ai-time-machine" },
           { label: "Agent Debate", icon: MessageSquare, path: "/admin/ai-agent-debate" },
+          { label: "Change Plans", icon: FileCheck, path: "/admin/ai-change-plans" },
+          { label: "Boundary Controls", icon: Shield, path: "/admin/ai-boundary-controls" },
         ].map(l => (
           <Link key={l.label} to={l.path} className="rounded-xl border border-border/40 bg-card p-3 flex items-center gap-3 hover:bg-muted/30 transition-colors cursor-pointer">
             <l.icon className="h-4 w-4 text-primary shrink-0" />
