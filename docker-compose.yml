@@ -180,6 +180,8 @@ services:
       JWT_EXP: 3600
     volumes:
       - supabase-db-data:/var/lib/postgresql/data
+      - ./deploy/db-init/00-roles.sql:/docker-entrypoint-initdb.d/00-roles.sql:ro
+      - ./deploy/db-init/01-extensions.sql:/docker-entrypoint-initdb.d/01-extensions.sql:ro
       - ./supabase/migrations:/docker-entrypoint-initdb.d/migrations:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]

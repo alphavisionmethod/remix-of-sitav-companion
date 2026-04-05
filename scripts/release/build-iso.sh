@@ -103,6 +103,25 @@ for f in user-data meta-data network-config; do
   fi
 done
 
+# ── Step 3b: Build frontend with self-hosted env vars ────────
+echo "[3b/8] Building frontend for self-hosted deployment..."
+cd "$PROJECT_ROOT"
+
+# Set self-hosted Supabase URL (Kong exposes on 8000, proxied by Traefik)
+export VITE_SUPABASE_URL="${VITE_SUPABASE_URL:-http://localhost:8000}"
+export VITE_SUPABASE_PUBLISHABLE_KEY="${VITE_SUPABASE_PUBLISHABLE_KEY:-CHANGE_ME_ANON_KEY}"
+
+if command -v npm &>/dev/null; then
+  npm run build 2>&1 | tail -5
+  echo "  ✅ Frontend built with VITE_SUPABASE_URL=${VITE_SUPABASE_URL}"
+elif command -v bun &>/dev/null; then
+  bun run build 2>&1 | tail -5
+  echo "  ✅ Frontend built with VITE_SUPABASE_URL=${VITE_SUPABASE_URL}"
+else
+  echo "  ⚠ Neither npm nor bun found — skipping frontend build"
+  echo "    Ensure dist/ exists before packaging ISO"
+fi
+
 # ── Step 4: Inject SITA OS deployment files ──────────────────
 echo "[4/8] Injecting SITA OS deployment files..."
 SITA_DST="${WORK_DIR}/iso/sita"
@@ -124,6 +143,30 @@ fi
 # Copy deploy configs (Dockerfiles, nginx, kong, etc.)
 if [ -d "${PROJECT_ROOT}/deploy" ]; then
   cp -r "${PROJECT_ROOT}/deploy/"* "${SITA_DST}/deploy/" 2>/dev/null || true
+fi
+
+# Copy built frontend
+if [ -d "${PROJECT_ROOT}/dist" ]; then
+  cp -r "${PROJECT_ROOT}/dist" "${SITA_DST}/deploy/dist"
+  echo "  ✅ Frontend dist/ included in ISO"
+else
+  echo "  ⚠ No dist/ found — frontend will not be available"
+fi
+
+# Copy database init scripts
+if [ -d "${PROJECT_ROOT}/deploy/db-init" ]; then
+  mkdir -p "${SITA_DST}/deploy/db-init"
+  cp "${PROJECT_ROOT}/deploy/db-init/"*.sql "${SITA_DST}/deploy/db-init/" 2>/dev/null || true
+fi
+
+# Copy EULA
+if [ -f "${PROJECT_ROOT}/deploy/sita-eula.sh" ]; then
+  cp "${PROJECT_ROOT}/deploy/sita-eula.sh" "${SITA_DST}/"
+fi
+
+# Copy logrotate config
+if [ -f "${PROJECT_ROOT}/deploy/logrotate-sita.conf" ]; then
+  cp "${PROJECT_ROOT}/deploy/logrotate-sita.conf" "${SITA_DST}/"
 fi
 
 # ── Step 5: Export Docker images (optional) ──────────────────

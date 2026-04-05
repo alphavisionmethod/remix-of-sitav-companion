@@ -1,0 +1,64 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Development Override
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+# Disables TLS, exposes ports for debugging, enables hot-reload.
+# ═══════════════════════════════════════════════════════════════
+
+version: "3.8"
+
+services:
+  # Disable Traefik in dev — access services directly
+  sita-traefik:
+    profiles:
+      - traefik-dev
+
+  # Frontend with live reload
+  sita-web:
+    ports:
+      - "8080:80"
+    volumes:
+      - ./dist:/usr/share/nginx/html:ro
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+  # API Gateway — expose for direct access
+  sita-api-gateway:
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - LOG_LEVEL=debug
+
+  # Brain Core — expose for direct access
+  sita-brain-core:
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - LOG_LEVEL=debug
+
+  # Expose Kong/Supabase API
+  sita-supabase-kong:
+    ports:
+      - "8000:8000"
+
+  # Expose database for direct access
+  sita-supabase-db:
+    ports:
+      - "5432:5432"
+
+  # Expose NATS monitoring
+  sita-nats:
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+
+  # Expose Edge Functions
+  sita-supabase-functions:
+    ports:
+      - "9000:9000"
+
+  # Enable Studio by default in dev
+  sita-supabase-studio:
+    profiles: []
+    ports:
+      - "3100:3000"
