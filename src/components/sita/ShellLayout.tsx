@@ -18,6 +18,8 @@ import { ErrorBoundary } from "./ErrorBoundary";
 import { DesktopEntryCeremony } from "./DesktopEntryCeremony";
 import { PWAInstallPrompt } from "./PWAInstallPrompt";
 import { ContinuityBanner } from "./ContinuityBanner";
+import { UniversalCommandSurface } from "./shell/UniversalCommandSurface";
+import { ShellAmbientBackground } from "./shell/ShellAmbientBackground";
 import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
 import { useProactiveNotifications } from "@/hooks/use-proactive-notifications";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
@@ -33,7 +35,6 @@ const getPageTransition = (pathname: string) => {
   const segment = pathname.split("/").filter(Boolean)[0] || "home";
   const depth = pathname.split("/").filter(Boolean).length;
 
-  // Drill-down: slide from right
   if (depth > 1 && drillDownSegments.includes(segment)) {
     return {
       initial: { opacity: 0, x: 24 },
@@ -43,7 +44,6 @@ const getPageTransition = (pathname: string) => {
     };
   }
 
-  // Default: subtle fade-up
   return {
     initial: { opacity: 0, y: 6 },
     animate: { opacity: 1, y: 0 },
@@ -58,6 +58,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [timelineOpen, setTimelineOpen] = useState(false);
   const [wizardType, setWizardType] = useState<"lead" | "invoice" | "budget" | null>(null);
   const [showEntryCeremony, setShowEntryCeremony] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
   const { isCalm, isFocus } = useDisplayMode();
   const { isOpen: railOpen } = useInspector();
   const location = useLocation();
@@ -68,6 +69,18 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       sessionStorage.removeItem("sita-desktop-entry");
       setShowEntryCeremony(true);
     }
+  }, []);
+
+  // Global command shortcut
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setCommandOpen(o => !o);
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
   }, []);
 
   // Phase 4: Real-time notification toasts
@@ -83,14 +96,22 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       {showEntryCeremony && (
         <DesktopEntryCeremony onComplete={() => setShowEntryCeremony(false)} />
       )}
-      <div className={cn("flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
+
+      {/* Universal Command Surface */}
+      <UniversalCommandSurface open={commandOpen} onClose={() => setCommandOpen(false)} />
+
+      <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
+        {/* Ambient background — subtle, always present */}
+        <ShellAmbientBackground intensity="subtle" className="fixed" />
+
         <ContinuityBanner />
         <SitaTopBar
           onNotifOpen={() => setNotifOpen(true)}
           onTimelineOpen={() => setTimelineOpen(true)}
+          onCommandOpen={() => setCommandOpen(true)}
         />
 
-        <div className="flex flex-1 min-w-0">
+        <div className="relative z-10 flex flex-1 min-w-0">
           <AppSidebar />
           <div className="flex flex-1 min-w-0">
             <div className="flex flex-1 flex-col min-w-0">

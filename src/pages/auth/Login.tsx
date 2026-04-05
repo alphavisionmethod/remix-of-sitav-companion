@@ -6,7 +6,7 @@ import { Mail, Lock, ArrowRight, Eye, EyeOff, ShieldCheck, Zap, Brain, BarChart3
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 import { AuthDivider } from "@/components/auth/AuthDivider";
 import { motion } from "framer-motion";
-import { LockScreen } from "@/components/sita/LockScreen";
+import { EnhancedLockScreen as LockScreen } from "@/components/sita/shell/EnhancedLockScreen";
 import { FirstBootScreen } from "@/components/sita/FirstBootScreen";
 
 const Login = () => {
