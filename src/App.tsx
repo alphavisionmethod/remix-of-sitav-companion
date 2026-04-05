@@ -632,6 +632,17 @@ const App = () => (
                     <Route path="/admin/domain-reality" element={<DomainRealityBoard />} />
                     <Route path="/admin/route-diagnostics" element={<RouteSourceDiagnostics />} />
 
+                    {/* AR — Automation Reality */}
+                    <Route path="/admin/automation/overview" element={<AR01AutomationOverview />} />
+                    <Route path="/admin/automation/jobs" element={<AR02ScheduledJobRegistry />} />
+                    <Route path="/admin/automation/self-healing" element={<AR03SelfHealingBoard />} />
+                    <Route path="/admin/automation/agent-scheduler" element={<AR04AgentScheduler />} />
+                    <Route path="/admin/automation/maintenance" element={<AR05SystemMaintenanceBoard />} />
+                    <Route path="/admin/automation/traces" element={<AR06ExecutionTraceExplorer />} />
+                    <Route path="/admin/automation/failures" element={<AR07RetryFailureCenter />} />
+                    <Route path="/admin/automation/kill-switches" element={<AR08KillSwitchCenter />} />
+                    <Route path="/admin/automation/launch-gate" element={<AR09AutomationLaunchGate />} />
+
                     {/* SAG — Sovereign AI Gateway */}
                     <Route path="/admin/sag/overview" element={<SAGOverview />} />
                     <Route path="/admin/sag/models" element={<SAGModelRegistry />} />
