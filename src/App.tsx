@@ -256,6 +256,7 @@ const SelfHealingQueue = lazy(() => import("./pages/digital-presence/SelfHealing
 const AppExperienceStudio = lazy(() => import("./pages/digital-presence/AppExperienceStudio"));
 const PresenceAnalytics = lazy(() => import("./pages/digital-presence/PresenceAnalytics"));
 const DomainPublishManager = lazy(() => import("./pages/digital-presence/DomainPublishManager"));
+const DPOOnboarding = lazy(() => import("./pages/digital-presence/DPOOnboarding"));
 
 const queryClient = createQueryClient();
 
@@ -480,6 +481,7 @@ const App = () => (
                     <Route path="/digital-presence/app-studio" element={<AppExperienceStudio />} />
                     <Route path="/digital-presence/analytics" element={<PresenceAnalytics />} />
                     <Route path="/digital-presence/domains" element={<DomainPublishManager />} />
+                    <Route path="/digital-presence/onboarding" element={<DPOOnboarding />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
