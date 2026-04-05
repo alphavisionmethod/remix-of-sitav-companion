@@ -215,6 +215,17 @@ const GrowthAdvisorBoard = lazy(() => import("./pages/revenue-office/GrowthAdvis
 const JourneyTwin = lazy(() => import("./pages/revenue-office/JourneyTwin"));
 const LeakDetector = lazy(() => import("./pages/revenue-office/LeakDetector"));
 const ConversionLab = lazy(() => import("./pages/revenue-office/ConversionLab"));
+const MembershipCourseOffice = lazy(() => import("./pages/revenue-office/MembershipCourseOffice"));
+const OpportunityBoard = lazy(() => import("./pages/revenue-office/OpportunityBoard"));
+const TrustPulse = lazy(() => import("./pages/revenue-office/TrustPulse"));
+const WhiteLabelOffice = lazy(() => import("./pages/revenue-office/WhiteLabelOffice"));
+const BusinessTimeMachine = lazy(() => import("./pages/revenue-office/BusinessTimeMachine"));
+const RevenueDecisionTheater = lazy(() => import("./pages/revenue-office/DecisionTheater"));
+const WhatBreaksGrowth = lazy(() => import("./pages/revenue-office/WhatBreaksGrowth"));
+const GrowthDNA = lazy(() => import("./pages/revenue-office/GrowthDNA"));
+const GrowthOperatingModes = lazy(() => import("./pages/revenue-office/GrowthOperatingModes"));
+const ChiefRevenueSynthesis = lazy(() => import("./pages/revenue-office/ChiefRevenueSynthesis"));
+const CommercialMemoryFeed = lazy(() => import("./pages/revenue-office/CommercialMemoryFeed"));
 
 const queryClient = createQueryClient();
 
@@ -397,6 +408,17 @@ const App = () => (
                     <Route path="/revenue-office/journey-twin" element={<JourneyTwin />} />
                     <Route path="/revenue-office/leaks" element={<LeakDetector />} />
                     <Route path="/revenue-office/conversion-lab" element={<ConversionLab />} />
+                    <Route path="/revenue-office/memberships" element={<MembershipCourseOffice />} />
+                    <Route path="/revenue-office/opportunities" element={<OpportunityBoard />} />
+                    <Route path="/revenue-office/trust-pulse" element={<TrustPulse />} />
+                    <Route path="/revenue-office/white-label" element={<WhiteLabelOffice />} />
+                    <Route path="/revenue-office/time-machine" element={<BusinessTimeMachine />} />
+                    <Route path="/revenue-office/decision-theater" element={<RevenueDecisionTheater />} />
+                    <Route path="/revenue-office/what-breaks" element={<WhatBreaksGrowth />} />
+                    <Route path="/revenue-office/growth-dna" element={<GrowthDNA />} />
+                    <Route path="/revenue-office/operating-modes" element={<GrowthOperatingModes />} />
+                    <Route path="/revenue-office/synthesis" element={<ChiefRevenueSynthesis />} />
+                    <Route path="/revenue-office/memory-feed" element={<CommercialMemoryFeed />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
