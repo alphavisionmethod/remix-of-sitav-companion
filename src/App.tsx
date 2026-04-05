@@ -226,6 +226,15 @@ const GrowthDNA = lazy(() => import("./pages/revenue-office/GrowthDNA"));
 const GrowthOperatingModes = lazy(() => import("./pages/revenue-office/GrowthOperatingModes"));
 const ChiefRevenueSynthesis = lazy(() => import("./pages/revenue-office/ChiefRevenueSynthesis"));
 const CommercialMemoryFeed = lazy(() => import("./pages/revenue-office/CommercialMemoryFeed"));
+const AutomationOffice = lazy(() => import("./pages/revenue-office/AutomationOffice"));
+const AutomationBuilder = lazy(() => import("./pages/revenue-office/AutomationBuilder"));
+const AutomationTemplates = lazy(() => import("./pages/revenue-office/AutomationTemplates"));
+const AutomationSimLab = lazy(() => import("./pages/revenue-office/AutomationSimLab"));
+const AutomationHealth = lazy(() => import("./pages/revenue-office/AutomationHealth"));
+const AutomationReceipts = lazy(() => import("./pages/revenue-office/AutomationReceipts"));
+const AutomationPolicy = lazy(() => import("./pages/revenue-office/AutomationPolicy"));
+const QuoteStudio = lazy(() => import("./pages/revenue-office/QuoteStudio"));
+const CallDesk = lazy(() => import("./pages/revenue-office/CallDesk"));
 
 const queryClient = createQueryClient();
 
@@ -419,6 +428,15 @@ const App = () => (
                     <Route path="/revenue-office/operating-modes" element={<GrowthOperatingModes />} />
                     <Route path="/revenue-office/synthesis" element={<ChiefRevenueSynthesis />} />
                     <Route path="/revenue-office/memory-feed" element={<CommercialMemoryFeed />} />
+                    <Route path="/revenue-office/automation" element={<AutomationOffice />} />
+                    <Route path="/revenue-office/automation/builder" element={<AutomationBuilder />} />
+                    <Route path="/revenue-office/automation/templates" element={<AutomationTemplates />} />
+                    <Route path="/revenue-office/automation/simulation" element={<AutomationSimLab />} />
+                    <Route path="/revenue-office/automation/health" element={<AutomationHealth />} />
+                    <Route path="/revenue-office/automation/receipts" element={<AutomationReceipts />} />
+                    <Route path="/revenue-office/automation/policy" element={<AutomationPolicy />} />
+                    <Route path="/revenue-office/quotes" element={<QuoteStudio />} />
+                    <Route path="/revenue-office/calls" element={<CallDesk />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
