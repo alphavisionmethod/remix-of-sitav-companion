@@ -937,6 +937,62 @@ export type Database = {
         }
         Relationships: []
       }
+      brand_kits: {
+        Row: {
+          brand_rules: Json | null
+          colors: Json | null
+          component_styles: Json | null
+          created_at: string
+          id: string
+          image_direction: string[] | null
+          logo_assets: Json | null
+          presence_profile_id: string | null
+          style_tokens: Json | null
+          tone_descriptors: string[] | null
+          typography: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          brand_rules?: Json | null
+          colors?: Json | null
+          component_styles?: Json | null
+          created_at?: string
+          id?: string
+          image_direction?: string[] | null
+          logo_assets?: Json | null
+          presence_profile_id?: string | null
+          style_tokens?: Json | null
+          tone_descriptors?: string[] | null
+          typography?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          brand_rules?: Json | null
+          colors?: Json | null
+          component_styles?: Json | null
+          created_at?: string
+          id?: string
+          image_direction?: string[] | null
+          logo_assets?: Json | null
+          presence_profile_id?: string | null
+          style_tokens?: Json | null
+          tone_descriptors?: string[] | null
+          typography?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "brand_kits_presence_profile_id_fkey"
+            columns: ["presence_profile_id"]
+            isOneToOne: false
+            referencedRelation: "digital_presence_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       budgets: {
         Row: {
           allocated: number
@@ -1106,6 +1162,119 @@ export type Database = {
           theme_ids?: string[] | null
           title?: string
           uncertainty_level?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      change_plans: {
+        Row: {
+          approval_required: boolean | null
+          confidence: number | null
+          created_at: string
+          generated_by_agent_ids: string[] | null
+          id: string
+          policy_check_result: Json | null
+          preview_artifacts: Json | null
+          proposed_diff_summary: string | null
+          reason: string | null
+          risk_class: string | null
+          site_id: string
+          status: string
+          target_id: string | null
+          target_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_required?: boolean | null
+          confidence?: number | null
+          created_at?: string
+          generated_by_agent_ids?: string[] | null
+          id?: string
+          policy_check_result?: Json | null
+          preview_artifacts?: Json | null
+          proposed_diff_summary?: string | null
+          reason?: string | null
+          risk_class?: string | null
+          site_id: string
+          status?: string
+          target_id?: string | null
+          target_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_required?: boolean | null
+          confidence?: number | null
+          created_at?: string
+          generated_by_agent_ids?: string[] | null
+          id?: string
+          policy_check_result?: Json | null
+          preview_artifacts?: Json | null
+          proposed_diff_summary?: string | null
+          reason?: string | null
+          risk_class?: string | null
+          site_id?: string
+          status?: string
+          target_id?: string | null
+          target_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "change_plans_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "site_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chief_digital_synthesis: {
+        Row: {
+          aligned_views: Json | null
+          confidence_summary: Json | null
+          created_at: string
+          divergent_views: Json | null
+          highest_priority_fix: string | null
+          id: string
+          owner_id: string | null
+          owner_type: string
+          recommended_next_step: string | null
+          strongest_opportunity: string | null
+          strongest_risk: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          aligned_views?: Json | null
+          confidence_summary?: Json | null
+          created_at?: string
+          divergent_views?: Json | null
+          highest_priority_fix?: string | null
+          id?: string
+          owner_id?: string | null
+          owner_type: string
+          recommended_next_step?: string | null
+          strongest_opportunity?: string | null
+          strongest_risk?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          aligned_views?: Json | null
+          confidence_summary?: Json | null
+          created_at?: string
+          divergent_views?: Json | null
+          highest_priority_fix?: string | null
+          id?: string
+          owner_id?: string | null
+          owner_type?: string
+          recommended_next_step?: string | null
+          strongest_opportunity?: string | null
+          strongest_risk?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -1445,6 +1614,53 @@ export type Database = {
           },
         ]
       }
+      content_freshness: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          id: string
+          last_reviewed_at: string | null
+          page_id: string
+          stale_reason: string | null
+          stale_signals: Json | null
+          suggested_refresh: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          last_reviewed_at?: string | null
+          page_id: string
+          stale_reason?: string | null
+          stale_signals?: Json | null
+          suggested_refresh?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          last_reviewed_at?: string | null
+          page_id?: string
+          stale_reason?: string | null
+          stale_signals?: Json | null
+          suggested_refresh?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_freshness_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "site_pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       council_decisions: {
         Row: {
           consensus_score: number | null
@@ -1608,6 +1824,188 @@ export type Database = {
           metadata?: Json | null
           os?: string | null
           status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      digital_agent_debates: {
+        Row: {
+          alignment_summary: string | null
+          conflicting_assumptions: Json | null
+          created_at: string
+          disagreement_summary: string | null
+          id: string
+          owner_id: string | null
+          owner_type: string
+          participating_agent_ids: string[] | null
+          resolution_signals: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          alignment_summary?: string | null
+          conflicting_assumptions?: Json | null
+          created_at?: string
+          disagreement_summary?: string | null
+          id?: string
+          owner_id?: string | null
+          owner_type: string
+          participating_agent_ids?: string[] | null
+          resolution_signals?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          alignment_summary?: string | null
+          conflicting_assumptions?: Json | null
+          created_at?: string
+          disagreement_summary?: string | null
+          id?: string
+          owner_id?: string | null
+          owner_type?: string
+          participating_agent_ids?: string[] | null
+          resolution_signals?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      digital_agent_observations: {
+        Row: {
+          agent_id: string
+          confidence_level: number | null
+          created_at: string
+          detailed_reasoning: string | null
+          id: string
+          owner_id: string | null
+          owner_type: string
+          recommendation_type: string | null
+          summary: string | null
+          title: string
+          uncertainty_level: number | null
+          updated_at: string
+          user_id: string
+          what_changed: string | null
+          what_could_break: string | null
+          what_would_improve: string | null
+        }
+        Insert: {
+          agent_id: string
+          confidence_level?: number | null
+          created_at?: string
+          detailed_reasoning?: string | null
+          id?: string
+          owner_id?: string | null
+          owner_type: string
+          recommendation_type?: string | null
+          summary?: string | null
+          title: string
+          uncertainty_level?: number | null
+          updated_at?: string
+          user_id: string
+          what_changed?: string | null
+          what_could_break?: string | null
+          what_would_improve?: string | null
+        }
+        Update: {
+          agent_id?: string
+          confidence_level?: number | null
+          created_at?: string
+          detailed_reasoning?: string | null
+          id?: string
+          owner_id?: string | null
+          owner_type?: string
+          recommendation_type?: string | null
+          summary?: string | null
+          title?: string
+          uncertainty_level?: number | null
+          updated_at?: string
+          user_id?: string
+          what_changed?: string | null
+          what_could_break?: string | null
+          what_would_improve?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "digital_agent_observations_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "digital_agents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      digital_agents: {
+        Row: {
+          active: boolean | null
+          agent_type: string
+          created_at: string
+          display_name: string
+          id: string
+          mode_preferences: Json | null
+          priority: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          agent_type: string
+          created_at?: string
+          display_name: string
+          id?: string
+          mode_preferences?: Json | null
+          priority?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          agent_type?: string
+          created_at?: string
+          display_name?: string
+          id?: string
+          mode_preferences?: Json | null
+          priority?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      digital_presence_profiles: {
+        Row: {
+          business_twin_id: string | null
+          created_at: string
+          default_autonomy_mode: string
+          id: string
+          mode: string
+          presence_type_flags: string[] | null
+          primary_brand_kit_id: string | null
+          primary_site_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          business_twin_id?: string | null
+          created_at?: string
+          default_autonomy_mode?: string
+          id?: string
+          mode?: string
+          presence_type_flags?: string[] | null
+          primary_brand_kit_id?: string | null
+          primary_site_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          business_twin_id?: string | null
+          created_at?: string
+          default_autonomy_mode?: string
+          id?: string
+          mode?: string
+          presence_type_flags?: string[] | null
+          primary_brand_kit_id?: string | null
+          primary_site_id?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -2976,6 +3374,65 @@ export type Database = {
           },
         ]
       }
+      launch_records: {
+        Row: {
+          advisor_signoff_state: Json | null
+          checklist_items: Json | null
+          created_at: string
+          id: string
+          launch_at: string | null
+          linked_pages: string[] | null
+          linked_promotions: string[] | null
+          objective: string | null
+          presence_profile_id: string | null
+          readiness_state: string | null
+          rollback_plan: Json | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_signoff_state?: Json | null
+          checklist_items?: Json | null
+          created_at?: string
+          id?: string
+          launch_at?: string | null
+          linked_pages?: string[] | null
+          linked_promotions?: string[] | null
+          objective?: string | null
+          presence_profile_id?: string | null
+          readiness_state?: string | null
+          rollback_plan?: Json | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_signoff_state?: Json | null
+          checklist_items?: Json | null
+          created_at?: string
+          id?: string
+          launch_at?: string | null
+          linked_pages?: string[] | null
+          linked_promotions?: string[] | null
+          objective?: string | null
+          presence_profile_id?: string | null
+          readiness_state?: string | null
+          rollback_plan?: Json | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "launch_records_presence_profile_id_fkey"
+            columns: ["presence_profile_id"]
+            isOneToOne: false
+            referencedRelation: "digital_presence_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           assigned_advisor: string | null
@@ -3293,6 +3750,50 @@ export type Database = {
           },
         ]
       }
+      patch_executions: {
+        Row: {
+          change_plan_id: string
+          created_at: string
+          executed_at: string | null
+          execution_mode: string
+          id: string
+          result: Json | null
+          rollback_available: boolean | null
+          user_id: string
+          verification_result: Json | null
+        }
+        Insert: {
+          change_plan_id: string
+          created_at?: string
+          executed_at?: string | null
+          execution_mode: string
+          id?: string
+          result?: Json | null
+          rollback_available?: boolean | null
+          user_id: string
+          verification_result?: Json | null
+        }
+        Update: {
+          change_plan_id?: string
+          created_at?: string
+          executed_at?: string | null
+          execution_mode?: string
+          id?: string
+          result?: Json | null
+          rollback_available?: boolean | null
+          user_id?: string
+          verification_result?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patch_executions_change_plan_id_fkey"
+            columns: ["change_plan_id"]
+            isOneToOne: false
+            referencedRelation: "change_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       playbook_metrics: {
         Row: {
           id: string
@@ -3489,6 +3990,184 @@ export type Database = {
           },
         ]
       }
+      presence_receipts: {
+        Row: {
+          actor: string | null
+          affected_assets: string[] | null
+          approval_state: string | null
+          created_at: string
+          id: string
+          presence_profile_id: string | null
+          receipt_type: string
+          related_change_plan_id: string | null
+          summary: string | null
+          user_id: string
+        }
+        Insert: {
+          actor?: string | null
+          affected_assets?: string[] | null
+          approval_state?: string | null
+          created_at?: string
+          id?: string
+          presence_profile_id?: string | null
+          receipt_type: string
+          related_change_plan_id?: string | null
+          summary?: string | null
+          user_id: string
+        }
+        Update: {
+          actor?: string | null
+          affected_assets?: string[] | null
+          approval_state?: string | null
+          created_at?: string
+          id?: string
+          presence_profile_id?: string | null
+          receipt_type?: string
+          related_change_plan_id?: string | null
+          summary?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "presence_receipts_presence_profile_id_fkey"
+            columns: ["presence_profile_id"]
+            isOneToOne: false
+            referencedRelation: "digital_presence_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "presence_receipts_related_change_plan_id_fkey"
+            columns: ["related_change_plan_id"]
+            isOneToOne: false
+            referencedRelation: "change_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      presence_timeline_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          impact_summary: string | null
+          page_id: string | null
+          presence_profile_id: string | null
+          related_agent_ids: string[] | null
+          related_change_plan_id: string | null
+          site_id: string | null
+          summary: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          impact_summary?: string | null
+          page_id?: string | null
+          presence_profile_id?: string | null
+          related_agent_ids?: string[] | null
+          related_change_plan_id?: string | null
+          site_id?: string | null
+          summary?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          impact_summary?: string | null
+          page_id?: string | null
+          presence_profile_id?: string | null
+          related_agent_ids?: string[] | null
+          related_change_plan_id?: string | null
+          site_id?: string | null
+          summary?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "presence_timeline_events_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "site_pages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "presence_timeline_events_presence_profile_id_fkey"
+            columns: ["presence_profile_id"]
+            isOneToOne: false
+            referencedRelation: "digital_presence_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "presence_timeline_events_related_change_plan_id_fkey"
+            columns: ["related_change_plan_id"]
+            isOneToOne: false
+            referencedRelation: "change_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "presence_timeline_events_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "site_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_presence: {
+        Row: {
+          conversion_health: number | null
+          created_at: string
+          featured_state: string | null
+          id: string
+          merchandising_status: string | null
+          page_ids: string[] | null
+          product_id: string
+          recommendation_state: string | null
+          site_id: string
+          stale_content_risk: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          conversion_health?: number | null
+          created_at?: string
+          featured_state?: string | null
+          id?: string
+          merchandising_status?: string | null
+          page_ids?: string[] | null
+          product_id: string
+          recommendation_state?: string | null
+          site_id: string
+          stale_content_risk?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          conversion_health?: number | null
+          created_at?: string
+          featured_state?: string | null
+          id?: string
+          merchandising_status?: string | null
+          page_ids?: string[] | null
+          product_id?: string
+          recommendation_state?: string | null
+          site_id?: string
+          stale_content_risk?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_presence_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "site_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -3551,6 +4230,68 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      promotions: {
+        Row: {
+          active: boolean | null
+          created_at: string
+          end_at: string | null
+          id: string
+          linked_offer_ids: string[] | null
+          linked_page_ids: string[] | null
+          linked_product_ids: string[] | null
+          presence_profile_id: string | null
+          promotion_assets: Json | null
+          start_at: string | null
+          sync_state: string | null
+          title: string
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string
+          end_at?: string | null
+          id?: string
+          linked_offer_ids?: string[] | null
+          linked_page_ids?: string[] | null
+          linked_product_ids?: string[] | null
+          presence_profile_id?: string | null
+          promotion_assets?: Json | null
+          start_at?: string | null
+          sync_state?: string | null
+          title: string
+          type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string
+          end_at?: string | null
+          id?: string
+          linked_offer_ids?: string[] | null
+          linked_page_ids?: string[] | null
+          linked_product_ids?: string[] | null
+          presence_profile_id?: string | null
+          promotion_assets?: Json | null
+          start_at?: string | null
+          sync_state?: string | null
+          title?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promotions_presence_profile_id_fkey"
+            columns: ["presence_profile_id"]
+            isOneToOne: false
+            referencedRelation: "digital_presence_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       proof_records: {
         Row: {
@@ -4705,6 +5446,253 @@ export type Database = {
         }
         Relationships: []
       }
+      site_issues: {
+        Row: {
+          auto_fix_eligible: boolean | null
+          confidence: number | null
+          created_at: string
+          detected_by_agent_ids: string[] | null
+          id: string
+          issue_type: string
+          page_id: string | null
+          recommended_fix_type: string | null
+          severity: string
+          site_id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auto_fix_eligible?: boolean | null
+          confidence?: number | null
+          created_at?: string
+          detected_by_agent_ids?: string[] | null
+          id?: string
+          issue_type: string
+          page_id?: string | null
+          recommended_fix_type?: string | null
+          severity?: string
+          site_id: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auto_fix_eligible?: boolean | null
+          confidence?: number | null
+          created_at?: string
+          detected_by_agent_ids?: string[] | null
+          id?: string
+          issue_type?: string
+          page_id?: string | null
+          recommended_fix_type?: string | null
+          severity?: string
+          site_id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "site_issues_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "site_pages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "site_issues_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "site_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      site_opportunities: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          effort_estimate: string | null
+          id: string
+          impact_estimate: string | null
+          opportunity_type: string
+          page_id: string | null
+          site_id: string
+          status: string
+          surfaced_by_agent_ids: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          effort_estimate?: string | null
+          id?: string
+          impact_estimate?: string | null
+          opportunity_type: string
+          page_id?: string | null
+          site_id: string
+          status?: string
+          surfaced_by_agent_ids?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          effort_estimate?: string | null
+          id?: string
+          impact_estimate?: string | null
+          opportunity_type?: string
+          page_id?: string | null
+          site_id?: string
+          status?: string
+          surfaced_by_agent_ids?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "site_opportunities_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "site_pages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "site_opportunities_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "site_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      site_pages: {
+        Row: {
+          conversion_score: number | null
+          created_at: string
+          freshness_score: number | null
+          health_score: number | null
+          id: string
+          linked_campaign_ids: string[] | null
+          linked_offer_ids: string[] | null
+          linked_product_ids: string[] | null
+          mobile_score: number | null
+          page_type: string
+          path: string | null
+          site_id: string
+          status: string
+          title: string
+          trust_score: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          conversion_score?: number | null
+          created_at?: string
+          freshness_score?: number | null
+          health_score?: number | null
+          id?: string
+          linked_campaign_ids?: string[] | null
+          linked_offer_ids?: string[] | null
+          linked_product_ids?: string[] | null
+          mobile_score?: number | null
+          page_type?: string
+          path?: string | null
+          site_id: string
+          status?: string
+          title: string
+          trust_score?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          conversion_score?: number | null
+          created_at?: string
+          freshness_score?: number | null
+          health_score?: number | null
+          id?: string
+          linked_campaign_ids?: string[] | null
+          linked_offer_ids?: string[] | null
+          linked_product_ids?: string[] | null
+          mobile_score?: number | null
+          page_type?: string
+          path?: string | null
+          site_id?: string
+          status?: string
+          title?: string
+          trust_score?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "site_pages_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "site_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      site_registry: {
+        Row: {
+          created_at: string
+          display_name: string
+          domain: string | null
+          editable_capabilities: string[] | null
+          environment_type: string
+          health_status: string | null
+          id: string
+          monitoring_capabilities: string[] | null
+          presence_profile_id: string | null
+          source_type: string
+          sync_status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name: string
+          domain?: string | null
+          editable_capabilities?: string[] | null
+          environment_type?: string
+          health_status?: string | null
+          id?: string
+          monitoring_capabilities?: string[] | null
+          presence_profile_id?: string | null
+          source_type?: string
+          sync_status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          domain?: string | null
+          editable_capabilities?: string[] | null
+          environment_type?: string
+          health_status?: string | null
+          id?: string
+          monitoring_capabilities?: string[] | null
+          presence_profile_id?: string | null
+          source_type?: string
+          sync_status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "site_registry_presence_profile_id_fkey"
+            columns: ["presence_profile_id"]
+            isOneToOne: false
+            referencedRelation: "digital_presence_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sovereign_exports: {
         Row: {
           completed_at: string | null
@@ -5398,6 +6386,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      website_twins: {
+        Row: {
+          commerce_nodes: Json | null
+          conversion_nodes: Json | null
+          created_at: string
+          id: string
+          issue_nodes: Json | null
+          journey_paths: Json | null
+          page_nodes: Json | null
+          site_id: string
+          trust_nodes: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          commerce_nodes?: Json | null
+          conversion_nodes?: Json | null
+          created_at?: string
+          id?: string
+          issue_nodes?: Json | null
+          journey_paths?: Json | null
+          page_nodes?: Json | null
+          site_id: string
+          trust_nodes?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          commerce_nodes?: Json | null
+          conversion_nodes?: Json | null
+          created_at?: string
+          id?: string
+          issue_nodes?: Json | null
+          journey_paths?: Json | null
+          page_nodes?: Json | null
+          site_id?: string
+          trust_nodes?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "website_twins_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "site_registry"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       workflow_runs: {
         Row: {
