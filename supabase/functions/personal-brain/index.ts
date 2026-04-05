@@ -111,9 +111,7 @@ serve(async (req) => {
 
     let model = "google/gemini-3-flash-preview";
     if (budget && budget.hard_limit && budget.used_cost_cents >= budget.limit_cost_cents) {
-      return new Response(JSON.stringify({ error: "Monthly AI budget exceeded. Upgrade or wait for reset." }), {
-        status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return corsError("Monthly AI budget exceeded. Upgrade or wait for reset.", 429);
     }
 
     const systemPrompt = await buildBrainContext(supabaseClient, user.id, mode);
