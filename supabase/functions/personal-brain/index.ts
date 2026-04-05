@@ -139,6 +139,7 @@ serve(async (req) => {
     }
 
     // Log token usage (approximate — streaming doesn't give exact counts)
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
     const inputApprox = JSON.stringify(messages).length / 4;
