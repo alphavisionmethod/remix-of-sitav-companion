@@ -659,6 +659,119 @@ export type Database = {
           },
         ]
       }
+      asset_market_snapshots: {
+        Row: {
+          as_of: string
+          asset_id: string | null
+          confidence: number | null
+          daily_change: number | null
+          id: string
+          liquidity_estimate: number | null
+          market_state: string | null
+          metadata: Json | null
+          monthly_change: number | null
+          price: number | null
+          source: string | null
+          stale: boolean | null
+          volatility_estimate: number | null
+          weekly_change: number | null
+        }
+        Insert: {
+          as_of?: string
+          asset_id?: string | null
+          confidence?: number | null
+          daily_change?: number | null
+          id?: string
+          liquidity_estimate?: number | null
+          market_state?: string | null
+          metadata?: Json | null
+          monthly_change?: number | null
+          price?: number | null
+          source?: string | null
+          stale?: boolean | null
+          volatility_estimate?: number | null
+          weekly_change?: number | null
+        }
+        Update: {
+          as_of?: string
+          asset_id?: string | null
+          confidence?: number | null
+          daily_change?: number | null
+          id?: string
+          liquidity_estimate?: number | null
+          market_state?: string | null
+          metadata?: Json | null
+          monthly_change?: number | null
+          price?: number | null
+          source?: string | null
+          stale?: boolean | null
+          volatility_estimate?: number | null
+          weekly_change?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "asset_market_snapshots_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "asset_master"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      asset_master: {
+        Row: {
+          asset_class: string
+          availability_by_platform: Json | null
+          created_at: string
+          display_name: string
+          exchange_or_venue: string | null
+          id: string
+          metadata: Json | null
+          region: string | null
+          risk_tags: string[] | null
+          sector_ids: string[] | null
+          subtype: string | null
+          symbol: string
+          tags: string[] | null
+          theme_ids: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          asset_class?: string
+          availability_by_platform?: Json | null
+          created_at?: string
+          display_name: string
+          exchange_or_venue?: string | null
+          id?: string
+          metadata?: Json | null
+          region?: string | null
+          risk_tags?: string[] | null
+          sector_ids?: string[] | null
+          subtype?: string | null
+          symbol: string
+          tags?: string[] | null
+          theme_ids?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          asset_class?: string
+          availability_by_platform?: Json | null
+          created_at?: string
+          display_name?: string
+          exchange_or_venue?: string | null
+          id?: string
+          metadata?: Json | null
+          region?: string | null
+          risk_tags?: string[] | null
+          sector_ids?: string[] | null
+          subtype?: string | null
+          symbol?: string
+          tags?: string[] | null
+          theme_ids?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -914,6 +1027,138 @@ export type Database = {
         }
         Relationships: []
       }
+      capital_purpose_buckets: {
+        Row: {
+          created_at: string
+          current_allocation_pct: number | null
+          id: string
+          label: string
+          notes: string | null
+          policy_limits: Json | null
+          target_allocation_pct: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_allocation_pct?: number | null
+          id?: string
+          label: string
+          notes?: string | null
+          policy_limits?: Json | null
+          target_allocation_pct?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_allocation_pct?: number | null
+          id?: string
+          label?: string
+          notes?: string | null
+          policy_limits?: Json | null
+          target_allocation_pct?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      catalyst_events: {
+        Row: {
+          asset_ids: string[] | null
+          catalyst_type: string
+          created_at: string
+          id: string
+          importance: string | null
+          scenario_notes: string | null
+          scheduled_at: string | null
+          source: string | null
+          theme_ids: string[] | null
+          title: string
+          uncertainty_level: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          asset_ids?: string[] | null
+          catalyst_type?: string
+          created_at?: string
+          id?: string
+          importance?: string | null
+          scenario_notes?: string | null
+          scheduled_at?: string | null
+          source?: string | null
+          theme_ids?: string[] | null
+          title: string
+          uncertainty_level?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          asset_ids?: string[] | null
+          catalyst_type?: string
+          created_at?: string
+          id?: string
+          importance?: string | null
+          scenario_notes?: string | null
+          scheduled_at?: string | null
+          source?: string | null
+          theme_ids?: string[] | null
+          title?: string
+          uncertainty_level?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      chief_synthesis_records: {
+        Row: {
+          aligned_views: Json | null
+          confidence_summary: Json | null
+          created_at: string
+          divergent_views: Json | null
+          id: string
+          key_unknown: string | null
+          owner_id: string | null
+          owner_type: string
+          recommended_next_step: string | null
+          strongest_opportunity: string | null
+          strongest_risk: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          aligned_views?: Json | null
+          confidence_summary?: Json | null
+          created_at?: string
+          divergent_views?: Json | null
+          id?: string
+          key_unknown?: string | null
+          owner_id?: string | null
+          owner_type?: string
+          recommended_next_step?: string | null
+          strongest_opportunity?: string | null
+          strongest_risk?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          aligned_views?: Json | null
+          confidence_summary?: Json | null
+          created_at?: string
+          divergent_views?: Json | null
+          id?: string
+          key_unknown?: string | null
+          owner_id?: string | null
+          owner_type?: string
+          recommended_next_step?: string | null
+          strongest_opportunity?: string | null
+          strongest_risk?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       communication_log: {
         Row: {
           body: string | null
@@ -1035,6 +1280,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      connected_investment_platforms: {
+        Row: {
+          account_ids: string[] | null
+          auth_status: string
+          created_at: string
+          id: string
+          last_sync_at: string | null
+          metadata: Json | null
+          platform_type: string
+          provider_key: string | null
+          provider_name: string
+          read_permissions: string[] | null
+          region_restrictions: string[] | null
+          supported_asset_classes: string[] | null
+          sync_status: string
+          trade_permissions: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_ids?: string[] | null
+          auth_status?: string
+          created_at?: string
+          id?: string
+          last_sync_at?: string | null
+          metadata?: Json | null
+          platform_type?: string
+          provider_key?: string | null
+          provider_name: string
+          read_permissions?: string[] | null
+          region_restrictions?: string[] | null
+          supported_asset_classes?: string[] | null
+          sync_status?: string
+          trade_permissions?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_ids?: string[] | null
+          auth_status?: string
+          created_at?: string
+          id?: string
+          last_sync_at?: string | null
+          metadata?: Json | null
+          platform_type?: string
+          provider_key?: string | null
+          provider_name?: string
+          read_permissions?: string[] | null
+          region_restrictions?: string[] | null
+          supported_asset_classes?: string[] | null
+          sync_status?: string
+          trade_permissions?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       connector_configs: {
         Row: {
@@ -1839,6 +2141,778 @@ export type Database = {
         }
         Relationships: []
       }
+      investment_accounts: {
+        Row: {
+          account_label: string
+          account_type: string
+          available_cash: number | null
+          base_currency: string | null
+          connection_id: string | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          risk_flags: string[] | null
+          status: string
+          sync_health: string | null
+          total_value: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_label: string
+          account_type?: string
+          available_cash?: number | null
+          base_currency?: string | null
+          connection_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          risk_flags?: string[] | null
+          status?: string
+          sync_health?: string | null
+          total_value?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_label?: string
+          account_type?: string
+          available_cash?: number | null
+          base_currency?: string | null
+          connection_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          risk_flags?: string[] | null
+          status?: string
+          sync_health?: string | null
+          total_value?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investment_accounts_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "connected_investment_platforms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      investment_advisor_debates: {
+        Row: {
+          alignment_summary: string | null
+          conflicting_assumptions: Json | null
+          created_at: string
+          disagreement_summary: string | null
+          id: string
+          owner_id: string | null
+          owner_type: string
+          participating_advisor_ids: string[] | null
+          resolution_signals: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          alignment_summary?: string | null
+          conflicting_assumptions?: Json | null
+          created_at?: string
+          disagreement_summary?: string | null
+          id?: string
+          owner_id?: string | null
+          owner_type?: string
+          participating_advisor_ids?: string[] | null
+          resolution_signals?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          alignment_summary?: string | null
+          conflicting_assumptions?: Json | null
+          created_at?: string
+          disagreement_summary?: string | null
+          id?: string
+          owner_id?: string | null
+          owner_type?: string
+          participating_advisor_ids?: string[] | null
+          resolution_signals?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      investment_advisor_observations: {
+        Row: {
+          advisor_id: string | null
+          confidence_level: number | null
+          created_at: string
+          detailed_reasoning: string | null
+          id: string
+          key_risks: Json | null
+          owner_id: string | null
+          owner_type: string
+          recommendation_type: string | null
+          summary: string | null
+          title: string | null
+          uncertainty_level: number | null
+          updated_at: string
+          user_id: string
+          what_changed: string | null
+          what_would_change_mind: string | null
+        }
+        Insert: {
+          advisor_id?: string | null
+          confidence_level?: number | null
+          created_at?: string
+          detailed_reasoning?: string | null
+          id?: string
+          key_risks?: Json | null
+          owner_id?: string | null
+          owner_type?: string
+          recommendation_type?: string | null
+          summary?: string | null
+          title?: string | null
+          uncertainty_level?: number | null
+          updated_at?: string
+          user_id: string
+          what_changed?: string | null
+          what_would_change_mind?: string | null
+        }
+        Update: {
+          advisor_id?: string | null
+          confidence_level?: number | null
+          created_at?: string
+          detailed_reasoning?: string | null
+          id?: string
+          key_risks?: Json | null
+          owner_id?: string | null
+          owner_type?: string
+          recommendation_type?: string | null
+          summary?: string | null
+          title?: string | null
+          uncertainty_level?: number | null
+          updated_at?: string
+          user_id?: string
+          what_changed?: string | null
+          what_would_change_mind?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investment_advisor_observations_advisor_id_fkey"
+            columns: ["advisor_id"]
+            isOneToOne: false
+            referencedRelation: "investment_advisor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      investment_advisor_profiles: {
+        Row: {
+          active: boolean | null
+          advisor_type: string
+          created_at: string
+          description: string | null
+          display_name: string
+          id: string
+          output_style_preferences: Json | null
+          priority: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          advisor_type: string
+          created_at?: string
+          description?: string | null
+          display_name: string
+          id?: string
+          output_style_preferences?: Json | null
+          priority?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          advisor_type?: string
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          id?: string
+          output_style_preferences?: Json | null
+          priority?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      investment_behavioral_signals: {
+        Row: {
+          created_at: string
+          evidence_summary: string | null
+          id: string
+          requires_approval: boolean | null
+          requires_cooldown: boolean | null
+          requires_simulation: boolean | null
+          resolved_at: string | null
+          severity: string | null
+          signal_type: string
+          suggested_intervention: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          evidence_summary?: string | null
+          id?: string
+          requires_approval?: boolean | null
+          requires_cooldown?: boolean | null
+          requires_simulation?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+          signal_type: string
+          suggested_intervention?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          evidence_summary?: string | null
+          id?: string
+          requires_approval?: boolean | null
+          requires_cooldown?: boolean | null
+          requires_simulation?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+          signal_type?: string
+          suggested_intervention?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      investment_constitutions: {
+        Row: {
+          cool_down_rules: Json | null
+          created_at: string
+          id: string
+          journal_required_rules: Json | null
+          max_event_sleeve_pct: number | null
+          max_platform_exposure_pct: number | null
+          max_single_position_pct: number | null
+          max_speculative_sleeve_pct: number | null
+          override_policy: Json | null
+          require_approval_rules: Json | null
+          require_simulation_rules: Json | null
+          updated_at: string
+          user_id: string
+          version: number | null
+        }
+        Insert: {
+          cool_down_rules?: Json | null
+          created_at?: string
+          id?: string
+          journal_required_rules?: Json | null
+          max_event_sleeve_pct?: number | null
+          max_platform_exposure_pct?: number | null
+          max_single_position_pct?: number | null
+          max_speculative_sleeve_pct?: number | null
+          override_policy?: Json | null
+          require_approval_rules?: Json | null
+          require_simulation_rules?: Json | null
+          updated_at?: string
+          user_id: string
+          version?: number | null
+        }
+        Update: {
+          cool_down_rules?: Json | null
+          created_at?: string
+          id?: string
+          journal_required_rules?: Json | null
+          max_event_sleeve_pct?: number | null
+          max_platform_exposure_pct?: number | null
+          max_single_position_pct?: number | null
+          max_speculative_sleeve_pct?: number | null
+          override_policy?: Json | null
+          require_approval_rules?: Json | null
+          require_simulation_rules?: Json | null
+          updated_at?: string
+          user_id?: string
+          version?: number | null
+        }
+        Relationships: []
+      }
+      investment_decision_records: {
+        Row: {
+          advisor_snapshot_id: string | null
+          constitution_check_result: Json | null
+          created_at: string
+          decision_type: string
+          executed_at: string | null
+          id: string
+          proposed_platform: string | null
+          proposed_sizing: Json | null
+          rationale_summary: string | null
+          readiness_score: number | null
+          related_account_ids: string[] | null
+          related_asset_ids: string[] | null
+          related_strategy_id: string | null
+          related_thesis_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_snapshot_id?: string | null
+          constitution_check_result?: Json | null
+          created_at?: string
+          decision_type?: string
+          executed_at?: string | null
+          id?: string
+          proposed_platform?: string | null
+          proposed_sizing?: Json | null
+          rationale_summary?: string | null
+          readiness_score?: number | null
+          related_account_ids?: string[] | null
+          related_asset_ids?: string[] | null
+          related_strategy_id?: string | null
+          related_thesis_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_snapshot_id?: string | null
+          constitution_check_result?: Json | null
+          created_at?: string
+          decision_type?: string
+          executed_at?: string | null
+          id?: string
+          proposed_platform?: string | null
+          proposed_sizing?: Json | null
+          rationale_summary?: string | null
+          readiness_score?: number | null
+          related_account_ids?: string[] | null
+          related_asset_ids?: string[] | null
+          related_strategy_id?: string | null
+          related_thesis_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investment_decision_records_related_strategy_id_fkey"
+            columns: ["related_strategy_id"]
+            isOneToOne: false
+            referencedRelation: "investment_strategy_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "investment_decision_records_related_thesis_id_fkey"
+            columns: ["related_thesis_id"]
+            isOneToOne: false
+            referencedRelation: "thesis_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      investment_execution_records: {
+        Row: {
+          account_id: string | null
+          average_execution_price: number | null
+          decision_id: string | null
+          executed_at: string | null
+          executed_value: number | null
+          execution_status: string
+          fee_actual: number | null
+          fee_estimate: number | null
+          id: string
+          metadata: Json | null
+          platform_id: string | null
+          quantity: number | null
+          slippage_actual: number | null
+          slippage_estimate: number | null
+          user_id: string
+        }
+        Insert: {
+          account_id?: string | null
+          average_execution_price?: number | null
+          decision_id?: string | null
+          executed_at?: string | null
+          executed_value?: number | null
+          execution_status?: string
+          fee_actual?: number | null
+          fee_estimate?: number | null
+          id?: string
+          metadata?: Json | null
+          platform_id?: string | null
+          quantity?: number | null
+          slippage_actual?: number | null
+          slippage_estimate?: number | null
+          user_id: string
+        }
+        Update: {
+          account_id?: string | null
+          average_execution_price?: number | null
+          decision_id?: string | null
+          executed_at?: string | null
+          executed_value?: number | null
+          execution_status?: string
+          fee_actual?: number | null
+          fee_estimate?: number | null
+          id?: string
+          metadata?: Json | null
+          platform_id?: string | null
+          quantity?: number | null
+          slippage_actual?: number | null
+          slippage_estimate?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investment_execution_records_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "investment_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "investment_execution_records_decision_id_fkey"
+            columns: ["decision_id"]
+            isOneToOne: false
+            referencedRelation: "investment_decision_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "investment_execution_records_platform_id_fkey"
+            columns: ["platform_id"]
+            isOneToOne: false
+            referencedRelation: "connected_investment_platforms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      investment_journal_entries: {
+        Row: {
+          confidence_self_rating: number | null
+          content: string | null
+          created_at: string
+          decision_id: string | null
+          discipline_self_rating: number | null
+          emotional_tags: string[] | null
+          entry_type: string
+          id: string
+          thesis_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence_self_rating?: number | null
+          content?: string | null
+          created_at?: string
+          decision_id?: string | null
+          discipline_self_rating?: number | null
+          emotional_tags?: string[] | null
+          entry_type?: string
+          id?: string
+          thesis_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence_self_rating?: number | null
+          content?: string | null
+          created_at?: string
+          decision_id?: string | null
+          discipline_self_rating?: number | null
+          emotional_tags?: string[] | null
+          entry_type?: string
+          id?: string
+          thesis_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investment_journal_entries_thesis_id_fkey"
+            columns: ["thesis_id"]
+            isOneToOne: false
+            referencedRelation: "thesis_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      investment_office_profiles: {
+        Row: {
+          advisor_mode_preference: string | null
+          created_at: string
+          currency_base: string | null
+          default_view: string | null
+          enabled: boolean | null
+          experience_level: string
+          id: string
+          office_mode: string
+          region: string | null
+          restricted_features: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_mode_preference?: string | null
+          created_at?: string
+          currency_base?: string | null
+          default_view?: string | null
+          enabled?: boolean | null
+          experience_level?: string
+          id?: string
+          office_mode?: string
+          region?: string | null
+          restricted_features?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_mode_preference?: string | null
+          created_at?: string
+          currency_base?: string | null
+          default_view?: string | null
+          enabled?: boolean | null
+          experience_level?: string
+          id?: string
+          office_mode?: string
+          region?: string | null
+          restricted_features?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      investment_receipts: {
+        Row: {
+          actor: string | null
+          advisor_snapshot_id: string | null
+          approval_state: string | null
+          created_at: string
+          exportable_bundle_ref: string | null
+          id: string
+          receipt_type: string
+          related_decision_id: string | null
+          related_execution_id: string | null
+          related_thesis_id: string | null
+          risk_summary: Json | null
+          summary: string | null
+          user_id: string
+        }
+        Insert: {
+          actor?: string | null
+          advisor_snapshot_id?: string | null
+          approval_state?: string | null
+          created_at?: string
+          exportable_bundle_ref?: string | null
+          id?: string
+          receipt_type?: string
+          related_decision_id?: string | null
+          related_execution_id?: string | null
+          related_thesis_id?: string | null
+          risk_summary?: Json | null
+          summary?: string | null
+          user_id: string
+        }
+        Update: {
+          actor?: string | null
+          advisor_snapshot_id?: string | null
+          approval_state?: string | null
+          created_at?: string
+          exportable_bundle_ref?: string | null
+          id?: string
+          receipt_type?: string
+          related_decision_id?: string | null
+          related_execution_id?: string | null
+          related_thesis_id?: string | null
+          risk_summary?: Json | null
+          summary?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investment_receipts_related_decision_id_fkey"
+            columns: ["related_decision_id"]
+            isOneToOne: false
+            referencedRelation: "investment_decision_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "investment_receipts_related_execution_id_fkey"
+            columns: ["related_execution_id"]
+            isOneToOne: false
+            referencedRelation: "investment_execution_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "investment_receipts_related_thesis_id_fkey"
+            columns: ["related_thesis_id"]
+            isOneToOne: false
+            referencedRelation: "thesis_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      investment_scenario_sets: {
+        Row: {
+          created_at: string
+          id: string
+          owner_id: string | null
+          owner_type: string
+          scenarios: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          owner_id?: string | null
+          owner_type?: string
+          scenarios?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          owner_id?: string | null
+          owner_type?: string
+          scenarios?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      investment_signals: {
+        Row: {
+          acknowledged_at: string | null
+          asset_id: string | null
+          created_at: string
+          id: string
+          message: string | null
+          metadata: Json | null
+          related_advisor_ids: string[] | null
+          related_catalyst_id: string | null
+          severity: string | null
+          signal_type: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          asset_id?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          metadata?: Json | null
+          related_advisor_ids?: string[] | null
+          related_catalyst_id?: string | null
+          severity?: string | null
+          signal_type: string
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          asset_id?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          metadata?: Json | null
+          related_advisor_ids?: string[] | null
+          related_catalyst_id?: string | null
+          severity?: string | null
+          signal_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investment_signals_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "asset_master"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      investment_strategy_records: {
+        Row: {
+          advisor_summary_id: string | null
+          allocation_model: Json | null
+          created_at: string
+          horizon: string | null
+          id: string
+          objective: string | null
+          readiness_status: string | null
+          scenario_set_id: string | null
+          strategy_type: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_summary_id?: string | null
+          allocation_model?: Json | null
+          created_at?: string
+          horizon?: string | null
+          id?: string
+          objective?: string | null
+          readiness_status?: string | null
+          scenario_set_id?: string | null
+          strategy_type?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_summary_id?: string | null
+          allocation_model?: Json | null
+          created_at?: string
+          horizon?: string | null
+          id?: string
+          objective?: string | null
+          readiness_status?: string | null
+          scenario_set_id?: string | null
+          strategy_type?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      investment_watchlists: {
+        Row: {
+          asset_ids: string[] | null
+          created_at: string
+          id: string
+          name: string
+          rules: Json | null
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          asset_ids?: string[] | null
+          created_at?: string
+          id?: string
+          name: string
+          rules?: Json | null
+          type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          asset_ids?: string[] | null
+          created_at?: string
+          id?: string
+          name?: string
+          rules?: Json | null
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       invoices: {
         Row: {
           aging_days: number | null
@@ -1961,6 +3035,51 @@ export type Database = {
           status?: string
           updated_at?: string
           urgency?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      market_memory_events: {
+        Row: {
+          acknowledged_at: string | null
+          created_at: string
+          event_type: string
+          id: string
+          related_advisor_ids: string[] | null
+          related_asset_ids: string[] | null
+          related_decision_id: string | null
+          related_thesis_id: string | null
+          severity: string | null
+          summary: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          related_advisor_ids?: string[] | null
+          related_asset_ids?: string[] | null
+          related_decision_id?: string | null
+          related_thesis_id?: string | null
+          severity?: string | null
+          summary?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          related_advisor_ids?: string[] | null
+          related_asset_ids?: string[] | null
+          related_decision_id?: string | null
+          related_thesis_id?: string | null
+          severity?: string | null
+          summary?: string | null
+          title?: string
           user_id?: string
         }
         Relationships: []
@@ -2280,6 +3399,92 @@ export type Database = {
             columns: ["policy_id"]
             isOneToOne: false
             referencedRelation: "policies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portfolio_positions: {
+        Row: {
+          account_id: string | null
+          allocation_pct: number | null
+          asset_id: string | null
+          average_cost: number | null
+          conviction_tag: string | null
+          id: string
+          market_value: number | null
+          opened_at: string | null
+          purpose_bucket_id: string | null
+          quantity: number | null
+          realized_pnl: number | null
+          risk_tags: string[] | null
+          thesis_id: string | null
+          unrealized_pnl: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_id?: string | null
+          allocation_pct?: number | null
+          asset_id?: string | null
+          average_cost?: number | null
+          conviction_tag?: string | null
+          id?: string
+          market_value?: number | null
+          opened_at?: string | null
+          purpose_bucket_id?: string | null
+          quantity?: number | null
+          realized_pnl?: number | null
+          risk_tags?: string[] | null
+          thesis_id?: string | null
+          unrealized_pnl?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_id?: string | null
+          allocation_pct?: number | null
+          asset_id?: string | null
+          average_cost?: number | null
+          conviction_tag?: string | null
+          id?: string
+          market_value?: number | null
+          opened_at?: string | null
+          purpose_bucket_id?: string | null
+          quantity?: number | null
+          realized_pnl?: number | null
+          risk_tags?: string[] | null
+          thesis_id?: string | null
+          unrealized_pnl?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_pp_purpose_bucket"
+            columns: ["purpose_bucket_id"]
+            isOneToOne: false
+            referencedRelation: "capital_purpose_buckets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_pp_thesis"
+            columns: ["thesis_id"]
+            isOneToOne: false
+            referencedRelation: "thesis_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "portfolio_positions_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "investment_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "portfolio_positions_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "asset_master"
             referencedColumns: ["id"]
           },
         ]
@@ -2775,6 +3980,36 @@ export type Database = {
         }
         Relationships: []
       }
+      strategy_dna_profiles: {
+        Row: {
+          confidence_by_trait: Json | null
+          id: string
+          last_updated: string | null
+          notes: string | null
+          observed_patterns: Json | null
+          traits: Json | null
+          user_id: string
+        }
+        Insert: {
+          confidence_by_trait?: Json | null
+          id?: string
+          last_updated?: string | null
+          notes?: string | null
+          observed_patterns?: Json | null
+          traits?: Json | null
+          user_id: string
+        }
+        Update: {
+          confidence_by_trait?: Json | null
+          id?: string
+          last_updated?: string | null
+          notes?: string | null
+          observed_patterns?: Json | null
+          traits?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           amount: number
@@ -3120,6 +4355,114 @@ export type Database = {
           rule_matched?: string | null
           source_ip?: string | null
           target?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      thesis_records: {
+        Row: {
+          assumptions: Json | null
+          catalyst_ids: string[] | null
+          created_at: string
+          desired_sizing_note: string | null
+          expected_horizon: string | null
+          id: string
+          invalidation_criteria: Json | null
+          linked_decision_ids: string[] | null
+          linked_strategy_id: string | null
+          rationale: string | null
+          related_asset_ids: string[] | null
+          related_theme_ids: string[] | null
+          review_at: string | null
+          risk_factors: Json | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assumptions?: Json | null
+          catalyst_ids?: string[] | null
+          created_at?: string
+          desired_sizing_note?: string | null
+          expected_horizon?: string | null
+          id?: string
+          invalidation_criteria?: Json | null
+          linked_decision_ids?: string[] | null
+          linked_strategy_id?: string | null
+          rationale?: string | null
+          related_asset_ids?: string[] | null
+          related_theme_ids?: string[] | null
+          review_at?: string | null
+          risk_factors?: Json | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assumptions?: Json | null
+          catalyst_ids?: string[] | null
+          created_at?: string
+          desired_sizing_note?: string | null
+          expected_horizon?: string | null
+          id?: string
+          invalidation_criteria?: Json | null
+          linked_decision_ids?: string[] | null
+          linked_strategy_id?: string | null
+          rationale?: string | null
+          related_asset_ids?: string[] | null
+          related_theme_ids?: string[] | null
+          review_at?: string | null
+          risk_factors?: Json | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      time_machine_snapshots: {
+        Row: {
+          advisor_state: Json | null
+          captured_at: string
+          catalyst_state: Json | null
+          created_at: string
+          id: string
+          market_context: Json | null
+          owner_id: string | null
+          owner_type: string
+          portfolio_state: Json | null
+          risk_state: Json | null
+          thesis_state: Json | null
+          user_id: string
+        }
+        Insert: {
+          advisor_state?: Json | null
+          captured_at?: string
+          catalyst_state?: Json | null
+          created_at?: string
+          id?: string
+          market_context?: Json | null
+          owner_id?: string | null
+          owner_type?: string
+          portfolio_state?: Json | null
+          risk_state?: Json | null
+          thesis_state?: Json | null
+          user_id: string
+        }
+        Update: {
+          advisor_state?: Json | null
+          captured_at?: string
+          catalyst_state?: Json | null
+          created_at?: string
+          id?: string
+          market_context?: Json | null
+          owner_id?: string | null
+          owner_type?: string
+          portfolio_state?: Json | null
+          risk_state?: Json | null
+          thesis_state?: Json | null
           user_id?: string
         }
         Relationships: []
