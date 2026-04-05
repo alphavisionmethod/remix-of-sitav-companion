@@ -73,8 +73,8 @@ export default function CN01ConnectorRealityOverview() {
 
   return (
     <div className="space-y-6 p-6"
-      title="Connector Reality Overview"
-      description="Real connectors, demo connectors, internal test connectors, linked accounts, sync health, and launch honesty."
+     
+     
     >
       <div className="space-y-6">
         <div className="flex items-center gap-3">
