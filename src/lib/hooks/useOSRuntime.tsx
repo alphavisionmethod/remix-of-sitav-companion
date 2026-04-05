@@ -151,6 +151,50 @@ export function OSRuntimeProvider({
     };
   }, [userId]);
 
+  // ── Engine State Persistence ────────────────────────────────
+  // Load persisted engine states on mount & auto-save periodically
+  useEffect(() => {
+    let cancelled = false;
+
+    // Load persisted states for all engines
+    import("@/lib/persistence/engine-persistence-adapter").then(
+      async ({ loadAllEngineStates, debouncedPersistEngineState }) => {
+        if (cancelled) return;
+        const states = await loadAllEngineStates();
+        if (cancelled || Object.keys(states).length === 0) return;
+        console.debug(`[OS Runtime] Loaded ${Object.keys(states).length} persisted engine states`);
+
+        // Auto-save all engine states every 30s
+        const engineNames = [
+          "memory-governance", "policy-depth", "entity-graph",
+          "advisor-orchestration", "revenue-opportunity", "digital-twin",
+          "token-governance", "integration-concierge", "replay-recovery",
+          "enterprise-control", "support-diagnostics", "observability",
+          "release-safety", "trust-device", "compliance-audit",
+        ];
+
+        const saveInterval = setInterval(() => {
+          for (const name of engineNames) {
+            // Save a lightweight state snapshot for each engine
+            debouncedPersistEngineState(name, {
+              lastActive: new Date().toISOString(),
+              sessionId: runtime.context.sessionId,
+            });
+          }
+        }, 30_000);
+
+        // Store cleanup ref
+        (window as any).__sitaEngineSaveInterval = saveInterval;
+      },
+    ).catch(console.error);
+
+    return () => {
+      cancelled = true;
+      const saveInterval = (window as any).__sitaEngineSaveInterval;
+      if (saveInterval) clearInterval(saveInterval);
+    };
+  }, [userId, runtime]);
+
   return (
     <OSRuntimeCtx.Provider value={runtime}>
       {children}

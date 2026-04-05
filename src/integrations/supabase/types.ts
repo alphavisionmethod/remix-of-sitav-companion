@@ -1923,6 +1923,54 @@ export type Database = {
           },
         ]
       }
+      compute_budget_snapshots: {
+        Row: {
+          allocated_cents: number
+          anomaly_flags: string[] | null
+          cache_hit_rate: number
+          created_at: string
+          deep_reasoning_pct: number
+          domain: string
+          id: string
+          margin_posture: string
+          model_mix: Json
+          period: string
+          snapshot_at: string
+          used_cents: number
+          user_id: string
+        }
+        Insert: {
+          allocated_cents?: number
+          anomaly_flags?: string[] | null
+          cache_hit_rate?: number
+          created_at?: string
+          deep_reasoning_pct?: number
+          domain?: string
+          id?: string
+          margin_posture?: string
+          model_mix?: Json
+          period?: string
+          snapshot_at?: string
+          used_cents?: number
+          user_id: string
+        }
+        Update: {
+          allocated_cents?: number
+          anomaly_flags?: string[] | null
+          cache_hit_rate?: number
+          created_at?: string
+          deep_reasoning_pct?: number
+          domain?: string
+          id?: string
+          margin_posture?: string
+          model_mix?: Json
+          period?: string
+          snapshot_at?: string
+          used_cents?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       connected_investment_platforms: {
         Row: {
           account_ids: string[] | null
@@ -2657,6 +2705,63 @@ export type Database = {
           service?: string | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      engine_events: {
+        Row: {
+          created_at: string
+          engine_name: string
+          event_data: Json
+          event_type: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          engine_name: string
+          event_data?: Json
+          event_type: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          engine_name?: string
+          event_data?: Json
+          event_type?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      engine_state: {
+        Row: {
+          created_at: string
+          engine_name: string
+          id: string
+          state_data: Json
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          engine_name: string
+          id?: string
+          state_data?: Json
+          updated_at?: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          created_at?: string
+          engine_name?: string
+          id?: string
+          state_data?: Json
+          updated_at?: string
+          user_id?: string
+          version?: number
         }
         Relationships: []
       }
@@ -3626,6 +3731,75 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verification_state?: string | null
+        }
+        Relationships: []
+      }
+      intelligence_assets_library: {
+        Row: {
+          adapted_reuse_count: number
+          asset_type: string
+          confidence: number
+          content: Json
+          cost_avoided_cents: number
+          created_at: string
+          decay_rate: number
+          domain: string
+          evidence_grade: string
+          freshness_score: number
+          id: string
+          invalidated: boolean
+          invalidation_reason: string | null
+          reuse_count: number
+          source_agent_id: string | null
+          source_mission_id: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          adapted_reuse_count?: number
+          asset_type?: string
+          confidence?: number
+          content?: Json
+          cost_avoided_cents?: number
+          created_at?: string
+          decay_rate?: number
+          domain?: string
+          evidence_grade?: string
+          freshness_score?: number
+          id?: string
+          invalidated?: boolean
+          invalidation_reason?: string | null
+          reuse_count?: number
+          source_agent_id?: string | null
+          source_mission_id?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          adapted_reuse_count?: number
+          asset_type?: string
+          confidence?: number
+          content?: Json
+          cost_avoided_cents?: number
+          created_at?: string
+          decay_rate?: number
+          domain?: string
+          evidence_grade?: string
+          freshness_score?: number
+          id?: string
+          invalidated?: boolean
+          invalidation_reason?: string | null
+          reuse_count?: number
+          source_agent_id?: string | null
+          source_mission_id?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -5005,6 +5179,45 @@ export type Database = {
           result?: Json | null
           target_id?: string | null
           target_table?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      operator_taste_profiles: {
+        Row: {
+          confidence: number
+          created_at: string
+          id: string
+          last_applied_at: string | null
+          learned_from: string
+          preference_key: string
+          preference_value: Json
+          times_applied: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          id?: string
+          last_applied_at?: string | null
+          learned_from?: string
+          preference_key: string
+          preference_value?: Json
+          times_applied?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          id?: string
+          last_applied_at?: string | null
+          learned_from?: string
+          preference_key?: string
+          preference_value?: Json
+          times_applied?: number
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -7040,6 +7253,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      quality_floor_configs: {
+        Row: {
+          active: boolean
+          created_at: string
+          domain: string
+          enforcement_mode: string
+          id: string
+          min_confidence: number
+          min_evidence_completeness: number
+          min_freshness: number
+          min_verification_standard: string
+          task_class: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          domain?: string
+          enforcement_mode?: string
+          id?: string
+          min_confidence?: number
+          min_evidence_completeness?: number
+          min_freshness?: number
+          min_verification_standard?: string
+          task_class: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          domain?: string
+          enforcement_mode?: string
+          id?: string
+          min_confidence?: number
+          min_evidence_completeness?: number
+          min_freshness?: number
+          min_verification_standard?: string
+          task_class?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       quotes: {
         Row: {
