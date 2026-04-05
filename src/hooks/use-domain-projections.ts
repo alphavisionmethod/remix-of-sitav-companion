@@ -44,7 +44,7 @@ function buildDemoFinance(): FinanceProjection {
   const bills = adaptMockBills(mockBills);
   const cashflow = analyzeCashflow(entries, 24500);
   const bh = assessBudgetHealth(budgets);
-  const ra = assessReserves(reserves);
+  const ra = assessReserves(reserves, 5000);
   const ia = analyzeInvoiceAging(invoices);
   return {
     cashflow,
