@@ -1,7 +1,9 @@
 import { Building2, Briefcase, Users, GraduationCap, PenTool, ShoppingCart, MapPin, Heart, Layers, Sparkles } from "lucide-react";
 import { Toggle, SectionTitle, SingleSelect, ChapterBanner } from "../primitives";
+import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
+import { getBusinessTypeBranch } from "../branching";
 import type { ScreenProps } from "../types";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 const businessTypes = [
   { id: "service", label: "Service Business", desc: "Appointments, proposals, delivery milestones, reviews", icon: Briefcase },
