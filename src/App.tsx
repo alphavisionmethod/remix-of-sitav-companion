@@ -178,6 +178,8 @@ const AIDesignDiffTheater = lazy(() => import("./pages/admin/AIDesignDiffTheater
 const AITimeMachine = lazy(() => import("./pages/admin/AITimeMachine"));
 const AIAgentDebate = lazy(() => import("./pages/admin/AIAgentDebate"));
 const AISelfLearningLedger = lazy(() => import("./pages/admin/AISelfLearningLedger"));
+const AIChangePlanViewer = lazy(() => import("./pages/admin/AIChangePlanViewer"));
+const AIHumanBoundaryControls = lazy(() => import("./pages/admin/AIHumanBoundaryControls"));
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
@@ -899,6 +901,8 @@ const App = () => (
                     <Route path="/admin/ai-time-machine" element={<AITimeMachine />} />
                     <Route path="/admin/ai-agent-debate" element={<AIAgentDebate />} />
                     <Route path="/admin/ai-self-learning" element={<AISelfLearningLedger />} />
+                    <Route path="/admin/ai-change-plans" element={<AIChangePlanViewer />} />
+                    <Route path="/admin/ai-boundary-controls" element={<AIHumanBoundaryControls />} />
                     <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
