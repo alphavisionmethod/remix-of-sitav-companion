@@ -14,6 +14,7 @@ import { KeyboardShortcuts } from "./KeyboardShortcuts";
 import { WelcomeTour } from "./WelcomeTour";
 import { InteractiveTutorial } from "./InteractiveTutorial";
 import { QuickAddWizard, QuickAddFAB } from "./QuickAddWizard";
+import { CopilotBar } from "./CopilotBar";
 import { InteractionTracker } from "./InteractionTracker";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { DesktopEntryCeremony } from "./DesktopEntryCeremony";
