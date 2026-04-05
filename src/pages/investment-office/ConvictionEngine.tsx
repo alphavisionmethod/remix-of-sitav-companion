@@ -34,7 +34,7 @@ const POSITIONS = [
   },
 ];
 
-const DIMS = [
+const DIMS: Array<{ key: keyof Pick<typeof POSITIONS[0], "conviction" | "uncertainty" | "catalystStrength" | "downsideFragility" | "thesisClarity" | "portfolioFit" | "timeHorizonFit">; label: string; color: string; inverted?: boolean }> = [
   { key: "conviction", label: "Conviction", color: "bg-primary" },
   { key: "uncertainty", label: "Uncertainty", color: "bg-destructive", inverted: true },
   { key: "catalystStrength", label: "Catalyst Strength", color: "bg-[hsl(var(--trust-safe))]" },
@@ -42,7 +42,7 @@ const DIMS = [
   { key: "thesisClarity", label: "Thesis Clarity", color: "bg-primary" },
   { key: "portfolioFit", label: "Portfolio Fit", color: "bg-[hsl(var(--trust-safe))]" },
   { key: "timeHorizonFit", label: "Time Horizon Fit", color: "bg-primary" },
-] as const;
+];
 
 export default function ConvictionEngine() {
   return (
