@@ -355,19 +355,21 @@ export class SetupOrchestrationEngine {
     return null; // No more phases
   }
 
-  /** Navigate backward */
+  /** Navigate backward — navigates to ANY previous phase (including excluded-from-steps) */
   goToPreviousPhase(): SetupPhaseId | null {
     const active = this.getActivePhaseIds();
     const currentIdx = active.indexOf(this.session.currentPhaseId);
 
-    for (let i = currentIdx - 1; i >= 0; i--) {
-      const id = active[i];
-      const def = this.definitions.get(id);
-      if (def && !def.excludedFromSteps) {
-        this.session.currentPhaseId = id;
-        this.notifySessionChange();
-        return id;
+    if (currentIdx > 0) {
+      const id = active[currentIdx - 1];
+      this.session.currentPhaseId = id;
+      // Reset status so user can interact again
+      const state = this.session.phaseStates[id];
+      if (state && (state.status === "completed" || state.status === "success")) {
+        state.status = "active";
       }
+      this.notifySessionChange();
+      return id;
     }
     return null;
   }
