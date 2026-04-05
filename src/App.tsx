@@ -859,6 +859,10 @@ const App = () => (
                     <Route path="/admin/alert-triage" element={<AlertTriageBoard />} />
                     <Route path="/admin/policy-simulator" element={<AdminPolicySimulator />} />
                     <Route path="/admin/workflow-replay" element={<WorkflowReplayAudit />} />
+                    <Route path="/admin/compute-governance" element={<ComputeGovernanceBoard />} />
+                    <Route path="/admin/integration-concierge" element={<IntegrationConciergePage />} />
+                    <Route path="/admin/revenue-autopilot" element={<RevenueAutopilotMonitor />} />
+                    <Route path="/admin/proof-ledger" element={<InvestorProofLedger />} />
                     <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
