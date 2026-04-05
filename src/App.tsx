@@ -96,6 +96,9 @@ const MyActivity = lazy(() => import("./pages/MyActivity"));
 const PermissionsCenter = lazy(() => import("./pages/PermissionsCenter"));
 const AgentActivityDashboard = lazy(() => import("./pages/AgentActivityDashboard"));
 const RevenueCallingPage = lazy(() => import("./pages/RevenueCallingPage"));
+const FormsBuilder = lazy(() => import("./pages/revenue-office/FormsBuilder"));
+const SegmentationEngine = lazy(() => import("./pages/revenue-office/SegmentationEngine"));
+const ClientOnboarding = lazy(() => import("./pages/revenue-office/ClientOnboarding"));
 const ServiceArchitectureDashboard = lazy(() => import("./pages/ServiceArchitectureDashboard"));
 const PricingEditor = lazy(() => import("./pages/owner/PricingEditor"));
 const PackEditorPage = lazy(() => import("./pages/owner/PackEditor"));
@@ -487,6 +490,9 @@ const App = () => (
                     <Route path="/revenue-office/operating-modes" element={<GrowthOperatingModes />} />
                     <Route path="/revenue-office/synthesis" element={<ChiefRevenueSynthesis />} />
                     <Route path="/revenue-office/memory-feed" element={<CommercialMemoryFeed />} />
+                    <Route path="/revenue-office/forms" element={<FormsBuilder />} />
+                    <Route path="/revenue-office/segmentation" element={<SegmentationEngine />} />
+                    <Route path="/revenue-office/client-onboarding" element={<ClientOnboarding />} />
                     <Route path="/revenue-office/automation" element={<AutomationOffice />} />
                     <Route path="/revenue-office/automation/builder" element={<AutomationBuilder />} />
                     <Route path="/revenue-office/automation/templates" element={<AutomationTemplates />} />
