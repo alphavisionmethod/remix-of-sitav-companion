@@ -52,7 +52,7 @@ export function useAdvisorApprovals() { return useQuery({ queryKey: ["advisor-ap
 export function useProofHistory() { return useQuery({ queryKey: ["proof-history"], queryFn: fetchProofHistory }); }
 
 // Calendar
-export function useCalendarEvents() { return useQuery({ queryKey: ["calendar-events"], queryFn: fetchCalendarEvents }); }
+export function useCalendarEvents(year: number, month: number) { return useQuery({ queryKey: ["calendar-events", year, month], queryFn: () => fetchCalendarEvents(year, month) }); }
 
 // Activity
 export function useInboxItems() { return useQuery({ queryKey: ["inbox-items"], queryFn: fetchInboxItems }); }

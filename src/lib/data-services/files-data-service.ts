@@ -107,7 +107,7 @@ export async function fetchFilesSearchIndex(): Promise<IndexableItem[]> {
   return data.map((f: any, i: number) => ({
     id: f.id,
     type: f.classification || "document",
-    domain: classifyDomainFromFile(f),
+    domain: classifyDomainFromFile(f) as SearchDomain,
     title: f.filename,
     body: f.extracted_data?.text || "",
     tags: [f.classification, f.sensitivity, f.mime_type?.split("/")[1]].filter(Boolean) as string[],
