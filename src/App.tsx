@@ -716,6 +716,8 @@ const App = () => (
                     <Route path="/mission/error" element={<MissionError />} />
 
                     {/* ATLAS Gap Closure — Operator Command Surfaces */}
+                    <Route path="/atlas" element={<AtlasHub />} />
+                    <Route path="/atlas/admin" element={<AdminDurabilityBoard />} />
                     <Route path="/atlas/projections" element={<ProjectionControlCenter />} />
                     <Route path="/atlas/proof" element={<ProofCoverageBoard />} />
                     <Route path="/atlas/deployment" element={<DeploymentTruthCenter />} />
