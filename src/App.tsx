@@ -408,6 +408,17 @@ const App = () => (
                     <Route path="/revenue-office/journey-twin" element={<JourneyTwin />} />
                     <Route path="/revenue-office/leaks" element={<LeakDetector />} />
                     <Route path="/revenue-office/conversion-lab" element={<ConversionLab />} />
+                    <Route path="/revenue-office/memberships" element={<MembershipCourseOffice />} />
+                    <Route path="/revenue-office/opportunities" element={<OpportunityBoard />} />
+                    <Route path="/revenue-office/trust-pulse" element={<TrustPulse />} />
+                    <Route path="/revenue-office/white-label" element={<WhiteLabelOffice />} />
+                    <Route path="/revenue-office/time-machine" element={<BusinessTimeMachine />} />
+                    <Route path="/revenue-office/decision-theater" element={<RevenueDecisionTheater />} />
+                    <Route path="/revenue-office/what-breaks" element={<WhatBreaksGrowth />} />
+                    <Route path="/revenue-office/growth-dna" element={<GrowthDNA />} />
+                    <Route path="/revenue-office/operating-modes" element={<GrowthOperatingModes />} />
+                    <Route path="/revenue-office/synthesis" element={<ChiefRevenueSynthesis />} />
+                    <Route path="/revenue-office/memory-feed" element={<CommercialMemoryFeed />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
