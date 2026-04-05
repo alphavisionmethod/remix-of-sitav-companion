@@ -1,0 +1,158 @@
+import { useState } from "react";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
+import { motion } from "framer-motion";
+import { Upload, FileText, Image, Table2, FileSpreadsheet, Download, ArrowUpFromLine, ArrowDownToLine, Camera, Clipboard, ScanLine, HardDrive, Cloud, CheckCircle2, Clock, AlertTriangle, ChevronRight, FolderInput, X } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
+
+interface UploadItem { id: string; name: string; type: string; size: string; status: "uploading" | "processing" | "complete" | "failed"; progress: number; destination?: string; }
+interface ExportItem { id: string; name: string; type: string; size: string; status: "generating" | "ready" | "expired" | "failed"; createdAt: string; }
+
+const MOCK_UPLOADS: UploadItem[] = [
+  { id: "1", name: "Q2-financials.xlsx", type: "spreadsheet", size: "2.1 MB", status: "complete", progress: 100, destination: "Finance" },
+  { id: "2", name: "contract-acme.pdf", type: "pdf", size: "450 KB", status: "processing", progress: 80, destination: "CRM" },
+  { id: "3", name: "team-photo.jpg", type: "image", size: "3.5 MB", status: "uploading", progress: 45 },
+];
+
+const MOCK_EXPORTS: ExportItem[] = [
+  { id: "1", name: "Revenue Report March 2024.pdf", type: "pdf", size: "1.2 MB", status: "ready", createdAt: new Date(Date.now() - 3600000).toISOString() },
+  { id: "2", name: "Client List Export.csv", type: "csv", size: "340 KB", status: "ready", createdAt: new Date(Date.now() - 86400000).toISOString() },
+  { id: "3", name: "Proof Bundle #4521.zip", type: "bundle", size: "8.7 MB", status: "generating", createdAt: new Date().toISOString() },
+];
+
+const STATUS_STYLES = { uploading: "text-primary", processing: "text-amber-400", complete: "text-emerald-400", failed: "text-red-400", generating: "text-amber-400", ready: "text-emerald-400", expired: "text-muted-foreground" };
+const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircle2, failed: AlertTriangle, generating: Clock, ready: CheckCircle2, expired: AlertTriangle };
+
+const ImportExportCenter = () => {
+  const [tab, setTab] = useState("upload");
+  const [isDragging, setIsDragging] = useState(false);
+
+  return (
+    <div className="min-h-screen pb-12">
+      <SitaPageHeader title="Upload & Export Center" subtitle="Import files, export reports, and manage data transfers" />
+
+      <SitaTabs tabs={[
+        { key: "upload", label: "Upload" },
+        { key: "import", label: "Import Data" },
+        { key: "capture", label: "Capture" },
+        { key: "exports", label: "Downloads & Exports" },
+      ]} active={tab} onChange={setTab} className="mb-6" />
+
+      {tab === "upload" && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          {/* Drop zone */}
+          <div onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }} onDragLeave={() => setIsDragging(false)} onDrop={() => setIsDragging(false)}
+            className={cn("border-2 border-dashed rounded-2xl p-12 text-center transition-all mb-6", isDragging ? "border-primary bg-primary/5" : "border-border/30 hover:border-border/50")}>
+            <Upload className={cn("w-12 h-12 mx-auto mb-3 transition-colors", isDragging ? "text-primary" : "text-muted-foreground/30")} />
+            <h3 className="text-sm font-semibold mb-1">{isDragging ? "Drop files here" : "Drag & drop files to upload"}</h3>
+            <p className="text-xs text-muted-foreground mb-4">PDF, DOCX, XLSX, CSV, images, and more — up to 50MB each</p>
+            <div className="flex justify-center gap-2">
+              <Button size="sm" className="gap-1.5 text-xs"><ArrowUpFromLine className="w-3.5 h-3.5" /> Browse Files</Button>
+              <Button size="sm" variant="outline" className="gap-1.5 text-xs border-border/50"><FolderInput className="w-3.5 h-3.5" /> Upload Folder</Button>
+            </div>
+          </div>
+
+          {/* Recent uploads */}
+          <SitaCardTitle className="text-xs mb-3">Recent Uploads</SitaCardTitle>
+          <div className="space-y-2">
+            {MOCK_UPLOADS.map(item => {
+              const StatusIcon = STATUS_ICONS[item.status];
+              return (
+                <SitaCard key={item.id} className="p-3" hover>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-card/50 flex items-center justify-center">
+                      {item.type === "image" ? <Image className="w-4 h-4 text-muted-foreground" /> :
+                       item.type === "spreadsheet" ? <FileSpreadsheet className="w-4 h-4 text-muted-foreground" /> :
+                       <FileText className="w-4 h-4 text-muted-foreground" />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs font-medium truncate">{item.name}</div>
+                      <div className="text-[10px] text-muted-foreground">{item.size}{item.destination ? ` → ${item.destination}` : ""}</div>
+                    </div>
+                    {item.status === "uploading" && (
+                      <div className="w-20">
+                        <div className="h-1.5 rounded-full bg-border/30 overflow-hidden">
+                          <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${item.progress}%` }} />
+                        </div>
+                        <div className="text-[9px] text-muted-foreground text-right mt-0.5">{item.progress}%</div>
+                      </div>
+                    )}
+                    <StatusIcon className={cn("w-4 h-4", STATUS_STYLES[item.status])} />
+                  </div>
+                </SitaCard>
+              );
+            })}
+          </div>
+        </motion.div>
+      )}
+
+      {tab === "import" && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {[
+              { icon: FileSpreadsheet, title: "Import CSV / Excel", desc: "Import contacts, transactions, or data from spreadsheets" },
+              { icon: Cloud, title: "Import from Service", desc: "Pull data from connected services and integrations" },
+              { icon: HardDrive, title: "Import from Backup", desc: "Restore data from a previous backup or export" },
+            ].map(opt => (
+              <SitaCard key={opt.title} className="p-5 cursor-pointer" hover>
+                <opt.icon className="w-8 h-8 text-primary mb-3" />
+                <h3 className="text-sm font-semibold mb-1">{opt.title}</h3>
+                <p className="text-[11px] text-muted-foreground">{opt.desc}</p>
+              </SitaCard>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {tab === "capture" && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { icon: Camera, title: "Photo Capture", desc: "Take a photo directly" },
+              { icon: ScanLine, title: "Scan Document", desc: "Scan with your camera" },
+              { icon: Clipboard, title: "Clipboard Paste", desc: "Paste from clipboard" },
+              { icon: FileText, title: "Quick Note", desc: "Capture a thought" },
+            ].map(opt => (
+              <SitaCard key={opt.title} className="p-5 text-center cursor-pointer" hover>
+                <opt.icon className="w-10 h-10 text-primary mx-auto mb-3" />
+                <h3 className="text-sm font-semibold mb-1">{opt.title}</h3>
+                <p className="text-[10px] text-muted-foreground">{opt.desc}</p>
+              </SitaCard>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {tab === "exports" && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <div className="space-y-2">
+            {MOCK_EXPORTS.map(item => {
+              const StatusIcon = STATUS_ICONS[item.status as keyof typeof STATUS_ICONS] || Clock;
+              return (
+                <SitaCard key={item.id} className="p-3" hover>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-card/50 flex items-center justify-center">
+                      <Download className="w-4 h-4 text-muted-foreground" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs font-medium truncate">{item.name}</div>
+                      <div className="text-[10px] text-muted-foreground">{item.size} · {item.type.toUpperCase()}</div>
+                    </div>
+                    <Badge className={cn("text-[9px]", STATUS_STYLES[item.status as keyof typeof STATUS_STYLES])}>{item.status}</Badge>
+                    {item.status === "ready" && <Button size="sm" variant="ghost" className="text-xs h-7"><Download className="w-3 h-3" /></Button>}
+                  </div>
+                </SitaCard>
+              );
+            })}
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+};
+
+export default ImportExportCenter;
