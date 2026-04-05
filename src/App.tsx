@@ -134,7 +134,15 @@ const TrustCenter = lazy(() => import("./pages/TrustCenter"));
 const MediaWorkspace = lazy(() => import("./pages/MediaWorkspace"));
 const TemplateCenter = lazy(() => import("./pages/TemplateCenter"));
 const ImportExportCenter = lazy(() => import("./pages/ImportExportCenter"));
-// Mobile lazy imports moved to MobileRoutes.tsx
+const MobileHome = lazy(() => import("./pages/mobile/MobileHome"));
+const MobileApprovals = lazy(() => import("./pages/mobile/MobileApprovals"));
+const MobileProof = lazy(() => import("./pages/mobile/MobileProof"));
+const MobileAlerts = lazy(() => import("./pages/mobile/MobileAlerts"));
+const MobileBoardroom = lazy(() => import("./pages/mobile/MobileBoardroom"));
+const MobileWorkflowDetail = lazy(() => import("./pages/mobile/MobileWorkflowDetail"));
+const MobileReceiptDetail = lazy(() => import("./pages/mobile/MobileReceiptDetail"));
+const MobileApprovalDetail = lazy(() => import("./pages/mobile/MobileApprovalDetail"));
+const MobileSettings = lazy(() => import("./pages/mobile/MobileSettings"));
 
 const queryClient = createQueryClient();
 
