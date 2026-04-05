@@ -3,15 +3,15 @@ import { supabase } from "@/integrations/supabase/client";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
 
+// Re-export the rich types directly from mock-data for full compatibility
+export type { CollectionsAccount } from "@/lib/mock-data/collections";
+import type { CollectionsAccount } from "@/lib/mock-data/collections";
+import { MOCK_COLLECTIONS_ACCOUNTS } from "@/lib/mock-data/collections";
+
 export interface MockCustomer {
   id: string; name: string; company: string; email: string; phone: string;
   status: string; relationship_type: string; health_score: number;
   lifetime_revenue: number | null; last_contact_at: string; created_at: string; notes: string;
-}
-
-export interface CollectionsAccount {
-  id: string; customer: string; amount: number; daysOverdue: number;
-  status: string; lastAction: string; nextStep: string; priority: string;
 }
 
 const DEMO_CUSTOMERS: MockCustomer[] = [
@@ -19,11 +19,6 @@ const DEMO_CUSTOMERS: MockCustomer[] = [
   { id: "c2", name: "Marcus Webb", company: "Atlas Corp", email: "marcus@atlas.co", phone: "+1-555-0102", status: "active", relationship_type: "client", health_score: 78, lifetime_revenue: 85000, last_contact_at: "2026-03-28", created_at: "2025-09-01", notes: "Enterprise license prospect" },
   { id: "c3", name: "Elena Rossi", company: "Vanguard Advisory", email: "elena@vanguard.co", phone: "+1-555-0103", status: "active", relationship_type: "partner", health_score: 95, lifetime_revenue: 45000, last_contact_at: "2026-04-04", created_at: "2025-03-10", notes: "Advisory retainer" },
   { id: "c4", name: "James Park", company: "Nordic Digital", email: "james@nordic.io", phone: "+1-555-0104", status: "prospect", relationship_type: "prospect", health_score: 65, lifetime_revenue: null, last_contact_at: "2026-03-15", created_at: "2026-01-20", notes: "Consulting opportunity" },
-];
-
-const DEMO_COLLECTIONS: CollectionsAccount[] = [
-  { id: "col1", customer: "Atlas Corp", amount: 12500, daysOverdue: 15, status: "follow_up", lastAction: "Email sent Apr 1", nextStep: "Call scheduled Apr 8", priority: "high" },
-  { id: "col2", customer: "Nordic Digital", amount: 4800, daysOverdue: 7, status: "pending", lastAction: "Invoice resent Mar 30", nextStep: "Reminder Apr 7", priority: "medium" },
 ];
 
 export async function fetchCustomers(mode: RealityModeKey = "real"): Promise<ModeAwareResult<MockCustomer[]>> {
@@ -41,8 +36,5 @@ export async function fetchCustomers(mode: RealityModeKey = "real"): Promise<Mod
 }
 
 export async function fetchCollections(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CollectionsAccount[]>> {
-  return resolveByMode({ mode, realData: null, demoData: DEMO_COLLECTIONS, emptyDefault: [] });
+  return resolveByMode({ mode, realData: null, demoData: MOCK_COLLECTIONS_ACCOUNTS, emptyDefault: [] });
 }
-
-// Re-export original rich type for backward compat
-export type { CollectionsAccount as CollectionsAccountOriginal } from "@/lib/mock-data/collections";
