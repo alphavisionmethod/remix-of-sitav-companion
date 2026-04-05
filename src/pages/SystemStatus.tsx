@@ -704,7 +704,7 @@ const SystemStatus = () => {
 
       {activeTab === "history" && (
         <div className="space-y-3">
-          {[...recentApprovals.map((a, i) => ({
+          {[...FALLBACK_APPROVALS.map((a, i) => ({
             id: `approval-${i}`,
             type: "approval" as const,
             title: a.action,
