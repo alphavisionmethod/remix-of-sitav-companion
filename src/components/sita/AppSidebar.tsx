@@ -218,6 +218,7 @@ export function AppSidebar() {
         <CollapsibleNavGroup items={workspaceNav} label="Workspace" collapsed={collapsed} />
         <CollapsibleNavGroup items={systemNav} label="System" collapsed={collapsed} />
         <CollapsibleNavGroup items={controlNav} label="Control" collapsed={collapsed} />
+        <CollapsibleNavGroup items={appsNav} label="Apps" collapsed={collapsed} />
       </SidebarContent>
 
       <SidebarFooter className="px-2 pb-4 border-t border-sidebar-border pt-2">
