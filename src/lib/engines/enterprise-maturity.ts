@@ -111,10 +111,15 @@ export class EnterpriseControlPlaneEngine {
       { connectorId: "plaid", owner: "finance-team", policy: "transactions-only", healthScore: 91, lastAudit: new Date().toISOString() },
     ];
   }
-}
 
-// ────────────────────────────────────────────────────────────────
-// SECTION 2 — Support & Diagnostics Maturity
+  serialize(): Record<string, unknown> {
+    return { orgs: Array.from(this.orgs.entries()), delegations: this.delegations };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.orgs) this.orgs = new Map(state.orgs as any);
+    if (state.delegations) this.delegations = state.delegations as any;
+  }
+}
 // ────────────────────────────────────────────────────────────────
 
 export type SupportCaseSeverity = "low" | "medium" | "high" | "critical";
