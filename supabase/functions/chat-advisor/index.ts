@@ -287,35 +287,28 @@ async function logTokenUsage(
   domain: string
 ) {
   try {
+    // Use atomic RPC for budget update
+    const costCents = Math.ceil(inputTokensApprox * 0.00001 * 100);
+    const tokenCount = Math.ceil(inputTokensApprox);
+
     await adminClient.from("ai_token_usage").insert({
       user_id: userId,
       advisor_id: advisorId,
       model,
       provider: "google",
-      input_tokens: Math.ceil(inputTokensApprox),
+      input_tokens: tokenCount,
       output_tokens: 0,
-      cost_cents: Math.ceil(inputTokensApprox * 0.00001 * 100),
+      cost_cents: costCents,
       domain,
       category: "inference",
     });
 
-    // Update budget counters
+    // Atomic budget increment via RPC
     await adminClient.rpc("update_ai_budget_usage", {
       p_user_id: userId,
-      p_tokens: Math.ceil(inputTokensApprox),
-      p_cost_cents: Math.ceil(inputTokensApprox * 0.00001 * 100),
-    }).catch(() => {
-      // RPC may not exist yet, fallback
-      adminClient.from("user_ai_budgets")
-        .update({
-          used_tokens: Math.ceil(inputTokensApprox),
-          used_cost_cents: Math.ceil(inputTokensApprox * 0.00001 * 100),
-        })
-        .eq("user_id", userId)
-        .eq("period", "monthly")
-        .then(() => {})
-        .catch(() => {});
-    });
+      p_tokens: tokenCount,
+      p_cost: costCents,
+    }).catch(e => console.error("Budget RPC error:", e));
   } catch (e) {
     console.error("Token logging error:", e);
   }
