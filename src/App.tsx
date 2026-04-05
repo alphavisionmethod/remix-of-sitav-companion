@@ -259,6 +259,16 @@ const AR06ExecutionTraceExplorer = lazy(() => import("./pages/admin/AR06Executio
 const AR07RetryFailureCenter = lazy(() => import("./pages/admin/AR07RetryFailureCenter"));
 const AR08KillSwitchCenter = lazy(() => import("./pages/admin/AR08KillSwitchCenter"));
 const AR09AutomationLaunchGate = lazy(() => import("./pages/admin/AR09AutomationLaunchGate"));
+
+// LT — Launch Truth / CI / E2E / Behavioral Truth / Launch Gate
+const LT01BehavioralTruthOverview = lazy(() => import("./pages/admin/LT01BehavioralTruthOverview"));
+const LT02CIPipelineCenter = lazy(() => import("./pages/admin/LT02CIPipelineCenter"));
+const LT03E2EJourneyBoard = lazy(() => import("./pages/admin/LT03E2EJourneyBoard"));
+const LT04RuntimeProbeCenter = lazy(() => import("./pages/admin/LT04RuntimeProbeCenter"));
+const LT05LaunchGateBoard = lazy(() => import("./pages/admin/LT05LaunchGateBoard"));
+const LT06RouteInteractionTruth = lazy(() => import("./pages/admin/LT06RouteInteractionTruth"));
+const LT07TruthRegressionRadar = lazy(() => import("./pages/admin/LT07TruthRegressionRadar"));
+
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
