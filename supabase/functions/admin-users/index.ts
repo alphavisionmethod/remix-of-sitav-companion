@@ -94,7 +94,7 @@ serve(async (req) => {
         if (error) throw error;
 
         await adminClient.from("audit_logs").insert({
-          user_id: user.id, action: "assign_role", category: "admin",
+          user_id: auth.user.id, action: "assign_role", category: "admin",
           actor: "admin", target_type: "user", target_id: target_user_id, severity: "high",
           details: { role },
         });
