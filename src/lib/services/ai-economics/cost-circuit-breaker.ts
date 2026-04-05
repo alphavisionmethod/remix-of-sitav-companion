@@ -4,12 +4,12 @@
 // warn → throttle → pause → halt
 // ═══════════════════════════════════════════════════════════════
 
-export type CostBreakerState = "closed" | "warn" | "throttle" | "pause" | "halt";
-export type CostBudgetPeriod = "hourly" | "daily" | "monthly";
+export type BreakerState = "closed" | "warn" | "throttle" | "pause" | "halt";
+export type BreakerBudgetPeriod = "hourly" | "daily" | "monthly";
 
-export interface BudgetConfig {
+export interface BreakerBudgetConfig {
   agentId: string;
-  period: CostBudgetPeriod;
+  period: BreakerBudgetPeriod;
   budgetCents: number;
   warnThreshold: number;       // 0-1, e.g. 0.7 = 70%
   throttleThreshold: number;   // 0-1, e.g. 0.85
@@ -20,12 +20,12 @@ export interface BudgetConfig {
 
 export interface BudgetState {
   agentId: string;
-  period: CostBudgetPeriod;
+  period: BreakerBudgetPeriod;
   periodStart: string;
   spentCents: number;
   budgetCents: number;
   utilizationPercent: number;
-  breakerState: CostBreakerState;
+  breakerState: BreakerState;
   throttleRate: number;        // 0-1, 1 = no throttle
   modelOverride?: string;      // downgraded model
   invocationCount: number;
@@ -50,7 +50,7 @@ export interface FleetBudgetSummary {
   totalSpentCents: number;
   utilizationPercent: number;
   agentCount: number;
-  breakerStates: Record<CostBreakerState, number>;
+  breakerStates: Record<BreakerState, number>;
   violations24h: number;
   projectedOverrunCents: number;
 }
@@ -65,7 +65,7 @@ const MODEL_COST_TIERS: { model: string; inputCostPer1K: number; outputCostPer1K
 ];
 
 export class CostCircuitBreakerService {
-  private configs = new Map<string, BudgetConfig>();
+  private configs = new Map<string, BreakerBudgetConfig>();
   private states = new Map<string, BudgetState>();
   private allViolations: CostViolation[] = [];
   private violationCounter = 0;
@@ -73,7 +73,7 @@ export class CostCircuitBreakerService {
 
   // ── Configuration ─────────────────────────────────────────────
 
-  configureBudget(config: BudgetConfig): void {
+  configureBudget(config: BreakerBudgetConfig): void {
     this.configs.set(config.agentId, config);
     if (!this.states.has(config.agentId)) {
       this.states.set(config.agentId, {
@@ -98,7 +98,7 @@ export class CostCircuitBreakerService {
 
   // ── Cost Recording ────────────────────────────────────────────
 
-  recordCost(agentId: string, costCents: number): CostBreakerState {
+  recordCost(agentId: string, costCents: number): BreakerState {
     const config = this.configs.get(agentId);
     const state = this.states.get(agentId);
     if (!config || !state) {
@@ -209,7 +209,7 @@ export class CostCircuitBreakerService {
 
   getFleetSummary(): FleetBudgetSummary {
     const states = Array.from(this.states.values());
-    const breakerCounts: Record<CostBreakerState, number> = { closed: 0, warn: 0, throttle: 0, pause: 0, halt: 0 };
+    const breakerCounts: Record<BreakerState, number> = { closed: 0, warn: 0, throttle: 0, pause: 0, halt: 0 };
     let totalSpent = 0;
     let totalBudget = 0;
 
