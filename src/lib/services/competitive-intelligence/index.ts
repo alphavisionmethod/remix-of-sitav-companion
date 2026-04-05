@@ -54,10 +54,10 @@ class CompetitiveIntelligenceService {
 
     await supabase.from('user_memory').upsert({
       user_id: userId,
-      memory_key: `competitor_${full.id}`,
-      memory_value: JSON.stringify(full),
+      key: `competitor_${full.id}`,
+      value: JSON.stringify(full) as any,
       category: 'competitive_intel',
-    }, { onConflict: 'user_id,memory_key' });
+    }, { onConflict: 'user_id,key' });
 
     return full;
   }
