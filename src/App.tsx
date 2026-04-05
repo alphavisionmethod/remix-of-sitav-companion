@@ -263,6 +263,14 @@ const PresenceAnalytics = lazy(() => import("./pages/digital-presence/PresenceAn
 const DomainPublishManager = lazy(() => import("./pages/digital-presence/DomainPublishManager"));
 const DPOOnboarding = lazy(() => import("./pages/digital-presence/DPOOnboarding"));
 
+// ── ATLAS Gap Closure ──
+const ProjectionControlCenter = lazy(() => import("./pages/atlas/ProjectionControlCenter"));
+const ProofCoverageBoard = lazy(() => import("./pages/atlas/ProofCoverageBoard"));
+const DeploymentTruthCenter = lazy(() => import("./pages/atlas/DeploymentTruthCenter"));
+const OperationsCommandCenter = lazy(() => import("./pages/atlas/OperationsCommandCenter"));
+const ConnectorControlCenter = lazy(() => import("./pages/atlas/ConnectorControlCenter"));
+const ConciergeCommandCenter = lazy(() => import("./pages/atlas/ConciergeCommandCenter"));
+
 const queryClient = createQueryClient();
 
 // Premium loading skeleton — uses PageSkeleton for content-aware loading
@@ -702,7 +710,14 @@ const App = () => (
                     <Route path="/mission/workflows/:workflowId/replay" element={<MissionWorkflowReplayPage />} />
                     <Route path="/mission/error" element={<MissionError />} />
 
-                    {/* Redirect /incidents to mission-control/incidents */}
+                    {/* ATLAS Gap Closure — Operator Command Surfaces */}
+                    <Route path="/atlas/projections" element={<ProjectionControlCenter />} />
+                    <Route path="/atlas/proof" element={<ProofCoverageBoard />} />
+                    <Route path="/atlas/deployment" element={<DeploymentTruthCenter />} />
+                    <Route path="/atlas/operations" element={<OperationsCommandCenter />} />
+                    <Route path="/atlas/connectors" element={<ConnectorControlCenter />} />
+                    <Route path="/atlas/concierge" element={<ConciergeCommandCenter />} />
+
                     <Route path="/incidents" element={<Navigate to="/mission-control" replace />} />
 
                     {/* Owner — Advanced Workspace (Layer 2) */}
