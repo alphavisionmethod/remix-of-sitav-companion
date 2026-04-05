@@ -11,6 +11,9 @@ export type ThesisConviction = "high" | "medium" | "low" | "watching";
 export type RiskLevel = "very-low" | "low" | "moderate" | "high" | "very-high";
 export type MarketRegime = "bull" | "bear" | "sideways" | "volatile" | "unknown";
 export type AdvisorDomain = "macro" | "equity" | "crypto" | "commodities" | "events" | "risk" | "execution" | "behavioral" | "income";
+export type AdvisorConfidenceLevel = "high" | "moderate" | "low" | "insufficient-signal";
+export type AdvisorRecommendation = "observe" | "research-more" | "wait" | "watch-catalyst" | "size-small" | "reduce" | "hedge" | "avoid" | "high-uncertainty" | "proceed-carefully" | "execute-now";
+export type AdvisorTimeHorizon = "intraday" | "near-term" | "medium-term" | "long-term";
 
 export interface Instrument {
   id: string;
@@ -139,6 +142,34 @@ export interface PlatformConnection {
   icon: string;
 }
 
+// ── Enhanced Advisor System (Part 3 Spec) ──
+
+export interface AdvisorWatchItem {
+  label: string;
+  status: "stable" | "changing" | "alert";
+  detail: string;
+}
+
+export interface AdvisorViewByHorizon {
+  horizon: AdvisorTimeHorizon;
+  view: string;
+  confidence: AdvisorConfidenceLevel;
+}
+
+export interface AdvisorPriorView {
+  date: string;
+  view: string;
+  resolved: boolean;
+  outcome?: string;
+}
+
+export interface AdvisorDebatePosition {
+  advisorId: string;
+  position: string;
+  confidence: number;
+  reasoning: string;
+}
+
 export interface InvestmentAdvisor {
   id: string;
   domain: AdvisorDomain;
@@ -149,6 +180,40 @@ export interface InvestmentAdvisor {
   currentInsight: string;
   confidence: number;
   watchingCount: number;
+  // Part 3 deep fields
+  mission: string;
+  watches: AdvisorWatchItem[];
+  whatChanged: string[];
+  whyItCares: string;
+  confidenceLevel: AdvisorConfidenceLevel;
+  uncertaintyLevel: string;
+  whatWouldChangeMind: string[];
+  recommendations: AdvisorRecommendation[];
+  currentRecommendation: AdvisorRecommendation;
+  refusesToConclude: string[];
+  dataSources: string[];
+  keyUncertainty: string;
+  invalidationEvents: string[];
+  viewsByHorizon: AdvisorViewByHorizon[];
+  priorViews: AdvisorPriorView[];
+  portfolioAwareness: string;
+  beginnerExplanation: string;
+  advancedAnalysis: string;
+  reasoningStyle: string;
+  riskSensitivity: "conservative" | "moderate" | "aggressive";
+  timeHorizonFocus: AdvisorTimeHorizon;
+}
+
+export interface AdvisorSynthesis {
+  alignmentAreas: string[];
+  divergenceAreas: { topic: string; positions: AdvisorDebatePosition[] }[];
+  strongestOpportunities: string[];
+  largestRisks: string[];
+  actionJustified: boolean;
+  waitingSmarter: boolean;
+  reviewNext: string[];
+  overallConfidence: number;
+  summary: string;
 }
 
 export interface ResearchNote {
