@@ -1034,6 +1034,13 @@ const App = () => (
                     <Route path="/admin/deployment" element={<AdminDeploymentTruthCenter />} />
                     <Route path="/admin/proof-matrix" element={<ProofMatrixExplorer />} />
                     <Route path="/admin/connectors" element={<ConnectorGovernanceCenter />} />
+                    <Route path="/admin/connectors/overview" element={<CN01ConnectorRealityOverview />} />
+                    <Route path="/admin/connectors/registry" element={<CN02ConnectorRegistryConsole />} />
+                    <Route path="/admin/connectors/accounts" element={<CN03AccountLinkageBoard />} />
+                    <Route path="/admin/connectors/sync" element={<CN04SyncTruthCenter />} />
+                    <Route path="/admin/connectors/health" element={<CN05ConnectorHealthBoard />} />
+                    <Route path="/admin/connectors/demo" element={<CN06ConnectorDemoReview />} />
+                    <Route path="/admin/connectors/launch-gate" element={<CN07ConnectorLaunchGate />} />
                     <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/admin/mission-control" element={<MissionControlHome />} />
                     <Route path="/admin/durability" element={<AdminDurabilityBoardPage />} />
