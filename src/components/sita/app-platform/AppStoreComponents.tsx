@@ -10,7 +10,7 @@ import {
   Shield, ShieldCheck, ShieldAlert, Building, Users, HelpCircle, Star,
   Download, Check, ChevronRight, ExternalLink, Sparkles, Clock, Globe,
   Lock, Smartphone, Monitor, Zap, Bell, FileText, Link2, Package,
-  ArrowRight, X, Loader2, AlertTriangle, CheckCircle2,
+  ArrowRight, X, Loader2, AlertTriangle, CheckCircle2, Pin, RefreshCw,
 } from "lucide-react";
 import type {
   AppDefinition, AppBundle, AppTrustLevel, AppClass, AppInstallStatus,
