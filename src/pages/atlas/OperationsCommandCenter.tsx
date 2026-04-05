@@ -90,6 +90,7 @@ export default function OperationsCommandCenter() {
             { value: "slos", label: "SLO Burn", icon: Gauge },
             { value: "alerts", label: "Alert Triage", icon: AlertTriangle },
             { value: "incidents", label: "Incidents", icon: Radio },
+            { value: "queues", label: "Queues & Lag", icon: BarChart3 },
             { value: "runbooks", label: "Runbooks", icon: BookOpen },
           ].map(t => (
             <TabsTrigger key={t.value} value={t.value} className="text-[10px] h-7 px-2.5 gap-1"><t.icon className="h-3 w-3" />{t.label}</TabsTrigger>
