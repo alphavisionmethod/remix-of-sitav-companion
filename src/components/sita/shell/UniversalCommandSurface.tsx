@@ -349,6 +349,21 @@ export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfa
     onClose();
   };
 
+  const handleAIAsk = async (q: string) => {
+    setCommandState("ai_thinking");
+    setAiAnswer("");
+    try {
+      const { data } = await supabase.functions.invoke("personal-brain", {
+        body: { intent: q, context: { source: "command-surface" } },
+      });
+      setAiAnswer(data?.recommendation || data?.response || "I couldn't find an answer.");
+      setCommandState("ai_answer");
+    } catch {
+      setAiAnswer("Connection issue — try again.");
+      setCommandState("ai_answer");
+    }
+  };
+
   const suggestions = useMemo(() => getContextSuggestions(location.pathname, indicators), [location.pathname, indicators]);
   const intent = useMemo(() => detectIntent(query), [query]);
 
