@@ -1,7 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Domain Projection Hooks (Phase 4)
 // Wire Finance/Business/Concierge engines to real Supabase data
-// with event emission for projection materialization.
 // ═══════════════════════════════════════════════════════════════
 
 import { useQuery } from "@tanstack/react-query";
@@ -9,9 +8,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { analyzeCashflow, assessBudgetHealth, assessReserves, analyzeInvoiceAging, assessFinancialHealth, analyzeBillCalendar } from "@/lib/domain-engines/finance-os";
-import { assessBusinessHealth, analyzePipeline, scoreLeads } from "@/lib/domain-engines/business-os";
+import { assessBusinessHealth, analyzePipeline, scoreLead } from "@/lib/domain-engines/business-os";
 import { prioritizeTasks } from "@/lib/domain-engines/concierge-os";
-import { adaptMockLeads, adaptMockCustomers, adaptMockOpportunities, adaptMockBills, adaptMockInvoicesForAging, adaptMockHouseholdTasks, buildMockCashflowEntries, buildMockBudgets, buildMockReserves } from "@/lib/domain-engines/adapters";
+import {
+  adaptMockLeads, adaptMockCustomers, adaptMockOpportunities, adaptMockBills,
+  adaptMockInvoicesForAging, adaptMockHouseholdTasks, buildMockCashflowEntries,
+  buildMockBudgets, buildMockReserves
+} from "@/lib/domain-engines/adapters";
+import {
+  mockLeads, mockCustomers, mockOpportunities, mockBills, mockInvoices, mockSubscriptions,
+  mockHouseholdTasks,
+} from "@/lib/mock-data/legacy-display-mocks";
 import type { CashflowAnalysis, BudgetHealthResult, ReserveAssessment, InvoiceAgingResult, FinancialHealthResult, BillCalendarResult } from "@/lib/domain-engines/finance-os";
 import type { BusinessHealthResult, PipelineAnalysis, LeadScoreResult } from "@/lib/domain-engines/business-os";
 import type { TaskPrioritization } from "@/lib/domain-engines/concierge-os";
@@ -29,6 +36,27 @@ export interface FinanceProjection {
   lastUpdated: string;
 }
 
+function buildDemoFinance(): FinanceProjection {
+  const entries = buildMockCashflowEntries();
+  const budgets = buildMockBudgets();
+  const reserves = buildMockReserves();
+  const invoices = adaptMockInvoicesForAging(mockInvoices);
+  const bills = adaptMockBills(mockBills);
+  const cashflow = analyzeCashflow(entries, 24500);
+  const bh = assessBudgetHealth(budgets);
+  const ra = assessReserves(reserves);
+  const ia = analyzeInvoiceAging(invoices);
+  return {
+    cashflow,
+    budgetHealth: bh,
+    reserves: ra,
+    invoiceAging: ia,
+    overallHealth: assessFinancialHealth(cashflow, bh, ra, ia),
+    billCalendar: analyzeBillCalendar(bills),
+    lastUpdated: new Date().toISOString(),
+  };
+}
+
 export function useFinanceProjection() {
   const { isDemoMode } = useDataMode();
   const { user } = useAuth();
@@ -39,24 +67,8 @@ export function useFinanceProjection() {
     refetchInterval: isDemoMode ? undefined : 30000,
     staleTime: isDemoMode ? Infinity : 15000,
     queryFn: async () => {
-      if (isDemoMode) {
-        const entries = buildMockCashflowEntries();
-        const budgets = buildMockBudgets();
-        const reserves = buildMockReserves();
-        const invoices = adaptMockInvoicesForAging();
-        const bills = adaptMockBills();
-        return {
-          cashflow: analyzeCashflow(entries, 24500),
-          budgetHealth: assessBudgetHealth(budgets),
-          reserves: assessReserves(reserves),
-          invoiceAging: analyzeInvoiceAging(invoices),
-          overallHealth: assessFinancialHealth(entries, budgets, reserves, invoices, bills, 24500),
-          billCalendar: analyzeBillCalendar(bills),
-          lastUpdated: new Date().toISOString(),
-        };
-      }
+      if (isDemoMode) return buildDemoFinance();
 
-      // Real Supabase queries
       const [invoiceRes, billRes, budgetRes, allocRes] = await Promise.all([
         db.from("invoices").select("*").limit(200),
         db.from("bills").select("*").limit(200),
@@ -69,82 +81,61 @@ export function useFinanceProjection() {
       const rawBudgets = budgetRes.data || [];
       const rawAllocations = allocRes.data || [];
 
-      // If no real data, use demo engines
       if (rawInvoices.length === 0 && rawBills.length === 0 && rawBudgets.length === 0) {
-        const entries = buildMockCashflowEntries();
-        const budgets = buildMockBudgets();
-        const reserves = buildMockReserves();
-        const invoices = adaptMockInvoicesForAging();
-        const bills = adaptMockBills();
-        return {
-          cashflow: analyzeCashflow(entries, 24500),
-          budgetHealth: assessBudgetHealth(budgets),
-          reserves: assessReserves(reserves),
-          invoiceAging: analyzeInvoiceAging(invoices),
-          overallHealth: assessFinancialHealth(entries, budgets, reserves, invoices, bills, 24500),
-          billCalendar: analyzeBillCalendar(bills),
-          lastUpdated: new Date().toISOString(),
-        };
+        return buildDemoFinance();
       }
 
-      // Map real data to engine types
       const entries = rawInvoices.map((i: any) => ({
-        amount: Math.abs(Number(i.amount) || 0),
-        date: i.created_at,
-        category: "revenue",
-        type: "inflow" as const,
-        description: i.invoice_number || "Invoice",
+        id: i.id, type: "inflow" as const, category: "revenue",
+        amount: Math.abs(Number(i.amount) || 0), date: new Date(i.created_at).getTime(),
+        recurring: false, description: i.invoice_number || "Invoice",
       })).concat(rawBills.map((b: any) => ({
-        amount: Math.abs(Number(b.amount) || 0),
-        date: b.due_date,
-        category: b.category || "expense",
-        type: "outflow" as const,
-        description: b.payee || "Bill",
+        id: b.id, type: "outflow" as const, category: b.category || "expense",
+        amount: Math.abs(Number(b.amount) || 0), date: new Date(b.due_date).getTime(),
+        recurring: b.recurring || false, description: b.payee || "Bill",
       })));
 
       const balance = rawBudgets.reduce((s: number, b: any) => s + ((Number(b.allocated) || 0) - (Number(b.spent) || 0)), 0);
+      const now = Date.now();
+      const monthStart = now - 15 * 86400000;
+      const monthEnd = now + 15 * 86400000;
+
       const budgets = rawBudgets.map((b: any) => ({
-        category: b.category,
-        allocated: Number(b.allocated) || 0,
-        spent: Number(b.spent) || 0,
-        period: b.period || "monthly",
-      }));
-      const reserves = rawAllocations.map((a: any) => ({
-        name: a.category,
-        currentAmount: Number(a.amount) || 0,
-        targetAmount: Number(a.amount) * 1.5,
-        category: "sinking" as const,
-        contributionAmount: 0,
-        autoContribute: false,
-        priority: 1,
-      }));
-      const invoicesForAging = rawInvoices.map((i: any) => ({
-        id: i.id,
-        amount: Number(i.amount) || 0,
-        issuedDate: i.created_at,
-        dueDate: i.due_date,
-        status: i.status as any,
-        clientName: i.invoice_number || "Client",
-      }));
-      const billsForCalendar = rawBills.map((b: any) => ({
-        id: b.id,
-        name: b.payee,
-        amount: Number(b.amount) || 0,
-        dueDate: b.due_date,
-        recurring: b.recurring || false,
-        frequency: (b.frequency || "monthly") as any,
-        category: b.category || "other",
-        autoPay: b.auto_pay || false,
-        status: b.status as any,
+        id: b.id, name: b.category, category: b.category,
+        period: b.period || "monthly", allocated: Number(b.allocated) || 0,
+        spent: Number(b.spent) || 0, startDate: monthStart, endDate: monthEnd,
       }));
 
+      const reserves = rawAllocations.length > 0
+        ? rawAllocations.map((a: any) => ({
+            id: a.id, name: a.category, type: "growth" as const,
+            currentBalance: Number(a.amount) || 0, targetBalance: Number(a.amount) * 1.5,
+            lastContribution: new Date(a.updated_at || a.created_at).getTime(),
+          }))
+        : buildMockReserves();
+
+      const invoicesForAging = rawInvoices.map((i: any) => ({
+        id: i.id, customerId: i.customer_id || "unknown", customerName: i.invoice_number || "Client",
+        amount: Number(i.amount) || 0, issuedDate: new Date(i.created_at).getTime(),
+        dueDate: new Date(i.due_date).getTime(), status: i.status as any,
+        paidAmount: i.status === "paid" ? Number(i.amount) || 0 : 0, daysSinceIssued: 30,
+      }));
+
+      const billsForCalendar = rawBills.map((b: any) => ({
+        id: b.id, vendor: b.payee, amount: Number(b.amount) || 0,
+        dueDate: new Date(b.due_date).getTime(), category: b.category || "other",
+        recurring: b.recurring || false, status: b.status as any, autopay: b.auto_pay || false,
+      }));
+
+      const cashflow = analyzeCashflow(entries, Math.max(balance, 0));
+      const bh = assessBudgetHealth(budgets.length ? budgets : buildMockBudgets());
+      const ra = assessReserves(reserves);
+      const ia = analyzeInvoiceAging(invoicesForAging.length ? invoicesForAging : adaptMockInvoicesForAging(mockInvoices));
+
       return {
-        cashflow: analyzeCashflow(entries, Math.max(balance, 0)),
-        budgetHealth: assessBudgetHealth(budgets.length ? budgets : buildMockBudgets()),
-        reserves: assessReserves(reserves.length ? reserves : buildMockReserves()),
-        invoiceAging: analyzeInvoiceAging(invoicesForAging.length ? invoicesForAging : adaptMockInvoicesForAging()),
-        overallHealth: assessFinancialHealth(entries, budgets, reserves, invoicesForAging, billsForCalendar, Math.max(balance, 0)),
-        billCalendar: analyzeBillCalendar(billsForCalendar.length ? billsForCalendar : adaptMockBills()),
+        cashflow, budgetHealth: bh, reserves: ra, invoiceAging: ia,
+        overallHealth: assessFinancialHealth(cashflow, bh, ra, ia),
+        billCalendar: analyzeBillCalendar(billsForCalendar.length ? billsForCalendar : adaptMockBills(mockBills)),
         lastUpdated: new Date().toISOString(),
       };
     },
@@ -159,6 +150,18 @@ export interface BusinessProjection {
   lastUpdated: string;
 }
 
+function buildDemoBusiness(): BusinessProjection {
+  const customers = adaptMockCustomers(mockCustomers);
+  const opportunities = adaptMockOpportunities(mockOpportunities);
+  const leads = adaptMockLeads(mockLeads);
+  return {
+    health: assessBusinessHealth(customers, opportunities, [8000, 9000, 8500, 10000, 11000, 12000]),
+    pipeline: analyzePipeline(opportunities),
+    leadScores: leads.map(l => scoreLead(l)),
+    lastUpdated: new Date().toISOString(),
+  };
+}
+
 export function useBusinessProjection() {
   const { isDemoMode } = useDataMode();
   const { user } = useAuth();
@@ -169,17 +172,7 @@ export function useBusinessProjection() {
     refetchInterval: isDemoMode ? undefined : 30000,
     staleTime: isDemoMode ? Infinity : 15000,
     queryFn: async () => {
-      if (isDemoMode) {
-        const customers = adaptMockCustomers();
-        const opportunities = adaptMockOpportunities();
-        const leads = adaptMockLeads();
-        return {
-          health: assessBusinessHealth(customers, opportunities, [8000, 9000, 8500, 10000, 11000, 12000]),
-          pipeline: analyzePipeline(opportunities),
-          leadScores: scoreLeads(leads),
-          lastUpdated: new Date().toISOString(),
-        };
-      }
+      if (isDemoMode) return buildDemoBusiness();
 
       const [leadRes, custRes, oppRes] = await Promise.all([
         db.from("leads").select("*").limit(200),
@@ -191,62 +184,39 @@ export function useBusinessProjection() {
       const rawCustomers = custRes.data || [];
       const rawOpps = oppRes.data || [];
 
-      if (rawLeads.length === 0 && rawCustomers.length === 0) {
-        const customers = adaptMockCustomers();
-        const opportunities = adaptMockOpportunities();
-        const leads = adaptMockLeads();
-        return {
-          health: assessBusinessHealth(customers, opportunities, [8000, 9000, 8500, 10000, 11000, 12000]),
-          pipeline: analyzePipeline(opportunities),
-          leadScores: scoreLeads(leads),
-          lastUpdated: new Date().toISOString(),
-        };
-      }
+      if (rawLeads.length === 0 && rawCustomers.length === 0) return buildDemoBusiness();
 
       const customers = rawCustomers.map((c: any) => ({
-        id: c.id,
-        name: c.name,
-        company: c.company || "",
-        email: c.email || "",
-        status: c.status || "active",
-        healthScore: c.health_score || 50,
-        lifetimeRevenue: c.lifetime_revenue || 0,
-        lastContactDate: c.last_contact_at || c.created_at,
-        segment: c.relationship_type || "standard",
+        id: c.id, name: c.name, totalRevenue: Number(c.lifetime_revenue) || 0,
+        invoiceCount: 6, overdueInvoices: 0, avgPayDays: 14,
+        lastInteractionDays: c.last_contact_at ? Math.round((Date.now() - new Date(c.last_contact_at).getTime()) / 86400000) : 30,
+        tier: "mid-market" as const, status: (c.status === "active" ? "active" : "at-risk") as any,
+        createdAt: new Date(c.created_at).getTime(),
       }));
 
       const opportunities = rawOpps.map((o: any) => ({
-        id: o.id,
-        title: o.title,
-        value: Number(o.value) || 0,
-        stage: o.stage || "discovery",
-        probability: Number(o.confidence) || 50,
-        customerId: o.customer_id || "",
-        createdDate: o.created_at,
-        lastActivityDate: o.last_movement_at || o.updated_at,
-        expectedCloseDate: o.updated_at,
-        assignedTo: "owner",
+        id: o.id, name: o.title, stage: (o.stage || "discovery") as any,
+        valueCents: (Number(o.value) || 0) * 100, probability: (Number(o.confidence) || 50) / 100,
+        expectedCloseDate: Date.now() + 30 * 86400000,
+        daysInStage: o.last_movement_at ? Math.round((Date.now() - new Date(o.last_movement_at).getTime()) / 86400000) : 10,
+        lastActivityDays: 5,
       }));
 
       const leads = rawLeads.map((l: any) => ({
-        id: l.id,
-        name: l.name,
-        company: l.company || "",
-        email: l.email || "",
-        phone: l.phone || "",
-        source: l.source || "direct",
-        score: l.opportunity_score || 50,
-        status: l.status || "new",
-        lastContactDate: l.last_contact_at || l.created_at,
-        createdDate: l.created_at,
-        estimatedValue: l.likely_value || 0,
-        notes: l.notes || "",
+        id: l.id, name: l.name, email: l.email || "",
+        source: (l.source || "direct") as any, engagementScore: l.opportunity_score || 50,
+        recencyDays: l.last_contact_at ? Math.round((Date.now() - new Date(l.last_contact_at).getTime()) / 86400000) : 7,
+        fitScore: Math.min(100, (l.opportunity_score || 50) + 10),
+        estimatedValue: Number(l.likely_value) || 5000,
+        status: (l.status || "new") as any,
+        createdAt: new Date(l.created_at).getTime(),
+        lastContactAt: l.last_contact_at ? new Date(l.last_contact_at).getTime() : Date.now() - 7 * 86400000,
       }));
 
       return {
         health: assessBusinessHealth(customers, opportunities, [8000, 9000, 8500, 10000, 11000, 12000]),
         pipeline: analyzePipeline(opportunities),
-        leadScores: scoreLeads(leads),
+        leadScores: leads.map(l => scoreLead(l)),
         lastUpdated: new Date().toISOString(),
       };
     },
@@ -270,26 +240,22 @@ export function useConciergeProjection() {
     staleTime: isDemoMode ? Infinity : 15000,
     queryFn: async () => {
       if (isDemoMode) {
-        const tasks = adaptMockHouseholdTasks();
+        const tasks = adaptMockHouseholdTasks(mockHouseholdTasks);
         return { taskPrioritization: prioritizeTasks(tasks), lastUpdated: new Date().toISOString() };
       }
 
       const { data } = await db.from("household_tasks").select("*").limit(200);
       if (!data?.length) {
-        const tasks = adaptMockHouseholdTasks();
+        const tasks = adaptMockHouseholdTasks(mockHouseholdTasks);
         return { taskPrioritization: prioritizeTasks(tasks), lastUpdated: new Date().toISOString() };
       }
 
       const tasks = data.map((t: any) => ({
-        id: t.id,
-        title: t.title,
-        assignee: t.assigned_to || "unassigned",
-        dueDate: t.due_date || new Date().toISOString(),
-        priority: t.priority || "medium",
-        status: t.status || "pending",
-        category: "general",
-        estimatedMinutes: 30,
-        recurring: false,
+        id: t.id, title: t.title, category: "household" as const,
+        priority: (t.priority || "medium") as any, dueDate: new Date(t.due_date || Date.now()).getTime(),
+        estimatedMinutes: 30, assignedTo: t.assigned_to || "owner",
+        status: (t.status || "pending") as any, dependencies: [], recurring: false,
+        energyLevel: t.priority === "high" ? "high" as const : "medium" as const,
       }));
 
       return { taskPrioritization: prioritizeTasks(tasks), lastUpdated: new Date().toISOString() };
