@@ -171,7 +171,7 @@ const DOMAIN_COLORS: Record<string, string> = {
 
 // ── Command State ───────────────────────────────────────────
 
-type CommandState = "ready" | "searching" | "interpreting" | "previewing" | "approval_required" | "capture" | "no_results";
+type CommandState = "ready" | "searching" | "interpreting" | "previewing" | "approval_required" | "capture" | "no_results" | "ai_thinking" | "ai_answer";
 
 // ── Component ───────────────────────────────────────────────
 
