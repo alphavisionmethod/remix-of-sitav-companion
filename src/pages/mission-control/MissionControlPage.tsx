@@ -47,6 +47,7 @@ import { BCPDRDashboard } from "@/components/sita/BCPDRDashboard";
 import { CABWorkflow } from "@/components/sita/CABWorkflow";
 import { AgentCommunicationGraph } from "@/components/sita/AgentCommunicationGraph";
 import { SelfHealingNotifications } from "@/components/sita/SelfHealingNotifications";
+import PlatformTruthDashboard from "./PlatformTruthDashboard";
 import { MOCK_TOKEN_USAGES } from "@/lib/mock-data";
 import {
   Server, Shield, Activity, Wifi, AlertTriangle, DollarSign, Rocket,
@@ -1196,6 +1197,7 @@ export default function MissionControlPage() {
     { value: "costs", label: "Costs", icon: DollarSign },
     { value: "trust", label: "Trust", icon: Shield },
     { value: "safe-mode", label: "Safe Mode", icon: ShieldAlert },
+    { value: "platform-truth", label: "Platform Truth", icon: Eye },
   ];
 
   const advancedTabs = [
@@ -1222,6 +1224,7 @@ export default function MissionControlPage() {
     { value: "cab", label: "CAB", icon: GitBranch },
     { value: "comm-graph", label: "Agent Comms", icon: Network },
     { value: "heal-notify", label: "Heal Alerts", icon: BellRing },
+    { value: "platform-truth", label: "Platform Truth", icon: Eye },
   ];
 
   const tabs = isOwner ? ownerTabs : advancedTabs;
@@ -1284,6 +1287,7 @@ export default function MissionControlPage() {
           <TabsContent value="cab"><CABWorkflow /></TabsContent>
           <TabsContent value="comm-graph"><AgentCommunicationGraph /></TabsContent>
           <TabsContent value="heal-notify"><SelfHealingNotifications /></TabsContent>
+          <TabsContent value="platform-truth"><PlatformTruthDashboard /></TabsContent>
         </div>
       </Tabs>
     </div>
