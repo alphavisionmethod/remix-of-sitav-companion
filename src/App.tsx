@@ -549,6 +549,7 @@ const App = () => (
                     <Route path="/admin/fleet-health" element={<FleetHealthPage />} />
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
                     <Route path="/admin/team" element={<TeamManagement />} />
+                    <Route path="/admin/system" element={<SystemManagement />} />
 
                     {/* OS Apps */}
                     <Route path="/apps/email" element={<EmailApp />} />

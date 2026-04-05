@@ -71,6 +71,7 @@ const appsNav = [
 
 const bottomNav = [
   { title: "Admin", url: "/admin/dashboard", icon: LayoutDashboard },
+  { title: "System Mgmt", url: "/admin/system", icon: Server },
   { title: "Pack Store", url: "/store", icon: Package },
   { title: "Enterprise", url: "/enterprise", icon: Globe },
   { title: "Settings", url: "/settings", icon: Settings },
