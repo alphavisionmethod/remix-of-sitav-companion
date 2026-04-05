@@ -20,7 +20,7 @@ export interface BreakerBudgetConfig {
 
 export interface BudgetState {
   agentId: string;
-  period: CostBudgetPeriod;
+  period: BreakerBudgetPeriod;
   periodStart: string;
   spentCents: number;
   budgetCents: number;
