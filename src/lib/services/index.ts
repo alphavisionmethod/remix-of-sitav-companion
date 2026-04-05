@@ -190,3 +190,16 @@ export { AgentControlService, createAgentControl } from "./admin-service/agent-c
 // ── Phase 11: Revenue Growth & Life Growth ───────────────────
 export * from "./revenue-growth";
 export * from "./life-growth";
+
+// ── Phase 12: World-First Life OS Features ───────────────────
+export { LifeShockSimulator, createLifeShockSimulator } from "./life-simulation";
+export { NegotiationEngine, createNegotiationEngine } from "./autonomous-negotiation";
+export { RelationshipGraph as RelationshipIntelligenceGraph, createRelationshipGraph } from "./relationship-intelligence";
+export { TimeWealthEngine, createTimeWealthEngine } from "./time-wealth";
+export { FamilyConstitutionEngine, createFamilyConstitution } from "./family-constitution";
+export { CompoundLifeScoreEngine, createCompoundLifeScore } from "./compound-life-score";
+export { PredictiveNeedsEngine, createPredictiveNeeds } from "./predictive-needs";
+export { LegacyPlanningEngine, createLegacyPlanning } from "./legacy-planning";
+export { OpportunityRadarEngine, createOpportunityRadar } from "./opportunity-radar";
+export { DecisionIntelligenceEngine, createDecisionIntelligence } from "./decision-intelligence";
+export { AmbientIntelligenceService, createAmbientIntelligence } from "./os-awareness";
