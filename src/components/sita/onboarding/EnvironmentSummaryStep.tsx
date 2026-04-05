@@ -11,7 +11,7 @@ interface Props {
   trustLevel: string;
   primaryUseMode: string;
   enabledDomains: string[];
-  activeAdvisors: { id: string; name: string; enabled: boolean }[];
+  activeAdvisors: { id: string; enabled: boolean; name?: string }[];
   lifeRhythm?: LifeRhythmData;
   stressMap?: StressMapData;
   commsContext?: CommsContextData;
