@@ -171,3 +171,11 @@ export { SearchFabricService as SearchFabricImpl, createSearchFabric as createSe
 export { SelfHealingService as SelfHealingImpl, createSelfHealing as createSelfHealingImpl } from "./self-healing";
 export { SelfLearningService as SelfLearningImpl, createSelfLearning as createSelfLearningImpl } from "./self-learning";
 export { TrustStateService as TrustStateServiceImpl, createTrustStateService as createTrustStateServiceImpl } from "./trust-state-service";
+
+// ── Phase 9: Runtime & Continuity ────────────────────────────
+export { BootPersistenceService, getBootPersistenceService } from "./boot-persistence";
+export { MetaGovernanceCollectorService, getMetaGovernanceCollector } from "./meta-governance";
+export { SessionResumeService, getSessionResumeService } from "./session-resume";
+export { useSurfaceType, detectSurfaceType, buildActiveSurface, getDeviceId, getDeviceName } from "./surface-detection";
+export * from "./handoff";
+export * from "./offline-queue";
