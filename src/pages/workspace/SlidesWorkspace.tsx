@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { useDecks } from "@/hooks/use-domain-data";
-import type { MockDeck, MockSlide } from "@/lib/mock-data/workspace";
+import type { MockDeck, MockSlide } from "@/lib/data-services/workspace-data-service";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";

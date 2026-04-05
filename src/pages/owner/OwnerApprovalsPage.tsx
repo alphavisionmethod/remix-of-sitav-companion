@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 
 import { useOwnerApprovals } from "@/hooks/use-domain-data";
-import type { OwnerApprovalItem as ApprovalItem } from "@/lib/mock-data/owner";
+import type { OwnerApprovalItem as ApprovalItem } from "@/lib/data-services/owner-data-service";
 
 const riskStyles: Record<string, string> = {
   critical: "bg-destructive/10 text-destructive",
