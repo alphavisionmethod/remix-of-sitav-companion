@@ -58,3 +58,52 @@ export {
   deleteTasteProfile,
 } from "./operator-taste-persistence";
 export type { OperatorTasteRow } from "./operator-taste-persistence";
+
+// ── EventBus Persistence ────────────────────────────────────────
+export {
+  persistEvent,
+  persistDeadLetter,
+  persistEventBatch,
+  fetchPersistedEvents,
+  fetchDeadLetters,
+  markEventReplayed,
+  getPersistedTopicCounts,
+  getEventLineage,
+} from "./event-bus-persistence";
+export type { PersistedEvent } from "./event-bus-persistence";
+
+// ── Scoped Memory Persistence ───────────────────────────────────
+export {
+  persistMemoryEntry,
+  supersedeMemoryEntry,
+  fetchScopedMemory,
+  forgetScopedMemory,
+  updateMemoryConfidence,
+  getMemoryStats as getScopedMemoryStats,
+  hydrateMemoryForAI,
+} from "./memory-service-persistence";
+export type { PersistedScopedMemory, MemoryScope } from "./memory-service-persistence";
+
+// ── Policy Evaluation Persistence ───────────────────────────────
+export {
+  persistPolicyEvaluation,
+  fetchPolicyEvaluations,
+  getPolicyEvaluationStats,
+  getPolicyLineageForAction,
+} from "./policy-engine-persistence";
+export type { PersistedPolicyEvaluation } from "./policy-engine-persistence";
+
+// ── Action Lineage Persistence ──────────────────────────────────
+export {
+  persistActionRecord,
+  persistActionTransition,
+  linkEventToAction,
+  linkMemoryToAction,
+  linkPolicyToAction,
+  linkReceiptToAction,
+  addProofToAction,
+  fetchActionLineage,
+  getActionExplanation,
+  findStuckActions,
+} from "./action-lineage-persistence";
+export type { PersistedActionLineage } from "./action-lineage-persistence";

@@ -1,11 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Event Bus
-// Client-side immutable event log with subscriptions, dead-letter
-// queue, wildcard matching, replay, and tenant scoping
-// Canonical contracts: CorrelationContext from contracts
+// SITA OS — Event Bus (Durable)
+// Client-side event log with subscriptions, dead-letter queue,
+// wildcard matching, replay, tenant scoping — NOW with durable
+// persistence to os_event_log via Supabase
 // ═══════════════════════════════════════════════════════════════
 
 import type { CorrelationContext } from "@/packages/contracts";
+import { persistEvent, persistDeadLetter, fetchPersistedEvents } from "@/lib/persistence/event-bus-persistence";
 
 export type { CorrelationContext };
 
@@ -32,7 +33,7 @@ export type EventHandler = (event: BusEvent) => void | Promise<void>;
 
 interface Subscription {
   id: string;
-  pattern: string;           // exact topic or "*" for wildcard
+  pattern: string;
   handler: EventHandler;
   handlerName: string;
 }
@@ -43,12 +44,22 @@ export class EventBus {
   private deadLetterQueue: DeadLetterEntry[] = [];
   private maxLogSize = 10000;
   private maxDLQSize = 500;
+  private persistenceEnabled = true;
 
-  /** Publish an event — appended immutably to log, then dispatched to matching subscribers */
+  /** Publish an event — appended immutably to log, persisted durably, then dispatched */
   async publish(
     topic: string,
     payload: Record<string, unknown>,
-    options?: { source?: string; correlationId?: string; tenantId?: string; metadata?: Record<string, unknown> }
+    options?: {
+      source?: string;
+      correlationId?: string;
+      causationId?: string;
+      tenantId?: string;
+      metadata?: Record<string, unknown>;
+      domain?: string;
+      idempotencyKey?: string;
+      skipPersist?: boolean;
+    }
   ): Promise<BusEvent> {
     const event: BusEvent = {
       id: crypto.randomUUID(),
@@ -61,10 +72,19 @@ export class EventBus {
       metadata: options?.metadata,
     };
 
-    // Immutable append
+    // Immutable in-memory append
     this.log = [...this.log, event];
     if (this.log.length > this.maxLogSize) {
       this.log = this.log.slice(-this.maxLogSize);
+    }
+
+    // Durable persistence (fire-and-forget, non-blocking)
+    if (this.persistenceEnabled && !options?.skipPersist) {
+      persistEvent(event, {
+        causationId: options?.causationId,
+        domain: options?.domain,
+        idempotencyKey: options?.idempotencyKey,
+      }).catch(() => { /* silent — in-memory log is primary */ });
     }
 
     await this.dispatch(event);
@@ -89,18 +109,36 @@ export class EventBus {
   async replay(options?: { topic?: string; since?: number; until?: number; tenantId?: string }): Promise<BusEvent[]> {
     let events = [...this.log];
 
-    if (options?.topic) {
-      events = events.filter(e => this.matchesTopic(e.topic, options.topic!));
+    if (options?.topic) events = events.filter(e => this.matchesTopic(e.topic, options.topic!));
+    if (options?.since) events = events.filter(e => e.timestamp >= options.since!);
+    if (options?.until) events = events.filter(e => e.timestamp <= options.until!);
+    if (options?.tenantId) events = events.filter(e => e.tenantId === options.tenantId);
+
+    for (const event of events) {
+      await this.dispatch(event);
     }
-    if (options?.since) {
-      events = events.filter(e => e.timestamp >= options.since!);
-    }
-    if (options?.until) {
-      events = events.filter(e => e.timestamp <= options.until!);
-    }
-    if (options?.tenantId) {
-      events = events.filter(e => e.tenantId === options.tenantId);
-    }
+
+    return events;
+  }
+
+  /** Replay from durable storage (survives refresh) */
+  async replayFromStorage(options?: { topic?: string; since?: string; limit?: number }): Promise<BusEvent[]> {
+    const persisted = await fetchPersistedEvents({
+      topic: options?.topic,
+      since: options?.since,
+      limit: options?.limit ?? 100,
+    });
+
+    const events: BusEvent[] = persisted.map(p => ({
+      id: p.id,
+      topic: p.topic,
+      payload: p.payload,
+      timestamp: new Date(p.created_at).getTime(),
+      source: p.source,
+      correlationId: p.correlation_id ?? undefined,
+      tenantId: p.tenant_id ?? undefined,
+      metadata: p.metadata ?? undefined,
+    }));
 
     for (const event of events) {
       await this.dispatch(event);
@@ -153,6 +191,11 @@ export class EventBus {
     }
   }
 
+  /** Enable/disable persistence (useful for tests) */
+  setPersistence(enabled: boolean): void {
+    this.persistenceEnabled = enabled;
+  }
+
   // ── Private ───────────────────────────────────────────────────
 
   private async dispatch(event: BusEvent): Promise<void> {
@@ -172,6 +215,11 @@ export class EventBus {
         this.deadLetterQueue = [...this.deadLetterQueue, entry];
         if (this.deadLetterQueue.length > this.maxDLQSize) {
           this.deadLetterQueue = this.deadLetterQueue.slice(-this.maxDLQSize);
+        }
+
+        // Persist dead letter durably
+        if (this.persistenceEnabled) {
+          persistDeadLetter(entry).catch(() => {});
         }
       }
     }

@@ -1,12 +1,18 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Memory Service
-// Privacy-tiered context storage with sensitive key detection,
-// confidence decay, supersession, role-aware visibility, and
-// forget paths with audit trail
-// Canonical contracts: PrivacyTier from contracts
+// SITA OS — Memory Service (Durable)
+// Privacy-tiered context storage with durable persistence to
+// os_memory_scoped. In-memory map acts as hot cache; Supabase
+// is the source of truth.
 // ═══════════════════════════════════════════════════════════════
 
 import type { PrivacyTier as CanonicalPrivacyTier } from "@/packages/contracts";
+import {
+  persistMemoryEntry,
+  supersedeMemoryEntry,
+  forgetScopedMemory,
+  fetchScopedMemory,
+  type MemoryScope,
+} from "@/lib/persistence/memory-service-persistence";
 
 /** @deprecated Use CanonicalPrivacyTier from contracts */
 export type ServicePrivacyTier = CanonicalPrivacyTier;
@@ -16,14 +22,14 @@ export interface MemoryEntry {
   key: string;
   value: unknown;
   privacyTier: ServicePrivacyTier;
-  confidence: number;         // 0-1, decays over time
-  source: string;             // attribution
+  confidence: number;
+  source: string;
   createdAt: number;
   updatedAt: number;
   expiresAt?: number;
-  supersededBy?: string;      // ID of the entry that replaced this
+  supersededBy?: string;
   tags: string[];
-  entityId?: string;          // linked entity
+  entityId?: string;
   entityType?: string;
   accessLog: { role: string; timestamp: number }[];
 }
@@ -78,8 +84,9 @@ const MIN_CONFIDENCE = 0.1;
 export class MemoryService {
   private entries: Map<string, MemoryEntry> = new Map();
   private forgetLog: MemoryForgetRecord[] = [];
+  private persistenceEnabled = true;
 
-  /** Store a memory entry with automatic privacy classification */
+  /** Store a memory entry with automatic privacy classification and durable persistence */
   store(
     key: string,
     value: unknown,
@@ -91,19 +98,17 @@ export class MemoryService {
       entityId?: string;
       entityType?: string;
       expiresAt?: number;
+      scope?: MemoryScope;
+      domain?: string;
     }
   ): MemoryEntry {
-    // Auto-detect privacy tier if not specified
     const detectedTier = options?.privacyTier ?? this.detectPrivacyTier(key);
 
     // Check for supersession
     const existing = this.findByKey(key, options?.entityId);
-    if (existing && !existing.supersededBy) {
-      existing.supersededBy = crypto.randomUUID(); // will be set to new entry's ID
-    }
 
     const entry: MemoryEntry = {
-      id: existing?.supersededBy ?? crypto.randomUUID(),
+      id: crypto.randomUUID(),
       key,
       value,
       privacyTier: detectedTier,
@@ -118,6 +123,25 @@ export class MemoryService {
       accessLog: [],
     };
 
+    // Mark existing as superseded
+    if (existing && !existing.supersededBy) {
+      existing.supersededBy = entry.id;
+
+      // Durable supersession
+      if (this.persistenceEnabled) {
+        supersedeMemoryEntry(existing.id, entry, {
+          scope: options?.scope,
+          domain: options?.domain,
+        }).catch(() => {});
+      }
+    } else if (this.persistenceEnabled) {
+      // Durable persistence (fire-and-forget)
+      persistMemoryEntry(entry, {
+        scope: options?.scope,
+        domain: options?.domain,
+      }).catch(() => {});
+    }
+
     this.entries.set(entry.id, entry);
     return entry;
   }
@@ -127,18 +151,13 @@ export class MemoryService {
     const entry = this.entries.get(id);
     if (!entry) return null;
 
-    // Check visibility
     const allowedTiers = TIER_VISIBILITY[role] ?? TIER_VISIBILITY.viewer;
     if (!allowedTiers.includes(entry.privacyTier)) return null;
-
-    // Check expiry
     if (entry.expiresAt && Date.now() > entry.expiresAt) return null;
 
-    // Apply confidence decay
     const daysSinceUpdate = (Date.now() - entry.updatedAt) / 86400000;
     const decayedConfidence = Math.max(MIN_CONFIDENCE, entry.confidence * Math.pow(1 - DECAY_RATE_PER_DAY, daysSinceUpdate));
 
-    // Log access
     entry.accessLog.push({ role, timestamp: Date.now() });
 
     return { ...entry, confidence: decayedConfidence };
@@ -158,7 +177,6 @@ export class MemoryService {
       if (query.entityId && entry.entityId !== query.entityId) return false;
       if (query.tags && !query.tags.some(t => entry.tags.includes(t))) return false;
 
-      // Apply confidence decay for minConfidence check
       if (query.minConfidence) {
         const daysSinceUpdate = (now - entry.updatedAt) / 86400000;
         const decayed = Math.max(MIN_CONFIDENCE, entry.confidence * Math.pow(1 - DECAY_RATE_PER_DAY, daysSinceUpdate));
@@ -169,7 +187,7 @@ export class MemoryService {
     });
   }
 
-  /** Forget a memory entry — removes it and logs the action */
+  /** Forget a memory entry — removes it and logs the action durably */
   forget(entryId: string, reason: string, requestedBy: string): boolean {
     const entry = this.entries.get(entryId);
     if (!entry) return false;
@@ -185,13 +203,50 @@ export class MemoryService {
     });
 
     this.entries.delete(entryId);
+
+    // Durable forget (persists audit trail)
+    if (this.persistenceEnabled) {
+      forgetScopedMemory(entryId, reason, requestedBy).catch(() => {});
+    }
+
     return true;
   }
 
-  /** Get forget audit trail */
-  getForgetLog(): MemoryForgetRecord[] {
-    return [...this.forgetLog];
+  /** Hydrate in-memory cache from durable storage */
+  async hydrate(opts?: { scope?: MemoryScope; domain?: string; limit?: number }): Promise<number> {
+    const persisted = await fetchScopedMemory({
+      scope: opts?.scope,
+      domain: opts?.domain,
+      limit: opts?.limit ?? 500,
+    });
+
+    let loaded = 0;
+    for (const p of persisted) {
+      if (!this.entries.has(p.id)) {
+        this.entries.set(p.id, {
+          id: p.id,
+          key: p.key,
+          value: p.value,
+          privacyTier: p.privacy_tier as ServicePrivacyTier,
+          confidence: Number(p.confidence),
+          source: p.source,
+          createdAt: new Date(p.created_at).getTime(),
+          updatedAt: new Date(p.updated_at).getTime(),
+          expiresAt: p.expires_at ? new Date(p.expires_at).getTime() : undefined,
+          supersededBy: p.superseded_by ?? undefined,
+          tags: p.tags,
+          entityId: p.entity_id ?? undefined,
+          entityType: p.entity_type ?? undefined,
+          accessLog: [],
+        });
+        loaded++;
+      }
+    }
+    return loaded;
   }
+
+  /** Get forget audit trail */
+  getForgetLog(): MemoryForgetRecord[] { return [...this.forgetLog]; }
 
   /** Get all entries for an entity */
   getEntityMemory(entityId: string, role: string = "viewer"): MemoryEntry[] {
@@ -203,14 +258,15 @@ export class MemoryService {
     const byTier: Record<ServicePrivacyTier, number> = { public: 0, internal: 0, confidential: 0, restricted: 0 };
     let expired = 0;
     const now = Date.now();
-
     for (const entry of this.entries.values()) {
       byTier[entry.privacyTier]++;
       if (entry.expiresAt && now > entry.expiresAt) expired++;
     }
-
     return { total: this.entries.size, byTier, forgotten: this.forgetLog.length, expired };
   }
+
+  /** Enable/disable persistence */
+  setPersistence(enabled: boolean): void { this.persistenceEnabled = enabled; }
 
   // ── Private ───────────────────────────────────────────────────
 

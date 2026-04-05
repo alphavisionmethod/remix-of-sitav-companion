@@ -5350,6 +5350,290 @@ export type Database = {
           },
         ]
       }
+      os_action_lineage: {
+        Row: {
+          action_type: string | null
+          assigned_advisor: string | null
+          blocking_reasons: string[]
+          confidence_score: number
+          created_at: string
+          current_state: string
+          depends_on: string[]
+          domain: string
+          entity_scope: Json
+          id: string
+          initiating_surface: string | null
+          linked_event_ids: string[]
+          linked_memory_ids: string[]
+          linked_policy_ids: string[]
+          linked_receipt_ids: string[]
+          proof_ids: string[]
+          replayable: boolean
+          rollback_eligible: boolean
+          state_history: Json
+          stuck_since: string | null
+          updated_at: string
+          user_id: string
+          workflow_id: string
+        }
+        Insert: {
+          action_type?: string | null
+          assigned_advisor?: string | null
+          blocking_reasons?: string[]
+          confidence_score?: number
+          created_at?: string
+          current_state?: string
+          depends_on?: string[]
+          domain: string
+          entity_scope?: Json
+          id?: string
+          initiating_surface?: string | null
+          linked_event_ids?: string[]
+          linked_memory_ids?: string[]
+          linked_policy_ids?: string[]
+          linked_receipt_ids?: string[]
+          proof_ids?: string[]
+          replayable?: boolean
+          rollback_eligible?: boolean
+          state_history?: Json
+          stuck_since?: string | null
+          updated_at?: string
+          user_id: string
+          workflow_id: string
+        }
+        Update: {
+          action_type?: string | null
+          assigned_advisor?: string | null
+          blocking_reasons?: string[]
+          confidence_score?: number
+          created_at?: string
+          current_state?: string
+          depends_on?: string[]
+          domain?: string
+          entity_scope?: Json
+          id?: string
+          initiating_surface?: string | null
+          linked_event_ids?: string[]
+          linked_memory_ids?: string[]
+          linked_policy_ids?: string[]
+          linked_receipt_ids?: string[]
+          proof_ids?: string[]
+          replayable?: boolean
+          rollback_eligible?: boolean
+          state_history?: Json
+          stuck_since?: string | null
+          updated_at?: string
+          user_id?: string
+          workflow_id?: string
+        }
+        Relationships: []
+      }
+      os_event_log: {
+        Row: {
+          actor_id: string | null
+          causation_id: string | null
+          consumers_processed: string[]
+          correlation_id: string | null
+          created_at: string
+          domain: string | null
+          id: string
+          idempotency_key: string | null
+          metadata: Json | null
+          payload: Json
+          replay_eligible: boolean
+          retention_class: string
+          retry_count: number
+          source: string
+          status: string
+          tenant_id: string | null
+          topic: string
+          user_id: string
+        }
+        Insert: {
+          actor_id?: string | null
+          causation_id?: string | null
+          consumers_processed?: string[]
+          correlation_id?: string | null
+          created_at?: string
+          domain?: string | null
+          id?: string
+          idempotency_key?: string | null
+          metadata?: Json | null
+          payload?: Json
+          replay_eligible?: boolean
+          retention_class?: string
+          retry_count?: number
+          source?: string
+          status?: string
+          tenant_id?: string | null
+          topic: string
+          user_id: string
+        }
+        Update: {
+          actor_id?: string | null
+          causation_id?: string | null
+          consumers_processed?: string[]
+          correlation_id?: string | null
+          created_at?: string
+          domain?: string | null
+          id?: string
+          idempotency_key?: string | null
+          metadata?: Json | null
+          payload?: Json
+          replay_eligible?: boolean
+          retention_class?: string
+          retry_count?: number
+          source?: string
+          status?: string
+          tenant_id?: string | null
+          topic?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      os_memory_scoped: {
+        Row: {
+          confidence: number
+          created_at: string
+          domain: string | null
+          entity_id: string | null
+          entity_type: string | null
+          expires_at: string | null
+          id: string
+          key: string
+          memory_scope: string
+          privacy_tier: string
+          provenance: Json | null
+          retention_class: string
+          source: string
+          superseded_by: string | null
+          tags: string[]
+          updated_at: string
+          user_id: string
+          value: Json
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          domain?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          expires_at?: string | null
+          id?: string
+          key: string
+          memory_scope?: string
+          privacy_tier?: string
+          provenance?: Json | null
+          retention_class?: string
+          source?: string
+          superseded_by?: string | null
+          tags?: string[]
+          updated_at?: string
+          user_id: string
+          value?: Json
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          domain?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          expires_at?: string | null
+          id?: string
+          key?: string
+          memory_scope?: string
+          privacy_tier?: string
+          provenance?: Json | null
+          retention_class?: string
+          source?: string
+          superseded_by?: string | null
+          tags?: string[]
+          updated_at?: string
+          user_id?: string
+          value?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "os_memory_scoped_superseded_by_fkey"
+            columns: ["superseded_by"]
+            isOneToOne: false
+            referencedRelation: "os_memory_scoped"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      os_policy_evaluations: {
+        Row: {
+          action_target: string | null
+          actor_id: string | null
+          capability_id: string | null
+          confidence: number | null
+          context_snapshot: Json
+          created_at: string
+          domain: string | null
+          effect: string
+          evaluated_rules_count: number
+          evaluation_time_ms: number | null
+          id: string
+          is_simulation: boolean
+          linked_action_id: string | null
+          linked_approval_id: string | null
+          linked_receipt_id: string | null
+          matched_conditions: Json
+          reason: string
+          risk_tier: string | null
+          rule_id: string
+          rule_name: string
+          user_id: string
+        }
+        Insert: {
+          action_target?: string | null
+          actor_id?: string | null
+          capability_id?: string | null
+          confidence?: number | null
+          context_snapshot?: Json
+          created_at?: string
+          domain?: string | null
+          effect: string
+          evaluated_rules_count?: number
+          evaluation_time_ms?: number | null
+          id?: string
+          is_simulation?: boolean
+          linked_action_id?: string | null
+          linked_approval_id?: string | null
+          linked_receipt_id?: string | null
+          matched_conditions?: Json
+          reason: string
+          risk_tier?: string | null
+          rule_id: string
+          rule_name: string
+          user_id: string
+        }
+        Update: {
+          action_target?: string | null
+          actor_id?: string | null
+          capability_id?: string | null
+          confidence?: number | null
+          context_snapshot?: Json
+          created_at?: string
+          domain?: string | null
+          effect?: string
+          evaluated_rules_count?: number
+          evaluation_time_ms?: number | null
+          id?: string
+          is_simulation?: boolean
+          linked_action_id?: string | null
+          linked_approval_id?: string | null
+          linked_receipt_id?: string | null
+          matched_conditions?: Json
+          reason?: string
+          risk_tier?: string | null
+          rule_id?: string
+          rule_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       outcome_economics_records: {
         Row: {
           confidence: number | null
