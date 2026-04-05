@@ -7,7 +7,7 @@ import { ApprovalCard, type ApprovalItem } from "@/components/mobile/ApprovalCar
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { MOCK_MOBILE_APPROVALS } from "@/lib/mock-data";
+import { useMobileApprovals } from "@/hooks/use-domain-data";
 
 
 const filters = ["All", "Critical", "Finance", "Business", "Concierge"];

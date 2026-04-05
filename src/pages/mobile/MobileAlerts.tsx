@@ -6,7 +6,7 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { AlertCard, type AlertItem } from "@/components/mobile/AlertCard";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { MOCK_MOBILE_ALERTS } from "@/lib/mock-data";
+import { useMobileAlerts } from "@/hooks/use-domain-data";
 
 
 const MobileAlerts = () => {

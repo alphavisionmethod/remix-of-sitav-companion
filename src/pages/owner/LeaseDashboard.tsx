@@ -19,7 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { CapabilityLease, LeaseViolation } from "@/lib/core-services/lease-manager";
-import { MOCK_DEMO_LEASES } from "@/lib/mock-data";
+import { useLeases } from "@/hooks/use-domain-data";
 
 // ── Status helpers ──────────────────────────────────────────────
 

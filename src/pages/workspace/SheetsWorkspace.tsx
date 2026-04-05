@@ -14,7 +14,8 @@ import {
   Sigma, Equal, Copy, Trash2, MoreVertical, Maximize2, Minimize2,
   Save, X, PlusCircle, ArrowDown, ArrowUp
 } from "lucide-react";
-import { MOCK_SHEETS, type MockSheet } from "@/lib/mock-data";
+import { useSheets } from "@/hooks/use-domain-data";
+import type { MockSheet } from "@/lib/mock-data/workspace";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 

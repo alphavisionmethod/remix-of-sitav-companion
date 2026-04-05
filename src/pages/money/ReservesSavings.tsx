@@ -11,7 +11,7 @@ import { db } from "@/integrations/supabase/db";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
-import { MOCK_RESERVES_SAVINGS } from "@/lib/mock-data";
+import { useReservesSavings } from "@/hooks/use-domain-data";
 
 
 const ReservesSavings = () => {

@@ -14,7 +14,8 @@ import {
   Users, Zap, Eye, Lock, ThumbsUp, ThumbsDown, RotateCcw,
 } from "lucide-react";
 
-import { MOCK_OWNER_APPROVALS, type OwnerApprovalItem as ApprovalItem } from "@/lib/mock-data";
+import { useOwnerApprovals } from "@/hooks/use-domain-data";
+import type { OwnerApprovalItem as ApprovalItem } from "@/lib/mock-data/owner";
 
 const riskStyles: Record<string, string> = {
   critical: "bg-destructive/10 text-destructive",

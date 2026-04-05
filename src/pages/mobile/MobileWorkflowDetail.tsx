@@ -6,7 +6,7 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { useParams } from "react-router-dom";
 import { CheckCircle2, Clock, ArrowRight, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { MOCK_MOBILE_WORKFLOW_STEPS } from "@/lib/mock-data";
+import { useMobileWorkflowSteps } from "@/hooks/use-domain-data";
 
 
 const statusIcon = {

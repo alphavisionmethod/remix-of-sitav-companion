@@ -5,7 +5,7 @@
 import { MobileShell } from "@/components/mobile/MobileShell";
 import { ProofCard, type ProofItem } from "@/components/mobile/ProofCard";
 import { useNavigate } from "react-router-dom";
-import { MOCK_MOBILE_PROOFS } from "@/lib/mock-data";
+import { useMobileProofs } from "@/hooks/use-domain-data";
 
 
 const MobileProof = () => {

@@ -5,7 +5,7 @@ import { Loader2, CheckCircle, AlertTriangle, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { FileIngestionService } from "@/lib/core-services/file-ingestion";
-import { MOCK_FILES_PROCESSING } from "@/lib/mock-data";
+import { useFilesProcessing } from "@/hooks/use-domain-data";
 
 
 const stageMap: Record<string, ProcessingStage> = {

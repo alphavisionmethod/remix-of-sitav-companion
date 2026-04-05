@@ -1,5 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
-import { MOCK_INBOX_ITEMS } from "@/lib/mock-data";
+import { useInboxItems } from "@/hooks/use-domain-data";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useState } from "react";

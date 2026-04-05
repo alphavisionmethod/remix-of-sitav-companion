@@ -5,7 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { MOCK_DECKS, type MockDeck, type MockSlide } from "@/lib/mock-data";
+import { useDecks } from "@/hooks/use-domain-data";
+import type { MockDeck, MockSlide } from "@/lib/mock-data/workspace";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";

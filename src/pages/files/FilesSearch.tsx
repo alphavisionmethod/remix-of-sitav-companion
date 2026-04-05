@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { SearchFabricService, type IndexableItem, type SearchResponse } from "@/lib/core-services/search-fabric";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { MOCK_FILES_SEARCH_INDEX } from "@/lib/mock-data";
+import { useFilesSearchIndex } from "@/hooks/use-domain-data";
 
 
 type FilterType = "all" | "business" | "finance" | "concierge" | "obligations" | "deadlines";

@@ -14,7 +14,8 @@ import {
   Send, Phone, Mail, MessageSquare, Shield, TrendingUp, TrendingDown,
   BarChart3, Users, FileText, ChevronRight, Timer, Ban, Scale, ArrowUpRight
 } from "lucide-react";
-import { MOCK_COLLECTIONS_ACCOUNTS, type CollectionsAccount } from "@/lib/mock-data";
+import { useCollectionsAccounts } from "@/hooks/use-domain-data";
+import type { CollectionsAccount } from "@/lib/mock-data/collections";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 
 // ── Types ───────────────────────────────────────────────────────
