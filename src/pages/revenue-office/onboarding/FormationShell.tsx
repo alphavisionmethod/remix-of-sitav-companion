@@ -23,6 +23,7 @@ import ArtifactScreen from "./screens/ArtifactScreen";
 import URLIntakeScreen from "./screens/URLIntakeScreen";
 import ReconciliationScreen from "./screens/ReconciliationScreen";
 import AutomationScreen from "./screens/AutomationScreen";
+import AdvisorActivationScreen from "./screens/AdvisorActivationScreen";
 import FirstWinScreen from "./screens/FirstWinScreen";
 import RevealScreen from "./screens/RevealScreen";
 
