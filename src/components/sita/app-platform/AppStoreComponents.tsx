@@ -245,8 +245,9 @@ export function CategoryStrip({ categories, active, onSelect }: {
 export function InstallSheet({ app, onClose, onInstall }: {
   app: AppDefinition; onClose: () => void; onInstall: () => void;
 }) {
-  const [status, setStatus] = useState<"review" | "permissions" | "installing" | "installed">("review");
+  const [status, setStatus] = useState<"review" | "permissions" | "scope" | "installing" | "installed">("review");
   const [progress, setProgress] = useState(0);
+  const [installScope, setInstallScope] = useState<AppInstallScope>("user");
 
   const handleInstall = () => {
     setStatus("installing");
