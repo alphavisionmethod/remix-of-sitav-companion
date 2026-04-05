@@ -50,7 +50,7 @@ export interface FleetBudgetSummary {
   totalSpentCents: number;
   utilizationPercent: number;
   agentCount: number;
-  breakerStates: Record<CostBreakerState, number>;
+  breakerStates: Record<BreakerState, number>;
   violations24h: number;
   projectedOverrunCents: number;
 }
