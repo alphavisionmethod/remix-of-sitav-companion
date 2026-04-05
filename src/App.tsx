@@ -76,6 +76,15 @@ const BundleDetailPage = lazy(() => import("./pages/app-platform/BundleDetailPag
 const AppUpdatesPage = lazy(() => import("./pages/app-platform/AppUpdatesPage"));
 const AppPermissionsCenterPage = lazy(() => import("./pages/app-platform/AppPermissionsCenterPage"));
 const AppAssociationsPage = lazy(() => import("./pages/app-platform/AppAssociationsPage"));
+const AppComparePage = lazy(() => import("./pages/app-platform/AppComparePage"));
+const AppManagePage = lazy(() => import("./pages/app-platform/AppManagePage"));
+const WebAppInstallPage = lazy(() => import("./pages/app-platform/WebAppInstallPage"));
+const ExternalInstallerPage = lazy(() => import("./pages/app-platform/ExternalInstallerPage"));
+const AppReceiptsPage = lazy(() => import("./pages/app-platform/AppReceiptsPage"));
+const EnterpriseCatalogPage = lazy(() => import("./pages/app-platform/EnterpriseCatalogPage"));
+const DevToolsCatalogPage = lazy(() => import("./pages/app-platform/DevToolsCatalogPage"));
+const OpenWithPage = lazy(() => import("./pages/app-platform/OpenWithPage"));
+const FirstLaunchPage = lazy(() => import("./pages/app-platform/FirstLaunchPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const PolicyEditor = lazy(() => import("./pages/PolicyEditor"));
 const ConnectorHub = lazy(() => import("./pages/ConnectorHub"));
