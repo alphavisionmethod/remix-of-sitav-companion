@@ -7551,6 +7551,36 @@ export type Database = {
         }
         Relationships: []
       }
+      os_service_state: {
+        Row: {
+          created_at: string
+          id: string
+          service_id: string
+          state_snapshot: Json
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          service_id: string
+          state_snapshot?: Json
+          updated_at?: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          service_id?: string
+          state_snapshot?: Json
+          updated_at?: string
+          user_id?: string
+          version?: number
+        }
+        Relationships: []
+      }
       outcome_economics_records: {
         Row: {
           confidence: number | null
