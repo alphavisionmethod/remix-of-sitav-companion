@@ -1,12 +1,14 @@
 import { useMemo } from "react";
-import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Target, ArrowRight, AlertTriangle, CheckCircle, BarChart3, Zap, Phone, FileText, Heart, Users, Star } from "lucide-react";
+import { Brain, AlertTriangle, CheckCircle, Sparkles } from "lucide-react";
 import { ScreenHeader } from "../primitives";
+import { inferBusinessSignals } from "../branching";
 import type { ScreenProps } from "../types";
 
 export default function ShapeSummaryScreen({ state }: ScreenProps) {
+  const signals = useMemo(() => inferBusinessSignals(state), [state]);
+
   const strengths = useMemo(() => {
     const s: string[] = [];
     if (state.leadSources.includes("referrals")) s.push("Strong referral engine");
@@ -39,6 +41,15 @@ export default function ShapeSummaryScreen({ state }: ScreenProps) {
     return m;
   }, [state]);
 
+  const importSummary = useMemo(() => {
+    const items: { label: string; count: string }[] = [];
+    if (state.connectedSystems.length > 0) items.push({ label: "Systems to connect", count: `${state.connectedSystems.length}` });
+    if (state.importedFiles.length > 0) items.push({ label: "Import types selected", count: `${state.importedFiles.length}` });
+    if (state.uploadedArtifacts.length > 0) items.push({ label: "Materials for analysis", count: `${state.uploadedArtifacts.length}` });
+    if (state.pastedUrls.length > 0) items.push({ label: "URLs for inference", count: `${state.pastedUrls.length}` });
+    return items;
+  }, [state]);
+
   return (
     <div className="space-y-6">
       <ScreenHeader icon={Brain} title="Here's what SITA understands so far" subtitle="Review and confirm — or go back to refine" color="text-primary" />
@@ -56,6 +67,22 @@ export default function ShapeSummaryScreen({ state }: ScreenProps) {
         </CardContent>
       </Card>
 
+      {signals.length > 0 && (
+        <Card className="bg-primary/5 border-primary/15">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 mb-3"><Sparkles className="h-4 w-4 text-primary" /><p className="text-xs font-semibold text-foreground">SITA Detected Signals</p></div>
+            <div className="space-y-1.5">
+              {signals.map((sig, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <Badge className="bg-primary/10 text-primary text-[8px]">{sig.confidence}%</Badge>
+                  <p className="text-[11px] text-muted-foreground">{sig.title}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <div className="grid md:grid-cols-2 gap-4">
         <Card className="bg-emerald-500/5 border-emerald-500/20">
           <CardContent className="p-4">
@@ -70,6 +97,22 @@ export default function ShapeSummaryScreen({ state }: ScreenProps) {
           </CardContent>
         </Card>
       </div>
+
+      {importSummary.length > 0 && (
+        <Card className="bg-card/60 border-border/40">
+          <CardContent className="p-4">
+            <p className="text-xs font-semibold text-foreground mb-2">Import & Connection Summary</p>
+            <div className="grid grid-cols-2 gap-2">
+              {importSummary.map(item => (
+                <div key={item.label} className="flex items-center justify-between p-2 rounded-lg bg-muted/30">
+                  <span className="text-[10px] text-muted-foreground">{item.label}</span>
+                  <Badge className="bg-primary/10 text-primary text-[9px]">{item.count}</Badge>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Card className="bg-card/60 border-border/40">
         <CardContent className="p-4">
