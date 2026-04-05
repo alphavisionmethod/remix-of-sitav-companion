@@ -428,6 +428,15 @@ const App = () => (
                     <Route path="/revenue-office/operating-modes" element={<GrowthOperatingModes />} />
                     <Route path="/revenue-office/synthesis" element={<ChiefRevenueSynthesis />} />
                     <Route path="/revenue-office/memory-feed" element={<CommercialMemoryFeed />} />
+                    <Route path="/revenue-office/automation" element={<AutomationOffice />} />
+                    <Route path="/revenue-office/automation/builder" element={<AutomationBuilder />} />
+                    <Route path="/revenue-office/automation/templates" element={<AutomationTemplates />} />
+                    <Route path="/revenue-office/automation/simulation" element={<AutomationSimLab />} />
+                    <Route path="/revenue-office/automation/health" element={<AutomationHealth />} />
+                    <Route path="/revenue-office/automation/receipts" element={<AutomationReceipts />} />
+                    <Route path="/revenue-office/automation/policy" element={<AutomationPolicy />} />
+                    <Route path="/revenue-office/quotes" element={<QuoteStudio />} />
+                    <Route path="/revenue-office/calls" element={<CallDesk />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
