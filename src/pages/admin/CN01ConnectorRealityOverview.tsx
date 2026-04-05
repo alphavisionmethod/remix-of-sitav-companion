@@ -72,10 +72,7 @@ export default function CN01ConnectorRealityOverview() {
   const connectedAccounts = accounts.filter((a: any) => a.status === "connected" || a.status === "demo_simulated" || a.status === "internal_test");
 
   return (
-    <div className="space-y-6 p-6"
-     
-     
-    >
+    <div className="space-y-6 p-6">
       <div className="space-y-6">
         <div className="flex items-center gap-3">
           <Button onClick={() => seedMutation.mutate()} disabled={seedMutation.isPending} size="sm" variant="outline">
