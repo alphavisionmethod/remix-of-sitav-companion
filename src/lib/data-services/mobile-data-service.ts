@@ -9,7 +9,7 @@ export async function fetchMobileAlerts() {
   if (error || !data || data.length === 0) return MOCK_MOBILE_ALERTS;
 
   return data.map((n: any) => ({
-    id: n.id, severity: n.urgency === "critical" ? "critical" : n.urgency === "high" ? "urgent" : "info",
+    id: n.id, severity: (n.urgency === "critical" ? "critical" : n.urgency === "high" ? "urgent" : n.urgency === "normal" ? "warning" : "info") as "critical" | "urgent" | "warning" | "info",
     title: n.title, message: n.body || "", domain: n.category || "general",
     createdAt: n.created_at, read: n.status === "read",
   }));

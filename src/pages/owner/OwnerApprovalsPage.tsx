@@ -25,8 +25,6 @@ const riskStyles: Record<string, string> = {
 };
 
 const statusIcon = (s: string) => {
-  const { data: approvalsData = [] } = useOwnerApprovals();
-
   if (s === "pending") return <Clock className="h-4 w-4 text-accent" />;
   if (s === "approved") return <CheckCircle className="h-4 w-4 text-trust-safe" />;
   if (s === "rejected") return <XCircle className="h-4 w-4 text-destructive" />;
@@ -80,14 +78,13 @@ function ApprovalList({ items }: { items: ApprovalItem[] }) {
   );
 }
 
-const mockApprovals = approvalsData;
-
-
 export default function OwnerApprovalsPage() {
-  const pending = mockApprovals.filter(a => a.status === "pending");
-  const approved = mockApprovals.filter(a => a.status === "approved");
-  const rejected = mockApprovals.filter(a => a.status === "rejected");
-  const delegated = mockApprovals.filter(a => a.status === "delegated");
+  const { data: approvalsData = [] } = useOwnerApprovals();
+
+  const pending = approvalsData.filter(a => a.status === "pending");
+  const approved = approvalsData.filter(a => a.status === "approved");
+  const rejected = approvalsData.filter(a => a.status === "rejected");
+  const delegated = approvalsData.filter(a => a.status === "delegated");
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
@@ -108,7 +105,6 @@ export default function OwnerApprovalsPage() {
         </div>
       </motion.div>
 
-      {/* Approval ladder summary */}
       <div className="grid grid-cols-4 gap-3">
         {[
           { label: "Pending", count: pending.length, color: "text-accent", bg: "bg-accent/10" },

@@ -336,7 +336,7 @@ export default function LeaseDashboard() {
   const { data: leasesData = [] } = useLeases();
 
   const { leaseManager, revokeLease: revokeLeaseHook } = useCapabilityLease();
-  useSeedLeases();
+  useSeedLeases(leasesData);
 
   const [inspecting, setInspecting] = useState<CapabilityLease | null>(null);
   const [tab, setTab] = useState("all");
