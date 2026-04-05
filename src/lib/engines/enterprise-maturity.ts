@@ -290,9 +290,16 @@ export class SupportDiagnosticsEngine {
       topModules: Array.from(moduleCounts.entries()).map(([module, count]) => ({ module, count })).sort((a, b) => b.count - a.count).slice(0, 5),
     };
   }
-}
 
-// ────────────────────────────────────────────────────────────────
+  serialize(): Record<string, unknown> {
+    return { cases: Array.from(this.cases.entries()), bundles: Array.from(this.bundles.entries()), knownIssues: this.knownIssues };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.cases) this.cases = new Map(state.cases as any);
+    if (state.bundles) this.bundles = new Map(state.bundles as any);
+    if (state.knownIssues) this.knownIssues = state.knownIssues as any;
+  }
+}
 // SECTION 3 — Observability Maturity
 // ────────────────────────────────────────────────────────────────
 
