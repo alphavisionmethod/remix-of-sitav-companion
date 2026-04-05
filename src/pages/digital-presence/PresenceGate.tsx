@@ -89,6 +89,9 @@ export default function PresenceGate() {
 
       {/* Quick actions */}
       <div className="flex flex-wrap gap-3">
+        <Button size="sm" onClick={() => navigate("/digital-presence/onboarding")} className="gap-1.5">
+          <Sparkles className="w-3.5 h-3.5" /> Start Formation Ceremony
+        </Button>
         <Button variant="outline" size="sm" onClick={() => navigate("/digital-presence/builder")}>
           <Layout className="w-3.5 h-3.5 mr-1.5" /> Create New Page
         </Button>
