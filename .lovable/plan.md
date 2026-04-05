@@ -1,115 +1,53 @@
 
+# Core Persistence Wiring — Targeted Fix Plan
 
-# SITA OS — Fix 123 In-Memory Services: DB-Backing Plan
+## Audit Result
 
-## Current State
+**3 of 5 services are ALREADY fully wired:**
+- ✅ EventBus → `persistEvent`, `persistDeadLetter`, `replayFromStorage` — all operational
+- ✅ MemoryService → `persistMemoryEntry`, `supersedeMemoryEntry`, `forgetScopedMemory`, `hydrate()` — all operational
+- ✅ PolicyEngine → `persistPolicyEvaluation` for deny/approval/simulation — operational
 
-**Already fixed (working correctly):**
-- **EventBus** → `os_event_log` (fully wired, persistence on every publish)
-- **MemoryService** → `os_memory_scoped` (fully wired, supersession, forget audit)
-- **PolicyEngine** → `os_policy_evaluations` (fully wired, deny/approval decisions persisted)
-- 25 services already import Supabase and use existing tables
+**2 services need wiring:**
+- ❌ ReceiptService — purely in-memory `this.receipts[]`, no persistence adapter imported
+- ❌ Action Lineage — adapter exists (`action-lineage-persistence.ts`) but nothing calls it
 
-**The problem:** 123 services use in-memory `Map()`, arrays, or class state. Data dies on refresh.
+## Implementation
 
-**BUT — critical nuance:** Most of these 123 services are **pure logic/type-export modules** (brain-core, capability-router, executor-service). They don't hold durable state — they compute, classify, or orchestrate. Only ~30-40 services actually hold meaningful state that should survive refresh.
+### 1. Wire ReceiptService to `sita_receipts` persistence
 
-## Strategy: Tiered Persistence
+Update `src/lib/core-services/receipt-service.ts`:
+- Import `persistReceipt`, `fetchReceipts` from `supabase-adapters.ts`
+- On every `createReceipt()` call: persist durably after in-memory append
+- Add `hydrate()` method to load receipts from DB on init
+- Add `getPersistedReceipts()` for durable queries
+- Keep in-memory chain for hot-path hash verification
 
-Instead of individually wiring 123 services (weeks of work, massive code churn), we implement a **universal persistence substrate** that any service can opt into with 1-2 lines of code.
+### 2. Create Action Lineage orchestration service
 
-### Phase 1 — Universal Service Persistence Hook (Day 1)
+Create `src/lib/core-services/action-lineage-service.ts`:
+- Import all functions from `action-lineage-persistence.ts`
+- Provide `initiateAction()`, `transitionAction()`, `linkEvent()`, `linkReceipt()`, `linkPolicy()`
+- Export singleton factory
+- This gives services a clean API to record action lifecycle
 
-Create a generic `useServicePersistence` system that:
-- Wraps any class-based service with automatic save/load to a single `os_service_state` table
-- Uses the existing `engine_state` table pattern (already exists in DB)
-- Services opt in by adding `implements Persistable` and calling `this.persist()`
+### 3. Wire Action Lineage into key flows
 
-**New table:** `os_service_state` (generic key-value state store per service per user)
+Update `src/lib/core-services/executor-service.ts` (or canonical-execution-path):
+- On execution start: call `persistActionRecord()`
+- On state transitions: call `persistActionTransition()`
+- On receipt creation: call `linkReceiptToAction()`
+- On event emission: call `linkEventToAction()`
+- On policy evaluation: call `linkPolicyToAction()`
 
-```
-os_service_state
-  id UUID PK
-  user_id UUID NOT NULL
-  service_id TEXT NOT NULL (e.g. "billing", "booking-scheduling")
-  state_snapshot JSONB NOT NULL
-  version INTEGER DEFAULT 1
-  updated_at TIMESTAMPTZ
-  UNIQUE(user_id, service_id)
-```
+### 4. Add Core Persistence Status admin page
 
-**New adapter:** `src/lib/persistence/universal-service-persistence.ts`
-- `saveServiceState(serviceId, state)` → upsert to `os_service_state`
-- `loadServiceState(serviceId)` → fetch from `os_service_state`
-- Debounced auto-save (30s intervals)
+Create `/admin/persistence-status` showing:
+- All 5 services and their wiring status
+- Recent writes per service
+- Hydration health
+- Orphaned adapter resolution status
 
-### Phase 2 — Wire Top-Priority Stateful Services (Day 1-2)
+### 5. Remove incorrect `@persistence: none` annotations
 
-Add persistence to the ~15 highest-impact services that hold real user state:
-
-| Service | State Type | Table |
-|---------|-----------|-------|
-| billing | plans, invoices, usage | `os_service_state` |
-| booking-scheduling | bookings, availability | `bookings` (exists) |
-| capital-allocation | allocations | `capital_allocations` (exists) |
-| workflow-engine | workflow runs | `os_service_state` |
-| notifications | queue, preferences | `notifications_queue` (exists) |
-| approval-engine | pending approvals | `approval_queue` (exists) |
-| executor-service | execution state | `execution_envelopes` (exists) |
-| receipt-service | receipts | `agent_action_receipts` (exists) |
-| connector-runners | connector state | `connector_sync_history` (exists) |
-| communication-service | messages | `communications` (exists) |
-| timeline-calendar | events | `events` (exists) |
-| keyvault | secrets | `encrypted_secrets` (exists) |
-| entity-graph | entities | `os_service_state` |
-| decision-intelligence | decisions | `os_service_state` |
-| trust-governor | trust state | `os_service_state` |
-
-For services where a dedicated table already exists, wire the import. For others, use `os_service_state`.
-
-### Phase 3 — Wire Remaining Stateful Services (Day 2-3)
-
-Add `os_service_state` persistence to the next ~20 services:
-- personalization-engine, family-constitution, autonomous-negotiation, ai-economics, ai-workforce, model-router, opportunity-radar, duress-detection, revenue-autopilot, digital-twins, etc.
-
-### Phase 4 — Mark Pure-Logic Services as Non-Stateful (Day 3)
-
-~70-80 services are pure logic (re-exports, type definitions, stateless functions). These don't need persistence — they just need to be documented as stateless. Examples:
-- brain-core (re-exports orchestration functions)
-- capability-router (re-exports registry)
-- accuracy-classifier, auth, data-scope-model, etc.
-
-Add a `// @persistence: none — stateless module` header comment to each.
-
-## Technical Details
-
-### Migration SQL
-One table: `os_service_state` with RLS, indexes on `(user_id, service_id)`, and `update_updated_at` trigger.
-
-### Universal Persistence Adapter
-```typescript
-// saveServiceState(serviceId, stateObject) → upserts JSONB
-// loadServiceState(serviceId) → returns parsed state
-// createPersistentService(serviceId, factory) → auto-hydrate on init
-```
-
-### Per-Service Wiring Pattern
-Each stateful service gets:
-1. Import the universal adapter
-2. In constructor: `loadServiceState("billing").then(s => this.hydrate(s))`
-3. On mutation: `debouncedSave("billing", this.serialize())`
-4. ~5-10 lines of code per service
-
-### Files Created/Modified
-- **1 migration** — `os_service_state` table
-- **1 new file** — `src/lib/persistence/universal-service-persistence.ts`
-- **~35 modified services** — add persistence calls
-- **~80 annotated services** — mark as stateless
-
-## Outcome
-- 3 critical services already persist (EventBus, Memory, Policy) ✅
-- ~35 stateful services gain DB persistence via universal adapter
-- ~80 stateless services documented as needing no persistence
-- State survives refresh for all meaningful services
-- Single migration, single adapter, minimal per-service code
-
+The index files for event-bus, memory-service, policy-engine, receipt-service were incorrectly annotated as `@persistence: none` during the bulk annotation pass. Fix these.
