@@ -154,6 +154,10 @@ const ConciergeRuntimeBoard = lazy(() => import("./pages/admin/ConciergeRuntimeB
 const AlertTriageBoard = lazy(() => import("./pages/admin/AlertTriageBoard"));
 const AdminPolicySimulator = lazy(() => import("./pages/admin/PolicySimulator"));
 const WorkflowReplayAudit = lazy(() => import("./pages/admin/WorkflowReplayAudit"));
+const ComputeGovernanceBoard = lazy(() => import("./pages/admin/ComputeGovernanceBoard"));
+const IntegrationConciergePage = lazy(() => import("./pages/admin/IntegrationConciergePage"));
+const RevenueAutopilotMonitor = lazy(() => import("./pages/admin/RevenueAutopilotMonitor"));
+const InvestorProofLedger = lazy(() => import("./pages/admin/InvestorProofLedger"));
 const PersonalBrain = lazy(() => import("./pages/PersonalBrain"));
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
@@ -855,6 +859,10 @@ const App = () => (
                     <Route path="/admin/alert-triage" element={<AlertTriageBoard />} />
                     <Route path="/admin/policy-simulator" element={<AdminPolicySimulator />} />
                     <Route path="/admin/workflow-replay" element={<WorkflowReplayAudit />} />
+                    <Route path="/admin/compute-governance" element={<ComputeGovernanceBoard />} />
+                    <Route path="/admin/integration-concierge" element={<IntegrationConciergePage />} />
+                    <Route path="/admin/revenue-autopilot" element={<RevenueAutopilotMonitor />} />
+                    <Route path="/admin/proof-ledger" element={<InvestorProofLedger />} />
                     <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
