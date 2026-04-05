@@ -14,6 +14,10 @@ export interface MockReplacement {
   migration_priority: "critical" | "high" | "medium" | "low";
   blockers: string[];
   validation_evidence: any[];
+  sequence_order: number;
+  runtime_validated: boolean;
+  runtime_evidence: any[];
+  dependencies: string[];
   done_at: string | null;
   created_at: string;
   updated_at: string;
@@ -23,7 +27,7 @@ export async function fetchMockReplacements(): Promise<MockReplacement[]> {
   const { data, error } = await supabase
     .from("mock_replacements")
     .select("*")
-    .order("migration_priority", { ascending: true });
+    .order("sequence_order", { ascending: true });
   if (error) throw error;
   return (data ?? []) as MockReplacement[];
 }
@@ -50,6 +54,7 @@ export async function updateMockReplacementStatus(
 ): Promise<void> {
   const updates: any = { migration_status: status };
   if (status === "completed" || status === "validated") updates.done_at = new Date().toISOString();
+  if (status === "validated") updates.runtime_validated = true;
   const { error } = await supabase.from("mock_replacements").update(updates).eq("id", id);
   if (error) throw error;
 }
