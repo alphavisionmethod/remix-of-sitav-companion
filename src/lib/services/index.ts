@@ -163,7 +163,7 @@ export { FraudSentinelService as FraudSentinelImpl, createFraudSentinel as creat
 export { GovernanceSimulatorService as GovSimImpl, createGovernanceSimulator as createGovSimImpl } from "./governance-simulator";
 export { HouseholdOrgGraphService as HouseholdOrgGraphImpl, createHouseholdOrgGraph as createHouseholdOrgGraphImpl } from "./household-org-graph";
 export { IdentityService as IdentityServiceImpl, createIdentityService as createIdentityServiceImpl } from "./identity";
-export { ImmuneControllerService as ImmuneControllerImpl, createImmuneController as createImmuneControllerImpl } from "./immune-controller";
+export { ImmuneController as ImmuneControllerImpl, createImmuneController as createImmuneControllerImpl } from "./immune-controller";
 export { AuditLedgerService, createAuditLedger as createAuditLedgerService } from "./audit-ledger";
 export { PaymentExecutionService as PaymentExecImpl, createPaymentExecution as createPaymentExecImpl } from "./payment-execution-service";
 export { RolePermissionEngineService as RolePermImpl, createRolePermissionEngine as createRolePermImpl } from "./role-permission-engine";
@@ -179,3 +179,10 @@ export { SessionResumeService, getSessionResumeService } from "./session-resume"
 export { useSurfaceType, detectSurfaceType, buildActiveSurface, getDeviceId, getDeviceName } from "./surface-detection";
 export * from "./handoff";
 export * from "./offline-queue";
+
+// ── Phase 10: Enhanced AI Team & Admin ────────────────────────
+export { AgentHealthMonitorService, createAgentHealthMonitor } from "./ai-workforce/agent-health-monitor";
+export { CostCircuitBreakerService, createCostCircuitBreaker } from "./ai-economics/cost-circuit-breaker";
+export { HealthAggregatorService, createHealthAggregator } from "./observability/health-aggregator";
+export { InvestmentOfficeRuntimeService, createInvestmentOfficeRuntime } from "./finance-os/investment-office-runtime";
+export { AgentControlService, createAgentControl } from "./admin-service/agent-control";
