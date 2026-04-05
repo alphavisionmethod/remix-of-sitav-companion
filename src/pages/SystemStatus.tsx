@@ -146,7 +146,7 @@ const StateBadgeInline = ({ state }: { state: string }) => {
 
 // ── Main Component ──────────────────────────────────────────────
 
-const recentApprovals = [
+const FALLBACK_APPROVALS = [
   { action: "Bill payment: AWS — $340", result: "Auto-approved", time: "1h ago", trust: "verified" as const },
   { action: "Quote #1042 to Sarah Chen — $2,500", result: "User approved", time: "3h ago", trust: "verified" as const },
   { action: "Follow-up email to Emily Watson", result: "Pending review", time: "4h ago", trust: "review" as const },
@@ -293,7 +293,7 @@ const SystemStatus = () => {
             </div>
 
             <SitaSectionHeader title="Recent Approvals" />
-            {recentApprovals.map((a, i) => (
+            {FALLBACK_APPROVALS.map((a, i) => (
               <SitaCard key={i} hover={false} className="p-3">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
@@ -704,7 +704,7 @@ const SystemStatus = () => {
 
       {activeTab === "history" && (
         <div className="space-y-3">
-          {[...recentApprovals.map((a, i) => ({
+          {[...FALLBACK_APPROVALS.map((a, i) => ({
             id: `approval-${i}`,
             type: "approval" as const,
             title: a.action,
@@ -739,7 +739,7 @@ const SystemStatus = () => {
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-foreground">Execution Summary</p>
               <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                <span>{recentApprovals.length} approvals</span>
+                <span>{FALLBACK_APPROVALS.length} approvals</span>
                 <span>{incidents.length} incidents</span>
                 <span className="text-trust-safe">{incidents.filter(i => i.state === "resolved").length} resolved</span>
               </div>
