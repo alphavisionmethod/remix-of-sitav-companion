@@ -74,9 +74,7 @@ serve(async (req) => {
           actor: "admin", target_type: "user", target_id: target_user_id, severity: "high",
         });
 
-        return new Response(JSON.stringify({ success: true }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return corsResponse({ success: true });
       }
 
       if (postAction === "unsuspend") {
