@@ -206,6 +206,18 @@ const CoreServiceMigrationBoard = lazy(() => import("./pages/admin/CoreServiceMi
 const PersistenceDriftRadar = lazy(() => import("./pages/admin/PersistenceDriftRadar"));
 const RuntimeContinuityBoard = lazy(() => import("./pages/admin/RuntimeContinuityBoard"));
 
+// Delivery OS surfaces
+const FeatureIntakeDesk = lazy(() => import("./pages/admin/FeatureIntakeDesk"));
+const FeatureLifecycleBoard = lazy(() => import("./pages/admin/FeatureLifecycleBoard"));
+const FeatureFactoryConsole = lazy(() => import("./pages/admin/FeatureFactoryConsole"));
+const DomainMethodologyPacks = lazy(() => import("./pages/admin/DomainMethodologyPacks"));
+const DependencyMapViewer = lazy(() => import("./pages/admin/DependencyMapViewer"));
+const ChangeImpactAnalyzer = lazy(() => import("./pages/admin/ChangeImpactAnalyzer"));
+const DeliveryReadinessBoard = lazy(() => import("./pages/admin/DeliveryReadinessBoard"));
+const PlatformMaturityDashboard = lazy(() => import("./pages/admin/PlatformMaturityDashboard"));
+const BuilderKnowledgeBase = lazy(() => import("./pages/admin/BuilderKnowledgeBase"));
+const DeliveryWavePlanner = lazy(() => import("./pages/admin/DeliveryWavePlanner"));
+
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
