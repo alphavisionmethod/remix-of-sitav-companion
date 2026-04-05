@@ -186,3 +186,7 @@ export { CostCircuitBreakerService, createCostCircuitBreaker } from "./ai-econom
 export { HealthAggregatorService, createHealthAggregator } from "./observability/health-aggregator";
 export { InvestmentOfficeRuntimeService, createInvestmentOfficeRuntime } from "./finance-os/investment-office-runtime";
 export { AgentControlService, createAgentControl } from "./admin-service/agent-control";
+
+// ── Phase 11: Revenue Growth & Life Growth ───────────────────
+export * from "./revenue-growth";
+export * from "./life-growth";
