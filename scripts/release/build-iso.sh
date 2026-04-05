@@ -15,6 +15,7 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 VERSION="${VERSION:-1.0.0}"
 INCLUDE_IMAGES=false
 OUTPUT_DIR="${PROJECT_ROOT}/dist"
+PROFILE="user"
 CACHE_DIR="${PROJECT_ROOT}/.cache/iso"
 
 # Ubuntu 24.04 LTS live server ISO
