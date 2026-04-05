@@ -48,12 +48,12 @@ export async function fetchSynthesis(): Promise<MultiAdvisorSynthesis[]> {
   const { data, error } = await supabase.from("chief_synthesis_records").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(10);
   if (error || !data || data.length === 0) return mockSynthesis;
 
-  return data.map((s: any) => ({
+  return data.map((s: any): MultiAdvisorSynthesis => ({
     id: s.id, title: s.owner_type || "Synthesis",
     participants: Array.isArray(s.aligned_views) ? s.aligned_views.map((v: any) => ({ name: "Advisor", recommendation: String(v), confidence: 0.7 })) : [],
     primaryRecommendation: s.recommended_next_step || "",
-    alternatePath: "", consensusLevel: 0.7,
-    riskAssessment: s.strongest_risk || "", createdAt: s.created_at,
+    alternatePath: "", disagreements: [], overlap: [],
+    assumptions: [], requiresApproval: false, canSimulate: false,
   }));
 }
 
