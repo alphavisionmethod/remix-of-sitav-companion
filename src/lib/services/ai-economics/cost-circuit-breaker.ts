@@ -98,7 +98,7 @@ export class CostCircuitBreakerService {
 
   // ── Cost Recording ────────────────────────────────────────────
 
-  recordCost(agentId: string, costCents: number): CostBreakerState {
+  recordCost(agentId: string, costCents: number): BreakerState {
     const config = this.configs.get(agentId);
     const state = this.states.get(agentId);
     if (!config || !state) {
