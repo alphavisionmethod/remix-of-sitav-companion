@@ -11,3 +11,4 @@ export * from "./policy-decision";
 export * from "./policy-snapshot";
 export * from "./trust-state";
 export * from "./trust-transition";
+export * from "./event-subject-definition";
