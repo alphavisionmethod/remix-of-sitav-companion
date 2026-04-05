@@ -188,6 +188,13 @@ const InvestmentConstitution = lazy(() => import("./pages/investment-office/Inve
 const BehavioralFirewall = lazy(() => import("./pages/investment-office/BehavioralFirewall"));
 const MarketMemoryFeed = lazy(() => import("./pages/investment-office/MarketMemoryFeed"));
 const IntelligenceDossier = lazy(() => import("./pages/investment-office/IntelligenceDossier"));
+const EventProbabilityLab = lazy(() => import("./pages/investment-office/EventProbabilityLab"));
+const StrategyDNA = lazy(() => import("./pages/investment-office/StrategyDNA"));
+const PostTradeLoop = lazy(() => import("./pages/investment-office/PostTradeLoop"));
+const CrossAssetStoryEngine = lazy(() => import("./pages/investment-office/CrossAssetStoryEngine"));
+const ConvictionEngine = lazy(() => import("./pages/investment-office/ConvictionEngine"));
+const PositionSizingCoach = lazy(() => import("./pages/investment-office/PositionSizingCoach"));
+const OperatingModes = lazy(() => import("./pages/investment-office/OperatingModes"));
 
 const queryClient = createQueryClient();
 
