@@ -25,6 +25,8 @@ const riskStyles: Record<string, string> = {
 };
 
 const statusIcon = (s: string) => {
+  const { data: approvalsData = [] } = useOwnerApprovals();
+
   if (s === "pending") return <Clock className="h-4 w-4 text-accent" />;
   if (s === "approved") return <CheckCircle className="h-4 w-4 text-trust-safe" />;
   if (s === "rejected") return <XCircle className="h-4 w-4 text-destructive" />;
@@ -78,7 +80,7 @@ function ApprovalList({ items }: { items: ApprovalItem[] }) {
   );
 }
 
-const mockApprovals = MOCK_OWNER_APPROVALS;
+const mockApprovals = approvalsData;
 
 
 export default function OwnerApprovalsPage() {

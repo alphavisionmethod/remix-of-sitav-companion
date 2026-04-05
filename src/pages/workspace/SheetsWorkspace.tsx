@@ -21,6 +21,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 
 const SheetsWorkspace = () => {
+  const { data: sheetsData = [] } = useSheets();
+
   const [activeTab, setActiveTab] = useState("all");
   const [selectedSheet, setSelectedSheet] = useState<string | null>(null);
   const [editingCell, setEditingCell] = useState<{ row: number; col: number } | null>(null);
@@ -39,8 +41,8 @@ const SheetsWorkspace = () => {
     { key: "metrics", label: "Metrics" },
   ];
 
-  const filteredSheets = MOCK_SHEETS.filter(s => activeTab === "all" || s.type === activeTab);
-  const activeSheet = selectedSheet ? MOCK_SHEETS.find(s => s.id === selectedSheet) : null;
+  const filteredSheets = sheetsData.filter(s => activeTab === "all" || s.type === activeTab);
+  const activeSheet = selectedSheet ? sheetsData.find(s => s.id === selectedSheet) : null;
 
   const sortedData = useMemo(() => {
     if (!activeSheet || sortColumn === null) return activeSheet?.data ?? [];

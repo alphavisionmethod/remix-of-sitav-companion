@@ -22,13 +22,15 @@ const domainFilterMap: Record<FilterType, string[] | undefined> = {
 };
 
 const FilesSearch = () => {
+  const { data: searchData = [] } = useFilesSearchIndex();
+
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<FilterType>("all");
   const [searchResponse, setSearchResponse] = useState<SearchResponse | null>(null);
 
   const searchService = useMemo(() => {
     const svc = new SearchFabricService();
-    svc.addBatch(MOCK_FILES_SEARCH_INDEX);
+    svc.addBatch(searchData);
     return svc;
   }, []);
 

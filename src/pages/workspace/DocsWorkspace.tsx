@@ -54,6 +54,8 @@ const TOOLBAR_ACTIONS = [
 ];
 
 const DocsWorkspace = () => {
+  const { data: docsData = [] } = useDocs();
+
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [editingDoc, setEditingDoc] = useState<MockDoc | null>(null);
@@ -74,7 +76,7 @@ const DocsWorkspace = () => {
   ];
 
   const filteredDocs = useMemo(() =>
-    MOCK_DOCS.filter(doc => {
+    docsData.filter(doc => {
       if (activeTab === "proposals") return doc.type === "proposal";
       if (activeTab === "reports") return doc.type === "report";
       if (activeTab === "packets") return doc.type === "boardroom-packet";

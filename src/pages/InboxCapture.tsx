@@ -28,6 +28,8 @@ const routeColors: Record<string, string> = {
 };
 
 const InboxCapture = () => {
+  const { data: inboxData = [] } = useInboxItems();
+
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -77,7 +79,7 @@ const InboxCapture = () => {
     confidence: undefined as number | undefined,
   }));
 
-  const items = isDemoMode ? MOCK_INBOX_ITEMS : liveItems;
+  const items = isDemoMode ? inboxData : liveItems;
   const filtered = activeTab === "all" ? items
     : activeTab === "processed" ? items.filter(i => ["classified", "routed"].includes(i.status))
     : items.filter(i => i.status === "new" || i.status === "processing");

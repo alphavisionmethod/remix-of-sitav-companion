@@ -22,10 +22,12 @@ const sensitivityColor: Record<SensitivityLevel, string> = {
 };
 
 const FilesOverview = () => {
+  const { data: filesData = [] } = useFilesOverview();
+
   const [view, setView] = useState<ViewVariant>("founder");
 
   const classifiedFiles = useMemo(() =>
-    MOCK_FILES_OVERVIEW.map(f => ({
+    filesData.map(f => ({
       ...f,
       classification: classifyFile(f.name, f.mime, f.text),
       sensitivity: detectSensitivity(f.text),

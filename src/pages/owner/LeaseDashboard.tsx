@@ -313,7 +313,7 @@ function useSeedLeases() {
 
   if (!seeded && leaseManager.getAllLeases().length === 0) {
     // Seed demo leases
-    const demos = MOCK_DEMO_LEASES;
+    const demos = leasesData;
 
     demos.forEach(d => leaseManager.issueLease(d));
 
@@ -335,6 +335,8 @@ function useSeedLeases() {
 // ── Main Page ───────────────────────────────────────────────────
 
 export default function LeaseDashboard() {
+  const { data: leasesData = [] } = useLeases();
+
   const { leaseManager, revokeLease: revokeLeaseHook } = useCapabilityLease();
   useSeedLeases();
 
