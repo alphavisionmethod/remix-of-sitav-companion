@@ -592,6 +592,9 @@ const App = () => (
                     <Route path="/revenue-office/calls" element={<CallDesk />} />
                     <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
 
+                    {/* AI Runtime */}
+                    <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
+
                     {/* SAG — Sovereign AI Gateway */}
                     <Route path="/admin/sag/overview" element={<SAGOverview />} />
                     <Route path="/admin/sag/models" element={<SAGModelRegistry />} />
