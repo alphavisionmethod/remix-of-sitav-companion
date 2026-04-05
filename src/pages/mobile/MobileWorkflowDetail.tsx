@@ -1,13 +1,8 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Mobile Trusted Device: Workflow Detail
-// ═══════════════════════════════════════════════════════════════
-
 import { MobileShell } from "@/components/mobile/MobileShell";
 import { useParams } from "react-router-dom";
 import { CheckCircle2, Clock, ArrowRight, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMobileWorkflowSteps } from "@/hooks/use-domain-data";
-
 
 const statusIcon = {
   completed: <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))]" />,
@@ -18,6 +13,7 @@ const statusIcon = {
 
 const MobileWorkflowDetail = () => {
   const { id } = useParams();
+  const { data: steps = [] } = useMobileWorkflowSteps();
 
   return (
     <MobileShell title={`Workflow ${id?.slice(0, 8) || ""}`}>
@@ -29,20 +25,13 @@ const MobileWorkflowDetail = () => {
           <span className="text-[10px] px-2 py-0.5 rounded bg-secondary text-secondary-foreground">business</span>
         </div>
       </div>
-
-      {/* Step timeline */}
       <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Steps</h3>
       <div className="space-y-0">
-        {MOCK_MOBILE_WORKFLOW_STEPS.map((step, i) => (
+        {steps.map((step, i) => (
           <div key={step.id} className="flex gap-3">
             <div className="flex flex-col items-center">
               {statusIcon[step.status]}
-              {i < MOCK_MOBILE_WORKFLOW_STEPS.length - 1 && (
-                <div className={cn(
-                  "w-px flex-1 my-1",
-                  step.status === "completed" ? "bg-[hsl(var(--trust-safe))]/40" : "bg-border"
-                )} />
-              )}
+              {i < steps.length - 1 && (<div className={cn("w-px flex-1 my-1", step.status === "completed" ? "bg-[hsl(var(--trust-safe))]/40" : "bg-border")} />)}
             </div>
             <div className="pb-4 min-w-0 flex-1">
               <p className={cn("text-sm", step.status === "active" ? "font-semibold text-primary" : "")}>{step.label}</p>
