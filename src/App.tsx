@@ -456,6 +456,23 @@ const App = () => (
                     <Route path="/revenue-office/calls" element={<CallDesk />} />
                     <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
 
+
+                    {/* Digital Presence Office */}
+                    <Route path="/digital-presence" element={<PresenceGate />} />
+                    <Route path="/digital-presence/boardroom" element={<PresenceBoardroom />} />
+                    <Route path="/digital-presence/website-twin" element={<WebsiteTwin />} />
+                    <Route path="/digital-presence/builder" element={<SiteBuilder />} />
+                    <Route path="/digital-presence/brand-studio" element={<BrandStudio />} />
+                    <Route path="/digital-presence/connected-sites" element={<ConnectedSites />} />
+                    <Route path="/digital-presence/cro" element={<CROOffice />} />
+                    <Route path="/digital-presence/ecommerce" element={<EcommerceOffice />} />
+                    <Route path="/digital-presence/promotions" element={<PromotionsOffice />} />
+                    <Route path="/digital-presence/ai-team" element={<AIWebTeam />} />
+                    <Route path="/digital-presence/radar" element={<ErrorRadar />} />
+                    <Route path="/digital-presence/content-freshness" element={<ContentFreshness />} />
+                    <Route path="/digital-presence/launch" element={<LaunchWarRoom />} />
+                    <Route path="/digital-presence/time-machine" element={<PresenceTimeMachine />} />
+
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
                     <Route path="/concierge/overview" element={<ConciergeCenter />} />
