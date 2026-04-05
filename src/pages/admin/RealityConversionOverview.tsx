@@ -26,6 +26,22 @@ export default function RealityConversionOverview() {
   const mStats = useMockReplacementStats(mockReplacements);
   const { data: detectionReport } = useDetectionReport();
   const { data: integrations = [] } = useIntegrationStatuses();
+  const qc = useQueryClient();
+  const [seeding, setSeeding] = useState(false);
+
+  const handleAutoSeed = async () => {
+    setSeeding(true);
+    try {
+      const result = await autoSeedAll();
+      toast.success(`Seeded ${result.classifications.seeded} classifications + ${result.replacements.seeded} mock replacements (${result.classifications.skipped + result.replacements.skipped} skipped)`);
+      qc.invalidateQueries({ queryKey: ["reality-classifications"] });
+      qc.invalidateQueries({ queryKey: ["mock-replacements"] });
+    } catch (e: any) {
+      toast.error(e.message || "Seed failed");
+    } finally {
+      setSeeding(false);
+    }
+  };
 
   const domainRollup = useMemo(() => {
     const map = new Map<string, { total: number; proven: number; simulated: number }>();
