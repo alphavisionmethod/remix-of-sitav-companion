@@ -70,7 +70,7 @@ export function analyzeMarket(inputs: AllocationInput[]): MarketSnapshot {
       adjustment = -10;
     }
 
-    return { ...i, budgetAllocationPercent: Math.round(budgetPct * 10) / 10, recommendation: rec, recommendedAdjustment: adjustment };
+    return { ...i, currentSpendCents: i.spendCents, budgetAllocationPercent: Math.round(budgetPct * 10) / 10, recommendation: rec, recommendedAdjustment: adjustment };
   });
 
   const sorted = [...allocations].sort((a, b) => b.roiMultiple - a.roiMultiple);
