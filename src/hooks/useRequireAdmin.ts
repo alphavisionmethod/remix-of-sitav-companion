@@ -25,19 +25,21 @@ export function useRequireAdmin() {
       return;
     }
 
-    supabase.rpc("has_role", { _user_id: user.id, _role: "admin" })
-      .then(({ data }) => {
+    const checkRole = async () => {
+      try {
+        const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
         if (!data) {
           navigate("/");
         } else {
           setIsAdmin(true);
         }
-        setChecking(false);
-      })
-      .catch(() => {
+      } catch {
         navigate("/");
+      } finally {
         setChecking(false);
-      });
+      }
+    };
+    checkRole();
   }, [user, loading, isDemo, navigate]);
 
   return { isAdmin, loading: loading || checking };
