@@ -490,6 +490,9 @@ const App = () => (
                     <Route path="/revenue-office/operating-modes" element={<GrowthOperatingModes />} />
                     <Route path="/revenue-office/synthesis" element={<ChiefRevenueSynthesis />} />
                     <Route path="/revenue-office/memory-feed" element={<CommercialMemoryFeed />} />
+                    <Route path="/revenue-office/forms" element={<FormsBuilder />} />
+                    <Route path="/revenue-office/segmentation" element={<SegmentationEngine />} />
+                    <Route path="/revenue-office/client-onboarding" element={<ClientOnboarding />} />
                     <Route path="/revenue-office/automation" element={<AutomationOffice />} />
                     <Route path="/revenue-office/automation/builder" element={<AutomationBuilder />} />
                     <Route path="/revenue-office/automation/templates" element={<AutomationTemplates />} />
