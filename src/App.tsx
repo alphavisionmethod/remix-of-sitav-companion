@@ -195,6 +195,11 @@ const CrossAssetStoryEngine = lazy(() => import("./pages/investment-office/Cross
 const ConvictionEngine = lazy(() => import("./pages/investment-office/ConvictionEngine"));
 const PositionSizingCoach = lazy(() => import("./pages/investment-office/PositionSizingCoach"));
 const OperatingModes = lazy(() => import("./pages/investment-office/OperatingModes"));
+const DecisionReadiness = lazy(() => import("./pages/investment-office/DecisionReadiness"));
+const CapitalPurpose = lazy(() => import("./pages/investment-office/CapitalPurpose"));
+const WhatWouldBreak = lazy(() => import("./pages/investment-office/WhatWouldBreak"));
+const DisagreementEngine = lazy(() => import("./pages/investment-office/DisagreementEngine"));
+const FamilyOffice = lazy(() => import("./pages/investment-office/FamilyOffice"));
 
 const queryClient = createQueryClient();
 
