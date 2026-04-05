@@ -143,7 +143,7 @@ export default function OperationsCommandCenter() {
             {alerts.map(alert => (
               <div key={alert.id} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
                 <div className="flex items-center gap-3">
-                  <AlertTriangle className={cn("w-4 h-4", alert.severity === "critical" ? "text-red-400" : alert.severity === "warning" ? "text-amber-400" : "text-blue-400")} />
+                  <AlertTriangle className={cn("w-4 h-4", alert.severity === "warning" ? "text-amber-400" : "text-blue-400")} />
                   <div>
                     <p className="text-xs font-medium text-foreground">{alert.title}</p>
                     <p className="text-[10px] text-muted-foreground">{alert.source}</p>
