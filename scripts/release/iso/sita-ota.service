@@ -1,0 +1,17 @@
+[Unit]
+Description=SITA OS — OTA Update Agent
+Documentation=https://sita.dev/docs/updates
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/sita/sita-ota-agent.sh
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sita-ota
+TimeoutStartSec=600
+ProtectSystem=strict
+ReadWritePaths=/opt/sita /tmp/sita-ota /var/log
+ProtectHome=true
+PrivateTmp=false

@@ -2766,6 +2766,137 @@ export type Database = {
         }
         Relationships: []
       }
+      system_update_devices: {
+        Row: {
+          auto_update_enabled: boolean | null
+          channel: string
+          created_at: string
+          current_version: string
+          device_id: string
+          hardware_profile: Json | null
+          hostname: string | null
+          id: string
+          last_check_at: string | null
+          last_update_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auto_update_enabled?: boolean | null
+          channel?: string
+          created_at?: string
+          current_version?: string
+          device_id: string
+          hardware_profile?: Json | null
+          hostname?: string | null
+          id?: string
+          last_check_at?: string | null
+          last_update_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auto_update_enabled?: boolean | null
+          channel?: string
+          created_at?: string
+          current_version?: string
+          device_id?: string
+          hardware_profile?: Json | null
+          hostname?: string | null
+          id?: string
+          last_check_at?: string | null
+          last_update_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      system_update_log: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          device_id: string | null
+          error: string | null
+          from_version: string | null
+          id: string
+          started_at: string | null
+          status: string
+          to_version: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          device_id?: string | null
+          error?: string | null
+          from_version?: string | null
+          id?: string
+          started_at?: string | null
+          status?: string
+          to_version: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          device_id?: string | null
+          error?: string | null
+          from_version?: string | null
+          id?: string
+          started_at?: string | null
+          status?: string
+          to_version?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "system_update_log_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "system_update_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      system_update_releases: {
+        Row: {
+          channel: string
+          checksum_sha256: string | null
+          created_at: string
+          download_url: string | null
+          id: string
+          is_critical: boolean | null
+          min_version: string | null
+          release_notes: string | null
+          size_bytes: number | null
+          version: string
+        }
+        Insert: {
+          channel?: string
+          checksum_sha256?: string | null
+          created_at?: string
+          download_url?: string | null
+          id?: string
+          is_critical?: boolean | null
+          min_version?: string | null
+          release_notes?: string | null
+          size_bytes?: number | null
+          version: string
+        }
+        Update: {
+          channel?: string
+          checksum_sha256?: string | null
+          created_at?: string
+          download_url?: string | null
+          id?: string
+          is_critical?: boolean | null
+          min_version?: string | null
+          release_notes?: string | null
+          size_bytes?: number | null
+          version?: string
+        }
+        Relationships: []
+      }
       tasks: {
         Row: {
           assigned_to: string | null

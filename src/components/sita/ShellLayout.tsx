@@ -19,6 +19,7 @@ import { ErrorBoundary } from "./ErrorBoundary";
 import { DesktopEntryCeremony } from "./DesktopEntryCeremony";
 import { PWAInstallPrompt } from "./PWAInstallPrompt";
 import { ContinuityBanner } from "./ContinuityBanner";
+import { UpdateBanner } from "./UpdateBanner";
 import { UniversalCommandSurface } from "./shell/UniversalCommandSurface";
 import { ShellAmbientBackground } from "./shell/ShellAmbientBackground";
 import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
@@ -105,6 +106,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         {/* Ambient background — subtle, always present */}
         <ShellAmbientBackground intensity="subtle" className="fixed" />
 
+        <UpdateBanner />
         <ContinuityBanner />
         <SitaTopBar
           onNotifOpen={() => setNotifOpen(true)}
