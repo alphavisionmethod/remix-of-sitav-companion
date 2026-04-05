@@ -606,6 +606,16 @@ const App = () => (
                     {/* AI Runtime */}
                     <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
                     <Route path="/admin/persistence-status" element={<PersistenceStatus />} />
+                    <Route path="/admin/drs/overview" element={<DRS01RealityModeOverview />} />
+                    <Route path="/admin/drs/registry" element={<DRS02ModeRegistryConsole />} />
+                    <Route path="/admin/drs/scenarios" element={<DRS03ScenarioLibrary />} />
+                    <Route path="/admin/drs/entities" element={<DRS04ScenarioEntityGraph />} />
+                    <Route path="/admin/drs/providers" element={<DRS05ProviderConsole />} />
+                    <Route path="/admin/drs/safety" element={<DRS06DemoPolicySafety />} />
+                    <Route path="/admin/drs/ai-control" element={<DRS07DemoAIControl />} />
+                    <Route path="/admin/drs/analytics" element={<DRS08AnalyticsSegregation />} />
+                    <Route path="/admin/drs/truth" element={<DRS09TruthLabeling />} />
+                    <Route path="/admin/drs/launch-gate" element={<DRS10DualRealityLaunchGate />} />
 
                     {/* SAG — Sovereign AI Gateway */}
                     <Route path="/admin/sag/overview" element={<SAGOverview />} />
