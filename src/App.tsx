@@ -305,7 +305,8 @@ const App = () => (
                     <Route path="/money/settings" element={<MoneyCenter />} />
 
                     {/* Investment Office */}
-                    <Route path="/investments" element={<InvestmentBoardroom />} />
+                    <Route path="/investments" element={<InvestmentGate />} />
+                    <Route path="/investments/boardroom" element={<InvestmentBoardroom />} />
                     <Route path="/investments/markets" element={<MarketExplorer />} />
                     <Route path="/investments/instrument/:instrumentId" element={<InstrumentDetail />} />
                     <Route path="/investments/portfolio" element={<PortfolioOffice />} />
@@ -316,7 +317,12 @@ const App = () => (
                     <Route path="/investments/risk" element={<RiskOffice />} />
                     <Route path="/investments/advisors" element={<InvestmentAdvisorBoard />} />
                     <Route path="/investments/platforms" element={<PlatformConnections />} />
-                    <Route path="/money/investments" element={<InvestmentBoardroom />} />
+                    <Route path="/investments/events" element={<EventMarketsWorkspace />} />
+                    <Route path="/investments/watchlists" element={<WatchlistsSignals />} />
+                    <Route path="/investments/receipts" element={<InvestmentReceipts />} />
+                    <Route path="/investments/beginner" element={<BeginnerMode />} />
+                    <Route path="/investments/advanced" element={<AdvancedMode />} />
+                    <Route path="/money/investments" element={<InvestmentGate />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
