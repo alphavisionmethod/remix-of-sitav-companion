@@ -45,6 +45,7 @@ const screenMap: Record<StageId, React.ComponentType<any>> = {
   url_intake: URLIntakeScreen,
   reconciliation: ReconciliationScreen,
   automation: AutomationScreen,
+  advisors: AdvisorActivationScreen,
   firstwin: FirstWinScreen,
   reveal: RevealScreen,
 };
