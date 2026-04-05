@@ -60,3 +60,43 @@ export * from "./collection-sequence";
 export * from "./contact-record";
 export * from "./customer-lifecycle";
 export * from "./customer-dashboard";
+
+// ── Core business entities (expanded) ───────────────────────
+export * from "./deal";
+export * from "./deal-risk";
+export * from "./lead-expanded";
+export * from "./quote-expanded";
+export * from "./opportunity-record";
+export * from "./pipeline-stage";
+export * from "./customer-message";
+
+// ── Revenue intelligence ────────────────────────────────────
+export * from "./pricing-proposal";
+export * from "./revenue-leakage-signal";
+export * from "./repeat-purchase-timing";
+
+// ── Collections & follow-up ─────────────────────────────────
+export * from "./invoice-followup";
+export * from "./no-show-risk";
+
+// ── Outreach & communication ────────────────────────────────
+export * from "./outbound-communication";
+export * from "./outreach-plan";
+export * from "./referral-prompt";
+export * from "./handoff-route";
+
+// ── Service & operations ────────────────────────────────────
+export * from "./review-request";
+export * from "./service-order";
+export * from "./task-assignment";
+
+// ── Vertical configuration ──────────────────────────────────
+export * from "./vertical-approval-default";
+export * from "./vertical-comms-template";
+export * from "./vertical-pack-config";
+export * from "./vertical-playbook";
+export * from "./vertical-role-default";
+
+// ── Sub-packages ────────────────────────────────────────────
+export * from "./revenue-ops";
+export * from "./website";
