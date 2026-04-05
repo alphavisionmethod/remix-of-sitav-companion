@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Receipt / Proof Center
 // The signature trust surface — accountable, inspectable, premium
+// Now with proof chain visualization and bundle export (Phase 3)
 // ═══════════════════════════════════════════════════════════════
 
 import { SitaCard, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
@@ -10,11 +11,16 @@ import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { useProofRecords } from "@/hooks/use-sita-data";
 import { useProofTimeline } from "@/hooks/use-proof-timeline";
+import { useProofChain, useProofBundle } from "@/hooks/use-proof-chain";
 import { useKernelStatus } from "@/contexts/SitaKernelContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 const db: any = supabase;
+import { useAuth } from "@/contexts/AuthContext";
+import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
