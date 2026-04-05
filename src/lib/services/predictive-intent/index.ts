@@ -57,10 +57,10 @@ class PredictiveIntentEngine {
     // Persist to user_memory
     await supabase.from('user_memory').upsert({
       user_id: userId,
-      memory_key: `intent_pattern_${action}_${pattern.hour}_${pattern.dayOfWeek}`,
-      memory_value: JSON.stringify(pattern),
+      key: `intent_pattern_${action}_${pattern.hour}_${pattern.dayOfWeek}`,
+      value: JSON.stringify(pattern) as any,
       category: 'predictive_intent',
-    }, { onConflict: 'user_id,memory_key' }).select();
+    }, { onConflict: 'user_id,key' }).select();
   }
 
   async predictNext(userId: string): Promise<PredictedIntent[]> {
