@@ -1,40 +1,45 @@
+// SITA OS — Business Data Service (Mode-Aware)
 import { supabase } from "@/integrations/supabase/client";
-import { MOCK_DEMO_CUSTOMERS, type MockCustomer } from "@/lib/mock-data/customers";
-import { MOCK_COLLECTIONS_ACCOUNTS, type CollectionsAccount } from "@/lib/mock-data/collections";
+import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
+import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
 
-export type { MockCustomer, CollectionsAccount };
+export interface MockCustomer {
+  id: string; name: string; company: string; email: string; phone: string;
+  status: string; relationship_type: string; health_score: number;
+  lifetime_revenue: number | null; last_contact_at: string; created_at: string; notes: string;
+}
 
-export async function fetchCustomers(): Promise<MockCustomer[]> {
+export interface CollectionsAccount {
+  id: string; customer: string; amount: number; daysOverdue: number;
+  status: string; lastAction: string; nextStep: string; priority: string;
+}
+
+const DEMO_CUSTOMERS: MockCustomer[] = [
+  { id: "c1", name: "Sarah Chen", company: "Meridian Ventures", email: "sarah@meridian.vc", phone: "+1-555-0101", status: "active", relationship_type: "investor", health_score: 92, lifetime_revenue: 120000, last_contact_at: "2026-04-02", created_at: "2025-06-15", notes: "Key strategic partner" },
+  { id: "c2", name: "Marcus Webb", company: "Atlas Corp", email: "marcus@atlas.co", phone: "+1-555-0102", status: "active", relationship_type: "client", health_score: 78, lifetime_revenue: 85000, last_contact_at: "2026-03-28", created_at: "2025-09-01", notes: "Enterprise license prospect" },
+  { id: "c3", name: "Elena Rossi", company: "Vanguard Advisory", email: "elena@vanguard.co", phone: "+1-555-0103", status: "active", relationship_type: "partner", health_score: 95, lifetime_revenue: 45000, last_contact_at: "2026-04-04", created_at: "2025-03-10", notes: "Advisory retainer" },
+  { id: "c4", name: "James Park", company: "Nordic Digital", email: "james@nordic.io", phone: "+1-555-0104", status: "prospect", relationship_type: "prospect", health_score: 65, lifetime_revenue: null, last_contact_at: "2026-03-15", created_at: "2026-01-20", notes: "Consulting opportunity" },
+];
+
+const DEMO_COLLECTIONS: CollectionsAccount[] = [
+  { id: "col1", customer: "Atlas Corp", amount: 12500, daysOverdue: 15, status: "follow_up", lastAction: "Email sent Apr 1", nextStep: "Call scheduled Apr 8", priority: "high" },
+  { id: "col2", customer: "Nordic Digital", amount: 4800, daysOverdue: 7, status: "pending", lastAction: "Invoice resent Mar 30", nextStep: "Reminder Apr 7", priority: "medium" },
+];
+
+export async function fetchCustomers(mode: RealityModeKey = "real"): Promise<ModeAwareResult<MockCustomer[]>> {
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_CUSTOMERS, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return MOCK_DEMO_CUSTOMERS;
-
+  if (!user) return resolveByMode({ mode, realData: null, demoData: DEMO_CUSTOMERS, emptyDefault: [] });
   const { data, error } = await supabase.from("customers").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
-  if (error || !data || data.length === 0) return MOCK_DEMO_CUSTOMERS;
-
-  return data.map((c: any) => ({
+  const mapped = (!error && data && data.length > 0) ? data.map((c: any): MockCustomer => ({
     id: c.id, name: c.name, company: c.company, email: c.email, phone: c.phone,
     status: c.status, relationship_type: c.relationship_type, health_score: c.health_score,
     lifetime_revenue: c.lifetime_revenue ? Number(c.lifetime_revenue) : null,
     last_contact_at: c.last_contact_at, created_at: c.created_at, notes: c.notes,
-  }));
+  })) : null;
+  return resolveByMode({ mode, realData: mapped, demoData: DEMO_CUSTOMERS, emptyDefault: [] });
 }
 
-export async function fetchCollectionsAccounts(): Promise<CollectionsAccount[]> {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return MOCK_COLLECTIONS_ACCOUNTS;
-
-  const { data, error } = await supabase.from("invoices").select("*").eq("user_id", user.id).eq("status", "overdue");
-  if (error || !data || data.length === 0) return MOCK_COLLECTIONS_ACCOUNTS;
-
-  return data.map((inv: any): CollectionsAccount => ({
-    id: inv.id, customerName: inv.customer_name || "Unknown",
-    invoiceId: inv.id, invoiceNumber: inv.invoice_number || inv.id.slice(0, 8),
-    amountCents: Math.round(Number(inv.amount || 0) * 100),
-    originalDueDate: inv.due_date || inv.created_at,
-    agingDays: Math.max(0, Math.floor((Date.now() - new Date(inv.due_date || inv.created_at).getTime()) / 864e5)),
-    agingBucket: "31-60", escalationLevel: 1,
-    lastContactAt: inv.updated_at, lastContactMethod: "email",
-    chaseSequenceActive: true, currentStep: 1, totalSteps: 9,
-    notes: "", riskScore: 50, status: "active",
-  }));
+export async function fetchCollections(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CollectionsAccount[]>> {
+  return resolveByMode({ mode, realData: null, demoData: DEMO_COLLECTIONS, emptyDefault: [] });
 }
