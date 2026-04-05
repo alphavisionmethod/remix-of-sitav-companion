@@ -26,9 +26,15 @@ export async function fetchCollectionsAccounts(): Promise<CollectionsAccount[]> 
   const { data, error } = await supabase.from("invoices").select("*").eq("user_id", user.id).eq("status", "overdue");
   if (error || !data || data.length === 0) return MOCK_COLLECTIONS_ACCOUNTS;
 
-  return data.map((inv: any) => ({
-    id: inv.id, customer_name: inv.customer_name || "Unknown", invoice_number: inv.invoice_number || inv.id,
-    amount_due: Number(inv.amount || 0), days_overdue: Math.floor((Date.now() - new Date(inv.due_date).getTime()) / 864e5),
-    status: inv.status, last_action: inv.updated_at, risk_level: Number(inv.amount || 0) > 5000 ? "high" : "medium",
+  return data.map((inv: any): CollectionsAccount => ({
+    id: inv.id, customerName: inv.customer_name || "Unknown",
+    invoiceId: inv.id, invoiceNumber: inv.invoice_number || inv.id.slice(0, 8),
+    amountCents: Math.round(Number(inv.amount || 0) * 100),
+    originalDueDate: inv.due_date || inv.created_at,
+    agingDays: Math.max(0, Math.floor((Date.now() - new Date(inv.due_date || inv.created_at).getTime()) / 864e5)),
+    agingBucket: "31-60", escalationLevel: 1,
+    lastContactAt: inv.updated_at, lastContactMethod: "email",
+    chaseSequenceActive: true, currentStep: 1, totalSteps: 9,
+    notes: "", riskScore: 50, status: "active",
   }));
 }

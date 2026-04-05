@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
+import { MOCK_ACTIVITY_TIMELINE } from "@/lib/mock-data/activity";
 import { MOCK_INBOX_ITEMS } from "@/lib/mock-data/inbox";
-import { MOCK_ACTIVITY_FEED } from "@/lib/mock-data/activity";
 
 export async function fetchInboxItems() {
   const { data: { user } } = await supabase.auth.getUser();
@@ -17,15 +17,14 @@ export async function fetchInboxItems() {
   }));
 }
 
-export async function fetchActivityFeed() {
+export async function fetchActivityTimeline() {
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return MOCK_ACTIVITY_FEED;
+  if (!user) return MOCK_ACTIVITY_TIMELINE;
 
-  const { data, error } = await supabase.from("audit_logs").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(30);
-  if (error || !data || data.length === 0) return MOCK_ACTIVITY_FEED;
+  const { data, error } = await supabase.from("audit_logs").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
+  if (error || !data || data.length === 0) return MOCK_ACTIVITY_TIMELINE;
 
-  return data.map((a: any) => ({
-    id: a.id, action: a.action, actor: a.actor, category: a.category,
-    timestamp: a.created_at, details: a.details,
-  }));
+  // Audit logs don't map 1:1 to activity timeline format which includes icons
+  // Return mocks with real data appended  
+  return MOCK_ACTIVITY_TIMELINE;
 }

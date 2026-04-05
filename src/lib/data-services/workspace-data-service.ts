@@ -12,23 +12,19 @@ export async function fetchDocs(): Promise<MockDoc[]> {
     .order("created_at", { ascending: false });
   if (error || !data || data.length === 0) return MOCK_DOCS;
 
-  return data.map((f: any) => ({
-    id: f.id, title: f.filename.replace(/\.[^.]+$/, ""), content: f.extracted_data?.text || "",
-    lastEdited: f.updated_at, status: f.status === "processed" ? "final" as const : "draft" as const,
-    wordCount: (f.extracted_data?.text || "").split(/\s+/).length,
+  return data.map((f: any): MockDoc => ({
+    id: f.id, title: f.filename.replace(/\.[^.]+$/, ""),
+    type: "document", status: f.status === "processed" ? "published" : "draft",
+    lastModified: f.updated_at, author: "You",
+    version: 1, privacy: "personal",
+    content: f.extracted_data?.text || "", governed: false, tags: [],
   }));
 }
 
 export async function fetchSheets(): Promise<MockSheet[]> {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return MOCK_SHEETS;
-  // Sheets are complex structured data - use mocks until dedicated table
   return MOCK_SHEETS;
 }
 
 export async function fetchDecks(): Promise<MockDeck[]> {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return MOCK_DECKS;
-  // Slide decks need dedicated table - use mocks
   return MOCK_DECKS;
 }

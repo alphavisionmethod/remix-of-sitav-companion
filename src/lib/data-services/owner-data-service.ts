@@ -26,14 +26,14 @@ export async function fetchOwnerApprovals(): Promise<OwnerApprovalItem[]> {
   const { data, error } = await supabase.from("approval_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
   if (error || !data || data.length === 0) return MOCK_OWNER_APPROVALS;
 
-  return data.map((a: any) => ({
-    id: a.id, title: a.action_summary, category: a.action_type || "general",
-    urgency: "medium" as "low" | "medium" | "high" | "critical",
-    requested_at: a.created_at, summary: a.action_summary,
-    amount_cents: undefined, status: a.status,
+  return data.map((a: any): OwnerApprovalItem => ({
+    id: a.id, title: a.action_summary, domain: a.action_type || "general",
+    requestedBy: a.requested_by || "System",
+    riskTier: "medium", status: a.status as any,
+    requestedAt: a.created_at,
   }));
 }
 
 export async function fetchPricingItems(): Promise<OwnerPricingItem[]> {
-  return MOCK_PRICING_ITEMS; // Pricing is config, stays local until dedicated table
+  return MOCK_PRICING_ITEMS;
 }
