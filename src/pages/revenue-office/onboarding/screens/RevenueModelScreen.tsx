@@ -1,7 +1,9 @@
 import { DollarSign, Phone, FileText, RefreshCw, Package, Heart, ShoppingBag, MapPin, Users, Megaphone, Layers } from "lucide-react";
 import { Toggle, SectionTitle, ScreenHeader, SingleSelect } from "../primitives";
+import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
+import { getRevenueEngineBranch } from "../branching";
 import type { ScreenProps } from "../types";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 const sources = [
   { id: "appointments", label: "Booked calls / appointments", icon: Phone },
