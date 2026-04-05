@@ -118,7 +118,7 @@ export default function DomainRealityBoard() {
       <SitaPageHeader title="Domain Reality Conversion Board" subtitle="Feature-level real vs demo readiness across every flagship domain" />
 
       <SitaTabs
-        tabs={DOMAINS.map(d => d.domain)}
+        tabs={DOMAINS.map(d => ({ key: d.domain, label: d.domain }))}
         activeTab={DOMAINS[selectedDomain].domain}
         onTabChange={(tab) => setSelectedDomain(DOMAINS.findIndex(d => d.domain === tab))}
       />
