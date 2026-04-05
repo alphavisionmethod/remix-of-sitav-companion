@@ -1197,6 +1197,7 @@ export default function MissionControlPage() {
     { value: "costs", label: "Costs", icon: DollarSign },
     { value: "trust", label: "Trust", icon: Shield },
     { value: "safe-mode", label: "Safe Mode", icon: ShieldAlert },
+    { value: "platform-truth", label: "Platform Truth", icon: Eye },
   ];
 
   const advancedTabs = [
