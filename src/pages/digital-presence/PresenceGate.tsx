@@ -19,6 +19,10 @@ const WORKSPACES = [
   { label: "Content Freshness", desc: "Outdated pages, expired offers, stale info", icon: Globe, path: "/digital-presence/content-freshness", color: "text-teal-400" },
   { label: "Launch War Room", desc: "Launch readiness, rollback plans", icon: Rocket, path: "/digital-presence/launch", color: "text-pink-400" },
   { label: "Time Machine", desc: "Replay changes, impact review", icon: Globe, path: "/digital-presence/time-machine", color: "text-sky-400" },
+  { label: "Self-Healing Queue", desc: "Safe auto-fixes, patch preview & verification", icon: Shield, path: "/digital-presence/self-healing", color: "text-emerald-400" },
+  { label: "App Experience Studio", desc: "PWA, portals, mini-apps, mobile-first", icon: Smartphone, path: "/digital-presence/app-studio", color: "text-lime-400" },
+  { label: "Presence Analytics", desc: "Traffic quality, source performance, impact", icon: BarChart3, path: "/digital-presence/analytics", color: "text-fuchsia-400" },
+  { label: "Domain & Publish", desc: "Domains, staging, rollback, release management", icon: Server, path: "/digital-presence/domains", color: "text-slate-400" },
 ];
 
 const HEALTH_STATS = [
