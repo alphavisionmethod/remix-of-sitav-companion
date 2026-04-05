@@ -218,6 +218,22 @@ const PlatformMaturityDashboard = lazy(() => import("./pages/admin/PlatformMatur
 const BuilderKnowledgeBase = lazy(() => import("./pages/admin/BuilderKnowledgeBase"));
 const DeliveryWavePlanner = lazy(() => import("./pages/admin/DeliveryWavePlanner"));
 
+// FIP — Feature Integration Protocol Enforcement System
+const FIPIntakeDesk = lazy(() => import("./pages/admin/fip/FIPIntakeDesk"));
+const FIPSpecStudio = lazy(() => import("./pages/admin/fip/FIPSpecStudio"));
+const FIPOwnerBoundary = lazy(() => import("./pages/admin/fip/FIPOwnerBoundary"));
+const FIPCapabilityRegistry = lazy(() => import("./pages/admin/fip/FIPCapabilityRegistry"));
+const FIPComplianceBoard = lazy(() => import("./pages/admin/fip/FIPComplianceBoard"));
+const FIPExecutionExplorer = lazy(() => import("./pages/admin/fip/FIPExecutionExplorer"));
+const FIPPolicyTrustBoard = lazy(() => import("./pages/admin/fip/FIPPolicyTrustBoard"));
+const FIPMemoryGraphStudio = lazy(() => import("./pages/admin/fip/FIPMemoryGraphStudio"));
+const FIPObservabilityCenter = lazy(() => import("./pages/admin/fip/FIPObservabilityCenter"));
+const FIPRolloutPlanner = lazy(() => import("./pages/admin/fip/FIPRolloutPlanner"));
+const FIPGeneratedTruthBoard = lazy(() => import("./pages/admin/fip/FIPGeneratedTruthBoard"));
+const FIPReadinessGateReview = lazy(() => import("./pages/admin/fip/FIPReadinessGateReview"));
+const FIPDeprecationManager = lazy(() => import("./pages/admin/fip/FIPDeprecationManager"));
+const FIPBuilderConsole = lazy(() => import("./pages/admin/fip/FIPBuilderConsole"));
+
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
@@ -960,6 +976,21 @@ const App = () => (
                     <Route path="/admin/platform-maturity" element={<PlatformMaturityDashboard />} />
                     <Route path="/admin/builder-knowledge" element={<BuilderKnowledgeBase />} />
                     <Route path="/admin/delivery-waves" element={<DeliveryWavePlanner />} />
+                    {/* FIP — Feature Integration Protocol */}
+                    <Route path="/admin/fip/intake" element={<FIPIntakeDesk />} />
+                    <Route path="/admin/fip/spec-studio" element={<FIPSpecStudio />} />
+                    <Route path="/admin/fip/owner-boundary" element={<FIPOwnerBoundary />} />
+                    <Route path="/admin/fip/capability-registry" element={<FIPCapabilityRegistry />} />
+                    <Route path="/admin/fip/compliance" element={<FIPComplianceBoard />} />
+                    <Route path="/admin/fip/execution-paths" element={<FIPExecutionExplorer />} />
+                    <Route path="/admin/fip/policy-trust" element={<FIPPolicyTrustBoard />} />
+                    <Route path="/admin/fip/memory-graph" element={<FIPMemoryGraphStudio />} />
+                    <Route path="/admin/fip/observability" element={<FIPObservabilityCenter />} />
+                    <Route path="/admin/fip/rollout" element={<FIPRolloutPlanner />} />
+                    <Route path="/admin/fip/generated-truth" element={<FIPGeneratedTruthBoard />} />
+                    <Route path="/admin/fip/readiness" element={<FIPReadinessGateReview />} />
+                    <Route path="/admin/fip/deprecation" element={<FIPDeprecationManager />} />
+                    <Route path="/admin/fip/builder" element={<FIPBuilderConsole />} />
 
                     <Route path="/admin/ai-engineering" element={<AIEngineeringBoard />} />
                     <Route path="/admin/ai-team-roster" element={<AITeamRoster />} />

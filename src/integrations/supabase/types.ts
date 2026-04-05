@@ -1523,6 +1523,84 @@ export type Database = {
         }
         Relationships: []
       }
+      capability_registry: {
+        Row: {
+          approval_type: string | null
+          autonomy_tier: string | null
+          capability_class: string
+          capability_id: string
+          created_at: string
+          description: string | null
+          entitlement_dependency: string | null
+          event_subjects: string[] | null
+          feature_id: string | null
+          id: string
+          metadata: Json | null
+          name: string
+          owner_service: string
+          receipt_requirement: string | null
+          replayability_class: string | null
+          required_policy_family: string | null
+          required_scopes: string[] | null
+          risk_tier: string | null
+          sandbox_support: boolean | null
+          status: string | null
+          updated_at: string
+          user_id: string
+          version: string | null
+        }
+        Insert: {
+          approval_type?: string | null
+          autonomy_tier?: string | null
+          capability_class?: string
+          capability_id: string
+          created_at?: string
+          description?: string | null
+          entitlement_dependency?: string | null
+          event_subjects?: string[] | null
+          feature_id?: string | null
+          id?: string
+          metadata?: Json | null
+          name: string
+          owner_service: string
+          receipt_requirement?: string | null
+          replayability_class?: string | null
+          required_policy_family?: string | null
+          required_scopes?: string[] | null
+          risk_tier?: string | null
+          sandbox_support?: boolean | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+          version?: string | null
+        }
+        Update: {
+          approval_type?: string | null
+          autonomy_tier?: string | null
+          capability_class?: string
+          capability_id?: string
+          created_at?: string
+          description?: string | null
+          entitlement_dependency?: string | null
+          event_subjects?: string[] | null
+          feature_id?: string | null
+          id?: string
+          metadata?: Json | null
+          name?: string
+          owner_service?: string
+          receipt_requirement?: string | null
+          replayability_class?: string | null
+          required_policy_family?: string | null
+          required_scopes?: string[] | null
+          risk_tier?: string | null
+          sandbox_support?: boolean | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
       capital_allocations: {
         Row: {
           amount: number
@@ -3301,6 +3379,378 @@ export type Database = {
           },
         ]
       }
+      feature_compliance_records: {
+        Row: {
+          boardroom_integration: boolean | null
+          capabilities_registered: boolean | null
+          completeness_score: number | null
+          contracts_defined: boolean | null
+          created_at: string
+          deprecation_planned: boolean | null
+          execution_path_defined: boolean | null
+          feature_id: string
+          feature_name: string
+          generated_truth_updated: boolean | null
+          id: string
+          last_evaluated_at: string | null
+          memory_effects_declared: boolean | null
+          metadata: Json | null
+          observability_defined: boolean | null
+          owner_declared: boolean | null
+          policy_defined: boolean | null
+          readiness_stage: string | null
+          receipts_defined: boolean | null
+          rollout_defined: boolean | null
+          testing_defined: boolean | null
+          updated_at: string
+          user_id: string
+          violation_count: number | null
+          violation_severity: string | null
+          violations: Json | null
+          workflow_defined: boolean | null
+        }
+        Insert: {
+          boardroom_integration?: boolean | null
+          capabilities_registered?: boolean | null
+          completeness_score?: number | null
+          contracts_defined?: boolean | null
+          created_at?: string
+          deprecation_planned?: boolean | null
+          execution_path_defined?: boolean | null
+          feature_id: string
+          feature_name: string
+          generated_truth_updated?: boolean | null
+          id?: string
+          last_evaluated_at?: string | null
+          memory_effects_declared?: boolean | null
+          metadata?: Json | null
+          observability_defined?: boolean | null
+          owner_declared?: boolean | null
+          policy_defined?: boolean | null
+          readiness_stage?: string | null
+          receipts_defined?: boolean | null
+          rollout_defined?: boolean | null
+          testing_defined?: boolean | null
+          updated_at?: string
+          user_id: string
+          violation_count?: number | null
+          violation_severity?: string | null
+          violations?: Json | null
+          workflow_defined?: boolean | null
+        }
+        Update: {
+          boardroom_integration?: boolean | null
+          capabilities_registered?: boolean | null
+          completeness_score?: number | null
+          contracts_defined?: boolean | null
+          created_at?: string
+          deprecation_planned?: boolean | null
+          execution_path_defined?: boolean | null
+          feature_id?: string
+          feature_name?: string
+          generated_truth_updated?: boolean | null
+          id?: string
+          last_evaluated_at?: string | null
+          memory_effects_declared?: boolean | null
+          metadata?: Json | null
+          observability_defined?: boolean | null
+          owner_declared?: boolean | null
+          policy_defined?: boolean | null
+          readiness_stage?: string | null
+          receipts_defined?: boolean | null
+          rollout_defined?: boolean | null
+          testing_defined?: boolean | null
+          updated_at?: string
+          user_id?: string
+          violation_count?: number | null
+          violation_severity?: string | null
+          violations?: Json | null
+          workflow_defined?: boolean | null
+        }
+        Relationships: []
+      }
+      feature_deprecation_records: {
+        Row: {
+          compatibility_window: string | null
+          contract_deprecation_plan: Json | null
+          created_at: string
+          deprecated_at: string | null
+          feature_id: string
+          feature_name: string
+          generated_truth_cleanup: string[] | null
+          id: string
+          metadata: Json | null
+          migration_path: string | null
+          replacement_owner: string | null
+          retired_at: string | null
+          retirement_status: string | null
+          support_implications: string | null
+          ui_removal_plan: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          compatibility_window?: string | null
+          contract_deprecation_plan?: Json | null
+          created_at?: string
+          deprecated_at?: string | null
+          feature_id: string
+          feature_name: string
+          generated_truth_cleanup?: string[] | null
+          id?: string
+          metadata?: Json | null
+          migration_path?: string | null
+          replacement_owner?: string | null
+          retired_at?: string | null
+          retirement_status?: string | null
+          support_implications?: string | null
+          ui_removal_plan?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          compatibility_window?: string | null
+          contract_deprecation_plan?: Json | null
+          created_at?: string
+          deprecated_at?: string | null
+          feature_id?: string
+          feature_name?: string
+          generated_truth_cleanup?: string[] | null
+          id?: string
+          metadata?: Json | null
+          migration_path?: string | null
+          replacement_owner?: string | null
+          retired_at?: string | null
+          retirement_status?: string | null
+          support_implications?: string | null
+          ui_removal_plan?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      feature_execution_paths: {
+        Row: {
+          brain_core_involvement: boolean | null
+          capability_routing_point: string | null
+          conflict_behavior: string | null
+          connector_runner_path: string | null
+          created_at: string
+          duplicate_suppression: string | null
+          event_emission_point: string | null
+          execution_graph: Json | null
+          executor_entry: string | null
+          feature_id: string
+          id: string
+          idempotency_key_source: string | null
+          ingress_point: string | null
+          metadata: Json | null
+          partial_success_handling: string | null
+          policy_decision_point: string | null
+          receipt_emission_point: string | null
+          replay_safe: boolean | null
+          rollback_behavior: string | null
+          status: string | null
+          updated_at: string
+          user_id: string
+          verification_point: string | null
+        }
+        Insert: {
+          brain_core_involvement?: boolean | null
+          capability_routing_point?: string | null
+          conflict_behavior?: string | null
+          connector_runner_path?: string | null
+          created_at?: string
+          duplicate_suppression?: string | null
+          event_emission_point?: string | null
+          execution_graph?: Json | null
+          executor_entry?: string | null
+          feature_id: string
+          id?: string
+          idempotency_key_source?: string | null
+          ingress_point?: string | null
+          metadata?: Json | null
+          partial_success_handling?: string | null
+          policy_decision_point?: string | null
+          receipt_emission_point?: string | null
+          replay_safe?: boolean | null
+          rollback_behavior?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+          verification_point?: string | null
+        }
+        Update: {
+          brain_core_involvement?: boolean | null
+          capability_routing_point?: string | null
+          conflict_behavior?: string | null
+          connector_runner_path?: string | null
+          created_at?: string
+          duplicate_suppression?: string | null
+          event_emission_point?: string | null
+          execution_graph?: Json | null
+          executor_entry?: string | null
+          feature_id?: string
+          id?: string
+          idempotency_key_source?: string | null
+          ingress_point?: string | null
+          metadata?: Json | null
+          partial_success_handling?: string | null
+          policy_decision_point?: string | null
+          receipt_emission_point?: string | null
+          replay_safe?: boolean | null
+          rollback_behavior?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+          verification_point?: string | null
+        }
+        Relationships: []
+      }
+      feature_generated_truth_impacts: {
+        Row: {
+          artifact_path: string
+          artifact_type: string
+          created_at: string
+          current_state: string | null
+          expected_entries: Json | null
+          feature_id: string
+          id: string
+          impact_description: string | null
+          impact_severity: string | null
+          metadata: Json | null
+          updated_at: string
+          updated_by: string | null
+          user_id: string
+          verified: boolean | null
+          verified_at: string | null
+        }
+        Insert: {
+          artifact_path: string
+          artifact_type: string
+          created_at?: string
+          current_state?: string | null
+          expected_entries?: Json | null
+          feature_id: string
+          id?: string
+          impact_description?: string | null
+          impact_severity?: string | null
+          metadata?: Json | null
+          updated_at?: string
+          updated_by?: string | null
+          user_id: string
+          verified?: boolean | null
+          verified_at?: string | null
+        }
+        Update: {
+          artifact_path?: string
+          artifact_type?: string
+          created_at?: string
+          current_state?: string | null
+          expected_entries?: Json | null
+          feature_id?: string
+          id?: string
+          impact_description?: string | null
+          impact_severity?: string | null
+          metadata?: Json | null
+          updated_at?: string
+          updated_by?: string | null
+          user_id?: string
+          verified?: boolean | null
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      feature_intake_records: {
+        Row: {
+          affected_domains: string[] | null
+          autonomy_tier: string | null
+          capability_classes: string[] | null
+          completeness_score: number | null
+          created_at: string
+          engineering_owner: string | null
+          feature_id: string
+          feature_name: string
+          feature_type: string
+          id: string
+          intake_questions: Json | null
+          intake_status: string | null
+          launch_intent: string | null
+          metadata: Json | null
+          non_goals: string[] | null
+          outcome_statement: string | null
+          owner_rationale: string | null
+          primary_owner: string | null
+          product_owner: string | null
+          risk_tier: string | null
+          support_owner: string | null
+          surface_map: Json | null
+          trust_bearing: boolean | null
+          updated_at: string
+          user_id: string
+          wedge_priority: string | null
+          why_not_elsewhere: string | null
+        }
+        Insert: {
+          affected_domains?: string[] | null
+          autonomy_tier?: string | null
+          capability_classes?: string[] | null
+          completeness_score?: number | null
+          created_at?: string
+          engineering_owner?: string | null
+          feature_id: string
+          feature_name: string
+          feature_type?: string
+          id?: string
+          intake_questions?: Json | null
+          intake_status?: string | null
+          launch_intent?: string | null
+          metadata?: Json | null
+          non_goals?: string[] | null
+          outcome_statement?: string | null
+          owner_rationale?: string | null
+          primary_owner?: string | null
+          product_owner?: string | null
+          risk_tier?: string | null
+          support_owner?: string | null
+          surface_map?: Json | null
+          trust_bearing?: boolean | null
+          updated_at?: string
+          user_id: string
+          wedge_priority?: string | null
+          why_not_elsewhere?: string | null
+        }
+        Update: {
+          affected_domains?: string[] | null
+          autonomy_tier?: string | null
+          capability_classes?: string[] | null
+          completeness_score?: number | null
+          created_at?: string
+          engineering_owner?: string | null
+          feature_id?: string
+          feature_name?: string
+          feature_type?: string
+          id?: string
+          intake_questions?: Json | null
+          intake_status?: string | null
+          launch_intent?: string | null
+          metadata?: Json | null
+          non_goals?: string[] | null
+          outcome_statement?: string | null
+          owner_rationale?: string | null
+          primary_owner?: string | null
+          product_owner?: string | null
+          risk_tier?: string | null
+          support_owner?: string | null
+          surface_map?: Json | null
+          trust_bearing?: boolean | null
+          updated_at?: string
+          user_id?: string
+          wedge_priority?: string | null
+          why_not_elsewhere?: string | null
+        }
+        Relationships: []
+      }
       feature_lifecycle_stages: {
         Row: {
           actor: string | null
@@ -3356,6 +3806,258 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      feature_owner_decisions: {
+        Row: {
+          alternate_candidates: Json | null
+          boundary_violations: Json | null
+          created_at: string
+          decision_status: string | null
+          feature_id: string
+          id: string
+          metadata: Json | null
+          module_drift_risk: boolean | null
+          owner_rationale: string | null
+          primary_owner: string
+          recommendation: string | null
+          second_brain_risk: boolean | null
+          smallest_correct_owner: string | null
+          unsupported_root_risk: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          alternate_candidates?: Json | null
+          boundary_violations?: Json | null
+          created_at?: string
+          decision_status?: string | null
+          feature_id: string
+          id?: string
+          metadata?: Json | null
+          module_drift_risk?: boolean | null
+          owner_rationale?: string | null
+          primary_owner: string
+          recommendation?: string | null
+          second_brain_risk?: boolean | null
+          smallest_correct_owner?: string | null
+          unsupported_root_risk?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          alternate_candidates?: Json | null
+          boundary_violations?: Json | null
+          created_at?: string
+          decision_status?: string | null
+          feature_id?: string
+          id?: string
+          metadata?: Json | null
+          module_drift_risk?: boolean | null
+          owner_rationale?: string | null
+          primary_owner?: string
+          recommendation?: string | null
+          second_brain_risk?: boolean | null
+          smallest_correct_owner?: string | null
+          unsupported_root_risk?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      feature_readiness_gates: {
+        Row: {
+          blockers: Json | null
+          created_at: string
+          current_stage: string | null
+          feature_id: string
+          gate_history: Json | null
+          id: string
+          launch_honesty_risk: string | null
+          metadata: Json | null
+          missing_evidence: string[] | null
+          red_team_answers: Json | null
+          stage_evidence: Json | null
+          support_signoff: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blockers?: Json | null
+          created_at?: string
+          current_stage?: string | null
+          feature_id: string
+          gate_history?: Json | null
+          id?: string
+          launch_honesty_risk?: string | null
+          metadata?: Json | null
+          missing_evidence?: string[] | null
+          red_team_answers?: Json | null
+          stage_evidence?: Json | null
+          support_signoff?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blockers?: Json | null
+          created_at?: string
+          current_stage?: string | null
+          feature_id?: string
+          gate_history?: Json | null
+          id?: string
+          launch_honesty_risk?: string | null
+          metadata?: Json | null
+          missing_evidence?: string[] | null
+          red_team_answers?: Json | null
+          stage_evidence?: Json | null
+          support_signoff?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      feature_rollout_records: {
+        Row: {
+          config_owner: string | null
+          created_at: string
+          current_ring: string | null
+          feature_flags: Json | null
+          feature_id: string
+          id: string
+          kill_switch_class: string | null
+          launch_criteria: Json | null
+          metadata: Json | null
+          migration_requirements: string[] | null
+          monitoring_owner: string | null
+          promotion_gates: Json | null
+          rollback_steps: string[] | null
+          rollout_mode: string | null
+          shadow_sim_progression: Json | null
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          config_owner?: string | null
+          created_at?: string
+          current_ring?: string | null
+          feature_flags?: Json | null
+          feature_id: string
+          id?: string
+          kill_switch_class?: string | null
+          launch_criteria?: Json | null
+          metadata?: Json | null
+          migration_requirements?: string[] | null
+          monitoring_owner?: string | null
+          promotion_gates?: Json | null
+          rollback_steps?: string[] | null
+          rollout_mode?: string | null
+          shadow_sim_progression?: Json | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          config_owner?: string | null
+          created_at?: string
+          current_ring?: string | null
+          feature_flags?: Json | null
+          feature_id?: string
+          id?: string
+          kill_switch_class?: string | null
+          launch_criteria?: Json | null
+          metadata?: Json | null
+          migration_requirements?: string[] | null
+          monitoring_owner?: string | null
+          promotion_gates?: Json | null
+          rollback_steps?: string[] | null
+          rollout_mode?: string | null
+          shadow_sim_progression?: Json | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      feature_spec_records: {
+        Row: {
+          capability_map: Json | null
+          completeness_score: number | null
+          contract_schema_map: Json | null
+          created_at: string
+          execution_model: Json | null
+          feature_id: string
+          feature_name: string
+          generated_truth_updates: Json | null
+          id: string
+          memory_graph_effects: Json | null
+          metadata: Json | null
+          missing_sections: string[] | null
+          observability_support: Json | null
+          outcome_statement: string | null
+          owner_map: Json | null
+          policy_trust_model: Json | null
+          rollout_recovery: Json | null
+          spec_version: string | null
+          status: string | null
+          surface_map: Json | null
+          testing_model: Json | null
+          updated_at: string
+          user_id: string
+          workflow_model: Json | null
+        }
+        Insert: {
+          capability_map?: Json | null
+          completeness_score?: number | null
+          contract_schema_map?: Json | null
+          created_at?: string
+          execution_model?: Json | null
+          feature_id: string
+          feature_name: string
+          generated_truth_updates?: Json | null
+          id?: string
+          memory_graph_effects?: Json | null
+          metadata?: Json | null
+          missing_sections?: string[] | null
+          observability_support?: Json | null
+          outcome_statement?: string | null
+          owner_map?: Json | null
+          policy_trust_model?: Json | null
+          rollout_recovery?: Json | null
+          spec_version?: string | null
+          status?: string | null
+          surface_map?: Json | null
+          testing_model?: Json | null
+          updated_at?: string
+          user_id: string
+          workflow_model?: Json | null
+        }
+        Update: {
+          capability_map?: Json | null
+          completeness_score?: number | null
+          contract_schema_map?: Json | null
+          created_at?: string
+          execution_model?: Json | null
+          feature_id?: string
+          feature_name?: string
+          generated_truth_updates?: Json | null
+          id?: string
+          memory_graph_effects?: Json | null
+          metadata?: Json | null
+          missing_sections?: string[] | null
+          observability_support?: Json | null
+          outcome_statement?: string | null
+          owner_map?: Json | null
+          policy_trust_model?: Json | null
+          rollout_recovery?: Json | null
+          spec_version?: string | null
+          status?: string | null
+          surface_map?: Json | null
+          testing_model?: Json | null
+          updated_at?: string
+          user_id?: string
+          workflow_model?: Json | null
+        }
+        Relationships: []
       }
       file_metadata: {
         Row: {
