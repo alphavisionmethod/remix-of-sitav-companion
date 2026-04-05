@@ -29,6 +29,7 @@ while [[ $# -gt 0 ]]; do
     --version)      VERSION="$2"; shift 2 ;;
     --include-images) INCLUDE_IMAGES=true; shift ;;
     --output-dir)   OUTPUT_DIR="$2"; shift 2 ;;
+    --profile)      PROFILE="$2"; shift 2 ;;
     --help|-h)
       echo "Usage: $0 [OPTIONS]"
       echo ""
@@ -36,6 +37,7 @@ while [[ $# -gt 0 ]]; do
       echo "  --version VERSION    Set OS version (default: 1.0.0)"
       echo "  --include-images     Export and embed Docker images into ISO"
       echo "  --output-dir DIR     Output directory (default: ./dist)"
+      echo "  --profile PROFILE    Build profile: admin or user (default: user)"
       echo "  -h, --help           Show this help"
       exit 0
       ;;
