@@ -1,102 +1,124 @@
 
 
-# Advisor Specialization, Individual Knowledge & Self-Learning
+# SITA OS — Performance, Cloud Updates, Management & ISO Deployment Plan
 
-## Current Gaps
+## What You're Asking (4 Areas)
 
-1. **Edge function `chat-advisor`** uses 6 generic one-paragraph system prompts. All advisors get the same shallow personality. No domain knowledge, no user-specific context injection, no memory of past conversations.
-2. **Self-learning service** is a 13-line in-memory stub. No persistence, no per-advisor learning, no correction tracking, no feedback loop.
-3. **No per-advisor knowledge base** — advisors cannot accumulate domain expertise, remember user corrections, or adapt their behavior over time.
-4. **No conversation memory** — each chat session starts fresh. Advisors forget everything between sessions.
-5. **No correction/feedback pipeline** — when a user says "that's wrong" or thumbs-down a response, nothing is captured or used to improve future responses.
+1. **Make the OS lighter and faster with zero errors**
+2. **Cloud-based OTA updates for each user (drivers + general), fully automatic**
+3. **Manage every aspect of the app and OS from the admin UI (including approvals)**
+4. **Deploy as a bootable Linux ISO**
 
-## What We Build
+## Current State
 
-### 1. Advisor Knowledge Base Service — `src/lib/services/advisor-knowledge/index.ts`
+- **ISO pipeline**: Fully built — `build-iso.sh` downloads Ubuntu 24.04, injects autoinstall, bundles Docker stack, repacks with xorriso. First-boot script generates secrets, configures TLS/firewall/fail2ban, starts the stack.
+- **OTA updates**: `sita-update.sh` exists for A/B root partition swap with rollback. Electron `auto-updater.cjs` checks a feed URL. But there is NO cloud update service, no per-user update channel, no driver management, and no frontend UI for updates.
+- **Admin**: `AdminDashboard.tsx` and `TeamManagement.tsx` exist but are mock-heavy. `ApprovalsCenter.tsx` pulls real data via `useApprovals()`. No unified OS management panel (updates, drivers, storage, network, security) in the admin UI.
+- **Performance**: App has 594 lines in `App.tsx` with 100+ lazy routes. No code splitting beyond lazy imports. No service worker, no asset preloading, no bundle analysis done.
 
-Per-advisor persistent knowledge store. Each advisor accumulates domain-specific knowledge articles that get injected into their system prompt as context.
+## Plan
 
-- `addKnowledge(advisorId, article)` — stores a knowledge entry (title, content, tags, source, confidence)
-- `getRelevantKnowledge(advisorId, query, limit)` — retrieves top-N articles matching the query by tag/keyword overlap
-- `promoteKnowledge(id)` / `deprecateKnowledge(id)` — lifecycle management
-- Persisted to `advisor_knowledge` Supabase table (new migration)
-- Each advisor starts with seed knowledge from their `capabilities` and `description` in the registry
+### Part 1: Performance & Error Prevention (3 files)
 
-### 2. Advisor Memory Service — `src/lib/services/advisor-memory/index.ts`
+**1a. Route Optimization — `src/App.tsx`** (edit)
+- Group routes into feature chunks using dynamic `import()` with webpack magic comments for better code splitting
+- Add error boundaries around each route group to prevent cascading failures
+- Add a global `Suspense` fallback with a branded skeleton loader instead of empty div
 
-Per-advisor, per-user conversational memory. Advisors remember past interactions, decisions, and user preferences.
+**1b. Service Worker for Caching — `public/sw.js`** (new)
+- Cache static assets (JS, CSS, fonts) with cache-first strategy
+- Cache API responses with stale-while-revalidate for dashboard data
+- Register in `src/main.tsx`
 
-- `saveConversationSummary(advisorId, userId, summary)` — stores a compressed summary of each conversation
-- `getRecentMemories(advisorId, userId, limit)` — retrieves last N conversation summaries
-- `saveUserFact(advisorId, userId, fact)` — stores a learned fact about the user ("prefers conservative investments", "has 3 kids")
-- `getUserFacts(advisorId, userId)` — retrieves all known facts for context injection
-- Persisted to `advisor_memories` Supabase table (new migration)
+**1c. Performance Monitor — `src/lib/services/performance-monitor/index.ts`** (new)
+- Track Web Vitals (LCP, FID, CLS) and report to console/analytics
+- Auto-detect slow renders (>100ms) and log warnings
+- Memory leak detection via periodic heap sampling
 
-### 3. Advisor Correction & Feedback Service — `src/lib/services/advisor-feedback/index.ts`
+### Part 2: Cloud OTA Update System (4 files)
 
-Captures user corrections and feedback to improve advisor responses over time.
+**2a. Edge Function — `supabase/functions/system-updates/index.ts`** (new)
+- `GET /system-updates?channel=stable&current_version=1.0.0` — returns latest available update metadata
+- `POST /system-updates/register` — registers a device with its hardware profile, current version, and update channel (stable/beta/canary)
+- `POST /system-updates/report` — device reports update success/failure for telemetry
+- Channels: `stable` (default), `beta` (opt-in), `canary` (internal)
+- Per-user update preferences stored in `system_update_devices` table
 
-- `recordCorrection(advisorId, userId, originalResponse, correction, category)` — stores what went wrong
-- `recordRating(advisorId, userId, messageId, rating, comment)` — thumbs up/down with optional comment
-- `getCorrections(advisorId, limit)` — retrieves recent corrections to inject as "anti-patterns" in system prompt
-- `getAdvisorScore(advisorId)` — computes rolling satisfaction score from ratings
-- `generateLearningFromCorrections(advisorId)` — synthesizes corrections into knowledge articles (calls AI to extract patterns)
-- Persisted to `advisor_feedback` table (new migration)
+**2b. Database Migration** (new)
+- `system_update_releases` — id, version, channel, release_notes, download_url, checksum_sha256, size_bytes, is_critical, created_at
+- `system_update_devices` — id, user_id, device_id, hostname, current_version, channel, hardware_profile (jsonb), last_check_at, last_update_at, auto_update_enabled
+- `system_update_log` — id, device_id, user_id, from_version, to_version, status (pending/downloading/installing/success/failed/rolled_back), started_at, completed_at, error
+- All with RLS: users see only their own devices
 
-### 4. Enhanced Self-Learning Engine — Rewrite `src/lib/services/self-learning/index.ts`
+**2c. Client Update Service — `src/lib/services/system-updates/index.ts`** (new)
+- `checkForUpdates()` — calls edge function, returns update info
+- `getUpdateHistory(deviceId)` — returns past updates for a device
+- `registerDevice(profile)` — registers current device
+- `setUpdateChannel(channel)` — switches between stable/beta/canary
+- `setAutoUpdate(enabled)` — toggles automatic updates
+- Works for both web app (checks for new frontend builds) and OS/Electron (checks for ISO/image updates)
 
-Replace the 13-line stub with a full per-advisor self-learning engine.
+**2d. OS-Level Update Agent — `scripts/release/sita-ota-agent.sh`** (new)
+- Systemd timer runs every 6 hours
+- Calls the edge function to check for updates
+- Downloads update bundle, verifies SHA256 checksum
+- Calls `sita-update.sh` for A/B partition swap
+- Reports result back to cloud
+- Handles driver updates: checks hardware profile, downloads matching driver packages
+- Fully automatic when `auto_update_enabled=true`; prompts via notification when manual
 
-- Per-advisor learning profiles with domain-specific pattern tracking
-- Correction-driven learning: when corrections accumulate (3+ similar), auto-generate a knowledge article
-- Outcome tracking: advisor predictions vs. actual outcomes (e.g., revenue forecast accuracy)
-- Confidence calibration: adjusts advisor confidence thresholds based on historical accuracy
-- Learning decay: old patterns lose weight over time unless reinforced
-- Persists learning signals to `user_memory` with category `advisor_learning`
+### Part 3: Unified OS Management Panel (3 files)
 
-### 5. Deep System Prompts — Rewrite `chat-advisor/index.ts`
+**3a. System Management Page — `src/pages/admin/SystemManagement.tsx`** (new)
+Tabs:
+- **Updates**: Current version, available updates, update channel selector, update history timeline, one-click "Update Now" button, auto-update toggle
+- **Devices**: Registered devices list with version, last-seen, health status
+- **Drivers**: Hardware profile, installed drivers, available driver updates
+- **Storage**: Disk usage breakdown (DB, Docker images, logs, backups), cleanup actions
+- **Network**: Current IP, DNS, firewall status, open ports
+- **Security**: TLS cert status/expiry, fail2ban stats, audit log summary, last security scan
+- **Backups**: Last backup timestamp, restore options, backup schedule config
+- **Approvals**: Embedded view of pending approvals with approve/reject inline (reuses `useApprovals` hook)
 
-Replace the 6 generic prompts with a dynamic prompt builder that assembles per-advisor context:
+**3b. Update Notification Banner — `src/components/sita/UpdateBanner.tsx`** (new)
+- Persistent banner at top of shell when update is available
+- Shows version, release notes preview, "Update Now" / "Remind Later" buttons
+- Critical updates show red banner with countdown
+- Integrates with system-updates service
 
-- **Base personality**: Deep, unique personality and expertise description per advisor (2000+ chars each for all 26 advisors)
-- **Knowledge injection**: Top 10 relevant knowledge articles from `advisor_knowledge` table
-- **Memory injection**: Last 5 conversation summaries + all user facts from `advisor_memories`
-- **Correction guardrails**: Recent corrections formatted as "AVOID: [pattern]" instructions
-- **Cross-advisor context**: Key facts from other advisors that are relevant (e.g., Money Advisor knows business revenue context)
-- **User preferences**: Communication style, detail level, formality from personalization engine
-- Dynamic prompt assembly: `buildAdvisorPrompt(advisorId, userId, query)` constructs the full system prompt
+**3c. Route & Sidebar Integration** (edits to `App.tsx` + `AppSidebar.tsx`)
+- Add `/admin/system` route
+- Add "System" entry under Admin group in sidebar
 
-### 6. Conversation Summarizer — `src/lib/services/advisor-memory/summarizer.ts`
+### Part 4: ISO Deployment Readiness (2 files)
 
-After each conversation ends (or every 10 messages), calls AI to compress the conversation into a structured summary:
+**4a. OTA Agent Systemd Timer — `scripts/release/iso/sita-ota.timer` + `sita-ota.service`** (new)
+- Timer unit: runs `sita-ota-agent.sh` every 6 hours
+- Service unit: executes the OTA check with proper permissions
+- Installed during first-boot
 
-- Key decisions made
-- Facts learned about the user
-- Action items generated
-- Unresolved questions
-- Stored via the Advisor Memory Service for future context injection
-
-### 7. Database Migration
-
-New tables with RLS:
-
-- `advisor_knowledge` — id, advisor_id, user_id, title, content, tags[], source, confidence, status, created_at, updated_at
-- `advisor_memories` — id, advisor_id, user_id, memory_type (summary/fact/preference), content, metadata, created_at
-- `advisor_feedback` — id, advisor_id, user_id, message_id, feedback_type (correction/rating), original_response, corrected_response, rating, category, created_at
-
-All with RLS: users can only access their own rows.
+**4b. First-Boot Enhancement — `scripts/release/iso/sita-first-boot.sh`** (edit)
+- Add step to install and enable the OTA timer
+- Register device with cloud update service on first boot
+- Report initial hardware profile (CPU, RAM, disk, GPU, TPM status)
 
 ## File Summary
 
-| # | File | Type |
-|---|------|------|
-| 1 | Migration: `advisor_knowledge`, `advisor_memories`, `advisor_feedback` tables | New |
-| 2 | `src/lib/services/advisor-knowledge/index.ts` | New |
-| 3 | `src/lib/services/advisor-memory/index.ts` | New |
-| 4 | `src/lib/services/advisor-memory/summarizer.ts` | New |
-| 5 | `src/lib/services/advisor-feedback/index.ts` | New |
-| 6 | `src/lib/services/self-learning/index.ts` | Rewrite |
-| 7 | `supabase/functions/chat-advisor/index.ts` | Rewrite (dynamic prompts + memory + knowledge injection) |
+| # | File | Action |
+|---|------|--------|
+| 1 | `src/App.tsx` | Edit — error boundaries, better suspense |
+| 2 | `public/sw.js` | New — service worker for asset caching |
+| 3 | `src/lib/services/performance-monitor/index.ts` | New — Web Vitals + slow render detection |
+| 4 | `supabase/functions/system-updates/index.ts` | New — cloud update API |
+| 5 | Migration: `system_update_*` tables | New — 3 tables with RLS |
+| 6 | `src/lib/services/system-updates/index.ts` | New — client update service |
+| 7 | `scripts/release/sita-ota-agent.sh` | New — OS-level auto-updater |
+| 8 | `src/pages/admin/SystemManagement.tsx` | New — unified OS management panel |
+| 9 | `src/components/sita/UpdateBanner.tsx` | New — update notification banner |
+| 10 | `src/components/sita/AppSidebar.tsx` | Edit — add System link |
+| 11 | `scripts/release/iso/sita-ota.timer` | New — systemd timer for OTA |
+| 12 | `scripts/release/iso/sita-ota.service` | New — systemd service for OTA |
+| 13 | `scripts/release/iso/sita-first-boot.sh` | Edit — register device + install OTA timer |
 
-**Total: 4 new service files, 2 rewrites, 1 migration. Each advisor becomes a unique specialist that learns, remembers, and improves from every interaction.**
+**Total: 9 new files, 4 edits, 1 migration. Covers performance, cloud updates, full admin management, and ISO deployment readiness.**
 
