@@ -481,6 +481,7 @@ const App = () => (
                     <Route path="/digital-presence/app-studio" element={<AppExperienceStudio />} />
                     <Route path="/digital-presence/analytics" element={<PresenceAnalytics />} />
                     <Route path="/digital-presence/domains" element={<DomainPublishManager />} />
+                    <Route path="/digital-presence/onboarding" element={<DPOOnboarding />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
