@@ -9,7 +9,7 @@ import type { CostClass } from "./model-routing-engine";
 
 // ── Budget Envelope Types ───────────────────────────────────
 
-export type BudgetScope = "tenant" | "workspace" | "agent" | "mission" | "workflow";
+export type BudgetScope = "tenant" | "workspace" | "agent" | "mission" | "workflow" | "domain" | "environment" | "release-cycle" | "async-premium-queue";
 
 export interface BudgetEnvelope {
   envelopeId: string;

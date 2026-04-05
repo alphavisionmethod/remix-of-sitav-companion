@@ -47,3 +47,10 @@ export type {
   BudgetScope, BudgetEnvelope, BudgetStatus,
   BudgetCheckResult, BudgetSpendEvent, SpendForecast,
 } from "./budget-policy-engine";
+
+export {
+  analyzeMissionCosts, createMissionCostRecord, recordInvocation,
+} from "./mission-cost-tracker";
+export type {
+  MissionCostRecord, AgentInvocation, MissionCostAnalysis,
+} from "./mission-cost-tracker";
