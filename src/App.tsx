@@ -903,7 +903,8 @@ const App = () => (
                     <Route path="/admin/ai-agent-debate" element={<AIAgentDebate />} />
                     <Route path="/admin/ai-self-learning" element={<AISelfLearningLedger />} />
                     <Route path="/admin/ai-change-plans" element={<AIChangePlanViewer />} />
-                    <Route path="/admin/ai-boundary-controls" element={<AIHumanBoundaryControls />} />
+                   <Route path="/admin/ai-boundary-controls" element={<AIHumanBoundaryControls />} />
+                   <Route path="/admin/ai-evidence-bundles" element={<AIEvidenceBundleComposer />} />
                     <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
