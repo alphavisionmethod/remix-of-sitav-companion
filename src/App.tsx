@@ -147,7 +147,7 @@ const MobileReceiptDetail = lazy(() => import("./pages/mobile/MobileReceiptDetai
 const MobileApprovalDetail = lazy(() => import("./pages/mobile/MobileApprovalDetail"));
 const MobileSettings = lazy(() => import("./pages/mobile/MobileSettings"));
 
-const queryClient = new QueryClient();
+const queryClient = createQueryClient();
 
 // Premium loading skeleton — uses PageSkeleton for content-aware loading
 import { PageSkeleton } from "@/components/sita/PageSkeleton";
