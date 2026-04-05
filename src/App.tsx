@@ -688,6 +688,7 @@ const App = () => (
                     <Route path="/mission-control/releases" element={<MissionControl />} />
                     <Route path="/mission-control/safe-mode" element={<MissionControl />} />
                     <Route path="/mission-control/permissions" element={<MissionControl />} />
+                    <Route path="/mission-control/platform-truth" element={<MissionControl />} />
 
                     {/* Mission Drill-Downs (Layer 2 — Advanced Ops) */}
                     <Route path="/mission/overview" element={<MissionOverview />} />
