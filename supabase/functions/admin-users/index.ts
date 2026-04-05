@@ -99,9 +99,7 @@ serve(async (req) => {
           details: { role },
         });
 
-        return new Response(JSON.stringify({ success: true }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return corsResponse({ success: true });
       }
 
       if (postAction === "revoke_role") {
