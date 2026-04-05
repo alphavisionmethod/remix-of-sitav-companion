@@ -838,6 +838,4 @@ export function FileAssociationPrompt({ appName, fileType, onSet, onSkip }: {
   );
 }
 
-// ── Re-export Pin icon for use in prompt components ──
-import { Pin, RefreshCw as RefreshCwIcon } from "lucide-react";
-// Note: RefreshCw already imported above, using alias to avoid conflict
+// Pin and RefreshCw imported at top
