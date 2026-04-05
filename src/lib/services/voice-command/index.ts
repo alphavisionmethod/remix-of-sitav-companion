@@ -44,7 +44,7 @@ const INTENT_PATTERNS: Array<{ pattern: RegExp; intent: string; domain: string }
 ];
 
 class VoiceCommandEngine {
-  private recognition: SpeechRecognition | null = null;
+  private recognition: any = null;
   private synthesis: SpeechSynthesis | null = null;
   private status: VoiceCommandStatus = 'idle';
   private config: VoiceConfig = {
