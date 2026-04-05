@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Flame, Users, MessageSquare, Target, Phone, DollarSign, Package, Heart, Star, RefreshCw, AlertTriangle, Eye, Brain } from "lucide-react";
-import { Toggle, ScreenHeader } from "../primitives";
+import { Toggle, ScreenHeader, SectionTitle, SingleSelect } from "../primitives";
+import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
+import { getBottleneckBranch } from "../branching";
 import type { ScreenProps } from "../types";
-import { useCallback } from "react";
 
 const bottlenecks = [
   { id: "lead_flow", label: "Not enough leads coming in", desc: "Pipeline feels empty or unpredictable", icon: Users },
