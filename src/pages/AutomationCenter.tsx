@@ -100,7 +100,7 @@ const AutomationCenter = () => {
       <SitaTabs
         tabs={[
           { key: "rules", label: "Rules", count: rules.length },
-          { key: "MOCK_DELEGATIONS", label: "Delegations", count: MOCK_DELEGATIONS.length },
+          { key: "delegations", label: "Delegations", count: MOCK_DELEGATIONS.length },
           { key: "trust", label: "Trust Levels" },
         ]}
         active={activeTab}
