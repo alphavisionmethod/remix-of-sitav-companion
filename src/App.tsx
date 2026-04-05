@@ -234,6 +234,21 @@ const FIPReadinessGateReview = lazy(() => import("./pages/admin/fip/FIPReadiness
 const FIPDeprecationManager = lazy(() => import("./pages/admin/fip/FIPDeprecationManager"));
 const FIPBuilderConsole = lazy(() => import("./pages/admin/fip/FIPBuilderConsole"));
 
+// SAG — Sovereign AI Gateway
+const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
+const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
+const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
+const SAGProviderHealth = lazy(() => import("./pages/admin/sag/SAGProviderHealth"));
+const SAGPromptRegistry = lazy(() => import("./pages/admin/sag/SAGPromptRegistry"));
+const SAGEconomicsBoard = lazy(() => import("./pages/admin/sag/SAGEconomicsBoard"));
+const SAGCostConfidenceLab = lazy(() => import("./pages/admin/sag/SAGCostConfidenceLab"));
+const SAGMultiStageExplorer = lazy(() => import("./pages/admin/sag/SAGMultiStageExplorer"));
+const SAGReceiptExplorer = lazy(() => import("./pages/admin/sag/SAGReceiptExplorer"));
+const SAGFallbackCenter = lazy(() => import("./pages/admin/sag/SAGFallbackCenter"));
+const SAGBuilderConsole = lazy(() => import("./pages/admin/sag/SAGBuilderConsole"));
+const SAGComplianceGate = lazy(() => import("./pages/admin/sag/SAGComplianceGate"));
+
+
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
@@ -575,6 +590,20 @@ const App = () => (
                     <Route path="/revenue-office/quotes" element={<QuoteStudio />} />
                     <Route path="/revenue-office/calls" element={<CallDesk />} />
                     <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
+
+                    {/* SAG — Sovereign AI Gateway */}
+                    <Route path="/admin/sag/overview" element={<SAGOverview />} />
+                    <Route path="/admin/sag/models" element={<SAGModelRegistry />} />
+                    <Route path="/admin/sag/routing" element={<SAGRoutingPolicy />} />
+                    <Route path="/admin/sag/health" element={<SAGProviderHealth />} />
+                    <Route path="/admin/sag/prompts" element={<SAGPromptRegistry />} />
+                    <Route path="/admin/sag/economics" element={<SAGEconomicsBoard />} />
+                    <Route path="/admin/sag/cost-confidence" element={<SAGCostConfidenceLab />} />
+                    <Route path="/admin/sag/multi-stage" element={<SAGMultiStageExplorer />} />
+                    <Route path="/admin/sag/receipts" element={<SAGReceiptExplorer />} />
+                    <Route path="/admin/sag/fallback" element={<SAGFallbackCenter />} />
+                    <Route path="/admin/sag/builder" element={<SAGBuilderConsole />} />
+                    <Route path="/admin/sag/compliance" element={<SAGComplianceGate />} />
 
 
                     {/* Digital Presence Office */}
