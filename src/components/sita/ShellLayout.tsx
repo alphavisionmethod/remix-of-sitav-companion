@@ -14,6 +14,7 @@ import { KeyboardShortcuts } from "./KeyboardShortcuts";
 import { WelcomeTour } from "./WelcomeTour";
 import { InteractiveTutorial } from "./InteractiveTutorial";
 import { QuickAddWizard, QuickAddFAB } from "./QuickAddWizard";
+import { InteractionTracker } from "./InteractionTracker";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { DesktopEntryCeremony } from "./DesktopEntryCeremony";
 import { PWAInstallPrompt } from "./PWAInstallPrompt";
@@ -170,6 +171,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
       {/* Keyboard Shortcuts Overlay */}
       <KeyboardShortcuts />
+
+      {/* Behavioral Interaction Tracker — invisible */}
+      <InteractionTracker />
     </SidebarProvider>
   );
 };
