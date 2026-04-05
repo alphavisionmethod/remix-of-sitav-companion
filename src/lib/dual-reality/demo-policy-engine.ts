@@ -103,8 +103,8 @@ export function evaluateDemoPolicy(
     return {
       allowed: true,
       reason: `Side effect '${sideEffect}' permitted in ${mode} mode`,
-      executionMode: mode === "real" ? "real" : "simulated",
-      receiptType: def.receiptMode as any,
+      executionMode: "simulated",
+      receiptType: def.receiptMode as DemoPolicyDecision["receiptType"],
     };
   }
 
