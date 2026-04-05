@@ -225,4 +225,11 @@ export class ScenarioIntelligenceEngine {
   getSimulations(domain?: string): ScenarioSimulation[] {
     return domain ? this.simulations.filter(s => s.domain === domain) : this.simulations;
   }
+
+  serialize(): Record<string, unknown> {
+    return { simulations: this.simulations };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.simulations) this.simulations = state.simulations as any;
+  }
 }
