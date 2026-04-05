@@ -237,6 +237,16 @@ const FIPBuilderConsole = lazy(() => import("./pages/admin/fip/FIPBuilderConsole
 // SAG — Sovereign AI Gateway
 const AIRuntimeStatus = lazy(() => import("./pages/admin/AIRuntimeStatus"));
 const PersistenceStatus = lazy(() => import("./pages/admin/PersistenceStatus"));
+const DRS01RealityModeOverview = lazy(() => import("./pages/admin/DRS01RealityModeOverview"));
+const DRS02ModeRegistryConsole = lazy(() => import("./pages/admin/DRS02ModeRegistryConsole"));
+const DRS03ScenarioLibrary = lazy(() => import("./pages/admin/DRS03ScenarioLibrary"));
+const DRS04ScenarioEntityGraph = lazy(() => import("./pages/admin/DRS04ScenarioEntityGraph"));
+const DRS05ProviderConsole = lazy(() => import("./pages/admin/DRS05ProviderConsole"));
+const DRS06DemoPolicySafety = lazy(() => import("./pages/admin/DRS06DemoPolicySafety"));
+const DRS07DemoAIControl = lazy(() => import("./pages/admin/DRS07DemoAIControl"));
+const DRS08AnalyticsSegregation = lazy(() => import("./pages/admin/DRS08AnalyticsSegregation"));
+const DRS09TruthLabeling = lazy(() => import("./pages/admin/DRS09TruthLabeling"));
+const DRS10DualRealityLaunchGate = lazy(() => import("./pages/admin/DRS10DualRealityLaunchGate"));
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
