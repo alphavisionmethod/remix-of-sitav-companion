@@ -1223,6 +1223,7 @@ export default function MissionControlPage() {
     { value: "cab", label: "CAB", icon: GitBranch },
     { value: "comm-graph", label: "Agent Comms", icon: Network },
     { value: "heal-notify", label: "Heal Alerts", icon: BellRing },
+    { value: "platform-truth", label: "Platform Truth", icon: Eye },
   ];
 
   const tabs = isOwner ? ownerTabs : advancedTabs;
