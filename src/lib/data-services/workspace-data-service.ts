@@ -45,3 +45,6 @@ export async function fetchSheets(mode: RealityModeKey = "real"): Promise<ModeAw
 export async function fetchDecks(mode: RealityModeKey = "real"): Promise<ModeAwareResult<MockDeck[]>> {
   return resolveByMode({ mode, realData: null, demoData: DEMO_DECKS, emptyDefault: [] });
 }
+
+// Re-export original rich types for backward compat
+export type { MockDoc as MockDocOriginal, MockSheet as MockSheetOriginal, MockDeck as MockDeckOriginal, MockSlide as MockSlideOriginal } from "@/lib/mock-data/workspace";

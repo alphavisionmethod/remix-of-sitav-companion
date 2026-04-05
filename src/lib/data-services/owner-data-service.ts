@@ -58,3 +58,6 @@ export async function fetchOwnerApprovals(mode: RealityModeKey = "real"): Promis
 export async function fetchPricingItems(mode: RealityModeKey = "real"): Promise<ModeAwareResult<OwnerPricingItem[]>> {
   return resolveByMode({ mode, realData: null, demoData: DEMO_PRICING, emptyDefault: [] });
 }
+
+// Re-export original rich types for backward compat  
+export type { OwnerApprovalItem as OwnerApprovalItemOriginal, OwnerPricingItem as OwnerPricingItemOriginal } from "@/lib/mock-data/owner";

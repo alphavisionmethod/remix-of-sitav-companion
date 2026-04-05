@@ -247,6 +247,9 @@ const DRS07DemoAIControl = lazy(() => import("./pages/admin/DRS07DemoAIControl")
 const DRS08AnalyticsSegregation = lazy(() => import("./pages/admin/DRS08AnalyticsSegregation"));
 const DRS09TruthLabeling = lazy(() => import("./pages/admin/DRS09TruthLabeling"));
 const DRS10DualRealityLaunchGate = lazy(() => import("./pages/admin/DRS10DualRealityLaunchGate"));
+const MockEliminationCenter = lazy(() => import("./pages/admin/MockEliminationCenter"));
+const DomainRealityBoard = lazy(() => import("./pages/admin/DomainRealityBoard"));
+const RouteSourceDiagnostics = lazy(() => import("./pages/admin/RouteSourceDiagnostics"));
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
@@ -616,6 +619,9 @@ const App = () => (
                     <Route path="/admin/drs/analytics" element={<DRS08AnalyticsSegregation />} />
                     <Route path="/admin/drs/truth" element={<DRS09TruthLabeling />} />
                     <Route path="/admin/drs/launch-gate" element={<DRS10DualRealityLaunchGate />} />
+                    <Route path="/admin/mock-elimination" element={<MockEliminationCenter />} />
+                    <Route path="/admin/domain-reality" element={<DomainRealityBoard />} />
+                    <Route path="/admin/route-diagnostics" element={<RouteSourceDiagnostics />} />
 
                     {/* SAG — Sovereign AI Gateway */}
                     <Route path="/admin/sag/overview" element={<SAGOverview />} />

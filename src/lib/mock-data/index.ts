@@ -139,3 +139,9 @@ export const IS_DEV_MODE = import.meta.env.DEV;
 export function devOnly<T>(data: T[]): T[] {
   return IS_DEV_MODE ? data : [];
 }
+
+// ── Demo Source Classification ─────────────────────────────────
+// All exports from this module are DEMO SCENARIO DATA.
+// In real mode, pages should consume mode-aware data services.
+// This classification is used by the Dual Reality system.
+export { __DEMO_SOURCE__, __DATA_CLASSIFICATION__, isDemoViolation } from "./_demo-source-marker";
