@@ -359,6 +359,11 @@ const App = () => (
                     <Route path="/investments/conviction" element={<ConvictionEngine />} />
                     <Route path="/investments/sizing" element={<PositionSizingCoach />} />
                     <Route path="/investments/modes" element={<OperatingModes />} />
+                    <Route path="/investments/readiness" element={<DecisionReadiness />} />
+                    <Route path="/investments/capital-purpose" element={<CapitalPurpose />} />
+                    <Route path="/investments/what-would-break" element={<WhatWouldBreak />} />
+                    <Route path="/investments/disagreements" element={<DisagreementEngine />} />
+                    <Route path="/investments/family-office" element={<FamilyOffice />} />
                     <Route path="/money/investments" element={<InvestmentGate />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
