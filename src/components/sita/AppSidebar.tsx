@@ -16,6 +16,7 @@ import { useState } from "react";
 
 const primaryNav = [
   { title: "Daily Pulse", url: "/", icon: Home },
+  { title: "Brain", url: "/personal-brain", icon: Brain },
   { title: "Life Dashboard", url: "/life", icon: Heart },
   { title: "Business", url: "/business", icon: Briefcase },
   { title: "Money", url: "/money", icon: DollarSign },
