@@ -46,7 +46,7 @@ export default function DRS04ScenarioEntityGraph() {
       {Object.keys(typeGroups).length === 0 ? (
         <Card><CardContent className="py-12 text-center"><Network className="h-8 w-8 text-muted-foreground mx-auto mb-3" /><p className="text-sm text-muted-foreground">No scenario entities yet. Seed a demo scenario to populate.</p></CardContent></Card>
       ) : (
-        Object.entries(typeGroups).map(([type, entities]) => (
+        Object.entries(typeGroups).map(([type, entities]: [string, any[]]) => (
           <Card key={type}>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm flex items-center gap-2">
