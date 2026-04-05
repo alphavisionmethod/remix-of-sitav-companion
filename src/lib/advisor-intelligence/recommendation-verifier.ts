@@ -32,7 +32,7 @@ function critiqueFactuality(rec: RecommendationV2, spec: AdvisorSpecializationCo
 }
 
 function critiqueEvidenceSufficiency(rec: RecommendationV2, spec: AdvisorSpecializationContract): CritiqueResult {
-  const { evidence } = rec;
+  const evidence = rec.evidenceBundle;
   if (evidence.totalSources === 0) {
     return {
       type: "evidence-sufficiency",
