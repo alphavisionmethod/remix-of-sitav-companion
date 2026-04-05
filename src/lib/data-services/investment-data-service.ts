@@ -19,8 +19,8 @@ const DEMO_POSITIONS: Position[] = [
 ];
 
 const DEMO_THESES: Thesis[] = [
-  { id: "t1", title: "AI Infrastructure Buildout", status: "active", conviction: "high", horizon: "3-5 years", allocatedPct: 15, notes: "Long-term bet on AI compute demand" },
-  { id: "t2", title: "Rate Normalization", status: "active", conviction: "medium", horizon: "1-2 years", allocatedPct: 10, notes: "Expect rate cuts to benefit bonds/REITS" },
+  { id: "t1", title: "AI Infrastructure Buildout", asset: "NVDA", direction: "long", rationale: "AI compute demand", catalysts: ["GTC"], invalidationConditions: [], sizeLogic: "15%", regimeContext: "bull", confidence: 0.85, status: "active" } as any,
+  { id: "t2", title: "Rate Normalization", asset: "BND", direction: "long", rationale: "Rate cuts benefit bonds", catalysts: ["Fed"], invalidationConditions: [], sizeLogic: "10%", regimeContext: "neutral", confidence: 0.65, status: "active" } as any,
 ];
 
 export async function fetchCapitalBuckets(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CapitalBucket[]>> {
