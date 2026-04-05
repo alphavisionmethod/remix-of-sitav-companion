@@ -252,6 +252,10 @@ const ErrorRadar = lazy(() => import("./pages/digital-presence/ErrorRadar"));
 const ContentFreshness = lazy(() => import("./pages/digital-presence/ContentFreshness"));
 const LaunchWarRoom = lazy(() => import("./pages/digital-presence/LaunchWarRoom"));
 const PresenceTimeMachine = lazy(() => import("./pages/digital-presence/PresenceTimeMachine"));
+const SelfHealingQueue = lazy(() => import("./pages/digital-presence/SelfHealingQueue"));
+const AppExperienceStudio = lazy(() => import("./pages/digital-presence/AppExperienceStudio"));
+const PresenceAnalytics = lazy(() => import("./pages/digital-presence/PresenceAnalytics"));
+const DomainPublishManager = lazy(() => import("./pages/digital-presence/DomainPublishManager"));
 
 const queryClient = createQueryClient();
 
@@ -472,6 +476,10 @@ const App = () => (
                     <Route path="/digital-presence/content-freshness" element={<ContentFreshness />} />
                     <Route path="/digital-presence/launch" element={<LaunchWarRoom />} />
                     <Route path="/digital-presence/time-machine" element={<PresenceTimeMachine />} />
+                    <Route path="/digital-presence/self-healing" element={<SelfHealingQueue />} />
+                    <Route path="/digital-presence/app-studio" element={<AppExperienceStudio />} />
+                    <Route path="/digital-presence/analytics" element={<PresenceAnalytics />} />
+                    <Route path="/digital-presence/domains" element={<DomainPublishManager />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
