@@ -34,10 +34,10 @@ async function fetchLeads() {
     company: l.company ?? "",
     source: l.source ?? "Unknown",
     status: l.status === "new" ? "new" : l.status === "contacted" ? "contacted" : l.status === "qualified" ? "qualified" : "cooling",
-    score: l.lead_score ?? 50,
-    value: `$${(l.estimated_value ?? 0).toLocaleString()}`,
+    score: l.opportunity_score ?? 50,
+    value: `$${(l.likely_value ?? 0).toLocaleString()}`,
     lastTouch: l.last_contact_at ? new Date(l.last_contact_at).toLocaleDateString() : "Unknown",
-    nextAction: "Follow up",
+    nextAction: l.next_action ?? "Follow up",
   }));
 }
 
@@ -45,12 +45,12 @@ async function fetchInvoices() {
   const { data } = await supabase.from("invoices").select("*").order("due_date", { ascending: true }).limit(20);
   if (!data || data.length === 0) return null;
   return data.map(i => ({
-    id: `INV-${i.id.substring(0, 3).toUpperCase()}`,
-    client: i.customer_name ?? "Unknown",
+    id: i.invoice_number ?? `INV-${i.id.substring(0, 3).toUpperCase()}`,
+    client: i.customer_id ?? "Unknown",
     amount: `$${(i.amount ?? 0).toLocaleString()}`,
     status: i.status as string,
     dueDate: i.due_date ? new Date(i.due_date).toLocaleDateString() : "N/A",
-    paidDate: i.paid_at ? new Date(i.paid_at).toLocaleDateString() : null,
+    paidDate: i.status === "paid" ? new Date(i.updated_at).toLocaleDateString() : null,
   }));
 }
 
