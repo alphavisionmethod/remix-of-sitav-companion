@@ -1640,6 +1640,80 @@ export type Database = {
         }
         Relationships: []
       }
+      change_impact_records: {
+        Row: {
+          affected_contracts: Json
+          affected_domains: Json
+          affected_journeys: Json
+          affected_launch_gates: Json
+          affected_probes: Json
+          affected_routes: Json
+          bundle_perf_risks: Json
+          change_title: string
+          change_type: string
+          created_at: string
+          id: string
+          migration_risks: Json
+          rollout_risks: Json
+          severity: string
+          source_blueprint_id: string | null
+          status: string
+          trust_risks: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          affected_contracts?: Json
+          affected_domains?: Json
+          affected_journeys?: Json
+          affected_launch_gates?: Json
+          affected_probes?: Json
+          affected_routes?: Json
+          bundle_perf_risks?: Json
+          change_title: string
+          change_type?: string
+          created_at?: string
+          id?: string
+          migration_risks?: Json
+          rollout_risks?: Json
+          severity?: string
+          source_blueprint_id?: string | null
+          status?: string
+          trust_risks?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          affected_contracts?: Json
+          affected_domains?: Json
+          affected_journeys?: Json
+          affected_launch_gates?: Json
+          affected_probes?: Json
+          affected_routes?: Json
+          bundle_perf_risks?: Json
+          change_title?: string
+          change_type?: string
+          created_at?: string
+          id?: string
+          migration_risks?: Json
+          rollout_risks?: Json
+          severity?: string
+          source_blueprint_id?: string | null
+          status?: string
+          trust_risks?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "change_impact_records_source_blueprint_id_fkey"
+            columns: ["source_blueprint_id"]
+            isOneToOne: false
+            referencedRelation: "feature_blueprints"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       change_plans: {
         Row: {
           approval_required: boolean | null
@@ -2355,6 +2429,190 @@ export type Database = {
         }
         Relationships: []
       }
+      delivery_templates: {
+        Row: {
+          archetype_key: string
+          created_at: string
+          expected_components: Json
+          expected_contracts: Json
+          expected_files: Json
+          expected_interactions: Json
+          expected_journey_tests: Json
+          expected_persistence: Json
+          expected_shell: string | null
+          expected_truth_registration: Json
+          id: string
+          loading_error_degraded: Json
+          template_name: string
+          updated_at: string
+        }
+        Insert: {
+          archetype_key: string
+          created_at?: string
+          expected_components?: Json
+          expected_contracts?: Json
+          expected_files?: Json
+          expected_interactions?: Json
+          expected_journey_tests?: Json
+          expected_persistence?: Json
+          expected_shell?: string | null
+          expected_truth_registration?: Json
+          id?: string
+          loading_error_degraded?: Json
+          template_name: string
+          updated_at?: string
+        }
+        Update: {
+          archetype_key?: string
+          created_at?: string
+          expected_components?: Json
+          expected_contracts?: Json
+          expected_files?: Json
+          expected_interactions?: Json
+          expected_journey_tests?: Json
+          expected_persistence?: Json
+          expected_shell?: string | null
+          expected_truth_registration?: Json
+          id?: string
+          loading_error_degraded?: Json
+          template_name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "delivery_templates_archetype_key_fkey"
+            columns: ["archetype_key"]
+            isOneToOne: false
+            referencedRelation: "feature_archetypes"
+            referencedColumns: ["archetype_key"]
+          },
+        ]
+      }
+      delivery_waves: {
+        Row: {
+          completion_pct: number
+          created_at: string
+          dependency_groups: Json
+          domain_focus: Json
+          feature_ids: Json
+          id: string
+          launch_impact: string
+          migration_opportunities: Json
+          notes: string | null
+          status: string
+          target_end: string | null
+          target_start: string | null
+          updated_at: string
+          user_id: string
+          wave_name: string
+          wave_number: number
+        }
+        Insert: {
+          completion_pct?: number
+          created_at?: string
+          dependency_groups?: Json
+          domain_focus?: Json
+          feature_ids?: Json
+          id?: string
+          launch_impact?: string
+          migration_opportunities?: Json
+          notes?: string | null
+          status?: string
+          target_end?: string | null
+          target_start?: string | null
+          updated_at?: string
+          user_id: string
+          wave_name: string
+          wave_number?: number
+        }
+        Update: {
+          completion_pct?: number
+          created_at?: string
+          dependency_groups?: Json
+          domain_focus?: Json
+          feature_ids?: Json
+          id?: string
+          launch_impact?: string
+          migration_opportunities?: Json
+          notes?: string | null
+          status?: string
+          target_end?: string | null
+          target_start?: string | null
+          updated_at?: string
+          user_id?: string
+          wave_name?: string
+          wave_number?: number
+        }
+        Relationships: []
+      }
+      dependency_maps: {
+        Row: {
+          blueprint_id: string | null
+          created_at: string
+          feature_id: string
+          id: string
+          launch_gates: Json
+          required_contracts: Json
+          required_events: Json
+          required_journey_tests: Json
+          required_policies: Json
+          required_probes: Json
+          required_projections: Json
+          required_proofs: Json
+          required_services: Json
+          resolved_count: number
+          total_count: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blueprint_id?: string | null
+          created_at?: string
+          feature_id: string
+          id?: string
+          launch_gates?: Json
+          required_contracts?: Json
+          required_events?: Json
+          required_journey_tests?: Json
+          required_policies?: Json
+          required_probes?: Json
+          required_projections?: Json
+          required_proofs?: Json
+          required_services?: Json
+          resolved_count?: number
+          total_count?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blueprint_id?: string | null
+          created_at?: string
+          feature_id?: string
+          id?: string
+          launch_gates?: Json
+          required_contracts?: Json
+          required_events?: Json
+          required_journey_tests?: Json
+          required_policies?: Json
+          required_probes?: Json
+          required_projections?: Json
+          required_proofs?: Json
+          required_services?: Json
+          resolved_count?: number
+          total_count?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dependency_maps_blueprint_id_fkey"
+            columns: ["blueprint_id"]
+            isOneToOne: false
+            referencedRelation: "feature_blueprints"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       device_statuses: {
         Row: {
           created_at: string
@@ -2675,6 +2933,66 @@ export type Database = {
         }
         Relationships: []
       }
+      domain_methodology_packs: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_name: string
+          domain_key: string
+          expected_events: Json
+          expected_interactions: Json
+          expected_routes: Json
+          id: string
+          maturity_target: string
+          readiness_rules: Json
+          required_boards: Json
+          required_contracts: Json
+          required_proofs: Json
+          required_shells: Json
+          updated_at: string
+          user_id: string
+          verification_flows: Json
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_name: string
+          domain_key: string
+          expected_events?: Json
+          expected_interactions?: Json
+          expected_routes?: Json
+          id?: string
+          maturity_target?: string
+          readiness_rules?: Json
+          required_boards?: Json
+          required_contracts?: Json
+          required_proofs?: Json
+          required_shells?: Json
+          updated_at?: string
+          user_id: string
+          verification_flows?: Json
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          domain_key?: string
+          expected_events?: Json
+          expected_interactions?: Json
+          expected_routes?: Json
+          id?: string
+          maturity_target?: string
+          readiness_rules?: Json
+          required_boards?: Json
+          required_contracts?: Json
+          required_proofs?: Json
+          required_shells?: Json
+          updated_at?: string
+          user_id?: string
+          verification_flows?: Json
+        }
+        Relationships: []
+      }
       encrypted_secrets: {
         Row: {
           created_at: string | null
@@ -2833,6 +3151,211 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      feature_archetypes: {
+        Row: {
+          archetype_key: string
+          created_at: string
+          default_interaction_criticality: string
+          default_persistence_class: string
+          default_trust_level: string
+          description: string | null
+          display_name: string
+          expected_components: Json
+          expected_contracts: Json
+          expected_events: Json
+          expected_probes: Json
+          expected_shells: Json
+          id: string
+          loading_states: Json
+          updated_at: string
+        }
+        Insert: {
+          archetype_key: string
+          created_at?: string
+          default_interaction_criticality?: string
+          default_persistence_class?: string
+          default_trust_level?: string
+          description?: string | null
+          display_name: string
+          expected_components?: Json
+          expected_contracts?: Json
+          expected_events?: Json
+          expected_probes?: Json
+          expected_shells?: Json
+          id?: string
+          loading_states?: Json
+          updated_at?: string
+        }
+        Update: {
+          archetype_key?: string
+          created_at?: string
+          default_interaction_criticality?: string
+          default_persistence_class?: string
+          default_trust_level?: string
+          description?: string | null
+          display_name?: string
+          expected_components?: Json
+          expected_contracts?: Json
+          expected_events?: Json
+          expected_probes?: Json
+          expected_shells?: Json
+          id?: string
+          loading_states?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      feature_blueprints: {
+        Row: {
+          ai_compute_class: string
+          approved_at: string | null
+          approved_by: string | null
+          archetype_key: string | null
+          contract_class: string
+          created_at: string
+          description: string | null
+          domain: string
+          feature_id: string
+          id: string
+          interaction_criticality: string
+          journey_criticality: string
+          launch_criticality: string
+          metadata: Json
+          ownership: string | null
+          persistence_class: string
+          reality_target: string
+          route_plan: Json
+          schema_needs: Json
+          service_location: string | null
+          status: string
+          title: string
+          trust_needs: string
+          updated_at: string
+          user_id: string
+          user_intent: string | null
+        }
+        Insert: {
+          ai_compute_class?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          archetype_key?: string | null
+          contract_class?: string
+          created_at?: string
+          description?: string | null
+          domain: string
+          feature_id: string
+          id?: string
+          interaction_criticality?: string
+          journey_criticality?: string
+          launch_criticality?: string
+          metadata?: Json
+          ownership?: string | null
+          persistence_class?: string
+          reality_target?: string
+          route_plan?: Json
+          schema_needs?: Json
+          service_location?: string | null
+          status?: string
+          title: string
+          trust_needs?: string
+          updated_at?: string
+          user_id: string
+          user_intent?: string | null
+        }
+        Update: {
+          ai_compute_class?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          archetype_key?: string | null
+          contract_class?: string
+          created_at?: string
+          description?: string | null
+          domain?: string
+          feature_id?: string
+          id?: string
+          interaction_criticality?: string
+          journey_criticality?: string
+          launch_criticality?: string
+          metadata?: Json
+          ownership?: string | null
+          persistence_class?: string
+          reality_target?: string
+          route_plan?: Json
+          schema_needs?: Json
+          service_location?: string | null
+          status?: string
+          title?: string
+          trust_needs?: string
+          updated_at?: string
+          user_id?: string
+          user_intent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feature_blueprints_archetype_key_fkey"
+            columns: ["archetype_key"]
+            isOneToOne: false
+            referencedRelation: "feature_archetypes"
+            referencedColumns: ["archetype_key"]
+          },
+        ]
+      }
+      feature_lifecycle_stages: {
+        Row: {
+          actor: string | null
+          blockers: Json
+          blueprint_id: string | null
+          created_at: string
+          entered_at: string
+          evidence: Json
+          exited_at: string | null
+          feature_id: string
+          id: string
+          notes: string | null
+          stage: string
+          stage_order: number
+          user_id: string
+        }
+        Insert: {
+          actor?: string | null
+          blockers?: Json
+          blueprint_id?: string | null
+          created_at?: string
+          entered_at?: string
+          evidence?: Json
+          exited_at?: string | null
+          feature_id: string
+          id?: string
+          notes?: string | null
+          stage?: string
+          stage_order?: number
+          user_id: string
+        }
+        Update: {
+          actor?: string | null
+          blockers?: Json
+          blueprint_id?: string | null
+          created_at?: string
+          entered_at?: string
+          evidence?: Json
+          exited_at?: string | null
+          feature_id?: string
+          id?: string
+          notes?: string | null
+          stage?: string
+          stage_order?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feature_lifecycle_stages_blueprint_id_fkey"
+            columns: ["blueprint_id"]
+            isOneToOne: false
+            referencedRelation: "feature_blueprints"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       file_metadata: {
         Row: {
@@ -6354,6 +6877,63 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_maturity_scores: {
+        Row: {
+          automation_level: number
+          composite_score: number
+          contract_coverage: number
+          created_at: string
+          id: string
+          interaction_coverage: number
+          launch_readiness: number
+          measured_at: string
+          metadata: Json
+          persistence_level: number
+          proof_level: number
+          scope_id: string
+          scope_label: string
+          scope_type: string
+          truth_level: number
+          user_id: string
+        }
+        Insert: {
+          automation_level?: number
+          composite_score?: number
+          contract_coverage?: number
+          created_at?: string
+          id?: string
+          interaction_coverage?: number
+          launch_readiness?: number
+          measured_at?: string
+          metadata?: Json
+          persistence_level?: number
+          proof_level?: number
+          scope_id: string
+          scope_label: string
+          scope_type?: string
+          truth_level?: number
+          user_id: string
+        }
+        Update: {
+          automation_level?: number
+          composite_score?: number
+          contract_coverage?: number
+          created_at?: string
+          id?: string
+          interaction_coverage?: number
+          launch_readiness?: number
+          measured_at?: string
+          metadata?: Json
+          persistence_level?: number
+          proof_level?: number
+          scope_id?: string
+          scope_label?: string
+          scope_type?: string
+          truth_level?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       platform_mutation_receipts: {
         Row: {
           actor: string
@@ -7921,6 +8501,57 @@ export type Database = {
           id?: string
           payload?: Json | null
           type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      remediation_suggestions: {
+        Row: {
+          auto_fixable: boolean
+          created_at: string
+          gap_description: string
+          gap_type: string
+          id: string
+          priority: string
+          resolved_at: string | null
+          status: string
+          suggested_action: string
+          suggested_artifacts: Json
+          target_id: string
+          target_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auto_fixable?: boolean
+          created_at?: string
+          gap_description: string
+          gap_type: string
+          id?: string
+          priority?: string
+          resolved_at?: string | null
+          status?: string
+          suggested_action: string
+          suggested_artifacts?: Json
+          target_id: string
+          target_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auto_fixable?: boolean
+          created_at?: string
+          gap_description?: string
+          gap_type?: string
+          id?: string
+          priority?: string
+          resolved_at?: string | null
+          status?: string
+          suggested_action?: string
+          suggested_artifacts?: Json
+          target_id?: string
+          target_type?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
