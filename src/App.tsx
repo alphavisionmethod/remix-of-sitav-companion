@@ -270,6 +270,9 @@ const DeploymentTruthCenter = lazy(() => import("./pages/atlas/DeploymentTruthCe
 const OperationsCommandCenter = lazy(() => import("./pages/atlas/OperationsCommandCenter"));
 const ConnectorControlCenter = lazy(() => import("./pages/atlas/ConnectorControlCenter"));
 const ConciergeCommandCenter = lazy(() => import("./pages/atlas/ConciergeCommandCenter"));
+const PlatformTruthRegistry = lazy(() => import("./pages/atlas/PlatformTruthRegistry"));
+const DataProtectionPosture = lazy(() => import("./pages/atlas/DataProtectionPosture"));
+const ValidationCommandCenter = lazy(() => import("./pages/atlas/ValidationCommandCenter"));
 
 const queryClient = createQueryClient();
 
