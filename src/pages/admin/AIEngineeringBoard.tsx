@@ -124,9 +124,20 @@ const attentionColor = (severity: string) =>
 const AIEngineeringBoard = () => {
   const [tab, setTab] = useState("overview");
 
-  return (
-    <div className="space-y-6 p-6">
-      <AdminPageHeader icon={Brain} title="AI Engineering Board" subtitle="Your AI engineering department — goals, fixes, healing, approvals, and release confidence" accent="primary" />
+  const chiefSynthesis = useMemo(() => generateChiefSynthesis({
+    activeMissions: 5, blockedMissions: 1, completedMissions: 12,
+    criticalIssues: 2, selfHealSuccessRate: 92, releaseConfidence: 82,
+    topRisk: "Projection cache corruption affecting admin dashboards",
+    topOpportunity: "Self-healing maturity allows expanding auto-heal to low-risk UI fixes",
+    agentDisagreements: [
+      { topic: "Admin shell optimization approach", positions: [
+        { agent: "Performance Optimizer", position: "Lazy imports + Suspense boundaries" },
+        { agent: "Frontend Engineer", position: "Route-level code splitting first" },
+      ]},
+    ],
+  }), []);
+
+  const integrationHealth = useMemo(() => getIntegrationHealthSummary(), []);
 
       {/* A. Engineering Overview Band */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
