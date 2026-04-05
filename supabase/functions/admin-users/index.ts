@@ -56,14 +56,13 @@ serve(async (req) => {
     }
 
     if (req.method === "POST") {
-      const body = await req.json();
-      const { action: postAction, target_user_id } = body;
-
-      if (!target_user_id) {
-        return new Response(JSON.stringify({ error: "target_user_id required" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
+      const body = await validateBody(req, {
+        action: { type: "string", required: true, enum: ["suspend", "unsuspend", "assign_role", "revoke_role"] },
+        target_user_id: { type: "string", required: true, maxLength: 255 },
+        role: { type: "string", maxLength: 50 },
+      });
+      if (body instanceof Response) return body;
+      const { action: postAction, target_user_id, role } = body as { action: string; target_user_id: string; role?: string };
 
       if (postAction === "suspend") {
         const { error } = await adminClient.auth.admin.updateUserById(target_user_id, {
