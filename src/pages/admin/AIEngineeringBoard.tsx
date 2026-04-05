@@ -8,66 +8,88 @@ import {
   Brain, AlertTriangle, CheckCircle2, Shield, Zap, Clock, TrendingUp,
   Users, Wrench, Eye, RotateCcw, Sparkles, Activity, ArrowUpRight,
   Bug, Gauge, Rocket, ShieldCheck, FileCheck, Target, Palette,
-  GitBranch, Network, History, MessageSquare, BookOpen
+  GitBranch, Network, History, MessageSquare, BookOpen, FileText, XCircle
 } from "lucide-react";
 
 // ═══════════════════════════════════════════════════════════════
-// EXECUTIVE LAYER — What operators see first
+// DATA — Engineering Overview Band
 // ═══════════════════════════════════════════════════════════════
-const EXEC_CARDS = [
-  { label: "Issues Need Attention", value: 12, icon: AlertTriangle, color: "text-amber-500", bg: "bg-amber-500/10" },
-  { label: "Fixes Ready", value: 4, icon: Wrench, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
-  { label: "Auto-Heals Applied", value: 3, icon: Sparkles, color: "text-primary", bg: "bg-primary/10" },
+const OVERVIEW_BAND = [
+  { label: "Open Issues", value: 12, icon: AlertTriangle, color: "text-amber-500", bg: "bg-amber-500/10" },
+  { label: "Critical Issues", value: 2, icon: XCircle, color: "text-destructive", bg: "bg-destructive/10" },
+  { label: "Active Missions", value: 5, icon: Target, color: "text-primary", bg: "bg-primary/10" },
+  { label: "Self-Heal Rate", value: "92%", icon: Sparkles, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
   { label: "Release Confidence", value: "82%", icon: Rocket, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
-  { label: "Quality Score", value: "87", icon: ShieldCheck, color: "text-primary", bg: "bg-primary/10" },
+  { label: "Regression Risk", value: "Low", icon: Shield, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
+  { label: "Verification Health", value: "94%", icon: ShieldCheck, color: "text-primary", bg: "bg-primary/10" },
   { label: "Approvals Waiting", value: 2, icon: Clock, color: "text-amber-500", bg: "bg-amber-500/10" },
 ];
 
-const INCIDENTS = [
-  { title: "Elevated error rate on /api/projections", severity: "high" as const, duration: "18m", assigned: "Reliability Engineer", rootCause: "Cache invalidation race" },
-  { title: "Stale cache serving old brand kit colors", severity: "medium" as const, duration: "42m", assigned: "Backend Engineer", rootCause: "CDN TTL too long" },
+// Needs Attention
+const ATTENTION_ITEMS = [
+  { title: "Elevated 500 errors on /api/projections/rebuild", type: "critical-issue", severity: "critical" as const, agent: "Reliability Engineer", time: "18m" },
+  { title: "Admin shell LCP 3.2s — exceeds 1.5s budget", type: "regression", severity: "high" as const, agent: "Performance Optimizer", time: "4h" },
+  { title: "Failed self-heal: layout restore caused secondary shift", type: "failed-heal", severity: "medium" as const, agent: "Self-Healing Supervisor", time: "1d" },
+  { title: "Release gate failing: Performance Budget", type: "release-gate", severity: "high" as const, agent: "Release Manager", time: "35m" },
+  { title: "Projection cache fix — awaiting approval", type: "blocked-change", severity: "high" as const, agent: "Backend Engineer", time: "2h" },
 ];
 
-const REGRESSIONS = [
-  { area: "Admin Shell", metric: "LCP", before: "1.1s", after: "3.2s", change: "+191%", detected: "2h ago", cause: "Synchronous imports added" },
-  { area: "Approval Flow", metric: "Test Pass Rate", before: "100%", after: "94%", change: "-6%", detected: "4h ago", cause: "Timing-dependent assertions" },
+// Agent Signal Rail
+const AGENT_SIGNALS = [
+  { name: "Engineering Lead", signal: "Coordinating shell performance sprint", confidence: 92, autonomy: "supervised", escalation: false, tasks: 3 },
+  { name: "Backend Engineer", signal: "Projection mutex lock ready for review", confidence: 88, autonomy: "draft-only", escalation: false, tasks: 2 },
+  { name: "Frontend Engineer", signal: "Accessibility sweep — 2 violations remaining", confidence: 85, autonomy: "supervised", escalation: false, tasks: 4 },
+  { name: "Design Engineer", signal: "Admin header redesign proposed", confidence: 79, autonomy: "draft-only", escalation: false, tasks: 2 },
+  { name: "QA Engineer", signal: "Generated 8 new regression tests", confidence: 91, autonomy: "auto-low-risk", escalation: false, tasks: 3 },
+  { name: "Error Fixer", signal: "Analyzing projection error cluster — 14 signals", confidence: 84, autonomy: "supervised", escalation: true, tasks: 5 },
+  { name: "Reliability Engineer", signal: "Monitoring elevated error rate", confidence: 90, autonomy: "auto-low-risk", escalation: false, tasks: 2 },
+  { name: "Security Reviewer", signal: "Schema migration risk — escalated to human", confidence: 87, autonomy: "observe-only", escalation: true, tasks: 1 },
+  { name: "Performance Optimizer", signal: "Admin shell lazy import analysis", confidence: 76, autonomy: "supervised", escalation: false, tasks: 2 },
+  { name: "Release Manager", signal: "Staging promotion blocked — perf gate", confidence: 82, autonomy: "supervised", escalation: false, tasks: 1 },
+  { name: "Self-Healing Supervisor", signal: "Cache auto-heal verified ✓", confidence: 88, autonomy: "auto-low-risk", escalation: false, tasks: 3 },
+  { name: "Learning Analyst", signal: "New pattern: flag rollbacks within 2h", confidence: 71, autonomy: "observe-only", escalation: false, tasks: 1 },
+  { name: "Docs Engineer", signal: "Deployment runbook updated", confidence: 93, autonomy: "auto-low-risk", escalation: false, tasks: 0 },
 ];
 
-const RECENT_ACTIONS = [
-  { action: "Auto-fixed broken route mapping /admin/durability", agent: "Error Fixer", time: "12m ago", type: "auto-heal" as const },
+// Mission Lane
+const MISSIONS = [
+  { title: "Fix projection cache corruption", agent: "Backend Engineer", progress: 75, status: "ready_for_approval", blocker: "Awaiting human approval", confidence: 87 },
+  { title: "Reduce admin shell load time to <1.2s", agent: "Performance Optimizer", progress: 68, status: "in_progress", blocker: null, confidence: 76 },
+  { title: "Achieve 95% test coverage on core flows", agent: "QA Engineer", progress: 82, status: "in_progress", blocker: null, confidence: 91 },
+  { title: "Zero critical accessibility violations", agent: "Frontend Engineer", progress: 91, status: "in_progress", blocker: null, confidence: 85 },
+  { title: "Add smoke gates for critical flows", agent: "Release Manager", progress: 45, status: "in_progress", blocker: null, confidence: 82 },
+];
+
+// Self-Healing Lane
+const HEAL_STATS = { attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };
+const RECENT_HEALS = [
+  { action: "Restarted unhealthy projection worker", time: "12m ago", verified: true },
+  { action: "Reverted bad feature flag: revenue-sidebar-v2", time: "1h ago", verified: true },
+  { action: "Auto-fixed broken route /admin/durability", time: "2h ago", verified: true },
+  { action: "Invalidated stale brand-kit CDN cache", time: "4h ago", verified: true },
+];
+
+// Learning Lane
+const LEARNING_HIGHLIGHTS = [
+  { type: "pattern", detail: "Feature flag rollbacks cluster within 2h of activation", confidence: 82 },
+  { type: "optimization", detail: "Error Fixer accuracy improved +4% after lazy-import checks", confidence: 91 },
+  { type: "rejected", detail: "Design proposal using hardcoded colors — rejected 2x", confidence: 79 },
+  { type: "root-cause", detail: "Projection failures correlate with config concurrency changes", confidence: 84 },
+];
+
+// What Changed Lane
+const CHANGES = [
+  { action: "Auto-fixed broken route /admin/durability", agent: "Error Fixer", time: "12m ago", type: "auto-heal" as const },
   { action: "Proposed layout improvement for Mission Control header", agent: "Design Engineer", time: "28m ago", type: "proposal" as const },
   { action: "Reverted bad feature flag for revenue-office sidebar", agent: "Reliability Engineer", time: "1h ago", type: "rollback" as const },
   { action: "Generated regression tests for approval flow", agent: "QA Engineer", time: "2h ago", type: "improvement" as const },
   { action: "Patched stale projection cache invalidation", agent: "Backend Engineer", time: "3h ago", type: "fix" as const },
   { action: "Blocked risky schema migration — escalated to human", agent: "Security Reviewer", time: "4h ago", type: "blocked" as const },
-  { action: "Standardized card border-radius across admin surfaces", agent: "Design Engineer", time: "5h ago", type: "auto-heal" as const },
   { action: "Updated deployment runbook with new smoke gate", agent: "Documentation Engineer", time: "6h ago", type: "improvement" as const },
+  { action: "Release confidence: 78% → 82% after test additions", agent: "Release Manager", time: "7h ago", type: "improvement" as const },
 ];
 
-const ACTIVE_GOALS = [
-  { goal: "Reduce admin shell load time to < 1.2s", progress: 68, owner: "Performance Optimizer", status: "in_progress", deadline: "Apr 12" },
-  { goal: "Achieve 95% test coverage on core flows", progress: 82, owner: "QA Engineer", status: "in_progress", deadline: "Apr 15" },
-  { goal: "Zero critical accessibility violations", progress: 91, owner: "Frontend Engineer", status: "in_progress", deadline: "Apr 10" },
-  { goal: "Resolve all P0 incident backlog", progress: 100, owner: "Reliability Engineer", status: "done", deadline: "Done" },
-  { goal: "Add smoke gates for all critical flows", progress: 45, owner: "Release Manager", status: "in_progress", deadline: "Apr 20" },
-];
-
-const TEAM_SUMMARY = [
-  { name: "Engineering Lead", focus: "Sprint coordination", status: "active" as const, tasks: 3, confidence: 92 },
-  { name: "Backend Engineer", focus: "Projection cache fix", status: "active" as const, tasks: 2, confidence: 88 },
-  { name: "Frontend Engineer", focus: "Accessibility sweep", status: "active" as const, tasks: 4, confidence: 85 },
-  { name: "Design Engineer", focus: "Header redesign proposal", status: "active" as const, tasks: 2, confidence: 79 },
-  { name: "QA Engineer", focus: "Regression test gen", status: "active" as const, tasks: 3, confidence: 91 },
-  { name: "Error Fixer", focus: "Projection error analysis", status: "escalated" as const, tasks: 5, confidence: 84 },
-  { name: "Reliability Engineer", focus: "Incident monitoring", status: "active" as const, tasks: 2, confidence: 90 },
-  { name: "Security Reviewer", focus: "Migration risk review", status: "escalated" as const, tasks: 1, confidence: 87 },
-  { name: "Performance Optimizer", focus: "Admin shell perf", status: "active" as const, tasks: 2, confidence: 76 },
-  { name: "Release Manager", focus: "Staging promotion eval", status: "active" as const, tasks: 1, confidence: 82 },
-  { name: "Self-Healing Supervisor", focus: "Cache auto-heal verification", status: "active" as const, tasks: 3, confidence: 88 },
-  { name: "Learning Analyst", focus: "Regression pattern analysis", status: "active" as const, tasks: 1, confidence: 71 },
-  { name: "Docs Engineer", focus: "Runbook update", status: "idle" as const, tasks: 0, confidence: 93 },
-];
-
+// Environments + Release Gates
 const ENVIRONMENTS = [
   { env: "Production", status: "healthy" as const, confidence: 94, deployedAt: "2h ago", drift: "none", version: "v2.14.3" },
   { env: "Staging", status: "warning" as const, confidence: 78, deployedAt: "35m ago", drift: "2 config diffs", version: "v2.15.0-rc1" },
@@ -91,27 +113,27 @@ const typeDotColor = (type: string) =>
   type === "blocked" ? "bg-destructive" :
   type === "proposal" ? "bg-primary" : "bg-[hsl(var(--trust-safe))]";
 
+const attentionColor = (severity: string) =>
+  severity === "critical" ? "border-destructive/30 bg-destructive/5" :
+  severity === "high" ? "border-amber-500/30 bg-amber-500/5" :
+  "border-border/40 bg-card";
+
 const AIEngineeringBoard = () => {
   const [tab, setTab] = useState("overview");
 
   return (
     <div className="space-y-6 p-6">
-      <AdminPageHeader
-        icon={Brain}
-        title="AI Engineering Board"
-        subtitle="Your AI engineering department — goals, fixes, healing, approvals, and release confidence"
-        accent="primary"
-      />
+      <AdminPageHeader icon={Brain} title="AI Engineering Board" subtitle="Your AI engineering department — goals, fixes, healing, approvals, and release confidence" accent="primary" />
 
-      {/* Executive Layer */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {EXEC_CARDS.map(c => (
-          <div key={c.label} className="rounded-xl border border-border/40 bg-card p-4 text-center">
-            <div className={`mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-lg ${c.bg}`}>
-              <c.icon className={`h-4 w-4 ${c.color}`} />
+      {/* A. Engineering Overview Band */}
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
+        {OVERVIEW_BAND.map(c => (
+          <div key={c.label} className="rounded-xl border border-border/40 bg-card p-3 text-center">
+            <div className={`mx-auto mb-1.5 flex h-8 w-8 items-center justify-center rounded-lg ${c.bg}`}>
+              <c.icon className={`h-3.5 w-3.5 ${c.color}`} />
             </div>
-            <p className="text-2xl font-bold">{c.value}</p>
-            <p className="text-[11px] text-muted-foreground leading-tight mt-1">{c.label}</p>
+            <p className="text-lg font-bold leading-none">{c.value}</p>
+            <p className="text-[10px] text-muted-foreground mt-1 leading-tight">{c.label}</p>
           </div>
         ))}
       </div>
@@ -129,63 +151,112 @@ const AIEngineeringBoard = () => {
 
         {/* ── TAB 1: OVERVIEW ── */}
         <TabsContent value="overview" className="space-y-4 mt-4">
-          {/* Active Incidents */}
-          {INCIDENTS.length > 0 && (
-            <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-4 space-y-3">
+          {/* B. Needs Attention Lane */}
+          <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-4 space-y-2">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-sm font-semibold text-destructive">
-                <AlertTriangle className="h-4 w-4" /> Active Incidents ({INCIDENTS.length})
+                <AlertTriangle className="h-4 w-4" /> Needs Attention ({ATTENTION_ITEMS.length})
               </div>
-              {INCIDENTS.map(inc => (
-                <div key={inc.title} className="rounded-lg border border-border/40 bg-card p-3">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium">{inc.title}</span>
-                    <Badge variant={inc.severity === "high" ? "destructive" : "outline"}>{inc.severity}</Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Assigned: {inc.assigned} · Duration: {inc.duration} · Root cause: {inc.rootCause}</p>
-                </div>
-              ))}
             </div>
-          )}
-
-          {/* Regressions Detected */}
-          {REGRESSIONS.length > 0 && (
-            <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 space-y-3">
-              <div className="flex items-center gap-2 text-sm font-semibold text-amber-500">
-                <TrendingUp className="h-4 w-4" /> Regressions Detected ({REGRESSIONS.length})
+            {ATTENTION_ITEMS.map((item, i) => (
+              <div key={i} className={`rounded-lg border p-3 ${attentionColor(item.severity)}`}>
+                <div className="flex items-center justify-between mb-0.5">
+                  <span className="text-sm font-medium">{item.title}</span>
+                  <div className="flex items-center gap-1.5">
+                    <Badge variant={item.severity === "critical" ? "destructive" : "outline"} className="text-[10px]">{item.severity}</Badge>
+                    <span className="text-[10px] text-muted-foreground">{item.time}</span>
+                  </div>
+                </div>
+                <p className="text-[10px] text-muted-foreground">{item.agent} · {item.type.replace(/-/g, " ")}</p>
               </div>
-              {REGRESSIONS.map(r => (
-                <div key={r.area + r.metric} className="rounded-lg border border-border/40 bg-card p-3 flex items-center justify-between">
-                  <div>
-                    <span className="text-sm font-medium">{r.area} — {r.metric}</span>
-                    <p className="text-xs text-muted-foreground">{r.before} → {r.after} ({r.change}) · {r.detected}</p>
-                  </div>
-                  <Badge variant="outline" className="text-[10px] text-destructive">{r.cause}</Badge>
-                </div>
-              ))}
-            </div>
-          )}
+            ))}
+          </div>
 
-          {/* Release Confidence */}
+          {/* D. Mission Progress Lane */}
           <div className="rounded-xl border border-border/40 bg-card p-4">
             <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2"><Rocket className="h-4 w-4 text-primary" /><span className="text-sm font-semibold">Release Confidence</span></div>
-              <span className="text-2xl font-bold text-[hsl(var(--trust-safe))]">82%</span>
+              <div className="flex items-center gap-2"><Target className="h-4 w-4 text-primary" /><span className="text-sm font-semibold">Active Missions</span></div>
+              <Link to="/admin/ai-missions" className="text-xs text-primary hover:underline flex items-center gap-1">Mission Center <ArrowUpRight className="h-3 w-3" /></Link>
             </div>
-            <Progress value={82} className="h-2" />
-            <div className="flex flex-wrap gap-4 mt-3 text-xs text-muted-foreground">
-              <span>Tests: 94% pass</span><span>Build: clean</span><span>Security: 1 advisory</span>
-              <span>Accessibility: 2 warnings</span><span>Performance: 1 SLO breach</span><span>Design: 92% consistent</span>
+            <div className="space-y-2">
+              {MISSIONS.map(m => (
+                <div key={m.title} className="rounded-lg border border-border/20 p-3">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-sm font-medium">{m.title}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold">{m.confidence}%</span>
+                      <Badge variant={m.status === "ready_for_approval" ? "outline" : "secondary"} className="text-[10px]">
+                        {m.status === "ready_for_approval" ? "Awaiting Approval" : "In Progress"}
+                      </Badge>
+                    </div>
+                  </div>
+                  <Progress value={m.progress} className="h-1 mb-1" />
+                  <div className="flex justify-between text-[10px] text-muted-foreground">
+                    <span>{m.agent}</span>
+                    {m.blocker && <span className="text-amber-500">⚠ {m.blocker}</span>}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Recent Activity */}
+          {/* E. Self-Healing Lane */}
           <div className="rounded-xl border border-border/40 bg-card p-4">
             <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2"><Zap className="h-4 w-4 text-primary" /><span className="text-sm font-semibold">What Changed Recently</span></div>
-              <Link to="/admin/ai-learning" className="text-xs text-primary hover:underline">View all →</Link>
+              <div className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-[hsl(var(--trust-safe))]" /><span className="text-sm font-semibold">Self-Healing</span></div>
+              <Link to="/admin/ai-self-healing" className="text-xs text-primary hover:underline flex items-center gap-1">Self-Healing Center <ArrowUpRight className="h-3 w-3" /></Link>
+            </div>
+            <div className="grid grid-cols-4 gap-2 mb-3">
+              {[
+                { l: "Attempted", v: HEAL_STATS.attempted, c: "text-foreground" },
+                { l: "Verified", v: HEAL_STATS.verified, c: "text-[hsl(var(--trust-safe))]" },
+                { l: "Blocked", v: HEAL_STATS.blocked, c: "text-amber-500" },
+                { l: "Rolled Back", v: HEAL_STATS.rolledBack, c: "text-destructive" },
+              ].map(s => (
+                <div key={s.l} className="text-center">
+                  <p className={`text-lg font-bold ${s.c}`}>{s.v}</p>
+                  <p className="text-[10px] text-muted-foreground">{s.l}</p>
+                </div>
+              ))}
             </div>
             <div className="space-y-1">
-              {RECENT_ACTIONS.slice(0, 6).map((a, i) => (
+              {RECENT_HEALS.map((h, i) => (
+                <div key={i} className="flex items-center gap-2 py-1.5 border-b border-border/10 last:border-0">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))] shrink-0" />
+                  <span className="text-xs flex-1 truncate">{h.action}</span>
+                  <span className="text-[10px] text-muted-foreground shrink-0">{h.time}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* F. Learning Lane */}
+          <div className="rounded-xl border border-border/40 bg-card p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /><span className="text-sm font-semibold">Learning Highlights</span></div>
+              <Link to="/admin/ai-learning" className="text-xs text-primary hover:underline flex items-center gap-1">Learning Center <ArrowUpRight className="h-3 w-3" /></Link>
+            </div>
+            <div className="space-y-2">
+              {LEARNING_HIGHLIGHTS.map((l, i) => (
+                <div key={i} className="rounded-lg bg-muted/20 p-2.5 flex items-start gap-2">
+                  <Badge variant="outline" className="text-[9px] shrink-0 mt-0.5">{l.type}</Badge>
+                  <div className="flex-1">
+                    <p className="text-xs">{l.detail}</p>
+                  </div>
+                  <span className="text-[10px] text-muted-foreground shrink-0">{l.confidence}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* G. What Changed Lane */}
+          <div className="rounded-xl border border-border/40 bg-card p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2"><Zap className="h-4 w-4 text-primary" /><span className="text-sm font-semibold">What Changed</span></div>
+              <Link to="/admin/ai-time-machine" className="text-xs text-primary hover:underline flex items-center gap-1">Time Machine <ArrowUpRight className="h-3 w-3" /></Link>
+            </div>
+            <div className="space-y-1">
+              {CHANGES.slice(0, 6).map((a, i) => (
                 <div key={i} className="flex items-center gap-3 py-2 border-b border-border/20 last:border-0">
                   <div className={`h-2 w-2 rounded-full shrink-0 ${typeDotColor(a.type)}`} />
                   <div className="flex-1 min-w-0">
@@ -202,16 +273,19 @@ const AIEngineeringBoard = () => {
         {/* ── TAB 2: AI TEAM ── */}
         <TabsContent value="team" className="mt-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm text-muted-foreground">13 specialists · {TEAM_SUMMARY.filter(t => t.status === "escalated").length} escalated</p>
+            <p className="text-sm text-muted-foreground">{AGENT_SIGNALS.length} specialists · {AGENT_SIGNALS.filter(t => t.escalation).length} escalated</p>
             <Link to="/admin/ai-team-roster" className="text-xs text-primary hover:underline flex items-center gap-1">Full Roster <ArrowUpRight className="h-3 w-3" /></Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {TEAM_SUMMARY.map(t => (
-              <div key={t.name} className={`rounded-xl border p-3 flex items-center gap-3 ${t.status === "escalated" ? "border-amber-500/30 bg-amber-500/5" : "border-border/40 bg-card"}`}>
-                <div className={`h-2 w-2 rounded-full shrink-0 ${t.status === "active" ? "bg-[hsl(var(--trust-safe))]" : t.status === "escalated" ? "bg-amber-500" : "bg-muted-foreground/30"}`} />
+            {AGENT_SIGNALS.map(t => (
+              <div key={t.name} className={`rounded-xl border p-3 flex items-center gap-3 ${t.escalation ? "border-amber-500/30 bg-amber-500/5" : "border-border/40 bg-card"}`}>
+                <div className={`h-2 w-2 rounded-full shrink-0 ${t.escalation ? "bg-amber-500" : t.tasks > 0 ? "bg-[hsl(var(--trust-safe))]" : "bg-muted-foreground/30"}`} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{t.name}</p>
-                  <p className="text-[10px] text-muted-foreground truncate">{t.focus}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium truncate">{t.name}</p>
+                    {t.escalation && <Badge variant="destructive" className="text-[10px]">Escalated</Badge>}
+                  </div>
+                  <p className="text-[10px] text-muted-foreground truncate">{t.signal}</p>
                 </div>
                 <div className="text-right shrink-0">
                   <p className="text-sm font-bold">{t.confidence}%</p>
@@ -225,21 +299,26 @@ const AIEngineeringBoard = () => {
         {/* ── TAB 3: MISSIONS ── */}
         <TabsContent value="missions" className="mt-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm text-muted-foreground">{ACTIVE_GOALS.length} active goals</p>
+            <p className="text-sm text-muted-foreground">{MISSIONS.length} active missions</p>
             <Link to="/admin/ai-missions" className="text-xs text-primary hover:underline flex items-center gap-1">Mission Center <ArrowUpRight className="h-3 w-3" /></Link>
           </div>
           <div className="space-y-2">
-            {ACTIVE_GOALS.map(g => (
-              <div key={g.goal} className="rounded-xl border border-border/40 bg-card p-4">
+            {MISSIONS.map(m => (
+              <div key={m.title} className="rounded-xl border border-border/40 bg-card p-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">{g.goal}</span>
+                  <span className="text-sm font-medium">{m.title}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">{g.deadline}</span>
-                    <Badge variant={g.status === "done" ? "default" : "outline"}>{g.status === "done" ? "Complete" : `${g.progress}%`}</Badge>
+                    <Badge variant={m.status === "ready_for_approval" ? "outline" : "secondary"} className="text-[10px]">
+                      {m.status === "ready_for_approval" ? "Awaiting Approval" : `${m.progress}%`}
+                    </Badge>
                   </div>
                 </div>
-                <Progress value={g.progress} className="h-1.5 mb-1" />
-                <p className="text-xs text-muted-foreground">Owner: {g.owner}</p>
+                <Progress value={m.progress} className="h-1.5 mb-1.5" />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>{m.agent}</span>
+                  <span>Confidence: {m.confidence}%</span>
+                  {m.blocker && <span className="text-amber-500">⚠ {m.blocker}</span>}
+                </div>
               </div>
             ))}
           </div>
@@ -261,9 +340,7 @@ const AIEngineeringBoard = () => {
             ].map(f => (
               <div key={f.title} className={`rounded-xl border bg-card p-3 flex items-center gap-3 ${f.severity === "critical" ? "border-destructive/30" : f.severity === "high" ? "border-amber-500/30" : "border-border/40"}`}>
                 <Bug className={`h-4 w-4 shrink-0 ${f.severity === "critical" ? "text-destructive" : f.severity === "high" ? "text-amber-500" : "text-muted-foreground"}`} />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm truncate">{f.title}</p>
-                </div>
+                <div className="flex-1 min-w-0"><p className="text-sm truncate">{f.title}</p></div>
                 <div className="flex items-center gap-2 shrink-0">
                   {f.autoFix && <Badge variant="outline" className="text-[10px] text-[hsl(var(--trust-safe))]">auto-fix</Badge>}
                   <Badge variant={f.severity === "critical" ? "destructive" : "outline"} className="text-[10px]">{f.severity}</Badge>
@@ -277,17 +354,24 @@ const AIEngineeringBoard = () => {
         {/* ── TAB 5: SELF-HEALING ── */}
         <TabsContent value="healing" className="mt-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm text-muted-foreground">6 healed this week · 3 blocked</p>
+            <p className="text-sm text-muted-foreground">{HEAL_STATS.verified} healed · {HEAL_STATS.blocked} blocked</p>
             <Link to="/admin/ai-self-healing" className="text-xs text-primary hover:underline flex items-center gap-1">Self-Healing Center <ArrowUpRight className="h-3 w-3" /></Link>
           </div>
-          <div className="space-y-2">
+          <div className="grid grid-cols-4 gap-2 mb-4">
             {[
-              { action: "Restarted unhealthy projection rebuild worker", time: "12m ago", verified: true },
-              { action: "Reverted bad feature flag: revenue-sidebar-v2", time: "1h ago", verified: true },
-              { action: "Auto-fixed broken route /admin/durability", time: "2h ago", verified: true },
-              { action: "Invalidated stale brand-kit CDN cache", time: "4h ago", verified: true },
-              { action: "Retried stuck connector sync job (Stripe)", time: "6h ago", verified: true },
-            ].map((h, i) => (
+              { l: "Attempted", v: HEAL_STATS.attempted, c: "text-foreground" },
+              { l: "Verified ✓", v: HEAL_STATS.verified, c: "text-[hsl(var(--trust-safe))]" },
+              { l: "Blocked", v: HEAL_STATS.blocked, c: "text-amber-500" },
+              { l: "Rolled Back", v: HEAL_STATS.rolledBack, c: "text-destructive" },
+            ].map(s => (
+              <div key={s.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
+                <p className={`text-xl font-bold ${s.c}`}>{s.v}</p>
+                <p className="text-[10px] text-muted-foreground">{s.l}</p>
+              </div>
+            ))}
+          </div>
+          <div className="space-y-2">
+            {RECENT_HEALS.map((h, i) => (
               <div key={i} className="rounded-xl border border-border/40 bg-card p-3 flex items-center gap-3">
                 <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0" />
                 <div className="flex-1 min-w-0">
@@ -302,7 +386,6 @@ const AIEngineeringBoard = () => {
 
         {/* ── TAB 6: RELEASES ── */}
         <TabsContent value="releases" className="space-y-4 mt-4">
-          {/* Environments */}
           <div className="space-y-2">
             {ENVIRONMENTS.map(e => (
               <div key={e.env} className="rounded-xl border border-border/40 bg-card p-4">
@@ -318,8 +401,6 @@ const AIEngineeringBoard = () => {
               </div>
             ))}
           </div>
-
-          {/* Release Gates */}
           <div className="rounded-xl border border-border/40 bg-card p-4">
             <div className="flex items-center gap-2 mb-3"><Shield className="h-4 w-4 text-primary" /><span className="text-sm font-semibold">Release Gates</span></div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -334,14 +415,13 @@ const AIEngineeringBoard = () => {
               ))}
             </div>
           </div>
-
           <Link to="/admin/ai-releases" className="rounded-xl border border-border/40 bg-card p-3 flex items-center gap-3 hover:bg-muted/30 transition-colors">
             <Rocket className="h-4 w-4 text-primary" /><span className="text-sm font-medium">Full Release Center</span><ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground ml-auto" />
           </Link>
         </TabsContent>
       </Tabs>
 
-      {/* Quick Links — Wow Features + Deep Dives */}
+      {/* Quick Links */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: "Team Roster", icon: Users, path: "/admin/ai-team-roster" },
@@ -358,6 +438,8 @@ const AIEngineeringBoard = () => {
           { label: "Agent Debate", icon: MessageSquare, path: "/admin/ai-agent-debate" },
           { label: "Change Plans", icon: FileCheck, path: "/admin/ai-change-plans" },
           { label: "Boundary Controls", icon: Shield, path: "/admin/ai-boundary-controls" },
+          { label: "Self-Learning Ledger", icon: BookOpen, path: "/admin/ai-self-learning" },
+          { label: "Evidence Bundles", icon: FileText, path: "/admin/ai-evidence-bundles" },
         ].map(l => (
           <Link key={l.label} to={l.path} className="rounded-xl border border-border/40 bg-card p-3 flex items-center gap-3 hover:bg-muted/30 transition-colors cursor-pointer">
             <l.icon className="h-4 w-4 text-primary shrink-0" />
