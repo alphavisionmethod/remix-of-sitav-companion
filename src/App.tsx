@@ -976,6 +976,21 @@ const App = () => (
                     <Route path="/admin/platform-maturity" element={<PlatformMaturityDashboard />} />
                     <Route path="/admin/builder-knowledge" element={<BuilderKnowledgeBase />} />
                     <Route path="/admin/delivery-waves" element={<DeliveryWavePlanner />} />
+                    {/* FIP — Feature Integration Protocol */}
+                    <Route path="/admin/fip/intake" element={<FIPIntakeDesk />} />
+                    <Route path="/admin/fip/spec-studio" element={<FIPSpecStudio />} />
+                    <Route path="/admin/fip/owner-boundary" element={<FIPOwnerBoundary />} />
+                    <Route path="/admin/fip/capability-registry" element={<FIPCapabilityRegistry />} />
+                    <Route path="/admin/fip/compliance" element={<FIPComplianceBoard />} />
+                    <Route path="/admin/fip/execution-paths" element={<FIPExecutionExplorer />} />
+                    <Route path="/admin/fip/policy-trust" element={<FIPPolicyTrustBoard />} />
+                    <Route path="/admin/fip/memory-graph" element={<FIPMemoryGraphStudio />} />
+                    <Route path="/admin/fip/observability" element={<FIPObservabilityCenter />} />
+                    <Route path="/admin/fip/rollout" element={<FIPRolloutPlanner />} />
+                    <Route path="/admin/fip/generated-truth" element={<FIPGeneratedTruthBoard />} />
+                    <Route path="/admin/fip/readiness" element={<FIPReadinessGateReview />} />
+                    <Route path="/admin/fip/deprecation" element={<FIPDeprecationManager />} />
+                    <Route path="/admin/fip/builder" element={<FIPBuilderConsole />} />
 
                     <Route path="/admin/ai-engineering" element={<AIEngineeringBoard />} />
                     <Route path="/admin/ai-team-roster" element={<AITeamRoster />} />
