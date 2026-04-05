@@ -710,7 +710,14 @@ const App = () => (
                     <Route path="/mission/workflows/:workflowId/replay" element={<MissionWorkflowReplayPage />} />
                     <Route path="/mission/error" element={<MissionError />} />
 
-                    {/* Redirect /incidents to mission-control/incidents */}
+                    {/* ATLAS Gap Closure — Operator Command Surfaces */}
+                    <Route path="/atlas/projections" element={<ProjectionControlCenter />} />
+                    <Route path="/atlas/proof" element={<ProofCoverageBoard />} />
+                    <Route path="/atlas/deployment" element={<DeploymentTruthCenter />} />
+                    <Route path="/atlas/operations" element={<OperationsCommandCenter />} />
+                    <Route path="/atlas/connectors" element={<ConnectorControlCenter />} />
+                    <Route path="/atlas/concierge" element={<ConciergeCommandCenter />} />
+
                     <Route path="/incidents" element={<Navigate to="/mission-control" replace />} />
 
                     {/* Owner — Advanced Workspace (Layer 2) */}
