@@ -145,6 +145,30 @@ if [ -d "${PROJECT_ROOT}/deploy" ]; then
   cp -r "${PROJECT_ROOT}/deploy/"* "${SITA_DST}/deploy/" 2>/dev/null || true
 fi
 
+# Copy built frontend
+if [ -d "${PROJECT_ROOT}/dist" ]; then
+  cp -r "${PROJECT_ROOT}/dist" "${SITA_DST}/deploy/dist"
+  echo "  ✅ Frontend dist/ included in ISO"
+else
+  echo "  ⚠ No dist/ found — frontend will not be available"
+fi
+
+# Copy database init scripts
+if [ -d "${PROJECT_ROOT}/deploy/db-init" ]; then
+  mkdir -p "${SITA_DST}/deploy/db-init"
+  cp "${PROJECT_ROOT}/deploy/db-init/"*.sql "${SITA_DST}/deploy/db-init/" 2>/dev/null || true
+fi
+
+# Copy EULA
+if [ -f "${PROJECT_ROOT}/deploy/sita-eula.sh" ]; then
+  cp "${PROJECT_ROOT}/deploy/sita-eula.sh" "${SITA_DST}/"
+fi
+
+# Copy logrotate config
+if [ -f "${PROJECT_ROOT}/deploy/logrotate-sita.conf" ]; then
+  cp "${PROJECT_ROOT}/deploy/logrotate-sita.conf" "${SITA_DST}/"
+fi
+
 # ── Step 5: Export Docker images (optional) ──────────────────
 if [ "$INCLUDE_IMAGES" = true ]; then
   echo "[5/8] Exporting Docker images (this may take a while)..."
