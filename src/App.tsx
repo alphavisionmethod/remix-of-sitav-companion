@@ -654,7 +654,11 @@ const App = () => (
 
                     {/* Phase 5 — Platform Intelligence */}
                     <Route path="/integration-concierge" element={<IntegrationConcierge />} />
-                    <Route path="/integrations" element={<IntegrationConcierge />} />
+                    <Route path="/integrations" element={<IntegrationsCatalog />} />
+                    <Route path="/integrations/provider/:providerId" element={<ProviderDetail />} />
+                    <Route path="/integrations/connections" element={<ConnectionsList />} />
+                    <Route path="/integrations/connections/:connectionId" element={<ConnectionDetail />} />
+                    <Route path="/integrations/actions" element={<ActionsApprovals />} />
                     <Route path="/digital-twins" element={<DigitalTwinsPage />} />
                     <Route path="/digital-twins/business" element={<DigitalTwinsPage />} />
                     <Route path="/digital-twins/money" element={<DigitalTwinsPage />} />
