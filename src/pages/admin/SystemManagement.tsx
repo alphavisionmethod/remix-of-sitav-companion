@@ -67,23 +67,6 @@ const SystemManagement = () => {
 
   if (adminLoading) return <PageSkeleton rows={3} />;
   if (!isAdmin) return null;
-  const [tab, setTab] = useState("updates");
-  const [devices, setDevices] = useState<UpdateDevice[]>([]);
-  const [latestUpdate, setLatestUpdate] = useState<UpdateRelease | null>(null);
-  const [history, setHistory] = useState<UpdateLogEntry[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    Promise.all([
-      SystemUpdateService.getDevices(),
-      SystemUpdateService.checkForUpdates(),
-      SystemUpdateService.getUpdateHistory(),
-    ]).then(([d, u, h]) => {
-      setDevices(d);
-      setLatestUpdate(u);
-      setHistory(h);
-    }).finally(() => setLoading(false));
-  }, []);
 
   return (
     <div className="space-y-6 max-w-[1400px] mx-auto">
