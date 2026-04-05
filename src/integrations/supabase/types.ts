@@ -2539,6 +2539,403 @@ export type Database = {
         }
         Relationships: []
       }
+      integration_action_requests: {
+        Row: {
+          action_type: string
+          approved_at: string | null
+          approved_by: string | null
+          connection_id: string
+          created_at: string | null
+          dry_run_result: Json | null
+          execution_ended_at: string | null
+          execution_error_redacted: string | null
+          execution_result: Json | null
+          execution_started_at: string | null
+          id: string
+          payload_json: Json | null
+          rejected_at: string | null
+          rejected_by: string | null
+          rejection_reason: string | null
+          requested_by: string
+          risk_level: string
+          spending_cap_cents: number | null
+          status: string
+          tenant_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          action_type: string
+          approved_at?: string | null
+          approved_by?: string | null
+          connection_id: string
+          created_at?: string | null
+          dry_run_result?: Json | null
+          execution_ended_at?: string | null
+          execution_error_redacted?: string | null
+          execution_result?: Json | null
+          execution_started_at?: string | null
+          id?: string
+          payload_json?: Json | null
+          rejected_at?: string | null
+          rejected_by?: string | null
+          rejection_reason?: string | null
+          requested_by: string
+          risk_level?: string
+          spending_cap_cents?: number | null
+          status?: string
+          tenant_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          action_type?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          connection_id?: string
+          created_at?: string | null
+          dry_run_result?: Json | null
+          execution_ended_at?: string | null
+          execution_error_redacted?: string | null
+          execution_result?: Json | null
+          execution_started_at?: string | null
+          id?: string
+          payload_json?: Json | null
+          rejected_at?: string | null
+          rejected_by?: string | null
+          rejection_reason?: string | null
+          requested_by?: string
+          risk_level?: string
+          spending_cap_cents?: number | null
+          status?: string
+          tenant_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_action_requests_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "integration_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_audit_logs: {
+        Row: {
+          actor_id: string
+          connection_id: string | null
+          created_at: string | null
+          event_type: string
+          id: string
+          ip_address: string | null
+          metadata_redacted: Json | null
+          summary: string
+          tenant_id: string
+        }
+        Insert: {
+          actor_id: string
+          connection_id?: string | null
+          created_at?: string | null
+          event_type: string
+          id?: string
+          ip_address?: string | null
+          metadata_redacted?: Json | null
+          summary: string
+          tenant_id: string
+        }
+        Update: {
+          actor_id?: string
+          connection_id?: string | null
+          created_at?: string | null
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          metadata_redacted?: Json | null
+          summary?: string
+          tenant_id?: string
+        }
+        Relationships: []
+      }
+      integration_connections: {
+        Row: {
+          created_at: string | null
+          external_account_id: string | null
+          external_account_name: string | null
+          id: string
+          last_error_code: string | null
+          last_error_message_redacted: string | null
+          last_health_check_at: string | null
+          last_health_status: string | null
+          last_sync_at: string | null
+          metadata: Json | null
+          mode: string
+          provider_id: string
+          scopes: string[] | null
+          status: string
+          tenant_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          external_account_id?: string | null
+          external_account_name?: string | null
+          id?: string
+          last_error_code?: string | null
+          last_error_message_redacted?: string | null
+          last_health_check_at?: string | null
+          last_health_status?: string | null
+          last_sync_at?: string | null
+          metadata?: Json | null
+          mode?: string
+          provider_id: string
+          scopes?: string[] | null
+          status?: string
+          tenant_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          external_account_id?: string | null
+          external_account_name?: string | null
+          id?: string
+          last_error_code?: string | null
+          last_error_message_redacted?: string | null
+          last_health_check_at?: string | null
+          last_health_status?: string | null
+          last_sync_at?: string | null
+          metadata?: Json | null
+          mode?: string
+          provider_id?: string
+          scopes?: string[] | null
+          status?: string
+          tenant_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_connections_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "integration_providers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_credentials: {
+        Row: {
+          connection_id: string
+          created_at: string | null
+          encrypted_payload: string
+          expires_at: string | null
+          id: string
+          key_version: number
+          token_type: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          connection_id: string
+          created_at?: string | null
+          encrypted_payload: string
+          expires_at?: string | null
+          id?: string
+          key_version?: number
+          token_type?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          connection_id?: string
+          created_at?: string | null
+          encrypted_payload?: string
+          expires_at?: string | null
+          id?: string
+          key_version?: number
+          token_type?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_credentials_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "integration_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_providers: {
+        Row: {
+          auth_type: string
+          category: string
+          created_at: string | null
+          default_risk_level: string | null
+          description: string | null
+          display_name: string
+          docs_url: string | null
+          enabled: boolean | null
+          icon_url: string | null
+          id: string
+          requires_approval_for_writes: boolean | null
+          setup_instructions: string | null
+          supported_actions: Json | null
+          supported_objects: Json | null
+          supported_scopes: Json | null
+          supports_webhooks: boolean | null
+          supports_writes: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          auth_type?: string
+          category?: string
+          created_at?: string | null
+          default_risk_level?: string | null
+          description?: string | null
+          display_name: string
+          docs_url?: string | null
+          enabled?: boolean | null
+          icon_url?: string | null
+          id: string
+          requires_approval_for_writes?: boolean | null
+          setup_instructions?: string | null
+          supported_actions?: Json | null
+          supported_objects?: Json | null
+          supported_scopes?: Json | null
+          supports_webhooks?: boolean | null
+          supports_writes?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          auth_type?: string
+          category?: string
+          created_at?: string | null
+          default_risk_level?: string | null
+          description?: string | null
+          display_name?: string
+          docs_url?: string | null
+          enabled?: boolean | null
+          icon_url?: string | null
+          id?: string
+          requires_approval_for_writes?: boolean | null
+          setup_instructions?: string | null
+          supported_actions?: Json | null
+          supported_objects?: Json | null
+          supported_scopes?: Json | null
+          supports_webhooks?: boolean | null
+          supports_writes?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      integration_routing_rules: {
+        Row: {
+          active: boolean | null
+          client_id: string | null
+          client_name: string
+          connection_id: string
+          created_at: string | null
+          id: string
+          match_rules: Json | null
+          priority: number | null
+          project_name: string | null
+          tenant_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          client_id?: string | null
+          client_name: string
+          connection_id: string
+          created_at?: string | null
+          id?: string
+          match_rules?: Json | null
+          priority?: number | null
+          project_name?: string | null
+          tenant_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          client_id?: string | null
+          client_name?: string
+          connection_id?: string
+          created_at?: string | null
+          id?: string
+          match_rules?: Json | null
+          priority?: number | null
+          project_name?: string | null
+          tenant_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_routing_rules_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "integration_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_sync_runs: {
+        Row: {
+          connection_id: string
+          created_at: string | null
+          ended_at: string | null
+          error_redacted: string | null
+          id: string
+          records_created: number | null
+          records_failed: number | null
+          records_processed: number | null
+          records_updated: number | null
+          started_at: string | null
+          stats_json: Json | null
+          status: string
+          sync_type: string
+          tenant_id: string
+        }
+        Insert: {
+          connection_id: string
+          created_at?: string | null
+          ended_at?: string | null
+          error_redacted?: string | null
+          id?: string
+          records_created?: number | null
+          records_failed?: number | null
+          records_processed?: number | null
+          records_updated?: number | null
+          started_at?: string | null
+          stats_json?: Json | null
+          status?: string
+          sync_type?: string
+          tenant_id: string
+        }
+        Update: {
+          connection_id?: string
+          created_at?: string | null
+          ended_at?: string | null
+          error_redacted?: string | null
+          id?: string
+          records_created?: number | null
+          records_failed?: number | null
+          records_processed?: number | null
+          records_updated?: number | null
+          started_at?: string | null
+          stats_json?: Json | null
+          status?: string
+          sync_type?: string
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_sync_runs_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "integration_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       investment_accounts: {
         Row: {
           account_label: string

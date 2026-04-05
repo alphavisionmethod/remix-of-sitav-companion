@@ -113,6 +113,11 @@ const MissionWorkflowReplayPage = lazy(() => import("./pages/mission/MissionWork
 const EnterpriseControlPlane = lazy(() => import("./pages/enterprise/EnterpriseControlPlane"));
 const EnterpriseMaturityDashboard = lazy(() => import("./pages/EnterpriseMaturityDashboard"));
 const IntegrationConcierge = lazy(() => import("./pages/IntegrationConcierge"));
+const IntegrationsCatalog = lazy(() => import("./pages/integrations/IntegrationsCatalog"));
+const ProviderDetail = lazy(() => import("./pages/integrations/ProviderDetail"));
+const ConnectionsList = lazy(() => import("./pages/integrations/ConnectionsList"));
+const ConnectionDetail = lazy(() => import("./pages/integrations/ConnectionDetail"));
+const ActionsApprovals = lazy(() => import("./pages/integrations/ActionsApprovals"));
 const DigitalTwinsPage = lazy(() => import("./pages/DigitalTwinsPage"));
 const ScenarioLabPage = lazy(() => import("./pages/ScenarioLabPage"));
 const AIEconomicsPage = lazy(() => import("./pages/AIEconomicsPage"));
@@ -649,7 +654,11 @@ const App = () => (
 
                     {/* Phase 5 — Platform Intelligence */}
                     <Route path="/integration-concierge" element={<IntegrationConcierge />} />
-                    <Route path="/integrations" element={<IntegrationConcierge />} />
+                    <Route path="/integrations" element={<IntegrationsCatalog />} />
+                    <Route path="/integrations/provider/:providerId" element={<ProviderDetail />} />
+                    <Route path="/integrations/connections" element={<ConnectionsList />} />
+                    <Route path="/integrations/connections/:connectionId" element={<ConnectionDetail />} />
+                    <Route path="/integrations/actions" element={<ActionsApprovals />} />
                     <Route path="/digital-twins" element={<DigitalTwinsPage />} />
                     <Route path="/digital-twins/business" element={<DigitalTwinsPage />} />
                     <Route path="/digital-twins/money" element={<DigitalTwinsPage />} />
