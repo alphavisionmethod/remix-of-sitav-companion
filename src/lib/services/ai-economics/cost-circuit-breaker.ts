@@ -25,7 +25,7 @@ export interface BudgetState {
   spentCents: number;
   budgetCents: number;
   utilizationPercent: number;
-  breakerState: CostBreakerState;
+  breakerState: BreakerState;
   throttleRate: number;        // 0-1, 1 = no throttle
   modelOverride?: string;      // downgraded model
   invocationCount: number;
