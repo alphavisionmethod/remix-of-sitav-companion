@@ -60,7 +60,17 @@ const controlNav = [
   { title: "System", url: "/system", icon: Shield },
 ];
 
+const appsNav = [
+  { title: "Email", url: "/apps/email", icon: Mail },
+  { title: "Messenger", url: "/apps/messenger", icon: MessageSquare },
+  { title: "Vault", url: "/apps/vault", icon: Lock },
+  { title: "Health", url: "/apps/health", icon: Heart },
+  { title: "Gallery", url: "/apps/gallery", icon: Image },
+  { title: "Weather & News", url: "/apps/weather-news", icon: Cloud },
+];
+
 const bottomNav = [
+  { title: "Admin", url: "/admin/dashboard", icon: LayoutDashboard },
   { title: "Pack Store", url: "/store", icon: Package },
   { title: "Enterprise", url: "/enterprise", icon: Globe },
   { title: "Settings", url: "/settings", icon: Settings },
