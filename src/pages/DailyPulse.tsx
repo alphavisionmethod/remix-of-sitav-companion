@@ -674,6 +674,9 @@ const DailyPulse = () => {
         </div>
       </div>
 
+      {/* Widget Grid — customizable desktop widgets */}
+      <WidgetGrid />
+
       {/* Quick Access App Grid */}
       {showSection("quick-access") && (
         <div className="space-y-3">
