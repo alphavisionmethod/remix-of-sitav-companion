@@ -173,6 +173,12 @@ const ThesisJournal = lazy(() => import("./pages/investment-office/ThesisJournal
 const RiskOffice = lazy(() => import("./pages/investment-office/RiskOffice"));
 const InvestmentAdvisorBoard = lazy(() => import("./pages/investment-office/AdvisorBoard"));
 const PlatformConnections = lazy(() => import("./pages/investment-office/PlatformConnections"));
+const InvestmentGate = lazy(() => import("./pages/investment-office/InvestmentGate"));
+const EventMarketsWorkspace = lazy(() => import("./pages/investment-office/EventMarketsWorkspace"));
+const WatchlistsSignals = lazy(() => import("./pages/investment-office/WatchlistsSignals"));
+const InvestmentReceipts = lazy(() => import("./pages/investment-office/InvestmentReceipts"));
+const BeginnerMode = lazy(() => import("./pages/investment-office/BeginnerMode"));
+const AdvancedMode = lazy(() => import("./pages/investment-office/AdvancedMode"));
 
 const queryClient = createQueryClient();
 
