@@ -76,6 +76,15 @@ const BundleDetailPage = lazy(() => import("./pages/app-platform/BundleDetailPag
 const AppUpdatesPage = lazy(() => import("./pages/app-platform/AppUpdatesPage"));
 const AppPermissionsCenterPage = lazy(() => import("./pages/app-platform/AppPermissionsCenterPage"));
 const AppAssociationsPage = lazy(() => import("./pages/app-platform/AppAssociationsPage"));
+const AppComparePage = lazy(() => import("./pages/app-platform/AppComparePage"));
+const AppManagePage = lazy(() => import("./pages/app-platform/AppManagePage"));
+const WebAppInstallPage = lazy(() => import("./pages/app-platform/WebAppInstallPage"));
+const ExternalInstallerPage = lazy(() => import("./pages/app-platform/ExternalInstallerPage"));
+const AppReceiptsPage = lazy(() => import("./pages/app-platform/AppReceiptsPage"));
+const EnterpriseCatalogPage = lazy(() => import("./pages/app-platform/EnterpriseCatalogPage"));
+const DevToolsCatalogPage = lazy(() => import("./pages/app-platform/DevToolsCatalogPage"));
+const OpenWithPage = lazy(() => import("./pages/app-platform/OpenWithPage"));
+const FirstLaunchPage = lazy(() => import("./pages/app-platform/FirstLaunchPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const PolicyEditor = lazy(() => import("./pages/PolicyEditor"));
 const ConnectorHub = lazy(() => import("./pages/ConnectorHub"));
@@ -361,6 +370,16 @@ const App = () => (
                     <Route path="/app-store/updates" element={<AppUpdatesPage />} />
                     <Route path="/app-store/permissions" element={<AppPermissionsCenterPage />} />
                     <Route path="/app-store/associations" element={<AppAssociationsPage />} />
+                    <Route path="/app-store/compare" element={<AppComparePage />} />
+                    <Route path="/app-store/manage/:appId" element={<AppManagePage />} />
+                    <Route path="/app-store/web-install" element={<WebAppInstallPage />} />
+                    <Route path="/app-store/external-install" element={<ExternalInstallerPage />} />
+                    <Route path="/app-store/receipts" element={<AppReceiptsPage />} />
+                    <Route path="/app-store/receipts/:appId" element={<AppReceiptsPage />} />
+                    <Route path="/app-store/enterprise" element={<EnterpriseCatalogPage />} />
+                    <Route path="/app-store/dev-tools" element={<DevToolsCatalogPage />} />
+                    <Route path="/app-store/open-with" element={<OpenWithPage />} />
+                    <Route path="/app-store/first-launch/:appId" element={<FirstLaunchPage />} />
 
                     {/* Proof Center — explicit sub-routes */}
                     <Route path="/proof" element={<ProofCenter />} />
