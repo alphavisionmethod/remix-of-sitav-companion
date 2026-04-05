@@ -4,9 +4,9 @@
 // Canonical contract: contracts/runtime/integration-concierge-runtime
 // ═══════════════════════════════════════════════════════════════
 
-import type {
 import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
+import type {
   IntegrationConciergeRuntime,
   ConnectorState,
   IntegrationStatus,

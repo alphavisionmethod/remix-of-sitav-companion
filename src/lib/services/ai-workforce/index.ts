@@ -3,9 +3,9 @@
 // Agent lifecycle, task assignment, capability matching, teams
 // ═══════════════════════════════════════════════════════════════
 
-import type {
 import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
+import type {
   AgentDefinition, AgentTask, AgentTeam, AgentCapability,
   AgentStatus, AgentAutonomyLevel, CouncilDefinition, AgentKPI,
 } from "@/packages/contracts/domain-types/ai-workforce";
