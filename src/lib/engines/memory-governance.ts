@@ -265,4 +265,24 @@ export class MemoryGovernanceEngine {
     const global = this.config.globalRules.find(r => r.memoryType === type || r.domain === "*");
     return override ? { ...global!, ...override } as MemoryPersistenceRule : global;
   }
+
+  serialize(): Record<string, unknown> {
+    return {
+      memories: Array.from(this.memories.entries()),
+      contradictions: this.contradictions,
+      corrections: this.corrections,
+      forgetRequests: this.forgetRequests,
+      auditTrail: this.auditTrail.slice(-500),
+      config: this.config,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (state.memories) this.memories = new Map(state.memories as any);
+    if (state.contradictions) this.contradictions = state.contradictions as any;
+    if (state.corrections) this.corrections = state.corrections as any;
+    if (state.forgetRequests) this.forgetRequests = state.forgetRequests as any;
+    if (state.auditTrail) this.auditTrail = state.auditTrail as any;
+    if (state.config) this.config = { ...this.config, ...(state.config as any) };
+  }
 }

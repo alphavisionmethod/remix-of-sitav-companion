@@ -199,4 +199,22 @@ export class AdvisorOrchestrationEngine {
       }
     }
   }
+
+  serialize(): Record<string, unknown> {
+    return {
+      advisors: Array.from(this.advisors.entries()),
+      escalationRules: this.escalationRules,
+      activeHandoffs: this.activeHandoffs,
+      activeCollaborations: this.activeCollaborations,
+      disagreements: this.disagreements,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (state.advisors) this.advisors = new Map(state.advisors as any);
+    if (state.escalationRules) this.escalationRules = state.escalationRules as any;
+    if (state.activeHandoffs) this.activeHandoffs = state.activeHandoffs as any;
+    if (state.activeCollaborations) this.activeCollaborations = state.activeCollaborations as any;
+    if (state.disagreements) this.disagreements = state.disagreements as any;
+  }
 }

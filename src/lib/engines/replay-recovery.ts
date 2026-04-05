@@ -207,4 +207,18 @@ export class ReplayRecoveryEngine {
       diagnosticBundles: this.diagnostics.size,
     };
   }
+
+  serialize(): Record<string, unknown> {
+    return {
+      packets: Array.from(this.packets.entries()),
+      rollbacks: Array.from(this.rollbacks.entries()),
+      diagnostics: Array.from(this.diagnostics.entries()),
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (state.packets) this.packets = new Map(state.packets as any);
+    if (state.rollbacks) this.rollbacks = new Map(state.rollbacks as any);
+    if (state.diagnostics) this.diagnostics = new Map(state.diagnostics as any);
+  }
 }

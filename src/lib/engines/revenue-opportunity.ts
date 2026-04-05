@@ -178,4 +178,20 @@ export class RevenueOpportunityEngine {
       totalRecoveredValue: this.recoveries.reduce((s, r) => s + r.recoveredAmount, 0),
     };
   }
+
+  serialize(): Record<string, unknown> {
+    return {
+      signals: Array.from(this.signals.entries()),
+      recoveries: this.recoveries,
+      outcomes: this.outcomes,
+      config: this.config,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (state.signals) this.signals = new Map(state.signals as any);
+    if (state.recoveries) this.recoveries = state.recoveries as any;
+    if (state.outcomes) this.outcomes = state.outcomes as any;
+    if (state.config) this.config = { ...this.config, ...(state.config as any) };
+  }
 }

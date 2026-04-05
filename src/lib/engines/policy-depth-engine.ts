@@ -248,4 +248,20 @@ export class PolicyDepthEngine {
   getAuditLog(policyId?: string): PolicyAuditEntry[] {
     return policyId ? this.auditLog.filter(a => a.policyId === policyId) : this.auditLog;
   }
+
+  serialize(): Record<string, unknown> {
+    return {
+      policies: Array.from(this.policies.entries()),
+      consents: Array.from(this.consents.entries()),
+      auditLog: this.auditLog.slice(-500),
+      freezes: this.freezes,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (state.policies) this.policies = new Map(state.policies as any);
+    if (state.consents) this.consents = new Map(state.consents as any);
+    if (state.auditLog) this.auditLog = state.auditLog as any;
+    if (state.freezes) this.freezes = state.freezes as any;
+  }
 }
