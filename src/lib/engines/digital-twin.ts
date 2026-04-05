@@ -189,6 +189,13 @@ export class BoardroomIntelligenceEngine {
       .sort((a, b) => b.startedAt.localeCompare(a.startedAt))
       .slice(0, limit);
   }
+
+  serialize(): Record<string, unknown> {
+    return { sessions: Array.from(this.sessions.entries()) };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.sessions) this.sessions = new Map(state.sessions as any);
+  }
 }
 
 // ── Scenario Intelligence Engine ────────────────────────────────
