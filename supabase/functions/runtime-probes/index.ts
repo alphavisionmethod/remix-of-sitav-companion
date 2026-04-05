@@ -104,8 +104,8 @@ Deno.serve(async (req) => {
     const t = Date.now();
     const { data, error } = await supabase
       .from('scheduled_jobs')
-      .select('id, status')
-      .eq('status', 'active')
+      .select('id, state')
+      .eq('state', 'active')
       .limit(5);
     results.push({
       probe_id: 'scheduler-health',
