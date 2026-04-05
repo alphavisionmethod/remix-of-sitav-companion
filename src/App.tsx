@@ -237,6 +237,22 @@ const QuoteStudio = lazy(() => import("./pages/revenue-office/QuoteStudio"));
 const CallDesk = lazy(() => import("./pages/revenue-office/CallDesk"));
 const BusinessOnboarding = lazy(() => import("./pages/revenue-office/BusinessOnboarding"));
 
+// ── Digital Presence Office ──
+const PresenceGate = lazy(() => import("./pages/digital-presence/PresenceGate"));
+const PresenceBoardroom = lazy(() => import("./pages/digital-presence/PresenceBoardroom"));
+const WebsiteTwin = lazy(() => import("./pages/digital-presence/WebsiteTwin"));
+const SiteBuilder = lazy(() => import("./pages/digital-presence/SiteBuilder"));
+const BrandStudio = lazy(() => import("./pages/digital-presence/BrandStudio"));
+const ConnectedSites = lazy(() => import("./pages/digital-presence/ConnectedSites"));
+const CROOffice = lazy(() => import("./pages/digital-presence/CROOffice"));
+const EcommerceOffice = lazy(() => import("./pages/digital-presence/EcommerceOffice"));
+const PromotionsOffice = lazy(() => import("./pages/digital-presence/PromotionsOffice"));
+const AIWebTeam = lazy(() => import("./pages/digital-presence/AIWebTeam"));
+const ErrorRadar = lazy(() => import("./pages/digital-presence/ErrorRadar"));
+const ContentFreshness = lazy(() => import("./pages/digital-presence/ContentFreshness"));
+const LaunchWarRoom = lazy(() => import("./pages/digital-presence/LaunchWarRoom"));
+const PresenceTimeMachine = lazy(() => import("./pages/digital-presence/PresenceTimeMachine"));
+
 const queryClient = createQueryClient();
 
 // Premium loading skeleton — uses PageSkeleton for content-aware loading
