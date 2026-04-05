@@ -49,7 +49,7 @@ export interface OutboundCampaign {
   opened: number;
   clicked: number;
   converted: number;
-  revenue Generated Cents: number;
+  revenueGeneratedCents: number;
   requiresApproval: boolean;
   approvedBy?: string;
   proofId?: string;
