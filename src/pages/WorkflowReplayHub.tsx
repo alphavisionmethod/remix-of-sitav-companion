@@ -27,12 +27,11 @@ export default function WorkflowReplayHub() {
   const recovery = useRecoverySummary();
   const { engines } = useOSRuntime();
 
-  // Engine-backed replayable workflows (replaces hardcoded mockReplayable)
+  const { data: replayableData = [] } = useReplayableWorkflows();
+  // Engine-backed replayable workflows
   const replayable: ReplayableWorkflowView[] = useMemo(() => {
-    // Seed demo data via the engine
-    // Mock data imported from central module
-    return MOCK_REPLAYABLE_WORKFLOWS;
-  }, [engines.replay]);
+    return replayableData as ReplayableWorkflowView[];
+  }, [replayableData]);
 
   const filtered = replayable.filter(w =>
     (filter === "all" || w.status === filter) &&

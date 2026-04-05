@@ -18,6 +18,7 @@ import {
 import { useAdminUsers } from "@/hooks/use-domain-data";
 
 export default function UsersAdminPage() {
+  const { data: mockUsers = [] } = useAdminUsers();
   const [search, setSearch] = useState("");
   const [selectedUser, setSelectedUser] = useState<UserRowView | null>(null);
 

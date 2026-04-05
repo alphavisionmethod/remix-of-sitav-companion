@@ -60,7 +60,7 @@ const timeAgo = (dt: string | null) => {
 
 type Tab = "all" | "active" | "at-risk" | "new" | "inactive";
 
-const DEMO_CUSTOMERS = MOCK_DEMO_CUSTOMERS;
+const { data: DEMO_CUSTOMERS = [] } = useCustomers();
 
 
 const CustomersPage = () => {

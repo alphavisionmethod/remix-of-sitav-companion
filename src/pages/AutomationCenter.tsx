@@ -25,6 +25,8 @@ const AutomationCenter = () => {
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
   const qc = useQueryClient();
+  const { data: MOCK_AUTOMATION_RULES = [] } = useAutomationRules();
+  const { data: MOCK_DELEGATIONS = [] } = useDelegations();
 
   const activeTab = (() => {
     if (location.pathname.includes("/trust")) return "trust";
