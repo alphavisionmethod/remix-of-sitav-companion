@@ -5,7 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { MOCK_DECKS, type MockDeck, type MockSlide } from "@/lib/mock-data";
+import { useDecks } from "@/hooks/use-domain-data";
+import type { MockDeck, MockSlide } from "@/lib/mock-data/workspace";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
@@ -28,6 +29,8 @@ const typeColors: Record<string, string> = {
 };
 
 const SlidesWorkspace = () => {
+  const { data: decksData = [] } = useDecks();
+
   const [selectedDeck, setSelectedDeck] = useState<MockDeck | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPresenting, setIsPresenting] = useState(false);
@@ -263,7 +266,7 @@ const SlidesWorkspace = () => {
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {MOCK_DECKS.map((deck, i) => (
+        {decksData.map((deck, i) => (
           <motion.div key={deck.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}>
             <SitaCard className="p-0 overflow-hidden cursor-pointer" hover onClick={() => openDeck(deck)}>
               {/* Slide preview */}

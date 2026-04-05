@@ -9,7 +9,8 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { motion, AnimatePresence } from "framer-motion";
-import { MOCK_DOCS, type MockDoc } from "@/lib/mock-data";
+import { useDocs } from "@/hooks/use-domain-data";
+import type { MockDoc } from "@/lib/mock-data/workspace";
 import ReactMarkdown from "react-markdown";
 import {
   FileText, Plus, Search, Clock, Users, Shield, Workflow,
@@ -53,6 +54,8 @@ const TOOLBAR_ACTIONS = [
 ];
 
 const DocsWorkspace = () => {
+  const { data: docsData = [] } = useDocs();
+
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [editingDoc, setEditingDoc] = useState<MockDoc | null>(null);
@@ -73,7 +76,7 @@ const DocsWorkspace = () => {
   ];
 
   const filteredDocs = useMemo(() =>
-    MOCK_DOCS.filter(doc => {
+    docsData.filter(doc => {
       if (activeTab === "proposals") return doc.type === "proposal";
       if (activeTab === "reports") return doc.type === "report";
       if (activeTab === "packets") return doc.type === "boardroom-packet";

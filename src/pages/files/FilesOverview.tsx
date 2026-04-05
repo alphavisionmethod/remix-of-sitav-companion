@@ -9,7 +9,7 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { motion } from "framer-motion";
 import { classifyFile, detectSensitivity, type FileClassification, type SensitivityLevel } from "@/lib/core-services/file-ingestion";
 import { FileUploader } from "@/components/sita/FileUploader";
-import { MOCK_FILES_OVERVIEW } from "@/lib/mock-data";
+import { useFilesOverview } from "@/hooks/use-domain-data";
 
 type ViewVariant = "founder" | "household" | "finance" | "premium";
 
@@ -22,10 +22,12 @@ const sensitivityColor: Record<SensitivityLevel, string> = {
 };
 
 const FilesOverview = () => {
+  const { data: filesData = [] } = useFilesOverview();
+
   const [view, setView] = useState<ViewVariant>("founder");
 
   const classifiedFiles = useMemo(() =>
-    MOCK_FILES_OVERVIEW.map(f => ({
+    filesData.map(f => ({
       ...f,
       classification: classifyFile(f.name, f.mime, f.text),
       sensitivity: detectSensitivity(f.text),

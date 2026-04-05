@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { SearchFabricService, type IndexableItem, type SearchResponse } from "@/lib/core-services/search-fabric";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { MOCK_FILES_SEARCH_INDEX } from "@/lib/mock-data";
+import { useFilesSearchIndex } from "@/hooks/use-domain-data";
 
 
 type FilterType = "all" | "business" | "finance" | "concierge" | "obligations" | "deadlines";
@@ -22,13 +22,15 @@ const domainFilterMap: Record<FilterType, string[] | undefined> = {
 };
 
 const FilesSearch = () => {
+  const { data: searchData = [] } = useFilesSearchIndex();
+
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<FilterType>("all");
   const [searchResponse, setSearchResponse] = useState<SearchResponse | null>(null);
 
   const searchService = useMemo(() => {
     const svc = new SearchFabricService();
-    svc.addBatch(MOCK_FILES_SEARCH_INDEX);
+    svc.addBatch(searchData);
     return svc;
   }, []);
 

@@ -19,7 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { CapabilityLease, LeaseViolation } from "@/lib/core-services/lease-manager";
-import { MOCK_DEMO_LEASES } from "@/lib/mock-data";
+import { useLeases } from "@/hooks/use-domain-data";
 
 // ── Status helpers ──────────────────────────────────────────────
 
@@ -313,7 +313,7 @@ function useSeedLeases() {
 
   if (!seeded && leaseManager.getAllLeases().length === 0) {
     // Seed demo leases
-    const demos = MOCK_DEMO_LEASES;
+    const demos = leasesData;
 
     demos.forEach(d => leaseManager.issueLease(d));
 
@@ -335,6 +335,8 @@ function useSeedLeases() {
 // ── Main Page ───────────────────────────────────────────────────
 
 export default function LeaseDashboard() {
+  const { data: leasesData = [] } = useLeases();
+
   const { leaseManager, revokeLease: revokeLeaseHook } = useCapabilityLease();
   useSeedLeases();
 

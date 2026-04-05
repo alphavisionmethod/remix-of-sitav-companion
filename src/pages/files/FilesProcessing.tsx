@@ -5,7 +5,7 @@ import { Loader2, CheckCircle, AlertTriangle, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { FileIngestionService } from "@/lib/core-services/file-ingestion";
-import { MOCK_FILES_PROCESSING } from "@/lib/mock-data";
+import { useFilesProcessing } from "@/hooks/use-domain-data";
 
 
 const stageMap: Record<string, ProcessingStage> = {
@@ -20,15 +20,17 @@ const stageMap: Record<string, ProcessingStage> = {
 };
 
 const FilesProcessing = () => {
+  const { data: filesData = [] } = useFilesProcessing();
+
   const ingestedFiles = useMemo(() => {
     const service = new FileIngestionService();
     const results: Awaited<ReturnType<FileIngestionService["ingest"]>>[] = [];
-    MOCK_FILES_PROCESSING.forEach(f => {
+    filesData.forEach(f => {
       // Synchronous-safe: ingest returns quickly with in-memory data
       service.ingest(f).then(r => results.push(r));
     });
     // Since it's all synchronous in-memory, results are populated
-    return MOCK_FILES_PROCESSING.map((f, i) => ({
+    return filesData.map((f, i) => ({
       ...f,
       stage: stageMap[f.filename] || ("parsing" as ProcessingStage),
       inProgress: ["ocr", "classifying", "parsing", "scanning", "sensitivity-review"].includes(stageMap[f.filename] || "parsing"),

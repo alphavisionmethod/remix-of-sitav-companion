@@ -1,0 +1,89 @@
+import { supabase } from "@/integrations/supabase/client";
+import {
+  mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory,
+  type AdvisorSummary, type AdvisorRecommendation, type MultiAdvisorSynthesis,
+  type ApprovalRequest, type ProofHistoryItem,
+} from "@/lib/mock-data/advisor-mission-control";
+
+export type { AdvisorSummary, AdvisorRecommendation, MultiAdvisorSynthesis, ApprovalRequest, ProofHistoryItem };
+
+export async function fetchAdvisorProfiles(): Promise<AdvisorSummary[]> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return mockAdvisors;
+
+  const { data, error } = await supabase.from("advisor_registry").select("*").eq("user_id", user.id).eq("active", true);
+  if (error || !data || data.length === 0) return mockAdvisors;
+
+  return data.map((a: any) => ({
+    id: a.id, name: a.display_name, domain: a.domain as any,
+    mission: "", specialAbility: "", confidence: a.trust_threshold,
+    uncertainty: null, topMove: "", pendingApprovals: 0,
+    availableSimulations: 0, recentActions: 0, memoryItems: 0,
+    status: a.active ? "active" as const : "paused" as const, icon: "🤖",
+  }));
+}
+
+export async function fetchRecommendations(): Promise<AdvisorRecommendation[]> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return mockRecommendations;
+
+  const { data, error } = await supabase.from("advisor_responses").select("*, advisor_requests(intent, context)").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
+  if (error || !data || data.length === 0) return mockRecommendations;
+
+  return data.map((r: any) => ({
+    id: r.id, advisorId: r.request_id, advisorName: "Advisor",
+    title: r.advisor_requests?.intent || "Recommendation",
+    description: r.recommendation || "", reasoning: r.reasoning || "",
+    confidence: r.confidence || 0.5, impact: "medium" as const,
+    urgency: "medium" as const, sources: [], linkedEntities: [],
+    requiresApproval: false, canSimulate: false,
+    createdAt: r.created_at, category: "general",
+  }));
+}
+
+export async function fetchSynthesis(): Promise<MultiAdvisorSynthesis[]> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return mockSynthesis;
+
+  const { data, error } = await supabase.from("chief_synthesis_records").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(10);
+  if (error || !data || data.length === 0) return mockSynthesis;
+
+  return data.map((s: any): MultiAdvisorSynthesis => ({
+    id: s.id, title: s.owner_type || "Synthesis",
+    participants: Array.isArray(s.aligned_views) ? s.aligned_views.map((v: any) => ({ name: "Advisor", recommendation: String(v), confidence: 0.7 })) : [],
+    primaryRecommendation: s.recommended_next_step || "",
+    alternatePath: "", disagreements: [], overlap: [],
+    assumptions: [], requiresApproval: false, canSimulate: false,
+  }));
+}
+
+export async function fetchApprovals(): Promise<ApprovalRequest[]> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return mockApprovals;
+
+  const { data, error } = await supabase.from("approval_queue").select("*").eq("user_id", user.id).eq("status", "pending").order("created_at", { ascending: false });
+  if (error || !data || data.length === 0) return mockApprovals;
+
+  return data.map((a: any) => ({
+    id: a.id, action: a.action_summary, advisors: [],
+    reason: a.decision_reason || "", expectedImpact: "",
+    ifDelayed: "", riskLevel: "medium" as const,
+    policyRule: "", linkedEntities: [], proofWillExist: "",
+    createdAt: a.created_at, expiresAt: "",
+  }));
+}
+
+export async function fetchProofHistory(): Promise<ProofHistoryItem[]> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return mockProofHistory;
+
+  const { data, error } = await supabase.from("platform_proof_chains").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
+  if (error || !data || data.length === 0) return mockProofHistory;
+
+  return data.map((p: any) => ({
+    id: p.id, type: "execution" as const, title: p.proof_type || "Proof",
+    advisor: "system", outcome: "verified" as const,
+    confidence: 0.9, receiptHash: p.proof_hash || "",
+    whatChanged: "", createdAt: p.created_at,
+  }));
+}

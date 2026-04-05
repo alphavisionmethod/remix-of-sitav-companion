@@ -14,7 +14,8 @@ import {
   Users, Zap, Eye, Lock, ThumbsUp, ThumbsDown, RotateCcw,
 } from "lucide-react";
 
-import { MOCK_OWNER_APPROVALS, type OwnerApprovalItem as ApprovalItem } from "@/lib/mock-data";
+import { useOwnerApprovals } from "@/hooks/use-domain-data";
+import type { OwnerApprovalItem as ApprovalItem } from "@/lib/mock-data/owner";
 
 const riskStyles: Record<string, string> = {
   critical: "bg-destructive/10 text-destructive",
@@ -24,6 +25,8 @@ const riskStyles: Record<string, string> = {
 };
 
 const statusIcon = (s: string) => {
+  const { data: approvalsData = [] } = useOwnerApprovals();
+
   if (s === "pending") return <Clock className="h-4 w-4 text-accent" />;
   if (s === "approved") return <CheckCircle className="h-4 w-4 text-trust-safe" />;
   if (s === "rejected") return <XCircle className="h-4 w-4 text-destructive" />;
@@ -77,7 +80,7 @@ function ApprovalList({ items }: { items: ApprovalItem[] }) {
   );
 }
 
-const mockApprovals = MOCK_OWNER_APPROVALS;
+const mockApprovals = approvalsData;
 
 
 export default function OwnerApprovalsPage() {

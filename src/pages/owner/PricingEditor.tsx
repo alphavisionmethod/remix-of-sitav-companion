@@ -14,11 +14,14 @@ import { DollarSign, Plus, History, Pencil, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
-import { MOCK_PRICING_ITEMS, type OwnerPricingItem as PricingItem } from "@/lib/mock-data";
+import { usePricingItems } from "@/hooks/use-domain-data";
+import type { OwnerPricingItem as PricingItem } from "@/lib/mock-data/owner";
 
-const DEMO_ITEMS = MOCK_PRICING_ITEMS;
+const DEMO_ITEMS = pricingData;
 
 const PricingEditor = () => {
+  const { data: pricingData = [] } = usePricingItems();
+
   const [items, setItems] = useState<PricingItem[]>(DEMO_ITEMS);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editValues, setEditValues] = useState<Partial<PricingItem>>({});

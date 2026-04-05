@@ -14,7 +14,8 @@ import {
   Send, Phone, Mail, MessageSquare, Shield, TrendingUp, TrendingDown,
   BarChart3, Users, FileText, ChevronRight, Timer, Ban, Scale, ArrowUpRight
 } from "lucide-react";
-import { MOCK_COLLECTIONS_ACCOUNTS, type CollectionsAccount } from "@/lib/mock-data";
+import { useCollectionsAccounts } from "@/hooks/use-domain-data";
+import type { CollectionsAccount } from "@/lib/mock-data/collections";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 
 // ── Types ───────────────────────────────────────────────────────
@@ -361,6 +362,8 @@ const CollectionsInsights = ({ accounts }: { accounts: CollectionsAccount[] }) =
 // ── Main Component ──────────────────────────────────────────────
 
 const CollectionsCommandCenter = () => {
+  const { data: collectionsData = [] } = useCollectionsAccounts();
+
   const [activeTab, setActiveTab] = useState("overview");
 
   const tabs = [
@@ -378,19 +381,19 @@ const CollectionsCommandCenter = () => {
         actions={
           <div className="flex items-center gap-2">
             <span className="rounded-full bg-destructive/10 px-3 py-1 text-[10px] font-semibold text-destructive flex items-center gap-1">
-              <AlertTriangle className="h-3 w-3" /> {MOCK_COLLECTIONS_ACCOUNTS.filter(a => a.riskScore >= 70).length} Critical
+              <AlertTriangle className="h-3 w-3" /> {collectionsData.filter(a => a.riskScore >= 70).length} Critical
             </span>
             <span className="rounded-full bg-primary/10 px-3 py-1 text-[10px] font-semibold text-primary flex items-center gap-1">
-              <Send className="h-3 w-3" /> {MOCK_COLLECTIONS_ACCOUNTS.filter(a => a.chaseSequenceActive).length} Active Chases
+              <Send className="h-3 w-3" /> {collectionsData.filter(a => a.chaseSequenceActive).length} Active Chases
             </span>
           </div>
         }
       />
       <SitaTabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
-      {activeTab === "overview" && <CollectionsInsights accounts={MOCK_COLLECTIONS_ACCOUNTS} />}
-      {activeTab === "aging" && <AgingBuckets accounts={MOCK_COLLECTIONS_ACCOUNTS} />}
+      {activeTab === "overview" && <CollectionsInsights accounts={collectionsData} />}
+      {activeTab === "aging" && <AgingBuckets accounts={collectionsData} />}
       {activeTab === "escalation" && <EscalationLadder />}
-      {activeTab === "chases" && <ActiveChases accounts={MOCK_COLLECTIONS_ACCOUNTS} />}
+      {activeTab === "chases" && <ActiveChases accounts={collectionsData} />}
 
       <LiveAdvisorCard
         advisor="business"

@@ -11,10 +11,12 @@ import { db } from "@/integrations/supabase/db";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
-import { MOCK_RESERVES_SAVINGS } from "@/lib/mock-data";
+import { useReservesSavings } from "@/hooks/use-domain-data";
 
 
 const ReservesSavings = () => {
+  const { data: reservesData = [] } = useReservesSavings();
+
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
@@ -22,13 +24,13 @@ const ReservesSavings = () => {
   const { data: reserves = [], isLoading } = useQuery({
     queryKey: ["reserves", isDemoMode, user?.id],
     queryFn: async () => {
-      if (isDemoMode) return MOCK_RESERVES_SAVINGS;
+      if (isDemoMode) return reservesData;
       if (!user) return [];
       const { data, error } = await (db as any)
         .from("reserves")
         .select("*")
         .order("priority", { ascending: true });
-      if (error) { console.error("[reserves]", error); return MOCK_RESERVES_SAVINGS; }
+      if (error) { console.error("[reserves]", error); return reservesData; }
       return data || [];
     },
     staleTime: isDemoMode ? Infinity : 10000,
