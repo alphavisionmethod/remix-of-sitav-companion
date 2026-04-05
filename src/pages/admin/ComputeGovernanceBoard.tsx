@@ -501,39 +501,111 @@ const ComputeGovernanceBoard = () => {
 
         {/* ── Plans Tab ─────────────────────────────────────── */}
         <TabsContent value="plans" className="space-y-4 mt-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            {PLANS.map(plan => (
-              <Card key={plan.planId} className="bg-card/80 border-border/50">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm flex items-center justify-between">
-                    <span>{plan.name}</span>
-                    <span className="text-xs font-mono text-primary">${(plan.monthlyPriceCents / 100).toFixed(0)}/mo</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2 text-[11px] text-muted-foreground">
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-                    <span>Connectors: {plan.entitlements.connectedSystems === -1 ? "∞" : plan.entitlements.connectedSystems}</span>
-                    <span>Monitors: {plan.entitlements.activeMonitoringCapacity === -1 ? "∞" : plan.entitlements.activeMonitoringCapacity}</span>
-                    <span>Deep reasoning: {plan.entitlements.deepReasoningMinutesPerMonth === -1 ? "∞" : plan.entitlements.deepReasoningMinutesPerMonth + "min"}</span>
-                    <span>Max class: {plan.entitlements.maxCostClassAllowed}</span>
-                    <span>Boardroom: {plan.entitlements.boardroomSessions === -1 ? "∞" : plan.entitlements.boardroomSessions}/mo</span>
-                    <span>AI teams: {plan.entitlements.aiTeamConcurrency} concurrent</span>
-                    <span>Compute: ${(plan.entitlements.monthlyComputeBudgetCents / 100).toFixed(0)}/mo</span>
-                    <span>Self-heal: {plan.entitlements.selfHealingScope}</span>
-                    <span>Burst: ${(plan.entitlements.dailyBurstAllowanceCents / 100).toFixed(0)}/day</span>
-                    <span>Audit retention: {plan.entitlements.auditLogRetentionDays}d</span>
-                  </div>
-                  <div className="flex gap-1 mt-2 flex-wrap">
-                    {plan.entitlements.premiumModelAccess && <Badge variant="secondary" className="text-[9px]">Premium models</Badge>}
-                    {plan.entitlements.exceptionalModelAccess && <Badge variant="secondary" className="text-[9px]">Exceptional compute</Badge>}
-                    {plan.entitlements.engineeringTeamAccess && <Badge variant="secondary" className="text-[9px]">AI Eng Team</Badge>}
-                    {plan.entitlements.exportAndCompliance && <Badge variant="secondary" className="text-[9px]">Export & Compliance</Badge>}
-                    {plan.entitlements.contextCompressionRequired && <Badge variant="outline" className="text-[9px]">Compression required</Badge>}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          {/* Plan Cards */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {PLANS.map(plan => {
+              const ufc = plan.userFacingCapabilities;
+              const e = plan.entitlements;
+              const fmt = (v: number) => v === -1 ? "∞" : String(v);
+              return (
+                <Card key={plan.planId} className="bg-card/80 border-border/50">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm flex items-center justify-between">
+                      <span>{plan.name}</span>
+                      <span className="text-xs font-mono text-primary">
+                        {plan.monthlyPriceCents === 0 ? "Custom" : `$${(plan.monthlyPriceCents / 100).toFixed(0)}/mo`}
+                      </span>
+                    </CardTitle>
+                    <p className="text-[10px] text-muted-foreground italic">{plan.positioning}</p>
+                  </CardHeader>
+                  <CardContent className="space-y-3 text-[11px]">
+                    {/* User-facing capabilities */}
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-medium text-foreground">What You Get</p>
+                      {Object.entries(ufc).map(([k, v]) => (
+                        <div key={k} className="flex justify-between text-muted-foreground">
+                          <span className="capitalize">{k.replace(/([A-Z])/g, " $1").trim()}</span>
+                          <span className="text-foreground text-right max-w-[55%]">{v}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <Separator />
+                    {/* Internal dimensions */}
+                    <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-muted-foreground">
+                      <span>Connectors: {fmt(e.connectedSystems)}</span>
+                      <span>Monitors: {fmt(e.activeMonitoringCapacity)}</span>
+                      <span>Deep reasoning: {fmt(e.deepReasoningMinutesPerMonth)}min</span>
+                      <span>Max class: {e.maxCostClassAllowed}</span>
+                      <span>Boardroom: {fmt(e.boardroomSessions)}/mo</span>
+                      <span>AI teams: {e.aiTeamConcurrency}</span>
+                      <span>Compute: {e.monthlyComputeBudgetCents === -1 ? "Custom" : `$${(e.monthlyComputeBudgetCents / 100).toFixed(0)}/mo`}</span>
+                      <span>Self-heal: {e.selfHealingScope} ({fmt(e.selfHealingCategories)})</span>
+                      <span>Envs: {fmt(e.environments)}</span>
+                      <span>Seats: {fmt(e.seats)}</span>
+                      <span>Async jobs: {fmt(e.maxAsyncHighComputeJobs)}</span>
+                      <span>Autonomy: {e.autonomyMode}</span>
+                    </div>
+                    <div className="flex gap-1 flex-wrap">
+                      {e.premiumModelAccess && <Badge variant="secondary" className="text-[9px]">Premium models</Badge>}
+                      {e.exceptionalModelAccess && <Badge variant="secondary" className="text-[9px]">Exceptional</Badge>}
+                      {e.engineeringTeamAccess && <Badge variant="secondary" className="text-[9px]">AI Eng</Badge>}
+                      {e.customRoutingPolicies && <Badge variant="secondary" className="text-[9px]">Custom routing</Badge>}
+                      {e.reservedThroughput && <Badge variant="secondary" className="text-[9px]">Reserved compute</Badge>}
+                      {e.byoModelProvider && <Badge variant="secondary" className="text-[9px]">BYO provider</Badge>}
+                      {e.contextCompressionRequired && <Badge variant="outline" className="text-[9px]">Compression req.</Badge>}
+                    </div>
+                    <p className="text-[9px] text-muted-foreground/60">Best for: {plan.bestFor.join(", ")}</p>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
+
+          {/* Upsell Add-Ons */}
+          <Card className="bg-card/80 border-border/50">
+            <CardHeader className="pb-2"><CardTitle className="text-sm">Available Add-Ons</CardTitle></CardHeader>
+            <CardContent className="space-y-2">
+              {UPSELL_ADDONS.map(addon => (
+                <div key={addon.addonId} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
+                  <div>
+                    <p className="text-xs font-medium text-foreground">{addon.name}</p>
+                    <p className="text-[10px] text-muted-foreground">{addon.description}</p>
+                    <div className="flex gap-1 mt-1">
+                      {addon.applicableTiers.map(t => <Badge key={t} variant="outline" className="text-[8px]">{t}</Badge>)}
+                    </div>
+                  </div>
+                  <span className="text-xs font-mono text-primary">${(addon.monthlyPriceCents / 100).toFixed(0)}/mo</span>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Fair Use Policy */}
+          <Card className="bg-card/80 border-border/50">
+            <CardHeader className="pb-2"><CardTitle className="text-sm">Fair Use Policy</CardTitle></CardHeader>
+            <CardContent className="space-y-2 text-xs text-muted-foreground">
+              <p>Always-on awareness is continuous. Always-deep reasoning is not. Graceful adaptation replaces punitive shutdown.</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-[10px]">
+                <div className="p-2 rounded bg-secondary/20 text-center">
+                  <p className="font-mono text-foreground">{FAIR_USE_POLICY.deepReasoningThresholdPct}%</p>
+                  <p>Deep reasoning threshold</p>
+                </div>
+                <div className="p-2 rounded bg-secondary/20 text-center">
+                  <p className="font-mono text-foreground">{FAIR_USE_POLICY.proactiveInferenceThresholdPct}%</p>
+                  <p>Proactive inference threshold</p>
+                </div>
+                <div className="p-2 rounded bg-secondary/20 text-center">
+                  <p className="font-mono text-foreground">{FAIR_USE_POLICY.maxEscalationsPerHour}/hr</p>
+                  <p>Max premium escalations</p>
+                </div>
+                <div className="p-2 rounded bg-secondary/20 text-center">
+                  <p className="font-mono text-foreground">{FAIR_USE_POLICY.minCacheHitRatePct}%</p>
+                  <p>Min cache hit rate</p>
+                </div>
+              </div>
+              <p className="text-[10px]"><strong className="text-foreground">Escalation chain:</strong> {FAIR_USE_POLICY.escalationChain.join(" → ")}</p>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
