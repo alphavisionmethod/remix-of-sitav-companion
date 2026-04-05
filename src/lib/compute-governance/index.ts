@@ -20,10 +20,14 @@ export type {
 } from "./margin-protection";
 
 export {
-  PLANS, checkEntitlement, getComputeBudget,
+  PLANS, UPSELL_ADDONS, FAIR_USE_POLICY,
+  checkEntitlement, getComputeBudget, evaluateFairUse,
+  getApplicableAddons, getPlanByTier,
 } from "./plan-entitlements";
 export type {
-  PlanDefinition, PlanEntitlements, EntitlementCheckResult,
+  PlanTier, PlanDefinition, PlanEntitlements, EntitlementCheckResult,
+  UserFacingCapabilities, UpsellAddon, FairUseAction, FairUsePolicy,
+  FairUseEvaluation, EnterpriseCustomEconomics,
 } from "./plan-entitlements";
 
 export {
