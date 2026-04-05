@@ -949,6 +949,17 @@ const App = () => (
                     <Route path="/admin/service-migration" element={<CoreServiceMigrationBoard />} />
                     <Route path="/admin/persistence-drift" element={<PersistenceDriftRadar />} />
                     <Route path="/admin/runtime-continuity" element={<RuntimeContinuityBoard />} />
+                    {/* Delivery OS */}
+                    <Route path="/admin/feature-intake" element={<FeatureIntakeDesk />} />
+                    <Route path="/admin/feature-lifecycle" element={<FeatureLifecycleBoard />} />
+                    <Route path="/admin/feature-factory" element={<FeatureFactoryConsole />} />
+                    <Route path="/admin/domain-packs" element={<DomainMethodologyPacks />} />
+                    <Route path="/admin/dependency-map" element={<DependencyMapViewer />} />
+                    <Route path="/admin/change-impact" element={<ChangeImpactAnalyzer />} />
+                    <Route path="/admin/delivery-readiness" element={<DeliveryReadinessBoard />} />
+                    <Route path="/admin/platform-maturity" element={<PlatformMaturityDashboard />} />
+                    <Route path="/admin/builder-knowledge" element={<BuilderKnowledgeBase />} />
+                    <Route path="/admin/delivery-waves" element={<DeliveryWavePlanner />} />
 
                     <Route path="/admin/ai-engineering" element={<AIEngineeringBoard />} />
                     <Route path="/admin/ai-team-roster" element={<AITeamRoster />} />
