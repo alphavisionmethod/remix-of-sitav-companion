@@ -44,9 +44,7 @@ serve(async (req) => {
         details: { command, params },
       });
 
-      return new Response(JSON.stringify({ success: true, message: `Command '${command}' queued for device ${device_id}` }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return corsResponse({ success: true, message: `Command '${command}' queued for device ${device_id}` });
     }
 
     // GET: list pending commands for a device (polled by OS agent)
