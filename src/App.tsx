@@ -161,6 +161,19 @@ const MobileReceiptDetail = lazy(() => import("./pages/mobile/MobileReceiptDetai
 const MobileApprovalDetail = lazy(() => import("./pages/mobile/MobileApprovalDetail"));
 const MobileSettings = lazy(() => import("./pages/mobile/MobileSettings"));
 
+// ── Investment Office ──
+const InvestmentBoardroom = lazy(() => import("./pages/investment-office/InvestmentBoardroom"));
+const MarketExplorer = lazy(() => import("./pages/investment-office/MarketExplorer"));
+const InstrumentDetail = lazy(() => import("./pages/investment-office/InstrumentDetail"));
+const PortfolioOffice = lazy(() => import("./pages/investment-office/PortfolioOffice"));
+const StrategyStudio = lazy(() => import("./pages/investment-office/StrategyStudio"));
+const ExecutionDesk = lazy(() => import("./pages/investment-office/ExecutionDesk"));
+const ResearchLibrary = lazy(() => import("./pages/investment-office/ResearchLibrary"));
+const ThesisJournal = lazy(() => import("./pages/investment-office/ThesisJournal"));
+const RiskOffice = lazy(() => import("./pages/investment-office/RiskOffice"));
+const InvestmentAdvisorBoard = lazy(() => import("./pages/investment-office/AdvisorBoard"));
+const PlatformConnections = lazy(() => import("./pages/investment-office/PlatformConnections"));
+
 const queryClient = createQueryClient();
 
 // Premium loading skeleton — uses PageSkeleton for content-aware loading
