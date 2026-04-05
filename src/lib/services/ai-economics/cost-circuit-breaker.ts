@@ -9,7 +9,7 @@ export type BreakerBudgetPeriod = "hourly" | "daily" | "monthly";
 
 export interface BreakerBudgetConfig {
   agentId: string;
-  period: CostBudgetPeriod;
+  period: BreakerBudgetPeriod;
   budgetCents: number;
   warnThreshold: number;       // 0-1, e.g. 0.7 = 70%
   throttleThreshold: number;   // 0-1, e.g. 0.85
