@@ -250,6 +250,15 @@ const DRS10DualRealityLaunchGate = lazy(() => import("./pages/admin/DRS10DualRea
 const MockEliminationCenter = lazy(() => import("./pages/admin/MockEliminationCenter"));
 const DomainRealityBoard = lazy(() => import("./pages/admin/DomainRealityBoard"));
 const RouteSourceDiagnostics = lazy(() => import("./pages/admin/RouteSourceDiagnostics"));
+const AR01AutomationOverview = lazy(() => import("./pages/admin/AR01AutomationOverview"));
+const AR02ScheduledJobRegistry = lazy(() => import("./pages/admin/AR02ScheduledJobRegistry"));
+const AR03SelfHealingBoard = lazy(() => import("./pages/admin/AR03SelfHealingBoard"));
+const AR04AgentScheduler = lazy(() => import("./pages/admin/AR04AgentScheduler"));
+const AR05SystemMaintenanceBoard = lazy(() => import("./pages/admin/AR05SystemMaintenanceBoard"));
+const AR06ExecutionTraceExplorer = lazy(() => import("./pages/admin/AR06ExecutionTraceExplorer"));
+const AR07RetryFailureCenter = lazy(() => import("./pages/admin/AR07RetryFailureCenter"));
+const AR08KillSwitchCenter = lazy(() => import("./pages/admin/AR08KillSwitchCenter"));
+const AR09AutomationLaunchGate = lazy(() => import("./pages/admin/AR09AutomationLaunchGate"));
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
@@ -622,6 +631,17 @@ const App = () => (
                     <Route path="/admin/mock-elimination" element={<MockEliminationCenter />} />
                     <Route path="/admin/domain-reality" element={<DomainRealityBoard />} />
                     <Route path="/admin/route-diagnostics" element={<RouteSourceDiagnostics />} />
+
+                    {/* AR — Automation Reality */}
+                    <Route path="/admin/automation/overview" element={<AR01AutomationOverview />} />
+                    <Route path="/admin/automation/jobs" element={<AR02ScheduledJobRegistry />} />
+                    <Route path="/admin/automation/self-healing" element={<AR03SelfHealingBoard />} />
+                    <Route path="/admin/automation/agent-scheduler" element={<AR04AgentScheduler />} />
+                    <Route path="/admin/automation/maintenance" element={<AR05SystemMaintenanceBoard />} />
+                    <Route path="/admin/automation/traces" element={<AR06ExecutionTraceExplorer />} />
+                    <Route path="/admin/automation/failures" element={<AR07RetryFailureCenter />} />
+                    <Route path="/admin/automation/kill-switches" element={<AR08KillSwitchCenter />} />
+                    <Route path="/admin/automation/launch-gate" element={<AR09AutomationLaunchGate />} />
 
                     {/* SAG — Sovereign AI Gateway */}
                     <Route path="/admin/sag/overview" element={<SAGOverview />} />

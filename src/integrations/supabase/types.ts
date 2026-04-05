@@ -1937,6 +1937,54 @@ export type Database = {
         }
         Relationships: []
       }
+      automation_kill_switches: {
+        Row: {
+          activated_at: string | null
+          activated_by: string | null
+          created_at: string
+          deactivated_at: string | null
+          deactivated_by: string | null
+          enabled: boolean
+          id: string
+          metadata: Json | null
+          reason: string | null
+          scope: string
+          scope_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string | null
+          activated_by?: string | null
+          created_at?: string
+          deactivated_at?: string | null
+          deactivated_by?: string | null
+          enabled?: boolean
+          id?: string
+          metadata?: Json | null
+          reason?: string | null
+          scope?: string
+          scope_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string | null
+          activated_by?: string | null
+          created_at?: string
+          deactivated_at?: string | null
+          deactivated_by?: string | null
+          enabled?: boolean
+          id?: string
+          metadata?: Json | null
+          reason?: string | null
+          scope?: string
+          scope_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       bills: {
         Row: {
           amount: number
@@ -7184,6 +7232,80 @@ export type Database = {
           },
         ]
       }
+      job_executions: {
+        Row: {
+          attempt_number: number
+          completed_at: string | null
+          created_at: string
+          duration_ms: number | null
+          error_class: string | null
+          error_message: string | null
+          escalated: boolean | null
+          id: string
+          job_id: string
+          metadata: Json | null
+          mode: string
+          output: Json | null
+          policy_decision: string | null
+          retryable: boolean | null
+          started_at: string
+          status: string
+          triggered_by: string
+          user_id: string
+          verification_result: string | null
+        }
+        Insert: {
+          attempt_number?: number
+          completed_at?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_class?: string | null
+          error_message?: string | null
+          escalated?: boolean | null
+          id?: string
+          job_id: string
+          metadata?: Json | null
+          mode?: string
+          output?: Json | null
+          policy_decision?: string | null
+          retryable?: boolean | null
+          started_at?: string
+          status?: string
+          triggered_by?: string
+          user_id: string
+          verification_result?: string | null
+        }
+        Update: {
+          attempt_number?: number
+          completed_at?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_class?: string | null
+          error_message?: string | null
+          escalated?: boolean | null
+          id?: string
+          job_id?: string
+          metadata?: Json | null
+          mode?: string
+          output?: Json | null
+          policy_decision?: string | null
+          retryable?: boolean | null
+          started_at?: string
+          status?: string
+          triggered_by?: string
+          user_id?: string
+          verification_result?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_executions_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "scheduled_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       launch_records: {
         Row: {
           advisor_signoff_state: Json | null
@@ -11443,6 +11565,87 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      scheduled_jobs: {
+        Row: {
+          autonomy_tier: string
+          created_at: string
+          cron_expression: string
+          description: string | null
+          domain: string
+          environment: string
+          fail_count: number
+          id: string
+          job_class: string
+          kill_switch_class: string | null
+          last_run_at: string | null
+          last_run_status: string | null
+          max_retries: number
+          metadata: Json | null
+          name: string
+          next_run_at: string | null
+          policy_family: string | null
+          retry_policy: string
+          risk_tier: string
+          run_count: number
+          state: string
+          target_function: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          autonomy_tier?: string
+          created_at?: string
+          cron_expression?: string
+          description?: string | null
+          domain?: string
+          environment?: string
+          fail_count?: number
+          id?: string
+          job_class?: string
+          kill_switch_class?: string | null
+          last_run_at?: string | null
+          last_run_status?: string | null
+          max_retries?: number
+          metadata?: Json | null
+          name: string
+          next_run_at?: string | null
+          policy_family?: string | null
+          retry_policy?: string
+          risk_tier?: string
+          run_count?: number
+          state?: string
+          target_function: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          autonomy_tier?: string
+          created_at?: string
+          cron_expression?: string
+          description?: string | null
+          domain?: string
+          environment?: string
+          fail_count?: number
+          id?: string
+          job_class?: string
+          kill_switch_class?: string | null
+          last_run_at?: string | null
+          last_run_status?: string | null
+          max_retries?: number
+          metadata?: Json | null
+          name?: string
+          next_run_at?: string | null
+          policy_family?: string | null
+          retry_policy?: string
+          risk_tier?: string
+          run_count?: number
+          state?: string
+          target_function?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       setup_sessions: {
         Row: {
