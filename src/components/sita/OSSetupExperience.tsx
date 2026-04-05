@@ -77,6 +77,15 @@ import type { AdvisorActivation } from "@/components/sita/onboarding/AdvisorActi
 import { FirstWinSetupStep } from "@/components/sita/onboarding/FirstWinSetupStep";
 import type { FirstWinData } from "@/components/sita/onboarding/FirstWinSetupStep";
 import { DesktopTransitionStep } from "@/components/sita/onboarding/DesktopTransitionStep";
+import { LifeRhythmStep } from "@/components/sita/onboarding/LifeRhythmStep";
+import type { LifeRhythmData } from "@/components/sita/onboarding/LifeRhythmStep";
+import { StressSlippageStep } from "@/components/sita/onboarding/StressSlippageStep";
+import type { StressMapData } from "@/components/sita/onboarding/StressSlippageStep";
+import { CommunicationsContextStep } from "@/components/sita/onboarding/CommunicationsContextStep";
+import type { CommsContextData } from "@/components/sita/onboarding/CommunicationsContextStep";
+import { PlanningStyleStep } from "@/components/sita/onboarding/PlanningStyleStep";
+import type { PlanningStyleData } from "@/components/sita/onboarding/PlanningStyleStep";
+import { EnvironmentSummaryStep } from "@/components/sita/onboarding/EnvironmentSummaryStep";
 import { Progress } from "@/components/ui/progress";
 
 interface OperatingModelData {
