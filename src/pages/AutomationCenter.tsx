@@ -30,7 +30,7 @@ const AutomationCenter = () => {
 
   const activeTab = (() => {
     if (location.pathname.includes("/trust")) return "trust";
-    if (location.pathname.includes("/MOCK_DELEGATIONS")) return "MOCK_DELEGATIONS";
+    if (location.pathname.includes("/delegations")) return "delegations";
     return "rules";
   })();
 
