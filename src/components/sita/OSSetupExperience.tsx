@@ -155,6 +155,11 @@ interface SetupData {
   deferredConnections: string[];
   firstWin: FirstWinData;
   connectedSystems: number;
+  // New personalization ceremony fields
+  lifeRhythm: LifeRhythmData;
+  stressMap: StressMapData;
+  commsContext: CommsContextData;
+  planningStyle: PlanningStyleData;
 }
 
 // ── Phase Status Indicator ──────────────────────────────────
