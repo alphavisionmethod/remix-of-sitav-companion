@@ -493,6 +493,28 @@ const AIEngineeringBoard = () => {
         </TabsContent>
       </Tabs>
 
+      {/* ── Platform Integration Status ── */}
+      <div className="rounded-xl border border-border/40 bg-card p-4">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Plug className="h-4 w-4 text-primary" />
+            <span className="text-sm font-semibold">Platform Integrations</span>
+          </div>
+          <div className="flex items-center gap-2 text-xs">
+            <span className="text-[hsl(var(--trust-safe))]">{integrationHealth.healthy} connected</span>
+            <span className="text-muted-foreground">· {integrationHealth.crossReferenceCount} data flows</span>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+          {(Object.entries(integrationHealth.byCategory) as [string, { total: number; healthy: number }][]).map(([cat, data]) => (
+            <div key={cat} className="rounded-lg border border-border/20 p-2.5 text-center">
+              <p className="text-xs font-bold">{data.healthy}/{data.total}</p>
+              <p className="text-[10px] text-muted-foreground leading-tight">{cat.replace(/-/g, " ")}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Quick Links */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
