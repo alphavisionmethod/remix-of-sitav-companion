@@ -893,6 +893,12 @@ const App = () => (
                     <Route path="/admin/ai-design-studio" element={<AIDesignStudio />} />
                     <Route path="/admin/ai-learning" element={<AILearningCenter />} />
                     <Route path="/admin/ai-approvals" element={<AIApprovalDesk />} />
+                    <Route path="/admin/ai-releases" element={<AIReleasesCenter />} />
+                    <Route path="/admin/ai-root-cause" element={<AIRootCauseGraph />} />
+                    <Route path="/admin/ai-design-diffs" element={<AIDesignDiffTheater />} />
+                    <Route path="/admin/ai-time-machine" element={<AITimeMachine />} />
+                    <Route path="/admin/ai-agent-debate" element={<AIAgentDebate />} />
+                    <Route path="/admin/ai-self-learning" element={<AISelfLearningLedger />} />
                     <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
