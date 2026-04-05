@@ -161,6 +161,19 @@ const MobileReceiptDetail = lazy(() => import("./pages/mobile/MobileReceiptDetai
 const MobileApprovalDetail = lazy(() => import("./pages/mobile/MobileApprovalDetail"));
 const MobileSettings = lazy(() => import("./pages/mobile/MobileSettings"));
 
+// ── Investment Office ──
+const InvestmentBoardroom = lazy(() => import("./pages/investment-office/InvestmentBoardroom"));
+const MarketExplorer = lazy(() => import("./pages/investment-office/MarketExplorer"));
+const InstrumentDetail = lazy(() => import("./pages/investment-office/InstrumentDetail"));
+const PortfolioOffice = lazy(() => import("./pages/investment-office/PortfolioOffice"));
+const StrategyStudio = lazy(() => import("./pages/investment-office/StrategyStudio"));
+const ExecutionDesk = lazy(() => import("./pages/investment-office/ExecutionDesk"));
+const ResearchLibrary = lazy(() => import("./pages/investment-office/ResearchLibrary"));
+const ThesisJournal = lazy(() => import("./pages/investment-office/ThesisJournal"));
+const RiskOffice = lazy(() => import("./pages/investment-office/RiskOffice"));
+const InvestmentAdvisorBoard = lazy(() => import("./pages/investment-office/AdvisorBoard"));
+const PlatformConnections = lazy(() => import("./pages/investment-office/PlatformConnections"));
+
 const queryClient = createQueryClient();
 
 // Premium loading skeleton — uses PageSkeleton for content-aware loading
@@ -284,6 +297,20 @@ const App = () => (
                     <Route path="/money/documents" element={<MoneyCenter />} />
                     <Route path="/money/boardroom" element={<MoneyCenter />} />
                     <Route path="/money/settings" element={<MoneyCenter />} />
+
+                    {/* Investment Office */}
+                    <Route path="/investments" element={<InvestmentBoardroom />} />
+                    <Route path="/investments/markets" element={<MarketExplorer />} />
+                    <Route path="/investments/instrument/:instrumentId" element={<InstrumentDetail />} />
+                    <Route path="/investments/portfolio" element={<PortfolioOffice />} />
+                    <Route path="/investments/strategy" element={<StrategyStudio />} />
+                    <Route path="/investments/execute" element={<ExecutionDesk />} />
+                    <Route path="/investments/research" element={<ResearchLibrary />} />
+                    <Route path="/investments/journal" element={<ThesisJournal />} />
+                    <Route path="/investments/risk" element={<RiskOffice />} />
+                    <Route path="/investments/advisors" element={<InvestmentAdvisorBoard />} />
+                    <Route path="/investments/platforms" element={<PlatformConnections />} />
+                    <Route path="/money/investments" element={<InvestmentBoardroom />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
