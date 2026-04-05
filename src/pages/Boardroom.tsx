@@ -558,9 +558,11 @@ const RenderSection = ({ section }: { section: BoardroomContentSection }) => {
 // ── Packet View with Advisor Enhancements ─────────────────────
 
 const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; perspective?: PerspectiveLevel }) => {
-  const { packet, regenerate } = useBoardroomPacket(type);
+  const { packet, isLoading, regenerate } = useBoardroomPacket(type);
   const config = getPerspectiveConfig(perspective);
   const { pendingApprovals, activeGoals, overdueTasks, recentProofs } = useBoardroomData();
+
+  if (isLoading || !packet) return <div className="p-8 text-center text-muted-foreground">Generating boardroom packet…</div>;
 
   const filteredSections = packet.sections.filter(section => {
     if (section.type === "table" && !config.showDetailTables) return false;
