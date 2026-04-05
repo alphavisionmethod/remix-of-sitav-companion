@@ -107,6 +107,18 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
           <span className="text-muted-foreground">Outcome</span>
           <span className="text-foreground capitalize">{item.result || "—"}</span>
         </div>
+        {item.correlation_id && (
+          <div className="flex justify-between py-1.5 border-b border-border/50">
+            <span className="text-muted-foreground">Chain ID</span>
+            <span className="text-primary text-[10px] font-mono">{item.correlation_id.slice(0, 12)}…</span>
+          </div>
+        )}
+        {item.parent_proof_id && (
+          <div className="flex justify-between py-1.5 border-b border-border/50">
+            <span className="text-muted-foreground">Parent Proof</span>
+            <span className="text-primary text-[10px] font-mono">{item.parent_proof_id.slice(0, 12)}…</span>
+          </div>
+        )}
         {item.policy_id && (
           <div className="flex justify-between py-1.5 border-b border-border/50">
             <span className="text-muted-foreground">Policy applied</span>
@@ -121,18 +133,11 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
           <Hash className="h-3 w-3 text-muted-foreground" />
           <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Proof Hash</span>
         </div>
-        <p className="text-[11px] text-foreground font-mono break-all">{hash}</p>
+        <p className="text-[11px] text-foreground font-mono break-all">{item.hash || hash}</p>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2">
-        <SitaButton variant="secondary" size="sm">
-          <Download className="h-3 w-3 mr-1" /> Export
-        </SitaButton>
-        <SitaButton variant="secondary" size="sm">
-          <Link2 className="h-3 w-3 mr-1" /> Related
-        </SitaButton>
-      </div>
+      <ProofActions item={item} />
     </motion.div>
   );
 };
