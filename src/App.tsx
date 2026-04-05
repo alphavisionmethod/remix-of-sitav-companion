@@ -235,6 +235,7 @@ const FIPDeprecationManager = lazy(() => import("./pages/admin/fip/FIPDeprecatio
 const FIPBuilderConsole = lazy(() => import("./pages/admin/fip/FIPBuilderConsole"));
 
 // SAG — Sovereign AI Gateway
+const AIRuntimeStatus = lazy(() => import("./pages/admin/AIRuntimeStatus"));
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
@@ -590,6 +591,9 @@ const App = () => (
                     <Route path="/revenue-office/quotes" element={<QuoteStudio />} />
                     <Route path="/revenue-office/calls" element={<CallDesk />} />
                     <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
+
+                    {/* AI Runtime */}
+                    <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
 
                     {/* SAG — Sovereign AI Gateway */}
                     <Route path="/admin/sag/overview" element={<SAGOverview />} />

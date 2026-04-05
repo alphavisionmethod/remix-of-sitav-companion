@@ -158,14 +158,14 @@ export class TimeWealthEngine {
 
   serialize(): Record<string, unknown> {
     return {
-      profile: Array.from(this.profile.entries()),
+      activities: Array.from(this.activities.entries()),
       debts: this.debts,
     };
   }
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.profile) this.profile = new Map(state.profile as any);
+    if (state.activities) this.activities = new Map(state.activities as any);
     if (state.debts) this.debts = state.debts as any;
   }
 

@@ -4,9 +4,9 @@
 // Canonical contract: contracts/graph/device-attestation
 // ═══════════════════════════════════════════════════════════════
 
-import type {
 import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
+import type {
   DeviceAttestation,
   DeviceTrustLevel,
 } from "@/packages/contracts/graph/device-attestation";

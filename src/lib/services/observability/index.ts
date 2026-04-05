@@ -161,8 +161,6 @@ export class ObservabilityService {
       slos: Array.from(this.slos.entries()),
       alerts: Array.from(this.alerts.entries()),
       triggeredAlerts: this.triggeredAlerts,
-      records: this.records,
-      traces: this.traces,
     };
   }
 
@@ -172,8 +170,6 @@ export class ObservabilityService {
     if (state.slos) this.slos = new Map(state.slos as any);
     if (state.alerts) this.alerts = new Map(state.alerts as any);
     if (state.triggeredAlerts) this.triggeredAlerts = state.triggeredAlerts as any;
-    if (state.records) this.records = state.records as any;
-    if (state.traces) this.traces = state.traces as any;
   }
 
   async loadPersistedState(): Promise<void> {
