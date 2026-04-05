@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { LockScreen } from "@/components/sita/LockScreen";
+import { EnhancedLockScreen as LockScreen } from "@/components/sita/shell/EnhancedLockScreen";
 
 // Mock framer-motion
 vi.mock("framer-motion", () => ({
