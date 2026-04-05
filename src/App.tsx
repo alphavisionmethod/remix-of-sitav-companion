@@ -113,6 +113,14 @@ const NotificationCenter = lazy(() => import("./pages/NotificationCenter"));
 const CustomerHealthPage = lazy(() => import("./pages/CustomerHealthPage"));
 const GeneratedTruthDashboard = lazy(() => import("./pages/admin/GeneratedTruthDashboard"));
 const FleetHealthPage = lazy(() => import("./pages/admin/FleetHealthPage"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const TeamManagement = lazy(() => import("./pages/admin/TeamManagement"));
+const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
+const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
+const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
+const HealthApp = lazy(() => import("./pages/apps/HealthApp"));
+const GalleryApp = lazy(() => import("./pages/apps/GalleryApp"));
+const WeatherNewsApp = lazy(() => import("./pages/apps/WeatherNewsApp"));
 const CalendarWorkspace = lazy(() => import("./pages/CalendarWorkspace"));
 const NotesWorkspace = lazy(() => import("./pages/NotesWorkspace"));
 const PeopleWorkspace = lazy(() => import("./pages/PeopleWorkspace"));
@@ -535,9 +543,19 @@ const App = () => (
                     {/* Global Search */}
                     <Route path="/search" element={<SearchPage />} />
 
-                    {/* Admin — Generated Truth */}
+                    {/* Admin */}
                     <Route path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />
                     <Route path="/admin/fleet-health" element={<FleetHealthPage />} />
+                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin/team" element={<TeamManagement />} />
+
+                    {/* OS Apps */}
+                    <Route path="/apps/email" element={<EmailApp />} />
+                    <Route path="/apps/messenger" element={<MessengerApp />} />
+                    <Route path="/apps/vault" element={<VaultApp />} />
+                    <Route path="/apps/health" element={<HealthApp />} />
+                    <Route path="/apps/gallery" element={<GalleryApp />} />
+                    <Route path="/apps/weather-news" element={<WeatherNewsApp />} />
 
                     {/* New Workspaces */}
                     <Route path="/calendar" element={<CalendarWorkspace />} />

@@ -1,5 +1,5 @@
 import { Home, Briefcase, DollarSign, Headphones, Workflow, Receipt, BarChart3, FolderOpen, Settings, Shield, LogOut,
-  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw, Target, GitBranch, MessageSquare, Bell } from "lucide-react";
+  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw, Target, GitBranch, MessageSquare, Bell, Mail, Lock, Image, Cloud, LayoutDashboard } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
@@ -60,7 +60,17 @@ const controlNav = [
   { title: "System", url: "/system", icon: Shield },
 ];
 
+const appsNav = [
+  { title: "Email", url: "/apps/email", icon: Mail },
+  { title: "Messenger", url: "/apps/messenger", icon: MessageSquare },
+  { title: "Vault", url: "/apps/vault", icon: Lock },
+  { title: "Health", url: "/apps/health", icon: Heart },
+  { title: "Gallery", url: "/apps/gallery", icon: Image },
+  { title: "Weather & News", url: "/apps/weather-news", icon: Cloud },
+];
+
 const bottomNav = [
+  { title: "Admin", url: "/admin/dashboard", icon: LayoutDashboard },
   { title: "Pack Store", url: "/store", icon: Package },
   { title: "Enterprise", url: "/enterprise", icon: Globe },
   { title: "Settings", url: "/settings", icon: Settings },
@@ -208,6 +218,7 @@ export function AppSidebar() {
         <CollapsibleNavGroup items={workspaceNav} label="Workspace" collapsed={collapsed} />
         <CollapsibleNavGroup items={systemNav} label="System" collapsed={collapsed} />
         <CollapsibleNavGroup items={controlNav} label="Control" collapsed={collapsed} />
+        <CollapsibleNavGroup items={appsNav} label="Apps" collapsed={collapsed} />
       </SidebarContent>
 
       <SidebarFooter className="px-2 pb-4 border-t border-sidebar-border pt-2">
