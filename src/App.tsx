@@ -76,6 +76,7 @@ const AdvisorRegistry = lazy(() => import("./pages/advisors/AdvisorRegistry"));
 const RecoveryCenter = lazy(() => import("./pages/RecoveryCenter"));
 const LifeDashboard = lazy(() => import("./pages/LifeDashboard"));
 const LifeSimulator = lazy(() => import("./pages/LifeSimulator"));
+const MyActivity = lazy(() => import("./pages/MyActivity"));
 const PermissionsCenter = lazy(() => import("./pages/PermissionsCenter"));
 const AgentActivityDashboard = lazy(() => import("./pages/AgentActivityDashboard"));
 const RevenueCallingPage = lazy(() => import("./pages/RevenueCallingPage"));
