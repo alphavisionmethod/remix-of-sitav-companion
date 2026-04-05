@@ -82,9 +82,7 @@ serve(async (req) => {
           ban_duration: "none",
         });
         if (error) throw error;
-        return new Response(JSON.stringify({ success: true }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return corsResponse({ success: true });
       }
 
       if (postAction === "assign_role") {
