@@ -1,124 +1,99 @@
 
 
-# SITA OS — Performance, Cloud Updates, Management & ISO Deployment Plan
+# SITA OS — Admin Backend, ISO Profiles, AI Token Governance, Personal Brain & OS-App Bridge
 
-## What You're Asking (4 Areas)
+## Status: Previously Approved Plan Was Never Implemented
 
-1. **Make the OS lighter and faster with zero errors**
-2. **Cloud-based OTA updates for each user (drivers + general), fully automatic**
-3. **Manage every aspect of the app and OS from the admin UI (including approvals)**
-4. **Deploy as a bootable Linux ISO**
+The plan approved in the previous conversation (12 new files, 7 edits, 1 migration) was never built. This plan implements all of it.
 
-## Current State
+## What Gets Built
 
-- **ISO pipeline**: Fully built — `build-iso.sh` downloads Ubuntu 24.04, injects autoinstall, bundles Docker stack, repacks with xorriso. First-boot script generates secrets, configures TLS/firewall/fail2ban, starts the stack.
-- **OTA updates**: `sita-update.sh` exists for A/B root partition swap with rollback. Electron `auto-updater.cjs` checks a feed URL. But there is NO cloud update service, no per-user update channel, no driver management, and no frontend UI for updates.
-- **Admin**: `AdminDashboard.tsx` and `TeamManagement.tsx` exist but are mock-heavy. `ApprovalsCenter.tsx` pulls real data via `useApprovals()`. No unified OS management panel (updates, drivers, storage, network, security) in the admin UI.
-- **Performance**: App has 594 lines in `App.tsx` with 100+ lazy routes. No code splitting beyond lazy imports. No service worker, no asset preloading, no bundle analysis done.
+### Part 1: Database Migration (4 new tables)
 
-## Plan
+```sql
+ai_token_usage        -- every LLM call logged: user, advisor, model, tokens, cost
+user_ai_budgets       -- per-user monthly/daily token & cost limits
+advisor_performance   -- accuracy, satisfaction, corrections per advisor per period
+system_config         -- key/value feature flags & defaults, admin-editable
+```
 
-### Part 1: Performance & Error Prevention (3 files)
+All with RLS: users see own data, admins see everything via `has_role()`.
 
-**1a. Route Optimization — `src/App.tsx`** (edit)
-- Group routes into feature chunks using dynamic `import()` with webpack magic comments for better code splitting
-- Add error boundaries around each route group to prevent cascading failures
-- Add a global `Suspense` fallback with a branded skeleton loader instead of empty div
+### Part 2: Edge Functions (5 new, 1 edit)
 
-**1b. Service Worker for Caching — `public/sw.js`** (new)
-- Cache static assets (JS, CSS, fonts) with cache-first strategy
-- Cache API responses with stale-while-revalidate for dashboard data
-- Register in `src/main.tsx`
+| Function | Purpose |
+|----------|---------|
+| `admin-users` | User CRUD: list, suspend, promote, impersonate (admin-only) |
+| `device-telemetry` | Receives heartbeats from ISO devices, writes metrics |
+| `personal-brain` | General-purpose AI companion — learn, build, create, think modes. Injects cross-advisor memory. Uses Lovable AI gateway |
+| `os-status` | Receives CPU/RAM/disk/docker metrics from local agent |
+| `os-command` | Admin-only remote commands: restart-service, update-now, run-backup |
+| `chat-advisor` (edit) | Add pre-call budget check against `user_ai_budgets`, post-call insert into `ai_token_usage` |
 
-**1c. Performance Monitor — `src/lib/services/performance-monitor/index.ts`** (new)
-- Track Web Vitals (LCP, FID, CLS) and report to console/analytics
-- Auto-detect slow renders (>100ms) and log warnings
-- Memory leak detection via periodic heap sampling
+### Part 3: Frontend Pages (4 new)
 
-### Part 2: Cloud OTA Update System (4 files)
+| Page | Description |
+|------|-------------|
+| `UserManagement.tsx` | Real user list with search, suspend, role assignment, impersonation |
+| `AITokenDashboard.tsx` | Token spend analytics: by user, advisor, model. Budget editor. Anomaly alerts. Forecasted month-end cost |
+| `PersonalBrain.tsx` | Full-screen chat with mode tabs (Think/Learn/Build/Create). Shows token spend badge. Cross-references all advisor knowledge |
+| `AdminDashboard.tsx` (edit) | Wire real data from new tables instead of mocks |
 
-**2a. Edge Function — `supabase/functions/system-updates/index.ts`** (new)
-- `GET /system-updates?channel=stable&current_version=1.0.0` — returns latest available update metadata
-- `POST /system-updates/register` — registers a device with its hardware profile, current version, and update channel (stable/beta/canary)
-- `POST /system-updates/report` — device reports update success/failure for telemetry
-- Channels: `stable` (default), `beta` (opt-in), `canary` (internal)
-- Per-user update preferences stored in `system_update_devices` table
+### Part 4: Admin Guard Hook
 
-**2b. Database Migration** (new)
-- `system_update_releases` — id, version, channel, release_notes, download_url, checksum_sha256, size_bytes, is_critical, created_at
-- `system_update_devices` — id, user_id, device_id, hostname, current_version, channel, hardware_profile (jsonb), last_check_at, last_update_at, auto_update_enabled
-- `system_update_log` — id, device_id, user_id, from_version, to_version, status (pending/downloading/installing/success/failed/rolled_back), started_at, completed_at, error
-- All with RLS: users see only their own devices
+`src/hooks/useRequireAdmin.ts` — checks `has_role(uid, 'admin')`, redirects non-admins.
 
-**2c. Client Update Service — `src/lib/services/system-updates/index.ts`** (new)
-- `checkForUpdates()` — calls edge function, returns update info
-- `getUpdateHistory(deviceId)` — returns past updates for a device
-- `registerDevice(profile)` — registers current device
-- `setUpdateChannel(channel)` — switches between stable/beta/canary
-- `setAutoUpdate(enabled)` — toggles automatic updates
-- Works for both web app (checks for new frontend builds) and OS/Electron (checks for ISO/image updates)
+### Part 5: ISO Dual-Profile Build
 
-**2d. OS-Level Update Agent — `scripts/release/sita-ota-agent.sh`** (new)
-- Systemd timer runs every 6 hours
-- Calls the edge function to check for updates
-- Downloads update bundle, verifies SHA256 checksum
-- Calls `sita-update.sh` for A/B partition swap
-- Reports result back to cloud
-- Handles driver updates: checks hardware profile, downloads matching driver packages
-- Fully automatic when `auto_update_enabled=true`; prompts via notification when manual
+- `build-iso.sh` gains `--profile admin|user` flag
+- New `scripts/release/iso/profiles/admin.json` and `user.json`
+- `sita-first-boot.sh` reads profile, assigns admin role via Supabase Admin API on first user creation
+- Admin ISO: Mission Control unlocked, all admin pages, advanced mode default
+- User ISO: standard onboarding, personalization-first, no admin access
 
-### Part 3: Unified OS Management Panel (3 files)
+### Part 6: OS-App Bridge
 
-**3a. System Management Page — `src/pages/admin/SystemManagement.tsx`** (new)
-Tabs:
-- **Updates**: Current version, available updates, update channel selector, update history timeline, one-click "Update Now" button, auto-update toggle
-- **Devices**: Registered devices list with version, last-seen, health status
-- **Drivers**: Hardware profile, installed drivers, available driver updates
-- **Storage**: Disk usage breakdown (DB, Docker images, logs, backups), cleanup actions
-- **Network**: Current IP, DNS, firewall status, open ports
-- **Security**: TLS cert status/expiry, fail2ban stats, audit log summary, last security scan
-- **Backups**: Last backup timestamp, restore options, backup schedule config
-- **Approvals**: Embedded view of pending approvals with approve/reject inline (reuses `useApprovals` hook)
+- `scripts/release/iso/sita-metrics-agent.sh` — systemd timer (5min), reports CPU/RAM/disk/docker to `os-status` edge function
+- Admin can trigger remote commands (restart, backup, update) from SystemManagement page via `os-command` edge function
+- Personal Brain "Create" mode can submit feature requests that appear in Mission Control
 
-**3b. Update Notification Banner — `src/components/sita/UpdateBanner.tsx`** (new)
-- Persistent banner at top of shell when update is available
-- Shows version, release notes preview, "Update Now" / "Remind Later" buttons
-- Critical updates show red banner with countdown
-- Integrates with system-updates service
+### Part 7: Sidebar & Routing
 
-**3c. Route & Sidebar Integration** (edits to `App.tsx` + `AppSidebar.tsx`)
-- Add `/admin/system` route
-- Add "System" entry under Admin group in sidebar
-
-### Part 4: ISO Deployment Readiness (2 files)
-
-**4a. OTA Agent Systemd Timer — `scripts/release/iso/sita-ota.timer` + `sita-ota.service`** (new)
-- Timer unit: runs `sita-ota-agent.sh` every 6 hours
-- Service unit: executes the OTA check with proper permissions
-- Installed during first-boot
-
-**4b. First-Boot Enhancement — `scripts/release/iso/sita-first-boot.sh`** (edit)
-- Add step to install and enable the OTA timer
-- Register device with cloud update service on first boot
-- Report initial hardware profile (CPU, RAM, disk, GPU, TPM status)
+- Add "Brain" to primary nav (alongside Home, Business, Finance, Concierge)
+- Add `/admin/users`, `/admin/ai-tokens`, `/personal-brain` routes
+- Wire update to `AppSidebar.tsx`
 
 ## File Summary
 
 | # | File | Action |
 |---|------|--------|
-| 1 | `src/App.tsx` | Edit — error boundaries, better suspense |
-| 2 | `public/sw.js` | New — service worker for asset caching |
-| 3 | `src/lib/services/performance-monitor/index.ts` | New — Web Vitals + slow render detection |
-| 4 | `supabase/functions/system-updates/index.ts` | New — cloud update API |
-| 5 | Migration: `system_update_*` tables | New — 3 tables with RLS |
-| 6 | `src/lib/services/system-updates/index.ts` | New — client update service |
-| 7 | `scripts/release/sita-ota-agent.sh` | New — OS-level auto-updater |
-| 8 | `src/pages/admin/SystemManagement.tsx` | New — unified OS management panel |
-| 9 | `src/components/sita/UpdateBanner.tsx` | New — update notification banner |
-| 10 | `src/components/sita/AppSidebar.tsx` | Edit — add System link |
-| 11 | `scripts/release/iso/sita-ota.timer` | New — systemd timer for OTA |
-| 12 | `scripts/release/iso/sita-ota.service` | New — systemd service for OTA |
-| 13 | `scripts/release/iso/sita-first-boot.sh` | Edit — register device + install OTA timer |
+| 1 | Migration: 4 tables | New |
+| 2 | `supabase/functions/admin-users/index.ts` | New |
+| 3 | `supabase/functions/device-telemetry/index.ts` | New |
+| 4 | `supabase/functions/personal-brain/index.ts` | New |
+| 5 | `supabase/functions/os-status/index.ts` | New |
+| 6 | `supabase/functions/os-command/index.ts` | New |
+| 7 | `supabase/functions/chat-advisor/index.ts` | Edit — budget check + token logging |
+| 8 | `src/hooks/useRequireAdmin.ts` | New |
+| 9 | `src/pages/admin/UserManagement.tsx` | New |
+| 10 | `src/pages/admin/AITokenDashboard.tsx` | New |
+| 11 | `src/pages/admin/AdminDashboard.tsx` | Edit — real data |
+| 12 | `src/pages/PersonalBrain.tsx` | New |
+| 13 | `scripts/release/build-iso.sh` | Edit — `--profile` flag |
+| 14 | `scripts/release/iso/profiles/admin.json` | New |
+| 15 | `scripts/release/iso/profiles/user.json` | New |
+| 16 | `scripts/release/iso/sita-first-boot.sh` | Edit — profile-based role provisioning |
+| 17 | `scripts/release/iso/sita-metrics-agent.sh` | New |
+| 18 | `src/components/sita/AppSidebar.tsx` | Edit — add Brain + admin links |
+| 19 | `src/App.tsx` | Edit — add routes |
 
-**Total: 9 new files, 4 edits, 1 migration. Covers performance, cloud updates, full admin management, and ISO deployment readiness.**
+**Total: 12 new files, 7 edits, 1 migration.**
+
+## Technical Notes
+
+- Personal Brain uses Lovable AI gateway (`google/gemini-3-flash-preview`) via edge function — no new API keys needed
+- Budget enforcement: `chat-advisor` checks `user_ai_budgets` before calling AI; if over limit, auto-downgrades to cheaper model or blocks
+- Token logging: every LLM call inserts into `ai_token_usage` with user, advisor, model, token counts, cost
+- Self-learning cost: tagged separately in `ai_token_usage` so admin can cap learning budget independently
+- ISO profiles: same Docker image, different `/opt/sita/profile.json` — first-boot reads it to assign roles
 
