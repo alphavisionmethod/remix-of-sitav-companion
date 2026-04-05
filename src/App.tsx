@@ -200,6 +200,21 @@ const CapitalPurpose = lazy(() => import("./pages/investment-office/CapitalPurpo
 const WhatWouldBreak = lazy(() => import("./pages/investment-office/WhatWouldBreak"));
 const DisagreementEngine = lazy(() => import("./pages/investment-office/DisagreementEngine"));
 const FamilyOffice = lazy(() => import("./pages/investment-office/FamilyOffice"));
+const RevenueGate = lazy(() => import("./pages/revenue-office/RevenueGate"));
+const GrowthBoardroom = lazy(() => import("./pages/revenue-office/GrowthBoardroom"));
+const RelationshipCenter = lazy(() => import("./pages/revenue-office/RelationshipCenter"));
+const PipelineStudio = lazy(() => import("./pages/revenue-office/PipelineStudio"));
+const FunnelBuilder = lazy(() => import("./pages/revenue-office/FunnelBuilder"));
+const CampaignOrchestrator = lazy(() => import("./pages/revenue-office/CampaignOrchestrator"));
+const BookingCenter = lazy(() => import("./pages/revenue-office/BookingCenter"));
+const OffersWorkspace = lazy(() => import("./pages/revenue-office/OffersWorkspace"));
+const ReputationEngine = lazy(() => import("./pages/revenue-office/ReputationEngine"));
+const RevenueIntelligence = lazy(() => import("./pages/revenue-office/RevenueIntelligence"));
+const RetentionOffice = lazy(() => import("./pages/revenue-office/RetentionOffice"));
+const GrowthAdvisorBoard = lazy(() => import("./pages/revenue-office/GrowthAdvisorBoard"));
+const JourneyTwin = lazy(() => import("./pages/revenue-office/JourneyTwin"));
+const LeakDetector = lazy(() => import("./pages/revenue-office/LeakDetector"));
+const ConversionLab = lazy(() => import("./pages/revenue-office/ConversionLab"));
 
 const queryClient = createQueryClient();
 
@@ -365,6 +380,23 @@ const App = () => (
                     <Route path="/investments/disagreements" element={<DisagreementEngine />} />
                     <Route path="/investments/family-office" element={<FamilyOffice />} />
                     <Route path="/money/investments" element={<InvestmentGate />} />
+
+                    {/* Revenue Office */}
+                    <Route path="/revenue-office" element={<RevenueGate />} />
+                    <Route path="/revenue-office/boardroom" element={<GrowthBoardroom />} />
+                    <Route path="/revenue-office/relationships" element={<RelationshipCenter />} />
+                    <Route path="/revenue-office/pipeline" element={<PipelineStudio />} />
+                    <Route path="/revenue-office/funnels" element={<FunnelBuilder />} />
+                    <Route path="/revenue-office/campaigns" element={<CampaignOrchestrator />} />
+                    <Route path="/revenue-office/bookings" element={<BookingCenter />} />
+                    <Route path="/revenue-office/offers" element={<OffersWorkspace />} />
+                    <Route path="/revenue-office/reputation" element={<ReputationEngine />} />
+                    <Route path="/revenue-office/intelligence" element={<RevenueIntelligence />} />
+                    <Route path="/revenue-office/retention" element={<RetentionOffice />} />
+                    <Route path="/revenue-office/advisors" element={<GrowthAdvisorBoard />} />
+                    <Route path="/revenue-office/journey-twin" element={<JourneyTwin />} />
+                    <Route path="/revenue-office/leaks" element={<LeakDetector />} />
+                    <Route path="/revenue-office/conversion-lab" element={<ConversionLab />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
