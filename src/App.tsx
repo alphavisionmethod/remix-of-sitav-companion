@@ -370,6 +370,16 @@ const App = () => (
                     <Route path="/app-store/updates" element={<AppUpdatesPage />} />
                     <Route path="/app-store/permissions" element={<AppPermissionsCenterPage />} />
                     <Route path="/app-store/associations" element={<AppAssociationsPage />} />
+                    <Route path="/app-store/compare" element={<AppComparePage />} />
+                    <Route path="/app-store/manage/:appId" element={<AppManagePage />} />
+                    <Route path="/app-store/web-install" element={<WebAppInstallPage />} />
+                    <Route path="/app-store/external-install" element={<ExternalInstallerPage />} />
+                    <Route path="/app-store/receipts" element={<AppReceiptsPage />} />
+                    <Route path="/app-store/receipts/:appId" element={<AppReceiptsPage />} />
+                    <Route path="/app-store/enterprise" element={<EnterpriseCatalogPage />} />
+                    <Route path="/app-store/dev-tools" element={<DevToolsCatalogPage />} />
+                    <Route path="/app-store/open-with" element={<OpenWithPage />} />
+                    <Route path="/app-store/first-launch/:appId" element={<FirstLaunchPage />} />
 
                     {/* Proof Center — explicit sub-routes */}
                     <Route path="/proof" element={<ProofCenter />} />
