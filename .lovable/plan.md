@@ -1,57 +1,42 @@
 
-# SITA OS — Persistence Wiring Plan (Hybrid Approach)
+# SITA Delivery Operating System — Implementation Plan
 
-## Phase 1: Foundation — Generic Persistence Adapter + Key Tables Migration
+## Phase A: Database Schema (Migration)
+Create the core persistence tables for the delivery methodology:
+- `feature_blueprints` — canonical blueprint for every feature (domain, type, persistence class, trust needs, launch criticality)
+- `feature_lifecycle_stages` — tracks each feature through the 13-stage lifecycle pipeline
+- `domain_methodology_packs` — per-domain methodology definitions (routes, shells, contracts, events, proofs)
+- `feature_archetypes` — canonical feature type definitions (boardroom, office, simulator, workflow, etc.)
+- `delivery_templates` — per-archetype generation templates (expected files, components, contracts)
+- `dependency_maps` — auto-mapped dependencies per feature (contracts, services, policies, probes)
+- `change_impact_records` — impact analysis for proposed changes
+- `delivery_waves` — batched delivery planning
+- `platform_maturity_scores` — domain/feature maturity tracking
+- `remediation_suggestions` — auto-generated fix suggestions
 
-### 1A. Database Migration — Create dedicated tables for high-value data
-- `engine_state` — generic key-value store for serialized engine state (per user, per engine)
-- `engine_events` — append-only event log for engine actions
-- `intelligence_assets` — dedicated table for intelligence reuse assets
-- `intelligence_efficiency_scores` — dedicated table for AI efficiency metrics
-- `quality_floor_configs` — dedicated table for quality floor rules
-- `compute_budget_snapshots` — dedicated table for compute governance snapshots
-- `operator_taste_profiles` — dedicated table for operator preference memory
-- All with RLS (user_id = auth.uid())
+## Phase B: Core Engine Logic (src/lib/delivery-methodology/)
+- `feature-lifecycle.ts` — lifecycle state machine (proposed→specified→generated→…→evolving→deprecated)
+- `feature-factory.ts` — auto-generates feature ID, classification, route plan, contract stubs, manifests
+- `blueprint-engine.ts` — validates and enriches blueprints
+- `dependency-mapper.ts` — auto-maps contracts, services, policies, probes needed
+- `change-impact-analyzer.ts` — determines affected routes/contracts/journeys
+- `delivery-readiness.ts` — orchestrates readiness checks across all gates
+- `archetype-registry.ts` — canonical feature types with default requirements
+- `domain-packs.ts` — methodology packs per domain (Money, Revenue, AI Engineering, etc.)
+- `maturity-model.ts` — tracks maturity by domain/feature/truth level
+- `remediation-engine.ts` — proposes exact fixes for gaps
 
-### 1B. Create `src/lib/persistence/engine-persistence-adapter.ts`
-- Generic `persistEngineState(engineName, userId, state)` → upsert to `engine_state`
-- Generic `loadEngineState(engineName, userId)` → select from `engine_state`
-- Generic `appendEngineEvent(engineName, userId, event)` → insert to `engine_events`
-- Debounced auto-save (500ms) to avoid write spam
+## Phase C: Admin Surfaces (10 pages)
+1. **Feature Intake Desk** (`/admin/feature-intake`) — structured intake for new features
+2. **Blueprint Studio** (`/admin/blueprint-studio`) — create/review/approve blueprints
+3. **Feature Lifecycle Board** (`/admin/feature-lifecycle`) — track all features through pipeline stages
+4. **Feature Factory Console** (`/admin/feature-factory`) — generate artifacts from blueprints
+5. **Domain Methodology Packs** (`/admin/domain-packs`) — view/edit per-domain methodology
+6. **Dependency Map Viewer** (`/admin/dependency-map`) — visualize feature dependencies
+7. **Change Impact Analyzer** (`/admin/change-impact`) — analyze proposed changes
+8. **Delivery Readiness Board** (`/admin/delivery-readiness`) — orchestrate launch readiness
+9. **Platform Maturity Dashboard** (`/admin/platform-maturity`) — maturity scores by domain
+10. **AI Builder Knowledge Base** (`/admin/builder-knowledge`) — patterns, examples, domain packs
 
-### 1C. Create dedicated persistence modules
-- `src/lib/persistence/intelligence-asset-persistence.ts` — CRUD for `intelligence_assets`
-- `src/lib/persistence/efficiency-persistence.ts` — CRUD for `intelligence_efficiency_scores`
-- `src/lib/persistence/quality-floor-persistence.ts` — CRUD for `quality_floor_configs`
-- `src/lib/persistence/compute-governance-persistence.ts` — CRUD for `compute_budget_snapshots`
-- `src/lib/persistence/operator-taste-persistence.ts` — CRUD for `operator_taste_profiles`
-
-## Phase 2: Wire Core Services (42 files)
-- Wire `EventBus` to persist events to `engine_events`
-- Wire `MemoryGovernanceEngine` to persist/load from `engine_state`
-- Wire `PolicyDepthEngine` state persistence
-- Wire `ActionStateMachine` to log transitions to `engine_events`
-- Wire `AdvisorOrchestrationEngine`, `EntityRoleGraph`, `DigitalTwinEngine`, etc.
-- Update `useOSRuntime` to load persisted state on mount and auto-save on changes
-
-## Phase 3: Wire Strategic Intelligence (13 files)
-- Wire `IntelligenceCapitalIndex` computations to persist snapshots
-- Wire `QualityFloorEngine` rules to `quality_floor_configs`
-- Wire `OperatorTasteMemory` to `operator_taste_profiles`
-- Wire `BenchmarkLab` results to `engine_events`
-- Wire remaining 9 modules via generic adapter
-
-## Phase 4: Wire Compute Governance (7 files)
-- Wire `TaskClassifier`, `ModelRouter`, `BudgetPolicyEngine` state to dedicated + generic tables
-- Wire `MarginProtection`, `MissionCostTracker` metrics to `compute_budget_snapshots`
-
-## Phase 5: Wire Intelligence Architecture (12 files)
-- Wire `IntelligenceAssetLibrary` to `intelligence_assets` table
-- Wire `DifferentialReasoningEngine` outputs to `engine_events`
-- Wire `EfficiencyScoreboard` to `intelligence_efficiency_scores`
-- Wire remaining modules via generic adapter
-
-## Validation
-- Build passes (`tsc --noEmit`)
-- Data persists across page refresh
-- RLS prevents cross-user data access
+## Phase D: Route Registration
+Wire all 10 new routes into App.tsx with lazy loading.
