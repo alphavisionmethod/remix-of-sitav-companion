@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchCustomers, fetchCollections } from "@/lib/data-services/business-data-service";
+import { fetchCustomers, fetchCollections, type CollectionsAccount } from "@/lib/data-services/business-data-service";
 import { fetchFilesOverview, fetchFilesProcessing, fetchFilesSearchIndex, fetchAllFiles, fetchFilesByStatus, fetchFilesBySensitivity, fetchFileSettings } from "@/lib/data-services/files-data-service";
 import { fetchReservesSavings } from "@/lib/data-services/money-data-service";
 import { fetchMobileAlerts, fetchMobileApprovals, fetchMobileProofs, fetchMobileWorkflowSteps } from "@/lib/data-services/mobile-data-service";

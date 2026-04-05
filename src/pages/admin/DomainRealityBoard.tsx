@@ -119,8 +119,8 @@ export default function DomainRealityBoard() {
 
       <SitaTabs
         tabs={DOMAINS.map(d => ({ key: d.domain, label: d.domain }))}
-        activeTab={DOMAINS[selectedDomain].domain}
-        onTabChange={(tab) => setSelectedDomain(DOMAINS.findIndex(d => d.domain === tab))}
+        active={DOMAINS[selectedDomain].domain}
+        onChange={(tab) => setSelectedDomain(DOMAINS.findIndex(d => d.domain === tab))}
       />
 
       <SitaCard className="p-4">
