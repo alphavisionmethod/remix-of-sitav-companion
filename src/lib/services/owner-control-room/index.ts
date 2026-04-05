@@ -139,16 +139,12 @@ export class OwnerControlRoomService {
   serialize(): Record<string, unknown> {
     return {
       delegations: Array.from(this.delegations.entries()),
-      rhythms: this.rhythms,
-      patterns: Array.from(this.patterns.entries()),
     };
   }
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
     if (state.delegations) this.delegations = new Map(state.delegations as any);
-    if (state.rhythms) this.rhythms = state.rhythms as any;
-    if (state.patterns) this.patterns = new Map(state.patterns as any);
   }
 
   async loadPersistedState(): Promise<void> {
