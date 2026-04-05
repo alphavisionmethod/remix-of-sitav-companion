@@ -720,6 +720,9 @@ const App = () => (
                     <Route path="/atlas/operations" element={<OperationsCommandCenter />} />
                     <Route path="/atlas/connectors" element={<ConnectorControlCenter />} />
                     <Route path="/atlas/concierge" element={<ConciergeCommandCenter />} />
+                    <Route path="/atlas/truth-registry" element={<PlatformTruthRegistry />} />
+                    <Route path="/atlas/data-protection" element={<DataProtectionPosture />} />
+                    <Route path="/atlas/validation" element={<ValidationCommandCenter />} />
 
                     <Route path="/incidents" element={<Navigate to="/mission-control" replace />} />
 
