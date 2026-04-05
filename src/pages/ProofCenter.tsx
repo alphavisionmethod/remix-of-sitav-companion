@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Receipt / Proof Center
 // The signature trust surface — accountable, inspectable, premium
+// Now with proof chain visualization and bundle export (Phase 3)
 // ═══════════════════════════════════════════════════════════════
 
 import { SitaCard, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
@@ -10,6 +11,7 @@ import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { useProofRecords } from "@/hooks/use-sita-data";
 import { useProofTimeline } from "@/hooks/use-proof-timeline";
+import { useProofChain, useProofBundle } from "@/hooks/use-proof-chain";
 import { useKernelStatus } from "@/contexts/SitaKernelContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
@@ -101,6 +103,18 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
           <span className="text-muted-foreground">Outcome</span>
           <span className="text-foreground capitalize">{item.result || "—"}</span>
         </div>
+        {item.correlation_id && (
+          <div className="flex justify-between py-1.5 border-b border-border/50">
+            <span className="text-muted-foreground">Chain ID</span>
+            <span className="text-primary text-[10px] font-mono">{item.correlation_id.slice(0, 12)}…</span>
+          </div>
+        )}
+        {item.parent_proof_id && (
+          <div className="flex justify-between py-1.5 border-b border-border/50">
+            <span className="text-muted-foreground">Parent Proof</span>
+            <span className="text-primary text-[10px] font-mono">{item.parent_proof_id.slice(0, 12)}…</span>
+          </div>
+        )}
         {item.policy_id && (
           <div className="flex justify-between py-1.5 border-b border-border/50">
             <span className="text-muted-foreground">Policy applied</span>
@@ -115,16 +129,26 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
           <Hash className="h-3 w-3 text-muted-foreground" />
           <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Proof Hash</span>
         </div>
-        <p className="text-[11px] text-foreground font-mono break-all">{hash}</p>
+        <p className="text-[11px] text-foreground font-mono break-all">{item.hash || hash}</p>
       </div>
 
       {/* Actions */}
       <div className="flex items-center gap-2">
-        <SitaButton variant="secondary" size="sm">
+        <SitaButton variant="secondary" size="sm" onClick={() => {
+          if (item.correlation_id) {
+            const blob = new Blob([JSON.stringify(item, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `proof-${(item.id || "unknown").slice(0, 8)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }
+        }}>
           <Download className="h-3 w-3 mr-1" /> Export
         </SitaButton>
         <SitaButton variant="secondary" size="sm">
-          <Link2 className="h-3 w-3 mr-1" /> Related
+          <Link2 className="h-3 w-3 mr-1" /> Chain
         </SitaButton>
       </div>
     </motion.div>

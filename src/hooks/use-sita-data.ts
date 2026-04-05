@@ -11,7 +11,9 @@ import {
   mockAutomationRules, mockConnectors, mockAITeam, mockIncidents, mockCosts,
 } from "@/lib/mock-data/legacy-display-mocks";
 
-// Generic hook factory: returns mock data in demo mode, queries Supabase in live mode
+// ── Generic hook factory ─────────────────────────────────────
+// Returns mock data ONLY in demo mode; queries Supabase in live mode.
+// On Supabase error in live mode → returns empty array, NOT mock data.
 function useSitaQuery<T>(
   key: string,
   mockData: T[],
@@ -42,11 +44,11 @@ function useSitaQuery<T>(
 
         if (error) {
           console.error(`[use-sita-data] Error fetching ${table}:`, error);
-          return mockData;
+          return [];
         }
         return (data as T[]) || [];
       } catch {
-        return mockData;
+        return [];
       }
     },
     refetchInterval: isDemoMode ? undefined : (options?.refetchInterval ?? 30000),
@@ -81,7 +83,7 @@ export function useCommunications() {
 
 // ── Money Hooks ──
 export function useBills() {
-  return useSitaQuery("bills", mockBills, "bills", { orderBy: "due_at", ascending: true });
+  return useSitaQuery("bills", mockBills, "bills", { orderBy: "due_date", ascending: true });
 }
 
 export function useSubscriptions() {
@@ -101,8 +103,8 @@ export function useReserves() {
     queryFn: async () => {
       if (isDemoMode) return mockReserves;
       if (!user) return [];
-      const { data, error } = await (db as any).from("reserves").select("*").order("priority", { ascending: true });
-      if (error) return mockReserves;
+      const { data, error } = await (db as any).from("capital_allocations").select("*").order("created_at", { ascending: false });
+      if (error) return [];
       return data || [];
     },
     staleTime: isDemoMode ? Infinity : 10000,
@@ -129,11 +131,45 @@ export function useFinancialDocuments() {
 
 export function useCashFlow() {
   const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
   return useQuery({
-    queryKey: ["cash-flow", isDemoMode],
+    queryKey: ["cash-flow", isDemoMode, user?.id],
     queryFn: async () => {
       if (isDemoMode) return mockCashFlow;
-      return mockCashFlow;
+      if (!user) return mockCashFlow;
+      // Compute from real invoices + bills
+      const [invoiceRes, billRes, budgetRes] = await Promise.all([
+        db.from("invoices").select("amount, status").limit(200),
+        db.from("bills").select("amount, status, due_date").limit(200),
+        db.from("budgets").select("allocated, spent, category").limit(50),
+      ]);
+      const invoices = invoiceRes.data || [];
+      const bills = billRes.data || [];
+      const budgets = budgetRes.data || [];
+
+      const totalReceivable = invoices
+        .filter((i: any) => i.status === "pending" || i.status === "sent")
+        .reduce((s: number, i: any) => s + (Number(i.amount) || 0), 0);
+      const totalPayable = bills
+        .filter((b: any) => b.status === "pending" || b.status === "upcoming")
+        .reduce((s: number, b: any) => s + (Number(b.amount) || 0), 0);
+      const totalBudget = budgets.reduce((s: number, b: any) => s + (Number(b.allocated) || 0), 0);
+      const totalSpent = budgets.reduce((s: number, b: any) => s + (Number(b.spent) || 0), 0);
+      const available = totalBudget - totalSpent;
+      const safeToSpend = Math.max(0, available - totalPayable);
+
+      if (invoices.length === 0 && bills.length === 0 && budgets.length === 0) {
+        return mockCashFlow; // No real data yet, show demo
+      }
+
+      return {
+        available: `$${available.toLocaleString()}`,
+        incoming: `$${totalReceivable.toLocaleString()}`,
+        outgoing: `$${totalPayable.toLocaleString()}`,
+        safeToSpend: `$${safeToSpend.toLocaleString()}`,
+        runway: available > 0 ? `${Math.round(available / Math.max(totalPayable, 1))} months` : "< 1 month",
+        nextBigExpense: { name: "Next bill", amount: `$${totalPayable.toLocaleString()}`, date: "This month" },
+      };
     },
     staleTime: isDemoMode ? Infinity : 15000,
   });
@@ -149,11 +185,11 @@ export function useFamilyEvents() {
 }
 
 export function useGroceryList() {
-  return useSitaQuery("grocery-list", mockGroceryList, "tasks");
+  return useSitaQuery("grocery-list", mockGroceryList, "household_shared_items");
 }
 
 export function useTravel() {
-  return useSitaQuery("travel", mockTravel, "bookings", { orderBy: "date", ascending: true });
+  return useSitaQuery("travel", mockTravel, "bookings", { orderBy: "created_at" });
 }
 
 // ── Activity & Intelligence ──
@@ -166,11 +202,23 @@ export function useActivityStream() {
 
 export function useOpportunityInsights() {
   const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
   return useQuery({
-    queryKey: ["opportunity-insights", isDemoMode],
+    queryKey: ["opportunity-insights", isDemoMode, user?.id],
     queryFn: async () => {
       if (isDemoMode) return mockOpportunityInsights;
-      return mockOpportunityInsights;
+      if (!user) return [];
+      const { data, error } = await db.from("opportunities").select("*").order("created_at", { ascending: false }).limit(20);
+      if (error || !data?.length) return mockOpportunityInsights;
+      return data.map((o: any) => ({
+        id: o.id,
+        title: o.title,
+        domain: "business",
+        description: o.next_action || "Follow up",
+        impact: (o.confidence || 0) > 70 ? "high" : "medium",
+        savings: o.value ? `$${Number(o.value).toLocaleString()}` : "$0",
+        confidence: o.confidence || 50,
+      }));
     },
     staleTime: isDemoMode ? Infinity : 60000,
   });
@@ -178,7 +226,7 @@ export function useOpportunityInsights() {
 
 // ── Memory ──
 export function useMemoryItems() {
-  return useSitaQuery("memory", mockMemoryItems, "sita_memory_entries", { orderBy: "created_at" });
+  return useSitaQuery("memory", mockMemoryItems, "events", { orderBy: "created_at" });
 }
 
 // ── Goals ──
@@ -198,7 +246,7 @@ export function useWorkflows() {
     { id: "WF-002", name: "Bill Payment Automation", domain: "money", status: "active", trigger_type: "schedule", steps: [] },
     { id: "WF-003", name: "Weekly Family Sync", domain: "concierge", status: "paused", trigger_type: "schedule", steps: [] },
   ];
-  return useSitaQuery("workflows", mockWorkflows, "workflows", { orderBy: "created_at" });
+  return useSitaQuery("workflows", mockWorkflows, "workflow_runs", { orderBy: "created_at" });
 }
 
 // ── Policies ──
@@ -213,17 +261,19 @@ export function usePolicies() {
 
 // ── System ──
 export function useAutomationRules() {
-  return useSitaQuery("automation-rules", mockAutomationRules, "workflows");
+  return useSitaQuery("automation-rules", mockAutomationRules, "workflow_runs");
 }
 
 export function useSystemConnectors() {
   const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
   return useQuery({
-    queryKey: ["system-connectors", isDemoMode],
+    queryKey: ["system-connectors", isDemoMode, user?.id],
     queryFn: async () => {
       if (isDemoMode) return mockConnectors;
+      if (!user) return [];
       const { data } = await (db as any).from("connector_configs").select("*").limit(20);
-      return data?.length ? data : mockConnectors;
+      return data?.length ? data : [];
     },
     staleTime: isDemoMode ? Infinity : 30000,
   });
@@ -231,11 +281,14 @@ export function useSystemConnectors() {
 
 export function useAITeam() {
   const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
   return useQuery({
-    queryKey: ["ai-team", isDemoMode],
+    queryKey: ["ai-team", isDemoMode, user?.id],
     queryFn: async () => {
       if (isDemoMode) return mockAITeam;
-      return mockAITeam;
+      if (!user) return [];
+      const { data } = await db.from("advisor_registry").select("*").limit(20);
+      return data?.length ? data : [];
     },
   });
 }
@@ -246,11 +299,21 @@ export function useIncidents() {
 
 export function useCosts() {
   const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
   return useQuery({
-    queryKey: ["costs", isDemoMode],
+    queryKey: ["costs", isDemoMode, user?.id],
     queryFn: async () => {
       if (isDemoMode) return mockCosts;
-      return mockCosts;
+      if (!user) return mockCosts;
+      const { data } = await db.from("ai_cost_ledger").select("*").order("created_at", { ascending: false }).limit(50);
+      if (!data?.length) return mockCosts;
+      const totalCents = data.reduce((s: number, d: any) => s + (d.cost_cents || 0), 0);
+      return {
+        totalSpend: `$${(totalCents / 100).toFixed(2)}`,
+        todaySpend: `$${(data.filter((d: any) => new Date(d.created_at).toDateString() === new Date().toDateString()).reduce((s: number, d: any) => s + (d.cost_cents || 0), 0) / 100).toFixed(2)}`,
+        topModel: data[0]?.model || "gpt-4o",
+        callCount: data.length,
+      };
     },
   });
 }
@@ -276,7 +339,7 @@ export function useApprovals() {
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
-      if (error) return mockApprovals;
+      if (error) return [];
       return data || [];
     },
     refetchInterval: isDemoMode ? undefined : 15000,
@@ -302,12 +365,12 @@ export function useProofRecords() {
       if (isDemoMode) return mockProof;
       if (!user) return [];
       const { data, error } = await (db as any)
-        .from("sita_proof_records")
+        .from("proof_records")
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(50);
-      if (error) return mockProof;
+      if (error) return [];
       return data || [];
     },
     refetchInterval: isDemoMode ? undefined : 30000,
@@ -321,7 +384,7 @@ export function useReceipts() {
     { id: "R-002", type: "bill_paid", domain: "finance", entity_id: "BILL-rent", payload: { amount: 2400, method: "ach" } },
     { id: "R-003", type: "subscription_renewed", domain: "finance", entity_id: "SUB-slack", payload: { amount: 62.50, service: "Slack" } },
   ];
-  return useSitaQuery("receipts", mockReceipts, "sita_receipts", { orderBy: "created_at" });
+  return useSitaQuery("receipts", mockReceipts, "proof_records", { orderBy: "created_at" });
 }
 
 // ── Execution Envelopes ──
@@ -340,7 +403,7 @@ export function useTrustState() {
     { id: "TS-002", entity_type: "connector", entity_id: "stripe", trust_level: "verified", score: 98 },
     { id: "TS-003", entity_type: "advisor", entity_id: "finance-advisor", trust_level: "review", score: 78 },
   ];
-  return useSitaQuery("trust-state", mockTrust, "trust_state", { orderBy: "updated_at" });
+  return useSitaQuery("trust-state", mockTrust, "metrics_snapshots", { orderBy: "snapshot_at" });
 }
 
 // ── Budgets ──
