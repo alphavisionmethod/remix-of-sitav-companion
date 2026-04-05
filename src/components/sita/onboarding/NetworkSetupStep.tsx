@@ -57,15 +57,6 @@ function detectConnectionType(): ConnectionType {
   }
   return "unknown";
 }
-  const conn = (navigator as any).connection;
-  if (conn) {
-    const t = conn.type;
-    if (t === "ethernet") return "ethernet";
-    if (t === "wifi") return "wifi";
-    if (t === "cellular") return "cellular";
-  }
-  return navigator.onLine ? "unknown" : "unknown";
-}
 
 interface Props {
   onNext: () => void;
