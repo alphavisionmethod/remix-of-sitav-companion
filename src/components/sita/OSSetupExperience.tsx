@@ -77,6 +77,15 @@ import type { AdvisorActivation } from "@/components/sita/onboarding/AdvisorActi
 import { FirstWinSetupStep } from "@/components/sita/onboarding/FirstWinSetupStep";
 import type { FirstWinData } from "@/components/sita/onboarding/FirstWinSetupStep";
 import { DesktopTransitionStep } from "@/components/sita/onboarding/DesktopTransitionStep";
+import { LifeRhythmStep } from "@/components/sita/onboarding/LifeRhythmStep";
+import type { LifeRhythmData } from "@/components/sita/onboarding/LifeRhythmStep";
+import { StressSlippageStep } from "@/components/sita/onboarding/StressSlippageStep";
+import type { StressMapData } from "@/components/sita/onboarding/StressSlippageStep";
+import { CommunicationsContextStep } from "@/components/sita/onboarding/CommunicationsContextStep";
+import type { CommsContextData } from "@/components/sita/onboarding/CommunicationsContextStep";
+import { PlanningStyleStep } from "@/components/sita/onboarding/PlanningStyleStep";
+import type { PlanningStyleData } from "@/components/sita/onboarding/PlanningStyleStep";
+import { EnvironmentSummaryStep } from "@/components/sita/onboarding/EnvironmentSummaryStep";
 import { Progress } from "@/components/ui/progress";
 
 interface OperatingModelData {
@@ -146,6 +155,11 @@ interface SetupData {
   deferredConnections: string[];
   firstWin: FirstWinData;
   connectedSystems: number;
+  // New personalization ceremony fields
+  lifeRhythm: LifeRhythmData;
+  stressMap: StressMapData;
+  commsContext: CommsContextData;
+  planningStyle: PlanningStyleData;
 }
 
 // ── Phase Status Indicator ──────────────────────────────────
@@ -530,6 +544,10 @@ export function OSSetupExperience() {
     deferredConnections: [],
     firstWin: { category: "", action: "", approved: false, prepared: false },
     connectedSystems: 0,
+    lifeRhythm: { weekStructure: "", overloadMoments: [], planningHorizon: "", planningSupport: [] },
+    stressMap: { heavierThanShould: [], affectedFirst: [] },
+    commsContext: { communicationStress: "", supportNeeds: [] },
+    planningStyle: { viewPreference: "", focusPreference: "" },
   });
 
   // Sync setup state to engine for branch evaluation
@@ -897,6 +915,36 @@ export function OSSetupExperience() {
                     advisors={state.advisorActivation}
                     onUpdate={aa => setState(s => ({ ...s, advisorActivation: aa }))}
                     primaryUseMode={state.primaryUseMode}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {/* Life Rhythm */}
+                {phase === "life-rhythm" && (
+                  <LifeRhythmStep key="life-rhythm" data={state.lifeRhythm}
+                    onUpdate={lr => setState(s => ({ ...s, lifeRhythm: lr }))} onNext={goNext} onPrev={goPrev} />
+                )}
+                {/* Stress & Slippage */}
+                {phase === "stress-slippage" && (
+                  <StressSlippageStep key="stress-slippage" data={state.stressMap}
+                    onUpdate={sm => setState(s => ({ ...s, stressMap: sm }))} onNext={goNext} onPrev={goPrev} />
+                )}
+                {/* Communications Context */}
+                {phase === "communications-context" && (
+                  <CommunicationsContextStep key="comms-context" data={state.commsContext}
+                    onUpdate={cc => setState(s => ({ ...s, commsContext: cc }))} onNext={goNext} onPrev={goPrev} />
+                )}
+                {/* Planning Style */}
+                {phase === "planning-style" && (
+                  <PlanningStyleStep key="planning-style" data={state.planningStyle}
+                    onUpdate={ps => setState(s => ({ ...s, planningStyle: ps }))} onNext={goNext} onPrev={goPrev} />
+                )}
+                {/* Environment Summary */}
+                {phase === "environment-summary" && (
+                  <EnvironmentSummaryStep key="env-summary" displayName={state.displayName} trustLevel={state.trustLevel}
+                    primaryUseMode={state.primaryUseMode} enabledDomains={state.enabledDomains}
+                    activeAdvisors={state.advisorActivation} lifeRhythm={state.lifeRhythm}
+                    stressMap={state.stressMap} commsContext={state.commsContext} planningStyle={state.planningStyle}
+                    connectedSystems={state.connectedSystems} firstWinAction={state.firstWin.action}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
