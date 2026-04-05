@@ -60,8 +60,6 @@ const timeAgo = (dt: string | null) => {
 
 type Tab = "all" | "active" | "at-risk" | "new" | "inactive";
 
-const { data: DEMO_CUSTOMERS = [] } = useCustomers();
-
 
 const CustomersPage = () => {
   const { user } = useAuth();
@@ -71,6 +69,7 @@ const CustomersPage = () => {
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const { data: customers = [], isLoading } = useCustomers();
 
   const inspectCustomer = (c: Customer) => {
     inspect({
@@ -88,17 +87,6 @@ const CustomersPage = () => {
     });
   };
 
-  const { data: dbCustomers = [], isLoading } = useQuery({
-    queryKey: ["customers"],
-    queryFn: async () => {
-      if (isDemoMode) return DEMO_CUSTOMERS;
-      const { data, error } = await (supabase as any).from("customers").select("*").order("created_at", { ascending: false });
-      if (error) throw error;
-      return data as Customer[];
-    },
-  });
-
-  const customers = isDemoMode && dbCustomers.length === 0 ? DEMO_CUSTOMERS : dbCustomers;
 
   const filtered = customers
     .filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()) || c.company?.toLowerCase().includes(search.toLowerCase()))
