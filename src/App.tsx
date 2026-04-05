@@ -256,6 +256,7 @@ const SelfHealingQueue = lazy(() => import("./pages/digital-presence/SelfHealing
 const AppExperienceStudio = lazy(() => import("./pages/digital-presence/AppExperienceStudio"));
 const PresenceAnalytics = lazy(() => import("./pages/digital-presence/PresenceAnalytics"));
 const DomainPublishManager = lazy(() => import("./pages/digital-presence/DomainPublishManager"));
+const DPOOnboarding = lazy(() => import("./pages/digital-presence/DPOOnboarding"));
 
 const queryClient = createQueryClient();
 
