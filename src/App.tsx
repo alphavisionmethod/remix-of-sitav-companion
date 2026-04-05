@@ -902,6 +902,16 @@ const App = () => (
                     <Route path="/admin/proof-ledger" element={<InvestorProofLedger />} />
                     <Route path="/admin/reality-matrix" element={<RealityClassificationMatrix />} />
                     <Route path="/admin/mock-replacement" element={<MockReplacementProgram />} />
+                    <Route path="/admin/reality-overview" element={<RealityConversionOverview />} />
+                    <Route path="/admin/feature-reality" element={<FeatureRealityDetail />} />
+                    <Route path="/admin/mock-sources" element={<MockSourceInventory />} />
+                    <Route path="/admin/core-services" element={<SimulatedCoreServicesBoard />} />
+                    <Route path="/admin/route-heatmap" element={<RouteRealityHeatmap />} />
+                    <Route path="/admin/backend-readiness" element={<ContractBackendReadiness />} />
+                    <Route path="/admin/launch-honesty" element={<LaunchHonestyBoard />} />
+                    <Route path="/admin/wave-planner" element={<MigrationWavePlanner />} />
+                    <Route path="/admin/reality-progress" element={<RealityProgressTimeline />} />
+                    <Route path="/admin/runtime-validation" element={<RuntimeRealityValidation />} />
                     <Route path="/admin/ai-engineering" element={<AIEngineeringBoard />} />
                     <Route path="/admin/ai-team-roster" element={<AITeamRoster />} />
                     <Route path="/admin/ai-missions" element={<AIMissionCenter />} />
