@@ -33,9 +33,8 @@ serve(async (req) => {
         priority: command === "update-now" ? "high" : "normal",
       });
 
-      // Audit log
       await adminClient.from("audit_logs").insert({
-        user_id: user.id,
+        user_id: auth.user.id,
         action: `os_command:${command}`,
         category: "admin",
         actor: "admin",
