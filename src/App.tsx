@@ -846,14 +846,14 @@ const App = () => (
                     <Route path="/admin/connectors" element={<ConnectorGovernanceCenter />} />
                     <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/admin/mission-control" element={<MissionControlHome />} />
-                    <Route path="/admin/durability" element={<AdminDurabilityBoard />} />
-                    <Route path="/admin/projections" element={<ProjectionControlCenter />} />
-                    <Route path="/admin/operations" element={<OperationsCommandCenter />} />
+                    <Route path="/admin/durability" element={<AdminDurabilityBoardPage />} />
+                    <Route path="/admin/projections" element={<AdminProjectionControl />} />
+                    <Route path="/admin/operations" element={<AdminOperationsCommand />} />
                     <Route path="/admin/security-posture" element={<SecurityPostureBoard />} />
-                    <Route path="/admin/truth-registry" element={<PlatformTruthRegistry />} />
+                    <Route path="/admin/truth-registry" element={<AdminTruthRegistry />} />
                     <Route path="/admin/concierge-runtime" element={<ConciergeRuntimeBoard />} />
                     <Route path="/admin/alert-triage" element={<AlertTriageBoard />} />
-                    <Route path="/admin/policy-simulator" element={<PolicySimulator />} />
+                    <Route path="/admin/policy-simulator" element={<AdminPolicySimulator />} />
                     <Route path="/admin/workflow-replay" element={<WorkflowReplayAudit />} />
                     <Route path="/personal-brain" element={<PersonalBrain />} />
 
