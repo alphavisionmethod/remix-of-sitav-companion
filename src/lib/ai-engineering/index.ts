@@ -32,3 +32,6 @@ export type { SelfHealingRule, HealingAttempt, HealingPolicy, HealingMode } from
 
 export { AGENT_SPECIFICATIONS, getAgentSpec, getAgentSpecByRole, getAgentsRequiredForRelease, getAgentsWithVetoPower, getAutoHealCapableAgents, generateChiefSynthesis } from "./agent-specifications";
 export type { AgentSpecification, ChiefEngineeringSynthesis } from "./agent-specifications";
+
+export { ALL_INTEGRATIONS, buildCrossReferences, getIntegrationHealthSummary, routeSignal, getIntegrationsByCategory, getIntegration, getIntegrationsWithRoutes, getDataFlowsForIntegration } from "./platform-integration";
+export type { IntegrationPoint, IntegrationCategory, IntegrationHealth, IntegrationHealthSummary, CrossReference, RoutedSignal, SignalDestination } from "./platform-integration";
