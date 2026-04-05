@@ -438,6 +438,7 @@ const App = () => (
                     <Route path="/revenue-office/automation/policy" element={<AutomationPolicy />} />
                     <Route path="/revenue-office/quotes" element={<QuoteStudio />} />
                     <Route path="/revenue-office/calls" element={<CallDesk />} />
+                    <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
 
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
