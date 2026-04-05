@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, ArrowRight, X, Sparkles, ChevronRight, Plus,
