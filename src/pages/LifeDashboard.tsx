@@ -4,15 +4,17 @@ import { SitaPageHeader } from "@/components/sita/SitaCard";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { format, differenceInDays, parseISO } from "date-fns";
+import { Link } from "react-router-dom";
 import {
   Briefcase, DollarSign, Home, Clock, AlertTriangle, CheckCircle,
   TrendingUp, Shield, Target, Zap, Users, CalendarDays,
-  ArrowRight, Activity, Heart, Scale, Brain, Flame
+  ArrowRight, Activity, Heart, Scale, Brain, Flame,
+  Radar, Sparkles, FileSearch
 } from "lucide-react";
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip,
   PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis,
-  PolarRadiusAxis, Radar, AreaChart, Area
+  PolarRadiusAxis, Radar as RechartsRadar, AreaChart, Area
 } from "recharts";
 
 // ── Animation Variants ──────────────────────────────────────────

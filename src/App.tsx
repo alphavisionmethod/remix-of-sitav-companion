@@ -214,6 +214,7 @@ const App = () => (
                   <Routes>
                     <Route path="/" element={<DailyPulse />} />
                     <Route path="/life" element={<LifeDashboard />} />
+                    <Route path="/life-simulator" element={<LifeSimulator />} />
 
                     {/* Business — parent container handles sub-routing via tabs */}
                     <Route path="/business" element={<BusinessCenter />} />
