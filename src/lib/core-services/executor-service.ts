@@ -1,10 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Executor Service
-// Mode-aware execution with circuit breaker & idempotency
+// SITA OS — Executor Service (Durable)
+// Mode-aware execution with circuit breaker, idempotency,
+// and action lineage persistence via ActionLineageService
 // Canonical contracts: ExecutionMode, ExecutionStatus from contracts
 // ═══════════════════════════════════════════════════════════════
 
 import type { ExecutionMode as CanonicalExecutionMode, ExecutionStatus as CanonicalExecutionStatus } from "@/packages/contracts";
+import { getActionLineageService } from "./action-lineage-service";
+import { getEventBus } from "./event-bus";
 
 export type { CanonicalExecutionMode, CanonicalExecutionStatus };
 
