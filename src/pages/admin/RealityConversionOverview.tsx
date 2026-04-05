@@ -67,9 +67,14 @@ export default function RealityConversionOverview() {
 
   return (
     <div className="space-y-6 p-6">
-      <div>
-        <h1 className="text-2xl font-bold">Reality Conversion Overview</h1>
-        <p className="text-sm text-muted-foreground">Executive overview of platform reality state — RCP01</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Reality Conversion Overview</h1>
+          <p className="text-sm text-muted-foreground">Executive overview of platform reality state — RCP01</p>
+        </div>
+        <Button onClick={handleAutoSeed} disabled={seeding} variant="outline" size="sm" className="gap-2">
+          <Zap className="h-4 w-4" />{seeding ? "Seeding..." : "Auto-Seed from Audit"}
+        </Button>
       </div>
 
       {/* State Distribution Band */}
