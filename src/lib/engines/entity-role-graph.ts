@@ -197,4 +197,23 @@ export class EntityRoleGraph {
   addVisibilityRule(rule: VisibilityBoundary): void {
     this.visibilityRules.push(rule);
   }
+
+  // ── Persistence ─────────────────────────────────────────────
+  serialize(): Record<string, unknown> {
+    return {
+      entities: Array.from(this.entities.entries()),
+      relationships: this.relationships,
+      roles: this.roles,
+      delegations: this.delegations,
+      visibilityRules: this.visibilityRules,
+    };
+  }
+
+  hydrate(state: Record<string, unknown>): void {
+    if (state.entities) this.entities = new Map(state.entities as any);
+    if (state.relationships) this.relationships = state.relationships as any;
+    if (state.roles) this.roles = state.roles as any;
+    if (state.delegations) this.delegations = state.delegations as any;
+    if (state.visibilityRules) this.visibilityRules = state.visibilityRules as any;
+  }
 }

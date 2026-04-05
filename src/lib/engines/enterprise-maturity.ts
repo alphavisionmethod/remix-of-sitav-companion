@@ -111,10 +111,15 @@ export class EnterpriseControlPlaneEngine {
       { connectorId: "plaid", owner: "finance-team", policy: "transactions-only", healthScore: 91, lastAudit: new Date().toISOString() },
     ];
   }
-}
 
-// ────────────────────────────────────────────────────────────────
-// SECTION 2 — Support & Diagnostics Maturity
+  serialize(): Record<string, unknown> {
+    return { orgs: Array.from(this.orgs.entries()), delegations: this.delegations };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.orgs) this.orgs = new Map(state.orgs as any);
+    if (state.delegations) this.delegations = state.delegations as any;
+  }
+}
 // ────────────────────────────────────────────────────────────────
 
 export type SupportCaseSeverity = "low" | "medium" | "high" | "critical";
@@ -290,9 +295,16 @@ export class SupportDiagnosticsEngine {
       topModules: Array.from(moduleCounts.entries()).map(([module, count]) => ({ module, count })).sort((a, b) => b.count - a.count).slice(0, 5),
     };
   }
-}
 
-// ────────────────────────────────────────────────────────────────
+  serialize(): Record<string, unknown> {
+    return { cases: Array.from(this.cases.entries()), bundles: Array.from(this.bundles.entries()), knownIssues: this.knownIssues };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.cases) this.cases = new Map(state.cases as any);
+    if (state.bundles) this.bundles = new Map(state.bundles as any);
+    if (state.knownIssues) this.knownIssues = state.knownIssues as any;
+  }
+}
 // SECTION 3 — Observability Maturity
 // ────────────────────────────────────────────────────────────────
 
@@ -402,10 +414,15 @@ export class ObservabilityEngine {
       { dimension: "Device Trust", current: 88, target: 90, trend: "up", incidents: 1 },
     ];
   }
-}
 
-// ────────────────────────────────────────────────────────────────
-// SECTION 4 — Release Safety & Rollout Control
+  serialize(): Record<string, unknown> {
+    return { traces: this.traces.slice(-500), anomalies: this.anomalies };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.traces) this.traces = state.traces as any;
+    if (state.anomalies) this.anomalies = state.anomalies as any;
+  }
+}
 // ────────────────────────────────────────────────────────────────
 
 export type RolloutRing = "canary" | "early-adopter" | "general" | "conservative";
@@ -750,10 +767,19 @@ export class ReleaseSafetyEngine {
       },
     ];
   }
-}
 
-// ────────────────────────────────────────────────────────────────
-// SECTION 5 — Trust Device & Secure Signing
+  serialize(): Record<string, unknown> {
+    return { releases: Array.from(this.releases.entries()), killSwitches: this.killSwitches, environments: this.environments, ringGates: this.ringGates, ringTimelines: this.ringTimelines, deepFreezeHistory: this.deepFreezeHistory };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.releases) this.releases = new Map(state.releases as any);
+    if (state.killSwitches) this.killSwitches = state.killSwitches as any;
+    if (state.environments) this.environments = state.environments as any;
+    if (state.ringGates) this.ringGates = state.ringGates as any;
+    if (state.ringTimelines) this.ringTimelines = state.ringTimelines as any;
+    if (state.deepFreezeHistory) this.deepFreezeHistory = state.deepFreezeHistory as any;
+  }
+}
 // ────────────────────────────────────────────────────────────────
 
 export type DeviceTrustLevel = "untrusted" | "basic" | "verified" | "trusted" | "secure-enclave";
@@ -875,10 +901,15 @@ export class TrustDeviceEngine {
       },
     ];
   }
-}
 
-// ────────────────────────────────────────────────────────────────
-// SECTION 6 — Compliance, Audit & Proof Maturity
+  serialize(): Record<string, unknown> {
+    return { devices: Array.from(this.devices.entries()), signings: this.signings.slice(-500) };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.devices) this.devices = new Map(state.devices as any);
+    if (state.signings) this.signings = state.signings as any;
+  }
+}
 // ────────────────────────────────────────────────────────────────
 
 export type ProofPacketType = "workflow" | "approval" | "financial" | "boardroom" | "release" | "incident" | "device-signing";
@@ -1011,5 +1042,13 @@ export class ComplianceAuditEngine {
       { id: "a7", timestamp: new Date(now - 3600000).toISOString(), actor: "Concierge Advisor", actorType: "advisor", action: "workflow.completed", resource: "School pickup reminder", outcome: "success", metadata: {} },
       { id: "a8", timestamp: new Date(now - 7200000).toISOString(), actor: "System", actorType: "system", action: "proof.generated", resource: "Financial proof packet", outcome: "success", metadata: { type: "financial" } },
     ];
+  }
+
+  serialize(): Record<string, unknown> {
+    return { proofPackets: this.proofPackets, auditTimeline: this.auditTimeline.slice(-500) };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.proofPackets) this.proofPackets = state.proofPackets as any;
+    if (state.auditTimeline) this.auditTimeline = state.auditTimeline as any;
   }
 }

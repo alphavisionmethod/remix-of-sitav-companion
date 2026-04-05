@@ -86,6 +86,13 @@ export class DigitalTwinEngine {
     const criticalBottlenecks = twin.bottlenecks.filter(b => b.severity === "critical").length;
     twin.healthScore = Math.max(0, 100 - criticalSignals * 20 - warningSignals * 5 - criticalBottlenecks * 15);
   }
+
+  serialize(): Record<string, unknown> {
+    return { twins: Array.from(this.twins.entries()) };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.twins) this.twins = new Map(state.twins as any);
+  }
 }
 
 // ── Boardroom Intelligence Engine ───────────────────────────────
@@ -182,6 +189,13 @@ export class BoardroomIntelligenceEngine {
       .sort((a, b) => b.startedAt.localeCompare(a.startedAt))
       .slice(0, limit);
   }
+
+  serialize(): Record<string, unknown> {
+    return { sessions: Array.from(this.sessions.entries()) };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.sessions) this.sessions = new Map(state.sessions as any);
+  }
 }
 
 // ── Scenario Intelligence Engine ────────────────────────────────
@@ -210,5 +224,12 @@ export class ScenarioIntelligenceEngine {
 
   getSimulations(domain?: string): ScenarioSimulation[] {
     return domain ? this.simulations.filter(s => s.domain === domain) : this.simulations;
+  }
+
+  serialize(): Record<string, unknown> {
+    return { simulations: this.simulations };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.simulations) this.simulations = state.simulations as any;
   }
 }

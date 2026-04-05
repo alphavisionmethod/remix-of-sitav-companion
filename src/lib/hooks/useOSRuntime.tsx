@@ -152,34 +152,68 @@ export function OSRuntimeProvider({
   }, [userId]);
 
   // ── Engine State Persistence ────────────────────────────────
-  // Load persisted engine states on mount & auto-save periodically
+  // Load persisted engine states on mount & auto-save real state periodically
   useEffect(() => {
     let cancelled = false;
+
+    const ENGINE_MAP: Record<string, { serialize: () => Record<string, unknown>; hydrate: (s: Record<string, unknown>) => void }> = {
+      "entity-graph": runtime.engines.entityGraph,
+      "memory-governance": runtime.engines.memory,
+      "advisor-orchestration": runtime.engines.advisors,
+      "policy-depth": runtime.engines.policy,
+      "revenue-opportunity": runtime.engines.revenue,
+      "digital-twin": runtime.engines.twins,
+      "boardroom-intelligence": runtime.engines.boardroom,
+      "scenario-intelligence": runtime.engines.scenarios,
+      "token-governance": runtime.engines.tokens,
+      "replay-recovery": runtime.engines.replay,
+      "enterprise-control": runtime.engines.enterprise,
+      "support-diagnostics": runtime.engines.support,
+      "observability": runtime.engines.observability,
+      "release-safety": runtime.engines.releases,
+      "trust-device": runtime.engines.trustDevice,
+      "compliance-audit": runtime.engines.compliance,
+    };
 
     // Load persisted states for all engines
     import("@/lib/persistence/engine-persistence-adapter").then(
       async ({ loadAllEngineStates, debouncedPersistEngineState }) => {
         if (cancelled) return;
         const states = await loadAllEngineStates();
-        if (cancelled || Object.keys(states).length === 0) return;
-        console.debug(`[OS Runtime] Loaded ${Object.keys(states).length} persisted engine states`);
+        if (cancelled) return;
 
-        // Auto-save all engine states every 30s
-        const engineNames = [
-          "memory-governance", "policy-depth", "entity-graph",
-          "advisor-orchestration", "revenue-opportunity", "digital-twin",
-          "token-governance", "integration-concierge", "replay-recovery",
-          "enterprise-control", "support-diagnostics", "observability",
-          "release-safety", "trust-device", "compliance-audit",
-        ];
+        // Hydrate each engine from its persisted state
+        let hydratedCount = 0;
+        for (const [name, engine] of Object.entries(ENGINE_MAP)) {
+          const persisted = states[name];
+          if (persisted && typeof engine.hydrate === "function") {
+            try {
+              engine.hydrate(persisted);
+              hydratedCount++;
+            } catch (e) {
+              console.warn(`[OS Runtime] Failed to hydrate ${name}:`, e);
+            }
+          }
+        }
+        if (hydratedCount > 0) {
+          console.debug(`[OS Runtime] Hydrated ${hydratedCount}/${Object.keys(ENGINE_MAP).length} engines from persisted state`);
+        }
 
+        // Auto-save real engine state every 30s
         const saveInterval = setInterval(() => {
-          for (const name of engineNames) {
-            // Save a lightweight state snapshot for each engine
-            debouncedPersistEngineState(name, {
-              lastActive: new Date().toISOString(),
-              sessionId: runtime.context.sessionId,
-            });
+          for (const [name, engine] of Object.entries(ENGINE_MAP)) {
+            if (typeof engine.serialize === "function") {
+              try {
+                const state = engine.serialize();
+                debouncedPersistEngineState(name, {
+                  ...state,
+                  _lastPersisted: new Date().toISOString(),
+                  _sessionId: runtime.context.sessionId,
+                });
+              } catch (e) {
+                console.warn(`[OS Runtime] Failed to serialize ${name}:`, e);
+              }
+            }
           }
         }, 30_000);
 
@@ -188,8 +222,27 @@ export function OSRuntimeProvider({
       },
     ).catch(console.error);
 
+    // Also save immediately before unload
+    const handleBeforeUnload = () => {
+      for (const [name, engine] of Object.entries(ENGINE_MAP)) {
+        if (typeof engine.serialize === "function") {
+          try {
+            import("@/lib/persistence/engine-persistence-adapter").then(({ persistEngineState }) => {
+              persistEngineState(name, {
+                ...engine.serialize(),
+                _lastPersisted: new Date().toISOString(),
+                _sessionId: runtime.context.sessionId,
+              });
+            });
+          } catch { /* best-effort */ }
+        }
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
     return () => {
       cancelled = true;
+      window.removeEventListener("beforeunload", handleBeforeUnload);
       const saveInterval = (window as any).__sitaEngineSaveInterval;
       if (saveInterval) clearInterval(saveInterval);
     };
