@@ -97,6 +97,11 @@ export const defaultOnboardingState: OnboardingState = {
   reconActions: {},
   automationLevel: "draft_review",
   humanOnlyTasks: [],
+  activeAdvisors: [],
+  advisorIntensity: {},
+  branchAnswers: {},
+  multiBrand: false,
+  multiClient: false,
   selectedFirstWins: [],
 };
 
