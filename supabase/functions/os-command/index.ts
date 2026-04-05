@@ -29,7 +29,7 @@ serve(async (req) => {
         agent_id: device_id,
         user_id: auth.user.id,
         signal_type: `os_command:${command}`,
-        payload: { command, params: params || {}, issued_by: user.id, issued_at: new Date().toISOString() },
+        payload: { command, params: params || {}, issued_by: auth.user.id, issued_at: new Date().toISOString() },
         priority: command === "update-now" ? "high" : "normal",
       });
 
