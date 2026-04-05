@@ -193,6 +193,19 @@ const AISelfLearningLedger = lazy(() => import("./pages/admin/AISelfLearningLedg
 const AIChangePlanViewer = lazy(() => import("./pages/admin/AIChangePlanViewer"));
 const AIHumanBoundaryControls = lazy(() => import("./pages/admin/AIHumanBoundaryControls"));
 const AIEvidenceBundleComposer = lazy(() => import("./pages/admin/AIEvidenceBundleComposer"));
+
+// ── CPS: Core Persistence Substrate Admin Pages ──
+const CorePersistenceOverview = lazy(() => import("./pages/admin/CorePersistenceOverview"));
+const EventStreamExplorer = lazy(() => import("./pages/admin/EventStreamExplorer"));
+const MemoryContinuityCenter = lazy(() => import("./pages/admin/MemoryContinuityCenter"));
+const PolicyDecisionLedger = lazy(() => import("./pages/admin/PolicyDecisionLedger"));
+const IntelligenceArtifactLibrary = lazy(() => import("./pages/admin/IntelligenceArtifactLibrary"));
+const ActionLineageExplorer = lazy(() => import("./pages/admin/ActionLineageExplorer"));
+const ReplayRecoveryConsole = lazy(() => import("./pages/admin/ReplayRecoveryConsole"));
+const CoreServiceMigrationBoard = lazy(() => import("./pages/admin/CoreServiceMigrationBoard"));
+const PersistenceDriftRadar = lazy(() => import("./pages/admin/PersistenceDriftRadar"));
+const RuntimeContinuityBoard = lazy(() => import("./pages/admin/RuntimeContinuityBoard"));
+
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
