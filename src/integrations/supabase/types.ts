@@ -4191,6 +4191,333 @@ export type Database = {
           },
         ]
       }
+      platform_degraded_states: {
+        Row: {
+          affected_capabilities: string[] | null
+          auto_detected: boolean
+          component: string
+          created_at: string
+          detected_at: string
+          domain: string
+          id: string
+          impact_description: string | null
+          metadata: Json | null
+          reason: string
+          resolution_notes: string | null
+          resolved_at: string | null
+          severity: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          affected_capabilities?: string[] | null
+          auto_detected?: boolean
+          component: string
+          created_at?: string
+          detected_at?: string
+          domain: string
+          id?: string
+          impact_description?: string | null
+          metadata?: Json | null
+          reason: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          severity?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          affected_capabilities?: string[] | null
+          auto_detected?: boolean
+          component?: string
+          created_at?: string
+          detected_at?: string
+          domain?: string
+          id?: string
+          impact_description?: string | null
+          metadata?: Json | null
+          reason?: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          severity?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_health_snapshots: {
+        Row: {
+          check_duration_ms: number | null
+          checked_at: string
+          component: string
+          created_at: string
+          degraded_capabilities: string[] | null
+          details: Json | null
+          domain: string
+          health_score: number | null
+          health_status: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          check_duration_ms?: number | null
+          checked_at?: string
+          component: string
+          created_at?: string
+          degraded_capabilities?: string[] | null
+          details?: Json | null
+          domain: string
+          health_score?: number | null
+          health_status?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          check_duration_ms?: number | null
+          checked_at?: string
+          component?: string
+          created_at?: string
+          degraded_capabilities?: string[] | null
+          details?: Json | null
+          domain?: string
+          health_score?: number | null
+          health_status?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_launch_gates: {
+        Row: {
+          blocking_reason: string | null
+          category: string
+          created_at: string
+          evidence_data: Json | null
+          evidence_summary: string | null
+          evidence_type: string | null
+          gate_name: string
+          gate_owner: string | null
+          id: string
+          last_checked_at: string | null
+          metadata: Json | null
+          override_by: string | null
+          override_reason: string | null
+          required: boolean
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blocking_reason?: string | null
+          category?: string
+          created_at?: string
+          evidence_data?: Json | null
+          evidence_summary?: string | null
+          evidence_type?: string | null
+          gate_name: string
+          gate_owner?: string | null
+          id?: string
+          last_checked_at?: string | null
+          metadata?: Json | null
+          override_by?: string | null
+          override_reason?: string | null
+          required?: boolean
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blocking_reason?: string | null
+          category?: string
+          created_at?: string
+          evidence_data?: Json | null
+          evidence_summary?: string | null
+          evidence_type?: string | null
+          gate_name?: string
+          gate_owner?: string | null
+          id?: string
+          last_checked_at?: string | null
+          metadata?: Json | null
+          override_by?: string | null
+          override_reason?: string | null
+          required?: boolean
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_mutation_receipts: {
+        Row: {
+          actor: string
+          approval_id: string | null
+          correlation_id: string | null
+          created_at: string
+          domain: string
+          duration_ms: number | null
+          error: string | null
+          id: string
+          metadata: Json | null
+          mutation_type: string
+          payload_hash: string | null
+          policy_decision_id: string | null
+          previous_receipt_hash: string
+          proof_bundle_id: string | null
+          receipt_hash: string
+          status: string
+          target_id: string
+          target_type: string
+          user_id: string
+        }
+        Insert: {
+          actor: string
+          approval_id?: string | null
+          correlation_id?: string | null
+          created_at?: string
+          domain: string
+          duration_ms?: number | null
+          error?: string | null
+          id?: string
+          metadata?: Json | null
+          mutation_type: string
+          payload_hash?: string | null
+          policy_decision_id?: string | null
+          previous_receipt_hash?: string
+          proof_bundle_id?: string | null
+          receipt_hash: string
+          status?: string
+          target_id: string
+          target_type: string
+          user_id: string
+        }
+        Update: {
+          actor?: string
+          approval_id?: string | null
+          correlation_id?: string | null
+          created_at?: string
+          domain?: string
+          duration_ms?: number | null
+          error?: string | null
+          id?: string
+          metadata?: Json | null
+          mutation_type?: string
+          payload_hash?: string | null
+          policy_decision_id?: string | null
+          previous_receipt_hash?: string
+          proof_bundle_id?: string | null
+          receipt_hash?: string
+          status?: string
+          target_id?: string
+          target_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_projection_states: {
+        Row: {
+          confidence_level: number | null
+          created_at: string
+          data_hash: string | null
+          degraded: boolean
+          degraded_reason: string | null
+          domain: string
+          freshness_status: string
+          id: string
+          last_materialized_at: string | null
+          last_source_sync_at: string | null
+          metadata: Json | null
+          projection_key: string
+          source_type: string
+          staleness_threshold_seconds: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence_level?: number | null
+          created_at?: string
+          data_hash?: string | null
+          degraded?: boolean
+          degraded_reason?: string | null
+          domain: string
+          freshness_status?: string
+          id?: string
+          last_materialized_at?: string | null
+          last_source_sync_at?: string | null
+          metadata?: Json | null
+          projection_key: string
+          source_type?: string
+          staleness_threshold_seconds?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence_level?: number | null
+          created_at?: string
+          data_hash?: string | null
+          degraded?: boolean
+          degraded_reason?: string | null
+          domain?: string
+          freshness_status?: string
+          id?: string
+          last_materialized_at?: string | null
+          last_source_sync_at?: string | null
+          metadata?: Json | null
+          projection_key?: string
+          source_type?: string
+          staleness_threshold_seconds?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      platform_truth_sync_log: {
+        Row: {
+          artifact_path: string
+          artifact_type: string
+          created_at: string
+          drift_description: string | null
+          generated_hash: string | null
+          id: string
+          in_sync: boolean
+          last_checked_at: string
+          last_synced_at: string | null
+          metadata: Json | null
+          source_hash: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          artifact_path: string
+          artifact_type: string
+          created_at?: string
+          drift_description?: string | null
+          generated_hash?: string | null
+          id?: string
+          in_sync?: boolean
+          last_checked_at?: string
+          last_synced_at?: string | null
+          metadata?: Json | null
+          source_hash?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          artifact_path?: string
+          artifact_type?: string
+          created_at?: string
+          drift_description?: string | null
+          generated_hash?: string | null
+          id?: string
+          in_sync?: boolean
+          last_checked_at?: string
+          last_synced_at?: string | null
+          metadata?: Json | null
+          source_hash?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       playbook_metrics: {
         Row: {
           id: string
