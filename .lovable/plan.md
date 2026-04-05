@@ -1,66 +1,100 @@
 
 
-# SITA OS — "Wow Factor" Enhancement Plan
+# SITA OS — Setup Flow Audit & Fix Plan
 
-## What's Already Strong
-The system has 100+ routes, 6 apps, AI advisors, admin dashboard, onboarding, lock screen, command palette, and a dock. The foundation is solid.
+## Critical Issues Found
 
-## What's Missing to Make It Truly "Wow"
+### 1. DUPLICATE FLOW — Two Parallel Tracks Never Merged (BREAKING)
 
-### 1. Live Notification Center with Toast System
-No real-time notification feed exists. Users can't see advisor alerts, approval requests, or system events as they happen.
+After the deep personalization ceremony (boot → secure-foundation → ... → advisor-activation → environment-summary), the user enters the **old onboarding track**: welcome → cinematic-intro → setup-style → identity → domains → trust → explanation-style → etc. This means:
 
-**Build**: A slide-out notification panel (triggered from top bar bell icon) with grouped notifications (Advisors, Approvals, System), read/unread state, and toast popups for high-priority items using Sonner.
+- User enters their name/role TWICE (quick-identity AND identity)
+- User sets trust TWICE (trust-calibration AND trust)
+- User picks domains TWICE (primary-use-mode AND domains)
+- The full flow is ~45+ screens instead of ~29
 
-### 2. Spotlight Search with AI Natural Language
-The command palette is keyword-only. A truly advanced OS lets you type "show me last week's revenue" or "what bills are due tomorrow" and get instant answers.
+The phase ordering by `order` field creates this path:
+```text
+boot(0) → secure-foundation(0.5) → ... → advisor-activation(5.6) → environment-summary(5.65)
+→ welcome(6) → cinematic-intro(4*) → setup-style(5*) → identity(6*) → domains(9) → trust(10) → ...
+→ arrival-prep(25) → desktop-transition(25.5) → system-check(26) → trust-certificate(27)
 
-**Build**: Upgrade CommandPalette with an AI mode — when input starts with "?" or plain English is detected, route to personal-brain for instant answers inline, with a "thinking" shimmer.
+* dependency-gated, not purely order-gated — but they chain after welcome
+```
 
-### 3. Desktop Widget Grid (Drag-and-Drop)
-Daily Pulse is a fixed layout. Users should be able to pin widgets (clock, weather, quick stats, advisor chat, calendar) to a customizable home screen — like actual OS widgets.
+**Fix**: The old track (welcome → cinematic-intro → setup-style → identity → want-less-of → protect-most → domains → trust → explanation-style → ai-personality → interruption-style → rituals → appearance → household-graph → memory-consent → home-composition → desktop-preview → first-simulation → first-actions → recover-first) should be **removed or collapsed** into the new track. The environment-summary should flow directly into first-connections → first-win-setup → arrival-prep → desktop-transition → system-check → trust-certificate.
 
-**Build**: A `WidgetGrid` component on Daily Pulse with draggable cards (using native drag or a lightweight lib). Persist layout to `user_memory`. Starter widgets: Clock, Weather, Quick Stats, Advisor Mini-Chat, Calendar Preview.
+**Concrete changes**:
+- Remove the old phases from `SETUP_PHASE_DEFINITIONS`: `welcome`, `restore`, `enterprise`, `cinematic-intro`, `setup-style`, `identity`, `want-less-of`, `protect-most`, `domains`, `trust`, `explanation-style`, `presence-style`, `ai-personality`, `interruption-style`, `rituals`, `appearance`, `household-graph`, `memory-consent`, `home-composition`, `desktop-preview`, `first-simulation`, `first-actions`, `recover-first`
+- Remove matching `SetupPhaseId` entries from the type union
+- Remove render cases from `OSSetupExperience.tsx`
+- Move essential data collection into the new track:
+  - Name/role: already in `quick-identity`
+  - Domains: already in `primary-use-mode`
+  - Trust: already in `trust-calibration`
+  - Setup style (express/guided/advanced): move to after `account-environment` (before privacy-transparency)
+  - Appearance (theme/accent): fold into environment-summary or arrival-prep
+- Update `first-connections` and `first-win-setup` dependencies to chain after `environment-summary`
+- Update `arrival-prep` dependencies to chain after `first-win-setup`
 
-### 4. Ambient Sound & Haptic Feedback Cues
-Premium OS feel: subtle audio cues on key actions (approval granted, boot complete, error). Optional, togglable.
+### 2. `first-win-setup` Unreachable in Express Mode
 
-**Build**: A `SoundEngine` utility that plays short Web Audio API tones (no files needed — synthesized) for: unlock, approval, error, notification. Respect a "Sound Effects" toggle in Settings.
+`first-win-setup` depends on `first-connections`, which has `branchConditions: [setupStyleCondition(["guided", "advanced"])]`. In express mode, `first-connections` is excluded → its dependency never resolves → `first-win-setup` can never be entered.
 
-### 5. Multi-Window / Split-View Mode
-Currently everything is single-pane. An OS should let you split the screen — e.g., Brain chat on the left, Money dashboard on the right.
+**Fix**: Make `first-win-setup` depend on `environment-summary` instead of `first-connections`. Make `first-connections` optional but not blocking for first-win.
 
-**Build**: A `SplitView` wrapper that renders two routes side-by-side. Triggered from command palette: "Split: Brain + Money". Stores split state in context.
+### 3. `arrival-prep` Has Empty Dependencies
 
-### 6. Activity Heatmap & Usage Analytics (User-Facing)
-Users have no insight into their own usage patterns. A personal analytics page showing "You used Brain 47 times this week" with a GitHub-style contribution heatmap is a differentiator.
+`dependencies: []` means `canEnterPhase` always returns true. It relies on a custom `canStartArrivalPrep()` check in `advanceToNextPhase()`, but this is fragile — if a user navigates manually, they could enter it prematurely.
 
-**Build**: A `MyActivity` page with a heatmap grid (SVG), most-used features list, and weekly usage trends. Data from `audit_logs`.
+**Fix**: Set dependencies to `["first-win-setup"]` so it naturally chains after first-win.
 
-### 7. Contextual AI Copilot Bar (Persistent Bottom Strip)
-Instead of navigating to Brain, a persistent thin bar at the bottom lets users ask quick questions from any page. Like Spotlight but always visible.
+### 4. `restore` and `enterprise` Order Conflicts
 
-**Build**: A `CopilotBar` component — 40px strip above the dock with a text input. On submit, calls personal-brain and shows a compact response inline. Expandable to full Brain page.
+`restore` has `order: 2` and `enterprise` has `order: 3`, but they depend on `welcome` (order 6). The dependency system prevents them from activating early, but their low order numbers mean `getActivePhaseIds()` returns them in wrong positions. Not breaking but messy.
 
-## Implementation Priority
+**Fix**: Remove these phases entirely (see #1). Account recovery is already handled in `account-environment`.
 
-| # | Feature | Files | Impact |
-|---|---------|-------|--------|
-| 1 | Notification Center + Toasts | 2 new, 2 edits | High — fills a critical UX gap |
-| 2 | AI-powered Spotlight Search | 1 edit (CommandPalette) | High — "wow" moment |
-| 3 | Desktop Widget Grid | 2 new, 1 edit (DailyPulse) | High — OS feel |
-| 4 | Copilot Bar | 1 new, 1 edit (ShellLayout) | Medium — always-on AI |
-| 5 | Sound Engine | 1 new, 1 edit (Settings) | Medium — premium polish |
-| 6 | Split-View Mode | 2 new, 1 edit | Medium — power user feature |
-| 7 | Activity Heatmap | 1 new, 1 route | Lower — nice-to-have |
+### 5. Learning Panel Shows on Wrong Phases
 
-**Total: ~10 new files, ~7 edits. No migrations needed.**
+The `showLearningPanel` exclusion list is a hardcoded array of phase IDs. Any new phases added aren't excluded, meaning the learning panel shows on phases where it shouldn't (e.g., environment-summary during the cinematic arrival sequence).
 
-## Technical Notes
+**Fix**: After removing old phases, simplify to show learning panel only on `steppable` phases (those with `excludedFromSteps: false`).
 
-- Sound engine uses Web Audio API oscillators — zero asset files, ~50 lines
-- Widget grid persists to `user_memory` table (already exists)
-- Notification center reads from `notifications_queue` table (already exists)
-- Copilot bar reuses `personal-brain` edge function
-- Split view uses React portals + CSS grid, no third-party lib
+### 6. Session Progress Bar Shows on Wrong Phases
+
+Same hardcoded exclusion list issue on line 761.
+
+**Fix**: Same approach — use a computed condition instead of hardcoded IDs.
+
+### 7. `canAdvance()` Missing Validation for Many Phases
+
+The `canAdvance` function only checks a few phases (identity, domains, primary-use-mode, trust-calibration, advisor-activation, first-win-setup). All other phases return `true` — users can click Continue without making any selection.
+
+**Fix**: Add validation for key phases: device-ownership (must select), access-protection (handled internally), planning-style, stress-slippage, etc.
+
+## Implementation Steps
+
+| # | Task | Files Changed |
+|---|------|--------------|
+| 1 | Remove old duplicate phases from type, definitions, and render | `setup-orchestration.ts`, `setup-phase-definitions.ts`, `OSSetupExperience.tsx` |
+| 2 | Move setup-style selection to after account-environment | `setup-phase-definitions.ts` |
+| 3 | Re-wire first-connections → first-win-setup → arrival-prep dependency chain | `setup-phase-definitions.ts` |
+| 4 | Fix `arrival-prep` dependencies | `setup-phase-definitions.ts` |
+| 5 | Replace hardcoded phase exclusion lists with computed conditions | `OSSetupExperience.tsx` |
+| 6 | Add missing `canAdvance` validations | `OSSetupExperience.tsx` |
+| 7 | Clean up unused imports and dead component references | `OSSetupExperience.tsx` |
+
+**Result**: The flow becomes a clean 19-phase journey:
+```text
+boot → secure-foundation → language-region → network-setup → device-readiness
+→ device-ownership → account-environment → setup-style → access-protection
+→ privacy-transparency → quick-identity → deep-world-modeling
+→ [life-rhythm, stress-slippage, communications-context, planning-style]
+→ primary-use-mode → trust-calibration → advisor-activation → environment-summary
+→ first-connections → first-win-setup → arrival-prep → desktop-transition
+→ system-check → trust-certificate
+```
+
+**Total: ~3 files modified. No new files. No migration needed.**
 
