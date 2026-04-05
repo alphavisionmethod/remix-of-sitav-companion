@@ -162,6 +162,16 @@ const IntegrationConciergePage = lazy(() => import("./pages/admin/IntegrationCon
 const RevenueAutopilotMonitor = lazy(() => import("./pages/admin/RevenueAutopilotMonitor"));
 const InvestorProofLedger = lazy(() => import("./pages/admin/InvestorProofLedger"));
 const PersonalBrain = lazy(() => import("./pages/PersonalBrain"));
+
+// ── AI Engineering Board ──
+const AIEngineeringBoard = lazy(() => import("./pages/admin/AIEngineeringBoard"));
+const AITeamRoster = lazy(() => import("./pages/admin/AITeamRoster"));
+const AIMissionCenter = lazy(() => import("./pages/admin/AIMissionCenter"));
+const AIFixCenter = lazy(() => import("./pages/admin/AIFixCenter"));
+const AISelfHealing = lazy(() => import("./pages/admin/AISelfHealing"));
+const AIDesignStudio = lazy(() => import("./pages/admin/AIDesignStudio"));
+const AILearningCenter = lazy(() => import("./pages/admin/AILearningCenter"));
+const AIApprovalDesk = lazy(() => import("./pages/admin/AIApprovalDesk"));
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
