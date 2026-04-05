@@ -129,7 +129,7 @@ export function useFinanceProjection() {
 
       const cashflow = analyzeCashflow(entries, Math.max(balance, 0));
       const bh = assessBudgetHealth(budgets.length ? budgets : buildMockBudgets());
-      const ra = assessReserves(reserves);
+      const ra = assessReserves(reserves, Math.max(balance * 0.3, 3000));
       const ia = analyzeInvoiceAging(invoicesForAging.length ? invoicesForAging : adaptMockInvoicesForAging(mockInvoices));
 
       return {
