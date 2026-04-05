@@ -1,0 +1,248 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — App Detail Page
+// Full per-app management with trust, permissions, associations
+// ═══════════════════════════════════════════════════════════════
+
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft, Download, Check, ExternalLink, Star, Clock, Shield,
+  Bell, FileText, Link2, Package, ChevronDown, ChevronUp, RefreshCw,
+  Trash2, Pin, Settings, HardDrive,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { getAppById, APP_CATALOG } from "@/lib/app-platform";
+import {
+  AppIcon, VerificationBadge, AppSourceLabel, WorksWithSitaBadge,
+  PermissionDomainCard, InstallSheet, AppReceiptCard,
+} from "@/components/sita/app-platform/AppStoreComponents";
+
+const AppDetailPage = () => {
+  const { appId } = useParams<{ appId: string }>();
+  const navigate = useNavigate();
+  const [showInstall, setShowInstall] = useState(false);
+  const [showPermissions, setShowPermissions] = useState(false);
+  const [showReleaseNotes, setShowReleaseNotes] = useState(false);
+
+  const app = getAppById(appId || "");
+  if (!app) {
+    return (
+      <div className="mx-auto max-w-4xl">
+        <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+          <ArrowLeft className="h-4 w-4" /> Back to App Store
+        </button>
+        <div className="text-center py-20">
+          <p className="text-lg font-medium text-foreground">App not found</p>
+        </div>
+      </div>
+    );
+  }
+
+  const isInstalled = app.installStatus === "installed";
+  const similarApps = APP_CATALOG.filter(a => a.category === app.category && a.id !== app.id).slice(0, 4);
+
+  return (
+    <div className="mx-auto max-w-4xl space-y-6">
+      <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="h-4 w-4" /> Back to App Store
+      </button>
+
+      {/* Hero */}
+      <div className={cn("relative overflow-hidden rounded-2xl p-8 bg-gradient-to-br", app.iconBg)}>
+        <div className="relative z-10 flex items-start gap-5">
+          <AppIcon icon={app.icon} iconBg="from-white/20 to-white/10" size="lg" />
+          <div className="flex-1 min-w-0">
+            <h1 className="font-display text-2xl font-bold text-white">{app.name}</h1>
+            <p className="text-sm text-white/70">{app.publisher}</p>
+            <div className="flex items-center gap-3 mt-2">
+              <VerificationBadge level={app.trustLevel} size="md" />
+              <AppSourceLabel appClass={app.appClass} size="md" />
+            </div>
+            <div className="flex items-center gap-4 mt-4">
+              {isInstalled ? (
+                <button className="rounded-xl bg-white/20 backdrop-blur-sm px-6 py-2.5 text-sm font-semibold text-white hover:bg-white/30 transition-colors flex items-center gap-2">
+                  <Check className="h-4 w-4" /> Open
+                </button>
+              ) : (
+                <button onClick={() => setShowInstall(true)}
+                  className="rounded-xl bg-white px-6 py-2.5 text-sm font-semibold text-gray-900 hover:bg-white/90 transition-colors flex items-center gap-2">
+                  <Download className="h-4 w-4" /> Install
+                </button>
+              )}
+              {app.size !== "0 MB" && <span className="text-xs text-white/50">{app.size}</span>}
+              <span className="text-xs text-white/50">v{app.version}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Bar */}
+      <div className="flex items-center gap-6 px-2">
+        <div className="flex items-center gap-1.5 text-sm">
+          <Star className="h-4 w-4 text-accent fill-accent" />
+          <span className="font-semibold text-foreground">{app.rating}</span>
+        </div>
+        <div className="text-xs text-muted-foreground">
+          {(app.downloads / 1_000_000).toFixed(1)}M+ downloads
+        </div>
+        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+          <Clock className="h-3 w-3" /> Updated {app.lastUpdated}
+        </div>
+      </div>
+
+      {/* Description */}
+      <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
+        <h3 className="text-sm font-semibold text-foreground">About</h3>
+        <p className="text-sm text-muted-foreground leading-relaxed">{app.fullDescription}</p>
+        {app.whySitaRecommends && (
+          <div className="rounded-xl bg-primary/5 border border-primary/10 p-3">
+            <p className="text-xs text-primary font-medium">💡 Why SITA recommends this</p>
+            <p className="text-xs text-muted-foreground mt-1">{app.whySitaRecommends}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Works with SITA */}
+      {app.worksWithSita.length > 0 && (
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
+          <h3 className="text-sm font-semibold text-foreground">Works with SITA</h3>
+          <WorksWithSitaBadge features={app.worksWithSita} />
+        </div>
+      )}
+
+      {/* Permissions */}
+      {app.permissions.length > 0 && (
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
+          <button onClick={() => setShowPermissions(!showPermissions)}
+            className="flex items-center justify-between w-full">
+            <h3 className="text-sm font-semibold text-foreground">Permissions ({app.permissions.length})</h3>
+            {showPermissions ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
+          </button>
+          {showPermissions && (
+            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} className="space-y-2">
+              {app.permissions.map(p => (
+                <PermissionDomainCard key={p.id} permission={p} onToggle={() => {}} />
+              ))}
+            </motion.div>
+          )}
+        </div>
+      )}
+
+      {/* File & Protocol Associations */}
+      {(app.fileAssociations.length > 0 || app.protocolAssociations.length > 0) && (
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
+          <h3 className="text-sm font-semibold text-foreground">File & Protocol Support</h3>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {app.fileAssociations.map(f => (
+              <div key={f.extension} className="flex items-center gap-2 rounded-lg bg-secondary/30 px-3 py-2">
+                <FileText className="h-3.5 w-3.5 text-muted-foreground" />
+                <span className="text-xs text-foreground">{f.label}</span>
+                <span className="text-[10px] text-muted-foreground ml-auto">{f.extension}</span>
+                {f.isDefault && <span className="text-[9px] text-primary font-medium">Default</span>}
+              </div>
+            ))}
+            {app.protocolAssociations.map(p => (
+              <div key={p.protocol} className="flex items-center gap-2 rounded-lg bg-secondary/30 px-3 py-2">
+                <Link2 className="h-3.5 w-3.5 text-muted-foreground" />
+                <span className="text-xs text-foreground">{p.label}</span>
+                <span className="text-[10px] text-muted-foreground ml-auto">{p.protocol}://</span>
+                {p.isDefault && <span className="text-[9px] text-primary font-medium">Default</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Release Notes */}
+      {app.releaseNotes.length > 0 && (
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
+          <button onClick={() => setShowReleaseNotes(!showReleaseNotes)}
+            className="flex items-center justify-between w-full">
+            <h3 className="text-sm font-semibold text-foreground">Release Notes</h3>
+            {showReleaseNotes ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
+          </button>
+          {showReleaseNotes && (
+            <ul className="space-y-1.5">
+              {app.releaseNotes.map((note, i) => (
+                <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                  <span className="text-primary mt-0.5">•</span> {note}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {/* Trust & Privacy */}
+      <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
+        <h3 className="text-sm font-semibold text-foreground">Trust & Privacy</h3>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <Shield className="h-3.5 w-3.5 text-primary" />
+            <span>Trust: <strong className="text-foreground capitalize">{app.trustLevel.replace(/-/g, " ")}</strong></span>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <RefreshCw className="h-3.5 w-3.5" />
+            <span>Updates: <strong className="text-foreground capitalize">{app.updateSource.replace(/-/g, " ")}</strong></span>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <Bell className="h-3.5 w-3.5" />
+            <span>Notifications: <strong className="text-foreground">{app.notificationPermission ? "Supported" : "Not required"}</strong></span>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <HardDrive className="h-3.5 w-3.5" />
+            <span>Size: <strong className="text-foreground">{app.size}</strong></span>
+          </div>
+        </div>
+      </div>
+
+      {/* Management Actions (if installed) */}
+      {isInstalled && (
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
+          <h3 className="text-sm font-semibold text-foreground">Manage</h3>
+          <div className="grid gap-2 sm:grid-cols-3">
+            <button className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
+              <Pin className="h-3.5 w-3.5" /> {app.pinnedToDock ? "Unpin from Dock" : "Pin to Dock"}
+            </button>
+            <button className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
+              <Settings className="h-3.5 w-3.5" /> App Settings
+            </button>
+            <button className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
+              <RefreshCw className="h-3.5 w-3.5" /> Repair
+            </button>
+            <button className="flex items-center gap-2 rounded-xl bg-destructive/10 px-4 py-3 text-xs font-medium text-destructive hover:bg-destructive/20 transition-colors">
+              <Trash2 className="h-3.5 w-3.5" /> Uninstall
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Similar Apps */}
+      {similarApps.length > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-foreground">Similar Apps</h3>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {similarApps.map(a => (
+              <div key={a.id} onClick={() => navigate(`/app-store/app/${a.id}`)}
+                className="cursor-pointer rounded-xl border border-border bg-card p-3 flex items-center gap-3 transition-all hover:border-primary/20">
+                <AppIcon icon={a.icon} iconBg={a.iconBg} size="sm" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-foreground truncate">{a.name}</p>
+                  <p className="text-[10px] text-muted-foreground truncate">{a.shortDescription}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Install Sheet */}
+      {showInstall && (
+        <InstallSheet app={app} onClose={() => setShowInstall(false)} onInstall={() => setShowInstall(false)} />
+      )}
+    </div>
+  );
+};
+
+export default AppDetailPage;
