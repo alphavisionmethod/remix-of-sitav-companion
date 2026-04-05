@@ -65,12 +65,12 @@ class CompetitiveIntelligenceService {
   async loadCompetitors(userId: string): Promise<Competitor[]> {
     const { data } = await supabase
       .from('user_memory')
-      .select('memory_value')
+      .select('value')
       .eq('user_id', userId)
       .eq('category', 'competitive_intel')
-      .like('memory_key', 'competitor_%');
+      .like('key', 'competitor_%');
 
-    const competitors = (data || []).map((d: any) => JSON.parse(d.memory_value) as Competitor);
+    const competitors = (data || []).map((d) => JSON.parse(d.value as string) as Competitor);
     competitors.forEach((c) => this.competitors.set(c.id, c));
     return competitors;
   }
