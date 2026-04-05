@@ -135,6 +135,11 @@ const CustomerHealthPage = lazy(() => import("./pages/CustomerHealthPage"));
 const GeneratedTruthDashboard = lazy(() => import("./pages/admin/GeneratedTruthDashboard"));
 const FleetHealthPage = lazy(() => import("./pages/admin/FleetHealthPage"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const IncidentCommandCenter = lazy(() => import("./pages/admin/IncidentCommandCenter"));
+const AdminDeploymentTruthCenter = lazy(() => import("./pages/admin/DeploymentTruthCenter"));
+const ProofMatrixExplorer = lazy(() => import("./pages/admin/ProofMatrixExplorer"));
+const ConnectorGovernanceCenter = lazy(() => import("./pages/admin/ConnectorGovernanceCenter"));
+const LaunchReadinessBoard = lazy(() => import("./pages/admin/LaunchReadinessBoard"));
 const TeamManagement = lazy(() => import("./pages/admin/TeamManagement"));
 const SystemManagement = lazy(() => import("./pages/admin/SystemManagement"));
 const UserManagement = lazy(() => import("./pages/admin/UserManagement"));
@@ -825,6 +830,11 @@ const App = () => (
                     <Route path="/admin/system" element={<SystemManagement />} />
                     <Route path="/admin/users" element={<UserManagement />} />
                     <Route path="/admin/ai-tokens" element={<AITokenDashboard />} />
+                    <Route path="/admin/incidents" element={<IncidentCommandCenter />} />
+                    <Route path="/admin/deployment" element={<AdminDeploymentTruthCenter />} />
+                    <Route path="/admin/proof-matrix" element={<ProofMatrixExplorer />} />
+                    <Route path="/admin/connectors" element={<ConnectorGovernanceCenter />} />
+                    <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
