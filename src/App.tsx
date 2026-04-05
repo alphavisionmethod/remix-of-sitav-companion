@@ -537,6 +537,18 @@ const App = () => (
                     <Route path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />
                     <Route path="/admin/fleet-health" element={<FleetHealthPage />} />
 
+                    {/* New Workspaces */}
+                    <Route path="/calendar" element={<CalendarWorkspace />} />
+                    <Route path="/notes" element={<NotesWorkspace />} />
+                    <Route path="/people" element={<PeopleWorkspace />} />
+                    <Route path="/team" element={<TeamWorkspace />} />
+                    <Route path="/editor" element={<DocumentEditor />} />
+                    <Route path="/reporting" element={<ReportingWorkspace />} />
+                    <Route path="/trust" element={<TrustCenter />} />
+                    <Route path="/media" element={<MediaWorkspace />} />
+                    <Route path="/templates" element={<TemplateCenter />} />
+                    <Route path="/import-export" element={<ImportExportCenter />} />
+
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                   </Suspense>
