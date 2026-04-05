@@ -179,6 +179,15 @@ const WatchlistsSignals = lazy(() => import("./pages/investment-office/Watchlist
 const InvestmentReceipts = lazy(() => import("./pages/investment-office/InvestmentReceipts"));
 const BeginnerMode = lazy(() => import("./pages/investment-office/BeginnerMode"));
 const AdvancedMode = lazy(() => import("./pages/investment-office/AdvancedMode"));
+const CapitalTwin = lazy(() => import("./pages/investment-office/CapitalTwin"));
+const DecisionTheater = lazy(() => import("./pages/investment-office/DecisionTheater"));
+const TimeMachineReview = lazy(() => import("./pages/investment-office/TimeMachineReview"));
+const CatalystWarRoom = lazy(() => import("./pages/investment-office/CatalystWarRoom"));
+const OpportunityMap = lazy(() => import("./pages/investment-office/OpportunityMap"));
+const InvestmentConstitution = lazy(() => import("./pages/investment-office/InvestmentConstitution"));
+const BehavioralFirewall = lazy(() => import("./pages/investment-office/BehavioralFirewall"));
+const MarketMemoryFeed = lazy(() => import("./pages/investment-office/MarketMemoryFeed"));
+const IntelligenceDossier = lazy(() => import("./pages/investment-office/IntelligenceDossier"));
 
 const queryClient = createQueryClient();
 
