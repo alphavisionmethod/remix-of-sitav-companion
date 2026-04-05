@@ -103,13 +103,11 @@ serve(async (req) => {
       }
 
       if (postAction === "revoke_role") {
-        const { role } = body;
+        if (!role) return corsError("role required", 400);
         const { error } = await adminClient.from("user_roles")
           .delete().eq("user_id", target_user_id).eq("role", role);
         if (error) throw error;
-        return new Response(JSON.stringify({ success: true }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return corsResponse({ success: true });
       }
 
       return new Response(JSON.stringify({ error: "Unknown action" }), {
