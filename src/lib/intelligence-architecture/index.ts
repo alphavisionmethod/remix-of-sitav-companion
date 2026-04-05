@@ -82,7 +82,7 @@ export {
   generalizePattern, evaluateGeneralizationEligibility,
 } from "./cross-tenant-generalization";
 export type {
-  GeneralizedPattern, GeneralizationEligibility,
+  GeneralizedPattern,
 } from "./cross-tenant-generalization";
 
 // Pipeline Orchestrator
