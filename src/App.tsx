@@ -595,6 +595,7 @@ const App = () => (
 
                     {/* AI Runtime */}
                     <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
+                    <Route path="/admin/persistence-status" element={<PersistenceStatus />} />
 
                     {/* SAG — Sovereign AI Gateway */}
                     <Route path="/admin/sag/overview" element={<SAGOverview />} />
