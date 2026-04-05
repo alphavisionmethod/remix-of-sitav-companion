@@ -569,7 +569,35 @@ export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfa
                   </div>
                 )}
 
-                {/* No results */}
+                {/* AI Thinking / Answer */}
+                {commandState === "ai_thinking" && (
+                  <div className="py-10 text-center">
+                    <Loader2 className="h-6 w-6 text-primary animate-spin mx-auto mb-3" />
+                    <p className="text-sm text-muted-foreground">Thinking…</p>
+                    <div className="mt-3 mx-auto w-48 h-1.5 rounded-full bg-muted overflow-hidden">
+                      <div className="h-full bg-primary/40 rounded-full animate-pulse" style={{ width: "60%" }} />
+                    </div>
+                  </div>
+                )}
+                {commandState === "ai_answer" && aiAnswer && (
+                  <div className="p-4">
+                    <div className="rounded-xl border border-primary/20 bg-primary/5 p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Brain className="h-4 w-4 text-primary" />
+                        <span className="text-[10px] font-semibold text-primary uppercase tracking-wider">AI Answer</span>
+                      </div>
+                      <p className="text-sm text-foreground whitespace-pre-wrap">{aiAnswer}</p>
+                      <button
+                        onClick={() => { navigate("/brain"); onClose(); }}
+                        className="mt-3 text-[11px] text-primary hover:underline flex items-center gap-1"
+                      >
+                        Continue in Brain <ArrowRight className="h-2.5 w-2.5" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+
                 {commandState === "no_results" && (
                   <div className="py-10 text-center">
                     <Search className="h-6 w-6 text-muted-foreground/20 mx-auto mb-2" />
