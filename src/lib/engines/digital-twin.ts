@@ -86,6 +86,13 @@ export class DigitalTwinEngine {
     const criticalBottlenecks = twin.bottlenecks.filter(b => b.severity === "critical").length;
     twin.healthScore = Math.max(0, 100 - criticalSignals * 20 - warningSignals * 5 - criticalBottlenecks * 15);
   }
+
+  serialize(): Record<string, unknown> {
+    return { twins: Array.from(this.twins.entries()) };
+  }
+  hydrate(state: Record<string, unknown>): void {
+    if (state.twins) this.twins = new Map(state.twins as any);
+  }
 }
 
 // ── Boardroom Intelligence Engine ───────────────────────────────
