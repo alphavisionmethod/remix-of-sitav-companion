@@ -10,7 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { MOCK_AUTOMATION_RULES, MOCK_DELEGATIONS } from "@/lib/mock-data";
+import { useAutomationRules, useDelegations } from "@/hooks/use-domain-data";
 import {
   Zap, Shield, Clock, CheckCircle, Eye, Lock, Settings, ArrowRight, Sparkles,
   DollarSign, Briefcase, Home, Mail, Calendar, AlertTriangle, RefreshCw, Pause, Play,
