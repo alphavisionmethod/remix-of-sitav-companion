@@ -381,6 +381,23 @@ const App = () => (
                     <Route path="/investments/family-office" element={<FamilyOffice />} />
                     <Route path="/money/investments" element={<InvestmentGate />} />
 
+                    {/* Revenue Office */}
+                    <Route path="/revenue-office" element={<RevenueGate />} />
+                    <Route path="/revenue-office/boardroom" element={<GrowthBoardroom />} />
+                    <Route path="/revenue-office/relationships" element={<RelationshipCenter />} />
+                    <Route path="/revenue-office/pipeline" element={<PipelineStudio />} />
+                    <Route path="/revenue-office/funnels" element={<FunnelBuilder />} />
+                    <Route path="/revenue-office/campaigns" element={<CampaignOrchestrator />} />
+                    <Route path="/revenue-office/bookings" element={<BookingCenter />} />
+                    <Route path="/revenue-office/offers" element={<OffersWorkspace />} />
+                    <Route path="/revenue-office/reputation" element={<ReputationEngine />} />
+                    <Route path="/revenue-office/intelligence" element={<RevenueIntelligence />} />
+                    <Route path="/revenue-office/retention" element={<RetentionOffice />} />
+                    <Route path="/revenue-office/advisors" element={<GrowthAdvisorBoard />} />
+                    <Route path="/revenue-office/journey-twin" element={<JourneyTwin />} />
+                    <Route path="/revenue-office/leaks" element={<LeakDetector />} />
+                    <Route path="/revenue-office/conversion-lab" element={<ConversionLab />} />
+
                     {/* Concierge — parent container handles sub-routing via tabs */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
                     <Route path="/concierge/overview" element={<ConciergeCenter />} />
