@@ -463,3 +463,9 @@ export const SAMPLE_RESEARCH: ResearchNote[] = [
 export const SAMPLE_ORDERS: TradeOrder[] = [
   { id: "ord1", instrumentId: "nvda", instrument: getInstrument("nvda")!, action: "buy", quantity: 50, orderType: "limit", limitPrice: 130, platform: "Interactive Brokers", estimatedCost: 6500, estimatedFees: 1.50, riskPreview: "Adds 1.2% portfolio weight to NVDA. Total tech exposure rises to 44%.", status: "draft", rationale: "Adding on dip before GTC conference catalyst", thesisId: "th1", approvalRequired: false, createdAt: "2026-04-05" },
 ];
+
+// ── Demo Source Classification ─────────────────────────────────
+// All data in this file is DEMO SCENARIO DATA for the Investment Office.
+// In real mode, pages should use mode-aware investment data services.
+export const __DEMO_SOURCE__ = true;
+export const __DATA_CLASSIFICATION__ = "demo-scenario" as const;
