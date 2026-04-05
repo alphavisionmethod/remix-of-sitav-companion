@@ -765,7 +765,7 @@ const ComputeGovernanceBoard = () => {
                 {UPSELL_ADDONS.slice(0, 5).map(addon => (
                   <div key={addon.addonId} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                     <span className="text-xs text-foreground">{addon.name}</span>
-                    <span className="text-xs font-mono text-primary">${(<span className="text-xs font-mono text-primary">${(addon.monthlyPriceCents / 100).toFixed(0)}/mo</span> / 100).toFixed(0)}/mo</span>
+                    <span className="text-xs font-mono text-primary">${(addon.monthlyPriceCents / 100).toFixed(0)}/mo</span>
                   </div>
                 ))}
               </CardContent>
