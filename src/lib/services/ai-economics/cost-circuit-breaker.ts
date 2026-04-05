@@ -65,7 +65,7 @@ const MODEL_COST_TIERS: { model: string; inputCostPer1K: number; outputCostPer1K
 ];
 
 export class CostCircuitBreakerService {
-  private configs = new Map<string, BudgetConfig>();
+  private configs = new Map<string, BreakerBudgetConfig>();
   private states = new Map<string, BudgetState>();
   private allViolations: CostViolation[] = [];
   private violationCounter = 0;
