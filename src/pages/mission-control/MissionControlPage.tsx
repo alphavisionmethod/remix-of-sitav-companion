@@ -1286,6 +1286,7 @@ export default function MissionControlPage() {
           <TabsContent value="cab"><CABWorkflow /></TabsContent>
           <TabsContent value="comm-graph"><AgentCommunicationGraph /></TabsContent>
           <TabsContent value="heal-notify"><SelfHealingNotifications /></TabsContent>
+          <TabsContent value="platform-truth"><PlatformTruthDashboard /></TabsContent>
         </div>
       </Tabs>
     </div>
