@@ -22,19 +22,7 @@ serve(async (req) => {
       if (body instanceof Response) return body;
       const { device_id, command, params } = body as { device_id: string; command: string; params?: Record<string, unknown> };
 
-      if (!device_id || !command) {
-        return new Response(JSON.stringify({ error: "device_id and command required" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-
-      if (!ALLOWED_COMMANDS.includes(command)) {
-        return new Response(JSON.stringify({ error: `Command not allowed. Valid: ${ALLOWED_COMMANDS.join(", ")}` }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-
-      const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+      const adminClient = getServiceClient();
 
       // Store command for device to poll
       await adminClient.from("agent_signals").insert({
