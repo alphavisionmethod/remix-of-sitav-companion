@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { computeTruthIndices, type TruthIndexSummary } from "@/lib/services/truth-indices/truth-index-aggregator";
-import { Shield, Brain, Plug, Monitor, Eye, Layers, RefreshCw, Activity, Smartphone } from "lucide-react";
+import { Shield, Brain, Plug, Monitor, Eye, Layers, RefreshCw, Activity, Smartphone, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
@@ -21,6 +21,7 @@ const INDEX_CONFIG = [
   { key: "surfacePortability", label: "Surface Portability Index", icon: Monitor, color: "text-pink-400" },
   { key: "deviceReadiness", label: "Device Readiness Index", icon: Smartphone, color: "text-orange-400" },
   { key: "observability", label: "Observability Index", icon: Activity, color: "text-teal-400" },
+  { key: "securityPrivacy", label: "Security & Privacy Index", icon: Lock, color: "text-red-400" },
 ] as const;
 
 function getScoreColor(score: number): string {

@@ -10,6 +10,7 @@ import { getOAuthFlows, getSyncJobs, getConnectorTruthIndex } from "../connector
 import { getSurfacePortability, getSurfacePortabilityIndex } from "../surface-portability/surface-portability-service";
 import { getDemoGovernanceStatuses, getDemoGovernanceIndex } from "../demo-governance/demo-governance-service";
 import { computeObservabilityIndex, computeDeviceReadinessIndex } from "../observability/observability-service";
+import { computeSecurityPrivacyIndex } from "../security-privacy/security-privacy-service";
 
 export interface TruthIndexSummary {
   runtimeTruth: { score: number; label: string; detail: string };
@@ -20,6 +21,7 @@ export interface TruthIndexSummary {
   surfacePortability: { score: number; label: string; detail: string };
   deviceReadiness: { score: number; label: string; detail: string };
   observability: { score: number; label: string; detail: string };
+  securityPrivacy: { score: number; label: string; detail: string };
   overallScore: number;
   lastComputed: string;
 }
@@ -33,7 +35,7 @@ function getLabel(score: number): string {
 }
 
 export async function computeTruthIndices(): Promise<TruthIndexSummary> {
-  const [domains, gates, oauthFlows, syncJobs, portability, demoStatuses, observabilityScore, deviceScore] = await Promise.all([
+  const [domains, gates, oauthFlows, syncJobs, portability, demoStatuses, observabilityScore, deviceScore, securityResult] = await Promise.all([
     getDomainRuntimeStatuses(),
     getLaunchGates(),
     getOAuthFlows(),
@@ -42,6 +44,7 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
     getDemoGovernanceStatuses(),
     computeObservabilityIndex(),
     computeDeviceReadinessIndex(),
+    computeSecurityPrivacyIndex(),
   ]);
 
   const runtimeScore = getRuntimeTruthIndex(domains);
@@ -50,8 +53,9 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
   const surfaceScore = getSurfacePortabilityIndex(portability);
   const demoScore = getDemoGovernanceIndex(demoStatuses);
   const aiScore = await computeAITruthScore();
+  const securityScore = securityResult.score;
 
-  const scores = [runtimeScore, launchScore, aiScore, connectorScore, demoScore, surfaceScore, observabilityScore, deviceScore];
+  const scores = [runtimeScore, launchScore, aiScore, connectorScore, demoScore, surfaceScore, observabilityScore, deviceScore, securityScore];
   const overallScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
 
   return {
@@ -94,6 +98,11 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
       score: observabilityScore,
       label: getLabel(observabilityScore),
       detail: `Runtime probes + health snapshots + telemetry`,
+    },
+    securityPrivacy: {
+      score: securityScore,
+      label: getLabel(securityScore),
+      detail: securityResult.detail,
     },
     overallScore,
     lastComputed: new Date().toISOString(),
