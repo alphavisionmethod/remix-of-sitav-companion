@@ -6,6 +6,7 @@ import {
   ArrowRight, BarChart3, Briefcase, AlertTriangle, Clock, Brain, ChevronRight
 } from "lucide-react";
 import { PORTFOLIO, INVESTMENT_ADVISORS, WATCHLISTS, INSTRUMENTS, SAMPLE_ORDERS, SAMPLE_THESES } from "@/lib/investment-office/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const fmt = (n: number) => n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
