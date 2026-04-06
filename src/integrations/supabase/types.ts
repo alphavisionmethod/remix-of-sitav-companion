@@ -1776,6 +1776,57 @@ export type Database = {
           },
         ]
       }
+      architecture_boundary_records: {
+        Row: {
+          component_path: string
+          component_type: string
+          created_at: string
+          id: string
+          is_boundary_violation: boolean
+          layer: string
+          metadata: Json | null
+          migration_priority: string | null
+          migration_target: string | null
+          notes: string | null
+          owns_business_logic: boolean
+          updated_at: string
+          user_id: string
+          violation_type: string | null
+        }
+        Insert: {
+          component_path: string
+          component_type?: string
+          created_at?: string
+          id?: string
+          is_boundary_violation?: boolean
+          layer?: string
+          metadata?: Json | null
+          migration_priority?: string | null
+          migration_target?: string | null
+          notes?: string | null
+          owns_business_logic?: boolean
+          updated_at?: string
+          user_id: string
+          violation_type?: string | null
+        }
+        Update: {
+          component_path?: string
+          component_type?: string
+          created_at?: string
+          id?: string
+          is_boundary_violation?: boolean
+          layer?: string
+          metadata?: Json | null
+          migration_priority?: string | null
+          migration_target?: string | null
+          notes?: string | null
+          owns_business_logic?: boolean
+          updated_at?: string
+          user_id?: string
+          violation_type?: string | null
+        }
+        Relationships: []
+      }
       asset_market_snapshots: {
         Row: {
           as_of: string
@@ -2272,6 +2323,66 @@ export type Database = {
         }
         Relationships: []
       }
+      capability_definitions: {
+        Row: {
+          action_type: string
+          active: boolean
+          ai_eligible: boolean
+          capability_key: string
+          contract_schema: Json | null
+          created_at: string
+          description: string | null
+          display_name: string
+          domain: string
+          id: string
+          metadata: Json | null
+          portability_class: string
+          requires_approval: boolean
+          requires_auth: boolean
+          risk_tier: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_type?: string
+          active?: boolean
+          ai_eligible?: boolean
+          capability_key: string
+          contract_schema?: Json | null
+          created_at?: string
+          description?: string | null
+          display_name: string
+          domain?: string
+          id?: string
+          metadata?: Json | null
+          portability_class?: string
+          requires_approval?: boolean
+          requires_auth?: boolean
+          risk_tier?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          active?: boolean
+          ai_eligible?: boolean
+          capability_key?: string
+          contract_schema?: Json | null
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          domain?: string
+          id?: string
+          metadata?: Json | null
+          portability_class?: string
+          requires_approval?: boolean
+          requires_auth?: boolean
+          risk_tier?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       capability_registry: {
         Row: {
           approval_type: string | null
@@ -2349,6 +2460,63 @@ export type Database = {
           version?: string | null
         }
         Relationships: []
+      }
+      capability_surface_bindings: {
+        Row: {
+          adaptation_notes: string | null
+          binding_status: string
+          capability_id: string
+          created_at: string
+          id: string
+          interaction_pattern: string | null
+          metadata: Json | null
+          priority: number | null
+          surface_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          adaptation_notes?: string | null
+          binding_status?: string
+          capability_id: string
+          created_at?: string
+          id?: string
+          interaction_pattern?: string | null
+          metadata?: Json | null
+          priority?: number | null
+          surface_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          adaptation_notes?: string | null
+          binding_status?: string
+          capability_id?: string
+          created_at?: string
+          id?: string
+          interaction_pattern?: string | null
+          metadata?: Json | null
+          priority?: number | null
+          surface_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capability_surface_bindings_capability_id_fkey"
+            columns: ["capability_id"]
+            isOneToOne: false
+            referencedRelation: "capability_definitions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "capability_surface_bindings_surface_id_fkey"
+            columns: ["surface_id"]
+            isOneToOne: false
+            referencedRelation: "surface_types"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       capital_allocations: {
         Row: {
@@ -3807,6 +3975,51 @@ export type Database = {
           updated_at?: string
           user_id?: string
           votes?: Json
+        }
+        Relationships: []
+      }
+      cross_surface_consistency_records: {
+        Row: {
+          check_type: string
+          consistent: boolean
+          created_at: string
+          drift_description: string | null
+          id: string
+          resolution: string | null
+          resolved_at: string | null
+          scope: string
+          severity: string | null
+          surfaces_checked: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          check_type: string
+          consistent?: boolean
+          created_at?: string
+          drift_description?: string | null
+          id?: string
+          resolution?: string | null
+          resolved_at?: string | null
+          scope: string
+          severity?: string | null
+          surfaces_checked?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          check_type?: string
+          consistent?: boolean
+          created_at?: string
+          drift_description?: string | null
+          id?: string
+          resolution?: string | null
+          resolved_at?: string | null
+          scope?: string
+          severity?: string | null
+          surfaces_checked?: string[] | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -12901,6 +13114,68 @@ export type Database = {
         }
         Relationships: []
       }
+      shell_implementations: {
+        Row: {
+          boundary_violations: number | null
+          capability_coverage_pct: number | null
+          component_count: number | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          notes: string | null
+          route_count: number | null
+          shell_type: string
+          status: string
+          surface_id: string
+          technology_stack: string[] | null
+          updated_at: string
+          user_id: string
+          version: string | null
+        }
+        Insert: {
+          boundary_violations?: number | null
+          capability_coverage_pct?: number | null
+          component_count?: number | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          route_count?: number | null
+          shell_type: string
+          status?: string
+          surface_id: string
+          technology_stack?: string[] | null
+          updated_at?: string
+          user_id: string
+          version?: string | null
+        }
+        Update: {
+          boundary_violations?: number | null
+          capability_coverage_pct?: number | null
+          component_count?: number | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          route_count?: number | null
+          shell_type?: string
+          status?: string
+          surface_id?: string
+          technology_stack?: string[] | null
+          updated_at?: string
+          user_id?: string
+          version?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shell_implementations_surface_id_fkey"
+            columns: ["surface_id"]
+            isOneToOne: false
+            referencedRelation: "surface_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sita_memory_entries: {
         Row: {
           category: string
@@ -13396,6 +13671,181 @@ export type Database = {
           status?: string
           updated_at?: string
           usage_score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      surface_adapters: {
+        Row: {
+          adapter_name: string
+          constraints: Json | null
+          created_at: string
+          id: string
+          interaction_grammar: Json | null
+          navigation_grammar: Json | null
+          notification_grammar: Json | null
+          performance_profile: Json | null
+          receipt_presentation: Json | null
+          shell_type: string
+          status: string
+          surface_id: string
+          trust_presentation: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          adapter_name: string
+          constraints?: Json | null
+          created_at?: string
+          id?: string
+          interaction_grammar?: Json | null
+          navigation_grammar?: Json | null
+          notification_grammar?: Json | null
+          performance_profile?: Json | null
+          receipt_presentation?: Json | null
+          shell_type?: string
+          status?: string
+          surface_id: string
+          trust_presentation?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          adapter_name?: string
+          constraints?: Json | null
+          created_at?: string
+          id?: string
+          interaction_grammar?: Json | null
+          navigation_grammar?: Json | null
+          notification_grammar?: Json | null
+          performance_profile?: Json | null
+          receipt_presentation?: Json | null
+          shell_type?: string
+          status?: string
+          surface_id?: string
+          trust_presentation?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "surface_adapters_surface_id_fkey"
+            columns: ["surface_id"]
+            isOneToOne: false
+            referencedRelation: "surface_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      surface_readiness_records: {
+        Row: {
+          blockers: string[] | null
+          capability_coverage_pct: number | null
+          contract_coverage_pct: number | null
+          created_at: string
+          evidence: Json | null
+          id: string
+          last_audited_at: string | null
+          portability_score: number | null
+          receipt_portability: boolean
+          surface_id: string
+          trust_portability: boolean
+          updated_at: string
+          user_id: string
+          workflow_portability: boolean
+        }
+        Insert: {
+          blockers?: string[] | null
+          capability_coverage_pct?: number | null
+          contract_coverage_pct?: number | null
+          created_at?: string
+          evidence?: Json | null
+          id?: string
+          last_audited_at?: string | null
+          portability_score?: number | null
+          receipt_portability?: boolean
+          surface_id: string
+          trust_portability?: boolean
+          updated_at?: string
+          user_id: string
+          workflow_portability?: boolean
+        }
+        Update: {
+          blockers?: string[] | null
+          capability_coverage_pct?: number | null
+          contract_coverage_pct?: number | null
+          created_at?: string
+          evidence?: Json | null
+          id?: string
+          last_audited_at?: string | null
+          portability_score?: number | null
+          receipt_portability?: boolean
+          surface_id?: string
+          trust_portability?: boolean
+          updated_at?: string
+          user_id?: string
+          workflow_portability?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "surface_readiness_records_surface_id_fkey"
+            columns: ["surface_id"]
+            isOneToOne: false
+            referencedRelation: "surface_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      surface_types: {
+        Row: {
+          constraints: Json | null
+          created_at: string
+          display_name: string
+          id: string
+          input_modes: string[] | null
+          interaction_model: string | null
+          metadata: Json | null
+          notification_model: string | null
+          offline_support: boolean
+          output_modes: string[] | null
+          readiness_stage: string
+          surface_class: string
+          surface_key: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          constraints?: Json | null
+          created_at?: string
+          display_name: string
+          id?: string
+          input_modes?: string[] | null
+          interaction_model?: string | null
+          metadata?: Json | null
+          notification_model?: string | null
+          offline_support?: boolean
+          output_modes?: string[] | null
+          readiness_stage?: string
+          surface_class?: string
+          surface_key: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          constraints?: Json | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          input_modes?: string[] | null
+          interaction_model?: string | null
+          metadata?: Json | null
+          notification_model?: string | null
+          offline_support?: boolean
+          output_modes?: string[] | null
+          readiness_stage?: string
+          surface_class?: string
+          surface_key?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
