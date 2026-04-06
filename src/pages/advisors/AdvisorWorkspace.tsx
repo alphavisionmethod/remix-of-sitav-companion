@@ -23,6 +23,7 @@ import {
   mockProofHistory, mockMemoryItems, mockSynthesis,
 } from "@/lib/mock-data/advisor-mission-control";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useStreamingChat } from "@/hooks/use-streaming-chat";
 import {
   Brain, Users, GitCompare, Play, CheckCircle, FileText, Eye,
   BarChart3, Sparkles, ArrowRight, Shield, Clock, TrendingUp,
