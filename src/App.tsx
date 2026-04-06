@@ -283,6 +283,17 @@ const MSA03CapabilityPortability = lazy(() => import("./pages/admin/MSA03Capabil
 const MSA04SurfaceAdapterRegistry = lazy(() => import("./pages/admin/MSA04SurfaceAdapterRegistry"));
 const MSA05CompatibilityRadar = lazy(() => import("./pages/admin/MSA05CompatibilityRadar"));
 
+const PFA01ProviderFamilyRegistry = lazy(() => import("./pages/admin/PFA01ProviderFamilyRegistry"));
+const PFA02ProviderCapabilityMatrix = lazy(() => import("./pages/admin/PFA02ProviderCapabilityMatrix"));
+const PFA03OAuthClientRegistry = lazy(() => import("./pages/admin/PFA03OAuthClientRegistry"));
+const PFA04ConsentLedgerExplorer = lazy(() => import("./pages/admin/PFA04ConsentLedgerExplorer"));
+const PFA05ScopePolicyMatrix = lazy(() => import("./pages/admin/PFA05ScopePolicyMatrix"));
+const PFA06PermissionUpgradeCenter = lazy(() => import("./pages/admin/PFA06PermissionUpgradeCenter"));
+const PFA07ConnectorHealthDrift = lazy(() => import("./pages/admin/PFA07ConnectorHealthDrift"));
+const PFA08AccountGraphExplorer = lazy(() => import("./pages/admin/PFA08AccountGraphExplorer"));
+const PFA09ConnectedAccountsCenter = lazy(() => import("./pages/admin/PFA09ConnectedAccountsCenter"));
+const PFA10IntegrationLaunchHonesty = lazy(() => import("./pages/admin/PFA10IntegrationLaunchHonesty"));
+
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
@@ -1052,6 +1063,16 @@ const App = () => (
                     <Route path="/admin/msa/capabilities" element={<MSA03CapabilityPortability />} />
                     <Route path="/admin/msa/adapters" element={<MSA04SurfaceAdapterRegistry />} />
                     <Route path="/admin/msa/compatibility" element={<MSA05CompatibilityRadar />} />
+                    <Route path="/admin/pfa/families" element={<PFA01ProviderFamilyRegistry />} />
+                    <Route path="/admin/pfa/capabilities" element={<PFA02ProviderCapabilityMatrix />} />
+                    <Route path="/admin/pfa/oauth-clients" element={<PFA03OAuthClientRegistry />} />
+                    <Route path="/admin/pfa/consent" element={<PFA04ConsentLedgerExplorer />} />
+                    <Route path="/admin/pfa/scope-policy" element={<PFA05ScopePolicyMatrix />} />
+                    <Route path="/admin/pfa/upgrades" element={<PFA06PermissionUpgradeCenter />} />
+                    <Route path="/admin/pfa/health-drift" element={<PFA07ConnectorHealthDrift />} />
+                    <Route path="/admin/pfa/account-graph" element={<PFA08AccountGraphExplorer />} />
+                    <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
+                    <Route path="/admin/pfa/launch-honesty" element={<PFA10IntegrationLaunchHonesty />} />
                     <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/admin/mission-control" element={<MissionControlHome />} />
                     <Route path="/admin/durability" element={<AdminDurabilityBoardPage />} />
