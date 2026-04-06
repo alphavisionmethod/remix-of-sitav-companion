@@ -117,4 +117,10 @@ const ConciergeCenter = () => {
   );
 };
 
-export default ConciergeCenter;
+const ConciergeCenterWithBoundary = () => (
+  <GlobalErrorBoundary>
+    <ConciergeCenter />
+  </GlobalErrorBoundary>
+);
+
+export default ConciergeCenterWithBoundary;

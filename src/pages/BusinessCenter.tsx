@@ -117,4 +117,10 @@ const BusinessCenter = () => {
   );
 };
 
-export default BusinessCenter;
+const BusinessCenterWithBoundary = () => (
+  <GlobalErrorBoundary>
+    <BusinessCenter />
+  </GlobalErrorBoundary>
+);
+
+export default BusinessCenterWithBoundary;

@@ -717,4 +717,10 @@ const DailyPulse = () => {
   );
 };
 
-export default DailyPulse;
+const DailyPulseWithBoundary = () => (
+  <GlobalErrorBoundary>
+    <DailyPulse />
+  </GlobalErrorBoundary>
+);
+
+export default DailyPulseWithBoundary;

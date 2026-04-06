@@ -105,4 +105,10 @@ const MoneyCenter = () => {
   );
 };
 
-export default MoneyCenter;
+const MoneyCenterWithBoundary = () => (
+  <GlobalErrorBoundary>
+    <MoneyCenter />
+  </GlobalErrorBoundary>
+);
+
+export default MoneyCenterWithBoundary;
