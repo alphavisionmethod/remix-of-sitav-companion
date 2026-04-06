@@ -2501,18 +2501,22 @@ export type Database = {
         Row: {
           action_type: string
           budget_impact: string | null
+          budget_impact_class: string | null
           created_at: string
           description: string | null
           estimated_impact: string | null
           evidence: Json | null
+          evidence_refs: Json
           evidence_summary: string | null
           id: string
           impacted_domain: string | null
           invocation_id: string | null
           launch_impact: string | null
+          launch_impact_class: string | null
           originating_receipt_id: string | null
           proposed_action_summary: string | null
           proposed_changes: Json | null
+          recommendation_id: string | null
           recommendation_type: string | null
           resolved_at: string | null
           review_notes: string | null
@@ -2523,24 +2527,29 @@ export type Database = {
           role_key: string
           severity: string | null
           status: string
+          summary: string | null
           title: string
           user_id: string
         }
         Insert: {
           action_type: string
           budget_impact?: string | null
+          budget_impact_class?: string | null
           created_at?: string
           description?: string | null
           estimated_impact?: string | null
           evidence?: Json | null
+          evidence_refs?: Json
           evidence_summary?: string | null
           id?: string
           impacted_domain?: string | null
           invocation_id?: string | null
           launch_impact?: string | null
+          launch_impact_class?: string | null
           originating_receipt_id?: string | null
           proposed_action_summary?: string | null
           proposed_changes?: Json | null
+          recommendation_id?: string | null
           recommendation_type?: string | null
           resolved_at?: string | null
           review_notes?: string | null
@@ -2551,24 +2560,29 @@ export type Database = {
           role_key: string
           severity?: string | null
           status?: string
+          summary?: string | null
           title: string
           user_id: string
         }
         Update: {
           action_type?: string
           budget_impact?: string | null
+          budget_impact_class?: string | null
           created_at?: string
           description?: string | null
           estimated_impact?: string | null
           evidence?: Json | null
+          evidence_refs?: Json
           evidence_summary?: string | null
           id?: string
           impacted_domain?: string | null
           invocation_id?: string | null
           launch_impact?: string | null
+          launch_impact_class?: string | null
           originating_receipt_id?: string | null
           proposed_action_summary?: string | null
           proposed_changes?: Json | null
+          recommendation_id?: string | null
           recommendation_type?: string | null
           resolved_at?: string | null
           review_notes?: string | null
@@ -2579,6 +2593,7 @@ export type Database = {
           role_key?: string
           severity?: string | null
           status?: string
+          summary?: string | null
           title?: string
           user_id?: string
         }
@@ -2590,7 +2605,65 @@ export type Database = {
             referencedRelation: "ai_workforce_invocations"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "ai_workforce_approval_queue_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_workforce_recent_activity"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      ai_workforce_budget_classes: {
+        Row: {
+          budget_class_key: string
+          created_at: string
+          default_daily_budget_usd: number | null
+          default_max_request_cost_usd: number | null
+          default_monthly_budget_usd: number | null
+          default_weekly_budget_usd: number | null
+          description: string
+          display_name: string
+          fallback_budget_class_key: string | null
+          id: string
+          premium_allowed: boolean
+          priority_order: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          budget_class_key: string
+          created_at?: string
+          default_daily_budget_usd?: number | null
+          default_max_request_cost_usd?: number | null
+          default_monthly_budget_usd?: number | null
+          default_weekly_budget_usd?: number | null
+          description: string
+          display_name: string
+          fallback_budget_class_key?: string | null
+          id?: string
+          premium_allowed?: boolean
+          priority_order?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          budget_class_key?: string
+          created_at?: string
+          default_daily_budget_usd?: number | null
+          default_max_request_cost_usd?: number | null
+          default_monthly_budget_usd?: number | null
+          default_weekly_budget_usd?: number | null
+          description?: string
+          display_name?: string
+          fallback_budget_class_key?: string | null
+          id?: string
+          premium_allowed?: boolean
+          priority_order?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       ai_workforce_cached_outputs: {
         Row: {
@@ -2633,8 +2706,10 @@ export type Database = {
       }
       ai_workforce_invocations: {
         Row: {
+          ai_usage_ledger_id: string | null
           approved_by: string | null
           budget_class: string | null
+          cached_output_ref: string | null
           capability_key: string | null
           completed_at: string | null
           cost_cents: number | null
@@ -2644,6 +2719,7 @@ export type Database = {
           human_approved: boolean | null
           id: string
           input_summary: string | null
+          invoked_by_user_id: string | null
           latency_ms: number | null
           mode: string
           model_used: string | null
@@ -2651,15 +2727,24 @@ export type Database = {
           output_summary: string | null
           provider_used: string | null
           receipt_id: string | null
+          requested_budget_posture: string
+          resolved_routing_class: string | null
           role_key: string
+          scope_payload: Json
+          scope_ref: string | null
+          scope_type: string
+          started_at: string | null
           status: string
           task_type: string
           tokens_used: number | null
+          used_cached_output: boolean
           user_id: string
         }
         Insert: {
+          ai_usage_ledger_id?: string | null
           approved_by?: string | null
           budget_class?: string | null
+          cached_output_ref?: string | null
           capability_key?: string | null
           completed_at?: string | null
           cost_cents?: number | null
@@ -2669,6 +2754,7 @@ export type Database = {
           human_approved?: boolean | null
           id?: string
           input_summary?: string | null
+          invoked_by_user_id?: string | null
           latency_ms?: number | null
           mode?: string
           model_used?: string | null
@@ -2676,15 +2762,24 @@ export type Database = {
           output_summary?: string | null
           provider_used?: string | null
           receipt_id?: string | null
+          requested_budget_posture?: string
+          resolved_routing_class?: string | null
           role_key: string
+          scope_payload?: Json
+          scope_ref?: string | null
+          scope_type?: string
+          started_at?: string | null
           status?: string
           task_type: string
           tokens_used?: number | null
+          used_cached_output?: boolean
           user_id: string
         }
         Update: {
+          ai_usage_ledger_id?: string | null
           approved_by?: string | null
           budget_class?: string | null
+          cached_output_ref?: string | null
           capability_key?: string | null
           completed_at?: string | null
           cost_cents?: number | null
@@ -2694,6 +2789,7 @@ export type Database = {
           human_approved?: boolean | null
           id?: string
           input_summary?: string | null
+          invoked_by_user_id?: string | null
           latency_ms?: number | null
           mode?: string
           model_used?: string | null
@@ -2701,26 +2797,230 @@ export type Database = {
           output_summary?: string | null
           provider_used?: string | null
           receipt_id?: string | null
+          requested_budget_posture?: string
+          resolved_routing_class?: string | null
           role_key?: string
+          scope_payload?: Json
+          scope_ref?: string | null
+          scope_type?: string
+          started_at?: string | null
           status?: string
           task_type?: string
           tokens_used?: number | null
+          used_cached_output?: boolean
           user_id?: string
         }
         Relationships: []
+      }
+      ai_workforce_launch_honesty: {
+        Row: {
+          created_at: string
+          id: string
+          last_verified_at: string | null
+          launch_honesty_class: string
+          notes: string | null
+          public_claim_allowed: boolean
+          role_id: string | null
+          task_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          launch_honesty_class?: string
+          notes?: string | null
+          public_claim_allowed?: boolean
+          role_id?: string | null
+          task_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          launch_honesty_class?: string
+          notes?: string | null
+          public_claim_allowed?: boolean
+          role_id?: string | null
+          task_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_workforce_launch_honesty_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_roles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_workforce_launch_honesty_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_workforce_role_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_workforce_launch_honesty_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_task_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_workforce_outputs: {
+        Row: {
+          confidence_class: string | null
+          contains_proposed_actions: boolean
+          contains_recommendations: boolean
+          contains_sensitive_suggestions: boolean
+          created_at: string
+          id: string
+          invocation_id: string
+          launch_honesty_class: string | null
+          output_type: string
+          structured_payload: Json
+          summary_text: string | null
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          confidence_class?: string | null
+          contains_proposed_actions?: boolean
+          contains_recommendations?: boolean
+          contains_sensitive_suggestions?: boolean
+          created_at?: string
+          id?: string
+          invocation_id: string
+          launch_honesty_class?: string | null
+          output_type?: string
+          structured_payload?: Json
+          summary_text?: string | null
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          confidence_class?: string | null
+          contains_proposed_actions?: boolean
+          contains_recommendations?: boolean
+          contains_sensitive_suggestions?: boolean
+          created_at?: string
+          id?: string
+          invocation_id?: string
+          launch_honesty_class?: string | null
+          output_type?: string
+          structured_payload?: Json
+          summary_text?: string | null
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_workforce_outputs_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_invocations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_workforce_outputs_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_workforce_recent_activity"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_workforce_recommendation_scores: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          recommendation_id: string
+          review_method: string
+          reviewed_by_user_id: string | null
+          score_accuracy: number | null
+          score_actionability: number | null
+          score_cost_efficiency: number | null
+          score_evidence_quality: number | null
+          score_launch_honesty_alignment: number | null
+          score_overall: number
+          score_usefulness: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          recommendation_id: string
+          review_method?: string
+          reviewed_by_user_id?: string | null
+          score_accuracy?: number | null
+          score_actionability?: number | null
+          score_cost_efficiency?: number | null
+          score_evidence_quality?: number | null
+          score_launch_honesty_alignment?: number | null
+          score_overall?: number
+          score_usefulness?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          recommendation_id?: string
+          review_method?: string
+          reviewed_by_user_id?: string | null
+          score_accuracy?: number | null
+          score_actionability?: number | null
+          score_cost_efficiency?: number | null
+          score_evidence_quality?: number | null
+          score_launch_honesty_alignment?: number | null
+          score_overall?: number
+          score_usefulness?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_workforce_recommendation_scores_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_recommendations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_workforce_recommendation_scores_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_workforce_recommendation_summary"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ai_workforce_recommendations: {
         Row: {
           accepted_at: string | null
           action_proposed: string | null
+          budget_impact_class: string | null
           created_at: string
           deferred_until: string | null
           description: string | null
           domain: string
+          estimated_effort: string | null
+          estimated_impact: string | null
           evidence: Json | null
+          evidence_refs: Json
           id: string
           invocation_id: string | null
+          launch_impact_class: string | null
+          linked_approval_queue_item_id: string | null
+          linked_remediation_program_id: string | null
+          output_id: string | null
+          recommendation_type: string
           rejected_at: string | null
+          risk_tier: string
           role_key: string
           severity: string
           status: string
@@ -2731,14 +3031,24 @@ export type Database = {
         Insert: {
           accepted_at?: string | null
           action_proposed?: string | null
+          budget_impact_class?: string | null
           created_at?: string
           deferred_until?: string | null
           description?: string | null
           domain?: string
+          estimated_effort?: string | null
+          estimated_impact?: string | null
           evidence?: Json | null
+          evidence_refs?: Json
           id?: string
           invocation_id?: string | null
+          launch_impact_class?: string | null
+          linked_approval_queue_item_id?: string | null
+          linked_remediation_program_id?: string | null
+          output_id?: string | null
+          recommendation_type?: string
           rejected_at?: string | null
+          risk_tier?: string
           role_key: string
           severity?: string
           status?: string
@@ -2749,14 +3059,24 @@ export type Database = {
         Update: {
           accepted_at?: string | null
           action_proposed?: string | null
+          budget_impact_class?: string | null
           created_at?: string
           deferred_until?: string | null
           description?: string | null
           domain?: string
+          estimated_effort?: string | null
+          estimated_impact?: string | null
           evidence?: Json | null
+          evidence_refs?: Json
           id?: string
           invocation_id?: string | null
+          launch_impact_class?: string | null
+          linked_approval_queue_item_id?: string | null
+          linked_remediation_program_id?: string | null
+          output_id?: string | null
+          recommendation_type?: string
           rejected_at?: string | null
+          risk_tier?: string
           role_key?: string
           severity?: string
           status?: string
@@ -2772,24 +3092,156 @@ export type Database = {
             referencedRelation: "ai_workforce_invocations"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "ai_workforce_recommendations_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_workforce_recent_activity"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_workforce_role_health: {
+        Row: {
+          avg_cost_24h: number | null
+          created_at: string
+          fallback_rate_24h: number | null
+          health_reason: string | null
+          health_state: string
+          id: string
+          last_failure_at: string | null
+          last_success_at: string | null
+          last_used_at: string | null
+          role_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avg_cost_24h?: number | null
+          created_at?: string
+          fallback_rate_24h?: number | null
+          health_reason?: string | null
+          health_state?: string
+          id?: string
+          last_failure_at?: string | null
+          last_success_at?: string | null
+          last_used_at?: string | null
+          role_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avg_cost_24h?: number | null
+          created_at?: string
+          fallback_rate_24h?: number | null
+          health_reason?: string | null
+          health_state?: string
+          id?: string
+          last_failure_at?: string | null
+          last_success_at?: string | null
+          last_used_at?: string | null
+          role_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_workforce_role_health_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_roles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_workforce_role_health_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_workforce_role_summary"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_workforce_role_task_permissions: {
+        Row: {
+          allowed: boolean
+          created_at: string
+          id: string
+          preferred_budget_class: string | null
+          preferred_routing_class: string | null
+          requires_approval_override: boolean
+          role_id: string
+          task_id: string
+          user_id: string
+        }
+        Insert: {
+          allowed?: boolean
+          created_at?: string
+          id?: string
+          preferred_budget_class?: string | null
+          preferred_routing_class?: string | null
+          requires_approval_override?: boolean
+          role_id: string
+          task_id: string
+          user_id: string
+        }
+        Update: {
+          allowed?: boolean
+          created_at?: string
+          id?: string
+          preferred_budget_class?: string | null
+          preferred_routing_class?: string | null
+          requires_approval_override?: boolean
+          role_id?: string
+          task_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_workforce_role_task_permissions_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_roles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_workforce_role_task_permissions_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_workforce_role_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_workforce_role_task_permissions_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_task_types"
+            referencedColumns: ["id"]
+          },
         ]
       }
       ai_workforce_roles: {
         Row: {
           approval_required: boolean
+          approval_requirement_class: string
+          autonomy_level: string
           budget_class: string
           cost_per_invocation_cents: number | null
           created_at: string
           default_model_tier: string
+          default_routing_class: string
           display_name: string
+          domain_family: string
+          fallback_budget_class: string | null
           id: string
           is_active: boolean
+          launch_honesty_class: string
           launch_stage: string
           max_autonomy: string
           metadata: Json | null
           prompt_family: string | null
           purpose: string
           role_key: string
+          supports_demo_mode: boolean
           total_cost_cents: number | null
           total_invocations: number | null
           updated_at: string
@@ -2797,19 +3249,26 @@ export type Database = {
         }
         Insert: {
           approval_required?: boolean
+          approval_requirement_class?: string
+          autonomy_level?: string
           budget_class?: string
           cost_per_invocation_cents?: number | null
           created_at?: string
           default_model_tier?: string
+          default_routing_class?: string
           display_name: string
+          domain_family?: string
+          fallback_budget_class?: string | null
           id?: string
           is_active?: boolean
+          launch_honesty_class?: string
           launch_stage?: string
           max_autonomy?: string
           metadata?: Json | null
           prompt_family?: string | null
           purpose: string
           role_key: string
+          supports_demo_mode?: boolean
           total_cost_cents?: number | null
           total_invocations?: number | null
           updated_at?: string
@@ -2817,19 +3276,26 @@ export type Database = {
         }
         Update: {
           approval_required?: boolean
+          approval_requirement_class?: string
+          autonomy_level?: string
           budget_class?: string
           cost_per_invocation_cents?: number | null
           created_at?: string
           default_model_tier?: string
+          default_routing_class?: string
           display_name?: string
+          domain_family?: string
+          fallback_budget_class?: string | null
           id?: string
           is_active?: boolean
+          launch_honesty_class?: string
           launch_stage?: string
           max_autonomy?: string
           metadata?: Json | null
           prompt_family?: string | null
           purpose?: string
           role_key?: string
+          supports_demo_mode?: boolean
           total_cost_cents?: number | null
           total_invocations?: number | null
           updated_at?: string
@@ -2839,6 +3305,7 @@ export type Database = {
       }
       ai_workforce_task_types: {
         Row: {
+          allows_cached_output: boolean
           approval_required: boolean
           budget_class: string
           created_at: string
@@ -2846,14 +3313,20 @@ export type Database = {
           display_name: string
           id: string
           is_active: boolean
+          launch_stage: string
           max_cost_cents: number | null
           output_schema: Json | null
+          requires_human_review_for_proposals: boolean
           routing_class: string
+          structured_output_required: boolean
+          supports_scope_diffing: boolean
+          task_family: string
           task_key: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          allows_cached_output?: boolean
           approval_required?: boolean
           budget_class?: string
           created_at?: string
@@ -2861,14 +3334,20 @@ export type Database = {
           display_name: string
           id?: string
           is_active?: boolean
+          launch_stage?: string
           max_cost_cents?: number | null
           output_schema?: Json | null
+          requires_human_review_for_proposals?: boolean
           routing_class?: string
+          structured_output_required?: boolean
+          supports_scope_diffing?: boolean
+          task_family?: string
           task_key: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          allows_cached_output?: boolean
           approval_required?: boolean
           budget_class?: string
           created_at?: string
@@ -2876,9 +3355,14 @@ export type Database = {
           display_name?: string
           id?: string
           is_active?: boolean
+          launch_stage?: string
           max_cost_cents?: number | null
           output_schema?: Json | null
+          requires_human_review_for_proposals?: boolean
           routing_class?: string
+          structured_output_required?: boolean
+          supports_scope_diffing?: boolean
+          task_family?: string
           task_key?: string
           updated_at?: string
           user_id?: string
@@ -20492,6 +20976,110 @@ export type Database = {
           status: string | null
           structured_output_valid: boolean | null
           total_tokens: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      v_ai_workforce_queue_summary: {
+        Row: {
+          budget_impact_class: string | null
+          created_at: string | null
+          id: string | null
+          impacted_domain: string | null
+          inv_role_key: string | null
+          inv_task_type: string | null
+          invocation_id: string | null
+          launch_impact_class: string | null
+          rec_role_key: string | null
+          recommendation_id: string | null
+          recommendation_type: string | null
+          resolved_at: string | null
+          risk_tier: string | null
+          severity: string | null
+          status: string | null
+          summary: string | null
+          title: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_workforce_approval_queue_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_invocations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_workforce_approval_queue_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_workforce_recent_activity"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_ai_workforce_recent_activity: {
+        Row: {
+          budget_class: string | null
+          completed_at: string | null
+          cost_cents: number | null
+          created_at: string | null
+          fallback_occurred: boolean | null
+          id: string | null
+          latency_ms: number | null
+          mode: string | null
+          role_display_name: string | null
+          role_key: string | null
+          scope_ref: string | null
+          scope_type: string | null
+          status: string | null
+          task_type: string | null
+          tokens_used: number | null
+          used_cached_output: boolean | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      v_ai_workforce_recommendation_summary: {
+        Row: {
+          budget_impact_class: string | null
+          created_at: string | null
+          domain: string | null
+          estimated_impact: string | null
+          id: string | null
+          launch_impact_class: string | null
+          linked_approval_queue_item_id: string | null
+          recommendation_type: string | null
+          review_method: string | null
+          risk_tier: string | null
+          score_accuracy: number | null
+          score_actionability: number | null
+          score_overall: number | null
+          score_usefulness: number | null
+          severity: string | null
+          status: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      v_ai_workforce_role_summary: {
+        Row: {
+          autonomy_level: string | null
+          avg_cost_24h: number | null
+          budget_class: string | null
+          display_name: string | null
+          domain_family: string | null
+          fallback_rate_24h: number | null
+          health_state: string | null
+          id: string | null
+          is_active: boolean | null
+          last_used_at: string | null
+          launch_honesty_class: string | null
+          role_key: string | null
+          total_cost_cents: number | null
+          total_invocations: number | null
           user_id: string | null
         }
         Relationships: []
