@@ -443,21 +443,52 @@ const DailyPulse = () => {
         <div className="space-y-3">
           <SitaSectionHeader title="Advisor Top Moves" subtitle="Your advisors' highest-priority recommendations right now" />
           <div className="grid gap-3 md:grid-cols-3">
-            {advisorTopMoves.map((move) => (
-              <div key={move.advisor} className="rounded-xl border border-border bg-card p-4 transition-all hover:shadow-card-hover hover:border-primary/20">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="rounded-lg bg-primary/10 p-1.5">
-                    <move.icon className="h-3.5 w-3.5 text-primary" />
+            {advisorTopMoves.map((move) => {
+              const domain = move.advisor.toLowerCase();
+              const hasInsight = !!aiInsights[domain];
+              const isRequesting = aiInsight.isPending;
+              return (
+                <div key={move.advisor} className="rounded-xl border border-border bg-card p-4 transition-all hover:shadow-card-hover hover:border-primary/20">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="rounded-lg bg-primary/10 p-1.5">
+                      <move.icon className="h-3.5 w-3.5 text-primary" />
+                    </div>
+                    <span className="text-xs font-semibold text-foreground">{move.advisor} Advisor</span>
+                    <span className="ml-auto text-[10px] font-medium rounded-full bg-accent/10 text-accent px-2 py-0.5">{move.urgency}</span>
                   </div>
-                  <span className="text-xs font-semibold text-foreground">{move.advisor} Advisor</span>
-                  <span className="ml-auto text-[10px] font-medium rounded-full bg-accent/10 text-accent px-2 py-0.5">{move.urgency}</span>
+                  <p className="text-sm text-foreground/90 leading-relaxed">{hasInsight ? aiInsights[domain] : move.move}</p>
+                  <div className="mt-3 flex items-center gap-2">
+                    <TrustBadge level={hasInsight ? "verified" : move.confidence === "High" ? "verified" : "review"} label={hasInsight ? "AI Live" : `${move.confidence} confidence`} size="sm" />
+                    {!isDemoMode && !hasInsight && (
+                      <button
+                        onClick={() => {
+                          aiInsight.mutate(
+                            { intent: "daily_pulse_insight", domain, context: { section: move.advisor } },
+                            {
+                              onSuccess: (data: any) => {
+                                if (data?.recommendation) {
+                                  setAiInsights(prev => ({ ...prev, [domain]: data.recommendation }));
+                                }
+                              },
+                            }
+                          );
+                        }}
+                        disabled={isRequesting}
+                        className="ml-auto inline-flex items-center gap-1 rounded-md bg-primary/10 px-2 py-1 text-[10px] font-medium text-primary hover:bg-primary/20 transition-colors disabled:opacity-50"
+                      >
+                        {isRequesting ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+                        Get AI Insight
+                      </button>
+                    )}
+                    {hasInsight && (
+                      <span className="ml-auto inline-flex items-center gap-1 text-[10px] text-primary">
+                        <Sparkles className="h-3 w-3" /> Live AI
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <p className="text-sm text-foreground/90 leading-relaxed">{move.move}</p>
-                <div className="mt-3 flex items-center gap-2">
-                  <TrustBadge level={move.confidence === "High" ? "verified" : "review"} label={`${move.confidence} confidence`} size="sm" />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
