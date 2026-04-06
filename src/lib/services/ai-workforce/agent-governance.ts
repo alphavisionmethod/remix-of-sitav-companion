@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { AgentAutonomyLevel } from "@/packages/contracts/domain-types/ai-workforce";
-import type { AIWorkforceService } from "./index";
+import type { AIWorkforceService } from "./workforce-service";
 
 // ── Types ──
 
