@@ -26,7 +26,7 @@ const ReservesSavings = () => {
   const queryClient = useQueryClient();
   const { confirmation, confirm } = useConfirmation();
 
-  const { data: reserves = [], isLoading } = useQuery({
+  const reservesQuery = useQuery({
     queryKey: ["reserves", isDemoMode, user?.id],
     queryFn: async () => {
       if (isDemoMode) return reservesData;
@@ -40,6 +40,9 @@ const ReservesSavings = () => {
     },
     staleTime: isDemoMode ? Infinity : 10000,
   });
+  const reserves = reservesQuery.data ?? [];
+  const isLoading = reservesQuery.isLoading;
+  const freshness = useQueryFreshness(reservesQuery);
 
   // Create reserve mutation
   const createReserve = useMutation({
