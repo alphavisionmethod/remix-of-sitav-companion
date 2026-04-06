@@ -10,6 +10,8 @@ import {
   fetchWearableSignals,
   fetchReadinessStates,
   fetchSignalSubsystemReadiness,
+  fetchInterruptionPosture,
+  fetchVisibilityPolicies,
 } from "@/lib/data-services/health-signal-data-service";
 
 export function useWearableProviders() {
