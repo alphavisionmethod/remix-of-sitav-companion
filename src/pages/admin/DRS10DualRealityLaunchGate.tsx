@@ -108,6 +108,9 @@ export default function DRS10DualRealityLaunchGate() {
           </div>
         </CardContent>
       </Card>
+
+      {/* CI Pipeline Gate */}
+      <CILaunchGateWidget />
     </div>
   );
 }
