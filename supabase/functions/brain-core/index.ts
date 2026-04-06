@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
+import { zodValidate, BrainCoreSchema } from "../_shared/zod-validate.ts";
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
