@@ -1,0 +1,109 @@
+name: Customer Journey Manual Verification
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Test environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+          - local
+      mode:
+        description: 'Test mode'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - real
+          - demo
+          - internal_test
+      journey_subset:
+        description: 'Journey subset to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - auth
+          - core
+          - admin
+          - demo-vs-real
+          - degraded
+      headed:
+        description: 'Run in headed mode (slower, for debugging)'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  manual-verification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Determine test path
+        id: testpath
+        run: |
+          SUBSET="${{ inputs.journey_subset }}"
+          if [ "$SUBSET" = "all" ]; then
+            echo "path=tests/e2e/customer-journey/" >> $GITHUB_OUTPUT
+          elif [ "$SUBSET" = "auth" ]; then
+            echo "path=tests/e2e/customer-journey/auth/" >> $GITHUB_OUTPUT
+          elif [ "$SUBSET" = "core" ]; then
+            echo "path=tests/e2e/customer-journey/dashboard/ tests/e2e/customer-journey/files/ tests/e2e/customer-journey/assistant/ tests/e2e/customer-journey/boardroom/ tests/e2e/customer-journey/connectors/ tests/e2e/customer-journey/settings/" >> $GITHUB_OUTPUT
+          elif [ "$SUBSET" = "admin" ]; then
+            echo "path=tests/e2e/customer-journey/admin/" >> $GITHUB_OUTPUT
+          elif [ "$SUBSET" = "demo-vs-real" ]; then
+            echo "path=tests/e2e/customer-journey/demo-vs-real/" >> $GITHUB_OUTPUT
+          elif [ "$SUBSET" = "degraded" ]; then
+            echo "path=tests/e2e/customer-journey/degraded/" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run Customer Journey Tests
+        run: |
+          EXTRA_ARGS=""
+          if [ "${{ inputs.headed }}" = "true" ]; then
+            EXTRA_ARGS="--headed"
+          fi
+          npx playwright test ${{ steps.testpath.outputs.path }} --project=chromium $EXTRA_ARGS
+        env:
+          CI: true
+          PLAYWRIGHT_BASE_URL: ${{ secrets.PLAYWRIGHT_BASE_URL }}
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+          TEST_MODE: ${{ inputs.mode }}
+          TEST_ENVIRONMENT: ${{ inputs.environment }}
+
+      - name: Generate Summary
+        if: always()
+        run: |
+          echo "## 🎯 Manual Customer Journey Verification" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Parameter | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Environment | ${{ inputs.environment }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Mode | ${{ inputs.mode }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Subset | ${{ inputs.journey_subset }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Headed | ${{ inputs.headed }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit | ${{ github.sha }} |" >> $GITHUB_STEP_SUMMARY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-journey-results
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 14

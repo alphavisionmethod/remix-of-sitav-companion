@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════
 // SITA OS — CJ05: Demo vs Real Journey Comparison
-// Uses v_customer_journey_mode_deltas + persisted comparisons
+// + internal_test status, recommended next action
 // ═══════════════════════════════════════════════════════
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,6 +23,18 @@ const comparisonLabels: Record<string, { label: string; color: string }> = {
   no_data: { label: "No Runs", color: "bg-muted text-muted-foreground" },
 };
 
+function getNextAction(comparison: string, realStatus?: string): string {
+  switch (comparison) {
+    case "demo_works_real_broken": return "Fix real mode — claim risk if shipped";
+    case "real_works_demo_broken": return "Fix demo mode for showcase readiness";
+    case "both_issues": return "Prioritize real mode fix, then demo";
+    case "demo_only": return "Add real mode test coverage";
+    case "real_only": return "Add demo mode support";
+    case "both_work": return "✓ No action needed";
+    default: return "Run verification tests";
+  }
+}
+
 export default function CJ05DemoVsRealComparison() {
   const { data: journeys, isLoading } = useCustomerJourneys();
   const { data: runs } = useCustomerJourneyRuns();
@@ -30,7 +42,6 @@ export default function CJ05DemoVsRealComparison() {
   const { data: viewDeltas } = useModeDeltas();
   const upsertComparison = useUpsertModeComparison();
 
-  // Prefer view data if available, otherwise compute from runs
   const useViewData = (viewDeltas ?? []).length > 0;
 
   const comparisons = useViewData
@@ -43,16 +54,19 @@ export default function CJ05DemoVsRealComparison() {
         persisted: d,
         demoStatus: d.demo_status,
         realStatus: d.real_status,
+        internalTestStatus: d.internal_test_status || null,
       }))
     : (journeys ?? []).map((j: any) => {
         const jRuns = (runs ?? []).filter((r: any) => r.journey_key === j.journey_key);
         const demoRun = jRuns.find((r: any) => r.mode === "demo");
         const realRun = jRuns.find((r: any) => r.mode === "real");
+        const internalRun = jRuns.find((r: any) => r.mode === "internal_test");
         const persisted = (persistedComparisons ?? []).find((c: any) => c.journey_key === j.journey_key);
 
         let comparison = "no_data";
         const demoStatus = demoRun?.status || persisted?.demo_status;
         const realStatus = realRun?.status || persisted?.real_status;
+        const internalTestStatus = internalRun?.status || null;
 
         if (demoStatus && realStatus) {
           if (demoStatus === "working" && realStatus === "working") comparison = "both_work";
@@ -71,6 +85,7 @@ export default function CJ05DemoVsRealComparison() {
           persisted,
           demoStatus,
           realStatus,
+          internalTestStatus,
         };
       });
 
@@ -104,7 +119,7 @@ export default function CJ05DemoVsRealComparison() {
             <GitCompare className="h-6 w-6 text-primary" />
             CJ05 — Demo vs Real Comparison
           </h1>
-          <p className="text-muted-foreground mt-1">Identifies truth gaps between demo and real mode</p>
+          <p className="text-muted-foreground mt-1">Identifies truth gaps between demo, real, and internal test modes</p>
         </div>
         <Button onClick={handlePersistAll} disabled={upsertComparison.isPending} size="sm" variant="outline">
           <RefreshCw className="h-4 w-4 mr-1" />
@@ -143,16 +158,28 @@ export default function CJ05DemoVsRealComparison() {
         <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-muted-foreground" /></div>
       ) : (
         <div className="space-y-2">
+          {/* Header */}
+          <div className="grid grid-cols-16 gap-1 px-4 py-2 text-[10px] font-semibold text-muted-foreground uppercase">
+            <div className="col-span-3">Journey</div>
+            <div className="col-span-2 text-center">Demo</div>
+            <div className="col-span-2 text-center">Real</div>
+            <div className="col-span-2 text-center">Internal Test</div>
+            <div className="col-span-3 text-center">Comparison</div>
+            <div className="col-span-4">Next Action</div>
+          </div>
+
           {comparisons.map((c, idx) => {
-            const { journey: j, comparison, claim_risk, demoStatus, realStatus } = c;
+            const { journey: j, comparison, claim_risk, demoStatus, realStatus, internalTestStatus } = c;
             const cLabel = comparisonLabels[comparison] || comparisonLabels.no_data;
             const demoCfg = demoStatus ? JOURNEY_STATUS_CONFIG[demoStatus] || JOURNEY_STATUS_CONFIG.unverified : null;
             const realCfg = realStatus ? JOURNEY_STATUS_CONFIG[realStatus] || JOURNEY_STATUS_CONFIG.unverified : null;
+            const internalCfg = internalTestStatus ? JOURNEY_STATUS_CONFIG[internalTestStatus] || JOURNEY_STATUS_CONFIG.unverified : null;
+            const nextAction = getNextAction(comparison, realStatus);
 
             return (
               <Card key={j.id || idx} className={claim_risk ? "border-amber-500/30" : ""}>
-                <CardContent className="p-3 grid grid-cols-12 gap-2 items-center">
-                  <div className="col-span-4">
+                <CardContent className="p-3 grid grid-cols-16 gap-1 items-center">
+                  <div className="col-span-3">
                     <div className="font-medium text-sm flex items-center gap-1">
                       {claim_risk && <AlertTriangle className="h-3 w-3 text-amber-400" />}
                       {j.display_name}
@@ -161,15 +188,17 @@ export default function CJ05DemoVsRealComparison() {
                   </div>
                   <div className="col-span-2 text-center">
                     {demoCfg ? <Badge variant="outline" className={`${demoCfg.color} text-[10px]`}>{demoCfg.label}</Badge> : <span className="text-[10px] text-muted-foreground">—</span>}
-                    <div className="text-[9px] text-muted-foreground mt-0.5">Demo</div>
                   </div>
                   <div className="col-span-2 text-center">
                     {realCfg ? <Badge variant="outline" className={`${realCfg.color} text-[10px]`}>{realCfg.label}</Badge> : <span className="text-[10px] text-muted-foreground">—</span>}
-                    <div className="text-[9px] text-muted-foreground mt-0.5">Real</div>
                   </div>
-                  <div className="col-span-4 text-right">
+                  <div className="col-span-2 text-center">
+                    {internalCfg ? <Badge variant="outline" className={`${internalCfg.color} text-[10px]`}>{internalCfg.label}</Badge> : <span className="text-[10px] text-muted-foreground">—</span>}
+                  </div>
+                  <div className="col-span-3 text-center">
                     <Badge variant="outline" className={`${cLabel.color} text-[10px]`}>{cLabel.label}</Badge>
                   </div>
+                  <div className="col-span-4 text-[10px] text-muted-foreground">{nextAction}</div>
                 </CardContent>
               </Card>
             );

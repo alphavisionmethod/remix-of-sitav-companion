@@ -290,6 +290,7 @@ const CJ05DemoVsRealComparison = lazy(() => import("./pages/admin/customer-journ
 const CJ06BrokenClicksExplorer = lazy(() => import("./pages/admin/customer-journey/CJ06BrokenClicksExplorer"));
 const CJ07OwnerRemediationView = lazy(() => import("./pages/admin/customer-journey/CJ07OwnerRemediationView"));
 const CJ08RouteActionCoverage = lazy(() => import("./pages/admin/customer-journey/CJ08RouteActionCoverage"));
+const CJ09RecentVerificationRuns = lazy(() => import("./pages/admin/customer-journey/CJ09RecentVerificationRuns"));
 
 const CN01ConnectorRealityOverview = lazy(() => import("./pages/admin/CN01ConnectorRealityOverview"));
 const CN02ConnectorRegistryConsole = lazy(() => import("./pages/admin/CN02ConnectorRegistryConsole"));
@@ -816,6 +817,7 @@ const App = () => (
                     <Route path="/admin/customer-journey/broken-clicks" element={<CJ06BrokenClicksExplorer />} />
                     <Route path="/admin/customer-journey/remediation" element={<CJ07OwnerRemediationView />} />
                     <Route path="/admin/customer-journey/coverage" element={<CJ08RouteActionCoverage />} />
+                    <Route path="/admin/customer-journey/recent-runs" element={<CJ09RecentVerificationRuns />} />
 
                     {/* Digital Presence Office */}
                     <Route path="/digital-presence" element={<PresenceGate />} />

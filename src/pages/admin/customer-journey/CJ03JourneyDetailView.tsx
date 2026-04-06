@@ -1,14 +1,14 @@
 // ═══════════════════════════════════════════════════════
 // SITA OS — CJ03: Journey Detail View
-// Step-by-step proof, failures, evidence, recommended fixes
+// + root cause layer, remediation notes
 // ═══════════════════════════════════════════════════════
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useCustomerJourneys, useCustomerJourneyRuns } from "@/lib/customer-journey/journey-hooks";
 import { useStepResults, useEvidenceAssets } from "@/lib/customer-journey/journey-evidence-hooks";
-import { JOURNEY_STATUS_CONFIG } from "@/lib/customer-journey/journey-registry";
-import { ListChecks, Loader2, ChevronDown, ChevronRight, Image, FileText, AlertCircle } from "lucide-react";
+import { JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/lib/customer-journey/journey-registry";
+import { ListChecks, Loader2, ChevronDown, ChevronRight, Image, FileText, AlertCircle, Layers, Wrench } from "lucide-react";
 import { useState } from "react";
 
 function StepResultsPanel({ runId }: { runId: string }) {
@@ -78,7 +78,7 @@ export default function CJ03JourneyDetailView() {
           <ListChecks className="h-6 w-6 text-primary" />
           CJ03 — Journey Detail View
         </h1>
-        <p className="text-muted-foreground mt-1">Step-by-step proof, failures, evidence, and recommended fixes</p>
+        <p className="text-muted-foreground mt-1">Step-by-step proof, failures, evidence, root cause, and remediation notes</p>
       </div>
 
       {isLoading ? (
@@ -87,6 +87,7 @@ export default function CJ03JourneyDetailView() {
         <div className="space-y-3">
           {(journeys ?? []).map((j: any) => {
             const statusCfg = JOURNEY_STATUS_CONFIG[j.current_status] || JOURNEY_STATUS_CONFIG.unverified;
+            const impactCfg = LAUNCH_IMPACT_CONFIG[j.launch_importance] || LAUNCH_IMPACT_CONFIG.non_blocking;
             const isOpen = expanded === j.id;
             const jRuns = (runs ?? []).filter((r: any) => r.journey_key === j.journey_key);
             const steps = Array.isArray(j.steps) ? j.steps : [];
@@ -105,11 +106,34 @@ export default function CJ03JourneyDetailView() {
                         <div className="font-mono text-[10px] text-muted-foreground">{j.journey_key}</div>
                       </div>
                     </div>
-                    <Badge variant="outline" className={`${statusCfg.color} text-[10px]`}>{statusCfg.label}</Badge>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className={`${statusCfg.color} text-[10px]`}>{statusCfg.label}</Badge>
+                      <Badge variant="outline" className={`${impactCfg.color} text-[10px]`}>{impactCfg.label}</Badge>
+                    </div>
                   </button>
 
                   {isOpen && (
                     <div className="border-t p-4 space-y-4">
+                      {/* Journey metadata */}
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                        <div>
+                          <span className="text-[10px] text-muted-foreground uppercase">Persona</span>
+                          <div className="capitalize">{j.persona}</div>
+                        </div>
+                        <div>
+                          <span className="text-[10px] text-muted-foreground uppercase">Domain</span>
+                          <div className="capitalize">{j.domain}</div>
+                        </div>
+                        <div>
+                          <span className="text-[10px] text-muted-foreground uppercase">Modes</span>
+                          <div>{(j.primary_modes || []).join(", ")}</div>
+                        </div>
+                        <div>
+                          <span className="text-[10px] text-muted-foreground uppercase">Owner</span>
+                          <div>{j.owner || "—"}</div>
+                        </div>
+                      </div>
+
                       {/* Expected Steps */}
                       <div>
                         <h3 className="text-sm font-semibold mb-2">Expected Steps</h3>
@@ -155,7 +179,19 @@ export default function CJ03JourneyDetailView() {
                                       <span className="text-muted-foreground ml-2">/ {r.steps_total} total</span>
                                     </div>
                                     {r.actual_outcome && <p className="text-xs text-muted-foreground">{r.actual_outcome}</p>}
-                                    {r.recommended_fix && <p className="text-xs text-amber-400">Fix: {r.recommended_fix}</p>}
+                                    {r.recommended_fix && (
+                                      <p className="text-xs text-amber-400 flex items-center gap-1">
+                                        <Wrench className="h-3 w-3" /> Fix: {r.recommended_fix}
+                                      </p>
+                                    )}
+                                    {r.root_cause_layer && (
+                                      <p className="text-xs text-blue-400 flex items-center gap-1">
+                                        <Layers className="h-3 w-3" /> Root Cause: {r.root_cause_layer}
+                                      </p>
+                                    )}
+                                    {r.notes && (
+                                      <p className="text-xs text-muted-foreground italic mt-1">📝 {r.notes}</p>
+                                    )}
                                   </button>
                                   {isSelected && (
                                     <div className="ml-4 mt-2 p-3 border-l-2 border-primary/30">
