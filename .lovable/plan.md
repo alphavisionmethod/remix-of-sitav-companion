@@ -1,119 +1,74 @@
 
 
-# Push Notifications — APNs / FCM / Web Push Implementation Plan
+# Fix Critical Architecture Violations — Mock Data Elimination & EventBus Adapter
 
-## Current State
+## Summary
 
-- **notifications_queue** table exists with in-app notification support
-- **Realtime hook** (`use-realtime-notifications.ts`) delivers in-app toasts and Electron native notifications
-- **Communication service** is client-side only with simulated delivery — no actual push dispatch
-- **No `device_push_tokens` table** — nowhere to store FCM/APNs/Web Push tokens
-- **No push dispatch edge function** — nothing sends to FCM or APNs
-- **No Web Push subscription** — no service worker push handler, no VAPID keys
-- **Ecosystem seeder** references `apns`/`fcm` channels but they are metadata-only, not wired
+Three critical violations exist:
+1. **13 pages have inline `const MOCK_*` arrays** — hardcoded data directly in page files
+2. **11 pages import from `useDomainMockData`** — pulling mock data/types through a legacy barrel
+3. **EventBus → DB** — already connected via `event-bus-persistence.ts` (this is actually resolved; the report is stale)
 
-## Architecture
+The fix: extract all inline mock arrays into domain-specific demo-data files, create mode-aware hooks for each domain that doesn't have one yet, and eliminate all `useDomainMockData` imports from pages.
 
-```text
-┌─────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│ Browser/PWA  │────▶│ device_push_     │     │  push-dispatch  │
-│ iOS/Android  │     │ tokens (table)   │◀────│  edge function  │
-│ Electron     │     └──────────────────┘     └────────┬────────┘
-└─────────────┘                                        │
-                    ┌──────────────────┐     ┌─────────▼────────┐
-                    │ notifications_   │────▶│ DB trigger:      │
-                    │ queue            │     │ dispatch_push    │
-                    └──────────────────┘     └──────────────────┘
-                                                       │
-                                          ┌────────────┼────────────┐
-                                          ▼            ▼            ▼
-                                        FCM         APNs       Web Push
-```
+---
 
-## Implementation Steps
+## Issue 1: EventBus → DB (Already Connected)
 
-### Step 1: Database — `device_push_tokens` table + trigger
+The EventBus **already imports** the persistence adapter (`event-bus-persistence.ts`) which writes to `os_event_log` via Supabase. No code change needed — this is a stale finding. The adapter exists at `src/lib/persistence/event-bus-persistence.ts` and is imported on line 9 of `event-bus.ts`.
 
-Create migration:
-- **`device_push_tokens`** table: `id`, `user_id` (FK auth.users), `platform` (enum: `web`, `ios`, `android`, `electron`), `token` (text, unique), `endpoint` (text, nullable — for Web Push), `auth_key` / `p256dh` (text, nullable — Web Push keys), `device_name`, `active` (bool), `last_used_at`, `created_at`, `updated_at`
-- RLS: users manage own tokens only
-- **DB trigger** on `notifications_queue` INSERT → calls `push-dispatch` edge function via `pg_net` (or inserts into a dispatch queue the edge function polls)
+**Action**: No code change. Mark as resolved.
 
-### Step 2: Edge Function — `push-dispatch`
+---
 
-Create `supabase/functions/push-dispatch/index.ts`:
-- Triggered per notification (or batch polls `notifications_queue` where `channel = 'push'` and `status = 'pending'`)
-- Looks up all active tokens for `user_id` from `device_push_tokens`
-- **FCM path**: POST to `https://fcm.googleapis.com/v1/projects/{project}/messages:send` with service account key (secret: `FCM_SERVICE_ACCOUNT_JSON`)
-- **APNs path**: POST to `https://api.push.apple.com/3/device/{token}` with JWT signed by APNs key (secrets: `APNS_KEY_ID`, `APNS_TEAM_ID`, `APNS_PRIVATE_KEY`, `APNS_BUNDLE_ID`)
-- **Web Push path**: Use `web-push` protocol — VAPID-signed POST to subscription endpoint (secrets: `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`)
-- Updates `notifications_queue.status` to `delivered` / `failed`
-- Removes invalid tokens (410 Gone from APNs, `NotRegistered` from FCM)
+## Issue 2: 13 Pages with Inline `MOCK_*` Arrays
 
-### Step 3: Frontend — Push Token Registration Service
+These pages define hardcoded arrays directly in the component file:
 
-Create `src/lib/services/push-notification/push-registration-service.ts`:
-- **Web Push**: Request `Notification.permission`, call `serviceWorkerRegistration.pushManager.subscribe()` with VAPID public key, save subscription to `device_push_tokens`
-- **Capacitor (iOS/Android)**: Import `@capacitor/push-notifications`, register, listen for `registration` event, save token with platform `ios`/`android`
-- **Electron**: Already handled via IPC bridge — register Electron's native token
-- Provides `registerPushToken()`, `unregisterPushToken()`, `refreshToken()`
+| Page | Mock Constants |
+|---|---|
+| `CalendarWorkspace.tsx` | `MOCK_EVENTS` |
+| `NotesWorkspace.tsx` | `MOCK_NOTES` |
+| `MediaWorkspace.tsx` | `MOCK_MEDIA` |
+| `CommunicationsPage.tsx` | `MOCK_COMMUNICATIONS` |
+| `OutcomeEnginePage.tsx` | `MOCK_OUTCOMES`, `MOCK_INTERVENTIONS`, `MOCK_SPILLOVERS` |
+| `ApprovalChamber.tsx` | `MOCK_APPROVALS` |
+| `ImportExportCenter.tsx` | `MOCK_UPLOADS`, `MOCK_EXPORTS` |
+| `AppReceiptsPage.tsx` | `MOCK_RECEIPTS` |
+| `InvestmentOffice.tsx` | `MOCK_REGIME` + imported mocks |
+| `RevenueAutopilot.tsx` | Imported mocks used at module scope |
+| `admin/IncidentCommandCenter.tsx` | `MOCK_INCIDENTS` |
+| `admin/AdminDurabilityBoard.tsx` | `MOCK_MUTATIONS` |
+| `admin/MockReplacementProgram.tsx` | `MOCK_TYPES` (enum-like — acceptable) |
 
-### Step 4: Service Worker — Push Event Handler
+**Fix approach for each page:**
 
-Update or create service worker push handler (compatible with PWA setup):
-- Listen for `push` event, parse payload, show `self.registration.showNotification()`
-- Listen for `notificationclick`, navigate to `action_url`
+1. **Extract** the inline mock array into a new file under `src/lib/demo-data/<domain>.ts`
+2. **Create a mode-aware data service** at `src/lib/data-services/<domain>-data-service.ts` (if not already existing) that returns demo data in demo mode, empty arrays in real mode
+3. **Create a React Query hook** in `src/hooks/use-domain-data.ts` for the new data service
+4. **Update the page** to use the hook instead of inline arrays
 
-### Step 5: React Hook — `usePushNotifications`
+New demo-data files to create:
+- `src/lib/demo-data/calendar-events.ts`
+- `src/lib/demo-data/notes.ts`
+- `src/lib/demo-data/media.ts`
+- `src/lib/demo-data/communications.ts`
+- `src/lib/demo-data/outcome-engine.ts`
+- `src/lib/demo-data/approvals.ts`
+- `src/lib/demo-data/import-export.ts`
+- `src/lib/demo-data/app-receipts.ts`
+- `src/lib/demo-data/incidents.ts`
+- `src/lib/demo-data/durability.ts`
 
-Create `src/hooks/use-push-notifications.ts`:
-- On mount (if authenticated): check permission status, auto-register if granted
-- Provides `requestPermission()`, `isSupported`, `isRegistered`, `permissionState`
-- Integrates with existing `useRealtimeNotifications` (realtime = in-app toasts, push = native OS)
+New data services + hooks to create (~10 services, ~10 hooks added to `use-domain-data.ts`).
 
-### Step 6: Settings UI Integration
+---
 
-Update `MobileSettings.tsx` and create desktop notification settings:
-- Toggle to enable/disable push notifications (calls register/unregister)
-- Show registered devices from `device_push_tokens`
-- Quiet hours integration (already in notifications_queue trigger logic)
+## Issue 3: 11 Pages Import from `useDomainMockData`
 
-### Step 7: Communication Service Wiring
+These pages import mock constants or types from the legacy `useDomainMockData.ts` barrel:
 
-Update `CommunicationService.send()`:
-- When `channel === "push"`, insert into `notifications_queue` with `channel: 'push'` instead of simulating delivery
-- The DB trigger + edge function handles actual dispatch
-
-### Step 8: Tests
-
-- Unit tests for token registration service (mock service worker API)
-- Integration test for push-dispatch edge function (mock FCM/APNs responses)
-- E2E test for permission flow
-
-## Secrets Required
-
-| Secret | Purpose |
-|--------|---------|
-| `VAPID_PUBLIC_KEY` | Web Push VAPID identification |
-| `VAPID_PRIVATE_KEY` | Web Push signing |
-| `VAPID_SUBJECT` | Web Push contact (mailto:) |
-| `FCM_SERVICE_ACCOUNT_JSON` | Firebase Cloud Messaging auth |
-| `APNS_KEY_ID` | Apple Push Notification Service |
-| `APNS_TEAM_ID` | Apple Developer Team |
-| `APNS_PRIVATE_KEY` | APNs JWT signing key |
-| `APNS_BUNDLE_ID` | iOS app bundle identifier |
-
-## Files Created/Modified
-
-| File | Action |
-|------|--------|
-| `supabase/migrations/xxx_device_push_tokens.sql` | Create table + trigger |
-| `supabase/functions/push-dispatch/index.ts` | New edge function |
-| `src/lib/services/push-notification/push-registration-service.ts` | New service |
-| `src/hooks/use-push-notifications.ts` | New hook |
-| `src/lib/services/communication-service/index.ts` | Wire push channel |
-| `src/hooks/use-realtime-notifications.ts` | Minor integration |
-| `src/pages/mobile/MobileSettings.tsx` | Wire real toggle |
-| `public/sw-push.js` | Service worker push handler |
-| Tests (unit + integration + e2e) | New test files |
-
+| Page | What it imports |
+|---|---|
+| `OwnerCenter.tsx` | `buildMockSimResult` |
+| `RevenueAutopilot.tsx` | `MOCK_RECOVERED_VALUES`, `MOCK_RAW_OPPORTUNITIES`, `MOCK_LEAKAGE_INPUT
