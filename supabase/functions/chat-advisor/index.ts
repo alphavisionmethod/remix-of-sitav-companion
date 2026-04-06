@@ -335,13 +335,11 @@ serve(async (req) => {
     const rl = checkRateLimit(user.id, 30, 60_000);
     if (!rl.allowed) return rateLimitResponse(rl, corsHeaders);
 
-      messages: { type: "array", required: true },
-      advisor: { type: "string", maxLength: 50 },
-      context: { type: "object" },
-    });
-    if (body instanceof Response) return body;
-    const { messages, advisor = "general", context } = body as { messages: unknown[]; advisor?: string; context?: Record<string, unknown> };
-    if (!Array.isArray(messages) || messages.length === 0) return corsError("messages array required", 400);
+    const rawBody = await req.json().catch(() => null);
+    if (!rawBody) return corsError("Invalid JSON body", 400);
+    const validated = zodValidate(rawBody, ChatAdvisorSchema);
+    if (!validated.success) return validated.response;
+    const { messages, advisor = "general", context } = validated.data;
 
     // Rate limit: max 20 requests/min
     const { count } = await supabaseClient

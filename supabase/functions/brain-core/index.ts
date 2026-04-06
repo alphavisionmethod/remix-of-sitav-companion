@@ -510,12 +510,11 @@ serve(async (req) => {
     const rl = checkRateLimit(user.id, 30, 60_000);
     if (!rl.allowed) return rateLimitResponse(rl, corsHeaders);
 
-    const body: BrainRequest = await req.json();
-    if (!body.intent) {
-      return new Response(JSON.stringify({ error: "intent is required", correlation_id: correlationId }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    const rawBody = await req.json().catch(() => null);
+    if (!rawBody) return corsError("Invalid JSON body", 400);
+    const zodResult = zodValidate(rawBody, BrainCoreSchema);
+    if (!zodResult.success) return zodResult.response;
+    const body = zodResult.data;
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
     const advisor = body.advisor || "general";

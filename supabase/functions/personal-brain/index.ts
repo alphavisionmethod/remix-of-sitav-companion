@@ -90,12 +90,11 @@ serve(async (req) => {
     const rl = checkRateLimit(user.id, 30, 60_000);
     if (!rl.allowed) return rateLimitResponse(rl, corsHeaders);
 
-      messages: { type: "array", required: true },
-      mode: { type: "string", enum: ["think", "learn", "build", "create"] },
-    });
-    if (body instanceof Response) return body;
-    const { messages, mode = "think" } = body as { messages: unknown[]; mode?: string };
-    if (!Array.isArray(messages) || messages.length === 0) return corsError("messages array required", 400);
+    const rawBody = await req.json().catch(() => null);
+    if (!rawBody) return corsError("Invalid JSON body", 400);
+    const validated = zodValidate(rawBody, PersonalBrainSchema);
+    if (!validated.success) return validated.response;
+    const { messages, mode = "think" } = validated.data;
 
     // Rate limit: max 20 requests/min
     const { count } = await supabaseClient
