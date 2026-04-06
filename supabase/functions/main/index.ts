@@ -2,8 +2,12 @@
 // Routes requests to individual edge functions based on path
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { handleCors, corsHeaders } from "../_shared/cors.ts";
 
 serve(async (req: Request) => {
+  const cors = handleCors(req);
+  if (cors) return cors;
+
   const url = new URL(req.url);
   const pathParts = url.pathname.split("/").filter(Boolean);
   const functionName = pathParts[0];
@@ -11,7 +15,7 @@ serve(async (req: Request) => {
   if (!functionName || functionName === "health") {
     return new Response(
       JSON.stringify({ status: "healthy", service: "sita-edge-functions", timestamp: new Date().toISOString() }),
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 
