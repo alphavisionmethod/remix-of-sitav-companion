@@ -62,7 +62,7 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
     launchHonesty: {
       score: launchScore,
       label: getLabel(launchScore),
-      detail: `${gates.length} features gated, ${gates.filter(g => g.status === "active").length} active`,
+      detail: `${gates.length} features gated, ${gates.filter(g => g.status === "live").length} live`,
     },
     aiTruth: {
       score: aiScore,
