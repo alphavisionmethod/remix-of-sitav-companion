@@ -35,10 +35,10 @@ describe("EventBus — publish", () => {
 });
 
 describe("EventBus — subscribe/unsubscribe", () => {
-  it("subscribes and receives events", async () => {
+  it("subscribes and receives matching events", async () => {
     const bus = new EventBus();
     const received: string[] = [];
-    bus.subscribe("orders.*", (e) => received.push(e.topic));
+    bus.subscribe("orders.*", (e) => { received.push(e.topic); });
     await bus.publish("orders.created", {}, { skipPersist: true });
     await bus.publish("orders.updated", {}, { skipPersist: true });
     await bus.publish("users.created", {}, { skipPersist: true });
