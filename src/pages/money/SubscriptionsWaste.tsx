@@ -166,7 +166,7 @@ const SubscriptionsWaste = () => {
       <SitaPageHeader
         title="Subscriptions & Waste"
         subtitle="Track, optimize, and reduce waste"
-        actions={<SitaButton variant="primary" onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}><Plus className="h-4 w-4" /> Add Subscription</SitaButton>}
+        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}><Plus className="h-4 w-4" /> Add Subscription</SitaButton></div>}
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

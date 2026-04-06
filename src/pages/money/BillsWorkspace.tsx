@@ -159,7 +159,7 @@ const BillsWorkspace = () => {
       <SitaPageHeader
         title="Bills & Due Soon"
         subtitle="Track, schedule, and never miss a payment"
-        actions={<SitaButton variant="primary" onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}><Plus className="h-4 w-4" /> Add Bill</SitaButton>}
+        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}><Plus className="h-4 w-4" /> Add Bill</SitaButton></div>}
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
