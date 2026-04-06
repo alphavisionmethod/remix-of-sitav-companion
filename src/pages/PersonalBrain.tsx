@@ -24,7 +24,7 @@ const modes: { id: Mode; label: string; icon: React.ElementType; description: st
   { id: "create", label: "Create", icon: Palette, description: "Write, design, compose" },
 ];
 
-export default function PersonalBrain() {
+function PersonalBrainInner() {
   const { user } = useAuth();
   const [mode, setMode] = useState<Mode>("think");
   const [messages, setMessages] = useState<Message[]>([]);
