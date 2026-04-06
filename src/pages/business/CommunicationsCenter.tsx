@@ -54,6 +54,7 @@ let nextId = 7;
 
 const CommunicationsCenter = () => {
   const [communications, setCommunications] = useState<Communication[]>(initialComms);
+  const { confirmation, confirm: confirmAction } = useConfirmation();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
