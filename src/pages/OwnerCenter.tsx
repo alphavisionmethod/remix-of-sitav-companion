@@ -2202,15 +2202,15 @@ const OwnerCenter = () => {
                       </div>
                       {item.status === "pending" && (
                         <div className="flex items-center gap-1.5 shrink-0">
-                          <Button size="sm" variant="outline" className="text-xs h-7 text-trust-safe border-trust-safe/20 hover:bg-trust-safe/10" onClick={() => approveItem.mutate({ id: item.id })}>
+                          <SitaButton size="sm" variant="accent" className="text-xs h-7" onClick={() => approveItem.mutate({ id: item.id })}>
                             <CheckCircle className="h-3 w-3 mr-1" /> Approve
-                          </Button>
-                          <Button size="sm" variant="outline" className="text-xs h-7 text-destructive border-destructive/20 hover:bg-destructive/10" onClick={() => rejectItem.mutate({ id: item.id, reason: "Rejected by owner" })}>
+                          </SitaButton>
+                          <SitaButton size="sm" variant="secondary" className="text-xs h-7 text-destructive" onClick={() => rejectItem.mutate({ id: item.id, reason: "Rejected by owner" })}>
                             <XCircle className="h-3 w-3 mr-1" /> Reject
-                          </Button>
-                          <Button size="sm" variant="ghost" className="text-xs h-7 text-muted-foreground" onClick={() => dismissItem.mutate(item.id)}>
+                          </SitaButton>
+                          <SitaButton size="sm" variant="secondary" className="text-xs h-7 text-muted-foreground" onClick={() => dismissItem.mutate(item.id)}>
                             Dismiss
-                          </Button>
+                          </SitaButton>
                         </div>
                       )}
                     </div>
