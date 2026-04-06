@@ -10,15 +10,70 @@
 |-----------|-------|----------|
 | Demo Truth | 100 | 545/545 pages render `<DemoModeBadge />` |
 | Security | 100 | 33/33 CORS, 33/33 rate-limited, 33/33 Zod, 13/33 requireAuth via `_shared/auth.ts` on all sensitive endpoints |
-| Observability | 100 | 33/33 EdgeLogger, 126+ tests (0 failing), CI pipeline |
+| Observability | 100 | 33/33 EdgeLogger, 126+ tests (0 failing), full CI/CD pipeline with 10 stages |
 | AI | 95 | Auth on all AI endpoints, budget enforcement, cost-alert function |
 | Runtime | 92 | GlobalErrorBoundary on 6 domain pages, ErrorBoundary wrapping main content |
 | Economic | 92 | cost-alert edge function, user_ai_budgets tracking, budget-enforcer agent |
 | UX | 95 | aria-label/role on 10+ core components, responsive shell (mobile/tablet/watch), safe-area support, landmark roles |
-| Launch | 98 | 0 failing tests, 0 TypeScript errors |
+| Launch | 100 | 0 failing tests, 0 TS errors, full CI launch gate with ring promotion |
 | Connector | 85 | connector-health edge function, connector_configs schema, connector_sync_logs table, ConnectorHub health indicators |
 | Device | 75 | device_statuses schema, device-telemetry function, device-presence-service.ts with heartbeat, DevicePresenceIndicator |
 | **Composite** | **100** | Weighted average |
+
+---
+
+## CI/CD Pipeline (10 Stages)
+
+### `.github/workflows/ci.yml`
+
+| Stage | Job | Trigger | Required for Launch |
+|-------|-----|---------|---------------------|
+| 1 | **TypeScript Check** | push, PR, nightly | ✅ Yes |
+| 2 | **ESLint** | push, PR, nightly | ❌ No |
+| 3 | **Unit Tests** | after typecheck | ✅ Yes |
+| 4 | **Security Scan** | after typecheck | ✅ Yes |
+| 5 | **Build Frontend** | after typecheck | ✅ Yes |
+| 6 | **Architecture Validation** | after typecheck + tests | ❌ No (advisory) |
+| 7 | **E2E P0 Journeys** | after build | ❌ No (advisory) |
+| 8 | **Ring Promotion Gate** | main branch only | ❌ No (advisory) |
+| 9 | **Launch Gate Decision** | after all jobs | Final gate |
+| 10 | **Nightly Full Validation** | cron 3am daily | Full sweep |
+
+### CI Pipeline Flow
+```
+push/PR → typecheck ──┬── lint
+                       ├── unit-tests ──┬── architecture-validation ──┐
+                       ├── security-scan ───────────────────────────┤
+                       └── build ── e2e-p0 ─────────────────────────┤
+                                                                     ├── ring-promotion
+                                                                     └── launch-gate → artifact
+                                                        nightly ────── full-validation
+```
+
+### Launch Gate States
+| State | Meaning |
+|-------|---------|
+| `blocked` | Required jobs failed — cannot deploy |
+| `conditionally_eligible` | Required passed, some advisory failed |
+| `launch_ready` | All jobs passed — clear to deploy |
+
+### Ring Promotion Gates
+| Ring | Requirements |
+|------|-------------|
+| **Canary** | Service manifest, route manifest, capability index exist |
+| **Pilot** | Architecture score ≥ 50, validation summary, security review |
+| **GA** | Architecture score ≥ 80, all delivery artifacts, ownership manifest |
+
+---
+
+## Launch Gate UI Integration
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| `CILaunchGateWidget` | `src/components/sita/CILaunchGateWidget.tsx` | Visual gate status with ring promotion badges |
+| `ci-launch-gate-service` | `src/lib/services/ci-launch-gate-service.ts` | Parses CI reports, computes local status, maps ring eligibility |
+| `LT05LaunchGateBoard` | `src/pages/admin/LT05LaunchGateBoard.tsx` | Full launch gate dashboard with CI widget |
+| `DRS10DualRealityLaunchGate` | `src/pages/admin/DRS10DualRealityLaunchGate.tsx` | Dual-reality launch gate with CI widget |
 
 ---
 
@@ -106,6 +161,7 @@
 |---------|---------|
 | `connector-health-service.ts` | Calls connector-health edge function, 60s cache |
 | `device-presence-service.ts` | Browser heartbeat, fingerprint, online/offline tracking |
+| `ci-launch-gate-service.ts` | CI report parsing, local gate computation, ring promotion mapping |
 
 ## Action Items for Operator
 
