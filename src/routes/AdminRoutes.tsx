@@ -23,7 +23,13 @@ const ZeroWastePromptView = lazy(() => import("@/pages/admin/intelligence/ZeroWa
 const SmartDigestCenter = lazy(() => import("@/pages/admin/intelligence/SmartDigestCenter"));
 const CrossTenantGovernance = lazy(() => import("@/pages/admin/intelligence/CrossTenantGovernance"));
 
-// AIG07-AIG08: AI Governance Center
+// AIG01-AIG08: AI Governance Center
+const AIG01ProviderRegistry = lazy(() => import("@/pages/admin/AIG01ProviderRegistry"));
+const AIG02ModelRegistry = lazy(() => import("@/pages/admin/AIG02ModelRegistry"));
+const AIG03RoutingMatrix = lazy(() => import("@/pages/admin/AIG03RoutingMatrix"));
+const AIG04BudgetCenter = lazy(() => import("@/pages/admin/AIG04BudgetCenter"));
+const AIG05ReceiptsExplorer = lazy(() => import("@/pages/admin/AIG05ReceiptsExplorer"));
+const AIG06LaunchTruth = lazy(() => import("@/pages/admin/AIG06LaunchTruth"));
 const AIG07LaunchTruth = lazy(() => import("@/pages/admin/AIG07LaunchTruth"));
 const AIG08DegradedDiagnostics = lazy(() => import("@/pages/admin/AIG08DegradedDiagnostics"));
 
