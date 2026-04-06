@@ -333,6 +333,9 @@ const AIG03RoutingMatrix = lazy(() => import("./pages/admin/AIG03RoutingMatrix")
 const AIG04BudgetCenter = lazy(() => import("./pages/admin/AIG04BudgetCenter"));
 const AIG05ReceiptsExplorer = lazy(() => import("./pages/admin/AIG05ReceiptsExplorer"));
 const AIG06LaunchTruth = lazy(() => import("./pages/admin/AIG06LaunchTruth"));
+const AIG07LaunchTruth = lazy(() => import("./pages/admin/AIG07LaunchTruth"));
+const AIG08DegradedDiagnostics = lazy(() => import("./pages/admin/AIG08DegradedDiagnostics"));
+const AIG09RuntimeVerification = lazy(() => import("./pages/admin/AIG09RuntimeVerification"));
 
 const UAO01PresenceContinuity = lazy(() => import("./pages/admin/UAO01PresenceContinuity"));
 const UAO02ConnectedDevices = lazy(() => import("./pages/admin/UAO02ConnectedDevices"));
@@ -1206,6 +1209,9 @@ const App = () => (
                     <Route path="/admin/aig/budget" element={<AIG04BudgetCenter />} />
                     <Route path="/admin/aig/receipts" element={<AIG05ReceiptsExplorer />} />
                     <Route path="/admin/aig/launch-truth" element={<AIG06LaunchTruth />} />
+                    <Route path="/admin/aig/launch-truth-detail" element={<AIG07LaunchTruth />} />
+                    <Route path="/admin/aig/degraded" element={<AIG08DegradedDiagnostics />} />
+                    <Route path="/admin/aig/runtime-verification" element={<AIG09RuntimeVerification />} />
                     <Route path="/admin/uao/presence" element={<UAO01PresenceContinuity />} />
                     <Route path="/admin/uao/devices" element={<UAO02ConnectedDevices />} />
                     <Route path="/admin/uao/team" element={<UAO03AmbientTeamControl />} />
