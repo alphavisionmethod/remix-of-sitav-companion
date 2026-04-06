@@ -64,6 +64,7 @@ type Tab = "all" | "urgent" | "new" | "warm" | "stale" | "qualified";
 const LeadsInbox = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const { confirmation, confirm } = useConfirmation();
   const [tab, setTab] = useState<Tab>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [view, setView] = useState<"list" | "board">("list");
