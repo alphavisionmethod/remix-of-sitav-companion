@@ -86,7 +86,8 @@ async function registerWebPush(vapidPublicKey: string): Promise<{
 async function registerCapacitorPush(): Promise<string | null> {
   try {
     // Dynamic import — only available when @capacitor/push-notifications is installed
-    const mod = await import(/* @vite-ignore */ "@capacitor/push-notifications");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mod: any = await (Function('return import("@capacitor/push-notifications")')());
     const PushNotifications = mod.PushNotifications;
     const permResult = await PushNotifications.requestPermissions();
     if (permResult.receive !== "granted") return null;
