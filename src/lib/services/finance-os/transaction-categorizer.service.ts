@@ -5,8 +5,6 @@
 
 import type { TransactionRecord, CategorizedSpend } from "@/packages/finance-contracts";
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
-// @persistence: os_service_state — state survives refresh via universal adapter
 
 export interface CategorizationRule {
   id: string;
@@ -60,28 +58,4 @@ export function aggregateSpend(transactions: TransactionRecord[]): CategorizedSp
     trend: "stable" as const,
     trendPercent: 0,
   })).sort((a, b) => b.totalCents - a.totalCents);
-}
-
-
-// ── Persistence ──────────────────────────────────────────
-const _serviceId = "finance-os/transaction-categorizer";
-
-function _serializeState(): Record<string, unknown> {
-  return {
-    byCategory: Array.from(byCategory.entries()),
-  };
-}
-
-function _hydrateState(state: Record<string, unknown>): void {
-  if (!state) return;
-  if (state.byCategory) { byCategory.clear(); (state.byCategory as any[]).forEach(([k, v]: any) => byCategory.set(k, v)); }
-}
-
-export async function loadPersistedState(): Promise<void> {
-  const state = await loadServiceState(_serviceId);
-  if (state) _hydrateState(state as Record<string, unknown>);
-}
-
-export function persistState(): void {
-  debouncedSaveServiceState(_serviceId, _serializeState());
 }

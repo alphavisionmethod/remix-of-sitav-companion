@@ -5,8 +5,6 @@
 
 import type { ObligationRecord } from "@/packages/finance-contracts";
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
-// @persistence: os_service_state — state survives refresh via universal adapter
 
 export interface RecurringObligationSummary {
   totalMonthlyCommitmentCents: number;
@@ -59,30 +57,4 @@ export function summarizeRecurringObligations(obligations: ObligationRecord[]): 
     manualPayCount: recurring.filter(o => !o.autoPay).length,
     generatedAt: new Date().toISOString(),
   };
-}
-
-
-// ── Persistence ──────────────────────────────────────────
-const _serviceId = "finance-os/recurring-obligation";
-
-function _serializeState(): Record<string, unknown> {
-  return {
-    freqMap: Array.from(freqMap.entries()),
-    catMap: Array.from(catMap.entries()),
-  };
-}
-
-function _hydrateState(state: Record<string, unknown>): void {
-  if (!state) return;
-  if (state.freqMap) { freqMap.clear(); (state.freqMap as any[]).forEach(([k, v]: any) => freqMap.set(k, v)); }
-  if (state.catMap) { catMap.clear(); (state.catMap as any[]).forEach(([k, v]: any) => catMap.set(k, v)); }
-}
-
-export async function loadPersistedState(): Promise<void> {
-  const state = await loadServiceState(_serviceId);
-  if (state) _hydrateState(state as Record<string, unknown>);
-}
-
-export function persistState(): void {
-  debouncedSaveServiceState(_serviceId, _serializeState());
 }

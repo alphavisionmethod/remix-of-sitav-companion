@@ -5,8 +5,6 @@
 
 import type { SubscriptionRecord, WasteOpportunity } from "@/packages/finance-contracts";
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
-// @persistence: os_service_state — state survives refresh via universal adapter
 
 export interface WasteReport {
   totalWasteAnnualCents: number;
@@ -45,28 +43,4 @@ export function buildWasteReport(subscriptions: SubscriptionRecord[]): WasteRepo
     actionableCount: opportunities.length,
     generatedAt: new Date().toISOString(),
   };
-}
-
-
-// ── Persistence ──────────────────────────────────────────
-const _serviceId = "finance-os/waste-detector";
-
-function _serializeState(): Record<string, unknown> {
-  return {
-    categoryCount: Array.from(categoryCount.entries()),
-  };
-}
-
-function _hydrateState(state: Record<string, unknown>): void {
-  if (!state) return;
-  if (state.categoryCount) { categoryCount.clear(); (state.categoryCount as any[]).forEach(([k, v]: any) => categoryCount.set(k, v)); }
-}
-
-export async function loadPersistedState(): Promise<void> {
-  const state = await loadServiceState(_serviceId);
-  if (state) _hydrateState(state as Record<string, unknown>);
-}
-
-export function persistState(): void {
-  debouncedSaveServiceState(_serviceId, _serializeState());
 }

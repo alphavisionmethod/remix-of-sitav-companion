@@ -5,8 +5,6 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
-// @persistence: os_service_state — state survives refresh via universal adapter
 
 export type SentimentLevel = 'very_positive' | 'positive' | 'neutral' | 'negative' | 'very_negative';
 export type SentimentTrend = 'improving' | 'stable' | 'declining' | 'volatile';
@@ -178,27 +176,3 @@ class ClientSentimentService {
 }
 
 export const clientSentimentService = new ClientSentimentService();
-
-
-// ── Persistence ──────────────────────────────────────────
-const _serviceId = "client-sentiment/client-sentiment";
-
-function _serializeState(): Record<string, unknown> {
-  return {
-    phraseMap: Array.from(phraseMap.entries()),
-  };
-}
-
-function _hydrateState(state: Record<string, unknown>): void {
-  if (!state) return;
-  if (state.phraseMap) { phraseMap.clear(); (state.phraseMap as any[]).forEach(([k, v]: any) => phraseMap.set(k, v)); }
-}
-
-export async function loadPersistedState(): Promise<void> {
-  const state = await loadServiceState(_serviceId);
-  if (state) _hydrateState(state as Record<string, unknown>);
-}
-
-export function persistState(): void {
-  debouncedSaveServiceState(_serviceId, _serializeState());
-}
