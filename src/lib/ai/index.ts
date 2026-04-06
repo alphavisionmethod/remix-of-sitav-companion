@@ -25,3 +25,9 @@ export { useAICapability } from "./hooks/use-ai-capability";
 export { useAdvisorChat } from "./hooks/use-advisor-chat";
 export { useBoardroomSummary } from "./hooks/use-boardroom-summary";
 export { useDailyPulse } from "./hooks/use-daily-pulse";
+export { useAdminSynthesis } from "./hooks/use-admin-synthesis";
+export { useUtilityAI } from "./hooks/use-utility-ai";
+
+// Workforce executor
+export { executeWorkforceTask } from "./workforce-executor";
+export type { WorkforceExecutionRequest, WorkforceExecutionResult } from "./workforce-executor";

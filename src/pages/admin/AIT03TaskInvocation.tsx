@@ -1,5 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AIT03: Task Invocation Console
+// Real workforce execution through sovereign AI gateway
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
@@ -10,8 +11,11 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { getWorkforceRoles } from "@/lib/services/ai-workforce/workforce-orchestrator";
-import { Terminal, Play } from "lucide-react";
+import { executeWorkforceTask, type WorkforceExecutionResult } from "@/lib/ai/workforce-executor";
+import { AIWorkforceInvocationPanel } from "@/components/ai/AIWorkforceInvocationPanel";
+import { Terminal, Play, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const TASK_TYPES = [
   { key: "summarize", label: "Summarize" },
@@ -35,18 +39,54 @@ export default function AIT03TaskInvocation() {
   const [selectedTask, setSelectedTask] = useState("");
   const [budgetPosture, setBudgetPosture] = useState("economy_admin");
   const [inputText, setInputText] = useState("");
+  const [executing, setExecuting] = useState(false);
+  const [result, setResult] = useState<WorkforceExecutionResult | null>(null);
 
   const { data: roles = [] } = useQuery({
     queryKey: ["ai-workforce-roles"],
     queryFn: getWorkforceRoles,
   });
 
-  const handleInvoke = () => {
+  const handleInvoke = async () => {
     if (!selectedRole || !selectedTask) {
       toast.error("Select a role and task type");
       return;
     }
-    toast.info("AI workforce invocation queued. Architecture wired — runtime activation pending.");
+    if (!inputText.trim()) {
+      toast.error("Provide input/scope for the task");
+      return;
+    }
+
+    setExecuting(true);
+    setResult(null);
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error("Authentication required");
+        setExecuting(false);
+        return;
+      }
+
+      const execResult = await executeWorkforceTask(user.id, {
+        roleKey: selectedRole,
+        taskType: selectedTask,
+        inputSummary: inputText,
+        budgetClass: budgetPosture,
+      });
+
+      setResult(execResult);
+
+      if (execResult.response.status.startsWith("success_")) {
+        toast.success(`Task completed — ${(execResult.costCents / 100).toFixed(3)}¢`);
+      } else {
+        toast.warning(`Task returned: ${execResult.response.status}`);
+      }
+    } catch (err) {
+      toast.error("Execution failed: " + (err instanceof Error ? err.message : "Unknown error"));
+    } finally {
+      setExecuting(false);
+    }
   };
 
   return (
@@ -55,7 +95,7 @@ export default function AIT03TaskInvocation() {
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Terminal className="h-6 w-6 text-primary" /> AIT03 — Task Invocation Console
         </h1>
-        <p className="text-muted-foreground mt-1">Invoke AI workforce tasks with role, budget, and scope controls</p>
+        <p className="text-muted-foreground mt-1">Invoke AI workforce tasks through the sovereign gateway with role, budget, and scope controls</p>
       </div>
 
       <Card>
@@ -70,7 +110,15 @@ export default function AIT03TaskInvocation() {
                   {roles.map(r => (
                     <SelectItem key={r.role_key} value={r.role_key}>{r.display_name}</SelectItem>
                   ))}
-                  {roles.length === 0 && <SelectItem value="_" disabled>No roles registered</SelectItem>}
+                  {roles.length === 0 && (
+                    <>
+                      <SelectItem value="chief_architect">Chief Architect</SelectItem>
+                      <SelectItem value="runtime_truth_analyst">Runtime Truth Analyst</SelectItem>
+                      <SelectItem value="ai_governance_engineer">AI Governance Engineer</SelectItem>
+                      <SelectItem value="budget_efficiency_analyst">Budget Analyst</SelectItem>
+                      <SelectItem value="remediation_planner">Remediation Planner</SelectItem>
+                    </>
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -104,21 +152,29 @@ export default function AIT03TaskInvocation() {
               placeholder="Describe what you want the AI role to analyze, audit, or produce..."
               value={inputText}
               onChange={e => setInputText(e.target.value)}
-              rows={3}
+              rows={4}
             />
           </div>
 
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
-              <Badge variant="outline">Architecture wired</Badge>
-              <Badge variant="secondary">Runtime: pending activation</Badge>
+              <Badge variant="outline" className="text-xs">{budgetPosture}</Badge>
+              {selectedRole && <Badge variant="secondary" className="text-xs">{selectedRole}</Badge>}
             </div>
-            <Button onClick={handleInvoke} className="gap-2">
-              <Play className="h-4 w-4" /> Invoke
+            <Button onClick={handleInvoke} disabled={executing} className="gap-2">
+              {executing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+              {executing ? "Executing..." : "Invoke"}
             </Button>
           </div>
         </CardContent>
       </Card>
+
+      {result && (
+        <AIWorkforceInvocationPanel
+          result={result}
+          onRetry={handleInvoke}
+        />
+      )}
     </div>
   );
 }
