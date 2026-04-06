@@ -551,6 +551,7 @@ const App = () => (
           <ConnectivityProvider>
           <ThemeProvider>
           <DataModeProvider>
+          <DemoModeProvider>
           <DisplayModeProvider>
           <EntityContextProvider>
           <SitaKernelProvider>
