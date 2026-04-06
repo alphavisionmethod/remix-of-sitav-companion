@@ -1,176 +1,133 @@
 
 
-# SITA OS — Comprehensive Test Suite Plan
+# SITA OS — Complete Test Coverage & Build Fix Plan
 
-## Current Test State
+## Build Status
+- TypeScript: 0 errors (clean)
+- Vitest: **1 failing test** — `src/test/scripts-validation.test.ts` expects 42 scripts but finds 43
 
-| Category | Exists | Coverage |
-|----------|--------|----------|
-| Unit tests (vitest) | 52 files in `src/test/` | Mostly shallow — many just check `toBeDefined()` or `toBeInstanceOf()` |
-| E2E tests (playwright) | 7 files in `e2e/` | Good critical-flows coverage, some shallow route-load checks |
-| Integration tests | 0 | None |
-| Component render tests | 2 (boot-flow, lock-screen) | Nearly zero component coverage |
+## What Exists Now
 
-## What This Plan Delivers
+| Category | Files | Tests |
+|----------|-------|-------|
+| Unit tests (co-located `__tests__/`) | 25 | ~214 |
+| Unit tests (legacy `src/test/`) | 52 | ~1267 |
+| E2E (Playwright) | 7 | ~35 |
+| **Total** | **77 files** | **1482 tests (1 failing)** |
 
-**78 new test files** across 3 tiers, covering the actual logic and components in the repo — not placeholder `expect(true).toBe(true)` tests.
+## What's Missing
 
----
+### 1. Fix the Failing Test (BLOCKER)
+`src/test/scripts-validation.test.ts` line 67-69: hardcoded `expect(total).toBe(42)` but there are now 43 scripts. Change to `toBe(43)`.
 
-## Tier 1 — Unit Tests (Vitest) — 40 new test files
+### 2. Hook Tests (0 of 42 hooks tested)
+No hook has a dedicated `__tests__/` file. The plan called for 6 hook test files — none were created:
 
-Testing pure logic functions with real inputs/outputs.
-
-### No-Hallucination Engine (6 tests)
-| File | Tests |
-|------|-------|
-| `src/lib/no-hallucination/__tests__/confidence.test.ts` | `createConfidenceEnvelope` with missing inputs, stale data, contradictions, score clamping, risk class mapping |
-| `src/lib/no-hallucination/__tests__/staleness.test.ts` | `evaluateStaleness` with fresh/aging/stale/critical sources, domain thresholds, custom overrides |
-| `src/lib/no-hallucination/__tests__/grounding.test.ts` | `buildGroundingReport` verbatim vs derived fields, ungrounded claims, ambiguity detection |
-| `src/lib/no-hallucination/__tests__/contradiction.test.ts` | `detectContradictions` with matching values, conflicting values, material severity |
-| `src/lib/no-hallucination/__tests__/refusal.test.ts` | `evaluateRefusal` thresholds, `createCleanRefusal` output shape |
-| `src/lib/no-hallucination/__tests__/truth-boundaries.test.ts` | `getTruthBoundary`, `isDeterministicField`, domain boundary lookups |
-
-### Core Services (8 tests)
-| File | Tests |
-|------|-------|
-| `src/lib/core-services/__tests__/event-bus.test.ts` | Publish/subscribe, wildcard matching, dead-letter queue, replay, tenant scoping |
-| `src/lib/core-services/__tests__/policy-engine.test.ts` | Policy evaluation with various risk tiers, amounts, domains; deny/allow/require-approval outcomes |
-| `src/lib/core-services/__tests__/workflow-engine.test.ts` | Workflow creation, step execution, status transitions |
-| `src/lib/core-services/__tests__/receipt-service.test.ts` | Receipt creation, receipt chain integrity |
-| `src/lib/core-services/__tests__/executor-service.test.ts` | Execution chain, single choke point enforcement |
-| `src/lib/core-services/__tests__/approval-service.test.ts` | Approval request, dual-approval, timeout |
-| `src/lib/core-services/__tests__/search-fabric.test.ts` | Search indexing, query matching, domain filtering |
-| `src/lib/core-services/__tests__/fraud-sentinel.test.ts` | Fraud signal detection, risk scoring |
-
-### Capabilities (2 tests)
-| File | Tests |
-|------|-------|
-| `src/lib/capabilities/__tests__/capability-registry.test.ts` | Register, invoke, list, has, overwrite warning, missing capability error |
-| `src/lib/capabilities/__tests__/capability-router.test.ts` | Route capability to correct handler based on key |
-
-### Dual Reality (4 tests)
-| File | Tests |
-|------|-------|
-| `src/lib/dual-reality/__tests__/reality-mode-registry.test.ts` | Mode registration, lookup, default mode |
-| `src/lib/dual-reality/__tests__/reality-mode-resolver.test.ts` | Resolve mode from context, fallback behavior |
-| `src/lib/dual-reality/__tests__/demo-scenario-loader.test.ts` | Load scenario by key, missing scenario handling |
-| `src/lib/dual-reality/__tests__/demo-policy-engine.test.ts` | Demo policy evaluation, demo-specific rules |
-
-### Hooks (6 tests)
-| File | Tests |
-|------|-------|
-| `src/hooks/__tests__/use-reality-provider.test.ts` | `resolveByMode` — real data, empty data, demo data, array empty check |
-| `src/hooks/__tests__/use-global-search.test.ts` | Search query state, results filtering |
-| `src/hooks/__tests__/use-proof-chain.test.ts` | Proof chain building, verification |
-| `src/hooks/__tests__/use-brain-core.test.ts` | Brain core message handling, advisor routing |
+| File to Create | What it Tests |
+|----------------|---------------|
+| `src/hooks/__tests__/use-global-search.test.ts` | Query state, filtering, empty results |
+| `src/hooks/__tests__/use-brain-core.test.ts` | Message sending, advisor routing, mode handling |
+| `src/hooks/__tests__/use-domain-data.test.ts` | Data resolution by mode, fallback behavior |
+| `src/hooks/__tests__/use-proof-chain.test.ts` | Chain building, verification, integrity |
 | `src/hooks/__tests__/use-admin-data.test.ts` | Admin data fetching, CAI hook wiring |
-| `src/hooks/__tests__/use-domain-data.test.ts` | Domain data resolution by mode |
+| `src/hooks/__tests__/use-reality-provider.test.ts` | `resolveByMode` with real/demo/empty data |
 
-### Persistence (4 tests)
-| File | Tests |
-|------|-------|
-| `src/lib/persistence/__tests__/event-bus-persistence.test.ts` | Event serialization, persist call shape |
-| `src/lib/persistence/__tests__/policy-engine-persistence.test.ts` | Policy evaluation persistence |
-| `src/lib/persistence/__tests__/supabase-adapters.test.ts` | Adapter creation, table mapping |
-| `src/lib/persistence/__tests__/persistable.test.ts` | Persistable interface compliance |
+### 3. Context Provider Tests (1 of 9 contexts tested)
+Only `DemoModeProvider` has tests. Missing:
 
-### Services (6 tests)
-| File | Tests |
-|------|-------|
-| `src/lib/services/auth/__tests__/auth-service.test.ts` | Auth state management |
-| `src/lib/services/billing/__tests__/billing-service.test.ts` | Billing calculation, tier enforcement |
-| `src/lib/services/model-router/__tests__/model-router.test.ts` | Model selection by advisor/intent |
-| `src/lib/services/payment-execution-service/__tests__/payment-execution.test.ts` | Payment validation, execution flow |
-| `src/lib/services/sovereign-calculation/__tests__/sovereign-calc.test.ts` | Sovereignty score calculation |
-| `src/lib/services/self-healing/__tests__/self-healing.test.ts` | Self-healing detection, auto-remediation |
-
-### Utilities (4 tests)
-| File | Tests |
-|------|-------|
-| `src/lib/__tests__/utils.test.ts` | cn() utility, class merging |
-| `src/lib/__tests__/cross-domain.test.ts` | Cross-domain data point building |
-| `src/lib/__tests__/sita-kernel.test.ts` | Kernel initialization, event dispatch |
-| `src/lib/__tests__/continuity-engine.test.ts` | Continuity state management |
-
----
-
-## Tier 2 — Component / Integration Tests (Vitest + RTL) — 22 new test files
-
-Testing React components render correctly with proper props and context.
-
-### Core Components (10 tests)
-| File | Tests |
-|------|-------|
-| `src/components/sita/__tests__/DemoModeBadge.test.tsx` | Renders in demo mode, hides in live mode, forceShow, compact mode |
-| `src/components/sita/__tests__/ErrorBoundary.test.tsx` | Catches errors, displays fallback |
-| `src/components/sita/__tests__/SitaCard.test.tsx` | Renders with title, children, className |
-| `src/components/sita/__tests__/EmptyStateCard.test.tsx` | Renders message, CTA button |
-| `src/components/sita/__tests__/PageSkeleton.test.tsx` | Loading skeleton renders |
-| `src/components/sita/__tests__/StateBadge.test.tsx` | Badge variants render correctly |
-| `src/components/sita/__tests__/TrustBadge.test.tsx` | Trust level display |
-| `src/components/sita/__tests__/SitaPageHeader.test.tsx` | Title, subtitle, actions render |
-| `src/components/sita/__tests__/CommandPalette.test.tsx` | Opens, accepts input, shows results |
-| `src/components/sita/__tests__/ShellLayout.test.tsx` | Layout renders with sidebar and content |
-
-### Context Providers (5 tests)
-| File | Tests |
-|------|-------|
-| `src/contexts/__tests__/DemoModeProvider.test.tsx` | Surface registration, counts, integrity score |
-| `src/contexts/__tests__/DataModeContext.test.tsx` | isDemoMode toggle, persistence |
-| `src/contexts/__tests__/AuthContext.test.tsx` | Auth state, user loading, sign-out |
+| File to Create | What it Tests |
+|----------------|---------------|
+| `src/contexts/__tests__/DataModeContext.test.tsx` | isDemoMode toggle, default state |
+| `src/contexts/__tests__/AuthContext.test.tsx` | Auth state, loading, session handling |
 | `src/contexts/__tests__/ThemeContext.test.tsx` | Theme toggle, dark mode default |
-| `src/contexts/__tests__/ConnectivityContext.test.tsx` | Online/offline state |
+| `src/contexts/__tests__/ConnectivityContext.test.tsx` | Online/offline detection |
 
-### Page Integration (7 tests)
-| File | Tests |
-|------|-------|
-| `src/pages/__tests__/DailyPulse.test.tsx` | Renders with demo data, shows KPI cards |
-| `src/pages/__tests__/BusinessCenter.test.tsx` | Renders CRM section, customer list |
-| `src/pages/__tests__/MoneyCenter.test.tsx` | Renders financial overview |
-| `src/pages/__tests__/Boardroom.test.tsx` | Renders boardroom view with DemoModeBadge |
-| `src/pages/__tests__/SettingsPage.test.tsx` | Settings form renders with controls |
-| `src/pages/__tests__/NotFound.test.tsx` | 404 page renders with back link |
+### 4. Component Tests (3 of ~50 components tested)
+Only DemoModeBadge, SitaCard, EmptyStateCard tested. Missing from plan:
+
+| File to Create | What it Tests |
+|----------------|---------------|
+| `src/components/sita/__tests__/SitaPageHeader.test.tsx` | Title, subtitle, actions rendering |
+| `src/components/sita/__tests__/PageSkeleton.test.tsx` | Loading skeleton renders |
+| `src/components/sita/__tests__/StateBadge.test.tsx` | Badge variant rendering |
+| `src/components/sita/__tests__/TrustBadge.test.tsx` | Trust level display |
+| `src/components/sita/__tests__/ShellLayout.test.tsx` | Layout with sidebar + content |
+
+### 5. Page Integration Tests (1 of 7 planned)
+Only NotFound tested. Missing:
+
+| File to Create | What it Tests |
+|----------------|---------------|
+| `src/pages/__tests__/DailyPulse.test.tsx` | KPI cards render in demo mode |
+| `src/pages/__tests__/BusinessCenter.test.tsx` | CRM section renders |
+| `src/pages/__tests__/MoneyCenter.test.tsx` | Financial overview renders |
+| `src/pages/__tests__/Boardroom.test.tsx` | Boardroom + DemoModeBadge |
+| `src/pages/__tests__/SettingsPage.test.tsx` | Settings form renders |
 | `src/pages/__tests__/PersonalBrain.test.tsx` | Chat interface renders |
 
----
+### 6. Service Tests (Missing from plan)
+Key services with no dedicated `__tests__/`:
 
-## Tier 3 — E2E Tests (Playwright) — 8 new test files
+| File to Create | What it Tests |
+|----------------|---------------|
+| `src/lib/services/model-router/__tests__/model-router.test.ts` | Model selection by advisor/intent |
+| `src/lib/services/auth/__tests__/auth-service.test.ts` | Auth state management |
+| `src/lib/services/billing/__tests__/billing-service.test.ts` | Billing calculation, tier enforcement |
+| `src/lib/services/sovereign-calculation/__tests__/sovereign-calc.test.ts` | Sovereignty score calculation |
+| `src/lib/services/self-healing/__tests__/self-healing.test.ts` | Detection + auto-remediation |
+| `src/lib/services/payment-execution-service/__tests__/payment-execution.test.ts` | Payment validation flow |
 
-Testing full user journeys through the app.
+### 7. E2E Tests (Missing from plan)
+7 E2E specs exist. Plan called for 8 more — none created:
 
-| File | Tests |
-|------|-------|
-| `e2e/daily-pulse.spec.ts` | Demo mode → Daily Pulse loads → KPI tiles visible → no error boundary |
-| `e2e/money-center.spec.ts` | Demo mode → Money Center → financial data visible → navigation between tabs |
-| `e2e/boardroom.spec.ts` | Demo mode → Boardroom → review slides load → DemoModeBadge visible |
-| `e2e/advisor-chat.spec.ts` | Demo mode → AI Advisor → chat input visible → send message → response appears |
-| `e2e/command-palette.spec.ts` | Open palette → type query → results appear → select result → navigates |
-| `e2e/admin-routes.spec.ts` | Demo mode → admin dashboard → truth registry → launch readiness → all load |
-| `e2e/owner-mode.spec.ts` | Demo mode → owner center → approvals → policy editor → all load |
-| `e2e/responsive.spec.ts` | Key pages at mobile (375px) and desktop (1280px) viewports — no overflow, no crash |
+| File to Create | What it Tests |
+|----------------|---------------|
+| `e2e/daily-pulse.spec.ts` | Daily Pulse loads, KPI tiles visible |
+| `e2e/money-center.spec.ts` | Money Center loads, tabs work |
+| `e2e/boardroom.spec.ts` | Boardroom slides + DemoModeBadge |
+| `e2e/command-palette.spec.ts` | Open palette, type, select result |
+| `e2e/admin-routes.spec.ts` | Admin pages all load without crash |
+| `e2e/owner-mode.spec.ts` | Owner center, approvals, policy editor |
+| `e2e/responsive.spec.ts` | Key pages at 375px and 1280px |
+| `e2e/advisor-chat.spec.ts` | Chat input, send message, response |
+
+### 8. Persistence Tests (1 of 4 planned)
+Only `persistable.test.ts` exists. Missing:
+
+| File to Create | What it Tests |
+|----------------|---------------|
+| `src/lib/persistence/__tests__/event-bus-persistence.test.ts` | Event serialization, persist call |
+| `src/lib/persistence/__tests__/policy-engine-persistence.test.ts` | Policy evaluation persistence |
+| `src/lib/persistence/__tests__/supabase-adapters.test.ts` | Adapter creation, table mapping |
+
+### 9. Cross-Domain & Kernel Tests
+| File to Create | What it Tests |
+|----------------|---------------|
+| `src/lib/__tests__/cross-domain.test.ts` | Cross-domain data point building |
+| `src/lib/__tests__/sita-kernel.test.ts` | Kernel init, event dispatch |
+| `src/lib/__tests__/continuity-engine.test.ts` | Continuity state management |
 
 ---
 
 ## Implementation Order
 
-1. **Tier 1a** — No-Hallucination + Core Services unit tests (14 files) — these are pure logic, most valuable
-2. **Tier 1b** — Capabilities + Dual Reality + Persistence + Utilities unit tests (14 files)
-3. **Tier 1c** — Hooks + Services unit tests (12 files)
-4. **Tier 2a** — Component tests (10 files)
-5. **Tier 2b** — Context + Page integration tests (12 files)
-6. **Tier 3** — E2E tests (8 files)
-7. **Final** — Run full suite, fix any failures, verify CI passes
+1. Fix the 1 failing test (scripts count 42→43)
+2. Create 6 hook tests
+3. Create 4 context provider tests
+4. Create 5 component tests
+5. Create 6 page integration tests
+6. Create 6 service tests
+7. Create 3 persistence tests
+8. Create 3 utility/kernel tests
+9. Create 8 E2E specs
+10. Run full suite, fix any failures
 
-## Technical Details
+## Summary
 
-- All unit/integration tests use Vitest + React Testing Library (already configured)
-- E2E tests use Playwright (already configured)
-- Component tests wrap in necessary providers (DataModeContext, DemoModeProvider, QueryClientProvider)
-- Mock Supabase client for persistence tests using `vi.mock()`
-- Each test file follows the `__tests__/` co-location pattern for discoverability
-- Existing 52 test files in `src/test/` are left untouched
-
-## Files Created: ~70 new test files
-## Files Modified: 0 (no changes to existing code)
+| Action | Count |
+|--------|-------|
+| Fix failing test | 1 |
+| New test files to create | **41** |
+| Estimated new test cases | **~350** |
+| Target: all green | 1823+ tests, 0 failures |
 
