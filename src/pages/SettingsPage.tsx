@@ -338,7 +338,7 @@ const SettingsPage = () => {
                 <button
                   className="flex items-center gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-xs text-destructive hover:bg-destructive/20 transition-colors w-full"
                   onClick={async () => {
-                    if (!confirm("Are you sure? This will permanently delete all your data.")) return;
+                    if (!(await confirmAction({ title: "Delete all data?", description: "This will permanently delete all your data. This action cannot be undone.", variant: "destructive", requireTypedConfirmation: "DELETE" }))) return;
                     try {
                       const { error } = await supabase.functions.invoke("gdpr-delete", { method: "POST", body: {} });
                       if (error) throw error;

@@ -306,7 +306,7 @@ const CommunicationsCenter = () => {
                       <Edit className="h-3.5 w-3.5" /> Edit
                     </SitaButton>
                   )}
-                  <SitaButton variant="ghost" size="sm" onClick={() => { if (confirm("Delete this communication?")) handleDelete(selected.id); }}>
+                  <SitaButton variant="ghost" size="sm" onClick={async () => { if (await confirmAction({ title: "Delete this communication?", description: "This communication will be permanently removed.", variant: "destructive" })) handleDelete(selected.id); }}>
                     <Trash2 className="h-3.5 w-3.5" /> Delete
                   </SitaButton>
                 </div>

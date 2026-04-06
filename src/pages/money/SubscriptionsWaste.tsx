@@ -277,7 +277,7 @@ const SubscriptionsWaste = () => {
                     <SitaButton variant="primary" size="sm" className="flex-1" onClick={() => statusMutation.mutate({ id: selected.id, status: "active" })}><Play className="h-3.5 w-3.5" /> Reactivate</SitaButton>
                   )}
                   <SitaButton variant="secondary" size="sm" onClick={() => openEdit(selected)}><Pencil className="h-3.5 w-3.5" /> Edit</SitaButton>
-                  <SitaButton variant="danger" size="sm" onClick={() => { if (confirm("Delete this subscription?")) deleteMutation.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /></SitaButton>
+                  <SitaButton variant="danger" size="sm" onClick={async () => { if (await confirm({ title: "Delete this subscription?", description: "This subscription record will be permanently removed.", variant: "destructive" })) deleteMutation.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /></SitaButton>
                 </div>
               </>
             ) : (
