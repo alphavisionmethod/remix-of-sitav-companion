@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Dna, Info } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DNA_DIMENSIONS = [
   { label: "Value-Tilted", score: 35, description: "Preference for undervalued assets based on fundamentals" },
