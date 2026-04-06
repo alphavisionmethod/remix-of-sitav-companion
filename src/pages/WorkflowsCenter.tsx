@@ -52,6 +52,27 @@ const WorkflowsCenter = () => {
     },
   });
 
+  const createWorkflow = useMutation({
+    mutationFn: async () => {
+      const { data: wf, error: wfErr } = await db.from("workflows").insert({ user_id: user!.id, name: newName, trigger_event: newTrigger, active: true, steps: [] }).select().single();
+      if (wfErr) throw wfErr;
+      // Create initial run
+      const { error: runErr } = await db.from("workflow_runs").insert({ user_id: user!.id, workflow_id: wf.id, status: "pending", current_step: 0 });
+      if (runErr) throw runErr;
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["workflow_runs"] }); toast.success("Workflow created"); setShowCreate(false); setNewName(""); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const deleteRun = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await db.from("workflow_runs").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["workflow_runs"] }); setSelectedId(null); toast.success("Run deleted"); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const filtered = filter === "all" ? runs : runs.filter(r => r.status === filter);
   const selected = runs.find(r => r.id === selectedId);
   const runningCount = runs.filter(r => r.status === "running").length;
