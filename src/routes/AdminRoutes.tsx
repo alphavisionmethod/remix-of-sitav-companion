@@ -92,7 +92,13 @@ export const AdminRoutes = () => (
     <Route path="/admin/intelligence/digests" element={<SmartDigestCenter />} />
     <Route path="/admin/intelligence/cross-tenant" element={<CrossTenantGovernance />} />
 
-    {/* AIG07-AIG08: AI Governance Center */}
+    {/* AIG01-AIG08: AI Governance Center */}
+    <Route path="/admin/ai-gateway/providers" element={<AIG01ProviderRegistry />} />
+    <Route path="/admin/ai-gateway/models" element={<AIG02ModelRegistry />} />
+    <Route path="/admin/ai-gateway/routing" element={<AIG03RoutingMatrix />} />
+    <Route path="/admin/ai-gateway/budget" element={<AIG04BudgetCenter />} />
+    <Route path="/admin/ai-gateway/receipts" element={<AIG05ReceiptsExplorer />} />
+    <Route path="/admin/ai-gateway/honesty" element={<AIG06LaunchTruth />} />
     <Route path="/admin/ai-gateway/launch-truth" element={<AIG07LaunchTruth />} />
     <Route path="/admin/ai-gateway/diagnostics" element={<AIG08DegradedDiagnostics />} />
 
