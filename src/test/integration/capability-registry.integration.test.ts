@@ -7,7 +7,7 @@ import {
 } from "@/lib/capabilities/capability-registry";
 
 describe("Capability Registry — Integration", () => {
-  const TEST_KEY = `test-cap-${Date.now()}`;
+  const TEST_KEY = `test.cap.${Date.now()}`;
 
   beforeEach(() => {
     // Register a test capability
