@@ -4337,6 +4337,60 @@ export type Database = {
         }
         Relationships: []
       }
+      calendar_events: {
+        Row: {
+          created_at: string
+          domain: string | null
+          end_time: string | null
+          event_date: string
+          event_type: string | null
+          id: string
+          location: string | null
+          metadata: Json | null
+          overlap_warning: boolean | null
+          priority: string | null
+          recurrence: string | null
+          start_time: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          domain?: string | null
+          end_time?: string | null
+          event_date?: string
+          event_type?: string | null
+          id?: string
+          location?: string | null
+          metadata?: Json | null
+          overlap_warning?: boolean | null
+          priority?: string | null
+          recurrence?: string | null
+          start_time?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          domain?: string | null
+          end_time?: string | null
+          event_date?: string
+          event_type?: string | null
+          id?: string
+          location?: string | null
+          metadata?: Json | null
+          overlap_warning?: boolean | null
+          priority?: string | null
+          recurrence?: string | null
+          start_time?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       capabilities: {
         Row: {
           description: string | null
@@ -8535,6 +8589,78 @@ export type Database = {
           trend?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          author: string | null
+          columns_config: Json | null
+          content: string | null
+          created_at: string
+          data_rows: Json | null
+          document_type: string
+          formulas: Json | null
+          governed: boolean | null
+          id: string
+          linked_domain: string | null
+          linked_entity: string | null
+          linked_workflow: string | null
+          metadata: Json | null
+          privacy: string | null
+          slides: Json | null
+          status: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+          user_id: string
+          version: number | null
+        }
+        Insert: {
+          author?: string | null
+          columns_config?: Json | null
+          content?: string | null
+          created_at?: string
+          data_rows?: Json | null
+          document_type?: string
+          formulas?: Json | null
+          governed?: boolean | null
+          id?: string
+          linked_domain?: string | null
+          linked_entity?: string | null
+          linked_workflow?: string | null
+          metadata?: Json | null
+          privacy?: string | null
+          slides?: Json | null
+          status?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id: string
+          version?: number | null
+        }
+        Update: {
+          author?: string | null
+          columns_config?: Json | null
+          content?: string | null
+          created_at?: string
+          data_rows?: Json | null
+          document_type?: string
+          formulas?: Json | null
+          governed?: boolean | null
+          id?: string
+          linked_domain?: string | null
+          linked_entity?: string | null
+          linked_workflow?: string | null
+          metadata?: Json | null
+          privacy?: string | null
+          slides?: Json | null
+          status?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          version?: number | null
         }
         Relationships: []
       }
