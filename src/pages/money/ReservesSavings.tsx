@@ -14,14 +14,21 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
 import { useReservesSavings } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useConfirmation } from "@/hooks/use-confirmation";
+import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
+import { useQueryFreshness } from "@/hooks/use-query-freshness";
+import { ContextualEmptyState } from "@/components/sita/ContextualEmptyState";
+import { getContextualEmptyState } from "@/lib/ux-trust/contextual-empty-states";
 
 const ReservesSavings = () => {
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
+  const { confirmation, confirm } = useConfirmation();
 
-  const { data: reserves = [], isLoading } = useQuery({
+  const reservesQuery = useQuery({
     queryKey: ["reserves", isDemoMode, user?.id],
     queryFn: async () => {
       if (isDemoMode) return reservesData;
@@ -35,6 +42,9 @@ const ReservesSavings = () => {
     },
     staleTime: isDemoMode ? Infinity : 10000,
   });
+  const reserves = reservesQuery.data ?? [];
+  const isLoading = reservesQuery.isLoading;
+  const freshness = useQueryFreshness(reservesQuery);
 
   // Create reserve mutation
   const createReserve = useMutation({
@@ -76,8 +86,9 @@ const ReservesSavings = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <DemoModeBadge />
+      <ConfirmationDialog state={confirmation} />
       <SitaPageHeader title="Reserves & Savings" subtitle="Build stability, track goals, and maintain financial resilience"
-        actions={<SitaButton variant="primary" onClick={() => createReserve.mutate({ name: "New Goal", target_amount: 5000, category: "goal", contribution_amount: 200 })}><Plus className="h-4 w-4" /> New Goal</SitaButton>} />
+        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => createReserve.mutate({ name: "New Goal", target_amount: 5000, category: "goal", contribution_amount: 200 })}><Plus className="h-4 w-4" /> New Goal</SitaButton></div>} />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Total Reserved" value={`$${(totalCurrent / 1000).toFixed(1)}K`} icon={PiggyBank} sub={`of $${(totalTarget / 1000).toFixed(0)}K target`} className="gradient-sita-subtle" />
@@ -93,6 +104,8 @@ const ReservesSavings = () => {
 
       {isLoading ? (
         <SectionSkeleton cards={4} columns={1} />
+      ) : reserves.length === 0 && !isDemoMode ? (
+        <ContextualEmptyState config={getContextualEmptyState("money")} />
       ) : reserves.length === 0 ? (
         <EmptyState icon={PiggyBank} title="No reserves yet" description="Create your first savings goal to start building financial resilience." />
       ) : (
@@ -128,7 +141,7 @@ const ReservesSavings = () => {
                   <div className="shrink-0 flex flex-col items-end gap-2">
                     <TrustBadge level={pct >= 80 ? "verified" : pct >= 50 ? "review" : "degraded"} label={pct >= 80 ? "Healthy" : pct >= 50 ? "Building" : "Behind"} size="sm" />
                     {!isDemoMode && (
-                      <button onClick={() => deleteReserve.mutate(r.id)} className="text-muted-foreground hover:text-destructive transition-colors">
+                      <button onClick={async () => { if (await confirm({ title: "Delete this reserve goal?", description: "This savings goal will be permanently removed.", variant: "destructive" })) deleteReserve.mutate(r.id); }} className="text-muted-foreground hover:text-destructive transition-colors">
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     )}

@@ -15,6 +15,10 @@ import {
 import { motion } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useConfirmation } from "@/hooks/use-confirmation";
+import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
+import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 interface Lead {
   id: string; name: string; company?: string | null; source: string | null; status: string;
@@ -60,6 +64,7 @@ type Tab = "all" | "urgent" | "new" | "warm" | "stale" | "qualified";
 const LeadsInbox = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const { confirmation, confirm } = useConfirmation();
   const [tab, setTab] = useState<Tab>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [view, setView] = useState<"list" | "board">("list");
@@ -75,7 +80,7 @@ const LeadsInbox = () => {
   const [formValue, setFormValue] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  const { data: leads = [], isLoading } = useQuery({
+  const leadsQuery = useQuery({
     queryKey: ["leads"],
     queryFn: async () => {
       const { data, error } = await (supabase as any).from("leads").select("*").order("created_at", { ascending: false });
@@ -83,6 +88,9 @@ const LeadsInbox = () => {
       return data as Lead[];
     },
   });
+  const leads = leadsQuery.data ?? [];
+  const isLoading = leadsQuery.isLoading;
+  const freshness = useQueryFreshness(leadsQuery);
 
   const addMutation = useMutation({
     mutationFn: async (lead: { name: string; email?: string; phone?: string; company?: string; source?: string; likely_value?: number }) => {
@@ -165,6 +173,7 @@ const LeadsInbox = () => {
     return (
       <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <DemoModeBadge />
+      <ConfirmationDialog state={confirmation} />
         <SitaPageHeader title="Leads Inbox" subtitle="Capture, qualify, and convert" />
         <KPISkeleton count={4} />
         <SectionSkeleton cards={4} columns={2} />
@@ -177,7 +186,7 @@ const LeadsInbox = () => {
       <SitaPageHeader
         title="Leads Inbox"
         subtitle="Capture, qualify, and convert"
-        actions={<SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton>}
+        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton></div>}
       />
 
       {/* Add/Edit Modal */}
@@ -378,7 +387,7 @@ const LeadsInbox = () => {
 
               <div className="flex gap-2 flex-wrap">
                 <SitaButton variant="secondary" size="sm" onClick={() => openEdit(selected)}><FileText className="h-3.5 w-3.5" /> Edit Lead</SitaButton>
-                <SitaButton variant="ghost" size="sm" onClick={() => { if (confirm("Delete this lead?")) deleteMutation.mutate(selected.id); }}>
+                <SitaButton variant="ghost" size="sm" onClick={async () => { if (await confirm({ title: "Delete this lead?", description: "This lead will be permanently removed.", variant: "destructive" })) deleteMutation.mutate(selected.id); }}>
                   <Trash2 className="h-3.5 w-3.5" /> Delete
                 </SitaButton>
               </div>

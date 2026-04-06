@@ -6,6 +6,7 @@
 import React from "react";
 import { useRealityModeSafe } from "@/lib/dual-reality";
 import { RealityStateBanner } from "@/components/user-app/RealityStateBanner";
+import { NetworkStatusBar } from "@/components/sita/NetworkStatusBar";
 
 interface UserAppShellProps {
   children: React.ReactNode;
@@ -18,6 +19,9 @@ export function UserAppShell({ children, title, showRealityBanner = true }: User
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
+      {/* Network Status — global connectivity feedback */}
+      <NetworkStatusBar />
+
       {/* Reality Banner — subtle, user-friendly */}
       {showRealityBanner && isDemo && <RealityStateBanner />}
 

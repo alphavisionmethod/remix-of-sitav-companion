@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useConfirmation } from "@/hooks/use-confirmation";
+import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 
 type CommStatus = "draft" | "review" | "approved" | "sent" | "delivered" | "opened" | "replied" | "failed";
 
@@ -52,6 +54,7 @@ let nextId = 7;
 
 const CommunicationsCenter = () => {
   const [communications, setCommunications] = useState<Communication[]>(initialComms);
+  const { confirmation, confirm: confirmAction } = useConfirmation();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -116,6 +119,7 @@ const CommunicationsCenter = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <DemoModeBadge />
+      <ConfirmationDialog state={confirmation} />
       <SitaPageHeader
         title="Communications"
         subtitle="Drafts, outreach, and message tracking — full CRUD with mock data"
@@ -303,7 +307,7 @@ const CommunicationsCenter = () => {
                       <Edit className="h-3.5 w-3.5" /> Edit
                     </SitaButton>
                   )}
-                  <SitaButton variant="ghost" size="sm" onClick={() => { if (confirm("Delete this communication?")) handleDelete(selected.id); }}>
+                  <SitaButton variant="ghost" size="sm" onClick={async () => { if (await confirmAction({ title: "Delete this communication?", description: "This communication will be permanently removed.", variant: "destructive" })) handleDelete(selected.id); }}>
                     <Trash2 className="h-3.5 w-3.5" /> Delete
                   </SitaButton>
                 </div>

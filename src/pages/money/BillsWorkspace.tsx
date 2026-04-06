@@ -13,6 +13,10 @@ import { format, differenceInDays, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { simulatePayment, type PaymentSimulation } from "@/lib/core-services/payment-execution";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useConfirmation } from "@/hooks/use-confirmation";
+import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
+import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 interface BillForm {
   payee: string;
@@ -47,13 +51,14 @@ const statusConfig: Record<string, { label: string; color: string }> = {
 const BillsWorkspace = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const { confirmation, confirm } = useConfirmation();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<BillForm>(emptyForm);
 
-  const { data: bills = [], isLoading } = useQuery({
+  const billsQuery = useQuery({
     queryKey: ["bills"],
     queryFn: async () => {
       const { data, error } = await (supabase as any).from("bills").select("*").order("due_date", { ascending: true });
@@ -61,6 +66,9 @@ const BillsWorkspace = () => {
       return data;
     },
   });
+  const bills = billsQuery.data ?? [];
+  const isLoading = billsQuery.isLoading;
+  const freshness = useQueryFreshness(billsQuery);
 
   const createMutation = useMutation({
     mutationFn: async (bill: BillForm) => {
@@ -147,10 +155,11 @@ const BillsWorkspace = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <DemoModeBadge />
+      <ConfirmationDialog state={confirmation} />
       <SitaPageHeader
         title="Bills & Due Soon"
         subtitle="Track, schedule, and never miss a payment"
-        actions={<SitaButton variant="primary" onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}><Plus className="h-4 w-4" /> Add Bill</SitaButton>}
+        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}><Plus className="h-4 w-4" /> Add Bill</SitaButton></div>}
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -259,7 +268,7 @@ const BillsWorkspace = () => {
                     }}><Zap className="h-3.5 w-3.5" /> Simulate</SitaButton>
                   )}
                   <SitaButton variant="secondary" size="sm" onClick={() => openEdit(selected)}>Edit</SitaButton>
-                  <SitaButton variant="danger" size="sm" onClick={() => { if (confirm("Delete this bill?")) deleteMutation.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /></SitaButton>
+                  <SitaButton variant="danger" size="sm" onClick={async () => { if (await confirm({ title: "Delete this bill?", description: "This bill will be permanently removed.", variant: "destructive" })) deleteMutation.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /></SitaButton>
                 </div>
               </>
             ) : (

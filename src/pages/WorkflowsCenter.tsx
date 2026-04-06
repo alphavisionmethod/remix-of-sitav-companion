@@ -11,6 +11,10 @@ const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
 import { Workflow, CheckCircle2, Clock, AlertTriangle, ChevronRight, Eye, RotateCcw, Shield, Plus, Trash2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useConfirmation } from "@/hooks/use-confirmation";
+import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
+import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 const statusToState = (status: string): ExecutionState => {
   const map: Record<string, ExecutionState> = {
@@ -26,13 +30,14 @@ const statusToState = (status: string): ExecutionState => {
 const WorkflowsCenter = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const { confirmation, confirm } = useConfirmation();
   const [filter, setFilter] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
   const [newName, setNewName] = useState("");
   const [newTrigger, setNewTrigger] = useState("manual");
 
-  const { data: runs = [], isLoading } = useQuery({
+  const runsQuery = useQuery({
     queryKey: ["workflow_runs", user?.id],
     enabled: !!user,
     queryFn: async () => {
@@ -41,6 +46,9 @@ const WorkflowsCenter = () => {
       return data;
     },
   });
+  const runs = runsQuery.data ?? [];
+  const isLoading = runsQuery.isLoading;
+  const freshness = useQueryFreshness(runsQuery);
 
   const { data: steps = [] } = useQuery({
     queryKey: ["workflow_steps", selectedId],
@@ -96,8 +104,9 @@ const WorkflowsCenter = () => {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <DemoModeBadge />
+      <ConfirmationDialog state={confirmation} />
       <SitaPageHeader title="Workflows" subtitle="Actions, approvals, and execution tracking — live from workflow engine"
-        actions={<SitaButton variant="primary" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> New Workflow</SitaButton>}
+        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> New Workflow</SitaButton></div>}
       />
 
       {showCreate && (
@@ -211,7 +220,7 @@ const WorkflowsCenter = () => {
 
                 <div className="flex gap-2">
                   <SitaButton variant="primary" className="flex-1"><Eye className="h-3.5 w-3.5" /> Inspect</SitaButton>
-                  <SitaButton variant="danger" onClick={() => { if (confirm("Delete this run?")) deleteRun.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /> Delete</SitaButton>
+                  <SitaButton variant="danger" onClick={async () => { if (await confirm({ title: "Delete this run?", description: "This workflow run record will be permanently removed.", variant: "destructive" })) deleteRun.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /> Delete</SitaButton>
                 </div>
               </>
             ) : (

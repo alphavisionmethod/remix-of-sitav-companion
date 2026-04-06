@@ -27,6 +27,8 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useConfirmation } from "@/hooks/use-confirmation";
+import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
@@ -90,6 +92,7 @@ const SettingsPage = () => {
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
   const { isLoading, toggleDemoMode } = useDemoMode();
+  const { confirmation, confirm: confirmAction } = useConfirmation();
   const [activeSection, setActiveSection] = useState<SettingsSection>("identity");
   const [autonomy, setAutonomy] = useState("simulate-first");
   const [confidence, setConfidence] = useState("70");
@@ -198,6 +201,7 @@ const SettingsPage = () => {
         return (
           <SitaCard hover={false} className="p-5">
       <DemoModeBadge />
+      <ConfirmationDialog state={confirmation} />
             <SitaCardTitle sub="Your profile and environment identity">
               <div className="flex items-center gap-2"><User className="h-4 w-4 text-primary" /> Identity & Profile</div>
             </SitaCardTitle>
@@ -335,7 +339,7 @@ const SettingsPage = () => {
                 <button
                   className="flex items-center gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-xs text-destructive hover:bg-destructive/20 transition-colors w-full"
                   onClick={async () => {
-                    if (!confirm("Are you sure? This will permanently delete all your data.")) return;
+                    if (!(await confirmAction({ title: "Delete all data?", description: "This will permanently delete all your data. This action cannot be undone.", variant: "destructive", requireTypedConfirmation: "DELETE" }))) return;
                     try {
                       const { error } = await supabase.functions.invoke("gdpr-delete", { method: "POST", body: {} });
                       if (error) throw error;

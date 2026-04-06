@@ -13,6 +13,10 @@ import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useConfirmation } from "@/hooks/use-confirmation";
+import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
+import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 interface SubForm {
   service_name: string;
@@ -39,13 +43,14 @@ const usageLabelMap: Record<string, { label: string; color: string }> = {
 const SubscriptionsWaste = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const { confirmation, confirm } = useConfirmation();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<SubForm>(emptyForm);
 
-  const { data: subscriptions = [], isLoading } = useQuery({
+  const subsQuery = useQuery({
     queryKey: ["subscriptions"],
     queryFn: async () => {
       const { data, error } = await (supabase as any).from("subscriptions").select("*").order("service_name", { ascending: true });
@@ -53,6 +58,9 @@ const SubscriptionsWaste = () => {
       return data;
     },
   });
+  const subscriptions = subsQuery.data ?? [];
+  const isLoading = subsQuery.isLoading;
+  const freshness = useQueryFreshness(subsQuery);
 
   const createMutation = useMutation({
     mutationFn: async (sub: SubForm) => {
@@ -154,10 +162,11 @@ const SubscriptionsWaste = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <DemoModeBadge />
+      <ConfirmationDialog state={confirmation} />
       <SitaPageHeader
         title="Subscriptions & Waste"
         subtitle="Track, optimize, and reduce waste"
-        actions={<SitaButton variant="primary" onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}><Plus className="h-4 w-4" /> Add Subscription</SitaButton>}
+        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}><Plus className="h-4 w-4" /> Add Subscription</SitaButton></div>}
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -272,7 +281,7 @@ const SubscriptionsWaste = () => {
                     <SitaButton variant="primary" size="sm" className="flex-1" onClick={() => statusMutation.mutate({ id: selected.id, status: "active" })}><Play className="h-3.5 w-3.5" /> Reactivate</SitaButton>
                   )}
                   <SitaButton variant="secondary" size="sm" onClick={() => openEdit(selected)}><Pencil className="h-3.5 w-3.5" /> Edit</SitaButton>
-                  <SitaButton variant="danger" size="sm" onClick={() => { if (confirm("Delete this subscription?")) deleteMutation.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /></SitaButton>
+                  <SitaButton variant="danger" size="sm" onClick={async () => { if (await confirm({ title: "Delete this subscription?", description: "This subscription record will be permanently removed.", variant: "destructive" })) deleteMutation.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /></SitaButton>
                 </div>
               </>
             ) : (
