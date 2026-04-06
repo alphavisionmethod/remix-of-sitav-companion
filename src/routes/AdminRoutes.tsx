@@ -45,7 +45,6 @@ const OperatorTasteDashboard = lazy(() => import("@/pages/admin/strategic/Operat
 const AIT01TeamOverview = lazy(() => import("@/pages/admin/AIT01TeamOverview"));
 const AIT02RoleRegistry = lazy(() => import("@/pages/admin/AIT02RoleRegistry"));
 const AIT03TaskInvocation = lazy(() => import("@/pages/admin/AIT03TaskInvocation"));
-const AIT04to08 = lazy(() => import("@/pages/admin/AIT04to08Boards"));
 
 // Truth Index Dashboard
 const TruthIndexDashboard = lazy(() => import("@/pages/admin/TruthIndexDashboard"));
