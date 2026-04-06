@@ -143,9 +143,9 @@ export default function ISA06UnifiedAccountGraphExplorer() {
                 const toNode = nodes.find((n: any) => n.id === edge.to_node_id);
                 return (
                   <div key={edge.id} className="flex items-center gap-2 text-sm p-2 rounded bg-muted/30">
-                    <span className="font-medium">{fromNode?.display_label || edge.from_node_id?.slice(0, 8)}</span>
+                    <span className="font-medium">{fromNode?.display_name || edge.from_node_id?.slice(0, 8)}</span>
                     <ArrowRight className="h-4 w-4 text-muted-foreground shrink-0" />
-                    <span className="font-medium">{toNode?.display_label || edge.to_node_id?.slice(0, 8)}</span>
+                    <span className="font-medium">{toNode?.display_name || edge.to_node_id?.slice(0, 8)}</span>
                     <Badge variant="outline" className="text-xs ml-auto">{edge.edge_type}</Badge>
                     {edge.strength != null && (
                       <span className="text-xs text-muted-foreground">{Math.round(edge.strength * 100)}%</span>
