@@ -18,6 +18,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { buildMockSimResult } from "@/lib/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 // Engine-backed cost data (replaces @/lib/mocks import)
 const ENGINE_COSTS = [
   { service: "AI Model Calls", cost: "$12.40", percentage: 45, trend: "up" as const },

@@ -191,8 +191,9 @@ const RevenueAutopilot = () => {
     { key: "recovered", label: "Recovered Value" },
   ];
 
-  return (
+   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Revenue Autopilot"
         subtitle="Continuously find and recover value leaks across leads, quotes, invoices, renewals, and capacity"

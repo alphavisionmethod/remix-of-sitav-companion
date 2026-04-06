@@ -374,8 +374,9 @@ const CollectionsCommandCenter = () => {
     { key: "chases", label: "Active Chases" },
   ];
 
-  return (
+   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Collections Command Center"
         subtitle="Track overdue receivables, manage escalation sequences, and recover revenue automatically"

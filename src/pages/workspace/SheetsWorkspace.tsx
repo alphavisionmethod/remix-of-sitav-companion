@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useSheets } from "@/hooks/use-domain-data";
 import type { MockSheet } from "@/lib/mock-data/workspace";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 
