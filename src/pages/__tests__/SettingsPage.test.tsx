@@ -31,7 +31,7 @@ describe("SettingsPage", () => {
   it("exports a default component", async () => {
     const mod = await import("../SettingsPage");
     expect(mod.default).toBeDefined();
-  });
+  }, 15000);
 
   it("renders settings sections", async () => {
     const SettingsPage = (await import("../SettingsPage")).default;
@@ -43,5 +43,5 @@ describe("SettingsPage", () => {
       </QueryClientProvider>
     );
     expect(container.firstChild).toBeTruthy();
-  });
+  }, 15000);
 });

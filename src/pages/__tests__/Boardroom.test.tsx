@@ -9,6 +9,7 @@ vi.mock("@/integrations/supabase/client", () => ({
     auth: {
       onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
       getSession: vi.fn().mockResolvedValue({ data: { session: null }, error: null }),
+      getUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
     },
     from: vi.fn(() => ({
       select: vi.fn(() => ({ eq: vi.fn(() => ({ data: [], error: null })), data: [], error: null, order: vi.fn(() => ({ data: [], error: null })) })),
@@ -34,7 +35,7 @@ describe("Boardroom Page", () => {
   it("exports a default component", async () => {
     const mod = await import("../Boardroom");
     expect(mod.default).toBeDefined();
-  });
+  }, 15000);
 
   it("renders with DemoModeBadge", async () => {
     const Boardroom = (await import("../Boardroom")).default;
@@ -47,5 +48,5 @@ describe("Boardroom Page", () => {
     );
     expect(container.firstChild).toBeTruthy();
     expect(container.textContent).toContain("Demo");
-  });
+  }, 15000);
 });

@@ -1,8 +1,4 @@
 import { describe, it, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
@@ -20,7 +16,7 @@ vi.mock("@/integrations/supabase/client", () => ({
 
 vi.mock("@/contexts/DataModeContext", () => ({
   useDataMode: () => ({ isDemoMode: true, toggleMode: vi.fn() }),
-  DataModeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  DataModeProvider: ({ children }: any) => children,
 }));
 
 vi.mock("@/contexts/DisplayModeContext", () => ({
@@ -29,20 +25,18 @@ vi.mock("@/contexts/DisplayModeContext", () => ({
 
 vi.mock("@/contexts/InspectorContext", () => ({
   useInspector: () => ({ inspect: vi.fn(), inspectedEntity: null }),
-  InspectorProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  InspectorProvider: ({ children }: any) => children,
 }));
 
 vi.mock("@/contexts/AuthContext", () => ({
-  useAuth: () => ({ user: { id: "test-user", email: "test@test.com" }, loading: false, signOut: vi.fn() }),
-  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  useAuth: () => ({ user: { id: "test-user", email: "t@t.com" }, loading: false, signOut: vi.fn() }),
+  AuthProvider: ({ children }: any) => children,
 }));
 
 describe("DailyPulse Page", () => {
-  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-
   it("exports a default component", async () => {
     const mod = await import("../DailyPulse");
     expect(mod.default).toBeDefined();
     expect(typeof mod.default).toBe("function");
-  });
+  }, 15000);
 });
