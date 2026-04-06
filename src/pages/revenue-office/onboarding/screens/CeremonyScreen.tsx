@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { Crown, ArrowRight, Zap } from "lucide-react";
 import { CHAPTERS, type ScreenProps } from "../types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function CeremonyScreen({ state, setState, onNext }: ScreenProps) {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="text-center py-12 max-w-lg mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.3, duration: 0.6 }}>
         <div className="relative mx-auto w-20 h-20 mb-6">
           <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl" />

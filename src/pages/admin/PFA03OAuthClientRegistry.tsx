@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Key, CheckCircle, XCircle } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const purposeColors: Record<string, string> = {
   identity_web: "bg-blue-500/20 text-blue-400", connector_web: "bg-green-500/20 text-green-400",
@@ -20,6 +21,7 @@ export default function PFA03OAuthClientRegistry() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Key className="h-6 w-6" /> OAuth Client Registry</h1>
         <p className="text-sm text-muted-foreground mt-1">Auth clients by purpose, environment, and provider family</p>

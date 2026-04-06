@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const mockEscalations = [
   { id: "esc-1", domain: "engineering", trigger: "low_confidence", from: "utility", to: "premium", cost: 180, justified: true, outcome: "accepted", desc: "Complex race condition in payment flow", ago: "2hr" },
@@ -52,6 +53,7 @@ const EscalationControlCenter = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         icon={<Zap className="h-6 w-6" />}
         title="Escalation Control Center"

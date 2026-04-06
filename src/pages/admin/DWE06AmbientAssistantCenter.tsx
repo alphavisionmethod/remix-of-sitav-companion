@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bot, Brain, Zap, Shield, HeartHandshake } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function DWE06AmbientAssistantCenter() {
   const [roles, setRoles] = useState<any[]>([]);
@@ -22,6 +23,7 @@ export default function DWE06AmbientAssistantCenter() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE06 — Ambient Assistant Experience Center</h1>
         <p className="text-muted-foreground">Proactive roles, support intensity, calm mode, overload protection.</p>

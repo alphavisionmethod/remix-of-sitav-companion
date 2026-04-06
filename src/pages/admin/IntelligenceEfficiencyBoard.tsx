@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { IntelligenceAssetType, EfficiencyScore, OutcomeType, DomainId } from "@/lib/intelligence-architecture";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Mock Data ───────────────────────────────────────────────
 
@@ -112,6 +113,7 @@ const IntelligenceEfficiencyBoard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

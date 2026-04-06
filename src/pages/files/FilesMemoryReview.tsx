@@ -8,6 +8,7 @@ import { useAllFiles } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const FilesMemoryReview = () => {
   const { data: files = [], isLoading: loadingFiles } = useAllFiles();
@@ -84,6 +85,7 @@ const FilesMemoryReview = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Memory Review" subtitle="What the system learned from your files — review, correct, or forget" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

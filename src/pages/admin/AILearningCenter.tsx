@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { TrendingUp, Brain, AlertTriangle, CheckCircle2, RotateCcw, Sparkles, Target, Users } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PATTERNS = [
   { pattern: "Route mapping errors recur after lazy-import refactors", frequency: "4x in 30 days", domain: "Frontend", confidence: 88, severity: "high", improvement: "Added pre-commit route validation check", status: "implemented" as const },
@@ -36,6 +37,7 @@ const AILearningCenter = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <AdminPageHeader icon={TrendingUp} title="Learning & Improvement Center" subtitle="What the AI team learned — patterns, outcomes, calibration, and permanent improvements" accent="primary" />
 
       <div className="grid grid-cols-4 gap-3">

@@ -10,6 +10,7 @@ import { useAllFiles } from "@/hooks/use-domain-data";
 import { FileUploader } from "@/components/sita/FileUploader";
 import { classifyFile, detectSensitivity } from "@/lib/core-services/file-ingestion";
 import { format } from "date-fns";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type FileCategory = "all" | "business" | "money" | "household" | "travel" | "legal" | "sensitive";
 
@@ -73,6 +74,7 @@ const FilesAll = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="All Files"
         subtitle={`${files.length} files across all domains`}

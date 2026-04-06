@@ -12,6 +12,7 @@ import {
   CheckSquare, Clock, AlertTriangle, Home, Wrench, ShoppingCart, Car, FileText, Plus,
   Users, GraduationCap, Stethoscope, ArrowUpRight, RotateCcw, Sparkles, Shield, X, Trash2, Check
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type ViewFilter = "all" | "today" | "this-week" | "overdue" | "by-person" | "high-priority";
 
@@ -139,6 +140,7 @@ const HouseholdTasks = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader
         title="Household Tasks"
         subtitle="Organized, prioritized, delegated — with proof and escalation"

@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { FraudSentinelService, type FraudSummary } from "@/lib/core-services/fraud-sentinel";
 import { BudgetAutomationPanel } from "@/components/sita/BudgetAutomationPanel";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const accounts = [
   { name: "Business Checking", balance: "$14,230", institution: "Chase", trend: "up" as const, icon: Briefcase },
@@ -63,6 +64,7 @@ const MoneyOverview = () => {
   if (!hasLiveData) {
     return (
       <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <DemoModeBadge />
         <SitaPageHeader title="Money Center" subtitle="Cash posture, obligations, and financial intelligence" />
         <EmptyStateCTA
           icon={DollarSign}

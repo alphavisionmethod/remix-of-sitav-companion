@@ -7,6 +7,7 @@ import { Mail, MessageSquare, Send, Eye, Edit, CheckCircle, Clock, Sparkles, Tra
 import { motion, AnimatePresence } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type CommStatus = "draft" | "review" | "approved" | "sent" | "delivered" | "opened" | "replied" | "failed";
 
@@ -114,6 +115,7 @@ const CommunicationsCenter = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader
         title="Communications"
         subtitle="Drafts, outreach, and message tracking — full CRUD with mock data"

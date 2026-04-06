@@ -11,6 +11,7 @@ import { Activity, RefreshCw, Shield, Database, HardDrive } from "lucide-react";
 import { runAllProbes, getOverallHealth, type ProbeResult } from "@/lib/observability/health-probes";
 import { getCostSummary, type CostSummary } from "@/lib/observability/cost-governance";
 import { getLogBuffer, type LogEntry } from "@/lib/observability/structured-logger";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const statusColor = (s: string) => {
   switch (s) {
@@ -52,6 +53,7 @@ export default function SystemHealthDashboard() {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">System Health</h1>

@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Presentation, Play } from "lucide-react";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function CN06ConnectorDemoReview() {
   const queryClient = useQueryClient();
@@ -28,6 +29,7 @@ export default function CN06ConnectorDemoReview() {
 
   return (
     <div className="space-y-6 p-6"  >
+      <DemoModeBadge />
       <div className="space-y-6">
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={() => activateMutation.mutate("demo_google_drive")} disabled={activateMutation.isPending}>

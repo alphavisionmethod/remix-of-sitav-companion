@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const METRICS = [
   { label: "Monthly Revenue", value: "$47,280", change: "+12.4%", trend: "up" },
@@ -38,6 +39,7 @@ export default function RevenueGate() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between mb-2">
           <div>

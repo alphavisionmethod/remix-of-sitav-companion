@@ -10,6 +10,7 @@ import {
   Lock, Check, X, Eye, Loader2, CheckCircle2, HelpCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type AnalysisState = "idle" | "analyzing" | "verified" | "unknown" | "blocked";
 
@@ -33,6 +34,7 @@ const ExternalInstallerPage = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
+      <DemoModeBadge />
       <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to App Store
       </button>

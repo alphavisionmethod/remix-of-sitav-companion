@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const statusColors: Record<string, string> = {
   completed: "bg-green-500/20 text-green-400", running: "bg-blue-500/20 text-blue-400",
@@ -46,6 +47,7 @@ export default function CN04SyncTruthCenter() {
 
   return (
     <div className="space-y-6 p-6"  >
+      <DemoModeBadge />
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-sm text-muted-foreground">Total Syncs</p><p className="text-2xl font-bold">{syncRuns.length}</p></CardContent></Card>

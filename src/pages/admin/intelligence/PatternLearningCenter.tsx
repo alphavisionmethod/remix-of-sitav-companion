@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const mockPatterns = [
   { id: "p-1", type: "issue_fingerprint", domain: "engineering", label: "API timeout cascade after deploy", confidence: 94, falsePositive: 2, sourceCount: 42, privacy: "anonymizable", reusable: true, description: "Cascading timeout pattern detected post-deployment in microservice mesh" },
@@ -36,6 +37,7 @@ const PatternLearningCenter = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         icon={<Radar className="h-6 w-6" />}
         title="Pattern Learning Center"

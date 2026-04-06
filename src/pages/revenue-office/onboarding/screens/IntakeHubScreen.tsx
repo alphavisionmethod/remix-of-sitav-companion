@@ -2,6 +2,7 @@ import { Link2, Upload, FileText, Globe, ArrowRight } from "lucide-react";
 import { Toggle, ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const paths = [
   { id: "connect", label: "Connect live tools", desc: "CRM, calendar, email, booking, payments, store", icon: Link2 },
@@ -17,6 +18,7 @@ export default function IntakeHubScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ScreenHeader icon={Link2} title="Bring in what your business already uses" subtitle="SITA adapts to your existing world instead of replacing it" color="text-blue-400" />
       <div className="grid md:grid-cols-2 gap-3">
         {paths.map(p => <Toggle key={p.id} label={p.label} desc={p.desc} icon={p.icon} selected={state.intakePaths.includes(p.id)} onToggle={() => toggle(p.id)} />)}

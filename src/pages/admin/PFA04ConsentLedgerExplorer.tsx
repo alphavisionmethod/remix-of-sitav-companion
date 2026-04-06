@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BookOpen } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function PFA04ConsentLedgerExplorer() {
   const { data: consents = [] } = useQuery({
@@ -26,6 +27,7 @@ export default function PFA04ConsentLedgerExplorer() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><BookOpen className="h-6 w-6" /> Consent Ledger Explorer</h1>
         <p className="text-sm text-muted-foreground mt-1">Grants, upgrades, revocations, and permission histories</p>

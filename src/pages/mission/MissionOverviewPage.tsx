@@ -15,6 +15,7 @@ import {
   Cpu, Zap, CheckCircle, RefreshCw, Eye, Database, Rocket,
   Heart, Target, Lock, Server, BarChart3,
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function MissionOverviewPage() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function MissionOverviewPage() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-5">
+      <DemoModeBadge />
       <button onClick={() => navigate("/mission-control")} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
         <ArrowLeft className="h-3.5 w-3.5" /> Mission Control Home
       </button>

@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { BookOpen, TrendingUp, CheckCircle2, AlertTriangle, RotateCcw, Brain, Target, Users, ArrowRight } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const LEARNED_PATTERNS = [
   { pattern: "Route mapping errors recur after lazy-import refactors", frequency: "4x / 30d", confidence: 88, domain: "Frontend", action: "Added pre-commit route validation", status: "active" as const, impact: "Prevented 3 broken routes" },
@@ -37,6 +38,7 @@ const AISelfLearningLedger = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <AdminPageHeader icon={BookOpen} title="Self-Learning Ledger" subtitle="What the system learned, how behavior changed, and how routing adapted" accent="primary" />
 
       <div className="grid grid-cols-4 gap-3">

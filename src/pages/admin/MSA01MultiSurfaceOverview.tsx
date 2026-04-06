@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Globe, Smartphone, Monitor, Glasses, Mic, RefreshCw, CheckCircle, XCircle, Layers, AlertTriangle, Shield } from "lucide-react";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const surfaceIcons: Record<string, React.ReactNode> = {
   web: <Globe className="h-5 w-5" />, mobile_ios: <Smartphone className="h-5 w-5" />,
@@ -112,6 +113,7 @@ export default function MSA01MultiSurfaceOverview() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Layers className="h-6 w-6" /> Multi-Surface Architecture</h1>

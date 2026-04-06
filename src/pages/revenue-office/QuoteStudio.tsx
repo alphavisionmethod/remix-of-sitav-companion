@@ -9,6 +9,7 @@ import {
   TrendingUp, Package, Plus, ArrowRight, Brain, Users, Mail, Phone,
   Star, Shield, Target, RefreshCw, Zap, BarChart3, XCircle
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const quoteStats = [
   { label: "Active Quotes", value: "18", delta: "+4 this week", icon: FileText, color: "text-blue-400" },
@@ -56,6 +57,7 @@ export default function QuoteStudio() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><FileText className="h-6 w-6 text-blue-400" />Quote Studio</h1>

@@ -7,6 +7,7 @@ import { Brain, Send, Lightbulb, GraduationCap, Hammer, Palette, Loader2 } from 
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import ReactMarkdown from "react-markdown";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type Mode = "think" | "learn" | "build" | "create";
 
@@ -79,6 +80,7 @@ export default function PersonalBrain() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] max-w-[900px] mx-auto">
+      <DemoModeBadge />
       {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center gap-3 mb-3">

@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useComputeSnapshots } from "@/lib/hooks/useIntelligencePersistence";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DEFAULT_CATEGORIES = [
   { cat: "defensive", target: 25, desc: "Monitoring, self-healing, compliance" },
@@ -34,6 +35,7 @@ const PortfolioAllocationDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader icon={<PieChart className="h-6 w-6" />} title="AI Portfolio Allocation" subtitle="Treat AI spend like an investment portfolio — defensive, growth, strategic, experimental" />
 
       {dataLoading ? (

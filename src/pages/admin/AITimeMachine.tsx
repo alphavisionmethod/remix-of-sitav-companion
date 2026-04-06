@@ -2,6 +2,7 @@ import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { History, ArrowRight, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, Zap, RotateCcw, GitBranch } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const TIMELINE = [
   {
@@ -54,6 +55,7 @@ const AITimeMachine = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <AdminPageHeader icon={History} title="Engineering Time Machine" subtitle="Replay what changed before an incident or regression — deploys, configs, flags, rollbacks" accent="primary" />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

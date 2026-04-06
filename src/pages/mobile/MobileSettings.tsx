@@ -6,6 +6,7 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { Shield, Fingerprint, Bell, Moon, LogOut, ChevronRight, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ToggleRow = ({ icon: Icon, label, description, defaultOn = false }: {
   icon: any; label: string; description: string; defaultOn?: boolean;
@@ -13,7 +14,8 @@ const ToggleRow = ({ icon: Icon, label, description, defaultOn = false }: {
   const [on, setOn] = useState(defaultOn);
   return (
     <button
-      onClick={() => setOn(!on)}
+      onClick={() =>
+      <DemoModeBadge /> setOn(!on)}
       className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-border/40 bg-card"
     >
       <Icon className="h-4 w-4 text-muted-foreground shrink-0" />

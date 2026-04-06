@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Network, User, Building2, FileText, Briefcase } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ENTITY_ICONS: Record<string, React.ReactNode> = {
   person: <User className="h-3 w-3" />, company: <Building2 className="h-3 w-3" />,
@@ -32,6 +33,7 @@ export default function DRS04ScenarioEntityGraph() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS04 — Scenario Entity Graph</h1>
         <p className="text-sm text-muted-foreground mt-1">Inspect synthetic demo world composition</p>

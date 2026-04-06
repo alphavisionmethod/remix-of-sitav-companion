@@ -10,6 +10,7 @@ import {
   Sparkles, DollarSign, Users, Clock, Briefcase, TrendingUp,
   ArrowRight, AlertTriangle, CreditCard, Home, Headphones
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const OpportunityEngine = () => {
   const { user } = useAuth();
@@ -96,6 +97,7 @@ const OpportunityEngine = () => {
 
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader
         title="Opportunity Engine"
         subtitle="Cross-domain intelligence — what you're missing, what you could gain"

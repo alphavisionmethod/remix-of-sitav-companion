@@ -25,6 +25,7 @@ import {
   CheckCircle, ChevronRight, Lightbulb, Target, Play, TrendingUp,
   Clock, Users, Undo2, FileSearch,
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Section: What Matters Now ───────────────────────────────────
 function WhatMattersNow() {
@@ -35,6 +36,7 @@ function WhatMattersNow() {
 
   return (
     <div className="space-y-2">
+      <DemoModeBadge />
       {items.length === 0 ? (
         <div className="rounded-2xl border border-trust-verified/20 bg-trust-verified/5 p-8 text-center">
           <CheckCircle className="h-8 w-8 text-trust-safe mx-auto mb-3" />

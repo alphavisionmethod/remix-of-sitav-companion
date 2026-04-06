@@ -10,6 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useFeatureSpecs, useCreateSpec } from "@/hooks/use-fip-data";
 import { COMPLIANCE_SECTIONS } from "@/lib/fip/types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const SPEC_SECTIONS = [
   'outcome_statement', 'capability_map', 'owner_map', 'surface_map',
@@ -34,6 +35,7 @@ const FIPSpecStudio = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>

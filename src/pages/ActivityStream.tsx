@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 
 import { DEMO_ACTIVITY_TIMELINE } from "@/lib/demo-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Category System ──────────────────────────────────────────
 type FeedCategory = "all" | "actions" | "approvals" | "proof" | "workflows" | "finance" | "communications" | "household" | "system";
@@ -106,6 +107,7 @@ const FeedEventCard = ({ event, index, expanded, onToggle }: {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.2, delay: Math.min(index * 0.02, 0.3) }}
     >
+      <DemoModeBadge />
       <div
         onClick={onToggle}
         className={cn(

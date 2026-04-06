@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { generateChiefSynthesis } from "@/lib/ai-engineering";
 import { getIntegrationHealthSummary, getIntegrationsByCategory } from "@/lib/ai-engineering/platform-integration";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ═══════════════════════════════════════════════════════════════
 // DATA — Engineering Overview Band
@@ -141,6 +142,7 @@ const AIEngineeringBoard = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <AdminPageHeader icon={Brain} title="AI Engineering Board" subtitle="Your AI engineering department — goals, fixes, healing, approvals, and release confidence" accent="primary" />
 
       {/* ── Chief Engineering Synthesis ── */}

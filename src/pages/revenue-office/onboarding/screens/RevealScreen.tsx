@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { Sparkles, Brain, Target, ArrowRight, AlertTriangle, CheckCircle, BarChart3, Zap, Phone, FileText, Heart, Search, TrendingUp, Rocket } from "lucide-react";
 import type { ScreenProps } from "../types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function RevealScreen({ state }: ScreenProps) {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ export default function RevealScreen({ state }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="text-center mb-6">
         <motion.div initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.2, type: "spring", damping: 15 }}>
           <div className="relative mx-auto w-16 h-16 mb-4">

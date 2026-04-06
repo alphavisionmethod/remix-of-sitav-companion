@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const mockDiffs = [
   { id: "dr-1", domain: "investment-finance", desc: "Portfolio state — minor price fluctuation", materiality: 22, action: "reuse-as-is", costFull: 120, costActual: 5, deltas: 2, confidence: 92, preserved: 8, invalidated: 0, changes: ["AAPL +1.2%", "Bond yield -0.05%"] },
@@ -38,6 +39,7 @@ const DifferentialReasoningExplorer = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         icon={<GitCompare className="h-6 w-6" />}
         title="Differential Reasoning Explorer"

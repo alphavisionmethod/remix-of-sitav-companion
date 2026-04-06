@@ -5,6 +5,7 @@ import { Rocket, CheckCircle2, AlertCircle, Clock, XCircle } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DeliveryReadinessBoard = () => {
   const { data: blueprints } = useQuery({
@@ -41,6 +42,7 @@ const DeliveryReadinessBoard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-2">
           <Rocket className="h-8 w-8 text-primary" />

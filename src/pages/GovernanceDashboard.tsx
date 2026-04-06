@@ -13,6 +13,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { Scale, Shield, AlertTriangle, CheckCircle, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ReadinessInput } from "@/lib/engines/readiness-engine";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const };
 
@@ -36,6 +37,7 @@ export default function GovernanceDashboard() {
 
   return (
     <div className="space-y-6 pb-8">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Governance Dashboard"
         subtitle="Meta-governance health across trust, execution, drag, readiness, and delegation"

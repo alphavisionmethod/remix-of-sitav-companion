@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CheckCircle, XCircle, Minus, Zap } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const portColors: Record<string, string> = {
   portable: "bg-green-500/20 text-green-400", web_preferred: "bg-cyan-500/20 text-cyan-400",
@@ -40,6 +41,7 @@ export default function MSA03CapabilityPortability() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Zap className="h-6 w-6" /> Capability Portability Console</h1>
         <p className="text-sm text-muted-foreground mt-1">Every capability mapped to surface readiness — {portable}/{capabilities.length} portable</p>

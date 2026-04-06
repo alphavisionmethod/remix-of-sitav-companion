@@ -3,6 +3,7 @@ import { Globe, Link2, RefreshCw, Shield, AlertTriangle, CheckCircle, Plus, Sett
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PLATFORMS = [
   { name: "Shopify", icon: "🛒", connected: true, url: "mystore.myshopify.com", health: 94, lastSync: "2 min ago", products: 48, issues: 1 },
@@ -32,6 +33,7 @@ const AI_RECOMMENDATIONS = [
 export default function ConnectedSites() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Connected Website Manager</h1>
         <p className="text-sm text-muted-foreground">Connect, audit, monitor and optimize your web platforms</p>

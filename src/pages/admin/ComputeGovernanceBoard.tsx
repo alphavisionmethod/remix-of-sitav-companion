@@ -19,6 +19,7 @@ import { CG04MarginProtectionTab } from "@/components/admin/compute-governance/C
 import { CG06MissionCostTab } from "@/components/admin/compute-governance/CG06MissionCostTab";
 import { CG10PricingSimulatorTab } from "@/components/admin/compute-governance/CG10PricingSimulatorTab";
 import { classColors, tierColors, budgetStatusColors, fmt } from "@/components/admin/compute-governance/shared";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Mock Data ───────────────────────────────────────────────
 
@@ -102,6 +103,7 @@ const ComputeGovernanceBoard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

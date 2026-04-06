@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CANONICAL_DOMAIN_PACKS } from "@/lib/delivery-methodology/domain-packs";
 import { LIFECYCLE_STAGES, getStageLabel } from "@/lib/delivery-methodology/feature-lifecycle";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ARCHETYPE_DOCS = [
   { key: "boardroom", label: "Boardroom", desc: "Executive synthesis surface with advisor views and overlays", files: ["BoardroomPage.tsx", "SynthesisPanel.tsx", "AdvisorOverlay.tsx"], contracts: ["synthesis-contract", "advisor-panel-contract"] },
@@ -30,6 +31,7 @@ const BuilderKnowledgeBase = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-2">
           <BookMarked className="h-8 w-8 text-primary" />

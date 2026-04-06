@@ -28,6 +28,7 @@ import {
   Plane, Users, CalendarDays, FileText, Headphones, Settings, ShieldCheck, Zap, Home, TrendingUp, Shield, Target,
   Lightbulb, Activity, Eye
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Mission Mode Emphasis Config ─────────────────────────────────
 const MISSION_MODE_CONFIG: Record<string, {
@@ -242,7 +243,8 @@ const DailyPulse = () => {
   // Post-arrival first desktop state — shown once after setup
   if (showPostArrival) {
     return (
-      <PostArrivalDesktop onDismiss={() => {
+      <PostArrivalDesktop onDismiss={() =>
+      <DemoModeBadge /> {
         sessionStorage.removeItem("sita-post-arrival-trigger");
         setShowPostArrival(false);
       }} />

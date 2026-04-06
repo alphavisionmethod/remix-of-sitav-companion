@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const TOTAL_STEPS = 10;
 
@@ -90,6 +91,7 @@ function ToggleChip({ label, selected, onClick, icon: Icon }: { label: string; s
           : "border-border/50 bg-card/30 text-muted-foreground hover:border-primary/30 hover:text-foreground"
         }`}
     >
+      <DemoModeBadge />
       {Icon && <Icon className="w-3.5 h-3.5" />}
       {label}
     </button>

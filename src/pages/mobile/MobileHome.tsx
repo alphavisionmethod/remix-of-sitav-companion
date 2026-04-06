@@ -6,6 +6,7 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { PulseCard } from "@/components/mobile/PulseCard";
 import { useNavigate } from "react-router-dom";
 import { Heart, TrendingUp, Shield, Wallet, Calendar, Users, ArrowRight } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const quickActions = [
   { label: "Approvals", path: "/mobile/approvals", count: 3 },
@@ -19,6 +20,7 @@ const MobileHome = () => {
 
   return (
     <MobileShell title="Pulse">
+      <DemoModeBadge />
       {/* Health summary */}
       <div className="grid grid-cols-2 gap-2 mb-4">
         <PulseCard icon={Heart} label="System Health" value="97%" trend="up" accent="green" />

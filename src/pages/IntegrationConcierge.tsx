@@ -16,6 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import type { ConnectorUseCase } from "@/lib/engines/connector-concierge";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Category Config ────────────────────────────────────────────
 const CATEGORIES = [
@@ -47,6 +48,7 @@ function UseCaseCard({ useCase, onSelect }: { useCase: ConnectorUseCase; onSelec
       className="group rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-5 cursor-pointer hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all"
       onClick={onSelect}
     >
+      <DemoModeBadge />
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
           {useCase.connectors.map(c => (

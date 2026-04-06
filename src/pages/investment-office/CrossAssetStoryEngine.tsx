@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Network, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const NARRATIVES = [
   {
@@ -52,6 +53,7 @@ export default function CrossAssetStoryEngine() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Network className="h-6 w-6 text-primary" /> Cross-Asset Story Engine</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Map narratives across markets — see what connects stocks, crypto, commodities, and events</p>

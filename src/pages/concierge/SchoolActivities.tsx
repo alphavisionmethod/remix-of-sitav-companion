@@ -3,6 +3,7 @@ import { KPITile, SitaTabs, EmptyState, RiskCard } from "@/components/sita/SitaC
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { GraduationCap, Calendar, FileText, DollarSign, Bus, Users, AlertTriangle, CheckCircle, Clock, ClipboardList } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface SchoolItem {
   id: string;
@@ -53,6 +54,7 @@ const SchoolActivities = () => {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader title="School & Activities" subtitle="Forms, fees, meetings, prep, and logistics for every child" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

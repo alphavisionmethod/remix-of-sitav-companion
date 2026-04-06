@@ -8,6 +8,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Bot, CheckCircle, XCircle, Clock, AlertTriangle, Zap } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function AR04AgentScheduler() {
   const { data: agentJobs = [] } = useQuery({
@@ -36,6 +37,7 @@ export default function AR04AgentScheduler() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Agent Scheduler Control Plane"
         subtitle="Recurring agent execution, heartbeats, and runtime health"

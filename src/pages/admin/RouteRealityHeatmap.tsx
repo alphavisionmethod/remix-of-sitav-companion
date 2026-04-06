@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { Map, Eye, Cpu, Shield, CheckCircle2 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const STATE_BG: Record<string, string> = {
   presentational: "bg-muted/60 border-muted-foreground/20",
@@ -26,6 +27,7 @@ export default function RouteRealityHeatmap() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">Route Reality Heatmap</h1>
         <p className="text-sm text-muted-foreground">Visual map of all routes by reality state — RCP07</p>

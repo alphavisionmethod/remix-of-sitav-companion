@@ -3,6 +3,7 @@ import { BarChart3, Globe, TrendingUp, AlertTriangle, Eye, ShoppingCart, ArrowUp
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const METRICS = [
   { label: "Total Traffic", value: "12,847", change: "+14.2%", up: true, icon: Eye },
@@ -41,6 +42,7 @@ const ADVISOR_SIGNALS = [
 export default function PresenceBoardroom() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Presence Boardroom</h1>
         <p className="text-sm text-muted-foreground">Website health, traffic, conversions & advisor intelligence</p>

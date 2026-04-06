@@ -8,6 +8,7 @@ import {
   Plane, Calendar, DollarSign, FileText, MapPin, Clock, CheckCircle, AlertCircle, Shield,
   Luggage, Home, PawPrint, Car, CreditCard, Sparkles
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface Trip {
   id: string; destination: string; dates: string; status: "planning" | "booked" | "upcoming" | "active" | "completed";
@@ -60,6 +61,7 @@ const TravelPlanning = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Travel Planning" subtitle="Premium trip management — prep, logistics, household spillover, and continuity" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">

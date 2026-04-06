@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const mockDigests = [
   { id: "d-1", type: "daily_summary", domain: "engineering", fresh: true, hitRate: 0.82, genCost: 15, avoidedSpend: 120, age: "2hr", expiresIn: "22hr", cacheStatus: "cached" },
@@ -32,6 +33,7 @@ const SmartDigestCenter = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         icon={<FileText className="h-6 w-6" />}
         title="Smart Digest & Precompute Center"

@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Sparkles, CheckCircle2, AlertTriangle, Shield, TrendingUp, Clock, RotateCcw, Eye, Settings } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const HEALED = [
   { title: "Restarted unhealthy projection rebuild worker", time: "12m ago", risk: "low", verified: true, learned: true },
@@ -42,6 +43,7 @@ const AISelfHealing = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <AdminPageHeader icon={Sparkles} title="Self-Healing Center" subtitle="Autonomous maintenance — detect, patch, verify, learn" accent="trust" />
 
       <div className="grid grid-cols-4 gap-3">

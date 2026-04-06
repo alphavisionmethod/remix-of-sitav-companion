@@ -12,6 +12,7 @@ import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface SubForm {
   service_name: string;
@@ -152,6 +153,7 @@ const SubscriptionsWaste = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader
         title="Subscriptions & Waste"
         subtitle="Track, optimize, and reduce waste"

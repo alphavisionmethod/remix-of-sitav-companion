@@ -7,6 +7,7 @@ import {
   Brain, Code, Palette, TestTube, Bug, Shield, Gauge, FileText,
   Rocket, Sparkles, TrendingUp, Users, Eye, AlertTriangle, Activity
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const AGENTS = [
   { id: "eng-lead", name: "AI Engineering Lead", icon: Brain, domain: "Coordination", watching: "Cross-team synthesis, goal decomposition", currentTask: "Coordinating shell performance sprint", confidence: 92, autonomy: "supervised", escalation: "none" as const, tasksCompleted: 34, recommendations: 12, queueLoad: 3, accuracy: 89, missionIds: ["m-1", "m-2"], findings: 4, nextAction: "Synthesize sprint outcome report" },
@@ -43,6 +44,7 @@ const AITeamRoster = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <AdminPageHeader icon={Users} title="AI Team Roster" subtitle="Your AI engineering specialists — focus, queue, confidence, autonomy, and accuracy" accent="primary" />
 
       {/* Summary Stats */}

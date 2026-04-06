@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -59,6 +60,7 @@ export default function ProjectionControlCenter() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Projection Control Center" subtitle="Read-model materialization, freshness tracking, surface truth classification, and rebuild controls" />
 
       {degraded > 0 && (

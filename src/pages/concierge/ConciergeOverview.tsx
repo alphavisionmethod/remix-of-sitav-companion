@@ -11,6 +11,7 @@ import {
   CheckSquare, Calendar, AlertCircle, Heart, Clock, ShoppingCart, Plane, Users, Wrench, ArrowRight,
   GraduationCap, Stethoscope, Gift, FileText, Shield, Sparkles, Car, Home, Bell, BarChart3, Headphones
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 /* ============ MOCK DATA ============ */
 const kpiSummary = {
@@ -91,6 +92,7 @@ const ConciergeOverview = () => {
   if (!hasLiveData) {
     return (
       <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <DemoModeBadge />
         <SitaPageHeader title="Concierge" subtitle="Household operations and life logistics" />
         <EmptyStateCTA
           icon={Headphones}

@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Activity, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const statusColors: Record<string, string> = {
   healthy: "bg-green-500/20 text-green-400", degraded: "bg-yellow-500/20 text-yellow-400",
@@ -43,6 +44,7 @@ export default function CN05ConnectorHealthBoard() {
 
   return (
     <div className="space-y-6 p-6"  >
+      <DemoModeBadge />
       <div className="space-y-6">
         <Button onClick={() => healthCheckMutation.mutate()} disabled={healthCheckMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${healthCheckMutation.isPending ? "animate-spin" : ""}`} /> Run Health Check

@@ -3,6 +3,7 @@ import { Target, MousePointer, Shield, Smartphone, FormInput, TrendingUp, AlertT
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const CTA_ANALYSIS = [
   { page: "Homepage", cta: "Book a Free Call", clicks: 342, ctr: "8.1%", position: "Above fold", score: 92 },
@@ -41,6 +42,7 @@ const MOBILE_ISSUES = [
 export default function CROOffice() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Conversion Optimization Office</h1>
         <p className="text-sm text-muted-foreground">CTA analysis, trust gaps, funnel leaks, form friction & mobile UX</p>

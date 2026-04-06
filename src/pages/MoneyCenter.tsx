@@ -14,6 +14,7 @@ import MoneyProof from "./money/MoneyProof";
 import MoneyDocuments from "./money/MoneyDocuments";
 import MoneySettings from "./money/MoneySettings";
 import InvestmentOffice from "./money/InvestmentOffice";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "approvals" | "boardroom" | "proof" | "files" | "settings";
 
@@ -61,6 +62,7 @@ const MoneyCenter = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <DemoModeBadge />
       <motion.div
         className="overflow-x-auto -mx-2 px-2"
         initial={{ opacity: 0, y: -8 }}

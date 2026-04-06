@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Radio, RefreshCw, Monitor, Smartphone, Watch, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const surfaceIcons: Record<string, React.ReactNode> = { web: <Monitor className="h-4 w-4" />, phone: <Smartphone className="h-4 w-4" />, watch: <Watch className="h-4 w-4" /> };
 
@@ -47,6 +48,7 @@ export default function UAO01PresenceContinuity() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Radio className="h-6 w-6" /> Presence & Continuity Center</h1>

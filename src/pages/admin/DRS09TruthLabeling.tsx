@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Eye, Tag, ShieldCheck } from "lucide-react";
 import { CANONICAL_MODES } from "@/lib/dual-reality/reality-mode-registry";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function DRS09TruthLabeling() {
   const { data: labels, isLoading } = useQuery({
@@ -27,6 +28,7 @@ export default function DRS09TruthLabeling() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS09 — Demo Truth & Labeling Review</h1>
         <p className="text-sm text-muted-foreground mt-1">Ensure demo mode stays honest and properly labeled</p>

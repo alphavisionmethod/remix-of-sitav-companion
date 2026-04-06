@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const mockOutcomes = [
   { type: "incident_prevented", count: 8, costCents: 2400, valueCents: 48000, roi: 20.0, accepted: 8, rejected: 0, domain: "engineering" },
@@ -55,6 +56,7 @@ const OutcomeEconomicsBoard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         icon={<Target className="h-6 w-6" />}
         title="Outcome Economics Board"

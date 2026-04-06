@@ -17,6 +17,7 @@ import ConciergeFiles from "./concierge/ConciergeFiles";
 import FamilyBoardroom from "./concierge/FamilyBoardroom";
 import ConciergeSettings from "./concierge/ConciergeSettings";
 import HouseholdCommandCenter from "./concierge/HouseholdCommandCenter";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type SubPage = "overview" | "calendar" | "tasks" | "household" | "school" | "grocery" | "appointments" | "travel" | "providers" | "events" | "workflows" | "proof" | "files" | "boardroom" | "settings";
 
@@ -70,6 +71,7 @@ const ConciergeCenter = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <DemoModeBadge />
       <motion.div
         className="overflow-x-auto -mx-2 px-2"
         initial={{ opacity: 0, y: -8 }}

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { LIFECYCLE_STAGES, getStageLabel, getStageIndex, computeReadiness } from "@/lib/delivery-methodology/feature-lifecycle";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const stageColors: Record<string, string> = {
   proposed: "bg-muted", specified: "bg-blue-500/20", generated: "bg-cyan-500/20",
@@ -47,6 +48,7 @@ const FeatureLifecycleBoard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-2">
           <GitBranch className="h-8 w-8 text-primary" />

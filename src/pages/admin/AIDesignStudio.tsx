@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { Palette, Eye, CheckCircle2, ArrowRight, Sparkles, Sun, Moon, Accessibility, Layout, Type, Move } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const IMPROVEMENTS = [
   { id: 1, title: "Admin header — improve information hierarchy", area: "Admin Shell", type: "layout" as const, before: "Flat header with icon + title, no visual depth", after: "Gradient header with accent icon badge, subtitle, and action slot", rationale: "Improves scannability and creates premium feel consistent with boardroom surfaces", confidence: 84, impact: "medium", consistency: 92, status: "ready" as const },
@@ -26,6 +27,7 @@ const AIDesignStudio = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <AdminPageHeader icon={Palette} title="Design Studio" subtitle="AI design team improvements — before/after, rationale, confidence, and consistency checks" accent="accent" />
 
       <div className="grid grid-cols-4 gap-3">

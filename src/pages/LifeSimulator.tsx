@@ -8,6 +8,7 @@ import {
   TrendingDown, BarChart3, ChevronRight
 } from "lucide-react";
 import { LifeShockSimulator, type ShockType, type ShockImpactReport } from "@/lib/services/life-simulation";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const SHOCK_ICONS: Record<ShockType, typeof AlertTriangle> = {
   'job-loss': Briefcase, 'new-baby': Baby, 'divorce': HeartCrack,
@@ -44,6 +45,7 @@ const LifeSimulator = () => {
 
   return (
     <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6 max-w-[1600px] mx-auto">
+      <DemoModeBadge />
       <motion.div variants={fadeUp}>
         <SitaPageHeader
           title="Life Simulator"

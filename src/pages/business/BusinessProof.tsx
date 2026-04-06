@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Receipt, Shield, CheckCircle, FileText, Clock, Eye, Search } from "lucide-react";
 import { motion } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface ProofItem {
   id: number; action: string; customer: string; workflow: string; policy: string;
@@ -36,6 +37,7 @@ const BusinessProof = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Business Proof & Receipts" subtitle="Every action has a verifiable trail" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

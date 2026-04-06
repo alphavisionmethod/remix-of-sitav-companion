@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { getAppById } from "@/lib/app-platform";
 import { AppIcon, VerificationBadge, AppSourceLabel, PermissionDomainCard, AppReceiptCard } from "@/components/sita/app-platform/AppStoreComponents";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const AppManagePage = () => {
   const { appId } = useParams<{ appId: string }>();
@@ -26,6 +27,7 @@ const AppManagePage = () => {
   const app = getAppById(appId || "");
   if (!app) return (
     <div className="mx-auto max-w-4xl">
+      <DemoModeBadge />
       <button onClick={() => navigate("/app-store/library")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
         <ArrowLeft className="h-4 w-4" /> Back
       </button>

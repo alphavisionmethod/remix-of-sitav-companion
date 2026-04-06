@@ -2,6 +2,7 @@ import { Upload, Check, Users, FileText, ShoppingCart, Calendar, Star, BarChart3
 import { ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const importTypes = [
   { id: "contacts", label: "Contacts CSV", icon: Users },
@@ -23,6 +24,7 @@ export default function FileImportScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ScreenHeader icon={Upload} title="Import your business data" subtitle="Select file types you have — mapping and deduplication happen automatically" color="text-emerald-400" />
       <div className="grid md:grid-cols-2 gap-2">
         {importTypes.map(t => (

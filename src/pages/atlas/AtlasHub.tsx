@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const surfaces = [
   { id: "ops", label: "Operations Command Center", desc: "Service health, SLO burn, alerts, incidents, runbooks", route: "/atlas/operations", icon: Activity, status: "live", metrics: "6 services • 5 SLOs • 8 runbooks" },
@@ -27,6 +28,7 @@ export default function AtlasHub() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
+      <DemoModeBadge />
       <SitaPageHeader title="ATLAS Closure Program" subtitle="Unified operator truth layer — admin durability, projection truth, proof coverage, deployment gates, ops command, and launch readiness" />
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-2">

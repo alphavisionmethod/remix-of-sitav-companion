@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const GROWTH_TRAITS = [
   { trait: "Revenue Concentration", score: 72, status: "warning", insight: "Top 3 clients represent 58% of revenue", recommendation: "Target 3 new mid-market clients this quarter" },
@@ -37,6 +38,7 @@ const GrowthDNA = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <SitaPageHeader icon={<Dna className="h-5 w-5" />} title="Growth DNA" subtitle="Deep business growth pattern analysis and strategic positioning" />
       <div className="rounded-2xl border border-border/40 bg-card p-6 flex items-center justify-between">
         <div><p className="text-sm text-muted-foreground">Overall Growth Health</p><p className="text-4xl font-bold">{avg}<span className="text-lg text-muted-foreground">/100</span></p></div>

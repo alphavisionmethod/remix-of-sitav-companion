@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
 import { Workflow, CheckCircle2, Clock, AlertTriangle, ChevronRight, Eye, RotateCcw, Shield } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const statusToState = (status: string): ExecutionState => {
   const map: Record<string, ExecutionState> = {
@@ -68,6 +69,7 @@ const WorkflowsCenter = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Workflows" subtitle="Actions, approvals, and execution tracking — live from workflow engine" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

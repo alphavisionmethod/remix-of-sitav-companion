@@ -3,6 +3,7 @@ import { Clock, FileText, Tag, MapPin, Phone, AlertTriangle, CheckCircle, Sparkl
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const STALE_PAGES = [
   { page: "/blog/2023-trends", lastUpdated: "14 months ago", views: 120, category: "Blog", staleness: 95 },
@@ -34,6 +35,7 @@ const INCONSISTENCIES = [
 export default function ContentFreshness() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Content Freshness Center</h1>
         <p className="text-sm text-muted-foreground">Outdated pages, expired offers, stale info & messaging inconsistencies</p>

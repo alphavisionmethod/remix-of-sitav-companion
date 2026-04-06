@@ -9,6 +9,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, Clock, ChevronRight, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function AR06ExecutionTraceExplorer() {
   const [selectedExecId, setSelectedExecId] = useState<string | null>(null);
@@ -26,6 +27,7 @@ export default function AR06ExecutionTraceExplorer() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Execution Trace Explorer"
         subtitle="Inspect any recurring execution from trigger to outcome"

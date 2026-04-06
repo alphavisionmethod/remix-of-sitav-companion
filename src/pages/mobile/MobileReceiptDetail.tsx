@@ -6,6 +6,7 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { useParams } from "react-router-dom";
 import { CheckCircle2, Copy, ExternalLink } from "lucide-react";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const MobileReceiptDetail = () => {
   const { id } = useParams();
@@ -20,6 +21,7 @@ const MobileReceiptDetail = () => {
 
   return (
     <MobileShell title={`Receipt ${id?.slice(0, 8) || ""}`}>
+      <DemoModeBadge />
       {/* Verification badge */}
       <div className="flex flex-col items-center py-6">
         <div className="h-16 w-16 rounded-full bg-[hsl(var(--trust-safe))]/10 flex items-center justify-center mb-3">

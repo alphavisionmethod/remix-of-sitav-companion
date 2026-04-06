@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, AlertTriangle, Shield, Rocket } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface GateCheck {
   label: string;
@@ -98,6 +99,7 @@ export default function AR09AutomationLaunchGate() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Automation Launch Gate"
         subtitle="Use automation truth as a launch readiness signal"

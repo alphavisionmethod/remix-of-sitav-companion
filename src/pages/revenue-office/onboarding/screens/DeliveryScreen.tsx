@@ -2,6 +2,7 @@ import { Package, Phone, ClipboardList, DollarSign, Rocket, GraduationCap, Shopp
 import { Toggle, SectionTitle, ChapterBanner } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const postSaleOptions = [
   { id: "onboarding_call", label: "Onboarding call", icon: Phone },
@@ -36,6 +37,7 @@ export default function DeliveryScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ChapterBanner chapter="Chapter 3: Delivery Model" subtitle="What happens after someone buys — the most neglected part of growth" />
       <div>
         <SectionTitle>What happens after someone buys?</SectionTitle>

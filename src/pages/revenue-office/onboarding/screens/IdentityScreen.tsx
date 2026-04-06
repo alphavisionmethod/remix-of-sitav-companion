@@ -4,6 +4,7 @@ import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
 import { getBusinessTypeBranch } from "../branching";
 import type { ScreenProps } from "../types";
 import { useCallback, useMemo } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const businessTypes = [
   { id: "service", label: "Service Business", desc: "Appointments, proposals, delivery milestones, reviews", icon: Briefcase },
@@ -33,6 +34,7 @@ export default function IdentityScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ChapterBanner chapter="Chapter 1: Formation" subtitle="Let SITA understand who you are and what you do" />
       <div>
         <label className="text-xs font-medium text-muted-foreground block mb-2">What is your business called?</label>

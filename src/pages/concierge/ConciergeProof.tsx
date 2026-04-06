@@ -3,6 +3,7 @@ import { KPITile, SitaTabs, ProofCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { Shield, CheckCircle, Clock, FileText, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface ProofRecord {
   id: string;
@@ -38,6 +39,7 @@ const ConciergeProof = () => {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Household Proof" subtitle="Verifiable record of completed actions, confirmations, and receipts" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

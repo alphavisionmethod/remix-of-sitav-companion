@@ -11,6 +11,7 @@ import {
   RefreshCw, Database, GitBranch, Eye, FileCheck, Zap, BarChart3, Radio, Lock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Demo truth data ─────────────────────────────────────────────
 
@@ -160,6 +161,7 @@ function TruthScoreHero() {
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
+      <DemoModeBadge />
       <Card className="bg-card/50 border-border/50">
         <CardContent className="p-3 text-center">
           <p className={cn("text-2xl font-bold", pct >= 90 ? "text-green-400" : pct >= 70 ? "text-amber-400" : "text-red-400")}>{pct}%</p>

@@ -8,6 +8,7 @@ import { AuthDivider } from "@/components/auth/AuthDivider";
 import { motion } from "framer-motion";
 import { EnhancedLockScreen as LockScreen } from "@/components/sita/shell/EnhancedLockScreen";
 import { FirstBootScreen } from "@/components/sita/FirstBootScreen";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const Login = () => {
   const { signIn, signInAsDemo } = useAuth();
@@ -32,7 +33,8 @@ const Login = () => {
     return (
       <LockScreen
         userName={savedEmail.split("@")[0]}
-        onUnlock={async (pw) => {
+        onUnlock={async (pw) =>
+      <DemoModeBadge /> {
           const { error } = await signIn(savedEmail, pw);
           if (error) return false;
           localStorage.setItem("sita-last-email", savedEmail);

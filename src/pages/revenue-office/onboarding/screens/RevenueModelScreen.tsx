@@ -4,6 +4,7 @@ import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
 import { getRevenueEngineBranch } from "../branching";
 import type { ScreenProps } from "../types";
 import { useCallback, useMemo } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const sources = [
   { id: "appointments", label: "Booked calls / appointments", icon: Phone },
@@ -35,6 +36,7 @@ export default function RevenueModelScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ScreenHeader icon={DollarSign} title="How does money come into the business?" subtitle="Select all that apply — we'll ask which matter most" color="text-emerald-400" />
       <div className="grid md:grid-cols-2 gap-2">
         {sources.map(s => <Toggle key={s.id} label={s.label} icon={s.icon} selected={state.revenueSources.includes(s.id)} onToggle={() => toggle(s.id)} />)}

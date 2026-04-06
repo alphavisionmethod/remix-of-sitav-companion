@@ -3,6 +3,7 @@ import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents"
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { Gift, Heart, Calendar, PartyPopper, Star, Clock, CheckCircle, ShoppingBag, Mail } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface EventItem {
   id: string;
@@ -52,6 +53,7 @@ const EventsGifts = () => {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Events & Gifts" subtitle="Birthdays, milestones, relationship continuity, and thoughtful follow-ups" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

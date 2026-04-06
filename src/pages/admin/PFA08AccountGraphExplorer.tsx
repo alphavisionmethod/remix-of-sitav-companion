@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Network, RefreshCw, User, Link2, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function PFA08AccountGraphExplorer() {
   const queryClient = useQueryClient();
@@ -33,6 +34,7 @@ export default function PFA08AccountGraphExplorer() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Network className="h-6 w-6" /> Unified Account Graph</h1>
         <p className="text-sm text-muted-foreground mt-1">Identity and connector links per user/entity</p>

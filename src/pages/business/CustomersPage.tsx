@@ -21,6 +21,7 @@ import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 
 import { useCustomers } from "@/hooks/use-domain-data";
 import type { MockCustomer } from "@/lib/data-services/business-data-service";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type Customer = MockCustomer;
 
@@ -107,6 +108,7 @@ const CustomersPage = () => {
   if (isLoading) {
     return (
       <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
         <SitaPageHeader title="Customers" subtitle="Your client relationships" />
         <KPISkeleton count={4} />
         <SectionSkeleton cards={3} columns={1} />

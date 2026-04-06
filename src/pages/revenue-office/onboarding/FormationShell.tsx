@@ -26,6 +26,7 @@ import AutomationScreen from "./screens/AutomationScreen";
 import AdvisorActivationScreen from "./screens/AdvisorActivationScreen";
 import FirstWinScreen from "./screens/FirstWinScreen";
 import RevealScreen from "./screens/RevealScreen";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const screenMap: Record<StageId, React.ComponentType<any>> = {
   ceremony: CeremonyScreen,
@@ -99,6 +100,7 @@ export default function FormationShell() {
 
   return (
     <div className="min-h-screen bg-background">
+      <DemoModeBadge />
       {/* Chapter transition overlay */}
       <AnimatePresence>
         {showChapterTransition && (

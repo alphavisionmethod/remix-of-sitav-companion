@@ -6,6 +6,7 @@ import { Brain, Check, CircleDot, TrendingUp, Users, Target, Megaphone, DollarSi
 import { ChapterBanner } from "../primitives";
 import { getRecommendedAdvisors, type RecommendedAdvisor } from "../branching";
 import type { ScreenProps } from "../types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const iconMap: Record<string, any> = {
   chief_revenue: TrendingUp, funnel: Target, crm: Users, campaign: Megaphone,
@@ -44,6 +45,7 @@ export default function AdvisorActivationScreen({ state, setState }: ScreenProps
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ChapterBanner chapter="Advisor Board" subtitle="Activate the advisors that match your business model" />
       <div className="text-center mb-2">
         <Brain className="h-7 w-7 text-primary mx-auto mb-2" />

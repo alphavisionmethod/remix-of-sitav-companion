@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { MessageSquare, Send, Search, Plus, Paperclip, Smile, Phone, Video, MoreVertical, CheckCheck } from "lucide-react";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface Chat {
   id: string;
@@ -50,6 +51,7 @@ export default function MessengerApp() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto">
+      <DemoModeBadge />
       <div className="flex items-center gap-2 mb-4">
         <MessageSquare className="h-6 w-6 text-primary" />
         <h1 className="text-xl font-bold text-foreground">Messenger</h1>

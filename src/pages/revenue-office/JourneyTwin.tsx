@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Route, Eye, MousePointer, Mail, Phone, CreditCard, Star, ArrowRight, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const JOURNEY_STAGES = [
   {
@@ -57,6 +58,7 @@ const JOURNEY_STAGES = [
 export default function JourneyTwin() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <Route className="w-6 h-6 text-primary" /> Journey Twin

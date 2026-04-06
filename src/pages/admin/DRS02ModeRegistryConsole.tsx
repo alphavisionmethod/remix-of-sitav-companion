@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Settings } from "lucide-react";
 import { CANONICAL_MODES, type RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function DRS02ModeRegistryConsole() {
   const modes = Object.values(CANONICAL_MODES);
@@ -20,6 +21,7 @@ export default function DRS02ModeRegistryConsole() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS02 — Mode Registry Console</h1>
         <p className="text-sm text-muted-foreground mt-1">Manage and inspect runtime modes</p>

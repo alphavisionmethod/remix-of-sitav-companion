@@ -9,6 +9,7 @@ import {
   Activity, Zap, AlertTriangle, Lock, ArrowRight
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Service Module Definitions ─────────────────────────────────
 
@@ -169,6 +170,7 @@ export default function ServiceArchitectureDashboard() {
 
   return (
     <div className="min-h-screen p-6 space-y-6">
+      <DemoModeBadge />
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

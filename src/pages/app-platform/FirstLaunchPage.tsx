@@ -9,6 +9,7 @@ import { Check, Pin, Star, Settings, Layers, ArrowRight, Sparkles, CheckCircle2,
 import { cn } from "@/lib/utils";
 import { getAppById } from "@/lib/app-platform";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const FirstLaunchPage = () => {
   const navigate = useNavigate();
@@ -101,6 +102,7 @@ const FirstLaunchPage = () => {
 
   return (
     <div className="mx-auto max-w-lg py-8">
+      <DemoModeBadge />
       <div className="rounded-2xl border border-border bg-card shadow-xl shadow-primary/5 overflow-hidden">
         {/* Progress */}
         <div className="flex gap-1 p-4 pb-0">

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useFilesSearchIndex } from "@/hooks/use-domain-data";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type FilterType = "all" | "business" | "finance" | "concierge" | "obligations" | "deadlines";
 
@@ -62,6 +63,7 @@ const FilesSearch = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Knowledge Search" subtitle="Find files, facts, entities, and linked intelligence across your OS" />
 
       <div className="flex flex-col sm:flex-row gap-3">

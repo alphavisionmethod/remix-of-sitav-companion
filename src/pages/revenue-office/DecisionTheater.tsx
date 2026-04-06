@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Theater, AlertTriangle, CheckCircle, Users, TrendingUp, Shield, Zap, ArrowRight } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const pendingDecisions = [
   {
@@ -34,6 +35,7 @@ const pendingDecisions = [
 export default function DecisionTheater() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">Business Decision Theater</h1>
         <p className="text-muted-foreground">Cinematic pre-launch review — impact, risk, advisor commentary, and authorization</p>

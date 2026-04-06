@@ -9,6 +9,7 @@ import { Search, Plug, Shield, Zap, Globe, ArrowRight, CheckCircle, AlertTriangl
 import { INTEGRATION_PROVIDERS, PROVIDER_CATEGORIES } from "@/lib/services/integration-hub/providers";
 import { DEMO_CONNECTIONS } from "@/lib/services/integration-hub/demo-connections";
 import { useNavigate } from "react-router-dom";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function IntegrationsCatalog() {
   const [search, setSearch] = useState("");
@@ -26,6 +27,7 @@ export default function IntegrationsCatalog() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Integration Hub</h1>

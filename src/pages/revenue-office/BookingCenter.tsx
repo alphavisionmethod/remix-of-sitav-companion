@@ -3,6 +3,7 @@ import { Calendar, Clock, User, Video, MapPin, Plus, Check, X } from "lucide-rea
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const UPCOMING = [
   { client: "Sarah Mitchell", type: "Strategy Call", time: "Today, 2:00 PM", duration: "45 min", mode: "video", status: "confirmed" },
@@ -28,6 +29,7 @@ const STATS = [
 export default function BookingCenter() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>

@@ -2,6 +2,7 @@ import { Globe, Users, Megaphone, Mail, Target, MapPin, ShoppingBag, Briefcase, 
 import { Toggle, SectionTitle, ScreenHeader, SingleSelect } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const leadSourceOptions = [
   { id: "referrals", label: "Referrals", icon: Users },
@@ -24,6 +25,7 @@ export default function AcquisitionScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ScreenHeader icon={Users} title="How do people usually find you?" subtitle="Understanding demand sources lets SITA calibrate your acquisition engine" color="text-blue-400" />
       <div className="grid md:grid-cols-3 gap-2">
         {leadSourceOptions.map(ls => <Toggle key={ls.id} label={ls.label} icon={ls.icon} selected={state.leadSources.includes(ls.id)} onToggle={() => toggle(ls.id)} />)}

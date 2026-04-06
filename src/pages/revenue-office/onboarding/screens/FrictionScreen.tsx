@@ -5,6 +5,7 @@ import { Toggle, ScreenHeader, SectionTitle, SingleSelect } from "../primitives"
 import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
 import { getBottleneckBranch } from "../branching";
 import type { ScreenProps } from "../types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const bottlenecks = [
   { id: "lead_flow", label: "Not enough leads coming in", desc: "Pipeline feels empty or unpredictable", icon: Users },
@@ -42,6 +43,7 @@ export default function FrictionScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ScreenHeader icon={Flame} title="Where does momentum usually get lost?" subtitle="Be honest — this is where SITA can make the biggest impact fastest" color="text-amber-400" />
       <div className="grid md:grid-cols-2 gap-2">
         {bottlenecks.map(b => <Toggle key={b.id} label={b.label} desc={b.desc} icon={b.icon} selected={state.growthBottlenecks.includes(b.id)} onToggle={() => toggle(b.id)} />)}

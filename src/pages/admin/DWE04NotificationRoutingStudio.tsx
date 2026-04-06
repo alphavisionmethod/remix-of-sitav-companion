@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bell, Route, Volume2, VolumeX, Smartphone, Watch, Laptop } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function DWE04NotificationRoutingStudio() {
   const [routes, setRoutes] = useState<any[]>([]);
@@ -23,6 +24,7 @@ export default function DWE04NotificationRoutingStudio() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE04 — Notification Routing Studio</h1>
         <p className="text-muted-foreground">What goes where, why it was routed, urgency policy, fatigue suppression.</p>

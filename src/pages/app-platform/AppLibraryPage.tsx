@@ -11,6 +11,7 @@ import { APP_CATALOG, getInstalledApps } from "@/lib/app-platform";
 import { AppCard, AppIcon, VerificationBadge, AppSourceLabel, CategoryStrip } from "@/components/sita/app-platform/AppStoreComponents";
 import { APP_CATEGORIES } from "@/lib/app-platform/catalog";
 import type { AppDefinition } from "@/lib/app-platform/types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type LibView = "all" | "pinned" | "recent" | "web" | "native" | "updates";
 
@@ -46,6 +47,7 @@ const AppLibraryPage = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <DemoModeBadge />
       {/* Header */}
       <div>
         <h1 className="font-display text-2xl font-bold text-foreground">App Library</h1>

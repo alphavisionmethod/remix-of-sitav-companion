@@ -16,6 +16,7 @@ import {
   Wifi, WifiOff, AlertTriangle, ArrowLeft, Shield, Activity,
   Clock, RefreshCw, Eye, ChevronRight, Database, Lock, Zap, Server,
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
@@ -38,6 +39,7 @@ export default function ConnectorDetailPage() {
   if (!detail) {
     return (
       <div className="p-6 max-w-[1200px] mx-auto">
+      <DemoModeBadge />
         <button onClick={() => navigate("/mission-control")} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-3.5 w-3.5" /> Back to Mission Control
         </button>

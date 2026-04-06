@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { CheckCircle, XCircle, AlertTriangle, Shield } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const stageColors: Record<string, string> = {
   shell_only: "bg-muted text-muted-foreground", framework_ready: "bg-blue-500/20 text-blue-400",
@@ -36,6 +37,7 @@ export default function CN07ConnectorLaunchGate() {
 
   return (
     <div className="space-y-6 p-6"  >
+      <DemoModeBadge />
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="bg-card border-border"><CardContent className="pt-4">

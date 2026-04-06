@@ -4,6 +4,7 @@ import { getRegisteredDomains, getProviderMetadata, type ProviderDomain } from "
 import { registerAllProviders } from "@/lib/dual-reality/providers";
 import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
 import { Plug, CheckCircle2, AlertCircle } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ALL_DOMAINS: ProviderDomain[] = ["boardroom", "investment", "money", "business", "workspace", "owner", "calendar", "advisor"];
 
@@ -14,6 +15,7 @@ export default function DRS05ProviderConsole() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS05 — Mode-Aware Provider Console</h1>
         <p className="text-sm text-muted-foreground mt-1">Inspect provider resolution across domains</p>

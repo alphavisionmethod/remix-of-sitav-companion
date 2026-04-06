@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Plug, Shield, Activity, TestTube, Presentation, RefreshCw, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const statusColors: Record<string, string> = {
   healthy: "bg-green-500/20 text-green-400", connected: "bg-green-500/20 text-green-400",
@@ -73,6 +74,7 @@ export default function CN01ConnectorRealityOverview() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="space-y-6">
         <div className="flex items-center gap-3">
           <Button onClick={() => seedMutation.mutate()} disabled={seedMutation.isPending} size="sm" variant="outline">

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { RotateCcw, TrendingUp, TrendingDown, Brain, Check, AlertTriangle, ArrowRight } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ACTIVE_POSITIONS = [
   {
@@ -36,6 +37,7 @@ export default function PostTradeLoop() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><RotateCcw className="h-6 w-6 text-primary" /> Post-Trade Intelligence Loop</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Continuous review — did the thesis strengthen or weaken? Should you hold, trim, expand, or exit?</p>

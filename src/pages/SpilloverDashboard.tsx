@@ -14,6 +14,7 @@ import { KPITile, SectionHeader } from "@/components/sita/SitaComponents";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Spillover data ───────────────────────────────────────────
 
@@ -107,6 +108,7 @@ const SpilloverGraph = () => (
             strokeOpacity={opacity}
             strokeDasharray={s.impact === "low" ? "2,2" : undefined}
           />
+      <DemoModeBadge />
         );
       })}
     </svg>

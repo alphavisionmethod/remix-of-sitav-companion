@@ -3,6 +3,7 @@ import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents"
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { FileText, Upload, FolderOpen, Shield, GraduationCap, Stethoscope, Home, Plane, Receipt, Calendar, Search } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface HouseholdFile {
   id: string;
@@ -44,6 +45,7 @@ const ConciergeFiles = () => {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Household Files" subtitle="Forms, contracts, medical records, warranties, and important documents" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

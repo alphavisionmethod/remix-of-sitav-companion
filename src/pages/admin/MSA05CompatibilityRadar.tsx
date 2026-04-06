@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Radar, RefreshCw, AlertTriangle, CheckCircle, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const sevColors: Record<string, string> = {
   critical: "bg-red-500/20 text-red-400", high: "bg-orange-500/20 text-orange-400",
@@ -80,6 +81,7 @@ export default function MSA05CompatibilityRadar() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Radar className="h-6 w-6" /> Future Surface Compatibility Radar</h1>

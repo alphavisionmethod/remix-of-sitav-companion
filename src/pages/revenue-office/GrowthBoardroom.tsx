@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { TrendingUp, AlertTriangle, Target, Users, DollarSign, ArrowUpRight, ArrowDownRight, Activity } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PIPELINE_STAGES = [
   { name: "Awareness", count: 142, value: "$0", conversion: "100%" },
@@ -29,6 +30,7 @@ const ADVISOR_SIGNALS = [
 export default function GrowthBoardroom() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Growth Boardroom</h1>
         <p className="text-sm text-muted-foreground">Executive revenue and growth command view</p>

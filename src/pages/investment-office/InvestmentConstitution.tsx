@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ScrollText, Shield, Check, AlertTriangle, Settings, Lock } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface Rule {
   id: string;
@@ -47,6 +48,7 @@ export default function InvestmentConstitution() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ScrollText className="h-6 w-6 text-primary" /> Personal Investment Constitution</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Your living rulebook for disciplined investing. Advisors enforce these gently.</p>

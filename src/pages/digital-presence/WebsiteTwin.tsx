@@ -3,6 +3,7 @@ import { Monitor, ArrowRight, AlertTriangle, TrendingUp, Smartphone, Eye } from 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PAGE_TREE = [
   { path: "/", label: "Homepage", health: 92, views: 4201, mobile: 88, children: [
@@ -36,6 +37,7 @@ function PageNode({ page, depth = 0 }: { page: typeof PAGE_TREE[0]; depth?: numb
   const healthColor = page.health >= 85 ? "text-green-400" : page.health >= 70 ? "text-amber-400" : "text-red-400";
   return (
     <div style={{ marginLeft: depth * 24 }}>
+      <DemoModeBadge />
       <div className="flex items-center justify-between p-2 hover:bg-muted/30 rounded-md transition-colors">
         <div className="flex items-center gap-2">
           {depth > 0 && <ArrowRight className="w-3 h-3 text-muted-foreground" />}

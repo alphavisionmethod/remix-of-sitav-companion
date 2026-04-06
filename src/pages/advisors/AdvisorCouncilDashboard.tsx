@@ -23,6 +23,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Demo Data ────────────────────────────────────────────────
 
@@ -244,6 +245,7 @@ export default function AdvisorCouncilDashboard() {
 
   return (
     <div className="space-y-6 max-w-6xl">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Advisory Council Dashboard"
         subtitle="Performance scorecards, escalation history, handoff activity, and compute budget"

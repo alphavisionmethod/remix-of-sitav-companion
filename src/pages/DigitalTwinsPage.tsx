@@ -16,6 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import type { TwinType } from "@/packages/contracts";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Seed Demo Twins ────────────────────────────────────────────
 function useDemoTwins() {
@@ -70,6 +71,7 @@ function TwinDetailView({ twinType }: { twinType: TwinType }) {
 
   return (
     <div className="space-y-5">
+      <DemoModeBadge />
       {/* Health Hero */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-border/40 bg-gradient-to-br from-card via-card to-secondary/10 p-5"

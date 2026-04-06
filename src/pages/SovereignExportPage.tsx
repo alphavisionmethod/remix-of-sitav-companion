@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const EXPORTABLE_TABLES = [
   { name: "Profiles", rows: 1, size: "2 KB" },
@@ -33,6 +34,7 @@ export default function SovereignExportPage() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><FileArchive className="h-6 w-6 text-primary" /> Sovereign Data Export</h1>
         <p className="text-muted-foreground text-sm mt-1">Your data belongs to you. Export everything, anytime. GDPR compliant.</p>

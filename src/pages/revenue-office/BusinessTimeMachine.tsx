@@ -3,6 +3,7 @@ import { Clock, TrendingUp, TrendingDown, ArrowRight, Calendar, DollarSign, User
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PERIODS = [
   { period: "This Month", revenue: 42800, clients: 28, deals: 7, conversion: 23, trend: "up" as const },
@@ -37,6 +38,7 @@ const BusinessTimeMachine = () => {
   const yoy = Math.round(((cur-old)/old)*100);
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <SitaPageHeader icon={<Clock className="h-5 w-5" />} title="Business Time Machine" subtitle="Historical replay, decision timeline, and what-if scenarios" />
       <div className="grid grid-cols-4 gap-3">
         {[{ l:"Current Revenue", v:`$${(cur/1000).toFixed(1)}k/mo`, i:DollarSign },{ l:"YoY Growth", v:`+${yoy}%`, i:TrendingUp },{ l:"Key Decisions", v:DECISIONS.length, i:Target },{ l:"Active Clients", v:PERIODS[0].clients, i:Users }].map(m=>

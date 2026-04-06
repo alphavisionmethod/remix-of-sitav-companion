@@ -5,6 +5,7 @@ import { CalendarEventCard, ConflictCard, PrepCard, MemberAvatar, HouseholdAdvis
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Users, Clock, MapPin, AlertCircle, Heart, GraduationCap, Dumbbell, Stethoscope, Wrench, Car, Sparkles } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const today = 2;
@@ -58,6 +59,7 @@ const FamilyCalendar = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Family Calendar" subtitle="Reconciled schedules — conflict-aware, prep-ready, ownership-clear" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">

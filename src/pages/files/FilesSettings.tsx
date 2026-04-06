@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { upsertFileSettings } from "@/lib/data-services/files-data-service";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface SettingsState {
   auto_classify: boolean;
@@ -78,6 +79,7 @@ const FilesSettings = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Knowledge Settings" subtitle="Configure file processing, privacy defaults, retention, and integrations" />
 
       <div className="grid gap-6 lg:grid-cols-2">

@@ -5,6 +5,7 @@ import { Gauge, DollarSign, Cpu, TrendingUp, Users, Zap } from "lucide-react";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function AITokenDashboard() {
   const { isAdmin, loading: adminLoading } = useRequireAdmin();
@@ -58,6 +59,7 @@ export default function AITokenDashboard() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <Gauge className="h-6 w-6 text-primary" /> AI Token Dashboard

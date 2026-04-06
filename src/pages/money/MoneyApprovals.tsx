@@ -5,6 +5,7 @@ import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
 import { useState } from "react";
 import { Shield, CheckCircle, XCircle, AlertTriangle, DollarSign, Eye, Clock, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface MoneyApproval {
   id: number; action: string; amount: string; reason: string; impact: string; risk: "low" | "medium" | "high";
@@ -24,6 +25,7 @@ const MoneyApprovals = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Financial Actions & Approvals" subtitle="Review, approve, or adjust recommended financial moves" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

@@ -2,6 +2,7 @@ import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { Network, ArrowRight, AlertTriangle, Bug, Server, Layout, Database, Shield, Zap } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const GRAPH_NODES = [
   { id: "symptom-1", type: "symptom" as const, label: "500 errors on /api/projections/rebuild", severity: "critical" },
@@ -43,6 +44,7 @@ const AIRootCauseGraph = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <AdminPageHeader icon={Network} title="Root Cause Graph" subtitle="Visual graph linking symptoms → services → releases → configs → likely root causes" accent="destructive" />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

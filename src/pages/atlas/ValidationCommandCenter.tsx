@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const testSuites = [
   { name: "Unit Tests", total: 42, passed: 42, failed: 0, pending: 0, duration: "4.2s" },
@@ -73,6 +74,7 @@ export default function ValidationCommandCenter() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Validation Command Center" subtitle="Test coverage, readiness scoring, launch blockers, critical flow verification, and ring validation" />
 
       {totalFailed > 0 && (

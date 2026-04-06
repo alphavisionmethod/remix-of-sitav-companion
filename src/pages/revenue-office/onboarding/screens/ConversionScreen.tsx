@@ -2,6 +2,7 @@ import { Globe, Phone, MessageSquare, FileText, ShoppingCart, MapPin, Users, Mai
 import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const preBuyOptions = [
   { id: "discover_online", label: "Discover me online", icon: Globe },
@@ -38,6 +39,7 @@ export default function ConversionScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ScreenHeader icon={ShoppingCart} title="How do people usually become customers?" subtitle="This maps your conversion motion and funnel structure" color="text-purple-400" />
       <div>
         <SectionTitle hint="Select all that apply">What do customers do before they buy?</SectionTitle>

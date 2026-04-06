@@ -20,6 +20,7 @@ import { useGlobalSearch, type SearchResult } from "@/hooks/use-global-search";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Icon & Color Maps ────────────────────────────────────────
 
@@ -156,6 +157,7 @@ const SearchPage = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-6xl space-y-4">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Global Search"
         subtitle="Find anything across business, finance, concierge, files, workflows, and trust"

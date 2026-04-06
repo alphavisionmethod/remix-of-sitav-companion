@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const BRAND_COLORS = [
   { name: "Primary", value: "#3B82F6", hsl: "217 91% 60%" },
@@ -43,6 +44,7 @@ export default function BrandStudio() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Brand Studio</h1>
         <p className="text-sm text-muted-foreground">Logo, colors, typography, visual identity & reusable design system</p>

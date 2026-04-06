@@ -19,6 +19,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const SystemManagement = () => {
   const { isAdmin, loading: adminLoading } = useRequireAdmin();
@@ -72,6 +73,7 @@ const SystemManagement = () => {
 
   return (
     <div className="space-y-6 max-w-[1400px] mx-auto">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-display font-bold text-foreground">System Management</h1>
         <p className="text-sm text-muted-foreground mt-1">Devices, commands, drivers, storage, network & security</p>

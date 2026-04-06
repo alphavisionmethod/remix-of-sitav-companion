@@ -16,6 +16,7 @@ import {
   PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis,
   PolarRadiusAxis, Radar as RechartsRadar, AreaChart, Area
 } from "recharts";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Animation Variants ──────────────────────────────────────────
 
@@ -121,6 +122,7 @@ const LifeDashboard = () => {
 
   return (
     <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6 max-w-[1600px] mx-auto">
+      <DemoModeBadge />
       {/* Header */}
       <motion.div variants={fadeUp}>
         <SitaPageHeader

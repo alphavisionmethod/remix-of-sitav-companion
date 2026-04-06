@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Mail, Inbox, Send, Star, Trash2, Archive, Search, Plus, Paperclip, ChevronRight, Clock, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface Email {
   id: string;
@@ -43,6 +44,7 @@ export default function EmailApp() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Mail className="h-6 w-6 text-primary" />

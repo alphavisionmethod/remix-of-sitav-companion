@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const TIMELINE_EVENTS = [
   { date: "Apr 3", event: "Homepage hero redesign", type: "design", impact: "+18% CTR", positive: true, details: "New value prop + hero image. CRO Advisor recommended duplicating CTA." },
@@ -22,6 +23,7 @@ export default function PresenceTimeMachine() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Digital Presence Time Machine</h1>
         <p className="text-sm text-muted-foreground">Replay changes, review impact & see what advisors recommended</p>

@@ -11,6 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const mockAssets = [
   { id: "ia-1", type: "root-cause-analysis", domain: "engineering", title: "Memory leak in portfolio renderer", confidence: 92, freshness: "2hr", verificationState: "verified", reuseEligible: true, usageCount: 12, qualityScore: 92, acceptanceRate: 0.95, status: "active", savings: 540, invalidationTriggers: ["deployment", "dependency_update"], evidenceRefs: 3, lastUsed: "1hr ago" },
@@ -52,6 +53,7 @@ const IntelligenceAssetLibrary = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         icon={<Library className="h-6 w-6" />}
         title="Intelligence Asset Library"

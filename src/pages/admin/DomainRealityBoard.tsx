@@ -13,6 +13,7 @@ import {
   Database, Shield, CheckCircle, XCircle, AlertTriangle,
   FileText, PenSquare, Eye, Layers
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface FeatureReality {
   feature: string;
@@ -115,6 +116,7 @@ export default function DomainRealityBoard() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Domain Reality Conversion Board" subtitle="Feature-level real vs demo readiness across every flagship domain" />
 
       <SitaTabs
