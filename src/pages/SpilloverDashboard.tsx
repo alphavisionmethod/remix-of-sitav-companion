@@ -108,7 +108,6 @@ const SpilloverGraph = () => (
             strokeOpacity={opacity}
             strokeDasharray={s.impact === "low" ? "2,2" : undefined}
           />
-      <DemoModeBadge />
         );
       })}
     </svg>
@@ -137,6 +136,7 @@ export default function SpilloverDashboard() {
 
   return (
     <div className="space-y-8 p-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3">

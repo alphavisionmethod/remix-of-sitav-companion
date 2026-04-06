@@ -243,8 +243,7 @@ const DailyPulse = () => {
   // Post-arrival first desktop state — shown once after setup
   if (showPostArrival) {
     return (
-      <PostArrivalDesktop onDismiss={() =>
-      <DemoModeBadge /> {
+      <PostArrivalDesktop onDismiss={() => {
         sessionStorage.removeItem("sita-post-arrival-trigger");
         setShowPostArrival(false);
       }} />
@@ -555,6 +554,7 @@ const DailyPulse = () => {
                 const severityText = insight.severity === "critical" ? "text-urgency-critical" : insight.severity === "warning" ? "text-trust-review" : "text-primary";
                 return (
                   <div key={insight.id} className="rounded-xl border border-border bg-card p-4 pl-5 transition-all hover:shadow-card-hover">
+                    <DemoModeBadge />
                     <div className="flex items-start gap-3">
                       <div className={`rounded-lg ${severityColor} p-2 shrink-0`}><DomainIcon className={`h-4 w-4 ${severityText}`} /></div>
                       <div className="flex-1 min-w-0">

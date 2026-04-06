@@ -265,8 +265,7 @@ export default function BoardroomReplay() {
         return prev + 1;
       });
     }, 1000);
-    return () =>
-      <DemoModeBadge /> clearInterval(timer);
+    return () => clearInterval(timer);
   }, [isPlaying, slides.length]);
 
   useEffect(() => {

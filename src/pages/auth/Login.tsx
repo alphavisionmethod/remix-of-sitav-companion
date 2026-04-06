@@ -33,8 +33,7 @@ const Login = () => {
     return (
       <LockScreen
         userName={savedEmail.split("@")[0]}
-        onUnlock={async (pw) =>
-      <DemoModeBadge /> {
+        onUnlock={async (pw) => {
           const { error } = await signIn(savedEmail, pw);
           if (error) return false;
           localStorage.setItem("sita-last-email", savedEmail);
@@ -72,6 +71,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex bg-background">
+      <DemoModeBadge />
       {/* Left: Brand panel */}
       <div className="hidden lg:flex lg:w-[45%] relative overflow-hidden">
         {/* Background layers */}
