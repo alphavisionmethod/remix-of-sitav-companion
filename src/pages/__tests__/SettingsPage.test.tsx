@@ -4,19 +4,25 @@ import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
+vi.mock("@/integrations/supabase/client", () => ({
+  supabase: {
+    auth: {
+      onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
+      getSession: vi.fn().mockResolvedValue({ data: { session: null }, error: null }),
+      getUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
+    },
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({ eq: vi.fn(() => ({ data: [], error: null })), data: [], error: null, order: vi.fn(() => ({ data: [], error: null })) })),
+    })),
+  },
+}));
+
 vi.mock("@/contexts/DataModeContext", () => ({
   useDataMode: () => ({ isDemoMode: true, toggleMode: vi.fn() }),
 }));
 
 vi.mock("@/contexts/AuthContext", () => ({
   useAuth: () => ({ user: { id: "test-user" }, loading: false, signOut: vi.fn() }),
-}));
-
-vi.mock("@/integrations/supabase/client", () => ({
-  supabase: {
-    from: () => ({ select: () => ({ eq: () => ({ data: [], error: null }), data: [], error: null }) }),
-    auth: { getUser: () => Promise.resolve({ data: { user: { id: "test" } }, error: null }) },
-  },
 }));
 
 describe("SettingsPage", () => {

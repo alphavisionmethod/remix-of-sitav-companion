@@ -4,6 +4,18 @@ import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
+vi.mock("@/integrations/supabase/client", () => ({
+  supabase: {
+    auth: {
+      onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
+      getSession: vi.fn().mockResolvedValue({ data: { session: null }, error: null }),
+    },
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({ eq: vi.fn(() => ({ data: [], error: null })), data: [], error: null, order: vi.fn(() => ({ data: [], error: null })) })),
+    })),
+  },
+}));
+
 vi.mock("@/contexts/DataModeContext", () => ({
   useDataMode: () => ({ isDemoMode: true, toggleMode: vi.fn() }),
 }));
@@ -16,10 +28,6 @@ vi.mock("@/contexts/InspectorContext", () => ({
   useInspector: () => ({ inspect: vi.fn(), inspectedEntity: null }),
 }));
 
-vi.mock("@/integrations/supabase/client", () => ({
-  supabase: { from: () => ({ select: () => ({ data: [], error: null }) }) },
-}));
-
 describe("Boardroom Page", () => {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
@@ -28,7 +36,7 @@ describe("Boardroom Page", () => {
     expect(mod.default).toBeDefined();
   });
 
-  it("renders DemoModeBadge in demo mode", async () => {
+  it("renders with DemoModeBadge", async () => {
     const Boardroom = (await import("../Boardroom")).default;
     const { container } = render(
       <QueryClientProvider client={qc}>
@@ -38,7 +46,6 @@ describe("Boardroom Page", () => {
       </QueryClientProvider>
     );
     expect(container.firstChild).toBeTruthy();
-    // Should contain demo badge text
     expect(container.textContent).toContain("Demo");
   });
 });

@@ -3,16 +3,24 @@ import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import React from "react";
 
+vi.mock("@/integrations/supabase/client", () => ({
+  supabase: {
+    auth: {
+      onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
+      getSession: vi.fn().mockResolvedValue({ data: { session: null }, error: null }),
+    },
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({ eq: vi.fn(() => ({ data: [], error: null })), data: [], error: null, order: vi.fn(() => ({ data: [], error: null })) })),
+    })),
+  },
+}));
+
 vi.mock("@/contexts/DataModeContext", () => ({
   useDataMode: () => ({ isDemoMode: true, toggleMode: vi.fn() }),
 }));
 
 vi.mock("@/contexts/AuthContext", () => ({
   useAuth: () => ({ user: { id: "test-user" }, loading: false, signOut: vi.fn() }),
-}));
-
-vi.mock("@/integrations/supabase/client", () => ({
-  supabase: { from: () => ({ select: () => ({ data: [], error: null }) }) },
 }));
 
 describe("MoneyCenter Page", () => {
