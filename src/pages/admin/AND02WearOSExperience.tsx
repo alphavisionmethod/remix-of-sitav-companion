@@ -1,59 +1,164 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Watch, ArrowRight } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Watch, ArrowRight, Clock, Zap, Eye, Smartphone, AlertTriangle, Vibrate } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+
+const TILES = [
+  { id: "wmn", name: "What Matters Now", priority: 0, refresh: "30s", layout: "compact", items: 3, sources: ["approvals", "alerts", "tasks"] },
+  { id: "pulse", name: "Daily Pulse", priority: 1, refresh: "60s", layout: "expanded", items: 1, sources: ["pulse_score"] },
+  { id: "urgent", name: "Urgent Alerts", priority: 0, refresh: "realtime", layout: "list", items: 5, sources: ["critical_alerts"] },
+  { id: "schedule", name: "Next Up", priority: 2, refresh: "60s", layout: "compact", items: 2, sources: ["calendar", "tasks"] },
+  { id: "focus", name: "Focus State", priority: 3, refresh: "5m", layout: "compact", items: 1, sources: ["focus_mode"] },
+];
+
+const MICRO_ACTIONS = [
+  { action: "Approve", riskCeiling: "medium", biometric: "wrist_detection", gesture: "tap", feedback: "haptic_success" },
+  { action: "Reject", riskCeiling: "medium", biometric: "wrist_detection", gesture: "tap", feedback: "haptic_failure" },
+  { action: "Snooze", riskCeiling: "any", biometric: "none", gesture: "swipe", feedback: "haptic_click" },
+  { action: "Escalate to Phone", riskCeiling: "any", biometric: "none", gesture: "long_press", feedback: "haptic_direction_up" },
+  { action: "Dismiss", riskCeiling: "any", biometric: "none", gesture: "swipe_away", feedback: "none" },
+];
+
+const COMPLICATIONS = [
+  { name: "Pending Approvals", family: "graphicCircular", update: "realtime", data: "count" },
+  { name: "Daily Pulse Score", family: "graphicCorner", update: "hourly", data: "gauge" },
+  { name: "Next Action Timer", family: "graphicBezel", update: "per_minute", data: "countdown" },
+  { name: "Focus State", family: "graphicCircular", update: "on_change", data: "icon" },
+];
 
 const AND02WearOSExperience = () => (
   <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
+    <DemoModeBadge />
     <div className="flex items-center gap-3">
-      <Watch className="h-8 w-8 text-primary" />
+      <div className="p-2 rounded-lg bg-primary/10"><Watch className="h-8 w-8 text-primary" /></div>
       <div>
         <h1 className="text-2xl font-bold">Wear OS Experience Board</h1>
         <p className="text-muted-foreground">Tiles, complications, glanceable states, micro-actions, escalation</p>
       </div>
     </div>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <Card>
-        <CardHeader><CardTitle className="text-sm">Tiles</CardTitle></CardHeader>
-        <CardContent className="text-xs space-y-1">
-          <p>• Max active tiles: 5</p>
-          <p>• Refresh: every 60s</p>
-          <p>• Layouts: compact, expanded, list</p>
-          <p>• What-matters-now tile</p>
-          <p>• Urgent alerts tile</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader><CardTitle className="text-sm">Micro-Actions</CardTitle></CardHeader>
-        <CardContent className="text-xs space-y-1">
-          <p>• Approve / Reject</p>
-          <p>• Snooze</p>
-          <p>• Escalate to phone</p>
-          <p>• Dismiss</p>
-          <p>• Risk ceiling: medium</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader><CardTitle className="text-sm flex items-center gap-2"><ArrowRight className="h-4 w-4" /> Escalation</CardTitle></CardHeader>
-        <CardContent className="text-xs space-y-1">
-          <p>• Auto-escalate after 90s</p>
-          <p>• Watch → Phone handoff</p>
-          <p>• Vibration: long pulse on escalation</p>
-          <p>• Deep link to full context on phone</p>
-        </CardContent>
-      </Card>
-    </div>
-    <Card>
-      <CardHeader><CardTitle className="text-sm">Complications</CardTitle></CardHeader>
-      <CardContent className="text-xs">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {["Pending approvals count", "Daily pulse score", "Next action timer", "Focus state indicator"].map((c) => (
-            <div key={c} className="p-2 rounded border">{c}</div>
+
+    <Tabs defaultValue="tiles" className="space-y-4">
+      <TabsList>
+        <TabsTrigger value="tiles">Tiles</TabsTrigger>
+        <TabsTrigger value="actions">Micro-Actions</TabsTrigger>
+        <TabsTrigger value="complications">Complications</TabsTrigger>
+        <TabsTrigger value="escalation">Escalation</TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="tiles">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {TILES.map((tile) => (
+            <Card key={tile.id} className="hover:shadow-md transition-shadow">
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-sm flex items-center gap-2"><Eye className="h-4 w-4" />{tile.name}</CardTitle>
+                  <Badge variant={tile.priority === 0 ? "destructive" : "outline"}>P{tile.priority}</Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="text-xs space-y-2">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="p-2 rounded border"><Clock className="h-3 w-3 inline mr-1" />{tile.refresh}</div>
+                  <div className="p-2 rounded border"><Zap className="h-3 w-3 inline mr-1" />{tile.items} items</div>
+                </div>
+                <div className="p-2 rounded border">Layout: <span className="font-mono">{tile.layout}</span></div>
+                <div className="flex flex-wrap gap-1">{tile.sources.map((s) => <Badge key={s} variant="secondary" className="text-[10px] font-mono">{s}</Badge>)}</div>
+              </CardContent>
+            </Card>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </TabsContent>
+
+      <TabsContent value="actions">
+        <Card>
+          <CardHeader><CardTitle className="text-sm">Micro-Action Registry</CardTitle></CardHeader>
+          <CardContent>
+            <table className="w-full text-xs">
+              <thead><tr className="border-b">
+                <th className="text-left p-2">Action</th>
+                <th className="p-2">Risk Ceiling</th>
+                <th className="p-2">Biometric</th>
+                <th className="p-2">Gesture</th>
+                <th className="p-2">Feedback</th>
+              </tr></thead>
+              <tbody>
+                {MICRO_ACTIONS.map((a) => (
+                  <tr key={a.action} className="border-b hover:bg-muted/30">
+                    <td className="p-2 font-medium">{a.action}</td>
+                    <td className="p-2 text-center"><Badge variant={a.riskCeiling === "medium" ? "default" : "secondary"}>{a.riskCeiling}</Badge></td>
+                    <td className="p-2 text-center font-mono">{a.biometric}</td>
+                    <td className="p-2 text-center">{a.gesture}</td>
+                    <td className="p-2 text-center"><Badge variant="outline">{a.feedback}</Badge></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="complications">
+        <Card>
+          <CardHeader><CardTitle className="text-sm">Complication Registry</CardTitle></CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {COMPLICATIONS.map((c) => (
+                <div key={c.name} className="p-4 rounded-lg border space-y-2">
+                  <div className="text-sm font-medium">{c.name}</div>
+                  <div className="flex gap-2 text-xs">
+                    <Badge variant="outline">Family: {c.family}</Badge>
+                    <Badge variant="outline">Update: {c.update}</Badge>
+                    <Badge variant="secondary">Data: {c.data}</Badge>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="escalation">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card>
+            <CardHeader><CardTitle className="text-sm flex items-center gap-2"><ArrowRight className="h-4 w-4" />Escalation Rules</CardTitle></CardHeader>
+            <CardContent className="text-xs space-y-2">
+              {[
+                { trigger: "Auto-escalate after 90s", target: "Phone via deep link", haptic: "long_pulse" },
+                { trigger: "Risk > medium", target: "Phone with biometric", haptic: "direction_up" },
+                { trigger: "Batch approval (>3)", target: "Phone inbox", haptic: "notification" },
+                { trigger: "No connectivity", target: "Queue for sync", haptic: "retry" },
+              ].map((e, i) => (
+                <div key={i} className="p-3 rounded border space-y-1">
+                  <div className="font-medium flex items-center gap-2"><AlertTriangle className="h-3 w-3" />{e.trigger}</div>
+                  <div className="flex gap-2">
+                    <Badge variant="outline"><Smartphone className="h-3 w-3 mr-1" />{e.target}</Badge>
+                    <Badge variant="secondary"><Vibrate className="h-3 w-3 mr-1" />{e.haptic}</Badge>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader><CardTitle className="text-sm">Wear OS Constraints</CardTitle></CardHeader>
+            <CardContent className="text-xs space-y-2">
+              {[
+                { label: "Max active tiles", value: "5" },
+                { label: "Risk ceiling", value: "medium" },
+                { label: "Biometric", value: "wrist detection only" },
+                { label: "Batch actions", value: "not supported" },
+                { label: "Offline mode", value: "queue + sync" },
+                { label: "Text input", value: "voice dictation only" },
+              ].map((c) => (
+                <div key={c.label} className="flex justify-between p-2 rounded border">
+                  <span>{c.label}</span><span className="font-mono">{c.value}</span>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+      </TabsContent>
+    </Tabs>
   </div>
 );
 
