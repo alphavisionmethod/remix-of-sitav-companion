@@ -147,4 +147,10 @@ const BusinessBoardroom = () => {
   );
 };
 
-export default BusinessBoardroom;
+const BusinessBoardroomWithBoundary = () => (
+  <GlobalErrorBoundary>
+    <BusinessBoardroom />
+  </GlobalErrorBoundary>
+);
+
+export default BusinessBoardroomWithBoundary;
