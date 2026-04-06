@@ -333,6 +333,9 @@ const AIG03RoutingMatrix = lazy(() => import("./pages/admin/AIG03RoutingMatrix")
 const AIG04BudgetCenter = lazy(() => import("./pages/admin/AIG04BudgetCenter"));
 const AIG05ReceiptsExplorer = lazy(() => import("./pages/admin/AIG05ReceiptsExplorer"));
 const AIG06LaunchTruth = lazy(() => import("./pages/admin/AIG06LaunchTruth"));
+const AIG07LaunchTruth = lazy(() => import("./pages/admin/AIG07LaunchTruth"));
+const AIG08DegradedDiagnostics = lazy(() => import("./pages/admin/AIG08DegradedDiagnostics"));
+const AIG09RuntimeVerification = lazy(() => import("./pages/admin/AIG09RuntimeVerification"));
 
 const UAO01PresenceContinuity = lazy(() => import("./pages/admin/UAO01PresenceContinuity"));
 const UAO02ConnectedDevices = lazy(() => import("./pages/admin/UAO02ConnectedDevices"));
