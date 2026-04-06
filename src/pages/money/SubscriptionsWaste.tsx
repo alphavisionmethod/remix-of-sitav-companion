@@ -50,7 +50,7 @@ const SubscriptionsWaste = () => {
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<SubForm>(emptyForm);
 
-  const { data: subscriptions = [], isLoading } = useQuery({
+  const subsQuery = useQuery({
     queryKey: ["subscriptions"],
     queryFn: async () => {
       const { data, error } = await (supabase as any).from("subscriptions").select("*").order("service_name", { ascending: true });
@@ -58,6 +58,9 @@ const SubscriptionsWaste = () => {
       return data;
     },
   });
+  const subscriptions = subsQuery.data ?? [];
+  const isLoading = subsQuery.isLoading;
+  const freshness = useQueryFreshness(subsQuery);
 
   const createMutation = useMutation({
     mutationFn: async (sub: SubForm) => {
