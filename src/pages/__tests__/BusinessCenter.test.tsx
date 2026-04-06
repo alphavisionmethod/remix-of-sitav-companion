@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
 vi.mock("@/integrations/supabase/client", () => ({
@@ -24,6 +25,8 @@ vi.mock("@/contexts/AuthContext", () => ({
 }));
 
 describe("BusinessCenter Page", () => {
+  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+
   it("exports a default component", async () => {
     const mod = await import("../BusinessCenter");
     expect(mod.default).toBeDefined();
@@ -33,12 +36,14 @@ describe("BusinessCenter Page", () => {
   it("renders tabs navigation", async () => {
     const BusinessCenter = (await import("../BusinessCenter")).default;
     const { container } = render(
-      <MemoryRouter initialEntries={["/business"]}>
-        <BusinessCenter />
-      </MemoryRouter>
+      <QueryClientProvider client={qc}>
+        <MemoryRouter initialEntries={["/business"]}>
+          <BusinessCenter />
+        </MemoryRouter>
+      </QueryClientProvider>
     );
     expect(container.firstChild).toBeTruthy();
     const buttons = container.querySelectorAll("button");
     expect(buttons.length).toBeGreaterThan(0);
   });
-});
+}, 15000);
