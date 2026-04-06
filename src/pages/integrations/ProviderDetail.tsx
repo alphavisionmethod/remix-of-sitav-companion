@@ -10,17 +10,19 @@ import { ArrowLeft, CheckCircle, Shield, Zap, Globe, ExternalLink, BookOpen, Ale
 import { getProviderById } from "@/lib/services/integration-hub/providers";
 import { DEMO_CONNECTIONS } from "@/lib/services/integration-hub/demo-connections";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ProviderDetail() {
   const { providerId } = useParams();
   const navigate = useNavigate();
   const [wizardStep, setWizardStep] = useState(0);
   const [connecting, setConnecting] = useState(false);
+  const { isDemoMode } = useDataMode();
 
   const provider = getProviderById(providerId || "");
   if (!provider) return <div className="p-6 text-muted-foreground">Provider not found</div>;
 
-  const existingConnection = DEMO_CONNECTIONS.find(c => c.providerId === provider.id);
+  const existingConnection = isDemoMode ? DEMO_CONNECTIONS.find(c => c.providerId === provider.id) : null;
   const readCaps = provider.capabilities.filter(c => c.type === "read");
   const writeCaps = provider.capabilities.filter(c => c.type === "write");
 

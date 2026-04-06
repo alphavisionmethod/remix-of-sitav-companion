@@ -8,13 +8,27 @@ import { ArrowLeft, CheckCircle, AlertTriangle, RefreshCw, Trash2, Activity, Clo
 import { DEMO_CONNECTIONS } from "@/lib/services/integration-hub/demo-connections";
 import { getProviderById } from "@/lib/services/integration-hub/providers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ConnectionDetail() {
   const { connectionId } = useParams();
   const navigate = useNavigate();
-  const conn = DEMO_CONNECTIONS.find(c => c.id === connectionId);
+  const { isDemoMode } = useDataMode();
 
-  if (!conn) return <div className="p-6 text-muted-foreground">Connection not found</div>;
+  const conn = isDemoMode ? DEMO_CONNECTIONS.find(c => c.id === connectionId) : null;
+
+  if (!conn && isDemoMode) return <div className="p-6 text-muted-foreground">Connection not found</div>;
+  if (!isDemoMode) return (
+    <div className="p-6 space-y-4">
+      <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground" onClick={() => navigate("/integrations/connections")}>
+        <ArrowLeft className="w-3.5 h-3.5" /> Back to Connections
+      </Button>
+      <div className="text-center py-16">
+        <h2 className="text-lg font-semibold text-foreground mb-2">Connection Details</h2>
+        <p className="text-sm text-muted-foreground">Real connection details will appear here once integrations are connected.</p>
+      </div>
+    </div>
+  );
 
   const provider = getProviderById(conn.providerId);
 

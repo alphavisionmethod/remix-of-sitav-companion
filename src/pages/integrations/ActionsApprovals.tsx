@@ -10,6 +10,7 @@ import { Shield, CheckCircle, XCircle, AlertTriangle, Clock, ArrowRight, Zap, Ey
 import { DEMO_ACTION_REQUESTS } from "@/lib/services/integration-hub/demo-connections";
 import type { DemoActionRequest } from "@/lib/services/integration-hub/demo-connections";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusConfig: Record<string, { color: string; icon: any; label: string }> = {
   proposed: { color: "text-blue-400", icon: Clock, label: "Pending Approval" },

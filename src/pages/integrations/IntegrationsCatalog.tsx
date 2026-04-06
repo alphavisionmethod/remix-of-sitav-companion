@@ -50,8 +50,8 @@ export default function IntegrationsCatalog() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
           { label: "Available", value: INTEGRATION_PROVIDERS.length.toString(), icon: Globe, color: "text-blue-400" },
-          { label: "Connected", value: DEMO_CONNECTIONS.filter(c => c.status === "connected").length.toString(), icon: CheckCircle, color: "text-green-400" },
-          { label: "Needs Attention", value: DEMO_CONNECTIONS.filter(c => c.status === "expired" || c.status === "error").length.toString(), icon: AlertTriangle, color: "text-amber-400" },
+          { label: "Connected", value: demoConns.filter(c => c.status === "connected").length.toString(), icon: CheckCircle, color: "text-green-400" },
+          { label: "Needs Attention", value: demoConns.filter(c => c.status === "expired" || c.status === "error").length.toString(), icon: AlertTriangle, color: "text-amber-400" },
           { label: "Write-Enabled", value: INTEGRATION_PROVIDERS.filter(p => p.capabilities.some(c => c.type === "write")).length.toString(), icon: Zap, color: "text-purple-400" },
         ].map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
