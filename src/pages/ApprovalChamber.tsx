@@ -17,6 +17,10 @@ import type { AutonomyRung } from "@/components/sita/primitives/AutonomyLadder";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { motion, AnimatePresence } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useApprovals } from "@/hooks/use-sita-data";
+import { useApprovalQueue } from "@/hooks/use-brain-core";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { toast } from "sonner";
 
 // ── Types ────────────────────────────────────────────────────
 
