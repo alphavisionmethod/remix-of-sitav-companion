@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Search, TrendingUp, TrendingDown, Filter, BarChart3, Globe, Zap, ChevronRight } from "lucide-react";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
 import type { AssetClass } from "@/lib/investment-office/types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const CLASS_TABS: { value: AssetClass | "all"; label: string; icon: string }[] = [
   { value: "all", label: "All", icon: "🌐" },
@@ -29,6 +30,7 @@ export default function MarketExplorer() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Globe className="h-6 w-6 text-primary" /> Market Explorer</h1>
         <p className="text-sm text-muted-foreground mt-1">Stocks, crypto, commodities, and event markets</p>

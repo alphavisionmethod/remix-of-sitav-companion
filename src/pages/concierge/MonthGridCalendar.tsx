@@ -9,6 +9,7 @@ const db: any = supabase;
 import { useQuery } from "@tanstack/react-query";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { generateCalendarDemoEvents } from "@/lib/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import {
   Calendar, ChevronLeft, ChevronRight, Plus, Clock, Users, MapPin, CheckSquare
 } from "lucide-react";
@@ -122,6 +123,7 @@ const MonthGridCalendar = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Family Calendar" subtitle="Month view — bookings, tasks, and schedule at a glance" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

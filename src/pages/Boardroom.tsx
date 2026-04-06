@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { useBoardroomPacket } from "@/hooks/use-boardroom";
 import { mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory } from "@/lib/mock-data/advisor-mission-control";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type {
   BoardroomType, BoardroomPacket, BoardroomContentSection, MetricCardData,
   TableData, NarrativeData, AlertData, ActionItemData, ChartData, BOARDROOM_META
@@ -980,6 +981,7 @@ const Boardroom = () => {
   return (
     <>
       <motion.div className="mx-auto max-w-7xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+        <DemoModeBadge />
         <SitaPageHeader
           title="Boardroom"
           subtitle="Where advisor voices become one governed plan — not a dashboard, a deliberation artifact"

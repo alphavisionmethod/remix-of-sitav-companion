@@ -1,7 +1,11 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { handleCors, corsResponse, corsError } from "../_shared/cors.ts";
+import { handleCors, corsResponse, corsError, corsHeaders } from "../_shared/cors.ts";
 import { requireAdmin, getServiceClient } from "../_shared/auth.ts";
 import { validateBody } from "../_shared/validate.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { EdgeLogger } from "../_shared/logger.ts";
+
+const logger = new EdgeLogger("admin-users");
 
 serve(async (req) => {
   const cors = handleCors(req);
@@ -10,6 +14,10 @@ serve(async (req) => {
   try {
     const auth = await requireAdmin(req);
     if (auth instanceof Response) return auth;
+
+    const rl = checkRateLimit(`admin-users:${auth.user.id}`, 30, 60_000);
+    if (!rl.allowed) return rateLimitResponse(rl, corsHeaders);
+    logger.info("admin-users request", { userId: auth.user.id });
 
     const adminClient = getServiceClient();
     const url = new URL(req.url);

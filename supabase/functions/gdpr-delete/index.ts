@@ -4,11 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
 
 const DELETABLE_TABLES = [
   "advisor_feedback", "advisor_knowledge", "advisor_memories", "advisor_performance",
