@@ -11,6 +11,21 @@ serve(async (req) => {
   const cors = handleCors(req);
   if (cors) return cors;
 
+  // Zod input validation for POST
+  if (req.method === "POST") {
+    try {
+      const BodySchema = z.object({ file_name: z.string().min(1), file_type: z.string().optional() });
+      const cloned = req.clone();
+      const body = await cloned.json();
+      const parsed = BodySchema.safeParse(body);
+      if (!parsed.success) {
+        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+    } catch (_) { /* multipart or non-JSON */ }
+  }
+
   try {
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
