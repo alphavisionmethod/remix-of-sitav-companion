@@ -9,6 +9,7 @@ const db: any = supabase;
 import { useQuery } from "@tanstack/react-query";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { generateCalendarDemoEvents } from "@/lib/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import {
   Calendar, ChevronLeft, ChevronRight, Plus, Clock, Users, MapPin, CheckSquare
 } from "lucide-react";

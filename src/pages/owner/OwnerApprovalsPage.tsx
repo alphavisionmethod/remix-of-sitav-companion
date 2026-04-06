@@ -16,6 +16,7 @@ import {
 
 import { useOwnerApprovals } from "@/hooks/use-domain-data";
 import type { OwnerApprovalItem as ApprovalItem } from "@/lib/mock-data/owner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const riskStyles: Record<string, string> = {
   critical: "bg-destructive/10 text-destructive",
