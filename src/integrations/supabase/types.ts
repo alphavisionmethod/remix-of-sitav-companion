@@ -2500,51 +2500,84 @@ export type Database = {
       ai_workforce_approval_queue: {
         Row: {
           action_type: string
+          budget_impact: string | null
           created_at: string
           description: string | null
+          estimated_impact: string | null
           evidence: Json | null
+          evidence_summary: string | null
           id: string
+          impacted_domain: string | null
           invocation_id: string | null
+          launch_impact: string | null
+          originating_receipt_id: string | null
+          proposed_action_summary: string | null
           proposed_changes: Json | null
+          recommendation_type: string | null
+          resolved_at: string | null
           review_notes: string | null
           reviewed_at: string | null
           reviewed_by: string | null
+          reviewer_notes: string | null
           risk_tier: string
           role_key: string
+          severity: string | null
           status: string
           title: string
           user_id: string
         }
         Insert: {
           action_type: string
+          budget_impact?: string | null
           created_at?: string
           description?: string | null
+          estimated_impact?: string | null
           evidence?: Json | null
+          evidence_summary?: string | null
           id?: string
+          impacted_domain?: string | null
           invocation_id?: string | null
+          launch_impact?: string | null
+          originating_receipt_id?: string | null
+          proposed_action_summary?: string | null
           proposed_changes?: Json | null
+          recommendation_type?: string | null
+          resolved_at?: string | null
           review_notes?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          reviewer_notes?: string | null
           risk_tier?: string
           role_key: string
+          severity?: string | null
           status?: string
           title: string
           user_id: string
         }
         Update: {
           action_type?: string
+          budget_impact?: string | null
           created_at?: string
           description?: string | null
+          estimated_impact?: string | null
           evidence?: Json | null
+          evidence_summary?: string | null
           id?: string
+          impacted_domain?: string | null
           invocation_id?: string | null
+          launch_impact?: string | null
+          originating_receipt_id?: string | null
+          proposed_action_summary?: string | null
           proposed_changes?: Json | null
+          recommendation_type?: string | null
+          resolved_at?: string | null
           review_notes?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          reviewer_notes?: string | null
           risk_tier?: string
           role_key?: string
+          severity?: string | null
           status?: string
           title?: string
           user_id?: string
