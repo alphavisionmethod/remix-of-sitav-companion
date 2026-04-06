@@ -211,8 +211,10 @@ export function useToggleHealthConsent() {
 export function useUpdatePushRoute() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, active }: { id: string; active: boolean }) => {
-      const { error } = await supabase.from("ecosystem_push_routes").update({ active }).eq("id", id);
+    mutationFn: async ({ id, enabled }: { id: string; enabled: boolean }) => {
+      const { error } = await supabase.from("ecosystem_push_routes").update({
+        urgency_filter: enabled ? "all" : "none",
+      }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
