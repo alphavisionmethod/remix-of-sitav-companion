@@ -18,6 +18,8 @@ import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
+import { ContextualEmptyState } from "@/components/sita/ContextualEmptyState";
+import { getContextualEmptyState } from "@/lib/ux-trust/contextual-empty-states";
 
 const ReservesSavings = () => {
   const { data: reservesData = [] } = useReservesSavings();
