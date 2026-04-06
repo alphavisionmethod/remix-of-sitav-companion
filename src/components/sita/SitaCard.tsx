@@ -15,6 +15,7 @@ interface SitaCardProps {
 
 export const SitaCard = ({ children, className, glow, hover = true, elevated, lane, onClick, selected }: SitaCardProps) => (
   <motion.div
+    role="article"
     initial={{ opacity: 0, y: 4 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.25, ease: "easeOut" }}
