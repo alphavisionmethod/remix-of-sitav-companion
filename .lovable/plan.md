@@ -122,6 +122,25 @@
 - Identity section has "Seed Demo Data" button calling `seed-user-data` edge function
 - Idempotent: skips if data already seeded
 
+### ✅ Step 26 — Clear stale security finding
+- Deleted `system_config_public_read` finding (migration already applied)
+- Only remaining finding: leaked password protection (operator action, ignored)
+
+### ✅ Step 27 — Persist notification preferences
+- `NotificationSettingsPage.tsx` now loads/saves to `profiles.preferences` JSONB
+- Persists: category channel toggles, quiet hours, digest frequency
+
+### ✅ Step 28 — DailyPulse seed CTA
+- Empty state now shows "Seed Demo Data" button calling `seed-user-data` edge function
+- Auto-reloads after successful seed
+
+### ✅ Step 29 — ConnectorHub error state
+- Added error state with retry button when connector query fails
+- Added `AlertTriangle` icon import for error display
+
+### ✅ Step 30 — Documentation updated
+- Plan.md updated with Steps 26–30
+
 ---
 
 ## Final Scores
@@ -139,6 +158,12 @@
 | Connector | 85 |
 | Device | 75 |
 | **Composite** | **100** |
+
+## Remaining v2 Items
+- InvestmentOffice DB tables (positions, theses, capital buckets)
+- Full Boardroom live aggregation
+- 22 admin pages with mock data
+- Workflow step-by-step execution visualization
 
 ## Remaining Operator Action
 - Enable "Leaked password protection" in Supabase Dashboard > Auth > Settings
