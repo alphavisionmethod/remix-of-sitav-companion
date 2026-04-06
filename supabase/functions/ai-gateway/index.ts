@@ -1,6 +1,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { corsHeaders, corsResponse, corsError, handleCors } from "../_shared/cors.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { logSecurityEvent, getClientIP, getUserAgent } from "../_shared/audit-logger.ts";
 
 /**
  * SITA OS — Central AI Gateway Edge Function
