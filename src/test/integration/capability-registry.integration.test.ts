@@ -63,7 +63,7 @@ describe("Capability Registry — Integration", () => {
   });
 
   it("catches handler errors and returns graceful failure", async () => {
-    const errorKey = `error-cap-${Date.now()}`;
+    const errorKey = `error.cap.${Date.now()}`;
     registerCapability(errorKey, async () => {
       throw new Error("Intentional test failure");
     });
