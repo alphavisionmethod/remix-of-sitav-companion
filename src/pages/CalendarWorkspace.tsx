@@ -302,8 +302,22 @@ const CalendarWorkspace = () => {
                     </div>
                   )}
                   <div className="flex gap-2">
-                    <Button size="sm" variant="outline" className="flex-1 text-xs">Edit</Button>
-                    <Button size="sm" variant="outline" className="flex-1 text-xs">Reschedule</Button>
+                    <Button size="sm" variant="outline" className="flex-1 text-xs" onClick={() => {
+                      setEventForm({
+                        title: selectedEvent.title,
+                        event_date: format(parseISO(selectedEvent.date), "yyyy-MM-dd"),
+                        start_time: selectedEvent.time || "",
+                        end_time: selectedEvent.endTime || "",
+                        domain: selectedEvent.domain || "personal",
+                        event_type: selectedEvent.type || "meeting",
+                        location: selectedEvent.location || "",
+                      });
+                      setShowEditDialog(true);
+                    }}><Pencil className="w-3 h-3 mr-1" />Edit</Button>
+                    <Button size="sm" variant="outline" className="text-xs text-destructive" onClick={() => {
+                      deleteEvent.mutate(selectedEvent.id);
+                      setSelectedEvent(null);
+                    }}><Trash2 className="w-3 h-3" /></Button>
                   </div>
                 </SitaCard>
               </motion.div>
