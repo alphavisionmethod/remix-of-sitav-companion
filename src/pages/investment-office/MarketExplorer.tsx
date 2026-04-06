@@ -28,6 +28,8 @@ export default function MarketExplorer() {
 
   const regimeAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "macro");
 
+  const { instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS } = useInvestmentOfficeData();
+
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <DemoModeBadge />

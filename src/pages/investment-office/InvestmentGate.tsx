@@ -16,6 +16,8 @@ export default function InvestmentGate() {
   const hasAccounts = connected > 0;
   const regime = INVESTMENT_ADVISORS.find(a => a.domain === "macro");
 
+  const { portfolio: PORTFOLIO, advisors: INVESTMENT_ADVISORS, platformConnections: PLATFORM_CONNECTIONS, watchlists: WATCHLISTS, instruments: INSTRUMENTS } = useInvestmentOfficeData();
+
   return (
     <div className="mx-auto max-w-6xl space-y-8 pb-12">
       <DemoModeBadge />

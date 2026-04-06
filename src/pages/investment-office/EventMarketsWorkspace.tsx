@@ -11,6 +11,8 @@ export default function EventMarketsWorkspace() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<"markets" | "catalysts" | "scenarios">("markets");
 
+  const { instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS, scenarios: SAMPLE_SCENARIOS } = useInvestmentOfficeData();
+
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <DemoModeBadge />

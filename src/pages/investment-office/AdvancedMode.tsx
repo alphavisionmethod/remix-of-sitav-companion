@@ -15,6 +15,8 @@ export default function AdvancedMode() {
   const topMovers = [...INSTRUMENTS].sort((a, b) => Math.abs(b.changePct24h) - Math.abs(a.changePct24h)).slice(0, 8);
   const allCatalysts = INSTRUMENTS.flatMap(i => i.catalysts.map(c => ({ ...c, instrument: i }))).sort((a, b) => a.date.localeCompare(b.date));
 
+  const { portfolio: PORTFOLIO, instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS, watchlists: WATCHLISTS, theses: SAMPLE_THESES, orders: SAMPLE_ORDERS, scenarios: SAMPLE_SCENARIOS } = useInvestmentOfficeData();
+
   return (
     <div className="mx-auto max-w-[90rem] space-y-4">
       <DemoModeBadge />

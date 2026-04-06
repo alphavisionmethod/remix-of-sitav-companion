@@ -13,6 +13,8 @@ export default function WatchlistsSignals() {
   const highRiskHoldings = PORTFOLIO.holdings.filter(h => h.weight > 12);
   const catalystInstruments = INSTRUMENTS.filter(i => i.catalysts.length > 0);
 
+  const { watchlists: WATCHLISTS, instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS, portfolio: PORTFOLIO } = useInvestmentOfficeData();
+
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <DemoModeBadge />

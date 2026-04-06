@@ -28,6 +28,8 @@ export default function InstrumentDetail() {
     a.domain === "risk"
   );
 
+  const { getInstrument, advisors: INVESTMENT_ADVISORS, theses: SAMPLE_THESES, portfolio: PORTFOLIO } = useInvestmentOfficeData();
+
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <DemoModeBadge />

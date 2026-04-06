@@ -16,6 +16,8 @@ export default function InvestmentBoardroom() {
   const p = PORTFOLIO;
   const topMovers = [...INSTRUMENTS].sort((a, b) => Math.abs(b.changePct24h) - Math.abs(a.changePct24h)).slice(0, 5);
 
+  const { portfolio: PORTFOLIO, advisors: INVESTMENT_ADVISORS, watchlists: WATCHLISTS, instruments: INSTRUMENTS, orders: SAMPLE_ORDERS, theses: SAMPLE_THESES } = useInvestmentOfficeData();
+
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <DemoModeBadge />

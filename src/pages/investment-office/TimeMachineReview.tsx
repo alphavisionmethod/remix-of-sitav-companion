@@ -55,6 +55,8 @@ const PAST_DECISIONS = [
 export default function TimeMachineReview() {
   const [selected, setSelected] = useState(PAST_DECISIONS[0]);
 
+  const { advisors: INVESTMENT_ADVISORS } = useInvestmentOfficeData();
+
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <DemoModeBadge />

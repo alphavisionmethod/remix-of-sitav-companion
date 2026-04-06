@@ -11,6 +11,8 @@ export default function PortfolioOffice() {
   const p = PORTFOLIO;
   const sortedHoldings = [...p.holdings].sort((a, b) => b.currentValue - a.currentValue);
 
+  const { portfolio: PORTFOLIO, platformConnections: PLATFORM_CONNECTIONS } = useInvestmentOfficeData();
+
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <DemoModeBadge />

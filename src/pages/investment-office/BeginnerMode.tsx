@@ -19,6 +19,8 @@ export default function BeginnerMode() {
   const navigate = useNavigate();
   const p = PORTFOLIO;
 
+  const { portfolio: PORTFOLIO, advisors: INVESTMENT_ADVISORS, watchlists: WATCHLISTS } = useInvestmentOfficeData();
+
   return (
     <div className="mx-auto max-w-5xl space-y-8 pb-12">
       <DemoModeBadge />

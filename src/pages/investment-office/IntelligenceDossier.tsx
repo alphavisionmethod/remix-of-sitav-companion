@@ -15,6 +15,8 @@ export default function IntelligenceDossier() {
     (inst.assetClass === "events" && a.domain === "events")
   );
 
+  const { instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS } = useInvestmentOfficeData();
+
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <DemoModeBadge />

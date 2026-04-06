@@ -36,6 +36,8 @@ export default function PositionSizingCoach() {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const scenario = SIZING_SCENARIOS[selectedIdx];
 
+  const { portfolio: PORTFOLIO, instruments: INSTRUMENTS } = useInvestmentOfficeData();
+
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <DemoModeBadge />
