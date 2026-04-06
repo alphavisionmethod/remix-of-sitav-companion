@@ -5,8 +5,6 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
-// @persistence: os_service_state — state survives refresh via universal adapter
 
 export interface MemoryNode {
   id: string;
@@ -175,27 +173,3 @@ class AIMemoryGraphService {
 }
 
 export const aiMemoryGraphService = new AIMemoryGraphService();
-
-
-// ── Persistence ──────────────────────────────────────────
-const _serviceId = "ai-memory-graph/ai-memory-graph";
-
-function _serializeState(): Record<string, unknown> {
-  return {
-    categoryGroups: Array.from(categoryGroups.entries()),
-  };
-}
-
-function _hydrateState(state: Record<string, unknown>): void {
-  if (!state) return;
-  if (state.categoryGroups) { categoryGroups.clear(); (state.categoryGroups as any[]).forEach(([k, v]: any) => categoryGroups.set(k, v)); }
-}
-
-export async function loadPersistedState(): Promise<void> {
-  const state = await loadServiceState(_serviceId);
-  if (state) _hydrateState(state as Record<string, unknown>);
-}
-
-export function persistState(): void {
-  debouncedSaveServiceState(_serviceId, _serializeState());
-}

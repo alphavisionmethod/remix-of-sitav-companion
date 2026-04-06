@@ -1,5 +1,3 @@
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
-// @persistence: os_service_state — state survives refresh via universal adapter
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Execute Connector Action Service
 // Executes connector-specific actions with health validation
@@ -87,28 +85,4 @@ export function setConnectorHealth(connectorId: string, healthy: boolean): void 
     state.healthy = healthy;
     state.lastChecked = new Date().toISOString();
   }
-}
-
-
-// ── Persistence ──────────────────────────────────────────
-const _serviceId = "executor-service/execute-connector-action";
-
-function _serializeState(): Record<string, unknown> {
-  return {
-    healthStates: Array.from(healthStates.entries()),
-  };
-}
-
-function _hydrateState(state: Record<string, unknown>): void {
-  if (!state) return;
-  if (state.healthStates) { healthStates.clear(); (state.healthStates as any[]).forEach(([k, v]: any) => healthStates.set(k, v)); }
-}
-
-export async function loadPersistedState(): Promise<void> {
-  const state = await loadServiceState(_serviceId);
-  if (state) _hydrateState(state as Record<string, unknown>);
-}
-
-export function persistState(): void {
-  debouncedSaveServiceState(_serviceId, _serializeState());
 }

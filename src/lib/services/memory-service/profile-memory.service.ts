@@ -6,8 +6,6 @@
 import type { MemoryObject, DomainId, PrivacyTier } from "@/packages/contracts";
 import { persistMemoryEntry, fetchScopedMemory, supersedeMemoryEntry } from "@/lib/persistence/memory-service-persistence";
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
-// @persistence: os_service_state — state survives refresh via universal adapter
 
 const profileStore = new Map<string, MemoryObject>();
 
@@ -107,28 +105,4 @@ export async function hydrateProfileMemory(): Promise<number> {
     }
   }
   return count;
-}
-
-
-// ── Persistence ──────────────────────────────────────────
-const _serviceId = "memory-service/profile-memory";
-
-function _serializeState(): Record<string, unknown> {
-  return {
-    profileStore: Array.from(profileStore.entries()),
-  };
-}
-
-function _hydrateState(state: Record<string, unknown>): void {
-  if (!state) return;
-  if (state.profileStore) { profileStore.clear(); (state.profileStore as any[]).forEach(([k, v]: any) => profileStore.set(k, v)); }
-}
-
-export async function loadPersistedState(): Promise<void> {
-  const state = await loadServiceState(_serviceId);
-  if (state) _hydrateState(state as Record<string, unknown>);
-}
-
-export function persistState(): void {
-  debouncedSaveServiceState(_serviceId, _serializeState());
 }

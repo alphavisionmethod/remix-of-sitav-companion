@@ -4,8 +4,6 @@
 
 import type { ObligationRecord } from "@/packages/finance-contracts";
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
-// @persistence: os_service_state — state survives refresh via universal adapter
 
 export interface BillCalendarDay {
   date: string;
@@ -62,28 +60,4 @@ export function getNextDueBills(obligations: ObligationRecord[], count: number =
     .filter(o => o.status === "upcoming" || o.status === "due")
     .sort((a, b) => new Date(a.nextDueDate).getTime() - new Date(b.nextDueDate).getTime())
     .slice(0, count);
-}
-
-
-// ── Persistence ──────────────────────────────────────────
-const _serviceId = "finance-os/bill-calendar";
-
-function _serializeState(): Record<string, unknown> {
-  return {
-    daysMap: Array.from(daysMap.entries()),
-  };
-}
-
-function _hydrateState(state: Record<string, unknown>): void {
-  if (!state) return;
-  if (state.daysMap) { daysMap.clear(); (state.daysMap as any[]).forEach(([k, v]: any) => daysMap.set(k, v)); }
-}
-
-export async function loadPersistedState(): Promise<void> {
-  const state = await loadServiceState(_serviceId);
-  if (state) _hydrateState(state as Record<string, unknown>);
-}
-
-export function persistState(): void {
-  debouncedSaveServiceState(_serviceId, _serializeState());
 }

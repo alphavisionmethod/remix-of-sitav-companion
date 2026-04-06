@@ -89,7 +89,7 @@ class VoiceCommandEngine {
     this.recognition.interimResults = this.config.interimResults;
     this.recognition.lang = this.config.language;
 
-    this.recognition.onresult = (event: SpeechRecognitionEvent) => {
+    this.recognition.onresult = (event: any) => {
       const last = event.results[event.results.length - 1];
       if (!last.isFinal) return;
 
