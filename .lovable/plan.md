@@ -1,88 +1,12 @@
 
-# Fix 3 Flagship Loops to 100% — Files, Boardroom, Connected Services
 
-## Current State & Gaps
-
-| Loop | Score | Gap |
-|------|-------|-----|
-| Files + AI Assist | 72% | FileUploader works but no AI analysis feedback on file content, no "Ask AI about this file" action, file pages don't call brain-core, hardcoded KPIs |
-| Boardroom + Summary + Decision | 77% | BoardroomReplay uses all hardcoded slide data, no real data from DB, no decision recording, no session persistence |
-| Connected Services + Sync | 67% | ConnectorGovernanceCenter uses hardcoded CONNECTORS array, no calls to connector-discover/transform/batch, Settings integrations tab is static |
-
-## Implementation Plan
-
-### 1. Files + AI Assist — Wire AI to Files Pages (~150 lines changed)
-
-**A. Add "Ask AI" button to FilesOverview classified file rows**
-- Edit `src/pages/files/FilesOverview.tsx`
-- Import `useAIInsight` from `use-backend-actions`
-- Add "Analyze" button on each classified file card that calls `brain-core` with `intent: "file_analysis"` and file metadata as context
-- Display AI response inline (classification reasoning, extracted insights, suggested actions)
-
-**B. Wire FilesOverview KPIs to real Supabase data**
-- Replace hardcoded `7` obligations and `18` linked workflows with real queries from `file_metadata` table
-- Use `useQuery` to count by classification/sensitivity
-
-**C. Wire FilesProcessing to call file-ingestion edge function**
-- Edit `src/pages/files/FilesProcessing.tsx`
-- Replace the fake `FileIngestionService()` in-memory processing with a display of real `file_metadata` records filtered by `status`
-- Show actual classification results from the edge function
-
-**D. Add AI file summary to FilesSearch**
-- Edit `src/pages/files/FilesSearch.tsx`
-- Add "AI Search" mode that calls `brain-core` with `intent: "file_search"` + query text to get semantic search results
-
-### 2. Boardroom + Summary + Decision — Real Data + Persistence (~200 lines)
-
-**A. Create DB migration for boardroom sessions**
-- New table: `boardroom_sessions` (id, user_id, session_type, title, started_at, completed_at, slides_data jsonb, decisions jsonb, status)
-- New table: `boardroom_decisions` (id, session_id, user_id, text, status [executed/pending/carried/deferred], advisor, domain, decided_at)
-- RLS: users see own sessions/decisions only
-
-**B. Wire BoardroomReplay to real data**
-- Edit `src/pages/boardroom/BoardroomReplay.tsx`
-- Import `useQuery` + `useMutation` to load/save sessions
-- Replace `generateWeeklySlides()` with data pulled from real tables: invoices, leads, bills, household_tasks, approval_queue, cashflow-calculate
-- Call `brain-core` for "Advisor Consensus" text on each domain slide (business, finance, concierge)
-- Save decisions to `boardroom_decisions` table when user marks items
-- Add "Start New Session" and "Save Session" buttons
-
-**C. Create BoardroomHistory page**
-- New file: `src/pages/boardroom/BoardroomHistory.tsx`
-- List past sessions from `boardroom_sessions` with date, decision count, status
-- Click to replay any past session
-
-**D. Add route for BoardroomHistory**
-- Add `/boardroom/history` route in App.tsx
-
-### 3. Connected Services + Sync — Wire to Real Edge Functions (~180 lines)
-
-**A. Wire ConnectorGovernanceCenter to real data**
-- Edit `src/pages/admin/ConnectorGovernanceCenter.tsx`
-- Replace hardcoded `CONNECTORS` array with `useQuery` from `connector_registry` + `connector_accounts` + `connector_configs`
-- Add "Discover New" button that calls `connector-discover` edge function (`scan` action)
-- Add "Sync Now" button per connector that calls `connector-batch` edge function (`submit` action)
-- Show real sync history from `audit_logs` filtered by connector domain
-
-**B. Wire Settings > Integrations tab to real connector data**
-- Edit `src/pages/SettingsPage.tsx` (integrations section)
-- Replace static connector list with `useQuery` from `connector_registry` joined with `connector_accounts`
-- Add connect/disconnect actions that write to `connector_accounts`
-- Show real health status from `connector_configs`
-
-**C. Create ConnectorSyncDashboard component**
-- New file: `src/components/sita/ConnectorSyncDashboard.tsx`
-- Reusable widget showing: last sync time, record counts, error rate, health badge
-- Used in ConnectorGovernanceCenter + Settings integrations + MoneySettings
-
-**D. Wire connector-discover results into recommendation loop**
-- When `connector-discover` returns recommendations, create entries in `recommendations` table
-- Show "Recommended Integrations" section in Settings > Integrations
+# Implement 3 Flagship Loops to 100% — Files + AI, Boardroom, Connected Services
 
 ## Database Migration Required
 
+Create two new tables:
+
 ```sql
--- Boardroom sessions + decisions
 CREATE TABLE boardroom_sessions (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
@@ -91,8 +15,11 @@ CREATE TABLE boardroom_sessions (
   started_at timestamptz DEFAULT now(),
   completed_at timestamptz,
   slides_data jsonb DEFAULT '[]',
+  summary_text text,
+  confidence_score integer,
   status text DEFAULT 'active',
-  created_at timestamptz DEFAULT now()
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
 );
 
 CREATE TABLE boardroom_decisions (
@@ -103,40 +30,90 @@ CREATE TABLE boardroom_decisions (
   status text DEFAULT 'pending',
   advisor text,
   domain text,
-  decided_at timestamptz DEFAULT now()
+  decided_at timestamptz DEFAULT now(),
+  created_at timestamptz DEFAULT now()
 );
 
--- RLS
+-- RLS + trigger
 ALTER TABLE boardroom_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE boardroom_decisions ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Users see own sessions" ON boardroom_sessions FOR ALL USING (auth.uid() = user_id);
-CREATE POLICY "Users see own decisions" ON boardroom_decisions FOR ALL USING (auth.uid() = user_id);
+CREATE POLICY "Users manage own sessions" ON boardroom_sessions FOR ALL USING (auth.uid() = user_id);
+CREATE POLICY "Users manage own decisions" ON boardroom_decisions FOR ALL USING (auth.uid() = user_id);
+CREATE TRIGGER set_boardroom_sessions_updated_at BEFORE UPDATE ON boardroom_sessions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 ```
 
-## Files Created
+## Loop 1: Files + AI Assist (72% → 95%)
 
-| File | Purpose |
-|------|---------|
-| `src/pages/boardroom/BoardroomHistory.tsx` | Past session list |
-| `src/components/sita/ConnectorSyncDashboard.tsx` | Reusable sync status widget |
+### FilesOverview.tsx — Add AI + Real Data
+- Import `useAIInsight` from `use-backend-actions` and `useQuery` from tanstack
+- Query `file_metadata` table for real classified files (replace demo array)
+- Add "Analyze" button on each file card calling `brain-core` with `intent: "file_analysis"`
+- Display AI recommendation inline when returned
+- Replace hardcoded KPIs (obligations, linked) with real counts from `file_metadata`
+
+### FilesProcessing.tsx — Real Processing Queue
+- Replace fake `FileIngestionService()` with query to `file_metadata` filtered by status
+- Show actual files in processing vs completed based on `status` column
+
+### FilesSearch.tsx — AI Search Mode
+- Add "AI Search" button calling `brain-core` with `intent: "file_search"` + query text
+
+## Loop 2: Boardroom + Summary + Decision (77% → 95%)
+
+### BoardroomReplay.tsx — Real Data + Persistence
+- Replace `generateWeeklySlides()` hardcoded data with real queries:
+  - Business slide: query `invoices`, `leads`, `opportunities`
+  - Finance slide: call `cashflow-calculate` edge function
+  - Concierge slide: query `household_tasks`, `family_events`
+  - Decisions slide: query `approval_queue`
+- Call `brain-core` for "Advisor Consensus" text per domain
+- Add "Save Session" button writing to `boardroom_sessions`
+- Add decision status toggles writing to `boardroom_decisions`
+
+### BoardroomHistory.tsx — New Page
+- Query `boardroom_sessions` ordered by date
+- Show decision count, confidence score, status per session
+- Click to navigate to replay with session data
+
+### App.tsx — Add Route
+- Add `/boardroom/history` → `BoardroomHistory`
+
+## Loop 3: Connected Services + Sync (67% → 92%)
+
+### ConnectorGovernanceCenter.tsx — Real Connector Data
+- Replace hardcoded `CONNECTORS` array with queries to `connector_registry` + `connector_accounts` + `connector_configs`
+- Add "Discover New" button calling `connector-discover` edge function (scan action)
+- Add "Sync Now" button per connector calling `connector-batch` (submit action)
+- Show real sync history from `audit_logs`
+
+### ConnectorSyncDashboard.tsx — Reusable Widget
+- Shows: last sync time, record counts, error rate, health badge
+- Used in ConnectorGovernanceCenter + Settings integrations
+
+### SettingsPage.tsx (integrations section)
+- Replace static connector list with `connector_registry` + `connector_accounts` query
+- Show real connection status and health
+
+## Files Created
+| File | Lines |
+|------|-------|
+| `src/pages/boardroom/BoardroomHistory.tsx` | ~120 |
+| `src/components/sita/ConnectorSyncDashboard.tsx` | ~80 |
 
 ## Files Modified
-
 | File | Change |
 |------|--------|
-| `src/pages/files/FilesOverview.tsx` | AI analyze button, real KPIs |
-| `src/pages/files/FilesProcessing.tsx` | Real file_metadata queries |
+| `src/pages/files/FilesOverview.tsx` | AI analyze buttons, real file_metadata KPIs |
+| `src/pages/files/FilesProcessing.tsx` | Real processing queue from DB |
 | `src/pages/files/FilesSearch.tsx` | AI search mode |
-| `src/pages/boardroom/BoardroomReplay.tsx` | Real data, brain-core, decision saving |
+| `src/pages/boardroom/BoardroomReplay.tsx` | Real data slides, decision persistence, AI consensus |
 | `src/pages/admin/ConnectorGovernanceCenter.tsx` | Real connector data, discover/sync buttons |
-| `src/pages/SettingsPage.tsx` | Real integrations tab |
+| `src/pages/SettingsPage.tsx` | Real integrations section |
 | `src/App.tsx` | Add boardroom/history route |
 
 ## Result
-
 | Loop | Before | After |
 |------|--------|-------|
-| Files + AI Assist | 72% | 95%+ (real AI analysis, real KPIs, real processing) |
-| Boardroom + Summary + Decision | 77% | 95%+ (real data slides, decision persistence, AI consensus, history) |
-| Connected Services + Sync | 67% | 92%+ (real connector data, discover/sync wired, recommendations) |
+| Files + AI Assist | 72% | 95%+ |
+| Boardroom + Summary + Decision | 77% | 95%+ |
+| Connected Services + Sync | 67% | 92%+ |
