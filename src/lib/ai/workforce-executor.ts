@@ -126,7 +126,7 @@ export async function executeWorkforceTask(
         .update({
           status: response.status.startsWith("success_") ? "completed" : "failed",
           output_summary: response.content?.slice(0, 2000) ?? null,
-          output_data: response.structuredOutput ?? null,
+          output_data: (response.structuredOutput as any) ?? null,
           cost_cents: costCents,
           tokens_used: tokensUsed,
           latency_ms: latencyMs,
