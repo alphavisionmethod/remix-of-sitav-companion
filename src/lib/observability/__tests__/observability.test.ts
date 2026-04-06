@@ -152,7 +152,8 @@ describe("slo-tracking", () => {
 
 describe("health-index", () => {
   it("computes composite health index", async () => {
-    const { computeHealthIndex, type SubsystemHealth } = await import("@/lib/observability/health-index");
+    const { computeHealthIndex } = await import("@/lib/observability/health-index");
+    type SubsystemHealth = import("@/lib/observability/health-index").SubsystemHealth;
 
     const subsystems: SubsystemHealth[] = [
       { name: "database", score: 100, status: "healthy", lastChecked: Date.now() },
