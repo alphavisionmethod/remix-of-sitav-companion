@@ -81,6 +81,7 @@ const ReservesSavings = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <DemoModeBadge />
+      <ConfirmationDialog state={confirmation} />
       <SitaPageHeader title="Reserves & Savings" subtitle="Build stability, track goals, and maintain financial resilience"
         actions={<SitaButton variant="primary" onClick={() => createReserve.mutate({ name: "New Goal", target_amount: 5000, category: "goal", contribution_amount: 200 })}><Plus className="h-4 w-4" /> New Goal</SitaButton>} />
 

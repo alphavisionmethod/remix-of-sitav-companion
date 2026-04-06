@@ -101,6 +101,7 @@ const WorkflowsCenter = () => {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <DemoModeBadge />
+      <ConfirmationDialog state={confirmation} />
       <SitaPageHeader title="Workflows" subtitle="Actions, approvals, and execution tracking — live from workflow engine"
         actions={<SitaButton variant="primary" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> New Workflow</SitaButton>}
       />
