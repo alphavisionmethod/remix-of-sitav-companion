@@ -632,6 +632,242 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_budget_alerts: {
+        Row: {
+          alert_state: string
+          created_at: string
+          id: string
+          observed_cost_usd: number
+          period_class: string
+          policy_id: string | null
+          resolved_at: string | null
+          scope_ref: string | null
+          scope_type: string
+          threshold_percent: number
+          user_id: string
+        }
+        Insert: {
+          alert_state?: string
+          created_at?: string
+          id?: string
+          observed_cost_usd: number
+          period_class?: string
+          policy_id?: string | null
+          resolved_at?: string | null
+          scope_ref?: string | null
+          scope_type: string
+          threshold_percent: number
+          user_id: string
+        }
+        Update: {
+          alert_state?: string
+          created_at?: string
+          id?: string
+          observed_cost_usd?: number
+          period_class?: string
+          policy_id?: string | null
+          resolved_at?: string | null
+          scope_ref?: string | null
+          scope_type?: string
+          threshold_percent?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_budget_alerts_policy_id_fkey"
+            columns: ["policy_id"]
+            isOneToOne: false
+            referencedRelation: "ai_budget_policies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_budget_policies: {
+        Row: {
+          alert_threshold_percent: number
+          block_on_exceeded: boolean
+          created_at: string
+          daily_budget_usd: number | null
+          fallback_model_id: string | null
+          fallback_on_exceeded: boolean
+          id: string
+          is_active: boolean
+          max_daily_requests: number | null
+          max_request_cost_usd: number | null
+          metadata: Json
+          monthly_budget_usd: number | null
+          policy_key: string
+          premium_allowed: boolean
+          scope_ref: string | null
+          scope_type: string
+          updated_at: string
+          user_id: string
+          weekly_budget_usd: number | null
+        }
+        Insert: {
+          alert_threshold_percent?: number
+          block_on_exceeded?: boolean
+          created_at?: string
+          daily_budget_usd?: number | null
+          fallback_model_id?: string | null
+          fallback_on_exceeded?: boolean
+          id?: string
+          is_active?: boolean
+          max_daily_requests?: number | null
+          max_request_cost_usd?: number | null
+          metadata?: Json
+          monthly_budget_usd?: number | null
+          policy_key: string
+          premium_allowed?: boolean
+          scope_ref?: string | null
+          scope_type?: string
+          updated_at?: string
+          user_id: string
+          weekly_budget_usd?: number | null
+        }
+        Update: {
+          alert_threshold_percent?: number
+          block_on_exceeded?: boolean
+          created_at?: string
+          daily_budget_usd?: number | null
+          fallback_model_id?: string | null
+          fallback_on_exceeded?: boolean
+          id?: string
+          is_active?: boolean
+          max_daily_requests?: number | null
+          max_request_cost_usd?: number | null
+          metadata?: Json
+          monthly_budget_usd?: number | null
+          policy_key?: string
+          premium_allowed?: boolean
+          scope_ref?: string | null
+          scope_type?: string
+          updated_at?: string
+          user_id?: string
+          weekly_budget_usd?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_budget_policies_fallback_model_id_fkey"
+            columns: ["fallback_model_id"]
+            isOneToOne: false
+            referencedRelation: "ai_model_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_capability_routing: {
+        Row: {
+          budget_class: string
+          can_fallback_to_demo: boolean
+          can_fallback_to_unavailable: boolean
+          capability_key: string
+          created_at: string
+          default_model_id: string | null
+          default_provider_id: string | null
+          fallback_model_id: string | null
+          fallback_provider_id: string | null
+          id: string
+          is_active: boolean
+          launch_honesty_class: string
+          max_latency_class: string
+          metadata: Json
+          quality_requirement: string
+          routing_class: string
+          structured_output_required: boolean
+          tool_use_required: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          budget_class?: string
+          can_fallback_to_demo?: boolean
+          can_fallback_to_unavailable?: boolean
+          capability_key: string
+          created_at?: string
+          default_model_id?: string | null
+          default_provider_id?: string | null
+          fallback_model_id?: string | null
+          fallback_provider_id?: string | null
+          id?: string
+          is_active?: boolean
+          launch_honesty_class?: string
+          max_latency_class?: string
+          metadata?: Json
+          quality_requirement?: string
+          routing_class?: string
+          structured_output_required?: boolean
+          tool_use_required?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          budget_class?: string
+          can_fallback_to_demo?: boolean
+          can_fallback_to_unavailable?: boolean
+          capability_key?: string
+          created_at?: string
+          default_model_id?: string | null
+          default_provider_id?: string | null
+          fallback_model_id?: string | null
+          fallback_provider_id?: string | null
+          id?: string
+          is_active?: boolean
+          launch_honesty_class?: string
+          max_latency_class?: string
+          metadata?: Json
+          quality_requirement?: string
+          routing_class?: string
+          structured_output_required?: boolean
+          tool_use_required?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_capability_routing_default_model_id_fkey"
+            columns: ["default_model_id"]
+            isOneToOne: false
+            referencedRelation: "ai_model_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_capability_routing_default_provider_id_fkey"
+            columns: ["default_provider_id"]
+            isOneToOne: false
+            referencedRelation: "ai_provider_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_capability_routing_default_provider_id_fkey"
+            columns: ["default_provider_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_provider_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_capability_routing_fallback_model_id_fkey"
+            columns: ["fallback_model_id"]
+            isOneToOne: false
+            referencedRelation: "ai_model_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_capability_routing_fallback_provider_id_fkey"
+            columns: ["fallback_provider_id"]
+            isOneToOne: false
+            referencedRelation: "ai_provider_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_capability_routing_fallback_provider_id_fkey"
+            columns: ["fallback_provider_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_provider_status"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_change_plans: {
         Row: {
           affected_services: string[] | null
@@ -982,6 +1218,91 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_fallback_events: {
+        Row: {
+          capability_key: string
+          created_at: string
+          fallback_model_id: string | null
+          fallback_provider_id: string | null
+          fallback_reason: string
+          id: string
+          metadata: Json
+          primary_model_id: string | null
+          primary_provider_id: string | null
+          result_state: string
+          user_id: string
+        }
+        Insert: {
+          capability_key: string
+          created_at?: string
+          fallback_model_id?: string | null
+          fallback_provider_id?: string | null
+          fallback_reason: string
+          id?: string
+          metadata?: Json
+          primary_model_id?: string | null
+          primary_provider_id?: string | null
+          result_state?: string
+          user_id: string
+        }
+        Update: {
+          capability_key?: string
+          created_at?: string
+          fallback_model_id?: string | null
+          fallback_provider_id?: string | null
+          fallback_reason?: string
+          id?: string
+          metadata?: Json
+          primary_model_id?: string | null
+          primary_provider_id?: string | null
+          result_state?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_fallback_events_fallback_model_id_fkey"
+            columns: ["fallback_model_id"]
+            isOneToOne: false
+            referencedRelation: "ai_model_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_fallback_events_fallback_provider_id_fkey"
+            columns: ["fallback_provider_id"]
+            isOneToOne: false
+            referencedRelation: "ai_provider_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_fallback_events_fallback_provider_id_fkey"
+            columns: ["fallback_provider_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_provider_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_fallback_events_primary_model_id_fkey"
+            columns: ["primary_model_id"]
+            isOneToOne: false
+            referencedRelation: "ai_model_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_fallback_events_primary_provider_id_fkey"
+            columns: ["primary_provider_id"]
+            isOneToOne: false
+            referencedRelation: "ai_provider_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_fallback_events_primary_provider_id_fkey"
+            columns: ["primary_provider_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_provider_status"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_fix_proposals: {
         Row: {
           affected_area: string | null
@@ -1143,6 +1464,45 @@ export type Database = {
           },
         ]
       }
+      ai_launch_honesty: {
+        Row: {
+          capability_key: string
+          created_at: string
+          id: string
+          last_verified_at: string | null
+          launch_honesty_class: string
+          notes: string | null
+          public_claim_allowed: boolean
+          qualifier_required: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          capability_key: string
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          launch_honesty_class?: string
+          notes?: string | null
+          public_claim_allowed?: boolean
+          qualifier_required?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          capability_key?: string
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          launch_honesty_class?: string
+          notes?: string | null
+          public_claim_allowed?: boolean
+          qualifier_required?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_learning_patterns: {
         Row: {
           action_taken: string | null
@@ -1208,21 +1568,30 @@ export type Database = {
           deprecated: boolean | null
           deprecated_at: string | null
           disallowed_domains: string[] | null
+          display_name: string | null
           fallback_suitability: string | null
           health_score: number | null
           id: string
+          is_active: boolean | null
           latency_tier: string | null
           launch_stage: string | null
+          max_output_tokens_default: number | null
           metadata: Json | null
+          mode: string | null
           model_class: string
           model_id: string
           preferred_task_classes: string[] | null
           provider: string
           provider_model_name: string
+          provider_registry_id: string | null
+          quality_tier: string | null
           reasoning_strength: string | null
+          recommended_use_cases: Json | null
           reliability_score: number | null
           safety_notes: string | null
           structured_output_support: boolean | null
+          supports_json_mode: boolean | null
+          supports_streaming: boolean | null
           tool_calling_support: boolean | null
           updated_at: string
           user_id: string
@@ -1237,21 +1606,30 @@ export type Database = {
           deprecated?: boolean | null
           deprecated_at?: string | null
           disallowed_domains?: string[] | null
+          display_name?: string | null
           fallback_suitability?: string | null
           health_score?: number | null
           id?: string
+          is_active?: boolean | null
           latency_tier?: string | null
           launch_stage?: string | null
+          max_output_tokens_default?: number | null
           metadata?: Json | null
+          mode?: string | null
           model_class?: string
           model_id: string
           preferred_task_classes?: string[] | null
           provider: string
           provider_model_name: string
+          provider_registry_id?: string | null
+          quality_tier?: string | null
           reasoning_strength?: string | null
+          recommended_use_cases?: Json | null
           reliability_score?: number | null
           safety_notes?: string | null
           structured_output_support?: boolean | null
+          supports_json_mode?: boolean | null
+          supports_streaming?: boolean | null
           tool_calling_support?: boolean | null
           updated_at?: string
           user_id: string
@@ -1266,26 +1644,50 @@ export type Database = {
           deprecated?: boolean | null
           deprecated_at?: string | null
           disallowed_domains?: string[] | null
+          display_name?: string | null
           fallback_suitability?: string | null
           health_score?: number | null
           id?: string
+          is_active?: boolean | null
           latency_tier?: string | null
           launch_stage?: string | null
+          max_output_tokens_default?: number | null
           metadata?: Json | null
+          mode?: string | null
           model_class?: string
           model_id?: string
           preferred_task_classes?: string[] | null
           provider?: string
           provider_model_name?: string
+          provider_registry_id?: string | null
+          quality_tier?: string | null
           reasoning_strength?: string | null
+          recommended_use_cases?: Json | null
           reliability_score?: number | null
           safety_notes?: string | null
           structured_output_support?: boolean | null
+          supports_json_mode?: boolean | null
+          supports_streaming?: boolean | null
           tool_calling_support?: boolean | null
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "ai_model_registry_provider_registry_id_fkey"
+            columns: ["provider_registry_id"]
+            isOneToOne: false
+            referencedRelation: "ai_provider_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_model_registry_provider_registry_id_fkey"
+            columns: ["provider_registry_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_provider_status"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ai_portfolio_allocations: {
         Row: {
@@ -1432,14 +1834,19 @@ export type Database = {
           cost_drift_pct: number | null
           created_at: string
           error_rate: number | null
+          failure_reason: string | null
+          health_state: string | null
           id: string
           incident_description: string | null
           incident_status: string | null
           last_checked_at: string | null
+          last_failure_at: string | null
+          last_success_at: string | null
           metadata: Json | null
           model: string | null
           p95_latency_ms: number | null
           provider: string
+          provider_registry_id: string | null
           rate_limit_pressure: number | null
           structured_output_success_rate: number | null
           total_failures: number | null
@@ -1453,14 +1860,19 @@ export type Database = {
           cost_drift_pct?: number | null
           created_at?: string
           error_rate?: number | null
+          failure_reason?: string | null
+          health_state?: string | null
           id?: string
           incident_description?: string | null
           incident_status?: string | null
           last_checked_at?: string | null
+          last_failure_at?: string | null
+          last_success_at?: string | null
           metadata?: Json | null
           model?: string | null
           p95_latency_ms?: number | null
           provider: string
+          provider_registry_id?: string | null
           rate_limit_pressure?: number | null
           structured_output_success_rate?: number | null
           total_failures?: number | null
@@ -1474,14 +1886,19 @@ export type Database = {
           cost_drift_pct?: number | null
           created_at?: string
           error_rate?: number | null
+          failure_reason?: string | null
+          health_state?: string | null
           id?: string
           incident_description?: string | null
           incident_status?: string | null
           last_checked_at?: string | null
+          last_failure_at?: string | null
+          last_success_at?: string | null
           metadata?: Json | null
           model?: string | null
           p95_latency_ms?: number | null
           provider?: string
+          provider_registry_id?: string | null
           rate_limit_pressure?: number | null
           structured_output_success_rate?: number | null
           total_failures?: number | null
@@ -1489,13 +1906,177 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "ai_provider_health_provider_registry_id_fkey"
+            columns: ["provider_registry_id"]
+            isOneToOne: false
+            referencedRelation: "ai_provider_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_provider_health_provider_registry_id_fkey"
+            columns: ["provider_registry_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_provider_status"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_provider_registry: {
+        Row: {
+          api_style: string
+          base_url: string | null
+          created_at: string
+          display_name: string
+          id: string
+          is_active: boolean
+          launch_stage: string
+          metadata: Json
+          mode: string
+          provider_key: string
+          secret_env_name: string | null
+          supports_demo_mode: boolean
+          supports_streaming: boolean
+          supports_structured_output: boolean
+          supports_tools: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          api_style?: string
+          base_url?: string | null
+          created_at?: string
+          display_name: string
+          id?: string
+          is_active?: boolean
+          launch_stage?: string
+          metadata?: Json
+          mode?: string
+          provider_key: string
+          secret_env_name?: string | null
+          supports_demo_mode?: boolean
+          supports_streaming?: boolean
+          supports_structured_output?: boolean
+          supports_tools?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          api_style?: string
+          base_url?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          is_active?: boolean
+          launch_stage?: string
+          metadata?: Json
+          mode?: string
+          provider_key?: string
+          secret_env_name?: string | null
+          supports_demo_mode?: boolean
+          supports_streaming?: boolean
+          supports_structured_output?: boolean
+          supports_tools?: boolean
+          updated_at?: string
+          user_id?: string
+        }
         Relationships: []
+      }
+      ai_receipt_records: {
+        Row: {
+          capability_key: string
+          created_at: string
+          decision_class: string | null
+          degraded_reason: string | null
+          id: string
+          mode: string
+          model_id: string | null
+          provider_id: string | null
+          request_summary: string | null
+          response_summary: string | null
+          structured_output_valid: boolean | null
+          usage_ledger_id: string | null
+          user_id: string | null
+          workspace_id: string | null
+        }
+        Insert: {
+          capability_key: string
+          created_at?: string
+          decision_class?: string | null
+          degraded_reason?: string | null
+          id?: string
+          mode?: string
+          model_id?: string | null
+          provider_id?: string | null
+          request_summary?: string | null
+          response_summary?: string | null
+          structured_output_valid?: boolean | null
+          usage_ledger_id?: string | null
+          user_id?: string | null
+          workspace_id?: string | null
+        }
+        Update: {
+          capability_key?: string
+          created_at?: string
+          decision_class?: string | null
+          degraded_reason?: string | null
+          id?: string
+          mode?: string
+          model_id?: string | null
+          provider_id?: string | null
+          request_summary?: string | null
+          response_summary?: string | null
+          structured_output_valid?: boolean | null
+          usage_ledger_id?: string | null
+          user_id?: string | null
+          workspace_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_receipt_records_model_id_fkey"
+            columns: ["model_id"]
+            isOneToOne: false
+            referencedRelation: "ai_model_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_receipt_records_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "ai_provider_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_receipt_records_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_provider_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_receipt_records_usage_ledger_id_fkey"
+            columns: ["usage_ledger_id"]
+            isOneToOne: false
+            referencedRelation: "ai_usage_ledger"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_receipt_records_usage_ledger_id_fkey"
+            columns: ["usage_ledger_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_usage_recent"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ai_routing_policies: {
         Row: {
           allowed_providers: string[] | null
           async_eligible: boolean | null
           budget_class: string | null
+          can_fallback_to_demo: boolean | null
+          can_fallback_to_unavailable: boolean | null
           capability_id: string
           confidence_target: number | null
           created_at: string
@@ -1509,13 +2090,17 @@ export type Database = {
           fallback_provider: string | null
           id: string
           latency_target_ms: number | null
+          launch_honesty_class: string | null
           max_cost_cents: number | null
           metadata: Json | null
           premium_escalation_conditions: Json | null
+          quality_requirement: string | null
           reuse_eligible: boolean | null
           risk_tier: string | null
+          routing_class: string | null
           structured_output_required: boolean | null
           task_class: string
+          tool_use_required: boolean | null
           updated_at: string
           user_id: string
           verification_policy: string | null
@@ -1524,6 +2109,8 @@ export type Database = {
           allowed_providers?: string[] | null
           async_eligible?: boolean | null
           budget_class?: string | null
+          can_fallback_to_demo?: boolean | null
+          can_fallback_to_unavailable?: boolean | null
           capability_id: string
           confidence_target?: number | null
           created_at?: string
@@ -1537,13 +2124,17 @@ export type Database = {
           fallback_provider?: string | null
           id?: string
           latency_target_ms?: number | null
+          launch_honesty_class?: string | null
           max_cost_cents?: number | null
           metadata?: Json | null
           premium_escalation_conditions?: Json | null
+          quality_requirement?: string | null
           reuse_eligible?: boolean | null
           risk_tier?: string | null
+          routing_class?: string | null
           structured_output_required?: boolean | null
           task_class?: string
+          tool_use_required?: boolean | null
           updated_at?: string
           user_id: string
           verification_policy?: string | null
@@ -1552,6 +2143,8 @@ export type Database = {
           allowed_providers?: string[] | null
           async_eligible?: boolean | null
           budget_class?: string | null
+          can_fallback_to_demo?: boolean | null
+          can_fallback_to_unavailable?: boolean | null
           capability_id?: string
           confidence_target?: number | null
           created_at?: string
@@ -1565,13 +2158,17 @@ export type Database = {
           fallback_provider?: string | null
           id?: string
           latency_target_ms?: number | null
+          launch_honesty_class?: string | null
           max_cost_cents?: number | null
           metadata?: Json | null
           premium_escalation_conditions?: Json | null
+          quality_requirement?: string | null
           reuse_eligible?: boolean | null
           risk_tier?: string | null
+          routing_class?: string | null
           structured_output_required?: boolean | null
           task_class?: string
+          tool_use_required?: boolean | null
           updated_at?: string
           user_id?: string
           verification_policy?: string | null
@@ -1802,6 +2399,100 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      ai_usage_ledger: {
+        Row: {
+          capability_key: string
+          completion_tokens: number | null
+          created_at: string
+          error_code: string | null
+          error_summary: string | null
+          estimated_cost_usd: number | null
+          id: string
+          latency_ms: number | null
+          mode: string
+          model_id: string | null
+          prompt_tokens: number | null
+          provider_id: string | null
+          receipt_id: string | null
+          request_class: string
+          session_id: string | null
+          status: string
+          structured_output_valid: boolean | null
+          tool_invocations_count: number
+          total_tokens: number | null
+          user_id: string | null
+          workspace_id: string | null
+        }
+        Insert: {
+          capability_key: string
+          completion_tokens?: number | null
+          created_at?: string
+          error_code?: string | null
+          error_summary?: string | null
+          estimated_cost_usd?: number | null
+          id?: string
+          latency_ms?: number | null
+          mode?: string
+          model_id?: string | null
+          prompt_tokens?: number | null
+          provider_id?: string | null
+          receipt_id?: string | null
+          request_class?: string
+          session_id?: string | null
+          status?: string
+          structured_output_valid?: boolean | null
+          tool_invocations_count?: number
+          total_tokens?: number | null
+          user_id?: string | null
+          workspace_id?: string | null
+        }
+        Update: {
+          capability_key?: string
+          completion_tokens?: number | null
+          created_at?: string
+          error_code?: string | null
+          error_summary?: string | null
+          estimated_cost_usd?: number | null
+          id?: string
+          latency_ms?: number | null
+          mode?: string
+          model_id?: string | null
+          prompt_tokens?: number | null
+          provider_id?: string | null
+          receipt_id?: string | null
+          request_class?: string
+          session_id?: string | null
+          status?: string
+          structured_output_valid?: boolean | null
+          tool_invocations_count?: number
+          total_tokens?: number | null
+          user_id?: string | null
+          workspace_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_usage_ledger_model_id_fkey"
+            columns: ["model_id"]
+            isOneToOne: false
+            referencedRelation: "ai_model_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_usage_ledger_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "ai_provider_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_usage_ledger_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_provider_status"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ambient_launch_readiness: {
         Row: {
@@ -18572,6 +19263,98 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      v_ai_budget_summary: {
+        Row: {
+          avg_latency_ms: number | null
+          capability_key: string | null
+          period_day: string | null
+          request_count: number | null
+          status: string | null
+          total_completion_tokens: number | null
+          total_cost_usd: number | null
+          total_prompt_tokens: number | null
+          total_tokens: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      v_ai_capability_status: {
+        Row: {
+          budget_class: string | null
+          capability_key: string | null
+          cost_tier: string | null
+          created_at: string | null
+          default_model_key: string | null
+          default_model_name: string | null
+          default_provider_key: string | null
+          default_provider_name: string | null
+          fallback_model_key: string | null
+          fallback_provider_key: string | null
+          id: string | null
+          is_active: boolean | null
+          launch_honesty_class: string | null
+          provider_active: boolean | null
+          provider_health_state: string | null
+          public_claim_allowed: boolean | null
+          qualifier_required: boolean | null
+          quality_requirement: string | null
+          quality_tier: string | null
+          routing_class: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      v_ai_provider_status: {
+        Row: {
+          api_style: string | null
+          avg_latency_ms: number | null
+          display_name: string | null
+          error_rate: number | null
+          failure_reason: string | null
+          health_state: string | null
+          id: string | null
+          is_active: boolean | null
+          last_failure_at: string | null
+          last_success_at: string | null
+          launch_stage: string | null
+          mode: string | null
+          provider_key: string | null
+          secret_env_name: string | null
+          supports_streaming: boolean | null
+          supports_structured_output: boolean | null
+          supports_tools: boolean | null
+          total_failures: number | null
+          total_requests: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      v_ai_usage_recent: {
+        Row: {
+          capability_key: string | null
+          completion_tokens: number | null
+          created_at: string | null
+          error_code: string | null
+          error_summary: string | null
+          estimated_cost_usd: number | null
+          id: string | null
+          latency_ms: number | null
+          mode: string | null
+          model_key: string | null
+          model_name: string | null
+          prompt_tokens: number | null
+          provider_key: string | null
+          provider_name: string | null
+          quality_tier: string | null
+          request_class: string | null
+          status: string | null
+          structured_output_valid: boolean | null
+          total_tokens: number | null
+          user_id: string | null
+        }
+        Relationships: []
       }
       v_connected_accounts_center: {
         Row: {

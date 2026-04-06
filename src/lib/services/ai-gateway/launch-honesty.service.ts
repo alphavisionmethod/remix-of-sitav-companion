@@ -1,10 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AI Launch Honesty Service
-// Tracks which AI capabilities are real, demo, partial, etc.
+// Canonical: reads from ai_launch_honesty + routing + requests
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import type { LaunchHonestyLevel } from "./types";
+import type { LaunchHonestyLevel, AILaunchHonesty } from "./types";
 
 export interface AICapabilityLaunchStatus {
   capabilityId: string;
@@ -15,29 +15,43 @@ export interface AICapabilityLaunchStatus {
   hasRoutingPolicy: boolean;
   hasBudget: boolean;
   lastUsedAt: string | null;
+  publicClaimAllowed: boolean;
+  qualifierRequired: boolean;
   notes: string | null;
 }
 
+// ── Raw launch honesty records ─────────────────────────────────
+export async function getLaunchHonestyRecords(): Promise<AILaunchHonesty[]> {
+  const { data, error } = await supabase
+    .from("ai_launch_honesty")
+    .select("*")
+    .order("capability_key");
+  if (error) throw error;
+  return data ?? [];
+}
+
 /**
- * Build launch honesty view by cross-referencing routing policies,
- * model registry, and task requests.
+ * Build launch honesty board by merging canonical ai_launch_honesty,
+ * routing policies, and recent task requests.
  */
 export async function getAILaunchHonestyBoard(): Promise<AICapabilityLaunchStatus[]> {
-  const [{ data: policies }, { data: requests }] = await Promise.all([
+  const [{ data: honesty }, { data: policies }, { data: requests }] = await Promise.all([
+    supabase.from("ai_launch_honesty").select("*").order("capability_key"),
     supabase.from("ai_routing_policies").select("capability_id, enabled, default_provider, default_model, domain, task_class").order("capability_id"),
     supabase.from("ai_task_requests").select("capability_id, created_at, status, provider_chosen, model_chosen").order("created_at", { ascending: false }).limit(500),
   ]);
 
+  const honestyMap = new Map((honesty ?? []).map(h => [h.capability_key, h]));
   const policyMap = new Map((policies ?? []).map(p => [p.capability_id, p]));
-  const requestMap = new Map<string, typeof requests extends (infer T)[] ? T : never>();
+  const requestMap = new Map<string, (typeof requests extends (infer T)[] ? T : never)>();
   (requests ?? []).forEach(r => {
     if (r.capability_id && !requestMap.has(r.capability_id)) {
       requestMap.set(r.capability_id, r);
     }
   });
 
-  // Merge unique capability IDs from both sources
   const allIds = new Set([
+    ...(honesty ?? []).map(h => h.capability_key),
     ...(policies ?? []).map(p => p.capability_id),
     ...(requests ?? []).filter(r => r.capability_id).map(r => r.capability_id!),
   ]);
@@ -45,14 +59,18 @@ export async function getAILaunchHonestyBoard(): Promise<AICapabilityLaunchStatu
   const results: AICapabilityLaunchStatus[] = [];
 
   for (const id of allIds) {
+    const h = honestyMap.get(id);
     const policy = policyMap.get(id);
     const lastReq = requestMap.get(id);
 
-    let level: LaunchHonestyLevel = "planned";
-    if (policy?.enabled && lastReq?.status === "completed") level = "real";
-    else if (policy?.enabled && lastReq) level = "partial";
-    else if (policy?.enabled) level = "internal_only";
-    else if (policy && !policy.enabled) level = "unavailable";
+    // Use canonical honesty class if available, otherwise derive
+    let level: LaunchHonestyLevel = h?.launch_honesty_class as LaunchHonestyLevel ?? "planned";
+    if (!h) {
+      if (policy?.enabled && lastReq?.status === "completed") level = "real";
+      else if (policy?.enabled && lastReq) level = "partial";
+      else if (policy?.enabled) level = "internal_only";
+      else if (policy && !policy.enabled) level = "unavailable";
+    }
 
     results.push({
       capabilityId: id,
@@ -63,7 +81,9 @@ export async function getAILaunchHonestyBoard(): Promise<AICapabilityLaunchStatu
       hasRoutingPolicy: !!policy,
       hasBudget: !!policy?.domain,
       lastUsedAt: lastReq?.created_at ?? null,
-      notes: null,
+      publicClaimAllowed: h?.public_claim_allowed ?? false,
+      qualifierRequired: h?.qualifier_required ?? true,
+      notes: h?.notes ?? null,
     });
   }
 
