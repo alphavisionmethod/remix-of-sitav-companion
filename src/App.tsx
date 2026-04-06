@@ -408,6 +408,19 @@ const SAGFallbackCenter = lazy(() => import("./pages/admin/sag/SAGFallbackCenter
 const SAGBuilderConsole = lazy(() => import("./pages/admin/sag/SAGBuilderConsole"));
 const SAGComplianceGate = lazy(() => import("./pages/admin/sag/SAGComplianceGate"));
 
+// ── REX: Recommendation → Execution Loop ──
+const REX01RecommendationIntelligence = lazy(() => import("./pages/admin/REX01RecommendationIntelligence"));
+const REX02ApprovalQueueCompletion = lazy(() => import("./pages/admin/REX02ApprovalQueueCompletion"));
+const REX03RecommendationExecution = lazy(() => import("./pages/admin/REX03RecommendationExecution"));
+const REX04RemediationPrograms = lazy(() => import("./pages/admin/REX04RemediationPrograms"));
+const REX05OutcomeVerification = lazy(() => import("./pages/admin/REX05OutcomeVerification"));
+
+// ── FL: Flagship Loops ──
+const FL01FlagshipLoopsExecutive = lazy(() => import("./pages/admin/FL01FlagshipLoopsExecutive"));
+const FL02FlagshipLoopDetail = lazy(() => import("./pages/admin/FL02FlagshipLoopDetail"));
+
+// ── SERV: Service Ownership ──
+const SERV01ServiceOwnership = lazy(() => import("./pages/admin/SERV01ServiceOwnership"));
 
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
@@ -1345,10 +1358,21 @@ const App = () => (
                     <Route path="/admin/ai-time-machine" element={<AITimeMachine />} />
                     <Route path="/admin/ai-agent-debate" element={<AIAgentDebate />} />
                     <Route path="/admin/ai-self-learning" element={<AISelfLearningLedger />} />
-                    <Route path="/admin/ai-change-plans" element={<AIChangePlanViewer />} />
-                   <Route path="/admin/ai-boundary-controls" element={<AIHumanBoundaryControls />} />
-                   <Route path="/admin/ai-evidence-bundles" element={<AIEvidenceBundleComposer />} />
-                    <Route path="/personal-brain" element={<PersonalBrain />} />
+                     <Route path="/admin/ai-change-plans" element={<AIChangePlanViewer />} />
+                    <Route path="/admin/ai-boundary-controls" element={<AIHumanBoundaryControls />} />
+                    <Route path="/admin/ai-evidence-bundles" element={<AIEvidenceBundleComposer />} />
+                     {/* REX — Recommendation → Execution Loop */}
+                     <Route path="/admin/rex/intelligence" element={<REX01RecommendationIntelligence />} />
+                     <Route path="/admin/rex/approval-queue" element={<REX02ApprovalQueueCompletion />} />
+                     <Route path="/admin/rex/execution" element={<REX03RecommendationExecution />} />
+                     <Route path="/admin/rex/programs" element={<REX04RemediationPrograms />} />
+                     <Route path="/admin/rex/outcomes" element={<REX05OutcomeVerification />} />
+                     {/* FL — Flagship Loops */}
+                     <Route path="/admin/flagship/executive" element={<FL01FlagshipLoopsExecutive />} />
+                     <Route path="/admin/flagship/detail" element={<FL02FlagshipLoopDetail />} />
+                     {/* SERV — Service Ownership */}
+                     <Route path="/admin/services/ownership" element={<SERV01ServiceOwnership />} />
+                     <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
                     <Route path="/apps/email" element={<EmailApp />} />
