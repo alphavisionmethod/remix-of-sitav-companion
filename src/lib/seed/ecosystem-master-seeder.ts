@@ -93,6 +93,10 @@ function launchHonestyRows(userId: string) {
     { user_id: userId, capability_key: "business_os_crm", launch_honesty_class: "demo_governed", public_claim_allowed: false, qualifier_required: true, notes: "CRM features demo-governed" },
     { user_id: userId, capability_key: "admin_ai_workforce", launch_honesty_class: "internal_only", public_claim_allowed: false, qualifier_required: false, notes: "Admin AI workforce — internal engineering tool" },
     { user_id: userId, capability_key: "concierge_scheduling", launch_honesty_class: "planned", public_claim_allowed: false, qualifier_required: true, notes: "Scheduling — planned but not yet real" },
+    // Push notification channels — web-first strategy
+    { user_id: userId, capability_key: "push_web", launch_honesty_class: "real", public_claim_allowed: true, qualifier_required: false, notes: "Web push via VAPID — active, production-ready" },
+    { user_id: userId, capability_key: "push_android_fcm", launch_honesty_class: "planned", public_claim_allowed: false, qualifier_required: true, notes: "Android FCM push — planned, not blocking web launch" },
+    { user_id: userId, capability_key: "push_apple_apns", launch_honesty_class: "planned", public_claim_allowed: false, qualifier_required: true, notes: "Apple APNs push — deferred, requires paid Apple Developer membership" },
   ];
 }
 
