@@ -1,47 +1,55 @@
 
-# SITA OS — All Truth Indices to 100%
+## SITA OS — Admin AI Workforce Full Implementation Plan
 
-## Phase 1: Database Foundation (AI Workforce + Missing Domain Tables)
-1. **AI Workforce schema** — `ai_workforce_roles`, `ai_workforce_task_types`, `ai_workforce_invocations`, `ai_workforce_recommendations`, `ai_workforce_approval_queue`, `ai_workforce_cached_outputs`
-2. **Connector Truth tables** — `connector_oauth_flows`, `connector_token_store`, `connector_sync_engine`, `connector_health_checks`
-3. **Launch Gate tables** — `launch_gates`, `launch_gate_checks`, `feature_launch_status`
+### Part 1: Database Schema (12 new tables + views + RLS)
+Create migration with all 12 workforce tables:
+1. `ai_workforce_role_registry` — role definitions
+2. `ai_workforce_task_registry` — task type governance
+3. `ai_workforce_role_task_permissions` — role→task mapping
+4. `ai_workforce_budget_classes` — canonical budget classes
+5. `ai_workforce_invocations` — every task invocation
+6. `ai_workforce_outputs` — structured output storage
+7. `ai_workforce_recommendations` — extracted recommendations
+8. `ai_workforce_recommendation_scores` — quality scoring
+9. `ai_workforce_approval_queue_v2` — new approval queue (replaces old one)
+10. `ai_workforce_role_health` — operational health per role
+11. `ai_workforce_cached_outputs` — reusable output cache
+12. `ai_workforce_launch_honesty` — launch readiness per role/task
+Plus 4 views and full RLS policies.
 
-## Phase 2: Runtime Truth (38→100)
-- Wire all domain services (finance, CRM, household, documents, calendar) to real DB queries with honest empty states
-- Replace any remaining mock/static data returns with real Supabase queries or honest "not configured" states
-- Add `domain_runtime_status` tracking per domain
+### Part 2: Seed Data
+Insert canonical seed data for:
+- 10 roles (chief_architect through remediation_planner)
+- 12 task types (architecture_review through cost_optimization_review)
+- 5 budget classes (economy_admin through internal_diagnostics)
+- Role-task permission mappings
 
-## Phase 3: AI Truth (30→100) — Architecture Only
-- Complete AI workforce backend services (role registry, task orchestration, cost policy, receipts)
-- Wire all AI surfaces (advisor, boardroom, pulse, admin) through canonical `ai-capability-client`
-- Add AI workforce admin pages (AIT01–AIT08)
-- Ensure every AI surface renders honest state (real/demo/degraded/unavailable)
+### Part 3: Frontend Components (~15 components + 6 hooks)
+Build modular component architecture:
+- Shared primitives (badges, pills, status indicators)
+- Role table/cards/detail drawer
+- Task invocation form with budget pre-flight
+- Activity feed, cost board, recommendation board
+- Approval queue table + detail drawer
+- Launch truth board
+- 6 data hooks + client service
 
-## Phase 4: Connector Truth (22→100)
-- Implement OAuth flow service architecture (authorize, callback, token refresh, revoke)
-- Build connector sync engine contracts (sync scheduling, conflict resolution, health monitoring)
-- Wire connector admin surfaces to real DB state
-- Add connector health dashboard with honest state
+### Part 4: Edge Function Orchestration
+Create `admin-ai-workforce-run` edge function with:
+- 10-step orchestration flow (validate → budget → cache → invoke → persist → extract)
+- Role/task validation, budget resolution, AI gateway integration
+- Structured output validation, recommendation extraction
+- Receipt creation, approval queue routing, cache management
 
-## Phase 5: Launch Honesty (52→100)
-- Implement launch gate system — every feature gets a gate with status (live/demo/scaffold/unavailable)
-- Add launch honesty checks to all surfaces
-- Build launch readiness dashboard
-- Wire dual reality to launch gates
+### Part 5: Recommendation Quality Scoring
+- Scoring engine (7 dimensions)
+- Auto-heuristic + human review support
+- Quality analytics dashboard component
+- Feedback loop integration
 
-## Phase 6: Demo Governance (45→100)
-- Fill all demo provider gaps (every domain needs a governed demo provider)
-- Ensure demo data is scenario-backed and labeled
-- Add demo governance admin surface
-
-## Phase 7: Surface Portability (35→100)
-- Complete surface contracts for mobile/desktop/watch
-- Ensure all response envelopes are surface-neutral
-- Add surface registry and readiness tracking
-- Wire capability invocations with surface context
-
-## Approach
-- Wire architecture only for AI (no live API calls)
-- All services return honest states (real data, empty, or "not configured")
-- Every surface gets launch honesty badges
-- ~15-20 new/updated files across services, components, and pages
+### Implementation Order
+1. ✅ Database migration (Part 1) — must go first
+2. ✅ Seed data (Part 2) — right after schema
+3. ✅ Frontend + hooks (Part 3) — can start after types update
+4. ✅ Edge function (Part 4) — parallel with frontend
+5. ✅ Scoring system (Part 5) — after recommendations table exists
