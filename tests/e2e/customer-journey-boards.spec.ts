@@ -1,13 +1,14 @@
 import { test, expect } from "@playwright/test";
 
 const CJ_ROUTES = [
-  "/admin/customer-journey/executive-report",
-  "/admin/customer-journey/journey-truth-matrix",
-  "/admin/customer-journey/journey-detail",
-  "/admin/customer-journey/launch-blockers",
+  "/admin/customer-journey/executive",
+  "/admin/customer-journey/matrix",
+  "/admin/customer-journey/detail",
+  "/admin/customer-journey/blockers",
   "/admin/customer-journey/demo-vs-real",
   "/admin/customer-journey/broken-clicks",
   "/admin/customer-journey/remediation",
+  "/admin/customer-journey/coverage",
 ];
 
 test.describe("Customer Journey Boards", () => {

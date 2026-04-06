@@ -1,17 +1,30 @@
 // ═══════════════════════════════════════════════════════
 // SITA OS — CJ04: Launch Blocker View
-// Only journeys that block launch/pilot or create claim risk
+// Severity scores, resolve actions, auto-computed classification
 // ═══════════════════════════════════════════════════════
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useCustomerJourneys, useCustomerJourneyBlockers } from "@/lib/customer-journey/journey-hooks";
+import { useBlockerScores, useResolveBlockerScore } from "@/lib/customer-journey/journey-scoring-hooks";
 import { JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/lib/customer-journey/journey-registry";
-import { ShieldAlert, Loader2 } from "lucide-react";
+import { ShieldAlert, Loader2, CheckCircle2 } from "lucide-react";
+import { toast } from "sonner";
+
+const BLOCKER_TYPE_COLORS: Record<string, string> = {
+  launch_blocker: "bg-destructive/15 text-destructive",
+  pilot_blocker: "bg-orange-500/15 text-orange-400",
+  claim_risk: "bg-amber-500/15 text-amber-400",
+  important_non_blocker: "bg-blue-500/15 text-blue-400",
+  non_blocking: "bg-muted text-muted-foreground",
+};
 
 export default function CJ04LaunchBlockerView() {
   const { data: journeys, isLoading } = useCustomerJourneys();
   const { data: blockers } = useCustomerJourneyBlockers();
+  const { data: scores } = useBlockerScores(false);
+  const resolveScore = useResolveBlockerScore();
 
   const criticalJourneys = (journeys ?? []).filter((j: any) =>
     j.launch_importance === "launch_blocker" || j.launch_importance === "pilot_blocker" || j.launch_importance === "claim_risk"
@@ -19,6 +32,16 @@ export default function CJ04LaunchBlockerView() {
 
   const unresolvedBlockers = (blockers ?? []).filter((b: any) => !b.resolved);
   const resolvedBlockers = (blockers ?? []).filter((b: any) => b.resolved);
+  const unresolvedScores = scores ?? [];
+
+  const handleResolve = async (id: string) => {
+    try {
+      await resolveScore.mutateAsync(id);
+      toast.success("Blocker resolved");
+    } catch (e: any) {
+      toast.error(e.message);
+    }
+  };
 
   return (
     <div className="space-y-6 p-6" data-testid="cj04-launch-blockers">
@@ -34,7 +57,42 @@ export default function CJ04LaunchBlockerView() {
         <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-muted-foreground" /></div>
       ) : (
         <>
-          {/* Active Blockers */}
+          {/* Scored Blockers from Engine */}
+          {unresolvedScores.length > 0 && (
+            <Card className="border-destructive/30">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-destructive text-lg">🎯 Scored Blockers ({unresolvedScores.length})</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {unresolvedScores.map((s: any) => (
+                  <div key={s.id} className="p-3 rounded border border-destructive/20 bg-destructive/5 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-sm font-medium">{s.journey_key}</span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className="text-[10px] font-mono">Score: {s.severity_score}</Badge>
+                        <Badge variant="outline" className={`text-[10px] ${BLOCKER_TYPE_COLORS[s.blocker_type] || ""}`}>
+                          {s.blocker_type?.replace(/_/g, " ")}
+                        </Badge>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">{s.reason_summary}</p>
+                    <div className="flex items-center gap-2 text-[10px]">
+                      {s.affects_user && <Badge variant="outline" className="text-[10px]">User</Badge>}
+                      {s.affects_admin && <Badge variant="outline" className="text-[10px]">Admin</Badge>}
+                      {s.affects_real && <Badge variant="outline" className="text-[10px]">Real</Badge>}
+                      {s.affects_demo && <Badge variant="outline" className="text-[10px]">Demo</Badge>}
+                      <div className="flex-1" />
+                      <Button size="sm" variant="outline" className="h-6 text-[10px]" onClick={() => handleResolve(s.id)}>
+                        <CheckCircle2 className="h-3 w-3 mr-1" /> Resolve
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Legacy Active Blockers */}
           {unresolvedBlockers.length > 0 && (
             <Card className="border-destructive/30">
               <CardHeader className="pb-2">
@@ -86,7 +144,7 @@ export default function CJ04LaunchBlockerView() {
           {resolvedBlockers.length > 0 && (
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg text-emerald-400">✅ Resolved Blockers ({resolvedBlockers.length})</CardTitle>
+                <CardTitle className="text-lg text-emerald-400">✅ Resolved ({resolvedBlockers.length})</CardTitle>
               </CardHeader>
               <CardContent className="space-y-1">
                 {resolvedBlockers.map((b: any) => (
@@ -99,7 +157,7 @@ export default function CJ04LaunchBlockerView() {
             </Card>
           )}
 
-          {criticalJourneys.length === 0 && unresolvedBlockers.length === 0 && (
+          {criticalJourneys.length === 0 && unresolvedBlockers.length === 0 && unresolvedScores.length === 0 && (
             <Card>
               <CardContent className="py-8 text-center text-muted-foreground">No launch-critical journeys found. Seed from registry first.</CardContent>
             </Card>

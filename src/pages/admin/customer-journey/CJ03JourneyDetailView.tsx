@@ -3,19 +3,73 @@
 // Step-by-step proof, failures, evidence, recommended fixes
 // ═══════════════════════════════════════════════════════
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useCustomerJourneys, useCustomerJourneyRuns } from "@/lib/customer-journey/journey-hooks";
+import { useStepResults, useEvidenceAssets } from "@/lib/customer-journey/journey-evidence-hooks";
 import { JOURNEY_STATUS_CONFIG } from "@/lib/customer-journey/journey-registry";
-import { ListChecks, Loader2, ChevronDown, ChevronRight } from "lucide-react";
+import { ListChecks, Loader2, ChevronDown, ChevronRight, Image, FileText, AlertCircle } from "lucide-react";
 import { useState } from "react";
+
+function StepResultsPanel({ runId }: { runId: string }) {
+  const { data: stepResults } = useStepResults(runId);
+  const { data: evidence } = useEvidenceAssets(runId);
+
+  if (!stepResults?.length) return <p className="text-xs text-muted-foreground italic">No step-level results recorded.</p>;
+
+  const statusIcon: Record<string, string> = { pass: "✅", fail: "❌", partial: "⚠️", skipped: "⏭️" };
+
+  return (
+    <div className="space-y-3">
+      <h4 className="text-sm font-semibold">Step Results</h4>
+      <div className="space-y-1">
+        {stepResults.map((s: any) => (
+          <div key={s.id} className={`flex items-start gap-3 text-sm p-2 rounded ${s.status === "fail" ? "bg-destructive/5 border border-destructive/20" : "bg-muted/30"}`}>
+            <span className="text-xs w-6">{statusIcon[s.status] || "—"}</span>
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <span className="font-medium">Step {s.step_order}</span>
+                {s.duration_ms != null && <span className="text-[10px] text-muted-foreground">{s.duration_ms}ms</span>}
+              </div>
+              {s.actual_behavior && <p className="text-xs text-muted-foreground">{s.actual_behavior}</p>}
+              {s.error_summary && (
+                <div className="flex items-start gap-1 mt-1">
+                  <AlertCircle className="h-3 w-3 text-destructive mt-0.5" />
+                  <p className="text-xs text-destructive">{s.error_summary}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {(evidence ?? []).length > 0 && (
+        <div>
+          <h4 className="text-sm font-semibold">Evidence</h4>
+          <div className="flex flex-wrap gap-2 mt-1">
+            {evidence.map((e: any) => (
+              <Badge key={e.id} variant="outline" className="text-[10px] gap-1">
+                {e.asset_type === "screenshot" ? <Image className="h-3 w-3" /> : <FileText className="h-3 w-3" />}
+                {e.label || e.asset_type}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function CJ03JourneyDetailView() {
   const { data: journeys, isLoading } = useCustomerJourneys();
   const { data: runs } = useCustomerJourneyRuns();
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [selectedRun, setSelectedRun] = useState<string | null>(null);
 
-  const toggle = (id: string) => setExpanded(expanded === id ? null : id);
+  const toggle = (id: string) => {
+    setExpanded(expanded === id ? null : id);
+    setSelectedRun(null);
+  };
 
   return (
     <div className="space-y-6 p-6" data-testid="cj03-journey-detail">
@@ -56,7 +110,7 @@ export default function CJ03JourneyDetailView() {
 
                   {isOpen && (
                     <div className="border-t p-4 space-y-4">
-                      {/* Steps */}
+                      {/* Expected Steps */}
                       <div>
                         <h3 className="text-sm font-semibold mb-2">Expected Steps</h3>
                         <div className="space-y-1">
@@ -72,7 +126,6 @@ export default function CJ03JourneyDetailView() {
                         </div>
                       </div>
 
-                      {/* Expected Outcome */}
                       <div>
                         <h3 className="text-sm font-semibold">Expected Outcome</h3>
                         <p className="text-sm text-muted-foreground">{j.expected_outcome || "Not defined"}</p>
@@ -85,20 +138,29 @@ export default function CJ03JourneyDetailView() {
                           <div className="space-y-2">
                             {jRuns.slice(0, 5).map((r: any) => {
                               const rCfg = JOURNEY_STATUS_CONFIG[r.status] || JOURNEY_STATUS_CONFIG.unverified;
+                              const isSelected = selectedRun === r.id;
                               return (
-                                <div key={r.id} className="p-3 rounded border bg-card space-y-1">
-                                  <div className="flex items-center justify-between">
-                                    <Badge variant="outline" className={`${rCfg.color} text-[10px]`}>{rCfg.label}</Badge>
-                                    <span className="text-[10px] text-muted-foreground">{new Date(r.created_at).toLocaleString()}</span>
-                                  </div>
-                                  <div className="text-xs">
-                                    <span className="text-emerald-400">{r.steps_passed} passed</span>
-                                    {r.steps_failed > 0 && <span className="text-destructive ml-2">{r.steps_failed} failed</span>}
-                                    <span className="text-muted-foreground ml-2">/ {r.steps_total} total</span>
-                                  </div>
-                                  {r.actual_outcome && <p className="text-xs text-muted-foreground">{r.actual_outcome}</p>}
-                                  {r.recommended_fix && (
-                                    <p className="text-xs text-amber-400">Fix: {r.recommended_fix}</p>
+                                <div key={r.id}>
+                                  <button
+                                    className="w-full text-left p-3 rounded border bg-card space-y-1 hover:bg-muted/20 transition-colors"
+                                    onClick={() => setSelectedRun(isSelected ? null : r.id)}
+                                  >
+                                    <div className="flex items-center justify-between">
+                                      <Badge variant="outline" className={`${rCfg.color} text-[10px]`}>{rCfg.label}</Badge>
+                                      <span className="text-[10px] text-muted-foreground">{new Date(r.created_at).toLocaleString()}</span>
+                                    </div>
+                                    <div className="text-xs">
+                                      <span className="text-emerald-400">{r.steps_passed} passed</span>
+                                      {r.steps_failed > 0 && <span className="text-destructive ml-2">{r.steps_failed} failed</span>}
+                                      <span className="text-muted-foreground ml-2">/ {r.steps_total} total</span>
+                                    </div>
+                                    {r.actual_outcome && <p className="text-xs text-muted-foreground">{r.actual_outcome}</p>}
+                                    {r.recommended_fix && <p className="text-xs text-amber-400">Fix: {r.recommended_fix}</p>}
+                                  </button>
+                                  {isSelected && (
+                                    <div className="ml-4 mt-2 p-3 border-l-2 border-primary/30">
+                                      <StepResultsPanel runId={r.id} />
+                                    </div>
                                   )}
                                 </div>
                               );

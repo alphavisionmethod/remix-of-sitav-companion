@@ -1,35 +1,68 @@
 // ═══════════════════════════════════════════════════════
 // SITA OS — CJ05: Demo vs Real Journey Comparison
-// Shows if a journey works in demo but fails in real
+// Persisted mode comparisons + claim risk flags
 // ═══════════════════════════════════════════════════════
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useCustomerJourneys, useCustomerJourneyRuns } from "@/lib/customer-journey/journey-hooks";
+import { useModeComparisons, useUpsertModeComparison } from "@/lib/customer-journey/journey-scoring-hooks";
 import { JOURNEY_STATUS_CONFIG } from "@/lib/customer-journey/journey-registry";
-import { GitCompare, Loader2 } from "lucide-react";
+import { GitCompare, Loader2, AlertTriangle, RefreshCw } from "lucide-react";
+import { toast } from "sonner";
 
 export default function CJ05DemoVsRealComparison() {
   const { data: journeys, isLoading } = useCustomerJourneys();
   const { data: runs } = useCustomerJourneyRuns();
+  const { data: persistedComparisons } = useModeComparisons();
+  const upsertComparison = useUpsertModeComparison();
 
-  // For each journey, find latest demo run and latest real run
+  // Compute comparisons from runs
   const comparisons = (journeys ?? []).map((j: any) => {
     const jRuns = (runs ?? []).filter((r: any) => r.journey_key === j.journey_key);
     const demoRun = jRuns.find((r: any) => r.mode === "demo");
     const realRun = jRuns.find((r: any) => r.mode === "real");
 
-    let comparison = "no_data";
-    if (demoRun && realRun) {
-      if (demoRun.status === "working" && realRun.status === "working") comparison = "both_work";
-      else if (demoRun.status === "working" && realRun.status !== "working") comparison = "demo_works_real_broken";
-      else if (demoRun.status !== "working" && realRun.status === "working") comparison = "real_works_demo_broken";
-      else comparison = "both_issues";
-    } else if (demoRun && !realRun) comparison = "demo_only";
-    else if (!demoRun && realRun) comparison = "real_only";
+    // Check persisted comparison
+    const persisted = (persistedComparisons ?? []).find((c: any) => c.journey_key === j.journey_key);
 
-    return { journey: j, demoRun, realRun, comparison };
+    let comparison = "no_data";
+    const demoStatus = demoRun?.status || persisted?.demo_status;
+    const realStatus = realRun?.status || persisted?.real_status;
+
+    if (demoStatus && realStatus) {
+      if (demoStatus === "working" && realStatus === "working") comparison = "both_work";
+      else if (demoStatus === "working" && realStatus !== "working") comparison = "demo_works_real_broken";
+      else if (demoStatus !== "working" && realStatus === "working") comparison = "real_works_demo_broken";
+      else comparison = "both_issues";
+    } else if (demoStatus && !realStatus) comparison = "demo_only";
+    else if (!demoStatus && realStatus) comparison = "real_only";
+
+    const claim_risk = comparison === "demo_works_real_broken";
+
+    return { journey: j, demoRun, realRun, comparison, claim_risk, persisted };
   });
+
+  const handlePersistAll = async () => {
+    try {
+      let count = 0;
+      for (const c of comparisons) {
+        if (c.comparison === "no_data") continue;
+        await upsertComparison.mutateAsync({
+          journey_key: c.journey.journey_key,
+          real_status: c.realRun?.status || c.persisted?.real_status,
+          demo_status: c.demoRun?.status || c.persisted?.demo_status,
+          comparison_summary: c.comparison,
+          claim_risk: c.claim_risk,
+        });
+        count++;
+      }
+      toast.success(`Persisted ${count} mode comparisons`);
+    } catch (e: any) {
+      toast.error(e.message);
+    }
+  };
 
   const comparisonLabels: Record<string, { label: string; color: string }> = {
     both_work: { label: "Both Work", color: "bg-emerald-500/15 text-emerald-400" },
@@ -41,17 +74,25 @@ export default function CJ05DemoVsRealComparison() {
     no_data: { label: "No Runs", color: "bg-muted text-muted-foreground" },
   };
 
+  const claimRiskCount = comparisons.filter((c) => c.claim_risk).length;
+
   return (
     <div className="space-y-6 p-6" data-testid="cj05-demo-vs-real">
-      <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2">
-          <GitCompare className="h-6 w-6 text-primary" />
-          CJ05 — Demo vs Real Journey Comparison
-        </h1>
-        <p className="text-muted-foreground mt-1">Identifies truth gaps between demo and real mode experiences</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold flex items-center gap-2">
+            <GitCompare className="h-6 w-6 text-primary" />
+            CJ05 — Demo vs Real Comparison
+          </h1>
+          <p className="text-muted-foreground mt-1">Identifies truth gaps between demo and real mode</p>
+        </div>
+        <Button onClick={handlePersistAll} disabled={upsertComparison.isPending} size="sm" variant="outline">
+          <RefreshCw className="h-4 w-4 mr-1" />
+          Persist Comparisons
+        </Button>
       </div>
 
-      {/* Summary */}
+      {/* Summary cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {Object.entries(comparisonLabels).map(([key, cfg]) => {
           const count = comparisons.filter((c) => c.comparison === key).length;
@@ -65,22 +106,36 @@ export default function CJ05DemoVsRealComparison() {
             </Card>
           );
         })}
+        {claimRiskCount > 0 && (
+          <Card className="border-amber-500/30">
+            <CardContent className="p-4 text-center">
+              <div className="text-2xl font-bold text-amber-400">{claimRiskCount}</div>
+              <div className="flex items-center justify-center gap-1 mt-1">
+                <AlertTriangle className="h-3 w-3 text-amber-400" />
+                <span className="text-[10px] text-amber-400 font-medium">Claim Risks</span>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {isLoading ? (
         <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-muted-foreground" /></div>
       ) : (
         <div className="space-y-2">
-          {comparisons.map(({ journey: j, demoRun, realRun, comparison }) => {
+          {comparisons.map(({ journey: j, demoRun, realRun, comparison, claim_risk }) => {
             const cLabel = comparisonLabels[comparison];
             const demoCfg = demoRun ? JOURNEY_STATUS_CONFIG[demoRun.status] || JOURNEY_STATUS_CONFIG.unverified : null;
             const realCfg = realRun ? JOURNEY_STATUS_CONFIG[realRun.status] || JOURNEY_STATUS_CONFIG.unverified : null;
 
             return (
-              <Card key={j.id}>
+              <Card key={j.id} className={claim_risk ? "border-amber-500/30" : ""}>
                 <CardContent className="p-3 grid grid-cols-12 gap-2 items-center">
                   <div className="col-span-4">
-                    <div className="font-medium text-sm">{j.display_name}</div>
+                    <div className="font-medium text-sm flex items-center gap-1">
+                      {claim_risk && <AlertTriangle className="h-3 w-3 text-amber-400" />}
+                      {j.display_name}
+                    </div>
                     <div className="font-mono text-[10px] text-muted-foreground">{j.journey_key}</div>
                   </div>
                   <div className="col-span-2 text-center">
