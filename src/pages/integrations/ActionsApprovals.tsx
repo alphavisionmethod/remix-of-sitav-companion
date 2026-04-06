@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Shield, CheckCircle, XCircle, AlertTriangle, Clock, ArrowRight, Zap, Eye, Play, Ban } from "lucide-react";
 import { DEMO_ACTION_REQUESTS } from "@/lib/services/integration-hub/demo-connections";
 import type { DemoActionRequest } from "@/lib/services/integration-hub/demo-connections";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const statusConfig: Record<string, { color: string; icon: any; label: string }> = {
   proposed: { color: "text-blue-400", icon: Clock, label: "Pending Approval" },
@@ -26,6 +27,7 @@ function ActionCard({ action, onApprove, onReject }: { action: DemoActionRequest
 
   return (
     <Card className={`bg-card/50 border-border/50 ${action.riskLevel === "high" ? "border-l-2 border-l-red-500" : action.riskLevel === "medium" ? "border-l-2 border-l-amber-500" : ""}`}>
+      <DemoModeBadge />
       <CardContent className="p-4 space-y-3">
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-3">

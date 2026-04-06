@@ -5,6 +5,7 @@ import { CashFlowChart } from "@/components/sita/SitaCharts";
 import { Shield, DollarSign, TrendingUp, TrendingDown, AlertTriangle, Clock, ArrowRight, CheckCircle, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface CashWindow {
   day: string; inflows: number; outflows: number; net: number; balance: number; stress: boolean;
@@ -28,6 +29,7 @@ const CashTiming = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Cash Timing & Safe-to-Spend" subtitle="Understand your money flow, avoid collisions" />
 
       {/* Hero */}

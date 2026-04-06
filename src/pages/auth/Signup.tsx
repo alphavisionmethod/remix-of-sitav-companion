@@ -6,6 +6,7 @@ import { Mail, Lock, User, ArrowRight, Eye, EyeOff, ShieldCheck, Brain, Receipt,
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 import { AuthDivider } from "@/components/auth/AuthDivider";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const Signup = () => {
   const { signUp } = useAuth();
@@ -32,6 +33,7 @@ const Signup = () => {
   if (sent) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background px-4">
+      <DemoModeBadge />
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-sm text-center space-y-6">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10 border border-primary/15">
             <Mail className="h-9 w-9 text-primary" />

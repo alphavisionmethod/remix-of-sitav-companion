@@ -1,133 +1,53 @@
 
+# SITA OS — ARQ v3 Complete Remediation Plan
 
-# SITA OS — Complete Test Coverage & Build Fix Plan
+## Real vs Reported Scores
 
-## Build Status
-- TypeScript: 0 errors (clean)
-- Vitest: **1 failing test** — `src/test/scripts-validation.test.ts` expects 42 scripts but finds 43
+| Metric | Report Claims | Reality |
+|--------|--------------|---------|
+| Pages with DemoModeBadge | "55+ (all)" | **56 of 553** — 497 missing |
+| CORS on edge functions | 30/31 | **31/31** ✅ (already done) |
+| EdgeLogger on edge fns | 8/31 | 8/31 — **23 missing** |
+| Rate limiting on edge fns | 8/31 | 8/31 — **23 missing** |
+| Zod validation on edge fns | 5/31 | 5/31 — **26 missing** |
 
-## What Exists Now
+## Already Fixed ✅
+- CORS on all 31 edge functions
+- TypeScript: 0 errors
+- DemoModeProvider in App.tsx
+- RLS on all tables
+- 112 test files, 1607+ tests passing
+- CI pipeline present
 
-| Category | Files | Tests |
-|----------|-------|-------|
-| Unit tests (co-located `__tests__/`) | 25 | ~214 |
-| Unit tests (legacy `src/test/`) | 52 | ~1267 |
-| E2E (Playwright) | 7 | ~35 |
-| **Total** | **77 files** | **1482 tests (1 failing)** |
+## What Needs Fixing (4 Steps)
 
-## What's Missing
+### Step 1 — Add DemoModeBadge to 497 pages
+Batch-process all `.tsx` files in `src/pages/` missing the badge. Add import + `<DemoModeBadge />` as first child in the return wrapper.
 
-### 1. Fix the Failing Test (BLOCKER)
-`src/test/scripts-validation.test.ts` line 67-69: hardcoded `expect(total).toBe(42)` but there are now 43 scripts. Change to `toBe(43)`.
+### Step 2 — Add EdgeLogger to 23 edge functions
+Import from `../_shared/logger.ts`, add structured log on entry + exit + error.
 
-### 2. Hook Tests (0 of 42 hooks tested)
-No hook has a dedicated `__tests__/` file. The plan called for 6 hook test files — none were created:
+### Step 3 — Add rate limiting to 23 edge functions
+Import `checkRateLimit` from `../_shared/rate-limit.ts`, add per-user rate limiting.
 
-| File to Create | What it Tests |
-|----------------|---------------|
-| `src/hooks/__tests__/use-global-search.test.ts` | Query state, filtering, empty results |
-| `src/hooks/__tests__/use-brain-core.test.ts` | Message sending, advisor routing, mode handling |
-| `src/hooks/__tests__/use-domain-data.test.ts` | Data resolution by mode, fallback behavior |
-| `src/hooks/__tests__/use-proof-chain.test.ts` | Chain building, verification, integrity |
-| `src/hooks/__tests__/use-admin-data.test.ts` | Admin data fetching, CAI hook wiring |
-| `src/hooks/__tests__/use-reality-provider.test.ts` | `resolveByMode` with real/demo/empty data |
+### Step 4 — Add Zod validation to 26 edge functions
+Import from `../_shared/zod-validate.ts`, add input schema validation for each endpoint's expected body.
 
-### 3. Context Provider Tests (1 of 9 contexts tested)
-Only `DemoModeProvider` has tests. Missing:
+### Step 5 — Regenerate FINAL_ARQ_REPORT_v3.md
+Update all evidence counts to match actual implementation.
 
-| File to Create | What it Tests |
-|----------------|---------------|
-| `src/contexts/__tests__/DataModeContext.test.tsx` | isDemoMode toggle, default state |
-| `src/contexts/__tests__/AuthContext.test.tsx` | Auth state, loading, session handling |
-| `src/contexts/__tests__/ThemeContext.test.tsx` | Theme toggle, dark mode default |
-| `src/contexts/__tests__/ConnectivityContext.test.tsx` | Online/offline detection |
+## Expected Score After
 
-### 4. Component Tests (3 of ~50 components tested)
-Only DemoModeBadge, SitaCard, EmptyStateCard tested. Missing from plan:
+| Dimension | Current | After |
+|-----------|---------|-------|
+| Demo Truth | ~15 | 98 |
+| Security | 85 | 96 |
+| Observability | 72 | 96 |
+| **Composite** | **~68** | **~95** |
 
-| File to Create | What it Tests |
-|----------------|---------------|
-| `src/components/sita/__tests__/SitaPageHeader.test.tsx` | Title, subtitle, actions rendering |
-| `src/components/sita/__tests__/PageSkeleton.test.tsx` | Loading skeleton renders |
-| `src/components/sita/__tests__/StateBadge.test.tsx` | Badge variant rendering |
-| `src/components/sita/__tests__/TrustBadge.test.tsx` | Trust level display |
-| `src/components/sita/__tests__/ShellLayout.test.tsx` | Layout with sidebar + content |
-
-### 5. Page Integration Tests (1 of 7 planned)
-Only NotFound tested. Missing:
-
-| File to Create | What it Tests |
-|----------------|---------------|
-| `src/pages/__tests__/DailyPulse.test.tsx` | KPI cards render in demo mode |
-| `src/pages/__tests__/BusinessCenter.test.tsx` | CRM section renders |
-| `src/pages/__tests__/MoneyCenter.test.tsx` | Financial overview renders |
-| `src/pages/__tests__/Boardroom.test.tsx` | Boardroom + DemoModeBadge |
-| `src/pages/__tests__/SettingsPage.test.tsx` | Settings form renders |
-| `src/pages/__tests__/PersonalBrain.test.tsx` | Chat interface renders |
-
-### 6. Service Tests (Missing from plan)
-Key services with no dedicated `__tests__/`:
-
-| File to Create | What it Tests |
-|----------------|---------------|
-| `src/lib/services/model-router/__tests__/model-router.test.ts` | Model selection by advisor/intent |
-| `src/lib/services/auth/__tests__/auth-service.test.ts` | Auth state management |
-| `src/lib/services/billing/__tests__/billing-service.test.ts` | Billing calculation, tier enforcement |
-| `src/lib/services/sovereign-calculation/__tests__/sovereign-calc.test.ts` | Sovereignty score calculation |
-| `src/lib/services/self-healing/__tests__/self-healing.test.ts` | Detection + auto-remediation |
-| `src/lib/services/payment-execution-service/__tests__/payment-execution.test.ts` | Payment validation flow |
-
-### 7. E2E Tests (Missing from plan)
-7 E2E specs exist. Plan called for 8 more — none created:
-
-| File to Create | What it Tests |
-|----------------|---------------|
-| `e2e/daily-pulse.spec.ts` | Daily Pulse loads, KPI tiles visible |
-| `e2e/money-center.spec.ts` | Money Center loads, tabs work |
-| `e2e/boardroom.spec.ts` | Boardroom slides + DemoModeBadge |
-| `e2e/command-palette.spec.ts` | Open palette, type, select result |
-| `e2e/admin-routes.spec.ts` | Admin pages all load without crash |
-| `e2e/owner-mode.spec.ts` | Owner center, approvals, policy editor |
-| `e2e/responsive.spec.ts` | Key pages at 375px and 1280px |
-| `e2e/advisor-chat.spec.ts` | Chat input, send message, response |
-
-### 8. Persistence Tests (1 of 4 planned)
-Only `persistable.test.ts` exists. Missing:
-
-| File to Create | What it Tests |
-|----------------|---------------|
-| `src/lib/persistence/__tests__/event-bus-persistence.test.ts` | Event serialization, persist call |
-| `src/lib/persistence/__tests__/policy-engine-persistence.test.ts` | Policy evaluation persistence |
-| `src/lib/persistence/__tests__/supabase-adapters.test.ts` | Adapter creation, table mapping |
-
-### 9. Cross-Domain & Kernel Tests
-| File to Create | What it Tests |
-|----------------|---------------|
-| `src/lib/__tests__/cross-domain.test.ts` | Cross-domain data point building |
-| `src/lib/__tests__/sita-kernel.test.ts` | Kernel init, event dispatch |
-| `src/lib/__tests__/continuity-engine.test.ts` | Continuity state management |
-
----
-
-## Implementation Order
-
-1. Fix the 1 failing test (scripts count 42→43)
-2. Create 6 hook tests
-3. Create 4 context provider tests
-4. Create 5 component tests
-5. Create 6 page integration tests
-6. Create 6 service tests
-7. Create 3 persistence tests
-8. Create 3 utility/kernel tests
-9. Create 8 E2E specs
-10. Run full suite, fix any failures
-
-## Summary
-
-| Action | Count |
-|--------|-------|
-| Fix failing test | 1 |
-| New test files to create | **41** |
-| Estimated new test cases | **~350** |
-| Target: all green | 1823+ tests, 0 failures |
-
+## Volume
+- ~497 page files (DemoModeBadge)
+- 23 edge function files (logger + rate limit)
+- 26 edge function files (Zod)
+- 1 report file
+- Will be implemented in batches due to volume

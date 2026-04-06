@@ -8,6 +8,7 @@ import {
   UserPlus, Heart, ArrowRight, Zap, Target, MessageSquare, Shield,
   Clock, CheckCircle, Brain, Package, DollarSign, AlertTriangle, Workflow
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const templates = [
   { name: "Stale Lead Recovery (48hr)", desc: "Detect leads with no next step for 48hrs. Enrich with CRM data, send personalized email, assign callback task, follow up via SMS if no response, escalate high-value leads.", category: "Lead Recovery", popularity: 94, icon: Users, steps: 8, trustLevel: "L3", impact: "$8,200/mo recovered", difficulty: "Easy", timeToSetup: "5 min", advisorNote: "CRM Advisor: Most impactful first automation for service businesses" },
@@ -35,6 +36,7 @@ export default function AutomationTemplates() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <Layout className="h-6 w-6 text-primary" />Automation Template Gallery

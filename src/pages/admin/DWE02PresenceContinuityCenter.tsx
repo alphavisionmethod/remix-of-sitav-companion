@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Smartphone, MonitorSmartphone, ArrowRightLeft, Eye, Radio } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function DWE02PresenceContinuityCenter() {
   const [presence, setPresence] = useState<any[]>([]);
@@ -19,6 +20,7 @@ export default function DWE02PresenceContinuityCenter() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE02 — Presence & Continuity Center</h1>
         <p className="text-muted-foreground">Active device, continuity state, handoffs, focus, interruption tolerance.</p>

@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { DollarSign, Clock, AlertTriangle, CheckCircle, Send, Phone, Receipt, Plus, X, Trash2 } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
@@ -88,6 +89,7 @@ const InvoicesCollections = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Invoices & Collections" subtitle="Track payments, recover revenue" actions={
         <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><Plus className="h-3.5 w-3.5" /> New Invoice</button>
       } />

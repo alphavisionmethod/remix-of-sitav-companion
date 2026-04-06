@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Settings2, Eye, Search, Zap, Calendar, Activity, Shield } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const MODES = [
   {
@@ -46,6 +47,7 @@ export default function OperatingModes() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Settings2 className="h-6 w-6 text-primary" /> Investment Operating Modes</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Shift the office's density, advisor intensity, alerting, and risk framing to match your current intent</p>

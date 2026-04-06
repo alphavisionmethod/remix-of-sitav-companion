@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Progress } from "@/components/ui/progress";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const mockAgents = [
   { id: "a-1", name: "Finance Advisor", composite: 82, quality: 88, costEff: 76, acceptance: 0.92, override: 0.08, falsePositive: 0.03, verification: 0.95, reuse: 0.45, downstream: 78, trend: "improving" },
@@ -52,6 +53,7 @@ const AIEfficiencyScoreboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         icon={<Gauge className="h-6 w-6" />}
         title="AI Efficiency Scoreboard"

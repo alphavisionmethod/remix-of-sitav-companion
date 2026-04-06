@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ShieldCheck, CheckCircle, XCircle } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const trustColors: Record<string, string> = { high: "bg-green-500/20 text-green-400", standard: "bg-blue-500/20 text-blue-400", low: "bg-muted text-muted-foreground", untrusted: "bg-red-500/20 text-red-400" };
 
@@ -26,6 +27,7 @@ export default function UAO06DeviceTrust() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><ShieldCheck className="h-6 w-6" /> Micro-Approval & Device Trust</h1>
         <p className="text-sm text-muted-foreground mt-1">Trusted devices, approval classes, security posture</p>

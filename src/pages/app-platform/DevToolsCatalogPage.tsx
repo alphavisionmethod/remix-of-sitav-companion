@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { APP_CATALOG, APP_BUNDLES } from "@/lib/app-platform";
 import { AppCard, BundleCard, AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DEV_CATEGORIES = [
   { id: "all", label: "All", icon: Code },
@@ -38,6 +39,7 @@ const DevToolsCatalogPage = () => {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to App Store
       </button>

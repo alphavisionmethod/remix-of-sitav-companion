@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MonitorSmartphone, Smartphone, Watch, Monitor } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const NRC05CrossDeviceDelivery = () => (
   <div className="p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
     <div className="flex items-center gap-3">
       <MonitorSmartphone className="h-8 w-8 text-primary" />
       <div>

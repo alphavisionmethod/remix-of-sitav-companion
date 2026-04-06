@@ -10,6 +10,7 @@ import {
   DollarSign, Target, Eye, XCircle, Settings, Workflow, Brain, Shield, Lightbulb,
   MessageSquare, UserPlus, Heart, Package, ArrowUpRight, Layers
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const automationStats = [
   { label: "Active Automations", value: "24", delta: "+3 this week", icon: Play, color: "text-emerald-400" },
@@ -95,6 +96,7 @@ export default function AutomationOffice() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">

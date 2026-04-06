@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Seed demo usage ────────────────────────────────────────────
 function useDemoEconomics() {
@@ -89,6 +90,7 @@ export default function AIEconomicsPage() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1200px] mx-auto space-y-6">
+      <DemoModeBadge />
       {/* Hero */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-primary/10 bg-gradient-to-br from-primary/5 via-card to-card p-6"

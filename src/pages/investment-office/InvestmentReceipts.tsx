@@ -1,4 +1,5 @@
 import { FileCheck, Download, ChevronRight, Target, Shield, Brain, RefreshCw } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface Receipt {
   id: string;
@@ -27,6 +28,7 @@ const STATUS_COLORS: Record<string, string> = { completed: "text-[hsl(var(--trus
 export default function InvestmentReceipts() {
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><FileCheck className="h-6 w-6 text-primary" /> Decision History & Receipts</h1>

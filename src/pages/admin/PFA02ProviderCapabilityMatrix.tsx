@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Layers, CheckCircle, XCircle } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function PFA02ProviderCapabilityMatrix() {
   const { data: capabilities = [] } = useQuery({
@@ -21,6 +22,7 @@ export default function PFA02ProviderCapabilityMatrix() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Layers className="h-6 w-6" /> Provider Capability Matrix</h1>
         <p className="text-sm text-muted-foreground mt-1">Sub-capabilities under each provider family</p>

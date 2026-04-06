@@ -4,6 +4,7 @@ import { Activity, Brain, Briefcase, DollarSign, Headphones, BarChart3, Calendar
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Heatmap Grid ────────────────────────────────────────────
 
@@ -47,6 +48,7 @@ const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
 
   return (
     <div className="flex gap-1">
+      <DemoModeBadge />
       {/* Day labels */}
       <div className="flex flex-col gap-[3px] mr-1 pt-5">
         {DAY_LABELS.map((l, i) => (

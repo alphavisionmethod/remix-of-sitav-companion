@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type BlockerSeverity = "critical" | "high" | "medium" | "low";
 type BlockerStatus = "open" | "in-progress" | "resolved" | "accepted-risk";
@@ -132,6 +133,7 @@ export default function LaunchReadinessBoard() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>

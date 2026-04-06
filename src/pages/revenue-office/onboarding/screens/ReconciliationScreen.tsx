@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Search, Users, Briefcase, FileText, Calendar, Star, Megaphone, AlertTriangle, CheckCircle } from "lucide-react";
 import { ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function ReconciliationScreen({ state }: ScreenProps) {
   const entities = useMemo(() => {
@@ -23,6 +24,7 @@ export default function ReconciliationScreen({ state }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ScreenHeader icon={Search} title="Data Review and Reconciliation" subtitle="SITA scanned your imports — review what was found before proceeding" color="text-amber-400" />
 
       {totalRecords > 0 && (

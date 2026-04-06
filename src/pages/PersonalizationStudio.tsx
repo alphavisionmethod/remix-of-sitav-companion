@@ -11,6 +11,7 @@ import {
   Bell, Calendar, Briefcase, DollarSign, Home, Sparkles, Check, Edit, Save,
   ChevronRight, RotateCcw, Power, X, CheckCircle2
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type SubPage = "profile" | "preferences" | "memory" | "automation" | "boardroom";
 
@@ -52,6 +53,7 @@ const ProfileSection = () => {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <SitaSectionHeader title="Your Operating Profile" subtitle="How SITA understands and communicates with you" />
         <SitaButton variant={editing ? "primary" : "secondary"} size="sm" onClick={() => editing ? handleSave() : setEditing(true)}>

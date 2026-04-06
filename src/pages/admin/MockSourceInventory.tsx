@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { FileCode, AlertTriangle, Layers } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface MockSourceEntry {
   source: string;
@@ -55,6 +56,7 @@ export default function MockSourceInventory() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">Mock Source Inventory</h1>
         <p className="text-sm text-muted-foreground">All mock/demo/hardcoded sources used by runtime routes — RCP05</p>

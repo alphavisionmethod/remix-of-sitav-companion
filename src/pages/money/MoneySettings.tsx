@@ -2,6 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/co
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, Link, AlertTriangle, CheckCircle, Settings } from "lucide-react";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface PolicyRule {
   id: string;
@@ -39,6 +40,7 @@ const categories = [...new Set(policies.map(p => p.category))];
 const MoneySettings = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Money Settings & Rules" subtitle="Policies, thresholds, automation rules, and connected services" />
 
       <div className="grid gap-6 lg:grid-cols-2">

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldAlert, Brain, AlertTriangle, Check, Clock, Eye, TrendingUp, Zap, MessageSquare } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const BEHAVIORAL_SIGNALS = [
   { id: "bs1", type: "attention", severity: "moderate", title: "Attention Clustering on NVDA", detail: "You've checked NVDA 12 times this week (baseline: 3). This pattern correlates with loss-aversion monitoring after drawdowns.", suggestion: "Set a price alert at your limit order ($130) and reduce manual checking. The thesis is either valid or invalidated — checking the price doesn't change that.", timestamp: "Today", icon: "👁️" },
@@ -24,6 +25,7 @@ export default function BehavioralFirewall() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ShieldAlert className="h-6 w-6 text-primary" /> Behavioral Firewall</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Protecting you from impulsive, emotional, and undisciplined investment decisions</p>

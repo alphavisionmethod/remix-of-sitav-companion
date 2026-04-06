@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Route, ArrowRight, CheckCircle, XCircle } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const qualityColors: Record<string, string> = { seamless: "bg-green-500/20 text-green-400", good: "bg-blue-500/20 text-blue-400", friction: "bg-yellow-500/20 text-yellow-400", failed: "bg-red-500/20 text-red-400", unknown: "bg-muted text-muted-foreground" };
 const statusColors: Record<string, string> = { completed: "bg-green-500/20 text-green-400", initiated: "bg-blue-500/20 text-blue-400", failed: "bg-red-500/20 text-red-400", abandoned: "bg-muted text-muted-foreground" };
@@ -31,6 +32,7 @@ export default function UAO07CrossSurfaceJourney() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Route className="h-6 w-6" /> Cross-Surface Journey Board</h1>
         <p className="text-sm text-muted-foreground mt-1">Handoff quality, continuity success, friction points</p>

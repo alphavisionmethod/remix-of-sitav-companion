@@ -2,6 +2,7 @@ import { Eye, FileText, CheckCircle, Zap, Check, DollarSign, Star, AlertTriangle
 import { Toggle, SectionTitle, ChapterBanner } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const levels = [
   { id: "suggest", label: "Suggestions only", desc: "SITA observes and recommends — you decide everything", icon: Eye, trust: 1 },
@@ -28,6 +29,7 @@ export default function AutomationScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ChapterBanner chapter="Chapter 6: Trust & Automation" subtitle="Control how much SITA does — you can always adjust later" />
       <div>
         <SectionTitle>How much should SITA do automatically?</SectionTitle>

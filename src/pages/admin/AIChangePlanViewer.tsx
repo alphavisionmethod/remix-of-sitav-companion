@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { FileCheck, CheckCircle2, AlertTriangle, XCircle, Clock, ArrowRight, Shield, Code, Eye, RotateCcw, Zap } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PLANS = [
   {
@@ -120,6 +121,7 @@ const AIChangePlanViewer = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <AdminPageHeader icon={FileCheck} title="Change Plan Viewer" subtitle="Every AI-proposed change as a structured, auditable, evidence-backed plan with verification gates" accent="primary" />
 
       <div className="grid grid-cols-4 gap-3">

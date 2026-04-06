@@ -3,6 +3,7 @@ import { Package, DollarSign, Star, Users, Plus, Edit3, BarChart3, Tag, Layers }
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PRODUCTS = [
   { name: "Growth Strategy Blueprint", type: "digital", price: "$297", sales: 142, revenue: "$42,174", status: "active", category: "Course" },
@@ -23,6 +24,7 @@ export default function OffersWorkspace() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>

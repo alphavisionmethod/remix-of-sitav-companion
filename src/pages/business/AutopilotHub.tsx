@@ -8,6 +8,7 @@ import { SitaPageHeader } from "@/components/sita/SitaCard";
 import AutopilotWizard from "@/components/autopilot/AutopilotWizard";
 import AutopilotCommandCenter from "@/components/autopilot/AutopilotCommandCenter";
 import { getDefaultConfig, type AutopilotConfig } from "@/lib/domain-engines/autopilot-engine";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const STORAGE_KEY = "sita-autopilot-config";
 
@@ -54,6 +55,7 @@ const AutopilotHubPage = () => {
   if (showWizard) {
     return (
       <div className="mx-auto max-w-7xl space-y-6">
+      <DemoModeBadge />
         <SitaPageHeader
           title="Autopilot Setup"
           subtitle="Configure your revenue automation in under 2 minutes"

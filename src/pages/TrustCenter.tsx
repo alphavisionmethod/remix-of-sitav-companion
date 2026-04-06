@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const db: any = supabase;
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
@@ -59,6 +60,7 @@ const TrustCenter = () => {
 
   return (
     <div className="min-h-screen pb-12">
+      <DemoModeBadge />
       <SitaPageHeader title="Trust Center" subtitle="Control how SITA behaves, what it can do, and what requires your approval" actions={
         <Button size="sm" variant={automationsPaused ? "default" : "outline"} onClick={() => setAutomationsPaused(!automationsPaused)}
           className={cn("gap-1.5 text-xs", automationsPaused && "bg-amber-500 hover:bg-amber-600 text-black")}>

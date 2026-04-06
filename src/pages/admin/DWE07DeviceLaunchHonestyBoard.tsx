@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle, AlertTriangle, XCircle, Beaker } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
 import { DEVICE_ROADMAP } from "@/packages/contracts/msa/device-family-contract";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function DWE07DeviceLaunchHonestyBoard() {
   const [readiness, setReadiness] = useState<any[]>([]);
@@ -27,6 +28,7 @@ export default function DWE07DeviceLaunchHonestyBoard() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE07 — Device & Wearable Launch Honesty Board</h1>
         <p className="text-muted-foreground">Truthful device readiness: real, demo, pilot, internal, unsupported.</p>

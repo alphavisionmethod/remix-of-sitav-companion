@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, AlertTriangle, XCircle, ShieldCheck, Layers } from "lucide-react";
 import { getRegisteredDomains, type ProviderDomain } from "@/lib/dual-reality/mode-aware-provider";
 import { registerAllProviders } from "@/lib/dual-reality/providers";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ALL_DOMAINS: ProviderDomain[] = ["boardroom", "investment", "money", "business", "workspace", "owner", "calendar", "advisor"];
 
@@ -65,6 +66,7 @@ export default function DRS10DualRealityLaunchGate() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS10 — Dual Reality Launch Gate</h1>
         <p className="text-sm text-muted-foreground mt-1">Ensure demo mode never corrupts production truth</p>

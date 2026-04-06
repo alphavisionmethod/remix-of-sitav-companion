@@ -10,6 +10,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface UserRecord {
   id: string;
@@ -66,6 +67,7 @@ export default function UserManagement() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">

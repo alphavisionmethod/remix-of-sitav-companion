@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { GitCompareArrows, AlertTriangle, Check, HelpCircle } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DISAGREEMENTS = [
   {
@@ -31,6 +32,7 @@ const DISAGREEMENTS = [
 export default function DisagreementEngine() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><GitCompareArrows className="h-6 w-6 text-primary" /> Disagreement Engine</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Where advisors disagree, what assumptions conflict, and what evidence would resolve the debate</p>

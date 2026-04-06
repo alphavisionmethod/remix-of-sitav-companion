@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useCapabilities, useCreateCapability } from "@/hooks/use-fip-data";
 import { CAPABILITY_CLASSES } from "@/lib/fip/types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const FIPCapabilityRegistry = () => {
   const { data: caps = [], isLoading } = useCapabilities();
@@ -27,6 +28,7 @@ const FIPCapabilityRegistry = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>

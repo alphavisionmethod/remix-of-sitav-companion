@@ -8,6 +8,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AlertTriangle, XCircle, RotateCcw, ArrowUpRight } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function AR07RetryFailureCenter() {
   const { data: failures = [] } = useQuery({
@@ -25,6 +26,7 @@ export default function AR07RetryFailureCenter() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Retry / Failure / Escalation Center"
         subtitle="Inspect and manage recurring job failures, retries, and escalations"

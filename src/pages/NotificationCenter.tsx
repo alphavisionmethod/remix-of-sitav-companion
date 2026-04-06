@@ -21,6 +21,7 @@ import {
   ArrowRight, Volume2, VolumeX, Pin, XCircle, AlertCircle, Sparkles,
   MessageSquare, Calendar, Settings
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type UrgencyLevel = "critical" | "high" | "normal" | "low";
 type NotifCategory = "all" | "action" | "approval" | "finance" | "business" | "household" | "system" | "resolved";
@@ -60,6 +61,7 @@ const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
         !isRead && "hover:shadow-card-hover"
       )}
     >
+      <DemoModeBadge />
       <div className="p-4">
         <div className="flex items-start gap-3">
           {/* Urgency indicator + Icon */}

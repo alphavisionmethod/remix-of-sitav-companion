@@ -17,6 +17,7 @@ import {
   XCircle, Pause, RefreshCw, Filter, ArrowUpRight
 } from "lucide-react";
 import type { AutoActionType } from "@/lib/domain-engines/autopilot-engine";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Types ────────────────────────────────────────────────────────
 
@@ -177,6 +178,7 @@ const StepCard = ({
 
   return (
     <motion.div layout className="group relative">
+      <DemoModeBadge />
       {/* Connector line */}
       {index < totalSteps - 1 && (
         <div className="absolute left-6 top-full w-px h-3 bg-border z-0" />

@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Rocket, CheckCircle2, AlertTriangle, Shield, Clock, ArrowRight, RotateCcw, Activity, GitBranch, Eye, TrendingUp } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ENVIRONMENTS = [
   { env: "Production", status: "healthy" as const, confidence: 94, version: "v2.14.3", deployedAt: "Apr 4, 14:22", drift: "none", rollbackTo: "v2.14.2" },
@@ -58,6 +59,7 @@ const AIReleasesCenter = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <AdminPageHeader icon={Rocket} title="Release Center" subtitle="Readiness gates, rollout history, promotion evidence, rollback options" accent="trust" />
 
       <div className="grid grid-cols-4 gap-3">

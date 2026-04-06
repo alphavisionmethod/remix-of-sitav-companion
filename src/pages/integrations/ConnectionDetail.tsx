@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ArrowLeft, CheckCircle, AlertTriangle, RefreshCw, Trash2, Activity, Clock, Settings, Shield } from "lucide-react";
 import { DEMO_CONNECTIONS } from "@/lib/services/integration-hub/demo-connections";
 import { getProviderById } from "@/lib/services/integration-hub/providers";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function ConnectionDetail() {
   const { connectionId } = useParams();
@@ -19,6 +20,7 @@ export default function ConnectionDetail() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground" onClick={() => navigate("/integrations/connections")}>
         <ArrowLeft className="w-3.5 h-3.5" /> Back to Connections
       </Button>

@@ -5,6 +5,7 @@ import { Brain, AlertTriangle, CheckCircle, Sparkles } from "lucide-react";
 import { ScreenHeader } from "../primitives";
 import { inferBusinessSignals } from "../branching";
 import type { ScreenProps } from "../types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function ShapeSummaryScreen({ state }: ScreenProps) {
   const signals = useMemo(() => inferBusinessSignals(state), [state]);
@@ -52,6 +53,7 @@ export default function ShapeSummaryScreen({ state }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ScreenHeader icon={Brain} title="Here's what SITA understands so far" subtitle="Review and confirm — or go back to refine" color="text-primary" />
 
       <Card className="bg-primary/5 border-primary/20">

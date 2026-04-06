@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Globe, Brain, ShoppingCart, Calendar, Target, Users, Megaphone } from "lucide-react";
 import { ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const urlSlots = [
   { key: "website", label: "Website URL", placeholder: "https://yourbusiness.com", icon: Globe },
@@ -26,6 +27,7 @@ export default function URLIntakeScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ScreenHeader icon={Globe} title="Share your web presence" subtitle="SITA can inspect these to understand your business structure, offers, and funnels" color="text-blue-400" />
       <div className="space-y-3">
         {urlSlots.map(s => (

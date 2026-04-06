@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { CapabilityLease, LeaseViolation } from "@/lib/core-services/lease-manager";
 import { useLeases } from "@/hooks/use-domain-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Status helpers ──────────────────────────────────────────────
 
@@ -36,6 +37,7 @@ function StatusBadge({ status }: { status: string }) {
   const Icon = config.icon;
   return (
     <span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-semibold", config.color)}>
+      <DemoModeBadge />
       <Icon className="h-3 w-3" />
       {config.label}
     </span>

@@ -8,6 +8,7 @@ import { SitaPageHeader, SitaCard } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Calendar, Zap, Clock, AlertTriangle, Pause, Play, Ban } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const stateColors: Record<string, string> = {
   active: "bg-trust-verified/10 text-trust-safe border-trust-verified/20",
@@ -34,6 +35,7 @@ export default function AR02ScheduledJobRegistry() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Scheduled Job Registry"
         subtitle="Canonical source of truth for all recurring jobs"

@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GitBranch, Clock, CheckCircle, XCircle, TrendingUp } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const LT02CIPipelineCenter = () => {
   const { data: ciRuns } = useQuery({
@@ -33,6 +34,7 @@ const LT02CIPipelineCenter = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">CI Pipeline Center</h1>
         <p className="text-sm text-muted-foreground">Inspect CI status, quality gates, and job breakdown</p>

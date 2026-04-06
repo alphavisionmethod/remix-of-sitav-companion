@@ -12,6 +12,7 @@ import {
   fetchIntelligenceAssets, getAssetStats,
 } from "@/lib/persistence";
 import { PageSkeleton } from "@/components/sita/PageSkeleton";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -20,6 +21,7 @@ function HealthCard({ title, icon: Icon, status, detail, count }: { title: strin
   const colors = { healthy: "text-emerald-400 border-emerald-500/30 bg-emerald-500/5", warning: "text-amber-400 border-amber-500/30 bg-amber-500/5", error: "text-red-400 border-red-500/30 bg-red-500/5" };
   return (
     <motion.div variants={fade}>
+      <DemoModeBadge />
       <Card className={`border ${colors[status]}`}>
         <CardContent className="p-4">
           <div className="flex items-start justify-between mb-2">

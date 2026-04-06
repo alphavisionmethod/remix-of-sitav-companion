@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Flag, RefreshCw, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const labelColors: Record<string, string> = { alpha: "bg-blue-500/20 text-blue-400", planned: "bg-muted text-muted-foreground", future: "bg-muted text-muted-foreground/50", production: "bg-green-500/20 text-green-400", beta: "bg-cyan-500/20 text-cyan-400" };
 
@@ -34,6 +35,7 @@ export default function UAO08AmbientLaunchReadiness() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Flag className="h-6 w-6" /> Ambient Launch Readiness</h1>

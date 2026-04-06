@@ -3,6 +3,7 @@ import { Database, CheckCircle2, XCircle, AlertTriangle, FileJson } from "lucide
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useGeneratedTruthImpacts } from "@/hooks/use-fip-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const GENERATED_ARTIFACTS = [
   'generated/feature-integration-index.json', 'generated/service-manifest.json',
@@ -21,6 +22,7 @@ const FIPGeneratedTruthBoard = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Database className="h-6 w-6 text-primary" /> FIP11 — Generated Truth Impact Board</h1>
         <p className="text-muted-foreground mt-1">Ensure generated artifacts are updated when features change</p>

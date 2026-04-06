@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Settings2 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const statusColors: Record<string, string> = {
   active: "bg-green-500/20 text-green-400", in_development: "bg-blue-500/20 text-blue-400",
@@ -26,6 +27,7 @@ export default function MSA04SurfaceAdapterRegistry() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Settings2 className="h-6 w-6" /> Surface Adapter Registry</h1>
         <p className="text-sm text-muted-foreground mt-1">All planned and implemented surface adapters with grammars and profiles</p>

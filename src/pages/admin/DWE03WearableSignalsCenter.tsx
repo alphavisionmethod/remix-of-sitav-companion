@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Activity, HeartPulse, Shield, Lock } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function DWE03WearableSignalsCenter() {
   const [providers, setProviders] = useState<any[]>([]);
@@ -19,6 +20,7 @@ export default function DWE03WearableSignalsCenter() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE03 — Wearable Signals & Readiness Center</h1>
         <p className="text-muted-foreground">Connected wearable providers, granted signals, readiness, privacy controls.</p>

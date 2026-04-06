@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Landmark, Shield, TrendingUp, Wallet, Zap, Calendar, Target, Coins } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PURPOSES = [
   { id: "ltw", label: "Long-Term Wealth", icon: <TrendingUp className="h-5 w-5" />, emoji: "🏦", allocated: 245000, target: 60, actual: 49.2, color: "bg-primary" },
@@ -24,6 +25,7 @@ const RULES = [
 export default function CapitalPurpose() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Landmark className="h-6 w-6 text-primary" /> Capital Purpose Layer</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Allocate capital by purpose, not just by ticker — this drives risk rules, advisor recommendations, and execution review</p>

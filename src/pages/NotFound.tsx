@@ -2,6 +2,7 @@ import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Home, Compass, Shield } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const NotFound = () => {
   const location = useLocation();
@@ -12,6 +13,7 @@ const NotFound = () => {
 
   return (
     <div className="flex min-h-[70vh] items-center justify-center">
+      <DemoModeBadge />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

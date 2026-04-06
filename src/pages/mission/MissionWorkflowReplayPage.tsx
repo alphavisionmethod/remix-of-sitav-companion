@@ -14,6 +14,7 @@ import {
   Workflow, Clock, FileCheck, Zap, Eye, Play, XCircle,
   ArrowRight, Lock, Wifi, Receipt,
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface WorkflowEvent {
   id: string;
@@ -65,6 +66,7 @@ export default function MissionWorkflowReplayPage() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1200px] mx-auto space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-6"
       >

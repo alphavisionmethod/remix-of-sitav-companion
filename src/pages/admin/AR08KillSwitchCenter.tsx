@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Shield, AlertTriangle, Zap, Bot, Heart, Wrench } from "lucide-react";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const SCOPES = [
   { scope: "global", label: "Global Kill Switch", description: "Stops ALL recurring automation", icon: Shield, color: "text-destructive" },
@@ -72,6 +73,7 @@ export default function AR08KillSwitchCenter() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Kill Switch & Safety Center"
         subtitle="Control automation safety — disable recurring execution globally or by domain"

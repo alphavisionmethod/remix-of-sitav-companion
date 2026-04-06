@@ -4,6 +4,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { FileText, Upload, Search, DollarSign, Calendar, Shield, Clock, AlertCircle, Eye, Paperclip, FolderOpen } from "lucide-react";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface FinancialDocument {
   id: number;
@@ -57,6 +58,7 @@ const MoneyDocuments = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Financial Documents" subtitle="Invoices, receipts, contracts, and statements — organized and intelligence-ready" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DEMO_AGENTS = [
   { id: "1", name: "Revenue Scout", role: "Lead Qualification", status: "active" as const, tasksCompleted: 142, trustScore: 94, costToday: 2.34 },
@@ -23,6 +24,7 @@ export default function AIWorkforcePage() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Bot className="h-6 w-6 text-primary" /> AI Workforce</h1>

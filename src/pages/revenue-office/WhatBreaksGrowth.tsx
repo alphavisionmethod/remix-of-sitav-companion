@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShieldAlert, AlertTriangle, Target, Users, Zap, MessageCircle, Clock } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const riskAreas = [
   {
@@ -43,6 +44,7 @@ const riskAreas = [
 export default function WhatBreaksGrowth() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">What Breaks Growth?</h1>
         <p className="text-muted-foreground">Reverse-analysis of weak assumptions, delivery risks, and failure points across all growth systems</p>

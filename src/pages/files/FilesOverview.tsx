@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { classifyFile, detectSensitivity, type FileClassification, type SensitivityLevel } from "@/lib/core-services/file-ingestion";
 import { FileUploader } from "@/components/sita/FileUploader";
 import { useFilesOverview } from "@/hooks/use-domain-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type ViewVariant = "founder" | "household" | "finance" | "premium";
 
@@ -42,6 +43,7 @@ const FilesOverview = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Files & Knowledge"
         subtitle="Intelligence intake layer — upload, scan, extract, link, and act"

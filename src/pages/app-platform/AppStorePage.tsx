@@ -16,6 +16,7 @@ import {
   CategoryStrip, InstallSheet,
 } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const AppStorePage = () => {
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ const AppStorePage = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
+      <DemoModeBadge />
       <StoreHero installedCount={installed.length} appsAvailable={APP_CATALOG.length} />
 
       {/* Quick Nav */}

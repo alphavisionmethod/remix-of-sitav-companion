@@ -5,12 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useProviderHealth } from "@/hooks/use-sag-data";
 import { PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const SAGProviderHealth = () => {
   const { data: health = [], isLoading } = useProviderHealth();
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Activity className="h-6 w-6 text-primary" /> SAG04 — Provider Adapter Health Center</h1>
         <p className="text-muted-foreground mt-1">Monitor runtime health of all AI providers and models</p>

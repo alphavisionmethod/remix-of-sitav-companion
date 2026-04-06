@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import type { GovernanceBoardroomSection } from "@/packages/contracts";
 import type { ReadinessInput } from "@/lib/engines/readiness-engine";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DEFAULT_READINESS_INPUT: ReadinessInput = {
   proofCompleteness: { rate: 0.85, evidence: ["proof-chain audit"] },
@@ -37,6 +38,7 @@ const SectionCard = ({ section }: { section: GovernanceBoardroomSection }) => {
   const navigate = useNavigate();
   return (
     <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+      <DemoModeBadge />
       <SitaCard
         onClick={() => navigate(section.drilldownRoute)}
         className={cn(

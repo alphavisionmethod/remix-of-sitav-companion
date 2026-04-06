@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ConnectorHub = () => {
   const { user } = useAuth();
@@ -53,6 +54,7 @@ const ConnectorHub = () => {
 
   return (
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Connector Hub" subtitle="Manage integrations, health status, and sync history" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

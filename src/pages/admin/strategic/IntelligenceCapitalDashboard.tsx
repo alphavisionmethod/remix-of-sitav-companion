@@ -7,6 +7,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useIntelligenceAssets } from "@/lib/hooks/useIntelligencePersistence";
 import { useMemo } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const H = ({ icon: I, label, value, sub, color }: any) => (
   <Card className="bg-card/80 border-border/50"><CardContent className="p-3 text-center">
@@ -50,6 +51,7 @@ const IntelligenceCapitalDashboard = () => {
   if (authLoading || !isAdmin) return null;
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader icon={<Brain className="h-6 w-6" />} title="Intelligence Capital Index" subtitle="SITA's accumulated intelligence treated as a strategic asset base" >
         <Badge variant="secondary" className="gap-1 text-emerald-400"><TrendingUp className="h-3 w-3" /> {trend} · {roi}x ROI</Badge>
       </SitaPageHeader>

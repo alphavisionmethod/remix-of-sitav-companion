@@ -5,6 +5,7 @@ import { StateBadge } from "@/components/sita/StateBadge";
 import { useState } from "react";
 import { DollarSign, ArrowDownLeft, ArrowUpRight, Clock, AlertTriangle, CheckCircle, Send, Phone } from "lucide-react";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface Receivable {
   id: number; source: string; initials: string; amount: string; expected: string; type: "invoice" | "reimbursement" | "payment";
@@ -38,6 +39,7 @@ const ReceivablesObligations = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Receivables & Obligations" subtitle="What's coming in, what's going out" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

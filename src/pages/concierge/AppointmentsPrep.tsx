@@ -3,6 +3,7 @@ import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents"
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { Stethoscope, Calendar, MapPin, Clock, FileText, User, CheckCircle, AlertCircle, Car, ClipboardCheck } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface Appointment {
   id: string;
@@ -72,6 +73,7 @@ const AppointmentsPrep = () => {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Appointments & Prep" subtitle="Upcoming appointments with preparation checklists and logistics" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

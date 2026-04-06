@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const HRS06SignalLaunchHonesty = () => (
   <div className="p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
     <div className="flex items-center gap-3">
       <Rocket className="h-8 w-8 text-primary" />
       <div>

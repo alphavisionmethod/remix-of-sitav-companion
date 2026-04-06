@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Target, Briefcase, GraduationCap, ShoppingCart, MapPin, Users, PenTool, Heart, Layers, Brain, Check, ArrowRight, MessageSquare, Phone, FileText, RefreshCw } from "lucide-react";
 import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const templates = [
   { id: "service", label: "Service Business", flow: ["Lead", "Inquiry", "Call", "Quote", "Close", "Onboarding", "Delivery", "Review"], icon: Briefcase },
@@ -36,6 +37,7 @@ export default function JourneyScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ScreenHeader icon={Target} title="Let's sketch how customers move through your business" subtitle="SITA will build a Customer Journey Twin from this pattern" color="text-blue-400" />
       <div className="space-y-2">
         {templates.map(t => (

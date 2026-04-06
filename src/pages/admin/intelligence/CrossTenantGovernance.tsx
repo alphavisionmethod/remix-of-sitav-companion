@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const mockPatterns = [
   { id: "ct-1", label: "API timeout cascade after deploy", type: "issue_fingerprint", domain: "engineering", confidence: 94, tenants: 18, anonymization: "k_anonymity", approved: true, restrictions: ["confidence_gated"], privacyGates: ["no_pii", "min_source_count", "min_confidence"] },
@@ -31,6 +32,7 @@ const CrossTenantGovernance = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         icon={<Globe className="h-6 w-6" />}
         title="Cross-Tenant Intelligence Governance"

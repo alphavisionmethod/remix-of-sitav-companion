@@ -11,6 +11,7 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, BarChart, 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const db: any = supabase;
 
@@ -57,6 +58,7 @@ const ReportingWorkspace = () => {
 
   return (
     <div className="min-h-screen pb-12">
+      <DemoModeBadge />
       <SitaPageHeader title="Reporting & Analytics" subtitle="Insights across business, finance, operations, and trust" actions={
         <div className="flex gap-2">
           <Button size="sm" variant="outline" className="gap-1.5 text-xs border-border/50"><Download className="w-3.5 h-3.5" /> Export</Button>

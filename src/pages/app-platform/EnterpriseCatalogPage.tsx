@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Building, Shield, Lock, Check, Users, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ENTERPRISE_APPS = [
   { id: "ent-crm", name: "Internal CRM", publisher: "Your Organization", icon: "📊", iconBg: "from-blue-600 to-blue-400", version: "3.2.1", description: "Customer relationship management tool", status: "available", roles: ["Sales", "Support"], managed: true },
@@ -28,6 +29,7 @@ const EnterpriseCatalogPage = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
+      <DemoModeBadge />
       <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to App Store
       </button>

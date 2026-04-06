@@ -19,6 +19,7 @@ import {
   RotateCcw, Search, Play, AlertTriangle, CheckCircle, Clock,
   ChevronRight, Shield, Zap, Eye,
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function WorkflowReplayHub() {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ export default function WorkflowReplayHub() {
 
   return (
     <div className="max-w-[1200px] mx-auto space-y-5">
+      <DemoModeBadge />
       <AdminPageHeader icon={RotateCcw} title="Workflow Replay Center" subtitle="Search, inspect, and safely replay failed or stuck workflows">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full mt-5">
           {[

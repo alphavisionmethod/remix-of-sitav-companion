@@ -7,6 +7,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle, AlertTriangle, XCircle, Database, Shield, ArrowRight } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type DomainStatus = "real" | "demo_provider" | "mock_direct" | "mixed" | "blocked";
 
@@ -51,6 +52,7 @@ export default function MockEliminationCenter() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Mock Elimination Command Center" subtitle="Track domain-by-domain conversion from direct mock imports to mode-aware providers" />
 
       {/* Summary */}

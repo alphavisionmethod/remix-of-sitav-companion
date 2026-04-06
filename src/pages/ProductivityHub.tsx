@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { lazy, Suspense } from "react";
 import { FileText, Table2, Presentation, Sparkles, Clock, Star, Plus } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DocsWorkspace = lazy(() => import("./workspace/DocsWorkspace"));
 const SheetsWorkspace = lazy(() => import("./workspace/SheetsWorkspace"));
@@ -32,6 +33,7 @@ const OverviewPage = () => {
   const navigate = useNavigate();
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <div className="grid gap-4 sm:grid-cols-3">
         {[
           { label: "Documents", count: 24, icon: FileText, path: "/productivity/docs", color: "text-blue-500" },

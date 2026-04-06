@@ -3,6 +3,7 @@ import { Zap, ArrowRight, Shield, RotateCcw, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useExecutionPaths } from "@/hooks/use-fip-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PathNode = ({ label, value, active }: { label: string; value?: string; active: boolean }) => (
   <div className={`flex flex-col items-center p-2 rounded-lg border ${active ? 'border-primary bg-primary/5' : 'border-border bg-muted/30'}`}>
@@ -16,6 +17,7 @@ const FIPExecutionExplorer = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Zap className="h-6 w-6 text-primary" /> FIP06 — Execution Path Explorer</h1>
         <p className="text-muted-foreground mt-1">Inspect canonical execution paths for side-effecting features</p>

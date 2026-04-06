@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Gauge, Brain, Activity, CircleDot, Layers, MapPin, Heart, Phone, Users, AlertTriangle, Star, MessageSquare, TrendingUp, Link2, FileText, Target } from "lucide-react";
 import type { OnboardingState } from "./types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function LiveOfficeSidebar({ state, stage }: { state: OnboardingState; stage: number }) {
   const insights = useMemo(() => {
@@ -56,6 +57,7 @@ export default function LiveOfficeSidebar({ state, stage }: { state: OnboardingS
 
   return (
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="hidden lg:block w-72 flex-shrink-0">
+      <DemoModeBadge />
       <div className="sticky top-28 space-y-4">
         <Card className="bg-card/60 border-border/40 backdrop-blur-sm">
           <CardContent className="p-4">

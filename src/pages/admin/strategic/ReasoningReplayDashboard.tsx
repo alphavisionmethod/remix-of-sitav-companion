@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ReasoningReplayDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
@@ -26,6 +27,7 @@ const ReasoningReplayDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader icon={<FileSearch className="h-6 w-6" />} title="Reasoning Insurance Replay" subtitle="Meta-reasoning traces — what was considered, skipped, reused, and why" />
       {loading ? (
         <div className="text-center text-muted-foreground py-12">Loading reasoning replays…</div>

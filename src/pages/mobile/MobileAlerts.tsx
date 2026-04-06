@@ -3,6 +3,7 @@ import { AlertCard, type AlertItem } from "@/components/mobile/AlertCard";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useMobileAlerts } from "@/hooks/use-domain-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const MobileAlerts = () => {
   const { data: alerts = [] } = useMobileAlerts();
@@ -11,6 +12,7 @@ const MobileAlerts = () => {
 
   return (
     <MobileShell title="Alerts">
+      <DemoModeBadge />
       <div className="flex items-center gap-2 mb-4">
         {(["all", "unread"] as const).map((f) => (
           <button key={f} onClick={() => setFilter(f)} className={cn("px-3 py-1.5 rounded-full text-xs font-medium capitalize transition-colors border", filter === f ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border/40 text-muted-foreground")}>

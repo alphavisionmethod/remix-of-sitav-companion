@@ -8,6 +8,7 @@ import { ArrowLeft, Globe, FileText, Link2, Mail, Image, FileCode, Calendar, Che
 import { cn } from "@/lib/utils";
 import { APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DEFAULT_APP_SLOTS = [
   { id: "browser", label: "Default Browser", icon: Globe, currentApp: "chrome", candidates: ["chrome", "firefox"] },
@@ -37,6 +38,7 @@ const AppAssociationsPage = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
+      <DemoModeBadge />
       <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back
       </button>

@@ -32,6 +32,7 @@ import {
   AlertCircle, ArrowRightLeft, Timer, BarChart3
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Initialize services with demo data ──────────────────────────
 
@@ -191,6 +192,7 @@ const SystemStatus = () => {
 
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader
         title="System Status"
         subtitle="Trust score, self-healing, fleet health, connector health, and execution history"

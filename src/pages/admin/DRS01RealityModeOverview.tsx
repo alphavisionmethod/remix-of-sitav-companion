@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Eye, Shield, Layers, BarChart3, Activity } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 function useModeSummary() {
   return useQuery({
@@ -34,6 +35,7 @@ export default function DRS01RealityModeOverview() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS01 — Reality Mode Overview</h1>
         <p className="text-sm text-muted-foreground mt-1">Executive overview of real vs demo runtime</p>

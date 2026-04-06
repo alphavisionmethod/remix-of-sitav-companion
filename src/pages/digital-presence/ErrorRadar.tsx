@@ -3,6 +3,7 @@ import { AlertTriangle, Link2, Image, Clock, MousePointer, Shield, Smartphone, S
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ERRORS = [
   { type: "Broken Link", icon: Link2, page: "/blog/old-post", detail: "Links to /resources/guide → 404", severity: "high", autoFixable: true },
@@ -27,6 +28,7 @@ const OPPORTUNITIES = [
 export default function ErrorRadar() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Error & Opportunity Radar</h1>
         <p className="text-sm text-muted-foreground">Broken links, stale content, weak CTAs, trust gaps & growth opportunities</p>

@@ -3,6 +3,9 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { handleCors, corsHeaders } from "../_shared/cors.ts";
+import { EdgeLogger } from "../_shared/logger.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { z } from "https://esm.sh/zod@3.23.8";
 
 serve(async (req: Request) => {
   const cors = handleCors(req);

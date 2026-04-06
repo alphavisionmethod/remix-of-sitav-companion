@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type PatchStatus = "pending" | "approved" | "applied" | "rejected" | "verified";
 
@@ -55,6 +56,7 @@ export default function SelfHealingQueue() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Self-Healing Queue / Patch Center</h1>
         <p className="text-sm text-muted-foreground">Manage safe automatic or drafted fixes with preview, approval & verification</p>

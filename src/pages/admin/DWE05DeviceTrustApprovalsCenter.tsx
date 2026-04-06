@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Fingerprint, ShieldCheck, ShieldAlert, KeyRound } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function DWE05DeviceTrustApprovalsCenter() {
   const [trustRecords, setTrustRecords] = useState<any[]>([]);
@@ -23,6 +24,7 @@ export default function DWE05DeviceTrustApprovalsCenter() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE05 — Device Trust & Approvals Center</h1>
         <p className="text-muted-foreground">Trusted devices, device-bound approvals, biometric escalation, security posture.</p>

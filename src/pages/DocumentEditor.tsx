@@ -6,6 +6,7 @@ import { FileText, Bold, Italic, Underline, List, ListOrdered, Link, Image, Code
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const TOOLBAR_GROUPS = [
   [{ icon: Heading1, label: "H1" }, { icon: Heading2, label: "H2" }],
@@ -28,6 +29,7 @@ const DocumentEditor = () => {
 
   return (
     <div className="min-h-screen pb-12">
+      <DemoModeBadge />
       <SitaPageHeader title="Document Editor" subtitle="Create, edit, and review documents" actions={
         <div className="flex gap-2">
           <Button size="sm" variant="outline" className="gap-1.5 text-xs border-border/50"><History className="w-3.5 h-3.5" /> History</Button>

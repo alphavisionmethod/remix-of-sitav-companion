@@ -8,6 +8,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { Badge } from "@/components/ui/badge";
 import { Activity, Zap, AlertTriangle, Shield, Clock, CheckCircle, XCircle, Pause } from "lucide-react";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 function useScheduledJobs() {
   return useQuery({
@@ -73,6 +74,7 @@ export default function AR01AutomationOverview() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Automation Reality Overview"
         subtitle="Executive view of all scheduled automation, execution health, and safety controls"

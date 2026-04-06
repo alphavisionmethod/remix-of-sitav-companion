@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useModelRegistry, usePromptFamilies, useRoutingPolicies, useTaskRequests } from "@/hooks/use-sag-data";
 import { TASK_CLASSES, MODEL_CLASSES } from "@/lib/sovereign-ai-gateway/types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const BUILDER_STEPS = [
   { step: 1, label: 'Capability', icon: Layers, desc: 'Select capability ID for this AI feature' },
@@ -29,6 +30,7 @@ const SAGBuilderConsole = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Cpu className="h-6 w-6 text-primary" /> SAG11 — AI Builder Console</h1>
         <p className="text-muted-foreground mt-1">Structured methodology for integrating AI features correctly</p>

@@ -3,6 +3,7 @@ import { Brain, Database, Eye, Lock, Trash2, GitBranch } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useFeatureSpecs } from "@/hooks/use-fip-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const FIPMemoryGraphStudio = () => {
   const { data: specs = [], isLoading } = useFeatureSpecs();
@@ -10,6 +11,7 @@ const FIPMemoryGraphStudio = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Brain className="h-6 w-6 text-primary" /> FIP08 — Memory / Graph Impact Studio</h1>
         <p className="text-muted-foreground mt-1">Inspect memory and relationship effects of features</p>

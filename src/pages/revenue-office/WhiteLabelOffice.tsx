@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PARTNERS = [
   { name: "Peak Digital Agency", type: "Reseller", status: "active", clients: 12, revenue: 18400, margin: 35, health: 88 },
@@ -31,6 +32,7 @@ const WhiteLabelOffice = () => {
   const total = PARTNERS.reduce((a,p) => a + p.revenue, 0);
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <SitaPageHeader icon={<Building2 className="h-5 w-5" />} title="White Label Office" subtitle="Partner programs, reseller management, and branded service delivery" />
       <div className="grid grid-cols-4 gap-3">
         {[{ l:"Active Partners", v:PARTNERS.filter(p=>p.status==="active").length, i:Users },{ l:"Partner Clients", v:PARTNERS.reduce((a,p)=>a+p.clients,0), i:Users },{ l:"Partner Revenue", v:`$${(total/1000).toFixed(1)}k`, i:DollarSign },{ l:"Brand Kits", v:BRANDS.length, i:Package }].map(m=>

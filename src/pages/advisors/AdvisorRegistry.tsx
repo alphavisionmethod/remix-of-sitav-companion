@@ -22,6 +22,7 @@ import {
   getBehavioralProfile,
   type AdvisorBehavioralProfile,
 } from "@/packages/advisor-config/behavioral-engine";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Maturity color mapping ──────────────────────────────────
 const MATURITY_COLORS: Record<string, string> = {
@@ -60,6 +61,7 @@ function AdvisorDetailPanel({ advisor }: { advisor: ExtendedAdvisorConfig }) {
 
   return (
     <ScrollArea className="h-[calc(100vh-280px)]">
+      <DemoModeBadge />
       <div className="space-y-4 pr-2">
         {/* Header */}
         <SitaCard hover={false} glow className="p-5">

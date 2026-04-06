@@ -3,6 +3,7 @@ import { Rocket, CheckCircle, AlertTriangle, Clock, Layout, FileText, Eye, Shopp
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const READINESS_CHECKS = [
   { area: "Landing Page", status: "ready", score: 95, details: "Page live, CTA strong, mobile optimized" },
@@ -32,6 +33,7 @@ const overallScore = Math.round(READINESS_CHECKS.reduce((sum, c) => sum + c.scor
 export default function LaunchWarRoom() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Launch War Room</h1>
         <p className="text-sm text-muted-foreground">Launch readiness, checklist, timeline & rollback planning</p>

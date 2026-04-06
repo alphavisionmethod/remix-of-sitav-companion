@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Activity, CheckCircle, AlertTriangle, Clock, Users, Plane, Home, RefreshCw, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -54,6 +55,7 @@ const ConciergeRuntimeBoard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground tracking-tight flex items-center gap-2">

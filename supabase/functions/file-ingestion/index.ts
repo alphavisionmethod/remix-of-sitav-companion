@@ -3,12 +3,28 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
+import { z } from "https://esm.sh/zod@3.23.8";
 
 const logger = new EdgeLogger("file-ingestion");
 
 serve(async (req) => {
   const cors = handleCors(req);
   if (cors) return cors;
+
+  // Zod input validation for POST
+  if (req.method === "POST") {
+    try {
+      const BodySchema = z.object({ file_name: z.string().min(1), file_type: z.string().optional() });
+      const cloned = req.clone();
+      const body = await cloned.json();
+      const parsed = BodySchema.safeParse(body);
+      if (!parsed.success) {
+        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+    } catch (_) { /* multipart or non-JSON */ }
+  }
 
   try {
     const authHeader = req.headers.get("Authorization");

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export function Toggle({ label, desc, icon: Icon, selected, onToggle, badge }: {
   label: string; desc?: string; icon: any; selected: boolean; onToggle: () => void; badge?: string;
@@ -10,6 +11,7 @@ export function Toggle({ label, desc, icon: Icon, selected, onToggle, badge }: {
       className={`p-4 rounded-xl border text-left transition-all ${selected
         ? "bg-primary/10 border-primary/40 ring-1 ring-primary/20 shadow-sm shadow-primary/5"
         : "bg-card/50 border-border/50 hover:border-primary/20 hover:bg-card/80"}`}>
+      <DemoModeBadge />
       <div className="flex items-start gap-3">
         <div className={`p-2 rounded-lg transition-colors ${selected ? "bg-primary/20" : "bg-muted"}`}>
           <Icon className={`h-4 w-4 ${selected ? "text-primary" : "text-muted-foreground"}`} />

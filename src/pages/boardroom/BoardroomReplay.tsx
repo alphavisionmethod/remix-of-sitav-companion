@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Slide data auto-generated from weekly reviews ────────────
 

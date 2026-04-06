@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle, XCircle, AlertTriangle, Shield } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const LT05LaunchGateBoard = () => {
   const { data: gates } = useQuery({
@@ -48,6 +49,7 @@ const LT05LaunchGateBoard = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">Launch Gate Board</h1>
         <p className="text-sm text-muted-foreground">Central launch-readiness truth surface</p>

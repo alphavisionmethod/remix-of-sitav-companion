@@ -9,6 +9,7 @@ import {
   TrendingUp, ArrowRight, MessageSquare, Brain, Target, DollarSign,
   Star, Mail, Zap, Eye, Shield, BarChart3, RefreshCw
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const callStats = [
   { label: "Calls Today", value: "8", delta: "3 completed, 5 remaining", icon: Phone, color: "text-blue-400" },
@@ -52,6 +53,7 @@ export default function CallDesk() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Phone className="h-6 w-6 text-blue-400" />Call Desk</h1>
         <p className="text-muted-foreground">Prioritized call queue, AI prep briefs, relationship context, outcome logging, and auto-generated follow-ups</p>

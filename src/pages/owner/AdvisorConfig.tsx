@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Brain, Users, Shield, Eye, Sparkles, DollarSign, Briefcase, Heart, Headphones, Scale } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface AdvisorConfigItem {
   id: string;
@@ -51,6 +52,7 @@ const AdvisorConfig = () => {
 
   return (
     <motion.div className="mx-auto max-w-4xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Advisor Configuration" subtitle="Configure the 26 customer-facing advisors — prominence, autonomy, and domain access" />
 
       {councils.map(council => {

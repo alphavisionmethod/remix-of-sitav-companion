@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Image, Upload, Search, Grid3X3, LayoutList, Calendar, Tag, FolderOpen, X, Heart, Share2, Download, MoreHorizontal } from "lucide-react";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface Photo {
   id: string;
@@ -56,6 +57,7 @@ export default function GalleryApp() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Image className="h-6 w-6 text-primary" />

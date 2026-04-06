@@ -7,6 +7,7 @@ import { Shield, Lock, Eye, AlertTriangle, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { useFilesBySensitivity } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 function retentionFromClassification(c: string | null): string {
   if (!c) return "7 years";
@@ -49,6 +50,7 @@ const FilesSensitive = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Sensitive & Governed Documents"
         subtitle="Stricter privacy, consent-aware, restricted memory — organization & coordination only"

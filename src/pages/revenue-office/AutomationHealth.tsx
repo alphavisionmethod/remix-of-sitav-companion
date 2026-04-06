@@ -8,6 +8,7 @@ import {
   RefreshCw, Users, Mail, Phone, Heart, Shield, Brain, BarChart3, Target
 } from "lucide-react";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const healthMetrics = [
   { label: "Overall Health", value: 94, target: 95, color: "text-emerald-400", icon: Activity },
@@ -54,6 +55,7 @@ export default function AutomationHealth() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Activity className="h-6 w-6 text-blue-400" />Automation Health Monitor</h1>
         <p className="text-muted-foreground">Track success, failures, delays, fatigue, engagement, and conversion across all automations</p>

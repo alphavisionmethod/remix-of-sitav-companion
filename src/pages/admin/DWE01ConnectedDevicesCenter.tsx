@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Smartphone, Watch, Laptop, Monitor, Wifi, WifiOff, Shield, Activity } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const iconMap: Record<string, React.ReactNode> = {
   phone: <Smartphone className="h-5 w-5" />,
@@ -26,6 +27,7 @@ export default function DWE01ConnectedDevicesCenter() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE01 — Connected Devices Center</h1>
         <p className="text-muted-foreground">All phones, watches, desktops, wearables, and their trust/connection state.</p>

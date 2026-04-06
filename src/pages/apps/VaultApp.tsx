@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Lock, Plus, Search, Eye, EyeOff, Copy, Shield, AlertTriangle, Key, Globe, CreditCard, Server, Smartphone } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface VaultEntry {
   id: string;
@@ -46,6 +47,7 @@ export default function VaultApp() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Lock className="h-6 w-6 text-primary" />

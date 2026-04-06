@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Target, Clock, CheckCircle2, AlertTriangle, Pause, RotateCcw, Sparkles, Shield, FileCheck, ArrowRight, Eye, Users, Bug, Wrench } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const MISSIONS = [
   {
@@ -120,6 +121,7 @@ const AIMissionCenter = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <AdminPageHeader icon={Target} title="Mission Center" subtitle="AI team missions — goals, decomposition, evidence, risk, approvals, and outcomes" accent="primary" />
 
       <div className="grid grid-cols-5 gap-3">

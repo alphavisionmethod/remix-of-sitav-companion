@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface WorkflowRun {
   id: string;
@@ -97,6 +98,7 @@ export default function WorkflowReplayAudit() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Workflow Replay & Audit</h1>
         <p className="text-sm text-muted-foreground">Event sequence reconstruction, branch visibility, actor history, and receipt references</p>

@@ -8,6 +8,7 @@ import { ArrowLeft, FileText, Star, Check, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DEMO_FILES = [
   { name: "report.html", ext: ".html", candidates: ["chrome", "firefox", "vscode"] },
@@ -29,6 +30,7 @@ const OpenWithPage = () => {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
+      <DemoModeBadge />
       <button onClick={() => navigate("/app-store/associations")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to Associations
       </button>

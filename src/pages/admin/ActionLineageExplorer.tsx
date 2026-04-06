@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { GitBranch, RefreshCw, Eye, RotateCcw, Link2, Shield, Activity, FileText } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchActionLineage, getActionExplanation, findStuckActions, type PersistedActionLineage } from "@/lib/persistence";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -47,6 +48,7 @@ export default function ActionLineageExplorer() {
 
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.04 } } }} className="space-y-4">
         <motion.div variants={fade} className="flex items-center gap-3">
           <GitBranch className="h-6 w-6 text-primary" />

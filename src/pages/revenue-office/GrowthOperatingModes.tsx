@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Radio, Zap, UserX, Megaphone, Package, Heart, Shield, Users, TrendingUp, CheckCircle, AlertTriangle, Clock, ArrowRight, Settings, Brain, Target } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface OperatingMode {
   name: string;
@@ -87,6 +88,7 @@ export default function GrowthOperatingModes() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">Growth Operating Modes</h1>
         <p className="text-muted-foreground">Contextual business modes that change boardroom emphasis, advisor urgency, and workflow priorities</p>

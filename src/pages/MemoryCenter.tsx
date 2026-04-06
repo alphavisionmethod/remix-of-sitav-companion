@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import {
   Brain, Search, Edit, Trash2, Eye, Lock, Shield, Clock, Sparkles, X, Check, Save
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const categoryMap: Record<string, string> = {
   profile: "context",
@@ -121,6 +122,7 @@ const MemoryCenter = () => {
 
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Memory Center" subtitle="Everything SITA knows — transparent, editable, and governed" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

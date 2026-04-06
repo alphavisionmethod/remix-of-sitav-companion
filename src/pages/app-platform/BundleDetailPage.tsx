@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { getBundleById, APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon, VerificationBadge, AppSourceLabel, InstallSheet } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const BundleDetailPage = () => {
   const { bundleId } = useParams<{ bundleId: string }>();
@@ -21,6 +22,7 @@ const BundleDetailPage = () => {
   if (!bundle) {
     return (
       <div className="mx-auto max-w-4xl">
+      <DemoModeBadge />
         <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back
         </button>

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const SEGMENTS = [
   { id: "s1", name: "High-Value Clients", type: "dynamic", contacts: 34, revenue: "$284,000", criteria: ["LTV > $5,000", "Active in last 30d"], color: "border-l-emerald-400", growth: "+3 this month" },
@@ -45,6 +46,7 @@ export default function SegmentationEngine() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>

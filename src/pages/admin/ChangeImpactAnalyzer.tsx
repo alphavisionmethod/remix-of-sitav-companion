@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { analyzeChangeImpact, type ChangeProposal } from "@/lib/delivery-methodology/change-impact-analyzer";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ChangeImpactAnalyzer = () => {
   const queryClient = useQueryClient();
@@ -57,6 +58,7 @@ const ChangeImpactAnalyzer = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-2">
           <Zap className="h-8 w-8 text-primary" />

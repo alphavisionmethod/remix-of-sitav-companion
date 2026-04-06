@@ -8,6 +8,7 @@ import {
   Heart, Target, RefreshCw, Brain, ArrowRight
 } from "lucide-react";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const receipts = [
   { time: "14 min ago", automation: "Stale Lead Recovery", action: "Sent recovery email to 24 leads", contacts: 24, approvedBy: "Auto-run (L3)", outcome: "22 delivered, 2 bounced, 8 opened so far", rollback: true, category: "Lead Recovery", impact: "$8,200 at risk", details: { emailVariants: 3, segmentsUsed: ["warm", "hot"], exclusions: 3, fatigueDelays: 5 } },
@@ -37,6 +38,7 @@ export default function AutomationReceipts() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Receipt className="h-6 w-6 text-blue-400" />Automation Receipts & History</h1>
         <p className="text-muted-foreground">Full audit trail — who created, what happened, which contacts affected, outcomes, approvals, and rollback options</p>

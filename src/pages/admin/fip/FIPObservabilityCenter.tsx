@@ -3,6 +3,7 @@ import { Activity, CheckCircle2, XCircle, Wrench, FileSearch, RotateCcw } from "
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useComplianceRecords, useFeatureSpecs } from "@/hooks/use-fip-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const OBSERVABILITY_FIELDS = ['structured_logs', 'metrics', 'traces', 'correlation_ids', 'error_codes', 'diagnostic_bundles', 'replay_path', 'incident_summary', 'runbooks'];
 
@@ -15,6 +16,7 @@ const FIPObservabilityCenter = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Activity className="h-6 w-6 text-primary" /> FIP09 — Observability & Support Readiness</h1>
         <p className="text-muted-foreground mt-1">Ensure supportability is designed into every feature</p>

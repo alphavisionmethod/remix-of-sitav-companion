@@ -11,6 +11,7 @@ import { autoSeedAll } from "@/lib/detection/auto-seed";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Layers, Rocket, Scan, Link2, Zap } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const STATE_COLORS = {
   presentational: { bg: "bg-muted", text: "text-muted-foreground", icon: Eye, label: "Presentational" },
@@ -67,6 +68,7 @@ export default function RealityConversionOverview() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Reality Conversion Overview</h1>

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Activity, TrendingUp, TrendingDown, Users, Star, Zap, Calendar, Package, AlertTriangle, CheckCircle } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const memoryEvents = [
   { time: "2 hours ago", title: "Campaign 'Spring Growth' conversion rate dropped 3%", type: "campaign", severity: "medium", icon: TrendingDown, color: "text-amber-400" },
@@ -21,6 +22,7 @@ const typeLabels: Record<string, string> = { campaign: "Campaign", reputation: "
 export default function CommercialMemoryFeed() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">Commercial Memory Feed</h1>
         <p className="text-muted-foreground">A living stream of what changed across growth, conversion, churn, reputation, and trust</p>

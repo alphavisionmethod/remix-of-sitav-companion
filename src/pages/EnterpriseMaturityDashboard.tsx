@@ -18,12 +18,14 @@ import {
   BellRing, HeartPulse, Target, Gauge, RefreshCw, Download,
   ArrowRight, Zap, ShieldCheck, Database, Globe, Key, GitBranch,
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── SLO Card ───────────────────────────────────────────────────
 function SLOCard({ slo }: { slo: { id: string; name: string; target: number; currentValue: number; budget: number; budgetConsumed: number; status: string; window: string } }) {
   const statusColor = { met: "text-trust-safe", "at-risk": "text-accent", breached: "text-destructive" };
   return (
     <div className="rounded-xl border border-border/40 bg-card/60 p-4">
+      <DemoModeBadge />
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs font-semibold text-foreground">{slo.name}</span>
         <Badge variant="outline" className={cn("text-[9px]", statusColor[slo.status as keyof typeof statusColor])}>{slo.status}</Badge>

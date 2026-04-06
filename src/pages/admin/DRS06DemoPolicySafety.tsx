@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Loader2, Shield, ShieldOff, Zap } from "lucide-react";
 import { getKillSwitchState } from "@/lib/dual-reality/demo-policy-engine";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function DRS06DemoPolicySafety() {
   const killState = getKillSwitchState();
@@ -21,6 +22,7 @@ export default function DRS06DemoPolicySafety() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS06 — Demo Policy & Safety Board</h1>
         <p className="text-sm text-muted-foreground mt-1">Govern demo mode safety controls and kill switches</p>

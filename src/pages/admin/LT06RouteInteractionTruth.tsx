@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Route, MousePointer, Eye } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const LT06RouteInteractionTruth = () => {
   const { data: routeRecords } = useQuery({
@@ -21,6 +22,7 @@ const LT06RouteInteractionTruth = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">P0 Route & Interaction Truth</h1>
         <p className="text-sm text-muted-foreground">Top critical paths and whether they work</p>

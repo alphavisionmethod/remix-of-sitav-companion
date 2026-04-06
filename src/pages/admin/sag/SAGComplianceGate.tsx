@@ -3,6 +3,7 @@ import { ShieldAlert, CheckCircle2, XCircle, AlertTriangle, Ban } from "lucide-r
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useComplianceViolations, useGatewayStats } from "@/hooks/use-sag-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const VIOLATION_TYPES = [
   { type: 'direct_provider_call', label: 'Direct Provider Call', severity: 'critical', icon: Ban },
@@ -33,6 +34,7 @@ const SAGComplianceGate = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><ShieldAlert className="h-6 w-6 text-primary" /> SAG12 — AI Launch & Compliance Gate</h1>
         <p className="text-muted-foreground mt-1">AI governance truth as a launch gate</p>

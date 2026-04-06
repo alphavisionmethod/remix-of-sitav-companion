@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Radar, Clock, Shield, Zap } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const LT04RuntimeProbeCenter = () => {
   const { data: probes } = useQuery({
@@ -38,6 +39,7 @@ const LT04RuntimeProbeCenter = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Runtime Probe Center</h1>

@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Plug, CheckCircle, AlertTriangle, RefreshCw, ArrowRight, Clock, Activity, Shield, Users, Settings } from "lucide-react";
 import { DEMO_CONNECTIONS, DEMO_AUDIT_LOG } from "@/lib/services/integration-hub/demo-connections";
 import { getProviderById } from "@/lib/services/integration-hub/providers";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function ConnectionsList() {
   const [tab, setTab] = useState("connections");
@@ -17,6 +18,7 @@ export default function ConnectionsList() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">My Connections</h1>

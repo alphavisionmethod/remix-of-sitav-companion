@@ -7,6 +7,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ShieldCheck, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const MobileApprovalDetail = () => {
   const { id } = useParams();
@@ -26,6 +27,7 @@ const MobileApprovalDetail = () => {
   if (status !== "pending") {
     return (
       <MobileShell title="Approval">
+      <DemoModeBadge />
         <div className="flex flex-col items-center justify-center py-16">
           {status === "approved" ? (
             <CheckCircle2 className="h-16 w-16 text-[hsl(var(--trust-safe))] mb-4" />

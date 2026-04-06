@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Rocket, Users, Target, FileText, Phone, Star, Search, Upload, RefreshCw, TrendingUp, Check } from "lucide-react";
 import { ChapterBanner } from "../primitives";
 import type { ScreenProps } from "../types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function FirstWinScreen({ state, setState }: ScreenProps) {
   const wins = useMemo(() => [
@@ -28,6 +29,7 @@ export default function FirstWinScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ChapterBanner chapter="Chapter 7: Launch" subtitle="Choose what SITA should do for you right now" />
       <div className="text-center mb-2">
         <h2 className="text-xl font-bold text-foreground">Your first wins</h2>

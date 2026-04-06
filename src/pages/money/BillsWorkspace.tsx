@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { format, differenceInDays, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { simulatePayment, type PaymentSimulation } from "@/lib/core-services/payment-execution";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface BillForm {
   payee: string;
@@ -145,6 +146,7 @@ const BillsWorkspace = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader
         title="Bills & Due Soon"
         subtitle="Track, schedule, and never miss a payment"

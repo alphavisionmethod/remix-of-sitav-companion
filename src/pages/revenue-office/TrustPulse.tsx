@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const CLIENTS = [
   { client: "Bloom Studio", score: 92, trend: "up" as const, lastContact: "2d ago", signals: { resp: 95, pay: 100, engage: 88, sat: 85 }, risks: [] as string[], opps: ["Referral candidate", "Case study"] },
@@ -28,6 +29,7 @@ const TrustPulse = () => {
   const avg = Math.round(CLIENTS.reduce((a, c) => a + c.score, 0) / CLIENTS.length);
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <SitaPageHeader icon={<ShieldCheck className="h-5 w-5" />} title="Trust Pulse" subtitle="Client trust health monitoring and relationship confidence" />
       <div className="grid grid-cols-4 gap-3">
         {[{ l: "Avg Trust", v: `${avg}/100`, i: Heart, c: avg >= 70 ? "text-[hsl(var(--trust-safe))]" : "text-orange-400" },

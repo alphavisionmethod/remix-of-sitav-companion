@@ -3,6 +3,7 @@ import { BookOpen, Globe, Shield, Cpu, Landmark, Wallet, BarChart3 } from "lucid
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CANONICAL_DOMAIN_PACKS } from "@/lib/delivery-methodology/domain-packs";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const iconMap: Record<string, any> = {
   "money-office": Wallet, "revenue-office": BarChart3, "digital-presence": Globe,
@@ -12,6 +13,7 @@ const iconMap: Record<string, any> = {
 const DomainMethodologyPacks = () => {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-2">
           <BookOpen className="h-8 w-8 text-primary" />

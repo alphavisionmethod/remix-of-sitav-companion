@@ -6,6 +6,7 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { Shield, Fingerprint, Bell, Moon, LogOut, ChevronRight, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ToggleRow = ({ icon: Icon, label, description, defaultOn = false }: {
   icon: any; label: string; description: string; defaultOn?: boolean;
@@ -47,6 +48,7 @@ const NavRow = ({ icon: Icon, label, onClick }: { icon: any; label: string; onCl
 
 const MobileSettings = () => (
   <MobileShell title="Settings">
+    <DemoModeBadge />
     <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Trust & Security</h2>
     <div className="space-y-1.5 mb-6">
       <ToggleRow icon={Fingerprint} label="Biometric Lock" description="Require Face ID / fingerprint to open" defaultOn />

@@ -8,12 +8,14 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const MoneyBoardroom = () => {
   const [mode, setMode] = useState("weekly");
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader
         title="Finance Boardroom"
         subtitle="Executive financial review — cash, reserves, waste, and strategy"

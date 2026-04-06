@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Users, Shield, Landmark, Heart, GraduationCap, Home, Check, AlertTriangle } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const FAMILY_MEMBERS = [
   { name: "You (Owner)", role: "Primary", permissions: "Full access", emoji: "👤" },
@@ -27,6 +28,7 @@ const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3
 export default function FamilyOffice() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Users className="h-6 w-6 text-primary" /> Family Office</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Household capital governance, shared goals, family rules, and multi-member permissions</p>

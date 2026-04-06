@@ -5,6 +5,7 @@ import { GroceryContinuityCard, HouseholdAdvisor } from "@/components/sita/House
 import { ShoppingCart, Plus, Check, Clock, DollarSign, Leaf, AlertCircle, RotateCcw, Sparkles, Store, CalendarCheck, Plane } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface GroceryItem {
   id: string; name: string; category: string; quantity: string; estimated: string;
@@ -61,6 +62,7 @@ const GroceryPlanning = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Grocery & Supplies" subtitle="Continuity engine — smart lists, recurring supply tracking, and errand optimization" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">

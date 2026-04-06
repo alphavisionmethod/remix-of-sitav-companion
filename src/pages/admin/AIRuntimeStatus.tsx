@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Activity, Zap, Shield, DollarSign, Clock, Server } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const statusColors = {
   healthy: "bg-green-500/20 text-green-400 border-green-500/30",
@@ -22,6 +23,7 @@ const statusIcons = {
 function CheckRow({ label, ok, detail }: { label: string; ok: boolean | null; detail?: string }) {
   return (
     <div className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+      <DemoModeBadge />
       <span className="text-sm text-muted-foreground">{label}</span>
       <div className="flex items-center gap-2">
         {detail && <span className="text-xs text-muted-foreground">{detail}</span>}

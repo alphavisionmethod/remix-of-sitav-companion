@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const mockProfiles = [
   { domain: "engineering", taskType: "root-cause", version: "v3.2", maxContext: "B", packetDriven: true, redundancy: 8, costReduction: 42, qualityImpact: 2, active: true },
@@ -35,6 +36,7 @@ const ZeroWastePromptView = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         icon={<Sparkles className="h-6 w-6" />}
         title="Zero-Waste Prompt Architecture"

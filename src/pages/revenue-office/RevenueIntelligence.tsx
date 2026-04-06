@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { BarChart3, TrendingUp, AlertTriangle, DollarSign, Users, Target, ArrowUpRight, Layers } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const COHORT_DATA = [
   { cohort: "Jan 2026", acquired: 24, retained30: 20, retained60: 17, retained90: 14, ltv: "$1,820" },
@@ -27,6 +28,7 @@ const LEAKAGE = [
 export default function RevenueIntelligence() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Revenue Intelligence</h1>
         <p className="text-sm text-muted-foreground">Forecasting, cohort analysis, LTV, and leakage detection</p>

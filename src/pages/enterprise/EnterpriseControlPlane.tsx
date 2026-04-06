@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Demo Data ──────────────────────────────────────────────────
 
@@ -75,6 +76,7 @@ const EnterpriseControlPlane = () => {
 
   return (
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <DemoModeBadge />
       <SitaPageHeader
         title="Enterprise Control Plane"
         subtitle="Organization management, roles, compliance, SLA, and deployment health"

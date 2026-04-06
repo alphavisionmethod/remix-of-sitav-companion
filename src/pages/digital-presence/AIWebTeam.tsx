@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type Intensity = "quiet" | "balanced" | "proactive";
 type AgentStatus = "active" | "inactive" | "watching";
@@ -193,6 +194,7 @@ function ConfidenceBar({ value, label }: { value: number; label: string }) {
   const color = value >= 85 ? "bg-green-500" : value >= 70 ? "bg-amber-500" : "bg-red-500";
   return (
     <div className="space-y-1">
+      <DemoModeBadge />
       <div className="flex justify-between text-[10px]">
         <span className="text-muted-foreground">{label}</span>
         <span className="text-foreground font-medium">{value}%</span>

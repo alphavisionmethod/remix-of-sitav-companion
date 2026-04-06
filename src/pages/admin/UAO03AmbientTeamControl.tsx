@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Users, RefreshCw, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const toneColors: Record<string, string> = { executive: "bg-purple-500/20 text-purple-400", professional: "bg-blue-500/20 text-blue-400", analytical: "bg-cyan-500/20 text-cyan-400", concise: "bg-muted text-muted-foreground", caring: "bg-green-500/20 text-green-400", direct: "bg-orange-500/20 text-orange-400", precise: "bg-yellow-500/20 text-yellow-400", calm: "bg-teal-500/20 text-teal-400" };
 const intensityColors: Record<string, string> = { high: "bg-red-500/20 text-red-400", normal: "bg-blue-500/20 text-blue-400", low: "bg-muted text-muted-foreground" };
@@ -38,6 +39,7 @@ export default function UAO03AmbientTeamControl() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="h-6 w-6" /> Ambient Team Control</h1>

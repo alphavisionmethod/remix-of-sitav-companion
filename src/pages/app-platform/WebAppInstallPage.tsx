@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DETECTED_SITES = [
   { url: "https://mail.google.com", name: "Gmail", icon: "📧", trustLevel: "sita-verified" as const, installable: true },
@@ -37,6 +38,7 @@ const WebAppInstallPage = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
+      <DemoModeBadge />
       <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to App Store
       </button>

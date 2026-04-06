@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
+import { z } from "https://esm.sh/zod@3.23.8";
 
 const GATEWAY_BASE = "https://connector-gateway.lovable.dev";
 
@@ -32,7 +33,23 @@ const CONNECTOR_ACTIONS: Record<string, Record<string, { method: string; path: s
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders }
+
+  // Input validation
+  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
+    try {
+  const BodySchema = z.object({ connector: z.string().min(1), action: z.string().min(1), payload: z.record(z.unknown()).optional() });
+      const body = await req.json();
+      const parsed = BodySchema.safeParse(body);
+      if (!parsed.success) {
+        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+    } catch (_) {
+      // Non-JSON body or GET request - continue
+    }
+  });
   }
 
   try {

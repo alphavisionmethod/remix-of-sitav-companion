@@ -17,6 +17,7 @@ import {
   AppIcon, VerificationBadge, AppSourceLabel, WorksWithSitaBadge,
   PermissionDomainCard, InstallSheet, AppReceiptCard,
 } from "@/components/sita/app-platform/AppStoreComponents";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const AppDetailPage = () => {
   const { appId } = useParams<{ appId: string }>();
@@ -29,6 +30,7 @@ const AppDetailPage = () => {
   if (!app) {
     return (
       <div className="mx-auto max-w-4xl">
+      <DemoModeBadge />
         <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to App Store
         </button>

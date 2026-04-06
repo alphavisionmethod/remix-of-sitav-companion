@@ -3,6 +3,7 @@ import { Layers, ArrowRight, Zap, DollarSign, CheckCircle2 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRoutingPolicies } from "@/hooks/use-sag-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const EXAMPLE_STAGES = [
   { pattern: 'Classify → Synthesize → Resolve', stages: [
@@ -32,6 +33,7 @@ const SAGMultiStageExplorer = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Layers className="h-6 w-6 text-primary" /> SAG08 — Multi-Stage Route Explorer</h1>
         <p className="text-muted-foreground mt-1">Inspect staged inference paths — premium only where justified</p>

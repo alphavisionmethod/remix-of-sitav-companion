@@ -17,6 +17,7 @@ import CollectionsCommandCenter from "./business/CollectionsCommandCenter";
 import RevenueImpactDashboard from "./business/RevenueImpactDashboard";
 import PlaybookBuilder from "./business/PlaybookBuilder";
 import RevenueForecast from "./business/RevenueForecast";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type SubPage = "overview" | "leads" | "customers" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast";
 
@@ -70,6 +71,7 @@ const BusinessCenter = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <DemoModeBadge />
       <motion.div
         className="overflow-x-auto -mx-2 px-2"
         initial={{ opacity: 0, y: -8 }}

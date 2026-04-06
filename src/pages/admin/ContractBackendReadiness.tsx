@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { Server, FileCheck, AlertTriangle, Database } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const CONTRACT_COLORS: Record<string, string> = { none: "text-destructive", partial: "text-yellow-400", aligned: "text-blue-400", verified: "text-emerald-400" };
 
@@ -29,6 +30,7 @@ export default function ContractBackendReadiness() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">Contract & Backend Readiness</h1>
         <p className="text-sm text-muted-foreground">Backend target readiness for mock-backed pages — RCP08</p>

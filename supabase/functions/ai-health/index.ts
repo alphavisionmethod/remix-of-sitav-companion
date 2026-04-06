@@ -2,6 +2,9 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { handleCors, corsHeaders, corsError } from "../_shared/cors.ts";
 import { requireAuth } from "../_shared/auth.ts";
+import { EdgeLogger } from "../_shared/logger.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { z } from "https://esm.sh/zod@3.23.8";
 
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AI Runtime Health Check

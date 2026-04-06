@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { usePromptFamilies, useCreatePromptFamily } from "@/hooks/use-sag-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const SAGPromptRegistry = () => {
   const { data: prompts = [], isLoading } = usePromptFamilies();
@@ -24,6 +25,7 @@ const SAGPromptRegistry = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>

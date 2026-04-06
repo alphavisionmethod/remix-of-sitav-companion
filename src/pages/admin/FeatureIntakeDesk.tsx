@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { classifyFeatureDomain } from "@/lib/delivery-methodology/feature-factory";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ARCHETYPES = [
   "boardroom","office","simulator","workflow","onboarding","crud",
@@ -64,6 +65,7 @@ const FeatureIntakeDesk = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-2">
           <Package className="h-8 w-8 text-primary" />

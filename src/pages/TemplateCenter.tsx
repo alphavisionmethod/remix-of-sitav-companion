@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface Template { id: string; title: string; description: string; category: string; domain: string; usageCount: number; starred: boolean; }
 
@@ -37,6 +38,7 @@ const TemplateCenter = () => {
 
   return (
     <div className="min-h-screen pb-12">
+      <DemoModeBadge />
       <SitaPageHeader title="Template Center" subtitle="Reusable structures for documents, workflows, and communications" actions={
         <Button size="sm" variant="outline" className="gap-1.5 text-xs border-border/50"><Plus className="w-3.5 h-3.5" /> Create Template</Button>
       } />

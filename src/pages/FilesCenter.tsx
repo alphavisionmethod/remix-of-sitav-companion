@@ -10,6 +10,7 @@ import FilesSearch from "./files/FilesSearch";
 import FilesMemoryReview from "./files/FilesMemoryReview";
 import FilesSensitive from "./files/FilesSensitive";
 import FilesSettings from "./files/FilesSettings";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type SubPage = "overview" | "all" | "processing" | "review" | "search" | "memory" | "sensitive" | "settings";
 
@@ -49,6 +50,7 @@ const FilesCenter = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <DemoModeBadge />
       <motion.div
         className="overflow-x-auto -mx-2 px-2"
         initial={{ opacity: 0, y: -8 }}

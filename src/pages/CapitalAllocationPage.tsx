@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DEMO_ALLOCATIONS = [
   { asset: "US Equities", target: 40, current: 42.3, value: 423000, drift: 2.3, color: "bg-blue-500" },
@@ -20,6 +21,7 @@ export default function CapitalAllocationPage() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><PieChart className="h-6 w-6 text-primary" /> Capital Allocation</h1>

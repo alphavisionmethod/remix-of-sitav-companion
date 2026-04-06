@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Crown, TrendingUp, AlertTriangle, Lightbulb, Users, CheckCircle, HelpCircle, ArrowRight } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const synthesis = {
   confidence: 76,
@@ -27,6 +28,7 @@ const synthesis = {
 export default function ChiefRevenueSynthesis() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">Chief Revenue Synthesis</h1>
         <p className="text-muted-foreground">Executive summary — where advisors align, disagree, and what matters most right now</p>

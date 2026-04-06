@@ -3,6 +3,7 @@ import { Rocket, Flag, Power, RotateCcw, ArrowUpRight, Shield, Target } from "lu
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRolloutRecords } from "@/hooks/use-fip-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const ROLLOUT_RINGS = ['dev', 'staging', 'internal-shadow', 'internal-real', 'limited-tenant', 'premium', 'ga'];
 const KILL_CLASSES = ['ui-hide', 'side-effects-disabled', 'connector-writes-disabled', 'recurring-disabled', 'approval-paused', 'full-workflow-disabled'];
@@ -19,6 +20,7 @@ const FIPRolloutPlanner = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Rocket className="h-6 w-6 text-primary" /> FIP10 — Rollout & Kill-Switch Planner</h1>
         <p className="text-muted-foreground mt-1">Plan rollout progressions and recovery strategies</p>

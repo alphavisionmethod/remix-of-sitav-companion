@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
@@ -150,6 +151,7 @@ const SettingsPage = () => {
       case "identity":
         return (
           <SitaCard hover={false} className="p-5">
+      <DemoModeBadge />
             <SitaCardTitle sub="Your profile and environment identity">
               <div className="flex items-center gap-2"><User className="h-4 w-4 text-primary" /> Identity & Profile</div>
             </SitaCardTitle>

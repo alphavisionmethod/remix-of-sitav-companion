@@ -5,6 +5,7 @@ import { StateBadge } from "@/components/sita/StateBadge";
 import { useState } from "react";
 import { Shield, CheckCircle, Clock, FileText, DollarSign, Receipt, AlertTriangle, Eye } from "lucide-react";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface FinancialProof {
   id: number;
@@ -86,6 +87,7 @@ const MoneyProof = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Financial Proof & Receipts" subtitle="Every financial action leaves a verifiable trail" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

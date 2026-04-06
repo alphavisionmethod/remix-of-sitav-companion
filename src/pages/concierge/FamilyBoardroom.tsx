@@ -8,6 +8,7 @@ import {
   BarChart3, Calendar, CheckSquare, AlertCircle, Heart, Users, ArrowRight, Clock, Shield,
   Plane, ShoppingCart, GraduationCap, Wrench, Gift, Sparkles, Target, FileText, TrendingUp
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const weeklyStats = {
   tasksCompleted: 12, tasksTotal: 18, eventsAttended: 6, eventsTotal: 7,
@@ -63,6 +64,7 @@ const FamilyBoardroom = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Family Boardroom" subtitle="Weekly review — priorities, performance, and recommended next moves" />
 
       <SitaTabs

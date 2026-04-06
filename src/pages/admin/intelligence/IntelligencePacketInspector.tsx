@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const mockPackets = [
   { domain: "admin-ops", tokenCount: 1200, compressionRatio: 0.12, fresh: true, changes: 3, risks: 1, constraints: 2, priorRecs: 4, unresolved: 1, confidence: 82, compiledAgo: "15min", compileCost: 8, compileLatency: 240, qualityScore: 85 },
@@ -36,6 +37,7 @@ const IntelligencePacketInspector = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         icon={<Package className="h-6 w-6" />}
         title="Intelligence Packet Inspector"

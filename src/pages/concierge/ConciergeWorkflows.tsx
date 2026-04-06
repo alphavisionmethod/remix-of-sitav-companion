@@ -4,6 +4,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useState } from "react";
 import { Workflow, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift, Bell, CheckCircle, Clock, AlertTriangle, Play, Pause } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface HouseholdWorkflow {
   id: string;
@@ -48,6 +49,7 @@ const ConciergeWorkflows = () => {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Household Workflows" subtitle="Automated routines, action queues, approvals, and execution tracking" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

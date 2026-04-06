@@ -20,6 +20,7 @@ import {
   TrendingUp, DollarSign, Zap, CheckCircle, XCircle,
   Clock, Gauge, BarChart3, RefreshCw, Heart,
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Fleet Overview Hero ─────────────────────────────────────────
 
@@ -37,6 +38,7 @@ function FleetHero() {
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
       className="relative overflow-hidden rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/8 via-card to-card p-6"
     >
+      <DemoModeBadge />
       <div className="flex items-start justify-between mb-5">
         <div className="flex items-center gap-4">
           <div className="relative">

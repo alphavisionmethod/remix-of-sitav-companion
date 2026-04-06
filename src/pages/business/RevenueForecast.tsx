@@ -20,6 +20,7 @@ import {
   ChevronDown, ChevronUp, Users, DollarSign, AlertTriangle,
   ArrowUpRight, Gauge, Eye
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Types ────────────────────────────────────────────────────────
 
@@ -309,6 +310,7 @@ const RevenueForecast = () => {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Revenue Forecast"
         subtitle="AI-driven 30/60/90 day projections from digital twin health scores and playbook performance"

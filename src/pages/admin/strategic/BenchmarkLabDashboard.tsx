@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const BenchmarkLabDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
@@ -37,6 +38,7 @@ const BenchmarkLabDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader icon={<FlaskConical className="h-6 w-6" />} title="Intelligence Benchmark Lab" subtitle="A/B experiments comparing reasoning strategies — cheap vs expensive, reused vs fresh, compressed vs full" />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[

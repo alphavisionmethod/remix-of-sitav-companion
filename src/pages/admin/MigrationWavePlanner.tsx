@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { Layers, Users, Clock, Target, ArrowRight } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function MigrationWavePlanner() {
   const { data: mockReplacements = [] } = useMockReplacements();
@@ -34,6 +35,7 @@ export default function MigrationWavePlanner() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">Migration Wave Planner</h1>
         <p className="text-sm text-muted-foreground">Plan the sequence of mock → real migrations — RCP10</p>

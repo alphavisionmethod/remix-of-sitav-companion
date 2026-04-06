@@ -16,6 +16,7 @@ import {
   DollarSign, TrendingUp, Zap, Target, ArrowUpRight,
   ArrowDownRight, Clock, Users, BarChart3, PieChart as PieIcon
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Types ────────────────────────────────────────────────────────
 
@@ -102,6 +103,7 @@ const ChartTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-xl border border-border bg-card p-3 shadow-lg">
+      <DemoModeBadge />
       <p className="text-[10px] text-muted-foreground mb-1.5">{label}</p>
       {payload.map((p: any) => (
         <div key={p.dataKey} className="flex items-center gap-2">

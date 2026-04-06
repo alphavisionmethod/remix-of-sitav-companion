@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Server, AlertTriangle, Database, Cpu } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface CoreService {
   name: string;
@@ -31,6 +32,7 @@ const STATUS_COLORS: Record<string, string> = { not_started: "bg-muted text-mute
 export default function SimulatedCoreServicesBoard() {
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">Simulated Core Services</h1>
         <p className="text-sm text-muted-foreground">In-memory foundational services needing persistence — RCP06</p>

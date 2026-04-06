@@ -5,6 +5,7 @@
 import { MobileShell } from "@/components/mobile/MobileShell";
 import { TrendingUp, DollarSign, Users, Home, Brain, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const briefings = [
   {
@@ -57,6 +58,7 @@ const MobileBoardroom = () => (
         const Icon = b.icon;
         return (
           <div key={b.domain} className="rounded-xl border border-border/40 bg-card p-4">
+      <DemoModeBadge />
             <div className="flex items-center gap-2 mb-2">
               <Icon className={cn("h-4 w-4", b.accent)} />
               <h3 className="text-sm font-medium">{b.domain}</h3>

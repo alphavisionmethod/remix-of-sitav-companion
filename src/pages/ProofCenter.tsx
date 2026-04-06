@@ -26,6 +26,7 @@ import {
   Link2, Search, ChevronDown, ChevronRight, Shield, CheckCircle, XCircle,
   DollarSign, Briefcase, Home, Zap, Hash, Download, Layers
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type FilterType = "all" | "verified" | "pending" | "failed" | "rolled-back";
 type DomainFilter = "all" | "finance" | "business" | "household" | "system" | "workflow";
@@ -69,6 +70,7 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
       exit={{ opacity: 0, x: 20 }}
       className="rounded-xl border border-primary/15 bg-card p-5 space-y-5"
     >
+      <DemoModeBadge />
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>

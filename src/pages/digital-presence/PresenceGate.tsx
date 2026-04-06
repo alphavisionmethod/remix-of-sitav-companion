@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const WORKSPACES = [
   { label: "Presence Boardroom", desc: "Health, traffic, conversions, advisors", icon: BarChart3, path: "/digital-presence/boardroom", color: "text-blue-400" },
@@ -37,6 +38,7 @@ export default function PresenceGate() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-8">
+      <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-1">
           <Globe className="w-7 h-7 text-primary" />

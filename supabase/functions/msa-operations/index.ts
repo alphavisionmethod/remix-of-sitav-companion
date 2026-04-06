@@ -1,9 +1,26 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
+import { EdgeLogger } from "../_shared/logger.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { z } from "https://esm.sh/zod@3.23.8";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+
+  // Zod input validation
+  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
+    try {
+      const BodySchema = z.object({ operation: z.string().min(1), target: z.string().optional() });
+      const body = await req.json();
+      const parsed = BodySchema.safeParse(body);
+      if (!parsed.success) {
+        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+    } catch (_) { /* non-JSON or GET */ }
+  }
 
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;

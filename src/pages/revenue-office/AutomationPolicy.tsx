@@ -7,6 +7,7 @@ import {
   Mail, Phone, FileText, DollarSign, Calendar, Brain, Clock, Target,
   CheckCircle, XCircle, Eye
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const policies = [
   { category: "Email & SMS Sending", icon: Mail, rules: [
@@ -86,6 +87,7 @@ const humanVsAI = [
 export default function AutomationPolicy() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ShieldCheck className="h-6 w-6 text-emerald-400" />Automation Policy Center</h1>
         <p className="text-muted-foreground">Trust boundaries, safety rules, human-AI controls, escalation policies, and compliance governance</p>

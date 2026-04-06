@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, CheckCircle, Shield, Zap, Globe, ExternalLink, BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
 import { getProviderById } from "@/lib/services/integration-hub/providers";
 import { DEMO_CONNECTIONS } from "@/lib/services/integration-hub/demo-connections";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function ProviderDetail() {
   const { providerId } = useParams();
@@ -37,6 +38,7 @@ export default function ProviderDetail() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground" onClick={() => navigate("/integrations")}>
         <ArrowLeft className="w-3.5 h-3.5" /> Back to Catalog
       </Button>

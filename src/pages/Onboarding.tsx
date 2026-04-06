@@ -12,6 +12,7 @@ import {
   Shield, Brain, Zap, Clock, Mail, Calendar, FileText, Sparkles, CheckCircle, ArrowRight,
   Home, Users, CreditCard, BarChart3, Heart, Globe, Lock, Eye, Sliders
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type Step = "welcome" | "role" | "business" | "finance" | "concierge" | "trust" | "preferences" | "first-win" | "review" | "complete";
 
@@ -135,6 +136,7 @@ const Onboarding = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background overflow-y-auto">
+      <DemoModeBadge />
       <div className="w-full max-w-2xl px-6 py-12">
         {step !== "welcome" && step !== "complete" && (
           <div className="mb-8">

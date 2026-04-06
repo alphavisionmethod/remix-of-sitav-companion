@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TestTube, Play, Camera, Filter } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const LT03E2EJourneyBoard = () => {
   const { data: journeys } = useQuery({
@@ -25,6 +26,7 @@ const LT03E2EJourneyBoard = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">E2E Journey Board</h1>
         <p className="text-sm text-muted-foreground">Inspect end-to-end truth by journey, criticality, and mode</p>

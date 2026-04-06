@@ -15,6 +15,7 @@ import {
   Shield, Zap, Activity,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Workflow definitions mapped to onboarding firstRecovery choices ──
 
@@ -128,6 +129,7 @@ function ActivationSequence({
 
   return (
     <div className="space-y-3">
+      <DemoModeBadge />
       {workflow.actions.map((action, i) => {
         const isDone = i < activeStep;
         const isActive = i === activeStep;

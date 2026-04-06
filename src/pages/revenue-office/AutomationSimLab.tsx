@@ -9,6 +9,7 @@ import {
   ArrowRight, Shield, Brain, MessageSquare, Eye, Phone, DollarSign,
   ArrowDown, Zap, Target, XCircle, RefreshCw
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const simulation = {
   name: "Stale Lead Recovery (48hr Advanced)",
@@ -84,6 +85,7 @@ export default function AutomationSimLab() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <FlaskConical className="h-6 w-6 text-purple-400" />Automation Simulation Lab

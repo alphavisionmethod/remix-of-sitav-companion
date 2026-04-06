@@ -1,6 +1,7 @@
 import { Users } from "lucide-react";
 import { SectionTitle, ChapterBanner } from "../primitives";
 import type { ScreenProps } from "../types";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const roles = [
   { id: "leads", label: "Leads & inquiries" },
@@ -16,6 +17,7 @@ const roles = [
 export default function TeamScreen({ state, setState }: ScreenProps) {
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <ChapterBanner chapter="Chapter 4: Operations" subtitle="Who runs what — powers delegation, routing, and approvals" />
       <div className="space-y-2.5">
         {roles.map(r => (

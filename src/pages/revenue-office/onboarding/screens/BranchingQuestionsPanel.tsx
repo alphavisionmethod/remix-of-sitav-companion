@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Brain, Check } from "lucide-react";
 import type { BranchQuestion } from "../branching";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface Props {
   questions: BranchQuestion[];
@@ -15,6 +16,7 @@ export default function BranchingQuestionsPanel({ questions, answers, onAnswer }
 
   return (
     <div className="space-y-4 mt-6">
+      <DemoModeBadge />
       <div className="flex items-center gap-2">
         <Brain className="h-3.5 w-3.5 text-primary" />
         <p className="text-[11px] font-semibold text-foreground">SITA wants to understand more</p>

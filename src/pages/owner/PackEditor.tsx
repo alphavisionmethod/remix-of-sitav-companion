@@ -12,6 +12,7 @@ import { Package, Layers, Zap, Shield, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { listPacks } from "@/lib/services/capability-router/pack-enablement.service";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface PackState {
   packId: string;
@@ -38,6 +39,7 @@ const PackEditor = () => {
 
   return (
     <motion.div className="mx-auto max-w-4xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <DemoModeBadge />
       <SitaPageHeader title="Pack Manager" subtitle="Install, pause, or disable functional packs. Each change is logged." />
 
       <div className="space-y-3">

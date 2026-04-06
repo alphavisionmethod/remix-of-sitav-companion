@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { FileIngestionService } from "@/lib/core-services/file-ingestion";
 import { useFilesProcessing } from "@/hooks/use-domain-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 
 const stageMap: Record<string, ProcessingStage> = {
@@ -58,6 +59,7 @@ const FilesProcessing = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Processing Queue" subtitle="Real-time visibility into file intelligence pipeline" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

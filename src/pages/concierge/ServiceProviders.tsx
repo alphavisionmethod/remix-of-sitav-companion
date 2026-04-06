@@ -7,6 +7,7 @@ import { Wrench, Star, Phone, Clock, DollarSign, MapPin, Shield, Plus, Search, C
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInspector } from "@/contexts/InspectorContext";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface ServiceRecord {
   date: string;
@@ -155,6 +156,7 @@ const ServiceProviders = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <DomainHeader title="Service Providers" subtitle="Your trusted network — with full service history, spend tracking, and reliability scores" domain="concierge" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">

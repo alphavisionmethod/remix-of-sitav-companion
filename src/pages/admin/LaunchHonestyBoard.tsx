@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { Rocket, AlertTriangle, ShieldCheck, Eye, TrendingDown } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function LaunchHonestyBoard() {
   const { data: classifications = [] } = useRealityClassifications();
@@ -42,6 +43,7 @@ export default function LaunchHonestyBoard() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">Launch Honesty Board</h1>
         <p className="text-sm text-muted-foreground">What can and cannot be honestly claimed — RCP09</p>

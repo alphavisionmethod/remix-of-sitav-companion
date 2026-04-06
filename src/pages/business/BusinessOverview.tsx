@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const todayCallbacks = [
   { name: "Sarah Chen", time: "10:30 AM", reason: "Quote follow-up — $2,500 website redesign", stale: false },
@@ -55,6 +56,7 @@ const BusinessLeakagePanel = () => {
 
   return (
     <div className="space-y-3">
+      <DemoModeBadge />
       <SitaSectionHeader title="Revenue Leakage Signals" subtitle="From Revenue Intelligence Engine" action={<button onClick={() => navigate("/recovered-value")} className="text-xs text-primary hover:underline">Full ledger →</button>} />
       {leakageData.rankings.map(r => {
         const autoDecision = engines.revenue.shouldAutoRecover(Array.from((engines.revenue as any).signals?.values?.() || []).find((s: any) => s.id === r.opportunityId) as any);

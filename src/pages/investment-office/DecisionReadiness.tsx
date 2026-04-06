@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, AlertTriangle, Check, X, Clock, Search, Brain } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PENDING_DECISIONS = [
   {
@@ -64,6 +65,7 @@ export default function DecisionReadiness() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ShieldCheck className="h-6 w-6 text-primary" /> Decision Readiness Center</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Score whether you're truly ready to act — across research, risk, thesis, discipline, and policy</p>

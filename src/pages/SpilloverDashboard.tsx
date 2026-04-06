@@ -14,6 +14,7 @@ import { KPITile, SectionHeader } from "@/components/sita/SitaComponents";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Spillover data ───────────────────────────────────────────
 
@@ -135,6 +136,7 @@ export default function SpilloverDashboard() {
 
   return (
     <div className="space-y-8 p-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3">

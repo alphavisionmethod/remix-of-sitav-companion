@@ -5,6 +5,7 @@ import { useHouseholds, useHouseholdMembers, useCreateHousehold, useAddHousehold
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Users, Home, Plus, Trash2, Shield, UserPlus } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const HouseholdCommandCenter = () => {
   const { data: households, isLoading } = useHouseholds();
@@ -42,6 +43,7 @@ const HouseholdCommandCenter = () => {
   if (!households?.length && !showCreate) {
     return (
       <motion.div className="mx-auto max-w-3xl space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <DemoModeBadge />
         <SitaPageHeader title="Household Command Center" subtitle="Manage your household members, roles, and shared responsibilities" />
         <EmptyState icon={Home} title="No households yet" description="Create your first household to start managing family members, roles, and shared tasks." />
         <div className="flex justify-center">

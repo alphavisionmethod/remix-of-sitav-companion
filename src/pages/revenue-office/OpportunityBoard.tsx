@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Lightbulb, TrendingUp, UserPlus, Star, RefreshCw, DollarSign, ArrowRight } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const opportunities = [
   { title: "12 warm leads not yet contacted", impact: "$18,400", confidence: 87, effort: "Low", category: "Conversion", advisor: "CRM Advisor", icon: UserPlus, why: "These leads visited pricing page 3+ times but no follow-up scheduled" },
@@ -24,6 +25,7 @@ const categoryColors: Record<string, string> = {
 export default function OpportunityBoard() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">Opportunity Board</h1>
         <p className="text-muted-foreground">Ranked commercial opportunities across the entire business</p>
