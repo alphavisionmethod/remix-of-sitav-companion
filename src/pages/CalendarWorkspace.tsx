@@ -95,7 +95,10 @@ const CalendarWorkspace = () => {
       <DemoModeBadge />
       <SitaPageHeader title="Calendar" subtitle="Your time across life, business, and household" actions={
         <div className="flex gap-2">
-          <Button size="sm" variant="outline" className="gap-1.5 border-border/50 text-muted-foreground hover:bg-accent/50">
+          <Button size="sm" variant="outline" className="gap-1.5 border-border/50 text-muted-foreground hover:bg-accent/50" onClick={() => {
+            setEventForm({ title: "", event_date: format(selectedDate, "yyyy-MM-dd"), start_time: "", end_time: "", domain: "personal", event_type: "meeting", location: "" });
+            setShowCreateDialog(true);
+          }}>
             <Plus className="w-3.5 h-3.5" /> New Event
           </Button>
         </div>
