@@ -3,15 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { ShieldCheck, Heart, Lock, Eye, AlertTriangle, CheckCircle2, Trash2, Clock, FileText } from "lucide-react";
+import { ShieldCheck, Heart, Lock, Eye, AlertTriangle, CheckCircle2, Trash2, Clock, FileText, Loader2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useHealthSignalConsents } from "@/hooks/use-health-signal-data";
+import { DEMO_CONSENT_CATEGORIES, DEMO_REVOCATION_ACTIONS } from "@/lib/demo-data/health-signals";
 
-const CONSENT_CATEGORIES = [
-  { cat: "Ingestion", key: "ingestion", desc: "Allow SITA to read this signal from provider", icon: Eye, risk: "low" },
-  { cat: "Routing Influence", key: "routing", desc: "Allow signal to influence notification routing", icon: ShieldCheck, risk: "medium" },
-  { cat: "Boardroom Visibility", key: "boardroom", desc: "Allow signal summary in boardroom briefings", icon: FileText, risk: "medium" },
-  { cat: "Assistant Use", key: "assistant", desc: "Allow assistant to reference signal-derived state", icon: Heart, risk: "high" },
-];
+const ICON_MAP: Record<string, any> = { ingestion: Eye, routing: ShieldCheck, boardroom: FileText, assistant: Heart };
 
 const PRINCIPLES = [
   "Every signal type requires explicit opt-in",
@@ -26,16 +23,11 @@ const PRINCIPLES = [
   "Derived data inherits strictest consent of its inputs",
 ];
 
-const REVOCATION_ACTIONS = [
-  { action: "Revoke ingestion", effect: "Stops all data collection from this signal type", timeline: "Immediate", cascade: "Also revokes routing, boardroom, assistant" },
-  { action: "Revoke routing influence", effect: "Signal no longer affects notification decisions", timeline: "Immediate", cascade: "None" },
-  { action: "Revoke boardroom visibility", effect: "Signal removed from all briefing summaries", timeline: "Next briefing cycle", cascade: "None" },
-  { action: "Revoke assistant use", effect: "Assistant cannot reference signal-derived state", timeline: "Immediate", cascade: "None" },
-  { action: "Erase all data", effect: "Complete removal from all stores", timeline: "Within 24 hours", cascade: "All scopes revoked, audit trail preserved" },
-];
-
 const HRS01HealthConsentCenter = () => {
-  const [enabledCats, setEnabledCats] = useState<Record<string, boolean>>(Object.fromEntries(CONSENT_CATEGORIES.map(c => [c.key, false])));
+  const [enabledCats, setEnabledCats] = useState<Record<string, boolean>>(
+    Object.fromEntries(DEMO_CONSENT_CATEGORIES.map(c => [c.key, false]))
+  );
+  const { data: dbConsents, isLoading } = useHealthSignalConsents();
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
@@ -51,6 +43,7 @@ const HRS01HealthConsentCenter = () => {
       <Tabs defaultValue="categories" className="space-y-4">
         <TabsList>
           <TabsTrigger value="categories">Consent Categories</TabsTrigger>
+          <TabsTrigger value="db-consents">DB Consent Records</TabsTrigger>
           <TabsTrigger value="principles">Principles</TabsTrigger>
           <TabsTrigger value="revocation">Revocation</TabsTrigger>
           <TabsTrigger value="audit">Audit Trail</TabsTrigger>
@@ -58,27 +51,58 @@ const HRS01HealthConsentCenter = () => {
 
         <TabsContent value="categories">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {CONSENT_CATEGORIES.map((c) => (
-              <Card key={c.key} className="hover:shadow-md transition-shadow">
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm flex items-center gap-2"><c.icon className="h-4 w-4" />{c.cat}</CardTitle>
-                    <Switch checked={enabledCats[c.key]} onCheckedChange={(v) => setEnabledCats(prev => ({ ...prev, [c.key]: v }))} />
-                  </div>
-                </CardHeader>
-                <CardContent className="text-xs space-y-2">
-                  <p className="text-muted-foreground">{c.desc}</p>
-                  <div className="flex gap-2">
-                    <Badge variant={enabledCats[c.key] ? "default" : "secondary"}>{enabledCats[c.key] ? "Enabled" : "Disabled"}</Badge>
-                    <Badge variant={c.risk === "high" ? "destructive" : c.risk === "medium" ? "default" : "secondary"}>Risk: {c.risk}</Badge>
-                  </div>
-                  {c.key !== "ingestion" && !enabledCats["ingestion"] && enabledCats[c.key] && (
-                    <div className="flex items-center gap-1 text-amber-500"><AlertTriangle className="h-3 w-3" /><span>Requires ingestion consent first</span></div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+            {DEMO_CONSENT_CATEGORIES.map((c) => {
+              const Icon = ICON_MAP[c.key] || Eye;
+              return (
+                <Card key={c.key} className="hover:shadow-md transition-shadow">
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-sm flex items-center gap-2"><Icon className="h-4 w-4" />{c.cat}</CardTitle>
+                      <Switch checked={enabledCats[c.key]} onCheckedChange={(v) => setEnabledCats(prev => ({ ...prev, [c.key]: v }))} />
+                    </div>
+                  </CardHeader>
+                  <CardContent className="text-xs space-y-2">
+                    <p className="text-muted-foreground">{c.desc}</p>
+                    <div className="flex gap-2">
+                      <Badge variant={enabledCats[c.key] ? "default" : "secondary"}>{enabledCats[c.key] ? "Enabled" : "Disabled"}</Badge>
+                      <Badge variant={c.risk === "high" ? "destructive" : c.risk === "medium" ? "default" : "secondary"}>Risk: {c.risk}</Badge>
+                    </div>
+                    {c.key !== "ingestion" && !enabledCats["ingestion"] && enabledCats[c.key] && (
+                      <div className="flex items-center gap-1 text-amber-500"><AlertTriangle className="h-3 w-3" /><span>Requires ingestion consent first</span></div>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
+        </TabsContent>
+
+        <TabsContent value="db-consents">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
+          ) : !dbConsents?.length ? (
+            <Card><CardContent className="py-12 text-center text-muted-foreground">No consent records in database. In live mode, consent grants will appear here.</CardContent></Card>
+          ) : (
+            <Card>
+              <CardHeader><CardTitle className="text-sm">Active Consent Records</CardTitle></CardHeader>
+              <CardContent>
+                <table className="w-full text-xs">
+                  <thead><tr className="border-b"><th className="text-left p-2">Signal Type</th><th className="text-left p-2">Scope</th><th className="p-2">Read</th><th className="p-2">Revoked</th><th className="text-left p-2">Granted</th></tr></thead>
+                  <tbody>
+                    {dbConsents.map((consent: any) => (
+                      <tr key={consent.id} className="border-b hover:bg-muted/30">
+                        <td className="p-2 font-mono">{consent.signal_type}</td>
+                        <td className="p-2">{consent.consent_scope || "—"}</td>
+                        <td className="p-2 text-center">{consent.read_permission ? <CheckCircle2 className="h-3 w-3 mx-auto text-green-500" /> : <span>—</span>}</td>
+                        <td className="p-2 text-center">{consent.revoked_at ? <Badge variant="destructive" className="text-[10px]">Revoked</Badge> : <Badge variant="default" className="text-[10px]">Active</Badge>}</td>
+                        <td className="p-2 text-muted-foreground">{new Date(consent.created_at).toLocaleDateString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="principles">
@@ -96,21 +120,19 @@ const HRS01HealthConsentCenter = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Trash2 className="h-4 w-4" />Revocation Actions</CardTitle></CardHeader>
             <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs">
-                  <thead><tr className="border-b"><th className="text-left p-2">Action</th><th className="text-left p-2">Effect</th><th className="p-2">Timeline</th><th className="text-left p-2">Cascade</th></tr></thead>
-                  <tbody>
-                    {REVOCATION_ACTIONS.map((r) => (
-                      <tr key={r.action} className="border-b hover:bg-muted/30">
-                        <td className="p-2 font-medium">{r.action}</td>
-                        <td className="p-2 text-muted-foreground">{r.effect}</td>
-                        <td className="p-2 text-center"><Badge variant="outline">{r.timeline}</Badge></td>
-                        <td className="p-2 text-muted-foreground">{r.cascade}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <table className="w-full text-xs">
+                <thead><tr className="border-b"><th className="text-left p-2">Action</th><th className="text-left p-2">Effect</th><th className="p-2">Timeline</th><th className="text-left p-2">Cascade</th></tr></thead>
+                <tbody>
+                  {DEMO_REVOCATION_ACTIONS.map((r) => (
+                    <tr key={r.action} className="border-b hover:bg-muted/30">
+                      <td className="p-2 font-medium">{r.action}</td>
+                      <td className="p-2 text-muted-foreground">{r.effect}</td>
+                      <td className="p-2 text-center"><Badge variant="outline">{r.timeline}</Badge></td>
+                      <td className="p-2 text-muted-foreground">{r.cascade}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </CardContent>
           </Card>
         </TabsContent>
@@ -131,7 +153,7 @@ const HRS01HealthConsentCenter = () => {
                   </div>
                 ))}
               </div>
-              <p className="text-muted-foreground">All consent events are cryptographically signed and stored in an append-only audit log. Events include: consent grant, revocation, data access, erasure request, and scope change.</p>
+              <p className="text-muted-foreground">All consent events are cryptographically signed and stored in an append-only audit log.</p>
             </CardContent>
           </Card>
         </TabsContent>
