@@ -2168,6 +2168,8 @@ const OwnerCenter = () => {
           </motion.div>
         )}
 
+  const { data: approvalQueueData = [] } = useApprovalQueue();
+  const pendingApprovals = approvalQueueData.filter((a: any) => a.status === "pending");
 
       </AnimatePresence>
 
