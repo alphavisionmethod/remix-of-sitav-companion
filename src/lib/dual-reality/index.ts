@@ -9,3 +9,8 @@ export * from "./mode-aware-provider";
 export * from "./demo-policy-engine";
 export * from "./demo-scenario-loader";
 export * from "./demo-analytics-segregation";
+export * from "./surface-class-registry";
+export * from "./demo-interaction-policy";
+export * from "./demo-scenario-packs";
+export * from "./real-provider-registry";
+export * from "./reality-resolution-records";
