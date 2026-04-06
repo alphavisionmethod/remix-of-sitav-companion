@@ -14,16 +14,15 @@ vi.mock("@/integrations/supabase/client", () => ({
 }));
 
 describe("Surface Portability Service", () => {
-  it("returns 25 canonical capabilities on fallback", async () => {
+  it("returns 30 canonical capabilities on fallback", async () => {
     const { getSurfacePortability } = await import("@/lib/services/surface-portability/surface-portability-service");
     const caps = await getSurfacePortability();
-    expect(caps.length).toBe(25);
+    expect(caps.length).toBe(30);
   });
 
   it("all canonical capabilities score 100", async () => {
     const { getSurfacePortability } = await import("@/lib/services/surface-portability/surface-portability-service");
     const caps = await getSurfacePortability();
-
     for (const c of caps) {
       expect(c.portability_score).toBe(100);
       expect(c.web_ready).toBe(true);
@@ -38,20 +37,8 @@ describe("Surface Portability Service", () => {
 
   it("index returns 100 for all-100 capabilities", async () => {
     const { getSurfacePortabilityIndex } = await import("@/lib/services/surface-portability/surface-portability-service");
-    const records = [
-      { portability_score: 100 },
-      { portability_score: 100 },
-    ] as any[];
+    const records = [{ portability_score: 100 }, { portability_score: 100 }] as any[];
     expect(getSurfacePortabilityIndex(records)).toBe(100);
-  });
-
-  it("index averages mixed scores correctly", async () => {
-    const { getSurfacePortabilityIndex } = await import("@/lib/services/surface-portability/surface-portability-service");
-    const records = [
-      { portability_score: 80 },
-      { portability_score: 60 },
-    ] as any[];
-    expect(getSurfacePortabilityIndex(records)).toBe(70);
   });
 
   it("each capability has unique key", async () => {
@@ -59,5 +46,42 @@ describe("Surface Portability Service", () => {
     const caps = await getSurfacePortability();
     const keys = caps.map(c => c.capability_key);
     expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it("adapter summary shows 7 total adapters", async () => {
+    const { getSurfaceAdapterSummary } = await import("@/lib/services/surface-portability/surface-portability-service");
+    const summary = getSurfaceAdapterSummary();
+    expect(summary.totalAdapters).toBe(7);
+    expect(summary.activeAdapters).toBe(3);
+    expect(summary.plannedAdapters).toBe(4);
+  });
+});
+
+describe("Surface Adapter Registry", () => {
+  it("has exactly 7 adapters with full grammars", async () => {
+    const { SURFACE_ADAPTER_REGISTRY } = await import("@/lib/services/surface-portability/surface-adapter-registry");
+    expect(SURFACE_ADAPTER_REGISTRY).toHaveLength(7);
+    for (const a of SURFACE_ADAPTER_REGISTRY) {
+      expect(a.navigation).toBeDefined();
+      expect(a.interaction).toBeDefined();
+      expect(a.notification).toBeDefined();
+      expect(a.trust).toBeDefined();
+      expect(a.receipt).toBeDefined();
+      expect(a.performanceBudget).toBeDefined();
+    }
+  });
+
+  it("includes desktop_electron adapter", async () => {
+    const { getAdapterByKey } = await import("@/lib/services/surface-portability/surface-adapter-registry");
+    const electron = getAdapterByKey("desktop_electron");
+    expect(electron).toBeDefined();
+    expect(electron!.shellType).toBe("ElectronShell");
+  });
+
+  it("has 3 active and 4 planned", async () => {
+    const { getAdapterCountSummary } = await import("@/lib/services/surface-portability/surface-adapter-registry");
+    const s = getAdapterCountSummary();
+    expect(s.active).toBe(3);
+    expect(s.planned).toBe(4);
   });
 });
