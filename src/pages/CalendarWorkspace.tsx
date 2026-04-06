@@ -353,6 +353,69 @@ const CalendarWorkspace = () => {
           </AnimatePresence>
         </div>
       </div>
+
+      {/* Create Event Dialog */}
+      <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>New Event</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div><label className="text-xs font-medium">Title</label><Input value={eventForm.title} onChange={e => setEventForm(f => ({ ...f, title: e.target.value }))} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><label className="text-xs font-medium">Date</label><Input type="date" value={eventForm.event_date} onChange={e => setEventForm(f => ({ ...f, event_date: e.target.value }))} /></div>
+              <div><label className="text-xs font-medium">Domain</label>
+                <Select value={eventForm.domain} onValueChange={v => setEventForm(f => ({ ...f, domain: v }))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="personal">Personal</SelectItem>
+                    <SelectItem value="business">Business</SelectItem>
+                    <SelectItem value="household">Household</SelectItem>
+                    <SelectItem value="finance">Finance</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><label className="text-xs font-medium">Start Time</label><Input type="time" value={eventForm.start_time} onChange={e => setEventForm(f => ({ ...f, start_time: e.target.value }))} /></div>
+              <div><label className="text-xs font-medium">End Time</label><Input type="time" value={eventForm.end_time} onChange={e => setEventForm(f => ({ ...f, end_time: e.target.value }))} /></div>
+            </div>
+            <div><label className="text-xs font-medium">Location</label><Input value={eventForm.location} onChange={e => setEventForm(f => ({ ...f, location: e.target.value }))} /></div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCreateDialog(false)}>Cancel</Button>
+            <Button onClick={() => {
+              createEvent.mutate(eventForm);
+              setShowCreateDialog(false);
+            }} disabled={!eventForm.title || !eventForm.event_date}>Create</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Event Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Edit Event</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div><label className="text-xs font-medium">Title</label><Input value={eventForm.title} onChange={e => setEventForm(f => ({ ...f, title: e.target.value }))} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><label className="text-xs font-medium">Date</label><Input type="date" value={eventForm.event_date} onChange={e => setEventForm(f => ({ ...f, event_date: e.target.value }))} /></div>
+              <div><label className="text-xs font-medium">Location</label><Input value={eventForm.location} onChange={e => setEventForm(f => ({ ...f, location: e.target.value }))} /></div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><label className="text-xs font-medium">Start Time</label><Input type="time" value={eventForm.start_time} onChange={e => setEventForm(f => ({ ...f, start_time: e.target.value }))} /></div>
+              <div><label className="text-xs font-medium">End Time</label><Input type="time" value={eventForm.end_time} onChange={e => setEventForm(f => ({ ...f, end_time: e.target.value }))} /></div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEditDialog(false)}>Cancel</Button>
+            <Button onClick={() => {
+              if (selectedEvent) {
+                updateEvent.mutate({ id: selectedEvent.id, title: eventForm.title, event_date: eventForm.event_date, start_time: eventForm.start_time, end_time: eventForm.end_time, location: eventForm.location });
+                setShowEditDialog(false);
+              }
+            }}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
