@@ -1,9 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Receipts Service
-// Creates typed Receipt objects with hash chaining
+// Creates typed Receipt objects with hash chaining + persistence
 // ═══════════════════════════════════════════════════════════════
 
 import type { TypedReceipt, ActionReceipt, SystemReceipt } from "@/packages/proof-model";
+import { persistReceipt } from "@/lib/persistence/supabase-adapters";
 
 const receiptChain: TypedReceipt[] = [];
 
@@ -12,7 +13,7 @@ function computeHash(data: string): string {
   for (let i = 0; i < data.length; i++) {
     const char = data.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit int
+    hash = hash & hash;
   }
   return `sha256:${Math.abs(hash).toString(16).padStart(16, "0")}`;
 }
@@ -48,6 +49,15 @@ export function createActionReceipt(params: {
     status: params.status,
   };
   receiptChain.push(receipt);
+
+  // Fire-and-forget persistence
+  persistReceipt({
+    correlation_id: params.actionId,
+    receipt_type: "action",
+    payload: { ...params, hash: receipt.hash, previousHash },
+    metadata: { inputHash, outputHash },
+  }).catch(() => {});
+
   return receipt;
 }
 
@@ -70,6 +80,14 @@ export function createSystemReceipt(params: {
     details: params.details,
   };
   receiptChain.push(receipt);
+
+  // Fire-and-forget persistence
+  persistReceipt({
+    correlation_id: receipt.id,
+    receipt_type: "system",
+    payload: { action: params.action, scope: params.scope, details: params.details, hash: receipt.hash },
+  }).catch(() => {});
+
   return receipt;
 }
 
@@ -111,6 +129,13 @@ export function createRefusalReceipt(params: {
     requiredForRetry: params.requiredForRetry,
   };
   receiptChain.push(receipt);
+
+  persistReceipt({
+    correlation_id: receipt.id,
+    receipt_type: "refusal",
+    payload: { ...params, hash: receipt.hash },
+  }).catch(() => {});
+
   return receipt;
 }
 
@@ -147,5 +172,12 @@ export function createFirstBootReceipt(params: {
     details: params.details,
   };
   receiptChain.push(receipt);
+
+  persistReceipt({
+    correlation_id: receipt.id,
+    receipt_type: "first-boot",
+    payload: { ...params, hash: receipt.hash },
+  }).catch(() => {});
+
   return receipt;
 }
