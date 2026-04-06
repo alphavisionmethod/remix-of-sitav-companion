@@ -92,6 +92,7 @@ const SettingsPage = () => {
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
   const { isLoading, toggleDemoMode } = useDemoMode();
+  const { confirmation, confirm: confirmAction } = useConfirmation();
   const [activeSection, setActiveSection] = useState<SettingsSection>("identity");
   const [autonomy, setAutonomy] = useState("simulate-first");
   const [confidence, setConfidence] = useState("70");
