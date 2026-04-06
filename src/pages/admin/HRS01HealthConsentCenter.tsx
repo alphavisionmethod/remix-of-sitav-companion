@@ -72,7 +72,10 @@ const HRS01HealthConsentCenter = () => {
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-sm flex items-center gap-2"><Icon className="h-4 w-4" />{c.cat}</CardTitle>
-                      <Switch checked={enabledCats[c.key]} onCheckedChange={(v) => setEnabledCats(prev => ({ ...prev, [c.key]: v }))} />
+                      <Switch checked={enabledCats[c.key]} onCheckedChange={(v) => {
+                        setEnabledCats(prev => ({ ...prev, [c.key]: v }));
+                        toggleConsent.mutate({ signalType: "health", consentScope: c.key, enabled: v });
+                      }} />
                     </div>
                   </CardHeader>
                   <CardContent className="text-xs space-y-2">
