@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Zap, AlertTriangle, Clock, Target, TrendingUp } from "lucide-react";
-import { INSTRUMENTS, PORTFOLIO } from "@/lib/investment-office/mock-data";
+import { useInvestmentData } from "@/hooks/use-investment-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const CATALYST_EVENTS = [
   { id: "ce1", title: "CPI Release", date: "2026-05-14", type: "macro", impact: "high", assets: ["SPY", "XAUUSD", "FED-CUT-JUN"], description: "Key inflation data — determines Fed rate path", portfolioExposure: 45 },
