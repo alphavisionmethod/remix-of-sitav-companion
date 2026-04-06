@@ -19,6 +19,7 @@ import {
   ChevronDown, ChevronUp, Filter, History, LayoutDashboard, FileText,
   DollarSign, Zap, RotateCcw, MessageSquare,
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Types ──
 interface QueueItem {
@@ -82,6 +83,7 @@ export default function HQApprovalQueue() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Shield className="h-6 w-6 text-primary" /> Human Approval & Recommendation Queue

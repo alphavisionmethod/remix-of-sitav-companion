@@ -18,6 +18,7 @@ import { executeWorkforceTask, type WorkforceExecutionResult } from "@/lib/ai/wo
 import { AIWorkforceInvocationPanel } from "@/components/ai/AIWorkforceInvocationPanel";
 import { Terminal, Play, Loader2, DollarSign, AlertTriangle, Clock, Save, History, Copy } from "lucide-react";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { supabase } from "@/integrations/supabase/client";
 
 const TASK_TYPES = [
@@ -101,6 +102,7 @@ export default function AIT03TaskInvocation() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Terminal className="h-6 w-6 text-primary" /> AIT03 — Task Invocation Console

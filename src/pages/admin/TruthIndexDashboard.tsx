@@ -10,6 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { computeTruthIndices, type TruthIndexSummary } from "@/lib/services/truth-indices/truth-index-aggregator";
 import { Shield, Brain, Plug, Monitor, Eye, Layers, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const INDEX_CONFIG = [
   { key: "runtimeTruth", label: "Runtime Truth Index", icon: Shield, color: "text-blue-400" },
@@ -43,6 +44,7 @@ export default function TruthIndexDashboard() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">SITA OS — Truth Index Dashboard</h1>

@@ -12,6 +12,7 @@ import { getWorkforceRoles, getRecentInvocations, getWorkforceStats, getRecommen
 import { computeTruthIndices } from "@/lib/services/truth-indices/truth-index-aggregator";
 import { Bot, DollarSign, Zap, Clock, Shield, Activity, AlertTriangle, CheckCircle2, Lightbulb, TrendingUp, ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function AIT01TeamOverview() {
   const { data: stats, isLoading } = useQuery({ queryKey: ["ai-workforce-stats"], queryFn: getWorkforceStats });
@@ -47,6 +48,7 @@ export default function AIT01TeamOverview() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">

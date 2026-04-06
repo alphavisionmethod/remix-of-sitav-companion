@@ -12,6 +12,7 @@ import { Progress } from "@/components/ui/progress";
 import { getWorkforceRoles, getWorkforceStats } from "@/lib/services/ai-workforce/workforce-orchestrator";
 import { DEFAULT_THRESHOLDS, ROLE_BUDGET_POLICIES } from "@/lib/services/ai-workforce/admin-budget-routing-policy";
 import { ClipboardCheck, Shield, DollarSign, Zap, CheckCircle, AlertTriangle, Eye, Lock, Repeat, FileText, BarChart3, Users } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface CheckItem {
   id: string;
@@ -142,6 +143,7 @@ export default function AITSetupChecklist() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1200px] mx-auto">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <ClipboardCheck className="h-6 w-6 text-primary" /> Affordable AI Team Setup Checklist
