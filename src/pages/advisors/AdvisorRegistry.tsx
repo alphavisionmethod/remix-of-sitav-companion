@@ -23,6 +23,8 @@ import {
   type AdvisorBehavioralProfile,
 } from "@/packages/advisor-config/behavioral-engine";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 // ── Maturity color mapping ──────────────────────────────────
 const MATURITY_COLORS: Record<string, string> = {
@@ -243,13 +245,45 @@ const AdvisorRegistry = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
+  // Fetch DB advisors and merge with config registry
+  const { data: dbAdvisors = [] } = useQuery({
+    queryKey: ["advisor-registry-db"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("advisor_registry").select("*").order("display_name");
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  // Merge: config advisors are canonical, DB advisors that don't match a config entry are appended
+  const mergedRegistry = useMemo(() => {
+    const configIds = new Set<string>(FULL_ADVISOR_REGISTRY.map(a => a.id));
+    const dbOnly = dbAdvisors
+      .filter(db => !configIds.has(db.id as string) && !configIds.has(db.advisor_type as string))
+      .map(db => ({
+        id: db.id,
+        name: db.display_name,
+        domain: db.domain || "general",
+        council: "internal-ops" as const,
+        description: `DB-registered ${db.advisor_type} advisor`,
+        capabilities: Array.isArray((db.capabilities as any)) ? (db.capabilities as string[]) : [],
+        maxAutonomy: "L1-diagnose" as const,
+        confidenceThreshold: db.trust_threshold || 0.7,
+        maturity: "alpha" as "alpha",
+        handoffTargets: [],
+        blockedActions: [],
+        performanceKpis: [],
+      })) as ExtendedAdvisorConfig[];
+    return [...FULL_ADVISOR_REGISTRY, ...dbOnly];
+  }, [dbAdvisors]);
+
   const councils = useMemo(() => {
-    const set = new Set(FULL_ADVISOR_REGISTRY.map(a => a.council));
+    const set = new Set(mergedRegistry.map(a => a.council));
     return ["all", ...Array.from(set)];
-  }, []);
+  }, [mergedRegistry]);
 
   const filtered = useMemo(() => {
-    let list = FULL_ADVISOR_REGISTRY;
+    let list = mergedRegistry;
     if (council !== "all") list = list.filter(a => a.council === council);
     if (search) {
       const q = search.toLowerCase();
@@ -260,26 +294,26 @@ const AdvisorRegistry = () => {
       );
     }
     return list;
-  }, [council, search]);
+  }, [council, search, mergedRegistry]);
 
-  const selected = FULL_ADVISOR_REGISTRY.find(a => a.id === selectedId) ?? null;
+  const selected = mergedRegistry.find(a => a.id === selectedId) ?? null;
 
   const maturityCounts = useMemo(() => {
     const m = { scaffold: 0, alpha: 0, beta: 0, production: 0 };
-    FULL_ADVISOR_REGISTRY.forEach(a => m[a.maturity]++);
+    mergedRegistry.forEach(a => m[a.maturity]++);
     return m;
-  }, []);
+  }, [mergedRegistry]);
 
   return (
     <motion.div className="mx-auto max-w-7xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <SitaPageHeader title="Advisor Registry" subtitle={`${FULL_ADVISOR_REGISTRY.length} advisors — capabilities, behavioral profiles, and governance`} />
+      <SitaPageHeader title="Advisor Registry" subtitle={`${mergedRegistry.length} advisors — capabilities, behavioral profiles, and governance${dbAdvisors.length > 0 ? ` (${dbAdvisors.length} from DB)` : ""}`} />
 
       {/* KPIs */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KPITile label="Total Advisors" value={FULL_ADVISOR_REGISTRY.length} icon={Bot} />
+        <KPITile label="Total Advisors" value={mergedRegistry.length} icon={Bot} />
         <KPITile label="Alpha+" value={maturityCounts.alpha + maturityCounts.beta + maturityCounts.production} icon={Zap} />
         <KPITile label="Councils" value={councils.length - 1} icon={Users} />
-        <KPITile label="Total Capabilities" value={FULL_ADVISOR_REGISTRY.reduce((s, a) => s + a.capabilities.length, 0)} icon={Layers} />
+        <KPITile label="Total Capabilities" value={mergedRegistry.reduce((s, a) => s + a.capabilities.length, 0)} icon={Layers} />
       </div>
 
       {/* Search */}
@@ -298,7 +332,7 @@ const AdvisorRegistry = () => {
         tabs={councils.map(c => ({
           key: c,
           label: c === "all" ? "All" : c.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" "),
-          count: c === "all" ? FULL_ADVISOR_REGISTRY.length : FULL_ADVISOR_REGISTRY.filter(a => a.council === c).length,
+          count: c === "all" ? mergedRegistry.length : mergedRegistry.filter(a => a.council === c).length,
         }))}
         active={council}
         onChange={setCouncil}

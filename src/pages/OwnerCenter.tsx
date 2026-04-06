@@ -39,6 +39,7 @@ import {
   useTrustCenter, useReleases, useModelRouting, useKnowledgeHealth,
   useSupportCases, useChangeReview, useRollbackCenter, useServiceMap,
 } from "@/hooks/use-admin-data";
+import { useApproveApprovalItem, useRejectApprovalItem, useDismissApprovalItem, useApprovalQueue } from "@/hooks/use-approval-queue-mutations";
 import {
   AUTONOMY_TIERS, NEVER_ALLOWED, DESIGN_DRIFT_CHECKLIST, WATCHDOG_CONCERNS, getAutonomyLevel,
   MAY_AUTO_EXECUTE, MUST_SIMULATE_FIRST, PROMOTION_RULES, DEMOTION_TRIGGERS, MUST_REQUIRE_HUMAN_APPROVAL,
@@ -59,7 +60,7 @@ import {
 } from "lucide-react";
 
 type OwnerPage = "overview" | "workforce" | "incidents" | "connectors" | "costs" | "policies" | "audit" | "fleet" | "intelligence" | "council"
-  | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing" | "governance";
+  | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing" | "governance" | "approvals";
 
 const subpageFromPath = (path: string): OwnerPage => {
   const last = path.split("/").pop() || "";
@@ -72,6 +73,7 @@ const subpageFromPath = (path: string): OwnerPage => {
     "knowledge": "knowledge", "support": "support", "change-review": "change-review",
     "rollback-center": "rollback-center", "system-map": "system-map",
     "autopilot": "autopilot", "billing": "billing", "governance": "governance",
+    "approvals": "approvals",
   };
   return map[last] || "overview";
 };
@@ -213,6 +215,8 @@ const OwnerCenter = () => {
   const { data: changeData } = useChangeReview();
   const { data: rollbackData } = useRollbackCenter();
   const { data: serviceMapData } = useServiceMap();
+  const { data: approvalQueueData = [] } = useApprovalQueue();
+  const pendingApprovals = approvalQueueData.filter((a: any) => a.status === "pending");
 
   // Mutations
   const acknowledgeIncident = useAcknowledgeIncident();
@@ -223,6 +227,9 @@ const OwnerCenter = () => {
   const exportAudit = useExportAuditLogs();
   const restartDevice = useRestartDevice();
   const councilVote = useCouncilVote();
+  const approveItem = useApproveApprovalItem();
+  const rejectItem = useRejectApprovalItem();
+  const dismissItem = useDismissApprovalItem();
 
   // Local state for dialogs
   const [resolveDialog, setResolveDialog] = useState<{ open: boolean; incidentId: string }>({ open: false, incidentId: "" });
@@ -258,6 +265,7 @@ const OwnerCenter = () => {
       "model-routing": "/owner/model-routing", knowledge: "/owner/knowledge", support: "/owner/support",
       "change-review": "/owner/change-review", "rollback-center": "/owner/rollback-center",
       "system-map": "/owner/system-map", governance: "/owner/governance",
+      approvals: "/owner/approvals",
     };
     navigate(routeMap[key] || "/owner");
   };
@@ -284,6 +292,7 @@ const OwnerCenter = () => {
     { key: "rollback-center", label: "Rollback" },
     { key: "system-map", label: "System Map" },
     { key: "governance", label: "Governance" },
+    { key: "approvals", label: "Approvals", count: pendingApprovals.length },
   ];
 
   const councilIcons: Record<string, typeof Bot> = {
@@ -2158,6 +2167,57 @@ const OwnerCenter = () => {
             </div>
             <SitaSectionHeader title="Delegation Registry" />
             <DelegationRegistryTable />
+          </motion.div>
+        )}
+
+        {/* ══════════════════════════════════════════ */}
+        {/* APPROVALS */}
+        {/* ══════════════════════════════════════════ */}
+        {activePage === "approvals" && (
+          <motion.div key="approvals" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
+            <SitaSectionHeader title="Approval Queue" subtitle={`${pendingApprovals.length} pending · ${approvalQueueData.length} total`} />
+            {approvalQueueData.length === 0 ? (
+              <SitaCard hover={false} className="p-8 text-center">
+                <CheckCircle className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground">No approval requests yet. Items will appear here when advisors or workflows need your decision.</p>
+              </SitaCard>
+            ) : (
+              <div className="space-y-2">
+                {approvalQueueData.map((item: any) => (
+                  <SitaCard key={item.id} hover={false} className="p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <StateBadge state={item.status === "pending" ? "approval-requested" : item.status === "approved" ? "approved" : item.status === "rejected" ? "failed" : "completed"} size="sm" />
+                          {item.action_type && <Badge variant="outline" className="text-[10px]">{item.action_type}</Badge>}
+                        </div>
+                        <p className="text-sm font-medium text-foreground">{item.action_summary}</p>
+                        {item.decision_reason && (
+                          <p className="text-[11px] text-muted-foreground mt-1">Decision: {item.decision_reason}</p>
+                        )}
+                        <p className="text-[10px] text-muted-foreground mt-1">
+                          {new Date(item.created_at).toLocaleString()}
+                          {item.decided_at && ` · Decided ${new Date(item.decided_at).toLocaleString()}`}
+                        </p>
+                      </div>
+                      {item.status === "pending" && (
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <SitaButton size="sm" variant="accent" className="text-xs h-7" onClick={() => approveItem.mutate({ id: item.id })}>
+                            <CheckCircle className="h-3 w-3 mr-1" /> Approve
+                          </SitaButton>
+                          <SitaButton size="sm" variant="secondary" className="text-xs h-7 text-destructive" onClick={() => rejectItem.mutate({ id: item.id, reason: "Rejected by owner" })}>
+                            <XCircle className="h-3 w-3 mr-1" /> Reject
+                          </SitaButton>
+                          <SitaButton size="sm" variant="secondary" className="text-xs h-7 text-muted-foreground" onClick={() => dismissItem.mutate(item.id)}>
+                            Dismiss
+                          </SitaButton>
+                        </div>
+                      )}
+                    </div>
+                  </SitaCard>
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
 
