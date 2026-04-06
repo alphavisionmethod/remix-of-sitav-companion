@@ -186,3 +186,11 @@ function PersonalBrainInner() {
     </div>
   );
 }
+
+export default function PersonalBrain() {
+  return (
+    <GlobalErrorBoundary>
+      <PersonalBrainInner />
+    </GlobalErrorBoundary>
+  );
+}
