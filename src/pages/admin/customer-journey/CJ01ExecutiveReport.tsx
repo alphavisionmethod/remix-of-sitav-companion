@@ -39,7 +39,7 @@ export default function CJ01ExecutiveReport() {
 
   // Use summary view for richer stats if available
   const viewJourneys = summaryView ?? [];
-  const viewStatuses = viewJourneys.reduce<Record<string, number>>((acc, j: any) => {
+  const viewStatuses = viewJourneys.reduce((acc: Record<string, number>, j: any) => {
     const s = j.current_status || "unverified";
     acc[s] = (acc[s] || 0) + 1;
     return acc;
