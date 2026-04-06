@@ -8078,6 +8078,51 @@ export type Database = {
         }
         Relationships: []
       }
+      device_push_tokens: {
+        Row: {
+          active: boolean
+          auth_key: string | null
+          created_at: string
+          device_name: string | null
+          endpoint: string | null
+          id: string
+          last_used_at: string | null
+          p256dh: string | null
+          platform: Database["public"]["Enums"]["push_platform"]
+          token: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          auth_key?: string | null
+          created_at?: string
+          device_name?: string | null
+          endpoint?: string | null
+          id?: string
+          last_used_at?: string | null
+          p256dh?: string | null
+          platform: Database["public"]["Enums"]["push_platform"]
+          token: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          auth_key?: string | null
+          created_at?: string
+          device_name?: string | null
+          endpoint?: string | null
+          id?: string
+          last_used_at?: string | null
+          p256dh?: string | null
+          platform?: Database["public"]["Enums"]["push_platform"]
+          token?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       device_statuses: {
         Row: {
           created_at: string
@@ -21878,6 +21923,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      push_platform: "web" | "ios" | "android" | "electron"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -22006,6 +22052,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      push_platform: ["web", "ios", "android", "electron"],
     },
   },
 } as const

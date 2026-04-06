@@ -7,14 +7,21 @@ import { Shield, Fingerprint, Bell, Moon, LogOut, ChevronRight, Smartphone } fro
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { usePushNotifications } from "@/hooks/use-push-notifications";
 
-const ToggleRow = ({ icon: Icon, label, description, defaultOn = false }: {
+const ToggleRow = ({ icon: Icon, label, description, defaultOn = false, controlled, onToggle }: {
   icon: any; label: string; description: string; defaultOn?: boolean;
+  controlled?: boolean; onToggle?: (on: boolean) => void;
 }) => {
   const [on, setOn] = useState(defaultOn);
+  const isOn = controlled !== undefined ? controlled : on;
   return (
     <button
-      onClick={() => setOn(!on)}
+      onClick={() => {
+        const next = !isOn;
+        setOn(next);
+        onToggle?.(next);
+      }}
       className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-border/40 bg-card"
     >
       <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -24,11 +31,11 @@ const ToggleRow = ({ icon: Icon, label, description, defaultOn = false }: {
       </div>
       <div className={cn(
         "h-6 w-10 rounded-full transition-colors flex items-center px-0.5",
-        on ? "bg-primary" : "bg-muted"
+        isOn ? "bg-primary" : "bg-muted"
       )}>
         <div className={cn(
           "h-5 w-5 rounded-full bg-white transition-transform",
-          on ? "translate-x-4" : "translate-x-0"
+          isOn ? "translate-x-4" : "translate-x-0"
         )} />
       </div>
     </button>
@@ -46,34 +53,58 @@ const NavRow = ({ icon: Icon, label, onClick }: { icon: any; label: string; onCl
   </button>
 );
 
-const MobileSettings = () => (
-  <MobileShell title="Settings">
-    <DemoModeBadge />
-    <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Trust & Security</h2>
-    <div className="space-y-1.5 mb-6">
-      <ToggleRow icon={Fingerprint} label="Biometric Lock" description="Require Face ID / fingerprint to open" defaultOn />
-      <ToggleRow icon={Shield} label="Trusted Device" description="This device can approve high-impact actions" defaultOn />
-    </div>
+const MobileSettings = () => {
+  const { isSupported, isRegistered, requestPermission, unregister, devices } = usePushNotifications();
 
-    <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Notifications</h2>
-    <div className="space-y-1.5 mb-6">
-      <ToggleRow icon={Bell} label="Push Notifications" description="Receive alerts for approvals and critical events" defaultOn />
-      <ToggleRow icon={Bell} label="Quiet Hours" description="Mute non-critical alerts 10 PM — 7 AM" />
-    </div>
+  const handlePushToggle = async (on: boolean) => {
+    if (on) {
+      await requestPermission();
+    } else {
+      await unregister();
+    }
+  };
 
-    <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Appearance</h2>
-    <div className="space-y-1.5 mb-6">
-      <ToggleRow icon={Moon} label="Dark Mode" description="Always use dark theme" defaultOn />
-    </div>
+  return (
+    <MobileShell title="Settings">
+      <DemoModeBadge />
+      <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Trust & Security</h2>
+      <div className="space-y-1.5 mb-6">
+        <ToggleRow icon={Fingerprint} label="Biometric Lock" description="Require Face ID / fingerprint to open" defaultOn />
+        <ToggleRow icon={Shield} label="Trusted Device" description="This device can approve high-impact actions" defaultOn />
+      </div>
 
-    <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Device</h2>
-    <div className="space-y-1.5 mb-6">
-      <NavRow icon={Smartphone} label="Device Info" />
-      <NavRow icon={LogOut} label="Sign Out" />
-    </div>
+      <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Notifications</h2>
+      <div className="space-y-1.5 mb-6">
+        <ToggleRow
+          icon={Bell}
+          label="Push Notifications"
+          description={
+            isSupported
+              ? isRegistered
+                ? `Active on ${devices.length} device(s)`
+                : "Receive alerts for approvals and critical events"
+              : "Push not supported on this device"
+          }
+          controlled={isRegistered}
+          onToggle={handlePushToggle}
+        />
+        <ToggleRow icon={Bell} label="Quiet Hours" description="Mute non-critical alerts 10 PM — 7 AM" />
+      </div>
 
-    <p className="text-center text-[10px] text-muted-foreground mt-8">SITA OS — Trusted Device v1.0</p>
-  </MobileShell>
-);
+      <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Appearance</h2>
+      <div className="space-y-1.5 mb-6">
+        <ToggleRow icon={Moon} label="Dark Mode" description="Always use dark theme" defaultOn />
+      </div>
+
+      <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Device</h2>
+      <div className="space-y-1.5 mb-6">
+        <NavRow icon={Smartphone} label="Device Info" />
+        <NavRow icon={LogOut} label="Sign Out" />
+      </div>
+
+      <p className="text-center text-[10px] text-muted-foreground mt-8">SITA OS — Trusted Device v1.0</p>
+    </MobileShell>
+  );
+};
 
 export default MobileSettings;
