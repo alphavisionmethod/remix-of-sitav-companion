@@ -118,13 +118,31 @@ const SettingsPage = () => {
     },
   });
 
+  // Load preferences from profile
+  const loadPrefs = (prefs: Record<string, any> | null) => {
+    if (!prefs) return;
+    if (prefs.autonomy) setAutonomy(prefs.autonomy);
+    if (prefs.trustMode) setTrustMode(prefs.trustMode);
+    if (prefs.notifFreq) setNotifFreq(prefs.notifFreq);
+    if (prefs.dndEnabled !== undefined) setDndEnabled(prefs.dndEnabled);
+    if (prefs.piiRedaction !== undefined) setPiiRedaction(prefs.piiRedaction);
+    if (prefs.budgetMode) setBudgetMode(prefs.budgetMode);
+    if (prefs.confidence) setConfidence(prefs.confidence);
+    if (prefs.simPref) setSimPref(prefs.simPref);
+    if (prefs.contradictions) setContradictions(prefs.contradictions);
+    if (prefs.docRetention) setDocRetention(prefs.docRetention);
+    if (prefs.largeFontMode !== undefined) setLargeFontMode(prefs.largeFontMode);
+  };
+
+  // Save all settings to profiles.preferences
   const saveProfile = async () => {
     if (!user) return;
     setIsSaving(true);
     try {
-      const { error } = await (db as any).from("profiles").update({ display_name: displayName }).eq("user_id", user.id);
+      const preferences = { autonomy, trustMode, notifFreq, dndEnabled, piiRedaction, budgetMode, confidence, simPref, contradictions, docRetention, largeFontMode };
+      const { error } = await (db as any).from("profiles").update({ display_name: displayName, preferences }).eq("user_id", user.id);
       if (error) throw error;
-      toast.success("Profile saved");
+      toast.success("Settings saved");
     } catch (e: any) {
       toast.error(e.message || "Failed to save");
     } finally {
