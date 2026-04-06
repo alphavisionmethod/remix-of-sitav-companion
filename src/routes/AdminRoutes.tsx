@@ -73,6 +73,11 @@ export const AdminRoutes = () => (
     <Route path="/admin/ai-team/overview" element={<AIT01TeamOverview />} />
     <Route path="/admin/ai-team/roles" element={<AIT02RoleRegistry />} />
     <Route path="/admin/ai-team/invoke" element={<AIT03TaskInvocation />} />
+    <Route path="/admin/ai-team/activity" element={<AIT04ActivityFeed />} />
+    <Route path="/admin/ai-team/cost" element={<AIT05CostEfficiency />} />
+    <Route path="/admin/ai-team/recommendations" element={<AIT06Recommendations />} />
+    <Route path="/admin/ai-team/approvals" element={<AIT07ApprovalQueue />} />
+    <Route path="/admin/ai-team/launch-truth" element={<AIT08LaunchTruth />} />
 
     {/* UIE01-UIE11: Intelligence Architecture */}
     <Route path="/admin/intelligence/reuse" element={<IntelligenceReuseOverview />} />
