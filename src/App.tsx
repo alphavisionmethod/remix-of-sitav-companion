@@ -1248,6 +1248,7 @@ const App = () => (
                     <Route path="/admin/nrc/queue-matrix" element={<NRC04QueueInterruptMatrix />} />
                     <Route path="/admin/nrc/cross-device" element={<NRC05CrossDeviceDelivery />} />
                     <Route path="/admin/nrc/launch-honesty" element={<NRC06NotificationLaunchHonesty />} />
+                    <Route path="/admin/nrc/delivery-receipts" element={<NOT03DeliveryReceiptsExplorer />} />
                     {/* NSS — Native Shell Strategy */}
                     <Route path="/admin/nss/strategy" element={<NSS01StrategyBoard />} />
                     <Route path="/admin/nss/capability-matrix" element={<NSS02CapabilityMatrix />} />
