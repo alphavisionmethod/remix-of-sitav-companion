@@ -11,16 +11,16 @@ const HRS02SignalSourcesBoard = () => {
   const { data: providers, isLoading } = useWearableProviders();
 
   // Use DB data if available, map to display shape; else use demo
-  const displayProviders = providers && !Array.isArray(providers?.[0]?.signals)
+  const displayProviders = providers && providers.length > 0 && 'provider_key' in (providers[0] as any)
     ? (providers as any[]).map((p: any) => ({
         key: p.provider_key || p.key,
         name: p.display_name || p.name,
-        api: p.api_style || p.api || "REST API",
+        api: p.api_type || p.api || "REST API",
         native: p.native ?? false,
         partner: p.partner ?? false,
         stage: p.launch_stage || p.stage || "planned",
         readiness: p.readiness ?? 0,
-        signals: p.supported_signals || p.signals || [],
+        signals: p.categories || p.signals || [],
         platform: p.platform || "Cloud",
       }))
     : (providers as typeof DEMO_SIGNAL_PROVIDERS) ?? DEMO_SIGNAL_PROVIDERS;
