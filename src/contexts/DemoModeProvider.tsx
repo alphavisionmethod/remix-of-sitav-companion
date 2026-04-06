@@ -37,6 +37,9 @@ const DemoModeContext = createContext<DemoModeContextType | null>(null);
 export function DemoModeProvider({ children }: { children: React.ReactNode }) {
   const [surfaces, setSurfaces] = useState<Map<string, SurfaceRegistration>>(new Map());
 
+  // Load persisted kill switches from Supabase on mount
+  useEffect(() => { loadKillSwitches(); }, []);
+
   const registerSurface = useCallback((surfaceId: string, surfaceName: string, source: SurfaceDataSource) => {
     setSurfaces(prev => {
       const next = new Map(prev);
