@@ -24,6 +24,7 @@ export default function DecisionTheater() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div className="text-center space-y-2 pt-4">
         <h1 className="text-3xl font-bold text-foreground flex items-center justify-center gap-3">
           <Theater className="h-7 w-7 text-primary" /> Decision Theater

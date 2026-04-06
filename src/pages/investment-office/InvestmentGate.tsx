@@ -18,6 +18,7 @@ export default function InvestmentGate() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 pb-12">
+      <DemoModeBadge />
       {/* Hero */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
         className="relative rounded-3xl border border-border bg-gradient-to-br from-card via-card to-primary/5 p-8 overflow-hidden">
