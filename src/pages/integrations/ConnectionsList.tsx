@@ -70,7 +70,7 @@ export default function ConnectionsList() {
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30">
-          <TabsTrigger value="connections">Connections ({DEMO_CONNECTIONS.length})</TabsTrigger>
+          <TabsTrigger value="connections">Connections ({connections.length})</TabsTrigger>
           <TabsTrigger value="health">Health Dashboard</TabsTrigger>
           <TabsTrigger value="audit">Audit Log</TabsTrigger>
         </TabsList>
