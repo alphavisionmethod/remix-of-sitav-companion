@@ -40,11 +40,6 @@ serve(async (req) => {
 
     // ── Emit Mode: Create a new event ──
     if (mode === "emit") {
-      if (!userId) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-          status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
       if (!body.type) {
         return new Response(JSON.stringify({ error: "Event type required" }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
