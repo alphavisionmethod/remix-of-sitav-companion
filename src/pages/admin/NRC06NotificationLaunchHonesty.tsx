@@ -1,98 +1,193 @@
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Rocket, CheckCircle2, XCircle, AlertTriangle, ArrowRight } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useNrcLaunchReadiness } from "@/hooks/use-notification-calm-data";
+import { Rocket, CheckCircle2, XCircle, AlertTriangle, Bell, Smartphone, Monitor, Apple } from "lucide-react";
 
-const NRC06NotificationLaunchHonesty = () => {
-  const { data: subsystems, isLoading } = useNrcLaunchReadiness();
-  const items = subsystems ?? [];
-  const overall = items.length ? Math.round(items.reduce((s: number, t: any) => s + (t.readiness ?? 0), 0) / items.length) : 0;
+interface ChannelTruth {
+  channel: string;
+  label: string;
+  icon: React.ElementType;
+  status: "live" | "partial" | "planned" | "unavailable";
+  deliveryCount: number;
+  successRate: number;
+  evidence: string;
+}
 
-  return (
-    <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-primary/10"><Rocket className="h-8 w-8 text-primary" /></div>
-          <div>
-            <h1 className="text-2xl font-bold">Attention Systems Launch Honesty</h1>
-            <p className="text-muted-foreground">Launch truth for routing, fatigue, assistant, and delivery systems</p>
-          </div>
-        </div>
-        <Badge variant="secondary">{overall}% overall</Badge>
-      </div>
+function useNotificationLaunchHonesty() {
+  return useQuery({
+    queryKey: ["nrc06-notification-launch-honesty-real"],
+    queryFn: async () => {
+      // Fetch delivery receipts
+      const { data: receipts, error: rErr } = await (supabase as any)
+        .from("notification_delivery_receipts")
+        .select("channel, delivery_status, created_at")
+        .order("created_at", { ascending: false })
+        .limit(500);
+      if (rErr) throw rErr;
 
-      {isLoading ? <p className="text-xs text-muted-foreground">Loading…</p> : (
-        <>
-          <div className="grid grid-cols-4 gap-4">
-            {[
-              { label: "Real Routing", count: items.filter((t: any) => t.realRouting).length },
-              { label: "Rule-based", count: items.filter((t: any) => t.ruleBased).length },
-              { label: "Demo Ready", count: items.filter((t: any) => t.demo).length },
-              { label: "Critical", count: items.filter((t: any) => t.critical).length },
-            ].map((s) => (
-              <Card key={s.label}><CardContent className="pt-4 pb-3"><div className="text-xs text-muted-foreground">{s.label}</div><div className="text-2xl font-bold">{s.count}/{items.length}</div></CardContent></Card>
-            ))}
-          </div>
+      // Fetch push subscriptions
+      const { data: tokens, error: tErr } = await (supabase as any)
+        .from("device_push_tokens")
+        .select("id, platform, created_at");
+      // table may not exist yet — graceful fallback
+      const pushTokens = tErr ? [] : (tokens || []);
 
-          <Tabs defaultValue="grid" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="grid">Subsystem Grid</TabsTrigger>
-              <TabsTrigger value="pipeline">Pipeline View</TabsTrigger>
-            </TabsList>
+      const allReceipts = receipts || [];
 
-            <TabsContent value="grid">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {items.map((item: any) => (
-                  <Card key={item.target} className={item.critical ? "border-primary/50" : ""}>
-                    <CardHeader className="pb-2">
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-sm">{item.target}</CardTitle>
-                        <div className="flex gap-1">{item.critical && <Badge variant="destructive" className="text-[10px]">critical</Badge>}<Badge variant={item.stage === "alpha" ? "default" : "secondary"}>{item.stage}</Badge></div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-xs"><span>Readiness</span><span className="font-mono">{item.readiness}%</span></div>
-                        <Progress value={item.readiness} className="h-2" />
-                      </div>
-                      <div className="flex gap-2 flex-wrap">
-                        <Badge variant={item.realRouting ? "default" : "outline"} className="text-[10px]">{item.realRouting ? <CheckCircle2 className="h-3 w-3 mr-1" /> : <XCircle className="h-3 w-3 mr-1" />}Real</Badge>
-                        <Badge variant={item.ruleBased ? "default" : "outline"} className="text-[10px]">{item.ruleBased ? <CheckCircle2 className="h-3 w-3 mr-1" /> : <XCircle className="h-3 w-3 mr-1" />}Rule-based</Badge>
-                        <Badge variant={item.demo ? "default" : "outline"} className="text-[10px]">{item.demo ? <CheckCircle2 className="h-3 w-3 mr-1" /> : <XCircle className="h-3 w-3 mr-1" />}Demo</Badge>
-                      </div>
-                      {item.blockers?.length > 0 && <div className="space-y-1"><span className="text-[10px] flex items-center gap-1"><AlertTriangle className="h-3 w-3" />Blockers</span>{item.blockers.map((b: string, i: number) => <p key={i} className="text-[10px] text-muted-foreground pl-4">• {b}</p>)}</div>}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
+      // Compute per-channel stats
+      const channelStats = (channel: string) => {
+        const ch = allReceipts.filter((r: any) => r.channel === channel);
+        const delivered = ch.filter((r: any) => r.delivery_status === "delivered" || r.delivery_status === "sent");
+        return {
+          count: ch.length,
+          successRate: ch.length > 0 ? Math.round((delivered.length / ch.length) * 100) : 0,
+        };
+      };
 
-            <TabsContent value="pipeline">
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-3 flex-wrap">
-                    {items.map((s: any, i: number) => (
-                      <div key={s.key} className="flex items-center gap-2">
-                        {i > 0 && <ArrowRight className="h-4 w-4 text-muted-foreground" />}
-                        <div className={`p-3 rounded-lg border ${s.readiness > 30 ? "bg-green-500/10" : "bg-muted/30"}`}>
-                          <div className="text-xs font-medium">{s.target}</div>
-                          <div className="text-[10px] font-mono text-muted-foreground">{s.readiness}%</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </>
-      )}
-    </div>
-  );
+      const webPush = channelStats("push");
+      const inApp = channelStats("in_app");
+
+      const channels: ChannelTruth[] = [
+        {
+          channel: "web_push",
+          label: "Web Push (VAPID)",
+          icon: Monitor,
+          status: webPush.count > 0 ? "live" : pushTokens.length > 0 ? "partial" : "planned",
+          deliveryCount: webPush.count,
+          successRate: webPush.successRate,
+          evidence: webPush.count > 0
+            ? `${webPush.count} deliveries, ${webPush.successRate}% success`
+            : pushTokens.length > 0
+              ? `${pushTokens.length} subscriptions, no deliveries yet`
+              : "No subscriptions or deliveries",
+        },
+        {
+          channel: "in_app",
+          label: "In-App Notifications",
+          icon: Bell,
+          status: inApp.count > 0 ? "live" : "partial",
+          deliveryCount: inApp.count,
+          successRate: inApp.successRate,
+          evidence: inApp.count > 0
+            ? `${inApp.count} deliveries, ${inApp.successRate}% success`
+            : "Queue exists, no tracked deliveries",
+        },
+        {
+          channel: "android_push",
+          label: "Android Push (FCM)",
+          icon: Smartphone,
+          status: "planned",
+          deliveryCount: 0,
+          successRate: 0,
+          evidence: "FCM integration planned. No implementation yet.",
+        },
+        {
+          channel: "apple_push",
+          label: "Apple Push (APNs)",
+          icon: Apple,
+          status: "planned",
+          deliveryCount: 0,
+          successRate: 0,
+          evidence: "Requires Apple Developer Program membership. Planned.",
+        },
+      ];
+
+      const liveCount = channels.filter((c) => c.status === "live").length;
+      const overallScore = Math.round((liveCount / channels.length) * 100);
+
+      return { channels, overallScore, totalReceipts: allReceipts.length, pushSubscriptions: pushTokens.length };
+    },
+    staleTime: 30_000,
+  });
+}
+
+const statusColors: Record<string, string> = {
+  live: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+  partial: "bg-amber-500/15 text-amber-400 border-amber-500/30",
+  planned: "bg-blue-500/15 text-blue-400 border-blue-500/30",
+  unavailable: "bg-muted text-muted-foreground border-border",
 };
 
-export default NRC06NotificationLaunchHonesty;
+const statusIcons: Record<string, React.ElementType> = {
+  live: CheckCircle2,
+  partial: AlertTriangle,
+  planned: Rocket,
+  unavailable: XCircle,
+};
+
+export default function NRC06NotificationLaunchHonesty() {
+  const { data, isLoading } = useNotificationLaunchHonesty();
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-primary/10">
+            <Rocket className="h-8 w-8 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">NRC06 — Notification Launch Honesty</h1>
+            <p className="text-muted-foreground">Evidence-based classification of notification channel readiness</p>
+          </div>
+        </div>
+        <Badge variant="secondary">{data?.overallScore || 0}% channels live</Badge>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {[
+          { label: "Total Receipts", value: data?.totalReceipts || 0 },
+          { label: "Push Subscriptions", value: data?.pushSubscriptions || 0 },
+          { label: "Channels Live", value: data?.channels?.filter((c) => c.status === "live").length || 0 },
+          { label: "Channels Planned", value: data?.channels?.filter((c) => c.status === "planned").length || 0 },
+        ].map((s) => (
+          <Card key={s.label} className="bg-card border-border">
+            <CardContent className="p-4 text-center">
+              <p className="text-2xl font-bold text-foreground">{isLoading ? "—" : s.value}</p>
+              <p className="text-xs text-muted-foreground">{s.label}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {isLoading ? (
+          <p className="text-muted-foreground">Loading…</p>
+        ) : (
+          (data?.channels || []).map((channel) => {
+            const StatusIcon = statusIcons[channel.status] || XCircle;
+            return (
+              <Card key={channel.channel} className="bg-card border-border">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <channel.icon className="h-5 w-5 text-muted-foreground" />
+                      <CardTitle className="text-foreground text-base">{channel.label}</CardTitle>
+                    </div>
+                    <Badge className={statusColors[channel.status]}>
+                      <StatusIcon className="h-3 w-3 mr-1" />
+                      {channel.status}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Deliveries</span>
+                    <span className="text-foreground font-mono">{channel.deliveryCount}</span>
+                  </div>
+                  {channel.deliveryCount > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Success Rate</span>
+                      <span className="text-foreground font-mono">{channel.successRate}%</span>
+                    </div>
+                  )}
+                  <p className="text-xs text-muted-foreground pt-1">{channel.evidence}</p>
+                </CardContent>
+              </Card>
+            );
+          })
+        )}
+      </div>
+    </div>
+  );
+}
