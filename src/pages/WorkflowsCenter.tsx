@@ -30,6 +30,7 @@ const statusToState = (status: string): ExecutionState => {
 const WorkflowsCenter = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const { confirmation, confirm } = useConfirmation();
   const [filter, setFilter] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
