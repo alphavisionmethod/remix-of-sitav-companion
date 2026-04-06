@@ -17,7 +17,7 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useMockSimulation } from "@/hooks/useDomainMockData";
+import { buildMockSimResult } from "@/lib/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 // Engine-backed cost data (replaces @/lib/mocks import)
 const ENGINE_COSTS = [
@@ -61,7 +61,6 @@ type OwnerPage = "overview" | "workforce" | "incidents" | "connectors" | "costs"
   | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing" | "governance";
 
 const subpageFromPath = (path: string): OwnerPage => {
-  const { buildSimResult: buildMockSimResult } = useMockSimulation();
   const last = path.split("/").pop() || "";
   const map: Record<string, OwnerPage> = {
     "ai-team": "workforce", "internal-agents": "workforce", "workforce": "workforce",

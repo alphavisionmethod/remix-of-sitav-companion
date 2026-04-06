@@ -23,7 +23,10 @@ import {
   ProofCard, MemoryCard, SynthesisCard, ConfidenceLadder,
   BoardroomAdvisorCard, UncertaintyCard,
 } from "@/components/sita/AdvisorComponents";
-import { useAdvisorMissionControl } from "@/hooks/useAdvisorMissionControl";
+import {
+  mockAdvisors, mockRecommendations, mockSimulations, mockApprovals,
+  mockProofHistory, mockMemoryItems, mockSynthesis,
+} from "@/lib/mock-data/advisor-mission-control";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useStreamingChat } from "@/hooks/use-streaming-chat";
 import {
@@ -62,7 +65,6 @@ const TRUST_PIPELINE: ExecutionState[] = [
 // ── Main Guide Identity ─────────────────────────────────────────
 
 const MainGuideHeader = ({ mode, onModeChange }: { mode: CouncilMode; onModeChange: (m: CouncilMode) => void }) => {
-  const { advisors: mockAdvisors, recommendations: mockRecommendations, simulations: mockSimulations, approvals: mockApprovals, proofHistory: mockProofHistory, memoryItems: mockMemoryItems, synthesis: mockSynthesis } = useAdvisorMissionControl();
   const totalApprovals = mockAdvisors.reduce((s, a) => s + a.pendingApprovals, 0);
   const activeAdvisors = mockAdvisors.filter(a => a.status === "active").length;
   const highImpact = mockRecommendations.filter(r => r.impact === "high").length;

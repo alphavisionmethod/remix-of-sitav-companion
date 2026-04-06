@@ -23,7 +23,10 @@ import {
   ArrowRight, Hash, Zap, XCircle, Calendar, User,
 } from "lucide-react";
 
-import { useRevenueCallingData, type CallingContact as Contact, type CallingCallLog as CallLog, type CallingCallScript as CallScript } from "@/hooks/useDomainMockData";
+import {
+  MOCK_CONTACTS, MOCK_CALL_LOGS, MOCK_CALL_SCRIPTS as MOCK_SCRIPTS,
+  type CallingContact as Contact, type CallingCallLog as CallLog, type CallingCallScript as CallScript,
+} from "@/lib/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type DialerState = "idle" | "dialing" | "connected" | "wrapping-up";
@@ -110,7 +113,6 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
   const script = MOCK_SCRIPTS.find(s => s.stage === contact.stage) || MOCK_SCRIPTS[0];
 
   const handleEndCall = () => {
-  const { contacts: MOCK_CONTACTS, callLogs: MOCK_CALL_LOGS, callScripts: MOCK_SCRIPTS } = useRevenueCallingData();
     setState("wrapping-up");
   };
 

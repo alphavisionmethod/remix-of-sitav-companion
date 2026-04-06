@@ -25,7 +25,7 @@ import {
   getWatchlist, getTradeReviewPackets, getExecutionIntents,
   getOpportunityScores, getAvailableTrustModes, getInvestmentTrustMode,
 } from "@/lib/services/finance-os/investment-office.service";
-import { useInvestmentData } from "@/hooks/useDomainMockData";
+import { MOCK_CAPITAL_BUCKETS, MOCK_POSITIONS as MOCK_INV_POSITIONS, MOCK_THESES as MOCK_INV_THESES } from "@/lib/mock-data/investment";
 import { INVESTMENT_POLICY_RULES } from "@/lib/core-services/investment-policy-rules";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 

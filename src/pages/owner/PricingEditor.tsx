@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 
 import { usePricingItems } from "@/hooks/use-domain-data";
-import type { OwnerPricingItem as PricingItem } from "@/hooks/useDomainMockData";
+import type { OwnerPricingItem as PricingItem } from "@/lib/mock-data/owner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PricingEditor = () => {
