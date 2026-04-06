@@ -566,6 +566,7 @@ const App = () => (
         <AuthProvider>
           <ConnectivityProvider>
           <ThemeProvider>
+          <RealityModeProvider>
           <DataModeProvider>
           <DemoModeProvider>
           <DisplayModeProvider>
