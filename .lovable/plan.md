@@ -1,85 +1,113 @@
 
 
-# Money Office → 100% Fully Advanced
+# UX Trust Index → 100/100 — Full Implementation Plan
 
-## Current Gaps (Page-by-Page)
+## What This Means (Non-Technical)
+The UX trust system has all the building blocks (confirmation dialogs, data freshness badges, contextual empty states, undo support, optimistic mutations) but they're sitting on a shelf — only 1 out of 571 pages actually uses them. Getting to 100 means wiring these trust patterns into every page that needs them so users always know: what's real, what's stale, what's destructible, and what's empty.
 
-| Page | Current State | Gap |
-|---|---|---|
-| **MoneyOverview** | Hardcoded `accounts`, `upcomingBills`, `changes`, KPIs, fraud data | Replace all with DB queries; compute KPIs from bills/subscriptions/invoices/reserves |
-| **CashTiming** | Hardcoded `windows[]` array, hardcoded safe-to-spend | Compute from bills + invoices DB data; deterministic projection |
-| **ReceivablesObligations** | Hardcoded `receivables[]` and `obligations[]` | Query invoices (receivables) + bills (obligations) from DB |
-| **MoneyBoardroom** | All hardcoded KPIs and review data | Derive from DB aggregates |
-| **MoneyApprovals** | Hardcoded `approvals[]` array | Query `approval_queue` table filtered to money domain |
-| **MoneyProof** | Hardcoded `proofItems[]` | Query `proof_records` / `execution_receipts` for money domain |
-| **MoneyDocuments** | Hardcoded `documents[]` | Query `financial_documents` table with CRUD |
-| **MoneySettings** | Hardcoded `policies[]` and `connectors[]` | Need new `money_policies` table + query `connector_accounts` |
-| **BillsWorkspace** | Already DB-backed with CRUD | ~100% done |
-| **SubscriptionsWaste** | Already DB-backed with CRUD | ~100% done |
-| **ReservesSavings** | Partially DB-backed (reads reserves table) | Missing create/edit/delete mutations |
-| **InvestmentOffice** | Uses mock data via `useInvestmentOfficeData` | Separate domain — leave as-is for now |
+## Current Gaps
 
-## DB Tables Needed
+| Trust Pattern | Built? | Used? | Gap |
+|---|---|---|---|
+| DemoModeBadge | Yes | 571 pages | Done |
+| ConfirmationDialog | Yes | 1 page (TeamManagement) | 15+ pages with destructive actions use `window.confirm()` |
+| DataFreshnessBadge | Yes | 0 pages | Every DB-backed page should show data age |
+| Contextual Empty States | Yes (10 domains) | 0 pages | Every domain landing should use these |
+| useOptimisticMutation | Yes | 0 pages | CRUD pages should use for instant feedback |
+| ActionFeedbackStack | Yes | 0 pages | Mutation-heavy pages should show success/error stacks |
+| NetworkStatusBar | Yes | 0 pages | Should be in app shell (global) |
+| UndoToastStack | Yes | 0 pages | Delete actions should support undo |
 
-**New table: `financial_accounts`** — Bank/investment accounts for the overview
-- id, user_id, name, institution, account_type, balance, currency, trend, last_synced_at, created_at, updated_at
+## Plan
 
-**New table: `money_policies`** — User-configurable financial rules
-- id, user_id, title, description, category, enabled, threshold, icon_key, created_at, updated_at
+### 1. Global: Wire NetworkStatusBar into App Shell
+Add `NetworkStatusBar` to the root layout so all pages get offline/degraded indicators automatically. One file change.
 
-No new tables needed for receivables (use `invoices`), obligations (use `bills`), approvals (use `approval_queue`), proof (use existing proof tables), documents (use `financial_documents`).
+**File**: `src/App.tsx` or `src/components/shells/UserAppShell.tsx`
 
-## Implementation Plan
+### 2. Global: Wire ActionFeedbackStack + UndoToastStack into App Shell
+These are global stacks — mount once, available everywhere.
 
-### 1. Migration: Create `financial_accounts` + `money_policies` tables with RLS
+**File**: `src/App.tsx` or root layout
 
-### 2. Expand `money-data-service.ts`
-Add fetch functions for:
-- `fetchFinancialAccounts` — from `financial_accounts`
-- `fetchMoneyPolicies` — from `money_policies` + CRUD mutations
-- `fetchCashTimingWindows` — computed from `bills` + `invoices` over next 15 days
-- `fetchMoneyKPIs` — aggregate total balance, safe-to-spend, reserve health, burn rate from existing tables
+### 3. Replace all `window.confirm()` with `useConfirmation` + `ConfirmationDialog`
+Pages currently using `if (confirm("Delete..."))`:
+- `BillsWorkspace.tsx`
+- `SubscriptionsWaste.tsx`
+- `ReservesSavings.tsx`
+- Every other page with delete buttons (scan all pages with `confirm(` pattern)
 
-### 3. Expand `use-domain-data.ts`
-Add hooks: `useFinancialAccounts`, `useMoneyPolicies`, `useCashTimingWindows`, `useMoneyKPIs`
+Each gets: `const { confirmation, confirm } = useConfirmation();` + `<ConfirmationDialog state={confirmation} />`
 
-### 4. Rewrite pages to use DB hooks
+### 4. Add DataFreshnessBadge to all DB-backed pages
+Every page using `useQuery` / `useModeData` with real DB fetching should show a freshness badge in its header area. This means tracking `dataUpdatedAt` from React Query and passing it to `DataFreshnessBadge`.
 
-**MoneyOverview.tsx**: Replace hardcoded accounts/bills/KPIs with `useFinancialAccounts`, `useBills`, `useMoneyKPIs`. Compute fraud summary from real transaction patterns.
+Key pages: MoneyOverview, BillsWorkspace, SubscriptionsWaste, ReservesSavings, CustomersPage, InboxCapture, ApprovalChamber, ProofCenter, ReportingWorkspace, and ~20 more.
 
-**CashTiming.tsx**: Replace hardcoded windows with `useCashTimingWindows` (deterministic projection from bills + invoices).
+**Approach**: Create a small wrapper `useFreshnessFromQuery(queryResult)` that extracts `dataUpdatedAt` and returns props for `DataFreshnessBadge`. Then add the badge to each page header.
 
-**ReceivablesObligations.tsx**: Replace hardcoded arrays with `useInvoices` (receivables) + `useBills` (obligations). Add CRUD.
+### 5. Add Contextual Empty States to domain landing pages
+When a DB-backed page has zero data in live mode, instead of showing a blank table, show the domain-specific empty state from `getContextualEmptyState()`.
 
-**MoneyBoardroom.tsx**: Derive all KPIs from `useMoneyKPIs` aggregate hook.
+Key pages: MoneyOverview (money), CustomersPage (customers), BillsWorkspace (money), InboxCapture (concierge), ReportingWorkspace (reports), and all other domain roots.
 
-**MoneyApprovals.tsx**: Query `approval_queue` where domain = 'money'. Wire approve/reject mutations.
+**Pattern**:
+```tsx
+if (!isDemoMode && data.length === 0) {
+  const empty = getContextualEmptyState("money");
+  return <ContextualEmptyState config={empty} />;
+}
+```
 
-**MoneyProof.tsx**: Query proof/execution receipts for money domain.
+Need a new component: `ContextualEmptyState` that renders the config with icon, title, description, tip, and action buttons.
 
-**MoneyDocuments.tsx**: Query `financial_documents` with full CRUD (create, edit, delete).
+### 6. Add optimistic mutations to key CRUD pages
+Pages with create/edit/delete should use `useOptimisticMutation` for instant UI response:
+- BillsWorkspace (toggle paid status, delete)
+- SubscriptionsWaste (cancel, delete)
+- ReservesSavings (update progress, delete)
+- MoneySettings (toggle policies)
+- TeamManagement (role changes)
 
-**MoneySettings.tsx**: Query `money_policies` with toggle mutations + `connector_accounts` for connector status.
+### 7. Create UX Trust Score Calculator
+A runtime function that audits which trust patterns are active on the current page and reports the score. This powers the "80/100" metric and proves when it hits 100.
 
-**ReservesSavings.tsx**: Add create/edit/delete mutations for `reserves` table.
+**File**: `src/lib/ux-trust/ux-trust-score.ts`
 
-### 5. Demo mode preservation
-All hooks use the existing `resolveByMode` pattern — demo data as fallback, real DB queries in real mode.
+Checks:
+- DemoModeBadge present? (+10)
+- NetworkStatusBar mounted? (+10)
+- ConfirmationDialog on destructive pages? (+15)
+- DataFreshnessBadge on DB pages? (+15)
+- Contextual empty states on domain pages? (+15)
+- Optimistic mutations on CRUD pages? (+10)
+- ActionFeedback on mutation pages? (+10)
+- UndoToast on delete actions? (+15)
 
 ## Files Changed
 
 | File | Change |
 |---|---|
-| `supabase/migrations/...` | Create `financial_accounts`, `money_policies` with RLS |
-| `src/lib/data-services/money-data-service.ts` | Add 6+ fetch/mutation functions |
-| `src/hooks/use-domain-data.ts` | Add 4+ new money hooks |
-| `src/pages/money/MoneyOverview.tsx` | Replace all hardcoded data with DB hooks |
-| `src/pages/money/CashTiming.tsx` | Compute windows from DB |
-| `src/pages/money/ReceivablesObligations.tsx` | DB-backed + CRUD |
-| `src/pages/money/MoneyBoardroom.tsx` | DB-derived KPIs |
-| `src/pages/money/MoneyApprovals.tsx` | Query approval_queue |
-| `src/pages/money/MoneyProof.tsx` | Query proof tables |
-| `src/pages/money/MoneyDocuments.tsx` | CRUD on financial_documents |
-| `src/pages/money/MoneySettings.tsx` | CRUD on money_policies |
-| `src/pages/money/ReservesSavings.tsx` | Add create/edit/delete |
+| `src/App.tsx` or root layout | Mount NetworkStatusBar, ActionFeedbackStack, UndoToastStack globally |
+| `src/components/sita/ContextualEmptyState.tsx` | **New** — renders empty state configs |
+| `src/hooks/use-query-freshness.ts` | **New** — extracts freshness from React Query results |
+| `src/lib/ux-trust/ux-trust-score.ts` | **New** — runtime trust score calculator |
+| `src/pages/money/BillsWorkspace.tsx` | Replace `confirm()` → `useConfirmation`, add DataFreshnessBadge, add empty state |
+| `src/pages/money/SubscriptionsWaste.tsx` | Same as above |
+| `src/pages/money/ReservesSavings.tsx` | Same as above |
+| `src/pages/money/MoneyOverview.tsx` | Add DataFreshnessBadge, contextual empty state |
+| `src/pages/money/MoneySettings.tsx` | Add confirmation for policy changes |
+| `src/pages/business/CustomersPage.tsx` | Add DataFreshnessBadge, empty state, confirmation |
+| `src/pages/InboxCapture.tsx` | Add DataFreshnessBadge, empty state |
+| `src/pages/ApprovalChamber.tsx` | Add DataFreshnessBadge, confirmation |
+| `src/pages/ProofCenter.tsx` | Add DataFreshnessBadge |
+| `src/pages/ReportingWorkspace.tsx` | Add DataFreshnessBadge, empty state |
+| `src/pages/OwnerCenter.tsx` | Add DataFreshnessBadge |
+| All other pages with `confirm(` calls | Replace with ConfirmationDialog (~10-15 pages) |
+| All other DB-backed pages | Add DataFreshnessBadge (~20 pages) |
+
+## Estimated Scope
+- 3 new files (component, hook, score calculator)
+- ~35 page files modified (mostly mechanical: add imports + 3-5 lines each)
+- 0 database changes needed
 
