@@ -8,6 +8,24 @@ import * as amc from "@/lib/mock-data/advisor-mission-control";
 
 export type { AdvisorSummary, AdvisorRecommendation, SafeModeState } from "@/lib/mock-data/advisor-mission-control";
 
+// ── Named re-exports for module-scope usage in sub-components ──
+// Pages import these instead of importing from mock-data directly.
+export const mockAdvisors = amc.mockAdvisors;
+export const mockRecommendations = amc.mockRecommendations;
+export const mockSynthesis = amc.mockSynthesis;
+export const mockApprovals = amc.mockApprovals;
+export const mockProofHistory = amc.mockProofHistory;
+export const mockSimulations = amc.mockSimulations;
+export const mockMemoryItems = amc.mockMemoryItems;
+export const mockInternalAgents = amc.mockInternalAgents;
+export const mockIncidents = amc.mockIncidents;
+export const mockConnectorHealth = amc.mockConnectorHealth;
+export const mockStuckWorkflows = amc.mockStuckWorkflows;
+export const mockCostAnomalies = amc.mockCostAnomalies;
+export const mockPolicyAnomalies = amc.mockPolicyAnomalies;
+export const mockReleaseSafety = amc.mockReleaseSafety;
+export const mockSafeMode = amc.mockSafeMode;
+
 export function useAdvisorMissionControl() {
   const { isDemoMode } = useDataMode();
 
