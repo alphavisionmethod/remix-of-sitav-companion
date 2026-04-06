@@ -59,3 +59,9 @@ export {
   getAILaunchHonestyBoard,
   type AICapabilityLaunchStatus,
 } from "./launch-honesty.service";
+
+// Degraded state diagnostics
+export {
+  getDegradedDiagnostics,
+  type DegradedDiagnostic,
+} from "./diagnostics.service";

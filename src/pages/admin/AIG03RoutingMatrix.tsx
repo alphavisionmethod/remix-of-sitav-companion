@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Route, CheckCircle, XCircle } from "lucide-react";
+import { Route, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { getRoutingPolicies } from "@/lib/services/ai-gateway";
+import { getRoutingPolicies, getCapabilityRouting } from "@/lib/services/ai-gateway";
 
 export default function AIG03RoutingMatrix() {
   const { data: policies = [] } = useQuery({
@@ -13,33 +13,136 @@ export default function AIG03RoutingMatrix() {
     queryFn: getRoutingPolicies,
   });
 
+  const { data: capRouting = [] } = useQuery({
+    queryKey: ["ai-capability-routing"],
+    queryFn: getCapabilityRouting,
+  });
+
+  const activeRoutes = capRouting.filter(r => r.is_active).length;
+  const premiumRoutes = capRouting.filter(r => r.routing_class === "premium_synthesis").length;
+  const missingFallbacks = capRouting.filter(r => r.is_active && !r.fallback_model_id && !r.fallback_provider_id && !r.can_fallback_to_demo).length;
+
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
       <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><Route className="h-6 w-6" /> AIG03 — AI Routing Matrix</h1>
-        <p className="text-sm text-muted-foreground mt-1">Capability → Provider/Model routing, fallback paths, budget classes</p>
+        <h1 className="text-2xl font-bold flex items-center gap-2">
+          <Route className="h-6 w-6" /> AIG03 — AI Routing Matrix
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          Capability → Provider/Model routing, fallback paths, budget classes, quality requirements
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-card border-border"><CardContent className="pt-4">
-          <p className="text-xs text-muted-foreground">Total Policies</p>
-          <p className="text-2xl font-bold">{policies.length}</p>
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+        <Card className="bg-card border-border"><CardContent className="pt-3 pb-3">
+          <p className="text-xs text-muted-foreground">Capability Routes</p>
+          <p className="text-xl font-bold">{capRouting.length}</p>
         </CardContent></Card>
-        <Card className="bg-card border-border"><CardContent className="pt-4">
+        <Card className="bg-card border-border"><CardContent className="pt-3 pb-3">
           <p className="text-xs text-muted-foreground">Active</p>
-          <p className="text-2xl font-bold">{policies.filter(p => p.enabled).length}</p>
+          <p className="text-xl font-bold">{activeRoutes}</p>
         </CardContent></Card>
-        <Card className="bg-card border-border"><CardContent className="pt-4">
+        <Card className="bg-card border-border"><CardContent className="pt-3 pb-3">
+          <p className="text-xs text-muted-foreground">Premium</p>
+          <p className="text-xl font-bold">{premiumRoutes}</p>
+        </CardContent></Card>
+        <Card className={`bg-card ${missingFallbacks > 0 ? "border-amber-500/50" : "border-border"}`}><CardContent className="pt-3 pb-3">
+          <p className="text-xs text-amber-400">Missing Fallbacks</p>
+          <p className="text-xl font-bold">{missingFallbacks}</p>
+        </CardContent></Card>
+        <Card className="bg-card border-border"><CardContent className="pt-3 pb-3">
+          <p className="text-xs text-muted-foreground">Legacy Policies</p>
+          <p className="text-xl font-bold">{policies.length}</p>
+        </CardContent></Card>
+        <Card className="bg-card border-border"><CardContent className="pt-3 pb-3">
           <p className="text-xs text-muted-foreground">Domains</p>
-          <p className="text-2xl font-bold">{new Set(policies.map(p => p.domain).filter(Boolean)).size}</p>
+          <p className="text-xl font-bold">{new Set(capRouting.map(r => r.routing_class)).size}</p>
         </CardContent></Card>
       </div>
 
+      {/* Canonical Capability Routing */}
       <Card className="bg-card border-border">
-        <CardHeader><CardTitle>Routing Policies</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Capability Routing Matrix</CardTitle></CardHeader>
         <CardContent>
-          {policies.length > 0 ? (
+          {capRouting.length > 0 ? (
+            <Table>
+              <TableHeader><TableRow>
+                <TableHead>Capability Key</TableHead>
+                <TableHead>Routing Class</TableHead>
+                <TableHead>Budget Class</TableHead>
+                <TableHead>Quality</TableHead>
+                <TableHead>Latency</TableHead>
+                <TableHead>Tool Use</TableHead>
+                <TableHead>Structured</TableHead>
+                <TableHead>Honesty Class</TableHead>
+                <TableHead>Demo Fallback</TableHead>
+                <TableHead>Unavail Fallback</TableHead>
+                <TableHead>Active</TableHead>
+              </TableRow></TableHeader>
+              <TableBody>
+                {capRouting.map(r => {
+                  const hasFallback = !!(r.fallback_model_id || r.fallback_provider_id || r.can_fallback_to_demo || r.can_fallback_to_unavailable);
+                  return (
+                    <TableRow key={r.id}>
+                      <TableCell className="font-mono text-xs font-medium">{r.capability_key}</TableCell>
+                      <TableCell>
+                        <Badge variant={r.routing_class === "premium_synthesis" ? "default" : "outline"} className="text-xs">
+                          {r.routing_class}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-xs">{r.budget_class}</TableCell>
+                      <TableCell className="text-xs">{r.quality_requirement}</TableCell>
+                      <TableCell className="text-xs">{r.max_latency_class}</TableCell>
+                      <TableCell>
+                        {r.tool_use_required
+                          ? <CheckCircle className="h-3.5 w-3.5 text-emerald-400" />
+                          : <span className="text-xs text-muted-foreground">—</span>}
+                      </TableCell>
+                      <TableCell>
+                        {r.structured_output_required
+                          ? <CheckCircle className="h-3.5 w-3.5 text-emerald-400" />
+                          : <span className="text-xs text-muted-foreground">—</span>}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="text-xs">{r.launch_honesty_class}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        {r.can_fallback_to_demo
+                          ? <CheckCircle className="h-3.5 w-3.5 text-blue-400" />
+                          : <XCircle className="h-3.5 w-3.5 text-muted-foreground" />}
+                      </TableCell>
+                      <TableCell>
+                        {r.can_fallback_to_unavailable
+                          ? <CheckCircle className="h-3.5 w-3.5 text-amber-400" />
+                          : <XCircle className="h-3.5 w-3.5 text-muted-foreground" />}
+                      </TableCell>
+                      <TableCell>
+                        {r.is_active
+                          ? <CheckCircle className="h-3.5 w-3.5 text-emerald-400" />
+                          : <XCircle className="h-3.5 w-3.5 text-muted-foreground" />}
+                        {r.is_active && !hasFallback && (
+                          <AlertTriangle className="h-3 w-3 text-amber-400 ml-1 inline" />
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          ) : (
+            <p className="text-center text-muted-foreground py-4">
+              No capability routing configured. Add entries to ai_capability_routing to map capabilities to providers.
+            </p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Legacy Routing Policies */}
+      {policies.length > 0 && (
+        <Card className="bg-card border-border">
+          <CardHeader><CardTitle>Legacy Routing Policies</CardTitle></CardHeader>
+          <CardContent>
             <Table>
               <TableHeader><TableRow>
                 <TableHead>Capability</TableHead>
@@ -61,16 +164,14 @@ export default function AIG03RoutingMatrix() {
                     <TableCell className="font-mono text-xs">{p.fallback_model ?? "—"}</TableCell>
                     <TableCell className="text-xs">{p.budget_class ?? "—"}</TableCell>
                     <TableCell className="text-xs">{p.max_cost_cents ? `${p.max_cost_cents}¢` : "—"}</TableCell>
-                    <TableCell>{p.enabled ? <CheckCircle className="h-3 w-3 text-green-400" /> : <XCircle className="h-3 w-3 text-muted-foreground" />}</TableCell>
+                    <TableCell>{p.enabled ? <CheckCircle className="h-3 w-3 text-emerald-400" /> : <XCircle className="h-3 w-3 text-muted-foreground" />}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-          ) : (
-            <p className="text-center text-muted-foreground py-4">No routing policies. Add policies to ai_routing_policies to configure capability routing.</p>
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
