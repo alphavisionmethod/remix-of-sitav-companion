@@ -14726,6 +14726,62 @@ export type Database = {
         }
         Relationships: []
       }
+      notification_delivery_receipts: {
+        Row: {
+          channel: string
+          created_at: string
+          delivered_at: string | null
+          failure_reason: string | null
+          id: string
+          latency_ms: number | null
+          metadata: Json | null
+          notification_id: string | null
+          opened_at: string | null
+          platform: string
+          sent_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          channel?: string
+          created_at?: string
+          delivered_at?: string | null
+          failure_reason?: string | null
+          id?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          notification_id?: string | null
+          opened_at?: string | null
+          platform?: string
+          sent_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          delivered_at?: string | null
+          failure_reason?: string | null
+          id?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          notification_id?: string | null
+          opened_at?: string | null
+          platform?: string
+          sent_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_delivery_receipts_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notifications_queue"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_fatigue_profiles: {
         Row: {
           cooldown_minutes: number | null
@@ -14777,6 +14833,45 @@ export type Database = {
           updated_at?: string
           user_id?: string
           workout_behavior?: string | null
+        }
+        Relationships: []
+      }
+      notification_preferences: {
+        Row: {
+          category: string
+          channel_email: boolean
+          channel_in_app: boolean
+          channel_push: boolean
+          created_at: string
+          enabled: boolean
+          id: string
+          updated_at: string
+          urgency_minimum: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          channel_email?: boolean
+          channel_in_app?: boolean
+          channel_push?: boolean
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          updated_at?: string
+          urgency_minimum?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          channel_email?: boolean
+          channel_in_app?: boolean
+          channel_push?: boolean
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          updated_at?: string
+          urgency_minimum?: string
+          user_id?: string
         }
         Relationships: []
       }

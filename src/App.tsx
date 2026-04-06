@@ -382,6 +382,7 @@ const NRC03FatigueBoard = lazy(() => import("./pages/admin/NRC03FatigueBoard"));
 const NRC04QueueInterruptMatrix = lazy(() => import("./pages/admin/NRC04QueueInterruptMatrix"));
 const NRC05CrossDeviceDelivery = lazy(() => import("./pages/admin/NRC05CrossDeviceDelivery"));
 const NRC06NotificationLaunchHonesty = lazy(() => import("./pages/admin/NRC06NotificationLaunchHonesty"));
+const NOT03DeliveryReceiptsExplorer = lazy(() => import("./pages/admin/NOT03DeliveryReceiptsExplorer"));
 
 // ── NSS: Native Shell Strategy ──
 const NSS01StrategyBoard = lazy(() => import("./pages/admin/NSS01StrategyBoard"));
@@ -1248,6 +1249,7 @@ const App = () => (
                     <Route path="/admin/nrc/queue-matrix" element={<NRC04QueueInterruptMatrix />} />
                     <Route path="/admin/nrc/cross-device" element={<NRC05CrossDeviceDelivery />} />
                     <Route path="/admin/nrc/launch-honesty" element={<NRC06NotificationLaunchHonesty />} />
+                    <Route path="/admin/nrc/delivery-receipts" element={<NOT03DeliveryReceiptsExplorer />} />
                     {/* NSS — Native Shell Strategy */}
                     <Route path="/admin/nss/strategy" element={<NSS01StrategyBoard />} />
                     <Route path="/admin/nss/capability-matrix" element={<NSS02CapabilityMatrix />} />

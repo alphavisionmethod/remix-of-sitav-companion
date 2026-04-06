@@ -10,10 +10,10 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const statusColors: Record<string, string> = {
-  healthy: "bg-green-500/20 text-green-400", connected: "bg-green-500/20 text-green-400",
-  degraded: "bg-yellow-500/20 text-yellow-400", reauth_required: "bg-orange-500/20 text-orange-400",
-  unhealthy: "bg-red-500/20 text-red-400", token_expired: "bg-red-500/20 text-red-400",
-  demo_simulated: "bg-purple-500/20 text-purple-400", internal_test: "bg-blue-500/20 text-blue-400",
+  healthy: "bg-emerald-500/15 text-emerald-400", connected: "bg-emerald-500/15 text-emerald-400",
+  degraded: "bg-amber-500/15 text-amber-400", reauth_required: "bg-orange-500/15 text-orange-400",
+  unhealthy: "bg-destructive/15 text-destructive", token_expired: "bg-destructive/15 text-destructive",
+  demo_simulated: "bg-purple-500/15 text-purple-400", internal_test: "bg-blue-500/15 text-blue-400",
   shell_only: "bg-muted text-muted-foreground", not_configured: "bg-muted text-muted-foreground",
 };
 
@@ -21,6 +21,21 @@ const classIcons: Record<string, React.ReactNode> = {
   real: <Plug className="h-4 w-4" />, user_linked: <Shield className="h-4 w-4" />,
   internal_test: <TestTube className="h-4 w-4" />, demo: <Presentation className="h-4 w-4" />,
 };
+
+interface VerificationCheck {
+  label: string;
+  check: (data: { registry: any[]; accounts: any[]; tokens: any[]; receipts: any[]; oauthConfig: any }) => boolean;
+}
+
+const VERIFICATION_CHECKS: VerificationCheck[] = [
+  { label: "OAuth Configured", check: ({ oauthConfig }) => oauthConfig?.google_oauth_configured === true },
+  { label: "Registry Seeded", check: ({ registry }) => registry.some((r: any) => r.connector_class === "real") },
+  { label: "Callback Verified", check: ({ receipts }) => receipts.some((r: any) => r.event_type === "oauth_connect") },
+  { label: "Token Exchange", check: ({ tokens }) => tokens.length > 0 },
+  { label: "Connected Accounts", check: ({ accounts }) => accounts.some((a: any) => a.status === "connected" && !a.demo_mode) },
+  { label: "Reauth Flow", check: ({ tokens }) => tokens.some((t: any) => t.refresh_token) },
+  { label: "Disconnect Flow", check: ({ receipts }) => receipts.some((r: any) => r.event_type === "disconnect") },
+];
 
 export default function CN01ConnectorRealityOverview() {
   const queryClient = useQueryClient();
@@ -38,6 +53,30 @@ export default function CN01ConnectorRealityOverview() {
     queryFn: async () => {
       const { data } = await supabase.from("connector_accounts").select("*");
       return data || [];
+    },
+  });
+
+  const { data: tokens = [] } = useQuery({
+    queryKey: ["connector-oauth-tokens"],
+    queryFn: async () => {
+      const { data } = await supabase.from("connector_oauth_tokens").select("*");
+      return data || [];
+    },
+  });
+
+  const { data: receipts = [] } = useQuery({
+    queryKey: ["connector-receipts-verify"],
+    queryFn: async () => {
+      const { data } = await supabase.from("connector_receipts").select("*").order("created_at", { ascending: false }).limit(50);
+      return data || [];
+    },
+  });
+
+  const { data: oauthConfig } = useQuery({
+    queryKey: ["oauth-config-admin"],
+    queryFn: async () => {
+      const { data } = await supabase.functions.invoke("connector-oauth", { body: { action: "check_config" } });
+      return data;
     },
   });
 
@@ -72,6 +111,9 @@ export default function CN01ConnectorRealityOverview() {
   const demoConnectors = registry.filter((r: any) => r.connector_class === "demo");
   const connectedAccounts = accounts.filter((a: any) => a.status === "connected" || a.status === "demo_simulated" || a.status === "internal_test");
 
+  const verificationData = { registry, accounts, tokens, receipts, oauthConfig };
+  const passedChecks = VERIFICATION_CHECKS.filter((c) => c.check(verificationData)).length;
+
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
@@ -82,6 +124,32 @@ export default function CN01ConnectorRealityOverview() {
             {registry.length === 0 ? "Seed Registry" : "Re-Seed Registry"}
           </Button>
         </div>
+
+        {/* OAuth Verification Matrix */}
+        <Card className="bg-card border-border">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Shield className="h-5 w-5 text-primary" />
+              OAuth Runtime Verification Matrix
+              <Badge variant="outline" className={passedChecks === VERIFICATION_CHECKS.length ? "bg-emerald-500/15 text-emerald-400" : "bg-amber-500/15 text-amber-400"}>
+                {passedChecks}/{VERIFICATION_CHECKS.length} passed
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {VERIFICATION_CHECKS.map((check) => {
+                const passed = check.check(verificationData);
+                return (
+                  <div key={check.label} className="flex items-center gap-2 p-2 rounded-lg bg-muted/30 border border-border">
+                    {passed ? <CheckCircle className="h-4 w-4 text-emerald-400" /> : <XCircle className="h-4 w-4 text-destructive" />}
+                    <span className="text-xs font-medium">{check.label}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -126,9 +194,9 @@ export default function CN01ConnectorRealityOverview() {
                         <Badge variant="outline" className={statusColors[c.launch_stage] || ""}>{c.launch_stage}</Badge>
                         {lr && (
                           <div className="flex items-center gap-1">
-                            {lr.oauth_working ? <CheckCircle className="h-3 w-3 text-green-400" /> : <XCircle className="h-3 w-3 text-red-400" />}
-                            {lr.sync_working ? <CheckCircle className="h-3 w-3 text-green-400" /> : <XCircle className="h-3 w-3 text-red-400" />}
-                            {lr.health_reporting ? <CheckCircle className="h-3 w-3 text-green-400" /> : <XCircle className="h-3 w-3 text-red-400" />}
+                            {lr.oauth_working ? <CheckCircle className="h-3 w-3 text-emerald-400" /> : <XCircle className="h-3 w-3 text-destructive" />}
+                            {lr.sync_working ? <CheckCircle className="h-3 w-3 text-emerald-400" /> : <XCircle className="h-3 w-3 text-destructive" />}
+                            {lr.health_reporting ? <CheckCircle className="h-3 w-3 text-emerald-400" /> : <XCircle className="h-3 w-3 text-destructive" />}
                           </div>
                         )}
                         {c.read_supported && <Badge variant="secondary" className="text-xs">Read</Badge>}
