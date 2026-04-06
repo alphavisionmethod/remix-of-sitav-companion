@@ -788,7 +788,14 @@ const App = () => (
                     <Route path="/admin/truth/route-interaction" element={<LT06RouteInteractionTruth />} />
                     <Route path="/admin/truth/regression-radar" element={<LT07TruthRegressionRadar />} />
 
-
+                    {/* V — Behavioral Truth Verification Boards */}
+                    <Route path="/admin/verification/surfaces" element={<V01SurfaceInventoryBoard />} />
+                    <Route path="/admin/verification/coverage" element={<V02InteractionCoverageBoard />} />
+                    <Route path="/admin/verification/p0-journeys" element={<V03P0JourneyBoard />} />
+                    <Route path="/admin/verification/modes" element={<V04ModeVerificationBoard />} />
+                    <Route path="/admin/verification/failures" element={<V05FailureTriageBoard />} />
+                    <Route path="/admin/verification/evidence" element={<V06EvidenceExplorer />} />
+                    <Route path="/admin/verification/blockers" element={<V07LaunchBlockerBoard />} />
                     {/* Digital Presence Office */}
                     <Route path="/digital-presence" element={<PresenceGate />} />
                     <Route path="/digital-presence/boardroom" element={<PresenceBoardroom />} />
