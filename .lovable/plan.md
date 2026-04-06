@@ -1,105 +1,175 @@
 
 
-# 7 Indices → 100% — Implementation Plan
+# Customer Journey 100/100 — Full Implementation Plan
 
-## Current State Analysis
+## Current State
 
-| Index | Persisted | DB | Hooks | Gap Summary |
-|---|---|---|---|---|
-| **AI Budget/Policies** | 95% | 90% | 80% | DB functions exist (`check_ai_budget_policies`, `aggregate_ai_daily_spend`), budget service fully wired. Missing: CRUD mutations for `ai_budget_policies` from the UI, usage ledger aggregation hook, and the AITokenDashboard uses legacy `ai_token_usage` instead of `ai_usage_ledger` |
-| **AI Usage Ledger** | 95% | 85% | 75% | `getUsageLedger()` exists but AITokenDashboard still queries `ai_token_usage` (legacy). Missing: hook wrapping `budget.service.ts`, daily aggregation via `aggregate_ai_daily_spend` RPC, and cost-by-capability breakdown |
-| **Calendar** | 85% | 80% | 65% | Has `use-calendar-data.ts` hook + `CalendarWorkspace.tsx` inline query. Missing: CRUD mutations (create/edit/delete events), the page's "New Event" button is non-functional, Edit/Reschedule buttons are dead |
-| **Owner Center** | 90% | 85% | 70% | Uses `useCouncilDecisions` + `useAdminPolicies` correctly. Still imports from `@/lib/mock-data/admin-ops` for demo fallback. Missing: direct DB queries for policies/incidents/audit instead of edge function proxy, and `ENGINE_COSTS` is from a demo-data file |
-| **Apple Ecosystem** | 95% | 90% | 70% | All 7 hooks wired, seed button works. Missing: CRUD mutations (add/remove device, update trust, toggle health consent), the pages are read-only with no write actions |
-| **Android Ecosystem** | 95% | 90% | 70% | Same as Apple — all 7 hooks wired. Missing: same CRUD mutations as Apple |
-| **Health/Signal Intel** | 90% | 85% | 65% | 5 hooks wired. HRS01-03 use hooks. HRS05 uses `useReadinessStates` but hardcodes `BRIEFING_WINDOWS` and `HOLD_VS_ACT`. HRS01 consent toggles are local state only, not persisted |
+**What exists:**
+- 7 CJ admin pages (CJ01-CJ07) — all DB-backed with React Query hooks
+- `customer_journeys` table with 18 columns, `customer_journey_runs`, `customer_journey_steps`, `customer_journey_blockers` tables
+- `journey-registry.ts` with 24 journey definitions (auth, core, files, boardroom, AI, connectors, settings, admin, demo, onboarding, search, money, business)
+- `journey-hooks.ts` with 7 hooks (queries + seed + record run)
+- `surface-registry.ts` with full UI action inventory (~215 lines, P0/P1/P2 entries)
+- 19 E2E test files — but most are shallow (auth guard checks, route-load only)
+- Existing `verification_surfaces`, `verification_runs`, `verification_evidence`, `verification_blockers` tables
+
+**What's missing (the gap to 100%):**
+1. **6 new DB tables**: `ui_action_inventory`, `launch_blocker_scores`, `customer_journey_mode_comparisons`, `verification_evidence_assets`, `route_verification_coverage`, `journey_step_results` — the spec requires these for structured evidence, coverage tracking, mode comparison, and blocker scoring
+2. **Real Playwright P0 tests**: Current tests are auth-guard smoke tests. Zero actual clickthrough verification exists
+3. **Testability upgrades**: No `data-testid` on most interactive elements
+4. **Journey detail view (CJ03)** doesn't show step-level results from DB
+5. **Route/action coverage board** not wired to DB coverage table
+6. **Launch blocker scoring** is manual — no automated severity computation
+7. **Evidence asset storage** not structured
+8. **CI integration** config not set up
 
 ## Plan
 
-### 1. AI Budget/Policies + AI Usage Ledger → 100%
+### Phase 1 — Database Migration (6 new tables)
 
-**`src/hooks/use-ai-budget-data.ts`** (new) — React Query hooks wrapping `budget.service.ts`:
-- `useBudgetPolicies()`, `useActiveBudgetPolicies()`, `useBudgetAlerts()`, `useBudgetSummary()`
-- `useUsageLedger(limit)`, `useDailyAggregation()` (calls `aggregate_ai_daily_spend` RPC)
-- `useCreateBudgetPolicy()`, `useUpdateBudgetPolicy()`, `useDeleteBudgetPolicy()` mutations
+Create migration adding:
 
-**`src/pages/admin/AITokenDashboard.tsx`** — Rewrite to use new hooks:
-- Replace `ai_token_usage` query with `useUsageLedger()`
-- Replace `user_ai_budgets` query with `useBudgetSummary()`
-- Add daily aggregation chart via `useDailyAggregation()`
-- Add budget policy CRUD panel (list, create, toggle active)
+| Table | Purpose |
+|---|---|
+| `ui_action_inventory` | Full inventory of every clickable action (route_key, action_key, action_type, selector_hint, test_id, priority, launch_honesty_class) |
+| `journey_step_results` | Per-step results for each verification run (verification_run_id FK, step_order, status, actual_behavior, error_summary, screenshot_ref, duration_ms) |
+| `launch_blocker_scores` | Automated blocker scoring (journey_key, blocker_type, severity_score, affects_demo/real/admin/user, resolved) |
+| `customer_journey_mode_comparisons` | Demo vs real status per journey (real_status, demo_status, comparison_summary, claim_risk) |
+| `verification_evidence_assets` | Screenshots/traces/logs/videos linked to runs (run_id FK, asset_type, asset_ref, label) |
+| `route_verification_coverage` | Coverage rollup per route (total_actions, verified_actions, p0/p1 counts, coverage_percent) |
 
-### 2. Calendar → 100%
+All tables get RLS policies for authenticated users with `user_id` column.
 
-**`src/hooks/use-calendar-mutations.ts`** (new):
-- `useCreateCalendarEvent()` — insert into `calendar_events`
-- `useUpdateCalendarEvent()` — update event
-- `useDeleteCalendarEvent()` — delete event
+### Phase 2 — Data Services & Hooks
 
-**`src/pages/CalendarWorkspace.tsx`** — Wire CRUD:
-- "New Event" button opens a dialog with form fields (title, date, time, domain, type, location)
-- Event detail panel: "Edit" opens pre-filled dialog, "Reschedule" opens date picker, add "Delete" button
-- Replace inline supabase query with `useCalendarEvents` hook from `use-calendar-data.ts`
+**New file: `src/lib/customer-journey/journey-evidence-hooks.ts`**
+- `useStepResults(runId)` — query `journey_step_results`
+- `useRecordStepResult()` — insert step result mutation
+- `useEvidenceAssets(runId)` — query `verification_evidence_assets`
+- `useAddEvidenceAsset()` — insert asset mutation
 
-### 3. Owner Center → 100%
+**New file: `src/lib/customer-journey/journey-scoring-hooks.ts`**
+- `useBlockerScores()` — query `launch_blocker_scores`
+- `useComputeBlockerScore()` — mutation that auto-classifies severity based on journey priority + status + mode
+- `useModeComparisons()` — query `customer_journey_mode_comparisons`
+- `useUpdateModeComparison()` — mutation
 
-**`src/hooks/use-admin-data.ts`** — Add direct DB query fallback paths:
-- `useAdminPolicies`: in non-demo mode, query `approval_policies` or `ai_budget_policies` table directly instead of edge function only
-- `useAdminIncidents`: in non-demo mode, query `incidents` table directly as fallback
-- `useAdminAuditLogs`: query `audit_logs` table directly as fallback
-- `useFleetHealth`: query `connected_devices` / `ecosystem_devices` directly as fallback
-- `useCouncilDecisions`: query `council_decisions` table directly as fallback
-- Remove mock-data imports for non-demo paths — keep them only for `isDemoMode` branches
+**New file: `src/lib/customer-journey/journey-coverage-hooks.ts`**
+- `useActionInventory()` — query `ui_action_inventory`
+- `useSeedActionInventory()` — seed from `SURFACE_REGISTRY`
+- `useRouteCoverage()` — query `route_verification_coverage`
+- `useUpdateRouteCoverage()` — recompute coverage per route
 
-**`src/pages/OwnerCenter.tsx`** — Replace `ENGINE_COSTS` import with DB query or inline canonical data
+**Expand `journey-hooks.ts`:**
+- `useResolveBlocker()` — resolve a blocker entry
+- `useJourneyDetail(journeyKey)` — single journey + latest run + steps
 
-### 4. Apple + Android Ecosystem → 100%
+### Phase 3 — Blocker Scoring Engine
 
-**`src/hooks/useEcosystemDevices.ts`** — Add CRUD mutations:
-- `useAddEcosystemDevice()` — insert into `ecosystem_devices`
-- `useRemoveEcosystemDevice()` — delete device
-- `useUpdateDeviceTrust()` — update `ecosystem_trust_records`
-- `useToggleHealthConsent()` — update `ecosystem_health_consents.read_permission`/`revoked_at`
-- `useUpdatePushRoute()` — update `ecosystem_push_routes`
+**New file: `src/lib/customer-journey/blocker-scoring-engine.ts`**
 
-**`src/pages/admin/APL01AppleEcosystemCenter.tsx`** + **`AND01AndroidEcosystemCenter.tsx`**:
-- Add "Add Device" button + dialog
-- Trust tab: add "Revoke Trust" / "Re-verify" actions on each device
-- Health tab: consent toggles actually call `useToggleHealthConsent()` instead of local state
-- Push tab: enable/disable route toggles that persist
+Automated scoring function that takes a journey run result and computes:
+- `blocker_type`: launch_blocker / pilot_blocker / claim_risk / important_non_blocker / non_blocking
+- `severity_score`: 0-100 based on: journey priority (P0=high), user harm (broken=critical), mode affected, claim risk, dependency centrality
+- Auto-creates `launch_blocker_scores` row
+- Updates `customer_journey_mode_comparisons` when runs exist for both modes
 
-### 5. Health/Signal Intel → 100%
+### Phase 4 — Upgrade CJ Admin Pages
 
-**`src/hooks/use-health-signal-mutations.ts`** (new):
-- `useToggleSignalConsent()` — update `health_signal_consents` table
-- `useUpdateReadinessState()` — for manual override of readiness
+| Page | Current | Upgrade |
+|---|---|---|
+| **CJ03 JourneyDetailView** | Shows run list only | Add step-level results table, evidence viewer, failure diagnosis panel, recommended fix |
+| **CJ05 DemoVsRealComparison** | Derives from runs client-side | Also persist to `customer_journey_mode_comparisons`, show claim_risk flags prominently |
+| **CJ04 LaunchBlockerView** | Lists blockers | Add severity scores, resolve action, auto-computed blocker classification |
 
-**`src/pages/admin/HRS01HealthConsentCenter.tsx`**:
-- Replace `enabledCats` local state with DB-backed consent toggles using `useToggleSignalConsent()`
-- When toggled, insert/update `health_signal_consents` row
+**New page: `CJ08RouteActionCoverage.tsx`**
+- Shows `route_verification_coverage` data
+- Action inventory browser with filter by domain/priority
+- Gap analysis: routes with 0% coverage highlighted
+- Seed from `SURFACE_REGISTRY` button
 
-**`src/pages/admin/HRS05AssistantTimingBoard.tsx`**:
-- Extract `BRIEFING_WINDOWS` and `HOLD_VS_ACT` to `src/lib/demo-data/health-signals.ts`
-- Wire `useReadinessStates` data into timing logic display
+### Phase 5 — Testability Upgrades to Frontend
+
+Add `data-testid` attributes to critical interactive elements across ~15 key pages:
+- Login/signup forms and submit buttons
+- Sidebar navigation links
+- Files page upload button, file list
+- Boardroom refresh button, content area
+- Advisor chat input, send button
+- Approvals action buttons
+- Settings save button
+- Admin truth boards
+- Demo mode badge/indicator
+- Loading/error/empty state containers
+
+### Phase 6 — Playwright P0 Test Suite
+
+**New folder structure:**
+```text
+tests/e2e/
+  helpers/
+    auth.ts          — login/logout helpers
+    selectors.ts     — centralized selector constants
+    reporter.ts      — structured result export for DB ingestion
+  customer-journey/
+    auth.spec.ts     — sign_in, sign_out, session_persistence
+    dashboard.spec.ts — dashboard load, widget rendering
+    files.spec.ts    — browse, upload, file appears
+    boardroom.spec.ts — load, refresh
+    assistant.spec.ts — open, send message, degraded state
+    approvals.spec.ts — open, decision flow
+    connectors.spec.ts — open, status check
+    settings.spec.ts  — account open, edit
+    admin.spec.ts     — truth board, CJ report, launch readiness
+    demo-vs-real.spec.ts — boardroom, assistant, connectors comparison
+```
+
+Each test:
+- Uses auth helper for login
+- Captures screenshot on failure
+- Exports structured result (journey_key, steps_passed, steps_failed, status)
+- Tagged with priority (P0/P1)
+
+**Reporter** (`tests/e2e/reporters/journey-reporter.ts`):
+- Custom Playwright reporter that outputs JSON results
+- Can be ingested into `customer_journey_runs` + `journey_step_results` tables
+
+### Phase 7 — CI Integration
+
+**Update `playwright.config.ts`:**
+- Add `customer-journey` project for P0 suite
+- Configure reporter to output JSON artifacts
+- Add GitHub Actions workflow snippet (`.github/workflows/e2e.yml`) for PR-triggered P0 runs
+
+### Phase 8 — Seed Data
+
+Extend `ecosystem-master-seeder.ts`:
+- Seed `ui_action_inventory` from `SURFACE_REGISTRY` (~60 actions)
+- Seed initial `route_verification_coverage` rows for all registered routes
+- Seed `customer_journey_mode_comparisons` with initial "no_data" state
 
 ## Files Changed
 
 | File | Change |
 |---|---|
-| `src/hooks/use-ai-budget-data.ts` | **New** — 9 React Query hooks for budget + usage |
-| `src/hooks/use-calendar-mutations.ts` | **New** — create/update/delete calendar event mutations |
-| `src/hooks/use-health-signal-mutations.ts` | **New** — consent toggle + readiness update mutations |
-| `src/pages/admin/AITokenDashboard.tsx` | Rewrite: `ai_usage_ledger` + budget policies + daily aggregation |
-| `src/pages/CalendarWorkspace.tsx` | Wire CRUD dialogs for New/Edit/Delete events |
-| `src/hooks/use-admin-data.ts` | Add direct DB fallback queries for 5 hooks, remove mock imports from non-demo paths |
-| `src/pages/OwnerCenter.tsx` | Replace `ENGINE_COSTS` with canonical/DB data |
-| `src/hooks/useEcosystemDevices.ts` | Add 5 CRUD mutations |
-| `src/pages/admin/APL01AppleEcosystemCenter.tsx` | Add device + trust + consent CRUD actions |
-| `src/pages/admin/AND01AndroidEcosystemCenter.tsx` | Add device + trust + consent CRUD actions |
-| `src/pages/admin/HRS01HealthConsentCenter.tsx` | Wire consent toggles to DB |
-| `src/pages/admin/HRS05AssistantTimingBoard.tsx` | Extract hardcoded data to demo module |
-| `src/lib/demo-data/health-signals.ts` | Add `DEMO_BRIEFING_WINDOWS`, `DEMO_HOLD_VS_ACT` |
+| **Migration SQL** | 6 new tables + RLS + indexes |
+| `src/lib/customer-journey/journey-evidence-hooks.ts` | **New** — 4 hooks |
+| `src/lib/customer-journey/journey-scoring-hooks.ts` | **New** — 4 hooks |
+| `src/lib/customer-journey/journey-coverage-hooks.ts` | **New** — 4 hooks |
+| `src/lib/customer-journey/blocker-scoring-engine.ts` | **New** — auto-classification logic |
+| `src/lib/customer-journey/journey-hooks.ts` | Add `useResolveBlocker`, `useJourneyDetail` |
+| `src/pages/admin/customer-journey/CJ03JourneyDetailView.tsx` | Step results + evidence viewer |
+| `src/pages/admin/customer-journey/CJ04LaunchBlockerView.tsx` | Severity scores + resolve action |
+| `src/pages/admin/customer-journey/CJ05DemoVsRealComparison.tsx` | Persist comparisons + claim risk |
+| `src/pages/admin/customer-journey/CJ08RouteActionCoverage.tsx` | **New** — coverage board |
+| `tests/e2e/helpers/auth.ts` | **New** — login helper |
+| `tests/e2e/helpers/selectors.ts` | **New** — selector constants |
+| `tests/e2e/reporters/journey-reporter.ts` | **New** — structured output |
+| `tests/e2e/customer-journey/*.spec.ts` | **New** — 10 P0 test files |
+| `playwright.config.ts` | Add customer-journey project |
+| `src/lib/seed/ecosystem-master-seeder.ts` | Seed action inventory + coverage |
+| ~15 frontend pages | Add `data-testid` attributes |
 
-## No database migration needed
-All tables already exist. This is hooks + mutations + UI wiring.
+## Database migration required
+6 new tables with RLS policies.
 
