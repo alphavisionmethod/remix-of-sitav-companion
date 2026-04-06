@@ -138,19 +138,19 @@ export default function NotificationPreferences() {
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">Push</span>
                     <Switch
-                      checked={pref.push_enabled}
+                      checked={pref.channel_push}
                       disabled={!isRegistered}
                       onCheckedChange={(checked) =>
-                        upsertPref.mutate({ category: cat.key, push_enabled: checked, in_app_enabled: pref.in_app_enabled, min_urgency: pref.min_urgency })
+                        upsertPref.mutate({ category: cat.key, channel_push: checked, channel_in_app: pref.channel_in_app, urgency_minimum: pref.urgency_minimum })
                       }
                     />
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">In-App</span>
                     <Switch
-                      checked={pref.in_app_enabled}
+                      checked={pref.channel_in_app}
                       onCheckedChange={(checked) =>
-                        upsertPref.mutate({ category: cat.key, push_enabled: pref.push_enabled, in_app_enabled: checked, min_urgency: pref.min_urgency })
+                        upsertPref.mutate({ category: cat.key, channel_push: pref.channel_push, channel_in_app: checked, urgency_minimum: pref.urgency_minimum })
                       }
                     />
                   </div>

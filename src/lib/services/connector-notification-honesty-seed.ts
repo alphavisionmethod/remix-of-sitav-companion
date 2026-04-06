@@ -124,10 +124,12 @@ export async function seedConnectorNotificationHonesty(): Promise<{ seeded: numb
   for (const entry of CONNECTOR_NOTIFICATION_HONESTY_SEEDS) {
     const { error } = await supabase.from("ecosystem_launch_readiness").upsert(
       {
-        subsystem: entry.target,
-        domain: entry.domain,
-        readiness_score: entry.honestyClass === "real" ? 90 : entry.honestyClass === "partial" ? 40 : entry.honestyClass === "planned" ? 10 : 5,
-        status: entry.honestyClass,
+        target: entry.target,
+        target_name: entry.target.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+        ecosystem: entry.domain,
+        launch_stage: entry.honestyClass === "real" ? "live" : entry.honestyClass === "partial" ? "beta" : entry.honestyClass === "planned" ? "planned" : "alpha",
+        launch_ready: entry.honestyClass === "real",
+        pilot_ready: entry.honestyClass === "real" || entry.honestyClass === "partial",
         blockers: entry.claimSafe ? [] : [entry.reason],
         evidence: {
           honesty_class: entry.honestyClass,
@@ -136,8 +138,8 @@ export async function seedConnectorNotificationHonesty(): Promise<{ seeded: numb
           qualifier_required: entry.qualifierRequired,
           seeded_at: new Date().toISOString(),
         },
-      },
-      { onConflict: "subsystem" }
+      } as any,
+      { onConflict: "target" }
     );
 
     if (error) {
