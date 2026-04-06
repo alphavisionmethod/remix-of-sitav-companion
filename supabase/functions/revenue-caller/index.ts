@@ -21,7 +21,8 @@ interface CallRequest {
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders }
+    return new Response("ok", { headers: corsHeaders });}
+
 
   // Rate limiting
   const clientId = req.headers.get("authorization")?.slice(-10) || "anon";
@@ -44,7 +45,6 @@ Deno.serve(async (req: Request) => {
     } catch (_) {
       // Non-JSON body or GET request - continue
     }
-  });
   }
 
   try {
