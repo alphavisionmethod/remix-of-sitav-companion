@@ -296,6 +296,8 @@ const PFA07ConnectorHealthDrift = lazy(() => import("./pages/admin/PFA07Connecto
 const PFA08AccountGraphExplorer = lazy(() => import("./pages/admin/PFA08AccountGraphExplorer"));
 const PFA09ConnectedAccountsCenter = lazy(() => import("./pages/admin/PFA09ConnectedAccountsCenter"));
 const PFA10IntegrationLaunchHonesty = lazy(() => import("./pages/admin/PFA10IntegrationLaunchHonesty"));
+const GoogleProviderFamilyDashboard = lazy(() => import("./pages/admin/GoogleProviderFamilyDashboard"));
+const GoogleConnectedAccounts = lazy(() => import("./pages/settings/GoogleConnectedAccounts"));
 
 const ISA01IdentityProviderRegistryBoard = lazy(() => import("./pages/admin/ISA01IdentityProviderRegistryBoard"));
 const ISA02ConnectorProviderRegistryBoard = lazy(() => import("./pages/admin/ISA02ConnectorProviderRegistryBoard"));
