@@ -1,175 +1,111 @@
 
 
-# Customer Journey 100/100 — Full Implementation Plan
+# Customer Journey — Exact Schema Alignment + Views + Remaining Gaps
 
-## Current State
+## Current State Analysis
 
-**What exists:**
-- 7 CJ admin pages (CJ01-CJ07) — all DB-backed with React Query hooks
-- `customer_journeys` table with 18 columns, `customer_journey_runs`, `customer_journey_steps`, `customer_journey_blockers` tables
-- `journey-registry.ts` with 24 journey definitions (auth, core, files, boardroom, AI, connectors, settings, admin, demo, onboarding, search, money, business)
-- `journey-hooks.ts` with 7 hooks (queries + seed + record run)
-- `surface-registry.ts` with full UI action inventory (~215 lines, P0/P1/P2 entries)
-- 19 E2E test files — but most are shallow (auth guard checks, route-load only)
-- Existing `verification_surfaces`, `verification_runs`, `verification_evidence`, `verification_blockers` tables
+**What exists and works:**
+- `customer_journeys` table (flat, user-scoped with embedded JSON steps) — serves as registry
+- `customer_journey_runs` (historical runs with 25 columns)
+- `customer_journey_steps` (step results linked to runs)
+- `customer_journey_blockers` (legacy blocker table)
+- 6 new tables from last migration: `ui_action_inventory`, `journey_step_results`, `launch_blocker_scores`, `customer_journey_mode_comparisons`, `verification_evidence_assets`, `route_verification_coverage`
+- 8 CJ admin pages (CJ01-CJ08), all functional
+- 10 Playwright P0 test files in `tests/e2e/customer-journey/`
+- CI workflow in `.github/workflows/e2e.yml`
+- Blocker scoring engine, evidence hooks, coverage hooks, scoring hooks
+- Journey reporter for Playwright
 
-**What's missing (the gap to 100%):**
-1. **6 new DB tables**: `ui_action_inventory`, `launch_blocker_scores`, `customer_journey_mode_comparisons`, `verification_evidence_assets`, `route_verification_coverage`, `journey_step_results` — the spec requires these for structured evidence, coverage tracking, mode comparison, and blocker scoring
-2. **Real Playwright P0 tests**: Current tests are auth-guard smoke tests. Zero actual clickthrough verification exists
-3. **Testability upgrades**: No `data-testid` on most interactive elements
-4. **Journey detail view (CJ03)** doesn't show step-level results from DB
-5. **Route/action coverage board** not wired to DB coverage table
-6. **Launch blocker scoring** is manual — no automated severity computation
-7. **Evidence asset storage** not structured
-8. **CI integration** config not set up
+**What's missing vs the spec:**
+1. **3 tables the spec requires but don't exist**: `customer_journey_registry` (the spec wants a normalized registry separate from `customer_journeys`), `customer_journey_status` (rolled-up current truth), `journey_verification_runs` (the spec's normalized run table — current `customer_journey_runs` exists but has a different schema)
+2. **5 database views**: `v_customer_journey_summary`, `v_customer_journey_blockers`, `v_customer_journey_mode_deltas`, `v_route_verification_summary`, `v_customer_journey_recent_failures` — none exist
+3. **Schema gaps on existing tables**: `ui_action_inventory` missing `owner_team`; `verification_evidence_assets` missing `metadata` jsonb column; `route_verification_coverage` missing `p1_verified_actions`; `launch_blocker_scores` missing `journey_id` FK (uses `journey_key` text instead)
+4. **`journey_verification_runs` doesn't exist** — the spec wants `run_identifier`, `commit_sha`, `branch_name`, `environment`, `verification_type` columns for CI ingestion
+5. **Hooks not wired to new normalized tables** — current hooks query `customer_journeys` and `customer_journey_runs`, not the spec's `customer_journey_registry` / `journey_verification_runs`
+6. **No DB ingestion script** — the Playwright reporter outputs JSON but nothing ingests it into DB
 
 ## Plan
 
-### Phase 1 — Database Migration (6 new tables)
+### Phase 1 — Database Migration
 
-Create migration adding:
+Create the 3 missing tables + 5 views + add missing columns to existing tables.
+
+**New tables:**
 
 | Table | Purpose |
 |---|---|
-| `ui_action_inventory` | Full inventory of every clickable action (route_key, action_key, action_type, selector_hint, test_id, priority, launch_honesty_class) |
-| `journey_step_results` | Per-step results for each verification run (verification_run_id FK, step_order, status, actual_behavior, error_summary, screenshot_ref, duration_ms) |
-| `launch_blocker_scores` | Automated blocker scoring (journey_key, blocker_type, severity_score, affects_demo/real/admin/user, resolved) |
-| `customer_journey_mode_comparisons` | Demo vs real status per journey (real_status, demo_status, comparison_summary, claim_risk) |
-| `verification_evidence_assets` | Screenshots/traces/logs/videos linked to runs (run_id FK, asset_type, asset_ref, label) |
-| `route_verification_coverage` | Coverage rollup per route (total_actions, verified_actions, p0/p1 counts, coverage_percent) |
+| `customer_journey_registry` | Normalized canonical journey registry (no user_id, shared across system). Columns per spec: journey_key, display_name, persona, surface_class, domain_family, route_key, priority_class, launch_importance, expected_outcome, supported_modes, launch_honesty_class, owner_team, is_active |
+| `customer_journey_status` | Rolled-up current truth per journey. FK to registry + last_verified_run_id, current_status, launch_impact, proof_confidence, actual_outcome_summary, recommended_fix, owner_team |
+| `journey_verification_runs` | Normalized run table for CI ingestion. FK to registry, columns: mode, environment, verification_type, status, proof_confidence, steps_passed/failed/skipped, launch_impact, summary, evidence_bundle_ref, run_identifier, commit_sha, branch_name, started_at, completed_at |
 
-All tables get RLS policies for authenticated users with `user_id` column.
+**Alter existing tables:**
+- `ui_action_inventory`: add `owner_team text null`
+- `verification_evidence_assets`: add `metadata jsonb not null default '{}'::jsonb`
+- `launch_blocker_scores`: add `journey_id uuid null references customer_journey_registry(id) on delete set null`
 
-### Phase 2 — Data Services & Hooks
+**5 views:**
+- `v_customer_journey_summary` — registry + status + latest run metadata
+- `v_customer_journey_blockers` — unresolved launch/pilot/claim blockers with journey metadata
+- `v_customer_journey_mode_deltas` — mode comparisons with journey display names
+- `v_route_verification_summary` — coverage aggregated by surface_class
+- `v_customer_journey_recent_failures` — recent failed/partial runs with journey context
 
-**New file: `src/lib/customer-journey/journey-evidence-hooks.ts`**
-- `useStepResults(runId)` — query `journey_step_results`
-- `useRecordStepResult()` — insert step result mutation
-- `useEvidenceAssets(runId)` — query `verification_evidence_assets`
-- `useAddEvidenceAsset()` — insert asset mutation
+### Phase 2 — Journey Registry Seed Hook
 
-**New file: `src/lib/customer-journey/journey-scoring-hooks.ts`**
-- `useBlockerScores()` — query `launch_blocker_scores`
-- `useComputeBlockerScore()` — mutation that auto-classifies severity based on journey priority + status + mode
-- `useModeComparisons()` — query `customer_journey_mode_comparisons`
-- `useUpdateModeComparison()` — mutation
+**New file: `src/lib/customer-journey/journey-registry-seeder.ts`**
 
-**New file: `src/lib/customer-journey/journey-coverage-hooks.ts`**
-- `useActionInventory()` — query `ui_action_inventory`
-- `useSeedActionInventory()` — seed from `SURFACE_REGISTRY`
-- `useRouteCoverage()` — query `route_verification_coverage`
-- `useUpdateRouteCoverage()` — recompute coverage per route
+Seed `customer_journey_registry` and `customer_journey_steps` (the new normalized table linked by FK) from `CUSTOMER_JOURNEY_REGISTRY`. Also seed `customer_journey_status` with initial "unverified" state.
 
-**Expand `journey-hooks.ts`:**
-- `useResolveBlocker()` — resolve a blocker entry
-- `useJourneyDetail(journeyKey)` — single journey + latest run + steps
+**New hook: `useSeedJourneyRegistry()`** — inserts into the 3 normalized tables.
 
-### Phase 3 — Blocker Scoring Engine
+### Phase 3 — Verification Run Ingestion Hook
 
-**New file: `src/lib/customer-journey/blocker-scoring-engine.ts`**
+**New file: `src/lib/customer-journey/journey-ingestion-hooks.ts`**
 
-Automated scoring function that takes a journey run result and computes:
-- `blocker_type`: launch_blocker / pilot_blocker / claim_risk / important_non_blocker / non_blocking
-- `severity_score`: 0-100 based on: journey priority (P0=high), user harm (broken=critical), mode affected, claim risk, dependency centrality
-- Auto-creates `launch_blocker_scores` row
-- Updates `customer_journey_mode_comparisons` when runs exist for both modes
+- `useRecordVerificationRun()` — insert into `journey_verification_runs` with CI metadata (commit_sha, branch, environment)
+- `useUpdateJourneyStatus()` — update `customer_journey_status` from a completed run
+- `useIngestPlaywrightResults()` — takes the JSON output from journey-reporter and creates runs + step results + auto-computes blocker scores
 
-### Phase 4 — Upgrade CJ Admin Pages
+### Phase 4 — Update Admin Pages to Use Views
 
-| Page | Current | Upgrade |
-|---|---|---|
-| **CJ03 JourneyDetailView** | Shows run list only | Add step-level results table, evidence viewer, failure diagnosis panel, recommended fix |
-| **CJ05 DemoVsRealComparison** | Derives from runs client-side | Also persist to `customer_journey_mode_comparisons`, show claim_risk flags prominently |
-| **CJ04 LaunchBlockerView** | Lists blockers | Add severity scores, resolve action, auto-computed blocker classification |
+- CJ01: add query from `v_customer_journey_summary` for richer executive stats
+- CJ04: query `v_customer_journey_blockers` view for pre-joined blocker data
+- CJ05: query `v_customer_journey_mode_deltas` for display
+- CJ08: query `v_route_verification_summary` for surface-level aggregation
 
-**New page: `CJ08RouteActionCoverage.tsx`**
-- Shows `route_verification_coverage` data
-- Action inventory browser with filter by domain/priority
-- Gap analysis: routes with 0% coverage highlighted
-- Seed from `SURFACE_REGISTRY` button
+### Phase 5 — Playwright Result Ingestion Script
 
-### Phase 5 — Testability Upgrades to Frontend
+**New file: `scripts/ingest-journey-results.ts`**
 
-Add `data-testid` attributes to critical interactive elements across ~15 key pages:
-- Login/signup forms and submit buttons
-- Sidebar navigation links
-- Files page upload button, file list
-- Boardroom refresh button, content area
-- Advisor chat input, send button
-- Approvals action buttons
-- Settings save button
-- Admin truth boards
-- Demo mode badge/indicator
-- Loading/error/empty state containers
+Node script that:
+1. Reads `test-results/journey-reports/*.json`
+2. Matches journey_key to `customer_journey_registry`
+3. Inserts `journey_verification_runs` + `journey_step_results`
+4. Calls blocker scoring engine for failed runs
+5. Updates `customer_journey_status`
 
-### Phase 6 — Playwright P0 Test Suite
+### Phase 6 — CI Workflow Enhancement
 
-**New folder structure:**
-```text
-tests/e2e/
-  helpers/
-    auth.ts          — login/logout helpers
-    selectors.ts     — centralized selector constants
-    reporter.ts      — structured result export for DB ingestion
-  customer-journey/
-    auth.spec.ts     — sign_in, sign_out, session_persistence
-    dashboard.spec.ts — dashboard load, widget rendering
-    files.spec.ts    — browse, upload, file appears
-    boardroom.spec.ts — load, refresh
-    assistant.spec.ts — open, send message, degraded state
-    approvals.spec.ts — open, decision flow
-    connectors.spec.ts — open, status check
-    settings.spec.ts  — account open, edit
-    admin.spec.ts     — truth board, CJ report, launch readiness
-    demo-vs-real.spec.ts — boardroom, assistant, connectors comparison
-```
-
-Each test:
-- Uses auth helper for login
-- Captures screenshot on failure
-- Exports structured result (journey_key, steps_passed, steps_failed, status)
-- Tagged with priority (P0/P1)
-
-**Reporter** (`tests/e2e/reporters/journey-reporter.ts`):
-- Custom Playwright reporter that outputs JSON results
-- Can be ingested into `customer_journey_runs` + `journey_step_results` tables
-
-### Phase 7 — CI Integration
-
-**Update `playwright.config.ts`:**
-- Add `customer-journey` project for P0 suite
-- Configure reporter to output JSON artifacts
-- Add GitHub Actions workflow snippet (`.github/workflows/e2e.yml`) for PR-triggered P0 runs
-
-### Phase 8 — Seed Data
-
-Extend `ecosystem-master-seeder.ts`:
-- Seed `ui_action_inventory` from `SURFACE_REGISTRY` (~60 actions)
-- Seed initial `route_verification_coverage` rows for all registered routes
-- Seed `customer_journey_mode_comparisons` with initial "no_data" state
+Update `.github/workflows/e2e.yml`:
+- Add post-test step that runs `scripts/ingest-journey-results.ts` to push results to DB
+- Add Supabase service role key secret for ingestion
+- Add commit SHA and branch name as env vars for traceability
 
 ## Files Changed
 
 | File | Change |
 |---|---|
-| **Migration SQL** | 6 new tables + RLS + indexes |
-| `src/lib/customer-journey/journey-evidence-hooks.ts` | **New** — 4 hooks |
-| `src/lib/customer-journey/journey-scoring-hooks.ts` | **New** — 4 hooks |
-| `src/lib/customer-journey/journey-coverage-hooks.ts` | **New** — 4 hooks |
-| `src/lib/customer-journey/blocker-scoring-engine.ts` | **New** — auto-classification logic |
-| `src/lib/customer-journey/journey-hooks.ts` | Add `useResolveBlocker`, `useJourneyDetail` |
-| `src/pages/admin/customer-journey/CJ03JourneyDetailView.tsx` | Step results + evidence viewer |
-| `src/pages/admin/customer-journey/CJ04LaunchBlockerView.tsx` | Severity scores + resolve action |
-| `src/pages/admin/customer-journey/CJ05DemoVsRealComparison.tsx` | Persist comparisons + claim risk |
-| `src/pages/admin/customer-journey/CJ08RouteActionCoverage.tsx` | **New** — coverage board |
-| `tests/e2e/helpers/auth.ts` | **New** — login helper |
-| `tests/e2e/helpers/selectors.ts` | **New** — selector constants |
-| `tests/e2e/reporters/journey-reporter.ts` | **New** — structured output |
-| `tests/e2e/customer-journey/*.spec.ts` | **New** — 10 P0 test files |
-| `playwright.config.ts` | Add customer-journey project |
-| `src/lib/seed/ecosystem-master-seeder.ts` | Seed action inventory + coverage |
-| ~15 frontend pages | Add `data-testid` attributes |
+| **Migration SQL** | 3 new tables + 3 ALTER TABLE + 5 views |
+| `src/lib/customer-journey/journey-registry-seeder.ts` | **New** — seed normalized registry + steps + status |
+| `src/lib/customer-journey/journey-ingestion-hooks.ts` | **New** — verification run recording + Playwright result ingestion |
+| `src/lib/customer-journey/journey-hooks.ts` | Add `useSeedJourneyRegistry()`, keep existing hooks for backward compat |
+| `scripts/ingest-journey-results.ts` | **New** — CLI script for CI DB ingestion |
+| `src/pages/admin/customer-journey/CJ01ExecutiveReport.tsx` | Query `v_customer_journey_summary` |
+| `src/pages/admin/customer-journey/CJ04LaunchBlockerView.tsx` | Query `v_customer_journey_blockers` |
+| `src/pages/admin/customer-journey/CJ05DemoVsRealComparison.tsx` | Query `v_customer_journey_mode_deltas` |
+| `src/pages/admin/customer-journey/CJ08RouteActionCoverage.tsx` | Query `v_route_verification_summary` |
+| `.github/workflows/e2e.yml` | Add ingestion step + env vars |
 
 ## Database migration required
-6 new tables with RLS policies.
+3 new tables, 3 ALTER TABLE, 5 views.
 
