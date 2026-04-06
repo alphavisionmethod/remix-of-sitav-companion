@@ -7,11 +7,12 @@ import { corsHeaders, corsResponse, corsError, handleCors } from "../_shared/cor
  * 
  * All AI requests route through here. This function:
  * 1. Validates auth
- * 2. Resolves routing policy for the capability
- * 3. Checks budget
+ * 2. Resolves routing from ai_capability_routing → ai_routing_policies
+ * 3. Checks budget via check_ai_budget_policies()
  * 4. Calls the Lovable AI Gateway
- * 5. Logs a receipt
- * 6. Returns the response
+ * 5. Logs to ai_usage_ledger + ai_receipt_records + ai_inference_receipts
+ * 6. Records fallback events when applicable
+ * 7. Returns the response with full traceability
  */
 
 const LOVABLE_AI_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
@@ -24,6 +25,19 @@ const TASK_CLASS_MODELS: Record<string, string> = {
   fallback_degraded: "google/gemini-2.5-flash-lite",
 };
 
+// Rough cost estimate per 1K tokens by model prefix
+const COST_PER_1K: Record<string, number> = {
+  "google/gemini-2.5-pro": 0.01,
+  "google/gemini-3-flash-preview": 0.002,
+  "google/gemini-2.5-flash": 0.001,
+  "google/gemini-2.5-flash-lite": 0.0005,
+};
+
+function estimateCostUsd(model: string, totalTokens: number): number {
+  const rate = COST_PER_1K[model] ?? 0.002;
+  return (totalTokens / 1000) * rate;
+}
+
 serve(async (req) => {
   const cors = handleCors(req);
   if (cors) return cors;
@@ -32,6 +46,7 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
     // Auth
     const authHeader = req.headers.get("Authorization");
@@ -64,50 +79,131 @@ serve(async (req) => {
       }, 503);
     }
 
-    // 2. Resolve model from routing policy or task class default
-    let model = TASK_CLASS_MODELS[taskClass] ?? "google/gemini-3-flash-preview";
+    const serviceClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
-    // Try to get routing policy from DB
-    const { data: routingPolicy } = await supabase
-      .from("ai_routing_policies")
-      .select("default_model, default_provider, fallback_model, max_cost_cents, enabled")
-      .eq("capability_id", capabilityId)
-      .eq("enabled", true)
+    // 2. Resolve model: capability_routing → routing_policies → task class default
+    let model = TASK_CLASS_MODELS[taskClass] ?? "google/gemini-3-flash-preview";
+    let fallbackModel: string | null = null;
+    let routingSource = "task_class_default";
+
+    // Try canonical capability routing first
+    const { data: capRouting } = await serviceClient
+      .from("ai_capability_routing")
+      .select("*")
+      .eq("capability_key", capabilityId)
+      .eq("is_active", true)
+      .eq("user_id", user.id)
       .maybeSingle();
 
-    if (routingPolicy?.default_model) {
-      model = routingPolicy.default_model;
+    if (capRouting) {
+      // Look up model key from model registry if we have model_id
+      if (capRouting.default_model_id) {
+        const { data: modelRec } = await serviceClient
+          .from("ai_model_registry")
+          .select("model_id, provider")
+          .eq("id", capRouting.default_model_id)
+          .maybeSingle();
+        if (modelRec) {
+          model = modelRec.model_id;
+          routingSource = "capability_routing";
+        }
+      }
+      if (capRouting.fallback_model_id) {
+        const { data: fbModel } = await serviceClient
+          .from("ai_model_registry")
+          .select("model_id")
+          .eq("id", capRouting.fallback_model_id)
+          .maybeSingle();
+        if (fbModel) fallbackModel = fbModel.model_id;
+      }
     }
 
-    // 3. Check budget
-    const { data: budgetResult } = await supabase.rpc("update_ai_budget_usage", {
+    // Fallback to legacy routing policies
+    if (routingSource === "task_class_default") {
+      const { data: routingPolicy } = await serviceClient
+        .from("ai_routing_policies")
+        .select("default_model, default_provider, fallback_model, max_cost_cents, enabled")
+        .eq("capability_id", capabilityId)
+        .eq("enabled", true)
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (routingPolicy?.default_model) {
+        model = routingPolicy.default_model;
+        routingSource = "routing_policy";
+        fallbackModel = routingPolicy.fallback_model ?? null;
+      }
+    }
+
+    // 3. Check budget policies
+    const estimatedCost = estimateCostUsd(model, (maxTokens ?? 1000) * 2);
+    const { data: budgetCheck } = await serviceClient.rpc("check_ai_budget_policies", {
       p_user_id: user.id,
-      p_tokens: 0, // Pre-check
-      p_cost: 0,
+      p_capability_key: capabilityId,
+      p_estimated_cost_usd: estimatedCost,
     });
 
-    if (budgetResult && typeof budgetResult === "object" && "allowed" in budgetResult && !budgetResult.allowed) {
-      // Try fallback to cheaper model
-      if (routingPolicy?.fallback_model) {
-        model = routingPolicy.fallback_model;
-      } else {
+    const budgetResult = budgetCheck as Record<string, unknown> | null;
+    let budgetDowngrade = false;
+
+    if (budgetResult) {
+      // Block
+      if (budgetResult.should_block) {
+        // Log blocked event
+        await serviceClient.from("ai_usage_ledger").insert({
+          user_id: user.id,
+          capability_key: capabilityId,
+          mode: "real",
+          request_class: taskClass,
+          status: "blocked_budget",
+          estimated_cost_usd: estimatedCost,
+          error_code: "budget_exceeded",
+          error_summary: budgetResult.reason as string,
+        });
+
         return corsResponse({
           status: "degraded",
           reason: "budget_exceeded",
-          message: "AI budget exceeded. Please contact your administrator.",
+          message: `AI budget exceeded: ${budgetResult.reason}`,
+          policyKey: budgetResult.policy_key,
           launchLevel: "unavailable",
         }, 429);
+      }
+
+      // Downgrade
+      if (budgetResult.should_downgrade) {
+        budgetDowngrade = true;
+        if (fallbackModel) {
+          model = fallbackModel;
+        } else {
+          model = TASK_CLASS_MODELS["fallback_degraded"];
+        }
+      }
+
+      // Premium blocked
+      if (budgetResult.premium_blocked && taskClass === "premium_synthesis") {
+        model = TASK_CLASS_MODELS["balanced_assistant"];
+        budgetDowngrade = true;
+      }
+
+      // Record alert if threshold breached
+      if (budgetResult.alert_state) {
+        await serviceClient.from("ai_budget_alerts").insert({
+          user_id: user.id,
+          scope_type: "user",
+          scope_ref: user.id,
+          threshold_percent: budgetResult.pct as number,
+          observed_cost_usd: estimatedCost,
+          period_class: "daily",
+          alert_state: budgetResult.alert_state as string,
+        });
       }
     }
 
     // 4. Call Lovable AI Gateway
     const startTime = Date.now();
 
-    const aiPayload: Record<string, unknown> = {
-      model,
-      messages,
-      stream,
-    };
+    const aiPayload: Record<string, unknown> = { model, messages, stream };
     if (maxTokens) aiPayload.max_tokens = maxTokens;
     if (temperature !== undefined) aiPayload.temperature = temperature;
 
@@ -137,15 +233,23 @@ serve(async (req) => {
         return corsError("AI gateway error", 500);
       }
 
-      // Log receipt async (fire-and-forget for streaming)
-      const serviceClient = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+      // Log receipt async for streaming
+      serviceClient.from("ai_usage_ledger").insert({
+        user_id: user.id,
+        capability_key: capabilityId,
+        mode: "real",
+        request_class: taskClass,
+        status: budgetDowngrade ? "fallback_success" : "success",
+        latency_ms: latencyMs,
+      }).then(() => {});
+
       serviceClient.from("ai_inference_receipts").insert({
         user_id: user.id,
         provider: model.split("/")[0] ?? "lovable",
         model,
         capability_id: capabilityId,
         latency_ms: latencyMs,
-        route_reason: `task_class=${taskClass}`,
+        route_reason: `${routingSource}, task_class=${taskClass}`,
       }).then(() => {});
 
       return new Response(aiResponse.body, {
@@ -166,8 +270,8 @@ serve(async (req) => {
       }
 
       // Try fallback
-      if (routingPolicy?.fallback_model && model !== routingPolicy.fallback_model) {
-        aiPayload.model = routingPolicy.fallback_model;
+      if (fallbackModel && model !== fallbackModel) {
+        aiPayload.model = fallbackModel;
         const fallbackResp = await fetch(LOVABLE_AI_URL, {
           method: "POST",
           headers: {
@@ -181,38 +285,86 @@ serve(async (req) => {
           const fallbackData = await fallbackResp.json();
           const content = fallbackData.choices?.[0]?.message?.content ?? "";
           const usage = fallbackData.usage ?? {};
+          const fbLatency = Date.now() - startTime;
+          const inputTokens = usage.prompt_tokens ?? 0;
+          const outputTokens = usage.completion_tokens ?? 0;
+          const totalTokens = inputTokens + outputTokens;
+          const costUsd = estimateCostUsd(fallbackModel, totalTokens);
 
-          // Log receipt
-          const serviceClient = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+          // Log fallback event
+          await serviceClient.from("ai_fallback_events").insert({
+            user_id: user.id,
+            capability_key: capabilityId,
+            fallback_reason: `primary_error_${aiResponse.status}`,
+            result_state: "fallback_success",
+          });
+
+          // Log to usage ledger
+          const { data: ledgerRow } = await serviceClient.from("ai_usage_ledger").insert({
+            user_id: user.id,
+            capability_key: capabilityId,
+            mode: "real",
+            request_class: taskClass,
+            status: "fallback_success",
+            prompt_tokens: inputTokens,
+            completion_tokens: outputTokens,
+            total_tokens: totalTokens,
+            estimated_cost_usd: costUsd,
+            latency_ms: fbLatency,
+          }).select("id").single();
+
+          // Log receipt record
+          await serviceClient.from("ai_receipt_records").insert({
+            user_id: user.id,
+            capability_key: capabilityId,
+            mode: "real",
+            decision_class: "fallback",
+            degraded_reason: `primary_model_error_${aiResponse.status}`,
+            usage_ledger_id: ledgerRow?.id,
+          });
+
+          // Legacy receipt
           await serviceClient.from("ai_inference_receipts").insert({
             user_id: user.id,
-            provider: (routingPolicy.fallback_model as string).split("/")[0],
-            model: routingPolicy.fallback_model,
+            provider: fallbackModel.split("/")[0],
+            model: fallbackModel,
             capability_id: capabilityId,
-            input_tokens: usage.prompt_tokens ?? 0,
-            output_tokens: usage.completion_tokens ?? 0,
-            cost_estimate_cents: 0,
-            latency_ms: Date.now() - startTime,
+            input_tokens: inputTokens,
+            output_tokens: outputTokens,
+            cost_estimate_cents: Math.round(costUsd * 100),
+            latency_ms: fbLatency,
             route_reason: `fallback from ${model}`,
             verification_outcome: "fallback_used",
           });
 
           return corsResponse({
             content,
-            provider: (routingPolicy.fallback_model as string).split("/")[0],
-            model: routingPolicy.fallback_model,
+            provider: fallbackModel.split("/")[0],
+            model: fallbackModel,
             taskClass,
-            inputTokens: usage.prompt_tokens ?? 0,
-            outputTokens: usage.completion_tokens ?? 0,
-            costCents: 0,
-            latencyMs: Date.now() - startTime,
+            inputTokens,
+            outputTokens,
+            costCents: Math.round(costUsd * 100),
+            latencyMs: fbLatency,
             cached: false,
             fallbackUsed: true,
-            receiptId: crypto.randomUUID(),
+            receiptId: ledgerRow?.id ?? crypto.randomUUID(),
           });
         }
         await fallbackResp.text();
       }
+
+      // Log failed request
+      await serviceClient.from("ai_usage_ledger").insert({
+        user_id: user.id,
+        capability_key: capabilityId,
+        mode: "real",
+        request_class: taskClass,
+        status: "failed",
+        latency_ms: latencyMs,
+        error_code: `http_${aiResponse.status}`,
+        error_summary: errText.substring(0, 500),
+      });
 
       return corsError("AI gateway error", 500);
     }
@@ -223,13 +375,35 @@ serve(async (req) => {
     const usage = responseData.usage ?? {};
     const inputTokens = usage.prompt_tokens ?? 0;
     const outputTokens = usage.completion_tokens ?? 0;
+    const totalTokens = inputTokens + outputTokens;
+    const costUsd = estimateCostUsd(model, totalTokens);
+    const costCents = Math.round(costUsd * 100);
 
-    // Estimate cost (rough)
-    const costCents = Math.round((inputTokens + outputTokens) * 0.001);
+    // 6. Log to all canonical tables
+    const { data: ledgerRow } = await serviceClient.from("ai_usage_ledger").insert({
+      user_id: user.id,
+      capability_key: capabilityId,
+      mode: "real",
+      request_class: taskClass,
+      status: budgetDowngrade ? "fallback_success" : "success",
+      prompt_tokens: inputTokens,
+      completion_tokens: outputTokens,
+      total_tokens: totalTokens,
+      estimated_cost_usd: costUsd,
+      latency_ms: latencyMs,
+    }).select("id").single();
 
-    // 6. Log receipt
-    const serviceClient = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-    const { data: receipt } = await serviceClient.from("ai_inference_receipts").insert({
+    // Receipt record
+    await serviceClient.from("ai_receipt_records").insert({
+      user_id: user.id,
+      capability_key: capabilityId,
+      mode: "real",
+      decision_class: budgetDowngrade ? "budget_downgrade" : routingSource,
+      usage_ledger_id: ledgerRow?.id,
+    });
+
+    // Legacy inference receipt
+    await serviceClient.from("ai_inference_receipts").insert({
       user_id: user.id,
       provider: model.split("/")[0] ?? "lovable",
       model,
@@ -238,14 +412,24 @@ serve(async (req) => {
       output_tokens: outputTokens,
       cost_estimate_cents: costCents,
       latency_ms: latencyMs,
-      route_reason: `task_class=${taskClass}, capability=${capabilityId}`,
+      route_reason: `${routingSource}, task_class=${taskClass}, capability=${capabilityId}`,
       verification_outcome: "success",
-    }).select("id").single();
+    });
 
-    // Update budget
+    // Budget downgrade fallback event
+    if (budgetDowngrade) {
+      await serviceClient.from("ai_fallback_events").insert({
+        user_id: user.id,
+        capability_key: capabilityId,
+        fallback_reason: "budget_downgrade",
+        result_state: "fallback_success",
+      });
+    }
+
+    // Update legacy budget tracking
     await supabase.rpc("update_ai_budget_usage", {
       p_user_id: user.id,
-      p_tokens: inputTokens + outputTokens,
+      p_tokens: totalTokens,
       p_cost: costCents,
     });
 
@@ -259,8 +443,8 @@ serve(async (req) => {
       costCents,
       latencyMs,
       cached: false,
-      fallbackUsed: false,
-      receiptId: receipt?.id ?? crypto.randomUUID(),
+      fallbackUsed: budgetDowngrade,
+      receiptId: ledgerRow?.id ?? crypto.randomUUID(),
     });
 
   } catch (e) {

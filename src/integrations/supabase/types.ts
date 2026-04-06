@@ -687,6 +687,7 @@ export type Database = {
           alert_threshold_percent: number
           block_on_exceeded: boolean
           created_at: string
+          critical_threshold_percent: number
           daily_budget_usd: number | null
           fallback_model_id: string | null
           fallback_on_exceeded: boolean
@@ -708,6 +709,7 @@ export type Database = {
           alert_threshold_percent?: number
           block_on_exceeded?: boolean
           created_at?: string
+          critical_threshold_percent?: number
           daily_budget_usd?: number | null
           fallback_model_id?: string | null
           fallback_on_exceeded?: boolean
@@ -729,6 +731,7 @@ export type Database = {
           alert_threshold_percent?: number
           block_on_exceeded?: boolean
           created_at?: string
+          critical_threshold_percent?: number
           daily_budget_usd?: number | null
           fallback_model_id?: string | null
           fallback_on_exceeded?: boolean
@@ -19432,6 +19435,25 @@ export type Database = {
       }
     }
     Functions: {
+      aggregate_ai_daily_spend: {
+        Args: { p_user_id: string }
+        Returns: {
+          avg_latency_ms: number
+          capability_key: string
+          request_count: number
+          spend_date: string
+          total_cost_usd: number
+          total_tokens: number
+        }[]
+      }
+      check_ai_budget_policies: {
+        Args: {
+          p_capability_key: string
+          p_estimated_cost_usd: number
+          p_user_id: string
+        }
+        Returns: Json
+      }
       cleanup_expired_signals: { Args: never; Returns: number }
       has_role: {
         Args: {
