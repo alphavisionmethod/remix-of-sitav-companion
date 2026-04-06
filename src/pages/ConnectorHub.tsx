@@ -8,7 +8,7 @@ const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield, Circle } from "lucide-react";
+import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield, Circle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { fetchConnectorHealth, type ConnectorHealthResult } from "@/lib/services/connector-health-service";
 
@@ -17,7 +17,7 @@ const ConnectorHub = () => {
   const [filter, setFilter] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const { data: connectors = [], isLoading } = useQuery({
+  const { data: connectors = [], isLoading, isError, refetch } = useQuery({
     queryKey: ["connector_configs", user?.id],
     enabled: !!user,
     queryFn: async () => {
@@ -93,6 +93,13 @@ const ConnectorHub = () => {
 
       {isLoading ? (
         <SectionSkeleton cards={4} columns={2} />
+      ) : isError ? (
+        <SitaCard hover={false} className="p-8 text-center">
+          <AlertTriangle className="h-8 w-8 text-destructive mx-auto mb-3" />
+          <p className="text-sm font-medium text-foreground mb-1">Failed to load connectors</p>
+          <p className="text-xs text-muted-foreground mb-4">There was a problem fetching your integrations.</p>
+          <SitaButton variant="primary" onClick={() => refetch()}><RefreshCw className="h-3.5 w-3.5" /> Retry</SitaButton>
+        </SitaCard>
       ) : filtered.length === 0 ? (
         <EmptyState icon={Plug} title="No connectors configured" description="Set up connectors to integrate calendar, email, CRM, banking, and other services." />
       ) : (

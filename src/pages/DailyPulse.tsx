@@ -27,8 +27,10 @@ import type { TaskPrioritization } from "@/lib/domain-engines/concierge-os";
 import {
   Briefcase, DollarSign, Workflow, Clock, AlertTriangle, CheckCircle, ArrowRight, Sparkles, BarChart3, Receipt, Brain,
   Plane, Users, CalendarDays, FileText, Headphones, Settings, ShieldCheck, Zap, Home, TrendingUp, Shield, Target,
-  Lightbulb, Activity, Eye
+  Lightbulb, Activity, Eye, Loader2
 } from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Mission Mode Emphasis Config ─────────────────────────────────
@@ -130,6 +132,7 @@ const DailyPulse = () => {
   const [showPostArrival, setShowPostArrival] = useState(() => {
     return !localStorage.getItem("sita-post-arrival-seen") && sessionStorage.getItem("sita-post-arrival-trigger") === "true";
   });
+  const [seeding, setSeeding] = useState(false);
   const hour = new Date().getHours();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
@@ -251,6 +254,20 @@ const DailyPulse = () => {
     );
   }
 
+  const handleSeedData = async () => {
+    setSeeding(true);
+    try {
+      const { error } = await supabase.functions.invoke("seed-user-data");
+      if (error) throw error;
+      toast.success("Demo data seeded! Refreshing…");
+      setTimeout(() => window.location.reload(), 1500);
+    } catch {
+      toast.error("Failed to seed data");
+    } finally {
+      setSeeding(false);
+    }
+  };
+
   if (!hasAnyData) {
     return (
       <div className="mx-auto max-w-6xl space-y-8">
@@ -258,7 +275,15 @@ const DailyPulse = () => {
           <div className="relative z-10">
             <p className="text-sm text-muted-foreground font-medium">{timeGreeting}</p>
             <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-foreground">Welcome to SITA OS</h1>
-            <p className="mt-2 text-sm text-muted-foreground max-w-lg leading-relaxed">Your sovereign AI operating system is ready. Let's set up your first domain.</p>
+            <p className="mt-2 text-sm text-muted-foreground max-w-lg leading-relaxed">Your sovereign AI operating system is ready. Seed demo data to explore all features, or set up your first domain manually.</p>
+            <button
+              onClick={handleSeedData}
+              disabled={seeding}
+              className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
+            >
+              {seeding ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+              {seeding ? "Seeding…" : "Seed Demo Data"}
+            </button>
           </div>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
