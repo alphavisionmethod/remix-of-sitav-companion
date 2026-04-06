@@ -7,8 +7,8 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Activity, RefreshCw, Shield, Database, Users, HardDrive } from "lucide-react";
-import { probeSupabase, probeAuth, probeStorage, runAllProbes, getOverallHealth, type ProbeResult } from "@/lib/observability/health-probes";
+import { Activity, RefreshCw, Shield, Database, HardDrive } from "lucide-react";
+import { runAllProbes, getOverallHealth, type ProbeResult } from "@/lib/observability/health-probes";
 import { getCostSummary, type CostSummary } from "@/lib/observability/cost-governance";
 import { getLogBuffer, type LogEntry } from "@/lib/observability/structured-logger";
 
@@ -34,7 +34,8 @@ export default function SystemHealthDashboard() {
       const results = await runAllProbes();
       setProbes(results);
       setOverallHealth(getOverallHealth(results));
-      setCostSummary(getCostSummary());
+      const summary = await getCostSummary();
+      setCostSummary(summary);
       setRecentLogs(getLogBuffer().slice(-20));
     } finally {
       setLoading(false);
@@ -109,11 +110,11 @@ export default function SystemHealthDashboard() {
               </div>
               <div>
                 <p className="text-muted-foreground">Total Tokens</p>
-                <p className="font-mono font-bold">{costSummary.totalTokens.toLocaleString()}</p>
+                <p className="font-mono font-bold">{(costSummary.totalInputTokens + costSummary.totalOutputTokens).toLocaleString()}</p>
               </div>
               <div>
-                <p className="text-muted-foreground">Requests</p>
-                <p className="font-mono font-bold">{costSummary.totalRequests}</p>
+                <p className="text-muted-foreground">Records</p>
+                <p className="font-mono font-bold">{costSummary.recordCount}</p>
               </div>
             </div>
           </CardContent>

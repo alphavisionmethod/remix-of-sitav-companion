@@ -6,6 +6,7 @@
 import type { SitaEvent } from "@/packages/event-types";
 import type { EventEnvelope } from "./event-envelope";
 import { persistEvent, persistDeadLetter as persistDeadLetterEntry } from "@/lib/persistence/event-bus-persistence";
+import type { BusEvent, DeadLetterEntry } from "@/lib/core-services/event-bus";
 
 type EventHandler = (event: SitaEvent, envelope: EventEnvelope) => void;
 
@@ -40,34 +41,29 @@ export function publish(envelope: EventEnvelope): { delivered: number; errors: s
     }
   }
 
-  // Fire-and-forget persistence — don't block the publish path
-  persistEvent({
-    id: envelope.id ?? crypto.randomUUID(),
+  // Fire-and-forget persistence via the core event bus adapter
+  const busEvent: BusEvent = {
+    id: (event as any).id ?? crypto.randomUUID(),
     topic: event.type ?? "unknown",
     payload: event as unknown as Record<string, unknown>,
     source: (event as any).source ?? "event-bus",
-    correlationId: envelope.correlationId,
-    tenantId: envelope.tenantId,
-    metadata: envelope.metadata as Record<string, unknown> | undefined,
-    timestamp: envelope.timestamp ?? new Date().toISOString(),
-  } as any, { domain: event.domain }).catch(() => {});
+    correlationId: (event as any).correlationId,
+    tenantId: (event as any).tenantId,
+    metadata: (event as any).metadata,
+    timestamp: Date.now(),
+  };
+  persistEvent(busEvent, { domain: event.domain }).catch(() => {});
 
-  // Persist dead letters on handler errors
+  // Persist dead letters on total handler failure
   if (errors.length > 0 && delivered === 0) {
-    persistDeadLetterEntry({
-      event: {
-        id: envelope.id ?? crypto.randomUUID(),
-        topic: event.type ?? "unknown",
-        payload: event as unknown as Record<string, unknown>,
-        source: "event-bus",
-        correlationId: envelope.correlationId,
-        timestamp: envelope.timestamp ?? new Date().toISOString(),
-      } as any,
+    const dlEntry: DeadLetterEntry = {
+      event: busEvent,
       error: errors.join("; "),
       handler: "aggregate",
-      failedAt: new Date().toISOString(),
+      timestamp: Date.now(),
       retryCount: 0,
-    }).catch(() => {});
+    };
+    persistDeadLetterEntry(dlEntry).catch(() => {});
   }
 
   return { delivered, errors };
