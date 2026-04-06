@@ -107,18 +107,21 @@ export const SitaTopBar = ({
         <ShellStatusBar />
       </div>
 
-      {/* Right: Controls */}
-      <div className="flex items-center gap-1">
-        {/* AI Spend */}
-        <AISpendIndicator />
+      {/* Right: Controls — responsive */}
+      <div className="flex items-center gap-0.5 sm:gap-1">
+        {/* AI Spend — desktop only */}
+        <div className="hidden sm:block">
+          <AISpendIndicator />
+        </div>
 
         {/* Trust posture */}
         <TrustPostureChip posture={indicators.trustPosture} showLabel={false} />
 
-        {/* Mode toggle */}
+        {/* Mode toggle — hide label on mobile */}
         <button
           onClick={toggleMode}
-          className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium transition-colors hover:bg-secondary/60"
+          className="flex items-center gap-1 rounded-lg px-1.5 sm:px-2 py-1 text-[11px] font-medium transition-colors hover:bg-secondary/60"
+          aria-label={isDemoMode ? "Switch to live mode" : "Switch to demo mode"}
         >
           <div className={cn("h-1.5 w-1.5 rounded-full", isDemoMode ? "bg-[hsl(var(--sita-gold))]" : "bg-[hsl(var(--trust-verified))]")} />
           <span className="text-muted-foreground hidden sm:inline">{isDemoMode ? "Demo" : "Live"}</span>
