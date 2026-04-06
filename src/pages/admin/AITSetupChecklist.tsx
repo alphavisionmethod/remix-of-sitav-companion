@@ -12,6 +12,7 @@ import { Progress } from "@/components/ui/progress";
 import { getWorkforceRoles, getWorkforceStats } from "@/lib/services/ai-workforce/workforce-orchestrator";
 import { DEFAULT_THRESHOLDS, ROLE_BUDGET_POLICIES } from "@/lib/services/ai-workforce/admin-budget-routing-policy";
 import { ClipboardCheck, Shield, DollarSign, Zap, CheckCircle, AlertTriangle, Eye, Lock, Repeat, FileText, BarChart3, Users } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface CheckItem {
   id: string;
