@@ -1,10 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { handleCors, corsResponse, corsError } from "../_shared/cors.ts";
 import { requireAdmin, getServiceClient } from "../_shared/auth.ts";
-import { validateBody } from "../_shared/validate.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { corsHeaders } from "../_shared/cors.ts";
+import { zodValidate, OsCommandSchema } from "../_shared/zod-validate.ts";
 
 const ALLOWED_COMMANDS = ["restart-service", "update-now", "run-backup", "clear-cache", "rotate-certs", "health-check"];
 const logger = new EdgeLogger("os-command");
