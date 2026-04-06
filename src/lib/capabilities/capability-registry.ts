@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { CapabilityInvocation, CapabilityResult } from "@/packages/contracts/msa/capability-contract";
+import { validateCapabilityInvocation, validateCapabilityResult } from "@/packages/contracts/msa/capability-validator";
 
 type CapabilityHandler = (params: Record<string, unknown>, context: CapabilityContext) => Promise<CapabilityResult>;
 
@@ -26,6 +27,18 @@ export function registerCapability(key: string, handler: CapabilityHandler): voi
 
 /** Invoke a capability by key — surface-neutral */
 export async function invokeCapability(invocation: CapabilityInvocation): Promise<CapabilityResult> {
+  // Runtime validation of invocation contract
+  const validation = validateCapabilityInvocation(invocation);
+  if (!validation.valid) {
+    return {
+      success: false,
+      error: `Invocation validation failed: ${validation.errors.join("; ")}`,
+    };
+  }
+  if (validation.warnings.length > 0) {
+    console.warn(`[CapabilityRegistry] Invocation warnings: ${validation.warnings.join("; ")}`);
+  }
+
   const handler = registry.get(invocation.capabilityKey);
   if (!handler) {
     return {
@@ -44,7 +57,15 @@ export async function invokeCapability(invocation: CapabilityInvocation): Promis
   const start = performance.now();
   try {
     const result = await handler(invocation.params, context);
-    return { ...result, latencyMs: Math.round(performance.now() - start) };
+    const enriched = { ...result, latencyMs: Math.round(performance.now() - start) };
+
+    // Runtime validation of result contract
+    const resultValidation = validateCapabilityResult(enriched);
+    if (!resultValidation.valid) {
+      console.error(`[CapabilityRegistry] Result contract violation for ${invocation.capabilityKey}: ${resultValidation.errors.join("; ")}`);
+    }
+
+    return enriched;
   } catch (err: any) {
     return {
       success: false,
