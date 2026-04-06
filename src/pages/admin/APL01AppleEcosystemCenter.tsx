@@ -83,6 +83,7 @@ const APL01AppleEcosystemCenter = () => {
               {seedMutation.isPending ? <Loader2 className="h-3 w-3 mr-1 animate-spin" /> : <Database className="h-3 w-3 mr-1" />}Seed Apple Data
             </Button>
           )}
+          <Button variant="outline" size="sm" onClick={() => setShowAddDevice(true)}><Plus className="h-3 w-3 mr-1" />Add Device</Button>
           <Button variant="outline" size="sm"><RefreshCw className="h-3 w-3 mr-1" />Refresh</Button>
         </div>
       </div>
