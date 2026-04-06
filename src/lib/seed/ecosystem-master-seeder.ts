@@ -163,6 +163,71 @@ function scheduledJobRows(userId: string) {
   ];
 }
 
+// ── Runtime Probes (10 probes) ──────────────────────────────
+function runtimeProbeRows(userId: string) {
+  const probes = [
+    { probe_id: "supabase", name: "Supabase Connectivity", target_system: "supabase", owner: "platform", success_criteria: "profiles table accessible", failure_criteria: "query error" },
+    { probe_id: "auth", name: "Auth Service", target_system: "supabase_auth", owner: "platform", success_criteria: "session retrievable", failure_criteria: "no session" },
+    { probe_id: "storage", name: "Storage Service", target_system: "supabase_storage", owner: "platform", success_criteria: "bucket listable", failure_criteria: "storage error" },
+    { probe_id: "edge_functions", name: "Edge Functions", target_system: "supabase_functions", owner: "platform", success_criteria: "functions API reachable", failure_criteria: "timeout or error" },
+    { probe_id: "realtime", name: "Realtime", target_system: "supabase_realtime", owner: "platform", success_criteria: "channel subscribable", failure_criteria: "connection timeout" },
+    { probe_id: "ai_gateway", name: "AI Gateway", target_system: "ai_provider_registry", owner: "ai", success_criteria: "active providers exist", failure_criteria: "no active providers" },
+    { probe_id: "connectors", name: "Connector Health", target_system: "connector_registry", owner: "platform", success_criteria: "active connectors exist", failure_criteria: "no active connectors" },
+    { probe_id: "workflows", name: "Workflow Engine", target_system: "workflow_definitions", owner: "platform", success_criteria: "table accessible", failure_criteria: "query error" },
+    { probe_id: "notifications", name: "Notification Queue", target_system: "notifications_queue", owner: "platform", success_criteria: "table accessible", failure_criteria: "query error" },
+    { probe_id: "telemetry", name: "Telemetry", target_system: "os_event_log", owner: "platform", success_criteria: "table accessible", failure_criteria: "query error" },
+  ];
+  return probes.map(p => ({ user_id: userId, ...p, enabled: true, severity: "high", launch_impact: "blocks", cadence_seconds: 300 }));
+}
+
+// ── Platform Health Snapshots (10 domains) ──────────────────
+function platformHealthSnapshotRows(userId: string) {
+  const domains = ["supabase", "auth", "storage", "edge_functions", "realtime", "ai_gateway", "connectors", "workflows", "notifications", "telemetry"];
+  return domains.map(d => ({
+    user_id: userId,
+    domain: d,
+    component: d.replace(/_/g, " "),
+    health_status: "healthy",
+    health_score: 100,
+    details: { seeded: true },
+    degraded_capabilities: [],
+    check_duration_ms: 5,
+  }));
+}
+
+// ── Device Families (7 canonical) ───────────────────────────
+function deviceFamilyRows(userId: string) {
+  return [
+    { user_id: userId, family_key: "web_desktop", name: "Web Desktop", description: "Desktop web browser", interaction_type: "active", screen_class: "large", notification_type: "push", quick_action_support: true, launch_stage: "live", active: true },
+    { user_id: userId, family_key: "web_mobile", name: "Web Mobile", description: "Mobile web browser", interaction_type: "active", screen_class: "small", notification_type: "push", quick_action_support: true, launch_stage: "live", active: true },
+    { user_id: userId, family_key: "web_tablet", name: "Web Tablet", description: "Tablet web browser", interaction_type: "active", screen_class: "medium", notification_type: "push", quick_action_support: true, launch_stage: "live", active: true },
+    { user_id: userId, family_key: "ios_native", name: "iOS Native", description: "Native iOS app", interaction_type: "active", screen_class: "small", notification_type: "push", quick_action_support: true, launch_stage: "planned", active: true },
+    { user_id: userId, family_key: "android_native", name: "Android Native", description: "Native Android app", interaction_type: "active", screen_class: "small", notification_type: "push", quick_action_support: true, launch_stage: "planned", active: true },
+    { user_id: userId, family_key: "desktop_electron", name: "Desktop Electron", description: "Electron desktop app", interaction_type: "active", screen_class: "large", notification_type: "push", quick_action_support: true, launch_stage: "planned", active: true },
+    { user_id: userId, family_key: "watchos", name: "watchOS", description: "Apple Watch glance surface", interaction_type: "passive", screen_class: "glance", notification_type: "haptic", quick_action_support: false, launch_stage: "planned", active: true },
+  ];
+}
+
+// ── Surface Portability Registry (30 capabilities) ──────────
+function surfacePortabilityRows(userId: string) {
+  const caps = [
+    "boardroom_dashboard", "approval_workflow", "proof_chain", "alert_system", "advisor_ai",
+    "money_management", "investment_portfolio", "business_ops", "workspace_management", "owner_settings",
+    "calendar_scheduling", "workflow_engine", "receipt_ledger", "reality_governance", "connector_system",
+    "demo_scenario_engine", "trust_weighted_actions", "incident_management", "admin_observability", "surface_portability",
+    "household_ops", "document_management", "crm_relationships", "ai_budget_governance", "device_telemetry",
+    "push_notifications", "authentication_identity", "session_handoff", "offline_queue", "global_search",
+  ];
+  return caps.map(key => ({
+    user_id: userId,
+    capability_key: key,
+    capability_name: key.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
+    web_ready: true, mobile_ready: true, desktop_ready: true, tablet_ready: true, watch_ready: true,
+    response_envelope_neutral: true, surface_adapter_exists: true, portability_score: 100,
+    notes: "Seeded — canonical capability",
+  }));
+}
+
 // ── OS Event Log (sample ambient data) ──────────────────────
 function osEventLogRows(userId: string) {
   const now = new Date();
