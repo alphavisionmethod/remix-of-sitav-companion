@@ -1,3 +1,5 @@
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Agent Health Monitor
 // Continuous health scoring, auto-restart, auto-demote,
@@ -373,4 +375,29 @@ export class AgentHealthMonitorService {
 
 export function createAgentHealthMonitor(): AgentHealthMonitorService {
   return new AgentHealthMonitorService();
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("ai-workforce/agent-health-monitor", this._serializeState());
+
+  private _serializeState(): Record<string, unknown> {
+    return {
+      metrics: Array.from(this.metrics.entries()),
+      snapshots: Array.from(this.snapshots.entries()),
+      restartTimestamps: Array.from(this.restartTimestamps.entries()),
+      budgets: Array.from(this.budgets.entries()),
+    };
+  }
+
+  hydrateState(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.metrics) this.metrics = new Map(state.metrics as any);
+    if (state.snapshots) this.snapshots = new Map(state.snapshots as any);
+    if (state.restartTimestamps) this.restartTimestamps = new Map(state.restartTimestamps as any);
+    if (state.budgets) this.budgets = new Map(state.budgets as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("ai-workforce/agent-health-monitor");
+    if (state) this.hydrateState(state as Record<string, unknown>);
+  }
 }

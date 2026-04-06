@@ -1,3 +1,5 @@
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Workflow Memory Service
 // Stores workflow context for resume/retry
@@ -48,4 +50,28 @@ export function pruneOldCheckpoints(maxAgeMs: number = 86400000 * 7): number {
     }
   });
   return count;
+}
+
+
+// ── Persistence ──────────────────────────────────────────
+const _serviceId = "memory-service/workflow-memory";
+
+function _serializeState(): Record<string, unknown> {
+  return {
+    workflowMemory: Array.from(workflowMemory.entries()),
+  };
+}
+
+function _hydrateState(state: Record<string, unknown>): void {
+  if (!state) return;
+  if (state.workflowMemory) { workflowMemory.clear(); (state.workflowMemory as any[]).forEach(([k, v]: any) => workflowMemory.set(k, v)); }
+}
+
+export async function loadPersistedState(): Promise<void> {
+  const state = await loadServiceState(_serviceId);
+  if (state) _hydrateState(state as Record<string, unknown>);
+}
+
+export function persistState(): void {
+  debouncedSaveServiceState(_serviceId, _serializeState());
 }

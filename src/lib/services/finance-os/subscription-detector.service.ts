@@ -5,6 +5,9 @@
 
 import type { TransactionRecord, SubscriptionRecord } from "@/packages/finance-contracts";
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
+
 export interface DetectedSubscription {
   merchantName: string;
   averageAmountCents: number;
@@ -54,4 +57,28 @@ export function detectSubscriptions(transactions: TransactionRecord[]): Detected
   }
 
   return detected.sort((a, b) => b.confidence - a.confidence);
+}
+
+
+// ── Persistence ──────────────────────────────────────────
+const _serviceId = "finance-os/subscription-detector";
+
+function _serializeState(): Record<string, unknown> {
+  return {
+    merchantGroups: Array.from(merchantGroups.entries()),
+  };
+}
+
+function _hydrateState(state: Record<string, unknown>): void {
+  if (!state) return;
+  if (state.merchantGroups) { merchantGroups.clear(); (state.merchantGroups as any[]).forEach(([k, v]: any) => merchantGroups.set(k, v)); }
+}
+
+export async function loadPersistedState(): Promise<void> {
+  const state = await loadServiceState(_serviceId);
+  if (state) _hydrateState(state as Record<string, unknown>);
+}
+
+export function persistState(): void {
+  debouncedSaveServiceState(_serviceId, _serializeState());
 }

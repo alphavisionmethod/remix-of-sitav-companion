@@ -5,6 +5,9 @@
 
 import type { FinancialAccount, AccountSummary, AccountType } from "@/packages/finance-contracts";
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
+
 export interface AccountsByType {
   type: AccountType;
   accounts: FinancialAccount[];
@@ -43,4 +46,28 @@ export function groupAccountsByType(accounts: FinancialAccount[]): AccountsByTyp
 export function detectStaleAccounts(accounts: FinancialAccount[], thresholdHours: number = 24): FinancialAccount[] {
   const cutoff = Date.now() - thresholdHours * 3600000;
   return accounts.filter(a => a.isActive && new Date(a.lastSyncedAt).getTime() < cutoff);
+}
+
+
+// ── Persistence ──────────────────────────────────────────
+const _serviceId = "finance-os/account-summary";
+
+function _serializeState(): Record<string, unknown> {
+  return {
+    typeMap: Array.from(typeMap.entries()),
+  };
+}
+
+function _hydrateState(state: Record<string, unknown>): void {
+  if (!state) return;
+  if (state.typeMap) { typeMap.clear(); (state.typeMap as any[]).forEach(([k, v]: any) => typeMap.set(k, v)); }
+}
+
+export async function loadPersistedState(): Promise<void> {
+  const state = await loadServiceState(_serviceId);
+  if (state) _hydrateState(state as Record<string, unknown>);
+}
+
+export function persistState(): void {
+  debouncedSaveServiceState(_serviceId, _serializeState());
 }

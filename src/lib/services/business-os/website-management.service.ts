@@ -1,3 +1,5 @@
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Website Management Service
 // Page CRUD, SEO configuration, domain management, analytics hooks
@@ -338,4 +340,25 @@ export class WebsiteManager {
 
 export function createWebsiteManager(): WebsiteManager {
   return new WebsiteManager();
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("business-os/website-management", this._serializeState());
+
+  private _serializeState(): Record<string, unknown> {
+    return {
+      pages: Array.from(this.pages.entries()),
+      domains: Array.from(this.domains.entries()),
+    };
+  }
+
+  hydrateState(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.pages) this.pages = new Map(state.pages as any);
+    if (state.domains) this.domains = new Map(state.domains as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("business-os/website-management");
+    if (state) this.hydrateState(state as Record<string, unknown>);
+  }
 }

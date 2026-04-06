@@ -1,3 +1,5 @@
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 // SITA OS — Household Coaching Engine
 // Personalized coaching for each household member
 
@@ -171,4 +173,23 @@ export class HouseholdCoachingEngine {
 
 export function createHouseholdCoachingEngine(): HouseholdCoachingEngine {
   return new HouseholdCoachingEngine();
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("life-growth/household-coaching-engine", this._serializeState());
+
+  private _serializeState(): Record<string, unknown> {
+    return {
+      pairs: Array.from(this.pairs.entries()),
+    };
+  }
+
+  hydrateState(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.pairs) this.pairs = new Map(state.pairs as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("life-growth/household-coaching-engine");
+    if (state) this.hydrateState(state as Record<string, unknown>);
+  }
 }
