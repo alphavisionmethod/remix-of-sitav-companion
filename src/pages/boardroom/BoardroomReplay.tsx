@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Slide data auto-generated from weekly reviews ────────────
 
@@ -264,7 +265,8 @@ export default function BoardroomReplay() {
         return prev + 1;
       });
     }, 1000);
-    return () => clearInterval(timer);
+    return () =>
+      <DemoModeBadge /> clearInterval(timer);
   }, [isPlaying, slides.length]);
 
   useEffect(() => {
