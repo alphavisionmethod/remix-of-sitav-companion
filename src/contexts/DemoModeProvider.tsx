@@ -43,6 +43,7 @@ export function DemoModeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     loadKillSwitches();
     seedDemoGovernance();
+    seedPlatformReadiness();
   }, []);
 
   const registerSurface = useCallback((surfaceId: string, surfaceName: string, source: SurfaceDataSource) => {
