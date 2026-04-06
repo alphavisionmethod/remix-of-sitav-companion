@@ -273,6 +273,7 @@ const SheetsWorkspace = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Sheets"
         subtitle="Structured grids, financial tables, and scenario planners — connected to your data"

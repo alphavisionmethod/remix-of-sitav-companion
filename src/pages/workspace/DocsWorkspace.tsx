@@ -273,6 +273,7 @@ const DocsWorkspace = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Docs"
         subtitle="Documents, proposals, reports, and boardroom packets — linked to workflows and proof"

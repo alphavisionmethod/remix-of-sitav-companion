@@ -30,6 +30,7 @@ import {
   mockProofHistory,
   type SafeModeState,
 } from "@/lib/mock-data/advisor-mission-control";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { cn } from "@/lib/utils";
 import { FraudSentinelService } from "@/lib/core-services/fraud-sentinel";
 import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
