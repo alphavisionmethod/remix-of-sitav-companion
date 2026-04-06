@@ -12,24 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
-type Severity = "critical" | "high" | "medium" | "low";
-type IncidentStatus = "open" | "investigating" | "mitigating" | "resolved" | "closed";
-
-interface Incident {
-  id: string;
-  title: string;
-  severity: Severity;
-  status: IncidentStatus;
-  source: string;
-  description: string;
-  created_at: string;
-  resolved_at?: string;
-  assignee?: string;
-  affected_services: string[];
-  root_cause?: string;
-  mitigation?: string;
-  timeline: { time: string; action: string; actor: string }[];
-}
+import { DEMO_INCIDENTS, type DemoIncident as Incident, type Severity, type IncidentStatus } from "@/lib/demo-data/incidents";
 
 const SEVERITY_CONFIG: Record<Severity, { color: string; bg: string; border: string }> = {
   critical: { color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/30" },
