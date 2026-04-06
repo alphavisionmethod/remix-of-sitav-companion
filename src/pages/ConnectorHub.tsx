@@ -17,7 +17,7 @@ const ConnectorHub = () => {
   const [filter, setFilter] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const { data: connectors = [], isLoading } = useQuery({
+  const { data: connectors = [], isLoading, isError, refetch } = useQuery({
     queryKey: ["connector_configs", user?.id],
     enabled: !!user,
     queryFn: async () => {
