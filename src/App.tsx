@@ -796,6 +796,16 @@ const App = () => (
                     <Route path="/admin/verification/failures" element={<V05FailureTriageBoard />} />
                     <Route path="/admin/verification/evidence" element={<V06EvidenceExplorer />} />
                     <Route path="/admin/verification/blockers" element={<V07LaunchBlockerBoard />} />
+
+                    {/* CJ — Customer Journey Proof System */}
+                    <Route path="/admin/customer-journey/executive" element={<CJ01ExecutiveReport />} />
+                    <Route path="/admin/customer-journey/matrix" element={<CJ02JourneyTruthMatrix />} />
+                    <Route path="/admin/customer-journey/detail" element={<CJ03JourneyDetailView />} />
+                    <Route path="/admin/customer-journey/blockers" element={<CJ04LaunchBlockerView />} />
+                    <Route path="/admin/customer-journey/demo-vs-real" element={<CJ05DemoVsRealComparison />} />
+                    <Route path="/admin/customer-journey/broken-clicks" element={<CJ06BrokenClicksExplorer />} />
+                    <Route path="/admin/customer-journey/remediation" element={<CJ07OwnerRemediationView />} />
+
                     {/* Digital Presence Office */}
                     <Route path="/digital-presence" element={<PresenceGate />} />
                     <Route path="/digital-presence/boardroom" element={<PresenceBoardroom />} />
