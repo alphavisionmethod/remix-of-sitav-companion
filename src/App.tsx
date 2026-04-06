@@ -1144,6 +1144,38 @@ const App = () => (
                     <Route path="/admin/dwe/trust" element={<DWE05DeviceTrustApprovalsCenter />} />
                     <Route path="/admin/dwe/assistant" element={<DWE06AmbientAssistantCenter />} />
                     <Route path="/admin/dwe/launch-honesty" element={<DWE07DeviceLaunchHonestyBoard />} />
+                    {/* APL — Apple Ecosystem */}
+                    <Route path="/admin/apl/ecosystem" element={<APL01AppleEcosystemCenter />} />
+                    <Route path="/admin/apl/devices-trust" element={<APL02AppleDevicesTrust />} />
+                    <Route path="/admin/apl/watch" element={<APL03AppleWatchExperience />} />
+                    <Route path="/admin/apl/identity" element={<APL04AppleIdentityAccounts />} />
+                    <Route path="/admin/apl/health-consent" element={<APL05AppleHealthConsent />} />
+                    <Route path="/admin/apl/launch-readiness" element={<APL06AppleLaunchReadiness />} />
+                    {/* AND — Android Ecosystem */}
+                    <Route path="/admin/and/ecosystem" element={<AND01AndroidEcosystemCenter />} />
+                    <Route path="/admin/and/wearos" element={<AND02WearOSExperience />} />
+                    <Route path="/admin/and/trust" element={<AND03AndroidTrustApprovals />} />
+                    <Route path="/admin/and/health-consent" element={<AND04AndroidHealthConsent />} />
+                    <Route path="/admin/and/launch-readiness" element={<AND05AndroidLaunchReadiness />} />
+                    {/* HRS — Health / Readiness / Signal Intelligence */}
+                    <Route path="/admin/hrs/consent" element={<HRS01HealthConsentCenter />} />
+                    <Route path="/admin/hrs/sources" element={<HRS02SignalSourcesBoard />} />
+                    <Route path="/admin/hrs/readiness" element={<HRS03ReadinessExplanation />} />
+                    <Route path="/admin/hrs/notification-influence" element={<HRS04NotificationInfluence />} />
+                    <Route path="/admin/hrs/assistant-timing" element={<HRS05AssistantTimingBoard />} />
+                    <Route path="/admin/hrs/launch-honesty" element={<HRS06SignalLaunchHonesty />} />
+                    {/* NRC — Notification Routing + Calm Assistant */}
+                    <Route path="/admin/nrc/routing" element={<NRC01RoutingStudio />} />
+                    <Route path="/admin/nrc/calmness" element={<NRC02CalmnessCenter />} />
+                    <Route path="/admin/nrc/fatigue" element={<NRC03FatigueBoard />} />
+                    <Route path="/admin/nrc/queue-matrix" element={<NRC04QueueInterruptMatrix />} />
+                    <Route path="/admin/nrc/cross-device" element={<NRC05CrossDeviceDelivery />} />
+                    <Route path="/admin/nrc/launch-honesty" element={<NRC06NotificationLaunchHonesty />} />
+                    {/* NSS — Native Shell Strategy */}
+                    <Route path="/admin/nss/strategy" element={<NSS01StrategyBoard />} />
+                    <Route path="/admin/nss/capability-matrix" element={<NSS02CapabilityMatrix />} />
+                    <Route path="/admin/nss/trust-continuity" element={<NSS03TrustContinuity />} />
+                    <Route path="/admin/nss/launch-honesty" element={<NSS04MobileLaunchHonesty />} />
                     <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/admin/mission-control" element={<MissionControlHome />} />
                     <Route path="/admin/durability" element={<AdminDurabilityBoardPage />} />
