@@ -53,3 +53,19 @@ export function useSignalSubsystemReadiness() {
     queryFn: () => fetchSignalSubsystemReadiness(isDemoMode),
   });
 }
+
+export function useInterruptionPosture() {
+  const { isDemoMode } = useDataMode();
+  return useQuery({
+    queryKey: ["interruption-posture", isDemoMode],
+    queryFn: () => fetchInterruptionPosture(isDemoMode),
+  });
+}
+
+export function useVisibilityPolicies() {
+  const { isDemoMode } = useDataMode();
+  return useQuery({
+    queryKey: ["visibility-policies", isDemoMode],
+    queryFn: () => fetchVisibilityPolicies(isDemoMode),
+  });
+}
