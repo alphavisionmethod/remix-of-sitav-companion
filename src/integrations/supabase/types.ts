@@ -7092,6 +7092,264 @@ export type Database = {
           },
         ]
       }
+      customer_journey_blockers: {
+        Row: {
+          blocker_type: string
+          created_at: string
+          id: string
+          journey_key: string
+          recommended_fix: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          run_id: string | null
+          severity: string | null
+          summary: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blocker_type?: string
+          created_at?: string
+          id?: string
+          journey_key: string
+          recommended_fix?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          run_id?: string | null
+          severity?: string | null
+          summary?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blocker_type?: string
+          created_at?: string
+          id?: string
+          journey_key?: string
+          recommended_fix?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          run_id?: string | null
+          severity?: string | null
+          summary?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_journey_blockers_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "customer_journey_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_journey_runs: {
+        Row: {
+          actual_outcome: string | null
+          completed_at: string | null
+          created_at: string
+          degraded_reason: string | null
+          demo_governed: boolean | null
+          evidence_refs: Json | null
+          expected_outcome: string | null
+          id: string
+          journey_id: string | null
+          journey_key: string
+          launch_impact: string | null
+          mode: string
+          notes: string | null
+          owner: string | null
+          proof_confidence: string | null
+          provider_source_type: string | null
+          recommended_fix: string | null
+          root_cause_layer: string | null
+          severity: string | null
+          started_at: string | null
+          status: string
+          steps_failed: number | null
+          steps_passed: number | null
+          steps_total: number | null
+          user_id: string
+        }
+        Insert: {
+          actual_outcome?: string | null
+          completed_at?: string | null
+          created_at?: string
+          degraded_reason?: string | null
+          demo_governed?: boolean | null
+          evidence_refs?: Json | null
+          expected_outcome?: string | null
+          id?: string
+          journey_id?: string | null
+          journey_key: string
+          launch_impact?: string | null
+          mode?: string
+          notes?: string | null
+          owner?: string | null
+          proof_confidence?: string | null
+          provider_source_type?: string | null
+          recommended_fix?: string | null
+          root_cause_layer?: string | null
+          severity?: string | null
+          started_at?: string | null
+          status?: string
+          steps_failed?: number | null
+          steps_passed?: number | null
+          steps_total?: number | null
+          user_id: string
+        }
+        Update: {
+          actual_outcome?: string | null
+          completed_at?: string | null
+          created_at?: string
+          degraded_reason?: string | null
+          demo_governed?: boolean | null
+          evidence_refs?: Json | null
+          expected_outcome?: string | null
+          id?: string
+          journey_id?: string | null
+          journey_key?: string
+          launch_impact?: string | null
+          mode?: string
+          notes?: string | null
+          owner?: string | null
+          proof_confidence?: string | null
+          provider_source_type?: string | null
+          recommended_fix?: string | null
+          root_cause_layer?: string | null
+          severity?: string | null
+          started_at?: string | null
+          status?: string
+          steps_failed?: number | null
+          steps_passed?: number | null
+          steps_total?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_journey_runs_journey_id_fkey"
+            columns: ["journey_id"]
+            isOneToOne: false
+            referencedRelation: "customer_journeys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_journey_steps: {
+        Row: {
+          actual_behavior: string | null
+          created_at: string
+          evidence_ref: string | null
+          expected_behavior: string | null
+          id: string
+          result: string | null
+          root_cause: string | null
+          run_id: string | null
+          step_name: string
+          step_order: number
+          user_id: string
+        }
+        Insert: {
+          actual_behavior?: string | null
+          created_at?: string
+          evidence_ref?: string | null
+          expected_behavior?: string | null
+          id?: string
+          result?: string | null
+          root_cause?: string | null
+          run_id?: string | null
+          step_name: string
+          step_order?: number
+          user_id: string
+        }
+        Update: {
+          actual_behavior?: string | null
+          created_at?: string
+          evidence_ref?: string | null
+          expected_behavior?: string | null
+          id?: string
+          result?: string | null
+          root_cause?: string | null
+          run_id?: string | null
+          step_name?: string
+          step_order?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_journey_steps_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "customer_journey_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_journeys: {
+        Row: {
+          created_at: string
+          current_status: string | null
+          dependencies: string[] | null
+          display_name: string
+          domain: string
+          expected_outcome: string | null
+          id: string
+          journey_key: string
+          last_verified_at: string | null
+          launch_importance: string | null
+          notes: string | null
+          owner: string | null
+          persona: string
+          primary_modes: string[] | null
+          route_family: string | null
+          steps: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_status?: string | null
+          dependencies?: string[] | null
+          display_name: string
+          domain?: string
+          expected_outcome?: string | null
+          id?: string
+          journey_key: string
+          last_verified_at?: string | null
+          launch_importance?: string | null
+          notes?: string | null
+          owner?: string | null
+          persona?: string
+          primary_modes?: string[] | null
+          route_family?: string | null
+          steps?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_status?: string | null
+          dependencies?: string[] | null
+          display_name?: string
+          domain?: string
+          expected_outcome?: string | null
+          id?: string
+          journey_key?: string
+          last_verified_at?: string | null
+          launch_importance?: string | null
+          notes?: string | null
+          owner?: string | null
+          persona?: string
+          primary_modes?: string[] | null
+          route_family?: string | null
+          steps?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       customers: {
         Row: {
           company: string | null
@@ -22259,6 +22517,26 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      journey_launch_impact:
+        | "launch_blocker"
+        | "pilot_blocker"
+        | "claim_risk"
+        | "important_non_blocker"
+        | "non_blocking"
+      journey_proof_confidence:
+        | "verified_e2e"
+        | "verified_interaction"
+        | "verified_component_only"
+        | "manually_confirmed"
+        | "unverified"
+      journey_status:
+        | "working"
+        | "partial"
+        | "demo_governed"
+        | "degraded_usable"
+        | "broken"
+        | "planned"
+        | "internal_only"
       push_platform: "web" | "ios" | "android" | "electron"
     }
     CompositeTypes: {
@@ -22388,6 +22666,29 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      journey_launch_impact: [
+        "launch_blocker",
+        "pilot_blocker",
+        "claim_risk",
+        "important_non_blocker",
+        "non_blocking",
+      ],
+      journey_proof_confidence: [
+        "verified_e2e",
+        "verified_interaction",
+        "verified_component_only",
+        "manually_confirmed",
+        "unverified",
+      ],
+      journey_status: [
+        "working",
+        "partial",
+        "demo_governed",
+        "degraded_usable",
+        "broken",
+        "planned",
+        "internal_only",
+      ],
       push_platform: ["web", "ios", "android", "electron"],
     },
   },
