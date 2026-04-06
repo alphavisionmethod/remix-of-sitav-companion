@@ -109,6 +109,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         {/* Ambient background — subtle, always present */}
         <ShellAmbientBackground intensity="subtle" className="fixed" />
 
+        <NetworkStatusBar />
         <UpdateBanner />
         <ContinuityBanner />
         <SitaTopBar
