@@ -2,6 +2,7 @@
 // SITA OS — Business OS: Contacts Service
 // ═══════════════════════════════════════════════════════════════
 
+import { supabase } from "@/integrations/supabase/client";
 import type { CRMContact } from "@/packages/business-contracts";
 
 export interface ContactTimelineEntry {
@@ -14,14 +15,45 @@ export interface ContactTimelineEntry {
   metadata?: Record<string, unknown>;
 }
 
-export function buildContactTimeline(contactId: string): ContactTimelineEntry[] {
-  const now = Date.now();
-  return [
-    { id: `tl-1`, contactId, type: "email", title: "Follow-up email sent", description: "Re: Q2 proposal review", timestamp: new Date(now - 2 * 86400000).toISOString() },
-    { id: `tl-2`, contactId, type: "call", title: "Discovery call", description: "30min — discussed requirements and timeline", timestamp: new Date(now - 5 * 86400000).toISOString() },
-    { id: `tl-3`, contactId, type: "meeting", title: "In-person demo", description: "Product walkthrough with stakeholders", timestamp: new Date(now - 10 * 86400000).toISOString() },
-    { id: `tl-4`, contactId, type: "deal-update", title: "Deal moved to negotiation", description: "Proposal accepted — entering contract review", timestamp: new Date(now - 12 * 86400000).toISOString() },
-  ];
+/**
+ * Build contact timeline from real Supabase data.
+ * Falls back to minimal placeholder only if DB returns nothing.
+ */
+export async function buildContactTimeline(contactId: string): Promise<ContactTimelineEntry[]> {
+  try {
+    const { data, error } = await (supabase as any)
+      .from("events")
+      .select("id, event_type, title, description, created_at, metadata")
+      .or(`metadata->>contact_id.eq.${contactId},metadata->>entity_id.eq.${contactId}`)
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    if (error || !data?.length) {
+      // Honest empty — no fake data in real mode
+      return [];
+    }
+
+    return data.map((e: any) => ({
+      id: e.id,
+      contactId,
+      type: mapEventType(e.event_type),
+      title: e.title || e.event_type,
+      description: e.description || "",
+      timestamp: e.created_at,
+      metadata: e.metadata,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+function mapEventType(t: string): ContactTimelineEntry["type"] {
+  if (t?.includes("call")) return "call";
+  if (t?.includes("email")) return "email";
+  if (t?.includes("meeting")) return "meeting";
+  if (t?.includes("deal")) return "deal-update";
+  if (t?.includes("task")) return "task";
+  return "note";
 }
 
 export function enrichContact(contact: CRMContact): CRMContact & { enriched: boolean; socialProfiles: string[] } {
