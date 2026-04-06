@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layers, Shield, TrendingUp, Zap, DollarSign, Target, AlertTriangle, ChevronRight } from "lucide-react";
 import { PORTFOLIO } from "@/lib/investment-office/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PURPOSES = [
   { id: "long-term", label: "Long-Term Wealth", icon: "🏛️", color: "hsl(var(--primary))", allocated: 45, value: PORTFOLIO.totalValue * 0.45, target: 50, risk: "moderate" },
