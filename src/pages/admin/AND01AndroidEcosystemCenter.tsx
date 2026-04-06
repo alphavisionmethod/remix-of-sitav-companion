@@ -5,9 +5,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Smartphone, Watch, Shield, Heart, Wifi, Activity, Clock, Zap, CheckCircle2, AlertTriangle, ChevronRight, RefreshCw, Loader2, Database, Monitor } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Smartphone, Watch, Shield, Heart, Wifi, Activity, Clock, Zap, CheckCircle2, AlertTriangle, ChevronRight, RefreshCw, Loader2, Database, Monitor, Plus, Trash2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords, useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes, useEcosystemContinuityEvents, useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
+import {
+  useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords,
+  useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes,
+  useEcosystemContinuityEvents, useSeedEcosystemData,
+  useAddEcosystemDevice, useRemoveEcosystemDevice, useUpdateDeviceTrust,
+  useToggleHealthConsent, useUpdatePushRoute,
+} from "@/hooks/useEcosystemDevices";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   android_phone: { title: "Android Phone Shell", icon: Smartphone, desc: "Primary Android surface — Material Design shell", tech: ["Kotlin", "Jetpack Compose", "WebView hybrid"], capabilities: ["push_fcm", "biometric", "camera", "nfc"] },
