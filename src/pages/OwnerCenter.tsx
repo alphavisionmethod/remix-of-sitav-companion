@@ -215,6 +215,8 @@ const OwnerCenter = () => {
   const { data: changeData } = useChangeReview();
   const { data: rollbackData } = useRollbackCenter();
   const { data: serviceMapData } = useServiceMap();
+  const { data: approvalQueueData = [] } = useApprovalQueue();
+  const pendingApprovals = approvalQueueData.filter((a: any) => a.status === "pending");
 
   // Mutations
   const acknowledgeIncident = useAcknowledgeIncident();
