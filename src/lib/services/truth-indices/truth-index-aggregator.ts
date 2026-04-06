@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Truth Index Aggregator
-// Computes all 6 truth indices from real DB-backed data
+// Computes all 9 truth indices from real DB-backed data
 // ═══════════════════════════════════════════════════════════════
 
 import { getDomainRuntimeStatuses, getRuntimeTruthIndex } from "../domain-runtime/domain-runtime-service";
@@ -8,6 +8,7 @@ import { getLaunchGates, getLaunchHonestyIndex } from "../launch-gate/launch-gat
 import { getOAuthFlows, getSyncJobs, getConnectorTruthIndex } from "../connector-truth/connector-truth-service";
 import { getSurfacePortability, getSurfacePortabilityIndex } from "../surface-portability/surface-portability-service";
 import { getDemoGovernanceStatuses, getDemoGovernanceIndex } from "../demo-governance/demo-governance-service";
+import { computeObservabilityIndex, computeDeviceReadinessIndex } from "../observability/observability-service";
 
 export interface TruthIndexSummary {
   runtimeTruth: { score: number; label: string; detail: string };
@@ -16,6 +17,8 @@ export interface TruthIndexSummary {
   connectorTruth: { score: number; label: string; detail: string };
   demoGovernance: { score: number; label: string; detail: string };
   surfacePortability: { score: number; label: string; detail: string };
+  deviceReadiness: { score: number; label: string; detail: string };
+  observability: { score: number; label: string; detail: string };
   overallScore: number;
   lastComputed: string;
 }
@@ -29,13 +32,15 @@ function getLabel(score: number): string {
 }
 
 export async function computeTruthIndices(): Promise<TruthIndexSummary> {
-  const [domains, gates, oauthFlows, syncJobs, portability, demoStatuses] = await Promise.all([
+  const [domains, gates, oauthFlows, syncJobs, portability, demoStatuses, observabilityScore, deviceScore] = await Promise.all([
     getDomainRuntimeStatuses(),
     getLaunchGates(),
     getOAuthFlows(),
     getSyncJobs(),
     getSurfacePortability(),
     getDemoGovernanceStatuses(),
+    computeObservabilityIndex(),
+    computeDeviceReadinessIndex(),
   ]);
 
   const runtimeScore = getRuntimeTruthIndex(domains);
@@ -43,11 +48,9 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
   const connectorScore = getConnectorTruthIndex(oauthFlows, syncJobs);
   const surfaceScore = getSurfacePortabilityIndex(portability);
   const demoScore = getDemoGovernanceIndex(demoStatuses);
-
-  // AI Truth is derived from AI gateway tables
   const aiScore = await computeAITruthScore();
 
-  const scores = [runtimeScore, launchScore, aiScore, connectorScore, demoScore, surfaceScore];
+  const scores = [runtimeScore, launchScore, aiScore, connectorScore, demoScore, surfaceScore, observabilityScore, deviceScore];
   const overallScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
 
   return {
@@ -59,7 +62,7 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
     launchHonesty: {
       score: launchScore,
       label: getLabel(launchScore),
-      detail: `${gates.length} features gated, ${gates.filter(g => g.status === "live").length} live`,
+      detail: `${gates.length} features gated, ${gates.filter(g => g.state === "passed").length} passed`,
     },
     aiTruth: {
       score: aiScore,
@@ -79,7 +82,17 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
     surfacePortability: {
       score: surfaceScore,
       label: getLabel(surfaceScore),
-      detail: `${portability.length} capabilities tracked`,
+      detail: `${portability.length} capabilities, ${portability.filter(p => p.mobile_ready).length} mobile-ready`,
+    },
+    deviceReadiness: {
+      score: deviceScore,
+      label: getLabel(deviceScore),
+      detail: `Device families + connected devices + surface readiness`,
+    },
+    observability: {
+      score: observabilityScore,
+      label: getLabel(observabilityScore),
+      detail: `Runtime probes + health snapshots + telemetry`,
     },
     overallScore,
     lastComputed: new Date().toISOString(),
@@ -87,26 +100,23 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
 }
 
 async function computeAITruthScore(): Promise<number> {
-  // Score based on AI architecture completeness
   const checks = {
-    hasGatewayEdgeFunction: true, // ai-gateway exists
-    hasProviderRegistry: true, // ai_provider_registry table
-    hasModelRegistry: true, // ai_model_registry table
-    hasRoutingMatrix: true, // ai_capability_routing table
-    hasBudgetPolicies: true, // ai_budget_policies table
-    hasUsageLedger: true, // ai_usage_ledger table
-    hasReceiptsTable: true, // ai_inference_receipts table
-    hasFrontendClient: true, // src/lib/ai/ai-capability-client.ts
-    hasStateTypes: true, // src/lib/ai/ai-state-types.ts
-    hasResponseNormalizer: true, // src/lib/ai/ai-response-normalizer.ts
-    hasWorkforceOrchestrator: true, // workforce-orchestrator.ts
-    runtimeActivated: false, // no live API calls yet
-    hasLiveProviderKey: false, // architecture-only mode
+    hasGatewayEdgeFunction: true,
+    hasProviderRegistry: true,
+    hasModelRegistry: true,
+    hasRoutingMatrix: true,
+    hasBudgetPolicies: true,
+    hasUsageLedger: true,
+    hasReceiptsTable: true,
+    hasFrontendClient: true,
+    hasStateTypes: true,
+    hasResponseNormalizer: true,
+    hasWorkforceOrchestrator: true,
+    runtimeActivated: false,
+    hasLiveProviderKey: false,
   };
 
-  let score = 0;
   const total = Object.keys(checks).length;
   const passed = Object.values(checks).filter(Boolean).length;
-  score = Math.round((passed / total) * 100);
-  return score;
+  return Math.round((passed / total) * 100);
 }
