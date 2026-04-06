@@ -245,6 +245,51 @@ function osEventLogRows(userId: string) {
   });
 }
 
+// ── Assistant Role States (9 roles) ─────────────────────────
+function assistantRoleStateRows(userId: string) {
+  const roles = [
+    { role_key: "chief_of_staff", display_name: "Chief of Staff", tone_mode: "executive", proactive: true, escalation_behavior: "escalate", domain: "all", priority: 1 },
+    { role_key: "operator", display_name: "Operator", tone_mode: "concise", proactive: true, escalation_behavior: "auto_handle", domain: "operations", priority: 2 },
+    { role_key: "strategist", display_name: "Strategist", tone_mode: "analytical", proactive: true, escalation_behavior: "recommend", domain: "strategy", priority: 3 },
+    { role_key: "money_sentinel", display_name: "Money Sentinel", tone_mode: "precise", proactive: true, escalation_behavior: "alert", domain: "finance", priority: 1 },
+    { role_key: "boardroom_curator", display_name: "Boardroom Curator", tone_mode: "executive", proactive: false, escalation_behavior: "recommend", domain: "boardroom", priority: 4 },
+    { role_key: "followup_guardian", display_name: "Follow-Up Guardian", tone_mode: "caring", proactive: true, escalation_behavior: "remind", domain: "relationships", priority: 5 },
+    { role_key: "risk_watcher", display_name: "Risk Watcher", tone_mode: "direct", proactive: true, escalation_behavior: "escalate", domain: "risk", priority: 2 },
+    { role_key: "calm_filter", display_name: "Calm Filter", tone_mode: "calm", proactive: true, escalation_behavior: "suppress", domain: "attention", priority: 1 },
+    { role_key: "health_monitor", display_name: "Health Monitor", tone_mode: "caring", proactive: true, escalation_behavior: "alert", domain: "health", priority: 3 },
+  ];
+  return roles.map(r => ({ user_id: userId, ...r, enabled: true, active_state: "active", last_active_at: new Date().toISOString() }));
+}
+
+// ── Interruption Policies (3 defaults) ──────────────────────
+function interruptionPolicyRows(userId: string) {
+  return [
+    { user_id: userId, policy_name: "quiet_hours", category: "sleep", default_delivery: "silent queue", escalation_rule: "critical only", priority: "low", enabled: true, quiet_window_start: "22:00", quiet_window_end: "07:00" },
+    { user_id: userId, policy_name: "focus_mode", category: "deep_work", default_delivery: "defer", escalation_rule: "high+ after 30min", priority: "normal", enabled: true },
+    { user_id: userId, policy_name: "exercise_mode", category: "exercise", default_delivery: "watch nudge", escalation_rule: "critical only", priority: "low", enabled: true },
+  ];
+}
+
+// ── Capability Surface Bindings (13 capabilities) ───────────
+function capabilitySurfaceBindingRows(userId: string) {
+  const caps = [
+    { capability_key: "approvals", capability_name: "Approvals", mobile_experience: "full", desktop_experience: "full", wearable_experience: "micro_action", surface_fit: "mobile_primary", requires_native_api: false },
+    { capability_key: "alerts", capability_name: "Alerts", mobile_experience: "full", desktop_experience: "adapted", wearable_experience: "glance", surface_fit: "mobile_primary", requires_native_api: true },
+    { capability_key: "advisor_chat", capability_name: "Advisor Chat", mobile_experience: "full", desktop_experience: "full", wearable_experience: "not_available", surface_fit: "mobile_supported", requires_native_api: false },
+    { capability_key: "daily_pulse", capability_name: "Daily Pulse", mobile_experience: "full", desktop_experience: "full", wearable_experience: "glance", surface_fit: "cross_surface", requires_native_api: false },
+    { capability_key: "quick_capture", capability_name: "Quick Capture", mobile_experience: "full", desktop_experience: "minimal", wearable_experience: "not_available", surface_fit: "mobile_primary", requires_native_api: true },
+    { capability_key: "boardroom", capability_name: "Boardroom", mobile_experience: "adapted", desktop_experience: "full", wearable_experience: "glance", surface_fit: "desktop_primary", requires_native_api: false },
+    { capability_key: "workflow_builder", capability_name: "Workflow Builder", mobile_experience: "minimal", desktop_experience: "full", wearable_experience: "not_available", surface_fit: "desktop_primary", requires_native_api: false },
+    { capability_key: "ai_engineering", capability_name: "AI Engineering", mobile_experience: "not_available", desktop_experience: "full", wearable_experience: "not_available", surface_fit: "not_mobile_appropriate", requires_native_api: false },
+    { capability_key: "finance_workspace", capability_name: "Finance Workspace", mobile_experience: "adapted", desktop_experience: "full", wearable_experience: "not_available", surface_fit: "desktop_primary", requires_native_api: false },
+    { capability_key: "micro_approvals", capability_name: "Micro Approvals", mobile_experience: "full", desktop_experience: "not_available", wearable_experience: "micro_action", surface_fit: "wearable_micro_action", requires_native_api: true },
+    { capability_key: "camera_capture", capability_name: "Camera Capture", mobile_experience: "full", desktop_experience: "not_available", wearable_experience: "not_available", surface_fit: "mobile_primary", requires_native_api: true },
+    { capability_key: "biometric_actions", capability_name: "Biometric Actions", mobile_experience: "full", desktop_experience: "minimal", wearable_experience: "micro_action", surface_fit: "mobile_primary", requires_native_api: true },
+    { capability_key: "push_notifications", capability_name: "Push Notifications", mobile_experience: "full", desktop_experience: "adapted", wearable_experience: "full", surface_fit: "cross_surface", requires_native_api: true },
+  ];
+  return caps.map(c => ({ user_id: userId, ...c }));
+}
+
 // ── Master Seed Function ────────────────────────────────────
 export async function seedEcosystemData(): Promise<{ seeded: number; errors: string[] }> {
   const userId = await getUserId();
@@ -273,6 +318,9 @@ export async function seedEcosystemData(): Promise<{ seeded: number; errors: str
     { table: "platform_health_snapshots", rows: platformHealthSnapshotRows(userId) },
     { table: "device_families", rows: deviceFamilyRows(userId), conflict: "user_id,family_key" },
     { table: "surface_portability_registry", rows: surfacePortabilityRows(userId), conflict: "user_id,capability_key" },
+    { table: "assistant_role_states", rows: assistantRoleStateRows(userId) },
+    { table: "interruption_policies", rows: interruptionPolicyRows(userId) },
+    { table: "capability_surface_bindings", rows: capabilitySurfaceBindingRows(userId), conflict: "user_id,capability_key" },
   ];
 
   for (const task of tasks) {

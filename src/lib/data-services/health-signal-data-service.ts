@@ -51,6 +51,27 @@ export async function fetchReadinessStates(isDemoMode: boolean, limit = 20) {
   return data ?? [];
 }
 
+export async function fetchInterruptionPosture(isDemoMode: boolean) {
+  if (isDemoMode) return [];
+  const { data, error } = await supabase
+    .from("interruption_policies")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function fetchVisibilityPolicies(isDemoMode: boolean) {
+  if (isDemoMode) return [];
+  const { data, error } = await supabase
+    .from("readiness_states")
+    .select("*")
+    .order("assessed_at", { ascending: false })
+    .limit(30);
+  if (error) throw error;
+  return data ?? [];
+}
+
 export async function fetchSignalSubsystemReadiness(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_SIGNAL_SUBSYSTEMS;
   const { data, error } = await supabase

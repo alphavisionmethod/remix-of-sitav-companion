@@ -10,6 +10,8 @@ import {
   fetchWearableSignals,
   fetchReadinessStates,
   fetchSignalSubsystemReadiness,
+  fetchInterruptionPosture,
+  fetchVisibilityPolicies,
 } from "@/lib/data-services/health-signal-data-service";
 
 export function useWearableProviders() {
@@ -49,5 +51,21 @@ export function useSignalSubsystemReadiness() {
   return useQuery({
     queryKey: ["signal-subsystem-readiness", isDemoMode],
     queryFn: () => fetchSignalSubsystemReadiness(isDemoMode),
+  });
+}
+
+export function useInterruptionPosture() {
+  const { isDemoMode } = useDataMode();
+  return useQuery({
+    queryKey: ["interruption-posture", isDemoMode],
+    queryFn: () => fetchInterruptionPosture(isDemoMode),
+  });
+}
+
+export function useVisibilityPolicies() {
+  const { isDemoMode } = useDataMode();
+  return useQuery({
+    queryKey: ["visibility-policies", isDemoMode],
+    queryFn: () => fetchVisibilityPolicies(isDemoMode),
   });
 }
