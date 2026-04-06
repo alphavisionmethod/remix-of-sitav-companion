@@ -132,6 +132,7 @@ const DailyPulse = () => {
   const [showPostArrival, setShowPostArrival] = useState(() => {
     return !localStorage.getItem("sita-post-arrival-seen") && sessionStorage.getItem("sita-post-arrival-trigger") === "true";
   });
+  const [seeding, setSeeding] = useState(false);
   const hour = new Date().getHours();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
