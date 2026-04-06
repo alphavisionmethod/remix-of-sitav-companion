@@ -4,6 +4,7 @@ import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cor
 import { EdgeLogger } from "../_shared/logger.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
+import { requireAdmin } from "../_shared/auth.ts";
 
 // ── Statistical Utilities ──
 function computeStats(values: number[]) {
