@@ -90,7 +90,7 @@ describe("SearchFabricService", () => {
 
   it("returns empty results for no matches", () => {
     const svc = new SearchFabricService();
-    svc.addToIndex(makeItem({ title: "Alpha" }));
+    svc.addToIndex(makeItem({ title: "Alpha", body: "nothing here", tags: [] }));
     const results = svc.search({ query: "zzzzz" });
     expect(results.results).toHaveLength(0);
   });
