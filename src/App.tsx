@@ -294,6 +294,15 @@ const PFA08AccountGraphExplorer = lazy(() => import("./pages/admin/PFA08AccountG
 const PFA09ConnectedAccountsCenter = lazy(() => import("./pages/admin/PFA09ConnectedAccountsCenter"));
 const PFA10IntegrationLaunchHonesty = lazy(() => import("./pages/admin/PFA10IntegrationLaunchHonesty"));
 
+const UAO01PresenceContinuity = lazy(() => import("./pages/admin/UAO01PresenceContinuity"));
+const UAO02ConnectedDevices = lazy(() => import("./pages/admin/UAO02ConnectedDevices"));
+const UAO03AmbientTeamControl = lazy(() => import("./pages/admin/UAO03AmbientTeamControl"));
+const UAO04NotificationRouter = lazy(() => import("./pages/admin/UAO04NotificationRouter"));
+const UAO05HealthReadiness = lazy(() => import("./pages/admin/UAO05HealthReadiness"));
+const UAO06DeviceTrust = lazy(() => import("./pages/admin/UAO06DeviceTrust"));
+const UAO07CrossSurfaceJourney = lazy(() => import("./pages/admin/UAO07CrossSurfaceJourney"));
+const UAO08AmbientLaunchReadiness = lazy(() => import("./pages/admin/UAO08AmbientLaunchReadiness"));
+
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
