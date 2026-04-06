@@ -277,6 +277,12 @@ const CN05ConnectorHealthBoard = lazy(() => import("./pages/admin/CN05ConnectorH
 const CN06ConnectorDemoReview = lazy(() => import("./pages/admin/CN06ConnectorDemoReview"));
 const CN07ConnectorLaunchGate = lazy(() => import("./pages/admin/CN07ConnectorLaunchGate"));
 
+const MSA01MultiSurfaceOverview = lazy(() => import("./pages/admin/MSA01MultiSurfaceOverview"));
+const MSA02CoreSurfaceBoundary = lazy(() => import("./pages/admin/MSA02CoreSurfaceBoundary"));
+const MSA03CapabilityPortability = lazy(() => import("./pages/admin/MSA03CapabilityPortability"));
+const MSA04SurfaceAdapterRegistry = lazy(() => import("./pages/admin/MSA04SurfaceAdapterRegistry"));
+const MSA05CompatibilityRadar = lazy(() => import("./pages/admin/MSA05CompatibilityRadar"));
+
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
@@ -1041,6 +1047,11 @@ const App = () => (
                     <Route path="/admin/connectors/health" element={<CN05ConnectorHealthBoard />} />
                     <Route path="/admin/connectors/demo" element={<CN06ConnectorDemoReview />} />
                     <Route path="/admin/connectors/launch-gate" element={<CN07ConnectorLaunchGate />} />
+                    <Route path="/admin/msa/overview" element={<MSA01MultiSurfaceOverview />} />
+                    <Route path="/admin/msa/boundary" element={<MSA02CoreSurfaceBoundary />} />
+                    <Route path="/admin/msa/capabilities" element={<MSA03CapabilityPortability />} />
+                    <Route path="/admin/msa/adapters" element={<MSA04SurfaceAdapterRegistry />} />
+                    <Route path="/admin/msa/compatibility" element={<MSA05CompatibilityRadar />} />
                     <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/admin/mission-control" element={<MissionControlHome />} />
                     <Route path="/admin/durability" element={<AdminDurabilityBoardPage />} />
