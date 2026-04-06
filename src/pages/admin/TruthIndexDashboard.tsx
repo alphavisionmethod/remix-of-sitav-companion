@@ -21,6 +21,7 @@ const INDEX_CONFIG = [
   { key: "surfacePortability", label: "Surface Portability Index", icon: Monitor, color: "text-pink-400" },
   { key: "deviceReadiness", label: "Device Readiness Index", icon: Smartphone, color: "text-orange-400" },
   { key: "observability", label: "Observability Index", icon: Activity, color: "text-teal-400" },
+  { key: "securityPrivacy", label: "Security & Privacy Index", icon: Lock, color: "text-red-400" },
 ] as const;
 
 function getScoreColor(score: number): string {
