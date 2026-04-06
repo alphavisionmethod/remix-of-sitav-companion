@@ -1047,6 +1047,11 @@ const App = () => (
                     <Route path="/admin/connectors/health" element={<CN05ConnectorHealthBoard />} />
                     <Route path="/admin/connectors/demo" element={<CN06ConnectorDemoReview />} />
                     <Route path="/admin/connectors/launch-gate" element={<CN07ConnectorLaunchGate />} />
+                    <Route path="/admin/msa/overview" element={<MSA01MultiSurfaceOverview />} />
+                    <Route path="/admin/msa/boundary" element={<MSA02CoreSurfaceBoundary />} />
+                    <Route path="/admin/msa/capabilities" element={<MSA03CapabilityPortability />} />
+                    <Route path="/admin/msa/adapters" element={<MSA04SurfaceAdapterRegistry />} />
+                    <Route path="/admin/msa/compatibility" element={<MSA05CompatibilityRadar />} />
                     <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/admin/mission-control" element={<MissionControlHome />} />
                     <Route path="/admin/durability" element={<AdminDurabilityBoardPage />} />
