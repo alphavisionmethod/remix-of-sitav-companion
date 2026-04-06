@@ -23,7 +23,7 @@ export interface SignalProviderRecord {
   privacyTier: "high" | "standard";
 }
 
-export interface HealthSignalConsentRecord {
+export interface SignalHealthConsentRecord {
   id: string;
   userId: string;
   providerKey: SignalProviderKey;
@@ -62,10 +62,10 @@ export interface NormalizedSignalRecord {
   validUntil?: string;
 }
 
-export interface ReadinessStateRecord {
+export interface SignalReadinessStateRecord {
   id: string;
   userId: string;
-  readinessLevel: ReadinessLevel;
+  readinessLevel: SignalReadinessLevel;
   interruptionSensitivity: "silent" | "critical_only" | "low" | "normal" | "high";
   derivedFrom: NormalizedState[];
   confidence: number;
@@ -90,7 +90,7 @@ export interface InterruptionPostureRecord {
 export interface SignalInfluenceRecord {
   id: string;
   userId: string;
-  readinessLevel: ReadinessLevel;
+  readinessLevel: SignalReadinessLevel;
   influenceType: "suppress" | "defer" | "escalate" | "route_surface" | "adjust_timing";
   targetCategory: string;
   targetSurface?: string;
@@ -115,7 +115,7 @@ export interface SyntheticSignalScenarioRecord {
   scenarioName: string;
   description: string;
   signals: Array<{ providerKey: SignalProviderKey; signalCategory: SignalCategory; value: number; unit: string }>;
-  expectedReadiness: ReadinessLevel;
+  expectedReadiness: SignalReadinessLevel;
   expectedPosture: string;
   isActive: boolean;
 }
@@ -134,20 +134,20 @@ export interface SignalLaunchReadinessRecord {
 export interface ReadinessDerivationConfig {
   rules: Array<{
     condition: { state: NormalizedState; operator: "gt" | "lt" | "eq" | "between"; value: number | [number, number] };
-    producesLevel: ReadinessLevel;
+    producesLevel: SignalReadinessLevel;
     confidence: number;
     priority: number;
   }>;
   combineStrategy: "highest_priority" | "worst_case" | "weighted_average";
-  defaultLevel: ReadinessLevel;
+  defaultLevel: SignalReadinessLevel;
 }
 
 /** Assistant timing intelligence */
 export interface AssistantTimingConfig {
   dontBotherDuring: string[];
-  holdLowValueWhen: ReadinessLevel[];
-  showStrategicBriefWhen: ReadinessLevel[];
+  holdLowValueWhen: SignalReadinessLevel[];
+  showStrategicBriefWhen: SignalReadinessLevel[];
   escalateUrgentDespite: boolean;
-  schedulePlanningPromptsWhen: ReadinessLevel[];
-  idealBriefingWindow: { readiness: ReadinessLevel; timeOfDay?: string };
+  schedulePlanningPromptsWhen: SignalReadinessLevel[];
+  idealBriefingWindow: { readiness: SignalReadinessLevel; timeOfDay?: string };
 }
