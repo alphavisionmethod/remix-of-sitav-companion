@@ -1,137 +1,108 @@
 
-# Live Inference Completion — 100% Implementation Audit
 
-## Summary: What IS Implemented (Strong Foundation)
+# Live Connector Completion + Notification Reality — Implementation Plan
 
-The vast majority of this 18-part prompt is **already implemented**. The architecture is not just scaffolded — it is deeply wired and operational.
+## Current State Assessment
 
-### Phase 1 — Provider Activation: DONE
-- `LOVABLE_API_KEY` secret is configured and present
-- `OPENAI_API_KEY` and `ANTHROPIC_API_KEY` secrets exist in Supabase
-- `ai_provider_registry` table exists with admin page (AIG01)
-- `ai_model_registry` table exists with admin page (AIG02)
-- Provider health checks via `ai-health` edge function: tests key presence, provider reachability, model invocation, structured output, budget status
-- Runtime probes include AI gateway health probe
+### What EXISTS and works:
 
-### Phase 2 — AI Gateway Runtime: DONE
-- `supabase/functions/ai-gateway/index.ts` (465 lines) is a **fully operational** gateway that:
-  - Authenticates users
-  - Rate limits requests
-  - Resolves routing: capability_routing → routing_policies → task class defaults
-  - Checks budget policies via `check_ai_budget_policies()` RPC
-  - Calls Lovable AI Gateway (real provider calls)
-  - Supports streaming and non-streaming
-  - Logs to `ai_usage_ledger`, `ai_receipt_records`, `ai_inference_receipts`
-  - Records `ai_fallback_events` on fallback
-  - Budget blocks, downgrades, and premium blocks all handled
-  - Legacy budget tracking via `update_ai_budget_usage` RPC
+**Connectors:**
+- `connector_operations` edge function: seed, test, health check, demo activate, sync, disconnect
+- `connector-health` edge function: pings configured connectors
+- `provider-family-operations` edge function: Google family seeding, scope policies, drift checks
+- DB tables: `connector_registry`, `connector_accounts`, `connector_oauth_tokens`, `connector_oauth_flows`, `connector_sync_runs`, `connector_health_records`, `connector_receipts`, `connector_policies`, `connector_launch_readiness`, `connector_demo_bindings`, `consent_ledger`, `consent_scope_records`, `consent_revocations`, `consent_upgrades`
+- Admin pages: CN01-CN07 (Reality Overview, Registry, Account Linkage, Sync Truth, Health, Demo Review, Launch Gate)
+- PFA01-PFA10 (Provider Family boards including OAuth client registry, consent ledger, scope matrix, health drift, connected accounts, launch honesty)
+- ISA01-ISA07 (Identity/Security/Auth boards)
+- Google provider family service with demo/real state management
 
-### Phase 3 — Capability-to-Live Routing: DONE
-- `ai-capability-client.ts` routes all frontend calls through the gateway
-- Hooks exist for all target capabilities:
-  - `use-advisor-chat.ts` → `advisor.chat.primary`
-  - `use-boardroom-summary.ts` → `boardroom.weekly.summary`
-  - `use-daily-pulse.ts` → `daily_pulse.generate`
-  - `use-utility-ai.ts` → `utility.extract` / `classification.extract`
-  - `use-admin-synthesis.ts` → `admin.synthesis`
-- `invokeSynthesis()` and `invokeUtility()` convenience methods exist
-- Task class → model mapping in gateway: premium → gemini-2.5-pro, balanced → gemini-3-flash, cheap → flash-lite
+**Notifications:**
+- `push-dispatch` edge function: full VAPID web push + FCM + APNs dispatch with token cleanup
+- `push-registration-service.ts`: web push subscription, token persistence, VAPID key handling
+- `use-push-notifications.ts` hook: permission, register, unregister, refresh
+- `sw-push.js` service worker: push event + notification click handling
+- `NotificationCenter.tsx`: full UI with urgency classes, categories, mark read, dismiss
+- DB tables: `notifications_queue`, `device_push_tokens`, `attention_decisions`, `interruption_policies`, `notification_fatigue_profiles`, `ambient_notification_routes`
+- Admin pages: NRC01-NRC06 (Routing Studio, Calmness Center, Fatigue Board, Queue/Interrupt Matrix, Cross-Device Delivery, Launch Honesty)
+- DWE04 (Notification Routing Studio with quiet hours)
+- VAPID keys configured as secrets
+- DB trigger `dispatch_push_notification` on `notifications_queue` insert
 
-### Phase 4 — Live Verification: PARTIALLY DONE
-- `ai-health` edge function performs real provider ping + structured output test
-- Runtime probes check AI gateway
-- **Missing**: No dedicated "AI Runtime Verification Board" (AIG09) admin page that shows per-capability pass/fail matrix
+### What is MISSING (gaps):
 
-### Phase 5 — Degraded/Fallback Truth: DONE
-- Gateway handles: no key → 503, rate limit → 429, credits → 402, budget block → 429
-- Fallback logic: if primary fails, tries `fallbackModel` if configured
-- `ai-response-normalizer.ts` maps all states: `degraded_config_missing`, `degraded_provider_unavailable`, `degraded_budget_limited`, `degraded_fallback_used`, etc.
-- `ai-state-types.ts` has 17 canonical AI states + launch honesty levels
-- AIG08 Degraded Diagnostics board: shows missing keys, rate limits, provider failures, budget fallbacks
+**Connector gaps:**
+1. **No real Google OAuth callback handler** — `connector_oauth_flows` table exists but no edge function handles the actual Google OAuth redirect, code exchange, or token persistence. The connect flow is architectural, not runtime-real.
+2. **No real OAuth initiation endpoint** — no edge function generates the Google authorization URL with correct scopes and state parameter.
+3. **Connected Services page doesn't have real connect/disconnect buttons wired to OAuth** — it shows demo state.
 
-### Phase 6 — Receipt/Usage/Audit Truth: DONE
-- Gateway writes to 3 tables on every call: `ai_usage_ledger`, `ai_receipt_records`, `ai_inference_receipts`
-- Tracks: provider, model, tokens, cost estimate, latency, fallback status, error details
-- Budget alert recording when thresholds breached
-- Fallback events recorded in `ai_fallback_events`
+**Notification gaps:**
+4. **No `notification_delivery_receipts` table** — push-dispatch writes to `notifications_queue.status` but doesn't persist per-delivery-attempt records (platform, success/fail, failure reason, latency).
+5. **No notification preferences table** — no per-user/per-category channel preferences. `interruption_policies` handles quiet hours but not "I want email for finance, push for approvals" type preferences.
+6. **No event-to-response tracking** — notifications are fire-and-forget. No link from "user clicked notification" back to the source event.
+7. **Calm routing logic exists in admin UI (demo data) but is not wired into the push-dispatch flow** — `interruption_policies` table exists but push-dispatch doesn't check it before sending.
 
-### Phase 7 — Admin Truth Surfaces: 7 of 8 DONE
-| Board | Status |
-|---|---|
-| AIG01 Provider Registry | DONE — full table with health, secrets, launch stage |
-| AIG02 Model Registry | DONE — models, tiers, costs, capabilities |
-| AIG03 Routing Matrix | DONE — capability → model routing, budget class |
-| AIG04 Budget Center | DONE — policies, spend tracking, alerts, cost governance |
-| AIG05 Receipts Explorer | DONE — invocations, provider/model, latency, cost, fallbacks |
-| AIG06 Launch Truth | DONE — duplicate of AIG07 (both exist) |
-| AIG07 Launch Truth | DONE — honesty classes, contradictions, public-safe status |
-| AIG08 Degraded Diagnostics | DONE — missing keys, provider failures, budget fallbacks |
-| **AIG09 Runtime Verification Board** | **MISSING** — no per-capability live test matrix board |
-
-### Phase 8 — Behavioral Proof Integration: PARTIALLY DONE
-- Customer Journey system exists with 24 journeys including AI journeys
-- Playwright tests exist for assistant chat
-- **Gap**: CJ AI journeys are not reclassified from live runtime evidence automatically
-
-## What Is MISSING (3 Gaps)
-
-### Gap 1: AIG09 — AI Runtime Verification Board (Part 12, Check 7)
-No admin page shows a per-capability live test matrix with:
-- Last live invocation per capability
-- Provider/model used
-- Pass/fail status
-- Latency, tokens, cost
-- Fallback/degraded reason
-
-**Fix**: Create `src/pages/admin/AIG09RuntimeVerification.tsx` that queries `ai_usage_ledger` and `ai_inference_receipts` grouped by capability_key, showing last success/failure per capability.
-
-### Gap 2: Live Smoke Test Automation (Part 4, Phase 4)
-No automated way to run the 5 verification checks from Part 7 (provider health, basic invocation, structured output, budget check, receipt write) and display results in the admin UI. The `ai-health` edge function does checks 1-3 but doesn't persist results or show per-capability pass/fail.
-
-**Fix**: Extend `ai-health` to run the full 8-check matrix and persist results. Add query hook + display in AIG09.
-
-### Gap 3: CJ AI Journey Reclassification from Runtime Evidence (Part 13)
-AI-backed customer journeys (assistant.chat_primary, boardroom.summary_view_primary) are not automatically reclassified based on actual runtime evidence from `ai_usage_ledger`.
-
-**Fix**: Add a hook/function that checks recent `ai_usage_ledger` rows for each AI capability and updates `customer_journey_status` accordingly.
+**Admin gaps:**
+8. **No dedicated Connector Runtime Verification Board (CON01)** matching the prompt's exact spec — CN01 exists but doesn't show OAuth/callback/token verification matrix.
+9. **No dedicated Notification Delivery Receipts Explorer (NOT03)** — no admin page for per-attempt delivery inspection.
 
 ## Implementation Plan
 
-### Phase A — AIG09 Runtime Verification Board (new page)
-- Create `src/pages/admin/AIG09RuntimeVerification.tsx`
-- Query `ai_usage_ledger` + `ai_inference_receipts` for last invocation per capability
-- Show matrix: capability, provider, model, status, latency, tokens, cost, receipt, fallback
-- Add "Run Verification" button that calls `ai-health` edge function
-- Add route to App.tsx
+### Phase 1 — Database: Delivery receipts + notification preferences (migration)
 
-### Phase B — Extend ai-health for Full 8-Check Matrix
-- Add receipt write verification (check if receipt was written after test call)
-- Add routing fidelity check (compare selected model to routing policy)
-- Add fallback/degraded simulation (test with invalid capability)
-- Persist verification results to a new table or use existing `ai_provider_health`
-- Return per-check pass/fail with timestamps
+Create 2 new tables:
+- `notification_delivery_receipts`: notification_id, user_id, platform, channel, status (sent/delivered/failed/opened/clicked), failure_reason, latency_ms, sent_at, delivered_at, opened_at, metadata
+- `notification_preferences`: user_id, category, channel_push (bool), channel_in_app (bool), channel_email (bool), urgency_minimum, enabled, updated_at
 
-### Phase C — CJ AI Journey Auto-Classification
-- Create `src/lib/customer-journey/ai-journey-classifier.ts`
-- Query `ai_usage_ledger` for recent successes per AI capability key
-- Map to CJ journey keys (advisor.chat_primary → assistant.chat_primary)
-- Update `customer_journey_status` based on evidence
-- Wire into CJ01 Executive Report or seeder
+### Phase 2 — Google OAuth real flow (edge function)
+
+Create `supabase/functions/connector-oauth/index.ts` with two actions:
+- `initiate`: generates Google authorization URL with correct scopes, state param, redirect URI; writes `connector_oauth_flows` row with status=pending
+- `callback`: handles the redirect, exchanges code for tokens, writes `connector_oauth_tokens`, updates `connector_accounts` status to connected, writes `consent_scope_records`, writes `connector_receipts`
+
+This makes Google Drive connect/disconnect/reauth truly real.
+
+### Phase 3 — Notification delivery receipts in push-dispatch
+
+Update `push-dispatch/index.ts` to:
+- Write a `notification_delivery_receipts` row per device attempt (platform, success/fail, failure_reason, latency)
+- Check `interruption_policies` before sending (calm routing: suppress if in quiet hours and urgency < allowed)
+- Check `notification_preferences` for channel permission
+
+### Phase 4 — Connected Services UX truth
+
+Update the Connected Services page to:
+- Wire real "Connect Google Drive" button → calls `connector-oauth` initiate
+- Show reauth prompts when `connector_oauth_tokens.reauth_required = true`
+- Show honest state labels (not connected / connected / reauth required / planned)
+
+### Phase 5 — Admin boards
+
+**CON01 upgrade** (Connector Runtime Verification Board): Add OAuth verification matrix showing per-capability: OAuth configured?, callback verified?, token exchange verified?, connected accounts exist?, reauth flow verified?, disconnect verified?
+
+**NOT03 new** (Notification Delivery Receipts Explorer): Query `notification_delivery_receipts` showing notification_id, platform, status, failure_reason, latency, timestamps.
+
+**NOT04 upgrade** (Calm Policy Board): Wire to real `interruption_policies` data instead of demo data.
+
+### Phase 6 — Customer Journey entries
+
+Add journey entries for connector and notification flows:
+- `connectors.google_drive_connect_entry`
+- `notifications.permission_enable_web`
+- `notifications.push_subscription_primary`
+- `notifications.receive_web_push_primary`
 
 ## Files Changed
 
 | File | Action |
 |---|---|
-| `src/pages/admin/AIG09RuntimeVerification.tsx` | **New** — live test matrix board |
-| `src/lib/ai/hooks/use-ai-runtime-verification.ts` | **New** — hook for runtime checks |
-| `supabase/functions/ai-health/index.ts` | Update — add receipt + routing checks |
-| `src/lib/customer-journey/ai-journey-classifier.ts` | **New** — auto-classify AI journeys |
-| `src/App.tsx` | Add AIG09 route |
+| `supabase/functions/connector-oauth/index.ts` | **New** — OAuth initiate + callback |
+| `supabase/functions/push-dispatch/index.ts` | Update — delivery receipts + calm check |
+| `src/pages/admin/CN01ConnectorRealityOverview.tsx` | Update — verification matrix |
+| `src/pages/admin/NOT03DeliveryReceiptsExplorer.tsx` | **New** |
+| `src/pages/ConnectedServices.tsx` or equivalent | Update — real OAuth buttons |
+| `src/lib/customer-journey/journey-registry.ts` | Add connector + notification journeys |
+| `src/routes/AdminRoutes.tsx` | Add NOT03 route |
 
-## No database migration needed
-All required tables exist. Pure frontend + edge function changes.
+## Database migration required
+2 new tables: `notification_delivery_receipts`, `notification_preferences`. RLS policies for both (user can read own rows).
 
-## Score: 92/100 Implemented
-- 15 of 18 parts are 100% complete
-- 3 parts have minor gaps (runtime verification board, smoke automation, CJ integration)
-- The core AI gateway, budget, receipts, routing, degraded handling, and 8 admin boards are all fully operational
