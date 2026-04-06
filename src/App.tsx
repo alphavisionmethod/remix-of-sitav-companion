@@ -1330,6 +1330,7 @@ const App = () => (
           </DisplayModeProvider>
           </DemoModeProvider>
           </DataModeProvider>
+          </RealityModeProvider>
           </ThemeProvider>
           </ConnectivityProvider>
         </AuthProvider>
