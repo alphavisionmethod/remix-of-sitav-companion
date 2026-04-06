@@ -317,6 +317,9 @@ function capabilitySurfaceBindingRows(userId: string) {
     { table: "platform_health_snapshots", rows: platformHealthSnapshotRows(userId) },
     { table: "device_families", rows: deviceFamilyRows(userId), conflict: "user_id,family_key" },
     { table: "surface_portability_registry", rows: surfacePortabilityRows(userId), conflict: "user_id,capability_key" },
+    { table: "assistant_role_states", rows: assistantRoleStateRows(userId) },
+    { table: "interruption_policies", rows: interruptionPolicyRows(userId) },
+    { table: "capability_surface_bindings", rows: capabilitySurfaceBindingRows(userId), conflict: "user_id,capability_key" },
   ];
 
   for (const task of tasks) {
