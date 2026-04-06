@@ -92,10 +92,13 @@ const AND01AndroidEcosystemCenter = () => {
       </div>
 
       <Tabs defaultValue="surfaces" className="space-y-4">
-        <TabsList>
+        <TabsList className="flex-wrap">
           <TabsTrigger value="surfaces">Surfaces</TabsTrigger>
           <TabsTrigger value="capabilities">Provider Family</TabsTrigger>
           <TabsTrigger value="launch">Launch Readiness</TabsTrigger>
+          <TabsTrigger value="wearables">Wearable Configs</TabsTrigger>
+          <TabsTrigger value="push">Push Routes</TabsTrigger>
+          <TabsTrigger value="continuity">Continuity Events</TabsTrigger>
           <TabsTrigger value="roadmap">Roadmap</TabsTrigger>
         </TabsList>
 
