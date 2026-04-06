@@ -14,7 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
 
-const agents = [
+const DEMO_AGENTS = [
   { id: "1", name: "Revenue Scout", role: "Lead Qualification", status: "active" as const, tasksCompleted: 142, trustScore: 94, costToday: 2.34 },
   { id: "2", name: "Invoice Guardian", role: "Payment Follow-up", status: "active" as const, tasksCompleted: 89, trustScore: 97, costToday: 1.12 },
   { id: "3", name: "Content Architect", role: "Content Generation", status: "paused" as const, tasksCompleted: 56, trustScore: 82, costToday: 0 },

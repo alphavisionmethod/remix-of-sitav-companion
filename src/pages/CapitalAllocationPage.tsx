@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const allocations = [
+const DEMO_ALLOCATIONS = [
   { asset: "US Equities", target: 40, current: 42.3, value: 423000, drift: 2.3, color: "bg-blue-500" },
   { asset: "International Equities", target: 20, current: 18.1, value: 181000, drift: -1.9, color: "bg-purple-500" },
   { asset: "Fixed Income", target: 25, current: 24.8, value: 248000, drift: -0.2, color: "bg-emerald-500" },
