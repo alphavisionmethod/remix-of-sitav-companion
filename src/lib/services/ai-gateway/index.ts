@@ -65,3 +65,11 @@ export {
   getDegradedDiagnostics,
   type DegradedDiagnostic,
 } from "./diagnostics.service";
+
+// Callable edge function wrappers
+export {
+  callBrainCore,
+  callAIGateway,
+  type BrainCoreResponse,
+  type AIGatewayResponse,
+} from "./callable";
