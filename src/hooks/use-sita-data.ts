@@ -137,7 +137,34 @@ export function useCashFlow() {
     queryFn: async () => {
       if (isDemoMode) return mockCashFlow;
       if (!user) return mockCashFlow;
-      // Compute from real invoices + bills
+
+      // Try backend edge function first for server-computed analysis
+      try {
+        const { data, error } = await supabase.functions.invoke("cashflow-calculate", {
+          body: { action: "analyze" },
+        });
+        if (!error && data && data.accounts_count > 0) {
+          const liquid = data.total_liquid_cents || 0;
+          const receivable = data.total_receivable_cents || 0;
+          const overdue = data.overdue_cents || 0;
+          const inflows = data.inflows_30d_cents || 0;
+          const net = data.net_position_cents || 0;
+          const safeToSpend = Math.max(0, liquid - overdue);
+
+          return {
+            available: `$${(liquid / 100).toLocaleString()}`,
+            incoming: `$${(receivable / 100).toLocaleString()}`,
+            outgoing: `$${(overdue / 100).toLocaleString()}`,
+            safeToSpend: `$${(safeToSpend / 100).toLocaleString()}`,
+            runway: liquid > 0 && overdue > 0 ? `${Math.round(liquid / overdue)} months` : "∞",
+            nextBigExpense: { name: "Overdue receivables", amount: `$${(overdue / 100).toLocaleString()}`, date: "Now" },
+          };
+        }
+      } catch {
+        // Edge function unavailable — fall back to local computation
+      }
+
+      // Fallback: compute from real invoices + bills
       const [invoiceRes, billRes, budgetRes] = await Promise.all([
         db.from("invoices").select("amount, status").limit(200),
         db.from("bills").select("amount, status, due_date").limit(200),
@@ -159,7 +186,7 @@ export function useCashFlow() {
       const safeToSpend = Math.max(0, available - totalPayable);
 
       if (invoices.length === 0 && bills.length === 0 && budgets.length === 0) {
-        return mockCashFlow; // No real data yet, show demo
+        return mockCashFlow;
       }
 
       return {
