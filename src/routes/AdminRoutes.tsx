@@ -23,6 +23,10 @@ const ZeroWastePromptView = lazy(() => import("@/pages/admin/intelligence/ZeroWa
 const SmartDigestCenter = lazy(() => import("@/pages/admin/intelligence/SmartDigestCenter"));
 const CrossTenantGovernance = lazy(() => import("@/pages/admin/intelligence/CrossTenantGovernance"));
 
+// AIG07-AIG08: AI Governance Center
+const AIG07LaunchTruth = lazy(() => import("@/pages/admin/AIG07LaunchTruth"));
+const AIG08DegradedDiagnostics = lazy(() => import("@/pages/admin/AIG08DegradedDiagnostics"));
+
 // Part 3: Strategic Intelligence Screens
 const IntelligenceCapitalDashboard = lazy(() => import("@/pages/admin/strategic/IntelligenceCapitalDashboard"));
 const CostToConfidenceDashboard = lazy(() => import("@/pages/admin/strategic/CostToConfidenceDashboard"));
