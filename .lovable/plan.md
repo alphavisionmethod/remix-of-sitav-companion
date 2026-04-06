@@ -1,43 +1,64 @@
 
+# SITA OS — Behavioral Truth Verification System
 
-# Advisor Registry CRUD + Approval Queue → 100% Advanced
+## Phase 1: Database Foundation
+Create verification tables:
+- `verification_surfaces` — full inventory of every route, action, button, form
+- `verification_runs` — test execution records with pass/fail/mode/env
+- `verification_evidence` — screenshots, logs, traces linked to runs
+- `verification_blockers` — auto-computed launch blockers from failures
+- RLS policies for all tables (user-scoped)
 
-## Current Gaps
+## Phase 2: Surface Inventory Registry
+Create a TypeScript registry (`src/lib/verification/surface-registry.ts`) that maps every route, page, tab, action, button, form, and modal with:
+- route key, path, shell, domain
+- action type, label, test selector
+- expected result, backend dependency
+- supported modes, launch honesty class
+- priority (P0/P1/P2)
 
-### Advisor Registry
-- **TeamManagement.tsx** reads from `advisor_registry` table but has **zero mutations** — no create, edit, delete, toggle active
-- Detail panel shows Train/Reset/Permissions buttons that are **non-functional placeholders**
-- **AdvisorRegistry.tsx** reads from hardcoded `FULL_ADVISOR_REGISTRY` config, not from DB at all
+Scan existing routes and components to build the initial inventory.
 
-### Approval Queue
-- **HQApprovalQueue.tsx** is already fully built for `ai_workforce_approval_queue` (overview, detail, filters, approve/reject/defer, history) — this is 100%
-- The **`approval_queue`** table (used by OwnerCenter, ProofCenter, ActivityStream) has no dedicated management UI — just read-only consumers
-- No way to create approval requests manually or manage the `approval_queue` lifecycle from a single view
+## Phase 3: Test ID Infrastructure
+Add `data-testid` attributes to all P0 and P1 interactive elements across:
+- Auth pages (login, signup)
+- Navigation (sidebar, topbar)
+- Files, Boardroom, AI Chat, Approvals
+- Connectors, Admin OS pages
+- Settings, Owner Center
 
-## Plan
+## Phase 4: Admin Verification Dashboard
+Build 7 admin boards as routes under `/admin/verification/`:
+- V01: Surface Inventory Board
+- V02: Interaction Coverage Board
+- V03: P0 Journey Board
+- V04: Mode Verification Board
+- V05: Failure Triage Board
+- V06: Evidence Explorer
+- V07: Launch Blocker Board
 
-### Step 1: Advisor Registry Full CRUD (TeamManagement.tsx)
-Add to TeamManagement:
-- **Create Advisor dialog**: Form with display_name, domain, advisor_type, trust_threshold, active toggle → inserts into `advisor_registry`
-- **Edit Advisor**: Click advisor card → edit dialog pre-filled with current values → updates `advisor_registry`
-- **Toggle Active/Pause**: Quick action button on card that updates `active` column
-- **Delete Advisor**: Confirmation dialog → deletes from `advisor_registry`
-- Replace placeholder Train/Reset/Permissions buttons with real toggle-active and edit actions
+## Phase 5: Playwright E2E Tests
+Create Playwright test suites for all P0 journeys:
+- Auth (sign in, sign out, session persistence)
+- Files (upload, browse, manage)
+- AI/Advisors (chat, response, degraded)
+- Boardroom (load, refresh, mode)
+- Approvals (action, state change)
+- Connectors (connect flow, states)
+- Admin OS (runtime truth, AI governance, approvals)
+- Mode variants (real, demo, degraded)
 
-### Step 2: Approval Queue Management Page
-Create a unified approval management view at the OwnerCenter level for the `approval_queue` table:
-- **Add a full approval management tab** to OwnerCenter or create a standalone route
-- Actually — `approval_queue` is already consumed in OwnerCenter with real data. The gap is: no approve/reject mutations on that table.
-- Add approve/reject/dismiss mutations to the existing OwnerCenter approvals view using `supabase.from("approval_queue").update()`
-
-### Step 3: Wire AdvisorRegistry page to DB
-- AdvisorRegistry.tsx currently uses `FULL_ADVISOR_REGISTRY` (hardcoded). Add a DB query layer that merges DB records with config defaults, so DB-persisted advisors appear alongside config-defined ones.
+## Phase 6: Verification Seeding & Evidence Pipeline
+- Seed `verification_surfaces` from the TypeScript registry
+- Create edge function for recording test results
+- Wire admin boards to live DB data
 
 ## Files Changed
-
-| File | Change |
+| Area | Files |
 |---|---|
-| `src/pages/admin/TeamManagement.tsx` | Add create/edit/delete/toggle mutations + dialogs |
-| `src/pages/OwnerCenter.tsx` | Add approve/reject mutations for `approval_queue` items |
-| `src/pages/advisors/AdvisorRegistry.tsx` | Merge DB advisors with config registry |
-
+| Migration | New tables: verification_surfaces, verification_runs, verification_evidence, verification_blockers |
+| Registry | `src/lib/verification/surface-registry.ts` |
+| Test IDs | Multiple component files across src/pages and src/components |
+| Admin UI | 7 new pages under `src/pages/admin/verification/` |
+| Playwright | `tests/e2e/` directory with journey test files |
+| Edge Function | `supabase/functions/verification-recorder/index.ts` |
