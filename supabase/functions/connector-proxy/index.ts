@@ -39,7 +39,7 @@ serve(async (req) => {
   // Input validation
   if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
     try {
-  const BodySchema = z.object({ connector: z.string().min(1), action: z.string().min(1), payload: z.record(z.unknown()).optional() });
+      const BodySchema = z.object({ connector: z.string().min(1), action: z.string().min(1), payload: z.record(z.unknown()).optional() });
       const body = await req.json();
       const parsed = BodySchema.safeParse(body);
       if (!parsed.success) {
@@ -50,7 +50,6 @@ serve(async (req) => {
     } catch (_) {
       // Non-JSON body or GET request - continue
     }
-  });
   }
 
   try {
