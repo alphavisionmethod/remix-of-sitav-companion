@@ -41,11 +41,6 @@ export interface HealthSnapshot {
   checked_at: string;
   created_at: string;
 }
-  details: Record<string, unknown>;
-  degraded_capabilities: string[];
-  check_duration_ms: number;
-  checked_at: string;
-}
 
 /** Fetch all registered probes */
 export async function getRegisteredProbes(): Promise<RuntimeProbe[]> {
