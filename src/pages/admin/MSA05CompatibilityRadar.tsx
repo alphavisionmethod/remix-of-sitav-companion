@@ -5,12 +5,19 @@ import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Radar, RefreshCw, AlertTriangle, CheckCircle } from "lucide-react";
+import { Radar, RefreshCw, AlertTriangle, CheckCircle, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 const sevColors: Record<string, string> = {
   critical: "bg-red-500/20 text-red-400", high: "bg-orange-500/20 text-orange-400",
   medium: "bg-yellow-500/20 text-yellow-400", low: "bg-muted text-muted-foreground",
+};
+
+const heatCell = (status: string) => {
+  if (status === "production" || status === "active") return "bg-green-500/30";
+  if (status === "beta") return "bg-cyan-500/20";
+  if (status === "planned") return "bg-yellow-500/15";
+  return "bg-muted/20";
 };
 
 export default function MSA05CompatibilityRadar() {
@@ -26,18 +33,50 @@ export default function MSA05CompatibilityRadar() {
     queryFn: async () => { const { data } = await supabase.from("architecture_boundary_records").select("*").eq("is_boundary_violation", true); return data || []; },
   });
 
+  const { data: surfaces = [] } = useQuery({
+    queryKey: ["surface-types"],
+    queryFn: async () => { const { data } = await supabase.from("surface_types").select("*").order("created_at"); return data || []; },
+  });
+
+  const { data: bindings = [] } = useQuery({
+    queryKey: ["capability-bindings"],
+    queryFn: async () => { const { data } = await supabase.from("capability_surface_bindings").select("*, capability_definitions(domain, capability_key)"); return data || []; },
+  });
+
   const checkMutation = useMutation({
     mutationFn: async () => {
       const { data, error } = await supabase.functions.invoke("msa-operations", { body: { action: "check_consistency" } });
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => { toast.success(`Consistency check: ${data?.inconsistent || 0} drifts found`); queryClient.invalidateQueries({ queryKey: ["cross-surface-consistency"] }); },
+    onSuccess: (data: any) => { toast.success(`Consistency check: ${data?.inconsistent || 0} drifts found`); queryClient.invalidateQueries(); },
     onError: (e: any) => toast.error(`Check failed: ${e.message}`),
   });
 
   const consistent = consistency.filter((c: any) => c.consistent);
   const drifts = consistency.filter((c: any) => !c.consistent);
+
+  // Build heatmap: domains vs surfaces
+  const domains = [...new Set(bindings.map((b: any) => b.capability_definitions?.domain).filter(Boolean))];
+  const heatmapData = domains.map(domain => {
+    const row: Record<string, any> = { domain };
+    surfaces.forEach((s: any) => {
+      const domainBindings = bindings.filter((b: any) => b.capability_definitions?.domain === domain && b.surface_id === s.id);
+      const prodCount = domainBindings.filter((b: any) => b.binding_status === "production").length;
+      const total = domainBindings.length;
+      row[s.surface_key] = { total, production: prodCount, status: prodCount > 0 ? "production" : total > 0 ? "planned" : "none" };
+    });
+    return row;
+  });
+
+  // Migration recommendations
+  const recommendations = boundaries
+    .filter((b: any) => b.migration_target)
+    .sort((a: any, b: any) => {
+      const priority: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+      return (priority[a.migration_priority] || 3) - (priority[b.migration_priority] || 3);
+    })
+    .slice(0, 10);
 
   return (
     <div className="space-y-6 p-6">
@@ -51,22 +90,67 @@ export default function MSA05CompatibilityRadar() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-card border-border"><CardContent className="pt-4">
-          <p className="text-sm text-muted-foreground">Consistency Checks</p>
+          <p className="text-xs text-muted-foreground">Consistency Checks</p>
           <p className="text-2xl font-bold">{consistency.length}</p>
         </CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4">
-          <p className="text-sm text-muted-foreground">Consistent</p>
-          <p className="text-2xl font-bold">{consistent.length}</p>
+          <p className="text-xs text-muted-foreground">Consistent</p>
+          <p className="text-2xl font-bold text-green-400">{consistent.length}</p>
         </CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4">
-          <p className="text-sm text-muted-foreground">Drifts Detected</p>
+          <p className="text-xs text-muted-foreground">Drifts</p>
           <p className="text-2xl font-bold text-destructive">{drifts.length}</p>
+        </CardContent></Card>
+        <Card className="bg-card border-border"><CardContent className="pt-4">
+          <p className="text-xs text-muted-foreground">Web-Trapped</p>
+          <p className="text-2xl font-bold text-yellow-400">{boundaries.length}</p>
         </CardContent></Card>
       </div>
 
-      {/* Web-Trapped Logic */}
+      {/* ── CompatibilityHeatmap ── */}
+      {heatmapData.length > 0 && (
+        <Card className="bg-card border-border">
+          <CardHeader><CardTitle>Compatibility Heatmap — Domain × Surface</CardTitle></CardHeader>
+          <CardContent>
+            <div className="overflow-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr>
+                    <th className="text-left p-2 font-medium text-muted-foreground">Domain</th>
+                    {surfaces.map((s: any) => (
+                      <th key={s.id} className="text-center p-2 font-medium text-muted-foreground">{s.display_name}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {heatmapData.map((row: any) => (
+                    <tr key={row.domain}>
+                      <td className="p-2 font-mono">{row.domain}</td>
+                      {surfaces.map((s: any) => {
+                        const cell = row[s.surface_key] || { total: 0, production: 0, status: "none" };
+                        return (
+                          <td key={s.id} className={`p-2 text-center rounded ${heatCell(cell.status)}`}>
+                            {cell.total > 0 ? `${cell.production}/${cell.total}` : "—"}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="flex gap-4 mt-3 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-green-500/30" /> Production</div>
+              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-yellow-500/15" /> Planned</div>
+              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-muted/20" /> No binding</div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* ── WebTrappedLogicList ── */}
       {boundaries.length > 0 && (
         <Card className="bg-card border-border">
           <CardHeader><CardTitle className="flex items-center gap-2"><AlertTriangle className="h-5 w-5 text-yellow-400" /> Web-Trapped Logic ({boundaries.length})</CardTitle></CardHeader>
@@ -74,7 +158,15 @@ export default function MSA05CompatibilityRadar() {
             <div className="space-y-2">
               {boundaries.map((b: any) => (
                 <div key={b.id} className="flex items-center justify-between p-2 rounded bg-muted/20">
-                  <span className="font-mono text-xs">{b.component_path}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs">{b.component_path}</span>
+                    {b.migration_target && (
+                      <>
+                        <ArrowRight className="h-3 w-3 text-muted-foreground" />
+                        <span className="font-mono text-xs text-muted-foreground">{b.migration_target}</span>
+                      </>
+                    )}
+                  </div>
                   <div className="flex gap-2">
                     <Badge variant="outline" className="text-xs">{b.violation_type}</Badge>
                     <Badge className={sevColors[b.migration_priority] || ""}>{b.migration_priority}</Badge>
@@ -86,7 +178,30 @@ export default function MSA05CompatibilityRadar() {
         </Card>
       )}
 
-      {/* Cross-Surface Consistency */}
+      {/* ── MigrationRecommendations ── */}
+      {recommendations.length > 0 && (
+        <Card className="bg-card border-border">
+          <CardHeader><CardTitle>Migration Recommendations</CardTitle></CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {recommendations.map((r: any, i: number) => (
+                <div key={r.id} className="flex items-start gap-3 p-3 rounded bg-muted/10 border border-border">
+                  <span className="text-xs font-bold text-muted-foreground w-5">{i + 1}.</span>
+                  <div className="flex-1 space-y-1">
+                    <p className="text-sm">Extract <span className="font-mono text-xs">{r.component_path}</span></p>
+                    <p className="text-xs text-muted-foreground">
+                      → Move {r.violation_type?.replace(/_/g, " ")} to <span className="font-mono">{r.migration_target}</span>
+                    </p>
+                  </div>
+                  <Badge className={sevColors[r.migration_priority] || ""}>{r.migration_priority}</Badge>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* ── Cross-Surface Consistency ── */}
       {consistency.length > 0 && (
         <Card className="bg-card border-border">
           <CardHeader><CardTitle>Cross-Surface Consistency Checks</CardTitle></CardHeader>
@@ -108,11 +223,7 @@ export default function MSA05CompatibilityRadar() {
                     <TableCell className="text-sm">{c.scope}</TableCell>
                     <TableCell className="text-xs">{(c.surfaces_checked || []).join(", ")}</TableCell>
                     <TableCell>
-                      {c.consistent ? (
-                        <CheckCircle className="h-4 w-4 text-green-400" />
-                      ) : (
-                        <AlertTriangle className="h-4 w-4 text-yellow-400" />
-                      )}
+                      {c.consistent ? <CheckCircle className="h-4 w-4 text-green-400" /> : <AlertTriangle className="h-4 w-4 text-yellow-400" />}
                     </TableCell>
                     <TableCell className="text-xs text-muted-foreground">{c.drift_description || "—"}</TableCell>
                   </TableRow>

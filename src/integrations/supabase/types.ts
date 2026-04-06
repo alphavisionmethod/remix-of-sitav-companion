@@ -2383,6 +2383,60 @@ export type Database = {
         }
         Relationships: []
       }
+      capability_portability_records: {
+        Row: {
+          blockers: string[]
+          capability_id: string
+          created_at: string
+          evidence: Json
+          id: string
+          portability_score: number
+          status: string
+          surface_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blockers?: string[]
+          capability_id: string
+          created_at?: string
+          evidence?: Json
+          id?: string
+          portability_score?: number
+          status?: string
+          surface_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blockers?: string[]
+          capability_id?: string
+          created_at?: string
+          evidence?: Json
+          id?: string
+          portability_score?: number
+          status?: string
+          surface_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capability_portability_records_capability_id_fkey"
+            columns: ["capability_id"]
+            isOneToOne: false
+            referencedRelation: "capability_definitions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "capability_portability_records_surface_id_fkey"
+            columns: ["surface_id"]
+            isOneToOne: false
+            referencedRelation: "surface_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       capability_registry: {
         Row: {
           approval_type: string | null
@@ -5444,6 +5498,45 @@ export type Database = {
           intent?: Json | null
           result?: Json | null
           status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      experience_grammar_records: {
+        Row: {
+          canonical_values: Json
+          created_at: string
+          description: string | null
+          display_name: string
+          grammar_key: string
+          grammar_type: string
+          id: string
+          surface_rendering_rules: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          canonical_values?: Json
+          created_at?: string
+          description?: string | null
+          display_name: string
+          grammar_key: string
+          grammar_type: string
+          id?: string
+          surface_rendering_rules?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          canonical_values?: Json
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          grammar_key?: string
+          grammar_type?: string
+          id?: string
+          surface_rendering_rules?: Json
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -13737,6 +13830,147 @@ export type Database = {
           },
         ]
       }
+      surface_constraint_records: {
+        Row: {
+          constraint_key: string
+          constraint_type: string
+          constraint_value: Json
+          created_at: string
+          enforced: boolean
+          id: string
+          notes: string | null
+          surface_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          constraint_key: string
+          constraint_type: string
+          constraint_value?: Json
+          created_at?: string
+          enforced?: boolean
+          id?: string
+          notes?: string | null
+          surface_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          constraint_key?: string
+          constraint_type?: string
+          constraint_value?: Json
+          created_at?: string
+          enforced?: boolean
+          id?: string
+          notes?: string | null
+          surface_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "surface_constraint_records_surface_id_fkey"
+            columns: ["surface_id"]
+            isOneToOne: false
+            referencedRelation: "surface_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      surface_launch_profiles: {
+        Row: {
+          blockers: string[]
+          created_at: string
+          gate_results: Json
+          id: string
+          launch_status: string
+          launch_target_date: string | null
+          readiness_score: number
+          surface_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blockers?: string[]
+          created_at?: string
+          gate_results?: Json
+          id?: string
+          launch_status?: string
+          launch_target_date?: string | null
+          readiness_score?: number
+          surface_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blockers?: string[]
+          created_at?: string
+          gate_results?: Json
+          id?: string
+          launch_status?: string
+          launch_target_date?: string | null
+          readiness_score?: number
+          surface_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "surface_launch_profiles_surface_id_fkey"
+            columns: ["surface_id"]
+            isOneToOne: false
+            referencedRelation: "surface_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      surface_notification_grammars: {
+        Row: {
+          channel: string
+          created_at: string
+          delivery_method: string
+          enabled: boolean
+          id: string
+          surface_id: string
+          template: Json
+          updated_at: string
+          urgency_level: string
+          user_id: string
+        }
+        Insert: {
+          channel: string
+          created_at?: string
+          delivery_method: string
+          enabled?: boolean
+          id?: string
+          surface_id: string
+          template?: Json
+          updated_at?: string
+          urgency_level: string
+          user_id: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          delivery_method?: string
+          enabled?: boolean
+          id?: string
+          surface_id?: string
+          template?: Json
+          updated_at?: string
+          urgency_level?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "surface_notification_grammars_surface_id_fkey"
+            columns: ["surface_id"]
+            isOneToOne: false
+            referencedRelation: "surface_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       surface_readiness_records: {
         Row: {
           blockers: string[] | null
@@ -13789,6 +14023,53 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "surface_readiness_records_surface_id_fkey"
+            columns: ["surface_id"]
+            isOneToOne: false
+            referencedRelation: "surface_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      surface_trust_presentations: {
+        Row: {
+          component_pattern: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          rendering_strategy: string
+          surface_id: string
+          trust_element: string
+          updated_at: string
+          user_id: string
+          verified: boolean
+        }
+        Insert: {
+          component_pattern?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          rendering_strategy: string
+          surface_id: string
+          trust_element: string
+          updated_at?: string
+          user_id: string
+          verified?: boolean
+        }
+        Update: {
+          component_pattern?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          rendering_strategy?: string
+          surface_id?: string
+          trust_element?: string
+          updated_at?: string
+          user_id?: string
+          verified?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "surface_trust_presentations_surface_id_fkey"
             columns: ["surface_id"]
             isOneToOne: false
             referencedRelation: "surface_types"
