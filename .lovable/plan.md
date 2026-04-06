@@ -56,6 +56,17 @@
 - FINAL_ARQ_REPORT_v3.md with responsive/shell/accessibility documentation
 - plan.md reflecting all completed work
 
+### ✅ Step 11 — CI Pipeline & Launch Gate
+- 10-stage CI workflow in `.github/workflows/ci.yml`
+- `ci-launch-gate-service.ts` for gate computation
+- `CILaunchGateWidget.tsx` integrated into admin pages
+
+### ✅ Step 12 — Deploy All Edge Functions & Seed Data
+- Fixed syntax errors in connector-proxy, revenue-caller, scheduler-dispatch, personal-brain
+- Deployed 33/33 edge functions successfully
+- `seed-user-data` changed from requireAdmin → requireAuth for self-service seeding
+- Demo data seeding available on user login
+
 ---
 
 ## Final Scores

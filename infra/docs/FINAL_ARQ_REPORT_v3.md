@@ -163,8 +163,19 @@ push/PR → typecheck ──┬── lint
 | `device-presence-service.ts` | Browser heartbeat, fingerprint, online/offline tracking |
 | `ci-launch-gate-service.ts` | CI report parsing, local gate computation, ring promotion mapping |
 
+## Deployment Status
+
+| Item | Status |
+|------|--------|
+| Edge Functions | ✅ 33/33 deployed (2026-04-06) |
+| Syntax Fixes | ✅ connector-proxy, revenue-caller, scheduler-dispatch, personal-brain |
+| seed-user-data | ✅ Deployed (requireAuth — any logged-in user can seed their own data) |
+| Demo Data | ⏳ Requires user login → POST to `/seed-user-data` to populate 22 tables |
+| CI Pipeline | ✅ 10-stage workflow with launch gate + ring promotion |
+
 ## Action Items for Operator
 
 - **Enable Leaked Password Protection**: Supabase Dashboard > Authentication > Settings > Password Security
+- **Seed Demo Data**: Log in to the app, then call `seed-user-data` (automatic on first use, or manual POST)
 
 ## Remediation Complete: **PRODUCTION READY** ✅
