@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Map, TrendingUp, Zap, Eye, AlertTriangle, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const THEMES = [
@@ -98,6 +98,7 @@ export default function OpportunityMap() {
           <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Linked Instruments</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
             {selectedTheme.instruments.map(sym => {
+  const { instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS } = useInvestmentOfficeData();
               const inst = INSTRUMENTS.find(i => i.symbol === sym);
               if (!inst) return null;
               return (

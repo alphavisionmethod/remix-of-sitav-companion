@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, Brain, Check, X, AlertTriangle, ArrowRight, TrendingUp, TrendingDown } from "lucide-react";
-import { INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PAST_DECISIONS = [

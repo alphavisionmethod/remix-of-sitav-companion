@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Zap, AlertTriangle, Clock, Target, TrendingUp } from "lucide-react";
-import { INSTRUMENTS, PORTFOLIO } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const CATALYST_EVENTS = [
@@ -29,6 +29,7 @@ export default function CatalystWarRoom() {
     .sort((a, b) => a.date.localeCompare(b.date));
 
   const daysUntil = (date: string) => {
+  const { instruments: INSTRUMENTS, portfolio: PORTFOLIO } = useInvestmentOfficeData();
     const d = Math.ceil((new Date(date).getTime() - Date.now()) / 86400000);
     return d <= 0 ? "Today" : d === 1 ? "Tomorrow" : `${d} days`;
   };

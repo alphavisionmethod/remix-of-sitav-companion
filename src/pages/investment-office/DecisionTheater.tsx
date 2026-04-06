@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Theater, Shield, AlertTriangle, Check, X, Brain, Target, Zap, Clock, FileText } from "lucide-react";
-import { INVESTMENT_ADVISORS, ADVISOR_SYNTHESIS, SAMPLE_SCENARIOS, SAMPLE_ORDERS } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const READINESS_DIMENSIONS = [

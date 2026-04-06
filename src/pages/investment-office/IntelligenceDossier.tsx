@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FileSearch, Brain, TrendingUp, TrendingDown, AlertTriangle, Check, Calendar, Target, Globe, Shield } from "lucide-react";
-import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function IntelligenceDossier() {

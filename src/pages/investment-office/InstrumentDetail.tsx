@@ -3,7 +3,7 @@ import {
   ArrowLeft, TrendingUp, TrendingDown, Shield, Zap, BarChart3, Brain,
   Target, AlertTriangle, ChevronRight, Calendar, Eye, Plus
 } from "lucide-react";
-import { getInstrument, INVESTMENT_ADVISORS, SAMPLE_THESES, PORTFOLIO } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;

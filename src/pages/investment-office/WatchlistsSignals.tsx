@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, Plus, Bell, Brain, TrendingUp, TrendingDown, ChevronRight, Star, Zap, Shield } from "lucide-react";
-import { WATCHLISTS, INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function WatchlistsSignals() {

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Brain, Target, AlertTriangle, TrendingUp, TrendingDown, Plus, ChevronRight, Calendar } from "lucide-react";
-import { SAMPLE_THESES, getInstrument } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function ThesisJournal() {
@@ -21,6 +21,7 @@ export default function ThesisJournal() {
 
       <div className="space-y-4">
         {SAMPLE_THESES.map(th => {
+  const { theses: SAMPLE_THESES, getInstrument } = useInvestmentOfficeData();
           const inst = getInstrument(th.instrumentId);
           return (
             <div key={th.id} className="rounded-2xl border border-border bg-card p-6 space-y-4">

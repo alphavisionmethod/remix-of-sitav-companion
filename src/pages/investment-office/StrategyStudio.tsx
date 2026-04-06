@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Brain, TrendingUp, TrendingDown, BarChart3, Target, AlertTriangle, ChevronRight, Play, Sliders } from "lucide-react";
-import { SAMPLE_SCENARIOS, SAMPLE_THESES, PORTFOLIO, INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;

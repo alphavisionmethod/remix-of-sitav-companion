@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Sparkles, Calendar, TrendingUp, TrendingDown, AlertTriangle, Target, Shield, ChevronRight, BarChart3 } from "lucide-react";
-import { INSTRUMENTS, INVESTMENT_ADVISORS, SAMPLE_SCENARIOS } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 const eventInstruments = INSTRUMENTS.filter(i => i.assetClass === "events");
 const allCatalysts = INSTRUMENTS.flatMap(i => i.catalysts.map(c => ({ ...c, instrument: i }))).sort((a, b) => a.date.localeCompare(b.date));
