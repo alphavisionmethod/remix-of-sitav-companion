@@ -27,6 +27,8 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useConfirmation } from "@/hooks/use-confirmation";
+import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };

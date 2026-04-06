@@ -14,6 +14,10 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
 import { useReservesSavings } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useConfirmation } from "@/hooks/use-confirmation";
+import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
+import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 const ReservesSavings = () => {
   const { data: reservesData = [] } = useReservesSavings();
