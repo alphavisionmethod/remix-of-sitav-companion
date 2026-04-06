@@ -3,7 +3,8 @@
 // Premium executive operating system — not a chatbot UI
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 import { useNavigate, useParams } from "react-router-dom";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaMetric, SitaButton } from "@/components/sita/SitaCard";
 import { TrustBadge, type TrustLevel } from "@/components/sita/TrustBadge";
@@ -22,6 +23,7 @@ import {
   mockProofHistory, mockMemoryItems, mockSynthesis,
 } from "@/lib/mock-data/advisor-mission-control";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useStreamingChat } from "@/hooks/use-streaming-chat";
 import {
   Brain, Users, GitCompare, Play, CheckCircle, FileText, Eye,
   BarChart3, Sparkles, ArrowRight, Shield, Clock, TrendingUp,
@@ -718,6 +720,90 @@ const EmptyState = ({ icon: IconComponent, title, description }: { icon: React.E
   </div>
 );
 
+// ── Council Chat Panel ──────────────────────────────────────────
+
+const ADVISOR_MODES: Record<CouncilMode, string> = {
+  "daily-pulse": "general",
+  "business": "business",
+  "money": "money",
+  "concierge": "concierge",
+  "boardroom": "strategy",
+  "executive": "general",
+};
+
+const CouncilChatPanel = ({ mode }: { mode: CouncilMode }) => {
+  const { messages, isStreaming, error, send, stop, clear } = useStreamingChat();
+  const [input, setInput] = useState("");
+  const endRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleSend = () => {
+    if (!input.trim() || isStreaming) return;
+    send(input, ADVISOR_MODES[mode] || "general");
+    setInput("");
+  };
+
+  return (
+    <div className="space-y-4">
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+        className="rounded-xl border border-primary/15 bg-primary/5 p-5"
+      >
+        <div className="flex items-center gap-3 mb-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15">
+            <MessageSquare className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <h2 className="text-base font-bold text-foreground font-display">Ask Your Council</h2>
+            <p className="text-xs text-muted-foreground">Chat with your advisors in {MODES.find(m => m.id === mode)?.label || "General"} mode</p>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Messages */}
+      <div className="max-h-[400px] overflow-y-auto space-y-3 rounded-xl border border-border bg-card/30 p-4">
+        {messages.length === 0 && !isStreaming && (
+          <p className="text-xs text-muted-foreground text-center py-8">
+            Ask anything — your council advisors will respond based on your data and context.
+          </p>
+        )}
+        {messages.map((m, i) => (
+          <div key={i} className={cn("rounded-lg p-3 text-sm", m.role === "user" ? "bg-primary/10 ml-8" : "bg-secondary/50 mr-8")}>
+            <p className="text-[10px] font-semibold text-muted-foreground mb-1">{m.role === "user" ? "You" : "Advisor"}</p>
+            <div className="prose prose-sm max-w-none text-foreground">
+              <ReactMarkdown>{m.content}</ReactMarkdown>
+            </div>
+          </div>
+        ))}
+        {error && <p className="text-xs text-destructive text-center">{error}</p>}
+        <div ref={endRef} />
+      </div>
+
+      {/* Input */}
+      <div className="flex gap-2">
+        <input
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && !e.shiftKey && handleSend()}
+          placeholder="Ask your advisory council..."
+          className="flex-1 rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20"
+          disabled={isStreaming}
+        />
+        {isStreaming ? (
+          <SitaButton variant="danger" size="sm" onClick={stop}>Stop</SitaButton>
+        ) : (
+          <SitaButton variant="primary" size="sm" onClick={handleSend}>Send</SitaButton>
+        )}
+        {messages.length > 0 && !isStreaming && (
+          <SitaButton variant="ghost" size="sm" onClick={clear}>Clear</SitaButton>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // ── Main Page ───────────────────────────────────────────────────
 
 export default function AdvisorWorkspace() {
@@ -765,6 +851,9 @@ export default function AdvisorWorkspace() {
           <TabsTrigger value="proof" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
             <FileText className="h-3 w-3 mr-1.5" />Proof
           </TabsTrigger>
+          <TabsTrigger value="chat" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
+            <MessageSquare className="h-3 w-3 mr-1.5" />Chat
+          </TabsTrigger>
         </TabsList>
 
         <div className="mt-5">
@@ -801,6 +890,10 @@ export default function AdvisorWorkspace() {
 
           <TabsContent value="proof">
             <ProofHistory />
+          </TabsContent>
+
+          <TabsContent value="chat">
+            <CouncilChatPanel mode={mode} />
           </TabsContent>
         </div>
       </Tabs>

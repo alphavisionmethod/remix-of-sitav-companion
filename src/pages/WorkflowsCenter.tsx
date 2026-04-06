@@ -4,11 +4,12 @@ import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents"
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
-import { Workflow, CheckCircle2, Clock, AlertTriangle, ChevronRight, Eye, RotateCcw, Shield } from "lucide-react";
+import { Workflow, CheckCircle2, Clock, AlertTriangle, ChevronRight, Eye, RotateCcw, Shield, Plus, Trash2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const statusToState = (status: string): ExecutionState => {
@@ -24,8 +25,12 @@ const statusToState = (status: string): ExecutionState => {
 
 const WorkflowsCenter = () => {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const [filter, setFilter] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [showCreate, setShowCreate] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newTrigger, setNewTrigger] = useState("manual");
 
   const { data: runs = [], isLoading } = useQuery({
     queryKey: ["workflow_runs", user?.id],
@@ -45,6 +50,27 @@ const WorkflowsCenter = () => {
       if (error) throw error;
       return data;
     },
+  });
+
+  const createWorkflow = useMutation({
+    mutationFn: async () => {
+      const { data: wf, error: wfErr } = await db.from("workflows").insert({ user_id: user!.id, name: newName, trigger_event: newTrigger, active: true, steps: [] }).select().single();
+      if (wfErr) throw wfErr;
+      // Create initial run
+      const { error: runErr } = await db.from("workflow_runs").insert({ user_id: user!.id, workflow_id: wf.id, status: "pending", current_step: 0 });
+      if (runErr) throw runErr;
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["workflow_runs"] }); toast.success("Workflow created"); setShowCreate(false); setNewName(""); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const deleteRun = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await db.from("workflow_runs").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["workflow_runs"] }); setSelectedId(null); toast.success("Run deleted"); },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const filtered = filter === "all" ? runs : runs.filter(r => r.status === filter);
@@ -70,7 +96,28 @@ const WorkflowsCenter = () => {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <DemoModeBadge />
-      <SitaPageHeader title="Workflows" subtitle="Actions, approvals, and execution tracking — live from workflow engine" />
+      <SitaPageHeader title="Workflows" subtitle="Actions, approvals, and execution tracking — live from workflow engine"
+        actions={<SitaButton variant="primary" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> New Workflow</SitaButton>}
+      />
+
+      {showCreate && (
+        <SitaCard hover={false} glow className="p-5">
+          <SitaCardTitle>Create Workflow</SitaCardTitle>
+          <div className="mt-3 space-y-3">
+            <input className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" placeholder="Workflow name" value={newName} onChange={e => setNewName(e.target.value)} />
+            <select className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" value={newTrigger} onChange={e => setNewTrigger(e.target.value)}>
+              <option value="manual">Manual</option>
+              <option value="schedule">Schedule</option>
+              <option value="event">Event</option>
+              <option value="webhook">Webhook</option>
+            </select>
+            <div className="flex gap-2">
+              <SitaButton variant="primary" onClick={() => createWorkflow.mutate()} disabled={!newName.trim()}>Create</SitaButton>
+              <SitaButton variant="secondary" onClick={() => setShowCreate(false)}>Cancel</SitaButton>
+            </div>
+          </div>
+        </SitaCard>
+      )}
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Running" value={runningCount} icon={Clock} />
@@ -164,7 +211,7 @@ const WorkflowsCenter = () => {
 
                 <div className="flex gap-2">
                   <SitaButton variant="primary" className="flex-1"><Eye className="h-3.5 w-3.5" /> Inspect</SitaButton>
-                  <SitaButton variant="danger"><RotateCcw className="h-3.5 w-3.5" /> Rollback</SitaButton>
+                  <SitaButton variant="danger" onClick={() => { if (confirm("Delete this run?")) deleteRun.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /> Delete</SitaButton>
                 </div>
               </>
             ) : (
