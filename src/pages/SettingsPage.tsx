@@ -187,10 +187,18 @@ const SettingsPage = () => {
                 <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center">
                   <User className="h-6 w-6 text-primary" />
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{user?.email || "Demo User"}</p>
-                  <p className="text-xs text-muted-foreground">Personal Environment</p>
+                <div className="flex-1">
+                  <input
+                    value={displayName}
+                    onChange={e => setDisplayName(e.target.value)}
+                    placeholder="Your name"
+                    className="text-sm font-semibold text-foreground bg-transparent border-b border-transparent focus:border-primary/40 outline-none w-full"
+                  />
+                  <p className="text-xs text-muted-foreground">{user?.email || "Demo User"}</p>
                 </div>
+                <SitaButton variant="primary" size="sm" onClick={saveProfile} disabled={isSaving}>
+                  {isSaving ? "Saving..." : "Save"}
+                </SitaButton>
               </div>
               {/* Intelligence mode */}
               <div className="flex items-center justify-between py-3 border-b border-border">
