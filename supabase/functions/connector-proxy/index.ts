@@ -33,7 +33,8 @@ const CONNECTOR_ACTIONS: Record<string, Record<string, { method: string; path: s
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders }
+    return new Response("ok", { headers: corsHeaders });
+  }
 
   // Input validation
   if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
