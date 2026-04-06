@@ -877,6 +877,7 @@ const App = () => (
                     <Route path="/sovereign-export" element={<SovereignExportPage />} />
                     <Route path="/communications" element={<CommunicationsPage />} />
                     <Route path="/notifications/settings" element={<NotificationSettingsPage />} />
+                    <Route path="/settings/notifications" element={<NotificationPreferences />} />
                     <Route path="/notifications" element={<NotificationCenter />} />
 
                     {/* Approvals — explicit sub-routes */}
