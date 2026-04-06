@@ -254,7 +254,6 @@ const DailyPulse = () => {
     );
   }
 
-  const [seeding, setSeeding] = useState(false);
   const handleSeedData = async () => {
     setSeeding(true);
     try {
