@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { corsHeaders } from "../_shared/cors.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 import { requireAuth } from "../_shared/auth.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 // ═══ AI Gateway integration ═══
 const AI_GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
