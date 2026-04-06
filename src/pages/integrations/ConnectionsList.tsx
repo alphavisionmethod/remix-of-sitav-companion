@@ -124,7 +124,7 @@ export default function ConnectionsList() {
 
         <TabsContent value="health" className="mt-4 space-y-3">
           <div className="grid sm:grid-cols-2 gap-3">
-            {DEMO_CONNECTIONS.map(conn => {
+            {connections.map((conn: any) => {
               const provider = getProviderById(conn.providerId);
               return (
                 <Card key={conn.id} className="bg-card/50 border-border/50">
