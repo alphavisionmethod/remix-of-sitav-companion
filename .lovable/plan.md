@@ -1,112 +1,142 @@
 
 
-# Audit: Last 2 Prompts — Implementation Status
+# Recommendation-to-Execution Closure + Service-Layer Unification + Flagship Loop Discipline
 
-## Prompt 1: "Connectors + Notifications Advanced Prompt Pack" (5 sub-prompts)
+## Current State
 
-### Sub-prompt 1: Google Drive Connector — 95% DONE
-- **DONE**: `connector-oauth` edge function (366 lines) with initiate/callback/disconnect/check_config
-- **DONE**: Real Google OAuth code exchange, token persistence, consent ledger writes
-- **DONE**: Identity vs connector OAuth separation, default scopes for Drive/Gmail/Calendar
-- **DONE**: ConnectorHub wired with Connect/Disconnect buttons
-- **MISSING**: `GOOGLE_CONNECTOR_CLIENT_ID` + `GOOGLE_CONNECTOR_CLIENT_SECRET` secrets (manual step — user must register Google Cloud OAuth client)
+**What EXISTS (strong foundation):**
+- `ai_workforce_recommendations` table with `linked_approval_queue_item_id` and `linked_remediation_program_id` columns already
+- `approval_queue` table with approve/reject/dismiss mutations
+- `remediation_suggestions` table (basic gap → fix tracking)
+- `execution_envelopes` table
+- `ai_workforce_recommendation_scores` table
+- Remediation engine (`remediation-engine.ts`) and recommendation verifier (`recommendation-verifier.ts`)
+- 160 service domain directories, 38 customer journey entries
 
-### Sub-prompt 2: Web Push / VAPID — 90% DONE
-- **DONE**: VAPID secrets configured, `push-registration-service.ts`, `use-push-notifications.ts` hook, `sw-push.js` service worker
-- **DONE**: `push-dispatch` edge function (476 lines) with real VAPID web push, delivery receipts, calm routing, preference checks
-- **DONE**: DB tables: `notification_delivery_receipts`, `notification_preferences`
-- **MISSING**: No dedicated user-facing notification preferences page — `/settings/notifications` routes to generic `SettingsPage`, not a real notification preferences UI
+**What's MISSING:**
+- No `remediation_programs` table (column exists on recommendations but target table doesn't)
+- No `outcome_verification` table
+- No recommendation lifecycle beyond new/accepted/rejected/deferred
+- No execution binding from approved recommendations
+- No REX/SERV/FL admin boards
+- No flagship loop registry
+- No service ownership model or route-to-service traceability
+- No anti-sprawl diagnostics
 
-### Sub-prompt 3: Connector Runtime Verification Board — 85% DONE
-- **DONE**: CN01 with 7-point OAuth verification matrix, registry listing, health records
-- **MISSING**: Per-capability verification rows (google_drive, gmail, calendar individually)
-- **MISSING**: Connected account diagnostics with scope/expiry columns
-- **MISSING**: Failure diagnostics grouped by type (missing env, callback failure, token expired, etc.)
+## Implementation Plan
 
-### Sub-prompt 4: Notification Runtime Verification Board — 40% DONE
-- **DONE**: NOT03 Delivery Receipts Explorer, NRC01-NRC06 existing boards
-- **MISSING**: `NOT01NotificationRuntimeVerification.tsx` — the single canonical "is push actually working?" board with executive summary, channel verification matrix, subscription truth, launch honesty panel
-- **MISSING**: Subscription truth section (device_push_tokens stats in admin)
+### Phase 1: Database Migration (1 migration)
 
-### Sub-prompt 5: Seed Data for Launch-Honesty Classification — 0% DONE
-- **MISSING**: `connector-notification-honesty-seed.ts` service with conservative defaults (google_drive → partial, apple_push → planned, etc.)
-- **MISSING**: NRC06 still uses demo data, not wired to real `notification_delivery_receipts`
+Create 3 new tables:
 
-### Missing CJ Entries
-- **MISSING**: `connectors.google_drive_reauth_primary`
-- **MISSING**: `connectors.google_drive_disconnect_primary`
-- **MISSING**: `notifications.preference_update_primary`
-- **MISSING**: `notifications.event_to_response_primary`
+**`remediation_programs`** — groups of recommendations into strategic work programs
+- id, user_id, program_key, title, focus_area, status (draft/active/completed/archived), linked_flagship_loop, open_items_count, completed_items_count, created_at, updated_at
+- RLS: users manage own rows
 
----
+**`outcome_verifications`** — post-execution truth checks
+- id, user_id, recommendation_id (FK → ai_workforce_recommendations), execution_ref, expected_improvement, actual_improvement, journey_delta, launch_truth_delta, score_adjustment, verified (boolean), verified_at, verifier_notes, created_at
+- RLS: users manage own rows
 
-## Prompt 2: "Live AI Runtime Verification & Activation" (4 parts) — 100% DONE
+**`flagship_loops`** — the 5 flagship product loops as first-class objects
+- id, user_id, loop_key, title, owner, target_persona, routes (jsonb), capabilities (jsonb), primary_services (jsonb), cj_entries (jsonb), launch_blockers (jsonb), proof_status (text), ux_quality (text), launch_claim_status (text), demo_vs_real (text), created_at, updated_at
+- RLS: users manage own rows
 
-- **DONE**: `AIG09RuntimeVerification.tsx` (549 lines) — full 8-section board (AIR01-AIR08)
-- **DONE**: `ai-launch-honesty-reclassifier.ts` (173 lines) — evidence-driven reclassification
-- **DONE**: `ai-routing-seed-service.ts` (294 lines) — providers, models, capability routing seeds
-- **DONE**: Routes for AIG07, AIG08, AIG09 added to App.tsx
-- **DONE**: All 7 target capabilities, all 6 honesty classes, claim risk + blocking gaps
+Also ALTER `ai_workforce_recommendations`:
+- Add `execution_binding_status` (text, default 'unbound')
+- Add `outcome_verification_id` (uuid, nullable FK)
 
----
+### Phase 2: Recommendation Loop Service (1 file)
 
-## Gap Implementation Plan (7 items)
+**`src/lib/services/recommendation-execution/recommendation-loop-service.ts`**
 
-### 1. NOT01 Notification Runtime Verification Board (NEW)
-Create `src/pages/admin/NOT01NotificationRuntimeVerification.tsx` with:
-- Executive summary cards: active subscriptions, delivery success/failure rates, calm suppressions, Apple/Android planned status
-- Channel verification matrix (web push / in-app / android planned / apple planned)
-- Subscription truth section querying `device_push_tokens`
-- Launch honesty classification panel
+Canonical service with:
+- `advanceRecommendationLifecycle(id, newStatus)` — enforces valid state transitions
+- `bindToExecution(recommendationId, executionRef)` — links approved recommendation to remediation task
+- `bindToRemediationProgram(recommendationId, programId)` — group linkage
+- `verifyOutcome(recommendationId, verification)` — writes outcome verification
+- `scoreFromOutcome(recommendationId)` — adjusts quality score based on outcome
 
-### 2. Notification Preferences User Page (NEW)
-Create `src/pages/settings/NotificationPreferences.tsx` with:
-- Push permission state display
-- Enable/disable push toggle using `usePushNotifications` hook
-- Per-category channel toggles (push/in-app) reading/writing `notification_preferences` table
-- Urgency minimum per category
-- Wire route in App.tsx
+### Phase 3: Flagship Loop Seed Service (1 file)
 
-### 3. Connector-Notification Honesty Seed Service (NEW)
-Create `src/lib/services/connector-notification-honesty-seed.ts`:
-- Seeds `ecosystem_launch_readiness` with conservative defaults: google_drive → partial, gmail/calendar → planned, web_push → partial, android_push → planned, apple_push → planned, in_app → partial
-- Promotion rules metadata
+**`src/lib/services/flagship-loops/flagship-loop-service.ts`**
 
-### 4. CN01 Enhancement — Per-Capability Matrix + Diagnostics
-Update `CN01ConnectorRealityOverview.tsx`:
-- Add per-capability rows (google_drive, gmail, calendar) with individual verification checks
-- Add connected account detail table with scope, expiry, reauth columns
-- Add failure diagnostics grouped by category
+Seeds and manages 5 loops:
+1. **sign-in-dashboard-pulse** — auth → dashboard → pulse
+2. **files-ai-assist** — files → AI assistance → results
+3. **boardroom-summary-decision** — boardroom → synthesis → action
+4. **connected-services-sync** — connector hub → connect → health
+5. **admin-truth-recommendation-approval** — admin → review → approve → execute
 
-### 5. NRC06 Wire to Real Data
-Update `NRC06NotificationLaunchHonesty.tsx`:
-- Query real `notification_delivery_receipts` and `device_push_tokens` for evidence-based classification
-- Replace demo data with computed reality scores
+Each includes: routes, capabilities, primary services, CJ entries, launch blockers.
 
-### 6. Missing Customer Journey Entries
-Add 4 entries to `journey-registry.ts`:
-- `connectors.google_drive_reauth_primary`
-- `connectors.google_drive_disconnect_primary`
-- `notifications.preference_update_primary`
-- `notifications.event_to_response_primary`
+### Phase 4: Service Ownership Registry (1 file)
 
-### 7. Route Wiring
-Update `App.tsx`:
-- Add NOT01 route under admin
-- Replace `/settings/notifications` to use new `NotificationPreferences` page
+**`src/lib/services/service-registry/service-ownership-registry.ts`**
 
-## Files
+Static registry mapping 12 major domains to their primary services, routes, and capabilities:
+- auth, dashboard, files, assistant, boardroom, connectors, approvals, settings, admin-truth, notifications, ai-runtime, recommendation-execution
+
+Each entry: domain, primaryService, dependentServices, routes[], launchCriticality, flagshipLoop.
+
+### Phase 5: Admin Boards (8 new pages)
+
+**REX01 — Recommendation Intelligence Board** (`src/pages/admin/REX01RecommendationIntelligence.tsx`)
+- Volume, quality scores, accepted/rejected/executed/outcome-verified rates by domain
+
+**REX02 — Approval Queue Completion Board** (`src/pages/admin/REX02ApprovalQueueCompletion.tsx`)
+- Pending, aging, high-risk, decision latency, bound-to-remediation stats
+
+**REX03 — Recommendation → Execution Board** (`src/pages/admin/REX03RecommendationExecution.tsx`)
+- Per-recommendation: status, approval, remediation program, execution state, outcome, score
+
+**REX04 — Remediation Program Board** (`src/pages/admin/REX04RemediationPrograms.tsx`)
+- Programs list with progress, linked recommendations, blocker count, CJ impact
+
+**REX05 — Outcome Verification Board** (`src/pages/admin/REX05OutcomeVerification.tsx`)
+- Executed items with expected vs actual improvement, journey delta, score adjustment
+
+**FL01 — Flagship Loops Executive Board** (`src/pages/admin/FL01FlagshipLoopsExecutive.tsx`)
+- 5 loops: health, proof status, blocker count, launch readiness, demo vs real
+
+**FL02 — Flagship Loop Detail View** (`src/pages/admin/FL02FlagshipLoopDetail.tsx`)
+- Single loop: steps, routes, services, proof coverage, UX gaps, blockers
+
+**SERV01 — Domain Service Ownership Board** (`src/pages/admin/SERV01ServiceOwnership.tsx`)
+- 12 domains: primary services, route count, duplicate risk, shadow-service risk
+
+### Phase 6: Route Wiring + CJ Entries
+
+**`src/App.tsx`** — Add lazy imports and routes for all 8 new admin pages under `/admin/rex/`, `/admin/flagship/`, `/admin/services/`
+
+**`src/lib/customer-journey/journey-registry.ts`** — Add 3 entries:
+- `admin.recommendation_approve_bind_execute`
+- `admin.flagship_loop_inspect`
+- `admin.outcome_verification_review`
+
+## Files Summary
 
 | File | Action |
 |---|---|
-| `src/pages/admin/NOT01NotificationRuntimeVerification.tsx` | **New** |
-| `src/pages/settings/NotificationPreferences.tsx` | **New** |
-| `src/lib/services/connector-notification-honesty-seed.ts` | **New** |
-| `src/pages/admin/CN01ConnectorRealityOverview.tsx` | Update |
-| `src/pages/admin/NRC06NotificationLaunchHonesty.tsx` | Update |
-| `src/lib/customer-journey/journey-registry.ts` | Add 4 entries |
-| `src/App.tsx` | Add NOT01 route + NotificationPreferences route |
+| Migration SQL | **New** — 3 tables + 2 ALTER columns |
+| `src/lib/services/recommendation-execution/recommendation-loop-service.ts` | **New** |
+| `src/lib/services/flagship-loops/flagship-loop-service.ts` | **New** |
+| `src/lib/services/service-registry/service-ownership-registry.ts` | **New** |
+| `src/pages/admin/REX01RecommendationIntelligence.tsx` | **New** |
+| `src/pages/admin/REX02ApprovalQueueCompletion.tsx` | **New** |
+| `src/pages/admin/REX03RecommendationExecution.tsx` | **New** |
+| `src/pages/admin/REX04RemediationPrograms.tsx` | **New** |
+| `src/pages/admin/REX05OutcomeVerification.tsx` | **New** |
+| `src/pages/admin/FL01FlagshipLoopsExecutive.tsx` | **New** |
+| `src/pages/admin/FL02FlagshipLoopDetail.tsx` | **New** |
+| `src/pages/admin/SERV01ServiceOwnership.tsx` | **New** |
+| `src/App.tsx` | Update — add 8 routes |
+| `src/lib/customer-journey/journey-registry.ts` | Update — add 3 entries |
 
-## No database migration needed
-All tables exist. Pure frontend + service logic.
+## Database migration required
+3 new tables + 2 ALTER columns on `ai_workforce_recommendations`.
+
+## Deliberately excluded from this phase
+- SERV02/SERV03 (route trace + sprawl audit) — deferred to avoid more sprawl while building anti-sprawl tools
+- FL03 (prioritization board) — covered by FL01 executive view initially
+- Automated anti-shadow cleanup — diagnostics first, cleanup later
 
