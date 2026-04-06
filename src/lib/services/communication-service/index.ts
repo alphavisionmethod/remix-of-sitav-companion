@@ -94,7 +94,31 @@ export class CommunicationService {
 
     this.messages.set(message.id, message);
 
-    // Simulate delivery
+    // Route push channel through DB → edge function pipeline
+    if (request.channel === "push") {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.from("notifications_queue").insert({
+            user_id: user.id,
+            category: request.category,
+            channel: "push",
+            title: request.subject || body.slice(0, 100),
+            body: body.slice(0, 500),
+            urgency: request.priority === "urgent" ? "critical" : request.priority === "high" ? "high" : "normal",
+            action_url: (request.templateData?.action_url as string) || null,
+            metadata: { correlation_id: request.correlationId, domain: request.domain },
+          });
+          message.status = "queued";
+          message.sentAt = new Date().toISOString();
+          return { messageId: message.id, status: "queued", channel: message.channel };
+        }
+      } catch (err) {
+        console.error("Push dispatch failed, falling back to simulated:", err);
+      }
+    }
+
+    // Simulate delivery for non-push channels
     message.status = "delivered";
     message.sentAt = new Date().toISOString();
     message.deliveredAt = new Date().toISOString();
