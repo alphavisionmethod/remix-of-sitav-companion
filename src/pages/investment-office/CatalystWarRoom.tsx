@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Zap, AlertTriangle, Clock, Target, TrendingUp } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 
 const CATALYST_EVENTS = [
   { id: "ce1", title: "CPI Release", date: "2026-05-14", type: "macro", impact: "high", assets: ["SPY", "XAUUSD", "FED-CUT-JUN"], description: "Key inflation data — determines Fed rate path", portfolioExposure: 45 },
@@ -23,7 +22,6 @@ const TYPE_COLORS: Record<string, string> = {
 };
 
 export default function CatalystWarRoom() {
-  const { instruments: INSTRUMENTS, portfolio: PORTFOLIO } = useInvestmentOfficeData();
   const [filter, setFilter] = useState<string>("all");
   const sorted = [...CATALYST_EVENTS]
     .filter(e => filter === "all" || e.type === filter)

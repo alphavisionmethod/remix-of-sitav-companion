@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Theater, Shield, AlertTriangle, Check, X, Brain, Target, Zap, Clock, FileText } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
+import { INVESTMENT_ADVISORS, SAMPLE_ORDERS, SAMPLE_SCENARIOS } from "@/hooks/useInvestmentOfficeData";
 
 const READINESS_DIMENSIONS = [
   { label: "Research Completeness", score: 85, status: "ready" },
@@ -17,7 +17,6 @@ const READINESS_DIMENSIONS = [
 ];
 
 export default function DecisionTheater() {
-  const { synthesis: ADVISOR_SYNTHESIS, advisors: INVESTMENT_ADVISORS, orders: SAMPLE_ORDERS, scenarios: SAMPLE_SCENARIOS } = useInvestmentOfficeData();
   const navigate = useNavigate();
   const order = SAMPLE_ORDERS[0];
   const overallReadiness = Math.round(READINESS_DIMENSIONS.reduce((s, d) => s + d.score, 0) / READINESS_DIMENSIONS.length);

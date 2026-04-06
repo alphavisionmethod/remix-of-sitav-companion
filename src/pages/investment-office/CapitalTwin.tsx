@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layers, Shield, TrendingUp, Zap, DollarSign, Target, AlertTriangle, ChevronRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
+import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 
 const PURPOSES = [
   { id: "long-term", label: "Long-Term Wealth", icon: "🏛️", color: "hsl(var(--primary))", allocated: 45, value: PORTFOLIO.totalValue * 0.45, target: 50, risk: "moderate" },
@@ -22,7 +22,6 @@ const SHOCK_ZONES = [
 ];
 
 export default function CapitalTwin() {
-  const { portfolio: PORTFOLIO } = useInvestmentOfficeData();
   const navigate = useNavigate();
   const [view, setView] = useState<"purpose" | "exposure" | "readiness">("purpose");
 

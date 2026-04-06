@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { BookOpen, Search, Calendar, Tag, ChevronRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
+import { INSTRUMENTS, SAMPLE_RESEARCH } from "@/hooks/useInvestmentOfficeData";
 
 export default function ResearchLibrary() {
-  const { instruments: INSTRUMENTS, research: SAMPLE_RESEARCH } = useInvestmentOfficeData();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<string>("all");
   const types = ["all", "macro", "company", "sector", "thesis", "catalyst", "memo"];

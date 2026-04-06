@@ -5,12 +5,11 @@ import {
   GraduationCap, BarChart3, Eye, DollarSign, Zap, Globe
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
+import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 
 export default function InvestmentGate() {
-  const { instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS, connections: PLATFORM_CONNECTIONS, portfolio: PORTFOLIO, watchlists: WATCHLISTS } = useInvestmentOfficeData();
   const navigate = useNavigate();
   const p = PORTFOLIO;
   const connected = PLATFORM_CONNECTIONS.filter(c => c.status === "connected").length;

@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type { InvestmentAdvisor, AdvisorConfidenceLevel, AdvisorRecommendation } from "@/lib/investment-office/types";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
+import { ADVISOR_SYNTHESIS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
 
 type ViewMode = "council" | "synthesis" | "debate" | "detail" | "compare";
 
@@ -32,7 +32,6 @@ const REC_LABELS: Partial<Record<AdvisorRecommendation, string>> = {
 };
 
 function ConfidenceBadge({ level }: { level: AdvisorConfidenceLevel }) {
-  const { synthesis: ADVISOR_SYNTHESIS, advisors: INVESTMENT_ADVISORS } = useInvestmentOfficeData();
   return (
     <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${CONFIDENCE_BG[level]} ${CONFIDENCE_COLORS[level]}`}>
       {level.replace("-", " ")}
