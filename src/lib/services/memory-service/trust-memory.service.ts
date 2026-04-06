@@ -1,5 +1,3 @@
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
-// @persistence: os_service_state — state survives refresh via universal adapter
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Trust Memory Service
 // Trust score history and flag tracking
@@ -89,28 +87,4 @@ export function resolveFlag(userId: string, index: number): boolean {
   if (!state || !state.flags[index]) return false;
   state.flags[index].resolved = true;
   return true;
-}
-
-
-// ── Persistence ──────────────────────────────────────────
-const _serviceId = "memory-service/trust-memory";
-
-function _serializeState(): Record<string, unknown> {
-  return {
-    trustStates: Array.from(trustStates.entries()),
-  };
-}
-
-function _hydrateState(state: Record<string, unknown>): void {
-  if (!state) return;
-  if (state.trustStates) { trustStates.clear(); (state.trustStates as any[]).forEach(([k, v]: any) => trustStates.set(k, v)); }
-}
-
-export async function loadPersistedState(): Promise<void> {
-  const state = await loadServiceState(_serviceId);
-  if (state) _hydrateState(state as Record<string, unknown>);
-}
-
-export function persistState(): void {
-  debouncedSaveServiceState(_serviceId, _serializeState());
 }

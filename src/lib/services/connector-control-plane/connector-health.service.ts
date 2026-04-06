@@ -5,8 +5,6 @@
 
 import { CONNECTOR_FRESHNESS_POLICIES, type ConnectorFreshnessPolicy } from "@/packages/policy-contracts";
 
-import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
-// @persistence: os_service_state — state survives refresh via universal adapter
 
 export interface ConnectorHealthReport {
   connectorId: string;
@@ -65,28 +63,4 @@ export function recordSync(connectorId: string): void {
 
 export function getFreshnessPolicy(connectorId: string): ConnectorFreshnessPolicy | undefined {
   return CONNECTOR_FRESHNESS_POLICIES.find((p) => p.connectorId === connectorId);
-}
-
-
-// ── Persistence ──────────────────────────────────────────
-const _serviceId = "connector-control-plane/connector-health";
-
-function _serializeState(): Record<string, unknown> {
-  return {
-    lastSyncTimes: Array.from(lastSyncTimes.entries()),
-  };
-}
-
-function _hydrateState(state: Record<string, unknown>): void {
-  if (!state) return;
-  if (state.lastSyncTimes) { lastSyncTimes.clear(); (state.lastSyncTimes as any[]).forEach(([k, v]: any) => lastSyncTimes.set(k, v)); }
-}
-
-export async function loadPersistedState(): Promise<void> {
-  const state = await loadServiceState(_serviceId);
-  if (state) _hydrateState(state as Record<string, unknown>);
-}
-
-export function persistState(): void {
-  debouncedSaveServiceState(_serviceId, _serializeState());
 }

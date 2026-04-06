@@ -202,14 +202,13 @@ export class SelfLearningService {
   private _serializeState(): Record<string, unknown> {
     return {
       signals: Array.from(this.signals.entries()),
-      patternScores: Array.from(this.patternScores.entries()),
     };
   }
 
   hydrateState(state: Record<string, unknown>): void {
     if (!state) return;
     if (state.signals) this.signals = new Map(state.signals as any);
-    if (state.patternScores) this.patternScores = new Map(state.patternScores as any);
+    // patternScores are computed, not persisted
   }
 
   async loadPersistedState(): Promise<void> {
