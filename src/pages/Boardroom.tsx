@@ -45,7 +45,6 @@ import { useBoardroomData } from "@/hooks/use-boardroom-data";
 // ── Section Renderers (preserved from original) ───────────────
 
 const MetricCardGrid = ({ data, title }: { data: MetricCardData[]; title: string }) => {
-  const { advisors: mockAdvisors, recommendations: mockRecommendations, synthesis: mockSynthesis, approvals: mockApprovals, proofHistory: mockProofHistory } = useAdvisorMissionControl();
   return (
   <div>
     <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">{title}</p>
@@ -965,6 +964,8 @@ const FullscreenPresentation = ({ type, onExit }: { type: BoardroomType; onExit:
 // ── Main Boardroom ────────────────────────────────────────────
 
 const Boardroom = () => {
+  const { advisors: mockAdvisors, recommendations: mockRecommendations, synthesis: mockSynthesis, approvals: mockApprovals, proofHistory: mockProofHistory } = useAdvisorMissionControl();
+
   const [activeType, setActiveType] = useState<BoardroomType>("morning-briefing");
   const [isPresenting, setIsPresenting] = useState(false);
   const [perspective, setPerspective] = useState<PerspectiveLevel>("owner");
