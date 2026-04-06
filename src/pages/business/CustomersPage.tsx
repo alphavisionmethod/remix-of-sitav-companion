@@ -15,6 +15,7 @@ import {
   Building, Clock, CheckCircle, Plus, ArrowRight, Sparkles, FileText, MessageSquare, Receipt, X, Trash2
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import CustomerAutopilotPanel from "@/components/autopilot/CustomerAutopilotPanel";
 import { useInspector } from "@/contexts/InspectorContext";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
