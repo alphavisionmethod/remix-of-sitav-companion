@@ -149,7 +149,7 @@ export default function NotificationSettingsPage() {
 
       const merged = {
         ...(existing?.preferences as Record<string, any> || {}),
-        notifCategories: serializedCategories,
+        notifCategories: JSON.parse(JSON.stringify(serializedCategories)),
         quietHoursEnabled,
         quietStart,
         quietEnd,
@@ -158,7 +158,7 @@ export default function NotificationSettingsPage() {
 
       await supabase
         .from("profiles")
-        .update({ preferences: merged })
+        .update({ preferences: merged as any })
         .eq("user_id", user.id);
 
       toast.success("Notification preferences saved");
