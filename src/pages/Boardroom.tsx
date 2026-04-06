@@ -44,7 +44,9 @@ import { useBoardroomData } from "@/hooks/use-boardroom-data";
 
 // ── Section Renderers (preserved from original) ───────────────
 
-const MetricCardGrid = ({ data, title }: { data: MetricCardData[]; title: string }) => (
+const MetricCardGrid = ({ data, title }: { data: MetricCardData[]; title: string }) => {
+  const { advisors: mockAdvisors, recommendations: mockRecommendations, synthesis: mockSynthesis, approvals: mockApprovals, proofHistory: mockProofHistory } = useAdvisorMissionControl();
+  return (
   <div>
     <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">{title}</p>
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

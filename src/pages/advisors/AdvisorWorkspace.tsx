@@ -62,6 +62,7 @@ const TRUST_PIPELINE: ExecutionState[] = [
 // ── Main Guide Identity ─────────────────────────────────────────
 
 const MainGuideHeader = ({ mode, onModeChange }: { mode: CouncilMode; onModeChange: (m: CouncilMode) => void }) => {
+  const { advisors: mockAdvisors, recommendations: mockRecommendations, simulations: mockSimulations, approvals: mockApprovals, proofHistory: mockProofHistory, memoryItems: mockMemoryItems, synthesis: mockSynthesis } = useAdvisorMissionControl();
   const totalApprovals = mockAdvisors.reduce((s, a) => s + a.pendingApprovals, 0);
   const activeAdvisors = mockAdvisors.filter(a => a.status === "active").length;
   const highImpact = mockRecommendations.filter(r => r.impact === "high").length;

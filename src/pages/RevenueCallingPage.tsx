@@ -110,6 +110,7 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
   const script = MOCK_SCRIPTS.find(s => s.stage === contact.stage) || MOCK_SCRIPTS[0];
 
   const handleEndCall = () => {
+  const { contacts: MOCK_CONTACTS, callLogs: MOCK_CALL_LOGS, callScripts: MOCK_SCRIPTS } = useRevenueCallingData();
     setState("wrapping-up");
   };
 

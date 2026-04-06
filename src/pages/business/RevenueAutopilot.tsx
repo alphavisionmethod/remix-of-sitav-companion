@@ -42,7 +42,9 @@ const severityColors: Record<string, string> = {
 
 // ── Sub-Pages ───────────────────────────────────────────────────
 
-const LeakageRadar = () => (
+const LeakageRadar = () => {
+  const { recoveredValues: MOCK_RECOVERED_VALUES, rawOpportunities: MOCK_RAW_OPPORTUNITIES, leakageInput: MOCK_LEAKAGE_INPUT } = useRevenueAutopilotData();
+  return (
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <KPITile label="Total Leakage Detected" value={`$${Math.round(SUMMARY.totalLeakageDetected).toLocaleString()}`} sub="Across all sources" trend="down" />

@@ -61,6 +61,7 @@ type OwnerPage = "overview" | "workforce" | "incidents" | "connectors" | "costs"
   | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing" | "governance";
 
 const subpageFromPath = (path: string): OwnerPage => {
+  const { buildSimResult: buildMockSimResult } = useMockSimulation();
   const last = path.split("/").pop() || "";
   const map: Record<string, OwnerPage> = {
     "ai-team": "workforce", "internal-agents": "workforce", "workforce": "workforce",
