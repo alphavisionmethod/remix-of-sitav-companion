@@ -312,6 +312,43 @@ const DWE05DeviceTrustApprovalsCenter = lazy(() => import("./pages/admin/DWE05De
 const DWE06AmbientAssistantCenter = lazy(() => import("./pages/admin/DWE06AmbientAssistantCenter"));
 const DWE07DeviceLaunchHonestyBoard = lazy(() => import("./pages/admin/DWE07DeviceLaunchHonestyBoard"));
 
+// ── APL: Apple Ecosystem ──
+const APL01AppleEcosystemCenter = lazy(() => import("./pages/admin/APL01AppleEcosystemCenter"));
+const APL02AppleDevicesTrust = lazy(() => import("./pages/admin/APL02AppleDevicesTrust"));
+const APL03AppleWatchExperience = lazy(() => import("./pages/admin/APL03AppleWatchExperience"));
+const APL04AppleIdentityAccounts = lazy(() => import("./pages/admin/APL04AppleIdentityAccounts"));
+const APL05AppleHealthConsent = lazy(() => import("./pages/admin/APL05AppleHealthConsent"));
+const APL06AppleLaunchReadiness = lazy(() => import("./pages/admin/APL06AppleLaunchReadiness"));
+
+// ── AND: Android Ecosystem ──
+const AND01AndroidEcosystemCenter = lazy(() => import("./pages/admin/AND01AndroidEcosystemCenter"));
+const AND02WearOSExperience = lazy(() => import("./pages/admin/AND02WearOSExperience"));
+const AND03AndroidTrustApprovals = lazy(() => import("./pages/admin/AND03AndroidTrustApprovals"));
+const AND04AndroidHealthConsent = lazy(() => import("./pages/admin/AND04AndroidHealthConsent"));
+const AND05AndroidLaunchReadiness = lazy(() => import("./pages/admin/AND05AndroidLaunchReadiness"));
+
+// ── HRS: Health / Readiness / Signal Intelligence ──
+const HRS01HealthConsentCenter = lazy(() => import("./pages/admin/HRS01HealthConsentCenter"));
+const HRS02SignalSourcesBoard = lazy(() => import("./pages/admin/HRS02SignalSourcesBoard"));
+const HRS03ReadinessExplanation = lazy(() => import("./pages/admin/HRS03ReadinessExplanation"));
+const HRS04NotificationInfluence = lazy(() => import("./pages/admin/HRS04NotificationInfluence"));
+const HRS05AssistantTimingBoard = lazy(() => import("./pages/admin/HRS05AssistantTimingBoard"));
+const HRS06SignalLaunchHonesty = lazy(() => import("./pages/admin/HRS06SignalLaunchHonesty"));
+
+// ── NRC: Notification Routing + Calm Assistant ──
+const NRC01RoutingStudio = lazy(() => import("./pages/admin/NRC01RoutingStudio"));
+const NRC02CalmnessCenter = lazy(() => import("./pages/admin/NRC02CalmnessCenter"));
+const NRC03FatigueBoard = lazy(() => import("./pages/admin/NRC03FatigueBoard"));
+const NRC04QueueInterruptMatrix = lazy(() => import("./pages/admin/NRC04QueueInterruptMatrix"));
+const NRC05CrossDeviceDelivery = lazy(() => import("./pages/admin/NRC05CrossDeviceDelivery"));
+const NRC06NotificationLaunchHonesty = lazy(() => import("./pages/admin/NRC06NotificationLaunchHonesty"));
+
+// ── NSS: Native Shell Strategy ──
+const NSS01StrategyBoard = lazy(() => import("./pages/admin/NSS01StrategyBoard"));
+const NSS02CapabilityMatrix = lazy(() => import("./pages/admin/NSS02CapabilityMatrix"));
+const NSS03TrustContinuity = lazy(() => import("./pages/admin/NSS03TrustContinuity"));
+const NSS04MobileLaunchHonesty = lazy(() => import("./pages/admin/NSS04MobileLaunchHonesty"));
+
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
