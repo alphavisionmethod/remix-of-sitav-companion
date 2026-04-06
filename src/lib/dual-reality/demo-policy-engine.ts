@@ -1,10 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Demo Policy Engine
-// Side-effect blocking, safety controls, kill switches
+// Side-effect blocking, safety controls, DB-backed kill switches,
+// receipt logging for every policy decision
 // ═══════════════════════════════════════════════════════════════
 
 import type { RealityModeKey } from "./reality-mode-registry";
 import { getModeDefinition } from "./reality-mode-registry";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface DemoPolicyDecision {
   allowed: boolean;
@@ -26,36 +28,124 @@ export type SideEffectCategory =
   | "webhook_fire"
   | "automation_trigger";
 
-// ── Kill Switches ───────────────────────────────────────────────
+// ── Kill Switches (in-memory cache + DB persistence) ────────────
 
-const killSwitches = {
+const killSwitchCache = {
   demoModeGlobal: false,
   demoAILiveCalls: false,
   demoSimulatedWrites: false,
   demoSpecificScenarios: new Set<string>(),
+  _loaded: false,
 };
 
-export function setKillSwitch(key: keyof Omit<typeof killSwitches, "demoSpecificScenarios">, value: boolean): void {
-  (killSwitches as any)[key] = value;
+/** Load kill switches from Supabase into the in-memory cache */
+export async function loadKillSwitches(): Promise<void> {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data } = await (supabase as any)
+      .from("demo_kill_switches")
+      .select("key, enabled")
+      .eq("user_id", user.id);
+
+    if (!data) return;
+
+    for (const row of data as { key: string; enabled: boolean }[]) {
+      if (row.key === "demo_mode_global") killSwitchCache.demoModeGlobal = row.enabled;
+      else if (row.key === "demo_ai_live_calls") killSwitchCache.demoAILiveCalls = row.enabled;
+      else if (row.key === "demo_simulated_writes") killSwitchCache.demoSimulatedWrites = row.enabled;
+      else if (row.key.startsWith("scenario:") && row.enabled) {
+        killSwitchCache.demoSpecificScenarios.add(row.key.replace("scenario:", ""));
+      }
+    }
+    killSwitchCache._loaded = true;
+  } catch {
+    // Graceful fallback to in-memory defaults
+  }
 }
 
-export function disableScenario(scenarioId: string): void {
-  killSwitches.demoSpecificScenarios.add(scenarioId);
+/** Persist a kill switch change to Supabase */
+export async function setKillSwitch(
+  key: "demoModeGlobal" | "demoAILiveCalls" | "demoSimulatedWrites",
+  value: boolean,
+  reason?: string
+): Promise<void> {
+  (killSwitchCache as any)[key] = value;
+
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const dbKey = key === "demoModeGlobal" ? "demo_mode_global"
+      : key === "demoAILiveCalls" ? "demo_ai_live_calls"
+      : "demo_simulated_writes";
+
+    await (supabase as any).from("demo_kill_switches").upsert(
+      { user_id: user.id, key: dbKey, enabled: value, reason: reason ?? null },
+      { onConflict: "user_id,key" }
+    );
+  } catch {
+    // Best-effort persistence
+  }
 }
 
-export function enableScenario(scenarioId: string): void {
-  killSwitches.demoSpecificScenarios.delete(scenarioId);
+export async function disableScenario(scenarioId: string, reason?: string): Promise<void> {
+  killSwitchCache.demoSpecificScenarios.add(scenarioId);
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    await (supabase as any).from("demo_kill_switches").upsert(
+      { user_id: user.id, key: `scenario:${scenarioId}`, enabled: true, reason: reason ?? null },
+      { onConflict: "user_id,key" }
+    );
+  } catch { /* best effort */ }
+}
+
+export async function enableScenario(scenarioId: string): Promise<void> {
+  killSwitchCache.demoSpecificScenarios.delete(scenarioId);
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    await (supabase as any).from("demo_kill_switches").upsert(
+      { user_id: user.id, key: `scenario:${scenarioId}`, enabled: false },
+      { onConflict: "user_id,key" }
+    );
+  } catch { /* best effort */ }
 }
 
 export function isScenarioKilled(scenarioId: string): boolean {
-  return killSwitches.demoModeGlobal || killSwitches.demoSpecificScenarios.has(scenarioId);
+  return killSwitchCache.demoModeGlobal || killSwitchCache.demoSpecificScenarios.has(scenarioId);
 }
 
 export function getKillSwitchState() {
   return {
-    ...killSwitches,
-    demoSpecificScenarios: Array.from(killSwitches.demoSpecificScenarios),
+    demoModeGlobal: killSwitchCache.demoModeGlobal,
+    demoAILiveCalls: killSwitchCache.demoAILiveCalls,
+    demoSimulatedWrites: killSwitchCache.demoSimulatedWrites,
+    demoSpecificScenarios: Array.from(killSwitchCache.demoSpecificScenarios),
   };
+}
+
+// ── Receipt Logging ─────────────────────────────────────────────
+
+async function logDemoReceipt(decision: DemoPolicyDecision, sideEffect: SideEffectCategory, mode: RealityModeKey): Promise<void> {
+  if (mode === "real") return; // Real mode doesn't create demo receipts
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    await (supabase as any).from("demo_receipts").insert({
+      user_id: user.id,
+      receipt_type: decision.receiptType,
+      summary: `${sideEffect}: ${decision.reason}`,
+      simulated: decision.executionMode === "simulated" || decision.executionMode === "blocked",
+      visible_to_roles: ["admin", "owner"],
+      feature_id: sideEffect,
+    });
+  } catch {
+    // Non-blocking receipt logging
+  }
 }
 
 // ── Policy Evaluation ───────────────────────────────────────────
@@ -71,13 +161,17 @@ export function evaluateDemoPolicy(
   }
 
   // Global kill switch
-  if (killSwitches.demoModeGlobal) {
-    return { allowed: false, reason: "Demo mode globally disabled via kill switch", executionMode: "blocked", receiptType: "demo_receipt" };
+  if (killSwitchCache.demoModeGlobal) {
+    const decision: DemoPolicyDecision = { allowed: false, reason: "Demo mode globally disabled via kill switch", executionMode: "blocked", receiptType: "demo_receipt" };
+    logDemoReceipt(decision, sideEffect, mode);
+    return decision;
   }
 
   // Scenario kill switch
   if (opts?.scenarioId && isScenarioKilled(opts.scenarioId)) {
-    return { allowed: false, reason: `Scenario ${opts.scenarioId} disabled via kill switch`, executionMode: "blocked", receiptType: "demo_receipt" };
+    const decision: DemoPolicyDecision = { allowed: false, reason: `Scenario ${opts.scenarioId} disabled via kill switch`, executionMode: "blocked", receiptType: "demo_receipt" };
+    logDemoReceipt(decision, sideEffect, mode);
+    return decision;
   }
 
   const def = getModeDefinition(mode);
@@ -100,20 +194,24 @@ export function evaluateDemoPolicy(
   const allowed = categoryMap[sideEffect] ?? false;
 
   if (allowed) {
-    return {
+    const decision: DemoPolicyDecision = {
       allowed: true,
       reason: `Side effect '${sideEffect}' permitted in ${mode} mode`,
       executionMode: "simulated",
       receiptType: def.receiptMode as DemoPolicyDecision["receiptType"],
     };
+    logDemoReceipt(decision, sideEffect, mode);
+    return decision;
   }
 
-  return {
+  const decision: DemoPolicyDecision = {
     allowed: false,
     reason: `Side effect '${sideEffect}' blocked in ${mode} mode`,
     executionMode: "simulated",
     receiptType: "demo_receipt",
   };
+  logDemoReceipt(decision, sideEffect, mode);
+  return decision;
 }
 
 // ── AI Policy ───────────────────────────────────────────────────
@@ -126,7 +224,7 @@ export function evaluateAIPolicy(mode: RealityModeKey): {
 } {
   const def = getModeDefinition(mode);
 
-  if (killSwitches.demoAILiveCalls && mode !== "real") {
+  if (killSwitchCache.demoAILiveCalls && mode !== "real") {
     return { allowed: false, mode: "disabled", preferCached: true };
   }
 
