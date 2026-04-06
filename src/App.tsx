@@ -1082,6 +1082,14 @@ const App = () => (
                     <Route path="/admin/pfa/account-graph" element={<PFA08AccountGraphExplorer />} />
                     <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
                     <Route path="/admin/pfa/launch-honesty" element={<PFA10IntegrationLaunchHonesty />} />
+                    <Route path="/admin/uao/presence" element={<UAO01PresenceContinuity />} />
+                    <Route path="/admin/uao/devices" element={<UAO02ConnectedDevices />} />
+                    <Route path="/admin/uao/team" element={<UAO03AmbientTeamControl />} />
+                    <Route path="/admin/uao/notifications" element={<UAO04NotificationRouter />} />
+                    <Route path="/admin/uao/health" element={<UAO05HealthReadiness />} />
+                    <Route path="/admin/uao/trust" element={<UAO06DeviceTrust />} />
+                    <Route path="/admin/uao/journeys" element={<UAO07CrossSurfaceJourney />} />
+                    <Route path="/admin/uao/launch" element={<UAO08AmbientLaunchReadiness />} />
                     <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/admin/mission-control" element={<MissionControlHome />} />
                     <Route path="/admin/durability" element={<AdminDurabilityBoardPage />} />
