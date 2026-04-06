@@ -1,40 +1,55 @@
-# SITA OS — Final Gap Closure (ARQ v3: 85 → 92/100)
 
-## Evidence from Codebase Audit
 
-| Metric | Actual |
-|--------|--------|
-| Pages with `<DemoModeBadge />` | 39 |
-| Pages with mock data but NO badge | **16** (newly found) |
-| Edge fns with shared CORS | 22/31 (**9 still inline**) |
-| Zod validation in edge fns | **0** |
-| DemoModeProvider in App.tsx | **not wired** |
+# SITA OS — Full Audit: What's Missing
 
-**Report says 85 but real score is ~82 due to uncovered gaps.**
+## Build Error (BLOCKS EVERYTHING)
+
+**`src/pages/admin/RouteSourceDiagnostics.tsx` line 12** — The `DemoModeBadge` import was inserted inside the lucide-react import block, breaking the file syntax.
+
+**Fix:** Move the DemoModeBadge import to its own line before the lucide-react import.
 
 ---
 
-## 5 Batches
+## Remaining Gaps (6 items)
 
-### Batch 1 — Add DemoModeBadge to 16 pages
-Import + render `<DemoModeBadge />` in: MediaWorkspace, NotesWorkspace, ApprovalChamber, AutomationCenter, CalendarWorkspace, CommunicationsPage, ImportExportCenter, OutcomeEnginePage, AdminDurabilityBoard, DeploymentTruthCenter, IncidentCommandCenter, MockReplacementProgram, RealityClassificationMatrix, RouteSourceDiagnostics, AppReceiptsPage, PackStorePage
+| # | Gap | Severity |
+|---|-----|----------|
+| 1 | Build error in RouteSourceDiagnostics.tsx | 🔴 BLOCKER |
+| 2 | `DemoModeProvider` not wired in App.tsx | 🔴 HIGH — `useDemoMode()` returns fallback everywhere |
+| 3 | `_shared/zod-validate.ts` never created | 🟡 HIGH — zero Zod validation in edge functions |
+| 4 | Report says 39 pages badged, actual count is 55+ | 🟡 Report outdated |
+| 5 | Report says 22/31 CORS, actual is 30/31 | 🟡 Report outdated |
+| 6 | Report composite says 85 but evidence supports ~88 | 🟡 Report outdated |
 
-### Batch 2 — Standardize CORS on 9 edge functions
-Replace inline `corsHeaders` with shared `_shared/cors.ts` in: agent-heartbeat, agent-intelligence, agent-scheduler, brain-core, provider-family-operations, scheduler-dispatch, self-healing, system-updates, seed-user-data
+---
 
-### Batch 3 — Add Zod validation to 5 high-risk edge functions
-Create `_shared/zod-validate.ts` with Zod schemas for: ChatAdvisor, BrainCore, PersonalBrain, OsCommand, AdminUsers. Import + apply in each function before processing.
+## Implementation Plan — 4 Steps
 
-### Batch 4 — Wire DemoModeProvider in App.tsx
-Wrap the app with `<DemoModeProvider>` so `useDemoMode()` works globally.
+### Step 1 — Fix build error in RouteSourceDiagnostics.tsx
+Move `import { DemoModeBadge }` out of the lucide-react import block to its own line.
 
-### Batch 5 — Update FINAL_ARQ_REPORT_v3.md
-Regenerate with accurate evidence: 55 pages badged, 31/31 CORS, 5 Zod-validated, composite 92/100.
+### Step 2 — Wire DemoModeProvider in App.tsx
+Import `DemoModeProvider` from `@/contexts/DemoModeProvider` and wrap it around the app content inside the existing provider stack.
 
-## Files Summary
-- 16 page files (badge)
-- 9 edge function files (CORS)
-- 1 new: `_shared/zod-validate.ts`
-- 5 edge function files (Zod)
-- 1 App.tsx (provider)
-- 1 report file
+### Step 3 — Create Zod validation utility + wire to 5 edge functions
+Create `supabase/functions/_shared/zod-validate.ts` with:
+- Zod schemas for ChatAdvisor, BrainCore, PersonalBrain, OsCommand, AdminUsers
+- `zodValidate()` helper that returns parsed data or error Response
+
+Then import and apply in: `chat-advisor`, `brain-core`, `personal-brain`, `os-command`, `admin-users`.
+
+### Step 4 — Regenerate FINAL_ARQ_REPORT_v3.md
+Update all evidence counts and scores to match reality:
+- Demo Truth: 55+ pages badged → 98/100
+- Security Truth: 30/31 CORS, 8 rate-limited, 5 Zod-validated → 90/100
+- Composite: **92/100**
+
+---
+
+## Files Changed
+- 1 fix: `src/pages/admin/RouteSourceDiagnostics.tsx`
+- 1 edit: `src/App.tsx` (add DemoModeProvider)
+- 1 new: `supabase/functions/_shared/zod-validate.ts`
+- 5 edits: edge functions (add Zod validation)
+- 1 regenerate: `infra/docs/FINAL_ARQ_REPORT_v3.md`
+
