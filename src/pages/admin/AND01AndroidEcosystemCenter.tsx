@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Smartphone, Watch, Shield, Heart, Wifi } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const AND01AndroidEcosystemCenter = () => (
   <div className="p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
     <div className="flex items-center gap-3">
       <Smartphone className="h-8 w-8 text-primary" />
       <div>
