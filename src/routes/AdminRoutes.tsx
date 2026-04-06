@@ -59,6 +59,12 @@ const AIT06Recommendations = lazy(() => import("@/pages/admin/AIT04to08Boards").
 const AIT07ApprovalQueue = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT07ApprovalQueue })));
 const AIT08LaunchTruth = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT08LaunchTruth })));
 
+// HQ01-HQ04: Human Approval & Recommendation Queue
+const HQApprovalQueue = lazy(() => import("@/pages/admin/HQApprovalQueue"));
+
+// Setup Checklist
+const AITSetupChecklist = lazy(() => import("@/pages/admin/AITSetupChecklist"));
+
 // Truth Index Dashboard
 const TruthIndexDashboard = lazy(() => import("@/pages/admin/TruthIndexDashboard"));
 
