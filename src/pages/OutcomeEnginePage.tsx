@@ -16,12 +16,11 @@ import { KPITile, SectionHeader } from "@/components/sita/SitaComponents";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { DEMO_OUTCOMES, DEMO_INTERVENTIONS, DEMO_SPILLOVERS } from "@/lib/demo-data/outcome-engine";
 
-// ── Mock outcome data ────────────────────────────────────────
-
-const MOCK_OUTCOMES = [
-  {
-    id: "O-1",
+const MOCK_OUTCOMES = DEMO_OUTCOMES;
+const MOCK_INTERVENTIONS = DEMO_INTERVENTIONS;
+const MOCK_SPILLOVERS = DEMO_SPILLOVERS;
     title: "Get more booked clients",
     description: "Increase booking rate from 22% to 35% by recovering stale leads and optimizing follow-up timing",
     progress: 42,
