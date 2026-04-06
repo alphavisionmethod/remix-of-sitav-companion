@@ -21,6 +21,9 @@ serve(async (req) => {
     if (authResult instanceof Response) return authResult;
     const { user } = authResult;
 
+    const rateCheck = checkRateLimit(`msa-ops:${user.id}`, 30, 60_000);
+    if (!rateCheck.allowed) return rateLimitResponse(rateCheck, corsHeaders);
+
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
