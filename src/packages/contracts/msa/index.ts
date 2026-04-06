@@ -15,3 +15,4 @@ export * from "./android-ecosystem-contract";
 export * from "./health-signal-intelligence-contract";
 export * from "./notification-calm-assistant-contract";
 export * from "./native-shell-strategy-contract";
+export * from "./ecosystem-validators";
