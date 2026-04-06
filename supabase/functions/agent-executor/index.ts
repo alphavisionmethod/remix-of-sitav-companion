@@ -1,10 +1,52 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
-import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
-import { EdgeLogger } from "../_shared/logger.ts";
-import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { corsHeaders } from "../_shared/cors.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 import { requireAuth } from "../_shared/auth.ts";
+
+// ═══ AI Gateway integration ═══
+const AI_GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const AI_MODEL = "google/gemini-3-flash-preview";
+
+async function callAI(
+  systemPrompt: string,
+  userPrompt: string,
+  jsonMode = true,
+): Promise<{ content: string; tokensUsed: number }> {
+  const apiKey = Deno.env.get("LOVABLE_API_KEY");
+  if (!apiKey) {
+    return { content: JSON.stringify({ error: "AI not configured", fallback: true }), tokensUsed: 0 };
+  }
+
+  const res = await fetch(AI_GATEWAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: AI_MODEL,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      ...(jsonMode ? { response_format: { type: "json_object" } } : {}),
+      max_tokens: 1024,
+      temperature: 0.2,
+    }),
+  });
+
+  if (!res.ok) {
+    const errText = await res.text();
+    console.error("AI gateway error:", res.status, errText);
+    return { content: JSON.stringify({ error: "AI unavailable", fallback: true }), tokensUsed: 0 };
+  }
+
+  const data = await res.json();
+  const content = data.choices?.[0]?.message?.content || "{}";
+  const tokensUsed = (data.usage?.total_tokens) || 0;
+  return { content, tokensUsed };
+}
 
 // ═══ Receipt hash utility ═══
 async function computeReceiptHash(data: Record<string, unknown>): Promise<string> {
@@ -48,10 +90,23 @@ async function writeReceipt(
 
 // ═══════════════════════════════════════════════════════════
 // POD HANDLERS — one per council category
+// Each handler gathers data, then optionally asks AI for analysis
 // ═══════════════════════════════════════════════════════════
 
-// ── Reliability Ops ──
-async function handleConnectorHealth(supabase: any, userId: string) {
+const AGENT_SYSTEM_PROMPTS: Record<string, string> = {
+  "connector-health": "You are a connector health analyst for SITA OS. Analyze connector status data and return JSON with: summary (string), recommendations (string[]), riskLevel (low|medium|high), health (healthy|degraded|critical).",
+  "stale-workflow": "You are a workflow analyst for SITA OS. Analyze stale workflow data and return JSON with: summary, recommendations (string[]), riskLevel, health.",
+  "incident-response": "You are an incident response analyst. Analyze telemetry and return JSON with: summary, rootCauses (string[]), recommendations (string[]), riskLevel, health.",
+  "cost-anomaly": "You are an AI cost analyst. Analyze token usage patterns and return JSON with: summary, anomalies (string[]), recommendations (string[]), estimatedSavings (string), health.",
+  "self-healing-controller": "You are a self-healing supervisor. Analyze escalations and return JSON with: summary, actionPlan (string[]), autoHealable (boolean), health.",
+  "fraud-sentinel": "You are a security analyst. Analyze request patterns for anomalies and return JSON with: summary, threats (string[]), recommendations (string[]), riskLevel, health.",
+  "policy-validator": "You are a policy compliance analyst. Analyze policy violations and return JSON with: summary, violations (string[]), remediations (string[]), health.",
+  "budget-enforcer": "You are a budget enforcement analyst. Analyze spend data and return JSON with: summary, budgetStatus (string), recommendations (string[]), health.",
+};
+
+// ── Data gathering handlers (pure DB reads) ──
+
+async function gatherConnectorHealth(supabase: any, userId: string) {
   const { data: connectors } = await supabase.from("connector_configs").select("*").eq("user_id", userId);
   const degraded = (connectors || []).filter((c: any) => c.status !== "active");
   return {
@@ -61,7 +116,7 @@ async function handleConnectorHealth(supabase: any, userId: string) {
   };
 }
 
-async function handleStaleWorkflow(supabase: any, userId: string) {
+async function gatherStaleWorkflow(supabase: any, userId: string) {
   const { data: workflows } = await supabase.from("workflow_runs").select("*").eq("user_id", userId).eq("status", "running");
   const stale = (workflows || []).filter((w: any) => Date.now() - new Date(w.updated_at).getTime() > 86400000);
   return {
@@ -71,7 +126,7 @@ async function handleStaleWorkflow(supabase: any, userId: string) {
   };
 }
 
-async function handleIncidentResponse(supabase: any, userId: string) {
+async function gatherIncidentResponse(supabase: any, userId: string) {
   const { data: telemetry } = await supabase.from("agent_telemetry").select("*")
     .eq("user_id", userId).order("recorded_at", { ascending: false }).limit(50);
   const critical = (telemetry || []).filter((t: any) => t.metadata?.health === "critical" || t.metadata?.health === "degraded");
@@ -82,7 +137,7 @@ async function handleIncidentResponse(supabase: any, userId: string) {
   };
 }
 
-async function handleReleaseSafety(supabase: any, userId: string) {
+async function gatherReleaseSafety(supabase: any, userId: string) {
   const { data: receipts } = await supabase.from("agent_action_receipts").select("*")
     .eq("user_id", userId).order("created_at", { ascending: false }).limit(20);
   const failures = (receipts || []).filter((r: any) => r.health === "critical" || r.health === "degraded");
@@ -93,7 +148,7 @@ async function handleReleaseSafety(supabase: any, userId: string) {
   };
 }
 
-async function handleSelfHealingController(supabase: any, userId: string) {
+async function gatherSelfHealingController(supabase: any, userId: string) {
   const { data: signals } = await supabase.from("agent_signals").select("*")
     .eq("user_id", userId).eq("signal_type", "escalation").eq("status", "pending").limit(10);
   return {
@@ -103,12 +158,11 @@ async function handleSelfHealingController(supabase: any, userId: string) {
   };
 }
 
-// ── Security Trust ──
-async function handleFraudSentinel(supabase: any, userId: string) {
+async function gatherFraudSentinel(supabase: any, userId: string) {
   const { data: responses } = await supabase.from("advisor_responses").select("created_at, tokens_used")
     .eq("user_id", userId).order("created_at", { ascending: false }).limit(200);
   const reqs = responses || [];
-  const burstWindow = 60000; // 1 min
+  const burstWindow = 60000;
   let maxBurst = 0;
   for (let i = 0; i < reqs.length; i++) {
     const windowEnd = new Date(reqs[i].created_at).getTime() - burstWindow;
@@ -122,7 +176,7 @@ async function handleFraudSentinel(supabase: any, userId: string) {
   };
 }
 
-async function handleAccessMonitor(supabase: any, userId: string) {
+async function gatherAccessMonitor(supabase: any, userId: string) {
   const { data: schedules } = await supabase.from("agent_schedules").select("*")
     .eq("user_id", userId).order("updated_at", { ascending: false }).limit(20);
   const recentChanges = (schedules || []).filter((s: any) =>
@@ -134,7 +188,7 @@ async function handleAccessMonitor(supabase: any, userId: string) {
   };
 }
 
-async function handlePolicyValidator(supabase: any, userId: string) {
+async function gatherPolicyValidator(supabase: any, userId: string) {
   const { data: telemetry } = await supabase.from("agent_telemetry").select("*")
     .eq("user_id", userId).eq("metric_name", "policy_violation").limit(10);
   return {
@@ -144,8 +198,7 @@ async function handlePolicyValidator(supabase: any, userId: string) {
   };
 }
 
-// ── Runtime Cost ──
-async function handleCostAnomaly(supabase: any, userId: string) {
+async function gatherCostAnomaly(supabase: any, userId: string) {
   const { data: responses } = await supabase.from("advisor_responses").select("tokens_used, model_used, created_at")
     .eq("user_id", userId).order("created_at", { ascending: false }).limit(100);
   const totalTokens = (responses || []).reduce((s: number, r: any) => s + (r.tokens_used || 0), 0);
@@ -158,7 +211,7 @@ async function handleCostAnomaly(supabase: any, userId: string) {
   };
 }
 
-async function handleCostGuardrail(supabase: any, userId: string) {
+async function gatherCostGuardrail(supabase: any, userId: string) {
   const { data: receipts } = await supabase.from("agent_action_receipts").select("cost_tokens, created_at")
     .eq("user_id", userId).order("created_at", { ascending: false }).limit(100);
   const totalCost = (receipts || []).reduce((s: number, r: any) => s + (r.cost_tokens || 0), 0);
@@ -169,7 +222,7 @@ async function handleCostGuardrail(supabase: any, userId: string) {
   };
 }
 
-async function handleModelRouter(supabase: any, userId: string) {
+async function gatherModelRouter(supabase: any, userId: string) {
   const { data: responses } = await supabase.from("advisor_responses").select("model_used, tokens_used")
     .eq("user_id", userId).order("created_at", { ascending: false }).limit(50);
   const modelBreakdown: Record<string, { count: number; tokens: number }> = {};
@@ -179,157 +232,104 @@ async function handleModelRouter(supabase: any, userId: string) {
     modelBreakdown[model].count++;
     modelBreakdown[model].tokens += r.tokens_used || 0;
   }
-  return {
-    modelBreakdown, totalRequests: responses?.length || 0,
-    health: "healthy",
-  };
+  return { modelBreakdown, totalRequests: responses?.length || 0, health: "healthy" };
 }
 
-async function handleBudgetEnforcer(supabase: any, userId: string) {
-  const costResult = await handleCostGuardrail(supabase, userId);
+async function gatherBudgetEnforcer(supabase: any, userId: string) {
+  const costResult = await gatherCostGuardrail(supabase, userId);
   const overBudget = costResult.totalTokensSpent > costResult.dailyBudget;
-  return {
-    ...costResult, overBudget, enforcement: overBudget ? "throttle" : "allow",
-    health: overBudget ? "critical" : "healthy",
-  };
+  return { ...costResult, overBudget, enforcement: overBudget ? "throttle" : "allow", health: overBudget ? "critical" : "healthy" };
 }
 
-// ── Product Build ──
-async function handleFeatureGovernance(supabase: any, userId: string) {
+async function gatherFeatureGovernance(supabase: any, userId: string) {
   const { data: workflows } = await supabase.from("workflow_runs").select("*").eq("user_id", userId).limit(20);
   const incomplete = (workflows || []).filter((w: any) => w.status !== "completed" && w.status !== "running");
-  return {
-    totalWorkflows: workflows?.length || 0, incompleteCount: incomplete.length,
-    health: incomplete.length > 5 ? "warning" : "healthy",
-  };
+  return { totalWorkflows: workflows?.length || 0, incompleteCount: incomplete.length, health: incomplete.length > 5 ? "warning" : "healthy" };
 }
 
-async function handleContractValidator(supabase: any, userId: string) {
-  const { data: connectors } = await supabase.from("connector_configs").select("service, config, updated_at")
-    .eq("user_id", userId);
-  const staleContracts = (connectors || []).filter((c: any) =>
-    Date.now() - new Date(c.updated_at).getTime() > 30 * 86400000
-  );
-  return {
-    totalContracts: connectors?.length || 0, staleCount: staleContracts.length,
-    health: staleContracts.length > 0 ? "warning" : "healthy",
-  };
+async function gatherContractValidator(supabase: any, userId: string) {
+  const { data: connectors } = await supabase.from("connector_configs").select("service, config, updated_at").eq("user_id", userId);
+  const staleContracts = (connectors || []).filter((c: any) => Date.now() - new Date(c.updated_at).getTime() > 30 * 86400000);
+  return { totalContracts: connectors?.length || 0, staleCount: staleContracts.length, health: staleContracts.length > 0 ? "warning" : "healthy" };
 }
 
-async function handleSchemaChecker(supabase: any, _userId: string) {
+async function gatherSchemaChecker(_supabase: any, _userId: string) {
   return { schemasChecked: 1, driftDetected: false, health: "healthy" };
 }
 
-// ── Architecture Governance ──
-async function handleBoundaryEnforcer(supabase: any, userId: string) {
+async function gatherBoundaryEnforcer(supabase: any, userId: string) {
   const { data: signals } = await supabase.from("agent_signals").select("*")
     .eq("user_id", userId).eq("signal_type", "finding").limit(20);
   const boundaryViolations = (signals || []).filter((s: any) => s.payload?.type === "boundary-violation");
-  return {
-    findings: signals?.length || 0, boundaryViolations: boundaryViolations.length,
-    health: boundaryViolations.length > 0 ? "warning" : "healthy",
-  };
+  return { findings: signals?.length || 0, boundaryViolations: boundaryViolations.length, health: boundaryViolations.length > 0 ? "warning" : "healthy" };
 }
 
-async function handleDependencyAuditor(supabase: any, userId: string) {
-  const { data: connectors } = await supabase.from("connector_configs").select("service, updated_at")
-    .eq("user_id", userId);
-  const outdated = (connectors || []).filter((c: any) =>
-    Date.now() - new Date(c.updated_at).getTime() > 90 * 86400000
-  );
-  return {
-    totalDependencies: connectors?.length || 0, outdatedCount: outdated.length,
-    health: outdated.length > 2 ? "warning" : "healthy",
-  };
+async function gatherDependencyAuditor(supabase: any, userId: string) {
+  const { data: connectors } = await supabase.from("connector_configs").select("service, updated_at").eq("user_id", userId);
+  const outdated = (connectors || []).filter((c: any) => Date.now() - new Date(c.updated_at).getTime() > 90 * 86400000);
+  return { totalDependencies: connectors?.length || 0, outdatedCount: outdated.length, health: outdated.length > 2 ? "warning" : "healthy" };
 }
 
-// ── Knowledge Coordination ──
-async function handleDataFreshness(supabase: any, userId: string) {
+async function gatherDataFreshness(supabase: any, userId: string) {
   const { data: syncLogs } = await supabase.from("sync_logs").select("*").eq("user_id", userId)
     .order("synced_at", { ascending: false }).limit(20);
-  const stale = (syncLogs || []).filter((l: any) =>
-    Date.now() - new Date(l.synced_at).getTime() > 6 * 3600000
-  );
-  return {
-    recentSyncs: syncLogs?.length || 0, staleConnectors: stale.length,
-    health: stale.length === 0 ? "healthy" : "degraded",
-  };
+  const stale = (syncLogs || []).filter((l: any) => Date.now() - new Date(l.synced_at).getTime() > 6 * 3600000);
+  return { recentSyncs: syncLogs?.length || 0, staleConnectors: stale.length, health: stale.length === 0 ? "healthy" : "degraded" };
 }
 
-async function handleMemoryCurator(supabase: any, userId: string) {
+async function gatherMemoryCurator(supabase: any, userId: string) {
   const { data: telemetry } = await supabase.from("agent_telemetry").select("recorded_at, agent_id")
     .eq("user_id", userId).order("recorded_at", { ascending: false }).limit(30);
-  const staleAgents = (telemetry || []).filter((t: any) =>
-    Date.now() - new Date(t.recorded_at).getTime() > 7 * 86400000
-  );
-  return {
-    trackedAgents: telemetry?.length || 0, staleMemoryEntries: staleAgents.length,
-    health: staleAgents.length > 5 ? "warning" : "healthy",
-  };
+  const staleAgents = (telemetry || []).filter((t: any) => Date.now() - new Date(t.recorded_at).getTime() > 7 * 86400000);
+  return { trackedAgents: telemetry?.length || 0, staleMemoryEntries: staleAgents.length, health: staleAgents.length > 5 ? "warning" : "healthy" };
 }
 
-async function handleRunbookUpdater(supabase: any, userId: string) {
+async function gatherRunbookUpdater(supabase: any, userId: string) {
   const { data: receipts } = await supabase.from("agent_action_receipts").select("action_type, created_at")
     .eq("user_id", userId).order("created_at", { ascending: false }).limit(20);
   const healingActions = (receipts || []).filter((r: any) => r.action_type === "self-heal" || r.action_type === "remediate");
-  return {
-    recentActions: receipts?.length || 0, undocumentedHealings: healingActions.length,
-    health: healingActions.length > 3 ? "warning" : "healthy",
-  };
+  return { recentActions: receipts?.length || 0, undocumentedHealings: healingActions.length, health: healingActions.length > 3 ? "warning" : "healthy" };
 }
 
 // ═══ Agent handler router ═══
 const AGENT_HANDLERS: Record<string, (supabase: any, userId: string) => Promise<any>> = {
-  // Reliability Ops
-  "connector-health": handleConnectorHealth,
-  "stale-workflow": handleStaleWorkflow,
-  "incident-response": handleIncidentResponse,
-  "release-safety": handleReleaseSafety,
-  "self-healing-controller": handleSelfHealingController,
-  // Security Trust
-  "fraud-sentinel": handleFraudSentinel,
-  "access-monitor": handleAccessMonitor,
-  "policy-validator": handlePolicyValidator,
-  // Runtime Cost
-  "cost-anomaly": handleCostAnomaly,
-  "cost-guardrail": handleCostGuardrail,
-  "model-router": handleModelRouter,
-  "budget-enforcer": handleBudgetEnforcer,
-  // Product Build
-  "feature-governance": handleFeatureGovernance,
-  "contract-validator": handleContractValidator,
-  "schema-checker": handleSchemaChecker,
-  // Architecture Governance
-  "boundary-enforcer": handleBoundaryEnforcer,
-  "dependency-auditor": handleDependencyAuditor,
-  // Knowledge Coordination
-  "data-freshness": handleDataFreshness,
-  "memory-curator": handleMemoryCurator,
-  "runbook-updater": handleRunbookUpdater,
+  "connector-health": gatherConnectorHealth,
+  "stale-workflow": gatherStaleWorkflow,
+  "incident-response": gatherIncidentResponse,
+  "release-safety": gatherReleaseSafety,
+  "self-healing-controller": gatherSelfHealingController,
+  "fraud-sentinel": gatherFraudSentinel,
+  "access-monitor": gatherAccessMonitor,
+  "policy-validator": gatherPolicyValidator,
+  "cost-anomaly": gatherCostAnomaly,
+  "cost-guardrail": gatherCostGuardrail,
+  "model-router": gatherModelRouter,
+  "budget-enforcer": gatherBudgetEnforcer,
+  "feature-governance": gatherFeatureGovernance,
+  "contract-validator": gatherContractValidator,
+  "schema-checker": gatherSchemaChecker,
+  "boundary-enforcer": gatherBoundaryEnforcer,
+  "dependency-auditor": gatherDependencyAuditor,
+  "data-freshness": gatherDataFreshness,
+  "memory-curator": gatherMemoryCurator,
+  "runbook-updater": gatherRunbookUpdater,
 };
+
+// Agents that warrant AI-powered analysis when issues are found
+const AI_ELIGIBLE_AGENTS = new Set([
+  "connector-health", "stale-workflow", "incident-response",
+  "cost-anomaly", "self-healing-controller", "fraud-sentinel",
+  "policy-validator", "budget-enforcer",
+]);
 
 // ═══ Main handler ═══
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-  // Zod input validation
-  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
-    try {
-      const BodySchema = z.object({ agent_id: z.string().min(1), action: z.string().min(1), params: z.record(z.unknown()).optional() });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
-      if (!parsed.success) {
-        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
-        });
-      }
-    } catch (_) { /* non-JSON or GET */ }
-  }
-
   const startTime = Date.now();
 
   try {
-    // ── Standardized auth ──
+    // ── Auth ──
     const authResult = await requireAuth(req);
     if (authResult instanceof Response) return authResult;
     const { user } = authResult;
@@ -338,49 +338,103 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const { agent_id, action = "diagnose" } = await req.json();
-    if (!agent_id) {
-      return new Response(JSON.stringify({ error: "agent_id required" }), {
+    // ── Input ──
+    const body = await req.json();
+    const BodySchema = z.object({
+      agent_id: z.string().min(1),
+      action: z.string().min(1).default("diagnose"),
+      use_ai: z.boolean().default(true),
+    });
+    const parsed = BodySchema.safeParse(body);
+    if (!parsed.success) {
+      return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Route to handler
+    const { agent_id, action, use_ai } = parsed.data;
+
+    // ── Gather diagnostic data ──
     const handler = AGENT_HANDLERS[agent_id];
-    let results: Record<string, unknown>;
+    let diagnosticData: Record<string, unknown>;
 
     if (handler) {
-      const handlerResult = await handler(supabase, user.id);
-      results = { agent_id, action, timestamp: new Date().toISOString(), ...handlerResult };
+      diagnosticData = await handler(supabase, user.id);
     } else {
-      results = { agent_id, action, timestamp: new Date().toISOString(), health: "healthy", message: "Agent diagnostic completed — no issues found" };
+      diagnosticData = { health: "healthy", message: "Agent diagnostic completed — no issues found" };
+    }
+
+    // ── AI-powered analysis (only when issues found and AI eligible) ──
+    let aiAnalysis: Record<string, unknown> | null = null;
+    let tokensUsed = 0;
+
+    const hasIssues = diagnosticData.health !== "healthy";
+    const isAIEligible = AI_ELIGIBLE_AGENTS.has(agent_id);
+
+    if (use_ai && hasIssues && isAIEligible) {
+      const systemPrompt = AGENT_SYSTEM_PROMPTS[agent_id] ||
+        "You are an operations analyst. Analyze the diagnostic data and return JSON with: summary (string), recommendations (string[]), riskLevel (low|medium|high), health (healthy|degraded|critical).";
+
+      const aiResult = await callAI(
+        systemPrompt,
+        `Analyze this diagnostic data for agent "${agent_id}":\n${JSON.stringify(diagnosticData, null, 2)}`,
+      );
+
+      tokensUsed = aiResult.tokensUsed;
+
+      try {
+        aiAnalysis = JSON.parse(aiResult.content);
+      } catch {
+        aiAnalysis = { rawAnalysis: aiResult.content, parseError: true };
+      }
     }
 
     const durationMs = Date.now() - startTime;
 
-    // Record telemetry
+    const results: Record<string, unknown> = {
+      agent_id,
+      action,
+      timestamp: new Date().toISOString(),
+      ...diagnosticData,
+      ...(aiAnalysis ? { aiAnalysis, aiPowered: true, tokensUsed } : { aiPowered: false }),
+      durationMs,
+    };
+
+    // ── Record telemetry ──
     await supabase.from("agent_telemetry").insert({
       user_id: user.id, agent_id,
       metric_name: "diagnostic_run",
-      metric_value: results.health === "healthy" ? 1 : 0,
-      metadata: results,
+      metric_value: diagnosticData.health === "healthy" ? 1 : 0,
+      metadata: { ...diagnosticData, aiPowered: !!aiAnalysis, tokensUsed },
     });
 
-    // Write proof receipt
+    // ── Write receipt ──
     await writeReceipt(
       supabase, user.id, agent_id, action,
-      { agent_id, action },
+      { agent_id, action, aiPowered: !!aiAnalysis },
       results,
-      results.health === "healthy" ? 0.95 : results.health === "warning" ? 0.7 : 0.4,
-      results.health as string,
-      durationMs, 0
+      diagnosticData.health === "healthy" ? 0.95 : diagnosticData.health === "warning" ? 0.7 : 0.4,
+      diagnosticData.health as string,
+      durationMs, tokensUsed,
     );
 
-    // Auto-escalate critical findings
-    if (results.health === "critical") {
+    // ── Auto-escalate critical ──
+    if (diagnosticData.health === "critical") {
       await emitSignal(supabase, user.id, agent_id, "meta-supervisor", "escalation", {
         reason: "critical_health_detected", agentResult: results,
+        aiRecommendations: aiAnalysis?.recommendations || [],
       }, 9);
+    }
+
+    // ── Record AI cost ──
+    if (tokensUsed > 0) {
+      await supabase.from("ai_cost_ledger").insert({
+        user_id: user.id, model: AI_MODEL,
+        provider: "lovable-gateway", purpose: `agent-executor:${agent_id}`,
+        input_tokens: Math.round(tokensUsed * 0.7),
+        output_tokens: Math.round(tokensUsed * 0.3),
+        cost_cents: Math.round(tokensUsed * 0.0001),
+      });
     }
 
     return new Response(JSON.stringify(results), {
