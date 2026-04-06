@@ -5,9 +5,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Apple, Smartphone, Watch, Shield, Heart, Wifi, Monitor, ChevronRight, CheckCircle2, AlertTriangle, Clock, Zap, Activity, RefreshCw, Loader2, Database, Radio, Bell } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Apple, Smartphone, Watch, Shield, Heart, Wifi, Monitor, ChevronRight, CheckCircle2, AlertTriangle, Clock, Zap, Activity, RefreshCw, Loader2, Database, Radio, Bell, Plus, Trash2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords, useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes, useEcosystemContinuityEvents, useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
+import {
+  useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords,
+  useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes,
+  useEcosystemContinuityEvents, useSeedEcosystemData,
+  useAddEcosystemDevice, useRemoveEcosystemDevice, useUpdateDeviceTrust,
+  useToggleHealthConsent, useUpdatePushRoute,
+} from "@/hooks/useEcosystemDevices";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   iphone: { title: "iPhone Shell", icon: Smartphone, desc: "Primary mobile — task, approval, advisor", tech: ["Swift/SwiftUI", "WebView hybrid"], capabilities: ["push", "biometric", "camera", "haptic"] },
