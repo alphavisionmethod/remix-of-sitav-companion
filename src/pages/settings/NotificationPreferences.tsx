@@ -35,14 +35,14 @@ export default function NotificationPreferences() {
   });
 
   const upsertPref = useMutation({
-    mutationFn: async (pref: { category: string; push_enabled: boolean; in_app_enabled: boolean; min_urgency: string }) => {
+    mutationFn: async (pref: { category: string; channel_push: boolean; channel_in_app: boolean; urgency_minimum: string }) => {
       if (!user?.id) return;
       const { error } = await supabase.from("notification_preferences").upsert({
         user_id: user.id,
         category: pref.category,
-        push_enabled: pref.push_enabled,
-        in_app_enabled: pref.in_app_enabled,
-        min_urgency: pref.min_urgency,
+        channel_push: pref.channel_push,
+        channel_in_app: pref.channel_in_app,
+        urgency_minimum: pref.urgency_minimum,
       }, { onConflict: "user_id,category" });
       if (error) throw error;
     },
@@ -55,7 +55,7 @@ export default function NotificationPreferences() {
 
   const getPref = (category: string) => {
     const existing = preferences.find((p: any) => p.category === category);
-    return { push_enabled: existing?.push_enabled ?? true, in_app_enabled: existing?.in_app_enabled ?? true, min_urgency: existing?.min_urgency ?? "low" };
+    return { channel_push: existing?.channel_push ?? true, channel_in_app: existing?.channel_in_app ?? true, urgency_minimum: existing?.urgency_minimum ?? "low" };
   };
 
   const permissionLabel = permissionState === "granted" ? "Granted" : permissionState === "denied" ? "Blocked" : permissionState === "default" ? "Not Asked" : "Unsupported";
