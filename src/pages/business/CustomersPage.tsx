@@ -67,10 +67,46 @@ const CustomersPage = () => {
   const navigate = useNavigate();
   const { inspect } = useInspector();
   const { isDemoMode } = useDataMode();
+  const queryClient = useQueryClient();
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [showAdd, setShowAdd] = useState(false);
+  const [formName, setFormName] = useState("");
+  const [formEmail, setFormEmail] = useState("");
+  const [formCompany, setFormCompany] = useState("");
+  const [formPhone, setFormPhone] = useState("");
   const { data: customers = [], isLoading } = useCustomers();
+
+  const createCustomer = useMutation({
+    mutationFn: async () => {
+      const { error } = await (supabase as any).from("customers").insert({
+        user_id: user!.id, name: formName, email: formEmail || null,
+        company: formCompany || null, phone: formPhone || null,
+        status: "active", tier: "standard", lifetime_value: 0,
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+      toast.success("Customer created");
+      setShowAdd(false); setFormName(""); setFormEmail(""); setFormCompany(""); setFormPhone("");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const deleteCustomer = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await (supabase as any).from("customers").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+      toast.success("Customer deleted");
+      setSelectedId(null);
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
 
   const inspectCustomer = (c: Customer) => {
     inspect({
