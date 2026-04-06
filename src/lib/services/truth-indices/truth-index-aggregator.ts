@@ -3,6 +3,7 @@
 // Computes all 9 truth indices from real DB-backed data
 // ═══════════════════════════════════════════════════════════════
 
+import { supabase } from "@/integrations/supabase/client";
 import { getDomainRuntimeStatuses, getRuntimeTruthIndex } from "../domain-runtime/domain-runtime-service";
 import { getLaunchGates, getLaunchHonestyIndex } from "../launch-gate/launch-gate-service";
 import { getOAuthFlows, getSyncJobs, getConnectorTruthIndex } from "../connector-truth/connector-truth-service";
