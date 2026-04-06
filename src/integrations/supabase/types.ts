@@ -3012,11 +3012,13 @@ export type Database = {
           estimated_impact: string | null
           evidence: Json | null
           evidence_refs: Json
+          execution_binding_status: string
           id: string
           invocation_id: string | null
           launch_impact_class: string | null
           linked_approval_queue_item_id: string | null
           linked_remediation_program_id: string | null
+          outcome_verification_id: string | null
           output_id: string | null
           recommendation_type: string
           rejected_at: string | null
@@ -3040,11 +3042,13 @@ export type Database = {
           estimated_impact?: string | null
           evidence?: Json | null
           evidence_refs?: Json
+          execution_binding_status?: string
           id?: string
           invocation_id?: string | null
           launch_impact_class?: string | null
           linked_approval_queue_item_id?: string | null
           linked_remediation_program_id?: string | null
+          outcome_verification_id?: string | null
           output_id?: string | null
           recommendation_type?: string
           rejected_at?: string | null
@@ -3068,11 +3072,13 @@ export type Database = {
           estimated_impact?: string | null
           evidence?: Json | null
           evidence_refs?: Json
+          execution_binding_status?: string
           id?: string
           invocation_id?: string | null
           launch_impact_class?: string | null
           linked_approval_queue_item_id?: string | null
           linked_remediation_program_id?: string | null
+          outcome_verification_id?: string | null
           output_id?: string | null
           recommendation_type?: string
           rejected_at?: string | null
@@ -3097,6 +3103,13 @@ export type Database = {
             columns: ["invocation_id"]
             isOneToOne: false
             referencedRelation: "v_ai_workforce_recent_activity"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_workforce_recommendations_outcome_verification_id_fkey"
+            columns: ["outcome_verification_id"]
+            isOneToOne: false
+            referencedRelation: "outcome_verifications"
             referencedColumns: ["id"]
           },
         ]
@@ -11048,6 +11061,66 @@ export type Database = {
         }
         Relationships: []
       }
+      flagship_loops: {
+        Row: {
+          capabilities: Json | null
+          cj_entries: Json | null
+          created_at: string
+          demo_vs_real: string
+          id: string
+          launch_blockers: Json | null
+          launch_claim_status: string
+          loop_key: string
+          owner: string | null
+          primary_services: Json | null
+          proof_status: string
+          routes: Json | null
+          target_persona: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          ux_quality: string
+        }
+        Insert: {
+          capabilities?: Json | null
+          cj_entries?: Json | null
+          created_at?: string
+          demo_vs_real?: string
+          id?: string
+          launch_blockers?: Json | null
+          launch_claim_status?: string
+          loop_key: string
+          owner?: string | null
+          primary_services?: Json | null
+          proof_status?: string
+          routes?: Json | null
+          target_persona?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+          ux_quality?: string
+        }
+        Update: {
+          capabilities?: Json | null
+          cj_entries?: Json | null
+          created_at?: string
+          demo_vs_real?: string
+          id?: string
+          launch_blockers?: Json | null
+          launch_claim_status?: string
+          loop_key?: string
+          owner?: string | null
+          primary_services?: Json | null
+          proof_status?: string
+          routes?: Json | null
+          target_persona?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          ux_quality?: string
+        }
+        Relationships: []
+      }
       goals: {
         Row: {
           category: string | null
@@ -15598,6 +15671,69 @@ export type Database = {
         }
         Relationships: []
       }
+      outcome_verifications: {
+        Row: {
+          actual_improvement: string | null
+          created_at: string
+          execution_ref: string | null
+          expected_improvement: string | null
+          id: string
+          journey_delta: Json | null
+          launch_truth_delta: Json | null
+          recommendation_id: string | null
+          score_adjustment: number | null
+          user_id: string
+          verified: boolean
+          verified_at: string | null
+          verifier_notes: string | null
+        }
+        Insert: {
+          actual_improvement?: string | null
+          created_at?: string
+          execution_ref?: string | null
+          expected_improvement?: string | null
+          id?: string
+          journey_delta?: Json | null
+          launch_truth_delta?: Json | null
+          recommendation_id?: string | null
+          score_adjustment?: number | null
+          user_id: string
+          verified?: boolean
+          verified_at?: string | null
+          verifier_notes?: string | null
+        }
+        Update: {
+          actual_improvement?: string | null
+          created_at?: string
+          execution_ref?: string | null
+          expected_improvement?: string | null
+          id?: string
+          journey_delta?: Json | null
+          launch_truth_delta?: Json | null
+          recommendation_id?: string | null
+          score_adjustment?: number | null
+          user_id?: string
+          verified?: boolean
+          verified_at?: string | null
+          verifier_notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "outcome_verifications_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_recommendations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "outcome_verifications_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_workforce_recommendation_summary"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       packet_compilation_records: {
         Row: {
           compile_cost_estimate: number | null
@@ -18779,6 +18915,51 @@ export type Database = {
           updated_at?: string
           user_id?: string
           visibility_scope?: string | null
+        }
+        Relationships: []
+      }
+      remediation_programs: {
+        Row: {
+          completed_items_count: number
+          created_at: string
+          focus_area: string
+          id: string
+          linked_flagship_loop: string | null
+          metadata: Json | null
+          open_items_count: number
+          program_key: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_items_count?: number
+          created_at?: string
+          focus_area?: string
+          id?: string
+          linked_flagship_loop?: string | null
+          metadata?: Json | null
+          open_items_count?: number
+          program_key: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_items_count?: number
+          created_at?: string
+          focus_area?: string
+          id?: string
+          linked_flagship_loop?: string | null
+          metadata?: Json | null
+          open_items_count?: number
+          program_key?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
