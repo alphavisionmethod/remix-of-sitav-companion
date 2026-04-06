@@ -64,13 +64,11 @@ serve(async (req) => {
     }
 
     if (req.method === "POST") {
-      const body = await validateBody(req, {
-        action: { type: "string", required: true, enum: ["suspend", "unsuspend", "assign_role", "revoke_role"] },
-        target_user_id: { type: "string", required: true, maxLength: 255 },
-        role: { type: "string", maxLength: 50 },
-      });
-      if (body instanceof Response) return body;
-      const { action: postAction, target_user_id, role } = body as { action: string; target_user_id: string; role?: string };
+      const rawBody = await req.json().catch(() => null);
+      if (!rawBody) return corsError("Invalid JSON body", 400);
+      const validated = zodValidate(rawBody, AdminUsersActionSchema);
+      if (!validated.success) return validated.response;
+      const { action: postAction, target_user_id, role } = validated.data;
 
       if (postAction === "suspend") {
         const { error } = await adminClient.auth.admin.updateUserById(target_user_id, {

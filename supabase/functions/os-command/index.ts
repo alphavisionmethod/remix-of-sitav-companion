@@ -22,13 +22,11 @@ serve(async (req) => {
     logger.info("os-command request", { userId: auth.user.id });
 
     if (req.method === "POST") {
-      const body = await validateBody(req, {
-        device_id: { type: "string", required: true, maxLength: 255 },
-        command: { type: "string", required: true, enum: ALLOWED_COMMANDS },
-        params: { type: "object" },
-      });
-      if (body instanceof Response) return body;
-      const { device_id, command, params } = body as { device_id: string; command: string; params?: Record<string, unknown> };
+      const rawBody = await req.json().catch(() => null);
+      if (!rawBody) return corsError("Invalid JSON body", 400);
+      const validated = zodValidate(rawBody, OsCommandSchema);
+      if (!validated.success) return validated.response;
+      const { device_id, command, params } = validated.data;
 
       const adminClient = getServiceClient();
 
