@@ -19,14 +19,14 @@ const NotesWorkspace = () => {
   const [search, setSearch] = useState("");
   const [activeFolder, setActiveFolder] = useState<string | null>(null);
   const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [selectedNote, setSelectedNote] = useState<Note | null>(MOCK_NOTES[0]);
+  const [selectedNote, setSelectedNote] = useState<Note | null>(DEMO_NOTES[0]);
   const [isEditing, setIsEditing] = useState(false);
 
-  const folders = useMemo(() => [...new Set(MOCK_NOTES.map(n => n.folder).filter(Boolean))], []);
-  const allTags = useMemo(() => [...new Set(MOCK_NOTES.flatMap(n => n.tags))], []);
+  const folders = useMemo(() => [...new Set(DEMO_NOTES.map(n => n.folder).filter(Boolean))], []);
+  const allTags = useMemo(() => [...new Set(DEMO_NOTES.flatMap(n => n.tags))], []);
 
   const filtered = useMemo(() => {
-    let result = MOCK_NOTES;
+    let result: Note[] = DEMO_NOTES;
     if (search) result = result.filter(n => n.title.toLowerCase().includes(search.toLowerCase()) || n.preview.toLowerCase().includes(search.toLowerCase()));
     if (activeFolder) result = result.filter(n => n.folder === activeFolder);
     if (activeTag) result = result.filter(n => n.tags.includes(activeTag));

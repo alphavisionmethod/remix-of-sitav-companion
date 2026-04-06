@@ -23,7 +23,7 @@ const MediaWorkspace = () => {
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
 
   const filtered = useMemo(() => {
-    let result = MOCK_MEDIA;
+    let result: MediaItem[] = DEMO_MEDIA;
     if (typeFilter !== "all") result = result.filter(m => m.type === typeFilter);
     if (search) result = result.filter(m => m.name.toLowerCase().includes(search.toLowerCase()) || m.tags.some(t => t.includes(search.toLowerCase())));
     return result;

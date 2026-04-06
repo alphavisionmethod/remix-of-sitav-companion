@@ -70,13 +70,13 @@ const CalendarWorkspace = () => {
   const [selectedEvent, setSelectedEvent] = useState<CalEvent | null>(null);
 
   const filteredEvents = useMemo(() =>
-    MOCK_EVENTS.filter(e => domainFilter === "all" || e.domain === domainFilter),
+    DEMO_CALENDAR_EVENTS.filter(e => domainFilter === "all" || e.domain === domainFilter),
     [domainFilter]
   );
 
   const todayEvents = filteredEvents.filter(e => isSameDay(parseISO(e.date), new Date()));
-  const upcomingConflicts = MOCK_EVENTS.filter(e => e.overlapWarning);
-  const urgentDeadlines = MOCK_EVENTS.filter(e => e.priority === "urgent" || e.priority === "high");
+  const upcomingConflicts = DEMO_CALENDAR_EVENTS.filter(e => e.overlapWarning);
+  const urgentDeadlines = DEMO_CALENDAR_EVENTS.filter(e => e.priority === "urgent" || e.priority === "high");
 
   const weekStart = startOfWeek(selectedDate, { weekStartsOn: 1 });
   const weekDays = eachDayOfInterval({ start: weekStart, end: addDays(weekStart, 6) });
