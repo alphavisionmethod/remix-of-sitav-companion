@@ -21,6 +21,7 @@ export default function BeginnerMode() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 pb-12">
+      <DemoModeBadge />
       {/* Hero */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-8 space-y-4">
