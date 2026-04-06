@@ -4,8 +4,8 @@ import {
   Briefcase, TrendingUp, Shield, Brain, Link2, ChevronRight, Compass,
   GraduationCap, BarChart3, Eye, DollarSign, Zap, Globe
 } from "lucide-react";
-import { INSTRUMENTS, INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO, WATCHLISTS } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 

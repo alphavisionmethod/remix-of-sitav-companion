@@ -1,6 +1,6 @@
 import { Shield, AlertTriangle, BarChart3, PieChart, TrendingDown, Eye } from "lucide-react";
-import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 
 export default function RiskOffice() {
   const p = PORTFOLIO;

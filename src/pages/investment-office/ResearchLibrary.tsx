@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BookOpen, Search, Calendar, Tag, ChevronRight } from "lucide-react";
-import { INSTRUMENTS, SAMPLE_RESEARCH } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { INSTRUMENTS, SAMPLE_RESEARCH } from "@/hooks/useInvestmentOfficeData";
 
 export default function ResearchLibrary() {
   const [query, setQuery] = useState("");

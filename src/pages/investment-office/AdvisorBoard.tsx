@@ -6,9 +6,9 @@ import {
   Lightbulb, Target, Clock, RefreshCw, HelpCircle, MessageSquare, ArrowRight,
   Zap, X, Check, Minus, TrendingUp, TrendingDown, Globe
 } from "lucide-react";
-import { ADVISOR_SYNTHESIS, INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type { InvestmentAdvisor, AdvisorConfidenceLevel, AdvisorRecommendation } from "@/lib/investment-office/types";
+import { ADVISOR_SYNTHESIS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
 
 type ViewMode = "council" | "synthesis" | "debate" | "detail" | "compare";
 

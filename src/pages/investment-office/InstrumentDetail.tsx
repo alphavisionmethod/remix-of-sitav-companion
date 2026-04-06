@@ -3,8 +3,8 @@ import {
   ArrowLeft, TrendingUp, TrendingDown, Shield, Zap, BarChart3, Brain,
   Target, AlertTriangle, ChevronRight, Calendar, Eye, Plus
 } from "lucide-react";
-import { INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_THESES, getInstrument } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_THESES, getInstrument } from "@/hooks/useInvestmentOfficeData";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 const fmt = (n: number) => n >= 1e12 ? `$${(n / 1e12).toFixed(2)}T` : n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : `$${n.toLocaleString()}`;

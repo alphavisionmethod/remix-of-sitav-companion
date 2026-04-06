@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link2, Plus, RefreshCw, CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
-import { PLATFORM_CONNECTIONS } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PLATFORM_CONNECTIONS } from "@/hooks/useInvestmentOfficeData";
 
 const STATUS_CONFIG = {
   connected: { icon: CheckCircle2, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },

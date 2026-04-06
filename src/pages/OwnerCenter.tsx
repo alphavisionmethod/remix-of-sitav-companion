@@ -17,7 +17,7 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { buildMockSimResult } from "@/lib/mock-data";
+import { buildMockSimResult } from "@/hooks/useDomainMockData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 // Engine-backed cost data (replaces @/lib/mocks import)
 const ENGINE_COSTS = [

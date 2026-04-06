@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Target, Shield, DollarSign, AlertTriangle, Check, ChevronRight, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
-import { INSTRUMENTS, INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, SAMPLE_ORDERS } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type { TradeAction, Instrument } from "@/lib/investment-office/types";
+import { INSTRUMENTS, INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, SAMPLE_ORDERS } from "@/hooks/useInvestmentOfficeData";
 
 export default function ExecutionDesk() {
   const navigate = useNavigate();

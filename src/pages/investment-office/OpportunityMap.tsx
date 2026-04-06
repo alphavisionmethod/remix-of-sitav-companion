@@ -2,8 +2,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Map, TrendingUp, Zap, Eye, AlertTriangle, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { INSTRUMENTS } from "@/hooks/useInvestmentOfficeData";
 
 const THEMES = [
   { id: "ai", label: "AI Infrastructure", icon: "🤖", strength: 92, crowding: 75, uncertainty: 30, instruments: ["NVDA", "MSFT", "AAPL"], advisorView: "Strong secular theme. Crowding risk rising but fundamentals support continuation.", color: "hsl(var(--primary))" },
