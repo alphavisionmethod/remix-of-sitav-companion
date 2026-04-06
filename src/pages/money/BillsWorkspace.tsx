@@ -152,6 +152,7 @@ const BillsWorkspace = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <DemoModeBadge />
+      <ConfirmationDialog state={confirmation} />
       <SitaPageHeader
         title="Bills & Due Soon"
         subtitle="Track, schedule, and never miss a payment"
