@@ -8,6 +8,8 @@ export * from "./types";
 
 // Provider & Model registry
 export {
+  getProviderRegistry,
+  getActiveProviders,
   getAIModelRegistry,
   getActiveModels,
   getModelsByProvider,
@@ -21,10 +23,18 @@ export {
   getRoutingPolicies,
   getActiveRoutingPolicies,
   getRoutingForCapability,
+  getCapabilityRouting,
+  getActiveCapabilityRouting,
+  getCapabilityRoutingByKey,
 } from "./routing.service";
 
 // Budget & Cost
 export {
+  getBudgetPolicies,
+  getActiveBudgetPolicies,
+  getBudgetAlerts,
+  getActiveAlerts,
+  getUsageLedger,
   getCostLedger,
   getCostByProvider,
   getTokenUsage,
@@ -38,11 +48,14 @@ export {
   getReceiptsByProvider,
   getTaskRequests,
   getTaskRequestsByStatus,
+  getReceiptRecords,
+  getFallbackEvents,
   getReceiptStats,
 } from "./receipts.service";
 
 // Launch honesty
 export {
+  getLaunchHonestyRecords,
   getAILaunchHonestyBoard,
   type AICapabilityLaunchStatus,
 } from "./launch-honesty.service";

@@ -1,10 +1,30 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AI Provider Registry Service
-// Supabase-backed: providers, models, health
+// Supabase-backed: canonical provider registry, models, health
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import type { AIModelRegistry, AIProviderHealth } from "./types";
+import type { AIModelRegistry, AIProviderHealth, AIProviderRegistry } from "./types";
+
+// ── Provider Registry (canonical) ──────────────────────────────
+export async function getProviderRegistry(): Promise<AIProviderRegistry[]> {
+  const { data, error } = await supabase
+    .from("ai_provider_registry")
+    .select("*")
+    .order("provider_key");
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function getActiveProviders(): Promise<AIProviderRegistry[]> {
+  const { data, error } = await supabase
+    .from("ai_provider_registry")
+    .select("*")
+    .eq("is_active", true)
+    .order("provider_key");
+  if (error) throw error;
+  return data ?? [];
+}
 
 // ── Model Registry ─────────────────────────────────────────────
 export async function getAIModelRegistry(): Promise<AIModelRegistry[]> {

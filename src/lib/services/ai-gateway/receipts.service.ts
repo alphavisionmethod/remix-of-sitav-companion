@@ -1,12 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — AI Receipts & Inference Trace Service
-// Supabase-backed: every AI invocation traced
+// SITA OS — AI Receipts & Trace Service
+// Supabase-backed: inference receipts + canonical receipt records
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import type { AIInferenceReceipt, AITaskRequest } from "./types";
+import type { AIInferenceReceipt, AITaskRequest, AIReceiptRecord, AIFallbackEvent } from "./types";
 
-// ── Inference Receipts ─────────────────────────────────────────
+// ── Inference Receipts (legacy) ────────────────────────────────
 export async function getInferenceReceipts(limit = 100): Promise<AIInferenceReceipt[]> {
   const { data, error } = await supabase
     .from("ai_inference_receipts")
@@ -44,6 +44,28 @@ export async function getTaskRequestsByStatus(status: string, limit = 50): Promi
     .from("ai_task_requests")
     .select("*")
     .eq("status", status)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return data ?? [];
+}
+
+// ── Canonical Receipt Records ──────────────────────────────────
+export async function getReceiptRecords(limit = 100): Promise<AIReceiptRecord[]> {
+  const { data, error } = await supabase
+    .from("ai_receipt_records")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return data ?? [];
+}
+
+// ── Fallback Events ────────────────────────────────────────────
+export async function getFallbackEvents(limit = 100): Promise<AIFallbackEvent[]> {
+  const { data, error } = await supabase
+    .from("ai_fallback_events")
+    .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);
   if (error) throw error;
