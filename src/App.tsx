@@ -281,6 +281,15 @@ const V05FailureTriageBoard = lazy(() => import("./pages/admin/verification/V05F
 const V06EvidenceExplorer = lazy(() => import("./pages/admin/verification/V06EvidenceExplorer"));
 const V07LaunchBlockerBoard = lazy(() => import("./pages/admin/verification/V07LaunchBlockerBoard"));
 
+// CJ — Customer Journey Proof System
+const CJ01ExecutiveReport = lazy(() => import("./pages/admin/customer-journey/CJ01ExecutiveReport"));
+const CJ02JourneyTruthMatrix = lazy(() => import("./pages/admin/customer-journey/CJ02JourneyTruthMatrix"));
+const CJ03JourneyDetailView = lazy(() => import("./pages/admin/customer-journey/CJ03JourneyDetailView"));
+const CJ04LaunchBlockerView = lazy(() => import("./pages/admin/customer-journey/CJ04LaunchBlockerView"));
+const CJ05DemoVsRealComparison = lazy(() => import("./pages/admin/customer-journey/CJ05DemoVsRealComparison"));
+const CJ06BrokenClicksExplorer = lazy(() => import("./pages/admin/customer-journey/CJ06BrokenClicksExplorer"));
+const CJ07OwnerRemediationView = lazy(() => import("./pages/admin/customer-journey/CJ07OwnerRemediationView"));
+
 const CN01ConnectorRealityOverview = lazy(() => import("./pages/admin/CN01ConnectorRealityOverview"));
 const CN02ConnectorRegistryConsole = lazy(() => import("./pages/admin/CN02ConnectorRegistryConsole"));
 const CN03AccountLinkageBoard = lazy(() => import("./pages/admin/CN03AccountLinkageBoard"));
