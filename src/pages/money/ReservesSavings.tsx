@@ -24,6 +24,7 @@ const ReservesSavings = () => {
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
+  const { confirmation, confirm } = useConfirmation();
 
   const { data: reserves = [], isLoading } = useQuery({
     queryKey: ["reserves", isDemoMode, user?.id],
