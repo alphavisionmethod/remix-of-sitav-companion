@@ -2304,7 +2304,7 @@ const OwnerCenter = () => {
             </div>
             <SitaButton variant="accent" className="w-full" onClick={() => {
               if (isDemoMode) {
-                setSimResult(buildMockSimResult(simInput));
+                setSimResult(buildDemoSimResult(simInput));
               } else {
                 simulatePolicy.mutate(simInput, { onSuccess: (data) => setSimResult(data) });
               }
