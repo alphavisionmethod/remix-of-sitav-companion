@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { useBoardroomPacket } from "@/hooks/use-boardroom";
 import { mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory } from "@/lib/mock-data/advisor-mission-control";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type {
   BoardroomType, BoardroomPacket, BoardroomContentSection, MetricCardData,
   TableData, NarrativeData, AlertData, ActionItemData, ChartData, BOARDROOM_META
