@@ -15,7 +15,7 @@ import {
   BarChart3, Users, FileText, ChevronRight, Timer, Ban, Scale, ArrowUpRight
 } from "lucide-react";
 import { useCollectionsAccounts } from "@/hooks/use-domain-data";
-import type { CollectionsAccount } from "@/lib/mock-data/collections";
+import type { CollectionsAccount } from "@/hooks/useDomainMockData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 
