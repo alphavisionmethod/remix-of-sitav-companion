@@ -102,6 +102,26 @@
 - Ignored leaked password protection (operator action)
 - Ignored integration_audit_logs finding (intentional actor-scoped policy)
 
+### ✅ Step 22 — Wire GDPR export/delete to edge functions
+- `SovereignExportPage.tsx`: Export JSON/CSV buttons call `gdpr-export`, download result as file
+- Delete button calls `gdpr-delete` with confirmation step
+- `SettingsPage.tsx`: Privacy section buttons also wired to same functions
+
+### ✅ Step 23 — Wire ApprovalChamber to live DB
+- Replaced `MOCK_APPROVALS` with `useApprovals()` + `useApprovalQueue()` hooks
+- Maps DB `approval_queue` rows to `ApprovalItem` interface
+- Approve/reject mutations via existing `useApprovalQueue().approve/reject`
+- Falls back to mock data in demo mode
+
+### ✅ Step 24 — Wire AdvisorWorkspace live tabs (Approvals + Memory)
+- Approvals tab uses `useApprovalQueue()` for live pending approvals
+- Memory tab queries `user_memory` table with fallback to mocks
+- Council, Priorities, Compare, Simulations, Proof tabs keep mock enrichment (acceptable v1)
+
+### ✅ Step 25 — Add manual seed button to Settings
+- Identity section has "Seed Demo Data" button calling `seed-user-data` edge function
+- Idempotent: skips if data already seeded
+
 ---
 
 ## Final Scores
@@ -122,3 +142,4 @@
 
 ## Remaining Operator Action
 - Enable "Leaked password protection" in Supabase Dashboard > Auth > Settings
+- Log in via preview to trigger auto-seed (or use Settings > Seed Data button)
