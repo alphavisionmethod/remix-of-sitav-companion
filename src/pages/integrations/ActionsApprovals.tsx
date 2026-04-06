@@ -124,12 +124,14 @@ function ActionCard({ action, onApprove, onReject }: { action: DemoActionRequest
 export default function ActionsApprovals() {
   const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
+  const { isDemoMode } = useDataMode();
 
-  const filtered = filter === "all" ? DEMO_ACTION_REQUESTS : DEMO_ACTION_REQUESTS.filter(a => a.status === filter);
+  const actionRequests = isDemoMode ? DEMO_ACTION_REQUESTS : [];
+  const filtered = filter === "all" ? actionRequests : actionRequests.filter(a => a.status === filter);
 
-  const pending = DEMO_ACTION_REQUESTS.filter(a => a.status === "proposed").length;
-  const approved = DEMO_ACTION_REQUESTS.filter(a => a.status === "approved" || a.status === "succeeded").length;
-  const rejected = DEMO_ACTION_REQUESTS.filter(a => a.status === "rejected").length;
+  const pending = actionRequests.filter(a => a.status === "proposed").length;
+  const approved = actionRequests.filter(a => a.status === "approved" || a.status === "succeeded").length;
+  const rejected = actionRequests.filter(a => a.status === "rejected").length;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">

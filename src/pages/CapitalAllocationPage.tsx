@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEMO_ALLOCATIONS = [
   { asset: "US Equities", target: 40, current: 42.3, value: 423000, drift: 2.3, color: "bg-blue-500" },
@@ -17,7 +18,9 @@ const DEMO_ALLOCATIONS = [
 ];
 
 export default function CapitalAllocationPage() {
-  const totalValue = DEMO_ALLOCATIONS.reduce((s, a) => s + a.value, 0);
+  const { isDemoMode } = useDataMode();
+  const allocations = isDemoMode ? DEMO_ALLOCATIONS : [];
+  const totalValue = allocations.reduce((s, a) => s + a.value, 0);
 
   return (
     <div className="space-y-6 p-6">
