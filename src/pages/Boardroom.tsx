@@ -56,7 +56,8 @@ const MetricCardGrid = ({ data, title }: { data: MetricCardData[]; title: string
       ))}
     </div>
   </div>
-);
+  );
+};
 
 const TableSection = ({ data, title }: { data: TableData; title: string }) => (
   <SitaCard hover={false}>
