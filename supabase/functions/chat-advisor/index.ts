@@ -331,7 +331,10 @@ serve(async (req) => {
     const user = auth.user;
     const supabaseClient = auth.supabase;
 
-    const body = await validateBody(req, {
+    // Rate limit: 30 requests per minute per user
+    const rl = checkRateLimit(user.id, 30, 60_000);
+    if (!rl.allowed) return rateLimitResponse(rl, corsHeaders);
+
       messages: { type: "array", required: true },
       advisor: { type: "string", maxLength: 50 },
       context: { type: "object" },
