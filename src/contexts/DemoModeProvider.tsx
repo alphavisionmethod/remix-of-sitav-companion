@@ -8,6 +8,7 @@ import React, { createContext, useContext, useState, useCallback, useMemo, useEf
 import { useDataMode } from "./DataModeContext";
 import { loadKillSwitches } from "@/lib/dual-reality/demo-policy-engine";
 import { seedDemoGovernance } from "@/lib/dual-reality/demo-governance-seeder";
+import { seedPlatformReadiness } from "@/lib/services/platform-readiness/platform-readiness-seeder";
 
 export type SurfaceDataSource = "real" | "demo" | "mixed" | "empty";
 
@@ -42,6 +43,7 @@ export function DemoModeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     loadKillSwitches();
     seedDemoGovernance();
+    seedPlatformReadiness();
   }, []);
 
   const registerSurface = useCallback((surfaceId: string, surfaceName: string, source: SurfaceDataSource) => {
