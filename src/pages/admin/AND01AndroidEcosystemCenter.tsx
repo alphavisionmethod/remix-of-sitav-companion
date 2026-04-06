@@ -353,6 +353,30 @@ const AND01AndroidEcosystemCenter = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Add Device Dialog */}
+      <Dialog open={showAddDevice} onOpenChange={setShowAddDevice}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Add Android Device</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div><label className="text-xs font-medium">Surface</label>
+              <select className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" value={newDevice.surface} onChange={e => setNewDevice(d => ({ ...d, surface: e.target.value }))}>
+                {Object.entries(SURFACE_META).map(([k, v]) => <option key={k} value={k}>{v.title}</option>)}
+              </select>
+            </div>
+            <div><label className="text-xs font-medium">Device Model</label><Input value={newDevice.device_model} onChange={e => setNewDevice(d => ({ ...d, device_model: e.target.value }))} placeholder="e.g. Pixel 8 Pro" /></div>
+            <div><label className="text-xs font-medium">OS Version</label><Input value={newDevice.os_version} onChange={e => setNewDevice(d => ({ ...d, os_version: e.target.value }))} placeholder="e.g. Android 14" /></div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddDevice(false)}>Cancel</Button>
+            <Button onClick={() => {
+              addDevice.mutate({ ecosystem: "android", surface: newDevice.surface, device_model: newDevice.device_model, os_version: newDevice.os_version });
+              setShowAddDevice(false);
+              setNewDevice({ surface: "android_phone", device_model: "", os_version: "" });
+            }} disabled={!newDevice.device_model}>Add</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
