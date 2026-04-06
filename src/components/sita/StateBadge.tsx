@@ -20,7 +20,7 @@ const stateConfig: Record<ExecutionState, { label: string; class: string; dot: s
 export const StateBadge = ({ state, className, size = "default" }: { state: ExecutionState; className?: string; size?: "sm" | "default" }) => {
   const c = stateConfig[state];
   return (
-    <span className={cn(
+    <span role="status" aria-label={c.label} className={cn(
       "inline-flex items-center gap-1.5 rounded-md border font-medium",
       size === "sm" ? "px-1.5 py-px text-[10px]" : "px-2 py-0.5 text-[11px]",
       c.class, className

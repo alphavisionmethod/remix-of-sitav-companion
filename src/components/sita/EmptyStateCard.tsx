@@ -15,7 +15,7 @@ export const EmptyStateCard = ({ icon: Icon, title, description, ctaLabel, ctaPa
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 bg-card/50 px-6 py-12 text-center">
+    <div role="status" className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 bg-card/50 px-6 py-12 text-center">
       <div className="rounded-xl bg-primary/8 p-3 mb-4">
         <Icon className="h-6 w-6 text-primary" />
       </div>

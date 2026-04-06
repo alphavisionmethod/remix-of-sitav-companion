@@ -15,6 +15,15 @@ serve(async (req: Request) => {
   const pathParts = url.pathname.split("/").filter(Boolean);
   const functionName = pathParts[0];
 
+  // Validate query params
+  const QuerySchema = z.object({ fn: z.string().optional(), debug: z.enum(["true","false"]).optional() });
+  const qp = QuerySchema.safeParse(Object.fromEntries(url.searchParams));
+  if (!qp.success) {
+    return new Response(JSON.stringify({ error: "Invalid query parameters" }), {
+      status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   if (!functionName || functionName === "health") {
     return new Response(
       JSON.stringify({ status: "healthy", service: "sita-edge-functions", timestamp: new Date().toISOString() }),

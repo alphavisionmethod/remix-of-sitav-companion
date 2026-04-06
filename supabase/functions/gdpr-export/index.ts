@@ -7,7 +7,10 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { requireAuth } from "../_shared/auth.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
+
+const logger = new EdgeLogger("gdpr-export");
 
 const USER_TABLES = [
   "profiles", "user_ai_budgets", "user_preferences",
@@ -24,57 +27,39 @@ const USER_TABLES = [
   "connected_devices", "device_trust_records", "presence_states",
 ];
 
+const QueryParamsSchema = z.object({
+  format: z.enum(["json", "csv"]).optional().default("json"),
+});
+
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders }
+  const cors = handleCors(req);
+  if (cors) return cors;
 
   // Rate limiting
   const clientId = req.headers.get("authorization")?.slice(-10) || "anon";
-  const rl = checkRateLimit(`gdpr-export:${clientId}`, 60, 60000);
-  if (!rl.allowed) {
-    return rateLimitResponse(rl, corsHeaders);
-  }
+  const rl = checkRateLimit(`gdpr-export:${clientId}`, 10, 60000);
+  if (!rl.allowed) return rateLimitResponse(rl, corsHeaders);
 
-  // Input validation
-  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
-    try {
-  const BodySchema = z.object({ user_id: z.string().uuid().optional(), format: z.string().optional() });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
-      if (!parsed.success) {
-        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
-        });
-      }
-    } catch (_) {
-      // Non-JSON body or GET request - continue
-    }
-  });
+  // Auth
+  const auth = await requireAuth(req);
+  if (auth instanceof Response) return auth;
+
+  // Validate query params
+  const url = new URL(req.url);
+  const paramsParsed = QueryParamsSchema.safeParse({ format: url.searchParams.get("format") || "json" });
+  if (!paramsParsed.success) {
+    return corsError("Invalid query parameters", 400);
   }
 
   try {
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
-
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey, {
-      global: { headers: { Authorization: authHeader } },
-    });
-
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: "Invalid token" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
+    logger.info("GDPR export initiated", { userId: auth.user.id });
 
     const exportData: Record<string, unknown[]> = {};
     const errors: string[] = [];
 
     for (const table of USER_TABLES) {
       try {
-        const { data, error } = await supabase.from(table).select("*").eq("user_id", user.id).limit(10000);
+        const { data, error } = await auth.supabase.from(table).select("*").eq("user_id", auth.user.id).limit(10000);
         if (error) { errors.push(`${table}: ${error.message}`); continue; }
         if (data && data.length > 0) exportData[table] = data;
       } catch {
@@ -84,8 +69,8 @@ Deno.serve(async (req) => {
 
     const result = {
       export_type: "gdpr_data_export",
-      user_id: user.id,
-      email: user.email,
+      user_id: auth.user.id,
+      email: auth.user.email,
       exported_at: new Date().toISOString(),
       tables_exported: Object.keys(exportData).length,
       total_records: Object.values(exportData).reduce((sum, arr) => sum + arr.length, 0),
@@ -93,11 +78,14 @@ Deno.serve(async (req) => {
       ...(errors.length > 0 ? { warnings: errors } : {}),
     };
 
+    logger.info("GDPR export completed", { userId: auth.user.id, tables: Object.keys(exportData).length });
+
     return new Response(JSON.stringify(result, null, 2), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json", "Content-Disposition": "attachment; filename=sita-data-export.json" },
     });
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    logger.error("GDPR export failed", err);
+    return corsError(err instanceof Error ? err.message : "Unknown error", 500);
   }
 });
