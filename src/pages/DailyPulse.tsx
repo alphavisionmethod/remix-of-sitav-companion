@@ -134,7 +134,8 @@ const DailyPulse = () => {
     return !localStorage.getItem("sita-post-arrival-seen") && sessionStorage.getItem("sita-post-arrival-trigger") === "true";
   });
   const [seeding, setSeeding] = useState(false);
-  const hour = new Date().getHours();
+  const [aiInsights, setAiInsights] = useState<Record<string, string>>({});
+  const aiInsight = useAIInsight();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
   const modeConfig = MISSION_MODE_CONFIG[missionMode.id] || MISSION_MODE_CONFIG["normal"];
