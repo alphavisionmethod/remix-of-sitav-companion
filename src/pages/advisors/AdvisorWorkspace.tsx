@@ -4,6 +4,11 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, useRef, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useApprovalQueue } from "@/hooks/use-brain-core";
 import ReactMarkdown from "react-markdown";
 import { useNavigate, useParams } from "react-router-dom";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaMetric, SitaButton } from "@/components/sita/SitaCard";
