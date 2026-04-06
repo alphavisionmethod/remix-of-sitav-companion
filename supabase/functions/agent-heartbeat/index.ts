@@ -1,10 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
 
 const AGENT_COUNCILS = [
   { id: "reliability-ops", name: "Reliability Operations", agents: ["connector-health", "stale-workflow", "data-freshness", "incident-response", "self-healing-controller"] },
