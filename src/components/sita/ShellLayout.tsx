@@ -23,6 +23,8 @@ import { ContinuityBanner } from "./ContinuityBanner";
 import { UpdateBanner } from "./UpdateBanner";
 import { UniversalCommandSurface } from "./shell/UniversalCommandSurface";
 import { ShellAmbientBackground } from "./shell/ShellAmbientBackground";
+import { NetworkStatusBar } from "./NetworkStatusBar";
+import { TrustTransitionIndicator } from "./TrustTransitionIndicator";
 import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
 import { useProactiveNotifications } from "@/hooks/use-proactive-notifications";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
