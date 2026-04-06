@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { ShieldCheck, Heart, Lock, Eye, AlertTriangle, CheckCircle2, Trash2, Clock, FileText, Loader2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useHealthSignalConsents } from "@/hooks/use-health-signal-data";
+import { useToggleSignalConsent } from "@/hooks/use-health-signal-mutations";
 import { DEMO_CONSENT_CATEGORIES, DEMO_REVOCATION_ACTIONS } from "@/lib/demo-data/health-signals";
 
 const ICON_MAP: Record<string, any> = { ingestion: Eye, routing: ShieldCheck, boardroom: FileText, assistant: Heart };
