@@ -1,87 +1,126 @@
 
 
-# Take Calendar, Owner Center, Apple Ecosystem, Android Ecosystem to 100%
+# Android Ecosystem + Health/Signal Intelligence → 100% Advanced
 
-## Current State
+## Current Reality
 
-| Area | Status | Issue |
-|---|---|---|
-| **Calendar** | 60% SIMULATED | Uses hardcoded `DEMO_CALENDAR_EVENTS` directly, no mode-aware hook, no Supabase query |
-| **Owner Center** | 70% SIMULATED | Imports `buildMockSimResult` from legacy `useDomainMockData`, has `ENGINE_COSTS` hardcoded inline |
-| **Apple Ecosystem** | 80% STRUCTURAL | APL01 is DB-connected (good), but AND01 pattern not applied; missing ecosystem data service layer, no Android seed integration |
-| **Android Ecosystem** | 80% STRUCTURAL | AND01 uses 100% hardcoded `SURFACES`/`CAPS` arrays — zero DB hooks, no seed button, no real data path |
-| **OutcomeEnginePage** | BROKEN | Corrupted from prior edit — orphan array literals after line 23 causing build failure |
+### Android Ecosystem (AND01)
+**Stale finding** — already DB-connected with 7 hooks, seed button, loading/empty states. BUT missing two tabs that Apple has:
+- No Wearable Configs tab (hook `useEcosystemWearableConfigs("android")` exists but isn't wired)
+- No Push Routes tab (hook `useEcosystemPushRoutes("android")` exists but isn't wired)
+- No Continuity Events tab
 
-## Fix 1: OutcomeEnginePage — Fix Build Error (CRITICAL)
+### Health/Signal Intelligence (HRS01–HRS06)
+**Truly contracts-only** — all 6 pages use hardcoded inline arrays with zero DB queries:
+- `HRS01HealthConsentCenter` — hardcoded `CONSENT_CATEGORIES`, no DB consent read/write
+- `HRS02SignalSourcesBoard` — hardcoded `PROVIDERS` array, no `wearable_providers` query
+- `HRS03ReadinessExplanation` — hardcoded readiness rules, no `readiness_states` query
+- `HRS05AssistantTimingBoard` — hardcoded timing rules, no DB
+- `HRS06SignalLaunchHonesty` — hardcoded `SUBSYSTEMS`, no `ecosystem_launch_readiness` query
 
-The file has a corrupted edit: lines 19-23 import from demo-data and alias to `MOCK_*`, but lines 24-72 contain orphan array literals from the old inline data that was supposed to be removed.
+**Existing DB tables** (already in Supabase, unused by HRS pages): `wearable_providers`, `wearable_signals`, `health_signal_consents`, `readiness_states`
 
-**Action**: Rewrite `OutcomeEnginePage.tsx` to:
-- Import from `@/lib/demo-data/outcome-engine` (already exists)
-- Remove orphan inline arrays (lines 24-72)
-- Use `DEMO_OUTCOMES`, `DEMO_INTERVENTIONS`, `DEMO_SPILLOVERS` directly
+---
 
-## Fix 2: Calendar — Mode-Aware with Supabase Fallback
+## Fix 1: Android Ecosystem — Add Missing Tabs
 
-Current: page imports `DEMO_CALENDAR_EVENTS` statically and uses it directly. A `calendar-data-service.ts` already exists with `fetchCalendarEvents()` that queries Supabase `events` table with demo fallback.
+Add 3 tabs to `AND01AndroidEcosystemCenter.tsx` matching Apple's pattern:
 
-**Action**:
-1. Create `src/hooks/use-calendar-data.ts` — React Query hook wrapping `fetchCalendarEvents`, mode-aware via `useDataMode()`
-2. Update `CalendarWorkspace.tsx` to use the hook instead of static import — show real events in real mode, demo in demo mode
-3. Add proper loading/empty states
+1. **Wearable Configs tab** — render `useEcosystemWearableConfigs("android")` data (device → config cards)
+2. **Push Routes tab** — render `useEcosystemPushRoutes("android")` data (routing priority table)
+3. **Continuity Events tab** — render `useEcosystemContinuityEvents("android")` data (event timeline)
 
-## Fix 3: Owner Center — Remove Legacy Imports
+All hooks already exist and are imported. Just needs UI tabs.
 
-Current: imports `buildMockSimResult` from `useDomainMockData`, has `ENGINE_COSTS` hardcoded.
+## Fix 2: Create Health Signal Data Service
 
-**Action**:
-1. Move `ENGINE_COSTS` to `src/lib/demo-data/owner-center.ts`
-2. Change `buildMockSimResult` import to point directly at `@/lib/mock-data/owner-center` (where it already lives)
-3. Create `src/lib/data-services/owner-center-data-service.ts` with mode-aware cost fetching
-4. Create hook in `src/hooks/use-owner-data.ts`
-5. Update `OwnerCenter.tsx` to use new imports
+New file: `src/lib/data-services/health-signal-data-service.ts`
 
-## Fix 4: Android Ecosystem — DB-Connected (Match Apple Pattern)
+Functions:
+- `fetchWearableProviders()` — queries `wearable_providers` with demo fallback
+- `fetchHealthSignalConsents()` — queries `health_signal_consents` with demo fallback
+- `fetchWearableSignals(limit)` — queries `wearable_signals` with demo fallback
+- `fetchReadinessStates(limit)` — queries `readiness_states` with demo fallback
+- `fetchSignalSubsystemReadiness()` — queries `ecosystem_launch_readiness` where target LIKE `hrs_%` with demo fallback
 
-Current: AND01 uses hardcoded `SURFACES` and `CAPS` arrays with zero DB integration. Apple (APL01) already uses `useEcosystemDevices("apple")`, `useEcosystemLaunchReadiness()`, etc.
+Each returns real Supabase data in real mode, demo arrays in demo mode.
 
-**Action**:
-1. Update `AND01AndroidEcosystemCenter.tsx` to use existing `useEcosystemDevices("android")`, `useEcosystemLaunchReadiness("android")`, `useEcosystemTrustRecords("android")` hooks (they already support `"android"` as ecosystem param)
-2. Add seed button using existing `useSeedEcosystemData()` mutation
-3. Keep `SURFACES` metadata as display config but render real device data when available
-4. Add loading/empty states matching APL01 pattern
-5. Verify the `ecosystem-operations` edge function handles `"android"` seeding
+## Fix 3: Create Health Signal Hooks
 
-## Fix 5: Apple Ecosystem — Complete Missing Pieces
+New file: `src/hooks/use-health-signal-data.ts`
 
-APL01 is already well-connected. Minor gaps:
+React Query hooks wrapping each data service function:
+- `useWearableProviders()`
+- `useHealthSignalConsents()`
+- `useWearableSignals(limit?)`
+- `useReadinessStates(limit?)`
+- `useSignalSubsystemReadiness()`
 
-**Action**:
-1. Add wearable config display using existing `useEcosystemWearableConfigs("apple")` hook
-2. Add push route display using existing `useEcosystemPushRoutes("apple")` hook
-3. Add continuity events tab using existing `useEcosystemContinuityEvents("apple")` hook
-4. These hooks already exist but aren't wired into the UI
+## Fix 4: Extract Demo Data
+
+New file: `src/lib/demo-data/health-signals.ts`
+
+Move all inline arrays from HRS pages:
+- `DEMO_CONSENT_CATEGORIES` (from HRS01)
+- `DEMO_SIGNAL_PROVIDERS` (from HRS02)
+- `DEMO_READINESS_FACTORS` (from HRS03)
+- `DEMO_TIMING_RULES` (from HRS05)
+- `DEMO_SIGNAL_SUBSYSTEMS` (from HRS06)
+- `DEMO_REVOCATION_ACTIONS` (from HRS01)
+
+## Fix 5: Wire HRS Pages to Hooks
+
+### HRS01HealthConsentCenter
+- Import `useHealthSignalConsents()` hook
+- Query real consent records from DB
+- Keep `CONSENT_CATEGORIES` as display config (it's a UI schema, not data)
+- Add toggle that writes to `health_signal_consents` table
+- Add loading/empty states
+
+### HRS02SignalSourcesBoard
+- Import `useWearableProviders()` hook
+- Replace hardcoded `PROVIDERS` with DB data, fallback to demo
+- Show real provider connection status
+- Add loading/empty states
+
+### HRS03ReadinessExplanation
+- Import `useReadinessStates()` hook
+- Show real readiness derivation records alongside explanation
+- Keep explanatory text as static content
+
+### HRS05AssistantTimingBoard
+- Import `useReadinessStates()` for real timing data display
+- Keep timing rules as reference documentation
+- Add real-data panel showing latest readiness → timing decisions
+
+### HRS06SignalLaunchHonesty
+- Import `useSignalSubsystemReadiness()` hook
+- Replace hardcoded `SUBSYSTEMS` with DB `ecosystem_launch_readiness` records where target starts with `hrs_`
+- Add seed button using `useSeedEcosystemData()` for health subsystem initialization
+- Add loading/empty states
+
+---
 
 ## Implementation Order
 
-1. Fix OutcomeEnginePage build error (unblocks everything)
-2. Calendar mode-aware hook + page update
-3. Owner Center legacy import cleanup
-4. Android Ecosystem DB connection
-5. Apple Ecosystem remaining hook wiring
-6. Run architecture validation scripts to confirm zero violations
+1. Extract demo data to `src/lib/demo-data/health-signals.ts`
+2. Create `src/lib/data-services/health-signal-data-service.ts`
+3. Create `src/hooks/use-health-signal-data.ts`
+4. Add 3 missing tabs to AND01
+5. Wire HRS01–HRS06 to hooks (5 pages)
+6. Build verification
 
 ## Files Changed
 
 | File | Action |
 |---|---|
-| `src/pages/OutcomeEnginePage.tsx` | Fix corrupted edit |
-| `src/hooks/use-calendar-data.ts` | New hook |
-| `src/pages/CalendarWorkspace.tsx` | Use hook |
-| `src/lib/demo-data/owner-center.ts` | New demo data |
-| `src/hooks/use-owner-data.ts` | New hook |
-| `src/lib/data-services/owner-center-data-service.ts` | New service |
-| `src/pages/OwnerCenter.tsx` | Remove legacy imports |
-| `src/pages/admin/AND01AndroidEcosystemCenter.tsx` | DB-connect |
-| `src/pages/admin/APL01AppleEcosystemCenter.tsx` | Wire remaining hooks |
+| `src/lib/demo-data/health-signals.ts` | New — extracted demo arrays |
+| `src/lib/data-services/health-signal-data-service.ts` | New — mode-aware DB service |
+| `src/hooks/use-health-signal-data.ts` | New — React Query hooks |
+| `src/pages/admin/AND01AndroidEcosystemCenter.tsx` | Add 3 tabs (wearable, push, continuity) |
+| `src/pages/admin/HRS01HealthConsentCenter.tsx` | Wire to DB hooks |
+| `src/pages/admin/HRS02SignalSourcesBoard.tsx` | Wire to DB hooks |
+| `src/pages/admin/HRS03ReadinessExplanation.tsx` | Wire to DB hooks |
+| `src/pages/admin/HRS05AssistantTimingBoard.tsx` | Wire to DB hooks |
+| `src/pages/admin/HRS06SignalLaunchHonesty.tsx` | Wire to DB hooks + seed button |
 
