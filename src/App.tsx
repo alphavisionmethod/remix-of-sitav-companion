@@ -303,6 +303,15 @@ const UAO06DeviceTrust = lazy(() => import("./pages/admin/UAO06DeviceTrust"));
 const UAO07CrossSurfaceJourney = lazy(() => import("./pages/admin/UAO07CrossSurfaceJourney"));
 const UAO08AmbientLaunchReadiness = lazy(() => import("./pages/admin/UAO08AmbientLaunchReadiness"));
 
+// ── DWE: Device & Wearable Expansion ──
+const DWE01ConnectedDevicesCenter = lazy(() => import("./pages/admin/DWE01ConnectedDevicesCenter"));
+const DWE02PresenceContinuityCenter = lazy(() => import("./pages/admin/DWE02PresenceContinuityCenter"));
+const DWE03WearableSignalsCenter = lazy(() => import("./pages/admin/DWE03WearableSignalsCenter"));
+const DWE04NotificationRoutingStudio = lazy(() => import("./pages/admin/DWE04NotificationRoutingStudio"));
+const DWE05DeviceTrustApprovalsCenter = lazy(() => import("./pages/admin/DWE05DeviceTrustApprovalsCenter"));
+const DWE06AmbientAssistantCenter = lazy(() => import("./pages/admin/DWE06AmbientAssistantCenter"));
+const DWE07DeviceLaunchHonestyBoard = lazy(() => import("./pages/admin/DWE07DeviceLaunchHonestyBoard"));
+
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
@@ -1090,6 +1099,14 @@ const App = () => (
                     <Route path="/admin/uao/trust" element={<UAO06DeviceTrust />} />
                     <Route path="/admin/uao/journeys" element={<UAO07CrossSurfaceJourney />} />
                     <Route path="/admin/uao/launch" element={<UAO08AmbientLaunchReadiness />} />
+                    {/* DWE — Device & Wearable Expansion */}
+                    <Route path="/admin/dwe/devices" element={<DWE01ConnectedDevicesCenter />} />
+                    <Route path="/admin/dwe/presence" element={<DWE02PresenceContinuityCenter />} />
+                    <Route path="/admin/dwe/wearables" element={<DWE03WearableSignalsCenter />} />
+                    <Route path="/admin/dwe/notifications" element={<DWE04NotificationRoutingStudio />} />
+                    <Route path="/admin/dwe/trust" element={<DWE05DeviceTrustApprovalsCenter />} />
+                    <Route path="/admin/dwe/assistant" element={<DWE06AmbientAssistantCenter />} />
+                    <Route path="/admin/dwe/launch-honesty" element={<DWE07DeviceLaunchHonestyBoard />} />
                     <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/admin/mission-control" element={<MissionControlHome />} />
                     <Route path="/admin/durability" element={<AdminDurabilityBoardPage />} />

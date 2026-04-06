@@ -21,7 +21,8 @@ serve(async (req) => {
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     if (authError || !user) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: corsHeaders });
 
-    const { action } = await req.json();
+    const body = await req.json();
+    const { action } = body;
 
     switch (action) {
       case "seed_device_families": return await seedDeviceFamilies(supabase, user.id);
@@ -31,6 +32,10 @@ serve(async (req) => {
       case "update_presence": return await updatePresence(supabase, user.id);
       case "check_readiness": return await checkReadiness(supabase, user.id);
       case "device_graph_report": return await deviceGraphReport(supabase, user.id);
+      case "register_device": return await registerDevice(supabase, user.id, body);
+      case "initiate_handoff": return await initiateHandoff(supabase, user.id, body);
+      case "route_notification": return await routeNotification(supabase, user.id, body);
+      case "surface_strategy": return jsonRes({ success: true, strategy: getSurfaceStrategy() });
       default:
         return new Response(JSON.stringify({ error: `Unknown action: ${action}` }), { status: 400, headers: corsHeaders });
     }
@@ -217,4 +222,121 @@ async function deviceGraphReport(supabase: any, userId: string) {
     current_readiness: readiness?.[0] || null,
     graph: { devices: devices || [], trust: trust || [], edges: edges || [] },
   });
+}
+
+async function registerDevice(supabase: any, userId: string, body: any) {
+  const { device_label, device_model, platform, device_family_key, trust_level } = body;
+  if (!device_label || !platform) return jsonRes({ error: "device_label and platform required" });
+
+  const { data: family } = await supabase.from("device_families").select("id").eq("family_key", device_family_key || "phone").eq("user_id", userId).limit(1).single();
+
+  const { data, error } = await supabase.from("connected_devices").insert({
+    user_id: userId,
+    device_label,
+    device_model: device_model || "Unknown",
+    platform: platform || "other",
+    device_family_id: family?.id || null,
+    trust_level: trust_level || "basic",
+    connection_state: "connected",
+    battery_aware_routing_enabled: false,
+    interruption_eligible: true,
+    last_seen_at: new Date().toISOString(),
+  }).select().single();
+
+  if (error) return jsonRes({ error: error.message });
+
+  // Create trust record
+  await supabase.from("device_trust_records").insert({
+    user_id: userId,
+    connected_device_id: data.id,
+    trust_class: trust_level || "basic",
+    biometric_capable: platform === "ios" || platform === "android",
+    device_bound_approval_enabled: false,
+    approval_classes_allowed: [],
+  });
+
+  // Create graph edge
+  await supabase.from("user_device_graph_edges").insert({
+    user_id: userId,
+    node_type: "device",
+    node_ref: data.id,
+    edge_type: "owns",
+    related_node_ref: userId,
+  });
+
+  return jsonRes({ success: true, device: data });
+}
+
+async function initiateHandoff(supabase: any, userId: string, body: any) {
+  const { source_device_id, target_device_id, source_surface, target_surface, context_ref } = body;
+  if (!source_surface || !target_surface) return jsonRes({ error: "source_surface and target_surface required" });
+
+  const { data, error } = await supabase.from("handoff_sessions").insert({
+    user_id: userId,
+    source_device_id: source_device_id || null,
+    target_device_id: target_device_id || null,
+    source_surface,
+    target_surface,
+    context_payload_ref: context_ref || null,
+    handoff_state: "initiated",
+    started_at: new Date().toISOString(),
+  }).select().single();
+
+  if (error) return jsonRes({ error: error.message });
+  return jsonRes({ success: true, handoff: data });
+}
+
+async function routeNotification(supabase: any, userId: string, body: any) {
+  const { urgency, category } = body;
+
+  // Get current presence
+  const { data: presence } = await supabase.from("presence_states").select("*").eq("user_id", userId).order("updated_at", { ascending: false }).limit(1).single();
+
+  // Get interruption policies
+  const { data: policies } = await supabase.from("interruption_policies").select("*").eq("user_id", userId).eq("enabled", true);
+
+  let selectedSurface = "web";
+  let selectedChannel = "in_app";
+  let deferred = false;
+  let routeReason = "default_web_routing";
+
+  const focusState = presence?.focus_state || "normal";
+  const urgencyLevel = urgency || "normal";
+
+  if (focusState === "deep_work" || focusState === "sleeping") {
+    if (urgencyLevel === "critical") {
+      selectedSurface = "phone";
+      selectedChannel = "push";
+      routeReason = "critical_override_focus";
+    } else {
+      deferred = true;
+      routeReason = "deferred_due_to_focus_state";
+    }
+  } else if (urgencyLevel === "high") {
+    selectedSurface = presence?.active_surface || "phone";
+    selectedChannel = "push";
+    routeReason = "high_urgency_active_surface";
+  }
+
+  const { data: route } = await supabase.from("ambient_notification_routes").insert({
+    user_id: userId,
+    route_name: `auto_${category || "general"}_${Date.now()}`,
+    target_surface: selectedSurface,
+    urgency_level: urgencyLevel,
+    category: category || "general",
+    enabled: true,
+    fatigue_aware: true,
+  }).select().single();
+
+  return jsonRes({ success: true, surface: selectedSurface, channel: selectedChannel, deferred, reason: routeReason, route_id: route?.id });
+}
+
+function getSurfaceStrategy() {
+  return {
+    web_first: ["boardroom", "admin_tools", "ai_engineering", "workflow_builder", "finance_workspace"],
+    mobile_primary: ["approvals", "alerts", "advisor_chat", "daily_pulse", "quick_capture"],
+    wearable_primary: ["micro_approvals", "urgent_nudges", "glance_summary"],
+    ring_signal: ["readiness_signal", "interruption_context"],
+    cross_surface: ["identity", "memory", "notifications", "trust_state"],
+  };
 }
