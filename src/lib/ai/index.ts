@@ -19,3 +19,9 @@ export {
   formatFreshness,
   isStale,
 } from "./ai-surface-grammar";
+
+// Hooks
+export { useAICapability } from "./hooks/use-ai-capability";
+export { useAdvisorChat } from "./hooks/use-advisor-chat";
+export { useBoardroomSummary } from "./hooks/use-boardroom-summary";
+export { useDailyPulse } from "./hooks/use-daily-pulse";
