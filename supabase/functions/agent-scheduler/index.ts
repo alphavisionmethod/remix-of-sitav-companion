@@ -39,6 +39,20 @@ const DEFAULT_AGENTS: Array<{ agent_id: string; schedule_type: string }> = [
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  // Zod input validation
+  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
+    try {
+      const BodySchema = z.object({ agent_id: z.string().min(1), schedule_type: z.string().optional(), interval_ms: z.number().optional() });
+      const body = await req.json();
+      const parsed = BodySchema.safeParse(body);
+      if (!parsed.success) {
+        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+    } catch (_) { /* non-JSON or GET */ }
+  }
+
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;

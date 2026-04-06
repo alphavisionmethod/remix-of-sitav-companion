@@ -17,6 +17,20 @@ const COUNCIL_AGENTS: Record<string, string[]> = {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  // Zod input validation
+  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
+    try {
+      const BodySchema = z.object({ agent_id: z.string().min(1), query: z.string().optional(), context: z.record(z.unknown()).optional() });
+      const body = await req.json();
+      const parsed = BodySchema.safeParse(body);
+      if (!parsed.success) {
+        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+    } catch (_) { /* non-JSON or GET */ }
+  }
+
   try {
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {

@@ -311,6 +311,20 @@ const AGENT_HANDLERS: Record<string, (supabase: any, userId: string) => Promise<
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  // Zod input validation
+  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
+    try {
+      const BodySchema = z.object({ agent_id: z.string().min(1), action: z.string().min(1), params: z.record(z.unknown()).optional() });
+      const body = await req.json();
+      const parsed = BodySchema.safeParse(body);
+      if (!parsed.success) {
+        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+    } catch (_) { /* non-JSON or GET */ }
+  }
+
   const startTime = Date.now();
 
   try {
