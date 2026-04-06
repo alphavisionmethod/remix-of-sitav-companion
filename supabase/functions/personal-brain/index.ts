@@ -178,7 +178,14 @@ serve(async (req) => {
       session_id: correlationId,
     }).then(() => {}).catch(e => console.error("Token log error:", e));
 
-    return new Response(response.body, {
+    // Budget metering
+    const estCost = Math.ceil(inputApprox * 0.002);
+    adminClient.rpc("update_ai_budget_usage", {
+      p_user_id: user.id,
+      p_tokens: Math.ceil(inputApprox),
+      p_cost: estCost,
+    }).then(() => {}).catch(e => console.error("Budget metering error:", e));
+
       headers: {
         ...corsHeaders,
         "Content-Type": "text/event-stream",
