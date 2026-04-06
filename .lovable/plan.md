@@ -1,53 +1,47 @@
 
-# Provider Family Architecture Implementation Plan
+# UAO Wave — Unified Ambient Operating System Architecture
 
-## Database Migration (1 migration, ~18 tables)
+## Database Migration (~21 new tables)
 
 | Table | Purpose |
 |---|---|
-| `provider_families` | Google, Microsoft, Apple, Stripe, Slack, etc. |
-| `provider_capabilities` | Sub-capabilities (google_drive, google_gmail, etc.) |
-| `oauth_client_registry` | OAuth clients by purpose (web_auth, connector, ios, android) |
-| `consent_ledger` | All granted/revoked permissions with full audit trail |
-| `consent_scope_records` | Individual scope grants per consent entry |
-| `consent_upgrades` | Permission upgrade history |
-| `consent_revocations` | Revocation records with reasons |
-| `scope_policy_matrix` | Min/optional/disallowed scopes per capability |
-| `permission_drift_records` | Detected drift events (expired tokens, reduced scopes) |
-| `connector_health_records` | Health status per connector instance |
-| `unified_account_nodes` | Principal/user nodes in identity graph |
-| `unified_account_edges` | Links between identity and connector accounts |
-| `identity_provider_links` | Identity provider connections (sign-in) |
-| `connected_service_links` | Connector service connections (Drive, Gmail, etc.) |
-| `device_auth_clients` | Future device-bound auth client registry |
-| `integration_launch_honesty` | Launch readiness labels per integration |
-| `scope_recommendations` | Scope minimization engine output |
-| `permission_levels` | Current permission level per connector |
+| `device_families` | Phone, watch, desktop, ring, spatial, ambient — with interaction type, trust, sensor support |
+| `connected_devices` | User's actual connected devices with trust level, health, reachability |
+| `wearable_providers` | Apple Watch, Wear OS, Fitbit, Garmin, Polar, Whoop, Oura, Samsung |
+| `wearable_signals` | Ingested signals from wearables (HR, strain, recovery, activity) |
+| `readiness_states` | Derived readiness/availability state per user |
+| `presence_states` | Active device, surface, focus state, interruption tolerance |
+| `context_continuity_records` | What user was doing, assistant thread, active tasks, open approvals |
+| `handoff_sessions` | Surface-to-surface handoff tracking |
+| `ambient_notification_routes` | Routing rules: what goes where based on urgency/device/state |
+| `notification_fatigue_profiles` | Spam/fatigue protection per user |
+| `device_trust_records` | Per-device trust level, biometric capability, approval eligibility |
+| `micro_approval_policies` | Which approval classes allowed per device class |
+| `device_approval_receipts` | Approval receipts including device context |
+| `assistant_role_presences` | Which assistant roles are active (chief of staff, strategist, etc.) |
+| `proactive_interventions` | Proactive suggestions, reminders, nudges with consent tracking |
+| `interruption_policies` | Per-user interruption rules by time, state, device |
+| `health_signal_consents` | Explicit consent records for each health signal type |
+| `health_signal_privacy` | Privacy tier settings per signal category |
+| `user_device_graph_edges` | Links between user identity, devices, wearables, trust |
+| `surface_context_states` | Current state per surface (what's open, scroll position, etc.) |
+| `ambient_launch_readiness` | Launch honesty per device family / wearable provider |
 
 All with RLS (user_id = auth.uid()).
 
-## Edge Function: `provider-family-operations`
-Actions: `seed_provider_families`, `seed_google_family`, `seed_scope_policies`, `check_permission_drift`, `generate_scope_recommendation`, `account_graph_report`
+## Edge Function: `ambient-os-operations`
 
-## Admin Pages (10 pages)
-- PFA01 — Provider Family Registry Console
-- PFA02 — Provider Capability Matrix
-- PFA03 — OAuth Client Registry Board
-- PFA04 — Consent Ledger Explorer
-- PFA05 — Scope Policy Matrix Board
-- PFA06 — Permission Upgrade Center
-- PFA07 — Connector Health & Drift Board
-- PFA08 — Unified Account Graph Explorer
-- PFA09 — Connected Accounts Center (user-facing)
-- PFA10 — Integration Launch Honesty Board
+Actions: `seed_device_families`, `seed_wearable_providers`, `update_presence`, `check_readiness`, `route_notification`, `device_graph_report`, `seed_launch_readiness`
 
-## Routes
-All at `/admin/pfa/*` except PFA09 at `/settings/connected-accounts`
+## Admin Pages (8 pages)
 
-## Google Seed Data
-- Provider family: Google
-- Capabilities: google_identity, google_drive, google_gmail, google_calendar
-- OAuth Client 1: SITA Web Auth (openid, profile, email)
-- OAuth Client 2: SITA Connector Access (drive, gmail, calendar scopes)
-- OAuth Client 3/4: iOS/Android (planned)
-- Scope policies for each capability
+| Page | Route | Purpose |
+|---|---|---|
+| UAO01 — Presence & Continuity Center | `/admin/uao/presence` | Active device, surfaces, handoff, continuity |
+| UAO02 — Connected Devices Center | `/admin/uao/devices` | Phones, watches, wearables, trust, sync |
+| UAO03 — Ambient Team Control Center | `/admin/uao/team` | Assistant roles, proactive mode, escalation |
+| UAO04 — Notification & Escalation Router | `/admin/uao/notifications` | Routing rules, urgency ladders, quiet hours |
+| UAO05 — Health/Readiness Signal Center | `/admin/uao/health` | Signal sources, consent, readiness, privacy |
+| UAO06 — Micro-Approval & Device Trust | `/admin/uao/trust` | Trusted devices, approval classes, security |
+| UAO07 — Cross-Surface Journey Board | `/admin/uao/journeys` | Handoff quality, continuity success |
+| UAO08 — Ambient Launch Readiness | `/admin/uao/launch` | Device readiness honesty per family |
