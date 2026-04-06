@@ -21,6 +21,16 @@ Deno.serve(async (req) => {
     return new Response('ok', { headers: corsHeaders });
   }
 
+  // Validate query params
+  const url = new URL(req.url);
+  const QuerySchema = z.object({ probe: z.string().optional(), verbose: z.enum(["true","false"]).optional() });
+  const qp = QuerySchema.safeParse(Object.fromEntries(url.searchParams));
+  if (!qp.success) {
+    return new Response(JSON.stringify({ error: "Invalid query parameters" }), {
+      status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   const startTime = Date.now();
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;

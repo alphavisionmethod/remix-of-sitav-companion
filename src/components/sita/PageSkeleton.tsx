@@ -3,7 +3,7 @@
  * Use instead of plain spinners for a polished loading state.
  */
 export const PageSkeleton = ({ rows = 3 }: { rows?: number }) => (
-  <div className="space-y-6 animate-fade-in">
+  <div className="space-y-6 animate-fade-in" aria-busy="true" aria-label="Loading page content">
     {/* Header skeleton */}
     <div className="space-y-2">
       <div className="skeleton-premium h-8 w-48 rounded" />

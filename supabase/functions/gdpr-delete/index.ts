@@ -7,7 +7,10 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { requireAuth } from "../_shared/auth.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
+
+const logger = new EdgeLogger("gdpr-delete");
 
 const DELETABLE_TABLES = [
   "advisor_feedback", "advisor_knowledge", "advisor_memories", "advisor_performance",
@@ -32,72 +35,49 @@ const DELETABLE_TABLES = [
 ];
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders }
+  const cors = handleCors(req);
+  if (cors) return cors;
 
   // Rate limiting
   const clientId = req.headers.get("authorization")?.slice(-10) || "anon";
-  const rl = checkRateLimit(`gdpr-delete:${clientId}`, 60, 60000);
-  if (!rl.allowed) {
-    return rateLimitResponse(rl, corsHeaders);
-  }
-
-  // Input validation
-  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
-    try {
-  const BodySchema = z.object({ user_id: z.string().uuid().optional(), confirm: z.boolean().optional() });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
-      if (!parsed.success) {
-        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
-        });
-      }
-    } catch (_) {
-      // Non-JSON body or GET request - continue
-    }
-  });
-  }
+  const rl = checkRateLimit(`gdpr-delete:${clientId}`, 5, 60000);
+  if (!rl.allowed) return rateLimitResponse(rl, corsHeaders);
 
   if (req.method !== "POST") {
-    return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    return corsError("Method not allowed", 405);
+  }
+
+  // Auth
+  const auth = await requireAuth(req);
+  if (auth instanceof Response) return auth;
+
+  // Zod validation
+  const BodySchema = z.object({ confirm: z.literal("DELETE_ALL_MY_DATA") });
+  let body: any;
+  try {
+    body = await req.json();
+  } catch {
+    return corsError("Invalid JSON body", 400);
+  }
+  const parsed = BodySchema.safeParse(body);
+  if (!parsed.success) {
+    return corsResponse({
+      error: "Confirmation required",
+      message: 'Send { "confirm": "DELETE_ALL_MY_DATA" } to proceed',
+    }, 400);
   }
 
   try {
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
-
-    // Parse body for confirmation
-    const body = await req.json().catch(() => ({}));
-    if (body.confirm !== "DELETE_ALL_MY_DATA") {
-      return new Response(JSON.stringify({
-        error: "Confirmation required",
-        message: "Send { \"confirm\": \"DELETE_ALL_MY_DATA\" } to proceed",
-      }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
+    logger.info("GDPR delete initiated", { userId: auth.user.id });
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-
-    // Verify user identity with anon key
-    const userClient = createClient(supabaseUrl, anonKey, {
-      global: { headers: { Authorization: authHeader } },
-    });
-    const { data: { user }, error: authError } = await userClient.auth.getUser();
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: "Invalid token" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
-
-    // Use service role for deletion
     const adminClient = createClient(supabaseUrl, serviceKey);
 
     const results: Record<string, string> = {};
     for (const table of DELETABLE_TABLES) {
       try {
-        const { error } = await adminClient.from(table).delete().eq("user_id", user.id);
+        const { error } = await adminClient.from(table).delete().eq("user_id", auth.user.id);
         results[table] = error ? `error: ${error.message}` : "deleted";
       } catch {
         results[table] = "error: query failed";
@@ -106,22 +86,25 @@ Deno.serve(async (req) => {
 
     // Delete storage files
     try {
-      const { data: files } = await adminClient.storage.from("documents").list(user.id);
+      const { data: files } = await adminClient.storage.from("documents").list(auth.user.id);
       if (files && files.length > 0) {
-        await adminClient.storage.from("documents").remove(files.map(f => `${user.id}/${f.name}`));
+        await adminClient.storage.from("documents").remove(files.map(f => `${auth.user.id}/${f.name}`));
         results["storage:documents"] = "deleted";
       }
     } catch {
       results["storage:documents"] = "error";
     }
 
-    return new Response(JSON.stringify({
+    logger.info("GDPR delete completed", { userId: auth.user.id });
+
+    return corsResponse({
       status: "completed",
-      user_id: user.id,
+      user_id: auth.user.id,
       deleted_at: new Date().toISOString(),
       results,
-    }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    });
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    logger.error("GDPR delete failed", err);
+    return corsError(err instanceof Error ? err.message : "Unknown error", 500);
   }
 });

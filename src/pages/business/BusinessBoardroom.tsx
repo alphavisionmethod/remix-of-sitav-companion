@@ -1,3 +1,4 @@
+import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton, SitaPageHeader } from "@/components/sita/SitaCard";
 import { KPITile, OpportunityCard, RiskCard, ProofCard, SitaTabs } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
@@ -146,4 +147,10 @@ const BusinessBoardroom = () => {
   );
 };
 
-export default BusinessBoardroom;
+const BusinessBoardroomWithBoundary = () => (
+  <GlobalErrorBoundary>
+    <BusinessBoardroom />
+  </GlobalErrorBoundary>
+);
+
+export default BusinessBoardroomWithBoundary;

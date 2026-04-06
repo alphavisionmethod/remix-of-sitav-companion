@@ -15,6 +15,7 @@ interface SitaCardProps {
 
 export const SitaCard = ({ children, className, glow, hover = true, elevated, lane, onClick, selected }: SitaCardProps) => (
   <motion.div
+    role="article"
     initial={{ opacity: 0, y: 4 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.25, ease: "easeOut" }}
@@ -79,7 +80,7 @@ export const SitaSectionHeader = ({ title, subtitle, action, className }: { titl
 );
 
 export const SitaPageHeader = ({ title, subtitle, actions, className }: { title: string; subtitle?: string; actions?: ReactNode; className?: string }) => (
-  <div className={cn("flex items-start justify-between gap-4", className)}>
+  <div role="banner" className={cn("flex items-start justify-between gap-4", className)}>
     <div className="min-w-0">
       <h1 className="font-display text-[1.65rem] font-bold tracking-tight text-foreground">{title}</h1>
       {subtitle && <p className="mt-1 text-sm text-muted-foreground max-w-lg">{subtitle}</p>}

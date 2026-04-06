@@ -19,7 +19,7 @@ export const TrustBadge = ({ level, label, className, size = "default" }: { leve
   const c = trustConfig[level];
   const Icon = c.icon;
   return (
-    <span className={cn(
+    <span role="status" aria-label={`Trust level: ${label || c.label}`} className={cn(
       "inline-flex items-center gap-1 rounded-full border font-medium",
       size === "sm" ? "px-1.5 py-px text-[10px]" : "px-2 py-0.5 text-[11px]",
       c.class, className

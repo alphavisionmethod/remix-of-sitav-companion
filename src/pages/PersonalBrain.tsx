@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,7 +24,7 @@ const modes: { id: Mode; label: string; icon: React.ElementType; description: st
   { id: "create", label: "Create", icon: Palette, description: "Write, design, compose" },
 ];
 
-export default function PersonalBrain() {
+function PersonalBrainInner() {
   const { user } = useAuth();
   const [mode, setMode] = useState<Mode>("think");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -183,5 +184,13 @@ export default function PersonalBrain() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PersonalBrain() {
+  return (
+    <GlobalErrorBoundary>
+      <PersonalBrainInner />
+    </GlobalErrorBoundary>
   );
 }
