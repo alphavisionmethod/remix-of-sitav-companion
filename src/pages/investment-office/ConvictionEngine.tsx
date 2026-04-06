@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Gauge, AlertTriangle, Check } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const POSITIONS = [
   {
