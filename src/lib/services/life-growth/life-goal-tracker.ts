@@ -267,16 +267,12 @@ export class LifeGoalTracker {
   private _serializeState(): Record<string, unknown> {
     return {
       goals: Array.from(this.goals.entries()),
-      byMember: Array.from(this.byMember.entries()),
-      goalsByCategory: Array.from(this.goalsByCategory.entries()),
     };
   }
 
   hydrateState(state: Record<string, unknown>): void {
     if (!state) return;
     if (state.goals) this.goals = new Map(state.goals as any);
-    if (state.byMember) this.byMember = new Map(state.byMember as any);
-    if (state.goalsByCategory) this.goalsByCategory = new Map(state.goalsByCategory as any);
   }
 
   async loadPersistedState(): Promise<void> {
