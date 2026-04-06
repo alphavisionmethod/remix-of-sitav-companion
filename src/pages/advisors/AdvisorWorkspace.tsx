@@ -891,6 +891,10 @@ export default function AdvisorWorkspace() {
           <TabsContent value="proof">
             <ProofHistory />
           </TabsContent>
+
+          <TabsContent value="chat">
+            <CouncilChatPanel mode={mode} />
+          </TabsContent>
         </div>
       </Tabs>
     </div>

@@ -9,8 +9,9 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
-import { Workflow, CheckCircle2, Clock, AlertTriangle, ChevronRight, Eye, RotateCcw, Shield } from "lucide-react";
+import { Workflow, CheckCircle2, Clock, AlertTriangle, ChevronRight, Eye, RotateCcw, Shield, Plus, Trash2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useState } from "react";
 
 const statusToState = (status: string): ExecutionState => {
   const map: Record<string, ExecutionState> = {
