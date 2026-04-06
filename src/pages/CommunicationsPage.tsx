@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageSquare, Mail, Phone, Send, Clock, CheckCircle2, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { DEMO_COMMUNICATIONS, type DemoCommunicationEntry as CommunicationEntry, type ChannelType, type MessageStatus } from "@/lib/demo-data/communications";
 
 type ChannelType = "email" | "sms" | "call" | "chat";
 type MessageStatus = "sent" | "delivered" | "read" | "failed" | "queued";
