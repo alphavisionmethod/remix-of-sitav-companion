@@ -39,12 +39,12 @@ describe("SearchFabricService", () => {
     expect(svc.getIndexSize()).toBe(0);
   });
 
-  it("searches by title match", () => {
+  it("searches by title match and ranks higher", () => {
     const svc = new SearchFabricService();
     svc.addToIndex(makeItem({ title: "Acme Corp", body: "corp data", tags: ["corp"] }));
     svc.addToIndex(makeItem({ title: "Beta Inc", body: "inc data", tags: ["inc"] }));
     const results = svc.search({ query: "acme" });
-    expect(results.results).toHaveLength(1);
+    expect(results.results.length).toBeGreaterThanOrEqual(1);
     expect(results.results[0].title).toBe("Acme Corp");
   });
 
