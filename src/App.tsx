@@ -272,6 +272,15 @@ const LT05LaunchGateBoard = lazy(() => import("./pages/admin/LT05LaunchGateBoard
 const LT06RouteInteractionTruth = lazy(() => import("./pages/admin/LT06RouteInteractionTruth"));
 const LT07TruthRegressionRadar = lazy(() => import("./pages/admin/LT07TruthRegressionRadar"));
 
+// V — Behavioral Truth Verification Boards
+const V01SurfaceInventoryBoard = lazy(() => import("./pages/admin/verification/V01SurfaceInventoryBoard"));
+const V02InteractionCoverageBoard = lazy(() => import("./pages/admin/verification/V02InteractionCoverageBoard"));
+const V03P0JourneyBoard = lazy(() => import("./pages/admin/verification/V03P0JourneyBoard"));
+const V04ModeVerificationBoard = lazy(() => import("./pages/admin/verification/V04ModeVerificationBoard"));
+const V05FailureTriageBoard = lazy(() => import("./pages/admin/verification/V05FailureTriageBoard"));
+const V06EvidenceExplorer = lazy(() => import("./pages/admin/verification/V06EvidenceExplorer"));
+const V07LaunchBlockerBoard = lazy(() => import("./pages/admin/verification/V07LaunchBlockerBoard"));
+
 const CN01ConnectorRealityOverview = lazy(() => import("./pages/admin/CN01ConnectorRealityOverview"));
 const CN02ConnectorRegistryConsole = lazy(() => import("./pages/admin/CN02ConnectorRegistryConsole"));
 const CN03AccountLinkageBoard = lazy(() => import("./pages/admin/CN03AccountLinkageBoard"));
@@ -779,7 +788,14 @@ const App = () => (
                     <Route path="/admin/truth/route-interaction" element={<LT06RouteInteractionTruth />} />
                     <Route path="/admin/truth/regression-radar" element={<LT07TruthRegressionRadar />} />
 
-
+                    {/* V — Behavioral Truth Verification Boards */}
+                    <Route path="/admin/verification/surfaces" element={<V01SurfaceInventoryBoard />} />
+                    <Route path="/admin/verification/coverage" element={<V02InteractionCoverageBoard />} />
+                    <Route path="/admin/verification/p0-journeys" element={<V03P0JourneyBoard />} />
+                    <Route path="/admin/verification/modes" element={<V04ModeVerificationBoard />} />
+                    <Route path="/admin/verification/failures" element={<V05FailureTriageBoard />} />
+                    <Route path="/admin/verification/evidence" element={<V06EvidenceExplorer />} />
+                    <Route path="/admin/verification/blockers" element={<V07LaunchBlockerBoard />} />
                     {/* Digital Presence Office */}
                     <Route path="/digital-presence" element={<PresenceGate />} />
                     <Route path="/digital-presence/boardroom" element={<PresenceBoardroom />} />
