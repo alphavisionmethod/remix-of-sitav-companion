@@ -34,6 +34,7 @@ const AND01AndroidEcosystemCenter = () => {
   const { data: healthConsents } = useEcosystemHealthConsents("android");
   const { data: wearableConfigs } = useEcosystemWearableConfigs("android");
   const { data: pushRoutes } = useEcosystemPushRoutes("android");
+  const { data: continuityEvents } = useEcosystemContinuityEvents("android");
   const seedMutation = useSeedEcosystemData();
 
   const hasData = (devices?.length ?? 0) > 0;
