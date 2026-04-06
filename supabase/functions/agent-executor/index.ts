@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { corsHeaders } from "../_shared/cors.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 import { requireAuth } from "../_shared/auth.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 // ═══ AI Gateway integration ═══
 const AI_GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
@@ -333,6 +334,9 @@ serve(async (req) => {
     const authResult = await requireAuth(req);
     if (authResult instanceof Response) return authResult;
     const { user } = authResult;
+
+    const rateCheck = checkRateLimit(`agent-exec:${user.id}`, 20, 60_000);
+    if (!rateCheck.allowed) return rateLimitResponse(rateCheck, corsHeaders);
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;

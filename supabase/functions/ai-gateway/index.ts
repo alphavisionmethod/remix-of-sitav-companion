@@ -1,6 +1,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { corsHeaders, corsResponse, corsError, handleCors } from "../_shared/cors.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { logSecurityEvent, getClientIP, getUserAgent } from "../_shared/audit-logger.ts";
 
 /**
  * SITA OS — Central AI Gateway Edge Function
@@ -43,6 +45,14 @@ serve(async (req) => {
   if (cors) return cors;
 
   try {
+    // Rate limiting
+    const clientIP = getClientIP(req);
+    const rateCheck = checkRateLimit(`ai-gw:${clientIP}`, 30, 60_000);
+    if (!rateCheck.allowed) {
+      await logSecurityEvent({ eventType: "rate_limit_hit", ipAddress: clientIP, functionName: "ai-gateway", severity: "warning", details: { remaining: rateCheck.remaining } });
+      return rateLimitResponse(rateCheck, corsHeaders);
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -56,6 +66,7 @@ serve(async (req) => {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
+      await logSecurityEvent({ eventType: "auth_failure", ipAddress: clientIP, userAgent: getUserAgent(req), functionName: "ai-gateway", severity: "warning" });
       return corsError("Unauthorized", 401);
     }
 
