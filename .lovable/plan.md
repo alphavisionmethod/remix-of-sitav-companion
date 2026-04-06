@@ -1,123 +1,105 @@
 
 
-# Health/Signal Intel + Notification/Calm + Native Shell → 100/100
+# 7 Indices → 100% — Implementation Plan
 
-## Current State
+## Current State Analysis
 
-| Index | Score | What Exists | What's Missing |
-|---|---|---|---|
-| **Health/Signal Intel** | 90% persisted, 85% DB, 65% hooks | 5 hooks wired (consents, providers, signals, readiness, subsystems), HRS01-06 pages, demo data, DB tables | HRS pages 02-06 mostly use hardcoded demo data, no DB-backed CRUD for visibility policies, interruption posture, or synthetic scenarios |
-| **Notification/Calm** | 75% structural, 0% DB, 0% hooks | NRC01-06 pages exist with hardcoded data, contracts defined, DB tables exist (attention_decisions, notification_fatigue_profiles, assistant_role_presences, assistant_role_states, interruption_policies) | Zero data services, zero hooks, zero DB queries — all 6 pages are fully hardcoded |
-| **Native Shell Strategy** | 70% structural, 0% DB, 0% hooks | NSS01-04 pages exist with hardcoded data, contracts defined, DB tables exist (capability_surface_bindings) | Zero data services, zero hooks, zero DB queries — all 4 pages are fully hardcoded |
+| Index | Persisted | DB | Hooks | Gap Summary |
+|---|---|---|---|---|
+| **AI Budget/Policies** | 95% | 90% | 80% | DB functions exist (`check_ai_budget_policies`, `aggregate_ai_daily_spend`), budget service fully wired. Missing: CRUD mutations for `ai_budget_policies` from the UI, usage ledger aggregation hook, and the AITokenDashboard uses legacy `ai_token_usage` instead of `ai_usage_ledger` |
+| **AI Usage Ledger** | 95% | 85% | 75% | `getUsageLedger()` exists but AITokenDashboard still queries `ai_token_usage` (legacy). Missing: hook wrapping `budget.service.ts`, daily aggregation via `aggregate_ai_daily_spend` RPC, and cost-by-capability breakdown |
+| **Calendar** | 85% | 80% | 65% | Has `use-calendar-data.ts` hook + `CalendarWorkspace.tsx` inline query. Missing: CRUD mutations (create/edit/delete events), the page's "New Event" button is non-functional, Edit/Reschedule buttons are dead |
+| **Owner Center** | 90% | 85% | 70% | Uses `useCouncilDecisions` + `useAdminPolicies` correctly. Still imports from `@/lib/mock-data/admin-ops` for demo fallback. Missing: direct DB queries for policies/incidents/audit instead of edge function proxy, and `ENGINE_COSTS` is from a demo-data file |
+| **Apple Ecosystem** | 95% | 90% | 70% | All 7 hooks wired, seed button works. Missing: CRUD mutations (add/remove device, update trust, toggle health consent), the pages are read-only with no write actions |
+| **Android Ecosystem** | 95% | 90% | 70% | Same as Apple — all 7 hooks wired. Missing: same CRUD mutations as Apple |
+| **Health/Signal Intel** | 90% | 85% | 65% | 5 hooks wired. HRS01-03 use hooks. HRS05 uses `useReadinessStates` but hardcodes `BRIEFING_WINDOWS` and `HOLD_VS_ACT`. HRS01 consent toggles are local state only, not persisted |
 
 ## Plan
 
-### 1. Create Notification/Calm data service + hooks
+### 1. AI Budget/Policies + AI Usage Ledger → 100%
 
-**New file**: `src/lib/data-services/notification-calm-data-service.ts`
-- `fetchAttentionDecisions()` — queries `attention_decisions`
-- `fetchFatigueProfiles()` — queries `notification_fatigue_profiles`
-- `fetchAssistantRoles()` — queries `assistant_role_presences`
-- `fetchAssistantRoleStates()` — queries `assistant_role_states`
-- `fetchInterruptionPolicies()` — queries `interruption_policies`
-- `fetchDeliveryWaves()` — queries `delivery_waves`
-- All mode-aware with demo fallbacks
+**`src/hooks/use-ai-budget-data.ts`** (new) — React Query hooks wrapping `budget.service.ts`:
+- `useBudgetPolicies()`, `useActiveBudgetPolicies()`, `useBudgetAlerts()`, `useBudgetSummary()`
+- `useUsageLedger(limit)`, `useDailyAggregation()` (calls `aggregate_ai_daily_spend` RPC)
+- `useCreateBudgetPolicy()`, `useUpdateBudgetPolicy()`, `useDeleteBudgetPolicy()` mutations
 
-**New file**: `src/lib/demo-data/notification-calm.ts`
-- Demo routing matrix, fatigue signals, suppression actions, overload triggers, channel specs, delivery principles, assistant roles, queue strategies
-- Extracted from the hardcoded constants in NRC01-06
+**`src/pages/admin/AITokenDashboard.tsx`** — Rewrite to use new hooks:
+- Replace `ai_token_usage` query with `useUsageLedger()`
+- Replace `user_ai_budgets` query with `useBudgetSummary()`
+- Add daily aggregation chart via `useDailyAggregation()`
+- Add budget policy CRUD panel (list, create, toggle active)
 
-**New file**: `src/hooks/use-notification-calm-data.ts`
-- `useAttentionDecisions()`
-- `useFatigueProfiles()`
-- `useAssistantRoles()`
-- `useAssistantRoleStates()`
-- `useInterruptionPolicies()`
-- `useDeliveryWaves()`
+### 2. Calendar → 100%
 
-### 2. Create Native Shell data service + hooks
+**`src/hooks/use-calendar-mutations.ts`** (new):
+- `useCreateCalendarEvent()` — insert into `calendar_events`
+- `useUpdateCalendarEvent()` — update event
+- `useDeleteCalendarEvent()` — delete event
 
-**New file**: `src/lib/data-services/native-shell-data-service.ts`
-- `fetchCapabilitySurfaceBindings()` — queries `capability_surface_bindings`
-- `fetchNativeShellPlatforms()` — returns shell platform data (demo fallback from contracts)
-- All mode-aware
+**`src/pages/CalendarWorkspace.tsx`** — Wire CRUD:
+- "New Event" button opens a dialog with form fields (title, date, time, domain, type, location)
+- Event detail panel: "Edit" opens pre-filled dialog, "Reschedule" opens date picker, add "Delete" button
+- Replace inline supabase query with `useCalendarEvents` hook from `use-calendar-data.ts`
 
-**New file**: `src/lib/demo-data/native-shell.ts`
-- Demo platform shells, capability matrix, trust continuity flows, mobile action classes
-- Extracted from hardcoded constants in NSS01-04
+### 3. Owner Center → 100%
 
-**New file**: `src/hooks/use-native-shell-data.ts`
-- `useCapabilitySurfaceBindings()`
-- `useNativeShellPlatforms()`
-- `useNativeShellLaunchReadiness()`
+**`src/hooks/use-admin-data.ts`** — Add direct DB query fallback paths:
+- `useAdminPolicies`: in non-demo mode, query `approval_policies` or `ai_budget_policies` table directly instead of edge function only
+- `useAdminIncidents`: in non-demo mode, query `incidents` table directly as fallback
+- `useAdminAuditLogs`: query `audit_logs` table directly as fallback
+- `useFleetHealth`: query `connected_devices` / `ecosystem_devices` directly as fallback
+- `useCouncilDecisions`: query `council_decisions` table directly as fallback
+- Remove mock-data imports for non-demo paths — keep them only for `isDemoMode` branches
 
-### 3. Expand Health/Signal Intel data service
+**`src/pages/OwnerCenter.tsx`** — Replace `ENGINE_COSTS` import with DB query or inline canonical data
 
-Add to existing `health-signal-data-service.ts`:
-- `fetchVisibilityPolicies()` — for HRS pages that reference visibility
-- `fetchInterruptionPosture()` — readiness → interruption posture mapping
+### 4. Apple + Android Ecosystem → 100%
 
-Add to `use-health-signal-data.ts`:
-- `useVisibilityPolicies()`
-- `useInterruptionPosture()`
+**`src/hooks/useEcosystemDevices.ts`** — Add CRUD mutations:
+- `useAddEcosystemDevice()` — insert into `ecosystem_devices`
+- `useRemoveEcosystemDevice()` — delete device
+- `useUpdateDeviceTrust()` — update `ecosystem_trust_records`
+- `useToggleHealthConsent()` — update `ecosystem_health_consents.read_permission`/`revoked_at`
+- `useUpdatePushRoute()` — update `ecosystem_push_routes`
 
-### 4. Wire NRC01-06 pages to DB hooks
+**`src/pages/admin/APL01AppleEcosystemCenter.tsx`** + **`AND01AndroidEcosystemCenter.tsx`**:
+- Add "Add Device" button + dialog
+- Trust tab: add "Revoke Trust" / "Re-verify" actions on each device
+- Health tab: consent toggles actually call `useToggleHealthConsent()` instead of local state
+- Push tab: enable/disable route toggles that persist
 
-| Page | Current | After |
-|---|---|---|
-| NRC01 RoutingStudio | Hardcoded ROUTING_MATRIX, CHANNEL_SPECS | Query `attention_decisions` + demo fallback |
-| NRC02 CalmnessCenter | Hardcoded roles + interventions | Query `assistant_role_presences` + `assistant_role_states` |
-| NRC03 FatigueBoard | Hardcoded FATIGUE_SIGNALS, SUPPRESSION_ACTIONS | Query `notification_fatigue_profiles` |
-| NRC04 QueueInterruptMatrix | Hardcoded queue data | Query `interruption_policies` |
-| NRC05 CrossDeviceDelivery | Hardcoded device routing | Query `attention_decisions` + device data |
-| NRC06 NotificationLaunchHonesty | Hardcoded SUBSYSTEMS | Query `ecosystem_launch_readiness` like HRS06 |
+### 5. Health/Signal Intel → 100%
 
-### 5. Wire NSS01-04 pages to DB hooks
+**`src/hooks/use-health-signal-mutations.ts`** (new):
+- `useToggleSignalConsent()` — update `health_signal_consents` table
+- `useUpdateReadinessState()` — for manual override of readiness
 
-| Page | Current | After |
-|---|---|---|
-| NSS01 StrategyBoard | Hardcoded PLATFORMS | Query device_families + demo fallback |
-| NSS02 CapabilityMatrix | Hardcoded CAPABILITIES | Query `capability_surface_bindings` |
-| NSS03 TrustContinuity | Hardcoded flows | Use demo data extracted to module |
-| NSS04 MobileLaunchHonesty | Hardcoded TARGETS | Query `ecosystem_launch_readiness` like HRS06 |
+**`src/pages/admin/HRS01HealthConsentCenter.tsx`**:
+- Replace `enabledCats` local state with DB-backed consent toggles using `useToggleSignalConsent()`
+- When toggled, insert/update `health_signal_consents` row
 
-### 6. Seed notification + native shell data
-
-Add to `ecosystem-master-seeder.ts`:
-- `assistantRoleRows()` — 9 assistant roles (chief_of_staff, operator, strategist, etc.)
-- `interruptionPolicyRows()` — 3 default policies (quiet hours, focus mode, sleep)
-- `fatigueProfileRows()` — 1 default profile per user
-- `capabilitySurfaceBindingRows()` — 13 capability × surface bindings
-
-### 7. Wire HRS04 NotificationInfluence to DB
-
-Currently hardcoded influence rules — wire to readiness states + demo fallback.
+**`src/pages/admin/HRS05AssistantTimingBoard.tsx`**:
+- Extract `BRIEFING_WINDOWS` and `HOLD_VS_ACT` to `src/lib/demo-data/health-signals.ts`
+- Wire `useReadinessStates` data into timing logic display
 
 ## Files Changed
 
 | File | Change |
 |---|---|
-| `src/lib/demo-data/notification-calm.ts` | **New** — demo data extracted from NRC pages |
-| `src/lib/demo-data/native-shell.ts` | **New** — demo data extracted from NSS pages |
-| `src/lib/data-services/notification-calm-data-service.ts` | **New** — 6 DB query functions |
-| `src/lib/data-services/native-shell-data-service.ts` | **New** — 3 DB query functions |
-| `src/hooks/use-notification-calm-data.ts` | **New** — 6 React Query hooks |
-| `src/hooks/use-native-shell-data.ts` | **New** — 3 React Query hooks |
-| `src/lib/data-services/health-signal-data-service.ts` | Add 2 query functions |
-| `src/hooks/use-health-signal-data.ts` | Add 2 hooks |
-| `src/lib/seed/ecosystem-master-seeder.ts` | Add seed functions for NRC + NSS tables |
-| `src/pages/admin/NRC01RoutingStudio.tsx` | Wire to DB hooks |
-| `src/pages/admin/NRC02CalmnessCenter.tsx` | Wire to DB hooks |
-| `src/pages/admin/NRC03FatigueBoard.tsx` | Wire to DB hooks |
-| `src/pages/admin/NRC04QueueInterruptMatrix.tsx` | Wire to DB hooks |
-| `src/pages/admin/NRC05CrossDeviceDelivery.tsx` | Wire to DB hooks |
-| `src/pages/admin/NRC06NotificationLaunchHonesty.tsx` | Wire to DB hooks |
-| `src/pages/admin/NSS01StrategyBoard.tsx` | Wire to DB hooks |
-| `src/pages/admin/NSS02CapabilityMatrix.tsx` | Wire to DB hooks |
-| `src/pages/admin/NSS03TrustContinuity.tsx` | Wire to DB hooks |
-| `src/pages/admin/NSS04MobileLaunchHonesty.tsx` | Wire to DB hooks |
-| `src/pages/admin/HRS04NotificationInfluence.tsx` | Wire to DB hooks |
+| `src/hooks/use-ai-budget-data.ts` | **New** — 9 React Query hooks for budget + usage |
+| `src/hooks/use-calendar-mutations.ts` | **New** — create/update/delete calendar event mutations |
+| `src/hooks/use-health-signal-mutations.ts` | **New** — consent toggle + readiness update mutations |
+| `src/pages/admin/AITokenDashboard.tsx` | Rewrite: `ai_usage_ledger` + budget policies + daily aggregation |
+| `src/pages/CalendarWorkspace.tsx` | Wire CRUD dialogs for New/Edit/Delete events |
+| `src/hooks/use-admin-data.ts` | Add direct DB fallback queries for 5 hooks, remove mock imports from non-demo paths |
+| `src/pages/OwnerCenter.tsx` | Replace `ENGINE_COSTS` with canonical/DB data |
+| `src/hooks/useEcosystemDevices.ts` | Add 5 CRUD mutations |
+| `src/pages/admin/APL01AppleEcosystemCenter.tsx` | Add device + trust + consent CRUD actions |
+| `src/pages/admin/AND01AndroidEcosystemCenter.tsx` | Add device + trust + consent CRUD actions |
+| `src/pages/admin/HRS01HealthConsentCenter.tsx` | Wire consent toggles to DB |
+| `src/pages/admin/HRS05AssistantTimingBoard.tsx` | Extract hardcoded data to demo module |
+| `src/lib/demo-data/health-signals.ts` | Add `DEMO_BRIEFING_WINDOWS`, `DEMO_HOLD_VS_ACT` |
 
 ## No database migration needed
-All required tables already exist. This is data services + hooks + seed data + page wiring.
+All tables already exist. This is hooks + mutations + UI wiring.
 
