@@ -2997,14 +2997,25 @@ export type Database = {
             referencedRelation: "v_ai_workforce_recommendation_summary"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "ai_workforce_recommendation_scores_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "v_recommendation_closure_summary"
+            referencedColumns: ["id"]
+          },
         ]
       }
       ai_workforce_recommendations: {
         Row: {
           accepted_at: string | null
           action_proposed: string | null
+          approval_decision_at: string | null
+          approved_by_user_id: string | null
           budget_impact_class: string | null
           created_at: string
+          customer_journey_impact_key: string | null
+          deferred_reason: string | null
           deferred_until: string | null
           description: string | null
           domain: string
@@ -3013,15 +3024,22 @@ export type Database = {
           evidence: Json | null
           evidence_refs: Json
           execution_binding_status: string
+          execution_priority: string | null
+          execution_required: boolean
+          flagship_loop_key: string | null
           id: string
           invocation_id: string | null
+          launch_blocker_impact_class: string | null
           launch_impact_class: string | null
+          lifecycle_status: string
           linked_approval_queue_item_id: string | null
           linked_remediation_program_id: string | null
           outcome_verification_id: string | null
+          outcome_verification_required: boolean
           output_id: string | null
           recommendation_type: string
           rejected_at: string | null
+          rejected_by_user_id: string | null
           risk_tier: string
           role_key: string
           severity: string
@@ -3033,8 +3051,12 @@ export type Database = {
         Insert: {
           accepted_at?: string | null
           action_proposed?: string | null
+          approval_decision_at?: string | null
+          approved_by_user_id?: string | null
           budget_impact_class?: string | null
           created_at?: string
+          customer_journey_impact_key?: string | null
+          deferred_reason?: string | null
           deferred_until?: string | null
           description?: string | null
           domain?: string
@@ -3043,15 +3065,22 @@ export type Database = {
           evidence?: Json | null
           evidence_refs?: Json
           execution_binding_status?: string
+          execution_priority?: string | null
+          execution_required?: boolean
+          flagship_loop_key?: string | null
           id?: string
           invocation_id?: string | null
+          launch_blocker_impact_class?: string | null
           launch_impact_class?: string | null
+          lifecycle_status?: string
           linked_approval_queue_item_id?: string | null
           linked_remediation_program_id?: string | null
           outcome_verification_id?: string | null
+          outcome_verification_required?: boolean
           output_id?: string | null
           recommendation_type?: string
           rejected_at?: string | null
+          rejected_by_user_id?: string | null
           risk_tier?: string
           role_key: string
           severity?: string
@@ -3063,8 +3092,12 @@ export type Database = {
         Update: {
           accepted_at?: string | null
           action_proposed?: string | null
+          approval_decision_at?: string | null
+          approved_by_user_id?: string | null
           budget_impact_class?: string | null
           created_at?: string
+          customer_journey_impact_key?: string | null
+          deferred_reason?: string | null
           deferred_until?: string | null
           description?: string | null
           domain?: string
@@ -3073,15 +3106,22 @@ export type Database = {
           evidence?: Json | null
           evidence_refs?: Json
           execution_binding_status?: string
+          execution_priority?: string | null
+          execution_required?: boolean
+          flagship_loop_key?: string | null
           id?: string
           invocation_id?: string | null
+          launch_blocker_impact_class?: string | null
           launch_impact_class?: string | null
+          lifecycle_status?: string
           linked_approval_queue_item_id?: string | null
           linked_remediation_program_id?: string | null
           outcome_verification_id?: string | null
+          outcome_verification_required?: boolean
           output_id?: string | null
           recommendation_type?: string
           rejected_at?: string | null
+          rejected_by_user_id?: string | null
           risk_tier?: string
           role_key?: string
           severity?: string
@@ -11067,57 +11107,81 @@ export type Database = {
           cj_entries: Json | null
           created_at: string
           demo_vs_real: string
+          description: string | null
           id: string
           launch_blockers: Json | null
           launch_claim_status: string
+          launch_honesty_class: string | null
+          launch_importance: string | null
           loop_key: string
           owner: string | null
+          owner_team: string | null
+          primary_persona: string | null
           primary_services: Json | null
+          proof_required: boolean | null
           proof_status: string
           routes: Json | null
+          status: string | null
           target_persona: string | null
           title: string
           updated_at: string
           user_id: string
           ux_quality: string
+          ux_quality_target: string | null
         }
         Insert: {
           capabilities?: Json | null
           cj_entries?: Json | null
           created_at?: string
           demo_vs_real?: string
+          description?: string | null
           id?: string
           launch_blockers?: Json | null
           launch_claim_status?: string
+          launch_honesty_class?: string | null
+          launch_importance?: string | null
           loop_key: string
           owner?: string | null
+          owner_team?: string | null
+          primary_persona?: string | null
           primary_services?: Json | null
+          proof_required?: boolean | null
           proof_status?: string
           routes?: Json | null
+          status?: string | null
           target_persona?: string | null
           title: string
           updated_at?: string
           user_id: string
           ux_quality?: string
+          ux_quality_target?: string | null
         }
         Update: {
           capabilities?: Json | null
           cj_entries?: Json | null
           created_at?: string
           demo_vs_real?: string
+          description?: string | null
           id?: string
           launch_blockers?: Json | null
           launch_claim_status?: string
+          launch_honesty_class?: string | null
+          launch_importance?: string | null
           loop_key?: string
           owner?: string | null
+          owner_team?: string | null
+          primary_persona?: string | null
           primary_services?: Json | null
+          proof_required?: boolean | null
           proof_status?: string
           routes?: Json | null
+          status?: string | null
           target_persona?: string | null
           title?: string
           updated_at?: string
           user_id?: string
           ux_quality?: string
+          ux_quality_target?: string | null
         }
         Relationships: []
       }
@@ -15732,6 +15796,13 @@ export type Database = {
             referencedRelation: "v_ai_workforce_recommendation_summary"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "outcome_verifications_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "v_recommendation_closure_summary"
+            referencedColumns: ["id"]
+          },
         ]
       }
       packet_compilation_records: {
@@ -18876,6 +18947,272 @@ export type Database = {
         }
         Relationships: []
       }
+      recommendation_execution_bindings: {
+        Row: {
+          approval_queue_item_id: string | null
+          binding_status: string
+          binding_type: string
+          completed_at: string | null
+          created_at: string
+          due_at: string | null
+          id: string
+          linked_program_id: string | null
+          linked_task_id: string | null
+          notes: string | null
+          owner_team: string | null
+          owner_user_id: string | null
+          recommendation_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_queue_item_id?: string | null
+          binding_status?: string
+          binding_type: string
+          completed_at?: string | null
+          created_at?: string
+          due_at?: string | null
+          id?: string
+          linked_program_id?: string | null
+          linked_task_id?: string | null
+          notes?: string | null
+          owner_team?: string | null
+          owner_user_id?: string | null
+          recommendation_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_queue_item_id?: string | null
+          binding_status?: string
+          binding_type?: string
+          completed_at?: string | null
+          created_at?: string
+          due_at?: string | null
+          id?: string
+          linked_program_id?: string | null
+          linked_task_id?: string | null
+          notes?: string | null
+          owner_team?: string | null
+          owner_user_id?: string | null
+          recommendation_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendation_execution_bindings_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_recommendations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendation_execution_bindings_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_workforce_recommendation_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendation_execution_bindings_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "v_recommendation_closure_summary"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recommendation_execution_events: {
+        Row: {
+          binding_id: string
+          created_at: string
+          created_by_user_id: string | null
+          details: Json
+          event_type: string
+          id: string
+          summary: string
+          user_id: string
+        }
+        Insert: {
+          binding_id: string
+          created_at?: string
+          created_by_user_id?: string | null
+          details?: Json
+          event_type: string
+          id?: string
+          summary: string
+          user_id: string
+        }
+        Update: {
+          binding_id?: string
+          created_at?: string
+          created_by_user_id?: string | null
+          details?: Json
+          event_type?: string
+          id?: string
+          summary?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendation_execution_events_binding_id_fkey"
+            columns: ["binding_id"]
+            isOneToOne: false
+            referencedRelation: "recommendation_execution_bindings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendation_execution_events_binding_id_fkey"
+            columns: ["binding_id"]
+            isOneToOne: false
+            referencedRelation: "v_recommendation_closure_summary"
+            referencedColumns: ["binding_id"]
+          },
+        ]
+      }
+      recommendation_learning_signals: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          recommendation_id: string
+          signal_source: string
+          signal_strength: number
+          signal_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          recommendation_id: string
+          signal_source: string
+          signal_strength: number
+          signal_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          recommendation_id?: string
+          signal_source?: string
+          signal_strength?: number
+          signal_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendation_learning_signals_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_recommendations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendation_learning_signals_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_workforce_recommendation_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendation_learning_signals_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "v_recommendation_closure_summary"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recommendation_outcome_verifications: {
+        Row: {
+          actual_improvement: string | null
+          binding_id: string | null
+          created_at: string
+          customer_journey_delta: string | null
+          expected_improvement: string
+          id: string
+          launch_truth_delta: string | null
+          notes: string | null
+          recommendation_id: string
+          user_id: string
+          verification_method: string
+          verification_status: string
+          verified_at: string | null
+          verified_by_user_id: string | null
+        }
+        Insert: {
+          actual_improvement?: string | null
+          binding_id?: string | null
+          created_at?: string
+          customer_journey_delta?: string | null
+          expected_improvement: string
+          id?: string
+          launch_truth_delta?: string | null
+          notes?: string | null
+          recommendation_id: string
+          user_id: string
+          verification_method: string
+          verification_status?: string
+          verified_at?: string | null
+          verified_by_user_id?: string | null
+        }
+        Update: {
+          actual_improvement?: string | null
+          binding_id?: string | null
+          created_at?: string
+          customer_journey_delta?: string | null
+          expected_improvement?: string
+          id?: string
+          launch_truth_delta?: string | null
+          notes?: string | null
+          recommendation_id?: string
+          user_id?: string
+          verification_method?: string
+          verification_status?: string
+          verified_at?: string | null
+          verified_by_user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendation_outcome_verifications_binding_id_fkey"
+            columns: ["binding_id"]
+            isOneToOne: false
+            referencedRelation: "recommendation_execution_bindings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendation_outcome_verifications_binding_id_fkey"
+            columns: ["binding_id"]
+            isOneToOne: false
+            referencedRelation: "v_recommendation_closure_summary"
+            referencedColumns: ["binding_id"]
+          },
+          {
+            foreignKeyName: "recommendation_outcome_verifications_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_recommendations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendation_outcome_verifications_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_workforce_recommendation_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendation_outcome_verifications_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "v_recommendation_closure_summary"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       relationship_contexts: {
         Row: {
           created_at: string
@@ -18920,43 +19257,67 @@ export type Database = {
       }
       remediation_programs: {
         Row: {
+          completed_at: string | null
           completed_items_count: number
           created_at: string
+          description: string | null
+          display_name: string | null
           focus_area: string
           id: string
+          launch_impact_class: string | null
           linked_flagship_loop: string | null
           metadata: Json | null
           open_items_count: number
+          owner_team: string | null
+          owner_user_id: string | null
           program_key: string
+          start_at: string | null
           status: string
+          target_at: string | null
           title: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          completed_at?: string | null
           completed_items_count?: number
           created_at?: string
+          description?: string | null
+          display_name?: string | null
           focus_area?: string
           id?: string
+          launch_impact_class?: string | null
           linked_flagship_loop?: string | null
           metadata?: Json | null
           open_items_count?: number
+          owner_team?: string | null
+          owner_user_id?: string | null
           program_key: string
+          start_at?: string | null
           status?: string
+          target_at?: string | null
           title: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          completed_at?: string | null
           completed_items_count?: number
           created_at?: string
+          description?: string | null
+          display_name?: string | null
           focus_area?: string
           id?: string
+          launch_impact_class?: string | null
           linked_flagship_loop?: string | null
           metadata?: Json | null
           open_items_count?: number
+          owner_team?: string | null
+          owner_user_id?: string | null
           program_key?: string
+          start_at?: string | null
           status?: string
+          target_at?: string | null
           title?: string
           updated_at?: string
           user_id?: string
@@ -19013,6 +19374,84 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      remediation_tasks: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          description: string
+          display_name: string
+          due_at: string | null
+          execution_type: string
+          id: string
+          owner_team: string | null
+          owner_user_id: string | null
+          program_id: string | null
+          related_customer_journey_key: string | null
+          related_flagship_loop_key: string | null
+          related_route_key: string | null
+          related_service_key: string | null
+          task_key: string
+          task_status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          description: string
+          display_name: string
+          due_at?: string | null
+          execution_type: string
+          id?: string
+          owner_team?: string | null
+          owner_user_id?: string | null
+          program_id?: string | null
+          related_customer_journey_key?: string | null
+          related_flagship_loop_key?: string | null
+          related_route_key?: string | null
+          related_service_key?: string | null
+          task_key: string
+          task_status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string
+          display_name?: string
+          due_at?: string | null
+          execution_type?: string
+          id?: string
+          owner_team?: string | null
+          owner_user_id?: string | null
+          program_id?: string | null
+          related_customer_journey_key?: string | null
+          related_flagship_loop_key?: string | null
+          related_route_key?: string | null
+          related_service_key?: string | null
+          task_key?: string
+          task_status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "remediation_tasks_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "remediation_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "remediation_tasks_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "v_remediation_program_summary"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       reserves: {
         Row: {
@@ -23372,6 +23811,20 @@ export type Database = {
         }
         Relationships: []
       }
+      v_outcome_verification_summary: {
+        Row: {
+          count: number | null
+          domain: string | null
+          flagship_loop_key: string | null
+          negative_count: number | null
+          neutral_count: number | null
+          positive_count: number | null
+          recommendation_type: string | null
+          verification_method: string | null
+          verification_status: string | null
+        }
+        Relationships: []
+      }
       v_provider_activation_summary: {
         Row: {
           activation_state: string | null
@@ -23429,6 +23882,107 @@ export type Database = {
           side_effect_policy_key: string | null
           surface_class_key: string | null
           surface_display_name: string | null
+        }
+        Relationships: []
+      }
+      v_recommendation_closure_summary: {
+        Row: {
+          actual_improvement: string | null
+          binding_id: string | null
+          binding_owner_team: string | null
+          binding_status: string | null
+          binding_type: string | null
+          created_at: string | null
+          customer_journey_impact_key: string | null
+          domain: string | null
+          execution_priority: string | null
+          execution_required: boolean | null
+          flagship_loop_key: string | null
+          id: string | null
+          launch_blocker_impact_class: string | null
+          lifecycle_status: string | null
+          linked_program_id: string | null
+          outcome_verification_required: boolean | null
+          recommendation_type: string | null
+          severity: string | null
+          title: string | null
+          user_id: string | null
+          verification_id: string | null
+          verification_method: string | null
+          verification_status: string | null
+        }
+        Relationships: []
+      }
+      v_recommendation_execution_pipeline: {
+        Row: {
+          bound_count: number | null
+          count: number | null
+          domain: string | null
+          execution_required_count: number | null
+          flagship_loop_key: string | null
+          lifecycle_status: string | null
+          recommendation_type: string | null
+          verified_count: number | null
+        }
+        Relationships: []
+      }
+      v_remediation_program_summary: {
+        Row: {
+          completed_at: string | null
+          completed_items: number | null
+          display_name: string | null
+          done_tasks: number | null
+          flagship_loop_key: string | null
+          focus_area: string | null
+          id: string | null
+          launch_impact_class: string | null
+          open_items: number | null
+          owner_team: string | null
+          program_key: string | null
+          start_at: string | null
+          status: string | null
+          target_at: string | null
+          title: string | null
+          total_tasks: number | null
+          user_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          completed_items?: never
+          display_name?: string | null
+          done_tasks?: never
+          flagship_loop_key?: string | null
+          focus_area?: string | null
+          id?: string | null
+          launch_impact_class?: string | null
+          open_items?: never
+          owner_team?: string | null
+          program_key?: string | null
+          start_at?: string | null
+          status?: string | null
+          target_at?: string | null
+          title?: string | null
+          total_tasks?: never
+          user_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          completed_items?: never
+          display_name?: string | null
+          done_tasks?: never
+          flagship_loop_key?: string | null
+          focus_area?: string | null
+          id?: string | null
+          launch_impact_class?: string | null
+          open_items?: never
+          owner_team?: string | null
+          program_key?: string | null
+          start_at?: string | null
+          status?: string | null
+          target_at?: string | null
+          title?: string | null
+          total_tasks?: never
+          user_id?: string | null
         }
         Relationships: []
       }
