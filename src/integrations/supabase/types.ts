@@ -14,6 +14,89 @@ export type Database = {
   }
   public: {
     Tables: {
+      action_escalations: {
+        Row: {
+          created_at: string
+          escalation_reason: string | null
+          from_state: string | null
+          id: string
+          target_device_id: string | null
+          target_surface: string | null
+          to_state: string | null
+          trust_weighted_action_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          escalation_reason?: string | null
+          from_state?: string | null
+          id?: string
+          target_device_id?: string | null
+          target_surface?: string | null
+          to_state?: string | null
+          trust_weighted_action_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          escalation_reason?: string | null
+          from_state?: string | null
+          id?: string
+          target_device_id?: string | null
+          target_surface?: string | null
+          to_state?: string | null
+          trust_weighted_action_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "action_escalations_trust_weighted_action_id_fkey"
+            columns: ["trust_weighted_action_id"]
+            isOneToOne: false
+            referencedRelation: "trust_weighted_actions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      adaptive_interface_profiles: {
+        Row: {
+          cognitive_load_class: string | null
+          created_at: string
+          current_mode: string | null
+          density_preference: string | null
+          id: string
+          quick_action_bias: string | null
+          summary_depth: string | null
+          surface: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cognitive_load_class?: string | null
+          created_at?: string
+          current_mode?: string | null
+          density_preference?: string | null
+          id?: string
+          quick_action_bias?: string | null
+          summary_depth?: string | null
+          surface?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cognitive_load_class?: string | null
+          created_at?: string
+          current_mode?: string | null
+          density_preference?: string | null
+          id?: string
+          quick_action_bias?: string | null
+          summary_depth?: string | null
+          surface?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       advisor_configs: {
         Row: {
           active: boolean
@@ -2114,6 +2197,84 @@ export type Database = {
         }
         Relationships: []
       }
+      assistant_role_states: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          id: string
+          posture: string | null
+          role_key: string
+          state: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          posture?: string | null
+          role_key?: string
+          state?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          posture?: string | null
+          role_key?: string
+          state?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      attention_decisions: {
+        Row: {
+          created_at: string
+          defer_until: string | null
+          deferred: boolean | null
+          event_ref: string | null
+          fatigue_score: number | null
+          id: string
+          reason: string | null
+          routing_decision: string | null
+          selected_device_id: string | null
+          selected_surface: string | null
+          urgency_class: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          defer_until?: string | null
+          deferred?: boolean | null
+          event_ref?: string | null
+          fatigue_score?: number | null
+          id?: string
+          reason?: string | null
+          routing_decision?: string | null
+          selected_device_id?: string | null
+          selected_surface?: string | null
+          urgency_class?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          defer_until?: string | null
+          deferred?: boolean | null
+          event_ref?: string | null
+          fatigue_score?: number | null
+          id?: string
+          reason?: string | null
+          routing_decision?: string | null
+          selected_device_id?: string | null
+          selected_surface?: string | null
+          urgency_class?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -2384,6 +2545,36 @@ export type Database = {
         }
         Relationships: []
       }
+      boundary_policies: {
+        Row: {
+          active: boolean | null
+          boundary_type: string
+          created_at: string
+          id: string
+          policy_json: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          boundary_type?: string
+          created_at?: string
+          id?: string
+          policy_json?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          boundary_type?: string
+          created_at?: string
+          id?: string
+          policy_json?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       brand_kits: {
         Row: {
           brand_rules: Json | null
@@ -2466,6 +2657,45 @@ export type Database = {
           id?: string
           period?: string
           spent?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cai_continuity_sessions: {
+        Row: {
+          completed_at: string | null
+          context_ref: string | null
+          id: string
+          source_device_id: string | null
+          source_surface: string | null
+          started_at: string
+          status: string | null
+          target_device_id: string | null
+          target_surface: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          context_ref?: string | null
+          id?: string
+          source_device_id?: string | null
+          source_surface?: string | null
+          started_at?: string
+          status?: string | null
+          target_device_id?: string | null
+          target_surface?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          context_ref?: string | null
+          id?: string
+          source_device_id?: string | null
+          source_surface?: string | null
+          started_at?: string
+          status?: string | null
+          target_device_id?: string | null
+          target_surface?: string | null
           user_id?: string
         }
         Relationships: []
@@ -3195,6 +3425,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      command_orchestrations: {
+        Row: {
+          actor_id: string
+          capability_key: string | null
+          created_at: string
+          execution_state: string | null
+          id: string
+          intent_resolution_id: string | null
+          policy_decision_ref: string | null
+          receipt_id: string | null
+          trust_decision_ref: string | null
+          updated_at: string
+          workflow_ref: string | null
+        }
+        Insert: {
+          actor_id: string
+          capability_key?: string | null
+          created_at?: string
+          execution_state?: string | null
+          id?: string
+          intent_resolution_id?: string | null
+          policy_decision_ref?: string | null
+          receipt_id?: string | null
+          trust_decision_ref?: string | null
+          updated_at?: string
+          workflow_ref?: string | null
+        }
+        Update: {
+          actor_id?: string
+          capability_key?: string | null
+          created_at?: string
+          execution_state?: string | null
+          id?: string
+          intent_resolution_id?: string | null
+          policy_decision_ref?: string | null
+          receipt_id?: string | null
+          trust_decision_ref?: string | null
+          updated_at?: string
+          workflow_ref?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "command_orchestrations_intent_resolution_id_fkey"
+            columns: ["intent_resolution_id"]
+            isOneToOne: false
+            referencedRelation: "intent_resolutions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       communication_log: {
         Row: {
@@ -4611,6 +4891,42 @@ export type Database = {
           },
         ]
       }
+      coordinated_assistant_sessions: {
+        Row: {
+          active_roles: string[] | null
+          calmness_profile: string | null
+          current_context_ref: string | null
+          current_objective: string | null
+          id: string
+          started_at: string
+          support_intensity: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_roles?: string[] | null
+          calmness_profile?: string | null
+          current_context_ref?: string | null
+          current_objective?: string | null
+          id?: string
+          started_at?: string
+          support_intensity?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_roles?: string[] | null
+          calmness_profile?: string | null
+          current_context_ref?: string | null
+          current_objective?: string | null
+          id?: string
+          started_at?: string
+          support_intensity?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       council_decisions: {
         Row: {
           consensus_score: number | null
@@ -5763,6 +6079,42 @@ export type Database = {
         }
         Relationships: []
       }
+      digest_compilations: {
+        Row: {
+          created_at: string
+          delivery_surface: string | null
+          digest_type: string
+          generated_at: string
+          id: string
+          mode: string | null
+          source_refs: string[] | null
+          summary_ref: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          delivery_surface?: string | null
+          digest_type?: string
+          generated_at?: string
+          id?: string
+          mode?: string | null
+          source_refs?: string[] | null
+          summary_ref?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          delivery_surface?: string | null
+          digest_type?: string
+          generated_at?: string
+          id?: string
+          mode?: string | null
+          source_refs?: string[] | null
+          summary_ref?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       digital_agent_debates: {
         Row: {
           alignment_summary: string | null
@@ -6414,6 +6766,48 @@ export type Database = {
           id?: string
           surface_rendering_rules?: Json
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      experience_signature_rules: {
+        Row: {
+          active: boolean | null
+          context_type: string | null
+          created_at: string
+          escalation_style: string | null
+          id: string
+          proof_style: string | null
+          summary_style: string | null
+          surface: string
+          tone_profile: string | null
+          urgency_class: string | null
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          context_type?: string | null
+          created_at?: string
+          escalation_style?: string | null
+          id?: string
+          proof_style?: string | null
+          summary_style?: string | null
+          surface?: string
+          tone_profile?: string | null
+          urgency_class?: string | null
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          context_type?: string | null
+          created_at?: string
+          escalation_style?: string | null
+          id?: string
+          proof_style?: string | null
+          summary_style?: string | null
+          surface?: string
+          tone_profile?: string | null
+          urgency_class?: string | null
           user_id?: string
         }
         Relationships: []
@@ -7430,6 +7824,47 @@ export type Database = {
         }
         Relationships: []
       }
+      handoff_contexts: {
+        Row: {
+          context_type: string | null
+          continuity_session_id: string | null
+          created_at: string
+          id: string
+          payload_ref: string | null
+          resumable: boolean | null
+          urgency_class: string | null
+          user_id: string
+        }
+        Insert: {
+          context_type?: string | null
+          continuity_session_id?: string | null
+          created_at?: string
+          id?: string
+          payload_ref?: string | null
+          resumable?: boolean | null
+          urgency_class?: string | null
+          user_id: string
+        }
+        Update: {
+          context_type?: string | null
+          continuity_session_id?: string | null
+          created_at?: string
+          id?: string
+          payload_ref?: string | null
+          resumable?: boolean | null
+          urgency_class?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "handoff_contexts_continuity_session_id_fkey"
+            columns: ["continuity_session_id"]
+            isOneToOne: false
+            referencedRelation: "cai_continuity_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       handoff_packets: {
         Row: {
           context: Json | null
@@ -7799,6 +8234,42 @@ export type Database = {
           owner_id?: string
           type?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      human_obligations: {
+        Row: {
+          created_at: string
+          due_at: string | null
+          id: string
+          obligation_type: string | null
+          related_person_ref: string | null
+          source_ref: string | null
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          due_at?: string | null
+          id?: string
+          obligation_type?: string | null
+          related_person_ref?: string | null
+          source_ref?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          due_at?: string | null
+          id?: string
+          obligation_type?: string | null
+          related_person_ref?: string | null
+          source_ref?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -8788,6 +9259,45 @@ export type Database = {
           similarity_score?: number | null
           tenant_id?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      intent_resolutions: {
+        Row: {
+          actor_id: string
+          confidence: number | null
+          created_at: string
+          id: string
+          raw_input: string | null
+          resolved_intent: string | null
+          source_device_id: string | null
+          source_surface: string | null
+          status: string | null
+          target_capability: string | null
+        }
+        Insert: {
+          actor_id: string
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          raw_input?: string | null
+          resolved_intent?: string | null
+          source_device_id?: string | null
+          source_surface?: string | null
+          status?: string | null
+          target_capability?: string | null
+        }
+        Update: {
+          actor_id?: string
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          raw_input?: string | null
+          resolved_intent?: string | null
+          source_device_id?: string | null
+          source_surface?: string | null
+          status?: string | null
+          target_capability?: string | null
         }
         Relationships: []
       }
@@ -10078,6 +10588,75 @@ export type Database = {
         }
         Relationships: []
       }
+      memory_corrections: {
+        Row: {
+          actor_id: string
+          correction_type: string | null
+          created_at: string
+          id: string
+          memory_ref: string
+          new_value_ref: string | null
+          old_value_ref: string | null
+          reason: string | null
+        }
+        Insert: {
+          actor_id: string
+          correction_type?: string | null
+          created_at?: string
+          id?: string
+          memory_ref: string
+          new_value_ref?: string | null
+          old_value_ref?: string | null
+          reason?: string | null
+        }
+        Update: {
+          actor_id?: string
+          correction_type?: string | null
+          created_at?: string
+          id?: string
+          memory_ref?: string
+          new_value_ref?: string | null
+          old_value_ref?: string | null
+          reason?: string | null
+        }
+        Relationships: []
+      }
+      memory_governance_records: {
+        Row: {
+          archival_state: string | null
+          confidence: number | null
+          correction_state: string | null
+          freshness: string | null
+          id: string
+          memory_ref: string
+          updated_at: string
+          user_id: string
+          visibility_scope: string | null
+        }
+        Insert: {
+          archival_state?: string | null
+          confidence?: number | null
+          correction_state?: string | null
+          freshness?: string | null
+          id?: string
+          memory_ref: string
+          updated_at?: string
+          user_id: string
+          visibility_scope?: string | null
+        }
+        Update: {
+          archival_state?: string | null
+          confidence?: number | null
+          correction_state?: string | null
+          freshness?: string | null
+          id?: string
+          memory_ref?: string
+          updated_at?: string
+          user_id?: string
+          visibility_scope?: string | null
+        }
+        Relationships: []
+      }
       metrics_snapshots: {
         Row: {
           domain: string
@@ -10542,6 +11121,36 @@ export type Database = {
           },
         ]
       }
+      operating_modes: {
+        Row: {
+          active: boolean | null
+          ended_at: string | null
+          id: string
+          metadata: Json | null
+          mode_key: string
+          started_at: string | null
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          mode_key?: string
+          started_at?: string | null
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          mode_key?: string
+          started_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       operator_actions: {
         Row: {
           action_type: string
@@ -10672,6 +11281,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      opportunity_signals: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          domain: string | null
+          id: string
+          importance_tier: string | null
+          signal_type: string | null
+          source_refs: string[] | null
+          status: string | null
+          summary: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          domain?: string | null
+          id?: string
+          importance_tier?: string | null
+          signal_type?: string | null
+          source_refs?: string[] | null
+          status?: string | null
+          summary?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          domain?: string | null
+          id?: string
+          importance_tier?: string | null
+          signal_type?: string | null
+          source_refs?: string[] | null
+          status?: string | null
+          summary?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       os_action_lineage: {
         Row: {
@@ -11231,6 +11885,102 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      personal_operating_graph_edges: {
+        Row: {
+          created_at: string
+          edge_type: string
+          from_node_id: string | null
+          id: string
+          metadata: Json | null
+          to_node_id: string | null
+          user_id: string
+          visibility_scope: string | null
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          edge_type?: string
+          from_node_id?: string | null
+          id?: string
+          metadata?: Json | null
+          to_node_id?: string | null
+          user_id: string
+          visibility_scope?: string | null
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          edge_type?: string
+          from_node_id?: string | null
+          id?: string
+          metadata?: Json | null
+          to_node_id?: string | null
+          user_id?: string
+          visibility_scope?: string | null
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "personal_operating_graph_edges_from_node_id_fkey"
+            columns: ["from_node_id"]
+            isOneToOne: false
+            referencedRelation: "personal_operating_graph_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "personal_operating_graph_edges_to_node_id_fkey"
+            columns: ["to_node_id"]
+            isOneToOne: false
+            referencedRelation: "personal_operating_graph_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      personal_operating_graph_nodes: {
+        Row: {
+          created_at: string
+          id: string
+          label: string
+          metadata: Json | null
+          node_ref: string | null
+          node_type: string
+          state: string | null
+          tenant_id: string | null
+          updated_at: string
+          user_id: string
+          visibility_scope: string | null
+          workspace_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label: string
+          metadata?: Json | null
+          node_ref?: string | null
+          node_type?: string
+          state?: string | null
+          tenant_id?: string | null
+          updated_at?: string
+          user_id: string
+          visibility_scope?: string | null
+          workspace_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string
+          metadata?: Json | null
+          node_ref?: string | null
+          node_type?: string
+          state?: string | null
+          tenant_id?: string | null
+          updated_at?: string
+          user_id?: string
+          visibility_scope?: string | null
+          workspace_id?: string | null
+        }
+        Relationships: []
       }
       platform_admin_durability_states: {
         Row: {
@@ -12915,6 +13665,42 @@ export type Database = {
           },
         ]
       }
+      priority_stacks: {
+        Row: {
+          attention_posture: string | null
+          created_at: string
+          id: string
+          mode: string | null
+          stack_date: string
+          top_items_json: Json | null
+          updated_at: string
+          urgency_summary: string | null
+          user_id: string
+        }
+        Insert: {
+          attention_posture?: string | null
+          created_at?: string
+          id?: string
+          mode?: string | null
+          stack_date?: string
+          top_items_json?: Json | null
+          updated_at?: string
+          urgency_summary?: string | null
+          user_id: string
+        }
+        Update: {
+          attention_posture?: string | null
+          created_at?: string
+          id?: string
+          mode?: string | null
+          stack_date?: string
+          top_items_json?: Json | null
+          updated_at?: string
+          urgency_summary?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       proactive_interventions: {
         Row: {
           accepted: boolean | null
@@ -13847,6 +14633,48 @@ export type Database = {
           payload?: Json | null
           type?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      relationship_contexts: {
+        Row: {
+          created_at: string
+          id: string
+          importance_tier: string | null
+          last_interaction_at: string | null
+          obligations_json: Json | null
+          open_loops_json: Json | null
+          related_person_ref: string | null
+          relationship_type: string | null
+          updated_at: string
+          user_id: string
+          visibility_scope: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          importance_tier?: string | null
+          last_interaction_at?: string | null
+          obligations_json?: Json | null
+          open_loops_json?: Json | null
+          related_person_ref?: string | null
+          relationship_type?: string | null
+          updated_at?: string
+          user_id: string
+          visibility_scope?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          importance_tier?: string | null
+          last_interaction_at?: string | null
+          obligations_json?: Json | null
+          open_loops_json?: Json | null
+          related_person_ref?: string | null
+          relationship_type?: string | null
+          updated_at?: string
+          user_id?: string
+          visibility_scope?: string | null
         }
         Relationships: []
       }
@@ -16500,6 +17328,36 @@ export type Database = {
         }
         Relationships: []
       }
+      timing_intelligence_decisions: {
+        Row: {
+          created_at: string
+          id: string
+          readiness_ref: string | null
+          reason: string | null
+          recommendation: string | null
+          trigger_ref: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          readiness_ref?: string | null
+          reason?: string | null
+          recommendation?: string | null
+          trigger_ref?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          readiness_ref?: string | null
+          reason?: string | null
+          recommendation?: string | null
+          trigger_ref?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       trust_state: {
         Row: {
           entity_id: string
@@ -16560,6 +17418,48 @@ export type Database = {
           impact_score?: number | null
           metadata?: Json | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      trust_weighted_actions: {
+        Row: {
+          action_ref: string | null
+          action_type: string
+          actor_id: string
+          created_at: string
+          device_trust_class: string | null
+          id: string
+          mode: string | null
+          reason: string | null
+          risk_tier: string | null
+          routing: string | null
+          trust_class: string | null
+        }
+        Insert: {
+          action_ref?: string | null
+          action_type: string
+          actor_id: string
+          created_at?: string
+          device_trust_class?: string | null
+          id?: string
+          mode?: string | null
+          reason?: string | null
+          risk_tier?: string | null
+          routing?: string | null
+          trust_class?: string | null
+        }
+        Update: {
+          action_ref?: string | null
+          action_type?: string
+          actor_id?: string
+          created_at?: string
+          device_trust_class?: string | null
+          id?: string
+          mode?: string | null
+          reason?: string | null
+          risk_tier?: string | null
+          routing?: string | null
+          trust_class?: string | null
         }
         Relationships: []
       }
