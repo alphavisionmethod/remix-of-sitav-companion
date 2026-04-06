@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Smartphone, Watch, Shield, Heart, Wifi, Activity, Clock, Zap, CheckCircle2, AlertTriangle, ChevronRight, RefreshCw, Loader2, Database, Monitor } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords, useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes, useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
+import { useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords, useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes, useEcosystemContinuityEvents, useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   android_phone: { title: "Android Phone Shell", icon: Smartphone, desc: "Primary Android surface — Material Design shell", tech: ["Kotlin", "Jetpack Compose", "WebView hybrid"], capabilities: ["push_fcm", "biometric", "camera", "nfc"] },
