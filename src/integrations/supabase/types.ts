@@ -11114,20 +11114,26 @@ export type Database = {
           launch_honesty_class: string | null
           launch_importance: string | null
           loop_key: string
+          next_actions: string[] | null
           owner: string | null
           owner_team: string | null
           primary_persona: string | null
           primary_services: Json | null
           proof_required: boolean | null
+          proof_score: number | null
           proof_status: string
           routes: Json | null
+          runtime_score: number | null
           status: string | null
+          structural_score: number | null
           target_persona: string | null
           title: string
+          truth_pct: number | null
           updated_at: string
           user_id: string
           ux_quality: string
           ux_quality_target: string | null
+          ux_score: number | null
         }
         Insert: {
           capabilities?: Json | null
@@ -11141,20 +11147,26 @@ export type Database = {
           launch_honesty_class?: string | null
           launch_importance?: string | null
           loop_key: string
+          next_actions?: string[] | null
           owner?: string | null
           owner_team?: string | null
           primary_persona?: string | null
           primary_services?: Json | null
           proof_required?: boolean | null
+          proof_score?: number | null
           proof_status?: string
           routes?: Json | null
+          runtime_score?: number | null
           status?: string | null
+          structural_score?: number | null
           target_persona?: string | null
           title: string
+          truth_pct?: number | null
           updated_at?: string
           user_id: string
           ux_quality?: string
           ux_quality_target?: string | null
+          ux_score?: number | null
         }
         Update: {
           capabilities?: Json | null
@@ -11168,20 +11180,26 @@ export type Database = {
           launch_honesty_class?: string | null
           launch_importance?: string | null
           loop_key?: string
+          next_actions?: string[] | null
           owner?: string | null
           owner_team?: string | null
           primary_persona?: string | null
           primary_services?: Json | null
           proof_required?: boolean | null
+          proof_score?: number | null
           proof_status?: string
           routes?: Json | null
+          runtime_score?: number | null
           status?: string | null
+          structural_score?: number | null
           target_persona?: string | null
           title?: string
+          truth_pct?: number | null
           updated_at?: string
           user_id?: string
           ux_quality?: string
           ux_quality_target?: string | null
+          ux_score?: number | null
         }
         Relationships: []
       }
