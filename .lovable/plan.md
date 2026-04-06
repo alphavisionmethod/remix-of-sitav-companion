@@ -1,96 +1,85 @@
 
 
-# Fix CI Pipeline — Full Production-Grade GitHub Actions
+# Money Office → 100% Fully Advanced
 
-## Current State
+## Current Gaps (Page-by-Page)
 
-A `.github/workflows/ci.yml` exists with 9 jobs (typecheck, lint, unit-tests, security-scan, build, architecture-validation, e2e-p0, ring-promotion, launch-gate, nightly). However it has critical issues that make it non-functional for real deploys.
-
-## Issues to Fix
-
-1. **`|| true` on every step** — silently swallows all failures; nothing actually blocks a merge
-2. **Invalid env syntax** — `${{ secrets.X || 'fallback' }}` is not valid GitHub Actions syntax; needs ternary or default env
-3. **Integration tests missing** — `test:integration` suite (12 files, 79 tests) not in pipeline
-4. **E2E needs a server** — CI sets `webServer: undefined` but downloads `dist/` artifact without serving it; tests will fail because no server is running
-5. **No Docker build job** — Dockerfile exists but CI never builds/validates the container
-6. **No deploy step** — no Lovable/Vercel/container registry push
-7. **No concurrency control** — parallel runs on same branch can conflict
-8. **No PR status checks** — no required status checks guidance
-
-## Plan
-
-### 1. Rewrite `.github/workflows/ci.yml`
-
-**Remove `|| true`** from critical jobs (typecheck, build, unit-tests, integration-tests). Keep `|| true` only on advisory/non-blocking steps (architecture validators, nightly).
-
-**Fix env var syntax** — replace `${{ secrets.X || 'fallback' }}` with proper defaults:
-```yaml
-env:
-  VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || '' }}
-```
-Use shell-level defaults: `${VITE_SUPABASE_URL:-http://localhost:8000}`
-
-**Add integration tests job** between unit-tests and e2e:
-```yaml
-integration-tests:
-  needs: typecheck
-  steps:
-    - npm ci
-    - npm run test:integration
-```
-
-**Fix E2E server** — serve the `dist/` artifact with `npx serve` or `npx vite preview`:
-```yaml
-e2e-p0:
-  steps:
-    - download dist/
-    - npx serve dist -l 8080 &
-    - wait for server
-    - PLAYWRIGHT_BASE_URL=http://localhost:8080 npx playwright test
-```
-
-**Add Docker build validation** job:
-```yaml
-docker-build:
-  needs: build
-  steps:
-    - docker build -t sita-os:ci .
-    - docker run --rm sita-os:ci cat /usr/share/nginx/html/health.json
-```
-
-**Add concurrency control**:
-```yaml
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-```
-
-**Update launch-gate** — include integration-tests in required jobs list.
-
-### 2. Update `package.json` (no change needed — scripts already exist)
-
-### 3. Update `playwright.config.ts` (no change needed — already handles CI)
-
-## Jobs After Fix
-
-| Job | Blocks merge? | Fails silently? |
+| Page | Current State | Gap |
 |---|---|---|
-| typecheck | Yes | No |
-| lint | No (warning) | Yes |
-| unit-tests | Yes | No |
-| integration-tests | Yes | No |
-| build | Yes | No |
-| security-scan | Yes | No |
-| e2e-p0 | No (advisory) | No |
-| docker-build | No (advisory) | No |
-| architecture-validation | No (advisory) | Yes |
-| ring-promotion | No (main only) | Yes |
-| launch-gate | Final report | No |
-| nightly | Schedule only | Yes |
+| **MoneyOverview** | Hardcoded `accounts`, `upcomingBills`, `changes`, KPIs, fraud data | Replace all with DB queries; compute KPIs from bills/subscriptions/invoices/reserves |
+| **CashTiming** | Hardcoded `windows[]` array, hardcoded safe-to-spend | Compute from bills + invoices DB data; deterministic projection |
+| **ReceivablesObligations** | Hardcoded `receivables[]` and `obligations[]` | Query invoices (receivables) + bills (obligations) from DB |
+| **MoneyBoardroom** | All hardcoded KPIs and review data | Derive from DB aggregates |
+| **MoneyApprovals** | Hardcoded `approvals[]` array | Query `approval_queue` table filtered to money domain |
+| **MoneyProof** | Hardcoded `proofItems[]` | Query `proof_records` / `execution_receipts` for money domain |
+| **MoneyDocuments** | Hardcoded `documents[]` | Query `financial_documents` table with CRUD |
+| **MoneySettings** | Hardcoded `policies[]` and `connectors[]` | Need new `money_policies` table + query `connector_accounts` |
+| **BillsWorkspace** | Already DB-backed with CRUD | ~100% done |
+| **SubscriptionsWaste** | Already DB-backed with CRUD | ~100% done |
+| **ReservesSavings** | Partially DB-backed (reads reserves table) | Missing create/edit/delete mutations |
+| **InvestmentOffice** | Uses mock data via `useInvestmentOfficeData` | Separate domain — leave as-is for now |
+
+## DB Tables Needed
+
+**New table: `financial_accounts`** — Bank/investment accounts for the overview
+- id, user_id, name, institution, account_type, balance, currency, trend, last_synced_at, created_at, updated_at
+
+**New table: `money_policies`** — User-configurable financial rules
+- id, user_id, title, description, category, enabled, threshold, icon_key, created_at, updated_at
+
+No new tables needed for receivables (use `invoices`), obligations (use `bills`), approvals (use `approval_queue`), proof (use existing proof tables), documents (use `financial_documents`).
+
+## Implementation Plan
+
+### 1. Migration: Create `financial_accounts` + `money_policies` tables with RLS
+
+### 2. Expand `money-data-service.ts`
+Add fetch functions for:
+- `fetchFinancialAccounts` — from `financial_accounts`
+- `fetchMoneyPolicies` — from `money_policies` + CRUD mutations
+- `fetchCashTimingWindows` — computed from `bills` + `invoices` over next 15 days
+- `fetchMoneyKPIs` — aggregate total balance, safe-to-spend, reserve health, burn rate from existing tables
+
+### 3. Expand `use-domain-data.ts`
+Add hooks: `useFinancialAccounts`, `useMoneyPolicies`, `useCashTimingWindows`, `useMoneyKPIs`
+
+### 4. Rewrite pages to use DB hooks
+
+**MoneyOverview.tsx**: Replace hardcoded accounts/bills/KPIs with `useFinancialAccounts`, `useBills`, `useMoneyKPIs`. Compute fraud summary from real transaction patterns.
+
+**CashTiming.tsx**: Replace hardcoded windows with `useCashTimingWindows` (deterministic projection from bills + invoices).
+
+**ReceivablesObligations.tsx**: Replace hardcoded arrays with `useInvoices` (receivables) + `useBills` (obligations). Add CRUD.
+
+**MoneyBoardroom.tsx**: Derive all KPIs from `useMoneyKPIs` aggregate hook.
+
+**MoneyApprovals.tsx**: Query `approval_queue` where domain = 'money'. Wire approve/reject mutations.
+
+**MoneyProof.tsx**: Query proof/execution receipts for money domain.
+
+**MoneyDocuments.tsx**: Query `financial_documents` with full CRUD (create, edit, delete).
+
+**MoneySettings.tsx**: Query `money_policies` with toggle mutations + `connector_accounts` for connector status.
+
+**ReservesSavings.tsx**: Add create/edit/delete mutations for `reserves` table.
+
+### 5. Demo mode preservation
+All hooks use the existing `resolveByMode` pattern — demo data as fallback, real DB queries in real mode.
 
 ## Files Changed
 
 | File | Change |
 |---|---|
-| `.github/workflows/ci.yml` | Full rewrite: fix env syntax, remove false `|| true`, add integration-tests + docker-build jobs, fix E2E server, add concurrency |
+| `supabase/migrations/...` | Create `financial_accounts`, `money_policies` with RLS |
+| `src/lib/data-services/money-data-service.ts` | Add 6+ fetch/mutation functions |
+| `src/hooks/use-domain-data.ts` | Add 4+ new money hooks |
+| `src/pages/money/MoneyOverview.tsx` | Replace all hardcoded data with DB hooks |
+| `src/pages/money/CashTiming.tsx` | Compute windows from DB |
+| `src/pages/money/ReceivablesObligations.tsx` | DB-backed + CRUD |
+| `src/pages/money/MoneyBoardroom.tsx` | DB-derived KPIs |
+| `src/pages/money/MoneyApprovals.tsx` | Query approval_queue |
+| `src/pages/money/MoneyProof.tsx` | Query proof tables |
+| `src/pages/money/MoneyDocuments.tsx` | CRUD on financial_documents |
+| `src/pages/money/MoneySettings.tsx` | CRUD on money_policies |
+| `src/pages/money/ReservesSavings.tsx` | Add create/edit/delete |
 
