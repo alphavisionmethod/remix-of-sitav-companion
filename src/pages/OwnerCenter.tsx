@@ -2170,6 +2170,57 @@ const OwnerCenter = () => {
           </motion.div>
         )}
 
+        {/* ══════════════════════════════════════════ */}
+        {/* APPROVALS */}
+        {/* ══════════════════════════════════════════ */}
+        {activePage === "approvals" && (
+          <motion.div key="approvals" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
+            <SitaSectionHeader title="Approval Queue" subtitle={`${pendingApprovals.length} pending · ${approvalQueueData.length} total`} />
+            {approvalQueueData.length === 0 ? (
+              <SitaCard hover={false} className="p-8 text-center">
+                <CheckCircle className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground">No approval requests yet. Items will appear here when advisors or workflows need your decision.</p>
+              </SitaCard>
+            ) : (
+              <div className="space-y-2">
+                {approvalQueueData.map((item: any) => (
+                  <SitaCard key={item.id} hover={false} className="p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <StateBadge state={item.status === "pending" ? "approval-requested" : item.status === "approved" ? "approved" : item.status === "rejected" ? "failed" : "completed"} size="sm" />
+                          {item.action_type && <Badge variant="outline" className="text-[10px]">{item.action_type}</Badge>}
+                        </div>
+                        <p className="text-sm font-medium text-foreground">{item.action_summary}</p>
+                        {item.decision_reason && (
+                          <p className="text-[11px] text-muted-foreground mt-1">Decision: {item.decision_reason}</p>
+                        )}
+                        <p className="text-[10px] text-muted-foreground mt-1">
+                          {new Date(item.created_at).toLocaleString()}
+                          {item.decided_at && ` · Decided ${new Date(item.decided_at).toLocaleString()}`}
+                        </p>
+                      </div>
+                      {item.status === "pending" && (
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <Button size="sm" variant="outline" className="text-xs h-7 text-trust-safe border-trust-safe/20 hover:bg-trust-safe/10" onClick={() => approveItem.mutate({ id: item.id })}>
+                            <CheckCircle className="h-3 w-3 mr-1" /> Approve
+                          </Button>
+                          <Button size="sm" variant="outline" className="text-xs h-7 text-destructive border-destructive/20 hover:bg-destructive/10" onClick={() => rejectItem.mutate({ id: item.id, reason: "Rejected by owner" })}>
+                            <XCircle className="h-3 w-3 mr-1" /> Reject
+                          </Button>
+                          <Button size="sm" variant="ghost" className="text-xs h-7 text-muted-foreground" onClick={() => dismissItem.mutate(item.id)}>
+                            Dismiss
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </SitaCard>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+
 
       </AnimatePresence>
 
