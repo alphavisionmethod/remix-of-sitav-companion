@@ -211,7 +211,7 @@ const WorkflowsCenter = () => {
 
                 <div className="flex gap-2">
                   <SitaButton variant="primary" className="flex-1"><Eye className="h-3.5 w-3.5" /> Inspect</SitaButton>
-                  <SitaButton variant="danger"><RotateCcw className="h-3.5 w-3.5" /> Rollback</SitaButton>
+                  <SitaButton variant="danger" onClick={() => { if (confirm("Delete this run?")) deleteRun.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /> Delete</SitaButton>
                 </div>
               </>
             ) : (
