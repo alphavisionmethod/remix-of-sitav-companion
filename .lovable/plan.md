@@ -1,106 +1,90 @@
 
 
-# Playwright Full Behavioral Proof Layer — Implementation Plan
+# Parts 3–5: Admin OS Dashboards + Journey Seeds + CI Gating — Gap Analysis & Plan
 
-## Current State
+## What Already Exists
 
-**What exists:**
-- 10 test files in `tests/e2e/customer-journey/` — all shallow route-load checks (goto → networkidle → body length > 50)
-- `helpers/auth.ts` — login/logout/ensureAuthenticated
-- `helpers/selectors.ts` — SEL constants (auth, nav, files, boardroom, connectors, settings, admin, states)
-- `reporters/journey-reporter.ts` — structured JSON output with journey_key/mode extraction
-- `playwright.config.ts` — single chromium project, journey reporter wired
-- No: global setup/teardown, navigation helper, journey-recorder helper, mode helper, assertions helper, evidence helper, fixtures, per-domain selectors, split spec files, degraded tests
+### Admin OS Pages (Part 3)
+All 8 pages exist (CJ01–CJ08), but the prompt remaps them differently. Current mapping vs prompt:
 
-**Gap summary:** The spec demands ~40 files. We have ~14. Existing tests verify "page loads" only — no button clicks, form fills, state checks, mode switching, degraded handling, or evidence capture. No reusable helpers beyond auth.
+| Prompt Board | Current File | Status |
+|---|---|---|
+| CJ01 Executive Report | CJ01ExecutiveReport.tsx (213 lines) | **Exists but missing**: proof confidence distribution chart, real vs demo mismatch count, last full verification run timestamp, surface class breakdown |
+| CJ02 Journey Truth Matrix | CJ02JourneyTruthMatrix.tsx (90 lines) | **Shallow**: no filters by domain/status/impact/surface/owner, no proof confidence column, no owner team column, no mode coverage column. Just a basic search input |
+| CJ03 Journey Detail View | CJ03JourneyDetailView.tsx (185 lines) | **Exists with depth**: step results, evidence, runs. Missing: recommended fix display (field exists but only in runs), likely root cause layer, remediation notes |
+| CJ04 Demo vs Real | CJ05DemoVsRealComparison.tsx (181 lines) | **Prompt says CJ04**, current is CJ05. Content is solid but missing: internal_test status column, recommended next action |
+| CJ05 Launch Blocker Board | CJ04LaunchBlockerView.tsx (192 lines) | **Prompt says CJ05**, current is CJ04. Missing: war-room feel, age column, affected persona/mode columns |
+| CJ06 Route & Action Coverage | CJ08RouteActionCoverage.tsx (168 lines) | **Prompt says CJ06**, current is CJ08. Missing: domain heatmap, weak coverage identification |
+| CJ07 Recent Verification Runs | None | **Missing entirely** — prompt wants a dedicated runs feed |
+
+Current CJ06 (BrokenClicksExplorer) and CJ07 (OwnerRemediationView) are not in the prompt's required list but are useful. We keep them.
+
+### Journey Seeds (Part 4)
+The registry at `journey-registry.ts` has 24 journeys with all P0 journeys already defined (auth.sign_in, auth.sign_up, auth.logout, files, assistant, boardroom, connectors, settings, admin routes). The seeder at `journey-registry-seeder.ts` maps them to DB. **Mostly complete** — just needs alignment with the exact journey keys/metadata from the prompt (e.g., `auth.sign_in_primary` vs `auth.sign_in`).
+
+### CI Workflows (Part 5)
+- `e2e.yml`: Exists with P0 tests + DB ingestion. Missing: nightly schedule, manual dispatch.
+- `ci.yml`: Full pipeline exists with E2E step. Missing: journey-specific summary output, explicit P0 gating rules.
+- No `customer-journey-nightly.yml` or `customer-journey-manual.yml`.
+
+### Playwright (Part 2 — already done)
+16 spec files, 8 helpers, 7 selectors — all implemented in previous message.
 
 ## Plan
 
-### Phase 1 — Infrastructure Files (8 new files)
+### Phase 1 — Upgrade CJ02 Journey Truth Matrix (major gap)
 
-| File | Purpose |
+Add multi-filter dropdowns (domain, status, launch impact, surface, owner), add columns for proof confidence, owner team, mode coverage. Use `v_customer_journey_summary` view instead of raw `useCustomerJourneys`.
+
+### Phase 2 — Add CJ07 Recent Verification Runs Feed (new page)
+
+Create a dedicated feed page showing: run time, journey key, mode, status, environment, evidence availability, commit SHA, summary. Query `useRecentFailures` + `journey_verification_runs`.
+
+### Phase 3 — Upgrade CJ01 Executive Report
+
+Add: proof confidence distribution (bar showing verified_e2e / verified_interaction / unverified counts), real vs demo mismatch count card, last full verification run timestamp, status by surface class breakdown.
+
+### Phase 4 — Upgrade CJ04 (Launch Blockers) and CJ05 (Demo vs Real)
+
+**CJ04** (currently LaunchBlockerView): Add age column (days since created), affected persona, affected modes, war-room visual intensity (red gradient background for critical).
+
+**CJ05** (currently DemoVsRealComparison): Add internal_test status column, recommended next action column.
+
+### Phase 5 — Upgrade CJ06 (Route Coverage) and CJ03 (Detail)
+
+**CJ08→CJ06**: Add domain coverage heatmap grid, weak coverage identification (<30% threshold).
+
+**CJ03**: Add root_cause_layer display, remediation notes field.
+
+### Phase 6 — CI Workflows
+
+**`customer-journey-nightly.yml`**: Scheduled 2x/day, runs full P0+P1+demo-vs-real suite, ingests results, uploads artifacts.
+
+**`customer-journey-manual.yml`**: Manual dispatch with inputs for environment, mode, journey subset, headed/headless.
+
+**Update `e2e.yml`**: Add markdown summary step, explicit P0 fail-on-critical gating, use `customer-journey` project.
+
+### Phase 7 — Journey Registry Alignment
+
+Update `journey-registry.ts` entries to match exact prompt keys where different (add `_primary` suffix variants). Add `surfaceClass` field to `JourneyDefinition` interface. Ensure seeder maps these correctly.
+
+## Files Changed
+
+| File | Action |
 |---|---|
-| `tests/e2e/global.setup.ts` | Verify base URL reachable, create auth state file via login for session reuse |
-| `tests/e2e/global.teardown.ts` | Clean up auth state file |
-| `tests/e2e/helpers/navigation.ts` | `navigateTo(page, route)`, `waitForRoute(page)`, `assertRouteLoaded(page)` — wraps goto + networkidle + no-error checks |
-| `tests/e2e/helpers/journey-recorder.ts` | `JourneyRecorder` class — accumulates step results, emits structured JSON matching the reporter schema, attachable to test fixtures |
-| `tests/e2e/helpers/mode.ts` | `switchToDemo(page)`, `switchToLive(page)`, `getCurrentMode(page)`, `assertModeBadge(page, mode)` — localStorage toggle + UI verification |
-| `tests/e2e/helpers/assertions.ts` | `assertRouteLoaded`, `assertButtonClickable`, `assertCardVisible`, `assertTableRowExists`, `assertDemoBadge`, `assertLiveBadge`, `assertDegradedBanner`, `assertNoErrorState`, `assertUploadSucceeded`, `assertEmptyStateHonest` |
-| `tests/e2e/helpers/evidence.ts` | `captureEvidence(page, label)` — screenshot + console errors + network failures, saved to `test-results/evidence/` |
-| `tests/e2e/fixtures/test-users.ts` | Test user config (email, password, role from env vars), operator user support |
-
-### Phase 2 — Selector Files (6 new files)
-
-Split domain-specific selectors from the monolithic `selectors.ts`:
-
-| File | Selectors |
-|---|---|
-| `tests/e2e/selectors/common.ts` | Re-exports from existing SEL + adds SIDEBAR, TOAST, LOADING, ERROR, EMPTY, MODE_TOGGLE |
-| `tests/e2e/selectors/auth.ts` | LOGIN_EMAIL, LOGIN_PASSWORD, LOGIN_SUBMIT, SIGNUP, SIGN_OUT |
-| `tests/e2e/selectors/files.ts` | FILES_PAGE, FILE_UPLOAD, FILE_LIST, FILE_ITEM |
-| `tests/e2e/selectors/assistant.ts` | ADVISOR_PAGE, CHAT_INPUT, CHAT_SEND, CHAT_RESPONSE, DEGRADED_BANNER |
-| `tests/e2e/selectors/boardroom.ts` | BOARDROOM_PAGE, SUMMARY_AREA, REFRESH, SLIDE_CARD |
-| `tests/e2e/selectors/connectors.ts` | CONNECTORS_PAGE, SERVICE_CARD, CONNECT_BTN, STATUS_BADGE |
-| `tests/e2e/selectors/admin.ts` | AI_RUNTIME, TEAM, CJ_REPORT, LAUNCH_TRUTH, ADMIN_NAV |
-
-### Phase 3 — Split Spec Files (behavioral depth)
-
-Replace shallow monolithic specs with split per-journey specs that test actual interactions:
-
-**Auth (2 files):**
-- `auth/sign-in-primary.spec.ts` — login form visible, fill + submit, lands on authenticated route, no auth loop on refresh
-- `auth/sign-out-primary.spec.ts` — sign out button works, redirects to login, protected route blocked
-
-**Core surfaces (5 files):**
-- `dashboard/dashboard-load-primary.spec.ts` — loads, primary cards render, sidebar nav visible, no fatal error
-- `files/files-upload-primary.spec.ts` — loads, upload button clickable, upload action (or honest degraded), file appears in list
-- `assistant/assistant-chat-primary.spec.ts` — loads, input visible, send button works, response appears (or honest demo/degraded state)
-- `boardroom/boardroom-summary-view-primary.spec.ts` — loads, summary renders, mode label visible, refresh works
-- `connectors/connected-services-open-primary.spec.ts` — loads, service cards visible, status badges render, planned states labeled
-
-**Settings + Admin (4 files):**
-- `settings/settings-account-open-primary.spec.ts` — loads, account controls visible, identity states render
-- `admin/runtime-truth-open-primary.spec.ts` — loads, dashboard widgets render
-- `admin/customer-journey-report-open-primary.spec.ts` — loads, executive stats visible
-- `admin/ai-team-open-primary.spec.ts` — loads, team cards/widgets render
-- `admin/launch-truth-open-primary.spec.ts` — loads, readiness indicators visible
-
-**Mode comparison (3 files):**
-- `demo-vs-real/boardroom-demo-vs-real.spec.ts` — switch to demo → verify demo badge, switch to live → verify live state, content differs
-- `demo-vs-real/assistant-demo-vs-real.spec.ts` — demo mode shows demo indicator, live mode shows real/degraded
-- `demo-vs-real/connected-services-demo-vs-real.spec.ts` — demo shows all connected, live shows real statuses
-
-**Degraded (2 files):**
-- `degraded/assistant-provider-missing.spec.ts` — in live mode without provider, honest degraded state shown
-- `degraded/connectors-unavailable.spec.ts` — disconnected connectors show honest status
-
-### Phase 4 — Config Updates
-
-- `playwright.config.ts`: add `globalSetup`, `globalTeardown`, `storageState` for session reuse, add `customer-journey` project with `testDir: ./tests/e2e/customer-journey`
-- Update screenshot config: `screenshot: "on"` for P0 tests (evidence capture)
-
-### Phase 5 — Remove Old Monolithic Specs
-
-Delete the 10 shallow `tests/e2e/customer-journey/*.spec.ts` files (auth.spec.ts, files.spec.ts, etc.) since they're replaced by the split per-journey files with actual behavioral depth.
-
-## Key Design Decisions
-
-- **Session reuse via globalSetup**: Login once, save storageState, reuse across tests — faster, fewer auth calls
-- **Evidence capture**: Every P0 test calls `captureEvidence` on failure automatically via the assertions helper
-- **Mode switching**: Tests use localStorage manipulation + page reload, matching the app's `DataModeContext` implementation
-- **Journey annotations**: All tests keep `[journey:key] [mode:mode]` in titles for the reporter to parse
-
-## Files Summary
-
-| Category | Count | Files |
-|---|---|---|
-| Infrastructure helpers | 8 | global.setup, global.teardown, navigation, journey-recorder, mode, assertions, evidence, test-users |
-| Selector files | 7 | common, auth, files, assistant, boardroom, connectors, admin |
-| Journey specs | 16 | 2 auth + 5 core + 4 admin/settings + 3 mode comparison + 2 degraded |
-| Config update | 1 | playwright.config.ts |
-| Deleted | 10 | Old shallow monolithic specs |
-| **Total new** | **31** | |
+| `src/pages/admin/customer-journey/CJ02JourneyTruthMatrix.tsx` | Major rewrite — add filters, columns |
+| `src/pages/admin/customer-journey/CJ07RecentVerificationRuns.tsx` | **New** — runs feed |
+| `src/pages/admin/customer-journey/CJ01ExecutiveReport.tsx` | Add proof confidence, mismatch count, surface breakdown |
+| `src/pages/admin/customer-journey/CJ04LaunchBlockerView.tsx` | Add age, persona, modes, war-room styling |
+| `src/pages/admin/customer-journey/CJ05DemoVsRealComparison.tsx` | Add internal_test, next action |
+| `src/pages/admin/customer-journey/CJ08RouteActionCoverage.tsx` | Add heatmap, weak coverage |
+| `src/pages/admin/customer-journey/CJ03JourneyDetailView.tsx` | Add root cause, remediation notes |
+| `.github/workflows/customer-journey-nightly.yml` | **New** |
+| `.github/workflows/customer-journey-manual.yml` | **New** |
+| `.github/workflows/e2e.yml` | Add summary, gating, project flag |
+| `src/lib/customer-journey/journey-registry.ts` | Add surfaceClass, align keys |
+| App router | Add route for CJ07 |
 
 ## No database migration needed
-Pure test infrastructure — TypeScript files only.
+All views and tables already exist. Pure frontend + CI changes.
 
