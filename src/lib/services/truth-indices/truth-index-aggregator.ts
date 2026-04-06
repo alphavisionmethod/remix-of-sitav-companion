@@ -83,7 +83,7 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
     surfacePortability: {
       score: surfaceScore,
       label: getLabel(surfaceScore),
-      detail: `${portability.length} capabilities, ${portability.filter(p => p.mobile_ready).length} mobile-ready`,
+      detail: `${portability.length} capabilities, ${portability.filter(p => p.mobile_ready).length} mobile-ready, 7 surface types, ${portability.filter(p => p.surface_adapter_exists).length} adapters`,
     },
     deviceReadiness: {
       score: deviceScore,
