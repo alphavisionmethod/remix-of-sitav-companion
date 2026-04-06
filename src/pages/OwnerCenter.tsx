@@ -259,6 +259,7 @@ const OwnerCenter = () => {
       "model-routing": "/owner/model-routing", knowledge: "/owner/knowledge", support: "/owner/support",
       "change-review": "/owner/change-review", "rollback-center": "/owner/rollback-center",
       "system-map": "/owner/system-map", governance: "/owner/governance",
+      approvals: "/owner/approvals",
     };
     navigate(routeMap[key] || "/owner");
   };
