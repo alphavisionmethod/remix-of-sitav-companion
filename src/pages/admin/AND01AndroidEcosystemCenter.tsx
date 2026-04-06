@@ -35,6 +35,8 @@ const PROVIDER_CAPS = [
 
 const AND01AndroidEcosystemCenter = () => {
   const [showDeps, setShowDeps] = useState(false);
+  const [showAddDevice, setShowAddDevice] = useState(false);
+  const [newDevice, setNewDevice] = useState({ surface: "android_phone", device_model: "", os_version: "" });
 
   const { data: devices, isLoading: devicesLoading } = useEcosystemDevices("android");
   const { data: launchData, isLoading: launchLoading } = useEcosystemLaunchReadiness("android");
@@ -44,6 +46,11 @@ const AND01AndroidEcosystemCenter = () => {
   const { data: pushRoutes } = useEcosystemPushRoutes("android");
   const { data: continuityEvents } = useEcosystemContinuityEvents("android");
   const seedMutation = useSeedEcosystemData();
+  const addDevice = useAddEcosystemDevice();
+  const removeDevice = useRemoveEcosystemDevice();
+  const updateTrust = useUpdateDeviceTrust();
+  const toggleConsent = useToggleHealthConsent();
+  const updatePush = useUpdatePushRoute();
 
   const hasData = (devices?.length ?? 0) > 0;
   const trustedCount = trustRecords?.filter((t: any) => t.biometric_verified).length ?? 0;
