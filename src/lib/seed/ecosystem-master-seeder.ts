@@ -269,6 +269,10 @@ export async function seedEcosystemData(): Promise<{ seeded: number; errors: str
     { table: "user_ai_budgets", rows: userAiBudgetRows(userId) },
     { table: "scheduled_jobs", rows: scheduledJobRows(userId) },
     { table: "os_event_log", rows: osEventLogRows(userId) },
+    { table: "runtime_probes", rows: runtimeProbeRows(userId), conflict: "user_id,probe_id" },
+    { table: "platform_health_snapshots", rows: platformHealthSnapshotRows(userId) },
+    { table: "device_families", rows: deviceFamilyRows(userId), conflict: "user_id,family_key" },
+    { table: "surface_portability_registry", rows: surfacePortabilityRows(userId), conflict: "user_id,capability_key" },
   ];
 
   for (const task of tasks) {
