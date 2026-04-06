@@ -72,6 +72,7 @@ const subpageFromPath = (path: string): OwnerPage => {
     "knowledge": "knowledge", "support": "support", "change-review": "change-review",
     "rollback-center": "rollback-center", "system-map": "system-map",
     "autopilot": "autopilot", "billing": "billing", "governance": "governance",
+    "approvals": "approvals",
   };
   return map[last] || "overview";
 };
