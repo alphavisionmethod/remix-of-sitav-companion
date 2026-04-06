@@ -31,6 +31,10 @@ serve(async (req) => {
       case "update_presence": return await updatePresence(supabase, user.id);
       case "check_readiness": return await checkReadiness(supabase, user.id);
       case "device_graph_report": return await deviceGraphReport(supabase, user.id);
+      case "register_device": return await registerDevice(supabase, user.id, await req.json());
+      case "initiate_handoff": return await initiateHandoff(supabase, user.id, await req.json());
+      case "route_notification": return await routeNotification(supabase, user.id, await req.json());
+      case "surface_strategy": return jsonRes({ success: true, strategy: getSurfaceStrategy() });
       default:
         return new Response(JSON.stringify({ error: `Unknown action: ${action}` }), { status: 400, headers: corsHeaders });
     }
