@@ -306,14 +306,14 @@ const AdvisorRegistry = () => {
 
   return (
     <motion.div className="mx-auto max-w-7xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <SitaPageHeader title="Advisor Registry" subtitle={`${FULL_ADVISOR_REGISTRY.length} advisors — capabilities, behavioral profiles, and governance`} />
+      <SitaPageHeader title="Advisor Registry" subtitle={`${mergedRegistry.length} advisors — capabilities, behavioral profiles, and governance${dbAdvisors.length > 0 ? ` (${dbAdvisors.length} from DB)` : ""}`} />
 
       {/* KPIs */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KPITile label="Total Advisors" value={FULL_ADVISOR_REGISTRY.length} icon={Bot} />
+        <KPITile label="Total Advisors" value={mergedRegistry.length} icon={Bot} />
         <KPITile label="Alpha+" value={maturityCounts.alpha + maturityCounts.beta + maturityCounts.production} icon={Zap} />
         <KPITile label="Councils" value={councils.length - 1} icon={Users} />
-        <KPITile label="Total Capabilities" value={FULL_ADVISOR_REGISTRY.reduce((s, a) => s + a.capabilities.length, 0)} icon={Layers} />
+        <KPITile label="Total Capabilities" value={mergedRegistry.reduce((s, a) => s + a.capabilities.length, 0)} icon={Layers} />
       </div>
 
       {/* Search */}
