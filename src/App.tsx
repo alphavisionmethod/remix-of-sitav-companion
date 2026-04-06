@@ -296,6 +296,14 @@ const PFA08AccountGraphExplorer = lazy(() => import("./pages/admin/PFA08AccountG
 const PFA09ConnectedAccountsCenter = lazy(() => import("./pages/admin/PFA09ConnectedAccountsCenter"));
 const PFA10IntegrationLaunchHonesty = lazy(() => import("./pages/admin/PFA10IntegrationLaunchHonesty"));
 
+const ISA01IdentityProviderRegistryBoard = lazy(() => import("./pages/admin/ISA01IdentityProviderRegistryBoard"));
+const ISA02ConnectorProviderRegistryBoard = lazy(() => import("./pages/admin/ISA02ConnectorProviderRegistryBoard"));
+const ISA03OAuthClientRegistryConsole = lazy(() => import("./pages/admin/ISA03OAuthClientRegistryConsole"));
+const ISA04ConsentLedgerExplorer = lazy(() => import("./pages/admin/ISA04ConsentLedgerExplorer"));
+const ISA05ScopePolicyMatrixBoard = lazy(() => import("./pages/admin/ISA05ScopePolicyMatrixBoard"));
+const ISA06UnifiedAccountGraphExplorer = lazy(() => import("./pages/admin/ISA06UnifiedAccountGraphExplorer"));
+const ISA07AuthConnectorTruthBoard = lazy(() => import("./pages/admin/ISA07AuthConnectorTruthBoard"));
+
 const UAO01PresenceContinuity = lazy(() => import("./pages/admin/UAO01PresenceContinuity"));
 const UAO02ConnectedDevices = lazy(() => import("./pages/admin/UAO02ConnectedDevices"));
 const UAO03AmbientTeamControl = lazy(() => import("./pages/admin/UAO03AmbientTeamControl"));
