@@ -27,8 +27,10 @@ import type { TaskPrioritization } from "@/lib/domain-engines/concierge-os";
 import {
   Briefcase, DollarSign, Workflow, Clock, AlertTriangle, CheckCircle, ArrowRight, Sparkles, BarChart3, Receipt, Brain,
   Plane, Users, CalendarDays, FileText, Headphones, Settings, ShieldCheck, Zap, Home, TrendingUp, Shield, Target,
-  Lightbulb, Activity, Eye
+  Lightbulb, Activity, Eye, Loader2
 } from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Mission Mode Emphasis Config ─────────────────────────────────
