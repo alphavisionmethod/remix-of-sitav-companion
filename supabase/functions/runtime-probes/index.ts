@@ -2,6 +2,7 @@ import { handleCors, corsHeaders } from "../_shared/cors.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { z } from "https://esm.sh/zod@3.23.8";
 
 const logger = new EdgeLogger("runtime-probes");
 
