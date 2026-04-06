@@ -15,7 +15,7 @@ describe("ContinuityEngine", () => {
     });
 
     it("returns high for heavy inputs", () => {
-      const result = calculateEmotionalLoad(4, 2, 2, 2);
+      const result = calculateEmotionalLoad(3, 2, 1, 2);
       expect(result.level).toBe("high");
     });
 
