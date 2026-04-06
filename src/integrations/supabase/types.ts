@@ -21222,6 +21222,216 @@ export type Database = {
         }
         Relationships: []
       }
+      verification_blockers: {
+        Row: {
+          blocker_type: string
+          created_at: string
+          description: string
+          id: string
+          resolved: boolean
+          resolved_at: string | null
+          severity: string
+          surface_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blocker_type?: string
+          created_at?: string
+          description: string
+          id?: string
+          resolved?: boolean
+          resolved_at?: string | null
+          severity?: string
+          surface_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blocker_type?: string
+          created_at?: string
+          description?: string
+          id?: string
+          resolved?: boolean
+          resolved_at?: string | null
+          severity?: string
+          surface_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_blockers_surface_id_fkey"
+            columns: ["surface_id"]
+            isOneToOne: false
+            referencedRelation: "verification_surfaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      verification_evidence: {
+        Row: {
+          content: string | null
+          created_at: string
+          evidence_type: string
+          file_url: string | null
+          id: string
+          metadata: Json | null
+          run_id: string | null
+          user_id: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          evidence_type?: string
+          file_url?: string | null
+          id?: string
+          metadata?: Json | null
+          run_id?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          evidence_type?: string
+          file_url?: string | null
+          id?: string
+          metadata?: Json | null
+          run_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_evidence_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "verification_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      verification_runs: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          environment: string
+          evidence_refs: Json | null
+          failure_reason: string | null
+          id: string
+          launched_by: string | null
+          mode: string
+          passed: boolean
+          run_type: string
+          surface_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          environment?: string
+          evidence_refs?: Json | null
+          failure_reason?: string | null
+          id?: string
+          launched_by?: string | null
+          mode?: string
+          passed?: boolean
+          run_type?: string
+          surface_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          environment?: string
+          evidence_refs?: Json | null
+          failure_reason?: string | null
+          id?: string
+          launched_by?: string | null
+          mode?: string
+          passed?: boolean
+          run_type?: string
+          surface_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_runs_surface_id_fkey"
+            columns: ["surface_id"]
+            isOneToOne: false
+            referencedRelation: "verification_surfaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      verification_surfaces: {
+        Row: {
+          action_label: string | null
+          action_selector: string | null
+          action_type: string
+          backend_dependency: string | null
+          component_name: string | null
+          created_at: string
+          domain: string | null
+          expected_result: string | null
+          id: string
+          launch_honesty_class: string
+          owner: string | null
+          route_key: string
+          route_path: string
+          shell: string
+          supported_modes: string[]
+          surface_class: string
+          test_priority: string
+          updated_at: string
+          user_id: string
+          verification_status: string
+        }
+        Insert: {
+          action_label?: string | null
+          action_selector?: string | null
+          action_type?: string
+          backend_dependency?: string | null
+          component_name?: string | null
+          created_at?: string
+          domain?: string | null
+          expected_result?: string | null
+          id?: string
+          launch_honesty_class?: string
+          owner?: string | null
+          route_key: string
+          route_path: string
+          shell?: string
+          supported_modes?: string[]
+          surface_class?: string
+          test_priority?: string
+          updated_at?: string
+          user_id: string
+          verification_status?: string
+        }
+        Update: {
+          action_label?: string | null
+          action_selector?: string | null
+          action_type?: string
+          backend_dependency?: string | null
+          component_name?: string | null
+          created_at?: string
+          domain?: string | null
+          expected_result?: string | null
+          id?: string
+          launch_honesty_class?: string
+          owner?: string | null
+          route_key?: string
+          route_path?: string
+          shell?: string
+          supported_modes?: string[]
+          surface_class?: string
+          test_priority?: string
+          updated_at?: string
+          user_id?: string
+          verification_status?: string
+        }
+        Relationships: []
+      }
       wearable_providers: {
         Row: {
           active: boolean | null
