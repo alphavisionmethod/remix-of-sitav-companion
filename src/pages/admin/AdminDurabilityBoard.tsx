@@ -11,7 +11,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
-type DurabilityStatus = "persisted" | "pending" | "failed" | "noncanonical";
+import { DEMO_MUTATIONS, type DemoMutationRecord as MutationRecord, type DurabilityStatus } from "@/lib/demo-data/durability";
 
 const statusConfig: Record<DurabilityStatus, { color: string; icon: typeof CheckCircle; label: string }> = {
   persisted: { color: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", icon: CheckCircle, label: "Persisted" },
@@ -20,28 +20,7 @@ const statusConfig: Record<DurabilityStatus, { color: string; icon: typeof Check
   noncanonical: { color: "bg-orange-500/10 text-orange-500 border-orange-500/20", icon: AlertTriangle, label: "Non-canonical" },
 };
 
-interface MutationRecord {
-  id: string;
-  actor: string;
-  surface: string;
-  mutationType: string;
-  targetType: string;
-  targetId: string;
-  submittedAt: string;
-  durabilityStatus: DurabilityStatus;
-  canonicalWritePath: boolean;
-  lineageComplete: boolean;
-  rollbackEligible: boolean;
-  proofRef?: string;
-}
-
-const MOCK_MUTATIONS: MutationRecord[] = [
-  { id: "mut-001", actor: "admin@sita.os", surface: "PolicySimulator", mutationType: "policy.create", targetType: "policy", targetId: "pol-42", submittedAt: "2026-04-05T10:23:00Z", durabilityStatus: "persisted", canonicalWritePath: true, lineageComplete: true, rollbackEligible: true, proofRef: "prf-901" },
-  { id: "mut-002", actor: "system", surface: "ConnectorGateway", mutationType: "connector.refresh", targetType: "connector", targetId: "conn-7", submittedAt: "2026-04-05T10:21:00Z", durabilityStatus: "persisted", canonicalWritePath: true, lineageComplete: true, rollbackEligible: false },
-  { id: "mut-003", actor: "admin@sita.os", surface: "UserManagement", mutationType: "user.role.update", targetType: "user_role", targetId: "ur-18", submittedAt: "2026-04-05T10:18:00Z", durabilityStatus: "pending", canonicalWritePath: true, lineageComplete: false, rollbackEligible: true },
-  { id: "mut-004", actor: "workflow-engine", surface: "WorkflowReplay", mutationType: "workflow.retry", targetType: "workflow_run", targetId: "wf-55", submittedAt: "2026-04-05T10:15:00Z", durabilityStatus: "failed", canonicalWritePath: false, lineageComplete: false, rollbackEligible: false },
-  { id: "mut-005", actor: "admin@sita.os", surface: "ApprovalQueue", mutationType: "approval.override", targetType: "approval", targetId: "apv-33", submittedAt: "2026-04-05T10:10:00Z", durabilityStatus: "noncanonical", canonicalWritePath: false, lineageComplete: false, rollbackEligible: true },
-];
+const MOCK_MUTATIONS = DEMO_MUTATIONS;
 
 const AdminDurabilityBoard = () => {
   const [tab, setTab] = useState("all");
