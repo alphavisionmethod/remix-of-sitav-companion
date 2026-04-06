@@ -1720,6 +1720,126 @@ export type Database = {
         }
         Relationships: []
       }
+      ambient_launch_readiness: {
+        Row: {
+          blockers: string[] | null
+          created_at: string
+          demo_available: boolean | null
+          evidence: Json | null
+          id: string
+          internal_only: boolean | null
+          launch_label: string | null
+          launch_ready: boolean | null
+          metadata: Json | null
+          pilot_ready: boolean | null
+          supported: boolean | null
+          target_key: string
+          target_name: string
+          target_type: string
+          updated_at: string
+          user_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          blockers?: string[] | null
+          created_at?: string
+          demo_available?: boolean | null
+          evidence?: Json | null
+          id?: string
+          internal_only?: boolean | null
+          launch_label?: string | null
+          launch_ready?: boolean | null
+          metadata?: Json | null
+          pilot_ready?: boolean | null
+          supported?: boolean | null
+          target_key: string
+          target_name: string
+          target_type: string
+          updated_at?: string
+          user_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          blockers?: string[] | null
+          created_at?: string
+          demo_available?: boolean | null
+          evidence?: Json | null
+          id?: string
+          internal_only?: boolean | null
+          launch_label?: string | null
+          launch_ready?: boolean | null
+          metadata?: Json | null
+          pilot_ready?: boolean | null
+          supported?: boolean | null
+          target_key?: string
+          target_name?: string
+          target_type?: string
+          updated_at?: string
+          user_id?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      ambient_notification_routes: {
+        Row: {
+          category: string | null
+          condition_rules: Json | null
+          created_at: string
+          enabled: boolean | null
+          fatigue_aware: boolean | null
+          id: string
+          metadata: Json | null
+          presence_requirement: string | null
+          priority: number | null
+          quiet_hours_override: boolean | null
+          readiness_requirement: string | null
+          route_name: string
+          target_device_family: string | null
+          target_surface: string
+          updated_at: string
+          urgency_level: string | null
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          condition_rules?: Json | null
+          created_at?: string
+          enabled?: boolean | null
+          fatigue_aware?: boolean | null
+          id?: string
+          metadata?: Json | null
+          presence_requirement?: string | null
+          priority?: number | null
+          quiet_hours_override?: boolean | null
+          readiness_requirement?: string | null
+          route_name: string
+          target_device_family?: string | null
+          target_surface: string
+          updated_at?: string
+          urgency_level?: string | null
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          condition_rules?: Json | null
+          created_at?: string
+          enabled?: boolean | null
+          fatigue_aware?: boolean | null
+          id?: string
+          metadata?: Json | null
+          presence_requirement?: string | null
+          priority?: number | null
+          quiet_hours_override?: boolean | null
+          readiness_requirement?: string | null
+          route_name?: string
+          target_device_family?: string | null
+          target_surface?: string
+          updated_at?: string
+          urgency_level?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       approval_queue: {
         Row: {
           action_summary: string
@@ -1937,6 +2057,60 @@ export type Database = {
           tags?: string[] | null
           theme_ids?: string[] | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      assistant_role_presences: {
+        Row: {
+          active: boolean | null
+          created_at: string
+          description: string | null
+          escalation_behavior: string | null
+          handoff_targets: string[] | null
+          id: string
+          intensity: string | null
+          metadata: Json | null
+          proactive_mode: boolean | null
+          role_key: string
+          role_name: string
+          schedule: string | null
+          tone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string
+          description?: string | null
+          escalation_behavior?: string | null
+          handoff_targets?: string[] | null
+          id?: string
+          intensity?: string | null
+          metadata?: Json | null
+          proactive_mode?: boolean | null
+          role_key: string
+          role_name: string
+          schedule?: string | null
+          tone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string
+          description?: string | null
+          escalation_behavior?: string | null
+          handoff_targets?: string[] | null
+          id?: string
+          intensity?: string | null
+          metadata?: Json | null
+          proactive_mode?: boolean | null
+          role_key?: string
+          role_name?: string
+          schedule?: string | null
+          tone?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -3192,6 +3366,86 @@ export type Database = {
         }
         Relationships: []
       }
+      connected_devices: {
+        Row: {
+          app_version: string | null
+          approval_eligible: boolean | null
+          biometric_capable: boolean | null
+          created_at: string
+          device_family_id: string | null
+          device_identifier: string | null
+          device_name: string
+          health_status: string | null
+          id: string
+          is_primary: boolean | null
+          last_seen_at: string | null
+          metadata: Json | null
+          mode: string | null
+          notification_eligible: boolean | null
+          os_version: string | null
+          platform: string | null
+          push_token: string | null
+          reachable: boolean | null
+          trust_level: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          app_version?: string | null
+          approval_eligible?: boolean | null
+          biometric_capable?: boolean | null
+          created_at?: string
+          device_family_id?: string | null
+          device_identifier?: string | null
+          device_name: string
+          health_status?: string | null
+          id?: string
+          is_primary?: boolean | null
+          last_seen_at?: string | null
+          metadata?: Json | null
+          mode?: string | null
+          notification_eligible?: boolean | null
+          os_version?: string | null
+          platform?: string | null
+          push_token?: string | null
+          reachable?: boolean | null
+          trust_level?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          app_version?: string | null
+          approval_eligible?: boolean | null
+          biometric_capable?: boolean | null
+          created_at?: string
+          device_family_id?: string | null
+          device_identifier?: string | null
+          device_name?: string
+          health_status?: string | null
+          id?: string
+          is_primary?: boolean | null
+          last_seen_at?: string | null
+          metadata?: Json | null
+          mode?: string | null
+          notification_eligible?: boolean | null
+          os_version?: string | null
+          platform?: string | null
+          push_token?: string | null
+          reachable?: boolean | null
+          trust_level?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connected_devices_device_family_id_fkey"
+            columns: ["device_family_id"]
+            isOneToOne: false
+            referencedRelation: "device_families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       connected_investment_platforms: {
         Row: {
           account_ids: string[] | null
@@ -4286,6 +4540,77 @@ export type Database = {
           },
         ]
       }
+      context_continuity_records: {
+        Row: {
+          active_task_ids: string[] | null
+          active_workflow_ids: string[] | null
+          assistant_context: Json | null
+          assistant_thread_id: string | null
+          boardroom_context: Json | null
+          created_at: string
+          device_id: string | null
+          id: string
+          metadata: Json | null
+          open_approval_ids: string[] | null
+          recent_entities: string[] | null
+          resumable: boolean | null
+          scroll_position: Json | null
+          session_id: string | null
+          surface: string
+          updated_at: string
+          urgency_stack: Json | null
+          user_id: string
+        }
+        Insert: {
+          active_task_ids?: string[] | null
+          active_workflow_ids?: string[] | null
+          assistant_context?: Json | null
+          assistant_thread_id?: string | null
+          boardroom_context?: Json | null
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          metadata?: Json | null
+          open_approval_ids?: string[] | null
+          recent_entities?: string[] | null
+          resumable?: boolean | null
+          scroll_position?: Json | null
+          session_id?: string | null
+          surface: string
+          updated_at?: string
+          urgency_stack?: Json | null
+          user_id: string
+        }
+        Update: {
+          active_task_ids?: string[] | null
+          active_workflow_ids?: string[] | null
+          assistant_context?: Json | null
+          assistant_thread_id?: string | null
+          boardroom_context?: Json | null
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          metadata?: Json | null
+          open_approval_ids?: string[] | null
+          recent_entities?: string[] | null
+          resumable?: boolean | null
+          scroll_position?: Json | null
+          session_id?: string | null
+          surface?: string
+          updated_at?: string
+          urgency_stack?: Json | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "context_continuity_records_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "connected_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       council_decisions: {
         Row: {
           consensus_score: number | null
@@ -5089,6 +5414,68 @@ export type Database = {
           },
         ]
       }
+      device_approval_receipts: {
+        Row: {
+          action_summary: string | null
+          action_type: string
+          approval_class: string
+          biometric_used: boolean | null
+          connected_device_id: string | null
+          created_at: string
+          decided_at: string | null
+          decision: string
+          device_family_key: string | null
+          id: string
+          metadata: Json | null
+          receipt_hash: string | null
+          trust_level_at_time: string | null
+          user_id: string
+          value_cents: number | null
+        }
+        Insert: {
+          action_summary?: string | null
+          action_type: string
+          approval_class: string
+          biometric_used?: boolean | null
+          connected_device_id?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decision: string
+          device_family_key?: string | null
+          id?: string
+          metadata?: Json | null
+          receipt_hash?: string | null
+          trust_level_at_time?: string | null
+          user_id: string
+          value_cents?: number | null
+        }
+        Update: {
+          action_summary?: string | null
+          action_type?: string
+          approval_class?: string
+          biometric_used?: boolean | null
+          connected_device_id?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decision?: string
+          device_family_key?: string | null
+          id?: string
+          metadata?: Json | null
+          receipt_hash?: string | null
+          trust_level_at_time?: string | null
+          user_id?: string
+          value_cents?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_approval_receipts_connected_device_id_fkey"
+            columns: ["connected_device_id"]
+            isOneToOne: false
+            referencedRelation: "connected_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       device_auth_clients: {
         Row: {
           active: boolean | null
@@ -5155,6 +5542,75 @@ export type Database = {
           },
         ]
       }
+      device_families: {
+        Row: {
+          active: boolean | null
+          continuity_support: boolean | null
+          created_at: string
+          description: string | null
+          family_key: string
+          handoff_support: boolean | null
+          id: string
+          interaction_type: string
+          launch_stage: string | null
+          metadata: Json | null
+          name: string
+          notification_type: string | null
+          offline_behavior: string | null
+          passive_usage_support: boolean | null
+          quick_action_support: boolean | null
+          screen_class: string | null
+          sensor_support: string[] | null
+          trust_level: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          continuity_support?: boolean | null
+          created_at?: string
+          description?: string | null
+          family_key: string
+          handoff_support?: boolean | null
+          id?: string
+          interaction_type?: string
+          launch_stage?: string | null
+          metadata?: Json | null
+          name: string
+          notification_type?: string | null
+          offline_behavior?: string | null
+          passive_usage_support?: boolean | null
+          quick_action_support?: boolean | null
+          screen_class?: string | null
+          sensor_support?: string[] | null
+          trust_level?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          continuity_support?: boolean | null
+          created_at?: string
+          description?: string | null
+          family_key?: string
+          handoff_support?: boolean | null
+          id?: string
+          interaction_type?: string
+          launch_stage?: string | null
+          metadata?: Json | null
+          name?: string
+          notification_type?: string | null
+          offline_behavior?: string | null
+          passive_usage_support?: boolean | null
+          quick_action_support?: boolean | null
+          screen_class?: string | null
+          sensor_support?: string[] | null
+          trust_level?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       device_statuses: {
         Row: {
           created_at: string
@@ -5196,6 +5652,65 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      device_trust_records: {
+        Row: {
+          approval_tier: string | null
+          biometric_verified: boolean | null
+          connected_device_id: string | null
+          created_at: string
+          financial_actions_allowed: boolean | null
+          high_risk_actions_allowed: boolean | null
+          id: string
+          last_trust_verification_at: string | null
+          max_approval_amount_cents: number | null
+          metadata: Json | null
+          trust_downgrade_reason: string | null
+          trust_level: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_tier?: string | null
+          biometric_verified?: boolean | null
+          connected_device_id?: string | null
+          created_at?: string
+          financial_actions_allowed?: boolean | null
+          high_risk_actions_allowed?: boolean | null
+          id?: string
+          last_trust_verification_at?: string | null
+          max_approval_amount_cents?: number | null
+          metadata?: Json | null
+          trust_downgrade_reason?: string | null
+          trust_level?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_tier?: string | null
+          biometric_verified?: boolean | null
+          connected_device_id?: string | null
+          created_at?: string
+          financial_actions_allowed?: boolean | null
+          high_risk_actions_allowed?: boolean | null
+          id?: string
+          last_trust_verification_at?: string | null
+          max_approval_amount_cents?: number | null
+          metadata?: Json | null
+          trust_downgrade_reason?: string | null
+          trust_level?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_trust_records_connected_device_id_fkey"
+            columns: ["connected_device_id"]
+            isOneToOne: false
+            referencedRelation: "connected_devices"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       differential_reasoning_records: {
         Row: {
@@ -6945,6 +7460,192 @@ export type Database = {
         }
         Relationships: []
       }
+      handoff_sessions: {
+        Row: {
+          completed_at: string | null
+          continuity_record_id: string | null
+          created_at: string
+          friction_notes: string | null
+          handoff_quality: string | null
+          handoff_status: string | null
+          id: string
+          initiated_at: string | null
+          metadata: Json | null
+          source_device_id: string | null
+          source_surface: string
+          target_device_id: string | null
+          target_surface: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          continuity_record_id?: string | null
+          created_at?: string
+          friction_notes?: string | null
+          handoff_quality?: string | null
+          handoff_status?: string | null
+          id?: string
+          initiated_at?: string | null
+          metadata?: Json | null
+          source_device_id?: string | null
+          source_surface: string
+          target_device_id?: string | null
+          target_surface: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          continuity_record_id?: string | null
+          created_at?: string
+          friction_notes?: string | null
+          handoff_quality?: string | null
+          handoff_status?: string | null
+          id?: string
+          initiated_at?: string | null
+          metadata?: Json | null
+          source_device_id?: string | null
+          source_surface?: string
+          target_device_id?: string | null
+          target_surface?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "handoff_sessions_continuity_record_id_fkey"
+            columns: ["continuity_record_id"]
+            isOneToOne: false
+            referencedRelation: "context_continuity_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "handoff_sessions_source_device_id_fkey"
+            columns: ["source_device_id"]
+            isOneToOne: false
+            referencedRelation: "connected_devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "handoff_sessions_target_device_id_fkey"
+            columns: ["target_device_id"]
+            isOneToOne: false
+            referencedRelation: "connected_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      health_signal_consents: {
+        Row: {
+          consent_granted_at: string | null
+          consent_reason: string | null
+          consent_revoked_at: string | null
+          consented: boolean | null
+          created_at: string
+          data_retention_days: number | null
+          id: string
+          metadata: Json | null
+          share_with_advisors: boolean | null
+          share_with_routing: boolean | null
+          signal_category: string
+          updated_at: string
+          user_id: string
+          visibility: string | null
+          wearable_provider_id: string | null
+        }
+        Insert: {
+          consent_granted_at?: string | null
+          consent_reason?: string | null
+          consent_revoked_at?: string | null
+          consented?: boolean | null
+          created_at?: string
+          data_retention_days?: number | null
+          id?: string
+          metadata?: Json | null
+          share_with_advisors?: boolean | null
+          share_with_routing?: boolean | null
+          signal_category: string
+          updated_at?: string
+          user_id: string
+          visibility?: string | null
+          wearable_provider_id?: string | null
+        }
+        Update: {
+          consent_granted_at?: string | null
+          consent_reason?: string | null
+          consent_revoked_at?: string | null
+          consented?: boolean | null
+          created_at?: string
+          data_retention_days?: number | null
+          id?: string
+          metadata?: Json | null
+          share_with_advisors?: boolean | null
+          share_with_routing?: boolean | null
+          signal_category?: string
+          updated_at?: string
+          user_id?: string
+          visibility?: string | null
+          wearable_provider_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "health_signal_consents_wearable_provider_id_fkey"
+            columns: ["wearable_provider_id"]
+            isOneToOne: false
+            referencedRelation: "wearable_providers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      health_signal_privacy: {
+        Row: {
+          anonymize: boolean | null
+          created_at: string
+          id: string
+          local_only: boolean | null
+          metadata: Json | null
+          privacy_tier: string | null
+          redact_from_exports: boolean | null
+          retention_days: number | null
+          signal_category: string
+          updated_at: string
+          user_id: string
+          visible_in_boardroom: boolean | null
+          visible_in_timeline: boolean | null
+          visible_to_advisors: boolean | null
+        }
+        Insert: {
+          anonymize?: boolean | null
+          created_at?: string
+          id?: string
+          local_only?: boolean | null
+          metadata?: Json | null
+          privacy_tier?: string | null
+          redact_from_exports?: boolean | null
+          retention_days?: number | null
+          signal_category: string
+          updated_at?: string
+          user_id: string
+          visible_in_boardroom?: boolean | null
+          visible_in_timeline?: boolean | null
+          visible_to_advisors?: boolean | null
+        }
+        Update: {
+          anonymize?: boolean | null
+          created_at?: string
+          id?: string
+          local_only?: boolean | null
+          metadata?: Json | null
+          privacy_tier?: string | null
+          redact_from_exports?: boolean | null
+          retention_days?: number | null
+          signal_category?: string
+          updated_at?: string
+          user_id?: string
+          visible_in_boardroom?: boolean | null
+          visible_in_timeline?: boolean | null
+          visible_to_advisors?: boolean | null
+        }
+        Relationships: []
+      }
       household_members: {
         Row: {
           accepted_at: string | null
@@ -8086,6 +8787,60 @@ export type Database = {
           recommendation_state?: string | null
           similarity_score?: number | null
           tenant_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      interruption_policies: {
+        Row: {
+          activity_states: string[] | null
+          allowed_urgencies: string[] | null
+          created_at: string
+          device_families: string[] | null
+          enabled: boolean | null
+          id: string
+          metadata: Json | null
+          policy_name: string
+          priority: number | null
+          suppress_categories: string[] | null
+          time_range_end: string | null
+          time_range_start: string | null
+          timezone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activity_states?: string[] | null
+          allowed_urgencies?: string[] | null
+          created_at?: string
+          device_families?: string[] | null
+          enabled?: boolean | null
+          id?: string
+          metadata?: Json | null
+          policy_name: string
+          priority?: number | null
+          suppress_categories?: string[] | null
+          time_range_end?: string | null
+          time_range_start?: string | null
+          timezone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activity_states?: string[] | null
+          allowed_urgencies?: string[] | null
+          created_at?: string
+          device_families?: string[] | null
+          enabled?: boolean | null
+          id?: string
+          metadata?: Json | null
+          policy_name?: string
+          priority?: number | null
+          suppress_categories?: string[] | null
+          time_range_end?: string | null
+          time_range_start?: string | null
+          timezone?: string | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -9350,6 +10105,54 @@ export type Database = {
         }
         Relationships: []
       }
+      micro_approval_policies: {
+        Row: {
+          allowed: boolean | null
+          approval_class: string
+          cooldown_seconds: number | null
+          created_at: string
+          device_family_key: string
+          escalation_target: string | null
+          id: string
+          max_value_cents: number | null
+          metadata: Json | null
+          receipt_required: boolean | null
+          requires_biometric: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allowed?: boolean | null
+          approval_class: string
+          cooldown_seconds?: number | null
+          created_at?: string
+          device_family_key: string
+          escalation_target?: string | null
+          id?: string
+          max_value_cents?: number | null
+          metadata?: Json | null
+          receipt_required?: boolean | null
+          requires_biometric?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allowed?: boolean | null
+          approval_class?: string
+          cooldown_seconds?: number | null
+          created_at?: string
+          device_family_key?: string
+          escalation_target?: string | null
+          id?: string
+          max_value_cents?: number | null
+          metadata?: Json | null
+          receipt_required?: boolean | null
+          requires_biometric?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       mock_replacements: {
         Row: {
           blockers: string[] | null
@@ -9530,6 +10333,60 @@ export type Database = {
           proof_label_style?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      notification_fatigue_profiles: {
+        Row: {
+          cooldown_minutes: number | null
+          created_at: string
+          escalation_only_after_minutes: number | null
+          focus_mode_behavior: string | null
+          id: string
+          max_notifications_per_hour: number | null
+          max_watch_notifications_per_hour: number | null
+          metadata: Json | null
+          quiet_hours_end: string | null
+          quiet_hours_start: string | null
+          quiet_hours_timezone: string | null
+          sleep_behavior: string | null
+          updated_at: string
+          user_id: string
+          workout_behavior: string | null
+        }
+        Insert: {
+          cooldown_minutes?: number | null
+          created_at?: string
+          escalation_only_after_minutes?: number | null
+          focus_mode_behavior?: string | null
+          id?: string
+          max_notifications_per_hour?: number | null
+          max_watch_notifications_per_hour?: number | null
+          metadata?: Json | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          quiet_hours_timezone?: string | null
+          sleep_behavior?: string | null
+          updated_at?: string
+          user_id: string
+          workout_behavior?: string | null
+        }
+        Update: {
+          cooldown_minutes?: number | null
+          created_at?: string
+          escalation_only_after_minutes?: number | null
+          focus_mode_behavior?: string | null
+          id?: string
+          max_notifications_per_hour?: number | null
+          max_watch_notifications_per_hour?: number | null
+          metadata?: Json | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          quiet_hours_timezone?: string | null
+          sleep_behavior?: string | null
+          updated_at?: string
+          user_id?: string
+          workout_behavior?: string | null
         }
         Relationships: []
       }
@@ -11928,6 +12785,65 @@ export type Database = {
           },
         ]
       }
+      presence_states: {
+        Row: {
+          active_device_id: string | null
+          active_surface: string | null
+          created_at: string
+          focus_state: string | null
+          handoff_eligible: boolean | null
+          id: string
+          interruption_tolerance: string | null
+          last_interaction_at: string | null
+          metadata: Json | null
+          motion_state: string | null
+          recent_surfaces: string[] | null
+          session_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_device_id?: string | null
+          active_surface?: string | null
+          created_at?: string
+          focus_state?: string | null
+          handoff_eligible?: boolean | null
+          id?: string
+          interruption_tolerance?: string | null
+          last_interaction_at?: string | null
+          metadata?: Json | null
+          motion_state?: string | null
+          recent_surfaces?: string[] | null
+          session_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_device_id?: string | null
+          active_surface?: string | null
+          created_at?: string
+          focus_state?: string | null
+          handoff_eligible?: boolean | null
+          id?: string
+          interruption_tolerance?: string | null
+          last_interaction_at?: string | null
+          metadata?: Json | null
+          motion_state?: string | null
+          recent_surfaces?: string[] | null
+          session_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "presence_states_active_device_id_fkey"
+            columns: ["active_device_id"]
+            isOneToOne: false
+            referencedRelation: "connected_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       presence_timeline_events: {
         Row: {
           created_at: string
@@ -11998,6 +12914,69 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      proactive_interventions: {
+        Row: {
+          accepted: boolean | null
+          body: string | null
+          confidence: number | null
+          consented: boolean | null
+          created_at: string
+          delivered: boolean | null
+          delivered_at: string | null
+          dismissed: boolean | null
+          explanation: string | null
+          id: string
+          intervention_type: string
+          metadata: Json | null
+          reversible: boolean | null
+          source_role: string | null
+          target_surface: string | null
+          title: string
+          urgency: string | null
+          user_id: string
+        }
+        Insert: {
+          accepted?: boolean | null
+          body?: string | null
+          confidence?: number | null
+          consented?: boolean | null
+          created_at?: string
+          delivered?: boolean | null
+          delivered_at?: string | null
+          dismissed?: boolean | null
+          explanation?: string | null
+          id?: string
+          intervention_type: string
+          metadata?: Json | null
+          reversible?: boolean | null
+          source_role?: string | null
+          target_surface?: string | null
+          title: string
+          urgency?: string | null
+          user_id: string
+        }
+        Update: {
+          accepted?: boolean | null
+          body?: string | null
+          confidence?: number | null
+          consented?: boolean | null
+          created_at?: string
+          delivered?: boolean | null
+          delivered_at?: string | null
+          dismissed?: boolean | null
+          explanation?: string | null
+          id?: string
+          intervention_type?: string
+          metadata?: Json | null
+          reversible?: boolean | null
+          source_role?: string | null
+          target_surface?: string | null
+          title?: string
+          urgency?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       product_presence: {
         Row: {
@@ -12501,6 +13480,69 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      readiness_states: {
+        Row: {
+          activity_state: string | null
+          availability: string | null
+          confidence: number | null
+          created_at: string
+          derived_from: string[] | null
+          dnd_active: boolean | null
+          energy_estimate: string | null
+          expires_at: string | null
+          focus_mode: boolean | null
+          id: string
+          interruption_tolerance: string | null
+          metadata: Json | null
+          readiness_level: string | null
+          sleep_state: string | null
+          stress_estimate: string | null
+          updated_at: string
+          user_id: string
+          workout_active: boolean | null
+        }
+        Insert: {
+          activity_state?: string | null
+          availability?: string | null
+          confidence?: number | null
+          created_at?: string
+          derived_from?: string[] | null
+          dnd_active?: boolean | null
+          energy_estimate?: string | null
+          expires_at?: string | null
+          focus_mode?: boolean | null
+          id?: string
+          interruption_tolerance?: string | null
+          metadata?: Json | null
+          readiness_level?: string | null
+          sleep_state?: string | null
+          stress_estimate?: string | null
+          updated_at?: string
+          user_id: string
+          workout_active?: boolean | null
+        }
+        Update: {
+          activity_state?: string | null
+          availability?: string | null
+          confidence?: number | null
+          created_at?: string
+          derived_from?: string[] | null
+          dnd_active?: boolean | null
+          energy_estimate?: string | null
+          expires_at?: string | null
+          focus_mode?: boolean | null
+          id?: string
+          interruption_tolerance?: string | null
+          metadata?: Json | null
+          readiness_level?: string | null
+          sleep_state?: string | null
+          stress_estimate?: string | null
+          updated_at?: string
+          user_id?: string
+          workout_active?: boolean | null
+        }
+        Relationships: []
       }
       reality_classifications: {
         Row: {
@@ -14748,6 +15790,62 @@ export type Database = {
           },
         ]
       }
+      surface_context_states: {
+        Row: {
+          active_filters: Json | null
+          created_at: string
+          current_route: string | null
+          current_view: string | null
+          device_id: string | null
+          id: string
+          last_active_at: string | null
+          metadata: Json | null
+          open_panels: string[] | null
+          scroll_state: Json | null
+          surface: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_filters?: Json | null
+          created_at?: string
+          current_route?: string | null
+          current_view?: string | null
+          device_id?: string | null
+          id?: string
+          last_active_at?: string | null
+          metadata?: Json | null
+          open_panels?: string[] | null
+          scroll_state?: Json | null
+          surface: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_filters?: Json | null
+          created_at?: string
+          current_route?: string | null
+          current_view?: string | null
+          device_id?: string | null
+          id?: string
+          last_active_at?: string | null
+          metadata?: Json | null
+          open_panels?: string[] | null
+          scroll_state?: Json | null
+          surface?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "surface_context_states_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "connected_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       surface_launch_profiles: {
         Row: {
           blockers: string[]
@@ -15607,6 +16705,51 @@ export type Database = {
         }
         Relationships: []
       }
+      user_device_graph_edges: {
+        Row: {
+          consent_status: string | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          relationship: string
+          source_id: string
+          source_type: string
+          target_id: string
+          target_type: string
+          trust_level: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          consent_status?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          relationship: string
+          source_id: string
+          source_type: string
+          target_id: string
+          target_type: string
+          trust_level?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          consent_status?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          relationship?: string
+          source_id?: string
+          source_type?: string
+          target_id?: string
+          target_type?: string
+          trust_level?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_memory: {
         Row: {
           category: string
@@ -15669,6 +16812,150 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      wearable_providers: {
+        Row: {
+          active: boolean | null
+          activity_data_support: boolean | null
+          api_type: string | null
+          auth_method: string | null
+          categories: string[] | null
+          created_at: string
+          description: string | null
+          health_data_support: boolean | null
+          id: string
+          launch_stage: string | null
+          metadata: Json | null
+          micro_action_support: boolean | null
+          name: string
+          notification_support: boolean | null
+          provider_key: string
+          readiness_data_support: boolean | null
+          requires_native_app: boolean | null
+          requires_partner_program: boolean | null
+          sleep_data_support: boolean | null
+          supported_signals: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          activity_data_support?: boolean | null
+          api_type?: string | null
+          auth_method?: string | null
+          categories?: string[] | null
+          created_at?: string
+          description?: string | null
+          health_data_support?: boolean | null
+          id?: string
+          launch_stage?: string | null
+          metadata?: Json | null
+          micro_action_support?: boolean | null
+          name: string
+          notification_support?: boolean | null
+          provider_key: string
+          readiness_data_support?: boolean | null
+          requires_native_app?: boolean | null
+          requires_partner_program?: boolean | null
+          sleep_data_support?: boolean | null
+          supported_signals?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          activity_data_support?: boolean | null
+          api_type?: string | null
+          auth_method?: string | null
+          categories?: string[] | null
+          created_at?: string
+          description?: string | null
+          health_data_support?: boolean | null
+          id?: string
+          launch_stage?: string | null
+          metadata?: Json | null
+          micro_action_support?: boolean | null
+          name?: string
+          notification_support?: boolean | null
+          provider_key?: string
+          readiness_data_support?: boolean | null
+          requires_native_app?: boolean | null
+          requires_partner_program?: boolean | null
+          sleep_data_support?: boolean | null
+          supported_signals?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wearable_signals: {
+        Row: {
+          confidence: number | null
+          connected_device_id: string | null
+          consented: boolean | null
+          created_at: string
+          id: string
+          ingested_at: string
+          metadata: Json | null
+          privacy_tier: string | null
+          recorded_at: string
+          signal_quality: string | null
+          signal_type: string
+          signal_unit: string | null
+          signal_value: number | null
+          user_id: string
+          wearable_provider_id: string | null
+        }
+        Insert: {
+          confidence?: number | null
+          connected_device_id?: string | null
+          consented?: boolean | null
+          created_at?: string
+          id?: string
+          ingested_at?: string
+          metadata?: Json | null
+          privacy_tier?: string | null
+          recorded_at?: string
+          signal_quality?: string | null
+          signal_type: string
+          signal_unit?: string | null
+          signal_value?: number | null
+          user_id: string
+          wearable_provider_id?: string | null
+        }
+        Update: {
+          confidence?: number | null
+          connected_device_id?: string | null
+          consented?: boolean | null
+          created_at?: string
+          id?: string
+          ingested_at?: string
+          metadata?: Json | null
+          privacy_tier?: string | null
+          recorded_at?: string
+          signal_quality?: string | null
+          signal_type?: string
+          signal_unit?: string | null
+          signal_value?: number | null
+          user_id?: string
+          wearable_provider_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wearable_signals_connected_device_id_fkey"
+            columns: ["connected_device_id"]
+            isOneToOne: false
+            referencedRelation: "connected_devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wearable_signals_wearable_provider_id_fkey"
+            columns: ["wearable_provider_id"]
+            isOneToOne: false
+            referencedRelation: "wearable_providers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       website_twins: {
         Row: {
