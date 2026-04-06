@@ -41,6 +41,14 @@ const BenchmarkLabDashboard = lazy(() => import("@/pages/admin/strategic/Benchma
 const ValueRiskDashboard = lazy(() => import("@/pages/admin/strategic/ValueRiskDashboard"));
 const OperatorTasteDashboard = lazy(() => import("@/pages/admin/strategic/OperatorTasteDashboard"));
 
+// AIT01-AIT08: AI Engineering Team
+const AIT01TeamOverview = lazy(() => import("@/pages/admin/AIT01TeamOverview"));
+const AIT02RoleRegistry = lazy(() => import("@/pages/admin/AIT02RoleRegistry"));
+const AIT03TaskInvocation = lazy(() => import("@/pages/admin/AIT03TaskInvocation"));
+
+// Truth Index Dashboard
+const TruthIndexDashboard = lazy(() => import("@/pages/admin/TruthIndexDashboard"));
+
 export const AdminRoutes = () => (
   <>
     <Route path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />
@@ -51,6 +59,14 @@ export const AdminRoutes = () => (
     <Route path="/admin/users" element={<UserManagement />} />
     <Route path="/admin/ai-tokens" element={<AITokenDashboard />} />
     <Route path="/admin/intelligence-efficiency" element={<IntelligenceEfficiencyBoard />} />
+
+    {/* Truth Index Dashboard */}
+    <Route path="/admin/truth-indices" element={<TruthIndexDashboard />} />
+
+    {/* AIT01-AIT08: AI Engineering Team */}
+    <Route path="/admin/ai-team/overview" element={<AIT01TeamOverview />} />
+    <Route path="/admin/ai-team/roles" element={<AIT02RoleRegistry />} />
+    <Route path="/admin/ai-team/invoke" element={<AIT03TaskInvocation />} />
 
     {/* UIE01-UIE11: Intelligence Architecture */}
     <Route path="/admin/intelligence/reuse" element={<IntelligenceReuseOverview />} />
