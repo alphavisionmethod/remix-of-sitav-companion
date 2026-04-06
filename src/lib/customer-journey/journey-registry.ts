@@ -15,7 +15,7 @@ export interface JourneyDefinition {
   persona: "user" | "operator" | "admin" | "internal_test";
   domain: string;
   routeFamily: string;
-  surfaceClass: string;
+  surfaceClass?: string;
   primaryModes: string[];
   steps: JourneyStep[];
   expectedOutcome: string;
