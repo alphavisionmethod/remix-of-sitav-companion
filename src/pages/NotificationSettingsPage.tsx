@@ -1,14 +1,16 @@
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { useState, useEffect, useCallback } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bell, Mail, MessageSquare, Shield, DollarSign, Calendar, AlertTriangle, Zap } from "lucide-react";
+import { Bell, Mail, MessageSquare, Shield, DollarSign, Calendar, AlertTriangle, Zap, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface NotificationChannel {
   id: string;
@@ -90,11 +92,36 @@ const URGENCY_COLORS: Record<string, string> = {
 };
 
 export default function NotificationSettingsPage() {
+  const { user } = useAuth();
   const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
   const [quietHoursEnabled, setQuietHoursEnabled] = useState(false);
   const [quietStart, setQuietStart] = useState("22:00");
   const [quietEnd, setQuietEnd] = useState("07:00");
   const [digestFrequency, setDigestFrequency] = useState("realtime");
+  const [saving, setSaving] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  // Load preferences from profiles.preferences on mount
+  useEffect(() => {
+    if (!user) return;
+    const load = async () => {
+      const { data } = await supabase
+        .from("profiles")
+        .select("preferences")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (data?.preferences) {
+        const prefs = data.preferences as Record<string, any>;
+        if (prefs.notifCategories) setCategories(prefs.notifCategories);
+        if (prefs.quietHoursEnabled != null) setQuietHoursEnabled(prefs.quietHoursEnabled);
+        if (prefs.quietStart) setQuietStart(prefs.quietStart);
+        if (prefs.quietEnd) setQuietEnd(prefs.quietEnd);
+        if (prefs.digestFrequency) setDigestFrequency(prefs.digestFrequency);
+      }
+      setLoaded(true);
+    };
+    load();
+  }, [user]);
 
   const toggleChannel = (catId: string, channelId: string) => {
     setCategories(prev => prev.map(cat =>
@@ -104,9 +131,43 @@ export default function NotificationSettingsPage() {
     ));
   };
 
-  const handleSave = () => {
-    toast.success("Notification preferences saved");
-  };
+  const handleSave = useCallback(async () => {
+    if (!user) return;
+    setSaving(true);
+    try {
+      // Serialize categories without icon functions
+      const serializedCategories = categories.map(c => ({
+        id: c.id, label: c.label, description: c.description,
+        urgency: c.urgency, channels: c.channels,
+      }));
+
+      const { data: existing } = await supabase
+        .from("profiles")
+        .select("preferences")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      const merged = {
+        ...(existing?.preferences as Record<string, any> || {}),
+        notifCategories: serializedCategories,
+        quietHoursEnabled,
+        quietStart,
+        quietEnd,
+        digestFrequency,
+      };
+
+      await supabase
+        .from("profiles")
+        .update({ preferences: merged })
+        .eq("user_id", user.id);
+
+      toast.success("Notification preferences saved");
+    } catch {
+      toast.error("Failed to save preferences");
+    } finally {
+      setSaving(false);
+    }
+  }, [user, categories, quietHoursEnabled, quietStart, quietEnd, digestFrequency]);
 
   return (
     <div className="space-y-6 p-6 max-w-3xl">
@@ -118,7 +179,10 @@ export default function NotificationSettingsPage() {
           </h1>
           <p className="text-sm text-muted-foreground mt-1">Control how and when SITA notifies you</p>
         </div>
-        <Button onClick={handleSave} size="sm">Save Preferences</Button>
+        <Button onClick={handleSave} size="sm" disabled={saving}>
+          {saving && <Loader2 className="h-3 w-3 animate-spin mr-1" />}
+          Save Preferences
+        </Button>
       </div>
 
       {/* Global Controls */}
@@ -159,7 +223,7 @@ export default function NotificationSettingsPage() {
       {/* Category Controls */}
       <div className="space-y-3">
         {categories.map((cat, i) => {
-          const Icon = cat.icon;
+          const Icon = cat.icon || Bell;
           return (
             <motion.div key={cat.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
               <Card className="bg-card border-border">
