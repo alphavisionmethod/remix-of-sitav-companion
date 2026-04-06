@@ -1,12 +1,20 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Workforce Executor
 // Bridges AI workforce roles → sovereign AI gateway
-// Every workforce task routes through the canonical capability client
+// Budget-policy-aware with pre-flight checks, fallback routing,
+// and cost-saving strategies
 // ═══════════════════════════════════════════════════════════════
 
 import { invokeAICapability } from "./ai-capability-client";
 import type { AIResponseEnvelope, AITaskClass } from "./ai-state-types";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  checkBudgetPreFlight,
+  buildInvocationHistory,
+  getBudgetExecutionParams,
+  type AdminBudgetClass,
+  type BudgetPreFlightResult,
+} from "@/lib/services/ai-workforce/admin-budget-routing-policy";
 
 // ── Role → Prompt mapping ──
 const ROLE_SYSTEM_PROMPTS: Record<string, string> = {
@@ -35,14 +43,6 @@ const TASK_TYPE_TO_INTENT: Record<string, string> = {
   propose: "draft",
 };
 
-const BUDGET_TO_TASK_CLASS: Record<string, AITaskClass> = {
-  economy_admin: "cheap_utility",
-  balanced_admin: "balanced_assistant",
-  premium_architecture: "premium_synthesis",
-  internal_diagnostics: "cheap_utility",
-  deep_audit: "premium_synthesis",
-};
-
 export interface WorkforceExecutionRequest {
   roleKey: string;
   taskType: string;
@@ -57,11 +57,15 @@ export interface WorkforceExecutionResult {
   roleKey: string;
   taskType: string;
   costCents: number;
+  budgetCheck: BudgetPreFlightResult;
 }
 
 /**
- * Execute a workforce task by routing through the sovereign AI gateway.
- * Records the invocation in the DB with cost/trace data.
+ * Execute a workforce task with full budget policy enforcement.
+ * 1. Fetches recent invocations for budget history
+ * 2. Runs pre-flight budget check (may downgrade class)
+ * 3. Routes through sovereign AI gateway with effective class
+ * 4. Records invocation with budget metadata
  */
 export async function executeWorkforceTask(
   userId: string,
@@ -69,16 +73,62 @@ export async function executeWorkforceTask(
 ): Promise<WorkforceExecutionResult> {
   const { roleKey, taskType, inputSummary, budgetClass = "economy_admin" } = request;
 
+  // ── Step 1: Gather recent invocation history for budget analysis ──
+  const { data: recentInvs } = await supabase
+    .from("ai_workforce_invocations")
+    .select("role_key, task_type, cost_cents, budget_class, created_at, input_summary")
+    .order("created_at", { ascending: false })
+    .limit(200);
+
+  const history = buildInvocationHistory(
+    (recentInvs ?? []) as any[],
+    roleKey,
+    taskType,
+  );
+
+  // ── Step 2: Pre-flight budget check ──
+  const budgetCheck = checkBudgetPreFlight(
+    roleKey,
+    budgetClass as AdminBudgetClass,
+    taskType,
+    history,
+  );
+
+  // If blocked, return immediately without invoking AI
+  if (!budgetCheck.allowed) {
+    return {
+      invocationId: null,
+      response: {
+        status: "error_budget_blocked",
+        content: `Budget policy blocked this request: ${budgetCheck.warnings.join("; ")}`,
+        rawResponse: null,
+        providerUsed: null,
+        modelUsed: null,
+        fallbackOccurred: false,
+        receiptId: null,
+        usageSummary: null,
+        structuredOutput: null,
+      } as unknown as AIResponseEnvelope,
+      roleKey,
+      taskType,
+      costCents: 0,
+      budgetCheck,
+    };
+  }
+
+  // ── Step 3: Use effective (possibly downgraded) budget class ──
+  const effectiveClass = budgetCheck.effectiveBudgetClass;
+  const execParams = getBudgetExecutionParams(effectiveClass);
+
   const systemPrompt = ROLE_SYSTEM_PROMPTS[roleKey]
     ?? `You are an AI operations assistant for SITA OS performing a ${taskType} task.`;
 
   const capabilityKey = `admin.workforce.${roleKey}.${taskType}`;
-  const taskClass = BUDGET_TO_TASK_CLASS[budgetClass] ?? "balanced_assistant";
   const intent = TASK_TYPE_TO_INTENT[taskType] ?? "analyze";
 
   const startMs = Date.now();
 
-  // Create DB invocation record first
+  // Create DB invocation record
   let invocationId: string | null = null;
   try {
     const { data } = await supabase
@@ -89,7 +139,7 @@ export async function executeWorkforceTask(
         task_type: taskType,
         capability_key: capabilityKey,
         input_summary: inputSummary.slice(0, 2000),
-        budget_class: budgetClass,
+        budget_class: effectiveClass,
         mode: "real",
         status: "running",
       })
@@ -100,25 +150,25 @@ export async function executeWorkforceTask(
     console.warn("[WorkforceExecutor] Could not create invocation record:", e);
   }
 
-  // Route through sovereign AI gateway
+  // ── Step 4: Route through sovereign AI gateway ──
   const response = await invokeAICapability({
     capabilityKey,
     messages: [
       { role: "system", content: systemPrompt },
       { role: "user", content: inputSummary },
     ],
-    taskClass,
+    taskClass: execParams.taskClass,
     surface: "web.admin",
     intent: intent as any,
-    maxTokens: taskClass === "premium_synthesis" ? 2000 : 800,
-    temperature: taskClass === "cheap_utility" ? 0.1 : 0.3,
+    maxTokens: execParams.maxTokens,
+    temperature: execParams.temperature,
   });
 
   const latencyMs = Date.now() - startMs;
   const costCents = response.usageSummary?.costCents ?? 0;
   const tokensUsed = (response.usageSummary?.inputTokens ?? 0) + (response.usageSummary?.outputTokens ?? 0);
 
-  // Update invocation record with results
+  // Update invocation record with results + budget metadata
   if (invocationId) {
     try {
       await supabase
@@ -148,5 +198,6 @@ export async function executeWorkforceTask(
     roleKey,
     taskType,
     costCents,
+    budgetCheck,
   };
 }
