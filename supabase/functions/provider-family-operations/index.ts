@@ -1,40 +1,40 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
-import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
-import { EdgeLogger } from "../_shared/logger.ts";
-import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
+import { corsHeaders } from "../_shared/cors.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
+import { requireAuth } from "../_shared/auth.ts";
+
+const ActionSchema = z.object({
+  action: z.enum([
+    "seed_provider_families", "seed_google_family", "seed_scope_policies",
+    "check_permission_drift", "generate_scope_recommendation", "account_graph_report",
+    "list_families", "get_family", "update_family_stage",
+  ]),
+  provider_key: z.string().optional(),
+  launch_stage: z.string().optional(),
+});
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
-  // Zod input validation
-  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
-    try {
-      const BodySchema = z.object({ family: z.string().min(1), operation: z.string().min(1) });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
-      if (!parsed.success) {
-        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
-        });
-      }
-    } catch (_) { /* non-JSON or GET */ }
-  }
-
   try {
+    const authResult = await requireAuth(req);
+    if (authResult instanceof Response) return authResult;
+    const { user } = authResult;
+
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) return new Response(JSON.stringify({ error: "No auth" }), { status: 401, headers: corsHeaders });
+    const body = await req.json();
+    const parsed = ActionSchema.safeParse(body);
+    if (!parsed.success) {
+      return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
-    const token = authHeader.replace("Bearer ", "");
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-    if (authError || !user) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: corsHeaders });
-
-    const { action } = await req.json();
+    const { action, provider_key, launch_stage } = parsed.data;
 
     switch (action) {
       case "seed_provider_families": return await seedProviderFamilies(supabase, user.id);
@@ -43,17 +43,61 @@ serve(async (req) => {
       case "check_permission_drift": return await checkPermissionDrift(supabase, user.id);
       case "generate_scope_recommendation": return await generateScopeRecommendation(supabase, user.id);
       case "account_graph_report": return await accountGraphReport(supabase, user.id);
+      case "list_families": return await listFamilies(supabase, user.id);
+      case "get_family": return await getFamily(supabase, user.id, provider_key || "");
+      case "update_family_stage": return await updateFamilyStage(supabase, user.id, provider_key || "", launch_stage || "");
       default:
-        return new Response(JSON.stringify({ error: `Unknown action: ${action}` }), { status: 400, headers: corsHeaders });
+        return jsonRes({ error: `Unknown action: ${action}` }, 400);
     }
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: corsHeaders });
+    return new Response(JSON.stringify({ error: err instanceof Error ? err.message : "Unknown error" }), {
+      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });
 
-function jsonRes(body: unknown) {
-  return new Response(JSON.stringify(body), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+function jsonRes(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 }
+
+// ── CRUD Operations ──
+
+async function listFamilies(supabase: any, userId: string) {
+  const { data, error } = await supabase.from("provider_families")
+    .select("*, provider_capabilities(id, capability_key, display_name, launch_stage)")
+    .eq("user_id", userId)
+    .order("name");
+  if (error) return jsonRes({ error: error.message }, 500);
+  return jsonRes({ success: true, families: data || [], total: data?.length || 0 });
+}
+
+async function getFamily(supabase: any, userId: string, providerKey: string) {
+  if (!providerKey) return jsonRes({ error: "provider_key required" }, 400);
+  const { data, error } = await supabase.from("provider_families")
+    .select("*, provider_capabilities(*), integration_launch_honesty(*), oauth_client_registry(*)")
+    .eq("user_id", userId)
+    .eq("provider_key", providerKey)
+    .single();
+  if (error) return jsonRes({ error: error.message }, 404);
+  return jsonRes({ success: true, family: data });
+}
+
+async function updateFamilyStage(supabase: any, userId: string, providerKey: string, stage: string) {
+  if (!providerKey || !stage) return jsonRes({ error: "provider_key and launch_stage required" }, 400);
+  const validStages = ["planned", "alpha", "beta", "production", "deprecated"];
+  if (!validStages.includes(stage)) return jsonRes({ error: `launch_stage must be one of: ${validStages.join(", ")}` }, 400);
+
+  const { data, error } = await supabase.from("provider_families")
+    .update({ launch_stage: stage })
+    .eq("user_id", userId)
+    .eq("provider_key", providerKey)
+    .select()
+    .single();
+  if (error) return jsonRes({ error: error.message }, 500);
+  return jsonRes({ success: true, family: data });
+}
+
+// ── Seed Operations ──
 
 async function seedProviderFamilies(supabase: any, userId: string) {
   const families = [
@@ -75,7 +119,6 @@ async function seedProviderFamilies(supabase: any, userId: string) {
     if (!error) count++;
   }
 
-  // Also seed launch honesty for each family
   const { data: allFamilies } = await supabase.from("provider_families").select("id, provider_key, launch_stage").eq("user_id", userId);
   for (const fam of (allFamilies || [])) {
     const label = fam.launch_stage === "alpha" ? "identity_only" : "shell_only";
@@ -90,9 +133,8 @@ async function seedProviderFamilies(supabase: any, userId: string) {
 }
 
 async function seedGoogleFamily(supabase: any, userId: string) {
-  // Get Google family
   const { data: google } = await supabase.from("provider_families").select("id").eq("user_id", userId).eq("provider_key", "google").single();
-  if (!google) return jsonRes({ success: false, error: "Seed provider families first" });
+  if (!google) return jsonRes({ success: false, error: "Seed provider families first" }, 400);
 
   const capabilities = [
     { capability_key: "google_identity", display_name: "Google Sign-In", category: "identity", minimum_scopes: ["openid","profile","email"], read_write: "read", sync_support: false, health_support: false, upgrade_path_support: false, launch_stage: "alpha" },
@@ -107,10 +149,9 @@ async function seedGoogleFamily(supabase: any, userId: string) {
     if (data) capIds[c.capability_key] = data.id;
   }
 
-  // OAuth Clients
   const clients = [
-    { client_name: "SITA Web Auth", client_purpose: "identity_web", allowed_capabilities: ["google_identity"], environment: "production", launch_stage: "alpha", notes: "Supabase Auth Google provider — openid, profile, email only" },
-    { client_name: "SITA Connector Access", client_purpose: "connector_web", allowed_capabilities: ["google_drive","google_gmail","google_calendar"], environment: "production", launch_stage: "planned", notes: "Separate OAuth client for Drive/Gmail/Calendar connector scopes" },
+    { client_name: "SITA Web Auth", client_purpose: "identity_web", allowed_capabilities: ["google_identity"], environment: "production", launch_stage: "alpha", notes: "Supabase Auth Google provider" },
+    { client_name: "SITA Connector Access", client_purpose: "connector_web", allowed_capabilities: ["google_drive","google_gmail","google_calendar"], environment: "production", launch_stage: "planned", notes: "Separate OAuth client for connector scopes" },
     { client_name: "SITA iOS Auth", client_purpose: "mobile_ios", allowed_capabilities: ["google_identity"], environment: "production", launch_stage: "planned", notes: "Future iOS OAuth client" },
     { client_name: "SITA Android Auth", client_purpose: "mobile_android", allowed_capabilities: ["google_identity"], environment: "production", launch_stage: "planned", notes: "Future Android OAuth client" },
   ];
@@ -119,7 +160,6 @@ async function seedGoogleFamily(supabase: any, userId: string) {
     await supabase.from("oauth_client_registry").upsert({ ...cl, provider_family_id: google.id, user_id: userId }, { onConflict: "id" });
   }
 
-  // Scope policies
   for (const [key, capId] of Object.entries(capIds)) {
     const cap = capabilities.find(c => c.capability_key === key)!;
     await supabase.from("scope_policy_matrix").upsert({
@@ -132,7 +172,6 @@ async function seedGoogleFamily(supabase: any, userId: string) {
       launch_safety_notes: key === "google_gmail" ? "Gmail send scope requires explicit user approval" : null,
     }, { onConflict: "provider_capability_id,user_id" });
 
-    // Launch honesty per capability
     await supabase.from("integration_launch_honesty").insert({
       user_id: userId, provider_family_id: google.id, provider_capability_id: capId,
       launch_label: key === "google_identity" ? "identity_only" : "shell_only",
@@ -144,7 +183,6 @@ async function seedGoogleFamily(supabase: any, userId: string) {
 }
 
 async function seedScopePolicies(supabase: any, userId: string) {
-  // Already handled in seedGoogleFamily; this seeds for non-Google families
   const { data: caps } = await supabase.from("provider_capabilities").select("id, capability_key, minimum_scopes, optional_scopes, upgrade_path_support").eq("user_id", userId);
   let count = 0;
   for (const cap of (caps || [])) {
@@ -187,9 +225,7 @@ async function generateScopeRecommendation(supabase: any, userId: string) {
     if ((p.optional_scopes || []).some((s: string) => s.includes("send") || s.includes("modify") || s.includes("write"))) {
       warnings.push("Write/send scopes available — start with read-only");
     }
-    if (p.approval_required_for_upgrade) {
-      warnings.push("Upgrade requires explicit approval");
-    }
+    if (p.approval_required_for_upgrade) warnings.push("Upgrade requires explicit approval");
 
     recs.push({
       user_id: userId, provider_capability_id: p.provider_capability_id,
@@ -216,10 +252,8 @@ async function accountGraphReport(supabase: any, userId: string) {
 
   return jsonRes({
     success: true,
-    nodes: (nodes || []).length,
-    edges: (edges || []).length,
-    identity_links: (identities || []).length,
-    service_links: (services || []).length,
+    nodes: (nodes || []).length, edges: (edges || []).length,
+    identity_links: (identities || []).length, service_links: (services || []).length,
     graph: { nodes: nodes || [], edges: edges || [], identities: identities || [], services: services || [] },
   });
 }

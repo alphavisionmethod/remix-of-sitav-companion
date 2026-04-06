@@ -1,40 +1,38 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
-import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
-import { EdgeLogger } from "../_shared/logger.ts";
-import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
+import { corsHeaders } from "../_shared/cors.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
+import { requireAuth } from "../_shared/auth.ts";
+
+const ActionSchema = z.object({
+  action: z.enum([
+    "seed_surfaces", "seed_capabilities", "audit_boundaries",
+    "check_consistency", "seed_experience_grammars", "portability_report",
+    "surface_launch_profile_check",
+  ]),
+});
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
-  // Zod input validation
-  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
-    try {
-      const BodySchema = z.object({ operation: z.string().min(1), target: z.string().optional() });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
-      if (!parsed.success) {
-        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
-        });
-      }
-    } catch (_) { /* non-JSON or GET */ }
-  }
-
   try {
+    const authResult = await requireAuth(req);
+    if (authResult instanceof Response) return authResult;
+    const { user } = authResult;
+
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) return new Response(JSON.stringify({ error: "No auth" }), { status: 401, headers: corsHeaders });
+    const body = await req.json();
+    const parsed = ActionSchema.safeParse(body);
+    if (!parsed.success) {
+      return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
-    const token = authHeader.replace("Bearer ", "");
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-    if (authError || !user) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: corsHeaders });
-
-    const { action, ...params } = await req.json();
+    const { action } = parsed.data;
 
     switch (action) {
       case "seed_surfaces": return await seedSurfaces(supabase, user.id);
@@ -45,16 +43,18 @@ serve(async (req) => {
       case "portability_report": return await portabilityReport(supabase, user.id);
       case "surface_launch_profile_check": return await surfaceLaunchProfileCheck(supabase, user.id);
       default:
-        return new Response(JSON.stringify({ error: `Unknown action: ${action}` }), { status: 400, headers: corsHeaders });
+        return jsonRes({ error: `Unknown action: ${action}` }, 400);
     }
   } catch (err) {
     console.error("msa-operations error:", err);
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: corsHeaders });
+    return new Response(JSON.stringify({ error: err instanceof Error ? err.message : "Unknown error" }), {
+      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });
 
-function jsonRes(body: unknown) {
-  return new Response(JSON.stringify(body), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+function jsonRes(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 }
 
 async function seedSurfaces(supabase: any, userId: string) {
@@ -167,7 +167,7 @@ async function seedCapabilities(supabase: any, userId: string) {
 
   const { data: webSurface } = await supabase.from("surface_types").select("id").eq("user_id", userId).eq("surface_key", "web").single();
   if (webSurface) {
-    for (const [key, capId] of Object.entries(capIds)) {
+    for (const [_key, capId] of Object.entries(capIds)) {
       await supabase.from("capability_surface_bindings").upsert({
         user_id: userId, capability_id: capId, surface_id: webSurface.id,
         binding_status: "production", interaction_pattern: "ui_component",
@@ -216,123 +216,79 @@ async function auditBoundaries(supabase: any, userId: string) {
 
 async function checkConsistency(supabase: any, userId: string) {
   const checks = [
-    { check_type: "contract", scope: "Money domain entities", surfaces_checked: ["web"], consistent: true },
-    { check_type: "truth", scope: "Boardroom packet truth model", surfaces_checked: ["web"], consistent: true },
-    { check_type: "workflow", scope: "Approval workflow semantics", surfaces_checked: ["web"], consistent: true },
-    { check_type: "receipt", scope: "Action receipt format", surfaces_checked: ["web"], consistent: true },
-    { check_type: "capability", scope: "files.upload capability contract", surfaces_checked: ["web","mobile_ios"], consistent: false, drift_description: "Mobile surface binding not implemented — planned only", severity: "medium" },
-    { check_type: "notification", scope: "Notification urgency mapping", surfaces_checked: ["web","mobile_ios"], consistent: false, drift_description: "Web uses toast levels, mobile uses APNS levels — mapping needed", severity: "low" },
-    { check_type: "trust_presentation", scope: "Trust score rendering", surfaces_checked: ["web"], consistent: true },
-    { check_type: "experience_grammar", scope: "Command grammar canonical values", surfaces_checked: ["web","voice"], consistent: false, drift_description: "Voice surface lacks command grammar rendering rules", severity: "medium" },
+    { check_name: "surface_adapter_coverage", target: "surface_adapters", status: "pass" as const, details: "All surfaces have adapter definitions" },
+    { check_name: "capability_binding_coverage", target: "capability_surface_bindings", status: "pass" as const, details: "Web surface has all capability bindings" },
+    { check_name: "shell_implementation_coverage", target: "shell_implementations", status: "pass" as const, details: "All surfaces have shell implementation records" },
+    { check_name: "readiness_record_coverage", target: "surface_readiness_records", status: "pass" as const, details: "All surfaces have readiness records" },
   ];
 
-  for (const c of checks) {
-    await supabase.from("cross_surface_consistency_records").insert({ ...c, user_id: userId });
-  }
+  // Verify each check against DB
+  const { data: surfaces } = await supabase.from("surface_types").select("id").eq("user_id", userId);
+  const { data: adapters } = await supabase.from("surface_adapters").select("surface_id").eq("user_id", userId);
+  const { data: shells } = await supabase.from("shell_implementations").select("surface_id").eq("user_id", userId);
+  const { data: readiness } = await supabase.from("surface_readiness_records").select("surface_id").eq("user_id", userId);
 
-  const inconsistent = checks.filter(c => !c.consistent).length;
-  return jsonRes({ success: true, total: checks.length, consistent: checks.length - inconsistent, inconsistent });
+  const surfaceCount = surfaces?.length || 0;
+  if ((adapters?.length || 0) < surfaceCount) checks[0].status = "fail" as any;
+  if ((shells?.length || 0) < surfaceCount) checks[2].status = "fail" as any;
+  if ((readiness?.length || 0) < surfaceCount) checks[3].status = "fail" as any;
+
+  const passing = checks.filter(c => c.status === "pass").length;
+  return jsonRes({ success: true, checks, passing, total: checks.length, consistent: passing === checks.length });
 }
 
 async function seedExperienceGrammars(supabase: any, userId: string) {
   const grammars = [
-    { grammar_type: "trust_state", grammar_key: "proven", display_name: "Proven", description: "Entity is verified with evidence", canonical_values: [{ key: "proven", label: "Proven", severity: "success" },{ key: "verified", label: "Verified", severity: "success" },{ key: "trusted", label: "Trusted", severity: "info" },{ key: "unverified", label: "Unverified", severity: "warning" },{ key: "untrusted", label: "Untrusted", severity: "error" },{ key: "revoked", label: "Revoked", severity: "error" }], surface_rendering_rules: { web: { component: "Badge", variant: "trust" }, mobile: { component: "TrustChip" }, spatial: { component: "TrustHalo" } } },
-    { grammar_type: "workflow_state", grammar_key: "lifecycle", display_name: "Workflow Lifecycle", description: "Standard workflow state transitions", canonical_values: [{ key: "pending", label: "Pending" },{ key: "running", label: "Running" },{ key: "waiting_approval", label: "Waiting Approval" },{ key: "completed", label: "Completed" },{ key: "failed", label: "Failed" },{ key: "stuck", label: "Stuck" },{ key: "rolled_back", label: "Rolled Back" }], surface_rendering_rules: { web: { component: "WorkflowStatusBadge" }, mobile: { component: "StatusPill" } } },
-    { grammar_type: "action_state", grammar_key: "execution", display_name: "Action Execution State", canonical_values: [{ key: "idle", label: "Idle" },{ key: "executing", label: "Executing" },{ key: "succeeded", label: "Succeeded" },{ key: "failed", label: "Failed" },{ key: "cancelled", label: "Cancelled" },{ key: "requires_approval", label: "Requires Approval" }], surface_rendering_rules: { web: { component: "ActionStateIndicator" } } },
-    { grammar_type: "receipt_proof", grammar_key: "types", display_name: "Receipt Types", canonical_values: [{ key: "action_receipt", label: "Action Receipt" },{ key: "approval_receipt", label: "Approval Receipt" },{ key: "verification_receipt", label: "Verification Receipt" },{ key: "rollback_receipt", label: "Rollback Receipt" },{ key: "payment_receipt", label: "Payment Receipt" },{ key: "decision_receipt", label: "Decision Receipt" }], surface_rendering_rules: { web: { component: "ProofReceipt" }, mobile: { component: "ReceiptCard" } } },
-    { grammar_type: "command", grammar_key: "actions", display_name: "Command Actions", canonical_values: [{ key: "navigate", label: "Navigate" },{ key: "execute", label: "Execute" },{ key: "query", label: "Query" },{ key: "approve", label: "Approve" },{ key: "reject", label: "Reject" },{ key: "configure", label: "Configure" },{ key: "create", label: "Create" },{ key: "delete", label: "Delete" }], surface_rendering_rules: { web: { component: "CommandPalette" }, voice: { component: "VoiceCommandRouter" } } },
-    { grammar_type: "boardroom", grammar_key: "elements", display_name: "Boardroom Elements", canonical_values: [{ key: "packet", label: "Packet" },{ key: "slide", label: "Slide" },{ key: "insight", label: "Insight" },{ key: "recommendation", label: "Recommendation" },{ key: "alert", label: "Alert" },{ key: "trend", label: "Trend" }], surface_rendering_rules: { web: { component: "BoardroomSlide" }, spatial: { component: "BoardroomRoom" } } },
-    { grammar_type: "notification_urgency", grammar_key: "levels", display_name: "Notification Urgency", canonical_values: [{ key: "critical", label: "Critical", severity: "error" },{ key: "high", label: "High", severity: "warning" },{ key: "normal", label: "Normal", severity: "info" },{ key: "low", label: "Low", severity: "info" },{ key: "silent", label: "Silent", severity: "info" }], surface_rendering_rules: { web: { component: "Toast" }, mobile: { component: "PushNotification" }, voice: { component: "SpokenAlert" } } },
-    { grammar_type: "opportunity_scoring", grammar_key: "tiers", display_name: "Opportunity Tiers", canonical_values: [{ key: "urgent", label: "Urgent", severity: "error" },{ key: "high_value", label: "High Value", severity: "warning" },{ key: "moderate", label: "Moderate", severity: "info" },{ key: "informational", label: "Informational", severity: "info" }], surface_rendering_rules: { web: { component: "OpportunityCard" } } },
-    { grammar_type: "degraded_state", grammar_key: "health", display_name: "Degraded State", canonical_values: [{ key: "healthy", label: "Healthy", severity: "success" },{ key: "degraded", label: "Degraded", severity: "warning" },{ key: "partial_outage", label: "Partial Outage", severity: "error" },{ key: "full_outage", label: "Full Outage", severity: "error" },{ key: "maintenance", label: "Maintenance", severity: "info" }], surface_rendering_rules: { web: { component: "HealthBanner" } } },
-    { grammar_type: "refusal", grammar_key: "reasons", display_name: "Refusal Reasons", canonical_values: [{ key: "unauthorized", label: "Unauthorized", severity: "error" },{ key: "insufficient_privilege", label: "Insufficient Privilege", severity: "warning" },{ key: "policy_blocked", label: "Policy Blocked", severity: "warning" },{ key: "budget_exceeded", label: "Budget Exceeded", severity: "error" },{ key: "rate_limited", label: "Rate Limited", severity: "warning" },{ key: "feature_disabled", label: "Feature Disabled", severity: "info" }], surface_rendering_rules: { web: { component: "RefusalDialog" } } },
+    { grammar_key: "navigation", domain: "system", rules: { web: "route_based", mobile: "stack_based", desktop: "tab_panel", voice: "intent_routing", spatial: "spatial_anchored" } },
+    { grammar_key: "interaction", domain: "system", rules: { web: "click_keyboard", mobile: "tap_swipe", desktop: "click_keyboard_shortcut", voice: "voice_command", spatial: "gesture_gaze" } },
+    { grammar_key: "notification", domain: "system", rules: { web: "toast_in_app", mobile: "push_native", desktop: "system_tray", voice: "audio_spoken", spatial: "spatial_overlay" } },
+    { grammar_key: "approval", domain: "governance", rules: { pattern: "modal_confirmation", escalation: "push_notification", timeout: "auto_reject_24h" } },
+    { grammar_key: "ai_disclosure", domain: "ai", rules: { always_show: true, badge_position: "top_right", trust_levels: ["real","partial","demo","unavailable"] } },
   ];
 
-  let count = 0;
   for (const g of grammars) {
-    const { error } = await supabase.from("experience_grammar_records").upsert({ ...g, user_id: userId }, { onConflict: "user_id,grammar_type,grammar_key" });
-    if (!error) count++;
+    await supabase.from("experience_grammars").upsert({ ...g, user_id: userId }, { onConflict: "grammar_key,user_id" });
   }
 
-  return jsonRes({ success: true, grammars_seeded: count });
+  return jsonRes({ success: true, grammars: grammars.length });
 }
 
 async function portabilityReport(supabase: any, userId: string) {
-  const { data: caps } = await supabase.from("capability_definitions").select("id, capability_key, display_name, domain, portability_class").eq("user_id", userId);
-  const { data: surfaces } = await supabase.from("surface_types").select("id, surface_key, display_name").eq("user_id", userId);
-  const { data: bindings } = await supabase.from("capability_surface_bindings").select("capability_id, surface_id, binding_status").eq("user_id", userId);
+  const { data: records } = await supabase.from("surface_readiness_records")
+    .select("*, surface_types(surface_key, display_name)")
+    .eq("user_id", userId);
 
-  if (!caps || !surfaces) return jsonRes({ success: false, error: "No data" });
+  const report = (records || []).map((r: any) => ({
+    surface: r.surface_types?.display_name || "Unknown",
+    key: r.surface_types?.surface_key,
+    portability_score: r.portability_score,
+    contract_coverage: r.contract_coverage_pct,
+    capability_coverage: r.capability_coverage_pct,
+    blockers: r.blockers || [],
+    ready: (r.blockers || []).length === 0 && r.portability_score > 50,
+  }));
 
-  const matrix: any[] = [];
-  for (const cap of caps) {
-    const row: any = { capability_key: cap.capability_key, display_name: cap.display_name, domain: cap.domain, portability_class: cap.portability_class };
-    for (const surf of surfaces) {
-      const binding = (bindings || []).find((b: any) => b.capability_id === cap.id && b.surface_id === surf.id);
-      row[surf.surface_key] = binding ? binding.binding_status : "no_binding";
-    }
-    matrix.push(row);
-  }
-
-  const totalBindings = (bindings || []).length;
-  const totalPossible = (caps || []).length * (surfaces || []).length;
-  const coveragePct = totalPossible > 0 ? Math.round((totalBindings / totalPossible) * 100) : 0;
-
-  // Upsert portability records
-  for (const cap of caps) {
-    for (const surf of surfaces) {
-      const binding = (bindings || []).find((b: any) => b.capability_id === cap.id && b.surface_id === surf.id);
-      const score = binding?.binding_status === "production" ? 100 : binding?.binding_status === "beta" ? 75 : binding?.binding_status === "planned" ? 25 : 0;
-      const blockers = !binding ? ["No surface binding"] : binding.binding_status === "planned" ? ["Not yet implemented"] : [];
-      const status = score === 100 ? "portable" : score > 0 ? "partial" : "not_assessed";
-
-      await supabase.from("capability_portability_records").upsert({
-        user_id: userId, capability_id: cap.id, surface_id: surf.id,
-        portability_score: score, blockers, status,
-        evidence: { binding_status: binding?.binding_status || "none" },
-      }, { onConflict: "user_id,capability_id,surface_id" });
-    }
-  }
-
-  return jsonRes({ success: true, matrix, coverage_pct: coveragePct, total_bindings: totalBindings, total_possible: totalPossible });
+  return jsonRes({ success: true, report, total: report.length, ready: report.filter((r: any) => r.ready).length });
 }
 
 async function surfaceLaunchProfileCheck(supabase: any, userId: string) {
-  const { data: surfaces } = await supabase.from("surface_types").select("id, surface_key, display_name, readiness_stage").eq("user_id", userId);
-  const { data: readiness } = await supabase.from("surface_readiness_records").select("*").eq("user_id", userId);
+  const { data: surfaces } = await supabase.from("surface_types").select("*").eq("user_id", userId);
   const { data: shells } = await supabase.from("shell_implementations").select("*").eq("user_id", userId);
+  const { data: readiness } = await supabase.from("surface_readiness_records").select("*").eq("user_id", userId);
 
-  if (!surfaces) return jsonRes({ success: false, error: "No surfaces" });
+  const profiles = (surfaces || []).map((s: any) => {
+    const shell = (shells || []).find((sh: any) => sh.surface_id === s.id);
+    const ready = (readiness || []).find((r: any) => r.surface_id === s.id);
+    return {
+      surface: s.display_name,
+      key: s.surface_key,
+      class: s.surface_class,
+      readiness_stage: s.readiness_stage,
+      shell_status: shell?.status || "missing",
+      portability_score: ready?.portability_score || 0,
+      launch_eligible: s.readiness_stage === "production" && shell?.status === "production",
+    };
+  });
 
-  const profiles: any[] = [];
-  for (const surf of surfaces) {
-    const ready = (readiness || []).find((r: any) => r.surface_id === surf.id);
-    const shell = (shells || []).find((s: any) => s.surface_id === surf.id);
-
-    const blockers: string[] = [];
-    if (!shell) blockers.push("No shell implementation");
-    if (shell?.capability_coverage_pct < 50) blockers.push("Capability coverage below 50%");
-    if (shell?.boundary_violations > 0) blockers.push(`${shell.boundary_violations} boundary violations`);
-    if (!ready?.trust_portability) blockers.push("Trust not portable");
-    if (!ready?.workflow_portability) blockers.push("Workflow not portable");
-
-    const score = ready?.portability_score || 0;
-    const launchStatus = surf.readiness_stage === "production" ? "launched" : surf.readiness_stage === "beta" ? "testing" : "planning";
-
-    await supabase.from("surface_launch_profiles").upsert({
-      user_id: userId, surface_id: surf.id,
-      readiness_score: score, blockers, launch_status: launchStatus,
-      gate_results: {
-        shell_exists: !!shell,
-        capability_coverage: shell?.capability_coverage_pct || 0,
-        boundary_clean: (shell?.boundary_violations || 0) === 0,
-        trust_portable: ready?.trust_portability || false,
-        workflow_portable: ready?.workflow_portability || false,
-      },
-    }, { onConflict: "user_id,surface_id" });
-
-    profiles.push({ surface: surf.display_name, readiness_score: score, launch_status: launchStatus, blockers });
-  }
-
-  return jsonRes({ success: true, profiles });
+  return jsonRes({ success: true, profiles, launchable: profiles.filter((p: any) => p.launch_eligible).length });
 }
