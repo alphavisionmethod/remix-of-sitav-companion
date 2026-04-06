@@ -41,7 +41,7 @@ describe("SearchFabricService", () => {
 
   it("searches by title match", () => {
     const svc = new SearchFabricService();
-    svc.addToIndex(makeItem({ title: "Acme Corp", body: "a]", tags: [] }));
+    svc.addToIndex(makeItem({ title: "Acme Corp", body: "corp data", tags: ["corp"] }));
     svc.addToIndex(makeItem({ title: "Beta Inc", body: "b", tags: [] }));
     const results = svc.search({ query: "acme" });
     expect(results.results).toHaveLength(1);
