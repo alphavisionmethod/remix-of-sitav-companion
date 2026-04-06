@@ -510,7 +510,10 @@ serve(async (req) => {
       });
     }
 
-    // ── Parse Request ──
+    // ── Rate Limit ──
+    const rl = checkRateLimit(user.id, 30, 60_000);
+    if (!rl.allowed) return rateLimitResponse(rl, corsHeaders);
+
     const body: BrainRequest = await req.json();
     if (!body.intent) {
       return new Response(JSON.stringify({ error: "intent is required", correlation_id: correlationId }), {
