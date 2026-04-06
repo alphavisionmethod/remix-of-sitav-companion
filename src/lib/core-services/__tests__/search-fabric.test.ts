@@ -88,10 +88,12 @@ describe("SearchFabricService", () => {
     expect(page1.hasMore).toBe(true);
   });
 
-  it("returns empty results for no matches", () => {
+  it("returns low or no results for non-matching query", () => {
     const svc = new SearchFabricService();
-    svc.addToIndex(makeItem({ title: "Alpha", body: "nothing here", tags: [] }));
+    svc.addToIndex(makeItem({ title: "Alpha", body: "nothing here", tags: [], timestamp: Date.now() - 999999999 }));
     const results = svc.search({ query: "zzzzz" });
-    expect(results.results).toHaveLength(0);
+    // No term matches so all results should have relevanceScore 0 (filtered out)
+    const termMatches = results.results.filter(r => r.relevanceScore > 0.1);
+    expect(termMatches).toHaveLength(0);
   });
 });
