@@ -59,10 +59,10 @@ export default function CJ02JourneyTruthMatrix() {
   }, [summaryView, journeys]);
 
   // Extract unique filter values
-  const domains = useMemo(() => [...new Set(allJourneys.map((j: any) => j.domain))].sort(), [allJourneys]);
-  const statuses = useMemo(() => [...new Set(allJourneys.map((j: any) => j.current_status))].sort(), [allJourneys]);
-  const owners = useMemo(() => [...new Set(allJourneys.map((j: any) => j.owner).filter(Boolean))].sort(), [allJourneys]);
-  const surfaces = useMemo(() => [...new Set(allJourneys.map((j: any) => j.surface_class).filter(Boolean))].sort(), [allJourneys]);
+  const domains = useMemo(() => [...new Set(allJourneys.map((j: any) => j.domain as string))].sort(), [allJourneys]);
+  const statuses = useMemo(() => [...new Set(allJourneys.map((j: any) => j.current_status as string))].sort(), [allJourneys]);
+  const owners = useMemo(() => [...new Set(allJourneys.map((j: any) => j.owner as string).filter(Boolean))].sort(), [allJourneys]);
+  const surfaces = useMemo(() => [...new Set(allJourneys.map((j: any) => j.surface_class as string).filter(Boolean))].sort(), [allJourneys]);
 
   const filtered = useMemo(() => {
     return allJourneys.filter((j: any) => {

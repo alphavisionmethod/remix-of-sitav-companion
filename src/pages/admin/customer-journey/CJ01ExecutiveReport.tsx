@@ -93,7 +93,7 @@ export default function CJ01ExecutiveReport() {
   // Domain scores
   const domainScores = useMemo(() => {
     const source = hasViewData ? viewJourneys : (journeys ?? []);
-    const domains = [...new Set(source.map((j: any) => j.domain_family || j.domain))];
+    const domains = [...new Set(source.map((j: any) => (j.domain_family || j.domain) as string))];
     return domains.map((d) => {
       const dj = source.filter((j: any) => (j.domain_family || j.domain) === d);
       const working = dj.filter((j: any) => j.current_status === "working").length;
