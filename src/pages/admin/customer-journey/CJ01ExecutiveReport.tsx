@@ -97,12 +97,12 @@ export default function CJ01ExecutiveReport() {
                 <div className="text-xs text-muted-foreground">Total Journeys</div>
               </CardContent>
             </Card>
-            {Object.entries(hasViewData ? viewStatuses : stats.statuses).sort(([,a],[,b]) => b - a).map(([status, count]) => {
+            {Object.entries(hasViewData ? viewStatuses : stats.statuses).sort(([,a],[,b]) => (b as number) - (a as number)).map(([status, count]) => {
               const cfg = JOURNEY_STATUS_CONFIG[status] || { label: status, color: "bg-muted text-muted-foreground" };
               return (
                 <Card key={status}>
                   <CardContent className="p-4 text-center">
-                    <div className="text-2xl font-bold">{count}</div>
+                    <div className="text-2xl font-bold">{count as number}</div>
                     <Badge variant="outline" className={`${cfg.color} text-[10px] mt-1`}>{cfg.label}</Badge>
                   </CardContent>
                 </Card>
