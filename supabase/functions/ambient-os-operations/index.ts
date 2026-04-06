@@ -21,7 +21,8 @@ serve(async (req) => {
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     if (authError || !user) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: corsHeaders });
 
-    const { action } = await req.json();
+    const body = await req.json();
+    const { action } = body;
 
     switch (action) {
       case "seed_device_families": return await seedDeviceFamilies(supabase, user.id);
@@ -31,9 +32,9 @@ serve(async (req) => {
       case "update_presence": return await updatePresence(supabase, user.id);
       case "check_readiness": return await checkReadiness(supabase, user.id);
       case "device_graph_report": return await deviceGraphReport(supabase, user.id);
-      case "register_device": return await registerDevice(supabase, user.id, await req.json());
-      case "initiate_handoff": return await initiateHandoff(supabase, user.id, await req.json());
-      case "route_notification": return await routeNotification(supabase, user.id, await req.json());
+      case "register_device": return await registerDevice(supabase, user.id, body);
+      case "initiate_handoff": return await initiateHandoff(supabase, user.id, body);
+      case "route_notification": return await routeNotification(supabase, user.id, body);
       case "surface_strategy": return jsonRes({ success: true, strategy: getSurfaceStrategy() });
       default:
         return new Response(JSON.stringify({ error: `Unknown action: ${action}` }), { status: 400, headers: corsHeaders });
