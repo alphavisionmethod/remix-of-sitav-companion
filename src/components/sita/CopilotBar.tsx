@@ -41,7 +41,7 @@ export const CopilotBar = () => {
   };
 
   return (
-    <div className="fixed bottom-16 md:bottom-20 left-1/2 -translate-x-1/2 z-[200] w-full max-w-xl px-4">
+    <div className="fixed bottom-[calc(6rem+env(safe-area-inset-bottom,0px))] md:bottom-20 left-1/2 -translate-x-1/2 z-[200] w-full max-w-xl px-4">
       <AnimatePresence>
         {expanded && response && (
           <motion.div

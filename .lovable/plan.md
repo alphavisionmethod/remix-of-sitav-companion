@@ -44,8 +44,17 @@
 - Created `DevicePresenceIndicator.tsx` component
 - `device-telemetry` function stores browser metrics
 
-### ✅ Step 9 — Updated FINAL_ARQ_REPORT_v3.md
-- All dimensions accurately documented with evidence
+### ✅ Step 9 — Shell responsive fixes (UX → 95)
+- **MobileBottomNav**: Safe-area-inset-bottom, compact labels, aria attributes
+- **SitaTopBar**: Mobile-first responsive — hides non-essential controls on small screens, adds mobile search button, safe-area-inset-top
+- **ShellLayout**: Proper bottom padding for stacked bars (`pb-28` mobile, `pb-16` desktop), smaller mobile padding (`p-3`)
+- **SitaCompanionBar**: Positioned above MobileBottomNav on mobile
+- **CopilotBar**: Positioned above CompanionBar on mobile
+- **All bars**: `env(safe-area-inset-*)` for notched devices
+
+### ✅ Step 10 — Updated all documentation
+- FINAL_ARQ_REPORT_v3.md with responsive/shell/accessibility documentation
+- plan.md reflecting all completed work
 
 ---
 
@@ -57,9 +66,9 @@
 | Security | 100 |
 | Observability | 100 |
 | AI | 95 |
+| UX | 95 |
 | Runtime | 92 |
 | Economic | 92 |
-| UX | 92 |
 | Launch | 98 |
 | Connector | 85 |
 | Device | 75 |

@@ -117,8 +117,9 @@ export const SitaCompanionBar = () => {
     <>
       <motion.div
         className={cn(
-          "fixed bottom-0 left-0 right-0 z-40 border-t border-border/50 backdrop-blur-xl",
-          "bg-card/90 transition-colors md:left-[var(--sidebar-width,0px)]"
+          "fixed left-0 right-0 z-30 border-t border-border/50 backdrop-blur-xl",
+          "bg-card/90 transition-colors md:left-[var(--sidebar-width,0px)]",
+          "bottom-[calc(3rem+env(safe-area-inset-bottom,0px))] md:bottom-0"
         )}
         animate={{ height: expanded ? "auto" : 40 }}
         transition={{ duration: 0.2, ease: "easeInOut" }}

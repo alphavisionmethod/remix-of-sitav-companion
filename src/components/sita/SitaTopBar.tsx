@@ -63,13 +63,20 @@ export const SitaTopBar = ({
   };
 
   return (
-    <header className="sita-top-bar sticky top-0 z-50 flex h-11 items-center justify-between border-b border-border/30 glass-panel px-3 select-none">
+    <header
+      role="banner"
+      aria-label="SITA OS system bar"
+      className="sita-top-bar sticky top-0 z-50 flex h-11 items-center justify-between border-b border-border/30 glass-panel px-2 sm:px-3 select-none"
+      style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+    >
       {/* Left: Sidebar + Context + Command */}
-      <div className="flex items-center gap-2">
-        <SidebarTrigger className="h-7 w-7 text-muted-foreground hover:text-foreground" />
-        <ContextSwitcher />
+      <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+        <SidebarTrigger className="h-7 w-7 text-muted-foreground hover:text-foreground shrink-0" />
+        <div className="hidden sm:block">
+          <ContextSwitcher />
+        </div>
 
-        {/* Command pill — primary affordance */}
+        {/* Command pill — desktop only */}
         <div className="hidden md:block">
           {onCommandOpen ? (
             <button
@@ -82,6 +89,17 @@ export const SitaTopBar = ({
             </button>
           ) : null}
         </div>
+
+        {/* Mobile search button */}
+        {onCommandOpen && (
+          <button
+            onClick={onCommandOpen}
+            className="md:hidden flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/60 transition-colors"
+            aria-label="Search"
+          >
+            <Search className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
       {/* Center: Status indicators (desktop only) */}
@@ -89,18 +107,21 @@ export const SitaTopBar = ({
         <ShellStatusBar />
       </div>
 
-      {/* Right: Controls */}
-      <div className="flex items-center gap-1">
-        {/* AI Spend */}
-        <AISpendIndicator />
+      {/* Right: Controls — responsive */}
+      <div className="flex items-center gap-0.5 sm:gap-1">
+        {/* AI Spend — desktop only */}
+        <div className="hidden sm:block">
+          <AISpendIndicator />
+        </div>
 
         {/* Trust posture */}
         <TrustPostureChip posture={indicators.trustPosture} showLabel={false} />
 
-        {/* Mode toggle */}
+        {/* Mode toggle — hide label on mobile */}
         <button
           onClick={toggleMode}
-          className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium transition-colors hover:bg-secondary/60"
+          className="flex items-center gap-1 rounded-lg px-1.5 sm:px-2 py-1 text-[11px] font-medium transition-colors hover:bg-secondary/60"
+          aria-label={isDemoMode ? "Switch to live mode" : "Switch to demo mode"}
         >
           <div className={cn("h-1.5 w-1.5 rounded-full", isDemoMode ? "bg-[hsl(var(--sita-gold))]" : "bg-[hsl(var(--trust-verified))]")} />
           <span className="text-muted-foreground hidden sm:inline">{isDemoMode ? "Demo" : "Live"}</span>
@@ -108,80 +129,89 @@ export const SitaTopBar = ({
 
         <div className="h-4 w-px bg-border/40 mx-0.5" />
 
-        {/* Mission Mode */}
-        <Popover open={missionOpen} onOpenChange={setMissionOpen}>
-          <PopoverTrigger asChild>
-            <button className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium transition-colors hover:bg-secondary/60">
-              <span>{missionMode.icon}</span>
-              <span className="text-muted-foreground hidden sm:inline">{missionMode.name}</span>
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className="w-72 p-1.5" align="end" sideOffset={8}>
-            <div className="space-y-0.5">
-              {MISSION_MODES.map(m => (
-                <button
-                  key={m.id}
-                  onClick={() => handleMissionSelect(m.id)}
-                  className={cn(
-                    "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors",
-                    missionMode.id === m.id ? "bg-primary/10 text-primary" : "hover:bg-secondary/60 text-foreground"
-                  )}
-                >
-                  <span className="text-base shrink-0">{m.icon}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-medium">{m.name}</p>
-                    <p className="text-[10px] text-muted-foreground truncate">{m.description}</p>
-                  </div>
-                  {missionMode.id === m.id && <Check className="h-3.5 w-3.5 text-primary shrink-0" />}
-                </button>
-              ))}
-            </div>
-          </PopoverContent>
-        </Popover>
+        {/* Mission Mode — hide on mobile */}
+        <div className="hidden sm:block">
+          <Popover open={missionOpen} onOpenChange={setMissionOpen}>
+            <PopoverTrigger asChild>
+              <button className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium transition-colors hover:bg-secondary/60">
+                <span>{missionMode.icon}</span>
+                <span className="text-muted-foreground hidden sm:inline">{missionMode.name}</span>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-72 p-1.5" align="end" sideOffset={8}>
+              <div className="space-y-0.5">
+                {MISSION_MODES.map(m => (
+                  <button
+                    key={m.id}
+                    onClick={() => handleMissionSelect(m.id)}
+                    className={cn(
+                      "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors",
+                      missionMode.id === m.id ? "bg-primary/10 text-primary" : "hover:bg-secondary/60 text-foreground"
+                    )}
+                  >
+                    <span className="text-base shrink-0">{m.icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] font-medium">{m.name}</p>
+                      <p className="text-[10px] text-muted-foreground truncate">{m.description}</p>
+                    </div>
+                    {missionMode.id === m.id && <Check className="h-3.5 w-3.5 text-primary shrink-0" />}
+                  </button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
 
-        <div className="h-4 w-px bg-border/40 mx-0.5" />
+        <div className="h-4 w-px bg-border/40 mx-0.5 hidden sm:block" />
 
-        {/* Focus + Calm */}
-        <button
-          onClick={toggleFocus}
-          className={cn("flex h-7 w-7 items-center justify-center rounded-lg transition-colors", isFocus ? "bg-primary/15 text-primary" : "text-muted-foreground hover:bg-secondary/60")}
-          title={isFocus ? "Exit Focus Mode" : "Focus Mode"}
-        >
-          {isFocus ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-        </button>
-        <button
-          onClick={toggleCalm}
-          className={cn("flex h-7 w-7 items-center justify-center rounded-lg transition-colors", isCalm ? "bg-primary/15 text-primary" : "text-muted-foreground hover:bg-secondary/60")}
-          title={isCalm ? "Exit Calm Mode" : "Calm Mode"}
-        >
-          <Shield className="h-3.5 w-3.5" />
-        </button>
+        {/* Focus + Calm — desktop only */}
+        <div className="hidden sm:flex items-center gap-0.5">
+          <button
+            onClick={toggleFocus}
+            className={cn("flex h-7 w-7 items-center justify-center rounded-lg transition-colors", isFocus ? "bg-primary/15 text-primary" : "text-muted-foreground hover:bg-secondary/60")}
+            title={isFocus ? "Exit Focus Mode" : "Focus Mode"}
+            aria-label={isFocus ? "Exit Focus Mode" : "Focus Mode"}
+          >
+            {isFocus ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+          </button>
+          <button
+            onClick={toggleCalm}
+            className={cn("flex h-7 w-7 items-center justify-center rounded-lg transition-colors", isCalm ? "bg-primary/15 text-primary" : "text-muted-foreground hover:bg-secondary/60")}
+            title={isCalm ? "Exit Calm Mode" : "Calm Mode"}
+            aria-label={isCalm ? "Exit Calm Mode" : "Calm Mode"}
+          >
+            <Shield className="h-3.5 w-3.5" />
+          </button>
+        </div>
 
-        <div className="h-4 w-px bg-border/40 mx-0.5" />
+        <div className="h-4 w-px bg-border/40 mx-0.5 hidden sm:block" />
 
         {/* Theme */}
         <button
           onClick={() => setTheme(resolved === "dark" ? "light" : "dark")}
           className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/60 transition-colors"
           title={`Switch to ${resolved === "dark" ? "light" : "dark"} mode`}
+          aria-label={`Switch to ${resolved === "dark" ? "light" : "dark"} mode`}
         >
           {resolved === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
         </button>
 
-        {/* Proof/Receipts */}
+        {/* Proof/Receipts — desktop only */}
         <button
           onClick={() => navigate("/proof")}
-          className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/60 transition-colors"
+          className="hidden sm:flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/60 transition-colors"
           title="Proof Center"
+          aria-label="Proof Center"
         >
           <Receipt className="h-3.5 w-3.5" />
         </button>
 
-        {/* Timeline */}
+        {/* Timeline — desktop only */}
         <button
           onClick={onTimelineOpen}
-          className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/60 transition-colors"
+          className="hidden sm:flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/60 transition-colors"
           title="Timeline"
+          aria-label="Timeline"
         >
           <Clock className="h-3.5 w-3.5" />
         </button>
@@ -189,8 +219,9 @@ export const SitaTopBar = ({
         {/* Notifications */}
         <button
           onClick={onNotifOpen}
-          className="relative flex h-7 items-center gap-1 rounded-lg px-2 text-muted-foreground hover:bg-secondary/60 transition-colors"
+          className="relative flex h-7 items-center gap-1 rounded-lg px-1.5 sm:px-2 text-muted-foreground hover:bg-secondary/60 transition-colors"
           title="Action Center"
+          aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ""}`}
         >
           <Bell className="h-3.5 w-3.5" />
           {unreadCount > 0 && (
@@ -200,8 +231,8 @@ export const SitaTopBar = ({
           )}
         </button>
 
-        {/* Clock */}
-        <span className="text-[11px] font-medium text-muted-foreground tabular-nums ml-1 hidden sm:inline">{clock}</span>
+        {/* Clock — desktop only */}
+        <span className="text-[11px] font-medium text-muted-foreground tabular-nums ml-1 hidden lg:inline">{clock}</span>
       </div>
     </header>
   );
