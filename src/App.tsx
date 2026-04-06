@@ -1099,6 +1099,14 @@ const App = () => (
                     <Route path="/admin/uao/trust" element={<UAO06DeviceTrust />} />
                     <Route path="/admin/uao/journeys" element={<UAO07CrossSurfaceJourney />} />
                     <Route path="/admin/uao/launch" element={<UAO08AmbientLaunchReadiness />} />
+                    {/* DWE — Device & Wearable Expansion */}
+                    <Route path="/admin/dwe/devices" element={<DWE01ConnectedDevicesCenter />} />
+                    <Route path="/admin/dwe/presence" element={<DWE02PresenceContinuityCenter />} />
+                    <Route path="/admin/dwe/wearables" element={<DWE03WearableSignalsCenter />} />
+                    <Route path="/admin/dwe/notifications" element={<DWE04NotificationRoutingStudio />} />
+                    <Route path="/admin/dwe/trust" element={<DWE05DeviceTrustApprovalsCenter />} />
+                    <Route path="/admin/dwe/assistant" element={<DWE06AmbientAssistantCenter />} />
+                    <Route path="/admin/dwe/launch-honesty" element={<DWE07DeviceLaunchHonestyBoard />} />
                     <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/admin/mission-control" element={<MissionControlHome />} />
                     <Route path="/admin/durability" element={<AdminDurabilityBoardPage />} />
