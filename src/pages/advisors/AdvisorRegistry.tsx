@@ -332,7 +332,7 @@ const AdvisorRegistry = () => {
         tabs={councils.map(c => ({
           key: c,
           label: c === "all" ? "All" : c.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" "),
-          count: c === "all" ? FULL_ADVISOR_REGISTRY.length : FULL_ADVISOR_REGISTRY.filter(a => a.council === c).length,
+          count: c === "all" ? mergedRegistry.length : mergedRegistry.filter(a => a.council === c).length,
         }))}
         active={council}
         onChange={setCouncil}
