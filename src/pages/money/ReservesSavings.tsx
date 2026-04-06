@@ -104,6 +104,8 @@ const ReservesSavings = () => {
 
       {isLoading ? (
         <SectionSkeleton cards={4} columns={1} />
+      ) : reserves.length === 0 && !isDemoMode ? (
+        <ContextualEmptyState config={getContextualEmptyState("money")} />
       ) : reserves.length === 0 ? (
         <EmptyState icon={PiggyBank} title="No reserves yet" description="Create your first savings goal to start building financial resilience." />
       ) : (
