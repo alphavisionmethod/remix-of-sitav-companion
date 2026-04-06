@@ -80,7 +80,7 @@ const LeadsInbox = () => {
   const [formValue, setFormValue] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  const { data: leads = [], isLoading } = useQuery({
+  const leadsQuery = useQuery({
     queryKey: ["leads"],
     queryFn: async () => {
       const { data, error } = await (supabase as any).from("leads").select("*").order("created_at", { ascending: false });
@@ -88,6 +88,9 @@ const LeadsInbox = () => {
       return data as Lead[];
     },
   });
+  const leads = leadsQuery.data ?? [];
+  const isLoading = leadsQuery.isLoading;
+  const freshness = useQueryFreshness(leadsQuery);
 
   const addMutation = useMutation({
     mutationFn: async (lead: { name: string; email?: string; phone?: string; company?: string; source?: string; likely_value?: number }) => {
