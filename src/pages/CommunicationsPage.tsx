@@ -51,8 +51,8 @@ export default function CommunicationsPage() {
   const [activeTab, setActiveTab] = useState("all");
 
   const filtered = activeTab === "all"
-    ? MOCK_COMMUNICATIONS
-    : MOCK_COMMUNICATIONS.filter(c => c.channel === activeTab);
+    ? DEMO_COMMUNICATIONS
+    : DEMO_COMMUNICATIONS.filter(c => c.channel === activeTab);
 
   return (
     <div className="space-y-6 p-6">
