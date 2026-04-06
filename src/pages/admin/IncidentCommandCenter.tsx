@@ -29,11 +29,7 @@ const STATUS_CONFIG: Record<IncidentStatus, { color: string; icon: typeof AlertT
   closed: { color: "text-muted-foreground", icon: XCircle },
 };
 
-const MOCK_INCIDENTS: Incident[] = [
-  {
-    id: "INC-001", title: "Connector sync failure — Plaid banking feed", severity: "critical", status: "investigating",
-    source: "connector_engine", description: "Plaid connector failing to sync account balances. Affects 3 users. Last successful sync 4h ago.",
-    created_at: new Date(Date.now() - 2 * 3600000).toISOString(), assignee: "System", affected_services: ["plaid", "finance-advisor", "cash-flow"],
+const MOCK_INCIDENTS = DEMO_INCIDENTS;
     timeline: [
       { time: "2h ago", action: "Incident auto-created from connector health check", actor: "system" },
       { time: "1h 45m ago", action: "Retry attempt #1 failed — HTTP 503", actor: "connector_engine" },
