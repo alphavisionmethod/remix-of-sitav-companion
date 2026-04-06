@@ -1,10 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Publish Event Service
-// In-memory pub/sub publisher with queue
+// In-memory pub/sub publisher with durable persistence wiring
 // ═══════════════════════════════════════════════════════════════
 
 import type { SitaEvent } from "@/packages/event-types";
 import type { EventEnvelope } from "./event-envelope";
+import { persistEvent, persistDeadLetter as persistDeadLetterEntry } from "@/lib/persistence/event-bus-persistence";
+import type { BusEvent, DeadLetterEntry } from "@/lib/core-services/event-bus";
 
 type EventHandler = (event: SitaEvent, envelope: EventEnvelope) => void;
 
@@ -37,6 +39,31 @@ export function publish(envelope: EventEnvelope): { delivered: number; errors: s
     } catch (err) {
       errors.push(`Handler ${sub.id} failed: ${err instanceof Error ? err.message : "unknown"}`);
     }
+  }
+
+  // Fire-and-forget persistence via the core event bus adapter
+  const busEvent: BusEvent = {
+    id: (event as any).id ?? crypto.randomUUID(),
+    topic: event.type ?? "unknown",
+    payload: event as unknown as Record<string, unknown>,
+    source: (event as any).source ?? "event-bus",
+    correlationId: (event as any).correlationId,
+    tenantId: (event as any).tenantId,
+    metadata: (event as any).metadata,
+    timestamp: Date.now(),
+  };
+  persistEvent(busEvent, { domain: event.domain }).catch(() => {});
+
+  // Persist dead letters on total handler failure
+  if (errors.length > 0 && delivered === 0) {
+    const dlEntry: DeadLetterEntry = {
+      event: busEvent,
+      error: errors.join("; "),
+      handler: "aggregate",
+      timestamp: Date.now(),
+      retryCount: 0,
+    };
+    persistDeadLetterEntry(dlEntry).catch(() => {});
   }
 
   return { delivered, errors };
