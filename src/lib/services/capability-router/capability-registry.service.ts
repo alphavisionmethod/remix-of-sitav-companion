@@ -5,6 +5,9 @@
 
 import type { CapabilityContract, DomainId, RiskTier } from "@/packages/contracts";
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
+
 const registry = new Map<string, CapabilityContract>();
 
 const DEFAULTS: CapabilityContract[] = [
@@ -66,4 +69,28 @@ export function getRegistryHealth(): { total: number; byDomain: Record<string, n
   const byDomain: Record<string, number> = {};
   registry.forEach((c) => { byDomain[c.domain] = (byDomain[c.domain] || 0) + 1; });
   return { total: registry.size, byDomain };
+}
+
+
+// ── Persistence ──────────────────────────────────────────
+const _serviceId = "capability-router/capability-registry";
+
+function _serializeState(): Record<string, unknown> {
+  return {
+    registry: Array.from(registry.entries()),
+  };
+}
+
+function _hydrateState(state: Record<string, unknown>): void {
+  if (!state) return;
+  if (state.registry) { registry.clear(); (state.registry as any[]).forEach(([k, v]: any) => registry.set(k, v)); }
+}
+
+export async function loadPersistedState(): Promise<void> {
+  const state = await loadServiceState(_serviceId);
+  if (state) _hydrateState(state as Record<string, unknown>);
+}
+
+export function persistState(): void {
+  debouncedSaveServiceState(_serviceId, _serializeState());
 }

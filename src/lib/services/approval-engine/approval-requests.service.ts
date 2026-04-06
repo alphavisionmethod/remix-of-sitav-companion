@@ -5,6 +5,9 @@
 
 import type { ApprovalRequest, ApprovalStatus, ApprovalDecision } from "@/packages/contracts";
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
+
 const store = new Map<string, ApprovalRequest>();
 
 export function createApprovalRequest(params: {
@@ -82,4 +85,28 @@ export function expireStale(): number {
     }
   });
   return count;
+}
+
+
+// ── Persistence ──────────────────────────────────────────
+const _serviceId = "approval-engine/approval-requests";
+
+function _serializeState(): Record<string, unknown> {
+  return {
+    store: Array.from(store.entries()),
+  };
+}
+
+function _hydrateState(state: Record<string, unknown>): void {
+  if (!state) return;
+  if (state.store) { store.clear(); (state.store as any[]).forEach(([k, v]: any) => store.set(k, v)); }
+}
+
+export async function loadPersistedState(): Promise<void> {
+  const state = await loadServiceState(_serviceId);
+  if (state) _hydrateState(state as Record<string, unknown>);
+}
+
+export function persistState(): void {
+  debouncedSaveServiceState(_serviceId, _serializeState());
 }

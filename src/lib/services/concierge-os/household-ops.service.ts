@@ -5,6 +5,9 @@
 import type { HouseholdTask } from "@/packages/concierge-contracts";
 import type { HouseholdMember, HouseholdKpiSummary } from "@/packages/concierge-contracts/household";
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
+
 export function computeHouseholdKpis(members: HouseholdMember[], tasks: HouseholdTask[]): HouseholdKpiSummary {
   const activeTasks = tasks.filter(t => t.status === "pending" || t.status === "in-progress");
   const overdueTasks = tasks.filter(t => t.dueDate && new Date(t.dueDate) < new Date() && t.status !== "completed");
@@ -59,4 +62,28 @@ export function balanceLoad(tasks: HouseholdTask[], members: HouseholdMember[]):
   }
 
   return tasks;
+}
+
+
+// ── Persistence ──────────────────────────────────────────
+const _serviceId = "concierge-os/household-ops";
+
+function _serializeState(): Record<string, unknown> {
+  return {
+    memberTaskCounts: Array.from(memberTaskCounts.entries()),
+  };
+}
+
+function _hydrateState(state: Record<string, unknown>): void {
+  if (!state) return;
+  if (state.memberTaskCounts) { memberTaskCounts.clear(); (state.memberTaskCounts as any[]).forEach(([k, v]: any) => memberTaskCounts.set(k, v)); }
+}
+
+export async function loadPersistedState(): Promise<void> {
+  const state = await loadServiceState(_serviceId);
+  if (state) _hydrateState(state as Record<string, unknown>);
+}
+
+export function persistState(): void {
+  debouncedSaveServiceState(_serviceId, _serializeState());
 }

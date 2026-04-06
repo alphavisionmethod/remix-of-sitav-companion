@@ -1,3 +1,5 @@
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Investment Office Runtime Service
 // Stateful orchestrator wrapping the 47 domain engines with
@@ -318,4 +320,23 @@ export class InvestmentOfficeRuntimeService {
 
 export function createInvestmentOfficeRuntime(): InvestmentOfficeRuntimeService {
   return new InvestmentOfficeRuntimeService();
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("finance-os/investment-office-runtime", this._serializeState());
+
+  private _serializeState(): Record<string, unknown> {
+    return {
+      connectors: Array.from(this.connectors.entries()),
+    };
+  }
+
+  hydrateState(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.connectors) this.connectors = new Map(state.connectors as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("finance-os/investment-office-runtime");
+    if (state) this.hydrateState(state as Record<string, unknown>);
+  }
 }

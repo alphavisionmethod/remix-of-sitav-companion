@@ -1,3 +1,5 @@
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Preference Memory Service
 // UI and behavioral preferences
@@ -49,4 +51,28 @@ export function exportPreferences(): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   preferences.forEach((p) => { result[p.key] = p.value; });
   return result;
+}
+
+
+// ── Persistence ──────────────────────────────────────────
+const _serviceId = "memory-service/preference-memory";
+
+function _serializeState(): Record<string, unknown> {
+  return {
+    preferences: Array.from(preferences.entries()),
+  };
+}
+
+function _hydrateState(state: Record<string, unknown>): void {
+  if (!state) return;
+  if (state.preferences) { preferences.clear(); (state.preferences as any[]).forEach(([k, v]: any) => preferences.set(k, v)); }
+}
+
+export async function loadPersistedState(): Promise<void> {
+  const state = await loadServiceState(_serviceId);
+  if (state) _hydrateState(state as Record<string, unknown>);
+}
+
+export function persistState(): void {
+  debouncedSaveServiceState(_serviceId, _serializeState());
 }

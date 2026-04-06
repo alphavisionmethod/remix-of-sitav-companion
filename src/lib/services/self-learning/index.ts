@@ -6,6 +6,9 @@
 
 import { supabase } from "@/integrations/supabase/client";
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
+
 export interface LearningSignal {
   id: string;
   domain: string;
@@ -191,6 +194,27 @@ export class SelfLearningService {
     } catch {
       // Silent fail — learning persistence is best-effort
     }
+  }
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("self-learning/self-learning", this._serializeState());
+
+  private _serializeState(): Record<string, unknown> {
+    return {
+      signals: Array.from(this.signals.entries()),
+      patternScores: Array.from(this.patternScores.entries()),
+    };
+  }
+
+  hydrateState(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.signals) this.signals = new Map(state.signals as any);
+    if (state.patternScores) this.patternScores = new Map(state.patternScores as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("self-learning/self-learning");
+    if (state) this.hydrateState(state as Record<string, unknown>);
   }
 }
 

@@ -1,3 +1,5 @@
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 // SITA OS — Financial Literacy Engine
 // Personalized financial education for every household member
 
@@ -191,4 +193,23 @@ export class FinancialLiteracyEngine {
 
 export function createFinancialLiteracyEngine(): FinancialLiteracyEngine {
   return new FinancialLiteracyEngine();
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("life-growth/financial-literacy-engine", this._serializeState());
+
+  private _serializeState(): Record<string, unknown> {
+    return {
+      progress: Array.from(this.progress.entries()),
+    };
+  }
+
+  hydrateState(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.progress) this.progress = new Map(state.progress as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("life-growth/financial-literacy-engine");
+    if (state) this.hydrateState(state as Record<string, unknown>);
+  }
 }

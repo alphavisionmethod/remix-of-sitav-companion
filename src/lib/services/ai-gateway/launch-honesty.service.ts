@@ -6,6 +6,9 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { LaunchHonestyLevel, AILaunchHonesty } from "./types";
 
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
+
 export interface AICapabilityLaunchStatus {
   capabilityId: string;
   capabilityName: string;
@@ -88,4 +91,32 @@ export async function getAILaunchHonestyBoard(): Promise<AICapabilityLaunchStatu
   }
 
   return results.sort((a, b) => a.capabilityId.localeCompare(b.capabilityId));
+}
+
+
+// ── Persistence ──────────────────────────────────────────
+const _serviceId = "ai-gateway/launch-honesty";
+
+function _serializeState(): Record<string, unknown> {
+  return {
+    honestyMap: Array.from(honestyMap.entries()),
+    policyMap: Array.from(policyMap.entries()),
+    requestMap: Array.from(requestMap.entries()),
+  };
+}
+
+function _hydrateState(state: Record<string, unknown>): void {
+  if (!state) return;
+  if (state.honestyMap) { honestyMap.clear(); (state.honestyMap as any[]).forEach(([k, v]: any) => honestyMap.set(k, v)); }
+  if (state.policyMap) { policyMap.clear(); (state.policyMap as any[]).forEach(([k, v]: any) => policyMap.set(k, v)); }
+  if (state.requestMap) { requestMap.clear(); (state.requestMap as any[]).forEach(([k, v]: any) => requestMap.set(k, v)); }
+}
+
+export async function loadPersistedState(): Promise<void> {
+  const state = await loadServiceState(_serviceId);
+  if (state) _hydrateState(state as Record<string, unknown>);
+}
+
+export function persistState(): void {
+  debouncedSaveServiceState(_serviceId, _serializeState());
 }

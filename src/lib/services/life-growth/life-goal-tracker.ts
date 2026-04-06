@@ -1,3 +1,5 @@
+import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// @persistence: os_service_state — state survives refresh via universal adapter
 // SITA OS — Life Goal Tracker
 // Goal-based planning connecting money, time, and skills
 
@@ -262,4 +264,27 @@ export class LifeGoalTracker {
 
 export function createLifeGoalTracker(): LifeGoalTracker {
   return new LifeGoalTracker();
+
+  // ── Persistence ──────────────────────────────────────────
+  private _persist = () => debouncedSaveServiceState("life-growth/life-goal-tracker", this._serializeState());
+
+  private _serializeState(): Record<string, unknown> {
+    return {
+      goals: Array.from(this.goals.entries()),
+      byMember: Array.from(this.byMember.entries()),
+      goalsByCategory: Array.from(this.goalsByCategory.entries()),
+    };
+  }
+
+  hydrateState(state: Record<string, unknown>): void {
+    if (!state) return;
+    if (state.goals) this.goals = new Map(state.goals as any);
+    if (state.byMember) this.byMember = new Map(state.byMember as any);
+    if (state.goalsByCategory) this.goalsByCategory = new Map(state.goalsByCategory as any);
+  }
+
+  async loadPersistedState(): Promise<void> {
+    const state = await loadServiceState("life-growth/life-goal-tracker");
+    if (state) this.hydrateState(state as Record<string, unknown>);
+  }
 }
