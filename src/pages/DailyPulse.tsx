@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, lazy, Suspense } from "react";
+import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { PostArrivalDesktop } from "@/components/sita/PostArrivalDesktop";
 import { useInspector, type InspectorEntity } from "@/contexts/InspectorContext";
 import { SitaPageHeader, SitaButton, SitaSectionHeader, SitaCard } from "@/components/sita/SitaCard";
