@@ -383,7 +383,7 @@ const LeadsInbox = () => {
 
               <div className="flex gap-2 flex-wrap">
                 <SitaButton variant="secondary" size="sm" onClick={() => openEdit(selected)}><FileText className="h-3.5 w-3.5" /> Edit Lead</SitaButton>
-                <SitaButton variant="ghost" size="sm" onClick={() => { if (confirm("Delete this lead?")) deleteMutation.mutate(selected.id); }}>
+                <SitaButton variant="ghost" size="sm" onClick={async () => { if (await confirm({ title: "Delete this lead?", description: "This lead will be permanently removed.", variant: "destructive" })) deleteMutation.mutate(selected.id); }}>
                   <Trash2 className="h-3.5 w-3.5" /> Delete
                 </SitaButton>
               </div>

@@ -133,7 +133,7 @@ const ReservesSavings = () => {
                   <div className="shrink-0 flex flex-col items-end gap-2">
                     <TrustBadge level={pct >= 80 ? "verified" : pct >= 50 ? "review" : "degraded"} label={pct >= 80 ? "Healthy" : pct >= 50 ? "Building" : "Behind"} size="sm" />
                     {!isDemoMode && (
-                      <button onClick={() => deleteReserve.mutate(r.id)} className="text-muted-foreground hover:text-destructive transition-colors">
+                      <button onClick={async () => { if (await confirm({ title: "Delete this reserve goal?", description: "This savings goal will be permanently removed.", variant: "destructive" })) deleteReserve.mutate(r.id); }} className="text-muted-foreground hover:text-destructive transition-colors">
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     )}
