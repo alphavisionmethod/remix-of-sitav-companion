@@ -4,7 +4,7 @@ import { analyzeCashflow, assessBudgetHealth, estimateTax, analyzeBillCalendar, 
 const now = Date.now();
 const makeBill = (overrides = {}) => ({ id: "B-1", vendor: "V", amount: 1000, dueDate: now + 3 * 86400000, category: "rent", recurring: false, status: "upcoming" as const, autopay: false, ...overrides });
 const makeBudget = (overrides = {}) => ({ id: "BU-1", name: "Marketing", category: "marketing", period: "monthly" as const, allocated: 1000, spent: 500, startDate: now, endDate: now + 30 * 86400000, ...overrides });
-const makeInvoice = (overrides = {}) => ({ id: "I-1", customerId: "C1", customerName: "Acme", amount: 1000, issuedDate: now - 10 * 86400000, dueDate: now, status: "pending" as const, paidAmount: 0, daysSinceIssued: 10, ...overrides });
+const makeInvoice = (overrides = {}) => ({ id: "I-1", customerId: "C1", customerName: "Acme", amount: 1000, issuedDate: now - 10 * 86400000, dueDate: now, status: "sent" as const, paidAmount: 0, daysSinceIssued: 10, ...overrides });
 
 describe("Finance OS — analyzeCashflow", () => {
   it("calculates correctly", () => {
