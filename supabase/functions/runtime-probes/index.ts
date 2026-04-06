@@ -21,6 +21,10 @@ interface ProbeResult {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
+  // Rate limit probes to prevent abuse
+  const probeRateCheck = checkRateLimit("runtime-probes:global", 10, 60_000);
+  if (!probeRateCheck.allowed) return rateLimitResponse(probeRateCheck, corsHeaders);
+
   const url = new URL(req.url);
   const qp = QuerySchema.safeParse(Object.fromEntries(url.searchParams));
   if (!qp.success) {

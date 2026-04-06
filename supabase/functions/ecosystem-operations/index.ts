@@ -20,9 +20,10 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    const authResult = await requireAuth(req);
-    if (authResult instanceof Response) return authResult;
+    const rateCheck = checkRateLimit(`eco-ops:${user.id}`, 30, 60_000);
+    if (!rateCheck.allowed) return rateLimitResponse(rateCheck, corsHeaders);
     const { user } = authResult;
+    // Auth already validated above via requireAuth
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;

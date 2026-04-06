@@ -1,8 +1,14 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { requireAdmin } from "../_shared/auth.ts";
+import { logSecurityEvent, getClientIP, getUserAgent } from "../_shared/audit-logger.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
 };
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
