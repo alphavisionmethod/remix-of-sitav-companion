@@ -23,7 +23,8 @@ import {
   ArrowRight, Hash, Zap, XCircle, Calendar, User,
 } from "lucide-react";
 
-import { MOCK_CONTACTS, MOCK_CALL_LOGS, MOCK_CALL_SCRIPTS as MOCK_SCRIPTS, type CallingContact as Contact, type CallingCallLog as CallLog, type CallingCallScript as CallScript } from "@/hooks/useDomainMockData";
+import { MOCK_CONTACTS, MOCK_CALL_LOGS, MOCK_CALL_SCRIPTS as MOCK_SCRIPTS } from "@/lib/mock-data/revenue-calling";
+import type { CallingContact as Contact, CallingCallLog as CallLog, CallingCallScript as CallScript } from "@/lib/mock-data/revenue-calling";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type DialerState = "idle" | "dialing" | "connected" | "wrapping-up";
