@@ -23,8 +23,8 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // ── Standardized admin auth ──
-    const authResult = await requireAdmin(req);
+    // ── Standardized auth ──
+    const authResult = await requireAuth(req);
     if (authResult instanceof Response) return authResult;
     const { user } = authResult;
 
