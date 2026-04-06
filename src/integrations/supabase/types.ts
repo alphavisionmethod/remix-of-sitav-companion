@@ -2497,6 +2497,361 @@ export type Database = {
           },
         ]
       }
+      ai_workforce_approval_queue: {
+        Row: {
+          action_type: string
+          created_at: string
+          description: string | null
+          evidence: Json | null
+          id: string
+          invocation_id: string | null
+          proposed_changes: Json | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          risk_tier: string
+          role_key: string
+          status: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          id?: string
+          invocation_id?: string | null
+          proposed_changes?: Json | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          risk_tier?: string
+          role_key: string
+          status?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          description?: string | null
+          evidence?: Json | null
+          id?: string
+          invocation_id?: string | null
+          proposed_changes?: Json | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          risk_tier?: string
+          role_key?: string
+          status?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_workforce_approval_queue_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_invocations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_workforce_cached_outputs: {
+        Row: {
+          cache_key: string
+          cost_cents: number | null
+          created_at: string
+          expires_at: string
+          id: string
+          output_data: Json
+          role_key: string
+          task_type: string
+          tokens_used: number | null
+          user_id: string
+        }
+        Insert: {
+          cache_key: string
+          cost_cents?: number | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          output_data: Json
+          role_key: string
+          task_type: string
+          tokens_used?: number | null
+          user_id: string
+        }
+        Update: {
+          cache_key?: string
+          cost_cents?: number | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          output_data?: Json
+          role_key?: string
+          task_type?: string
+          tokens_used?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_workforce_invocations: {
+        Row: {
+          approved_by: string | null
+          budget_class: string | null
+          capability_key: string | null
+          completed_at: string | null
+          cost_cents: number | null
+          created_at: string
+          error_message: string | null
+          fallback_occurred: boolean | null
+          human_approved: boolean | null
+          id: string
+          input_summary: string | null
+          latency_ms: number | null
+          mode: string
+          model_used: string | null
+          output_data: Json | null
+          output_summary: string | null
+          provider_used: string | null
+          receipt_id: string | null
+          role_key: string
+          status: string
+          task_type: string
+          tokens_used: number | null
+          user_id: string
+        }
+        Insert: {
+          approved_by?: string | null
+          budget_class?: string | null
+          capability_key?: string | null
+          completed_at?: string | null
+          cost_cents?: number | null
+          created_at?: string
+          error_message?: string | null
+          fallback_occurred?: boolean | null
+          human_approved?: boolean | null
+          id?: string
+          input_summary?: string | null
+          latency_ms?: number | null
+          mode?: string
+          model_used?: string | null
+          output_data?: Json | null
+          output_summary?: string | null
+          provider_used?: string | null
+          receipt_id?: string | null
+          role_key: string
+          status?: string
+          task_type: string
+          tokens_used?: number | null
+          user_id: string
+        }
+        Update: {
+          approved_by?: string | null
+          budget_class?: string | null
+          capability_key?: string | null
+          completed_at?: string | null
+          cost_cents?: number | null
+          created_at?: string
+          error_message?: string | null
+          fallback_occurred?: boolean | null
+          human_approved?: boolean | null
+          id?: string
+          input_summary?: string | null
+          latency_ms?: number | null
+          mode?: string
+          model_used?: string | null
+          output_data?: Json | null
+          output_summary?: string | null
+          provider_used?: string | null
+          receipt_id?: string | null
+          role_key?: string
+          status?: string
+          task_type?: string
+          tokens_used?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_workforce_recommendations: {
+        Row: {
+          accepted_at: string | null
+          action_proposed: string | null
+          created_at: string
+          deferred_until: string | null
+          description: string | null
+          domain: string
+          evidence: Json | null
+          id: string
+          invocation_id: string | null
+          rejected_at: string | null
+          role_key: string
+          severity: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          action_proposed?: string | null
+          created_at?: string
+          deferred_until?: string | null
+          description?: string | null
+          domain?: string
+          evidence?: Json | null
+          id?: string
+          invocation_id?: string | null
+          rejected_at?: string | null
+          role_key: string
+          severity?: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          action_proposed?: string | null
+          created_at?: string
+          deferred_until?: string | null
+          description?: string | null
+          domain?: string
+          evidence?: Json | null
+          id?: string
+          invocation_id?: string | null
+          rejected_at?: string | null
+          role_key?: string
+          severity?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_workforce_recommendations_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_workforce_invocations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_workforce_roles: {
+        Row: {
+          approval_required: boolean
+          budget_class: string
+          cost_per_invocation_cents: number | null
+          created_at: string
+          default_model_tier: string
+          display_name: string
+          id: string
+          is_active: boolean
+          launch_stage: string
+          max_autonomy: string
+          metadata: Json | null
+          prompt_family: string | null
+          purpose: string
+          role_key: string
+          total_cost_cents: number | null
+          total_invocations: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_required?: boolean
+          budget_class?: string
+          cost_per_invocation_cents?: number | null
+          created_at?: string
+          default_model_tier?: string
+          display_name: string
+          id?: string
+          is_active?: boolean
+          launch_stage?: string
+          max_autonomy?: string
+          metadata?: Json | null
+          prompt_family?: string | null
+          purpose: string
+          role_key: string
+          total_cost_cents?: number | null
+          total_invocations?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_required?: boolean
+          budget_class?: string
+          cost_per_invocation_cents?: number | null
+          created_at?: string
+          default_model_tier?: string
+          display_name?: string
+          id?: string
+          is_active?: boolean
+          launch_stage?: string
+          max_autonomy?: string
+          metadata?: Json | null
+          prompt_family?: string | null
+          purpose?: string
+          role_key?: string
+          total_cost_cents?: number | null
+          total_invocations?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_workforce_task_types: {
+        Row: {
+          approval_required: boolean
+          budget_class: string
+          created_at: string
+          description: string | null
+          display_name: string
+          id: string
+          is_active: boolean
+          max_cost_cents: number | null
+          output_schema: Json | null
+          routing_class: string
+          task_key: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_required?: boolean
+          budget_class?: string
+          created_at?: string
+          description?: string | null
+          display_name: string
+          id?: string
+          is_active?: boolean
+          max_cost_cents?: number | null
+          output_schema?: Json | null
+          routing_class?: string
+          task_key: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_required?: boolean
+          budget_class?: string
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          id?: string
+          is_active?: boolean
+          max_cost_cents?: number | null
+          output_schema?: Json | null
+          routing_class?: string
+          task_key?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       ambient_launch_readiness: {
         Row: {
           blockers: string[] | null
@@ -5052,6 +5407,69 @@ export type Database = {
           },
         ]
       }
+      connector_oauth_flows: {
+        Row: {
+          authorization_url: string | null
+          callback_received: boolean | null
+          connector_key: string
+          created_at: string
+          error_message: string | null
+          flow_type: string
+          id: string
+          last_refresh_at: string | null
+          metadata: Json | null
+          provider_name: string
+          refresh_count: number | null
+          scopes_granted: string[] | null
+          scopes_requested: string[] | null
+          status: string
+          token_expires_at: string | null
+          token_obtained: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          authorization_url?: string | null
+          callback_received?: boolean | null
+          connector_key: string
+          created_at?: string
+          error_message?: string | null
+          flow_type?: string
+          id?: string
+          last_refresh_at?: string | null
+          metadata?: Json | null
+          provider_name: string
+          refresh_count?: number | null
+          scopes_granted?: string[] | null
+          scopes_requested?: string[] | null
+          status?: string
+          token_expires_at?: string | null
+          token_obtained?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          authorization_url?: string | null
+          callback_received?: boolean | null
+          connector_key?: string
+          created_at?: string
+          error_message?: string | null
+          flow_type?: string
+          id?: string
+          last_refresh_at?: string | null
+          metadata?: Json | null
+          provider_name?: string
+          refresh_count?: number | null
+          scopes_granted?: string[] | null
+          scopes_requested?: string[] | null
+          status?: string
+          token_expires_at?: string | null
+          token_obtained?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       connector_oauth_tokens: {
         Row: {
           access_token: string | null
@@ -5320,6 +5738,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      connector_sync_jobs: {
+        Row: {
+          conflict_resolution: string
+          connector_key: string
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          id: string
+          last_sync_at: string | null
+          metadata: Json | null
+          next_sync_at: string | null
+          records_failed: number | null
+          records_synced: number | null
+          schedule_cron: string | null
+          status: string
+          sync_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          conflict_resolution?: string
+          connector_key: string
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          last_sync_at?: string | null
+          metadata?: Json | null
+          next_sync_at?: string | null
+          records_failed?: number | null
+          records_synced?: number | null
+          schedule_cron?: string | null
+          status?: string
+          sync_type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          conflict_resolution?: string
+          connector_key?: string
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          last_sync_at?: string | null
+          metadata?: Json | null
+          next_sync_at?: string | null
+          records_failed?: number | null
+          records_synced?: number | null
+          schedule_cron?: string | null
+          status?: string
+          sync_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       connector_sync_logs: {
         Row: {
@@ -7304,6 +7779,66 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verification_flows?: Json
+        }
+        Relationships: []
+      }
+      domain_runtime_status: {
+        Row: {
+          created_at: string
+          demo_provider_exists: boolean | null
+          domain_key: string
+          domain_name: string
+          empty_state_handled: boolean | null
+          has_db_tables: boolean | null
+          has_edge_functions: boolean | null
+          has_real_data: boolean | null
+          has_real_service: boolean | null
+          has_rls_policies: boolean | null
+          id: string
+          last_verified_at: string | null
+          notes: string | null
+          runtime_class: string
+          truth_score: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          demo_provider_exists?: boolean | null
+          domain_key: string
+          domain_name: string
+          empty_state_handled?: boolean | null
+          has_db_tables?: boolean | null
+          has_edge_functions?: boolean | null
+          has_real_data?: boolean | null
+          has_real_service?: boolean | null
+          has_rls_policies?: boolean | null
+          id?: string
+          last_verified_at?: string | null
+          notes?: string | null
+          runtime_class?: string
+          truth_score?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          demo_provider_exists?: boolean | null
+          domain_key?: string
+          domain_name?: string
+          empty_state_handled?: boolean | null
+          has_db_tables?: boolean | null
+          has_edge_functions?: boolean | null
+          has_real_data?: boolean | null
+          has_real_service?: boolean | null
+          has_rls_policies?: boolean | null
+          id?: string
+          last_verified_at?: string | null
+          notes?: string | null
+          runtime_class?: string
+          truth_score?: number | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -11366,6 +11901,50 @@ export type Database = {
           },
         ]
       }
+      launch_gate_checks: {
+        Row: {
+          check_name: string
+          check_type: string
+          checked_at: string
+          checked_by: string | null
+          evidence: string | null
+          gate_id: string
+          id: string
+          passed: boolean
+          user_id: string
+        }
+        Insert: {
+          check_name: string
+          check_type?: string
+          checked_at?: string
+          checked_by?: string | null
+          evidence?: string | null
+          gate_id: string
+          id?: string
+          passed?: boolean
+          user_id: string
+        }
+        Update: {
+          check_name?: string
+          check_type?: string
+          checked_at?: string
+          checked_by?: string | null
+          evidence?: string | null
+          gate_id?: string
+          id?: string
+          passed?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "launch_gate_checks_gate_id_fkey"
+            columns: ["gate_id"]
+            isOneToOne: false
+            referencedRelation: "launch_gates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       launch_gate_criteria: {
         Row: {
           category: string
@@ -11421,49 +12000,97 @@ export type Database = {
       }
       launch_gates: {
         Row: {
+          blockers: string[] | null
           blockers_count: number | null
           created_at: string
           criteria_met: number | null
           criteria_total: number | null
           current_truth_score: number | null
+          demo_available: boolean | null
+          domain: string | null
           environment: string | null
+          evidence: Json | null
+          feature_key: string | null
+          feature_name: string | null
+          gate_score: number | null
+          has_error_handling: boolean | null
+          has_real_auth: boolean | null
+          has_real_backend: boolean | null
+          has_real_data: boolean | null
+          has_tests: boolean | null
+          honesty_class: string | null
           id: string
           last_evaluated_at: string | null
+          last_verified_at: string | null
           metadata: Json | null
           name: string
+          notes: string | null
           state: string | null
+          status: string | null
           truth_threshold: number | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          blockers?: string[] | null
           blockers_count?: number | null
           created_at?: string
           criteria_met?: number | null
           criteria_total?: number | null
           current_truth_score?: number | null
+          demo_available?: boolean | null
+          domain?: string | null
           environment?: string | null
+          evidence?: Json | null
+          feature_key?: string | null
+          feature_name?: string | null
+          gate_score?: number | null
+          has_error_handling?: boolean | null
+          has_real_auth?: boolean | null
+          has_real_backend?: boolean | null
+          has_real_data?: boolean | null
+          has_tests?: boolean | null
+          honesty_class?: string | null
           id?: string
           last_evaluated_at?: string | null
+          last_verified_at?: string | null
           metadata?: Json | null
           name?: string
+          notes?: string | null
           state?: string | null
+          status?: string | null
           truth_threshold?: number | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          blockers?: string[] | null
           blockers_count?: number | null
           created_at?: string
           criteria_met?: number | null
           criteria_total?: number | null
           current_truth_score?: number | null
+          demo_available?: boolean | null
+          domain?: string | null
           environment?: string | null
+          evidence?: Json | null
+          feature_key?: string | null
+          feature_name?: string | null
+          gate_score?: number | null
+          has_error_handling?: boolean | null
+          has_real_auth?: boolean | null
+          has_real_backend?: boolean | null
+          has_real_data?: boolean | null
+          has_tests?: boolean | null
+          honesty_class?: string | null
           id?: string
           last_evaluated_at?: string | null
+          last_verified_at?: string | null
           metadata?: Json | null
           name?: string
+          notes?: string | null
           state?: string | null
+          status?: string | null
           truth_threshold?: number | null
           updated_at?: string
           user_id?: string
@@ -17879,6 +18506,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      surface_portability_registry: {
+        Row: {
+          capability_key: string
+          capability_name: string
+          created_at: string
+          desktop_ready: boolean | null
+          id: string
+          mobile_ready: boolean | null
+          notes: string | null
+          portability_score: number | null
+          response_envelope_neutral: boolean | null
+          surface_adapter_exists: boolean | null
+          tablet_ready: boolean | null
+          updated_at: string
+          user_id: string
+          watch_ready: boolean | null
+          web_ready: boolean | null
+        }
+        Insert: {
+          capability_key: string
+          capability_name: string
+          created_at?: string
+          desktop_ready?: boolean | null
+          id?: string
+          mobile_ready?: boolean | null
+          notes?: string | null
+          portability_score?: number | null
+          response_envelope_neutral?: boolean | null
+          surface_adapter_exists?: boolean | null
+          tablet_ready?: boolean | null
+          updated_at?: string
+          user_id: string
+          watch_ready?: boolean | null
+          web_ready?: boolean | null
+        }
+        Update: {
+          capability_key?: string
+          capability_name?: string
+          created_at?: string
+          desktop_ready?: boolean | null
+          id?: string
+          mobile_ready?: boolean | null
+          notes?: string | null
+          portability_score?: number | null
+          response_envelope_neutral?: boolean | null
+          surface_adapter_exists?: boolean | null
+          tablet_ready?: boolean | null
+          updated_at?: string
+          user_id?: string
+          watch_ready?: boolean | null
+          web_ready?: boolean | null
+        }
+        Relationships: []
       }
       surface_readiness_records: {
         Row: {
