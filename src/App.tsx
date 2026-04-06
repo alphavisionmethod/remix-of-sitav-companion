@@ -1154,6 +1154,12 @@ const App = () => (
                     <Route path="/admin/isa/scope-policy" element={<ISA05ScopePolicyMatrixBoard />} />
                     <Route path="/admin/isa/account-graph" element={<ISA06UnifiedAccountGraphExplorer />} />
                     <Route path="/admin/isa/truth-board" element={<ISA07AuthConnectorTruthBoard />} />
+                    <Route path="/admin/aig/providers" element={<AIG01ProviderRegistry />} />
+                    <Route path="/admin/aig/models" element={<AIG02ModelRegistry />} />
+                    <Route path="/admin/aig/routing" element={<AIG03RoutingMatrix />} />
+                    <Route path="/admin/aig/budget" element={<AIG04BudgetCenter />} />
+                    <Route path="/admin/aig/receipts" element={<AIG05ReceiptsExplorer />} />
+                    <Route path="/admin/aig/launch-truth" element={<AIG06LaunchTruth />} />
                     <Route path="/admin/uao/presence" element={<UAO01PresenceContinuity />} />
                     <Route path="/admin/uao/devices" element={<UAO02ConnectedDevices />} />
                     <Route path="/admin/uao/team" element={<UAO03AmbientTeamControl />} />
