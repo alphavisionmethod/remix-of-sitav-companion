@@ -137,6 +137,14 @@ export const FLAGSHIP_LOOP_SEEDS: FlagshipLoopSeed[] = [
     ux_quality: "beta",
     launch_claim_status: "internal_only",
     demo_vs_real: "mostly_real",
+    description: "An operator can inspect runtime truth, review recommendations, approve/bind work, and track execution and outcomes.",
+    primary_persona: "operator",
+    launch_importance: "operator_critical",
+    status: "active",
+    owner_team: "platform",
+    ux_quality_target: "beta",
+    proof_required: true,
+    launch_honesty_class: "internal_only",
   },
 ];
 
