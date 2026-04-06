@@ -3,10 +3,10 @@
 // Full analytics segregation by mode, surface, capability
 // ═══════════════════════════════════════════════════════════════
 
-import type { RealityModeKey } from "../reality-mode-registry";
-import type { SurfaceClass } from "../surface-class-registry";
-import { classifyRoute } from "../surface-class-registry";
-import { resolveMode } from "../reality-mode-resolver";
+import type { RealityModeKey } from "./reality-mode-registry";
+import type { SurfaceClass } from "./surface-class-registry";
+import { classifyRoute } from "./surface-class-registry";
+import { resolveMode } from "./reality-mode-resolver";
 
 // ── Analytics Event Schema ──────────────────────────────────────
 

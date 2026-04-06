@@ -4,10 +4,10 @@
 // Prevents raw mock imports, enforces side-effect policies
 // ═══════════════════════════════════════════════════════════════
 
-import type { RealityModeKey } from "../reality-mode-registry";
-import { getModeDefinition } from "../reality-mode-registry";
-import { resolveSurfaceModeBinding, type SurfaceModeBinding } from "../surface-class-registry";
-import { resolveMode } from "../reality-mode-resolver";
+import type { RealityModeKey } from "./reality-mode-registry";
+import { getModeDefinition } from "./reality-mode-registry";
+import { resolveSurfaceModeBinding, type SurfaceModeBinding } from "./surface-class-registry";
+import { resolveMode } from "./reality-mode-resolver";
 
 // ── Types ───────────────────────────────────────────────────────
 
