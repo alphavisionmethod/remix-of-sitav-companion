@@ -156,6 +156,16 @@ const AND01AndroidEcosystemCenter = () => {
                         <div className="flex items-center gap-1">{trust?.keystore_secured ? <CheckCircle2 className="h-3 w-3 text-green-500" /> : <AlertTriangle className="h-3 w-3 text-muted-foreground" />}Keystore</div>
                         <div className="flex items-center gap-1">{trust?.attestation_verified ? <CheckCircle2 className="h-3 w-3 text-green-500" /> : <AlertTriangle className="h-3 w-3 text-muted-foreground" />}Attestation</div>
                       </div>
+                      <div className="flex gap-1 mt-2">
+                        {trust && (
+                          <Button size="sm" variant="outline" className="text-[10px] h-6 px-2" onClick={() => updateTrust.mutate({ id: trust.id, biometric_verified: !trust.biometric_verified })}>
+                            {trust.biometric_verified ? "Revoke Trust" : "Re-verify"}
+                          </Button>
+                        )}
+                        <Button size="sm" variant="ghost" className="text-[10px] h-6 px-2 text-destructive" onClick={() => removeDevice.mutate(device.id)}>
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 );
