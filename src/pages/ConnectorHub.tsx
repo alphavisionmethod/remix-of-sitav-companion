@@ -105,7 +105,10 @@ const ConnectorHub = () => {
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       {conn.status === "active" ? <Wifi className="h-4 w-4 text-primary shrink-0" /> : conn.status === "error" ? <WifiOff className="h-4 w-4 text-destructive shrink-0" /> : <WifiOff className="h-4 w-4 text-muted-foreground shrink-0" />}
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-foreground capitalize">{conn.service}</p>
+                        <div className="flex items-center gap-1.5">
+                          <Circle className={`h-2 w-2 fill-current ${getHealthColor(conn.id)}`} />
+                          <p className="text-sm font-medium text-foreground capitalize">{conn.service}</p>
+                        </div>
                         <p className="text-xs text-muted-foreground">
                           {conn.last_sync_at ? `Last sync: ${new Date(conn.last_sync_at).toLocaleString()}` : "Never synced"}
                         </p>
