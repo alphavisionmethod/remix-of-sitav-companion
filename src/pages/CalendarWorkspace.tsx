@@ -6,13 +6,17 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { format, addDays, startOfWeek, startOfMonth, endOfMonth, isSameDay, isToday, isBefore, parseISO, eachDayOfInterval } from "date-fns";
-import { Calendar, Clock, AlertTriangle, Users, Briefcase, Home, ChevronLeft, ChevronRight, Plus, MapPin, Video, Phone, Zap } from "lucide-react";
+import { Calendar, Clock, AlertTriangle, Users, Briefcase, Home, ChevronLeft, ChevronRight, Plus, MapPin, Video, Phone, Zap, Trash2, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_CALENDAR_EVENTS, type CalWorkspaceEvent as CalEvent } from "@/lib/demo-data/calendar-workspace";
 import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
+import { useCreateCalendarEvent, useUpdateCalendarEvent, useDeleteCalendarEvent } from "@/hooks/use-calendar-mutations";
 
 type CalView = "day" | "week" | "month" | "agenda";
 
