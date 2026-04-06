@@ -5,9 +5,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Apple, Smartphone, Watch, Shield, Heart, Wifi, Monitor, ChevronRight, CheckCircle2, AlertTriangle, Clock, Zap, Activity, RefreshCw, Loader2, Database } from "lucide-react";
+import { Apple, Smartphone, Watch, Shield, Heart, Wifi, Monitor, ChevronRight, CheckCircle2, AlertTriangle, Clock, Zap, Activity, RefreshCw, Loader2, Database, Radio, Bell } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords, useEcosystemHealthConsents, useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
+import { useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords, useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes, useEcosystemContinuityEvents, useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   iphone: { title: "iPhone Shell", icon: Smartphone, desc: "Primary mobile — task, approval, advisor", tech: ["Swift/SwiftUI", "WebView hybrid"], capabilities: ["push", "biometric", "camera", "haptic"] },
@@ -33,6 +33,9 @@ const APL01AppleEcosystemCenter = () => {
   const { data: launchData, isLoading: launchLoading } = useEcosystemLaunchReadiness("apple");
   const { data: trustRecords } = useEcosystemTrustRecords("apple");
   const { data: healthConsents } = useEcosystemHealthConsents("apple");
+  const { data: wearableConfigs } = useEcosystemWearableConfigs("apple");
+  const { data: pushRoutes } = useEcosystemPushRoutes("apple");
+  const { data: continuityEvents } = useEcosystemContinuityEvents("apple");
   const seedMutation = useSeedEcosystemData();
 
   const hasData = (devices?.length ?? 0) > 0;
@@ -95,6 +98,9 @@ const APL01AppleEcosystemCenter = () => {
           <TabsTrigger value="surfaces">Surfaces</TabsTrigger>
           <TabsTrigger value="capabilities">Provider Family</TabsTrigger>
           <TabsTrigger value="launch">Launch Readiness</TabsTrigger>
+          <TabsTrigger value="wearables">Wearables</TabsTrigger>
+          <TabsTrigger value="push">Push Routes</TabsTrigger>
+          <TabsTrigger value="continuity">Continuity</TabsTrigger>
         </TabsList>
 
         <TabsContent value="surfaces">
@@ -202,6 +208,91 @@ const APL01AppleEcosystemCenter = () => {
                         {rec.blockers.map((b: string, i: number) => <p key={i} className="text-[10px] text-muted-foreground pl-4">• {b}</p>)}
                       </div>
                     )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+
+        {/* ── Wearables Tab ── */}
+        <TabsContent value="wearables">
+          {!wearableConfigs?.length ? (
+            <Card><CardContent className="py-12 text-center text-muted-foreground">No wearable configurations found. Seed Apple data first.</CardContent></Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {wearableConfigs.map((wc: any) => (
+                <Card key={wc.id}>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm flex items-center gap-2"><Watch className="h-4 w-4 text-primary" />{wc.config_name || wc.wearable_type}</CardTitle>
+                    <CardDescription className="text-xs">{wc.wearable_type} · {wc.complication_type || "standard"}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <div className="flex gap-2">
+                      <Badge variant={wc.haptic_enabled ? "default" : "outline"} className="text-[10px]">Haptic {wc.haptic_enabled ? "✓" : "✗"}</Badge>
+                      <Badge variant={wc.always_on ? "default" : "outline"} className="text-[10px]">Always-On {wc.always_on ? "✓" : "✗"}</Badge>
+                    </div>
+                    {wc.refresh_interval_sec && <div className="text-[10px] text-muted-foreground">Refresh: {wc.refresh_interval_sec}s</div>}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+
+        {/* ── Push Routes Tab ── */}
+        <TabsContent value="push">
+          {!pushRoutes?.length ? (
+            <Card><CardContent className="py-12 text-center text-muted-foreground">No push routes configured. Seed Apple data first.</CardContent></Card>
+          ) : (
+            <Card>
+              <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Bell className="h-4 w-4" />Push Routes</CardTitle></CardHeader>
+              <CardContent>
+                <table className="w-full text-xs">
+                  <thead><tr className="border-b">
+                    <th className="text-left p-2">Route</th>
+                    <th className="p-2">Channel</th>
+                    <th className="p-2">Priority</th>
+                    <th className="p-2">Active</th>
+                  </tr></thead>
+                  <tbody>
+                    {pushRoutes.map((pr: any) => (
+                      <tr key={pr.id} className="border-b hover:bg-muted/30">
+                        <td className="p-2 font-mono">{pr.route_key || pr.category}</td>
+                        <td className="p-2 text-center">{pr.channel || "apns"}</td>
+                        <td className="p-2 text-center"><Badge variant={pr.priority === "high" ? "destructive" : "secondary"}>{pr.priority || "normal"}</Badge></td>
+                        <td className="p-2 text-center">{pr.active !== false ? <CheckCircle2 className="h-3.5 w-3.5 text-green-500 mx-auto" /> : <AlertTriangle className="h-3.5 w-3.5 text-muted-foreground mx-auto" />}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+
+        {/* ── Continuity Tab ── */}
+        <TabsContent value="continuity">
+          {!continuityEvents?.length ? (
+            <Card><CardContent className="py-12 text-center text-muted-foreground">No continuity events recorded. Seed Apple data first.</CardContent></Card>
+          ) : (
+            <div className="space-y-3">
+              {continuityEvents.map((ce: any) => (
+                <Card key={ce.id}>
+                  <CardContent className="py-3 px-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Radio className="h-4 w-4 text-primary" />
+                        <div>
+                          <p className="text-sm font-medium">{ce.event_type || ce.handoff_type}</p>
+                          <p className="text-xs text-muted-foreground">{ce.source_device} → {ce.target_device}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant={ce.success ? "default" : "destructive"} className="text-[10px]">{ce.success ? "Success" : "Failed"}</Badge>
+                        {ce.latency_ms && <span className="text-[10px] text-muted-foreground">{ce.latency_ms}ms</span>}
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
