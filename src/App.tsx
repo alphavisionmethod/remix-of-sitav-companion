@@ -283,6 +283,17 @@ const MSA03CapabilityPortability = lazy(() => import("./pages/admin/MSA03Capabil
 const MSA04SurfaceAdapterRegistry = lazy(() => import("./pages/admin/MSA04SurfaceAdapterRegistry"));
 const MSA05CompatibilityRadar = lazy(() => import("./pages/admin/MSA05CompatibilityRadar"));
 
+const PFA01ProviderFamilyRegistry = lazy(() => import("./pages/admin/PFA01ProviderFamilyRegistry"));
+const PFA02ProviderCapabilityMatrix = lazy(() => import("./pages/admin/PFA02ProviderCapabilityMatrix"));
+const PFA03OAuthClientRegistry = lazy(() => import("./pages/admin/PFA03OAuthClientRegistry"));
+const PFA04ConsentLedgerExplorer = lazy(() => import("./pages/admin/PFA04ConsentLedgerExplorer"));
+const PFA05ScopePolicyMatrix = lazy(() => import("./pages/admin/PFA05ScopePolicyMatrix"));
+const PFA06PermissionUpgradeCenter = lazy(() => import("./pages/admin/PFA06PermissionUpgradeCenter"));
+const PFA07ConnectorHealthDrift = lazy(() => import("./pages/admin/PFA07ConnectorHealthDrift"));
+const PFA08AccountGraphExplorer = lazy(() => import("./pages/admin/PFA08AccountGraphExplorer"));
+const PFA09ConnectedAccountsCenter = lazy(() => import("./pages/admin/PFA09ConnectedAccountsCenter"));
+const PFA10IntegrationLaunchHonesty = lazy(() => import("./pages/admin/PFA10IntegrationLaunchHonesty"));
+
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
