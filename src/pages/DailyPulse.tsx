@@ -136,6 +136,7 @@ const DailyPulse = () => {
   const [seeding, setSeeding] = useState(false);
   const [aiInsights, setAiInsights] = useState<Record<string, string>>({});
   const aiInsight = useAIInsight();
+  const hour = new Date().getHours();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
   const modeConfig = MISSION_MODE_CONFIG[missionMode.id] || MISSION_MODE_CONFIG["normal"];
