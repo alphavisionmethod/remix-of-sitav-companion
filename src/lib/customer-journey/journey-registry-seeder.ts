@@ -58,7 +58,7 @@ export async function seedJourneyRegistry(): Promise<SeedResult> {
     journey_key: j.journeyKey,
     display_name: j.displayName,
     persona: j.persona as string,
-    surface_class: personaToSurface(j.persona),
+    surface_class: j.surfaceClass || personaToSurface(j.persona),
     domain_family: domainToFamily(j.domain),
     route_key: j.routeFamily,
     priority_class: j.launchImportance === "launch_blocker" ? "p0" : j.launchImportance === "pilot_blocker" ? "p0" : "p1",
