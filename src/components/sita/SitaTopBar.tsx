@@ -129,54 +129,60 @@ export const SitaTopBar = ({
 
         <div className="h-4 w-px bg-border/40 mx-0.5" />
 
-        {/* Mission Mode */}
-        <Popover open={missionOpen} onOpenChange={setMissionOpen}>
-          <PopoverTrigger asChild>
-            <button className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium transition-colors hover:bg-secondary/60">
-              <span>{missionMode.icon}</span>
-              <span className="text-muted-foreground hidden sm:inline">{missionMode.name}</span>
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className="w-72 p-1.5" align="end" sideOffset={8}>
-            <div className="space-y-0.5">
-              {MISSION_MODES.map(m => (
-                <button
-                  key={m.id}
-                  onClick={() => handleMissionSelect(m.id)}
-                  className={cn(
-                    "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors",
-                    missionMode.id === m.id ? "bg-primary/10 text-primary" : "hover:bg-secondary/60 text-foreground"
-                  )}
-                >
-                  <span className="text-base shrink-0">{m.icon}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-medium">{m.name}</p>
-                    <p className="text-[10px] text-muted-foreground truncate">{m.description}</p>
-                  </div>
-                  {missionMode.id === m.id && <Check className="h-3.5 w-3.5 text-primary shrink-0" />}
-                </button>
-              ))}
-            </div>
-          </PopoverContent>
-        </Popover>
+        {/* Mission Mode — hide on mobile */}
+        <div className="hidden sm:block">
+          <Popover open={missionOpen} onOpenChange={setMissionOpen}>
+            <PopoverTrigger asChild>
+              <button className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium transition-colors hover:bg-secondary/60">
+                <span>{missionMode.icon}</span>
+                <span className="text-muted-foreground hidden sm:inline">{missionMode.name}</span>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-72 p-1.5" align="end" sideOffset={8}>
+              <div className="space-y-0.5">
+                {MISSION_MODES.map(m => (
+                  <button
+                    key={m.id}
+                    onClick={() => handleMissionSelect(m.id)}
+                    className={cn(
+                      "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors",
+                      missionMode.id === m.id ? "bg-primary/10 text-primary" : "hover:bg-secondary/60 text-foreground"
+                    )}
+                  >
+                    <span className="text-base shrink-0">{m.icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] font-medium">{m.name}</p>
+                      <p className="text-[10px] text-muted-foreground truncate">{m.description}</p>
+                    </div>
+                    {missionMode.id === m.id && <Check className="h-3.5 w-3.5 text-primary shrink-0" />}
+                  </button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
 
-        <div className="h-4 w-px bg-border/40 mx-0.5" />
+        <div className="h-4 w-px bg-border/40 mx-0.5 hidden sm:block" />
 
-        {/* Focus + Calm */}
-        <button
-          onClick={toggleFocus}
-          className={cn("flex h-7 w-7 items-center justify-center rounded-lg transition-colors", isFocus ? "bg-primary/15 text-primary" : "text-muted-foreground hover:bg-secondary/60")}
-          title={isFocus ? "Exit Focus Mode" : "Focus Mode"}
-        >
-          {isFocus ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-        </button>
-        <button
-          onClick={toggleCalm}
-          className={cn("flex h-7 w-7 items-center justify-center rounded-lg transition-colors", isCalm ? "bg-primary/15 text-primary" : "text-muted-foreground hover:bg-secondary/60")}
-          title={isCalm ? "Exit Calm Mode" : "Calm Mode"}
-        >
-          <Shield className="h-3.5 w-3.5" />
-        </button>
+        {/* Focus + Calm — desktop only */}
+        <div className="hidden sm:flex items-center gap-0.5">
+          <button
+            onClick={toggleFocus}
+            className={cn("flex h-7 w-7 items-center justify-center rounded-lg transition-colors", isFocus ? "bg-primary/15 text-primary" : "text-muted-foreground hover:bg-secondary/60")}
+            title={isFocus ? "Exit Focus Mode" : "Focus Mode"}
+            aria-label={isFocus ? "Exit Focus Mode" : "Focus Mode"}
+          >
+            {isFocus ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+          </button>
+          <button
+            onClick={toggleCalm}
+            className={cn("flex h-7 w-7 items-center justify-center rounded-lg transition-colors", isCalm ? "bg-primary/15 text-primary" : "text-muted-foreground hover:bg-secondary/60")}
+            title={isCalm ? "Exit Calm Mode" : "Calm Mode"}
+            aria-label={isCalm ? "Exit Calm Mode" : "Calm Mode"}
+          >
+            <Shield className="h-3.5 w-3.5" />
+          </button>
+        </div>
 
         <div className="h-4 w-px bg-border/40 mx-0.5" />
 
