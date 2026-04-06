@@ -14,6 +14,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Progress } from "@/components/ui/progress";
 import { getWorkforceRoles, getRecentInvocations } from "@/lib/services/ai-workforce/workforce-orchestrator";
 import { Users, X, ChevronRight, TrendingUp, TrendingDown, Filter } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type SortKey = "cost" | "invocations" | "name" | "stage";
 
