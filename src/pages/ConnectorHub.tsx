@@ -47,11 +47,26 @@ const ConnectorHub = () => {
     },
   });
 
+  const { data: healthResult } = useQuery<ConnectorHealthResult>({
+    queryKey: ["connector_health", user?.id],
+    enabled: !!user,
+    queryFn: fetchConnectorHealth,
+    refetchInterval: 60_000,
+  });
+
   const filtered = filter === "all" ? connectors : connectors.filter(c => c.status === filter);
   const selected = connectors.find(c => c.id === selectedId);
   const selectedLogs = syncLogs.filter(l => l.connector_id === selectedId);
   const selectedCred = credentials.find(c => selected && c.connector_id === selected.id);
   const activeCount = connectors.filter(c => c.status === "active").length;
+
+  const getHealthColor = (connectorId: string) => {
+    const health = healthResult?.connectors.find(h => h.connectorId === connectorId);
+    if (!health) return "text-muted-foreground";
+    if (health.status === "up") return "text-primary";
+    if (health.status === "degraded") return "text-yellow-500";
+    return "text-destructive";
+  };
 
   return (
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
