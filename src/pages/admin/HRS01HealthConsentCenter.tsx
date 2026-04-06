@@ -29,6 +29,19 @@ const HRS01HealthConsentCenter = () => {
     Object.fromEntries(DEMO_CONSENT_CATEGORIES.map(c => [c.key, false]))
   );
   const { data: dbConsents, isLoading } = useHealthSignalConsents();
+  const toggleConsent = useToggleSignalConsent();
+
+  // Sync local state from DB consents
+  useEffect(() => {
+    if (dbConsents?.length) {
+      const fromDb: Record<string, boolean> = {};
+      DEMO_CONSENT_CATEGORIES.forEach(c => {
+        const match = dbConsents.find((dc: any) => dc.consent_scope === c.key && dc.read_permission && !dc.revoked_at);
+        fromDb[c.key] = !!match;
+      });
+      setEnabledCats(fromDb);
+    }
+  }, [dbConsents]);
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
