@@ -53,6 +53,7 @@ const AIT02RoleRegistry = lazy(() => import("@/pages/admin/AIT02RoleRegistry"));
 const AIT03TaskInvocation = lazy(() => import("@/pages/admin/AIT03TaskInvocation"));
 
 // AIT04-AIT08: AI Engineering Team (named exports)
+const AIT04ActivityFeed = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT04ActivityFeed })));
 const AIT05CostEfficiency = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT05CostEfficiency })));
 const AIT06Recommendations = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT06Recommendations })));
 const AIT07ApprovalQueue = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT07ApprovalQueue })));
