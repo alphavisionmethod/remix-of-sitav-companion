@@ -25,19 +25,20 @@ import {
   getWatchlist, getTradeReviewPackets, getExecutionIntents,
   getOpportunityScores, getAvailableTrustModes, getInvestmentTrustMode,
 } from "@/lib/services/finance-os/investment-office.service";
-import { MOCK_CAPITAL_BUCKETS, MOCK_POSITIONS as MOCK_INV_POSITIONS, MOCK_THESES as MOCK_INV_THESES } from "@/lib/mock-data/investment";
+import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investment-data";
+import { MOCK_CAPITAL_BUCKETS, MOCK_POSITIONS as FALLBACK_POSITIONS, MOCK_THESES as FALLBACK_THESES } from "@/lib/mock-data/investment";
 import { INVESTMENT_POLICY_RULES } from "@/lib/core-services/investment-policy-rules";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
-// ── Mock Data ───────────────────────────────────────────────────
-
-
-
-
+// ── Derived Data (computed from hook data in main component, passed via context) ──
+// Module-level fallback for sub-components that render before hooks resolve
 const MOCK_REGIME = detectRegime({ vix: 19, sp500Change30d: 2.4, yieldSpread: 1.2, correlationIndex: 0.38, pendingEvents: ["nfp release Friday"] });
-const capitalMap = buildCapitalMap(MOCK_CAPITAL_BUCKETS);
-const riskMetrics = analyzePortfolioRisk(MOCK_INV_POSITIONS, capitalMap.reserveCapital);
-const stressScenarios = runStressScenarios(MOCK_INV_POSITIONS, capitalMap.reserveCapital);
+let MOCK_CAPITAL_BUCKETS_REF = MOCK_CAPITAL_BUCKETS;
+let MOCK_INV_POSITIONS = FALLBACK_POSITIONS;
+let MOCK_INV_THESES = FALLBACK_THESES;
+let capitalMap = buildCapitalMap(MOCK_CAPITAL_BUCKETS_REF);
+let riskMetrics = analyzePortfolioRisk(MOCK_INV_POSITIONS, capitalMap.reserveCapital);
+let stressScenarios = runStressScenarios(MOCK_INV_POSITIONS, capitalMap.reserveCapital);
 
 const regimeColor = (value: string) => {
   if (["extreme", "crisis", "flight-to-safety", "stressed", "dislocating", "strong-down"].includes(value)) return "text-destructive bg-destructive/10";
@@ -454,7 +455,14 @@ const SettingsView = () => {
 
 const InvestmentOffice = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const { data: hookBuckets } = useCapitalBuckets();
+  const { data: hookPositions } = usePositions();
+  const { data: hookTheses } = useTheses();
 
+  // Update module-level refs so sub-components pick up hook data
+  if (hookBuckets?.length) { MOCK_CAPITAL_BUCKETS_REF = hookBuckets as any; capitalMap = buildCapitalMap(MOCK_CAPITAL_BUCKETS_REF); }
+  if (hookPositions?.length) { MOCK_INV_POSITIONS = hookPositions as any; riskMetrics = analyzePortfolioRisk(MOCK_INV_POSITIONS, capitalMap.reserveCapital); stressScenarios = runStressScenarios(MOCK_INV_POSITIONS, capitalMap.reserveCapital); }
+  if (hookTheses?.length) { MOCK_INV_THESES = hookTheses as any; }
   const tabs = [
     { key: "overview", label: "Capital Map" },
     { key: "portfolio", label: "Portfolio" },
