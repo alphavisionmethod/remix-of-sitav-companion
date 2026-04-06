@@ -304,6 +304,13 @@ const ISA05ScopePolicyMatrixBoard = lazy(() => import("./pages/admin/ISA05ScopeP
 const ISA06UnifiedAccountGraphExplorer = lazy(() => import("./pages/admin/ISA06UnifiedAccountGraphExplorer"));
 const ISA07AuthConnectorTruthBoard = lazy(() => import("./pages/admin/ISA07AuthConnectorTruthBoard"));
 
+const AIG01ProviderRegistry = lazy(() => import("./pages/admin/AIG01ProviderRegistry"));
+const AIG02ModelRegistry = lazy(() => import("./pages/admin/AIG02ModelRegistry"));
+const AIG03RoutingMatrix = lazy(() => import("./pages/admin/AIG03RoutingMatrix"));
+const AIG04BudgetCenter = lazy(() => import("./pages/admin/AIG04BudgetCenter"));
+const AIG05ReceiptsExplorer = lazy(() => import("./pages/admin/AIG05ReceiptsExplorer"));
+const AIG06LaunchTruth = lazy(() => import("./pages/admin/AIG06LaunchTruth"));
+
 const UAO01PresenceContinuity = lazy(() => import("./pages/admin/UAO01PresenceContinuity"));
 const UAO02ConnectedDevices = lazy(() => import("./pages/admin/UAO02ConnectedDevices"));
 const UAO03AmbientTeamControl = lazy(() => import("./pages/admin/UAO03AmbientTeamControl"));
@@ -1147,6 +1154,12 @@ const App = () => (
                     <Route path="/admin/isa/scope-policy" element={<ISA05ScopePolicyMatrixBoard />} />
                     <Route path="/admin/isa/account-graph" element={<ISA06UnifiedAccountGraphExplorer />} />
                     <Route path="/admin/isa/truth-board" element={<ISA07AuthConnectorTruthBoard />} />
+                    <Route path="/admin/aig/providers" element={<AIG01ProviderRegistry />} />
+                    <Route path="/admin/aig/models" element={<AIG02ModelRegistry />} />
+                    <Route path="/admin/aig/routing" element={<AIG03RoutingMatrix />} />
+                    <Route path="/admin/aig/budget" element={<AIG04BudgetCenter />} />
+                    <Route path="/admin/aig/receipts" element={<AIG05ReceiptsExplorer />} />
+                    <Route path="/admin/aig/launch-truth" element={<AIG06LaunchTruth />} />
                     <Route path="/admin/uao/presence" element={<UAO01PresenceContinuity />} />
                     <Route path="/admin/uao/devices" element={<UAO02ConnectedDevices />} />
                     <Route path="/admin/uao/team" element={<UAO03AmbientTeamControl />} />
