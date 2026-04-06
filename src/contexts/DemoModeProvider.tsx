@@ -7,6 +7,7 @@
 import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react";
 import { useDataMode } from "./DataModeContext";
 import { loadKillSwitches } from "@/lib/dual-reality/demo-policy-engine";
+import { seedDemoGovernance } from "@/lib/dual-reality/demo-governance-seeder";
 
 export type SurfaceDataSource = "real" | "demo" | "mixed" | "empty";
 
