@@ -4485,6 +4485,45 @@ export type Database = {
           },
         ]
       }
+      connector_sync_logs: {
+        Row: {
+          connector_id: string | null
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          id: string
+          metadata: Json | null
+          records_synced: number | null
+          service: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          connector_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          records_synced?: number | null
+          service: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          connector_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          records_synced?: number | null
+          service?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       connector_sync_runs: {
         Row: {
           account_id: string
