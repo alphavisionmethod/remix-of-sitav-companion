@@ -455,7 +455,14 @@ const SettingsView = () => {
 
 const InvestmentOffice = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const { data: hookBuckets } = useCapitalBuckets();
+  const { data: hookPositions } = usePositions();
+  const { data: hookTheses } = useTheses();
 
+  // Update module-level refs so sub-components pick up hook data
+  if (hookBuckets?.length) { MOCK_CAPITAL_BUCKETS_REF = hookBuckets as any; capitalMap = buildCapitalMap(MOCK_CAPITAL_BUCKETS_REF); }
+  if (hookPositions?.length) { MOCK_INV_POSITIONS = hookPositions as any; riskMetrics = analyzePortfolioRisk(MOCK_INV_POSITIONS, capitalMap.reserveCapital); stressScenarios = runStressScenarios(MOCK_INV_POSITIONS, capitalMap.reserveCapital); }
+  if (hookTheses?.length) { MOCK_INV_THESES = hookTheses as any; }
   const tabs = [
     { key: "overview", label: "Capital Map" },
     { key: "portfolio", label: "Portfolio" },
