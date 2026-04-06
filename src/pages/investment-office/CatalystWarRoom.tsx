@@ -35,6 +35,7 @@ export default function CatalystWarRoom() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Calendar className="h-6 w-6 text-primary" /> Catalyst War Room</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Calendar intelligence center — every event that could move your portfolio</p>

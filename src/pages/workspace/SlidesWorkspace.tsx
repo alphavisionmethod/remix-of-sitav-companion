@@ -7,6 +7,7 @@
 import { useState } from "react";
 import { useDecks } from "@/hooks/use-domain-data";
 import type { MockDeck, MockSlide } from "@/lib/mock-data/workspace";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
@@ -255,6 +256,7 @@ const SlidesWorkspace = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Slides"
         subtitle="Boardroom decks, proposals, and presentation packets — generated from your data"

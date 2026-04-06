@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Target, Shield, DollarSign, AlertTriangle, Check, ChevronRight, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
 import { INSTRUMENTS, SAMPLE_ORDERS, PLATFORM_CONNECTIONS, INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type { TradeAction, Instrument } from "@/lib/investment-office/types";
 
 export default function ExecutionDesk() {
@@ -24,6 +25,7 @@ export default function ExecutionDesk() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Target className="h-6 w-6 text-primary" /> Execution Desk</h1>
         <p className="text-sm text-muted-foreground mt-1">Prepare, review, and execute trades</p>

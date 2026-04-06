@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Gauge, AlertTriangle, Check } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const POSITIONS = [
   {
@@ -47,6 +48,7 @@ const DIMS: Array<{ key: keyof Pick<typeof POSITIONS[0], "conviction" | "uncerta
 export default function ConvictionEngine() {
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Gauge className="h-6 w-6 text-primary" /> Conviction Engine</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Multi-dimensional conviction scoring for every position — conviction, uncertainty, catalyst strength, fragility, and fit</p>

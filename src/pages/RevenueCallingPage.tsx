@@ -27,6 +27,7 @@ import {
   MOCK_CONTACTS, MOCK_CALL_LOGS, MOCK_CALL_SCRIPTS as MOCK_SCRIPTS,
   type CallingContact as Contact, type CallingCallLog as CallLog, type CallingCallScript as CallScript,
 } from "@/lib/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type DialerState = "idle" | "dialing" | "connected" | "wrapping-up";
 
@@ -300,6 +301,7 @@ const RevenueCallingPage = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-5xl space-y-4">
+      <DemoModeBadge />
       <SitaPageHeader title="Revenue Calling" subtitle="Power dialer, call scripts, and logging — powered by Twilio" />
 
       <CallStats />

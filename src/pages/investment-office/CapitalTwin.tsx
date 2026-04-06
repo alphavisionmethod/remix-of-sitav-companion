@@ -30,6 +30,7 @@ export default function CapitalTwin() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Layers className="h-6 w-6 text-primary" /> Capital Twin</h1>
         <p className="text-sm text-muted-foreground mt-0.5">A living digital twin of your capital world — by purpose, exposure, and readiness</p>

@@ -3,6 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { handleCors, corsHeaders, corsError } from "../_shared/cors.ts";
 import { requireAuth } from "../_shared/auth.ts";
 import { validateBody } from "../_shared/validate.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { EdgeLogger } from "../_shared/logger.ts";
 
 const MODE_PROMPTS: Record<string, string> = {
   think: `You are SITA Brain — Think Mode. You are a reflective thinking partner. Help the user brainstorm, debate ideas, journal, analyze problems from multiple angles. Use Socratic questioning. Present counterarguments. Help them think deeply.`,
@@ -84,7 +86,10 @@ serve(async (req) => {
     const user = auth.user;
     const supabaseClient = auth.supabase;
 
-    const body = await validateBody(req, {
+    // Rate limit: 30 requests per minute per user
+    const rl = checkRateLimit(user.id, 30, 60_000);
+    if (!rl.allowed) return rateLimitResponse(rl, corsHeaders);
+
       messages: { type: "array", required: true },
       mode: { type: "string", enum: ["think", "learn", "build", "create"] },
     });
@@ -173,7 +178,14 @@ serve(async (req) => {
       session_id: correlationId,
     }).then(() => {}).catch(e => console.error("Token log error:", e));
 
-    return new Response(response.body, {
+    // Budget metering
+    const estCost = Math.ceil(inputApprox * 0.002);
+    adminClient.rpc("update_ai_budget_usage", {
+      p_user_id: user.id,
+      p_tokens: Math.ceil(inputApprox),
+      p_cost: estCost,
+    }).then(() => {}).catch(e => console.error("Budget metering error:", e));
+
       headers: {
         ...corsHeaders,
         "Content-Type": "text/event-stream",

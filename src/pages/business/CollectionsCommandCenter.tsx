@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useCollectionsAccounts } from "@/hooks/use-domain-data";
 import type { CollectionsAccount } from "@/lib/mock-data/collections";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 
 // ── Types ───────────────────────────────────────────────────────
@@ -373,8 +374,9 @@ const CollectionsCommandCenter = () => {
     { key: "chases", label: "Active Chases" },
   ];
 
-  return (
+   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Collections Command Center"
         subtitle="Track overdue receivables, manage escalation sequences, and recover revenue automatically"

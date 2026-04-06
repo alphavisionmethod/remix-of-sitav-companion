@@ -18,6 +18,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { buildMockSimResult } from "@/lib/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 // Engine-backed cost data (replaces @/lib/mocks import)
 const ENGINE_COSTS = [
   { service: "AI Model Calls", cost: "$12.40", percentage: 45, trend: "up" as const },
@@ -295,6 +296,7 @@ const OwnerCenter = () => {
 
   return (
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader
         title="Owner Control Center"
         subtitle="Full admin control — incidents, intelligence, policies, fleet, council, and governance"

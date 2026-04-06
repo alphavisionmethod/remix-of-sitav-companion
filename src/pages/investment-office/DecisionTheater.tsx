@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Theater, Shield, AlertTriangle, Check, X, Brain, Target, Zap, Clock, FileText } from "lucide-react";
 import { INVESTMENT_ADVISORS, ADVISOR_SYNTHESIS, SAMPLE_SCENARIOS, SAMPLE_ORDERS } from "@/lib/investment-office/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const READINESS_DIMENSIONS = [
   { label: "Research Completeness", score: 85, status: "ready" },
@@ -23,6 +24,7 @@ export default function DecisionTheater() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div className="text-center space-y-2 pt-4">
         <h1 className="text-3xl font-bold text-foreground flex items-center justify-center gap-3">
           <Theater className="h-7 w-7 text-primary" /> Decision Theater

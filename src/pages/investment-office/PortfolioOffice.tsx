@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { DollarSign, TrendingUp, TrendingDown, PieChart, Shield, RefreshCw, ExternalLink, AlertTriangle } from "lucide-react";
 import { PORTFOLIO, PLATFORM_CONNECTIONS } from "@/lib/investment-office/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
@@ -12,6 +13,7 @@ export default function PortfolioOffice() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><PieChart className="h-6 w-6 text-primary" /> Portfolio Office</h1>

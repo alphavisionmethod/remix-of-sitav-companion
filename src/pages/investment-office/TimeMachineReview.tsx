@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, Brain, Check, X, AlertTriangle, ArrowRight, TrendingUp, TrendingDown } from "lucide-react";
 import { INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PAST_DECISIONS = [
   {
@@ -56,6 +57,7 @@ export default function TimeMachineReview() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Clock className="h-6 w-6 text-primary" /> Time Machine Review</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Replay past decisions using only what was known then. Learn what worked and what didn't.</p>

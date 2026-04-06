@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Dna, Info } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const DNA_DIMENSIONS = [
   { label: "Value-Tilted", score: 35, description: "Preference for undervalued assets based on fundamentals" },
@@ -26,6 +27,7 @@ const SUGGESTIONS = [
 export default function StrategyDNA() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Dna className="h-6 w-6 text-primary" /> Strategy DNA</h1>
         <p className="text-sm text-muted-foreground mt-0.5">An inferred strategy fingerprint based on your portfolio, behavior, and decision history</p>

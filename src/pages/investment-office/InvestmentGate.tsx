@@ -5,6 +5,7 @@ import {
   GraduationCap, BarChart3, Eye, DollarSign, Zap, Globe
 } from "lucide-react";
 import { PORTFOLIO, INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, WATCHLISTS, INSTRUMENTS } from "@/lib/investment-office/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 
@@ -17,6 +18,7 @@ export default function InvestmentGate() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 pb-12">
+      <DemoModeBadge />
       {/* Hero */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
         className="relative rounded-3xl border border-border bg-gradient-to-br from-card via-card to-primary/5 p-8 overflow-hidden">

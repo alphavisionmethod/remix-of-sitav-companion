@@ -17,6 +17,7 @@ import {
   computeAutopilotSummary, type LeakageItem, type RecoveredValueEntry, type RankedOpportunity
 } from "@/lib/domain-engines/revenue-autopilot";
 import { MOCK_LEAKAGE_INPUT, MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES } from "@/lib/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Mock Data ───────────────────────────────────────────────────
 
@@ -190,8 +191,9 @@ const RevenueAutopilot = () => {
     { key: "recovered", label: "Recovered Value" },
   ];
 
-  return (
+   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Revenue Autopilot"
         subtitle="Continuously find and recover value leaks across leads, quotes, invoices, renewals, and capacity"

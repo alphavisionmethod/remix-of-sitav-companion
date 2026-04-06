@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Sparkles, Calendar, TrendingUp, TrendingDown, AlertTriangle, Target, Shield, ChevronRight, BarChart3 } from "lucide-react";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, SAMPLE_SCENARIOS } from "@/lib/investment-office/mock-data";
-
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 const eventInstruments = INSTRUMENTS.filter(i => i.assetClass === "events");
 const allCatalysts = INSTRUMENTS.flatMap(i => i.catalysts.map(c => ({ ...c, instrument: i }))).sort((a, b) => a.date.localeCompare(b.date));
 const eventAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "events");
@@ -13,6 +13,7 @@ export default function EventMarketsWorkspace() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Sparkles className="h-6 w-6 text-primary" /> Event & Prediction Markets</h1>
         <p className="text-sm text-muted-foreground mt-1">Probability intelligence, catalysts, and disciplined event positioning</p>

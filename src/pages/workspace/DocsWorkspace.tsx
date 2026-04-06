@@ -11,6 +11,7 @@ import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDocs } from "@/hooks/use-domain-data";
 import type { MockDoc } from "@/lib/mock-data/workspace";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import ReactMarkdown from "react-markdown";
 import {
   FileText, Plus, Search, Clock, Users, Shield, Workflow,
@@ -272,6 +273,7 @@ const DocsWorkspace = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Docs"
         subtitle="Documents, proposals, reports, and boardroom packets — linked to workflows and proof"
