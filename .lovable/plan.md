@@ -1,66 +1,128 @@
 
 
-# Implement 3 Active Connector Edge Functions — discover, transform, batch
+# Wire Business OS, Finance OS, Concierge OS & AI to Real Backend — 100% Active
 
-## Summary
+## What's Wrong Now
 
-Create 3 new edge functions following the established SITA OS connector edge function pattern (auth via `_shared/auth.ts`, CORS, rate limiting, Zod validation, audit logging). These fill the last connector scaffold gaps.
+The edge functions exist and are fully implemented, but **zero frontend code calls them**:
+- `brain-core` (AI advisor) — never invoked from any page
+- `ai-gateway` (AI completions) — never invoked from any page
+- `cashflow-calculate` — never invoked
+- `invoice-generate` — never invoked
+- `tax-estimate` — never invoked
+- `booking-manage` — never invoked
+- `crm-sync` — never invoked
 
-All required DB tables exist: `connector_registry`, `connector_accounts`, `connector_configs`, `connector_credentials`, `audit_logs`.
+Pages either query Supabase tables directly (good) or return hardcoded mock data (bad). The `use-sita-data.ts` hooks already have a solid pattern — they query real tables in live mode and fall back to mocks in demo. But the domain service files (`business-os/`, `finance-os/`, `concierge-os/`) return hardcoded values with no Supabase calls.
 
-## Functions to Build
+**AI**: `LOVABLE_API_KEY` is configured. The `ai-gateway` and `brain-core` functions are fully implemented. But nothing in the user-facing app calls them.
 
-### 1. `connector-discover` (~180 lines)
-**Actions**: `scan` | `match` | `recommend` | `catalog`
-- `scan`: Queries `connector_registry` for all available connectors, returns grouped by `connector_class` with active/inactive status
-- `match`: Takes a business domain (e.g. "accounting", "email", "calendar") and returns ranked connector matches from registry using metadata + tags
-- `recommend`: Based on user's existing `connector_accounts`, recommends complementary connectors they don't have yet (e.g. "You have Stripe but not QuickBooks")
-- `catalog`: Returns full enriched catalog — registry entries + user's connection status + health status from `connector_configs`
-- Writes discovery events to `audit_logs`
+## Implementation Plan
 
-### 2. `connector-transform` (~200 lines)
-**Actions**: `normalize` | `map-fields` | `convert` | `validate-schema`
-- `normalize`: Takes raw connector data (e.g. different CRM formats) and normalizes to SITA canonical schema (contacts → `customers`, deals → `opportunities`)
-- `map-fields`: Returns field mapping between a source connector schema and SITA target table, auto-detecting matches by name/type similarity
-- `convert`: Transforms data between connector formats (e.g. Stripe invoice → SITA invoice format, QuickBooks contact → SITA customer)
-- `validate-schema`: Validates a data payload against a target SITA table schema, returning errors for missing/wrong-type fields
-- All transforms are deterministic, no AI
+### 1. Create Backend Integration Hooks (~200 lines)
 
-### 3. `connector-batch` (~190 lines)
-**Actions**: `submit` | `status` | `cancel` | `list` | `retry-failed`
-- `submit`: Accepts an array of operations (up to 100), validates each, creates a batch record in `audit_logs` with correlation ID, processes sequentially with per-item error isolation
-- `status`: Returns batch progress — total/completed/failed/pending counts by correlation ID
-- `cancel`: Marks remaining unprocessed items as cancelled
-- `list`: Returns user's recent batches with summary stats
-- `retry-failed`: Re-queues failed items from a batch for reprocessing
-- Each item gets its own audit log entry linked by correlation ID
+**New file: `src/hooks/use-backend-actions.ts`**
 
-## Shared Pattern (All 3)
+Create hooks that call the 6 domain edge functions:
 
-```text
-1. OPTIONS → CORS
-2. Rate limit (60/min)
-3. Auth via requireAuth()
-4. Zod body validation per action
-5. Business logic + DB
-6. Audit log entry
-7. Structured JSON response
-```
+| Hook | Edge Function | Purpose |
+|------|--------------|---------|
+| `useCRMSync` | `crm-sync` | Sync leads/customers/opportunities |
+| `useCashflowAnalysis` | `cashflow-calculate` | Analyze, forecast, safe-to-spend, burn-rate |
+| `useInvoiceGenerate` | `invoice-generate` | Generate invoice PDFs |
+| `useTaxEstimate` | `tax-estimate` | Quarterly/annual tax estimates |
+| `useBookingManage` | `booking-manage` | Create/update/cancel/list bookings |
+| `useBrainCore` | `brain-core` | AI advisor queries |
+
+Each returns a `useMutation` or `useQuery` that calls `supabase.functions.invoke(...)`.
+
+### 2. Wire AI into DailyPulse + Advisor Cards (~80 lines)
+
+**Edit: `src/pages/DailyPulse.tsx`**
+
+- Add a "Get AI Insight" button per domain section that calls `brain-core` with the appropriate intent
+- Display AI recommendations inline with confidence scores
+- Use `ai-gateway` for the advisor chat cards that already exist on the page
+
+**Edit: `src/components/sita/LiveAdvisorCard.tsx`**
+
+- Wire the existing advisor card component to call `brain-core` via `useBrainCore` hook
+- Show real AI responses instead of static placeholder text
+
+### 3. Wire Invoice Page to `invoice-generate` Edge Function (~40 lines)
+
+**Edit: `src/pages/business/InvoicesCollections.tsx`**
+
+- Add "Generate PDF" button on each invoice row
+- Calls `invoice-generate` edge function with invoice data
+- Shows success toast with download link
+
+### 4. Wire Money Pages to `cashflow-calculate` + `tax-estimate` (~60 lines)
+
+**Edit: `src/hooks/use-sita-data.ts`**
+
+- Update `useCashFlow` hook to call `cashflow-calculate` edge function in live mode instead of computing locally
+- Add `useTaxEstimate` hook calling `tax-estimate` edge function
+
+**Edit: `src/pages/money/` (MoneyCenter or relevant page)**
+
+- Add tax estimate card that calls the edge function
+- Wire cash flow section to use the new backend-computed data
+
+### 5. Wire Concierge to `booking-manage` (~40 lines)
+
+**Edit: Concierge/household pages**
+
+- Wire booking creation/management to call `booking-manage` edge function
+- Replace any hardcoded booking data with real Supabase queries + edge function calls
+
+### 6. Wire Domain Service Files to Supabase (~120 lines)
+
+**Edit: `src/lib/services/business-os/contacts.service.ts`**
+- Replace hardcoded `buildContactTimeline` with Supabase query from `customer_interactions` or `events` table
+
+**Edit: `src/lib/services/business-os/accounts.service.ts`**
+- Replace hardcoded values in `rollupAccountHealth` with real DB queries
+
+**Edit: `src/lib/services/finance-os/overview.service.ts`**
+- Replace hardcoded `buildInvestmentOverview` with Supabase query from `financial_accounts` / `capital_allocations`
+
+**Edit: `src/lib/services/concierge-os/household-ops.service.ts`**
+- Already takes real data as params — no changes needed (it's pure logic)
+
+### 7. Update AI Gateway Integration (~30 lines)
+
+**Edit: `src/lib/services/ai-gateway/index.ts`**
+
+- Add `callAIGateway` function that invokes the `ai-gateway` edge function
+- Add `callBrainCore` function that invokes `brain-core`
+- Both use `supabase.functions.invoke`
 
 ## Files Created
+| File | Lines |
+|------|-------|
+| `src/hooks/use-backend-actions.ts` | ~200 |
 
-| File | Lines (est.) |
-|------|-------------|
-| `supabase/functions/connector-discover/index.ts` | ~180 |
-| `supabase/functions/connector-transform/index.ts` | ~200 |
-| `supabase/functions/connector-batch/index.ts` | ~190 |
-
-## Files Updated
-
+## Files Modified
 | File | Change |
 |------|--------|
-| `scripts/check-edge-function-health.ts` | Add 3 functions to required list |
+| `src/hooks/use-sita-data.ts` | Wire `useCashFlow` to edge function, add `useTaxEstimate` |
+| `src/pages/DailyPulse.tsx` | Add AI insight buttons calling brain-core |
+| `src/pages/business/InvoicesCollections.tsx` | Add PDF generate button |
+| `src/components/sita/LiveAdvisorCard.tsx` | Wire to brain-core |
+| `src/lib/services/ai-gateway/index.ts` | Add callable gateway functions |
+| `src/lib/services/business-os/contacts.service.ts` | Supabase queries |
+| `src/lib/services/business-os/accounts.service.ts` | Supabase queries |
+| `src/lib/services/finance-os/overview.service.ts` | Supabase queries |
 
 ## No Database Migration Needed
-All tables exist.
+All tables and edge functions exist. This is pure wiring.
+
+## Result After Implementation
+| Gap | Before | After |
+|-----|--------|-------|
+| Business OS → Real Backend | 63% (demo data) | 90%+ (Supabase + edge functions) |
+| Finance OS → Real Backend | 63% (demo data) | 90%+ (cashflow-calculate + tax-estimate) |
+| Concierge OS → Real Backend | 58% (demo data) | 85%+ (booking-manage wired) |
+| AI → Live Provider Keys | Demo mode | Live (LOVABLE_API_KEY active, brain-core + ai-gateway wired) |
 
