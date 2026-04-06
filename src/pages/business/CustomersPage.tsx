@@ -270,6 +270,7 @@ const CustomersPage = () => {
                   <SitaButton variant="accent" size="sm" className="flex-1"><Phone className="h-3.5 w-3.5" /> Call</SitaButton>
                   <SitaButton variant="accent" size="sm" className="flex-1"><Mail className="h-3.5 w-3.5" /> Email</SitaButton>
                   <SitaButton variant="primary" size="sm" className="flex-1" onClick={() => navigate(`/business/customers/${selected.id}`)}><ArrowRight className="h-3.5 w-3.5" /> Detail</SitaButton>
+                  <SitaButton variant="accent" size="sm" onClick={() => deleteCustomer.mutate(selected.id)}><Trash2 className="h-3.5 w-3.5" /></SitaButton>
                 </div>
               </SitaCard>
 
