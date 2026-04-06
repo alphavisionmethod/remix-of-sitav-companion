@@ -1,108 +1,112 @@
 
 
-# Live Connector Completion + Notification Reality — Implementation Plan
+# Audit: Last 2 Prompts — Implementation Status
 
-## Current State Assessment
+## Prompt 1: "Connectors + Notifications Advanced Prompt Pack" (5 sub-prompts)
 
-### What EXISTS and works:
+### Sub-prompt 1: Google Drive Connector — 95% DONE
+- **DONE**: `connector-oauth` edge function (366 lines) with initiate/callback/disconnect/check_config
+- **DONE**: Real Google OAuth code exchange, token persistence, consent ledger writes
+- **DONE**: Identity vs connector OAuth separation, default scopes for Drive/Gmail/Calendar
+- **DONE**: ConnectorHub wired with Connect/Disconnect buttons
+- **MISSING**: `GOOGLE_CONNECTOR_CLIENT_ID` + `GOOGLE_CONNECTOR_CLIENT_SECRET` secrets (manual step — user must register Google Cloud OAuth client)
 
-**Connectors:**
-- `connector_operations` edge function: seed, test, health check, demo activate, sync, disconnect
-- `connector-health` edge function: pings configured connectors
-- `provider-family-operations` edge function: Google family seeding, scope policies, drift checks
-- DB tables: `connector_registry`, `connector_accounts`, `connector_oauth_tokens`, `connector_oauth_flows`, `connector_sync_runs`, `connector_health_records`, `connector_receipts`, `connector_policies`, `connector_launch_readiness`, `connector_demo_bindings`, `consent_ledger`, `consent_scope_records`, `consent_revocations`, `consent_upgrades`
-- Admin pages: CN01-CN07 (Reality Overview, Registry, Account Linkage, Sync Truth, Health, Demo Review, Launch Gate)
-- PFA01-PFA10 (Provider Family boards including OAuth client registry, consent ledger, scope matrix, health drift, connected accounts, launch honesty)
-- ISA01-ISA07 (Identity/Security/Auth boards)
-- Google provider family service with demo/real state management
+### Sub-prompt 2: Web Push / VAPID — 90% DONE
+- **DONE**: VAPID secrets configured, `push-registration-service.ts`, `use-push-notifications.ts` hook, `sw-push.js` service worker
+- **DONE**: `push-dispatch` edge function (476 lines) with real VAPID web push, delivery receipts, calm routing, preference checks
+- **DONE**: DB tables: `notification_delivery_receipts`, `notification_preferences`
+- **MISSING**: No dedicated user-facing notification preferences page — `/settings/notifications` routes to generic `SettingsPage`, not a real notification preferences UI
 
-**Notifications:**
-- `push-dispatch` edge function: full VAPID web push + FCM + APNs dispatch with token cleanup
-- `push-registration-service.ts`: web push subscription, token persistence, VAPID key handling
-- `use-push-notifications.ts` hook: permission, register, unregister, refresh
-- `sw-push.js` service worker: push event + notification click handling
-- `NotificationCenter.tsx`: full UI with urgency classes, categories, mark read, dismiss
-- DB tables: `notifications_queue`, `device_push_tokens`, `attention_decisions`, `interruption_policies`, `notification_fatigue_profiles`, `ambient_notification_routes`
-- Admin pages: NRC01-NRC06 (Routing Studio, Calmness Center, Fatigue Board, Queue/Interrupt Matrix, Cross-Device Delivery, Launch Honesty)
-- DWE04 (Notification Routing Studio with quiet hours)
-- VAPID keys configured as secrets
-- DB trigger `dispatch_push_notification` on `notifications_queue` insert
+### Sub-prompt 3: Connector Runtime Verification Board — 85% DONE
+- **DONE**: CN01 with 7-point OAuth verification matrix, registry listing, health records
+- **MISSING**: Per-capability verification rows (google_drive, gmail, calendar individually)
+- **MISSING**: Connected account diagnostics with scope/expiry columns
+- **MISSING**: Failure diagnostics grouped by type (missing env, callback failure, token expired, etc.)
 
-### What is MISSING (gaps):
+### Sub-prompt 4: Notification Runtime Verification Board — 40% DONE
+- **DONE**: NOT03 Delivery Receipts Explorer, NRC01-NRC06 existing boards
+- **MISSING**: `NOT01NotificationRuntimeVerification.tsx` — the single canonical "is push actually working?" board with executive summary, channel verification matrix, subscription truth, launch honesty panel
+- **MISSING**: Subscription truth section (device_push_tokens stats in admin)
 
-**Connector gaps:**
-1. **No real Google OAuth callback handler** — `connector_oauth_flows` table exists but no edge function handles the actual Google OAuth redirect, code exchange, or token persistence. The connect flow is architectural, not runtime-real.
-2. **No real OAuth initiation endpoint** — no edge function generates the Google authorization URL with correct scopes and state parameter.
-3. **Connected Services page doesn't have real connect/disconnect buttons wired to OAuth** — it shows demo state.
+### Sub-prompt 5: Seed Data for Launch-Honesty Classification — 0% DONE
+- **MISSING**: `connector-notification-honesty-seed.ts` service with conservative defaults (google_drive → partial, apple_push → planned, etc.)
+- **MISSING**: NRC06 still uses demo data, not wired to real `notification_delivery_receipts`
 
-**Notification gaps:**
-4. **No `notification_delivery_receipts` table** — push-dispatch writes to `notifications_queue.status` but doesn't persist per-delivery-attempt records (platform, success/fail, failure reason, latency).
-5. **No notification preferences table** — no per-user/per-category channel preferences. `interruption_policies` handles quiet hours but not "I want email for finance, push for approvals" type preferences.
-6. **No event-to-response tracking** — notifications are fire-and-forget. No link from "user clicked notification" back to the source event.
-7. **Calm routing logic exists in admin UI (demo data) but is not wired into the push-dispatch flow** — `interruption_policies` table exists but push-dispatch doesn't check it before sending.
+### Missing CJ Entries
+- **MISSING**: `connectors.google_drive_reauth_primary`
+- **MISSING**: `connectors.google_drive_disconnect_primary`
+- **MISSING**: `notifications.preference_update_primary`
+- **MISSING**: `notifications.event_to_response_primary`
 
-**Admin gaps:**
-8. **No dedicated Connector Runtime Verification Board (CON01)** matching the prompt's exact spec — CN01 exists but doesn't show OAuth/callback/token verification matrix.
-9. **No dedicated Notification Delivery Receipts Explorer (NOT03)** — no admin page for per-attempt delivery inspection.
+---
 
-## Implementation Plan
+## Prompt 2: "Live AI Runtime Verification & Activation" (4 parts) — 100% DONE
 
-### Phase 1 — Database: Delivery receipts + notification preferences (migration)
+- **DONE**: `AIG09RuntimeVerification.tsx` (549 lines) — full 8-section board (AIR01-AIR08)
+- **DONE**: `ai-launch-honesty-reclassifier.ts` (173 lines) — evidence-driven reclassification
+- **DONE**: `ai-routing-seed-service.ts` (294 lines) — providers, models, capability routing seeds
+- **DONE**: Routes for AIG07, AIG08, AIG09 added to App.tsx
+- **DONE**: All 7 target capabilities, all 6 honesty classes, claim risk + blocking gaps
 
-Create 2 new tables:
-- `notification_delivery_receipts`: notification_id, user_id, platform, channel, status (sent/delivered/failed/opened/clicked), failure_reason, latency_ms, sent_at, delivered_at, opened_at, metadata
-- `notification_preferences`: user_id, category, channel_push (bool), channel_in_app (bool), channel_email (bool), urgency_minimum, enabled, updated_at
+---
 
-### Phase 2 — Google OAuth real flow (edge function)
+## Gap Implementation Plan (7 items)
 
-Create `supabase/functions/connector-oauth/index.ts` with two actions:
-- `initiate`: generates Google authorization URL with correct scopes, state param, redirect URI; writes `connector_oauth_flows` row with status=pending
-- `callback`: handles the redirect, exchanges code for tokens, writes `connector_oauth_tokens`, updates `connector_accounts` status to connected, writes `consent_scope_records`, writes `connector_receipts`
+### 1. NOT01 Notification Runtime Verification Board (NEW)
+Create `src/pages/admin/NOT01NotificationRuntimeVerification.tsx` with:
+- Executive summary cards: active subscriptions, delivery success/failure rates, calm suppressions, Apple/Android planned status
+- Channel verification matrix (web push / in-app / android planned / apple planned)
+- Subscription truth section querying `device_push_tokens`
+- Launch honesty classification panel
 
-This makes Google Drive connect/disconnect/reauth truly real.
+### 2. Notification Preferences User Page (NEW)
+Create `src/pages/settings/NotificationPreferences.tsx` with:
+- Push permission state display
+- Enable/disable push toggle using `usePushNotifications` hook
+- Per-category channel toggles (push/in-app) reading/writing `notification_preferences` table
+- Urgency minimum per category
+- Wire route in App.tsx
 
-### Phase 3 — Notification delivery receipts in push-dispatch
+### 3. Connector-Notification Honesty Seed Service (NEW)
+Create `src/lib/services/connector-notification-honesty-seed.ts`:
+- Seeds `ecosystem_launch_readiness` with conservative defaults: google_drive → partial, gmail/calendar → planned, web_push → partial, android_push → planned, apple_push → planned, in_app → partial
+- Promotion rules metadata
 
-Update `push-dispatch/index.ts` to:
-- Write a `notification_delivery_receipts` row per device attempt (platform, success/fail, failure_reason, latency)
-- Check `interruption_policies` before sending (calm routing: suppress if in quiet hours and urgency < allowed)
-- Check `notification_preferences` for channel permission
+### 4. CN01 Enhancement — Per-Capability Matrix + Diagnostics
+Update `CN01ConnectorRealityOverview.tsx`:
+- Add per-capability rows (google_drive, gmail, calendar) with individual verification checks
+- Add connected account detail table with scope, expiry, reauth columns
+- Add failure diagnostics grouped by category
 
-### Phase 4 — Connected Services UX truth
+### 5. NRC06 Wire to Real Data
+Update `NRC06NotificationLaunchHonesty.tsx`:
+- Query real `notification_delivery_receipts` and `device_push_tokens` for evidence-based classification
+- Replace demo data with computed reality scores
 
-Update the Connected Services page to:
-- Wire real "Connect Google Drive" button → calls `connector-oauth` initiate
-- Show reauth prompts when `connector_oauth_tokens.reauth_required = true`
-- Show honest state labels (not connected / connected / reauth required / planned)
+### 6. Missing Customer Journey Entries
+Add 4 entries to `journey-registry.ts`:
+- `connectors.google_drive_reauth_primary`
+- `connectors.google_drive_disconnect_primary`
+- `notifications.preference_update_primary`
+- `notifications.event_to_response_primary`
 
-### Phase 5 — Admin boards
+### 7. Route Wiring
+Update `App.tsx`:
+- Add NOT01 route under admin
+- Replace `/settings/notifications` to use new `NotificationPreferences` page
 
-**CON01 upgrade** (Connector Runtime Verification Board): Add OAuth verification matrix showing per-capability: OAuth configured?, callback verified?, token exchange verified?, connected accounts exist?, reauth flow verified?, disconnect verified?
-
-**NOT03 new** (Notification Delivery Receipts Explorer): Query `notification_delivery_receipts` showing notification_id, platform, status, failure_reason, latency, timestamps.
-
-**NOT04 upgrade** (Calm Policy Board): Wire to real `interruption_policies` data instead of demo data.
-
-### Phase 6 — Customer Journey entries
-
-Add journey entries for connector and notification flows:
-- `connectors.google_drive_connect_entry`
-- `notifications.permission_enable_web`
-- `notifications.push_subscription_primary`
-- `notifications.receive_web_push_primary`
-
-## Files Changed
+## Files
 
 | File | Action |
 |---|---|
-| `supabase/functions/connector-oauth/index.ts` | **New** — OAuth initiate + callback |
-| `supabase/functions/push-dispatch/index.ts` | Update — delivery receipts + calm check |
-| `src/pages/admin/CN01ConnectorRealityOverview.tsx` | Update — verification matrix |
-| `src/pages/admin/NOT03DeliveryReceiptsExplorer.tsx` | **New** |
-| `src/pages/ConnectedServices.tsx` or equivalent | Update — real OAuth buttons |
-| `src/lib/customer-journey/journey-registry.ts` | Add connector + notification journeys |
-| `src/routes/AdminRoutes.tsx` | Add NOT03 route |
+| `src/pages/admin/NOT01NotificationRuntimeVerification.tsx` | **New** |
+| `src/pages/settings/NotificationPreferences.tsx` | **New** |
+| `src/lib/services/connector-notification-honesty-seed.ts` | **New** |
+| `src/pages/admin/CN01ConnectorRealityOverview.tsx` | Update |
+| `src/pages/admin/NRC06NotificationLaunchHonesty.tsx` | Update |
+| `src/lib/customer-journey/journey-registry.ts` | Add 4 entries |
+| `src/App.tsx` | Add NOT01 route + NotificationPreferences route |
 
-## Database migration required
-2 new tables: `notification_delivery_receipts`, `notification_preferences`. RLS policies for both (user can read own rows).
+## No database migration needed
+All tables exist. Pure frontend + service logic.
 
