@@ -3249,6 +3249,72 @@ export type Database = {
         }
         Relationships: []
       }
+      connected_service_links: {
+        Row: {
+          connection_status: string | null
+          created_at: string
+          granted_scopes: string[] | null
+          health_status: string | null
+          id: string
+          last_sync_at: string | null
+          metadata: Json | null
+          mode: string | null
+          permission_level: string | null
+          provider_capability_id: string
+          provider_family_id: string
+          reauth_needed: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          connection_status?: string | null
+          created_at?: string
+          granted_scopes?: string[] | null
+          health_status?: string | null
+          id?: string
+          last_sync_at?: string | null
+          metadata?: Json | null
+          mode?: string | null
+          permission_level?: string | null
+          provider_capability_id: string
+          provider_family_id: string
+          reauth_needed?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          connection_status?: string | null
+          created_at?: string
+          granted_scopes?: string[] | null
+          health_status?: string | null
+          id?: string
+          last_sync_at?: string | null
+          metadata?: Json | null
+          mode?: string | null
+          permission_level?: string | null
+          provider_capability_id?: string
+          provider_family_id?: string
+          reauth_needed?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connected_service_links_provider_capability_id_fkey"
+            columns: ["provider_capability_id"]
+            isOneToOne: false
+            referencedRelation: "provider_capabilities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connected_service_links_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       connector_accounts: {
         Row: {
           account_email: string | null
@@ -3487,6 +3553,7 @@ export type Database = {
           last_successful_sync: string | null
           latency_ms: number | null
           metadata: Json | null
+          provider_capability_id: string | null
           registry_id: string | null
           token_valid: boolean | null
           user_id: string
@@ -3502,6 +3569,7 @@ export type Database = {
           last_successful_sync?: string | null
           latency_ms?: number | null
           metadata?: Json | null
+          provider_capability_id?: string | null
           registry_id?: string | null
           token_valid?: boolean | null
           user_id: string
@@ -3517,6 +3585,7 @@ export type Database = {
           last_successful_sync?: string | null
           latency_ms?: number | null
           metadata?: Json | null
+          provider_capability_id?: string | null
           registry_id?: string | null
           token_valid?: boolean | null
           user_id?: string
@@ -3527,6 +3596,13 @@ export type Database = {
             columns: ["account_id"]
             isOneToOne: false
             referencedRelation: "connector_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connector_health_records_provider_capability_id_fkey"
+            columns: ["provider_capability_id"]
+            isOneToOne: false
+            referencedRelation: "provider_capabilities"
             referencedColumns: ["id"]
           },
           {
@@ -3939,6 +4015,179 @@ export type Database = {
             columns: ["account_id"]
             isOneToOne: false
             referencedRelation: "connector_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      consent_ledger: {
+        Row: {
+          connection_context: Json | null
+          consent_status: string | null
+          consent_version: number | null
+          created_at: string
+          denied_scopes: string[] | null
+          entity_id: string | null
+          granted_at: string
+          granted_scopes: string[] | null
+          id: string
+          mode: string | null
+          oauth_client_id: string | null
+          provider_capability_id: string | null
+          provider_family_id: string | null
+          revocation_reason: string | null
+          revoked_at: string | null
+          source_flow: string | null
+          updated_at: string
+          user_id: string
+          workspace_id: string | null
+        }
+        Insert: {
+          connection_context?: Json | null
+          consent_status?: string | null
+          consent_version?: number | null
+          created_at?: string
+          denied_scopes?: string[] | null
+          entity_id?: string | null
+          granted_at?: string
+          granted_scopes?: string[] | null
+          id?: string
+          mode?: string | null
+          oauth_client_id?: string | null
+          provider_capability_id?: string | null
+          provider_family_id?: string | null
+          revocation_reason?: string | null
+          revoked_at?: string | null
+          source_flow?: string | null
+          updated_at?: string
+          user_id: string
+          workspace_id?: string | null
+        }
+        Update: {
+          connection_context?: Json | null
+          consent_status?: string | null
+          consent_version?: number | null
+          created_at?: string
+          denied_scopes?: string[] | null
+          entity_id?: string | null
+          granted_at?: string
+          granted_scopes?: string[] | null
+          id?: string
+          mode?: string | null
+          oauth_client_id?: string | null
+          provider_capability_id?: string | null
+          provider_family_id?: string | null
+          revocation_reason?: string | null
+          revoked_at?: string | null
+          source_flow?: string | null
+          updated_at?: string
+          user_id?: string
+          workspace_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consent_ledger_oauth_client_id_fkey"
+            columns: ["oauth_client_id"]
+            isOneToOne: false
+            referencedRelation: "oauth_client_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "consent_ledger_provider_capability_id_fkey"
+            columns: ["provider_capability_id"]
+            isOneToOne: false
+            referencedRelation: "provider_capabilities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "consent_ledger_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      consent_revocations: {
+        Row: {
+          consent_ledger_id: string
+          created_at: string
+          id: string
+          impacted_capabilities: string[] | null
+          revocation_reason: string
+          revoked_scopes: string[] | null
+          user_id: string
+        }
+        Insert: {
+          consent_ledger_id: string
+          created_at?: string
+          id?: string
+          impacted_capabilities?: string[] | null
+          revocation_reason?: string
+          revoked_scopes?: string[] | null
+          user_id: string
+        }
+        Update: {
+          consent_ledger_id?: string
+          created_at?: string
+          id?: string
+          impacted_capabilities?: string[] | null
+          revocation_reason?: string
+          revoked_scopes?: string[] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consent_revocations_consent_ledger_id_fkey"
+            columns: ["consent_ledger_id"]
+            isOneToOne: false
+            referencedRelation: "consent_ledger"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      consent_upgrades: {
+        Row: {
+          approval_required: boolean | null
+          approved_by: string | null
+          consent_ledger_id: string
+          created_at: string
+          id: string
+          new_scopes: string[] | null
+          previous_scopes: string[] | null
+          status: string | null
+          upgrade_reason: string | null
+          user_id: string
+        }
+        Insert: {
+          approval_required?: boolean | null
+          approved_by?: string | null
+          consent_ledger_id: string
+          created_at?: string
+          id?: string
+          new_scopes?: string[] | null
+          previous_scopes?: string[] | null
+          status?: string | null
+          upgrade_reason?: string | null
+          user_id: string
+        }
+        Update: {
+          approval_required?: boolean | null
+          approved_by?: string | null
+          consent_ledger_id?: string
+          created_at?: string
+          id?: string
+          new_scopes?: string[] | null
+          previous_scopes?: string[] | null
+          status?: string | null
+          upgrade_reason?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consent_upgrades_consent_ledger_id_fkey"
+            columns: ["consent_ledger_id"]
+            isOneToOne: false
+            referencedRelation: "consent_ledger"
             referencedColumns: ["id"]
           },
         ]
@@ -4789,6 +5038,72 @@ export type Database = {
             columns: ["blueprint_id"]
             isOneToOne: false
             referencedRelation: "feature_blueprints"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      device_auth_clients: {
+        Row: {
+          active: boolean | null
+          client_class: string
+          client_name: string
+          created_at: string
+          device_type: string | null
+          id: string
+          last_auth_at: string | null
+          launch_stage: string | null
+          metadata: Json | null
+          oauth_client_id: string | null
+          platform: string | null
+          provider_family_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          client_class?: string
+          client_name: string
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          last_auth_at?: string | null
+          launch_stage?: string | null
+          metadata?: Json | null
+          oauth_client_id?: string | null
+          platform?: string | null
+          provider_family_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          client_class?: string
+          client_name?: string
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          last_auth_at?: string | null
+          launch_stage?: string | null
+          metadata?: Json | null
+          oauth_client_id?: string | null
+          platform?: string | null
+          provider_family_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_auth_clients_oauth_client_id_fkey"
+            columns: ["oauth_client_id"]
+            isOneToOne: false
+            referencedRelation: "oauth_client_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "device_auth_clients_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
             referencedColumns: ["id"]
           },
         ]
@@ -6739,6 +7054,62 @@ export type Database = {
         }
         Relationships: []
       }
+      identity_provider_links: {
+        Row: {
+          active: boolean | null
+          auth_method: string | null
+          created_at: string
+          display_name: string | null
+          email: string | null
+          external_id: string | null
+          id: string
+          last_used_at: string | null
+          metadata: Json | null
+          primary_identity: boolean | null
+          provider_family_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          auth_method?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          external_id?: string | null
+          id?: string
+          last_used_at?: string | null
+          metadata?: Json | null
+          primary_identity?: boolean | null
+          provider_family_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          auth_method?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          external_id?: string | null
+          id?: string
+          last_used_at?: string | null
+          metadata?: Json | null
+          primary_identity?: boolean | null
+          provider_family_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "identity_provider_links_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       incidents: {
         Row: {
           acknowledged_at: string | null
@@ -7020,6 +7391,63 @@ export type Database = {
             columns: ["connection_id"]
             isOneToOne: false
             referencedRelation: "integration_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_launch_honesty: {
+        Row: {
+          blockers: string[] | null
+          created_at: string
+          evidence: Json | null
+          id: string
+          launch_label: string | null
+          notes: string | null
+          provider_capability_id: string | null
+          provider_family_id: string | null
+          updated_at: string
+          user_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          blockers?: string[] | null
+          created_at?: string
+          evidence?: Json | null
+          id?: string
+          launch_label?: string | null
+          notes?: string | null
+          provider_capability_id?: string | null
+          provider_family_id?: string | null
+          updated_at?: string
+          user_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          blockers?: string[] | null
+          created_at?: string
+          evidence?: Json | null
+          id?: string
+          launch_label?: string | null
+          notes?: string | null
+          provider_capability_id?: string | null
+          provider_family_id?: string | null
+          updated_at?: string
+          user_id?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_launch_honesty_provider_capability_id_fkey"
+            columns: ["provider_capability_id"]
+            isOneToOne: false
+            referencedRelation: "provider_capabilities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integration_launch_honesty_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
             referencedColumns: ["id"]
           },
         ]
@@ -9148,6 +9576,68 @@ export type Database = {
         }
         Relationships: []
       }
+      oauth_client_registry: {
+        Row: {
+          active: boolean | null
+          allowed_capabilities: string[] | null
+          authorized_origins: string[] | null
+          client_name: string
+          client_purpose: string
+          created_at: string
+          environment: string | null
+          id: string
+          launch_stage: string | null
+          notes: string | null
+          provider_family_id: string
+          redirect_uris: string[] | null
+          rotation_metadata: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          allowed_capabilities?: string[] | null
+          authorized_origins?: string[] | null
+          client_name: string
+          client_purpose?: string
+          created_at?: string
+          environment?: string | null
+          id?: string
+          launch_stage?: string | null
+          notes?: string | null
+          provider_family_id: string
+          redirect_uris?: string[] | null
+          rotation_metadata?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          allowed_capabilities?: string[] | null
+          authorized_origins?: string[] | null
+          client_name?: string
+          client_purpose?: string
+          created_at?: string
+          environment?: string | null
+          id?: string
+          launch_stage?: string | null
+          notes?: string | null
+          provider_family_id?: string
+          redirect_uris?: string[] | null
+          rotation_metadata?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oauth_client_registry_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       operator_actions: {
         Row: {
           action_type: string
@@ -9731,6 +10221,109 @@ export type Database = {
             columns: ["change_plan_id"]
             isOneToOne: false
             referencedRelation: "change_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      permission_drift_records: {
+        Row: {
+          created_at: string
+          description: string | null
+          detected_at: string
+          drift_type: string
+          id: string
+          impacted_capabilities: string[] | null
+          provider_capability_id: string | null
+          reauth_needed: boolean | null
+          reconnect_needed: boolean | null
+          resolved: boolean | null
+          resolved_at: string | null
+          severity: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          detected_at?: string
+          drift_type?: string
+          id?: string
+          impacted_capabilities?: string[] | null
+          provider_capability_id?: string | null
+          reauth_needed?: boolean | null
+          reconnect_needed?: boolean | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          detected_at?: string
+          drift_type?: string
+          id?: string
+          impacted_capabilities?: string[] | null
+          provider_capability_id?: string | null
+          reauth_needed?: boolean | null
+          reconnect_needed?: boolean | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "permission_drift_records_provider_capability_id_fkey"
+            columns: ["provider_capability_id"]
+            isOneToOne: false
+            referencedRelation: "provider_capabilities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      permission_levels: {
+        Row: {
+          created_at: string
+          current_level: string | null
+          granted_scopes: string[] | null
+          id: string
+          last_verified_at: string | null
+          max_available_level: string | null
+          provider_capability_id: string
+          updated_at: string
+          upgrade_available: boolean | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_level?: string | null
+          granted_scopes?: string[] | null
+          id?: string
+          last_verified_at?: string | null
+          max_available_level?: string | null
+          provider_capability_id: string
+          updated_at?: string
+          upgrade_available?: boolean | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_level?: string | null
+          granted_scopes?: string[] | null
+          id?: string
+          last_verified_at?: string | null
+          max_available_level?: string | null
+          provider_capability_id?: string
+          updated_at?: string
+          upgrade_available?: boolean | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "permission_levels_provider_capability_id_fkey"
+            columns: ["provider_capability_id"]
+            isOneToOne: false
+            referencedRelation: "provider_capabilities"
             referencedColumns: ["id"]
           },
         ]
@@ -11623,6 +12216,137 @@ export type Database = {
           },
         ]
       }
+      provider_capabilities: {
+        Row: {
+          active: boolean | null
+          auth_requirement: string | null
+          capability_key: string
+          category: string
+          created_at: string
+          display_name: string
+          health_support: boolean | null
+          id: string
+          launch_stage: string | null
+          metadata: Json | null
+          minimum_scopes: string[] | null
+          optional_scopes: string[] | null
+          provider_family_id: string
+          read_write: string | null
+          sync_support: boolean | null
+          updated_at: string
+          upgrade_path_support: boolean | null
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          auth_requirement?: string | null
+          capability_key: string
+          category?: string
+          created_at?: string
+          display_name: string
+          health_support?: boolean | null
+          id?: string
+          launch_stage?: string | null
+          metadata?: Json | null
+          minimum_scopes?: string[] | null
+          optional_scopes?: string[] | null
+          provider_family_id: string
+          read_write?: string | null
+          sync_support?: boolean | null
+          updated_at?: string
+          upgrade_path_support?: boolean | null
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          auth_requirement?: string | null
+          capability_key?: string
+          category?: string
+          created_at?: string
+          display_name?: string
+          health_support?: boolean | null
+          id?: string
+          launch_stage?: string | null
+          metadata?: Json | null
+          minimum_scopes?: string[] | null
+          optional_scopes?: string[] | null
+          provider_family_id?: string
+          read_write?: string | null
+          sync_support?: boolean | null
+          updated_at?: string
+          upgrade_path_support?: boolean | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_capabilities_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      provider_families: {
+        Row: {
+          active: boolean | null
+          auth_types_supported: string[] | null
+          categories: string[] | null
+          connector_support: boolean | null
+          created_at: string
+          demo_support: boolean | null
+          description: string | null
+          docs_url: string | null
+          health_model: string | null
+          id: string
+          identity_support: boolean | null
+          launch_stage: string | null
+          name: string
+          provider_key: string
+          setup_metadata: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          auth_types_supported?: string[] | null
+          categories?: string[] | null
+          connector_support?: boolean | null
+          created_at?: string
+          demo_support?: boolean | null
+          description?: string | null
+          docs_url?: string | null
+          health_model?: string | null
+          id?: string
+          identity_support?: boolean | null
+          launch_stage?: string | null
+          name: string
+          provider_key: string
+          setup_metadata?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          auth_types_supported?: string[] | null
+          categories?: string[] | null
+          connector_support?: boolean | null
+          created_at?: string
+          demo_support?: boolean | null
+          description?: string | null
+          docs_url?: string | null
+          health_model?: string | null
+          id?: string
+          identity_support?: boolean | null
+          launch_stage?: string | null
+          name?: string
+          provider_key?: string
+          setup_metadata?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       quality_floor_configs: {
         Row: {
           active: boolean
@@ -13171,6 +13895,106 @@ export type Database = {
         }
         Relationships: []
       }
+      scope_policy_matrix: {
+        Row: {
+          approval_required_for_upgrade: boolean | null
+          created_at: string
+          default_grant_profile: string | null
+          disallowed_scopes: string[] | null
+          id: string
+          launch_safety_notes: string | null
+          minimum_scopes: string[] | null
+          optional_scopes: string[] | null
+          provider_capability_id: string
+          updated_at: string
+          upgrade_path_available: boolean | null
+          user_id: string
+        }
+        Insert: {
+          approval_required_for_upgrade?: boolean | null
+          created_at?: string
+          default_grant_profile?: string | null
+          disallowed_scopes?: string[] | null
+          id?: string
+          launch_safety_notes?: string | null
+          minimum_scopes?: string[] | null
+          optional_scopes?: string[] | null
+          provider_capability_id: string
+          updated_at?: string
+          upgrade_path_available?: boolean | null
+          user_id: string
+        }
+        Update: {
+          approval_required_for_upgrade?: boolean | null
+          created_at?: string
+          default_grant_profile?: string | null
+          disallowed_scopes?: string[] | null
+          id?: string
+          launch_safety_notes?: string | null
+          minimum_scopes?: string[] | null
+          optional_scopes?: string[] | null
+          provider_capability_id?: string
+          updated_at?: string
+          upgrade_path_available?: boolean | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scope_policy_matrix_provider_capability_id_fkey"
+            columns: ["provider_capability_id"]
+            isOneToOne: false
+            referencedRelation: "provider_capabilities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scope_recommendations: {
+        Row: {
+          approval_needed: boolean | null
+          created_at: string
+          id: string
+          launch_safe: boolean | null
+          provider_capability_id: string | null
+          recommended_scopes: string[] | null
+          removed_scopes: string[] | null
+          requested_scopes: string[] | null
+          user_id: string
+          warnings: string[] | null
+        }
+        Insert: {
+          approval_needed?: boolean | null
+          created_at?: string
+          id?: string
+          launch_safe?: boolean | null
+          provider_capability_id?: string | null
+          recommended_scopes?: string[] | null
+          removed_scopes?: string[] | null
+          requested_scopes?: string[] | null
+          user_id: string
+          warnings?: string[] | null
+        }
+        Update: {
+          approval_needed?: boolean | null
+          created_at?: string
+          id?: string
+          launch_safe?: boolean | null
+          provider_capability_id?: string | null
+          recommended_scopes?: string[] | null
+          removed_scopes?: string[] | null
+          requested_scopes?: string[] | null
+          user_id?: string
+          warnings?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scope_recommendations_provider_capability_id_fkey"
+            columns: ["provider_capability_id"]
+            isOneToOne: false
+            referencedRelation: "provider_capabilities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       setup_sessions: {
         Row: {
           completed_at: string | null
@@ -14591,6 +15415,103 @@ export type Database = {
           impact_score?: number | null
           metadata?: Json | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      unified_account_edges: {
+        Row: {
+          active: boolean | null
+          created_at: string
+          edge_type: string
+          id: string
+          metadata: Json | null
+          provider_family_id: string | null
+          source_node_id: string
+          target_node_id: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string
+          edge_type?: string
+          id?: string
+          metadata?: Json | null
+          provider_family_id?: string | null
+          source_node_id: string
+          target_node_id: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string
+          edge_type?: string
+          id?: string
+          metadata?: Json | null
+          provider_family_id?: string | null
+          source_node_id?: string
+          target_node_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "unified_account_edges_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unified_account_edges_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "unified_account_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unified_account_edges_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "unified_account_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      unified_account_nodes: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string | null
+          entity_id: string | null
+          id: string
+          metadata: Json | null
+          node_type: string
+          updated_at: string
+          user_id: string
+          workspace_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          entity_id?: string | null
+          id?: string
+          metadata?: Json | null
+          node_type?: string
+          updated_at?: string
+          user_id: string
+          workspace_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          entity_id?: string | null
+          id?: string
+          metadata?: Json | null
+          node_type?: string
+          updated_at?: string
+          user_id?: string
+          workspace_id?: string | null
         }
         Relationships: []
       }
