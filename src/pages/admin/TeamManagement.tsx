@@ -5,15 +5,22 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import {
-  Cpu, Pause, RotateCcw, Search,
+  Cpu, Pause, RotateCcw, Search, Plus, Pencil, Trash2,
   Clock, Shield, Brain, Users,
-  MoreVertical, CheckCircle, AlertTriangle, XCircle, Sparkles
+  MoreVertical, CheckCircle, AlertTriangle, XCircle, Sparkles, Play
 } from "lucide-react";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useConfirmation } from "@/hooks/use-confirmation";
+import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { toast } from "sonner";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
@@ -27,18 +34,43 @@ const statusConfig: Record<AgentStatus, { color: string; icon: React.ElementType
   degraded: { color: "text-red-500 bg-red-500/10", icon: AlertTriangle, label: "Degraded" },
 };
 
+const DOMAIN_OPTIONS = ["general", "finance", "business", "household", "health", "legal", "travel", "education", "lifestyle"];
+const ADVISOR_TYPE_OPTIONS = ["reactive", "proactive", "autonomous", "observing", "specialist"];
+
+interface AdvisorFormData {
+  display_name: string;
+  domain: string;
+  advisor_type: string;
+  trust_threshold: number;
+  active: boolean;
+  explanation_style: string;
+  memory_scope: string;
+}
+
+const EMPTY_FORM: AdvisorFormData = {
+  display_name: "",
+  domain: "general",
+  advisor_type: "reactive",
+  trust_threshold: 0.7,
+  active: true,
+  explanation_style: "concise",
+  memory_scope: "session",
+};
+
 export default function TeamManagement() {
   const [search, setSearch] = useState("");
   const [selectedAdvisor, setSelectedAdvisor] = useState<string | null>(null);
+  const [formDialog, setFormDialog] = useState<{ open: boolean; mode: "create" | "edit"; data: AdvisorFormData; editId?: string }>({
+    open: false, mode: "create", data: EMPTY_FORM,
+  });
+  const { confirmation, confirm } = useConfirmation();
+  const qc = useQueryClient();
 
   // Real advisor registry data
   const { data: advisors = [] } = useQuery({
     queryKey: ["admin-advisor-registry"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("advisor_registry")
-        .select("*")
-        .order("display_name");
+      const { data, error } = await supabase.from("advisor_registry").select("*").order("display_name");
       if (error) throw error;
       return data || [];
     },
@@ -48,10 +80,7 @@ export default function TeamManagement() {
   const { data: perfData = [] } = useQuery({
     queryKey: ["admin-advisor-performance"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("advisor_performance")
-        .select("*")
-        .order("total_calls", { ascending: false });
+      const { data, error } = await supabase.from("advisor_performance").select("*").order("total_calls", { ascending: false });
       if (error) throw error;
       return data || [];
     },
@@ -69,6 +98,76 @@ export default function TeamManagement() {
       if (error) throw error;
       return data || [];
     },
+  });
+
+  // ── Mutations ────────────────────────────────────
+  const createAdvisor = useMutation({
+    mutationFn: async (form: AdvisorFormData) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+      const { error } = await supabase.from("advisor_registry").insert({
+        user_id: user.id,
+        display_name: form.display_name,
+        domain: form.domain,
+        advisor_type: form.advisor_type,
+        trust_threshold: form.trust_threshold,
+        active: form.active,
+        explanation_style: form.explanation_style,
+        memory_scope: form.memory_scope,
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-advisor-registry"] });
+      toast.success("Advisor created");
+      setFormDialog(prev => ({ ...prev, open: false }));
+    },
+    onError: (e) => toast.error("Failed to create advisor: " + e.message),
+  });
+
+  const updateAdvisor = useMutation({
+    mutationFn: async ({ id, ...form }: AdvisorFormData & { id: string }) => {
+      const { error } = await supabase.from("advisor_registry").update({
+        display_name: form.display_name,
+        domain: form.domain,
+        advisor_type: form.advisor_type,
+        trust_threshold: form.trust_threshold,
+        active: form.active,
+        explanation_style: form.explanation_style,
+        memory_scope: form.memory_scope,
+      }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-advisor-registry"] });
+      toast.success("Advisor updated");
+      setFormDialog(prev => ({ ...prev, open: false }));
+    },
+    onError: (e) => toast.error("Failed to update: " + e.message),
+  });
+
+  const toggleActive = useMutation({
+    mutationFn: async ({ id, active }: { id: string; active: boolean }) => {
+      const { error } = await supabase.from("advisor_registry").update({ active }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-advisor-registry"] });
+      toast.success("Advisor status toggled");
+    },
+  });
+
+  const deleteAdvisor = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("advisor_registry").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-advisor-registry"] });
+      setSelectedAdvisor(null);
+      toast.success("Advisor deleted");
+    },
+    onError: (e) => toast.error("Failed to delete: " + e.message),
   });
 
   // Build merged agent list from registry + performance + token usage
@@ -97,6 +196,8 @@ export default function TeamManagement() {
       costToday: tokens.cost,
       trustThreshold: Number(a.trust_threshold),
       active: a.active,
+      explanationStyle: a.explanation_style,
+      memoryScope: a.memory_scope,
     };
   });
 
@@ -115,6 +216,8 @@ export default function TeamManagement() {
       costToday: tokens.cost,
       trustThreshold: 0.7,
       active: true,
+      explanationStyle: "concise",
+      memoryScope: "session",
     };
   });
 
@@ -131,9 +234,54 @@ export default function TeamManagement() {
 
   const selected = selectedAdvisor ? allAgents.find(a => a.id === selectedAdvisor) : null;
 
+  const openEditDialog = (agent: typeof allAgents[0]) => {
+    setFormDialog({
+      open: true,
+      mode: "edit",
+      editId: agent.id,
+      data: {
+        display_name: agent.name,
+        domain: agent.domain,
+        advisor_type: agent.advisorType,
+        trust_threshold: agent.trustThreshold,
+        active: agent.active,
+        explanation_style: agent.explanationStyle || "concise",
+        memory_scope: agent.memoryScope || "session",
+      },
+    });
+  };
+
+  const handleDelete = async (agent: typeof allAgents[0]) => {
+    const ok = await confirm({
+      title: `Delete "${agent.name}"?`,
+      description: "This advisor will be permanently removed from the registry. This cannot be undone.",
+      confirmLabel: "Delete",
+      variant: "destructive",
+      requireTypedConfirmation: agent.name,
+    });
+    if (ok) deleteAdvisor.mutate(agent.id);
+  };
+
+  const handleFormSubmit = () => {
+    if (!formDialog.data.display_name.trim()) {
+      toast.error("Display name is required");
+      return;
+    }
+    if (formDialog.mode === "create") {
+      createAdvisor.mutate(formDialog.data);
+    } else if (formDialog.editId) {
+      updateAdvisor.mutate({ id: formDialog.editId, ...formDialog.data });
+    }
+  };
+
+  const updateForm = (patch: Partial<AdvisorFormData>) => {
+    setFormDialog(prev => ({ ...prev, data: { ...prev.data, ...patch } }));
+  };
+
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ConfirmationDialog state={confirmation} />
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
@@ -141,9 +289,14 @@ export default function TeamManagement() {
           </h1>
           <p className="text-sm text-muted-foreground">Monitor and manage your AI advisor team — live data</p>
         </div>
-        <Badge variant="outline" className="text-xs">
-          {allAgents.length} advisors · {totalActive} active
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="text-xs">
+            {allAgents.length} advisors · {totalActive} active
+          </Badge>
+          <Button size="sm" onClick={() => setFormDialog({ open: true, mode: "create", data: EMPTY_FORM })}>
+            <Plus className="h-4 w-4 mr-1" /> Add Advisor
+          </Button>
+        </div>
       </div>
 
       <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -189,7 +342,7 @@ export default function TeamManagement() {
         <TabsContent value="grid">
           {filtered.length === 0 ? (
             <Card><CardContent className="p-8 text-center text-muted-foreground text-sm">
-              No advisors found. AI advisors will appear here once they handle requests.
+              No advisors found. Click "Add Advisor" to create one, or advisors will appear once they handle requests.
             </CardContent></Card>
           ) : (
             <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -276,6 +429,7 @@ export default function TeamManagement() {
         </TabsContent>
       </Tabs>
 
+      {/* Detail Panel */}
       {selected && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-lg p-4">
           <Card className="shadow-2xl border-primary/20">
@@ -295,14 +449,81 @@ export default function TeamManagement() {
                 <div><p className="text-lg font-bold text-foreground">{selected.tokensToday.toLocaleString()}</p><p className="text-[10px] text-muted-foreground">Tokens Today</p></div>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" className="flex-1"><Brain className="h-3.5 w-3.5 mr-1.5" /> Train</Button>
-                <Button variant="outline" size="sm" className="flex-1"><RotateCcw className="h-3.5 w-3.5 mr-1.5" /> Reset</Button>
-                <Button variant="outline" size="sm" className="flex-1"><Shield className="h-3.5 w-3.5 mr-1.5" /> Permissions</Button>
+                <Button
+                  variant="outline" size="sm" className="flex-1"
+                  onClick={(e) => { e.stopPropagation(); toggleActive.mutate({ id: selected.id, active: !selected.active }); }}
+                >
+                  {selected.active ? <><Pause className="h-3.5 w-3.5 mr-1.5" /> Pause</> : <><Play className="h-3.5 w-3.5 mr-1.5" /> Activate</>}
+                </Button>
+                <Button variant="outline" size="sm" className="flex-1" onClick={(e) => { e.stopPropagation(); openEditDialog(selected); }}>
+                  <Pencil className="h-3.5 w-3.5 mr-1.5" /> Edit
+                </Button>
+                <Button variant="outline" size="sm" className="flex-1 text-destructive hover:text-destructive" onClick={(e) => { e.stopPropagation(); handleDelete(selected); }}>
+                  <Trash2 className="h-3.5 w-3.5 mr-1.5" /> Delete
+                </Button>
               </div>
             </CardContent>
           </Card>
         </motion.div>
       )}
+
+      {/* Create / Edit Dialog */}
+      <Dialog open={formDialog.open} onOpenChange={(open) => !open && setFormDialog(prev => ({ ...prev, open: false }))}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>{formDialog.mode === "create" ? "Add New Advisor" : "Edit Advisor"}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="space-y-1.5">
+              <Label className="text-xs">Display Name</Label>
+              <Input value={formDialog.data.display_name} onChange={e => updateForm({ display_name: e.target.value })} placeholder="e.g. Finance Advisor" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label className="text-xs">Domain</Label>
+                <Select value={formDialog.data.domain} onValueChange={v => updateForm({ domain: v })}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>{DOMAIN_OPTIONS.map(d => <SelectItem key={d} value={d} className="capitalize">{d}</SelectItem>)}</SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs">Advisor Type</Label>
+                <Select value={formDialog.data.advisor_type} onValueChange={v => updateForm({ advisor_type: v })}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>{ADVISOR_TYPE_OPTIONS.map(t => <SelectItem key={t} value={t} className="capitalize">{t}</SelectItem>)}</SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label className="text-xs">Trust Threshold ({Math.round(formDialog.data.trust_threshold * 100)}%)</Label>
+                <Input type="range" min="0" max="1" step="0.05" value={formDialog.data.trust_threshold} onChange={e => updateForm({ trust_threshold: parseFloat(e.target.value) })} />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs">Explanation Style</Label>
+                <Select value={formDialog.data.explanation_style} onValueChange={v => updateForm({ explanation_style: v })}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="concise">Concise</SelectItem>
+                    <SelectItem value="detailed">Detailed</SelectItem>
+                    <SelectItem value="step-by-step">Step by Step</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Switch checked={formDialog.data.active} onCheckedChange={v => updateForm({ active: v })} />
+              <Label className="text-xs">Active on creation</Label>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setFormDialog(prev => ({ ...prev, open: false }))}>Cancel</Button>
+            <Button onClick={handleFormSubmit} disabled={createAdvisor.isPending || updateAdvisor.isPending}>
+              {formDialog.mode === "create" ? "Create Advisor" : "Save Changes"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
