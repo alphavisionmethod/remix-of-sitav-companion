@@ -17,16 +17,9 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { buildMockSimResult } from "@/hooks/useDomainMockData";
+import { buildMockSimResult } from "@/lib/mock-data/owner-center";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-// Engine-backed cost data (replaces @/lib/mocks import)
-const ENGINE_COSTS = [
-  { service: "AI Model Calls", cost: "$12.40", percentage: 45, trend: "up" as const },
-  { service: "Database", cost: "$3.20", percentage: 12, trend: "flat" as const },
-  { service: "Edge Functions", cost: "$2.10", percentage: 8, trend: "down" as const },
-  { service: "Storage", cost: "$0.80", percentage: 3, trend: "flat" as const },
-  { service: "Connectors", cost: "$8.90", percentage: 32, trend: "up" as const },
-];
+import { DEMO_ENGINE_COSTS as ENGINE_COSTS } from "@/lib/demo-data/owner-center-costs";
 import {
   useAdminIncidents, useAcknowledgeIncident, useResolveIncident, useCreateIncident,
   useAdminPolicies, useCreatePolicy, useSimulatePolicy,
