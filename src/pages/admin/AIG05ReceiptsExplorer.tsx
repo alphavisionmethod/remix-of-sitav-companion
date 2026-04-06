@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Receipt, BarChart3 } from "lucide-react";
+import { Receipt, BarChart3, ArrowDownUp } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { getInferenceReceipts, getReceiptStats } from "@/lib/services/ai-gateway";
+import { getInferenceReceipts, getReceiptStats, getReceiptRecords, getFallbackEvents } from "@/lib/services/ai-gateway";
 
 export default function AIG05ReceiptsExplorer() {
   const { data: receipts = [] } = useQuery({
@@ -18,35 +18,49 @@ export default function AIG05ReceiptsExplorer() {
     queryFn: getReceiptStats,
   });
 
+  const { data: canonicalReceipts = [] } = useQuery({
+    queryKey: ["ai-receipt-records"],
+    queryFn: () => getReceiptRecords(50),
+  });
+
+  const { data: fallbacks = [] } = useQuery({
+    queryKey: ["ai-fallback-events"],
+    queryFn: () => getFallbackEvents(50),
+  });
+
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Receipt className="h-6 w-6" /> AIG05 — AI Receipts / Trace Explorer</h1>
-        <p className="text-sm text-muted-foreground mt-1">Every AI invocation: provider, model, latency, cost, validation</p>
+        <p className="text-sm text-muted-foreground mt-1">Every AI invocation: provider, model, latency, cost, validation, fallbacks</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-card border-border"><CardContent className="pt-4">
-          <p className="text-xs text-muted-foreground">Total Receipts</p>
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <Card><CardContent className="pt-4">
+          <p className="text-xs text-muted-foreground">Inference Receipts</p>
           <p className="text-2xl font-bold">{stats?.totalReceipts ?? 0}</p>
         </CardContent></Card>
-        <Card className="bg-card border-border"><CardContent className="pt-4">
+        <Card><CardContent className="pt-4">
+          <p className="text-xs text-muted-foreground">Canonical Receipts</p>
+          <p className="text-2xl font-bold">{canonicalReceipts.length}</p>
+        </CardContent></Card>
+        <Card><CardContent className="pt-4">
           <p className="text-xs text-muted-foreground">Total Cost</p>
           <p className="text-2xl font-bold">${((stats?.totalCostCents ?? 0) / 100).toFixed(2)}</p>
         </CardContent></Card>
-        <Card className="bg-card border-border"><CardContent className="pt-4">
+        <Card><CardContent className="pt-4">
           <p className="text-xs text-muted-foreground">Avg Latency</p>
           <p className="text-2xl font-bold">{stats?.avgLatencyMs ?? 0}ms</p>
         </CardContent></Card>
-        <Card className="bg-card border-border"><CardContent className="pt-4">
-          <p className="text-xs text-muted-foreground">Cache Hit Rate</p>
-          <p className="text-2xl font-bold">{((stats?.cacheHitRate ?? 0) * 100).toFixed(1)}%</p>
+        <Card><CardContent className="pt-4">
+          <p className="text-xs text-muted-foreground">Fallback Events</p>
+          <p className="text-2xl font-bold">{fallbacks.length}</p>
         </CardContent></Card>
       </div>
 
       {stats && Object.keys(stats.byProvider).length > 0 && (
-        <Card className="bg-card border-border">
+        <Card>
           <CardHeader><CardTitle className="flex items-center gap-2"><BarChart3 className="h-5 w-5" /> Requests by Provider</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -61,8 +75,67 @@ export default function AIG05ReceiptsExplorer() {
         </Card>
       )}
 
-      <Card className="bg-card border-border">
-        <CardHeader><CardTitle>Recent Receipts</CardTitle></CardHeader>
+      {/* Fallback Events */}
+      {fallbacks.length > 0 && (
+        <Card>
+          <CardHeader><CardTitle className="flex items-center gap-2"><ArrowDownUp className="h-5 w-5" /> Fallback Events</CardTitle></CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader><TableRow>
+                <TableHead>Capability</TableHead>
+                <TableHead>Reason</TableHead>
+                <TableHead>Result</TableHead>
+                <TableHead>Date</TableHead>
+              </TableRow></TableHeader>
+              <TableBody>
+                {fallbacks.slice(0, 20).map((f) => (
+                  <TableRow key={f.id}>
+                    <TableCell className="font-mono text-xs">{f.capability_key}</TableCell>
+                    <TableCell className="text-xs">{f.fallback_reason}</TableCell>
+                    <TableCell><Badge variant={f.result_state === "fallback_success" ? "default" : "destructive"} className="text-xs">{f.result_state}</Badge></TableCell>
+                    <TableCell className="text-xs">{new Date(f.created_at).toLocaleString()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Canonical Receipt Records */}
+      {canonicalReceipts.length > 0 && (
+        <Card>
+          <CardHeader><CardTitle>Canonical Receipt Records</CardTitle></CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader><TableRow>
+                <TableHead>Capability</TableHead>
+                <TableHead>Mode</TableHead>
+                <TableHead>Decision</TableHead>
+                <TableHead>Structured Valid</TableHead>
+                <TableHead>Degraded Reason</TableHead>
+                <TableHead>Date</TableHead>
+              </TableRow></TableHeader>
+              <TableBody>
+                {canonicalReceipts.map((r) => (
+                  <TableRow key={r.id}>
+                    <TableCell className="font-mono text-xs">{r.capability_key}</TableCell>
+                    <TableCell><Badge variant={r.mode === "real" ? "default" : "secondary"} className="text-xs">{r.mode}</Badge></TableCell>
+                    <TableCell className="text-xs">{r.decision_class ?? "—"}</TableCell>
+                    <TableCell className="text-xs">{r.structured_output_valid != null ? (r.structured_output_valid ? "✓" : "✗") : "—"}</TableCell>
+                    <TableCell className="text-xs">{r.degraded_reason ?? "—"}</TableCell>
+                    <TableCell className="text-xs">{new Date(r.created_at).toLocaleString()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Legacy Inference Receipts */}
+      <Card>
+        <CardHeader><CardTitle>Inference Receipts</CardTitle></CardHeader>
         <CardContent>
           {receipts.length > 0 ? (
             <Table>
