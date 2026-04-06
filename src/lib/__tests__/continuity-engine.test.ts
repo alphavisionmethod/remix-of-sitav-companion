@@ -10,12 +10,12 @@ describe("ContinuityEngine", () => {
     });
 
     it("returns moderate for moderate inputs", () => {
-      const result = calculateEmotionalLoad(4, 1, 1, 2);
+      const result = calculateEmotionalLoad(2, 1, 0, 1);
       expect(result.level).toBe("moderate");
     });
 
     it("returns high for heavy inputs", () => {
-      const result = calculateEmotionalLoad(5, 3, 3, 3);
+      const result = calculateEmotionalLoad(4, 2, 2, 2);
       expect(result.level).toBe("high");
     });
 
