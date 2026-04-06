@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { CapabilityInvocation, CapabilityResult } from "@/packages/contracts/msa/capability-contract";
+import { validateCapabilityInvocation, validateCapabilityResult } from "@/packages/contracts/msa/capability-validator";
 
 type CapabilityHandler = (params: Record<string, unknown>, context: CapabilityContext) => Promise<CapabilityResult>;
 
