@@ -30,7 +30,6 @@ Deno.serve(async (req) => {
     } catch (_) {
       // Non-JSON body or GET request - continue
     }
-  });
   }
 
   try {
