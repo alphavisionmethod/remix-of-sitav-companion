@@ -1,74 +1,87 @@
 
 
-# Fix Critical Architecture Violations — Mock Data Elimination & EventBus Adapter
+# Take Calendar, Owner Center, Apple Ecosystem, Android Ecosystem to 100%
 
-## Summary
+## Current State
 
-Three critical violations exist:
-1. **13 pages have inline `const MOCK_*` arrays** — hardcoded data directly in page files
-2. **11 pages import from `useDomainMockData`** — pulling mock data/types through a legacy barrel
-3. **EventBus → DB** — already connected via `event-bus-persistence.ts` (this is actually resolved; the report is stale)
+| Area | Status | Issue |
+|---|---|---|
+| **Calendar** | 60% SIMULATED | Uses hardcoded `DEMO_CALENDAR_EVENTS` directly, no mode-aware hook, no Supabase query |
+| **Owner Center** | 70% SIMULATED | Imports `buildMockSimResult` from legacy `useDomainMockData`, has `ENGINE_COSTS` hardcoded inline |
+| **Apple Ecosystem** | 80% STRUCTURAL | APL01 is DB-connected (good), but AND01 pattern not applied; missing ecosystem data service layer, no Android seed integration |
+| **Android Ecosystem** | 80% STRUCTURAL | AND01 uses 100% hardcoded `SURFACES`/`CAPS` arrays — zero DB hooks, no seed button, no real data path |
+| **OutcomeEnginePage** | BROKEN | Corrupted from prior edit — orphan array literals after line 23 causing build failure |
 
-The fix: extract all inline mock arrays into domain-specific demo-data files, create mode-aware hooks for each domain that doesn't have one yet, and eliminate all `useDomainMockData` imports from pages.
+## Fix 1: OutcomeEnginePage — Fix Build Error (CRITICAL)
 
----
+The file has a corrupted edit: lines 19-23 import from demo-data and alias to `MOCK_*`, but lines 24-72 contain orphan array literals from the old inline data that was supposed to be removed.
 
-## Issue 1: EventBus → DB (Already Connected)
+**Action**: Rewrite `OutcomeEnginePage.tsx` to:
+- Import from `@/lib/demo-data/outcome-engine` (already exists)
+- Remove orphan inline arrays (lines 24-72)
+- Use `DEMO_OUTCOMES`, `DEMO_INTERVENTIONS`, `DEMO_SPILLOVERS` directly
 
-The EventBus **already imports** the persistence adapter (`event-bus-persistence.ts`) which writes to `os_event_log` via Supabase. No code change needed — this is a stale finding. The adapter exists at `src/lib/persistence/event-bus-persistence.ts` and is imported on line 9 of `event-bus.ts`.
+## Fix 2: Calendar — Mode-Aware with Supabase Fallback
 
-**Action**: No code change. Mark as resolved.
+Current: page imports `DEMO_CALENDAR_EVENTS` statically and uses it directly. A `calendar-data-service.ts` already exists with `fetchCalendarEvents()` that queries Supabase `events` table with demo fallback.
 
----
+**Action**:
+1. Create `src/hooks/use-calendar-data.ts` — React Query hook wrapping `fetchCalendarEvents`, mode-aware via `useDataMode()`
+2. Update `CalendarWorkspace.tsx` to use the hook instead of static import — show real events in real mode, demo in demo mode
+3. Add proper loading/empty states
 
-## Issue 2: 13 Pages with Inline `MOCK_*` Arrays
+## Fix 3: Owner Center — Remove Legacy Imports
 
-These pages define hardcoded arrays directly in the component file:
+Current: imports `buildMockSimResult` from `useDomainMockData`, has `ENGINE_COSTS` hardcoded.
 
-| Page | Mock Constants |
+**Action**:
+1. Move `ENGINE_COSTS` to `src/lib/demo-data/owner-center.ts`
+2. Change `buildMockSimResult` import to point directly at `@/lib/mock-data/owner-center` (where it already lives)
+3. Create `src/lib/data-services/owner-center-data-service.ts` with mode-aware cost fetching
+4. Create hook in `src/hooks/use-owner-data.ts`
+5. Update `OwnerCenter.tsx` to use new imports
+
+## Fix 4: Android Ecosystem — DB-Connected (Match Apple Pattern)
+
+Current: AND01 uses hardcoded `SURFACES` and `CAPS` arrays with zero DB integration. Apple (APL01) already uses `useEcosystemDevices("apple")`, `useEcosystemLaunchReadiness()`, etc.
+
+**Action**:
+1. Update `AND01AndroidEcosystemCenter.tsx` to use existing `useEcosystemDevices("android")`, `useEcosystemLaunchReadiness("android")`, `useEcosystemTrustRecords("android")` hooks (they already support `"android"` as ecosystem param)
+2. Add seed button using existing `useSeedEcosystemData()` mutation
+3. Keep `SURFACES` metadata as display config but render real device data when available
+4. Add loading/empty states matching APL01 pattern
+5. Verify the `ecosystem-operations` edge function handles `"android"` seeding
+
+## Fix 5: Apple Ecosystem — Complete Missing Pieces
+
+APL01 is already well-connected. Minor gaps:
+
+**Action**:
+1. Add wearable config display using existing `useEcosystemWearableConfigs("apple")` hook
+2. Add push route display using existing `useEcosystemPushRoutes("apple")` hook
+3. Add continuity events tab using existing `useEcosystemContinuityEvents("apple")` hook
+4. These hooks already exist but aren't wired into the UI
+
+## Implementation Order
+
+1. Fix OutcomeEnginePage build error (unblocks everything)
+2. Calendar mode-aware hook + page update
+3. Owner Center legacy import cleanup
+4. Android Ecosystem DB connection
+5. Apple Ecosystem remaining hook wiring
+6. Run architecture validation scripts to confirm zero violations
+
+## Files Changed
+
+| File | Action |
 |---|---|
-| `CalendarWorkspace.tsx` | `MOCK_EVENTS` |
-| `NotesWorkspace.tsx` | `MOCK_NOTES` |
-| `MediaWorkspace.tsx` | `MOCK_MEDIA` |
-| `CommunicationsPage.tsx` | `MOCK_COMMUNICATIONS` |
-| `OutcomeEnginePage.tsx` | `MOCK_OUTCOMES`, `MOCK_INTERVENTIONS`, `MOCK_SPILLOVERS` |
-| `ApprovalChamber.tsx` | `MOCK_APPROVALS` |
-| `ImportExportCenter.tsx` | `MOCK_UPLOADS`, `MOCK_EXPORTS` |
-| `AppReceiptsPage.tsx` | `MOCK_RECEIPTS` |
-| `InvestmentOffice.tsx` | `MOCK_REGIME` + imported mocks |
-| `RevenueAutopilot.tsx` | Imported mocks used at module scope |
-| `admin/IncidentCommandCenter.tsx` | `MOCK_INCIDENTS` |
-| `admin/AdminDurabilityBoard.tsx` | `MOCK_MUTATIONS` |
-| `admin/MockReplacementProgram.tsx` | `MOCK_TYPES` (enum-like — acceptable) |
+| `src/pages/OutcomeEnginePage.tsx` | Fix corrupted edit |
+| `src/hooks/use-calendar-data.ts` | New hook |
+| `src/pages/CalendarWorkspace.tsx` | Use hook |
+| `src/lib/demo-data/owner-center.ts` | New demo data |
+| `src/hooks/use-owner-data.ts` | New hook |
+| `src/lib/data-services/owner-center-data-service.ts` | New service |
+| `src/pages/OwnerCenter.tsx` | Remove legacy imports |
+| `src/pages/admin/AND01AndroidEcosystemCenter.tsx` | DB-connect |
+| `src/pages/admin/APL01AppleEcosystemCenter.tsx` | Wire remaining hooks |
 
-**Fix approach for each page:**
-
-1. **Extract** the inline mock array into a new file under `src/lib/demo-data/<domain>.ts`
-2. **Create a mode-aware data service** at `src/lib/data-services/<domain>-data-service.ts` (if not already existing) that returns demo data in demo mode, empty arrays in real mode
-3. **Create a React Query hook** in `src/hooks/use-domain-data.ts` for the new data service
-4. **Update the page** to use the hook instead of inline arrays
-
-New demo-data files to create:
-- `src/lib/demo-data/calendar-events.ts`
-- `src/lib/demo-data/notes.ts`
-- `src/lib/demo-data/media.ts`
-- `src/lib/demo-data/communications.ts`
-- `src/lib/demo-data/outcome-engine.ts`
-- `src/lib/demo-data/approvals.ts`
-- `src/lib/demo-data/import-export.ts`
-- `src/lib/demo-data/app-receipts.ts`
-- `src/lib/demo-data/incidents.ts`
-- `src/lib/demo-data/durability.ts`
-
-New data services + hooks to create (~10 services, ~10 hooks added to `use-domain-data.ts`).
-
----
-
-## Issue 3: 11 Pages Import from `useDomainMockData`
-
-These pages import mock constants or types from the legacy `useDomainMockData.ts` barrel:
-
-| Page | What it imports |
-|---|---|
-| `OwnerCenter.tsx` | `buildMockSimResult` |
-| `RevenueAutopilot.tsx` | `MOCK_RECOVERED_VALUES`, `MOCK_RAW_OPPORTUNITIES`, `MOCK_LEAKAGE_INPUT
