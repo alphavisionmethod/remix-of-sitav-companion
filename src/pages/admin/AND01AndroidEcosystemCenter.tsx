@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Smartphone, Watch, Shield, Heart, Wifi, Activity, Clock, Zap, CheckCircle2, AlertTriangle, ChevronRight, RefreshCw, Loader2, Database, Monitor } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords, useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes, useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
+import { useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords, useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes, useEcosystemContinuityEvents, useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   android_phone: { title: "Android Phone Shell", icon: Smartphone, desc: "Primary Android surface — Material Design shell", tech: ["Kotlin", "Jetpack Compose", "WebView hybrid"], capabilities: ["push_fcm", "biometric", "camera", "nfc"] },
@@ -34,6 +34,7 @@ const AND01AndroidEcosystemCenter = () => {
   const { data: healthConsents } = useEcosystemHealthConsents("android");
   const { data: wearableConfigs } = useEcosystemWearableConfigs("android");
   const { data: pushRoutes } = useEcosystemPushRoutes("android");
+  const { data: continuityEvents } = useEcosystemContinuityEvents("android");
   const seedMutation = useSeedEcosystemData();
 
   const hasData = (devices?.length ?? 0) > 0;
@@ -92,10 +93,13 @@ const AND01AndroidEcosystemCenter = () => {
       </div>
 
       <Tabs defaultValue="surfaces" className="space-y-4">
-        <TabsList>
+        <TabsList className="flex-wrap">
           <TabsTrigger value="surfaces">Surfaces</TabsTrigger>
           <TabsTrigger value="capabilities">Provider Family</TabsTrigger>
           <TabsTrigger value="launch">Launch Readiness</TabsTrigger>
+          <TabsTrigger value="wearables">Wearable Configs</TabsTrigger>
+          <TabsTrigger value="push">Push Routes</TabsTrigger>
+          <TabsTrigger value="continuity">Continuity Events</TabsTrigger>
           <TabsTrigger value="roadmap">Roadmap</TabsTrigger>
         </TabsList>
 
@@ -207,6 +211,97 @@ const AND01AndroidEcosystemCenter = () => {
                 </Card>
               ))}
             </div>
+          )}
+        </TabsContent>
+
+        {/* Wearable Configs Tab */}
+        <TabsContent value="wearables">
+          {!wearableConfigs?.length ? (
+            <Card><CardContent className="py-12 text-center text-muted-foreground">No wearable configs found. Seed data to populate Android wearable configurations.</CardContent></Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {wearableConfigs.map((config: any) => (
+                <Card key={config.id}>
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-sm flex items-center gap-2"><Watch className="h-4 w-4" />{config.ecosystem_devices?.surface || "Wearable"}</CardTitle>
+                      <Badge variant={config.enabled ? "default" : "secondary"}>{config.enabled ? "Active" : "Inactive"}</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="text-xs space-y-2">
+                    <div className="flex justify-between"><span className="text-muted-foreground">Model</span><span>{config.ecosystem_devices?.device_model || "—"}</span></div>
+                    <div className="flex justify-between"><span className="text-muted-foreground">Complication</span><span>{config.complication_type || "none"}</span></div>
+                    <div className="flex justify-between"><span className="text-muted-foreground">Haptic</span><Badge variant="outline">{config.haptic_level || "default"}</Badge></div>
+                    <div className="flex justify-between"><span className="text-muted-foreground">Glance</span><Badge variant={config.glance_enabled ? "default" : "outline"}>{config.glance_enabled ? "Yes" : "No"}</Badge></div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+
+        {/* Push Routes Tab */}
+        <TabsContent value="push">
+          {!pushRoutes?.length ? (
+            <Card><CardContent className="py-12 text-center text-muted-foreground">No push routes configured. Seed data to populate Android push routing.</CardContent></Card>
+          ) : (
+            <Card>
+              <CardHeader><CardTitle className="text-sm">Android Push Route Registry</CardTitle></CardHeader>
+              <CardContent>
+                <table className="w-full text-xs">
+                  <thead><tr className="border-b">
+                    <th className="text-left p-2">Device</th>
+                    <th className="text-left p-2">Channel</th>
+                    <th className="p-2">Priority</th>
+                    <th className="p-2">DND Bypass</th>
+                    <th className="p-2">Active</th>
+                  </tr></thead>
+                  <tbody>
+                    {pushRoutes.map((route: any) => (
+                      <tr key={route.id} className="border-b hover:bg-muted/30">
+                        <td className="p-2">{route.ecosystem_devices?.device_model || route.ecosystem_devices?.surface || "—"}</td>
+                        <td className="p-2 font-mono">{route.channel_type || "default"}</td>
+                        <td className="p-2 text-center"><Badge variant={route.routing_priority > 7 ? "destructive" : route.routing_priority > 4 ? "default" : "secondary"}>{route.routing_priority}</Badge></td>
+                        <td className="p-2 text-center">{route.dnd_bypass ? <CheckCircle2 className="h-3 w-3 mx-auto text-green-500" /> : <span className="text-muted-foreground">—</span>}</td>
+                        <td className="p-2 text-center">{route.active ? <CheckCircle2 className="h-3 w-3 mx-auto text-green-500" /> : <AlertTriangle className="h-3 w-3 mx-auto text-muted-foreground" />}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+
+        {/* Continuity Events Tab */}
+        <TabsContent value="continuity">
+          {!continuityEvents?.length ? (
+            <Card><CardContent className="py-12 text-center text-muted-foreground">No continuity events recorded for Android ecosystem.</CardContent></Card>
+          ) : (
+            <Card>
+              <CardHeader><CardTitle className="text-sm">Android Continuity Events</CardTitle></CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {continuityEvents.map((event: any) => (
+                    <div key={event.id} className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/30">
+                      <div className="p-1.5 rounded bg-primary/10"><Monitor className="h-3.5 w-3.5 text-primary" /></div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium">{event.event_type}</span>
+                          <Badge variant="outline" className="text-[10px]">{event.handoff_result || "pending"}</Badge>
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-0.5">
+                          {event.source_surface} → {event.target_surface} • {new Date(event.created_at).toLocaleString()}
+                        </div>
+                      </div>
+                      <Badge variant={event.handoff_result === "success" ? "default" : "secondary"} className="text-[10px]">
+                        {event.latency_ms ? `${event.latency_ms}ms` : "—"}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           )}
         </TabsContent>
 
