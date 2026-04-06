@@ -7145,6 +7145,42 @@ export type Database = {
           },
         ]
       }
+      customer_journey_mode_comparisons: {
+        Row: {
+          claim_risk: boolean
+          comparison_summary: string | null
+          demo_status: string | null
+          id: string
+          internal_test_status: string | null
+          journey_key: string
+          real_status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          claim_risk?: boolean
+          comparison_summary?: string | null
+          demo_status?: string | null
+          id?: string
+          internal_test_status?: string | null
+          journey_key: string
+          real_status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          claim_risk?: boolean
+          comparison_summary?: string | null
+          demo_status?: string | null
+          id?: string
+          internal_test_status?: string | null
+          journey_key?: string
+          real_status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       customer_journey_runs: {
         Row: {
           actual_outcome: string | null
@@ -13513,6 +13549,102 @@ export type Database = {
           },
         ]
       }
+      journey_step_results: {
+        Row: {
+          actual_behavior: string | null
+          created_at: string
+          duration_ms: number | null
+          error_summary: string | null
+          id: string
+          journey_step_id: string | null
+          screenshot_ref: string | null
+          status: string
+          step_order: number
+          trace_ref: string | null
+          user_id: string
+          verification_run_id: string
+        }
+        Insert: {
+          actual_behavior?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_summary?: string | null
+          id?: string
+          journey_step_id?: string | null
+          screenshot_ref?: string | null
+          status?: string
+          step_order: number
+          trace_ref?: string | null
+          user_id: string
+          verification_run_id: string
+        }
+        Update: {
+          actual_behavior?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_summary?: string | null
+          id?: string
+          journey_step_id?: string | null
+          screenshot_ref?: string | null
+          status?: string
+          step_order?: number
+          trace_ref?: string | null
+          user_id?: string
+          verification_run_id?: string
+        }
+        Relationships: []
+      }
+      launch_blocker_scores: {
+        Row: {
+          affects_admin: boolean
+          affects_demo: boolean
+          affects_real: boolean
+          affects_user: boolean
+          blocker_type: string
+          created_at: string
+          id: string
+          journey_key: string | null
+          reason_summary: string
+          resolved: boolean
+          resolved_at: string | null
+          severity_score: number
+          user_id: string
+          verification_run_id: string | null
+        }
+        Insert: {
+          affects_admin?: boolean
+          affects_demo?: boolean
+          affects_real?: boolean
+          affects_user?: boolean
+          blocker_type?: string
+          created_at?: string
+          id?: string
+          journey_key?: string | null
+          reason_summary?: string
+          resolved?: boolean
+          resolved_at?: string | null
+          severity_score?: number
+          user_id: string
+          verification_run_id?: string | null
+        }
+        Update: {
+          affects_admin?: boolean
+          affects_demo?: boolean
+          affects_real?: boolean
+          affects_user?: boolean
+          blocker_type?: string
+          created_at?: string
+          id?: string
+          journey_key?: string | null
+          reason_summary?: string
+          resolved?: boolean
+          resolved_at?: string | null
+          severity_score?: number
+          user_id?: string
+          verification_run_id?: string | null
+        }
+        Relationships: []
+      }
       launch_blockers: {
         Row: {
           created_at: string
@@ -19283,6 +19415,54 @@ export type Database = {
         }
         Relationships: []
       }
+      route_verification_coverage: {
+        Row: {
+          coverage_percent: number | null
+          id: string
+          last_verified_at: string | null
+          p0_actions: number
+          p0_verified_actions: number
+          p1_actions: number
+          p1_verified_actions: number
+          route_key: string
+          surface_class: string
+          total_actions: number
+          updated_at: string
+          user_id: string
+          verified_actions: number
+        }
+        Insert: {
+          coverage_percent?: number | null
+          id?: string
+          last_verified_at?: string | null
+          p0_actions?: number
+          p0_verified_actions?: number
+          p1_actions?: number
+          p1_verified_actions?: number
+          route_key: string
+          surface_class?: string
+          total_actions?: number
+          updated_at?: string
+          user_id: string
+          verified_actions?: number
+        }
+        Update: {
+          coverage_percent?: number | null
+          id?: string
+          last_verified_at?: string | null
+          p0_actions?: number
+          p0_verified_actions?: number
+          p1_actions?: number
+          p1_verified_actions?: number
+          route_key?: string
+          surface_class?: string
+          total_actions?: number
+          updated_at?: string
+          user_id?: string
+          verified_actions?: number
+        }
+        Relationships: []
+      }
       runtime_probe_runs: {
         Row: {
           created_at: string
@@ -21283,6 +21463,66 @@ export type Database = {
         }
         Relationships: []
       }
+      ui_action_inventory: {
+        Row: {
+          action_key: string
+          action_label: string | null
+          action_type: string
+          component_name: string | null
+          created_at: string
+          expected_outcome: string | null
+          id: string
+          is_active: boolean
+          launch_honesty_class: string | null
+          priority_class: string
+          route_key: string
+          selector_hint: string | null
+          supported_modes: Json
+          surface_class: string
+          test_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_key: string
+          action_label?: string | null
+          action_type?: string
+          component_name?: string | null
+          created_at?: string
+          expected_outcome?: string | null
+          id?: string
+          is_active?: boolean
+          launch_honesty_class?: string | null
+          priority_class?: string
+          route_key: string
+          selector_hint?: string | null
+          supported_modes?: Json
+          surface_class?: string
+          test_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_key?: string
+          action_label?: string | null
+          action_type?: string
+          component_name?: string | null
+          created_at?: string
+          expected_outcome?: string | null
+          id?: string
+          is_active?: boolean
+          launch_honesty_class?: string | null
+          priority_class?: string
+          route_key?: string
+          selector_hint?: string | null
+          supported_modes?: Json
+          surface_class?: string
+          test_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       unified_account_edges: {
         Row: {
           active: boolean | null
@@ -21648,6 +21888,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      verification_evidence_assets: {
+        Row: {
+          asset_ref: string
+          asset_type: string
+          created_at: string
+          id: string
+          label: string | null
+          user_id: string
+          verification_run_id: string
+        }
+        Insert: {
+          asset_ref: string
+          asset_type?: string
+          created_at?: string
+          id?: string
+          label?: string | null
+          user_id: string
+          verification_run_id: string
+        }
+        Update: {
+          asset_ref?: string
+          asset_type?: string
+          created_at?: string
+          id?: string
+          label?: string | null
+          user_id?: string
+          verification_run_id?: string
+        }
+        Relationships: []
       }
       verification_runs: {
         Row: {
