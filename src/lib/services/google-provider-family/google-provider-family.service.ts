@@ -71,7 +71,7 @@ export async function getGoogleProviderFamilyState(
       familyId: family.id,
       familyName: "Google",
       providerKey: "google",
-      launchStage: family.launch_stage || "alpha",
+      launchStage: (family.launch_stage || "alpha") as any,
       identity: identityResult,
       connectors: connectorsResult,
       oauthClients: clientsResult,
