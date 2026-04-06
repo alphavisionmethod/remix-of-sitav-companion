@@ -6,15 +6,16 @@ import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { useState, useMemo } from "react";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
   Users, Search, DollarSign, Heart, AlertTriangle, TrendingUp, Star, Phone, Mail,
-  Building, Clock, CheckCircle, Plus, ArrowRight, Sparkles, FileText, MessageSquare, Receipt
+  Building, Clock, CheckCircle, Plus, ArrowRight, Sparkles, FileText, MessageSquare, Receipt, X, Trash2
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import CustomerAutopilotPanel from "@/components/autopilot/CustomerAutopilotPanel";
 import { useInspector } from "@/contexts/InspectorContext";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
@@ -67,10 +68,46 @@ const CustomersPage = () => {
   const navigate = useNavigate();
   const { inspect } = useInspector();
   const { isDemoMode } = useDataMode();
+  const queryClient = useQueryClient();
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [showAdd, setShowAdd] = useState(false);
+  const [formName, setFormName] = useState("");
+  const [formEmail, setFormEmail] = useState("");
+  const [formCompany, setFormCompany] = useState("");
+  const [formPhone, setFormPhone] = useState("");
   const { data: customers = [], isLoading } = useCustomers();
+
+  const createCustomer = useMutation({
+    mutationFn: async () => {
+      const { error } = await (supabase as any).from("customers").insert({
+        user_id: user!.id, name: formName, email: formEmail || null,
+        company: formCompany || null, phone: formPhone || null,
+        status: "active", tier: "standard", lifetime_value: 0,
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+      toast.success("Customer created");
+      setShowAdd(false); setFormName(""); setFormEmail(""); setFormCompany(""); setFormPhone("");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const deleteCustomer = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await (supabase as any).from("customers").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+      toast.success("Customer deleted");
+      setSelectedId(null);
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
 
   const inspectCustomer = (c: Customer) => {
     inspect({
@@ -118,11 +155,30 @@ const CustomersPage = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DomainHeader
-        title="Customers"
-        subtitle="Relationships, health scores, and revenue intelligence — click any customer for full detail in the inspector"
-        domain="business"
-      />
+      <div className="flex items-center justify-between">
+        <DomainHeader
+          title="Customers"
+          subtitle="Relationships, health scores, and revenue intelligence"
+          domain="business"
+        />
+        <SitaButton variant="primary" size="sm" onClick={() => setShowAdd(true)}><Plus className="h-3.5 w-3.5" /> Add Customer</SitaButton>
+      </div>
+
+      {showAdd && (
+        <SitaCard hover={false} className="p-4">
+          <div className="flex justify-between items-center mb-3">
+            <SitaCardTitle>New Customer</SitaCardTitle>
+            <button onClick={() => setShowAdd(false)}><X className="h-4 w-4 text-muted-foreground" /></button>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2">
+            <input value={formName} onChange={e => setFormName(e.target.value)} placeholder="Name *" className="rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm" />
+            <input value={formEmail} onChange={e => setFormEmail(e.target.value)} placeholder="Email" className="rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm" />
+            <input value={formCompany} onChange={e => setFormCompany(e.target.value)} placeholder="Company" className="rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm" />
+            <input value={formPhone} onChange={e => setFormPhone(e.target.value)} placeholder="Phone" className="rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm" />
+          </div>
+          <SitaButton variant="primary" size="sm" className="mt-3" onClick={() => createCustomer.mutate()} disabled={!formName.trim()}>Create Customer</SitaButton>
+        </SitaCard>
+      )}
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="Total Customers" value={customers.length} icon={Users} />
@@ -215,6 +271,7 @@ const CustomersPage = () => {
                   <SitaButton variant="accent" size="sm" className="flex-1"><Phone className="h-3.5 w-3.5" /> Call</SitaButton>
                   <SitaButton variant="accent" size="sm" className="flex-1"><Mail className="h-3.5 w-3.5" /> Email</SitaButton>
                   <SitaButton variant="primary" size="sm" className="flex-1" onClick={() => navigate(`/business/customers/${selected.id}`)}><ArrowRight className="h-3.5 w-3.5" /> Detail</SitaButton>
+                  <SitaButton variant="accent" size="sm" onClick={() => deleteCustomer.mutate(selected.id)}><Trash2 className="h-3.5 w-3.5" /></SitaButton>
                 </div>
               </SitaCard>
 
