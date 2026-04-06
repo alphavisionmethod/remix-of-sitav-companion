@@ -4,6 +4,8 @@ import { Calendar, Zap, AlertTriangle, Clock, Target, TrendingUp } from "lucide-
 import { useInvestmentData } from "@/hooks/use-investment-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
+// eslint-disable-next-line react-refresh/only-export-components
+
 const CATALYST_EVENTS = [
   { id: "ce1", title: "CPI Release", date: "2026-05-14", type: "macro", impact: "high", assets: ["SPY", "XAUUSD", "FED-CUT-JUN"], description: "Key inflation data — determines Fed rate path", portfolioExposure: 45 },
   { id: "ce2", title: "Fed FOMC Meeting", date: "2026-06-18", type: "macro", impact: "high", assets: ["SPY", "XAUUSD", "BTC", "FED-CUT-JUN"], description: "Rate decision and forward guidance", portfolioExposure: 80 },
