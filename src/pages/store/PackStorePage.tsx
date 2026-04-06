@@ -16,6 +16,7 @@ import {
   MOCK_INSTALL_STATES, type StoreCategory, type PackManifest,
 } from "@/lib/pack-store";
 import { ArrowRight, Package, RefreshCw, Sparkles, TrendingUp } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PackStorePage = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const PackStorePage = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
+      <DemoModeBadge />
       {/* Hero */}
       <StoreHero
         installedCount={installed.length}

@@ -16,6 +16,7 @@ import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
 import type { AutonomyRung } from "@/components/sita/primitives/AutonomyLadder";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { motion, AnimatePresence } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -403,6 +404,7 @@ const ApprovalChamber = () => {
 
   return (
     <div className="space-y-6 p-6 max-w-5xl mx-auto">
+      <DemoModeBadge />
       {/* Header */}
       <div className="space-y-1">
         <div className="flex items-center gap-3">

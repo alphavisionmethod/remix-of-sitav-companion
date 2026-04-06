@@ -9,6 +9,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
   Search, Database, Shield, CheckCircle, AlertTriangle,
   XCircle, Eye, ArrowRight, Globe, Code
 } from "lucide-react";
@@ -78,6 +79,7 @@ export default function RouteSourceDiagnostics() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">
+      <DemoModeBadge />
       <SitaPageHeader title="Route Source Diagnostics" subtitle="Per-route data source, provider, mode, and launch honesty classification" />
 
       <div className="grid grid-cols-3 gap-4">

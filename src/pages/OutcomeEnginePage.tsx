@@ -15,6 +15,7 @@ import { ExecutionChainTimeline, buildDefaultChain } from "@/components/sita/pri
 import { KPITile, SectionHeader } from "@/components/sita/SitaComponents";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Mock outcome data ────────────────────────────────────────
 
@@ -130,6 +131,7 @@ export default function OutcomeEnginePage() {
 
   return (
     <div className="space-y-8 p-6 max-w-7xl mx-auto">
+      <DemoModeBadge />
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}

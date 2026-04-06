@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageSquare, Mail, Phone, Send, Clock, CheckCircle2, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type ChannelType = "email" | "sms" | "call" | "chat";
 type MessageStatus = "sent" | "delivered" | "read" | "failed" | "queued";
@@ -55,6 +56,7 @@ export default function CommunicationsPage() {
 
   return (
     <div className="space-y-6 p-6">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Communications</h1>
