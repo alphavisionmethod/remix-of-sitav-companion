@@ -277,6 +277,12 @@ const CN05ConnectorHealthBoard = lazy(() => import("./pages/admin/CN05ConnectorH
 const CN06ConnectorDemoReview = lazy(() => import("./pages/admin/CN06ConnectorDemoReview"));
 const CN07ConnectorLaunchGate = lazy(() => import("./pages/admin/CN07ConnectorLaunchGate"));
 
+const MSA01MultiSurfaceOverview = lazy(() => import("./pages/admin/MSA01MultiSurfaceOverview"));
+const MSA02CoreSurfaceBoundary = lazy(() => import("./pages/admin/MSA02CoreSurfaceBoundary"));
+const MSA03CapabilityPortability = lazy(() => import("./pages/admin/MSA03CapabilityPortability"));
+const MSA04SurfaceAdapterRegistry = lazy(() => import("./pages/admin/MSA04SurfaceAdapterRegistry"));
+const MSA05CompatibilityRadar = lazy(() => import("./pages/admin/MSA05CompatibilityRadar"));
+
 const SAGOverview = lazy(() => import("./pages/admin/sag/SAGOverview"));
 const SAGModelRegistry = lazy(() => import("./pages/admin/sag/SAGModelRegistry"));
 const SAGRoutingPolicy = lazy(() => import("./pages/admin/sag/SAGRoutingPolicy"));
