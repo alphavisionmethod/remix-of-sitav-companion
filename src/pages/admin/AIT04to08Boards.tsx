@@ -17,6 +17,7 @@ import { Activity, DollarSign, Lightbulb, CheckCircle, Shield, TrendingDown, Tre
 import { formatFreshness } from "@/lib/ai/ai-surface-grammar";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ═══════════════════════════════════════════════════════════════
 // AIT04 — Workforce Activity Feed (Full Spec)
