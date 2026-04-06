@@ -56,7 +56,9 @@ const LT05LaunchGateBoard = () => {
         <p className="text-sm text-muted-foreground">Central launch-readiness truth surface</p>
       </div>
 
-      {/* Hero */}
+      {/* CI Pipeline Integration */}
+      <CILaunchGateWidget />
+
       <Card className="border-2">
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
