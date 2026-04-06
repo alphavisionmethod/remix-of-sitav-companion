@@ -3489,6 +3489,33 @@ export type Database = {
         }
         Relationships: []
       }
+      analytics_mode_policies: {
+        Row: {
+          analytics_bucket: string
+          created_at: string
+          id: string
+          mix_with_real_allowed: boolean
+          mode_key: string
+          notes: string | null
+        }
+        Insert: {
+          analytics_bucket: string
+          created_at?: string
+          id?: string
+          mix_with_real_allowed?: boolean
+          mode_key: string
+          notes?: string | null
+        }
+        Update: {
+          analytics_bucket?: string
+          created_at?: string
+          id?: string
+          mix_with_real_allowed?: boolean
+          mode_key?: string
+          notes?: string | null
+        }
+        Relationships: []
+      }
       approval_queue: {
         Row: {
           action_summary: string
@@ -4447,6 +4474,59 @@ export type Database = {
             columns: ["surface_id"]
             isOneToOne: false
             referencedRelation: "surface_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      capability_reality_bindings: {
+        Row: {
+          allowed_modes: Json
+          allows_demo_provider: boolean
+          allows_internal_test_provider: boolean
+          capability_key: string
+          created_at: string
+          id: string
+          launch_honesty_class: string
+          preferred_mode_key: string
+          requires_real_provider: boolean
+          side_effect_policy_key: string
+          surface_class_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          allowed_modes?: Json
+          allows_demo_provider?: boolean
+          allows_internal_test_provider?: boolean
+          capability_key: string
+          created_at?: string
+          id?: string
+          launch_honesty_class?: string
+          preferred_mode_key: string
+          requires_real_provider?: boolean
+          side_effect_policy_key: string
+          surface_class_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          allowed_modes?: Json
+          allows_demo_provider?: boolean
+          allows_internal_test_provider?: boolean
+          capability_key?: string
+          created_at?: string
+          id?: string
+          launch_honesty_class?: string
+          preferred_mode_key?: string
+          requires_real_provider?: boolean
+          side_effect_policy_key?: string
+          surface_class_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capability_reality_bindings_surface_class_id_fkey"
+            columns: ["surface_class_id"]
+            isOneToOne: false
+            referencedRelation: "surface_class_registry"
             referencedColumns: ["id"]
           },
         ]
@@ -7255,6 +7335,44 @@ export type Database = {
           },
         ]
       }
+      demo_interaction_policies: {
+        Row: {
+          created_at: string
+          demo_provider_id: string
+          id: string
+          interaction_behavior: string
+          interaction_key: string
+          side_effect_policy_key: string
+          user_visible_label: string | null
+        }
+        Insert: {
+          created_at?: string
+          demo_provider_id: string
+          id?: string
+          interaction_behavior: string
+          interaction_key: string
+          side_effect_policy_key: string
+          user_visible_label?: string | null
+        }
+        Update: {
+          created_at?: string
+          demo_provider_id?: string
+          id?: string
+          interaction_behavior?: string
+          interaction_key?: string
+          side_effect_policy_key?: string
+          user_visible_label?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "demo_interaction_policies_demo_provider_id_fkey"
+            columns: ["demo_provider_id"]
+            isOneToOne: false
+            referencedRelation: "demo_provider_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       demo_kill_switches: {
         Row: {
           created_at: string
@@ -7330,6 +7448,51 @@ export type Database = {
           receipt_mode?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      demo_provider_registry: {
+        Row: {
+          capability_keys: Json
+          created_at: string
+          demo_provider_key: string
+          display_name: string
+          domain_family: string
+          id: string
+          is_active: boolean
+          launch_honesty_class: string
+          scenario_pack_required: boolean
+          supports_interaction: boolean
+          supports_simulated_writes: boolean
+          updated_at: string
+        }
+        Insert: {
+          capability_keys?: Json
+          created_at?: string
+          demo_provider_key: string
+          display_name: string
+          domain_family: string
+          id?: string
+          is_active?: boolean
+          launch_honesty_class?: string
+          scenario_pack_required?: boolean
+          supports_interaction?: boolean
+          supports_simulated_writes?: boolean
+          updated_at?: string
+        }
+        Update: {
+          capability_keys?: Json
+          created_at?: string
+          demo_provider_key?: string
+          display_name?: string
+          domain_family?: string
+          id?: string
+          is_active?: boolean
+          launch_honesty_class?: string
+          scenario_pack_required?: boolean
+          supports_interaction?: boolean
+          supports_simulated_writes?: boolean
+          updated_at?: string
         }
         Relationships: []
       }
@@ -7434,12 +7597,15 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
+          display_name: string | null
           entity_key: string
+          entity_payload: Json
           entity_type: string
           id: string
           label: string
           metadata: Json
           scenario_id: string
+          scenario_pack_id: string | null
           source_ref: string | null
           user_id: string
           visibility_scope: string
@@ -7447,12 +7613,15 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string | null
+          display_name?: string | null
           entity_key: string
+          entity_payload?: Json
           entity_type: string
           id?: string
           label: string
           metadata?: Json
           scenario_id: string
+          scenario_pack_id?: string | null
           source_ref?: string | null
           user_id: string
           visibility_scope?: string
@@ -7460,12 +7629,15 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string | null
+          display_name?: string | null
           entity_key?: string
+          entity_payload?: Json
           entity_type?: string
           id?: string
           label?: string
           metadata?: Json
           scenario_id?: string
+          scenario_pack_id?: string | null
           source_ref?: string | null
           user_id?: string
           visibility_scope?: string
@@ -7478,7 +7650,59 @@ export type Database = {
             referencedRelation: "demo_scenarios"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "demo_scenario_entities_scenario_pack_id_fkey"
+            columns: ["scenario_pack_id"]
+            isOneToOne: false
+            referencedRelation: "demo_scenario_packs"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      demo_scenario_packs: {
+        Row: {
+          created_at: string
+          default_for_demo_mode: boolean
+          description: string
+          display_name: string
+          enabled_demo_providers: Json
+          id: string
+          is_active: boolean
+          scenario_pack_key: string
+          storyline_metadata: Json
+          surface_classes: Json
+          theme_family: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          default_for_demo_mode?: boolean
+          description: string
+          display_name: string
+          enabled_demo_providers?: Json
+          id?: string
+          is_active?: boolean
+          scenario_pack_key: string
+          storyline_metadata?: Json
+          surface_classes?: Json
+          theme_family: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          default_for_demo_mode?: boolean
+          description?: string
+          display_name?: string
+          enabled_demo_providers?: Json
+          id?: string
+          is_active?: boolean
+          scenario_pack_key?: string
+          storyline_metadata?: Json
+          surface_classes?: Json
+          theme_family?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       demo_scenario_relationships: {
         Row: {
@@ -13067,6 +13291,42 @@ export type Database = {
         }
         Relationships: []
       }
+      launch_honesty_surface_bindings: {
+        Row: {
+          binding_key: string
+          binding_type: string
+          created_at: string
+          id: string
+          last_verified_at: string | null
+          launch_honesty_class: string
+          notes: string | null
+          public_claim_allowed: boolean
+          qualifier_required: boolean
+        }
+        Insert: {
+          binding_key: string
+          binding_type: string
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          launch_honesty_class: string
+          notes?: string | null
+          public_claim_allowed?: boolean
+          qualifier_required?: boolean
+        }
+        Update: {
+          binding_key?: string
+          binding_type?: string
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          launch_honesty_class?: string
+          notes?: string | null
+          public_claim_allowed?: boolean
+          qualifier_required?: boolean
+        }
+        Relationships: []
+      }
       launch_records: {
         Row: {
           advisor_signoff_state: Json | null
@@ -13519,6 +13779,42 @@ export type Database = {
           sandbox_implementation_ref?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      mode_segregation_audits: {
+        Row: {
+          capability_key: string | null
+          created_at: string
+          details: Json
+          id: string
+          issue_type: string
+          resolved: boolean
+          resolved_at: string | null
+          route_key: string | null
+          severity: string
+        }
+        Insert: {
+          capability_key?: string | null
+          created_at?: string
+          details?: Json
+          id?: string
+          issue_type: string
+          resolved?: boolean
+          resolved_at?: string | null
+          route_key?: string | null
+          severity: string
+        }
+        Update: {
+          capability_key?: string | null
+          created_at?: string
+          details?: Json
+          id?: string
+          issue_type?: string
+          resolved?: boolean
+          resolved_at?: string | null
+          route_key?: string | null
+          severity?: string
         }
         Relationships: []
       }
@@ -16737,6 +17033,51 @@ export type Database = {
           },
         ]
       }
+      provider_activation_registry: {
+        Row: {
+          activation_state: string
+          created_at: string
+          demo_mode_supported: boolean
+          health_state: string
+          id: string
+          internal_test_supported: boolean
+          last_verified_at: string | null
+          notes: string | null
+          provider_capability_key: string
+          provider_family_key: string
+          real_mode_supported: boolean
+          updated_at: string
+        }
+        Insert: {
+          activation_state: string
+          created_at?: string
+          demo_mode_supported?: boolean
+          health_state?: string
+          id?: string
+          internal_test_supported?: boolean
+          last_verified_at?: string | null
+          notes?: string | null
+          provider_capability_key: string
+          provider_family_key: string
+          real_mode_supported?: boolean
+          updated_at?: string
+        }
+        Update: {
+          activation_state?: string
+          created_at?: string
+          demo_mode_supported?: boolean
+          health_state?: string
+          id?: string
+          internal_test_supported?: boolean
+          last_verified_at?: string | null
+          notes?: string | null
+          provider_capability_key?: string
+          provider_family_key?: string
+          real_mode_supported?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       provider_capabilities: {
         Row: {
           active: boolean | null
@@ -17117,6 +17458,96 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verification_evidence?: Json | null
+        }
+        Relationships: []
+      }
+      reality_mode_registry: {
+        Row: {
+          allows_demo_side_effects: boolean
+          allows_real_side_effects: boolean
+          analytics_bucket: string
+          created_at: string
+          description: string
+          display_name: string
+          id: string
+          is_active: boolean
+          mode_key: string
+          user_visible: boolean
+        }
+        Insert: {
+          allows_demo_side_effects?: boolean
+          allows_real_side_effects?: boolean
+          analytics_bucket: string
+          created_at?: string
+          description: string
+          display_name: string
+          id?: string
+          is_active?: boolean
+          mode_key: string
+          user_visible?: boolean
+        }
+        Update: {
+          allows_demo_side_effects?: boolean
+          allows_real_side_effects?: boolean
+          analytics_bucket?: string
+          created_at?: string
+          description?: string
+          display_name?: string
+          id?: string
+          is_active?: boolean
+          mode_key?: string
+          user_visible?: boolean
+        }
+        Relationships: []
+      }
+      reality_mode_resolution_log: {
+        Row: {
+          analytics_bucket: string
+          capability_key: string | null
+          created_at: string
+          id: string
+          launch_honesty_class: string
+          provider_source_key: string | null
+          provider_source_type: string
+          requested_mode: string | null
+          resolution_reason: string | null
+          resolved_mode: string
+          route_key: string | null
+          side_effect_policy_key: string | null
+          surface_class_key: string | null
+          user_id: string | null
+        }
+        Insert: {
+          analytics_bucket: string
+          capability_key?: string | null
+          created_at?: string
+          id?: string
+          launch_honesty_class: string
+          provider_source_key?: string | null
+          provider_source_type: string
+          requested_mode?: string | null
+          resolution_reason?: string | null
+          resolved_mode: string
+          route_key?: string | null
+          side_effect_policy_key?: string | null
+          surface_class_key?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          analytics_bucket?: string
+          capability_key?: string | null
+          created_at?: string
+          id?: string
+          launch_honesty_class?: string
+          provider_source_key?: string | null
+          provider_source_type?: string
+          requested_mode?: string | null
+          resolution_reason?: string | null
+          resolved_mode?: string
+          route_key?: string | null
+          side_effect_policy_key?: string | null
+          surface_class_key?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -18244,6 +18675,56 @@ export type Database = {
         }
         Relationships: []
       }
+      route_surface_registry: {
+        Row: {
+          capability_family: string | null
+          created_at: string
+          domain_family: string
+          id: string
+          is_active: boolean
+          launch_stage: string
+          route_key: string
+          route_path: string
+          shell_key: string
+          surface_class_id: string
+          updated_at: string
+        }
+        Insert: {
+          capability_family?: string | null
+          created_at?: string
+          domain_family: string
+          id?: string
+          is_active?: boolean
+          launch_stage?: string
+          route_key: string
+          route_path: string
+          shell_key: string
+          surface_class_id: string
+          updated_at?: string
+        }
+        Update: {
+          capability_family?: string | null
+          created_at?: string
+          domain_family?: string
+          id?: string
+          is_active?: boolean
+          launch_stage?: string
+          route_key?: string
+          route_path?: string
+          shell_key?: string
+          surface_class_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "route_surface_registry_surface_class_id_fkey"
+            columns: ["surface_class_id"]
+            isOneToOne: false
+            referencedRelation: "surface_class_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       route_truth_records: {
         Row: {
           created_at: string
@@ -18718,6 +19199,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      side_effect_policies: {
+        Row: {
+          created_at: string
+          demo_mode_behavior: string
+          display_name: string
+          id: string
+          internal_test_behavior: string
+          notes: string | null
+          policy_key: string
+          real_mode_behavior: string
+        }
+        Insert: {
+          created_at?: string
+          demo_mode_behavior: string
+          display_name: string
+          id?: string
+          internal_test_behavior: string
+          notes?: string | null
+          policy_key: string
+          real_mode_behavior: string
+        }
+        Update: {
+          created_at?: string
+          demo_mode_behavior?: string
+          display_name?: string
+          id?: string
+          internal_test_behavior?: string
+          notes?: string | null
+          policy_key?: string
+          real_mode_behavior?: string
+        }
+        Relationships: []
       }
       sita_memory_entries: {
         Row: {
@@ -19279,6 +19793,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      surface_class_registry: {
+        Row: {
+          created_at: string
+          description: string
+          display_name: string
+          id: string
+          launch_stage: string
+          operator_only: boolean
+          surface_class_key: string
+          user_facing: boolean
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          display_name: string
+          id?: string
+          launch_stage?: string
+          operator_only?: boolean
+          surface_class_key: string
+          user_facing?: boolean
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          display_name?: string
+          id?: string
+          launch_stage?: string
+          operator_only?: boolean
+          surface_class_key?: string
+          user_facing?: boolean
+        }
+        Relationships: []
       }
       surface_constraint_records: {
         Row: {
@@ -21164,6 +21711,21 @@ export type Database = {
         }
         Relationships: []
       }
+      v_demo_provider_summary: {
+        Row: {
+          capability_keys: Json | null
+          demo_provider_key: string | null
+          display_name: string | null
+          domain_family: string | null
+          interaction_policy_count: number | null
+          is_active: boolean | null
+          launch_honesty_class: string | null
+          scenario_pack_count: number | null
+          supports_interaction: boolean | null
+          supports_simulated_writes: boolean | null
+        }
+        Relationships: []
+      }
       v_identity_methods: {
         Row: {
           active: boolean | null
@@ -21185,6 +21747,98 @@ export type Database = {
           registry_launch_stage: string | null
           revoked_at: string | null
           user_id: string | null
+        }
+        Relationships: []
+      }
+      v_launch_honesty_by_surface: {
+        Row: {
+          binding_key: string | null
+          binding_type: string | null
+          last_verified_at: string | null
+          launch_honesty_class: string | null
+          notes: string | null
+          public_claim_allowed: boolean | null
+          qualifier_required: boolean | null
+          route_path: string | null
+          surface_class_key: string | null
+        }
+        Relationships: []
+      }
+      v_mode_resolution_recent: {
+        Row: {
+          analytics_bucket: string | null
+          capability_key: string | null
+          created_at: string | null
+          id: string | null
+          launch_honesty_class: string | null
+          provider_source_key: string | null
+          provider_source_type: string | null
+          requested_mode: string | null
+          resolution_reason: string | null
+          resolved_mode: string | null
+          route_key: string | null
+          surface_class_key: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      v_provider_activation_summary: {
+        Row: {
+          activation_state: string | null
+          demo_mode_supported: boolean | null
+          health_state: string | null
+          internal_test_supported: boolean | null
+          last_verified_at: string | null
+          notes: string | null
+          provider_capability_key: string | null
+          provider_family_key: string | null
+          real_mode_supported: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          activation_state?: string | null
+          demo_mode_supported?: boolean | null
+          health_state?: string | null
+          internal_test_supported?: boolean | null
+          last_verified_at?: string | null
+          notes?: string | null
+          provider_capability_key?: string | null
+          provider_family_key?: string | null
+          real_mode_supported?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          activation_state?: string | null
+          demo_mode_supported?: boolean | null
+          health_state?: string | null
+          internal_test_supported?: boolean | null
+          last_verified_at?: string | null
+          notes?: string | null
+          provider_capability_key?: string | null
+          provider_family_key?: string | null
+          real_mode_supported?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      v_reality_mode_surface_summary: {
+        Row: {
+          allowed_modes: Json | null
+          capability_key: string | null
+          domain_family: string | null
+          honesty_binding_class: string | null
+          launch_honesty_class: string | null
+          operator_only: boolean | null
+          preferred_mode_key: string | null
+          public_claim_allowed: boolean | null
+          qualifier_required: boolean | null
+          route_key: string | null
+          route_launch_stage: string | null
+          route_path: string | null
+          shell_key: string | null
+          side_effect_policy_key: string | null
+          surface_class_key: string | null
+          surface_display_name: string | null
         }
         Relationships: []
       }
