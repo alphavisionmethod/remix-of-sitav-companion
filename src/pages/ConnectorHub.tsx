@@ -8,8 +8,9 @@ const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield } from "lucide-react";
+import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield, Circle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { fetchConnectorHealth, type ConnectorHealthResult } from "@/lib/services/connector-health-service";
 
 const ConnectorHub = () => {
   const { user } = useAuth();
