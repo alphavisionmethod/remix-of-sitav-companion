@@ -676,6 +676,16 @@ serve(async (req) => {
 
     const latencyMs = Date.now() - startTime;
 
+    // ── Token metering via budget RPC ──
+    if (finalResponse.tokens && finalResponse.tokens > 0) {
+      const estCost = Math.ceil(finalResponse.tokens * 0.002);
+      supabase.rpc("update_ai_budget_usage", {
+        p_user_id: user.id,
+        p_tokens: finalResponse.tokens,
+        p_cost: estCost,
+      }).then(() => {}).catch(e => console.error("Budget metering error:", e));
+    }
+
     // ── Persist: Response, Proof, Approval ──
     if (requestId) {
       await supabase.from("advisor_responses").insert({
