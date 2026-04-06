@@ -37,7 +37,7 @@ const WorkflowsCenter = () => {
   const [newName, setNewName] = useState("");
   const [newTrigger, setNewTrigger] = useState("manual");
 
-  const { data: runs = [], isLoading } = useQuery({
+  const runsQuery = useQuery({
     queryKey: ["workflow_runs", user?.id],
     enabled: !!user,
     queryFn: async () => {
@@ -46,6 +46,9 @@ const WorkflowsCenter = () => {
       return data;
     },
   });
+  const runs = runsQuery.data ?? [];
+  const isLoading = runsQuery.isLoading;
+  const freshness = useQueryFreshness(runsQuery);
 
   const { data: steps = [] } = useQuery({
     queryKey: ["workflow_steps", selectedId],
