@@ -129,23 +129,20 @@ async function fetchGoogleConnectors(
     .select("*")
     .in("provider_capability_id", capIds);
 
-  return capabilities.map((cap: any) => {
-    const svc = services?.find((s: any) => s.provider_capability_id === cap.id);
-    return {
-      capabilityKey: cap.capability_key as GoogleCapabilityKey,
-      displayName: cap.display_name,
-      connectionStatus: svc?.connection_status ?? "disconnected",
-      healthStatus: svc?.health_status ?? "unknown",
-      permissionLevel: svc?.permission_level ?? "minimal",
-      grantedScopes: svc?.granted_scopes ?? [],
-      reauthNeeded: svc?.reauth_needed ?? false,
-      lastSyncAt: svc?.last_sync_at ?? null,
-      mode,
-      launchStage: cap.launch_stage ?? "planned",
-      upgradeAvailable: cap.upgrade_path_support ?? false,
-      serviceAccountId: svc?.id ?? null,
-    };
-  });
+  return capabilities.map((cap: any): GoogleConnectorState => ({
+    capabilityKey: cap.capability_key as GoogleCapabilityKey,
+    displayName: cap.display_name,
+    connectionStatus: (svc => svc?.connection_status ?? "disconnected")(services?.find((s: any) => s.provider_capability_id === cap.id)) as any,
+    healthStatus: (svc => svc?.health_status ?? "unknown")(services?.find((s: any) => s.provider_capability_id === cap.id)) as any,
+    permissionLevel: (svc => svc?.permission_level ?? "minimal")(services?.find((s: any) => s.provider_capability_id === cap.id)) as any,
+    grantedScopes: services?.find((s: any) => s.provider_capability_id === cap.id)?.granted_scopes ?? [],
+    reauthNeeded: services?.find((s: any) => s.provider_capability_id === cap.id)?.reauth_needed ?? false,
+    lastSyncAt: services?.find((s: any) => s.provider_capability_id === cap.id)?.last_sync_at ?? null,
+    mode,
+    launchStage: (cap.launch_stage ?? "planned") as any,
+    upgradeAvailable: cap.upgrade_path_support ?? false,
+    serviceAccountId: services?.find((s: any) => s.provider_capability_id === cap.id)?.id ?? null,
+  }));
 }
 
 // ── OAuth Clients ────────────────────────────────────────────
