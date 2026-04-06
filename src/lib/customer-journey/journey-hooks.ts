@@ -83,7 +83,7 @@ export function useSeedJourneys() {
         user_id: user.id,
         journey_key: j.journeyKey,
         display_name: j.displayName,
-        persona: j.persona,
+        persona: j.persona as string,
         domain: j.domain,
         route_family: j.routeFamily,
         primary_modes: j.primaryModes,
