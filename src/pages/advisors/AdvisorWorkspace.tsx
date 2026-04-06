@@ -378,38 +378,60 @@ const SimulationStudio = () => (
 
 // ── Approval Queue ──────────────────────────────────────────────
 
-const ApprovalQueue = () => (
-  <div className="space-y-6">
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-      className="rounded-xl border border-trust-approval/20 bg-trust-approval/5 p-5"
-    >
-      <div className="flex items-center gap-3 mb-2">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-trust-approval/15">
-          <ShieldCheck className="h-5 w-5 text-trust-approval" />
-        </div>
-        <div>
-          <h2 className="text-base font-bold text-foreground font-display">Approval Queue</h2>
-          <p className="text-xs text-muted-foreground">Actions that need your decision before execution</p>
-        </div>
-      </div>
-      <p className="text-xs text-muted-foreground">
-        Each shows what happens if approved, delayed, or rejected — with linked proof and policy context.
-      </p>
-    </motion.div>
+const ApprovalQueue = () => {
+  const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
+  const { pendingApprovals, isLoading } = useApprovalQueue();
 
-    {mockApprovals.length > 0 ? (
-      <div className="space-y-4">
-        {mockApprovals.map((a, i) => (
-          <motion.div key={a.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
-            <ApprovalCard approval={a} />
-          </motion.div>
-        ))}
-      </div>
-    ) : (
-      <EmptyState icon={CheckCircle} title="All caught up" description="No approvals pending — your advisors are operating within policy" />
-    )}
-  </div>
-);
+  // Use DB approvals if available, otherwise mock
+  const approvals = (!isDemoMode && pendingApprovals.length > 0)
+    ? pendingApprovals.map((a: any) => ({
+        id: a.id,
+        advisorId: "system",
+        title: a.action_summary || "Pending Approval",
+        description: a.decision_reason || "Awaiting your decision",
+        type: a.action_type || "action",
+        status: "pending" as const,
+        impact: "medium" as const,
+        requiresApproval: true,
+      }))
+    : mockApprovals;
+
+  return (
+    <div className="space-y-6">
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+        className="rounded-xl border border-trust-approval/20 bg-trust-approval/5 p-5"
+      >
+        <div className="flex items-center gap-3 mb-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-trust-approval/15">
+            <ShieldCheck className="h-5 w-5 text-trust-approval" />
+          </div>
+          <div>
+            <h2 className="text-base font-bold text-foreground font-display">Approval Queue</h2>
+            <p className="text-xs text-muted-foreground">Actions that need your decision before execution</p>
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Each shows what happens if approved, delayed, or rejected — with linked proof and policy context.
+        </p>
+      </motion.div>
+
+      {isLoading ? (
+        <div className="text-center py-8 text-muted-foreground text-sm">Loading approvals…</div>
+      ) : approvals.length > 0 ? (
+        <div className="space-y-4">
+          {approvals.map((a: any, i: number) => (
+            <motion.div key={a.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
+              <ApprovalCard approval={a} />
+            </motion.div>
+          ))}
+        </div>
+      ) : (
+        <EmptyState icon={CheckCircle} title="All caught up" description="No approvals pending — your advisors are operating within policy" />
+      )}
+    </div>
+  );
+};
 
 // ── Memory Transparency ─────────────────────────────────────────
 
