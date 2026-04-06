@@ -245,13 +245,45 @@ const AdvisorRegistry = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
+  // Fetch DB advisors and merge with config registry
+  const { data: dbAdvisors = [] } = useQuery({
+    queryKey: ["advisor-registry-db"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("advisor_registry").select("*").order("display_name");
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  // Merge: config advisors are canonical, DB advisors that don't match a config entry are appended
+  const mergedRegistry = useMemo(() => {
+    const configIds = new Set(FULL_ADVISOR_REGISTRY.map(a => a.id));
+    const dbOnly = dbAdvisors
+      .filter(db => !configIds.has(db.id) && !configIds.has(db.advisor_type))
+      .map(db => ({
+        id: db.id,
+        name: db.display_name,
+        domain: db.domain || "general",
+        council: "internal-ops" as const,
+        description: `DB-registered ${db.advisor_type} advisor`,
+        capabilities: Array.isArray((db.capabilities as any)) ? (db.capabilities as string[]) : [],
+        maxAutonomy: "L1-diagnose" as const,
+        confidenceThreshold: db.trust_threshold || 0.7,
+        maturity: "alpha" as "alpha",
+        handoffTargets: [],
+        blockedActions: [],
+        performanceKpis: [],
+      })) as ExtendedAdvisorConfig[];
+    return [...FULL_ADVISOR_REGISTRY, ...dbOnly];
+  }, [dbAdvisors]);
+
   const councils = useMemo(() => {
-    const set = new Set(FULL_ADVISOR_REGISTRY.map(a => a.council));
+    const set = new Set(mergedRegistry.map(a => a.council));
     return ["all", ...Array.from(set)];
-  }, []);
+  }, [mergedRegistry]);
 
   const filtered = useMemo(() => {
-    let list = FULL_ADVISOR_REGISTRY;
+    let list = mergedRegistry;
     if (council !== "all") list = list.filter(a => a.council === council);
     if (search) {
       const q = search.toLowerCase();
@@ -262,15 +294,15 @@ const AdvisorRegistry = () => {
       );
     }
     return list;
-  }, [council, search]);
+  }, [council, search, mergedRegistry]);
 
-  const selected = FULL_ADVISOR_REGISTRY.find(a => a.id === selectedId) ?? null;
+  const selected = mergedRegistry.find(a => a.id === selectedId) ?? null;
 
   const maturityCounts = useMemo(() => {
     const m = { scaffold: 0, alpha: 0, beta: 0, production: 0 };
-    FULL_ADVISOR_REGISTRY.forEach(a => m[a.maturity]++);
+    mergedRegistry.forEach(a => m[a.maturity]++);
     return m;
-  }, []);
+  }, [mergedRegistry]);
 
   return (
     <motion.div className="mx-auto max-w-7xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
