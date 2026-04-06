@@ -2323,6 +2323,50 @@ export type Database = {
         }
         Relationships: []
       }
+      auth_connector_separation_audits: {
+        Row: {
+          created_at: string
+          details: Json
+          id: string
+          issue_type: string
+          provider_family_id: string | null
+          resolved: boolean
+          resolved_at: string | null
+          severity: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          details?: Json
+          id?: string
+          issue_type: string
+          provider_family_id?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          severity?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          details?: Json
+          id?: string
+          issue_type?: string
+          provider_family_id?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          severity?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auth_connector_separation_audits_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       automation_kill_switches: {
         Row: {
           activated_at: string | null
@@ -3785,11 +3829,18 @@ export type Database = {
       }
       connected_service_links: {
         Row: {
+          account_label: string | null
           connection_status: string | null
           created_at: string
+          disconnected_at: string | null
+          entity_id: string | null
+          external_account_email: string | null
+          external_account_id: string | null
+          external_account_name: string | null
           granted_scopes: string[] | null
           health_status: string | null
           id: string
+          last_health_check_at: string | null
           last_sync_at: string | null
           metadata: Json | null
           mode: string | null
@@ -3799,13 +3850,21 @@ export type Database = {
           reauth_needed: boolean | null
           updated_at: string
           user_id: string
+          workspace_id: string | null
         }
         Insert: {
+          account_label?: string | null
           connection_status?: string | null
           created_at?: string
+          disconnected_at?: string | null
+          entity_id?: string | null
+          external_account_email?: string | null
+          external_account_id?: string | null
+          external_account_name?: string | null
           granted_scopes?: string[] | null
           health_status?: string | null
           id?: string
+          last_health_check_at?: string | null
           last_sync_at?: string | null
           metadata?: Json | null
           mode?: string | null
@@ -3815,13 +3874,21 @@ export type Database = {
           reauth_needed?: boolean | null
           updated_at?: string
           user_id: string
+          workspace_id?: string | null
         }
         Update: {
+          account_label?: string | null
           connection_status?: string | null
           created_at?: string
+          disconnected_at?: string | null
+          entity_id?: string | null
+          external_account_email?: string | null
+          external_account_id?: string | null
+          external_account_name?: string | null
           granted_scopes?: string[] | null
           health_status?: string | null
           id?: string
+          last_health_check_at?: string | null
           last_sync_at?: string | null
           metadata?: Json | null
           mode?: string | null
@@ -3831,6 +3898,7 @@ export type Database = {
           reauth_needed?: boolean | null
           updated_at?: string
           user_id?: string
+          workspace_id?: string | null
         }
         Relationships: [
           {
@@ -4071,6 +4139,80 @@ export type Database = {
             columns: ["registry_id"]
             isOneToOne: false
             referencedRelation: "connector_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connector_disconnection_events: {
+        Row: {
+          connected_service_account_id: string
+          created_at: string
+          disconnect_reason: string
+          disconnected_at: string
+          id: string
+          initiated_by: string
+          metadata: Json
+          previous_permission_level: string | null
+          previous_scopes: Json
+          provider_capability_id: string | null
+          provider_family_id: string | null
+          user_id: string
+        }
+        Insert: {
+          connected_service_account_id: string
+          created_at?: string
+          disconnect_reason?: string
+          disconnected_at?: string
+          id?: string
+          initiated_by?: string
+          metadata?: Json
+          previous_permission_level?: string | null
+          previous_scopes?: Json
+          provider_capability_id?: string | null
+          provider_family_id?: string | null
+          user_id: string
+        }
+        Update: {
+          connected_service_account_id?: string
+          created_at?: string
+          disconnect_reason?: string
+          disconnected_at?: string
+          id?: string
+          initiated_by?: string
+          metadata?: Json
+          previous_permission_level?: string | null
+          previous_scopes?: Json
+          provider_capability_id?: string | null
+          provider_family_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connector_disconnection_event_connected_service_account_id_fkey"
+            columns: ["connected_service_account_id"]
+            isOneToOne: false
+            referencedRelation: "connected_service_links"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connector_disconnection_event_connected_service_account_id_fkey"
+            columns: ["connected_service_account_id"]
+            isOneToOne: false
+            referencedRelation: "v_connected_accounts_center"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connector_disconnection_events_provider_capability_id_fkey"
+            columns: ["provider_capability_id"]
+            isOneToOne: false
+            referencedRelation: "provider_capabilities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connector_disconnection_events_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
             referencedColumns: ["id"]
           },
         ]
@@ -4596,6 +4738,7 @@ export type Database = {
         Row: {
           connection_context: Json | null
           consent_status: string | null
+          consent_type: string | null
           consent_version: number | null
           created_at: string
           denied_scopes: string[] | null
@@ -4604,7 +4747,9 @@ export type Database = {
           granted_scopes: string[] | null
           id: string
           mode: string | null
+          notes: string | null
           oauth_client_id: string | null
+          previous_scopes: Json | null
           provider_capability_id: string | null
           provider_family_id: string | null
           revocation_reason: string | null
@@ -4617,6 +4762,7 @@ export type Database = {
         Insert: {
           connection_context?: Json | null
           consent_status?: string | null
+          consent_type?: string | null
           consent_version?: number | null
           created_at?: string
           denied_scopes?: string[] | null
@@ -4625,7 +4771,9 @@ export type Database = {
           granted_scopes?: string[] | null
           id?: string
           mode?: string | null
+          notes?: string | null
           oauth_client_id?: string | null
+          previous_scopes?: Json | null
           provider_capability_id?: string | null
           provider_family_id?: string | null
           revocation_reason?: string | null
@@ -4638,6 +4786,7 @@ export type Database = {
         Update: {
           connection_context?: Json | null
           consent_status?: string | null
+          consent_type?: string | null
           consent_version?: number | null
           created_at?: string
           denied_scopes?: string[] | null
@@ -4646,7 +4795,9 @@ export type Database = {
           granted_scopes?: string[] | null
           id?: string
           mode?: string | null
+          notes?: string | null
           oauth_client_id?: string | null
+          previous_scopes?: Json | null
           provider_capability_id?: string | null
           provider_family_id?: string | null
           revocation_reason?: string | null
@@ -4716,6 +4867,13 @@ export type Database = {
             referencedRelation: "consent_ledger"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "consent_revocations_consent_ledger_id_fkey"
+            columns: ["consent_ledger_id"]
+            isOneToOne: false
+            referencedRelation: "v_consent_history"
+            referencedColumns: ["id"]
+          },
         ]
       }
       consent_scope_records: {
@@ -4763,6 +4921,13 @@ export type Database = {
             referencedRelation: "consent_ledger"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "consent_scope_records_consent_ledger_id_fkey"
+            columns: ["consent_ledger_id"]
+            isOneToOne: false
+            referencedRelation: "v_consent_history"
+            referencedColumns: ["id"]
+          },
         ]
       }
       consent_upgrades: {
@@ -4808,6 +4973,13 @@ export type Database = {
             columns: ["consent_ledger_id"]
             isOneToOne: false
             referencedRelation: "consent_ledger"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "consent_upgrades_consent_ledger_id_fkey"
+            columns: ["consent_ledger_id"]
+            isOneToOne: false
+            referencedRelation: "v_consent_history"
             referencedColumns: ["id"]
           },
         ]
@@ -8316,51 +8488,195 @@ export type Database = {
         Row: {
           active: boolean | null
           auth_method: string | null
+          avatar_url: string | null
           created_at: string
           display_name: string | null
           email: string | null
           external_id: string | null
           id: string
+          identity_provider_registry_id: string | null
           last_used_at: string | null
+          last_verified_at: string | null
+          linked_at: string | null
           metadata: Json | null
+          mode: string | null
           primary_identity: boolean | null
           provider_family_id: string
+          revoked_at: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
           active?: boolean | null
           auth_method?: string | null
+          avatar_url?: string | null
           created_at?: string
           display_name?: string | null
           email?: string | null
           external_id?: string | null
           id?: string
+          identity_provider_registry_id?: string | null
           last_used_at?: string | null
+          last_verified_at?: string | null
+          linked_at?: string | null
           metadata?: Json | null
+          mode?: string | null
           primary_identity?: boolean | null
           provider_family_id: string
+          revoked_at?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
           active?: boolean | null
           auth_method?: string | null
+          avatar_url?: string | null
           created_at?: string
           display_name?: string | null
           email?: string | null
           external_id?: string | null
           id?: string
+          identity_provider_registry_id?: string | null
           last_used_at?: string | null
+          last_verified_at?: string | null
+          linked_at?: string | null
           metadata?: Json | null
+          mode?: string | null
           primary_identity?: boolean | null
           provider_family_id?: string
+          revoked_at?: string | null
           updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
+            foreignKeyName: "identity_provider_links_identity_provider_registry_id_fkey"
+            columns: ["identity_provider_registry_id"]
+            isOneToOne: false
+            referencedRelation: "identity_provider_registry"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "identity_provider_links_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      identity_provider_registry: {
+        Row: {
+          auth_method: string
+          created_at: string
+          default_scopes: Json
+          display_name: string
+          id: string
+          identity_key: string
+          is_active: boolean
+          launch_stage: string
+          platform_scope: string
+          provider_capability_id: string | null
+          provider_family_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auth_method?: string
+          created_at?: string
+          default_scopes?: Json
+          display_name: string
+          id?: string
+          identity_key: string
+          is_active?: boolean
+          launch_stage?: string
+          platform_scope?: string
+          provider_capability_id?: string | null
+          provider_family_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auth_method?: string
+          created_at?: string
+          default_scopes?: Json
+          display_name?: string
+          id?: string
+          identity_key?: string
+          is_active?: boolean
+          launch_stage?: string
+          platform_scope?: string
+          provider_capability_id?: string | null
+          provider_family_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "identity_provider_registry_provider_capability_id_fkey"
+            columns: ["provider_capability_id"]
+            isOneToOne: false
+            referencedRelation: "provider_capabilities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "identity_provider_registry_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      identity_session_audit: {
+        Row: {
+          anomaly_detected: boolean
+          anomaly_reason: string | null
+          created_at: string
+          event_type: string
+          id: string
+          identity_provider_key: string | null
+          ip_address: string | null
+          metadata: Json
+          provider_family_id: string | null
+          session_id: string | null
+          trust_posture: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          anomaly_detected?: boolean
+          anomaly_reason?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          identity_provider_key?: string | null
+          ip_address?: string | null
+          metadata?: Json
+          provider_family_id?: string | null
+          session_id?: string | null
+          trust_posture?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          anomaly_detected?: boolean
+          anomaly_reason?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          identity_provider_key?: string | null
+          ip_address?: string | null
+          metadata?: Json
+          provider_family_id?: string | null
+          session_id?: string | null
+          trust_posture?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "identity_session_audit_provider_family_id_fkey"
             columns: ["provider_family_id"]
             isOneToOne: false
             referencedRelation: "provider_families"
@@ -11921,6 +12237,66 @@ export type Database = {
             columns: ["provider_capability_id"]
             isOneToOne: false
             referencedRelation: "provider_capabilities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      permission_upgrade_requests: {
+        Row: {
+          approval_required: boolean
+          connected_service_account_id: string
+          created_at: string
+          current_permission_level: string
+          id: string
+          notes: string | null
+          requested_at: string
+          requested_permission_level: string
+          requested_scopes: Json
+          resolved_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          approval_required?: boolean
+          connected_service_account_id: string
+          created_at?: string
+          current_permission_level: string
+          id?: string
+          notes?: string | null
+          requested_at?: string
+          requested_permission_level: string
+          requested_scopes?: Json
+          resolved_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          approval_required?: boolean
+          connected_service_account_id?: string
+          created_at?: string
+          current_permission_level?: string
+          id?: string
+          notes?: string | null
+          requested_at?: string
+          requested_permission_level?: string
+          requested_scopes?: Json
+          resolved_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "permission_upgrade_requests_connected_service_account_id_fkey"
+            columns: ["connected_service_account_id"]
+            isOneToOne: false
+            referencedRelation: "connected_service_links"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "permission_upgrade_requests_connected_service_account_id_fkey"
+            columns: ["connected_service_account_id"]
+            isOneToOne: false
+            referencedRelation: "v_connected_accounts_center"
             referencedColumns: ["id"]
           },
         ]
@@ -17555,11 +17931,25 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "unified_account_edges_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "v_account_graph_summary"
+            referencedColumns: ["node_id"]
+          },
+          {
             foreignKeyName: "unified_account_edges_target_node_id_fkey"
             columns: ["target_node_id"]
             isOneToOne: false
             referencedRelation: "unified_account_nodes"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unified_account_edges_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "v_account_graph_summary"
+            referencedColumns: ["node_id"]
           },
         ]
       }
@@ -17571,7 +17961,9 @@ export type Database = {
           entity_id: string | null
           id: string
           metadata: Json | null
+          node_ref_id: string | null
           node_type: string
+          provider_family_id: string | null
           updated_at: string
           user_id: string
           workspace_id: string | null
@@ -17583,7 +17975,9 @@ export type Database = {
           entity_id?: string | null
           id?: string
           metadata?: Json | null
+          node_ref_id?: string | null
           node_type?: string
+          provider_family_id?: string | null
           updated_at?: string
           user_id: string
           workspace_id?: string | null
@@ -17595,12 +17989,22 @@ export type Database = {
           entity_id?: string | null
           id?: string
           metadata?: Json | null
+          node_ref_id?: string | null
           node_type?: string
+          provider_family_id?: string | null
           updated_at?: string
           user_id?: string
           workspace_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "unified_account_nodes_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_ai_budgets: {
         Row: {
@@ -18144,7 +18548,105 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      v_account_graph_summary: {
+        Row: {
+          created_at: string | null
+          display_name: string | null
+          edge_count: number | null
+          email: string | null
+          entity_id: string | null
+          node_id: string | null
+          node_ref_id: string | null
+          node_type: string | null
+          provider_family_id: string | null
+          provider_family_key: string | null
+          provider_family_name: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "unified_account_nodes_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_connected_accounts_center: {
+        Row: {
+          account_label: string | null
+          capability_category: string | null
+          capability_key: string | null
+          capability_name: string | null
+          connection_status: string | null
+          created_at: string | null
+          default_grant_profile: string | null
+          external_account_email: string | null
+          external_account_id: string | null
+          granted_scopes: string[] | null
+          health_status: string | null
+          id: string | null
+          last_health_check_at: string | null
+          last_sync_at: string | null
+          mode: string | null
+          permission_level: string | null
+          policy_minimum_scopes: string[] | null
+          provider_family_key: string | null
+          provider_family_name: string | null
+          reauth_needed: boolean | null
+          upgrade_path_available: boolean | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      v_consent_history: {
+        Row: {
+          capability_key: string | null
+          capability_name: string | null
+          consent_status: string | null
+          consent_type: string | null
+          created_at: string | null
+          denied_scopes: string[] | null
+          granted_at: string | null
+          granted_scopes: string[] | null
+          id: string | null
+          mode: string | null
+          notes: string | null
+          previous_scopes: Json | null
+          provider_family_key: string | null
+          provider_family_name: string | null
+          revocation_reason: string | null
+          revoked_at: string | null
+          source_flow: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      v_identity_methods: {
+        Row: {
+          active: boolean | null
+          auth_method: string | null
+          avatar_url: string | null
+          display_name: string | null
+          email: string | null
+          external_id: string | null
+          id: string | null
+          identity_key: string | null
+          last_used_at: string | null
+          last_verified_at: string | null
+          linked_at: string | null
+          mode: string | null
+          platform_scope: string | null
+          primary_identity: boolean | null
+          provider_family_key: string | null
+          provider_family_name: string | null
+          registry_launch_stage: string | null
+          revoked_at: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       cleanup_expired_signals: { Args: never; Returns: number }
