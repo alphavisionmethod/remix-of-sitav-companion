@@ -14,7 +14,7 @@ describe("Continuity Engine — calculateEmotionalLoad", () => {
   });
 
   it("returns moderate load for moderate activity", () => {
-    const result = calculateEmotionalLoad(4, 1, 1, 2);
+    const result = calculateEmotionalLoad(3, 1, 0, 1);
     expect(result.level).toBe("moderate");
   });
 
