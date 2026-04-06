@@ -29,7 +29,7 @@ export default function ISA01IdentityProviderRegistryBoard() {
       const { data } = await supabase
         .from("provider_families")
         .select("*")
-        .eq("has_identity", true)
+        .eq("identity_support", true)
         .order("name");
       return data || [];
     },

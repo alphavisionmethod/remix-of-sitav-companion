@@ -107,13 +107,13 @@ export default function ISA06UnifiedAccountGraphExplorer() {
                   <Card key={node.id} className={`border ${config.color} bg-opacity-5`}>
                     <CardContent className="pt-4">
                       <div className="flex items-center justify-between mb-1">
-                        <p className="font-medium text-sm">{node.display_label}</p>
-                        {statusIcons[node.status] || statusIcons.active}
+                      <p className="font-medium text-sm">{node.display_name}</p>
+                        {statusIcons[node.node_type] || statusIcons.active}
                       </div>
                       <div className="space-y-0.5 text-xs text-muted-foreground">
-                        <p>Key: <code className="bg-muted px-1 rounded">{node.node_key}</code></p>
-                        {node.provider_family_key && <p>Family: {node.provider_family_key}</p>}
-                        <p>Status: {node.status || "active"}</p>
+                        <p>Key: <code className="bg-muted px-1 rounded">{node.entity_id || node.id?.slice(0, 8)}</code></p>
+                        {node.workspace_id && <p>Workspace: {node.workspace_id.slice(0, 8)}</p>}
+                        <p>Type: {node.node_type || "unknown"}</p>
                       </div>
                     </CardContent>
                   </Card>
