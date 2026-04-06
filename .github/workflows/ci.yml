@@ -1,7 +1,7 @@
 # ═══════════════════════════════════════════════════════════════
-# SITA OS — CI/CD Pipeline (Complete)
-# Build, test, lint, typecheck, security, architecture,
-# truth validation, launch gate, and ring promotion
+# SITA OS — CI/CD Pipeline (Production-Grade)
+# Typecheck, lint, test, build, security, architecture,
+# E2E, Docker, ring promotion, and launch gate
 # ═══════════════════════════════════════════════════════════════
 
 name: CI/CD
@@ -12,7 +12,11 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '0 3 * * *' # Nightly full validation
+    - cron: '0 3 * * *'
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   NODE_VERSION: "20"
@@ -32,7 +36,7 @@ jobs:
       - name: TypeScript Check
         run: npx tsc --noEmit
 
-  # ── Lint ──────────────────────────────────────────────────
+  # ── Lint (advisory — does not block merge) ────────────────
   lint:
     name: ESLint
     runs-on: ubuntu-latest
@@ -46,7 +50,7 @@ jobs:
       - name: ESLint
         run: npx eslint src/ --max-warnings 0 || true
 
-  # ── Unit Tests ────────────────────────────────────────────
+  # ── Unit Tests (blocks merge) ─────────────────────────────
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
@@ -59,7 +63,7 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Run Unit Tests
-        run: npx vitest run --reporter=verbose --coverage || true
+        run: npx vitest run --reporter=verbose
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -67,7 +71,22 @@ jobs:
           path: coverage/
           retention-days: 14
 
-  # ── Security Scan ─────────────────────────────────────────
+  # ── Integration Tests (blocks merge) ──────────────────────
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: typecheck
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - name: Run Integration Tests
+        run: npm run test:integration
+
+  # ── Security Scan (blocks merge) ──────────────────────────
   security-scan:
     name: Security Scan
     runs-on: ubuntu-latest
@@ -80,7 +99,7 @@ jobs:
           cache: npm
       - run: npm ci
       - name: npm audit
-        run: npm audit --audit-level=high || true
+        run: npm audit --audit-level=high
       - name: Check RLS coverage
         run: npx tsx scripts/check-rls-coverage.ts || true
       - name: Check sensitive document privacy
@@ -93,7 +112,7 @@ jobs:
           const fs = require('fs');
           const report = {
             timestamp: new Date().toISOString(),
-            commit: process.env.GITHUB_SHA?.slice(0,8) || 'local',
+            commit: (process.env.GITHUB_SHA || 'local').slice(0,8),
             checks: {
               npm_audit: 'completed',
               rls_coverage: 'completed',
@@ -112,7 +131,7 @@ jobs:
           path: generated/ci-security-report.json
           retention-days: 30
 
-  # ── Build ─────────────────────────────────────────────────
+  # ── Build (blocks merge) ──────────────────────────────────
   build:
     name: Build Frontend
     runs-on: ubuntu-latest
@@ -136,7 +155,7 @@ jobs:
           path: dist/
           retention-days: 7
 
-  # ── Architecture Validation ───────────────────────────────
+  # ── Architecture Validation (advisory) ────────────────────
   architecture-validation:
     name: Architecture Validation
     runs-on: ubuntu-latest
@@ -175,7 +194,7 @@ jobs:
           path: generated/
           retention-days: 14
 
-  # ── E2E P0 Tests ──────────────────────────────────────────
+  # ── E2E P0 Tests (advisory — does not block merge) ────────
   e2e-p0:
     name: E2E P0 Journeys
     runs-on: ubuntu-latest
@@ -194,12 +213,18 @@ jobs:
         with:
           name: dist
           path: dist/
-      - name: Run E2E Tests
-        run: npx playwright test --reporter=html
+      - name: Start server and run E2E
+        run: |
+          npx serve dist -l 8080 &
+          SERVER_PID=$!
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8080 > /dev/null && break || sleep 1
+          done
+          PLAYWRIGHT_BASE_URL=http://localhost:8080 npx playwright test --reporter=html || E2E_EXIT=$?
+          kill $SERVER_PID 2>/dev/null || true
+          exit ${E2E_EXIT:-0}
         env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'http://localhost:8000' }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY || 'dummy-key' }}
-          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID || 'ci-project' }}
+          CI: true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -213,7 +238,25 @@ jobs:
           path: test-results/
           retention-days: 14
 
-  # ── Ring Promotion Gate ───────────────────────────────────
+  # ── Docker Build Validation (advisory) ────────────────────
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t sita-os:ci .
+      - name: Validate health endpoint
+        run: |
+          docker run --rm sita-os:ci cat /usr/share/nginx/html/health.json | python3 -c "
+          import sys, json
+          data = json.load(sys.stdin)
+          assert data['status'] == 'healthy', f'Unhealthy: {data}'
+          print('✅ Docker health check passed')
+          "
+
+  # ── Ring Promotion Gate (main only) ───────────────────────
   ring-promotion:
     name: Ring Promotion Gate
     runs-on: ubuntu-latest
@@ -242,7 +285,7 @@ jobs:
   launch-gate:
     name: Launch Gate Decision
     runs-on: ubuntu-latest
-    needs: [typecheck, lint, unit-tests, build, e2e-p0, security-scan, architecture-validation, ring-promotion]
+    needs: [typecheck, lint, unit-tests, integration-tests, build, e2e-p0, docker-build, security-scan, architecture-validation, ring-promotion]
     if: always()
     steps:
       - uses: actions/checkout@v4
@@ -264,17 +307,19 @@ jobs:
           node -e "
           const fs = require('fs');
           const jobs = {
-            typecheck: '${{ needs.typecheck.result || 'skipped' }}',
-            lint: '${{ needs.lint.result || 'skipped' }}',
-            unit_tests: '${{ needs.unit-tests.result || 'skipped' }}',
-            build: '${{ needs.build.result || 'skipped' }}',
-            e2e_p0: '${{ needs.e2e-p0.result || 'skipped' }}',
-            security_scan: '${{ needs.security-scan.result || 'skipped' }}',
-            architecture_validation: '${{ needs.architecture-validation.result || 'skipped' }}',
-            ring_promotion: '${{ needs.ring-promotion.result || 'skipped' }}',
+            typecheck: '${{ needs.typecheck.result }}',
+            lint: '${{ needs.lint.result }}',
+            unit_tests: '${{ needs.unit-tests.result }}',
+            integration_tests: '${{ needs.integration-tests.result }}',
+            build: '${{ needs.build.result }}',
+            e2e_p0: '${{ needs.e2e-p0.result }}',
+            docker_build: '${{ needs.docker-build.result }}',
+            security_scan: '${{ needs.security-scan.result }}',
+            architecture_validation: '${{ needs.architecture-validation.result }}',
+            ring_promotion: '${{ needs.ring-promotion.result }}',
           };
 
-          const requiredJobs = ['typecheck', 'build', 'unit_tests', 'security_scan'];
+          const requiredJobs = ['typecheck', 'build', 'unit_tests', 'integration_tests', 'security_scan'];
           const requiredPassed = requiredJobs.every(j => jobs[j] === 'success');
           const allPassed = Object.values(jobs).every(r => r === 'success' || r === 'skipped');
 
@@ -283,10 +328,10 @@ jobs:
           else if (requiredPassed) launchState = 'conditionally_eligible';
 
           const report = {
-            version: '1.0.0',
+            version: '2.0.0',
             generatedAt: new Date().toISOString(),
             branch: process.env.GITHUB_REF_NAME || 'unknown',
-            commit: process.env.GITHUB_SHA?.slice(0, 8) || 'unknown',
+            commit: (process.env.GITHUB_SHA || 'unknown').slice(0, 8),
             run_id: process.env.GITHUB_RUN_ID || 'unknown',
             run_number: process.env.GITHUB_RUN_NUMBER || 'unknown',
             jobs,
@@ -294,8 +339,10 @@ jobs:
               typecheck: { passed: jobs.typecheck === 'success', required: true },
               build: { passed: jobs.build === 'success', required: true },
               unit_tests: { passed: jobs.unit_tests === 'success', required: true },
+              integration_tests: { passed: jobs.integration_tests === 'success', required: true },
               security_scan: { passed: jobs.security_scan === 'success', required: true },
               e2e: { passed: jobs.e2e_p0 === 'success', required: false },
+              docker: { passed: jobs.docker_build === 'success', required: false },
               architecture: { passed: jobs.architecture_validation === 'success', required: false },
               ring_promotion: { passed: jobs.ring_promotion === 'success', required: false },
               lint: { passed: jobs.lint === 'success', required: false },
@@ -313,8 +360,9 @@ jobs:
 
           if (launchState === 'blocked') {
             console.log('::error::Launch gate BLOCKED — required jobs failed');
+            process.exit(1);
           } else if (launchState === 'conditionally_eligible') {
-            console.log('::warning::Launch gate CONDITIONAL — some non-required jobs failed');
+            console.log('::warning::Launch gate CONDITIONAL — some advisory jobs failed');
           } else {
             console.log('✅ Launch gate CLEAR — all jobs passed');
           }
