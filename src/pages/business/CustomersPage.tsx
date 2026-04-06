@@ -154,11 +154,30 @@ const CustomersPage = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DomainHeader
-        title="Customers"
-        subtitle="Relationships, health scores, and revenue intelligence — click any customer for full detail in the inspector"
-        domain="business"
-      />
+      <div className="flex items-center justify-between">
+        <DomainHeader
+          title="Customers"
+          subtitle="Relationships, health scores, and revenue intelligence"
+          domain="business"
+        />
+        <SitaButton variant="primary" size="sm" onClick={() => setShowAdd(true)}><Plus className="h-3.5 w-3.5" /> Add Customer</SitaButton>
+      </div>
+
+      {showAdd && (
+        <SitaCard hover={false} className="p-4">
+          <div className="flex justify-between items-center mb-3">
+            <SitaCardTitle>New Customer</SitaCardTitle>
+            <button onClick={() => setShowAdd(false)}><X className="h-4 w-4 text-muted-foreground" /></button>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2">
+            <input value={formName} onChange={e => setFormName(e.target.value)} placeholder="Name *" className="rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm" />
+            <input value={formEmail} onChange={e => setFormEmail(e.target.value)} placeholder="Email" className="rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm" />
+            <input value={formCompany} onChange={e => setFormCompany(e.target.value)} placeholder="Company" className="rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm" />
+            <input value={formPhone} onChange={e => setFormPhone(e.target.value)} placeholder="Phone" className="rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm" />
+          </div>
+          <SitaButton variant="primary" size="sm" className="mt-3" onClick={() => createCustomer.mutate()} disabled={!formName.trim()}>Create Customer</SitaButton>
+        </SitaCard>
+      )}
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="Total Customers" value={customers.length} icon={Users} />
