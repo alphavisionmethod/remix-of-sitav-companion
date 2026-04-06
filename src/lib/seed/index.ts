@@ -20,6 +20,15 @@ export async function bootstrapSitaOS(): Promise<{ success: boolean; details: Re
     // 3. Initialize ambient data flows
     await (await import("./data-flow-bridge")).initializeDataFlows();
 
+    // 4. Run health probes to populate fresh snapshots
+    try {
+      const { executeAndRecordProbes } = await import("@/lib/services/observability/observability-service");
+      await executeAndRecordProbes();
+      console.log("[bootstrap] Health probes executed and recorded");
+    } catch {
+      console.warn("[bootstrap] Health probe recording skipped (non-blocking)");
+    }
+
     console.log("[bootstrap] SITA OS fully bootstrapped");
     return {
       success: true,
@@ -27,6 +36,7 @@ export async function bootstrapSitaOS(): Promise<{ success: boolean; details: Re
         ecosystem: ecosystemResult,
         workforce: workforceResult,
         flows: "initialized",
+        probes: "recorded",
       },
     };
   } catch (error: any) {
