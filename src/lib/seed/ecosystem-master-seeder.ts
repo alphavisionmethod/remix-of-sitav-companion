@@ -291,6 +291,7 @@ function capabilitySurfaceBindingRows(userId: string) {
 }
 
 // ── Master Seed Function ────────────────────────────────────
+export async function seedEcosystemData(): Promise<{ seeded: number; errors: string[] }> {
   const userId = await getUserId();
   if (!userId) return { seeded: 0, errors: ["Not authenticated"] };
 
