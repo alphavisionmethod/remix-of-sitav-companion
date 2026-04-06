@@ -5,9 +5,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Apple, Smartphone, Watch, Shield, Heart, Wifi, Monitor, ChevronRight, CheckCircle2, AlertTriangle, Clock, Zap, Activity, RefreshCw, Loader2, Database, Radio, Bell } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Apple, Smartphone, Watch, Shield, Heart, Wifi, Monitor, ChevronRight, CheckCircle2, AlertTriangle, Clock, Zap, Activity, RefreshCw, Loader2, Database, Radio, Bell, Plus, Trash2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords, useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes, useEcosystemContinuityEvents, useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
+import {
+  useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords,
+  useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes,
+  useEcosystemContinuityEvents, useSeedEcosystemData,
+  useAddEcosystemDevice, useRemoveEcosystemDevice, useUpdateDeviceTrust,
+  useToggleHealthConsent, useUpdatePushRoute,
+} from "@/hooks/useEcosystemDevices";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   iphone: { title: "iPhone Shell", icon: Smartphone, desc: "Primary mobile — task, approval, advisor", tech: ["Swift/SwiftUI", "WebView hybrid"], capabilities: ["push", "biometric", "camera", "haptic"] },
@@ -29,6 +37,8 @@ const PROVIDER_CAPS = [
 
 const APL01AppleEcosystemCenter = () => {
   const [showDependencies, setShowDependencies] = useState(false);
+  const [showAddDevice, setShowAddDevice] = useState(false);
+  const [newDevice, setNewDevice] = useState({ surface: "iphone", device_model: "", os_version: "" });
   const { data: devices, isLoading: devicesLoading } = useEcosystemDevices("apple");
   const { data: launchData, isLoading: launchLoading } = useEcosystemLaunchReadiness("apple");
   const { data: trustRecords } = useEcosystemTrustRecords("apple");
@@ -37,6 +47,11 @@ const APL01AppleEcosystemCenter = () => {
   const { data: pushRoutes } = useEcosystemPushRoutes("apple");
   const { data: continuityEvents } = useEcosystemContinuityEvents("apple");
   const seedMutation = useSeedEcosystemData();
+  const addDevice = useAddEcosystemDevice();
+  const removeDevice = useRemoveEcosystemDevice();
+  const updateTrust = useUpdateDeviceTrust();
+  const toggleConsent = useToggleHealthConsent();
+  const updatePush = useUpdatePushRoute();
 
   const hasData = (devices?.length ?? 0) > 0;
   const trustedCount = trustRecords?.filter((t: any) => t.biometric_verified).length ?? 0;
@@ -68,6 +83,7 @@ const APL01AppleEcosystemCenter = () => {
               {seedMutation.isPending ? <Loader2 className="h-3 w-3 mr-1 animate-spin" /> : <Database className="h-3 w-3 mr-1" />}Seed Apple Data
             </Button>
           )}
+          <Button variant="outline" size="sm" onClick={() => setShowAddDevice(true)}><Plus className="h-3 w-3 mr-1" />Add Device</Button>
           <Button variant="outline" size="sm"><RefreshCw className="h-3 w-3 mr-1" />Refresh</Button>
         </div>
       </div>
@@ -141,6 +157,16 @@ const APL01AppleEcosystemCenter = () => {
                         <div className="flex items-center gap-1">{trust?.attestation_verified ? <CheckCircle2 className="h-3 w-3 text-green-500" /> : <AlertTriangle className="h-3 w-3 text-muted-foreground" />}Attestation</div>
                       </div>
                       {trust?.session_duration && <div className="text-[10px] text-muted-foreground">Session: {trust.session_duration} · Re-auth: {trust.reauth_method}</div>}
+                      <div className="flex gap-1 mt-2">
+                        {trust && (
+                          <Button size="sm" variant="outline" className="text-[10px] h-6 px-2" onClick={() => updateTrust.mutate({ id: trust.id, biometric_verified: !trust.biometric_verified })}>
+                            {trust.biometric_verified ? "Revoke Trust" : "Re-verify"}
+                          </Button>
+                        )}
+                        <Button size="sm" variant="ghost" className="text-[10px] h-6 px-2 text-destructive" onClick={() => removeDevice.mutate(device.id)}>
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 );
@@ -261,7 +287,9 @@ const APL01AppleEcosystemCenter = () => {
                         <td className="p-2 font-mono">{pr.route_key || pr.category}</td>
                         <td className="p-2 text-center">{pr.channel || "apns"}</td>
                         <td className="p-2 text-center"><Badge variant={pr.priority === "high" ? "destructive" : "secondary"}>{pr.priority || "normal"}</Badge></td>
-                        <td className="p-2 text-center">{pr.active !== false ? <CheckCircle2 className="h-3.5 w-3.5 text-green-500 mx-auto" /> : <AlertTriangle className="h-3.5 w-3.5 text-muted-foreground mx-auto" />}</td>
+                        <td className="p-2 text-center">
+                          <Switch checked={pr.urgency_filter !== "none"} onCheckedChange={(v) => updatePush.mutate({ id: pr.id, enabled: v })} />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -300,6 +328,30 @@ const APL01AppleEcosystemCenter = () => {
           )}
         </TabsContent>
       </Tabs>
+
+      {/* Add Device Dialog */}
+      <Dialog open={showAddDevice} onOpenChange={setShowAddDevice}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Add Apple Device</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div><label className="text-xs font-medium">Surface</label>
+              <select className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" value={newDevice.surface} onChange={e => setNewDevice(d => ({ ...d, surface: e.target.value }))}>
+                {Object.entries(SURFACE_META).map(([k, v]) => <option key={k} value={k}>{v.title}</option>)}
+              </select>
+            </div>
+            <div><label className="text-xs font-medium">Device Model</label><Input value={newDevice.device_model} onChange={e => setNewDevice(d => ({ ...d, device_model: e.target.value }))} placeholder="e.g. iPhone 15 Pro" /></div>
+            <div><label className="text-xs font-medium">OS Version</label><Input value={newDevice.os_version} onChange={e => setNewDevice(d => ({ ...d, os_version: e.target.value }))} placeholder="e.g. iOS 17.4" /></div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddDevice(false)}>Cancel</Button>
+            <Button onClick={() => {
+              addDevice.mutate({ ecosystem: "apple", surface: newDevice.surface, device_model: newDevice.device_model, os_version: newDevice.os_version });
+              setShowAddDevice(false);
+              setNewDevice({ surface: "iphone", device_model: "", os_version: "" });
+            }} disabled={!newDevice.device_model}>Add</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -5,9 +5,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Smartphone, Watch, Shield, Heart, Wifi, Activity, Clock, Zap, CheckCircle2, AlertTriangle, ChevronRight, RefreshCw, Loader2, Database, Monitor } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Smartphone, Watch, Shield, Heart, Wifi, Activity, Clock, Zap, CheckCircle2, AlertTriangle, ChevronRight, RefreshCw, Loader2, Database, Monitor, Plus, Trash2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords, useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes, useEcosystemContinuityEvents, useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
+import {
+  useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords,
+  useEcosystemHealthConsents, useEcosystemWearableConfigs, useEcosystemPushRoutes,
+  useEcosystemContinuityEvents, useSeedEcosystemData,
+  useAddEcosystemDevice, useRemoveEcosystemDevice, useUpdateDeviceTrust,
+  useToggleHealthConsent, useUpdatePushRoute,
+} from "@/hooks/useEcosystemDevices";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   android_phone: { title: "Android Phone Shell", icon: Smartphone, desc: "Primary Android surface — Material Design shell", tech: ["Kotlin", "Jetpack Compose", "WebView hybrid"], capabilities: ["push_fcm", "biometric", "camera", "nfc"] },
@@ -27,6 +35,8 @@ const PROVIDER_CAPS = [
 
 const AND01AndroidEcosystemCenter = () => {
   const [showDeps, setShowDeps] = useState(false);
+  const [showAddDevice, setShowAddDevice] = useState(false);
+  const [newDevice, setNewDevice] = useState({ surface: "android_phone", device_model: "", os_version: "" });
 
   const { data: devices, isLoading: devicesLoading } = useEcosystemDevices("android");
   const { data: launchData, isLoading: launchLoading } = useEcosystemLaunchReadiness("android");
@@ -36,6 +46,11 @@ const AND01AndroidEcosystemCenter = () => {
   const { data: pushRoutes } = useEcosystemPushRoutes("android");
   const { data: continuityEvents } = useEcosystemContinuityEvents("android");
   const seedMutation = useSeedEcosystemData();
+  const addDevice = useAddEcosystemDevice();
+  const removeDevice = useRemoveEcosystemDevice();
+  const updateTrust = useUpdateDeviceTrust();
+  const toggleConsent = useToggleHealthConsent();
+  const updatePush = useUpdatePushRoute();
 
   const hasData = (devices?.length ?? 0) > 0;
   const trustedCount = trustRecords?.filter((t: any) => t.biometric_verified).length ?? 0;
@@ -67,6 +82,7 @@ const AND01AndroidEcosystemCenter = () => {
               {seedMutation.isPending ? <Loader2 className="h-3 w-3 mr-1 animate-spin" /> : <Database className="h-3 w-3 mr-1" />}Seed Android Data
             </Button>
           )}
+          <Button variant="outline" size="sm" onClick={() => setShowAddDevice(true)}><Plus className="h-3 w-3 mr-1" />Add Device</Button>
           <Badge variant="secondary">{overallReadiness}% overall</Badge>
         </div>
       </div>
@@ -139,6 +155,16 @@ const AND01AndroidEcosystemCenter = () => {
                         <div className="flex items-center gap-1">{device.continuity_eligible ? <CheckCircle2 className="h-3 w-3 text-green-500" /> : <AlertTriangle className="h-3 w-3 text-muted-foreground" />}Continuity</div>
                         <div className="flex items-center gap-1">{trust?.keystore_secured ? <CheckCircle2 className="h-3 w-3 text-green-500" /> : <AlertTriangle className="h-3 w-3 text-muted-foreground" />}Keystore</div>
                         <div className="flex items-center gap-1">{trust?.attestation_verified ? <CheckCircle2 className="h-3 w-3 text-green-500" /> : <AlertTriangle className="h-3 w-3 text-muted-foreground" />}Attestation</div>
+                      </div>
+                      <div className="flex gap-1 mt-2">
+                        {trust && (
+                          <Button size="sm" variant="outline" className="text-[10px] h-6 px-2" onClick={() => updateTrust.mutate({ id: trust.id, biometric_verified: !trust.biometric_verified })}>
+                            {trust.biometric_verified ? "Revoke Trust" : "Re-verify"}
+                          </Button>
+                        )}
+                        <Button size="sm" variant="ghost" className="text-[10px] h-6 px-2 text-destructive" onClick={() => removeDevice.mutate(device.id)}>
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
@@ -263,7 +289,9 @@ const AND01AndroidEcosystemCenter = () => {
                         <td className="p-2 font-mono">{route.channel_type || "default"}</td>
                         <td className="p-2 text-center"><Badge variant={route.routing_priority > 7 ? "destructive" : route.routing_priority > 4 ? "default" : "secondary"}>{route.routing_priority}</Badge></td>
                         <td className="p-2 text-center">{route.dnd_bypass ? <CheckCircle2 className="h-3 w-3 mx-auto text-green-500" /> : <span className="text-muted-foreground">—</span>}</td>
-                        <td className="p-2 text-center">{route.active ? <CheckCircle2 className="h-3 w-3 mx-auto text-green-500" /> : <AlertTriangle className="h-3 w-3 mx-auto text-muted-foreground" />}</td>
+                        <td className="p-2 text-center">
+                          <Switch checked={route.urgency_filter !== "none"} onCheckedChange={(v) => updatePush.mutate({ id: route.id, enabled: v })} />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -325,6 +353,30 @@ const AND01AndroidEcosystemCenter = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Add Device Dialog */}
+      <Dialog open={showAddDevice} onOpenChange={setShowAddDevice}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Add Android Device</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div><label className="text-xs font-medium">Surface</label>
+              <select className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" value={newDevice.surface} onChange={e => setNewDevice(d => ({ ...d, surface: e.target.value }))}>
+                {Object.entries(SURFACE_META).map(([k, v]) => <option key={k} value={k}>{v.title}</option>)}
+              </select>
+            </div>
+            <div><label className="text-xs font-medium">Device Model</label><Input value={newDevice.device_model} onChange={e => setNewDevice(d => ({ ...d, device_model: e.target.value }))} placeholder="e.g. Pixel 8 Pro" /></div>
+            <div><label className="text-xs font-medium">OS Version</label><Input value={newDevice.os_version} onChange={e => setNewDevice(d => ({ ...d, os_version: e.target.value }))} placeholder="e.g. Android 14" /></div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddDevice(false)}>Cancel</Button>
+            <Button onClick={() => {
+              addDevice.mutate({ ecosystem: "android", surface: newDevice.surface, device_model: newDevice.device_model, os_version: newDevice.os_version });
+              setShowAddDevice(false);
+              setNewDevice({ surface: "android_phone", device_model: "", os_version: "" });
+            }} disabled={!newDevice.device_model}>Add</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

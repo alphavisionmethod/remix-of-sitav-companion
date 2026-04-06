@@ -6,13 +6,17 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { format, addDays, startOfWeek, startOfMonth, endOfMonth, isSameDay, isToday, isBefore, parseISO, eachDayOfInterval } from "date-fns";
-import { Calendar, Clock, AlertTriangle, Users, Briefcase, Home, ChevronLeft, ChevronRight, Plus, MapPin, Video, Phone, Zap } from "lucide-react";
+import { Calendar, Clock, AlertTriangle, Users, Briefcase, Home, ChevronLeft, ChevronRight, Plus, MapPin, Video, Phone, Zap, Trash2, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_CALENDAR_EVENTS, type CalWorkspaceEvent as CalEvent } from "@/lib/demo-data/calendar-workspace";
 import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
+import { useCreateCalendarEvent, useUpdateCalendarEvent, useDeleteCalendarEvent } from "@/hooks/use-calendar-mutations";
 
 type CalView = "day" | "week" | "month" | "agenda";
 
@@ -42,7 +46,13 @@ const CalendarWorkspace = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [domainFilter, setDomainFilter] = useState<string>("all");
   const [selectedEvent, setSelectedEvent] = useState<CalEvent | null>(null);
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [eventForm, setEventForm] = useState({ title: "", event_date: "", start_time: "", end_time: "", domain: "personal", event_type: "meeting", location: "" });
   const { mode } = useRealityProvider();
+  const createEvent = useCreateCalendarEvent();
+  const updateEvent = useUpdateCalendarEvent();
+  const deleteEvent = useDeleteCalendarEvent();
 
   // DB query for real calendar events
   const { data: dbEvents } = useQuery({
@@ -85,7 +95,10 @@ const CalendarWorkspace = () => {
       <DemoModeBadge />
       <SitaPageHeader title="Calendar" subtitle="Your time across life, business, and household" actions={
         <div className="flex gap-2">
-          <Button size="sm" variant="outline" className="gap-1.5 border-border/50 text-muted-foreground hover:bg-accent/50">
+          <Button size="sm" variant="outline" className="gap-1.5 border-border/50 text-muted-foreground hover:bg-accent/50" onClick={() => {
+            setEventForm({ title: "", event_date: format(selectedDate, "yyyy-MM-dd"), start_time: "", end_time: "", domain: "personal", event_type: "meeting", location: "" });
+            setShowCreateDialog(true);
+          }}>
             <Plus className="w-3.5 h-3.5" /> New Event
           </Button>
         </div>
@@ -289,8 +302,22 @@ const CalendarWorkspace = () => {
                     </div>
                   )}
                   <div className="flex gap-2">
-                    <Button size="sm" variant="outline" className="flex-1 text-xs">Edit</Button>
-                    <Button size="sm" variant="outline" className="flex-1 text-xs">Reschedule</Button>
+                    <Button size="sm" variant="outline" className="flex-1 text-xs" onClick={() => {
+                      setEventForm({
+                        title: selectedEvent.title,
+                        event_date: format(parseISO(selectedEvent.date), "yyyy-MM-dd"),
+                        start_time: selectedEvent.time || "",
+                        end_time: selectedEvent.endTime || "",
+                        domain: selectedEvent.domain || "personal",
+                        event_type: selectedEvent.type || "meeting",
+                        location: selectedEvent.location || "",
+                      });
+                      setShowEditDialog(true);
+                    }}><Pencil className="w-3 h-3 mr-1" />Edit</Button>
+                    <Button size="sm" variant="outline" className="text-xs text-destructive" onClick={() => {
+                      deleteEvent.mutate(selectedEvent.id);
+                      setSelectedEvent(null);
+                    }}><Trash2 className="w-3 h-3" /></Button>
                   </div>
                 </SitaCard>
               </motion.div>
@@ -326,6 +353,69 @@ const CalendarWorkspace = () => {
           </AnimatePresence>
         </div>
       </div>
+
+      {/* Create Event Dialog */}
+      <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>New Event</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div><label className="text-xs font-medium">Title</label><Input value={eventForm.title} onChange={e => setEventForm(f => ({ ...f, title: e.target.value }))} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><label className="text-xs font-medium">Date</label><Input type="date" value={eventForm.event_date} onChange={e => setEventForm(f => ({ ...f, event_date: e.target.value }))} /></div>
+              <div><label className="text-xs font-medium">Domain</label>
+                <Select value={eventForm.domain} onValueChange={v => setEventForm(f => ({ ...f, domain: v }))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="personal">Personal</SelectItem>
+                    <SelectItem value="business">Business</SelectItem>
+                    <SelectItem value="household">Household</SelectItem>
+                    <SelectItem value="finance">Finance</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><label className="text-xs font-medium">Start Time</label><Input type="time" value={eventForm.start_time} onChange={e => setEventForm(f => ({ ...f, start_time: e.target.value }))} /></div>
+              <div><label className="text-xs font-medium">End Time</label><Input type="time" value={eventForm.end_time} onChange={e => setEventForm(f => ({ ...f, end_time: e.target.value }))} /></div>
+            </div>
+            <div><label className="text-xs font-medium">Location</label><Input value={eventForm.location} onChange={e => setEventForm(f => ({ ...f, location: e.target.value }))} /></div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCreateDialog(false)}>Cancel</Button>
+            <Button onClick={() => {
+              createEvent.mutate(eventForm);
+              setShowCreateDialog(false);
+            }} disabled={!eventForm.title || !eventForm.event_date}>Create</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Event Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Edit Event</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div><label className="text-xs font-medium">Title</label><Input value={eventForm.title} onChange={e => setEventForm(f => ({ ...f, title: e.target.value }))} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><label className="text-xs font-medium">Date</label><Input type="date" value={eventForm.event_date} onChange={e => setEventForm(f => ({ ...f, event_date: e.target.value }))} /></div>
+              <div><label className="text-xs font-medium">Location</label><Input value={eventForm.location} onChange={e => setEventForm(f => ({ ...f, location: e.target.value }))} /></div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><label className="text-xs font-medium">Start Time</label><Input type="time" value={eventForm.start_time} onChange={e => setEventForm(f => ({ ...f, start_time: e.target.value }))} /></div>
+              <div><label className="text-xs font-medium">End Time</label><Input type="time" value={eventForm.end_time} onChange={e => setEventForm(f => ({ ...f, end_time: e.target.value }))} /></div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEditDialog(false)}>Cancel</Button>
+            <Button onClick={() => {
+              if (selectedEvent) {
+                updateEvent.mutate({ id: selectedEvent.id, title: eventForm.title, event_date: eventForm.event_date, start_time: eventForm.start_time, end_time: eventForm.end_time, location: eventForm.location });
+                setShowEditDialog(false);
+              }
+            }}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

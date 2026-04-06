@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { ShieldCheck, Heart, Lock, Eye, AlertTriangle, CheckCircle2, Trash2, Clock, FileText, Loader2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useHealthSignalConsents } from "@/hooks/use-health-signal-data";
+import { useToggleSignalConsent } from "@/hooks/use-health-signal-mutations";
 import { DEMO_CONSENT_CATEGORIES, DEMO_REVOCATION_ACTIONS } from "@/lib/demo-data/health-signals";
 
 const ICON_MAP: Record<string, any> = { ingestion: Eye, routing: ShieldCheck, boardroom: FileText, assistant: Heart };
@@ -28,6 +29,19 @@ const HRS01HealthConsentCenter = () => {
     Object.fromEntries(DEMO_CONSENT_CATEGORIES.map(c => [c.key, false]))
   );
   const { data: dbConsents, isLoading } = useHealthSignalConsents();
+  const toggleConsent = useToggleSignalConsent();
+
+  // Sync local state from DB consents
+  useEffect(() => {
+    if (dbConsents?.length) {
+      const fromDb: Record<string, boolean> = {};
+      DEMO_CONSENT_CATEGORIES.forEach(c => {
+        const match = dbConsents.find((dc: any) => dc.consent_scope === c.key && dc.read_permission && !dc.revoked_at);
+        fromDb[c.key] = !!match;
+      });
+      setEnabledCats(fromDb);
+    }
+  }, [dbConsents]);
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
@@ -58,7 +72,10 @@ const HRS01HealthConsentCenter = () => {
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-sm flex items-center gap-2"><Icon className="h-4 w-4" />{c.cat}</CardTitle>
-                      <Switch checked={enabledCats[c.key]} onCheckedChange={(v) => setEnabledCats(prev => ({ ...prev, [c.key]: v }))} />
+                      <Switch checked={enabledCats[c.key]} onCheckedChange={(v) => {
+                        setEnabledCats(prev => ({ ...prev, [c.key]: v }));
+                        toggleConsent.mutate({ signalType: "health", consentScope: c.key, enabled: v });
+                      }} />
                     </div>
                   </CardHeader>
                   <CardContent className="text-xs space-y-2">

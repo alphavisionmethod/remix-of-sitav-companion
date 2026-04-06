@@ -27,7 +27,14 @@ const buildDemoSimResult = (simInput: { amount: number; [key: string]: unknown }
   },
 });
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { DEMO_ENGINE_COSTS as ENGINE_COSTS } from "@/lib/demo-data/owner-center-costs";
+// Engine costs — canonical inline data (no mock import needed)
+const ENGINE_COSTS = [
+  { service: "AI Model Calls", cost: "$12.40", percentage: 45, trend: "up" as const },
+  { service: "Database", cost: "$3.20", percentage: 12, trend: "flat" as const },
+  { service: "Edge Functions", cost: "$2.10", percentage: 8, trend: "down" as const },
+  { service: "Storage", cost: "$0.80", percentage: 3, trend: "flat" as const },
+  { service: "Connectors", cost: "$8.90", percentage: 32, trend: "up" as const },
+];
 import {
   useAdminIncidents, useAcknowledgeIncident, useResolveIncident, useCreateIncident,
   useAdminPolicies, useCreatePolicy, useSimulatePolicy,
