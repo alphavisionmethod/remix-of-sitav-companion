@@ -38,6 +38,7 @@ export default function PositionSizingCoach() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Ruler className="h-6 w-6 text-primary" /> Position Sizing Coach</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Turn size into an explicit coaching surface — understand how each position fits your portfolio and policy</p>
