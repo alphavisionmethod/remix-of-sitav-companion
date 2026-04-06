@@ -104,6 +104,33 @@ const SettingsPage = () => {
   const [trustMode, setTrustMode] = useState("balanced");
   const [searchQuery, setSearchQuery] = useState("");
   const [auditResult, setAuditResult] = useState<SimulationResult | null>(null);
+  const [displayName, setDisplayName] = useState(user?.user_metadata?.full_name || "");
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Fetch profile
+  const { data: profile } = useQuery({
+    queryKey: ["profile", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data } = await (db as any).from("profiles").select("*").eq("user_id", user!.id).single();
+      if (data?.display_name) setDisplayName(data.display_name);
+      return data;
+    },
+  });
+
+  const saveProfile = async () => {
+    if (!user) return;
+    setIsSaving(true);
+    try {
+      const { error } = await (db as any).from("profiles").update({ display_name: displayName }).eq("user_id", user.id);
+      if (error) throw error;
+      toast.success("Profile saved");
+    } catch (e: any) {
+      toast.error(e.message || "Failed to save");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   // Fetch devices
   const { data: devices = [] } = useQuery({
