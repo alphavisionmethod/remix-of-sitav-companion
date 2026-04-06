@@ -386,6 +386,8 @@ const NRC04QueueInterruptMatrix = lazy(() => import("./pages/admin/NRC04QueueInt
 const NRC05CrossDeviceDelivery = lazy(() => import("./pages/admin/NRC05CrossDeviceDelivery"));
 const NRC06NotificationLaunchHonesty = lazy(() => import("./pages/admin/NRC06NotificationLaunchHonesty"));
 const NOT03DeliveryReceiptsExplorer = lazy(() => import("./pages/admin/NOT03DeliveryReceiptsExplorer"));
+const NOT01NotificationRuntimeVerification = lazy(() => import("./pages/admin/NOT01NotificationRuntimeVerification"));
+const NotificationPreferences = lazy(() => import("./pages/settings/NotificationPreferences"));
 
 // ── NSS: Native Shell Strategy ──
 const NSS01StrategyBoard = lazy(() => import("./pages/admin/NSS01StrategyBoard"));
