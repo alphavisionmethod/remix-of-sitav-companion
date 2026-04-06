@@ -1375,8 +1375,13 @@ const App = () => (
                      {/* FL — Flagship Loops */}
                      <Route path="/admin/flagship/executive" element={<FL01FlagshipLoopsExecutive />} />
                      <Route path="/admin/flagship/detail" element={<FL02FlagshipLoopDetail />} />
-                     {/* SERV — Service Ownership */}
+                     {/* SERV — Service Ownership & Traceability */}
                      <Route path="/admin/services/ownership" element={<SERV01ServiceOwnership />} />
+                     <Route path="/admin/services/domains" element={<SERV02DomainOwnership />} />
+                     <Route path="/admin/services/route-trace" element={<SERV03RouteServiceTrace />} />
+                     <Route path="/admin/services/duplication" element={<SERV04ServiceDuplication />} />
+                     <Route path="/admin/services/canonical-actions" element={<SERV05CanonicalActions />} />
+                     <Route path="/admin/services/flagship-trace" element={<SERV06FlagshipTraceability />} />
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
