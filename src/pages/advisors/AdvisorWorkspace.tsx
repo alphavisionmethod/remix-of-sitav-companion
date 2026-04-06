@@ -435,32 +435,60 @@ const ApprovalQueue = () => {
 
 // ── Memory Transparency ─────────────────────────────────────────
 
-const MemoryTransparency = () => (
-  <div className="space-y-6">
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-      className="rounded-xl border border-primary/15 bg-primary/5 p-5"
-    >
-      <div className="flex items-center gap-3 mb-2">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15">
-          <Eye className="h-5 w-5 text-primary" />
-        </div>
-        <div>
-          <h2 className="text-base font-bold text-foreground font-display">Why This Knows You</h2>
-          <p className="text-xs text-muted-foreground">Everything your advisors learned, inferred, and use — fully transparent</p>
-        </div>
-      </div>
-      <p className="text-xs text-muted-foreground">You can correct or forget any item. Your memory, your control.</p>
-    </motion.div>
+const MemoryTransparency = () => {
+  const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
+  const db: any = supabase;
 
-    <div className="space-y-2">
-      {mockMemoryItems.map((m, i) => (
-        <motion.div key={m.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
-          <MemoryCard item={m} />
-        </motion.div>
-      ))}
+  const { data: dbMemory = [] } = useQuery({
+    queryKey: ["advisor-memory", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data } = await db.from("user_memory").select("*").order("created_at", { ascending: false }).limit(20);
+      return data || [];
+    },
+  });
+
+  // Map DB memory to mock format, or use mocks
+  const memoryItems = (!isDemoMode && dbMemory.length > 0)
+    ? dbMemory.map((m: any) => ({
+        id: m.id,
+        type: m.memory_type || "learned",
+        source: m.source || "System",
+        content: m.content || m.key,
+        learnedAt: m.created_at,
+        confidence: m.confidence || 0.8,
+        usedCount: 0,
+      }))
+    : mockMemoryItems;
+
+  return (
+    <div className="space-y-6">
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+        className="rounded-xl border border-primary/15 bg-primary/5 p-5"
+      >
+        <div className="flex items-center gap-3 mb-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15">
+            <Eye className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <h2 className="text-base font-bold text-foreground font-display">Why This Knows You</h2>
+            <p className="text-xs text-muted-foreground">Everything your advisors learned, inferred, and use — fully transparent</p>
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground">You can correct or forget any item. Your memory, your control.</p>
+      </motion.div>
+
+      <div className="space-y-2">
+        {memoryItems.map((m: any, i: number) => (
+          <motion.div key={m.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
+            <MemoryCard item={m} />
+          </motion.div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ── Proof & History ─────────────────────────────────────────────
 
