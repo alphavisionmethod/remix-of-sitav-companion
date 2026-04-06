@@ -1,82 +1,96 @@
 
-# Integration Tests + E2E Tests — Full Implementation Plan
+
+# Fix CI Pipeline — Full Production-Grade GitHub Actions
 
 ## Current State
-- **E2E (`e2e/`)**: 21 spec files exist but are skeleton-level (most just check `body` is visible)
-- **E2E (`tests/e2e/`)**: 3 Playwright specs (auth, route-smoke, interactions) — more substantial but require test credentials
-- **Integration (`src/test/`)**: 50+ vitest files exist but many are shallow (check exports exist, not actual behavior)
-- **Playwright config**: Configured, pointing to `tests/e2e/`
-- **Vitest config**: Configured, working
 
-## What's Missing
-1. **Real integration tests** that verify service layer wiring: calling a service → verifying the result chain (policy engine → executor → receipt → state)
-2. **Real E2E tests** that don't require pre-configured test users — tests that work against the live preview with actual interactions
-3. **Coverage of all major domains**: auth, files, boardroom, advisors, approvals, connectors, money, business, admin, settings, verification boards, customer journey boards
+A `.github/workflows/ci.yml` exists with 9 jobs (typecheck, lint, unit-tests, security-scan, build, architecture-validation, e2e-p0, ring-promotion, launch-gate, nightly). However it has critical issues that make it non-functional for real deploys.
+
+## Issues to Fix
+
+1. **`|| true` on every step** — silently swallows all failures; nothing actually blocks a merge
+2. **Invalid env syntax** — `${{ secrets.X || 'fallback' }}` is not valid GitHub Actions syntax; needs ternary or default env
+3. **Integration tests missing** — `test:integration` suite (12 files, 79 tests) not in pipeline
+4. **E2E needs a server** — CI sets `webServer: undefined` but downloads `dist/` artifact without serving it; tests will fail because no server is running
+5. **No Docker build job** — Dockerfile exists but CI never builds/validates the container
+6. **No deploy step** — no Lovable/Vercel/container registry push
+7. **No concurrency control** — parallel runs on same branch can conflict
+8. **No PR status checks** — no required status checks guidance
 
 ## Plan
 
-### Phase 1 — Integration Test Suite (Vitest, `src/test/integration/`)
+### 1. Rewrite `.github/workflows/ci.yml`
 
-Create **real integration tests** that verify cross-service wiring and data flow:
+**Remove `|| true`** from critical jobs (typecheck, build, unit-tests, integration-tests). Keep `|| true` only on advisory/non-blocking steps (architecture validators, nightly).
 
-| File | What it tests |
-|---|---|
-| `auth-flow.integration.test.ts` | Auth context → session validation → route guard → redirect chain |
-| `capability-registry.integration.test.ts` | Register capability → invoke → validate result contract → error path |
-| `policy-engine-chain.integration.test.ts` | Policy context → evaluation → executor handoff → receipt generation |
-| `event-bus-wiring.integration.test.ts` | Publish event → subscriber fires → state updates → audit trail |
-| `approval-engine-flow.integration.test.ts` | Submit approval → policy check → state transition → notification |
-| `connector-lifecycle.integration.test.ts` | Register connector → health check → mode resolution → status update |
-| `demo-mode-resolution.integration.test.ts` | Switch mode → provider resolution → data source change → UI state |
-| `verification-pipeline.integration.test.ts` | Surface registry → seed DB hook → record run → blocker auto-creation |
-| `customer-journey-pipeline.integration.test.ts` | Journey registry → seed → record run → blocker creation → stats |
-| `file-ingestion-chain.integration.test.ts` | File upload trigger → ingestion service → receipt → state |
-| `ai-gateway-chain.integration.test.ts` | AI request → model router → provider resolution → fallback path |
-| `workflow-engine-chain.integration.test.ts` | Create workflow → execute steps → state transitions → completion |
+**Fix env var syntax** — replace `${{ secrets.X || 'fallback' }}` with proper defaults:
+```yaml
+env:
+  VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || '' }}
+```
+Use shell-level defaults: `${VITE_SUPABASE_URL:-http://localhost:8000}`
 
-Each test will: instantiate real services (no mocks of the service layer), call through the chain, and assert on the final state/receipts.
+**Add integration tests job** between unit-tests and e2e:
+```yaml
+integration-tests:
+  needs: typecheck
+  steps:
+    - npm ci
+    - npm run test:integration
+```
 
-### Phase 2 — E2E Test Suite (Playwright, `tests/e2e/`)
+**Fix E2E server** — serve the `dist/` artifact with `npx serve` or `npx vite preview`:
+```yaml
+e2e-p0:
+  steps:
+    - download dist/
+    - npx serve dist -l 8080 &
+    - wait for server
+    - PLAYWRIGHT_BASE_URL=http://localhost:8080 npx playwright test
+```
 
-Consolidate and replace the skeleton `e2e/` files. Create **comprehensive Playwright specs** that work without pre-configured credentials (unauthenticated tests) plus authenticated test suites:
+**Add Docker build validation** job:
+```yaml
+docker-build:
+  needs: build
+  steps:
+    - docker build -t sita-os:ci .
+    - docker run --rm sita-os:ci cat /usr/share/nginx/html/health.json
+```
 
-| File | Coverage |
-|---|---|
-| `auth-journeys.spec.ts` | Login form render, validation, error states, forgot password, signup, redirect guards |
-| `route-health.spec.ts` | All P0/P1/P2 routes load without crash (200+ routes) — generated from App.tsx route map |
-| `navigation.spec.ts` | Sidebar links, breadcrumbs, back navigation, 404 handling |
-| `admin-boards.spec.ts` | All admin routes (DRS, AR, SAG, LT, V01-V07, CJ01-CJ07, CN01) load correctly |
-| `verification-boards.spec.ts` | V01-V07 boards render, seed button works, data tables show |
-| `customer-journey-boards.spec.ts` | CJ01-CJ07 boards render, seed button works, matrix populates |
-| `files-journey.spec.ts` | Files page load, upload zone visible, file list renders |
-| `boardroom-journey.spec.ts` | Boardroom load, summary cards render, refresh button exists |
-| `advisor-journey.spec.ts` | Advisor workspace loads, chat input visible, advisor list renders |
-| `approvals-journey.spec.ts` | Approvals page loads, tabs work, action buttons visible |
-| `connectors-journey.spec.ts` | Connector hub loads, cards render, connect buttons visible |
-| `settings-journey.spec.ts` | Settings page loads, tabs navigate, forms render |
-| `money-journey.spec.ts` | Money center loads, financial data section renders |
-| `business-journey.spec.ts` | Business center loads, CRM data section renders |
-| `demo-mode.spec.ts` | Demo mode toggle, demo labels visible, scenario continuity |
-| `responsive.spec.ts` | Key pages at mobile/tablet/desktop viewports render correctly |
+**Add concurrency control**:
+```yaml
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+```
 
-### Phase 3 — Wiring & Config
+**Update launch-gate** — include integration-tests in required jobs list.
 
-1. **Update `playwright.config.ts`** — point `testDir` to include both `tests/e2e/` and consolidate
-2. **Add `test:integration` script** to `package.json`: `vitest run --dir src/test/integration`
-3. **Add `test:e2e` script**: `npx playwright test`
-4. **Remove duplicate `e2e/` directory** skeleton files (replaced by comprehensive `tests/e2e/`)
+### 2. Update `package.json` (no change needed — scripts already exist)
+
+### 3. Update `playwright.config.ts` (no change needed — already handles CI)
+
+## Jobs After Fix
+
+| Job | Blocks merge? | Fails silently? |
+|---|---|---|
+| typecheck | Yes | No |
+| lint | No (warning) | Yes |
+| unit-tests | Yes | No |
+| integration-tests | Yes | No |
+| build | Yes | No |
+| security-scan | Yes | No |
+| e2e-p0 | No (advisory) | No |
+| docker-build | No (advisory) | No |
+| architecture-validation | No (advisory) | Yes |
+| ring-promotion | No (main only) | Yes |
+| launch-gate | Final report | No |
+| nightly | Schedule only | Yes |
 
 ## Files Changed
 
-| Area | Files |
+| File | Change |
 |---|---|
-| Integration tests | 12 new files in `src/test/integration/` |
-| E2E tests | 16 new files in `tests/e2e/` |
-| Config | `package.json` (scripts), cleanup of `e2e/` directory |
-| Playwright | Minor config updates |
+| `.github/workflows/ci.yml` | Full rewrite: fix env syntax, remove false `|| true`, add integration-tests + docker-build jobs, fix E2E server, add concurrency |
 
-## Key Design Decisions
-- Integration tests use real service instances, not mocks — they test the actual wiring
-- E2E tests split into unauthenticated (route health, auth forms) and authenticated (skipped without credentials)
-- Route health E2E auto-generates from the full route map — no manual maintenance
-- All tests follow existing patterns (vitest globals, Playwright `test.describe`)
