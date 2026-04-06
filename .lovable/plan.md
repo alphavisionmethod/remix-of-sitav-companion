@@ -1,79 +1,43 @@
 
-# Convert All Mock-Data Domains to Real Supabase Data — Phase Plan
 
-## Scope Assessment
+# Advisor Registry CRUD + Approval Queue → 100% Advanced
 
-**40+ pages** across 6 domains currently use hardcoded mock data. Existing Supabase tables already cover most domains:
+## Current Gaps
 
-| Domain | Pages | Existing DB Tables | Status |
-|---|---|---|---|
-| **Investment/Money** | 12 pages | `asset_master`, `capital_allocations`, `capital_purpose_buckets`, `bills`, `budgets`, `connected_investment_platforms`, `asset_market_snapshots` | Tables exist, pages use mock imports |
-| **Business/CRM** | 15 pages | `customers`, `deals`, `invoices`, `revenue_leak_items`, `revenue_bookings`, `revenue_campaigns`, `revenue_funnels`, `communications` | Tables exist, pages use mock imports |
-| **Owner Center** | 8 pages | `approval_queue`, `audit_logs`, `council_decisions` + many governance tables | Partially connected, some mock imports remain |
-| **Revenue/Calling** | 3 pages | `revenue_*` tables, `communication_log` | Tables exist, mock data used |
-| **Workspace** | 5 pages | No content tables yet | Need new tables: `documents`, `sheets`, `slides` |
-| **Boardroom** | 2 pages | Many tables exist but page uses hardcoded arrays | Need data service wiring |
+### Advisor Registry
+- **TeamManagement.tsx** reads from `advisor_registry` table but has **zero mutations** — no create, edit, delete, toggle active
+- Detail panel shows Train/Reset/Permissions buttons that are **non-functional placeholders**
+- **AdvisorRegistry.tsx** reads from hardcoded `FULL_ADVISOR_REGISTRY` config, not from DB at all
 
-## Implementation Strategy
+### Approval Queue
+- **HQApprovalQueue.tsx** is already fully built for `ai_workforce_approval_queue` (overview, detail, filters, approve/reject/defer, history) — this is 100%
+- The **`approval_queue`** table (used by OwnerCenter, ProofCenter, ActivityStream) has no dedicated management UI — just read-only consumers
+- No way to create approval requests manually or manage the `approval_queue` lifecycle from a single view
 
-For each domain, the pattern is:
-1. **Data Service** — `src/lib/data-services/{domain}-data-service.ts` with mode-aware queries
-2. **React Query Hook** — `src/hooks/use-{domain}-data.ts` wrapping the service
-3. **Page Update** — Replace mock imports with hook calls, add loading/empty states
+## Plan
 
-### Batch 1: Investment Office + Money Overview (highest value)
-- Create `src/lib/data-services/investment-data-service.ts` querying `asset_master`, `capital_allocations`, `capital_purpose_buckets`, `asset_market_snapshots`, `connected_investment_platforms`
-- Create `src/hooks/use-investment-data.ts` with hooks: `useCapitalBuckets()`, `usePositions()`, `useTheses()`, `useAssetSnapshots()`
-- Update `InvestmentOffice.tsx` — replace `MOCK_CAPITAL_BUCKETS`, `MOCK_POSITIONS`, `MOCK_THESES` with hooks
-- Update `MoneyOverview.tsx`, `MoneyBoardroom.tsx` — wire to same hooks
+### Step 1: Advisor Registry Full CRUD (TeamManagement.tsx)
+Add to TeamManagement:
+- **Create Advisor dialog**: Form with display_name, domain, advisor_type, trust_threshold, active toggle → inserts into `advisor_registry`
+- **Edit Advisor**: Click advisor card → edit dialog pre-filled with current values → updates `advisor_registry`
+- **Toggle Active/Pause**: Quick action button on card that updates `active` column
+- **Delete Advisor**: Confirmation dialog → deletes from `advisor_registry`
+- Replace placeholder Train/Reset/Permissions buttons with real toggle-active and edit actions
 
-### Batch 2: Business CRM + Revenue
-- Create `src/lib/data-services/business-data-service.ts` querying `customers`, `deals`, `invoices`, `revenue_leak_items`, `revenue_campaigns`
-- Create `src/hooks/use-business-data.ts` with hooks: `useCustomers()`, `useDeals()`, `useInvoices()`, `useRevenuLeaks()`, `useRevenueCampaigns()`
-- Update `RevenueAutopilot.tsx` — replace `MOCK_LEAKAGE_INPUT`, `MOCK_RECOVERED_VALUES`, `MOCK_RAW_OPPORTUNITIES`
-- Update `BusinessBoardroom.tsx`, `CollectionsCommandCenter.tsx`, `RevenueForecast.tsx`
-- Update `RevenueCallingPage.tsx` — replace mock call lists
+### Step 2: Approval Queue Management Page
+Create a unified approval management view at the OwnerCenter level for the `approval_queue` table:
+- **Add a full approval management tab** to OwnerCenter or create a standalone route
+- Actually — `approval_queue` is already consumed in OwnerCenter with real data. The gap is: no approve/reject mutations on that table.
+- Add approve/reject/dismiss mutations to the existing OwnerCenter approvals view using `supabase.from("approval_queue").update()`
 
-### Batch 3: Owner Center cleanup
-- Replace remaining `buildMockSimResult` import with direct hook
-- Wire remaining mock arrays to existing governance hooks
+### Step 3: Wire AdvisorRegistry page to DB
+- AdvisorRegistry.tsx currently uses `FULL_ADVISOR_REGISTRY` (hardcoded). Add a DB query layer that merges DB records with config defaults, so DB-persisted advisors appear alongside config-defined ones.
 
-### Batch 4: Workspace (requires new tables)
-- Create migration for `workspace_documents`, `workspace_sheets`, `workspace_slides` tables
-- Create data service + hooks
-- Update `DocsWorkspace.tsx`, `SheetsWorkspace.tsx`, `SlidesWorkspace.tsx`
+## Files Changed
 
-### Batch 5: Boardroom
-- Wire `BusinessBoardroom.tsx` and `MoneyBoardroom.tsx` to aggregate hooks from batches 1-2
-
-## Implementation Order
-1. Batch 1 (Investment + Money) — 4 files
-2. Batch 2 (Business + Revenue) — 6 files  
-3. Batch 3 (Owner Center) — 2 files
-4. Batch 4 (Workspace) — migration + 3 files
-5. Batch 5 (Boardroom) — 2 files
-6. Build verification
-
-## Files Created/Changed (~25 files)
-
-| File | Action |
+| File | Change |
 |---|---|
-| `src/lib/data-services/investment-data-service.ts` | New |
-| `src/hooks/use-investment-data.ts` | New |
-| `src/lib/data-services/business-data-service.ts` | New |
-| `src/hooks/use-business-data.ts` | New |
-| `src/lib/data-services/workspace-data-service.ts` | New |
-| `src/hooks/use-workspace-data.ts` | New |
-| `src/pages/money/InvestmentOffice.tsx` | Wire to hooks |
-| `src/pages/money/MoneyOverview.tsx` | Wire to hooks |
-| `src/pages/money/MoneyBoardroom.tsx` | Wire to hooks |
-| `src/pages/business/RevenueAutopilot.tsx` | Wire to hooks |
-| `src/pages/business/BusinessBoardroom.tsx` | Wire to hooks |
-| `src/pages/business/CollectionsCommandCenter.tsx` | Wire to hooks |
-| `src/pages/business/RevenueForecast.tsx` | Wire to hooks |
-| `src/pages/RevenueCallingPage.tsx` | Wire to hooks |
-| `src/pages/OwnerCenter.tsx` | Remove remaining mocks |
-| `src/pages/workspace/DocsWorkspace.tsx` | Wire to hooks |
-| `src/pages/workspace/SheetsWorkspace.tsx` | Wire to hooks |
-| `src/pages/workspace/SlidesWorkspace.tsx` | Wire to hooks |
-| + more secondary pages | Wire to shared hooks |
+| `src/pages/admin/TeamManagement.tsx` | Add create/edit/delete/toggle mutations + dialogs |
+| `src/pages/OwnerCenter.tsx` | Add approve/reject mutations for `approval_queue` items |
+| `src/pages/advisors/AdvisorRegistry.tsx` | Merge DB advisors with config registry |
+
