@@ -43,6 +43,7 @@ const usageLabelMap: Record<string, { label: string; color: string }> = {
 const SubscriptionsWaste = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const { confirmation, confirm } = useConfirmation();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
