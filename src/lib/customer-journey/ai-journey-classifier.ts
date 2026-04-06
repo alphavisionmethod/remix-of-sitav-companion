@@ -35,7 +35,6 @@ export interface AIJourneyEvidence {
 export async function classifyAIJourneys(): Promise<AIJourneyEvidence[]> {
   const capabilityKeys = Object.keys(AI_CAPABILITY_TO_JOURNEY);
 
-  // Get last 30 days of usage for AI capabilities
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
   const { data: usageRows } = await supabase
@@ -49,14 +48,13 @@ export async function classifyAIJourneys(): Promise<AIJourneyEvidence[]> {
   const results: AIJourneyEvidence[] = [];
 
   for (const [capKey, journeyKey] of Object.entries(AI_CAPABILITY_TO_JOURNEY)) {
-    const rows = usageRows?.filter((r: any) => r.capability_key === capKey) ?? [];
-    const successes = rows.filter((r: any) => r.status === "success");
-    const failures = rows.filter((r: any) => r.status !== "success");
+    const rows = usageRows?.filter((r) => r.capability_key === capKey) ?? [];
+    const successes = rows.filter((r) => r.status === "success");
+    const failures = rows.filter((r) => r.status !== "success");
 
     const lastSuccess = successes[0]?.created_at ?? null;
     const lastFailure = failures[0]?.created_at ?? null;
 
-    // Classification logic
     let classifiedStatus: JourneyStatus;
     let confidence: "high" | "medium" | "low";
 
@@ -79,7 +77,6 @@ export async function classifyAIJourneys(): Promise<AIJourneyEvidence[]> {
         confidence = "medium";
       }
     } else {
-      // Only failures
       classifiedStatus = "broken";
       confidence = failures.length >= 3 ? "high" : "medium";
     }
@@ -99,7 +96,4 @@ export async function classifyAIJourneys(): Promise<AIJourneyEvidence[]> {
   return results;
 }
 
-/**
- * Hook-friendly wrapper: returns classified AI journey evidence
- */
 export { classifyAIJourneys as getAIJourneyClassifications };

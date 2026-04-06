@@ -117,6 +117,7 @@ export const AdminRoutes = () => (
     <Route path="/admin/ai-gateway/honesty" element={<AIG06LaunchTruth />} />
     <Route path="/admin/ai-gateway/launch-truth" element={<AIG07LaunchTruth />} />
     <Route path="/admin/ai-gateway/diagnostics" element={<AIG08DegradedDiagnostics />} />
+    <Route path="/admin/ai-gateway/verification" element={<AIG09RuntimeVerification />} />
 
     {/* Part 3: Strategic Intelligence */}
     <Route path="/admin/strategic/capital" element={<IntelligenceCapitalDashboard />} />

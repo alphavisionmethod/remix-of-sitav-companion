@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AIG09: AI Runtime Verification Board
 // Per-capability live test matrix with pass/fail, latency,
-// tokens, cost, receipts, and fallback/degraded truth
+// tokens, cost, receipts, and degraded truth
 // ═══════════════════════════════════════════════════════════════
 
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
@@ -16,11 +16,11 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
-const STATUS_CONFIG: Record<CapabilityVerification["last_status"], { icon: React.ReactNode; label: string; className: string }> = {
-  success: { icon: <CheckCircle2 className="h-4 w-4" />, label: "Pass", className: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" },
-  failure: { icon: <XCircle className="h-4 w-4" />, label: "Fail", className: "bg-destructive/10 text-destructive border-destructive/30" },
-  degraded: { icon: <AlertTriangle className="h-4 w-4" />, label: "Degraded", className: "bg-amber-500/10 text-amber-400 border-amber-500/30" },
-  never: { icon: <Clock className="h-4 w-4" />, label: "Never Tested", className: "bg-muted text-muted-foreground border-border" },
+const STATUS_CONFIG: Record<CapabilityVerification["last_status"], { icon: React.ReactNode; label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
+  success: { icon: <CheckCircle2 className="h-4 w-4" />, label: "Pass", variant: "default" },
+  failure: { icon: <XCircle className="h-4 w-4" />, label: "Fail", variant: "destructive" },
+  degraded: { icon: <AlertTriangle className="h-4 w-4" />, label: "Degraded", variant: "secondary" },
+  never: { icon: <Clock className="h-4 w-4" />, label: "Never Tested", variant: "outline" },
 };
 
 function HealthSummaryCards({ health }: { health: ReturnType<typeof useAIRuntimeVerification>["health"] }) {
@@ -38,9 +38,9 @@ function HealthSummaryCards({ health }: { health: ReturnType<typeof useAIRuntime
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
       {items.map((item) => (
-        <Card key={item.label} className={item.ok ? "border-emerald-500/30" : "border-destructive/30"}>
+        <Card key={item.label}>
           <CardContent className="p-3 flex items-center gap-2">
-            {item.ok ? <CheckCircle2 className="h-4 w-4 text-emerald-400" /> : <XCircle className="h-4 w-4 text-destructive" />}
+            {item.ok ? <CheckCircle2 className="h-4 w-4 text-primary" /> : <XCircle className="h-4 w-4 text-destructive" />}
             <span className="text-xs font-medium">{item.label}</span>
           </CardContent>
         </Card>
@@ -62,7 +62,6 @@ export default function AIG09RuntimeVerification() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1400px] mx-auto">
-      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
@@ -82,7 +81,6 @@ export default function AIG09RuntimeVerification() {
         </Button>
       </div>
 
-      {/* Overall Health Status */}
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-base flex items-center gap-2">
@@ -99,24 +97,22 @@ export default function AIG09RuntimeVerification() {
         </CardContent>
       </Card>
 
-      {/* Summary Counters */}
       <div className="grid grid-cols-4 gap-3">
         {[
-          { label: "Pass", count: passCount, color: "text-emerald-400" },
-          { label: "Fail", count: failCount, color: "text-destructive" },
-          { label: "Degraded", count: degradedCount, color: "text-amber-400" },
-          { label: "Never Tested", count: neverCount, color: "text-muted-foreground" },
+          { label: "Pass", count: passCount, variant: "default" as const },
+          { label: "Fail", count: failCount, variant: "destructive" as const },
+          { label: "Degraded", count: degradedCount, variant: "secondary" as const },
+          { label: "Never Tested", count: neverCount, variant: "outline" as const },
         ].map((s) => (
           <Card key={s.label}>
             <CardContent className="p-4 text-center">
-              <div className={`text-3xl font-bold ${s.color}`}>{s.count}</div>
-              <div className="text-xs text-muted-foreground mt-1">{s.label}</div>
+              <div className="text-3xl font-bold">{s.count}</div>
+              <Badge variant={s.variant} className="mt-1">{s.label}</Badge>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      {/* Capability Matrix */}
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-base flex items-center gap-2">
@@ -137,7 +133,6 @@ export default function AIG09RuntimeVerification() {
                   <TableHead>Latency</TableHead>
                   <TableHead>Tokens (in/out)</TableHead>
                   <TableHead>Cost</TableHead>
-                  <TableHead>Fallback</TableHead>
                   <TableHead>Mode</TableHead>
                   <TableHead>Last Invoked</TableHead>
                   <TableHead>Receipt</TableHead>
@@ -150,27 +145,20 @@ export default function AIG09RuntimeVerification() {
                     <TableRow key={cap.capability_key}>
                       <TableCell className="font-mono text-xs">{cap.capability_key}</TableCell>
                       <TableCell>
-                        <Badge variant="outline" className={`gap-1 ${cfg.className}`}>
+                        <Badge variant={cfg.variant} className="gap-1">
                           {cfg.icon} {cfg.label}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-xs">{cap.provider ?? "—"}</TableCell>
-                      <TableCell className="text-xs font-mono">{cap.model ?? "—"}</TableCell>
+                      <TableCell className="text-xs">{cap.provider_id ? cap.provider_id.slice(0, 8) + "…" : "—"}</TableCell>
+                      <TableCell className="text-xs font-mono">{cap.model_id ? cap.model_id.slice(0, 8) + "…" : "—"}</TableCell>
                       <TableCell className="text-xs">
                         {cap.latency_ms != null ? `${cap.latency_ms}ms` : "—"}
                       </TableCell>
                       <TableCell className="text-xs">
-                        {cap.input_tokens != null ? `${cap.input_tokens}/${cap.output_tokens ?? 0}` : "—"}
+                        {cap.prompt_tokens != null ? `${cap.prompt_tokens}/${cap.completion_tokens ?? 0}` : "—"}
                       </TableCell>
                       <TableCell className="text-xs">
                         {cap.estimated_cost_usd != null ? `$${cap.estimated_cost_usd.toFixed(4)}` : "—"}
-                      </TableCell>
-                      <TableCell>
-                        {cap.fallback_used ? (
-                          <Badge variant="outline" className="bg-amber-500/10 text-amber-400 border-amber-500/30 text-xs">Yes</Badge>
-                        ) : cap.last_status === "never" ? "—" : (
-                          <span className="text-xs text-muted-foreground">No</span>
-                        )}
                       </TableCell>
                       <TableCell className="text-xs">{cap.mode ?? "—"}</TableCell>
                       <TableCell className="text-xs text-muted-foreground">
@@ -190,22 +178,21 @@ export default function AIG09RuntimeVerification() {
         </CardContent>
       </Card>
 
-      {/* Degraded Details */}
-      {capabilities.some((c) => c.degraded_reason) && (
-        <Card className="border-amber-500/30">
+      {capabilities.some((c) => c.error_summary) && (
+        <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2 text-amber-400">
-              <AlertTriangle className="h-4 w-4" /> Degraded Capabilities
+            <CardTitle className="text-base flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4" /> Error Details
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {capabilities
-              .filter((c) => c.degraded_reason)
+              .filter((c) => c.error_summary)
               .map((c) => (
                 <div key={c.capability_key} className="flex items-center gap-3 text-sm">
                   <span className="font-mono text-xs">{c.capability_key}</span>
                   <span className="text-muted-foreground">→</span>
-                  <span className="text-amber-400">{c.degraded_reason}</span>
+                  <span className="text-destructive">{c.error_summary}</span>
                 </div>
               ))}
           </CardContent>

@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AI Runtime Verification Hook
-// Queries ai_usage_ledger + ai_inference_receipts for per-capability
+// Queries ai_usage_ledger + ai_receipt_records for per-capability
 // last invocation status, plus triggers ai-health smoke tests
 // ═══════════════════════════════════════════════════════════════
 
@@ -12,14 +12,13 @@ export interface CapabilityVerification {
   capability_key: string;
   last_status: "success" | "failure" | "degraded" | "never";
   last_invoked_at: string | null;
-  provider: string | null;
-  model: string | null;
+  provider_id: string | null;
+  model_id: string | null;
   latency_ms: number | null;
-  input_tokens: number | null;
-  output_tokens: number | null;
+  prompt_tokens: number | null;
+  completion_tokens: number | null;
   estimated_cost_usd: number | null;
-  fallback_used: boolean;
-  degraded_reason: string | null;
+  error_summary: string | null;
   receipt_id: string | null;
   mode: string | null;
 }
@@ -41,51 +40,39 @@ export function useAIRuntimeVerification() {
   const capabilityMatrix = useQuery<CapabilityVerification[]>({
     queryKey: ["ai-runtime-verification-matrix"],
     queryFn: async () => {
-      // Get last invocation per capability from usage ledger
       const { data: ledgerRows } = await supabase
         .from("ai_usage_ledger")
-        .select("capability_key, created_at, provider, model, latency_ms, input_tokens, output_tokens, estimated_cost_usd, status, fallback_used, degraded_reason, mode")
+        .select("capability_key, created_at, provider_id, model_id, latency_ms, prompt_tokens, completion_tokens, estimated_cost_usd, status, error_summary, error_code, receipt_id, mode")
         .in("capability_key", TARGET_CAPABILITIES)
         .order("created_at", { ascending: false })
         .limit(100);
 
-      // Get last receipt per capability
-      const { data: receiptRows } = await supabase
-        .from("ai_receipt_records")
-        .select("capability_key, id, created_at, mode, degraded_reason, provider_id, model_id")
-        .in("capability_key", TARGET_CAPABILITIES)
-        .order("created_at", { ascending: false })
-        .limit(100);
-
-      // Build per-capability map
       const capMap = new Map<string, CapabilityVerification>();
 
       for (const cap of TARGET_CAPABILITIES) {
-        const lastLedger = ledgerRows?.find((r: any) => r.capability_key === cap);
-        const lastReceipt = receiptRows?.find((r: any) => r.capability_key === cap);
+        const lastRow = ledgerRows?.find((r) => r.capability_key === cap);
 
-        const status: CapabilityVerification["last_status"] = !lastLedger
+        const status: CapabilityVerification["last_status"] = !lastRow
           ? "never"
-          : lastLedger.status === "success"
+          : lastRow.status === "success"
             ? "success"
-            : lastLedger.degraded_reason
-              ? "degraded"
-              : "failure";
+            : lastRow.error_code
+              ? "failure"
+              : "degraded";
 
         capMap.set(cap, {
           capability_key: cap,
           last_status: status,
-          last_invoked_at: lastLedger?.created_at || null,
-          provider: lastLedger?.provider || null,
-          model: lastLedger?.model || null,
-          latency_ms: lastLedger?.latency_ms || null,
-          input_tokens: lastLedger?.input_tokens || null,
-          output_tokens: lastLedger?.output_tokens || null,
-          estimated_cost_usd: lastLedger?.estimated_cost_usd || null,
-          fallback_used: lastLedger?.fallback_used || false,
-          degraded_reason: lastLedger?.degraded_reason || null,
-          receipt_id: lastReceipt?.id || null,
-          mode: lastLedger?.mode || lastReceipt?.mode || null,
+          last_invoked_at: lastRow?.created_at || null,
+          provider_id: lastRow?.provider_id || null,
+          model_id: lastRow?.model_id || null,
+          latency_ms: lastRow?.latency_ms || null,
+          prompt_tokens: lastRow?.prompt_tokens || null,
+          completion_tokens: lastRow?.completion_tokens || null,
+          estimated_cost_usd: lastRow?.estimated_cost_usd || null,
+          error_summary: lastRow?.error_summary || null,
+          receipt_id: lastRow?.receipt_id || null,
+          mode: lastRow?.mode || null,
         });
       }
 
