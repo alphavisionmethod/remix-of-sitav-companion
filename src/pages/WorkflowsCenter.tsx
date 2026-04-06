@@ -25,8 +25,12 @@ const statusToState = (status: string): ExecutionState => {
 
 const WorkflowsCenter = () => {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const [filter, setFilter] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [showCreate, setShowCreate] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newTrigger, setNewTrigger] = useState("manual");
 
   const { data: runs = [], isLoading } = useQuery({
     queryKey: ["workflow_runs", user?.id],
