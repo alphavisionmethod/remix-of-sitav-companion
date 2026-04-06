@@ -137,7 +137,7 @@ export default function ISA07AuthConnectorTruthBoard() {
 
   // Check 4: Families with identity but no separate connector capability registered
   families.forEach((f: any) => {
-    if (f.has_identity && f.has_connector) {
+    if (f.identity_support && f.connector_support) {
       const famClients = clientsByFamily[f.provider_key] || [];
       if (famClients.length === 0) {
         findings.push({
@@ -198,7 +198,7 @@ export default function ISA07AuthConnectorTruthBoard() {
               <p className="font-medium">Identity Layer</p>
             </div>
             <div className="space-y-1 text-sm text-muted-foreground">
-              <p>{families.filter((f: any) => f.has_identity).length} identity-capable families</p>
+              <p>{families.filter((f: any) => f.identity_support).length} identity-capable families</p>
               <p>{identityLinks.length} linked identities</p>
               <p>{oauthClients.filter((c: any) => c.client_purpose?.startsWith("identity")).length} identity OAuth clients</p>
               <p>{identityScopes.length} identity scopes</p>
@@ -212,7 +212,7 @@ export default function ISA07AuthConnectorTruthBoard() {
               <p className="font-medium">Connector Layer</p>
             </div>
             <div className="space-y-1 text-sm text-muted-foreground">
-              <p>{families.filter((f: any) => f.has_connector).length} connector-capable families</p>
+              <p>{families.filter((f: any) => f.connector_support).length} connector-capable families</p>
               <p>{connectorLinks.length} connected services</p>
               <p>{oauthClients.filter((c: any) => c.client_purpose?.startsWith("connector")).length} connector OAuth clients</p>
               <p>{connectorScopes.length} connector scopes</p>
