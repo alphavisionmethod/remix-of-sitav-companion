@@ -60,3 +60,20 @@ export const DEMO_SIGNAL_SUBSYSTEMS = [
   { target: "Assistant Timing", key: "hrs_timing", stage: "planned", readiness: 8, demo: true, real: false, blockers: ["Timing rules engine", "Context awareness", "Window detection"], critical: false },
   { target: "Demo Signals", key: "hrs_demo", stage: "internal", readiness: 80, demo: true, real: false, blockers: [], critical: false },
 ];
+
+export const DEMO_BRIEFING_WINDOWS = [
+  { name: "Morning Strategic Brief", readiness: "high + morning", category: "strategy", content: ["Top priorities", "Key metrics", "Upcoming decisions"], duration: "2-3 min" },
+  { name: "Financial Summary", readiness: "high + end of day", category: "finance", content: ["Cash position", "Revenue update", "Outstanding invoices"], duration: "1-2 min" },
+  { name: "Weekly Review", readiness: "ideal_strategic_window", category: "review", content: ["Week summary", "Goal progress", "Next week priorities"], duration: "5-7 min" },
+  { name: "Quick Decisions", readiness: "medium+ any time", category: "approval", content: ["Pending approvals", "Quick actions", "Time-sensitive items"], duration: "30s-1 min" },
+  { name: "Risk Alert", readiness: "any (override)", category: "risk", content: ["Emerging risks", "Threshold breaches", "Urgent items"], duration: "immediate" },
+];
+
+export const DEMO_HOLD_VS_ACT = [
+  { scenario: "Low readiness + low urgency alert", decision: "HOLD", reason: "Queue for next available window", timing: "Next high readiness window" },
+  { scenario: "Low readiness + critical approval", decision: "ACT", reason: "Urgency overrides readiness", timing: "Immediate with minimal context" },
+  { scenario: "Deep focus + normal task reminder", decision: "HOLD", reason: "Protect focus time", timing: "Post-focus session" },
+  { scenario: "High readiness + strategic opportunity", decision: "ACT", reason: "Ideal window, show strategic content", timing: "Proactive brief" },
+  { scenario: "Recovery + financial summary", decision: "HOLD", reason: "Defer cognitive load", timing: "Next high window" },
+  { scenario: "Any readiness + emergency", decision: "ACT", reason: "Emergency always overrides", timing: "Immediate full escalation" },
+];
