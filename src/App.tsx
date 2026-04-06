@@ -1063,6 +1063,16 @@ const App = () => (
                     <Route path="/admin/msa/capabilities" element={<MSA03CapabilityPortability />} />
                     <Route path="/admin/msa/adapters" element={<MSA04SurfaceAdapterRegistry />} />
                     <Route path="/admin/msa/compatibility" element={<MSA05CompatibilityRadar />} />
+                    <Route path="/admin/pfa/families" element={<PFA01ProviderFamilyRegistry />} />
+                    <Route path="/admin/pfa/capabilities" element={<PFA02ProviderCapabilityMatrix />} />
+                    <Route path="/admin/pfa/oauth-clients" element={<PFA03OAuthClientRegistry />} />
+                    <Route path="/admin/pfa/consent" element={<PFA04ConsentLedgerExplorer />} />
+                    <Route path="/admin/pfa/scope-policy" element={<PFA05ScopePolicyMatrix />} />
+                    <Route path="/admin/pfa/upgrades" element={<PFA06PermissionUpgradeCenter />} />
+                    <Route path="/admin/pfa/health-drift" element={<PFA07ConnectorHealthDrift />} />
+                    <Route path="/admin/pfa/account-graph" element={<PFA08AccountGraphExplorer />} />
+                    <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
+                    <Route path="/admin/pfa/launch-honesty" element={<PFA10IntegrationLaunchHonesty />} />
                     <Route path="/admin/launch-readiness" element={<LaunchReadinessBoard />} />
                     <Route path="/admin/mission-control" element={<MissionControlHome />} />
                     <Route path="/admin/durability" element={<AdminDurabilityBoardPage />} />
