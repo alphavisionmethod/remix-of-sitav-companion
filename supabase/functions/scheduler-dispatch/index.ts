@@ -6,7 +6,8 @@ import { z } from "https://esm.sh/zod@3.23.8";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders }
+    return new Response("ok", { headers: corsHeaders });}
+
 
   // Rate limiting
   const clientId = req.headers.get("authorization")?.slice(-10) || "anon";
