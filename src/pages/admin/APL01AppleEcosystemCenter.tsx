@@ -287,7 +287,9 @@ const APL01AppleEcosystemCenter = () => {
                         <td className="p-2 font-mono">{pr.route_key || pr.category}</td>
                         <td className="p-2 text-center">{pr.channel || "apns"}</td>
                         <td className="p-2 text-center"><Badge variant={pr.priority === "high" ? "destructive" : "secondary"}>{pr.priority || "normal"}</Badge></td>
-                        <td className="p-2 text-center">{pr.active !== false ? <CheckCircle2 className="h-3.5 w-3.5 text-green-500 mx-auto" /> : <AlertTriangle className="h-3.5 w-3.5 text-muted-foreground mx-auto" />}</td>
+                        <td className="p-2 text-center">
+                          <Switch checked={pr.urgency_filter !== "none"} onCheckedChange={(v) => updatePush.mutate({ id: pr.id, enabled: v })} />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
