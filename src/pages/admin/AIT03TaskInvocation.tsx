@@ -18,6 +18,7 @@ import { executeWorkforceTask, type WorkforceExecutionResult } from "@/lib/ai/wo
 import { AIWorkforceInvocationPanel } from "@/components/ai/AIWorkforceInvocationPanel";
 import { Terminal, Play, Loader2, DollarSign, AlertTriangle, Clock, Save, History, Copy } from "lucide-react";
 import { toast } from "sonner";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { supabase } from "@/integrations/supabase/client";
 
 const TASK_TYPES = [
