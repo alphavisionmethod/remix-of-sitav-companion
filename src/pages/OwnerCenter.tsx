@@ -292,7 +292,7 @@ const OwnerCenter = () => {
     { key: "rollback-center", label: "Rollback" },
     { key: "system-map", label: "System Map" },
     { key: "governance", label: "Governance" },
-    { key: "approvals", label: "Approvals" },
+    { key: "approvals", label: "Approvals", count: pendingApprovals.length },
   ];
 
   const councilIcons: Record<string, typeof Bot> = {

@@ -23,6 +23,8 @@ import {
   type AdvisorBehavioralProfile,
 } from "@/packages/advisor-config/behavioral-engine";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 // ── Maturity color mapping ──────────────────────────────────
 const MATURITY_COLORS: Record<string, string> = {
