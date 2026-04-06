@@ -225,6 +225,9 @@ const OwnerCenter = () => {
   const exportAudit = useExportAuditLogs();
   const restartDevice = useRestartDevice();
   const councilVote = useCouncilVote();
+  const approveItem = useApproveApprovalItem();
+  const rejectItem = useRejectApprovalItem();
+  const dismissItem = useDismissApprovalItem();
 
   // Local state for dialogs
   const [resolveDialog, setResolveDialog] = useState<{ open: boolean; incidentId: string }>({ open: false, incidentId: "" });
