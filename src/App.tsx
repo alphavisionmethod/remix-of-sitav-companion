@@ -1140,6 +1140,13 @@ const App = () => (
                     <Route path="/admin/pfa/account-graph" element={<PFA08AccountGraphExplorer />} />
                     <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
                     <Route path="/admin/pfa/launch-honesty" element={<PFA10IntegrationLaunchHonesty />} />
+                    <Route path="/admin/isa/identity-providers" element={<ISA01IdentityProviderRegistryBoard />} />
+                    <Route path="/admin/isa/connector-providers" element={<ISA02ConnectorProviderRegistryBoard />} />
+                    <Route path="/admin/isa/oauth-clients" element={<ISA03OAuthClientRegistryConsole />} />
+                    <Route path="/admin/isa/consent-ledger" element={<ISA04ConsentLedgerExplorer />} />
+                    <Route path="/admin/isa/scope-policy" element={<ISA05ScopePolicyMatrixBoard />} />
+                    <Route path="/admin/isa/account-graph" element={<ISA06UnifiedAccountGraphExplorer />} />
+                    <Route path="/admin/isa/truth-board" element={<ISA07AuthConnectorTruthBoard />} />
                     <Route path="/admin/uao/presence" element={<UAO01PresenceContinuity />} />
                     <Route path="/admin/uao/devices" element={<UAO02ConnectedDevices />} />
                     <Route path="/admin/uao/team" element={<UAO03AmbientTeamControl />} />
