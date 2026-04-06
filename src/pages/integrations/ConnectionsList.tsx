@@ -76,7 +76,9 @@ export default function ConnectionsList() {
         </TabsList>
 
         <TabsContent value="connections" className="mt-4 space-y-3">
-          {DEMO_CONNECTIONS.map(conn => {
+          {connections.length === 0 && !isDemoMode ? (
+            <EmptyState icon={LinkIcon} title="No connections yet" subtitle="Connect your first integration to get started." />
+          ) : connections.map((conn: any) => {
             const provider = getProviderById(conn.providerId);
             return (
               <Card key={conn.id} className={`bg-card/50 border-border/50 hover:border-primary/30 transition-colors cursor-pointer ${conn.status === "expired" ? "border-l-2 border-l-amber-500" : conn.status === "connected" ? "border-l-2 border-l-green-500" : ""}`}
