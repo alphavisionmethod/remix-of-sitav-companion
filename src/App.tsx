@@ -386,6 +386,8 @@ const NRC04QueueInterruptMatrix = lazy(() => import("./pages/admin/NRC04QueueInt
 const NRC05CrossDeviceDelivery = lazy(() => import("./pages/admin/NRC05CrossDeviceDelivery"));
 const NRC06NotificationLaunchHonesty = lazy(() => import("./pages/admin/NRC06NotificationLaunchHonesty"));
 const NOT03DeliveryReceiptsExplorer = lazy(() => import("./pages/admin/NOT03DeliveryReceiptsExplorer"));
+const NOT01NotificationRuntimeVerification = lazy(() => import("./pages/admin/NOT01NotificationRuntimeVerification"));
+const NotificationPreferences = lazy(() => import("./pages/settings/NotificationPreferences"));
 
 // ── NSS: Native Shell Strategy ──
 const NSS01StrategyBoard = lazy(() => import("./pages/admin/NSS01StrategyBoard"));
@@ -875,6 +877,7 @@ const App = () => (
                     <Route path="/sovereign-export" element={<SovereignExportPage />} />
                     <Route path="/communications" element={<CommunicationsPage />} />
                     <Route path="/notifications/settings" element={<NotificationSettingsPage />} />
+                    <Route path="/settings/notifications" element={<NotificationPreferences />} />
                     <Route path="/notifications" element={<NotificationCenter />} />
 
                     {/* Approvals — explicit sub-routes */}
@@ -1256,6 +1259,7 @@ const App = () => (
                     <Route path="/admin/nrc/cross-device" element={<NRC05CrossDeviceDelivery />} />
                     <Route path="/admin/nrc/launch-honesty" element={<NRC06NotificationLaunchHonesty />} />
                     <Route path="/admin/nrc/delivery-receipts" element={<NOT03DeliveryReceiptsExplorer />} />
+                    <Route path="/admin/nrc/runtime-verification" element={<NOT01NotificationRuntimeVerification />} />
                     {/* NSS — Native Shell Strategy */}
                     <Route path="/admin/nss/strategy" element={<NSS01StrategyBoard />} />
                     <Route path="/admin/nss/capability-matrix" element={<NSS02CapabilityMatrix />} />
