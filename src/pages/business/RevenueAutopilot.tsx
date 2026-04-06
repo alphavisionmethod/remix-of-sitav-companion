@@ -80,7 +80,8 @@ const LeakageRadar = () => {
       ))}
     </div>
   </div>
-);
+  );
+};
 
 const RecoveryEngine = () => (
   <div className="space-y-4">
