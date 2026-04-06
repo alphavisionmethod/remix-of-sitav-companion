@@ -8012,6 +8012,429 @@ export type Database = {
           },
         ]
       }
+      ecosystem_continuity_events: {
+        Row: {
+          completed_at: string | null
+          context_ref: string | null
+          created_at: string
+          ecosystem: string
+          handoff_type: string
+          id: string
+          initiated_at: string | null
+          source_device_id: string | null
+          source_surface: string
+          state: string
+          target_device_id: string | null
+          target_surface: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          context_ref?: string | null
+          created_at?: string
+          ecosystem: string
+          handoff_type: string
+          id?: string
+          initiated_at?: string | null
+          source_device_id?: string | null
+          source_surface: string
+          state?: string
+          target_device_id?: string | null
+          target_surface: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          context_ref?: string | null
+          created_at?: string
+          ecosystem?: string
+          handoff_type?: string
+          id?: string
+          initiated_at?: string | null
+          source_device_id?: string | null
+          source_surface?: string
+          state?: string
+          target_device_id?: string | null
+          target_surface?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecosystem_continuity_events_source_device_id_fkey"
+            columns: ["source_device_id"]
+            isOneToOne: false
+            referencedRelation: "ecosystem_devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ecosystem_continuity_events_target_device_id_fkey"
+            columns: ["target_device_id"]
+            isOneToOne: false
+            referencedRelation: "ecosystem_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecosystem_devices: {
+        Row: {
+          biometric_capable: boolean | null
+          biometric_types: string[] | null
+          continuity_eligible: boolean | null
+          created_at: string
+          device_model: string
+          ecosystem: string
+          id: string
+          last_seen_at: string | null
+          manufacturer: string | null
+          metadata: Json | null
+          os_version: string
+          play_services_available: boolean | null
+          push_channel: string
+          push_token: string | null
+          surface: string
+          trust_class: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          biometric_capable?: boolean | null
+          biometric_types?: string[] | null
+          continuity_eligible?: boolean | null
+          created_at?: string
+          device_model: string
+          ecosystem: string
+          id?: string
+          last_seen_at?: string | null
+          manufacturer?: string | null
+          metadata?: Json | null
+          os_version?: string
+          play_services_available?: boolean | null
+          push_channel?: string
+          push_token?: string | null
+          surface: string
+          trust_class?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          biometric_capable?: boolean | null
+          biometric_types?: string[] | null
+          continuity_eligible?: boolean | null
+          created_at?: string
+          device_model?: string
+          ecosystem?: string
+          id?: string
+          last_seen_at?: string | null
+          manufacturer?: string | null
+          metadata?: Json | null
+          os_version?: string
+          play_services_available?: boolean | null
+          push_channel?: string
+          push_token?: string | null
+          surface?: string
+          trust_class?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ecosystem_health_consents: {
+        Row: {
+          assistant_use_consent: boolean | null
+          boardroom_visibility_consent: boolean | null
+          consented_at: string | null
+          created_at: string
+          ecosystem: string
+          id: string
+          privacy_explanation_shown: boolean | null
+          read_permission: boolean | null
+          revoked_at: string | null
+          routing_influence_consent: boolean | null
+          signal_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assistant_use_consent?: boolean | null
+          boardroom_visibility_consent?: boolean | null
+          consented_at?: string | null
+          created_at?: string
+          ecosystem: string
+          id?: string
+          privacy_explanation_shown?: boolean | null
+          read_permission?: boolean | null
+          revoked_at?: string | null
+          routing_influence_consent?: boolean | null
+          signal_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assistant_use_consent?: boolean | null
+          boardroom_visibility_consent?: boolean | null
+          consented_at?: string | null
+          created_at?: string
+          ecosystem?: string
+          id?: string
+          privacy_explanation_shown?: boolean | null
+          read_permission?: boolean | null
+          revoked_at?: string | null
+          routing_influence_consent?: boolean | null
+          signal_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ecosystem_launch_readiness: {
+        Row: {
+          blockers: string[] | null
+          created_at: string
+          demo_available: boolean | null
+          ecosystem: string
+          evidence: Json | null
+          id: string
+          last_assessed_at: string | null
+          launch_ready: boolean | null
+          launch_stage: string
+          pilot_ready: boolean | null
+          target: string
+          target_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blockers?: string[] | null
+          created_at?: string
+          demo_available?: boolean | null
+          ecosystem: string
+          evidence?: Json | null
+          id?: string
+          last_assessed_at?: string | null
+          launch_ready?: boolean | null
+          launch_stage?: string
+          pilot_ready?: boolean | null
+          target: string
+          target_name?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blockers?: string[] | null
+          created_at?: string
+          demo_available?: boolean | null
+          ecosystem?: string
+          evidence?: Json | null
+          id?: string
+          last_assessed_at?: string | null
+          launch_ready?: boolean | null
+          launch_stage?: string
+          pilot_ready?: boolean | null
+          target?: string
+          target_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ecosystem_push_routes: {
+        Row: {
+          calm_router_integrated: boolean | null
+          channel: string
+          created_at: string
+          device_id: string
+          dnd_aware: boolean | null
+          ecosystem: string
+          focus_mode_aware: boolean | null
+          id: string
+          notification_channel_id: string | null
+          routing_priority: number | null
+          updated_at: string
+          urgency_filter: string
+          user_id: string
+        }
+        Insert: {
+          calm_router_integrated?: boolean | null
+          channel: string
+          created_at?: string
+          device_id: string
+          dnd_aware?: boolean | null
+          ecosystem: string
+          focus_mode_aware?: boolean | null
+          id?: string
+          notification_channel_id?: string | null
+          routing_priority?: number | null
+          updated_at?: string
+          urgency_filter?: string
+          user_id: string
+        }
+        Update: {
+          calm_router_integrated?: boolean | null
+          channel?: string
+          created_at?: string
+          device_id?: string
+          dnd_aware?: boolean | null
+          ecosystem?: string
+          focus_mode_aware?: boolean | null
+          id?: string
+          notification_channel_id?: string | null
+          routing_priority?: number | null
+          updated_at?: string
+          urgency_filter?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecosystem_push_routes_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "ecosystem_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecosystem_trust_records: {
+        Row: {
+          approval_eligible_classes: string[] | null
+          attestation_verified: boolean | null
+          biometric_type: string | null
+          biometric_verified: boolean | null
+          created_at: string
+          device_bound_receipts: boolean | null
+          device_id: string
+          ecosystem: string
+          escalation_target: string | null
+          id: string
+          keystore_secured: boolean | null
+          last_verified_at: string | null
+          reauth_method: string | null
+          risk_tier_ceiling: string
+          session_duration: string | null
+          trust_class: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_eligible_classes?: string[] | null
+          attestation_verified?: boolean | null
+          biometric_type?: string | null
+          biometric_verified?: boolean | null
+          created_at?: string
+          device_bound_receipts?: boolean | null
+          device_id: string
+          ecosystem: string
+          escalation_target?: string | null
+          id?: string
+          keystore_secured?: boolean | null
+          last_verified_at?: string | null
+          reauth_method?: string | null
+          risk_tier_ceiling?: string
+          session_duration?: string | null
+          trust_class?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_eligible_classes?: string[] | null
+          attestation_verified?: boolean | null
+          biometric_type?: string | null
+          biometric_verified?: boolean | null
+          created_at?: string
+          device_bound_receipts?: boolean | null
+          device_id?: string
+          ecosystem?: string
+          escalation_target?: string | null
+          id?: string
+          keystore_secured?: boolean | null
+          last_verified_at?: string | null
+          reauth_method?: string | null
+          risk_tier_ceiling?: string
+          session_duration?: string | null
+          trust_class?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecosystem_trust_records_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "ecosystem_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecosystem_wearable_configs: {
+        Row: {
+          auto_escalate_sec: number | null
+          complications_supported: string[] | null
+          created_at: string
+          device_id: string
+          ecosystem: string
+          escalate_to_phone_enabled: boolean | null
+          filtered_alerts_only: boolean | null
+          glanceable_states_enabled: boolean | null
+          haptic_routing_enabled: boolean | null
+          id: string
+          max_risk_tier: string | null
+          micro_actions_enabled: boolean | null
+          tiles_supported: string[] | null
+          updated_at: string
+          urgency_patterns: string[] | null
+          user_id: string
+          watch_model: string
+          watch_os_version: string
+        }
+        Insert: {
+          auto_escalate_sec?: number | null
+          complications_supported?: string[] | null
+          created_at?: string
+          device_id: string
+          ecosystem: string
+          escalate_to_phone_enabled?: boolean | null
+          filtered_alerts_only?: boolean | null
+          glanceable_states_enabled?: boolean | null
+          haptic_routing_enabled?: boolean | null
+          id?: string
+          max_risk_tier?: string | null
+          micro_actions_enabled?: boolean | null
+          tiles_supported?: string[] | null
+          updated_at?: string
+          urgency_patterns?: string[] | null
+          user_id: string
+          watch_model?: string
+          watch_os_version?: string
+        }
+        Update: {
+          auto_escalate_sec?: number | null
+          complications_supported?: string[] | null
+          created_at?: string
+          device_id?: string
+          ecosystem?: string
+          escalate_to_phone_enabled?: boolean | null
+          filtered_alerts_only?: boolean | null
+          glanceable_states_enabled?: boolean | null
+          haptic_routing_enabled?: boolean | null
+          id?: string
+          max_risk_tier?: string | null
+          micro_actions_enabled?: boolean | null
+          tiles_supported?: string[] | null
+          updated_at?: string
+          urgency_patterns?: string[] | null
+          user_id?: string
+          watch_model?: string
+          watch_os_version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecosystem_wearable_configs_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "ecosystem_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       encrypted_secrets: {
         Row: {
           created_at: string | null
