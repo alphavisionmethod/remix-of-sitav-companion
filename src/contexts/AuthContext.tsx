@@ -41,6 +41,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isDemo, setIsDemo] = useState(false);
+  const [seedTriggered, setSeedTriggered] = useState(false);
+
+  const triggerAutoSeed = async () => {
+    if (seedTriggered) return;
+    setSeedTriggered(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("seed-user-data", {
+        method: "POST",
+        body: {},
+      });
+      if (error) {
+        console.warn("Auto-seed skipped or failed:", error.message);
+      } else if (data?.skipped) {
+        console.log("Data already seeded");
+      } else {
+        console.log("Demo data seeded successfully");
+      }
+    } catch (e) {
+      console.warn("Auto-seed error:", e);
+    }
+  };
 
   useEffect(() => {
     // Check if demo session was active
