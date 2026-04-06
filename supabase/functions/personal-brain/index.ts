@@ -3,6 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { handleCors, corsHeaders, corsError } from "../_shared/cors.ts";
 import { requireAuth } from "../_shared/auth.ts";
 import { validateBody } from "../_shared/validate.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { EdgeLogger } from "../_shared/logger.ts";
 
 const MODE_PROMPTS: Record<string, string> = {
   think: `You are SITA Brain — Think Mode. You are a reflective thinking partner. Help the user brainstorm, debate ideas, journal, analyze problems from multiple angles. Use Socratic questioning. Present counterarguments. Help them think deeply.`,

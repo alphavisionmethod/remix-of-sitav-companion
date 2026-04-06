@@ -3,6 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { handleCors, corsHeaders, corsError } from "../_shared/cors.ts";
 import { requireAuth } from "../_shared/auth.ts";
 import { validateBody } from "../_shared/validate.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { EdgeLogger } from "../_shared/logger.ts";
 
 // ═══════════════════════════════════════════════════════════════
 // Deep Advisor Personalities — unique expertise per advisor
