@@ -421,8 +421,8 @@ const ApprovalChamber = () => {
   const handleAction = async (id: string, action: string) => {
     if (dbApprovals.length > 0 && !isDemoMode) {
       try {
-        if (action === "approve") await approve.mutateAsync(id);
-        else if (action === "reject") await reject.mutateAsync(id);
+        if (action === "approve") approve(id);
+        else if (action === "reject") reject(id);
         toast.success(`Approval ${action}ed`);
       } catch (e: any) {
         toast.error(e.message || `Failed to ${action}`);
