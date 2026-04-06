@@ -93,6 +93,13 @@ const ConnectorHub = () => {
 
       {isLoading ? (
         <SectionSkeleton cards={4} columns={2} />
+      ) : isError ? (
+        <SitaCard hover={false} className="p-8 text-center">
+          <AlertTriangle className="h-8 w-8 text-destructive mx-auto mb-3" />
+          <p className="text-sm font-medium text-foreground mb-1">Failed to load connectors</p>
+          <p className="text-xs text-muted-foreground mb-4">There was a problem fetching your integrations.</p>
+          <SitaButton variant="primary" onClick={() => refetch()}><RefreshCw className="h-3.5 w-3.5" /> Retry</SitaButton>
+        </SitaCard>
       ) : filtered.length === 0 ? (
         <EmptyState icon={Plug} title="No connectors configured" description="Set up connectors to integrate calendar, email, CRM, banking, and other services." />
       ) : (
