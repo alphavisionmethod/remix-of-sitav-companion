@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ShieldCheck, Play, X, Eye, Fingerprint, FileText, AlertTriangle, CheckCircle, Clock, ChevronDown, ChevronRight } from "lucide-react";
+import { ShieldCheck, Play, X, Eye, Fingerprint, FileText, AlertTriangle, CheckCircle, Clock, ChevronDown, ChevronRight, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
