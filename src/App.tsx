@@ -296,6 +296,8 @@ const PFA07ConnectorHealthDrift = lazy(() => import("./pages/admin/PFA07Connecto
 const PFA08AccountGraphExplorer = lazy(() => import("./pages/admin/PFA08AccountGraphExplorer"));
 const PFA09ConnectedAccountsCenter = lazy(() => import("./pages/admin/PFA09ConnectedAccountsCenter"));
 const PFA10IntegrationLaunchHonesty = lazy(() => import("./pages/admin/PFA10IntegrationLaunchHonesty"));
+const GoogleProviderFamilyDashboard = lazy(() => import("./pages/admin/GoogleProviderFamilyDashboard"));
+const GoogleConnectedAccounts = lazy(() => import("./pages/settings/GoogleConnectedAccounts"));
 
 const ISA01IdentityProviderRegistryBoard = lazy(() => import("./pages/admin/ISA01IdentityProviderRegistryBoard"));
 const ISA02ConnectorProviderRegistryBoard = lazy(() => import("./pages/admin/ISA02ConnectorProviderRegistryBoard"));
@@ -1148,7 +1150,9 @@ const App = () => (
                     <Route path="/admin/pfa/health-drift" element={<PFA07ConnectorHealthDrift />} />
                     <Route path="/admin/pfa/account-graph" element={<PFA08AccountGraphExplorer />} />
                     <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
+                    <Route path="/settings/google" element={<GoogleConnectedAccounts />} />
                     <Route path="/admin/pfa/launch-honesty" element={<PFA10IntegrationLaunchHonesty />} />
+                    <Route path="/admin/pfa/google" element={<GoogleProviderFamilyDashboard />} />
                     <Route path="/admin/isa/identity-providers" element={<ISA01IdentityProviderRegistryBoard />} />
                     <Route path="/admin/isa/connector-providers" element={<ISA02ConnectorProviderRegistryBoard />} />
                     <Route path="/admin/isa/oauth-clients" element={<ISA03OAuthClientRegistryConsole />} />
