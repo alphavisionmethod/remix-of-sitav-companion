@@ -257,9 +257,9 @@ const AdvisorRegistry = () => {
 
   // Merge: config advisors are canonical, DB advisors that don't match a config entry are appended
   const mergedRegistry = useMemo(() => {
-    const configIds = new Set(FULL_ADVISOR_REGISTRY.map(a => a.id));
+    const configIds = new Set<string>(FULL_ADVISOR_REGISTRY.map(a => a.id));
     const dbOnly = dbAdvisors
-      .filter(db => !configIds.has(db.id) && !configIds.has(db.advisor_type))
+      .filter(db => !configIds.has(db.id as string) && !configIds.has(db.advisor_type as string))
       .map(db => ({
         id: db.id,
         name: db.display_name,
