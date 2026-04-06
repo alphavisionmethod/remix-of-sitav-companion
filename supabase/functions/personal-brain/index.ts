@@ -185,6 +185,7 @@ serve(async (req) => {
       p_cost: estCost,
     }).then(() => {}).catch(e => console.error("Budget metering error:", e));
 
+    return new Response(aiResult.body!, {
       headers: {
         ...corsHeaders,
         "Content-Type": "text/event-stream",
