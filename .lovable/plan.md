@@ -1,170 +1,47 @@
 
-# SITA OS — ARQ v3 → 100/100 Remediation Plan
+# SITA OS — All Truth Indices to 100%
 
-## Status: ✅ ALL STEPS COMPLETE + 95% Deployment Sprint
+## Phase 1: Database Foundation (AI Workforce + Missing Domain Tables)
+1. **AI Workforce schema** — `ai_workforce_roles`, `ai_workforce_task_types`, `ai_workforce_invocations`, `ai_workforce_recommendations`, `ai_workforce_approval_queue`, `ai_workforce_cached_outputs`
+2. **Connector Truth tables** — `connector_oauth_flows`, `connector_token_store`, `connector_sync_engine`, `connector_health_checks`
+3. **Launch Gate tables** — `launch_gates`, `launch_gate_checks`, `feature_launch_status`
 
----
+## Phase 2: Runtime Truth (38→100)
+- Wire all domain services (finance, CRM, household, documents, calendar) to real DB queries with honest empty states
+- Replace any remaining mock/static data returns with real Supabase queries or honest "not configured" states
+- Add `domain_runtime_status` tracking per domain
 
-## Completed Steps
+## Phase 3: AI Truth (30→100) — Architecture Only
+- Complete AI workforce backend services (role registry, task orchestration, cost policy, receipts)
+- Wire all AI surfaces (advisor, boardroom, pulse, admin) through canonical `ai-capability-client`
+- Add AI workforce admin pages (AIT01–AIT08)
+- Ensure every AI surface renders honest state (real/demo/degraded/unavailable)
 
-### ✅ Step 1 — Fix 6 Failing Tests (Launch → 98)
-- Wrapped `NotFound.test.tsx`, `NotFoundExtended.test.tsx`, `PersonalBrain.test.tsx` in `DemoModeProvider`
+## Phase 4: Connector Truth (22→100)
+- Implement OAuth flow service architecture (authorize, callback, token refresh, revoke)
+- Build connector sync engine contracts (sync scheduling, conflict resolution, health monitoring)
+- Wire connector admin surfaces to real DB state
+- Add connector health dashboard with honest state
 
-### ✅ Step 2 — Add Zod to 4 remaining edge functions (Security → 100)
-- Added Zod validation to `main`, `os-status`, `ai-health`, `runtime-probes`
+## Phase 5: Launch Honesty (52→100)
+- Implement launch gate system — every feature gets a gate with status (live/demo/scaffold/unavailable)
+- Add launch honesty checks to all surfaces
+- Build launch readiness dashboard
+- Wire dual reality to launch gates
 
-### ✅ Step 3 — Add requireAuth to sensitive edge functions (Security + AI → 100)
-- `admin-api` → requireAdmin via `_shared/auth.ts`
-- `admin-intelligence` → requireAdmin via `_shared/auth.ts`
-- `agent-executor` → requireAuth via `_shared/auth.ts`
-- `event-processor` → requireAuth via `_shared/auth.ts`
-- `file-ingestion` → requireAuth via `_shared/auth.ts`
-- `seed-user-data` → requireAuth via `_shared/auth.ts`
-- `gdpr-delete` → requireAuth via `_shared/auth.ts`
-- `gdpr-export` → requireAuth via `_shared/auth.ts`
+## Phase 6: Demo Governance (45→100)
+- Fill all demo provider gaps (every domain needs a governed demo provider)
+- Ensure demo data is scenario-backed and labeled
+- Add demo governance admin surface
 
-### ✅ Step 4 — Accessibility pass (UX → 92)
-- Added role/aria-label to 10 core components
+## Phase 7: Surface Portability (35→100)
+- Complete surface contracts for mobile/desktop/watch
+- Ensure all response envelopes are surface-neutral
+- Add surface registry and readiness tracking
+- Wire capability invocations with surface context
 
-### ✅ Step 5 — Error boundaries (Runtime → 92)
-- Wrapped 6 domain layouts in GlobalErrorBoundary
-
-### ✅ Step 6 — Cost alerting (Economic → 92)
-- Created `cost-alert/index.ts` edge function
-
-### ✅ Step 7 — Connector health (Connector → 85)
-- Created `connector-health/index.ts` edge function
-- Created `connector-health-service.ts` client service with caching
-- Added health status indicators to `ConnectorHub.tsx`
-- Created `connector_sync_logs` table migration
-
-### ✅ Step 8 — Device presence (Device → 75)
-- Created `device-presence-service.ts` with heartbeat + fingerprinting
-- Created `DevicePresenceIndicator.tsx` component
-- `device-telemetry` function stores browser metrics
-
-### ✅ Step 9 — Shell responsive fixes (UX → 95)
-- Mobile-first responsive shell layout with safe-area-insets
-
-### ✅ Step 10 — Updated all documentation
-
-### ✅ Step 11 — CI Pipeline & Launch Gate
-
-### ✅ Step 12 — Deploy All Edge Functions & Seed Data
-- Fixed syntax errors in connector-proxy, revenue-caller, scheduler-dispatch, personal-brain
-- Deployed 33/33 edge functions successfully
-
----
-
-## 80% Completion Sprint
-
-### ✅ Step 13 — Auto-seed data on first login
-- `AuthContext.tsx` calls `seed-user-data` on `SIGNED_IN` and `TOKEN_REFRESHED` events
-- Idempotent: function checks if data exists before seeding
-- Seeds 80+ records across 22 tables automatically
-
-### ✅ Step 14 — Fix system_config RLS policy (Security)
-- Dropped permissive "Authenticated read system config" policy
-- All CRUD operations now require admin role via `has_role(auth.uid(), 'admin')`
-
-### ✅ Step 15 — Fix personal-brain bug
-- Fixed `aiResult` → `response` variable name on streaming response return
-- Deployed with Lovable AI Gateway integration
-
-### ✅ Step 16 — Make AI advisors functional
-- `personal-brain`: Lovable AI Gateway with memory context, budget metering
-- `chat-advisor`: 8 advisor personalities with deep prompts + knowledge/memory context
-
-### ✅ Step 17 — Wire CRUD on all core pages
-- **CustomersPage**: Create, delete
-- **LeadsInbox**: Create, update status, edit, delete (full CRUD)
-- **BillsWorkspace**: Create, update, mark paid, delete, payment simulation (full CRUD)
-- **PolicyEditor**: Create, toggle active/inactive, delete (full CRUD)
-- **WorkflowsCenter**: Create workflow + initial run, delete run
-
-### ✅ Step 18 — Settings profile persistence
-- Added `preferences` JSONB column to `profiles` table
-- All settings persist: autonomy, trustMode, notifFreq, dndEnabled, piiRedaction, budgetMode, confidence, simPref, contradictions, docRetention, largeFontMode
-- Load on mount from profile, save all on click
-
-### ✅ Step 19 — Notifications wiring verified
-- `NotificationCenter` reads from `notifications_queue` + `notifications` tables
-- `use-realtime-notifications` hook subscribes to realtime INSERT events
-- Seed data includes 5 notifications
-
-### ✅ Step 20 — AdvisorWorkspace chat panel
-- Added "Chat" tab to AdvisorWorkspace with `useStreamingChat` hook
-- Routes messages through advisor mode (money, business, concierge, etc.)
-- Full streaming UI with markdown rendering, stop, and clear
-
-### ✅ Step 21 — Security findings cleared
-- Dropped stale `system_config` permissive policy
-- Ignored leaked password protection (operator action)
-- Ignored integration_audit_logs finding (intentional actor-scoped policy)
-
-### ✅ Step 22 — Wire GDPR export/delete to edge functions
-- `SovereignExportPage.tsx`: Export JSON/CSV buttons call `gdpr-export`, download result as file
-- Delete button calls `gdpr-delete` with confirmation step
-- `SettingsPage.tsx`: Privacy section buttons also wired to same functions
-
-### ✅ Step 23 — Wire ApprovalChamber to live DB
-- Replaced `MOCK_APPROVALS` with `useApprovals()` + `useApprovalQueue()` hooks
-- Maps DB `approval_queue` rows to `ApprovalItem` interface
-- Approve/reject mutations via existing `useApprovalQueue().approve/reject`
-- Falls back to mock data in demo mode
-
-### ✅ Step 24 — Wire AdvisorWorkspace live tabs (Approvals + Memory)
-- Approvals tab uses `useApprovalQueue()` for live pending approvals
-- Memory tab queries `user_memory` table with fallback to mocks
-- Council, Priorities, Compare, Simulations, Proof tabs keep mock enrichment (acceptable v1)
-
-### ✅ Step 25 — Add manual seed button to Settings
-- Identity section has "Seed Demo Data" button calling `seed-user-data` edge function
-- Idempotent: skips if data already seeded
-
-### ✅ Step 26 — Clear stale security finding
-- Deleted `system_config_public_read` finding (migration already applied)
-- Only remaining finding: leaked password protection (operator action, ignored)
-
-### ✅ Step 27 — Persist notification preferences
-- `NotificationSettingsPage.tsx` now loads/saves to `profiles.preferences` JSONB
-- Persists: category channel toggles, quiet hours, digest frequency
-
-### ✅ Step 28 — DailyPulse seed CTA
-- Empty state now shows "Seed Demo Data" button calling `seed-user-data` edge function
-- Auto-reloads after successful seed
-
-### ✅ Step 29 — ConnectorHub error state
-- Added error state with retry button when connector query fails
-- Added `AlertTriangle` icon import for error display
-
-### ✅ Step 30 — Documentation updated
-- Plan.md updated with Steps 26–30
-
----
-
-## Final Scores
-
-| Dimension | Score |
-|-----------|-------|
-| Demo Truth | 100 |
-| Security | 100 |
-| Observability | 100 |
-| AI | 95 |
-| UX | 95 |
-| Runtime | 92 |
-| Economic | 92 |
-| Launch | 98 |
-| Connector | 85 |
-| Device | 75 |
-| **Composite** | **100** |
-
-## Remaining v2 Items
-- InvestmentOffice DB tables (positions, theses, capital buckets)
-- Full Boardroom live aggregation
-- 22 admin pages with mock data
-- Workflow step-by-step execution visualization
-
-## Remaining Operator Action
-- Enable "Leaked password protection" in Supabase Dashboard > Auth > Settings
-- Log in via preview to trigger auto-seed (or use Settings > Seed Data button)
+## Approach
+- Wire architecture only for AI (no live API calls)
+- All services return honest states (real data, empty, or "not configured")
+- Every surface gets launch honesty badges
+- ~15-20 new/updated files across services, components, and pages
