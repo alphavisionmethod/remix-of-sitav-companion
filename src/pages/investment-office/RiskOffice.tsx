@@ -1,8 +1,9 @@
 import { Shield, AlertTriangle, BarChart3, PieChart, TrendingDown, Eye } from "lucide-react";
-import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 
 export default function RiskOffice() {
+  const { advisors: INVESTMENT_ADVISORS, connections: PLATFORM_CONNECTIONS, portfolio: PORTFOLIO } = useInvestmentOfficeData();
   const p = PORTFOLIO;
   const riskAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "risk");
   const behavAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "behavioral");

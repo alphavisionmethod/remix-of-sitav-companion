@@ -23,10 +23,7 @@ import {
   ProofCard, MemoryCard, SynthesisCard, ConfidenceLadder,
   BoardroomAdvisorCard, UncertaintyCard,
 } from "@/components/sita/AdvisorComponents";
-import {
-  mockAdvisors, mockRecommendations, mockSimulations, mockApprovals,
-  mockProofHistory, mockMemoryItems, mockSynthesis,
-} from "@/lib/mock-data/advisor-mission-control";
+import { useAdvisorMissionControl } from "@/hooks/useAdvisorMissionControl";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useStreamingChat } from "@/hooks/use-streaming-chat";
 import {

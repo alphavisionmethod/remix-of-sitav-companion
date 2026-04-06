@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { Brain, Target, AlertTriangle, TrendingUp, TrendingDown, Plus, ChevronRight, Calendar } from "lucide-react";
-import { SAMPLE_THESES, getInstrument } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 
 export default function ThesisJournal() {
+  const { theses: SAMPLE_THESES, getInstrument } = useInvestmentOfficeData();
   const navigate = useNavigate();
 
   return (

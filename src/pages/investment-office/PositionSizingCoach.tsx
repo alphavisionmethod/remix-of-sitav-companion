@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Ruler, AlertTriangle, Check, Info, Shield, Target } from "lucide-react";
-import { INSTRUMENTS, PORTFOLIO } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 
 
 const SIZING_SCENARIOS = [
@@ -33,6 +33,7 @@ const SIZING_SCENARIOS = [
 ];
 
 export default function PositionSizingCoach() {
+  const { instruments: INSTRUMENTS, portfolio: PORTFOLIO } = useInvestmentOfficeData();
   const [selectedIdx, setSelectedIdx] = useState(0);
   const scenario = SIZING_SCENARIOS[selectedIdx];
 

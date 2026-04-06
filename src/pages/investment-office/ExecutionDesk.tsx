@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Target, Shield, DollarSign, AlertTriangle, Check, ChevronRight, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
-import { INSTRUMENTS, INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, SAMPLE_ORDERS } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type { TradeAction, Instrument } from "@/lib/investment-office/types";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 
 export default function ExecutionDesk() {
+  const { instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS, connections: PLATFORM_CONNECTIONS, orders: SAMPLE_ORDERS } = useInvestmentOfficeData();
   const navigate = useNavigate();
   const [selectedInstrument, setSelectedInstrument] = useState<Instrument | null>(INSTRUMENTS[2]);
   const [action, setAction] = useState<TradeAction>("buy");

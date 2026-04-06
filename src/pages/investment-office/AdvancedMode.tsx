@@ -3,13 +3,14 @@ import {
   BarChart3, Brain, TrendingUp, TrendingDown, Shield, PieChart, Target, Eye,
   Zap, Globe, DollarSign, AlertTriangle, ChevronRight, Calendar
 } from "lucide-react";
-import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_ORDERS, SAMPLE_SCENARIOS, SAMPLE_THESES, WATCHLISTS } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 
 const fmt = (n: number) => n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 
 export default function AdvancedMode() {
+  const { instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS, portfolio: PORTFOLIO, orders: SAMPLE_ORDERS, scenarios: SAMPLE_SCENARIOS, theses: SAMPLE_THESES, watchlists: WATCHLISTS } = useInvestmentOfficeData();
   const navigate = useNavigate();
   const p = PORTFOLIO;
   const topMovers = [...INSTRUMENTS].sort((a, b) => Math.abs(b.changePct24h) - Math.abs(a.changePct24h)).slice(0, 8);

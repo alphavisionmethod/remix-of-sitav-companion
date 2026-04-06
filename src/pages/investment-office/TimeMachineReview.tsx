@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, Brain, Check, X, AlertTriangle, ArrowRight, TrendingUp, TrendingDown } from "lucide-react";
-import { INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 
 const PAST_DECISIONS = [
   {
@@ -53,6 +53,7 @@ const PAST_DECISIONS = [
 ];
 
 export default function TimeMachineReview() {
+  const { advisors: INVESTMENT_ADVISORS } = useInvestmentOfficeData();
   const [selected, setSelected] = useState(PAST_DECISIONS[0]);
 
 
