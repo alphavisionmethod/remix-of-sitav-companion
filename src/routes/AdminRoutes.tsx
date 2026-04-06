@@ -32,6 +32,7 @@ const AIG05ReceiptsExplorer = lazy(() => import("@/pages/admin/AIG05ReceiptsExpl
 const AIG06LaunchTruth = lazy(() => import("@/pages/admin/AIG06LaunchTruth"));
 const AIG07LaunchTruth = lazy(() => import("@/pages/admin/AIG07LaunchTruth"));
 const AIG08DegradedDiagnostics = lazy(() => import("@/pages/admin/AIG08DegradedDiagnostics"));
+const AIG09RuntimeVerification = lazy(() => import("@/pages/admin/AIG09RuntimeVerification"));
 
 // Part 3: Strategic Intelligence Screens
 const IntelligenceCapitalDashboard = lazy(() => import("@/pages/admin/strategic/IntelligenceCapitalDashboard"));
