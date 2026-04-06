@@ -235,6 +235,27 @@ const SettingsPage = () => {
                   {isDemoMode ? <><ToggleLeft className="h-4 w-4" /><span>Demo</span></> : <><ToggleRight className="h-4 w-4" /><span>Live</span></>}
                 </button>
               </div>
+              {/* Seed Demo Data */}
+              <div className="flex items-center justify-between py-3 border-b border-border">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-xl bg-accent/8 p-2"><Database className="h-4 w-4 text-accent" /></div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Seed Demo Data</p>
+                    <p className="text-xs text-muted-foreground">Populate tables with sample data for testing</p>
+                  </div>
+                </div>
+                <SitaButton variant="secondary" size="sm" onClick={async () => {
+                  try {
+                    toast.info("Seeding data...");
+                    const { data, error } = await supabase.functions.invoke("seed-user-data", { method: "POST", body: {} });
+                    if (error) throw error;
+                    if (data?.skipped) toast.info("Data already seeded");
+                    else toast.success("Demo data seeded successfully");
+                  } catch (e: any) { toast.error(e.message || "Seed failed"); }
+                }}>
+                  <RefreshCw className="h-3.5 w-3.5 mr-1" /> Seed Data
+                </SitaButton>
+              </div>
             </div>
           </SitaCard>
         );
