@@ -2,37 +2,29 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton 
 import { KPITile, RiskCard, OpportunityCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { CashFlowChart } from "@/components/sita/SitaCharts";
+import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { Shield, DollarSign, TrendingUp, TrendingDown, AlertTriangle, Clock, ArrowRight, CheckCircle, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-
-interface CashWindow {
-  day: string; inflows: number; outflows: number; net: number; balance: number; stress: boolean;
-}
-
-const windows: CashWindow[] = [
-  { day: "Today", inflows: 0, outflows: 0, net: 0, balance: 18070, stress: false },
-  { day: "Apr 1", inflows: 0, outflows: 2449, net: -2449, balance: 15621, stress: true },
-  { day: "Apr 3", inflows: 0, outflows: 340, net: -340, balance: 15281, stress: false },
-  { day: "Apr 5", inflows: 3200, outflows: 189, net: 3011, balance: 18292, stress: false },
-  { day: "Apr 7", inflows: 0, outflows: 0, net: 0, balance: 18292, stress: false },
-  { day: "Apr 10", inflows: 0, outflows: 420, net: -420, balance: 17872, stress: false },
-  { day: "Apr 12", inflows: 4200, outflows: 0, net: 4200, balance: 22072, stress: false },
-  { day: "Apr 15", inflows: 0, outflows: 3685, net: -3685, balance: 18387, stress: true },
-];
+import { useCashTimingWindows, useMoneyKPIs } from "@/hooks/use-domain-data";
 
 const CashTiming = () => {
-  const safeToSpend = 3180;
-  const minBalance = Math.min(...windows.map(w => w.balance));
-  const stressWindows = windows.filter(w => w.stress);
+  const { data: windows = [], isLoading } = useCashTimingWindows();
+  const { data: kpis } = useMoneyKPIs();
+  const k = kpis || { safeToSpend: 0 };
+
+  const safeToSpend = k.safeToSpend;
+  const minBalance = windows.length > 0 ? Math.min(...windows.map((w: any) => w.balance)) : 0;
+  const stressWindows = windows.filter((w: any) => w.stress);
+
+  if (isLoading) return <SectionSkeleton cards={3} columns={1} />;
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <DemoModeBadge />
       <SitaPageHeader title="Cash Timing & Safe-to-Spend" subtitle="Understand your money flow, avoid collisions" />
 
-      {/* Hero */}
       <SitaCard hover={false} className="gradient-sita-subtle p-6">
         <div className="grid gap-6 sm:grid-cols-3">
           <div className="text-center">
@@ -53,29 +45,20 @@ const CashTiming = () => {
         </div>
       </SitaCard>
 
-      {/* Interactive Chart */}
       <CashFlowChart />
 
       <SitaCard hover={false}>
         <SitaCardTitle sub="Projected balance over the next 15 days">Cash Flow Timeline</SitaCardTitle>
         <div className="mt-4 space-y-1">
-          {windows.map((w, i) => (
+          {windows.map((w: any, i: number) => (
             <div key={i} className={`flex items-center gap-4 rounded-xl p-3.5 transition-all ${w.stress ? "bg-urgency-high/5 border border-urgency-high/10" : "bg-secondary/20"}`}>
               <div className="w-16 shrink-0">
                 <p className={`text-sm font-semibold ${w.stress ? "text-urgency-high" : "text-foreground"}`}>{w.day}</p>
               </div>
               <div className="flex-1 grid grid-cols-3 gap-4 text-sm">
-                <div>
-                  {w.inflows > 0 && <span className="text-trust-verified font-medium">+${w.inflows.toLocaleString()}</span>}
-                  {w.inflows === 0 && <span className="text-muted-foreground">—</span>}
-                </div>
-                <div>
-                  {w.outflows > 0 && <span className="text-urgency-high font-medium">-${w.outflows.toLocaleString()}</span>}
-                  {w.outflows === 0 && <span className="text-muted-foreground">—</span>}
-                </div>
-                <div className="text-right">
-                  <span className="font-display font-bold text-foreground">${w.balance.toLocaleString()}</span>
-                </div>
+                <div>{w.inflows > 0 ? <span className="text-trust-verified font-medium">+${w.inflows.toLocaleString()}</span> : <span className="text-muted-foreground">—</span>}</div>
+                <div>{w.outflows > 0 ? <span className="text-urgency-high font-medium">-${w.outflows.toLocaleString()}</span> : <span className="text-muted-foreground">—</span>}</div>
+                <div className="text-right"><span className="font-display font-bold text-foreground">${w.balance.toLocaleString()}</span></div>
               </div>
               {w.stress && <AlertTriangle className="h-4 w-4 text-urgency-high shrink-0" />}
             </div>
@@ -89,39 +72,18 @@ const CashTiming = () => {
       </SitaCard>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Stress Analysis */}
         <div className="space-y-4">
           <SitaSectionHeader title="Stress Windows" />
-          <RiskCard title="Apr 1 — Rent + Gym ($2,449 outflow)" description="Largest single-day outflow. Both are auto-pay. Balance drops to $15,621." severity="medium" />
-          <RiskCard title="Apr 15 — Car Loan + Tax Est. ($3,685 outflow)" description="Combined hit. Tax estimate is $3,200. Ensure balance stays above reserve threshold." severity="high" />
+          {stressWindows.length > 0 ? stressWindows.map((sw: any, i: number) => (
+            <RiskCard key={i} title={`${sw.day} — $${sw.outflows.toLocaleString()} outflow`} description={`Balance drops to $${sw.balance.toLocaleString()}`} severity={sw.outflows > 3000 ? "high" : "medium"} />
+          )) : (
+            <SitaCard hover={false} className="p-4"><p className="text-sm text-muted-foreground">No stress windows detected</p></SitaCard>
+          )}
         </div>
 
-        {/* Timing Suggestions */}
         <div className="space-y-4">
-          <SitaSectionHeader title="Timing Suggestions" />
+          <SitaSectionHeader title="Forecast Confidence" />
           <SitaCard hover={false} className="p-4">
-            <div className="flex items-start gap-3">
-              <div className="rounded-xl bg-accent/10 p-2.5"><Sparkles className="h-4 w-4 text-accent" /></div>
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm font-medium text-foreground">Wait to spend until Apr 5</p>
-                  <p className="text-xs text-muted-foreground">$3,200 invoice payment from Apex Corp expected — balance will improve significantly</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-foreground">Consider splitting tax payment</p>
-                  <p className="text-xs text-muted-foreground">$3,200 quarterly estimate on Apr 15 creates stress. If allowed, split across Apr 12 and Apr 15.</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-foreground">Transfer $1,000 to personal checking</p>
-                  <p className="text-xs text-muted-foreground">Personal account at $3,840 — below comfort threshold. Business has surplus.</p>
-                </div>
-              </div>
-            </div>
-          </SitaCard>
-
-          {/* Confidence */}
-          <SitaCard hover={false} className="p-4">
-            <SitaCardTitle>Forecast Confidence</SitaCardTitle>
             <div className="mt-3 space-y-2">
               {[
                 { label: "Bills (fixed)", confidence: 95, color: "bg-trust-verified" },
@@ -140,13 +102,14 @@ const CashTiming = () => {
           </SitaCard>
         </div>
       </div>
+
       <LiveAdvisorCard
         advisor="money"
         intent="cashflow_forecast"
         demoName="Cash Flow Intelligence"
         demoRole="Timing Advisor"
         demoConfidence="Medium"
-        demoRecommendation="2 stress windows in the next 15 days — Apr 1 ($2,449) and Apr 15 ($3,685). Delay discretionary spending until after Apr 5 when the $3,200 receivable arrives."
+        demoRecommendation={`${stressWindows.length} stress window${stressWindows.length !== 1 ? "s" : ""} in the next 15 days. Projected minimum balance: $${minBalance.toLocaleString()}.`}
         demoReasoning="Based on 15-day cash flow projection, bill timing, expected receivables, and stress window analysis."
       />
     </motion.div>
