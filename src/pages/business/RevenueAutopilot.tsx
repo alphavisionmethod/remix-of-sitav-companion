@@ -16,7 +16,7 @@ import {
   detectLeakage, suggestRecoveryActions, rankOpportunities, computeRecoveredValueSummary,
   computeAutopilotSummary, type LeakageItem, type RecoveredValueEntry, type RankedOpportunity
 } from "@/lib/domain-engines/revenue-autopilot";
-import { useRevenueAutopilotData } from "@/hooks/useDomainMockData";
+import { MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES, MOCK_LEAKAGE_INPUT } from "@/lib/mock-data/revenue-autopilot";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Mock Data ───────────────────────────────────────────────────
@@ -42,7 +42,8 @@ const severityColors: Record<string, string> = {
 
 // ── Sub-Pages ───────────────────────────────────────────────────
 
-const LeakageRadar = () => (
+const LeakageRadar = () => {
+  return (
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <KPITile label="Total Leakage Detected" value={`$${Math.round(SUMMARY.totalLeakageDetected).toLocaleString()}`} sub="Across all sources" trend="down" />
@@ -79,7 +80,8 @@ const LeakageRadar = () => (
       ))}
     </div>
   </div>
-);
+  );
+};
 
 const RecoveryEngine = () => (
   <div className="space-y-4">

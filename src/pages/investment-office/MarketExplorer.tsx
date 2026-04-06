@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, TrendingUp, TrendingDown, Filter, BarChart3, Globe, Zap, ChevronRight } from "lucide-react";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
+import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
 import type { AssetClass } from "@/lib/investment-office/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
@@ -28,7 +28,6 @@ export default function MarketExplorer() {
 
   const regimeAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "macro");
 
-  const { instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS } = useInvestmentOfficeData();
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, Plus, Bell, Brain, TrendingUp, TrendingDown, ChevronRight, Star, Zap, Shield } from "lucide-react";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
+import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, WATCHLISTS } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function WatchlistsSignals() {
@@ -13,7 +13,6 @@ export default function WatchlistsSignals() {
   const highRiskHoldings = PORTFOLIO.holdings.filter(h => h.weight > 12);
   const catalystInstruments = INSTRUMENTS.filter(i => i.catalysts.length > 0);
 
-  const { watchlists: WATCHLISTS, instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS, portfolio: PORTFOLIO } = useInvestmentOfficeData();
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">

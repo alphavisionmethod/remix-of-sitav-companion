@@ -26,7 +26,7 @@ import {
   GitCompare, Lock, Target, TrendingUp, MessageSquare, Calendar
 } from "lucide-react";
 import { useBoardroomPacket } from "@/hooks/use-boardroom";
-import { useAdvisorMissionControl } from "@/hooks/useAdvisorMissionControl";
+import { mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory } from "@/lib/mock-data/advisor-mission-control";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type {
   BoardroomType, BoardroomPacket, BoardroomContentSection, MetricCardData,
@@ -44,7 +44,8 @@ import { useBoardroomData } from "@/hooks/use-boardroom-data";
 
 // ── Section Renderers (preserved from original) ───────────────
 
-const MetricCardGrid = ({ data, title }: { data: MetricCardData[]; title: string }) => (
+const MetricCardGrid = ({ data, title }: { data: MetricCardData[]; title: string }) => {
+  return (
   <div>
     <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">{title}</p>
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -55,7 +56,8 @@ const MetricCardGrid = ({ data, title }: { data: MetricCardData[]; title: string
       ))}
     </div>
   </div>
-);
+  );
+};
 
 const TableSection = ({ data, title }: { data: TableData; title: string }) => (
   <SitaCard hover={false}>
@@ -963,6 +965,7 @@ const FullscreenPresentation = ({ type, onExit }: { type: BoardroomType; onExit:
 // ── Main Boardroom ────────────────────────────────────────────
 
 const Boardroom = () => {
+
   const [activeType, setActiveType] = useState<BoardroomType>("morning-briefing");
   const [isPresenting, setIsPresenting] = useState(false);
   const [perspective, setPerspective] = useState<PerspectiveLevel>("owner");

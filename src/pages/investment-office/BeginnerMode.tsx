@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { GraduationCap, Shield, Brain, TrendingUp, Eye, Target, ChevronRight, HelpCircle, Lightbulb, DollarSign } from "lucide-react";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
+import { INVESTMENT_ADVISORS, PORTFOLIO, WATCHLISTS } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
@@ -19,7 +19,6 @@ export default function BeginnerMode() {
   const navigate = useNavigate();
   const p = PORTFOLIO;
 
-  const { portfolio: PORTFOLIO, advisors: INVESTMENT_ADVISORS, watchlists: WATCHLISTS } = useInvestmentOfficeData();
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 pb-12">
