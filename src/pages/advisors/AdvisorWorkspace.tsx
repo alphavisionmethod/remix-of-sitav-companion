@@ -851,6 +851,9 @@ export default function AdvisorWorkspace() {
           <TabsTrigger value="proof" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
             <FileText className="h-3 w-3 mr-1.5" />Proof
           </TabsTrigger>
+          <TabsTrigger value="chat" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
+            <MessageSquare className="h-3 w-3 mr-1.5" />Chat
+          </TabsTrigger>
         </TabsList>
 
         <div className="mt-5">
