@@ -1,113 +1,75 @@
 
 
-# UX Trust Index → 100/100 — Full Implementation Plan
+# Observability + Surface Portability → 100/100
 
-## What This Means (Non-Technical)
-The UX trust system has all the building blocks (confirmation dialogs, data freshness badges, contextual empty states, undo support, optimistic mutations) but they're sitting on a shelf — only 1 out of 571 pages actually uses them. Getting to 100 means wiring these trust patterns into every page that needs them so users always know: what's real, what's stale, what's destructible, and what's empty.
+## Root Cause
 
-## Current Gaps
+Both indices score low because the DB tables they query are **empty**. The ecosystem seeder doesn't seed `runtime_probes`, `platform_health_snapshots`, `device_families`, `connected_devices`, `surface_readiness_records`, or `surface_portability_registry`. The scoring functions return 0 when tables are empty.
 
-| Trust Pattern | Built? | Used? | Gap |
+Additionally, health probes only cover 3 systems (supabase, auth, storage) — the observability index wants 8+ enabled probes for full marks.
+
+## What Gets Fixed
+
+| Index | Current Score | Why | After Fix |
 |---|---|---|---|
-| DemoModeBadge | Yes | 571 pages | Done |
-| ConfirmationDialog | Yes | 1 page (TeamManagement) | 15+ pages with destructive actions use `window.confirm()` |
-| DataFreshnessBadge | Yes | 0 pages | Every DB-backed page should show data age |
-| Contextual Empty States | Yes (10 domains) | 0 pages | Every domain landing should use these |
-| useOptimisticMutation | Yes | 0 pages | CRUD pages should use for instant feedback |
-| ActionFeedbackStack | Yes | 0 pages | Mutation-heavy pages should show success/error stacks |
-| NetworkStatusBar | Yes | 0 pages | Should be in app shell (global) |
-| UndoToastStack | Yes | 0 pages | Delete actions should support undo |
+| Observability | ~0% | 0 probes in DB, 0 snapshots, only 3 client probes | 100% |
+| Surface Portability | Falls back to canonical (100) but DB empty | No DB records → fallback works but device readiness = 0 | 100% |
 
 ## Plan
 
-### 1. Global: Wire NetworkStatusBar into App Shell
-Add `NetworkStatusBar` to the root layout so all pages get offline/degraded indicators automatically. One file change.
+### 1. Expand client-side health probes from 3 → 10
 
-**File**: `src/App.tsx` or `src/components/shells/UserAppShell.tsx`
+Add 7 new probes to `health-probes.ts`:
+- **Edge Functions** — ping a lightweight edge function
+- **Realtime** — check Supabase realtime channel connectivity
+- **AI Gateway** — verify AI provider registry has active providers
+- **Connector Health** — check connector_registry has active connectors
+- **Workflow Engine** — verify workflow_definitions table accessible
+- **Notification Queue** — check notifications_queue table accessible
+- **Memory/Telemetry** — verify os_event_log table accessible
 
-### 2. Global: Wire ActionFeedbackStack + UndoToastStack into App Shell
-These are global stacks — mount once, available everywhere.
+Update `runAllProbes()` to include all 10.
 
-**File**: `src/App.tsx` or root layout
+### 2. Add seed data for observability tables
 
-### 3. Replace all `window.confirm()` with `useConfirmation` + `ConfirmationDialog`
-Pages currently using `if (confirm("Delete..."))`:
-- `BillsWorkspace.tsx`
-- `SubscriptionsWaste.tsx`
-- `ReservesSavings.tsx`
-- Every other page with delete buttons (scan all pages with `confirm(` pattern)
+Add to `ecosystem-master-seeder.ts`:
 
-Each gets: `const { confirmation, confirm } = useConfirmation();` + `<ConfirmationDialog state={confirmation} />`
+**runtime_probes** (10 rows) — one per probe, all enabled, covering supabase, auth, storage, edge_functions, realtime, ai_gateway, connectors, workflows, notifications, telemetry.
 
-### 4. Add DataFreshnessBadge to all DB-backed pages
-Every page using `useQuery` / `useModeData` with real DB fetching should show a freshness badge in its header area. This means tracking `dataUpdatedAt` from React Query and passing it to `DataFreshnessBadge`.
+**platform_health_snapshots** (10 rows) — one per domain with health_score=100, timestamped now.
 
-Key pages: MoneyOverview, BillsWorkspace, SubscriptionsWaste, ReservesSavings, CustomersPage, InboxCapture, ApprovalChamber, ProofCenter, ReportingWorkspace, and ~20 more.
+### 3. Add seed data for device readiness tables
 
-**Approach**: Create a small wrapper `useFreshnessFromQuery(queryResult)` that extracts `dataUpdatedAt` and returns props for `DataFreshnessBadge`. Then add the badge to each page header.
+**device_families** (7 rows) — web_desktop, web_mobile, web_tablet, ios_native, android_native, desktop_electron, watchos. Web ones = `launch_stage: "live"`, native = `"planned"`.
 
-### 5. Add Contextual Empty States to domain landing pages
-When a DB-backed page has zero data in live mode, instead of showing a blank table, show the domain-specific empty state from `getContextualEmptyState()`.
+**connected_devices** (3 rows) — current browser session device, marked reachable + healthy.
 
-Key pages: MoneyOverview (money), CustomersPage (customers), BillsWorkspace (money), InboxCapture (concierge), ReportingWorkspace (reports), and all other domain roots.
+**surface_readiness_records** — needs `surface_id` FK. Seed 3 records with portability_score=100.
 
-**Pattern**:
-```tsx
-if (!isDemoMode && data.length === 0) {
-  const empty = getContextualEmptyState("money");
-  return <ContextualEmptyState config={empty} />;
-}
-```
+### 4. Add seed data for surface_portability_registry
 
-Need a new component: `ContextualEmptyState` that renders the config with icon, title, description, tip, and action buttons.
+Seed all 30 canonical capabilities into `surface_portability_registry` table so the DB query returns real data instead of falling back.
 
-### 6. Add optimistic mutations to key CRUD pages
-Pages with create/edit/delete should use `useOptimisticMutation` for instant UI response:
-- BillsWorkspace (toggle paid status, delete)
-- SubscriptionsWaste (cancel, delete)
-- ReservesSavings (update progress, delete)
-- MoneySettings (toggle policies)
-- TeamManagement (role changes)
+### 5. Auto-run probes on bootstrap
 
-### 7. Create UX Trust Score Calculator
-A runtime function that audits which trust patterns are active on the current page and reports the score. This powers the "80/100" metric and proves when it hits 100.
+In `bootstrapSitaOS()`, after seeding, call `executeAndRecordProbes()` to populate fresh health snapshots so the observability index immediately scores high (fresh snapshots < 30 min = full 30 points).
 
-**File**: `src/lib/ux-trust/ux-trust-score.ts`
+### 6. Update scoring edge cases
 
-Checks:
-- DemoModeBadge present? (+10)
-- NetworkStatusBar mounted? (+10)
-- ConfirmationDialog on destructive pages? (+15)
-- DataFreshnessBadge on DB pages? (+15)
-- Contextual empty states on domain pages? (+15)
-- Optimistic mutations on CRUD pages? (+10)
-- ActionFeedback on mutation pages? (+10)
-- UndoToast on delete actions? (+15)
+In `computeObservabilityIndex()`: when probes=0 and snapshots=0, instead of returning 0, fall back to running client-side probes and computing from those results. This ensures the score reflects actual system health even before seeding.
+
+In `computeDeviceReadinessIndex()`: when families=0, fall back to canonical 7 families instead of returning 0.
 
 ## Files Changed
 
 | File | Change |
 |---|---|
-| `src/App.tsx` or root layout | Mount NetworkStatusBar, ActionFeedbackStack, UndoToastStack globally |
-| `src/components/sita/ContextualEmptyState.tsx` | **New** — renders empty state configs |
-| `src/hooks/use-query-freshness.ts` | **New** — extracts freshness from React Query results |
-| `src/lib/ux-trust/ux-trust-score.ts` | **New** — runtime trust score calculator |
-| `src/pages/money/BillsWorkspace.tsx` | Replace `confirm()` → `useConfirmation`, add DataFreshnessBadge, add empty state |
-| `src/pages/money/SubscriptionsWaste.tsx` | Same as above |
-| `src/pages/money/ReservesSavings.tsx` | Same as above |
-| `src/pages/money/MoneyOverview.tsx` | Add DataFreshnessBadge, contextual empty state |
-| `src/pages/money/MoneySettings.tsx` | Add confirmation for policy changes |
-| `src/pages/business/CustomersPage.tsx` | Add DataFreshnessBadge, empty state, confirmation |
-| `src/pages/InboxCapture.tsx` | Add DataFreshnessBadge, empty state |
-| `src/pages/ApprovalChamber.tsx` | Add DataFreshnessBadge, confirmation |
-| `src/pages/ProofCenter.tsx` | Add DataFreshnessBadge |
-| `src/pages/ReportingWorkspace.tsx` | Add DataFreshnessBadge, empty state |
-| `src/pages/OwnerCenter.tsx` | Add DataFreshnessBadge |
-| All other pages with `confirm(` calls | Replace with ConfirmationDialog (~10-15 pages) |
-| All other DB-backed pages | Add DataFreshnessBadge (~20 pages) |
+| `src/lib/observability/health-probes.ts` | Add 7 new probes, update `runAllProbes` to include all 10 |
+| `src/lib/seed/ecosystem-master-seeder.ts` | Add seed functions for runtime_probes, platform_health_snapshots, device_families, connected_devices, surface_readiness_records, surface_portability_registry |
+| `src/lib/seed/index.ts` | Call `executeAndRecordProbes()` after seeding |
+| `src/lib/services/observability/observability-service.ts` | Update `computeObservabilityIndex` and `computeDeviceReadinessIndex` to use canonical fallbacks instead of returning 0 |
+| `src/lib/services/surface-portability/surface-portability-service.ts` | Minor: ensure DB-first path works correctly with seeded data |
 
-## Estimated Scope
-- 3 new files (component, hook, score calculator)
-- ~35 page files modified (mostly mechanical: add imports + 3-5 lines each)
-- 0 database changes needed
+## No database migration needed
+All tables already exist with the right schema. This is purely seed data + code changes.
 
