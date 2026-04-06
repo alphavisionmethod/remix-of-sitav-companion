@@ -419,8 +419,13 @@ const REX05OutcomeVerification = lazy(() => import("./pages/admin/REX05OutcomeVe
 const FL01FlagshipLoopsExecutive = lazy(() => import("./pages/admin/FL01FlagshipLoopsExecutive"));
 const FL02FlagshipLoopDetail = lazy(() => import("./pages/admin/FL02FlagshipLoopDetail"));
 
-// ── SERV: Service Ownership ──
+// ── SERV: Service Ownership & Traceability ──
 const SERV01ServiceOwnership = lazy(() => import("./pages/admin/SERV01ServiceOwnership"));
+const SERV02DomainOwnership = lazy(() => import("./pages/admin/SERV02DomainOwnership"));
+const SERV03RouteServiceTrace = lazy(() => import("./pages/admin/SERV03RouteServiceTrace"));
+const SERV04ServiceDuplication = lazy(() => import("./pages/admin/SERV04ServiceDuplication"));
+const SERV05CanonicalActions = lazy(() => import("./pages/admin/SERV05CanonicalActions"));
+const SERV06FlagshipTraceability = lazy(() => import("./pages/admin/SERV06FlagshipTraceability"));
 
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
@@ -1370,8 +1375,13 @@ const App = () => (
                      {/* FL — Flagship Loops */}
                      <Route path="/admin/flagship/executive" element={<FL01FlagshipLoopsExecutive />} />
                      <Route path="/admin/flagship/detail" element={<FL02FlagshipLoopDetail />} />
-                     {/* SERV — Service Ownership */}
+                     {/* SERV — Service Ownership & Traceability */}
                      <Route path="/admin/services/ownership" element={<SERV01ServiceOwnership />} />
+                     <Route path="/admin/services/domains" element={<SERV02DomainOwnership />} />
+                     <Route path="/admin/services/route-trace" element={<SERV03RouteServiceTrace />} />
+                     <Route path="/admin/services/duplication" element={<SERV04ServiceDuplication />} />
+                     <Route path="/admin/services/canonical-actions" element={<SERV05CanonicalActions />} />
+                     <Route path="/admin/services/flagship-trace" element={<SERV06FlagshipTraceability />} />
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}

@@ -724,6 +724,44 @@ export const CUSTOMER_JOURNEY_REGISTRY: JourneyDefinition[] = [
     dependencies: ["outcome_verifications_table"],
     owner: "platform",
   },
+  // ── Execution Binding + Service Traceability Journeys ──
+  {
+    journeyKey: "admin.execution_binding_review",
+    displayName: "Admin — Execution Binding Review",
+    persona: "operator",
+    domain: "recommendation-execution",
+    routeFamily: "/admin/rex",
+    primaryModes: ["desktop"],
+    steps: [
+      { order: 1, name: "Open REX03 Execution Board", expectedBehavior: "Loads execution bindings" },
+      { order: 2, name: "Review binding details", expectedBehavior: "Shows binding type, status, program link" },
+      { order: 3, name: "Log execution event", expectedBehavior: "Event recorded with timestamp" },
+      { order: 4, name: "Mark binding completed", expectedBehavior: "Status updates, learning signal emitted" },
+    ],
+    expectedOutcome: "Operator can track and complete execution bindings",
+    launchImportance: "important_non_blocker" as const,
+    dependencies: ["recommendation_execution_bindings_table", "recommendation_execution_events_table"],
+    owner: "platform",
+  },
+  {
+    journeyKey: "admin.service_traceability_audit",
+    displayName: "Admin — Service Traceability Audit",
+    persona: "operator",
+    domain: "admin-truth",
+    routeFamily: "/admin/services",
+    primaryModes: ["desktop"],
+    steps: [
+      { order: 1, name: "Open SERV03 Route Trace", expectedBehavior: "Loads route-to-service inventory" },
+      { order: 2, name: "Filter by flagship loop", expectedBehavior: "Shows only loop-relevant routes" },
+      { order: 3, name: "Expand route detail", expectedBehavior: "Shows action → service → provider chain" },
+      { order: 4, name: "Check SERV04 for shadow patterns", expectedBehavior: "Shadow risks visible" },
+      { order: 5, name: "Review SERV06 flagship traceability", expectedBehavior: "Per-loop trace scores visible" },
+    ],
+    expectedOutcome: "Operator can trace routes to services and identify shadow logic",
+    launchImportance: "important_non_blocker" as const,
+    dependencies: ["route_to_service_inventory", "service_ownership_registry"],
+    owner: "platform",
+  },
 ];
 export function getJourneysByDomain(domain: string) {
   return CUSTOMER_JOURNEY_REGISTRY.filter((j) => j.domain === domain);

@@ -19,6 +19,15 @@ export interface FlagshipLoopSeed {
   ux_quality: string;
   launch_claim_status: string;
   demo_vs_real: string;
+  // v5 extended fields
+  description?: string;
+  primary_persona?: string;
+  launch_importance?: string;
+  status?: string;
+  owner_team?: string;
+  ux_quality_target?: string;
+  proof_required?: boolean;
+  launch_honesty_class?: string;
 }
 
 export const FLAGSHIP_LOOP_SEEDS: FlagshipLoopSeed[] = [
@@ -36,6 +45,14 @@ export const FLAGSHIP_LOOP_SEEDS: FlagshipLoopSeed[] = [
     ux_quality: "beta",
     launch_claim_status: "claimable_with_qualifier",
     demo_vs_real: "mostly_real",
+    description: "A user can authenticate, land in the product, and immediately feel the OS is alive, truthful, and useful.",
+    primary_persona: "user",
+    launch_importance: "launch_critical",
+    status: "active",
+    owner_team: "platform",
+    ux_quality_target: "production",
+    proof_required: true,
+    launch_honesty_class: "claimable_with_qualifier",
   },
   {
     loop_key: "files-ai-assist",
@@ -51,6 +68,14 @@ export const FLAGSHIP_LOOP_SEEDS: FlagshipLoopSeed[] = [
     ux_quality: "beta",
     launch_claim_status: "claimable_with_qualifier",
     demo_vs_real: "hybrid",
+    description: "A user can upload/access files and use AI help around them.",
+    primary_persona: "user",
+    launch_importance: "launch_critical",
+    status: "needs_proof",
+    owner_team: "platform",
+    ux_quality_target: "production",
+    proof_required: true,
+    launch_honesty_class: "claimable_with_qualifier",
   },
   {
     loop_key: "boardroom-summary-decision",
@@ -66,6 +91,14 @@ export const FLAGSHIP_LOOP_SEEDS: FlagshipLoopSeed[] = [
     ux_quality: "beta",
     launch_claim_status: "claimable_with_qualifier",
     demo_vs_real: "hybrid",
+    description: "A user can open boardroom, receive strategic synthesis, and move toward a decision or action.",
+    primary_persona: "user",
+    launch_importance: "launch_critical",
+    status: "needs_polish",
+    owner_team: "platform",
+    ux_quality_target: "production",
+    proof_required: true,
+    launch_honesty_class: "claimable_with_qualifier",
   },
   {
     loop_key: "connected-services-sync",
@@ -81,6 +114,14 @@ export const FLAGSHIP_LOOP_SEEDS: FlagshipLoopSeed[] = [
     ux_quality: "beta",
     launch_claim_status: "not_claimable",
     demo_vs_real: "mostly_demo",
+    description: "A user can connect at least one real service (Google Drive first) and understand connection health.",
+    primary_persona: "user",
+    launch_importance: "important_to_launch",
+    status: "active",
+    owner_team: "platform",
+    ux_quality_target: "beta",
+    proof_required: true,
+    launch_honesty_class: "not_claimable",
   },
   {
     loop_key: "admin-truth-recommendation-approval",
@@ -96,6 +137,14 @@ export const FLAGSHIP_LOOP_SEEDS: FlagshipLoopSeed[] = [
     ux_quality: "beta",
     launch_claim_status: "internal_only",
     demo_vs_real: "mostly_real",
+    description: "An operator can inspect runtime truth, review recommendations, approve/bind work, and track execution and outcomes.",
+    primary_persona: "operator",
+    launch_importance: "operator_critical",
+    status: "active",
+    owner_team: "platform",
+    ux_quality_target: "beta",
+    proof_required: true,
+    launch_honesty_class: "internal_only",
   },
 ];
 
