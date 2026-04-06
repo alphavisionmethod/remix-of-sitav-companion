@@ -23,7 +23,13 @@ const ZeroWastePromptView = lazy(() => import("@/pages/admin/intelligence/ZeroWa
 const SmartDigestCenter = lazy(() => import("@/pages/admin/intelligence/SmartDigestCenter"));
 const CrossTenantGovernance = lazy(() => import("@/pages/admin/intelligence/CrossTenantGovernance"));
 
-// AIG07-AIG08: AI Governance Center
+// AIG01-AIG08: AI Governance Center
+const AIG01ProviderRegistry = lazy(() => import("@/pages/admin/AIG01ProviderRegistry"));
+const AIG02ModelRegistry = lazy(() => import("@/pages/admin/AIG02ModelRegistry"));
+const AIG03RoutingMatrix = lazy(() => import("@/pages/admin/AIG03RoutingMatrix"));
+const AIG04BudgetCenter = lazy(() => import("@/pages/admin/AIG04BudgetCenter"));
+const AIG05ReceiptsExplorer = lazy(() => import("@/pages/admin/AIG05ReceiptsExplorer"));
+const AIG06LaunchTruth = lazy(() => import("@/pages/admin/AIG06LaunchTruth"));
 const AIG07LaunchTruth = lazy(() => import("@/pages/admin/AIG07LaunchTruth"));
 const AIG08DegradedDiagnostics = lazy(() => import("@/pages/admin/AIG08DegradedDiagnostics"));
 
@@ -46,6 +52,13 @@ const AIT01TeamOverview = lazy(() => import("@/pages/admin/AIT01TeamOverview"));
 const AIT02RoleRegistry = lazy(() => import("@/pages/admin/AIT02RoleRegistry"));
 const AIT03TaskInvocation = lazy(() => import("@/pages/admin/AIT03TaskInvocation"));
 
+// AIT04-AIT08: AI Engineering Team (named exports)
+const AIT04ActivityFeed = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT04ActivityFeed })));
+const AIT05CostEfficiency = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT05CostEfficiency })));
+const AIT06Recommendations = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT06Recommendations })));
+const AIT07ApprovalQueue = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT07ApprovalQueue })));
+const AIT08LaunchTruth = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT08LaunchTruth })));
+
 // Truth Index Dashboard
 const TruthIndexDashboard = lazy(() => import("@/pages/admin/TruthIndexDashboard"));
 
@@ -67,6 +80,11 @@ export const AdminRoutes = () => (
     <Route path="/admin/ai-team/overview" element={<AIT01TeamOverview />} />
     <Route path="/admin/ai-team/roles" element={<AIT02RoleRegistry />} />
     <Route path="/admin/ai-team/invoke" element={<AIT03TaskInvocation />} />
+    <Route path="/admin/ai-team/activity" element={<AIT04ActivityFeed />} />
+    <Route path="/admin/ai-team/cost" element={<AIT05CostEfficiency />} />
+    <Route path="/admin/ai-team/recommendations" element={<AIT06Recommendations />} />
+    <Route path="/admin/ai-team/approvals" element={<AIT07ApprovalQueue />} />
+    <Route path="/admin/ai-team/launch-truth" element={<AIT08LaunchTruth />} />
 
     {/* UIE01-UIE11: Intelligence Architecture */}
     <Route path="/admin/intelligence/reuse" element={<IntelligenceReuseOverview />} />
@@ -81,7 +99,13 @@ export const AdminRoutes = () => (
     <Route path="/admin/intelligence/digests" element={<SmartDigestCenter />} />
     <Route path="/admin/intelligence/cross-tenant" element={<CrossTenantGovernance />} />
 
-    {/* AIG07-AIG08: AI Governance Center */}
+    {/* AIG01-AIG08: AI Governance Center */}
+    <Route path="/admin/ai-gateway/providers" element={<AIG01ProviderRegistry />} />
+    <Route path="/admin/ai-gateway/models" element={<AIG02ModelRegistry />} />
+    <Route path="/admin/ai-gateway/routing" element={<AIG03RoutingMatrix />} />
+    <Route path="/admin/ai-gateway/budget" element={<AIG04BudgetCenter />} />
+    <Route path="/admin/ai-gateway/receipts" element={<AIG05ReceiptsExplorer />} />
+    <Route path="/admin/ai-gateway/honesty" element={<AIG06LaunchTruth />} />
     <Route path="/admin/ai-gateway/launch-truth" element={<AIG07LaunchTruth />} />
     <Route path="/admin/ai-gateway/diagnostics" element={<AIG08DegradedDiagnostics />} />
 
