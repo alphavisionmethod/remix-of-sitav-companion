@@ -419,8 +419,13 @@ const REX05OutcomeVerification = lazy(() => import("./pages/admin/REX05OutcomeVe
 const FL01FlagshipLoopsExecutive = lazy(() => import("./pages/admin/FL01FlagshipLoopsExecutive"));
 const FL02FlagshipLoopDetail = lazy(() => import("./pages/admin/FL02FlagshipLoopDetail"));
 
-// ── SERV: Service Ownership ──
+// ── SERV: Service Ownership & Traceability ──
 const SERV01ServiceOwnership = lazy(() => import("./pages/admin/SERV01ServiceOwnership"));
+const SERV02DomainOwnership = lazy(() => import("./pages/admin/SERV02DomainOwnership"));
+const SERV03RouteServiceTrace = lazy(() => import("./pages/admin/SERV03RouteServiceTrace"));
+const SERV04ServiceDuplication = lazy(() => import("./pages/admin/SERV04ServiceDuplication"));
+const SERV05CanonicalActions = lazy(() => import("./pages/admin/SERV05CanonicalActions"));
+const SERV06FlagshipTraceability = lazy(() => import("./pages/admin/SERV06FlagshipTraceability"));
 
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
