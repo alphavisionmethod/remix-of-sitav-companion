@@ -82,6 +82,7 @@ const AND01AndroidEcosystemCenter = () => {
               {seedMutation.isPending ? <Loader2 className="h-3 w-3 mr-1 animate-spin" /> : <Database className="h-3 w-3 mr-1" />}Seed Android Data
             </Button>
           )}
+          <Button variant="outline" size="sm" onClick={() => setShowAddDevice(true)}><Plus className="h-3 w-3 mr-1" />Add Device</Button>
           <Badge variant="secondary">{overallReadiness}% overall</Badge>
         </div>
       </div>
