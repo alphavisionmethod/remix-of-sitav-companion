@@ -7181,6 +7181,63 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_journey_registry: {
+        Row: {
+          created_at: string
+          display_name: string
+          domain_family: string
+          expected_outcome: string
+          id: string
+          is_active: boolean
+          journey_key: string
+          launch_honesty_class: string | null
+          launch_importance: string
+          owner_team: string | null
+          persona: string
+          priority_class: string
+          route_key: string | null
+          supported_modes: Json
+          surface_class: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name: string
+          domain_family: string
+          expected_outcome: string
+          id?: string
+          is_active?: boolean
+          journey_key: string
+          launch_honesty_class?: string | null
+          launch_importance?: string
+          owner_team?: string | null
+          persona: string
+          priority_class?: string
+          route_key?: string | null
+          supported_modes?: Json
+          surface_class: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          domain_family?: string
+          expected_outcome?: string
+          id?: string
+          is_active?: boolean
+          journey_key?: string
+          launch_honesty_class?: string | null
+          launch_importance?: string
+          owner_team?: string | null
+          persona?: string
+          priority_class?: string
+          route_key?: string | null
+          supported_modes?: Json
+          surface_class?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       customer_journey_runs: {
         Row: {
           actual_outcome: string | null
@@ -7270,6 +7327,77 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "customer_journeys"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_journey_status: {
+        Row: {
+          actual_outcome_summary: string | null
+          current_status: string
+          id: string
+          journey_id: string
+          last_verified_at: string | null
+          last_verified_run_id: string | null
+          launch_impact: string | null
+          owner_team: string | null
+          proof_confidence: string | null
+          recommended_fix: string | null
+          updated_at: string
+        }
+        Insert: {
+          actual_outcome_summary?: string | null
+          current_status?: string
+          id?: string
+          journey_id: string
+          last_verified_at?: string | null
+          last_verified_run_id?: string | null
+          launch_impact?: string | null
+          owner_team?: string | null
+          proof_confidence?: string | null
+          recommended_fix?: string | null
+          updated_at?: string
+        }
+        Update: {
+          actual_outcome_summary?: string | null
+          current_status?: string
+          id?: string
+          journey_id?: string
+          last_verified_at?: string | null
+          last_verified_run_id?: string | null
+          launch_impact?: string | null
+          owner_team?: string | null
+          proof_confidence?: string | null
+          recommended_fix?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_journey_status_journey_id_fkey"
+            columns: ["journey_id"]
+            isOneToOne: true
+            referencedRelation: "customer_journey_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_journey_status_journey_id_fkey"
+            columns: ["journey_id"]
+            isOneToOne: true
+            referencedRelation: "v_customer_journey_summary"
+            referencedColumns: ["registry_id"]
+          },
+          {
+            foreignKeyName: "customer_journey_status_last_verified_run_id_fkey"
+            columns: ["last_verified_run_id"]
+            isOneToOne: false
+            referencedRelation: "journey_verification_runs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_journey_status_last_verified_run_id_fkey"
+            columns: ["last_verified_run_id"]
+            isOneToOne: false
+            referencedRelation: "v_customer_journey_recent_failures"
+            referencedColumns: ["run_id"]
           },
         ]
       }
@@ -13594,6 +13722,87 @@ export type Database = {
         }
         Relationships: []
       }
+      journey_verification_runs: {
+        Row: {
+          branch_name: string | null
+          commit_sha: string | null
+          completed_at: string | null
+          created_at: string
+          environment: string
+          evidence_bundle_ref: string | null
+          id: string
+          journey_id: string
+          launch_impact: string | null
+          mode: string
+          proof_confidence: string
+          run_identifier: string | null
+          started_at: string | null
+          status: string
+          steps_failed: number
+          steps_passed: number
+          steps_skipped: number
+          summary: string | null
+          verification_type: string
+        }
+        Insert: {
+          branch_name?: string | null
+          commit_sha?: string | null
+          completed_at?: string | null
+          created_at?: string
+          environment: string
+          evidence_bundle_ref?: string | null
+          id?: string
+          journey_id: string
+          launch_impact?: string | null
+          mode: string
+          proof_confidence: string
+          run_identifier?: string | null
+          started_at?: string | null
+          status: string
+          steps_failed?: number
+          steps_passed?: number
+          steps_skipped?: number
+          summary?: string | null
+          verification_type: string
+        }
+        Update: {
+          branch_name?: string | null
+          commit_sha?: string | null
+          completed_at?: string | null
+          created_at?: string
+          environment?: string
+          evidence_bundle_ref?: string | null
+          id?: string
+          journey_id?: string
+          launch_impact?: string | null
+          mode?: string
+          proof_confidence?: string
+          run_identifier?: string | null
+          started_at?: string | null
+          status?: string
+          steps_failed?: number
+          steps_passed?: number
+          steps_skipped?: number
+          summary?: string | null
+          verification_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journey_verification_runs_journey_id_fkey"
+            columns: ["journey_id"]
+            isOneToOne: false
+            referencedRelation: "customer_journey_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "journey_verification_runs_journey_id_fkey"
+            columns: ["journey_id"]
+            isOneToOne: false
+            referencedRelation: "v_customer_journey_summary"
+            referencedColumns: ["registry_id"]
+          },
+        ]
+      }
       launch_blocker_scores: {
         Row: {
           affects_admin: boolean
@@ -13603,6 +13812,7 @@ export type Database = {
           blocker_type: string
           created_at: string
           id: string
+          journey_id: string | null
           journey_key: string | null
           reason_summary: string
           resolved: boolean
@@ -13619,6 +13829,7 @@ export type Database = {
           blocker_type?: string
           created_at?: string
           id?: string
+          journey_id?: string | null
           journey_key?: string | null
           reason_summary?: string
           resolved?: boolean
@@ -13635,6 +13846,7 @@ export type Database = {
           blocker_type?: string
           created_at?: string
           id?: string
+          journey_id?: string | null
           journey_key?: string | null
           reason_summary?: string
           resolved?: boolean
@@ -13643,7 +13855,22 @@ export type Database = {
           user_id?: string
           verification_run_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "launch_blocker_scores_journey_id_fkey"
+            columns: ["journey_id"]
+            isOneToOne: false
+            referencedRelation: "customer_journey_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "launch_blocker_scores_journey_id_fkey"
+            columns: ["journey_id"]
+            isOneToOne: false
+            referencedRelation: "v_customer_journey_summary"
+            referencedColumns: ["registry_id"]
+          },
+        ]
       }
       launch_blockers: {
         Row: {
@@ -21474,6 +21701,7 @@ export type Database = {
           id: string
           is_active: boolean
           launch_honesty_class: string | null
+          owner_team: string | null
           priority_class: string
           route_key: string
           selector_hint: string | null
@@ -21493,6 +21721,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           launch_honesty_class?: string | null
+          owner_team?: string | null
           priority_class?: string
           route_key: string
           selector_hint?: string | null
@@ -21512,6 +21741,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           launch_honesty_class?: string | null
+          owner_team?: string | null
           priority_class?: string
           route_key?: string
           selector_hint?: string | null
@@ -21896,6 +22126,7 @@ export type Database = {
           created_at: string
           id: string
           label: string | null
+          metadata: Json
           user_id: string
           verification_run_id: string
         }
@@ -21905,6 +22136,7 @@ export type Database = {
           created_at?: string
           id?: string
           label?: string | null
+          metadata?: Json
           user_id: string
           verification_run_id: string
         }
@@ -21914,6 +22146,7 @@ export type Database = {
           created_at?: string
           id?: string
           label?: string | null
+          metadata?: Json
           user_id?: string
           verification_run_id?: string
         }
@@ -22701,6 +22934,97 @@ export type Database = {
         }
         Relationships: []
       }
+      v_customer_journey_blockers: {
+        Row: {
+          affects_admin: boolean | null
+          affects_demo: boolean | null
+          affects_real: boolean | null
+          affects_user: boolean | null
+          blocker_created_at: string | null
+          blocker_id: string | null
+          blocker_type: string | null
+          display_name: string | null
+          domain_family: string | null
+          journey_key: string | null
+          launch_importance: string | null
+          owner_team: string | null
+          priority_class: string | null
+          reason_summary: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          severity_score: number | null
+        }
+        Relationships: []
+      }
+      v_customer_journey_mode_deltas: {
+        Row: {
+          claim_risk: boolean | null
+          comparison_id: string | null
+          comparison_summary: string | null
+          demo_status: string | null
+          display_name: string | null
+          domain_family: string | null
+          journey_key: string | null
+          persona: string | null
+          priority_class: string | null
+          real_status: string | null
+          updated_at: string | null
+        }
+        Relationships: []
+      }
+      v_customer_journey_recent_failures: {
+        Row: {
+          branch_name: string | null
+          commit_sha: string | null
+          completed_at: string | null
+          created_at: string | null
+          display_name: string | null
+          domain_family: string | null
+          environment: string | null
+          journey_key: string | null
+          launch_importance: string | null
+          mode: string | null
+          priority_class: string | null
+          run_id: string | null
+          started_at: string | null
+          status: string | null
+          steps_failed: number | null
+          steps_passed: number | null
+          steps_skipped: number | null
+          summary: string | null
+          verification_type: string | null
+        }
+        Relationships: []
+      }
+      v_customer_journey_summary: {
+        Row: {
+          actual_outcome_summary: string | null
+          current_status: string | null
+          display_name: string | null
+          domain_family: string | null
+          expected_outcome: string | null
+          is_active: boolean | null
+          journey_key: string | null
+          last_run_commit_sha: string | null
+          last_run_environment: string | null
+          last_run_mode: string | null
+          last_run_status: string | null
+          last_run_steps_failed: number | null
+          last_run_steps_passed: number | null
+          last_verified_at: string | null
+          launch_honesty_class: string | null
+          launch_impact: string | null
+          launch_importance: string | null
+          owner_team: string | null
+          persona: string | null
+          priority_class: string | null
+          proof_confidence: string | null
+          recommended_fix: string | null
+          registry_id: string | null
+          surface_class: string | null
+        }
+        Relationships: []
+      }
       v_demo_provider_summary: {
         Row: {
           capability_keys: Json | null
@@ -22829,6 +23153,19 @@ export type Database = {
           side_effect_policy_key: string | null
           surface_class_key: string | null
           surface_display_name: string | null
+        }
+        Relationships: []
+      }
+      v_route_verification_summary: {
+        Row: {
+          latest_verification: string | null
+          overall_coverage_percent: number | null
+          surface_class: string | null
+          total_actions: number | null
+          total_p0_actions: number | null
+          total_p0_verified: number | null
+          total_routes: number | null
+          total_verified_actions: number | null
         }
         Relationships: []
       }
