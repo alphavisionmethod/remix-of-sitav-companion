@@ -19,6 +19,7 @@ import {
   ChevronDown, ChevronUp, Filter, History, LayoutDashboard, FileText,
   DollarSign, Zap, RotateCcw, MessageSquare,
 } from "lucide-react";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Types ──
 interface QueueItem {
