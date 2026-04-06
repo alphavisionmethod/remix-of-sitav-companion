@@ -169,10 +169,6 @@ export class HouseholdCoachingEngine {
   getPairs(): AccountabilityPair[] {
     return [...this.pairs.values()];
   }
-}
-
-export function createHouseholdCoachingEngine(): HouseholdCoachingEngine {
-  return new HouseholdCoachingEngine();
 
   // ── Persistence ──────────────────────────────────────────
   private _persist = () => debouncedSaveServiceState("life-growth/household-coaching-engine", this._serializeState());
@@ -192,4 +188,10 @@ export function createHouseholdCoachingEngine(): HouseholdCoachingEngine {
     const state = await loadServiceState("life-growth/household-coaching-engine");
     if (state) this.hydrateState(state as Record<string, unknown>);
   }
+}
+
+export function createHouseholdCoachingEngine(): HouseholdCoachingEngine {
+  return new HouseholdCoachingEngine();
+
+
 }

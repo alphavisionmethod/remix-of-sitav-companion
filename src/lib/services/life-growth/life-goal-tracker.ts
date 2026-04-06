@@ -260,10 +260,6 @@ export class LifeGoalTracker {
     };
     return actions[category] || actions.personal;
   }
-}
-
-export function createLifeGoalTracker(): LifeGoalTracker {
-  return new LifeGoalTracker();
 
   // ── Persistence ──────────────────────────────────────────
   private _persist = () => debouncedSaveServiceState("life-growth/life-goal-tracker", this._serializeState());
@@ -287,4 +283,10 @@ export function createLifeGoalTracker(): LifeGoalTracker {
     const state = await loadServiceState("life-growth/life-goal-tracker");
     if (state) this.hydrateState(state as Record<string, unknown>);
   }
+}
+
+export function createLifeGoalTracker(): LifeGoalTracker {
+  return new LifeGoalTracker();
+
+
 }

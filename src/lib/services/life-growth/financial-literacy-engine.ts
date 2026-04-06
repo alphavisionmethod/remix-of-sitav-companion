@@ -189,10 +189,6 @@ export class FinancialLiteracyEngine {
       explanation: `Understanding ${topic} helps you make informed financial decisions aligned with your goals.`,
     }];
   }
-}
-
-export function createFinancialLiteracyEngine(): FinancialLiteracyEngine {
-  return new FinancialLiteracyEngine();
 
   // ── Persistence ──────────────────────────────────────────
   private _persist = () => debouncedSaveServiceState("life-growth/financial-literacy-engine", this._serializeState());
@@ -212,4 +208,10 @@ export function createFinancialLiteracyEngine(): FinancialLiteracyEngine {
     const state = await loadServiceState("life-growth/financial-literacy-engine");
     if (state) this.hydrateState(state as Record<string, unknown>);
   }
+}
+
+export function createFinancialLiteracyEngine(): FinancialLiteracyEngine {
+  return new FinancialLiteracyEngine();
+
+
 }
