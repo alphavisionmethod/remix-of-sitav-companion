@@ -52,6 +52,14 @@ const AIT01TeamOverview = lazy(() => import("@/pages/admin/AIT01TeamOverview"));
 const AIT02RoleRegistry = lazy(() => import("@/pages/admin/AIT02RoleRegistry"));
 const AIT03TaskInvocation = lazy(() => import("@/pages/admin/AIT03TaskInvocation"));
 
+// AIT04-AIT08: AI Engineering Team (cont.)
+const AIT04Module = lazy(() => import("@/pages/admin/AIT04to08Boards"));
+const AIT04ActivityFeed = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT04ActivityFeed })));
+const AIT05CostEfficiency = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT05CostEfficiency })));
+const AIT06Recommendations = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT06Recommendations })));
+const AIT07ApprovalQueue = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT07ApprovalQueue })));
+const AIT08LaunchTruth = lazy(() => import("@/pages/admin/AIT04to08Boards").then(m => ({ default: m.AIT08LaunchTruth })));
+
 // Truth Index Dashboard
 const TruthIndexDashboard = lazy(() => import("@/pages/admin/TruthIndexDashboard"));
 
