@@ -63,13 +63,20 @@ export const SitaTopBar = ({
   };
 
   return (
-    <header className="sita-top-bar sticky top-0 z-50 flex h-11 items-center justify-between border-b border-border/30 glass-panel px-3 select-none">
+    <header
+      role="banner"
+      aria-label="SITA OS system bar"
+      className="sita-top-bar sticky top-0 z-50 flex h-11 items-center justify-between border-b border-border/30 glass-panel px-2 sm:px-3 select-none"
+      style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+    >
       {/* Left: Sidebar + Context + Command */}
-      <div className="flex items-center gap-2">
-        <SidebarTrigger className="h-7 w-7 text-muted-foreground hover:text-foreground" />
-        <ContextSwitcher />
+      <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+        <SidebarTrigger className="h-7 w-7 text-muted-foreground hover:text-foreground shrink-0" />
+        <div className="hidden sm:block">
+          <ContextSwitcher />
+        </div>
 
-        {/* Command pill — primary affordance */}
+        {/* Command pill — desktop only */}
         <div className="hidden md:block">
           {onCommandOpen ? (
             <button
@@ -82,6 +89,17 @@ export const SitaTopBar = ({
             </button>
           ) : null}
         </div>
+
+        {/* Mobile search button */}
+        {onCommandOpen && (
+          <button
+            onClick={onCommandOpen}
+            className="md:hidden flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/60 transition-colors"
+            aria-label="Search"
+          >
+            <Search className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
       {/* Center: Status indicators (desktop only) */}
