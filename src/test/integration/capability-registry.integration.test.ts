@@ -38,7 +38,7 @@ describe("Capability Registry — Integration", () => {
 
   it("returns error for unregistered capability", async () => {
     const result = await invokeCapability({
-      capabilityKey: "nonexistent-cap",
+      capabilityKey: "nonexistent.capability.key",
       userId: "user-1",
       surface: "web",
       mode: "demo",
