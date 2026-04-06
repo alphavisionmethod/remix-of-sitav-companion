@@ -7,23 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { DEMO_UPLOADS, DEMO_EXPORTS, type DemoUploadItem as UploadItem, type DemoExportItem as ExportItem } from "@/lib/demo-data/import-export";
 
-const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
-
-interface UploadItem { id: string; name: string; type: string; size: string; status: "uploading" | "processing" | "complete" | "failed"; progress: number; destination?: string; }
-interface ExportItem { id: string; name: string; type: string; size: string; status: "generating" | "ready" | "expired" | "failed"; createdAt: string; }
-
-const MOCK_UPLOADS: UploadItem[] = [
-  { id: "1", name: "Q2-financials.xlsx", type: "spreadsheet", size: "2.1 MB", status: "complete", progress: 100, destination: "Finance" },
-  { id: "2", name: "contract-acme.pdf", type: "pdf", size: "450 KB", status: "processing", progress: 80, destination: "CRM" },
-  { id: "3", name: "team-photo.jpg", type: "image", size: "3.5 MB", status: "uploading", progress: 45 },
-];
-
-const MOCK_EXPORTS: ExportItem[] = [
-  { id: "1", name: "Revenue Report March 2024.pdf", type: "pdf", size: "1.2 MB", status: "ready", createdAt: new Date(Date.now() - 3600000).toISOString() },
-  { id: "2", name: "Client List Export.csv", type: "csv", size: "340 KB", status: "ready", createdAt: new Date(Date.now() - 86400000).toISOString() },
-  { id: "3", name: "Proof Bundle #4521.zip", type: "bundle", size: "8.7 MB", status: "generating", createdAt: new Date().toISOString() },
-];
+const MOCK_UPLOADS = DEMO_UPLOADS;
+const MOCK_EXPORTS = DEMO_EXPORTS;
 
 const STATUS_STYLES = { uploading: "text-primary", processing: "text-amber-400", complete: "text-emerald-400", failed: "text-red-400", generating: "text-amber-400", ready: "text-emerald-400", expired: "text-muted-foreground" };
 const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircle2, failed: AlertTriangle, generating: Clock, ready: CheckCircle2, expired: AlertTriangle };
