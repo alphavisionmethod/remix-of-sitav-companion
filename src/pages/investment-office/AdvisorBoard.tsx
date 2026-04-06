@@ -7,6 +7,7 @@ import {
   Zap, X, Check, Minus, TrendingUp, TrendingDown, Globe
 } from "lucide-react";
 import { INVESTMENT_ADVISORS, ADVISOR_SYNTHESIS } from "@/lib/investment-office/mock-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type { InvestmentAdvisor, AdvisorConfidenceLevel, AdvisorRecommendation } from "@/lib/investment-office/types";
 
 type ViewMode = "council" | "synthesis" | "debate" | "detail" | "compare";
