@@ -119,7 +119,12 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
           <AppSidebar />
           <div className="flex flex-1 min-w-0">
             <div className="flex flex-1 flex-col min-w-0">
-              <main className="flex-1 overflow-auto scrollbar-thin">
+              {/* Main content with bottom padding for mobile nav + companion bar */}
+              <main
+                role="main"
+                aria-label="Page content"
+                className="flex-1 overflow-auto scrollbar-thin pb-28 md:pb-16"
+              >
                 <ErrorBoundary>
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -128,7 +133,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
                       animate={transition.animate}
                       exit={transition.exit}
                       transition={transition.transition}
-                      className="p-4 md:p-6"
+                      className="p-3 sm:p-4 md:p-6"
                     >
                       {children}
                     </motion.div>
