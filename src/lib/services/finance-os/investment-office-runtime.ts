@@ -316,10 +316,6 @@ export class InvestmentOfficeRuntimeService {
       receiptsGenerated: this.receipts.length,
     };
   }
-}
-
-export function createInvestmentOfficeRuntime(): InvestmentOfficeRuntimeService {
-  return new InvestmentOfficeRuntimeService();
 
   // ── Persistence ──────────────────────────────────────────
   private _persist = () => debouncedSaveServiceState("finance-os/investment-office-runtime", this._serializeState());
@@ -339,4 +335,10 @@ export function createInvestmentOfficeRuntime(): InvestmentOfficeRuntimeService 
     const state = await loadServiceState("finance-os/investment-office-runtime");
     if (state) this.hydrateState(state as Record<string, unknown>);
   }
+}
+
+export function createInvestmentOfficeRuntime(): InvestmentOfficeRuntimeService {
+  return new InvestmentOfficeRuntimeService();
+
+
 }

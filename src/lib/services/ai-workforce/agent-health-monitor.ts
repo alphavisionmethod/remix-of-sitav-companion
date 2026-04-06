@@ -371,10 +371,6 @@ export class AgentHealthMonitorService {
     if (m.failures.length > WINDOW_SIZE) m.failures.shift();
     if (m.costs.length > WINDOW_SIZE) m.costs.shift();
   }
-}
-
-export function createAgentHealthMonitor(): AgentHealthMonitorService {
-  return new AgentHealthMonitorService();
 
   // ── Persistence ──────────────────────────────────────────
   private _persist = () => debouncedSaveServiceState("ai-workforce/agent-health-monitor", this._serializeState());
@@ -400,4 +396,10 @@ export function createAgentHealthMonitor(): AgentHealthMonitorService {
     const state = await loadServiceState("ai-workforce/agent-health-monitor");
     if (state) this.hydrateState(state as Record<string, unknown>);
   }
+}
+
+export function createAgentHealthMonitor(): AgentHealthMonitorService {
+  return new AgentHealthMonitorService();
+
+
 }

@@ -336,10 +336,6 @@ export class WebsiteManager {
   private normalizeSlug(slug: string): string {
     return slug.toLowerCase().trim().replace(/[^a-z0-9-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
   }
-}
-
-export function createWebsiteManager(): WebsiteManager {
-  return new WebsiteManager();
 
   // ── Persistence ──────────────────────────────────────────
   private _persist = () => debouncedSaveServiceState("business-os/website-management", this._serializeState());
@@ -361,4 +357,10 @@ export function createWebsiteManager(): WebsiteManager {
     const state = await loadServiceState("business-os/website-management");
     if (state) this.hydrateState(state as Record<string, unknown>);
   }
+}
+
+export function createWebsiteManager(): WebsiteManager {
+  return new WebsiteManager();
+
+
 }
