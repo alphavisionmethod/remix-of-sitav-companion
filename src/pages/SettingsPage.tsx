@@ -295,10 +295,33 @@ const SettingsPage = () => {
               ]} />
               <ToggleSetting label="PII Redaction" description="Strip names from documents before AI processing" enabled={piiRedaction} onChange={() => setPiiRedaction(!piiRedaction)} />
               <div className="py-3 space-y-2">
-                <button className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-2 text-xs text-foreground hover:bg-secondary/80 transition-colors w-full">
+                <button
+                  className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-2 text-xs text-foreground hover:bg-secondary/80 transition-colors w-full"
+                  onClick={async () => {
+                    try {
+                      const { data, error } = await supabase.functions.invoke("gdpr-export", { method: "POST", body: { format: "json" } });
+                      if (error) throw error;
+                      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement("a"); a.href = url; a.download = `sita-export-${new Date().toISOString().slice(0, 10)}.json`; a.click();
+                      URL.revokeObjectURL(url);
+                      toast.success("Data exported");
+                    } catch (e: any) { toast.error(e.message || "Export failed"); }
+                  }}
+                >
                   <Download className="h-3.5 w-3.5 text-muted-foreground" /> Export All Data (JSON)
                 </button>
-                <button className="flex items-center gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-xs text-destructive hover:bg-destructive/20 transition-colors w-full">
+                <button
+                  className="flex items-center gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-xs text-destructive hover:bg-destructive/20 transition-colors w-full"
+                  onClick={async () => {
+                    if (!confirm("Are you sure? This will permanently delete all your data.")) return;
+                    try {
+                      const { error } = await supabase.functions.invoke("gdpr-delete", { method: "POST", body: {} });
+                      if (error) throw error;
+                      toast.success("Deletion request submitted");
+                    } catch (e: any) { toast.error(e.message || "Deletion failed"); }
+                  }}
+                >
                   <Trash2 className="h-3.5 w-3.5" /> Delete All Data
                 </button>
               </div>

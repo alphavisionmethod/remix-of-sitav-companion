@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Download, Shield, FileArchive, Clock, CheckCircle, AlertTriangle, Trash2 } from "lucide-react";
+import { Download, Shield, FileArchive, Clock, CheckCircle, AlertTriangle, Trash2, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 const EXPORTABLE_TABLES = [
   { name: "Profiles", rows: 1, size: "2 KB" },
@@ -25,11 +28,80 @@ const PAST_EXPORTS = [
 ];
 
 export default function SovereignExportPage() {
+  const { user, isDemo } = useAuth();
   const [selectedTables, setSelectedTables] = useState<string[]>(EXPORTABLE_TABLES.map(t => t.name));
   const [exporting, setExporting] = useState(false);
+  const [exportProgress, setExportProgress] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const toggleTable = (name: string) => {
     setSelectedTables(prev => prev.includes(name) ? prev.filter(t => t !== name) : [...prev, name]);
+  };
+
+  const handleExport = async (format: "json" | "csv") => {
+    if (isDemo) {
+      toast.info("Export is disabled in demo mode");
+      return;
+    }
+    setExporting(true);
+    setExportProgress(10);
+    try {
+      const interval = setInterval(() => {
+        setExportProgress(p => Math.min(p + 15, 90));
+      }, 500);
+
+      const { data, error } = await supabase.functions.invoke("gdpr-export", {
+        method: "POST",
+        body: { format, tables: selectedTables },
+      });
+
+      clearInterval(interval);
+      setExportProgress(100);
+
+      if (error) throw error;
+
+      // Download the response as a file
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `sita-export-${new Date().toISOString().slice(0, 10)}.${format}`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      toast.success("Data exported successfully");
+    } catch (e: any) {
+      toast.error(e.message || "Export failed");
+    } finally {
+      setExporting(false);
+      setExportProgress(0);
+    }
+  };
+
+  const handleDeleteRequest = async () => {
+    if (isDemo) {
+      toast.info("Deletion is disabled in demo mode");
+      return;
+    }
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      return;
+    }
+    setDeleting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("gdpr-delete", {
+        method: "POST",
+        body: {},
+      });
+      if (error) throw error;
+      toast.success("Deletion request submitted. Processing within 30 days per GDPR.");
+      setConfirmDelete(false);
+    } catch (e: any) {
+      toast.error(e.message || "Deletion request failed");
+    } finally {
+      setDeleting(false);
+    }
   };
 
   return (
@@ -70,12 +142,12 @@ export default function SovereignExportPage() {
               </div>
             ))}
             <div className="pt-4 flex gap-2">
-              <Button className="gap-2 flex-1" disabled={selectedTables.length === 0 || exporting} onClick={() => setExporting(true)}>
-                <Download className="h-4 w-4" /> Export as JSON
+              <Button className="gap-2 flex-1" disabled={selectedTables.length === 0 || exporting} onClick={() => handleExport("json")}>
+                {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} Export as JSON
               </Button>
-              <Button variant="outline" className="gap-2" disabled={selectedTables.length === 0 || exporting}>CSV</Button>
+              <Button variant="outline" className="gap-2" disabled={selectedTables.length === 0 || exporting} onClick={() => handleExport("csv")}>CSV</Button>
             </div>
-            {exporting && <div className="pt-2"><Progress value={65} className="h-2" /><p className="text-xs text-muted-foreground mt-1">Extracting data... 65%</p></div>}
+            {exporting && <div className="pt-2"><Progress value={exportProgress} className="h-2" /><p className="text-xs text-muted-foreground mt-1">Extracting data... {exportProgress}%</p></div>}
           </CardContent>
         </Card>
 
@@ -99,7 +171,19 @@ export default function SovereignExportPage() {
             <CardHeader><CardTitle className="text-sm text-destructive flex items-center gap-2"><AlertTriangle className="h-4 w-4" /> Data Deletion</CardTitle></CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground mb-3">Request permanent deletion of all your data. This action is irreversible and will be processed within 30 days per GDPR requirements.</p>
-              <Button variant="destructive" size="sm" className="gap-2"><Trash2 className="h-4 w-4" /> Request Deletion</Button>
+              {confirmDelete && (
+                <p className="text-xs text-destructive font-semibold mb-2">⚠️ Are you sure? Click again to confirm permanent deletion.</p>
+              )}
+              <Button
+                variant="destructive"
+                size="sm"
+                className="gap-2"
+                disabled={deleting}
+                onClick={handleDeleteRequest}
+              >
+                {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                {confirmDelete ? "Confirm Deletion" : "Request Deletion"}
+              </Button>
             </CardContent>
           </Card>
         </div>
