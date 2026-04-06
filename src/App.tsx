@@ -408,6 +408,19 @@ const SAGFallbackCenter = lazy(() => import("./pages/admin/sag/SAGFallbackCenter
 const SAGBuilderConsole = lazy(() => import("./pages/admin/sag/SAGBuilderConsole"));
 const SAGComplianceGate = lazy(() => import("./pages/admin/sag/SAGComplianceGate"));
 
+// ── REX: Recommendation → Execution Loop ──
+const REX01RecommendationIntelligence = lazy(() => import("./pages/admin/REX01RecommendationIntelligence"));
+const REX02ApprovalQueueCompletion = lazy(() => import("./pages/admin/REX02ApprovalQueueCompletion"));
+const REX03RecommendationExecution = lazy(() => import("./pages/admin/REX03RecommendationExecution"));
+const REX04RemediationPrograms = lazy(() => import("./pages/admin/REX04RemediationPrograms"));
+const REX05OutcomeVerification = lazy(() => import("./pages/admin/REX05OutcomeVerification"));
+
+// ── FL: Flagship Loops ──
+const FL01FlagshipLoopsExecutive = lazy(() => import("./pages/admin/FL01FlagshipLoopsExecutive"));
+const FL02FlagshipLoopDetail = lazy(() => import("./pages/admin/FL02FlagshipLoopDetail"));
+
+// ── SERV: Service Ownership ──
+const SERV01ServiceOwnership = lazy(() => import("./pages/admin/SERV01ServiceOwnership"));
 
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
