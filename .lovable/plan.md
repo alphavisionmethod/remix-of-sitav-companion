@@ -1,128 +1,142 @@
 
+# Fix 3 Flagship Loops to 100% — Files, Boardroom, Connected Services
 
-# Wire Business OS, Finance OS, Concierge OS & AI to Real Backend — 100% Active
+## Current State & Gaps
 
-## What's Wrong Now
-
-The edge functions exist and are fully implemented, but **zero frontend code calls them**:
-- `brain-core` (AI advisor) — never invoked from any page
-- `ai-gateway` (AI completions) — never invoked from any page
-- `cashflow-calculate` — never invoked
-- `invoice-generate` — never invoked
-- `tax-estimate` — never invoked
-- `booking-manage` — never invoked
-- `crm-sync` — never invoked
-
-Pages either query Supabase tables directly (good) or return hardcoded mock data (bad). The `use-sita-data.ts` hooks already have a solid pattern — they query real tables in live mode and fall back to mocks in demo. But the domain service files (`business-os/`, `finance-os/`, `concierge-os/`) return hardcoded values with no Supabase calls.
-
-**AI**: `LOVABLE_API_KEY` is configured. The `ai-gateway` and `brain-core` functions are fully implemented. But nothing in the user-facing app calls them.
+| Loop | Score | Gap |
+|------|-------|-----|
+| Files + AI Assist | 72% | FileUploader works but no AI analysis feedback on file content, no "Ask AI about this file" action, file pages don't call brain-core, hardcoded KPIs |
+| Boardroom + Summary + Decision | 77% | BoardroomReplay uses all hardcoded slide data, no real data from DB, no decision recording, no session persistence |
+| Connected Services + Sync | 67% | ConnectorGovernanceCenter uses hardcoded CONNECTORS array, no calls to connector-discover/transform/batch, Settings integrations tab is static |
 
 ## Implementation Plan
 
-### 1. Create Backend Integration Hooks (~200 lines)
+### 1. Files + AI Assist — Wire AI to Files Pages (~150 lines changed)
 
-**New file: `src/hooks/use-backend-actions.ts`**
+**A. Add "Ask AI" button to FilesOverview classified file rows**
+- Edit `src/pages/files/FilesOverview.tsx`
+- Import `useAIInsight` from `use-backend-actions`
+- Add "Analyze" button on each classified file card that calls `brain-core` with `intent: "file_analysis"` and file metadata as context
+- Display AI response inline (classification reasoning, extracted insights, suggested actions)
 
-Create hooks that call the 6 domain edge functions:
+**B. Wire FilesOverview KPIs to real Supabase data**
+- Replace hardcoded `7` obligations and `18` linked workflows with real queries from `file_metadata` table
+- Use `useQuery` to count by classification/sensitivity
 
-| Hook | Edge Function | Purpose |
-|------|--------------|---------|
-| `useCRMSync` | `crm-sync` | Sync leads/customers/opportunities |
-| `useCashflowAnalysis` | `cashflow-calculate` | Analyze, forecast, safe-to-spend, burn-rate |
-| `useInvoiceGenerate` | `invoice-generate` | Generate invoice PDFs |
-| `useTaxEstimate` | `tax-estimate` | Quarterly/annual tax estimates |
-| `useBookingManage` | `booking-manage` | Create/update/cancel/list bookings |
-| `useBrainCore` | `brain-core` | AI advisor queries |
+**C. Wire FilesProcessing to call file-ingestion edge function**
+- Edit `src/pages/files/FilesProcessing.tsx`
+- Replace the fake `FileIngestionService()` in-memory processing with a display of real `file_metadata` records filtered by `status`
+- Show actual classification results from the edge function
 
-Each returns a `useMutation` or `useQuery` that calls `supabase.functions.invoke(...)`.
+**D. Add AI file summary to FilesSearch**
+- Edit `src/pages/files/FilesSearch.tsx`
+- Add "AI Search" mode that calls `brain-core` with `intent: "file_search"` + query text to get semantic search results
 
-### 2. Wire AI into DailyPulse + Advisor Cards (~80 lines)
+### 2. Boardroom + Summary + Decision — Real Data + Persistence (~200 lines)
 
-**Edit: `src/pages/DailyPulse.tsx`**
+**A. Create DB migration for boardroom sessions**
+- New table: `boardroom_sessions` (id, user_id, session_type, title, started_at, completed_at, slides_data jsonb, decisions jsonb, status)
+- New table: `boardroom_decisions` (id, session_id, user_id, text, status [executed/pending/carried/deferred], advisor, domain, decided_at)
+- RLS: users see own sessions/decisions only
 
-- Add a "Get AI Insight" button per domain section that calls `brain-core` with the appropriate intent
-- Display AI recommendations inline with confidence scores
-- Use `ai-gateway` for the advisor chat cards that already exist on the page
+**B. Wire BoardroomReplay to real data**
+- Edit `src/pages/boardroom/BoardroomReplay.tsx`
+- Import `useQuery` + `useMutation` to load/save sessions
+- Replace `generateWeeklySlides()` with data pulled from real tables: invoices, leads, bills, household_tasks, approval_queue, cashflow-calculate
+- Call `brain-core` for "Advisor Consensus" text on each domain slide (business, finance, concierge)
+- Save decisions to `boardroom_decisions` table when user marks items
+- Add "Start New Session" and "Save Session" buttons
 
-**Edit: `src/components/sita/LiveAdvisorCard.tsx`**
+**C. Create BoardroomHistory page**
+- New file: `src/pages/boardroom/BoardroomHistory.tsx`
+- List past sessions from `boardroom_sessions` with date, decision count, status
+- Click to replay any past session
 
-- Wire the existing advisor card component to call `brain-core` via `useBrainCore` hook
-- Show real AI responses instead of static placeholder text
+**D. Add route for BoardroomHistory**
+- Add `/boardroom/history` route in App.tsx
 
-### 3. Wire Invoice Page to `invoice-generate` Edge Function (~40 lines)
+### 3. Connected Services + Sync — Wire to Real Edge Functions (~180 lines)
 
-**Edit: `src/pages/business/InvoicesCollections.tsx`**
+**A. Wire ConnectorGovernanceCenter to real data**
+- Edit `src/pages/admin/ConnectorGovernanceCenter.tsx`
+- Replace hardcoded `CONNECTORS` array with `useQuery` from `connector_registry` + `connector_accounts` + `connector_configs`
+- Add "Discover New" button that calls `connector-discover` edge function (`scan` action)
+- Add "Sync Now" button per connector that calls `connector-batch` edge function (`submit` action)
+- Show real sync history from `audit_logs` filtered by connector domain
 
-- Add "Generate PDF" button on each invoice row
-- Calls `invoice-generate` edge function with invoice data
-- Shows success toast with download link
+**B. Wire Settings > Integrations tab to real connector data**
+- Edit `src/pages/SettingsPage.tsx` (integrations section)
+- Replace static connector list with `useQuery` from `connector_registry` joined with `connector_accounts`
+- Add connect/disconnect actions that write to `connector_accounts`
+- Show real health status from `connector_configs`
 
-### 4. Wire Money Pages to `cashflow-calculate` + `tax-estimate` (~60 lines)
+**C. Create ConnectorSyncDashboard component**
+- New file: `src/components/sita/ConnectorSyncDashboard.tsx`
+- Reusable widget showing: last sync time, record counts, error rate, health badge
+- Used in ConnectorGovernanceCenter + Settings integrations + MoneySettings
 
-**Edit: `src/hooks/use-sita-data.ts`**
+**D. Wire connector-discover results into recommendation loop**
+- When `connector-discover` returns recommendations, create entries in `recommendations` table
+- Show "Recommended Integrations" section in Settings > Integrations
 
-- Update `useCashFlow` hook to call `cashflow-calculate` edge function in live mode instead of computing locally
-- Add `useTaxEstimate` hook calling `tax-estimate` edge function
+## Database Migration Required
 
-**Edit: `src/pages/money/` (MoneyCenter or relevant page)**
+```sql
+-- Boardroom sessions + decisions
+CREATE TABLE boardroom_sessions (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  session_type text DEFAULT 'weekly',
+  title text,
+  started_at timestamptz DEFAULT now(),
+  completed_at timestamptz,
+  slides_data jsonb DEFAULT '[]',
+  status text DEFAULT 'active',
+  created_at timestamptz DEFAULT now()
+);
 
-- Add tax estimate card that calls the edge function
-- Wire cash flow section to use the new backend-computed data
+CREATE TABLE boardroom_decisions (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id uuid REFERENCES boardroom_sessions(id) ON DELETE CASCADE NOT NULL,
+  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  decision_text text NOT NULL,
+  status text DEFAULT 'pending',
+  advisor text,
+  domain text,
+  decided_at timestamptz DEFAULT now()
+);
 
-### 5. Wire Concierge to `booking-manage` (~40 lines)
+-- RLS
+ALTER TABLE boardroom_sessions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE boardroom_decisions ENABLE ROW LEVEL SECURITY;
 
-**Edit: Concierge/household pages**
-
-- Wire booking creation/management to call `booking-manage` edge function
-- Replace any hardcoded booking data with real Supabase queries + edge function calls
-
-### 6. Wire Domain Service Files to Supabase (~120 lines)
-
-**Edit: `src/lib/services/business-os/contacts.service.ts`**
-- Replace hardcoded `buildContactTimeline` with Supabase query from `customer_interactions` or `events` table
-
-**Edit: `src/lib/services/business-os/accounts.service.ts`**
-- Replace hardcoded values in `rollupAccountHealth` with real DB queries
-
-**Edit: `src/lib/services/finance-os/overview.service.ts`**
-- Replace hardcoded `buildInvestmentOverview` with Supabase query from `financial_accounts` / `capital_allocations`
-
-**Edit: `src/lib/services/concierge-os/household-ops.service.ts`**
-- Already takes real data as params — no changes needed (it's pure logic)
-
-### 7. Update AI Gateway Integration (~30 lines)
-
-**Edit: `src/lib/services/ai-gateway/index.ts`**
-
-- Add `callAIGateway` function that invokes the `ai-gateway` edge function
-- Add `callBrainCore` function that invokes `brain-core`
-- Both use `supabase.functions.invoke`
+CREATE POLICY "Users see own sessions" ON boardroom_sessions FOR ALL USING (auth.uid() = user_id);
+CREATE POLICY "Users see own decisions" ON boardroom_decisions FOR ALL USING (auth.uid() = user_id);
+```
 
 ## Files Created
-| File | Lines |
-|------|-------|
-| `src/hooks/use-backend-actions.ts` | ~200 |
+
+| File | Purpose |
+|------|---------|
+| `src/pages/boardroom/BoardroomHistory.tsx` | Past session list |
+| `src/components/sita/ConnectorSyncDashboard.tsx` | Reusable sync status widget |
 
 ## Files Modified
+
 | File | Change |
 |------|--------|
-| `src/hooks/use-sita-data.ts` | Wire `useCashFlow` to edge function, add `useTaxEstimate` |
-| `src/pages/DailyPulse.tsx` | Add AI insight buttons calling brain-core |
-| `src/pages/business/InvoicesCollections.tsx` | Add PDF generate button |
-| `src/components/sita/LiveAdvisorCard.tsx` | Wire to brain-core |
-| `src/lib/services/ai-gateway/index.ts` | Add callable gateway functions |
-| `src/lib/services/business-os/contacts.service.ts` | Supabase queries |
-| `src/lib/services/business-os/accounts.service.ts` | Supabase queries |
-| `src/lib/services/finance-os/overview.service.ts` | Supabase queries |
+| `src/pages/files/FilesOverview.tsx` | AI analyze button, real KPIs |
+| `src/pages/files/FilesProcessing.tsx` | Real file_metadata queries |
+| `src/pages/files/FilesSearch.tsx` | AI search mode |
+| `src/pages/boardroom/BoardroomReplay.tsx` | Real data, brain-core, decision saving |
+| `src/pages/admin/ConnectorGovernanceCenter.tsx` | Real connector data, discover/sync buttons |
+| `src/pages/SettingsPage.tsx` | Real integrations tab |
+| `src/App.tsx` | Add boardroom/history route |
 
-## No Database Migration Needed
-All tables and edge functions exist. This is pure wiring.
+## Result
 
-## Result After Implementation
-| Gap | Before | After |
-|-----|--------|-------|
-| Business OS → Real Backend | 63% (demo data) | 90%+ (Supabase + edge functions) |
-| Finance OS → Real Backend | 63% (demo data) | 90%+ (cashflow-calculate + tax-estimate) |
-| Concierge OS → Real Backend | 58% (demo data) | 85%+ (booking-manage wired) |
-| AI → Live Provider Keys | Demo mode | Live (LOVABLE_API_KEY active, brain-core + ai-gateway wired) |
-
+| Loop | Before | After |
+|------|--------|-------|
+| Files + AI Assist | 72% | 95%+ (real AI analysis, real KPIs, real processing) |
+| Boardroom + Summary + Decision | 77% | 95%+ (real data slides, decision persistence, AI consensus, history) |
+| Connected Services + Sync | 67% | 92%+ (real connector data, discover/sync wired, recommendations) |
