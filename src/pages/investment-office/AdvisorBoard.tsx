@@ -426,6 +426,7 @@ export default function AdvisorBoard() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-5">
+      <DemoModeBadge />
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>

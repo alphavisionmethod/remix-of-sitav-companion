@@ -25,6 +25,7 @@ export default function ExecutionDesk() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Target className="h-6 w-6 text-primary" /> Execution Desk</h1>
         <p className="text-sm text-muted-foreground mt-1">Prepare, review, and execute trades</p>

@@ -18,6 +18,7 @@ export default function InvestmentBoardroom() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <DemoModeBadge />
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
