@@ -6,15 +6,36 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { Plug, CheckCircle, AlertTriangle, RefreshCw, ArrowRight, Clock, Activity, Shield, Users, Settings } from "lucide-react";
+import { Plug, CheckCircle, AlertTriangle, RefreshCw, ArrowRight, Clock, Activity, Shield, Users, Settings, LinkIcon } from "lucide-react";
 import { DEMO_CONNECTIONS, DEMO_AUDIT_LOG } from "@/lib/services/integration-hub/demo-connections";
 import { getProviderById } from "@/lib/services/integration-hub/providers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { EmptyState } from "@/components/sita/SitaComponents";
 
 export default function ConnectionsList() {
   const [tab, setTab] = useState("connections");
   const [agencyMode, setAgencyMode] = useState(false);
   const navigate = useNavigate();
+  const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
+
+  // Real mode: fetch from connector_instances table
+  const { data: realConnections = [] } = useQuery({
+    queryKey: ["connector_instances", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data, error } = await (supabase as any).from("connector_instances").select("*").order("created_at", { ascending: false });
+      if (error) return [];
+      return data ?? [];
+    },
+  });
+
+  const connections = isDemoMode ? DEMO_CONNECTIONS : realConnections;
+  const auditLog = isDemoMode ? DEMO_AUDIT_LOG : [];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
