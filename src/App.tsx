@@ -13,6 +13,7 @@ import { InspectorProvider } from "@/contexts/InspectorContext";
 import { EntityContextProvider } from "@/contexts/EntityContext";
 import { SitaKernelProvider } from "@/contexts/SitaKernelContext";
 import { OSRuntimeProvider } from "@/lib/hooks/useOSRuntime";
+import { RealityModeProvider } from "@/lib/dual-reality/reality-mode-context";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ShellLayout } from "@/components/sita/ShellLayout";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
@@ -565,6 +566,7 @@ const App = () => (
         <AuthProvider>
           <ConnectivityProvider>
           <ThemeProvider>
+          <RealityModeProvider>
           <DataModeProvider>
           <DemoModeProvider>
           <DisplayModeProvider>
@@ -1328,6 +1330,7 @@ const App = () => (
           </DisplayModeProvider>
           </DemoModeProvider>
           </DataModeProvider>
+          </RealityModeProvider>
           </ThemeProvider>
           </ConnectivityProvider>
         </AuthProvider>

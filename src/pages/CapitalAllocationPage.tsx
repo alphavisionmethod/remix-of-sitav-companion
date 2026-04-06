@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEMO_ALLOCATIONS = [
   { asset: "US Equities", target: 40, current: 42.3, value: 423000, drift: 2.3, color: "bg-blue-500" },
@@ -17,7 +18,9 @@ const DEMO_ALLOCATIONS = [
 ];
 
 export default function CapitalAllocationPage() {
-  const totalValue = DEMO_ALLOCATIONS.reduce((s, a) => s + a.value, 0);
+  const { isDemoMode } = useDataMode();
+  const allocations = isDemoMode ? DEMO_ALLOCATIONS : [];
+  const totalValue = allocations.reduce((s, a) => s + a.value, 0);
 
   return (
     <div className="space-y-6 p-6">
@@ -52,7 +55,7 @@ export default function CapitalAllocationPage() {
           <TabsTrigger value="rebalance">Rebalance Plan</TabsTrigger>
         </TabsList>
         <TabsContent value="positions" className="mt-4 space-y-3">
-          {DEMO_ALLOCATIONS.map((a, i) => (
+          {allocations.map((a, i) => (
             <motion.div key={a.asset} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}>
               <Card className="border-border/50">
                 <CardContent className="p-4 flex items-center justify-between">
@@ -79,7 +82,7 @@ export default function CapitalAllocationPage() {
           <Card className="border-border/50">
             <CardHeader><CardTitle className="text-sm">Proposed Rebalance Orders</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {DEMO_ALLOCATIONS.filter(a => Math.abs(a.drift) > 0.5).map(a => (
+              {allocations.filter(a => Math.abs(a.drift) > 0.5).map(a => (
                 <div key={a.asset} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
                   <div>
                     <p className="text-sm text-foreground">{a.asset}</p>

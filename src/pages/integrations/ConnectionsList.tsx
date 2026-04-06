@@ -6,15 +6,36 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { Plug, CheckCircle, AlertTriangle, RefreshCw, ArrowRight, Clock, Activity, Shield, Users, Settings } from "lucide-react";
+import { Plug, CheckCircle, AlertTriangle, RefreshCw, ArrowRight, Clock, Activity, Shield, Users, Settings, LinkIcon } from "lucide-react";
 import { DEMO_CONNECTIONS, DEMO_AUDIT_LOG } from "@/lib/services/integration-hub/demo-connections";
 import { getProviderById } from "@/lib/services/integration-hub/providers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { EmptyState } from "@/components/sita/SitaComponents";
 
 export default function ConnectionsList() {
   const [tab, setTab] = useState("connections");
   const [agencyMode, setAgencyMode] = useState(false);
   const navigate = useNavigate();
+  const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
+
+  // Real mode: fetch from connector_instances table
+  const { data: realConnections = [] } = useQuery({
+    queryKey: ["connector_instances", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data, error } = await (supabase as any).from("connector_instances").select("*").order("created_at", { ascending: false });
+      if (error) return [];
+      return data ?? [];
+    },
+  });
+
+  const connections = isDemoMode ? DEMO_CONNECTIONS : realConnections;
+  const auditLog = isDemoMode ? DEMO_AUDIT_LOG : [];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
@@ -49,13 +70,15 @@ export default function ConnectionsList() {
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30">
-          <TabsTrigger value="connections">Connections ({DEMO_CONNECTIONS.length})</TabsTrigger>
+          <TabsTrigger value="connections">Connections ({connections.length})</TabsTrigger>
           <TabsTrigger value="health">Health Dashboard</TabsTrigger>
           <TabsTrigger value="audit">Audit Log</TabsTrigger>
         </TabsList>
 
         <TabsContent value="connections" className="mt-4 space-y-3">
-          {DEMO_CONNECTIONS.map(conn => {
+          {connections.length === 0 && !isDemoMode ? (
+            <EmptyState icon={LinkIcon} title="No connections yet" description="Connect your first integration to get started." />
+          ) : connections.map((conn: any) => {
             const provider = getProviderById(conn.providerId);
             return (
               <Card key={conn.id} className={`bg-card/50 border-border/50 hover:border-primary/30 transition-colors cursor-pointer ${conn.status === "expired" ? "border-l-2 border-l-amber-500" : conn.status === "connected" ? "border-l-2 border-l-green-500" : ""}`}
@@ -101,7 +124,7 @@ export default function ConnectionsList() {
 
         <TabsContent value="health" className="mt-4 space-y-3">
           <div className="grid sm:grid-cols-2 gap-3">
-            {DEMO_CONNECTIONS.map(conn => {
+            {connections.map((conn: any) => {
               const provider = getProviderById(conn.providerId);
               return (
                 <Card key={conn.id} className="bg-card/50 border-border/50">
@@ -134,7 +157,9 @@ export default function ConnectionsList() {
         </TabsContent>
 
         <TabsContent value="audit" className="mt-4 space-y-2">
-          {DEMO_AUDIT_LOG.map(entry => (
+          {auditLog.length === 0 && !isDemoMode ? (
+            <EmptyState icon={Activity} title="No audit events" description="Activity will appear here as integrations sync." />
+          ) : auditLog.map((entry: any) => (
             <div key={entry.id} className="flex items-start gap-3 p-3 bg-muted/20 rounded-lg">
               <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${entry.eventType.includes("error") || entry.eventType.includes("warning") ? "bg-amber-400" : entry.eventType.includes("rejected") ? "bg-red-400" : "bg-green-400"}`} />
               <div className="flex-1">

@@ -10,6 +10,7 @@ import { Shield, CheckCircle, XCircle, AlertTriangle, Clock, ArrowRight, Zap, Ey
 import { DEMO_ACTION_REQUESTS } from "@/lib/services/integration-hub/demo-connections";
 import type { DemoActionRequest } from "@/lib/services/integration-hub/demo-connections";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusConfig: Record<string, { color: string; icon: any; label: string }> = {
   proposed: { color: "text-blue-400", icon: Clock, label: "Pending Approval" },
@@ -123,12 +124,14 @@ function ActionCard({ action, onApprove, onReject }: { action: DemoActionRequest
 export default function ActionsApprovals() {
   const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
+  const { isDemoMode } = useDataMode();
 
-  const filtered = filter === "all" ? DEMO_ACTION_REQUESTS : DEMO_ACTION_REQUESTS.filter(a => a.status === filter);
+  const actionRequests = isDemoMode ? DEMO_ACTION_REQUESTS : [];
+  const filtered = filter === "all" ? actionRequests : actionRequests.filter(a => a.status === filter);
 
-  const pending = DEMO_ACTION_REQUESTS.filter(a => a.status === "proposed").length;
-  const approved = DEMO_ACTION_REQUESTS.filter(a => a.status === "approved" || a.status === "succeeded").length;
-  const rejected = DEMO_ACTION_REQUESTS.filter(a => a.status === "rejected").length;
+  const pending = actionRequests.filter(a => a.status === "proposed").length;
+  const approved = actionRequests.filter(a => a.status === "approved" || a.status === "succeeded").length;
+  const rejected = actionRequests.filter(a => a.status === "rejected").length;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
