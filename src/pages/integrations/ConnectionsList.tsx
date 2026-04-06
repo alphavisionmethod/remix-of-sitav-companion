@@ -157,7 +157,9 @@ export default function ConnectionsList() {
         </TabsContent>
 
         <TabsContent value="audit" className="mt-4 space-y-2">
-          {DEMO_AUDIT_LOG.map(entry => (
+          {auditLog.length === 0 && !isDemoMode ? (
+            <EmptyState icon={Activity} title="No audit events" subtitle="Activity will appear here as integrations sync." />
+          ) : auditLog.map((entry: any) => (
             <div key={entry.id} className="flex items-start gap-3 p-3 bg-muted/20 rounded-lg">
               <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${entry.eventType.includes("error") || entry.eventType.includes("warning") ? "bg-amber-400" : entry.eventType.includes("rejected") ? "bg-red-400" : "bg-green-400"}`} />
               <div className="flex-1">
