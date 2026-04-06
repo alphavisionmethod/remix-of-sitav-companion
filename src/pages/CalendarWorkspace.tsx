@@ -13,7 +13,6 @@ import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_CALENDAR_EVENTS, type CalWorkspaceEvent as CalEvent } from "@/lib/demo-data/calendar-workspace";
 import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
-import { useAuth } from "@/contexts/AuthContext";
 
 type CalView = "day" | "week" | "month" | "agenda";
 
