@@ -35,7 +35,7 @@ function getLabel(score: number): string {
 }
 
 export async function computeTruthIndices(): Promise<TruthIndexSummary> {
-  const [domains, gates, oauthFlows, syncJobs, portability, demoStatuses, observabilityScore, deviceScore] = await Promise.all([
+  const [domains, gates, oauthFlows, syncJobs, portability, demoStatuses, observabilityScore, deviceScore, securityResult] = await Promise.all([
     getDomainRuntimeStatuses(),
     getLaunchGates(),
     getOAuthFlows(),
@@ -44,6 +44,7 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
     getDemoGovernanceStatuses(),
     computeObservabilityIndex(),
     computeDeviceReadinessIndex(),
+    computeSecurityPrivacyIndex(),
   ]);
 
   const runtimeScore = getRuntimeTruthIndex(domains);
@@ -52,8 +53,9 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
   const surfaceScore = getSurfacePortabilityIndex(portability);
   const demoScore = getDemoGovernanceIndex(demoStatuses);
   const aiScore = await computeAITruthScore();
+  const securityScore = securityResult.score;
 
-  const scores = [runtimeScore, launchScore, aiScore, connectorScore, demoScore, surfaceScore, observabilityScore, deviceScore];
+  const scores = [runtimeScore, launchScore, aiScore, connectorScore, demoScore, surfaceScore, observabilityScore, deviceScore, securityScore];
   const overallScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
 
   return {
