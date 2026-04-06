@@ -30,15 +30,6 @@ const STATUS_CONFIG: Record<IncidentStatus, { color: string; icon: typeof AlertT
 };
 
 const MOCK_INCIDENTS = DEMO_INCIDENTS;
-    timeline: [
-      { time: "2h ago", action: "Incident auto-created from connector health check", actor: "system" },
-      { time: "1h 45m ago", action: "Retry attempt #1 failed — HTTP 503", actor: "connector_engine" },
-      { time: "1h 30m ago", action: "Escalated to critical — staleness > 3h", actor: "staleness_monitor" },
-      { time: "45m ago", action: "Investigating — checking Plaid API status", actor: "operator" },
-    ],
-  },
-  {
-    id: "INC-002", title: "AI advisor latency spike — business council", severity: "high", status: "mitigating",
     source: "telemetry", description: "Business advisor p95 latency exceeded 8s threshold. Avg response time 12.4s over last 30min.",
     created_at: new Date(Date.now() - 5 * 3600000).toISOString(), assignee: "AI Team", affected_services: ["business-advisor", "advisor-router"],
     mitigation: "Switched to fallback model (gpt-4o-mini). Monitoring recovery.",
