@@ -1,126 +1,79 @@
 
+# Convert All Mock-Data Domains to Real Supabase Data — Phase Plan
 
-# Android Ecosystem + Health/Signal Intelligence → 100% Advanced
+## Scope Assessment
 
-## Current Reality
+**40+ pages** across 6 domains currently use hardcoded mock data. Existing Supabase tables already cover most domains:
 
-### Android Ecosystem (AND01)
-**Stale finding** — already DB-connected with 7 hooks, seed button, loading/empty states. BUT missing two tabs that Apple has:
-- No Wearable Configs tab (hook `useEcosystemWearableConfigs("android")` exists but isn't wired)
-- No Push Routes tab (hook `useEcosystemPushRoutes("android")` exists but isn't wired)
-- No Continuity Events tab
+| Domain | Pages | Existing DB Tables | Status |
+|---|---|---|---|
+| **Investment/Money** | 12 pages | `asset_master`, `capital_allocations`, `capital_purpose_buckets`, `bills`, `budgets`, `connected_investment_platforms`, `asset_market_snapshots` | Tables exist, pages use mock imports |
+| **Business/CRM** | 15 pages | `customers`, `deals`, `invoices`, `revenue_leak_items`, `revenue_bookings`, `revenue_campaigns`, `revenue_funnels`, `communications` | Tables exist, pages use mock imports |
+| **Owner Center** | 8 pages | `approval_queue`, `audit_logs`, `council_decisions` + many governance tables | Partially connected, some mock imports remain |
+| **Revenue/Calling** | 3 pages | `revenue_*` tables, `communication_log` | Tables exist, mock data used |
+| **Workspace** | 5 pages | No content tables yet | Need new tables: `documents`, `sheets`, `slides` |
+| **Boardroom** | 2 pages | Many tables exist but page uses hardcoded arrays | Need data service wiring |
 
-### Health/Signal Intelligence (HRS01–HRS06)
-**Truly contracts-only** — all 6 pages use hardcoded inline arrays with zero DB queries:
-- `HRS01HealthConsentCenter` — hardcoded `CONSENT_CATEGORIES`, no DB consent read/write
-- `HRS02SignalSourcesBoard` — hardcoded `PROVIDERS` array, no `wearable_providers` query
-- `HRS03ReadinessExplanation` — hardcoded readiness rules, no `readiness_states` query
-- `HRS05AssistantTimingBoard` — hardcoded timing rules, no DB
-- `HRS06SignalLaunchHonesty` — hardcoded `SUBSYSTEMS`, no `ecosystem_launch_readiness` query
+## Implementation Strategy
 
-**Existing DB tables** (already in Supabase, unused by HRS pages): `wearable_providers`, `wearable_signals`, `health_signal_consents`, `readiness_states`
+For each domain, the pattern is:
+1. **Data Service** — `src/lib/data-services/{domain}-data-service.ts` with mode-aware queries
+2. **React Query Hook** — `src/hooks/use-{domain}-data.ts` wrapping the service
+3. **Page Update** — Replace mock imports with hook calls, add loading/empty states
 
----
+### Batch 1: Investment Office + Money Overview (highest value)
+- Create `src/lib/data-services/investment-data-service.ts` querying `asset_master`, `capital_allocations`, `capital_purpose_buckets`, `asset_market_snapshots`, `connected_investment_platforms`
+- Create `src/hooks/use-investment-data.ts` with hooks: `useCapitalBuckets()`, `usePositions()`, `useTheses()`, `useAssetSnapshots()`
+- Update `InvestmentOffice.tsx` — replace `MOCK_CAPITAL_BUCKETS`, `MOCK_POSITIONS`, `MOCK_THESES` with hooks
+- Update `MoneyOverview.tsx`, `MoneyBoardroom.tsx` — wire to same hooks
 
-## Fix 1: Android Ecosystem — Add Missing Tabs
+### Batch 2: Business CRM + Revenue
+- Create `src/lib/data-services/business-data-service.ts` querying `customers`, `deals`, `invoices`, `revenue_leak_items`, `revenue_campaigns`
+- Create `src/hooks/use-business-data.ts` with hooks: `useCustomers()`, `useDeals()`, `useInvoices()`, `useRevenuLeaks()`, `useRevenueCampaigns()`
+- Update `RevenueAutopilot.tsx` — replace `MOCK_LEAKAGE_INPUT`, `MOCK_RECOVERED_VALUES`, `MOCK_RAW_OPPORTUNITIES`
+- Update `BusinessBoardroom.tsx`, `CollectionsCommandCenter.tsx`, `RevenueForecast.tsx`
+- Update `RevenueCallingPage.tsx` — replace mock call lists
 
-Add 3 tabs to `AND01AndroidEcosystemCenter.tsx` matching Apple's pattern:
+### Batch 3: Owner Center cleanup
+- Replace remaining `buildMockSimResult` import with direct hook
+- Wire remaining mock arrays to existing governance hooks
 
-1. **Wearable Configs tab** — render `useEcosystemWearableConfigs("android")` data (device → config cards)
-2. **Push Routes tab** — render `useEcosystemPushRoutes("android")` data (routing priority table)
-3. **Continuity Events tab** — render `useEcosystemContinuityEvents("android")` data (event timeline)
+### Batch 4: Workspace (requires new tables)
+- Create migration for `workspace_documents`, `workspace_sheets`, `workspace_slides` tables
+- Create data service + hooks
+- Update `DocsWorkspace.tsx`, `SheetsWorkspace.tsx`, `SlidesWorkspace.tsx`
 
-All hooks already exist and are imported. Just needs UI tabs.
-
-## Fix 2: Create Health Signal Data Service
-
-New file: `src/lib/data-services/health-signal-data-service.ts`
-
-Functions:
-- `fetchWearableProviders()` — queries `wearable_providers` with demo fallback
-- `fetchHealthSignalConsents()` — queries `health_signal_consents` with demo fallback
-- `fetchWearableSignals(limit)` — queries `wearable_signals` with demo fallback
-- `fetchReadinessStates(limit)` — queries `readiness_states` with demo fallback
-- `fetchSignalSubsystemReadiness()` — queries `ecosystem_launch_readiness` where target LIKE `hrs_%` with demo fallback
-
-Each returns real Supabase data in real mode, demo arrays in demo mode.
-
-## Fix 3: Create Health Signal Hooks
-
-New file: `src/hooks/use-health-signal-data.ts`
-
-React Query hooks wrapping each data service function:
-- `useWearableProviders()`
-- `useHealthSignalConsents()`
-- `useWearableSignals(limit?)`
-- `useReadinessStates(limit?)`
-- `useSignalSubsystemReadiness()`
-
-## Fix 4: Extract Demo Data
-
-New file: `src/lib/demo-data/health-signals.ts`
-
-Move all inline arrays from HRS pages:
-- `DEMO_CONSENT_CATEGORIES` (from HRS01)
-- `DEMO_SIGNAL_PROVIDERS` (from HRS02)
-- `DEMO_READINESS_FACTORS` (from HRS03)
-- `DEMO_TIMING_RULES` (from HRS05)
-- `DEMO_SIGNAL_SUBSYSTEMS` (from HRS06)
-- `DEMO_REVOCATION_ACTIONS` (from HRS01)
-
-## Fix 5: Wire HRS Pages to Hooks
-
-### HRS01HealthConsentCenter
-- Import `useHealthSignalConsents()` hook
-- Query real consent records from DB
-- Keep `CONSENT_CATEGORIES` as display config (it's a UI schema, not data)
-- Add toggle that writes to `health_signal_consents` table
-- Add loading/empty states
-
-### HRS02SignalSourcesBoard
-- Import `useWearableProviders()` hook
-- Replace hardcoded `PROVIDERS` with DB data, fallback to demo
-- Show real provider connection status
-- Add loading/empty states
-
-### HRS03ReadinessExplanation
-- Import `useReadinessStates()` hook
-- Show real readiness derivation records alongside explanation
-- Keep explanatory text as static content
-
-### HRS05AssistantTimingBoard
-- Import `useReadinessStates()` for real timing data display
-- Keep timing rules as reference documentation
-- Add real-data panel showing latest readiness → timing decisions
-
-### HRS06SignalLaunchHonesty
-- Import `useSignalSubsystemReadiness()` hook
-- Replace hardcoded `SUBSYSTEMS` with DB `ecosystem_launch_readiness` records where target starts with `hrs_`
-- Add seed button using `useSeedEcosystemData()` for health subsystem initialization
-- Add loading/empty states
-
----
+### Batch 5: Boardroom
+- Wire `BusinessBoardroom.tsx` and `MoneyBoardroom.tsx` to aggregate hooks from batches 1-2
 
 ## Implementation Order
-
-1. Extract demo data to `src/lib/demo-data/health-signals.ts`
-2. Create `src/lib/data-services/health-signal-data-service.ts`
-3. Create `src/hooks/use-health-signal-data.ts`
-4. Add 3 missing tabs to AND01
-5. Wire HRS01–HRS06 to hooks (5 pages)
+1. Batch 1 (Investment + Money) — 4 files
+2. Batch 2 (Business + Revenue) — 6 files  
+3. Batch 3 (Owner Center) — 2 files
+4. Batch 4 (Workspace) — migration + 3 files
+5. Batch 5 (Boardroom) — 2 files
 6. Build verification
 
-## Files Changed
+## Files Created/Changed (~25 files)
 
 | File | Action |
 |---|---|
-| `src/lib/demo-data/health-signals.ts` | New — extracted demo arrays |
-| `src/lib/data-services/health-signal-data-service.ts` | New — mode-aware DB service |
-| `src/hooks/use-health-signal-data.ts` | New — React Query hooks |
-| `src/pages/admin/AND01AndroidEcosystemCenter.tsx` | Add 3 tabs (wearable, push, continuity) |
-| `src/pages/admin/HRS01HealthConsentCenter.tsx` | Wire to DB hooks |
-| `src/pages/admin/HRS02SignalSourcesBoard.tsx` | Wire to DB hooks |
-| `src/pages/admin/HRS03ReadinessExplanation.tsx` | Wire to DB hooks |
-| `src/pages/admin/HRS05AssistantTimingBoard.tsx` | Wire to DB hooks |
-| `src/pages/admin/HRS06SignalLaunchHonesty.tsx` | Wire to DB hooks + seed button |
-
+| `src/lib/data-services/investment-data-service.ts` | New |
+| `src/hooks/use-investment-data.ts` | New |
+| `src/lib/data-services/business-data-service.ts` | New |
+| `src/hooks/use-business-data.ts` | New |
+| `src/lib/data-services/workspace-data-service.ts` | New |
+| `src/hooks/use-workspace-data.ts` | New |
+| `src/pages/money/InvestmentOffice.tsx` | Wire to hooks |
+| `src/pages/money/MoneyOverview.tsx` | Wire to hooks |
+| `src/pages/money/MoneyBoardroom.tsx` | Wire to hooks |
+| `src/pages/business/RevenueAutopilot.tsx` | Wire to hooks |
+| `src/pages/business/BusinessBoardroom.tsx` | Wire to hooks |
+| `src/pages/business/CollectionsCommandCenter.tsx` | Wire to hooks |
+| `src/pages/business/RevenueForecast.tsx` | Wire to hooks |
+| `src/pages/RevenueCallingPage.tsx` | Wire to hooks |
+| `src/pages/OwnerCenter.tsx` | Remove remaining mocks |
+| `src/pages/workspace/DocsWorkspace.tsx` | Wire to hooks |
+| `src/pages/workspace/SheetsWorkspace.tsx` | Wire to hooks |
+| `src/pages/workspace/SlidesWorkspace.tsx` | Wire to hooks |
+| + more secondary pages | Wire to shared hooks |
