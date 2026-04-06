@@ -92,6 +92,7 @@ export function AIT05CostEfficiency() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <DemoModeBadge />
       <h1 className="text-2xl font-bold flex items-center gap-2"><DollarSign className="h-6 w-6 text-primary" /> AIT05 — Cost & Efficiency</h1>
       <p className="text-muted-foreground text-sm">Budget policy metrics, spend analysis, and optimization insights</p>
 

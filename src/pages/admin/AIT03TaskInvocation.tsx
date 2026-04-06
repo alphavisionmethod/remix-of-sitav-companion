@@ -102,6 +102,7 @@ export default function AIT03TaskInvocation() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Terminal className="h-6 w-6 text-primary" /> AIT03 — Task Invocation Console
