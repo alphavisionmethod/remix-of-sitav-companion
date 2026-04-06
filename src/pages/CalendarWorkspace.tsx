@@ -12,8 +12,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_CALENDAR_EVENTS, type CalWorkspaceEvent as CalEvent } from "@/lib/demo-data/calendar-workspace";
-
-const db: any = supabase;
+import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
 
 type CalView = "day" | "week" | "month" | "agenda";
 
@@ -43,15 +42,37 @@ const CalendarWorkspace = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [domainFilter, setDomainFilter] = useState<string>("all");
   const [selectedEvent, setSelectedEvent] = useState<CalEvent | null>(null);
+  const { mode } = useRealityProvider();
+
+  // DB query for real calendar events
+  const { data: dbEvents } = useQuery({
+    queryKey: ["calendar-events", mode],
+    queryFn: async () => {
+      if (mode !== "real") return null;
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return null;
+      const { data, error } = await (supabase as any).from("calendar_events").select("*")
+        .eq("user_id", user.id).order("event_date", { ascending: true });
+      if (error || !data?.length) return null;
+      return data.map((e: any): CalEvent => ({
+        id: e.id, title: e.title, date: new Date(e.event_date).toISOString(),
+        time: e.start_time, endTime: e.end_time, domain: e.domain,
+        type: e.event_type, location: e.location, priority: e.priority,
+        overlapWarning: e.overlap_warning,
+      }));
+    },
+  });
+
+  const allEvents: CalEvent[] = dbEvents ?? DEMO_CALENDAR_EVENTS;
 
   const filteredEvents = useMemo(() =>
-    DEMO_CALENDAR_EVENTS.filter(e => domainFilter === "all" || e.domain === domainFilter),
-    [domainFilter]
+    allEvents.filter(e => domainFilter === "all" || e.domain === domainFilter),
+    [domainFilter, allEvents]
   );
 
   const todayEvents = filteredEvents.filter(e => isSameDay(parseISO(e.date), new Date()));
-  const upcomingConflicts = DEMO_CALENDAR_EVENTS.filter(e => e.overlapWarning);
-  const urgentDeadlines = DEMO_CALENDAR_EVENTS.filter(e => e.priority === "urgent" || e.priority === "high");
+  const upcomingConflicts = allEvents.filter(e => e.overlapWarning);
+  const urgentDeadlines = allEvents.filter(e => e.priority === "urgent" || e.priority === "high");
 
   const weekStart = startOfWeek(selectedDate, { weekStartsOn: 1 });
   const weekDays = eachDayOfInterval({ start: weekStart, end: addDays(weekStart, 6) });
