@@ -55,6 +55,7 @@ const PricingEditor = () => {
 
   return (
     <motion.div className="mx-auto max-w-4xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <DemoModeBadge />
       <SitaPageHeader
         title="Pricing Editor"
         subtitle="Manage service and product pricing with preview-before-save"

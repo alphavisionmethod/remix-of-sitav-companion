@@ -1237,6 +1237,7 @@ export default function MissionControlPage() {
   return (
     <MCAdminCtx.Provider value={mcAdminData}>
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-5">
+      <DemoModeBadge />
       <div className="flex items-center justify-between">
         <ModeToggle mode={mode} setMode={setMode} />
         {isOwner && (

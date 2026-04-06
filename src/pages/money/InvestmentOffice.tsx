@@ -470,6 +470,7 @@ const InvestmentOffice = () => {
 
   return (
     <div className="space-y-6">
+      <DemoModeBadge />
       <SitaPageHeader
         title="Investment Office"
         subtitle="Capital protection, regime-aware intelligence, thesis discipline — not a trading app"

@@ -737,6 +737,7 @@ export default function AdvisorWorkspace() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
+      <DemoModeBadge />
       <MainGuideHeader mode={mode} onModeChange={setMode} />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
