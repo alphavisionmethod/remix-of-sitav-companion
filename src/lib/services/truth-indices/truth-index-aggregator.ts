@@ -10,6 +10,7 @@ import { getOAuthFlows, getSyncJobs, getConnectorTruthIndex } from "../connector
 import { getSurfacePortability, getSurfacePortabilityIndex } from "../surface-portability/surface-portability-service";
 import { getDemoGovernanceStatuses, getDemoGovernanceIndex } from "../demo-governance/demo-governance-service";
 import { computeObservabilityIndex, computeDeviceReadinessIndex } from "../observability/observability-service";
+import { computeSecurityPrivacyIndex } from "../security-privacy/security-privacy-service";
 
 export interface TruthIndexSummary {
   runtimeTruth: { score: number; label: string; detail: string };
