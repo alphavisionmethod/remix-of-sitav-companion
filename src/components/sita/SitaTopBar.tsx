@@ -184,31 +184,34 @@ export const SitaTopBar = ({
           </button>
         </div>
 
-        <div className="h-4 w-px bg-border/40 mx-0.5" />
+        <div className="h-4 w-px bg-border/40 mx-0.5 hidden sm:block" />
 
         {/* Theme */}
         <button
           onClick={() => setTheme(resolved === "dark" ? "light" : "dark")}
           className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/60 transition-colors"
           title={`Switch to ${resolved === "dark" ? "light" : "dark"} mode`}
+          aria-label={`Switch to ${resolved === "dark" ? "light" : "dark"} mode`}
         >
           {resolved === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
         </button>
 
-        {/* Proof/Receipts */}
+        {/* Proof/Receipts — desktop only */}
         <button
           onClick={() => navigate("/proof")}
-          className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/60 transition-colors"
+          className="hidden sm:flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/60 transition-colors"
           title="Proof Center"
+          aria-label="Proof Center"
         >
           <Receipt className="h-3.5 w-3.5" />
         </button>
 
-        {/* Timeline */}
+        {/* Timeline — desktop only */}
         <button
           onClick={onTimelineOpen}
-          className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/60 transition-colors"
+          className="hidden sm:flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/60 transition-colors"
           title="Timeline"
+          aria-label="Timeline"
         >
           <Clock className="h-3.5 w-3.5" />
         </button>
@@ -216,8 +219,9 @@ export const SitaTopBar = ({
         {/* Notifications */}
         <button
           onClick={onNotifOpen}
-          className="relative flex h-7 items-center gap-1 rounded-lg px-2 text-muted-foreground hover:bg-secondary/60 transition-colors"
+          className="relative flex h-7 items-center gap-1 rounded-lg px-1.5 sm:px-2 text-muted-foreground hover:bg-secondary/60 transition-colors"
           title="Action Center"
+          aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ""}`}
         >
           <Bell className="h-3.5 w-3.5" />
           {unreadCount > 0 && (
@@ -227,8 +231,8 @@ export const SitaTopBar = ({
           )}
         </button>
 
-        {/* Clock */}
-        <span className="text-[11px] font-medium text-muted-foreground tabular-nums ml-1 hidden sm:inline">{clock}</span>
+        {/* Clock — desktop only */}
+        <span className="text-[11px] font-medium text-muted-foreground tabular-nums ml-1 hidden lg:inline">{clock}</span>
       </div>
     </header>
   );

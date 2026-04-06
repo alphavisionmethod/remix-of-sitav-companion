@@ -1,13 +1,12 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Home, Briefcase, DollarSign, Headphones, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 
 const navItems = [
   { icon: Home, label: "Home", path: "/" },
-  { icon: Briefcase, label: "Business", path: "/business" },
+  { icon: Briefcase, label: "Biz", path: "/business" },
   { icon: DollarSign, label: "Money", path: "/money" },
-  { icon: Headphones, label: "Concierge", path: "/concierge" },
+  { icon: Headphones, label: "Help", path: "/concierge" },
   { icon: MoreHorizontal, label: "More", path: "/settings" },
 ];
 
@@ -19,8 +18,13 @@ export const MobileBottomNav = () => {
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden border-t border-border/40 bg-surface-0/90 backdrop-blur-xl safe-area-bottom">
-      <div className="flex items-center justify-around px-2 py-1.5">
+    <nav
+      role="navigation"
+      aria-label="Main navigation"
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden border-t border-border/40 bg-surface-0/90 backdrop-blur-xl"
+      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+    >
+      <div className="flex items-center justify-around px-1 py-1">
         {navItems.map((item) => {
           const active = isActive(item.path);
           const Icon = item.icon;
@@ -28,25 +32,27 @@ export const MobileBottomNav = () => {
             <button
               key={item.path}
               onClick={() => navigate(item.path)}
-              className="flex flex-col items-center gap-0.5 px-3 py-1"
+              aria-label={item.label}
+              aria-current={active ? "page" : undefined}
+              className="relative flex flex-col items-center gap-0.5 px-2 py-1 min-w-0"
             >
               <Icon
                 className={cn(
-                  "h-5 w-5 transition-colors",
+                  "h-5 w-5 transition-colors shrink-0",
                   active ? "text-primary" : "text-muted-foreground"
                 )}
                 strokeWidth={active ? 2 : 1.5}
               />
               <span
                 className={cn(
-                  "text-[9px] font-medium",
+                  "text-[9px] font-medium leading-tight truncate max-w-[48px]",
                   active ? "text-primary" : "text-muted-foreground"
                 )}
               >
                 {item.label}
               </span>
               {active && (
-                <div className="absolute top-0 h-0.5 w-6 rounded-full bg-primary" />
+                <div className="absolute top-0 h-0.5 w-5 rounded-full bg-primary" />
               )}
             </button>
           );
