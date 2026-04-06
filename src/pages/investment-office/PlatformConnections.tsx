@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link2, Plus, RefreshCw, CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
+import { PLATFORM_CONNECTIONS } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const STATUS_CONFIG = {
@@ -39,7 +39,6 @@ export default function PlatformConnections() {
         <h3 className="text-sm font-semibold text-foreground">Connected</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {PLATFORM_CONNECTIONS.filter(p => p.status === "connected").map(pc => {
-  const { platformConnections: PLATFORM_CONNECTIONS } = useInvestmentOfficeData();
             const SC = STATUS_CONFIG[pc.status];
             return (
               <div key={pc.id} className="rounded-2xl border border-border bg-card p-4 flex items-center gap-4">

@@ -3,7 +3,7 @@ import {
   BarChart3, Brain, TrendingUp, TrendingDown, Shield, PieChart, Target, Eye,
   Zap, Globe, DollarSign, AlertTriangle, ChevronRight, Calendar
 } from "lucide-react";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
+import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_ORDERS, SAMPLE_SCENARIOS, SAMPLE_THESES, WATCHLISTS } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const fmt = (n: number) => n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
@@ -15,7 +15,6 @@ export default function AdvancedMode() {
   const topMovers = [...INSTRUMENTS].sort((a, b) => Math.abs(b.changePct24h) - Math.abs(a.changePct24h)).slice(0, 8);
   const allCatalysts = INSTRUMENTS.flatMap(i => i.catalysts.map(c => ({ ...c, instrument: i }))).sort((a, b) => a.date.localeCompare(b.date));
 
-  const { portfolio: PORTFOLIO, instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS, watchlists: WATCHLISTS, theses: SAMPLE_THESES, orders: SAMPLE_ORDERS, scenarios: SAMPLE_SCENARIOS } = useInvestmentOfficeData();
 
   return (
     <div className="mx-auto max-w-[90rem] space-y-4">

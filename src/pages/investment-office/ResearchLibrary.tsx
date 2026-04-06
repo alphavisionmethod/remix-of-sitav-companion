@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BookOpen, Search, Calendar, Tag, ChevronRight } from "lucide-react";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
+import { INSTRUMENTS, SAMPLE_RESEARCH } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function ResearchLibrary() {
@@ -60,7 +60,6 @@ export default function ResearchLibrary() {
               {note.instrumentIds.length > 0 && (
                 <div className="flex gap-1 ml-auto">
                   {note.instrumentIds.map(id => {
-  const { research: SAMPLE_RESEARCH, instruments: INSTRUMENTS } = useInvestmentOfficeData();
                     const inst = INSTRUMENTS.find(i => i.id === id);
                     return inst ? <span key={id} className="text-sm">{inst.logoIcon}</span> : null;
                   })}

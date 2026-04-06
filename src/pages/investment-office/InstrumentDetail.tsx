@@ -3,7 +3,7 @@ import {
   ArrowLeft, TrendingUp, TrendingDown, Shield, Zap, BarChart3, Brain,
   Target, AlertTriangle, ChevronRight, Calendar, Eye, Plus
 } from "lucide-react";
-import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
+import { INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_THESES, getInstrument } from "@/lib/investment-office/mock-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
@@ -28,7 +28,6 @@ export default function InstrumentDetail() {
     a.domain === "risk"
   );
 
-  const { getInstrument, advisors: INVESTMENT_ADVISORS, theses: SAMPLE_THESES, portfolio: PORTFOLIO } = useInvestmentOfficeData();
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
