@@ -21,6 +21,7 @@ export interface TruthIndexSummary {
   surfacePortability: { score: number; label: string; detail: string };
   deviceReadiness: { score: number; label: string; detail: string };
   observability: { score: number; label: string; detail: string };
+  securityPrivacy: { score: number; label: string; detail: string };
   overallScore: number;
   lastComputed: string;
 }
