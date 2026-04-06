@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ConnectivityProvider } from "@/contexts/ConnectivityContext";
 import { useUserPreferences } from "@/hooks/use-user-preferences";
 import { DataModeProvider } from "@/contexts/DataModeContext";
+import { DemoModeProvider } from "@/contexts/DemoModeProvider";
 import { DisplayModeProvider } from "@/contexts/DisplayModeContext";
 import { InspectorProvider } from "@/contexts/InspectorContext";
 import { EntityContextProvider } from "@/contexts/EntityContext";
@@ -550,6 +551,7 @@ const App = () => (
           <ConnectivityProvider>
           <ThemeProvider>
           <DataModeProvider>
+          <DemoModeProvider>
           <DisplayModeProvider>
           <EntityContextProvider>
           <SitaKernelProvider>
@@ -1296,6 +1298,7 @@ const App = () => (
           </SitaKernelProvider>
           </EntityContextProvider>
           </DisplayModeProvider>
+          </DemoModeProvider>
           </DataModeProvider>
           </ThemeProvider>
           </ConnectivityProvider>

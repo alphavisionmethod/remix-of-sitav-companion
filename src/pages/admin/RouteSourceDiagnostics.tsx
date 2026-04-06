@@ -8,8 +8,8 @@ import { useState, useMemo } from "react";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import {
   Search, Database, Shield, CheckCircle, AlertTriangle,
   XCircle, Eye, ArrowRight, Globe, Code
 } from "lucide-react";

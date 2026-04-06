@@ -1,10 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { handleCors, corsResponse, corsError } from "../_shared/cors.ts";
 import { requireAdmin, getServiceClient } from "../_shared/auth.ts";
-import { validateBody } from "../_shared/validate.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { corsHeaders } from "../_shared/cors.ts";
+import { zodValidate, OsCommandSchema } from "../_shared/zod-validate.ts";
 
 const ALLOWED_COMMANDS = ["restart-service", "update-now", "run-backup", "clear-cache", "rotate-certs", "health-check"];
 const logger = new EdgeLogger("os-command");
@@ -22,13 +22,11 @@ serve(async (req) => {
     logger.info("os-command request", { userId: auth.user.id });
 
     if (req.method === "POST") {
-      const body = await validateBody(req, {
-        device_id: { type: "string", required: true, maxLength: 255 },
-        command: { type: "string", required: true, enum: ALLOWED_COMMANDS },
-        params: { type: "object" },
-      });
-      if (body instanceof Response) return body;
-      const { device_id, command, params } = body as { device_id: string; command: string; params?: Record<string, unknown> };
+      const rawBody = await req.json().catch(() => null);
+      if (!rawBody) return corsError("Invalid JSON body", 400);
+      const validated = zodValidate(rawBody, OsCommandSchema);
+      if (!validated.success) return validated.response;
+      const { device_id, command, params } = validated.data;
 
       const adminClient = getServiceClient();
 
