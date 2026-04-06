@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Authenticated read system config" ON public.system_config;
