@@ -289,7 +289,9 @@ const AND01AndroidEcosystemCenter = () => {
                         <td className="p-2 font-mono">{route.channel_type || "default"}</td>
                         <td className="p-2 text-center"><Badge variant={route.routing_priority > 7 ? "destructive" : route.routing_priority > 4 ? "default" : "secondary"}>{route.routing_priority}</Badge></td>
                         <td className="p-2 text-center">{route.dnd_bypass ? <CheckCircle2 className="h-3 w-3 mx-auto text-green-500" /> : <span className="text-muted-foreground">—</span>}</td>
-                        <td className="p-2 text-center">{route.active ? <CheckCircle2 className="h-3 w-3 mx-auto text-green-500" /> : <AlertTriangle className="h-3 w-3 mx-auto text-muted-foreground" />}</td>
+                        <td className="p-2 text-center">
+                          <Switch checked={route.urgency_filter !== "none"} onCheckedChange={(v) => updatePush.mutate({ id: route.id, enabled: v })} />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
