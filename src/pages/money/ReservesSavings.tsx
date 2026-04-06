@@ -86,7 +86,7 @@ const ReservesSavings = () => {
       <DemoModeBadge />
       <ConfirmationDialog state={confirmation} />
       <SitaPageHeader title="Reserves & Savings" subtitle="Build stability, track goals, and maintain financial resilience"
-        actions={<SitaButton variant="primary" onClick={() => createReserve.mutate({ name: "New Goal", target_amount: 5000, category: "goal", contribution_amount: 200 })}><Plus className="h-4 w-4" /> New Goal</SitaButton>} />
+        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => createReserve.mutate({ name: "New Goal", target_amount: 5000, category: "goal", contribution_amount: 200 })}><Plus className="h-4 w-4" /> New Goal</SitaButton></div>} />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Total Reserved" value={`$${(totalCurrent / 1000).toFixed(1)}K`} icon={PiggyBank} sub={`of $${(totalTarget / 1000).toFixed(0)}K target`} className="gradient-sita-subtle" />
