@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FileSearch, Brain, TrendingUp, TrendingDown, AlertTriangle, Check, Calendar, Target, Globe, Shield } from "lucide-react";
-import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 export default function IntelligenceDossier() {
@@ -14,6 +14,8 @@ export default function IntelligenceDossier() {
     (inst.assetClass === "commodities" && a.domain === "commodities") ||
     (inst.assetClass === "events" && a.domain === "events")
   );
+
+  const { instruments: INSTRUMENTS, advisors: INVESTMENT_ADVISORS } = useInvestmentOfficeData();
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">

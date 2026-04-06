@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layers, Shield, TrendingUp, Zap, DollarSign, Target, AlertTriangle, ChevronRight } from "lucide-react";
-import { PORTFOLIO } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const PURPOSES = [
@@ -66,6 +66,7 @@ export default function CapitalTwin() {
       {view === "purpose" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {PURPOSES.map((p, i) => {
+  const { portfolio: PORTFOLIO } = useInvestmentOfficeData();
             const overTarget = p.allocated > p.target;
             return (
               <motion.div key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}

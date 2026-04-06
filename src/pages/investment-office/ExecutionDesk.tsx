@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Target, Shield, DollarSign, AlertTriangle, Check, ChevronRight, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
-import { INSTRUMENTS, SAMPLE_ORDERS, PLATFORM_CONNECTIONS, INVESTMENT_ADVISORS } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type { TradeAction, Instrument } from "@/lib/investment-office/types";
 
@@ -19,6 +19,7 @@ export default function ExecutionDesk() {
   const estCost = selectedInstrument ? (orderType === "limit" ? parseFloat(limitPrice) : selectedInstrument.price) * parseInt(quantity || "0") : 0;
 
   const handleExecute = () => {
+  const { instruments: INSTRUMENTS, orders: SAMPLE_ORDERS, platformConnections: PLATFORM_CONNECTIONS, advisors: INVESTMENT_ADVISORS } = useInvestmentOfficeData();
     setStatus("executing");
     setTimeout(() => setStatus("done"), 2500);
   };

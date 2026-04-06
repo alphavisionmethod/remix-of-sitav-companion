@@ -6,7 +6,7 @@ import {
   Lightbulb, Target, Clock, RefreshCw, HelpCircle, MessageSquare, ArrowRight,
   Zap, X, Check, Minus, TrendingUp, TrendingDown, Globe
 } from "lucide-react";
-import { INVESTMENT_ADVISORS, ADVISOR_SYNTHESIS } from "@/lib/investment-office/mock-data";
+import { useInvestmentOfficeData } from "@/hooks/useInvestmentOfficeData";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type { InvestmentAdvisor, AdvisorConfidenceLevel, AdvisorRecommendation } from "@/lib/investment-office/types";
 
@@ -335,6 +335,7 @@ function SynthesisPanel() {
             <h4 className="text-sm font-semibold text-foreground">{d.topic}</h4>
             <div className="space-y-2">
               {d.positions.map(pos => {
+  const { advisors: INVESTMENT_ADVISORS, advisorSynthesis: ADVISOR_SYNTHESIS } = useInvestmentOfficeData();
                 const adv = INVESTMENT_ADVISORS.find(a => a.id === pos.advisorId);
                 return (
                   <div key={pos.advisorId} className="rounded-xl border border-border bg-secondary/20 p-3 space-y-1">
