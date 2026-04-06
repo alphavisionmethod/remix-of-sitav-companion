@@ -817,6 +817,7 @@ const App = () => (
                     <Route path="/admin/customer-journey/broken-clicks" element={<CJ06BrokenClicksExplorer />} />
                     <Route path="/admin/customer-journey/remediation" element={<CJ07OwnerRemediationView />} />
                     <Route path="/admin/customer-journey/coverage" element={<CJ08RouteActionCoverage />} />
+                    <Route path="/admin/customer-journey/recent-runs" element={<CJ09RecentVerificationRuns />} />
 
                     {/* Digital Presence Office */}
                     <Route path="/digital-presence" element={<PresenceGate />} />
