@@ -96,7 +96,28 @@ const WorkflowsCenter = () => {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <DemoModeBadge />
-      <SitaPageHeader title="Workflows" subtitle="Actions, approvals, and execution tracking — live from workflow engine" />
+      <SitaPageHeader title="Workflows" subtitle="Actions, approvals, and execution tracking — live from workflow engine"
+        actions={<SitaButton variant="primary" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> New Workflow</SitaButton>}
+      />
+
+      {showCreate && (
+        <SitaCard hover={false} glow className="p-5">
+          <SitaCardTitle>Create Workflow</SitaCardTitle>
+          <div className="mt-3 space-y-3">
+            <input className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" placeholder="Workflow name" value={newName} onChange={e => setNewName(e.target.value)} />
+            <select className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" value={newTrigger} onChange={e => setNewTrigger(e.target.value)}>
+              <option value="manual">Manual</option>
+              <option value="schedule">Schedule</option>
+              <option value="event">Event</option>
+              <option value="webhook">Webhook</option>
+            </select>
+            <div className="flex gap-2">
+              <SitaButton variant="primary" onClick={() => createWorkflow.mutate()} disabled={!newName.trim()}>Create</SitaButton>
+              <SitaButton variant="secondary" onClick={() => setShowCreate(false)}>Cancel</SitaButton>
+            </div>
+          </div>
+        </SitaCard>
+      )
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Running" value={runningCount} icon={Clock} />
