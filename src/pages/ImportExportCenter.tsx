@@ -6,6 +6,7 @@ import { Upload, FileText, Image, Table2, FileSpreadsheet, Download, ArrowUpFrom
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
@@ -33,6 +34,7 @@ const ImportExportCenter = () => {
 
   return (
     <div className="min-h-screen pb-12">
+      <DemoModeBadge />
       <SitaPageHeader title="Upload & Export Center" subtitle="Import files, export reports, and manage data transfers" />
 
       <SitaTabs tabs={[

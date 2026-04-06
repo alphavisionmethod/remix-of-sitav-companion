@@ -10,6 +10,7 @@ import { Calendar, Clock, AlertTriangle, Users, Briefcase, Home, ChevronLeft, Ch
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const db: any = supabase;
 
@@ -85,6 +86,7 @@ const CalendarWorkspace = () => {
 
   return (
     <div className="min-h-screen pb-12">
+      <DemoModeBadge />
       <SitaPageHeader title="Calendar" subtitle="Your time across life, business, and household" actions={
         <div className="flex gap-2">
           <Button size="sm" variant="outline" className="gap-1.5 border-border/50 text-muted-foreground hover:bg-accent/50">

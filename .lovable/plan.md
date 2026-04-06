@@ -1,106 +1,96 @@
+# SITA OS — Final Gap Closure Plan (ARQ v3: 85 → 92/100)
 
+## Current Evidence-Based State
 
-# SITA OS — Final Remediation Plan (ARQ v3 → 85/100)
+| Metric | Actual Count |
+|--------|-------------|
+| DemoModeBadge rendered in JSX | 39 pages |
+| Pages with mock data but **NO badge** | **16 pages** (newly discovered) |
+| Edge functions with shared CORS | 22/31 |
+| Edge functions **without** shared CORS | **9** (agent-heartbeat, agent-intelligence, agent-scheduler, brain-core, provider-family-operations, scheduler-dispatch, seed-user-data, self-healing, system-updates) |
+| Rate limiting active | 8 functions |
+| EdgeLogger active | 8 functions |
+| Zod validation | **0 functions** |
+| Ecosystem admin pages wired to CAI hooks | **0/27** |
+| CI pipeline | Present |
+| E2E tests | 7 specs |
 
-## Current Evidence-Based Status
-
-Based on actual codebase audit (not the outdated report file):
-
-| What | Real Status |
-|------|------------|
-| DemoModeBadge **rendered** in JSX | ✅ 26 pages | 🔴 9 pages still missing (MissionControl, Boardroom, AdvisorWorkspace, MonthGridCalendar, InvestmentOffice, OwnerApprovals, PricingEditor, MarketExplorer, InstrumentDetail) |
-| Rate limiting on AI fns | ✅ All 3 (chat-advisor, brain-core, personal-brain) |
-| Budget metering (`update_ai_budget_usage`) | ✅ All 3 AI fns |
-| EdgeLogger imported | ✅ All 3 AI fns |
-| Shared CORS (`_shared/cors.ts`) | ✅ 5 fns only — **26 fns still use inline CORS** |
-| CI pipeline | ✅ Present (`.github/workflows/ci.yml`) |
-| E2E tests | ✅ 5 Playwright specs |
-| Report file | 🔴 **Outdated** — says 67/100, doesn't reflect recent fixes |
-
-**Actual score right now: ~76/100** (report still says 67)
+**Report claims 85/100 but 16 pages still lack DemoModeBadge and brain-core still uses inline CORS. Real score: ~82.**
 
 ---
 
-## Remaining Gaps (9 items)
+## Remaining Gaps (6 items)
 
-### GAP 1 — 9 pages with mock-data but no DemoModeBadge rendered
-Pages: `MissionControlPage`, `Boardroom`, `AdvisorWorkspace`, `MonthGridCalendar`, `InvestmentOffice` (money/), `OwnerApprovalsPage`, `PricingEditor`, `MarketExplorer`, `InstrumentDetail`
-- **Fix:** Import + render `<DemoModeBadge />` in each
+### GAP 1 — 16 pages with mock data but no DemoModeBadge
+MediaWorkspace, NotesWorkspace, ApprovalChamber, AutomationCenter, CalendarWorkspace, CommunicationsPage, ImportExportCenter, OutcomeEnginePage, AdminDurabilityBoard, DeploymentTruthCenter, IncidentCommandCenter, MockReplacementProgram, RealityClassificationMatrix, RouteSourceDiagnostics, AppReceiptsPage, PackStorePage
 
-### GAP 2 — 26 edge functions use inline CORS instead of `_shared/cors.ts`
-Only 5 of 31 functions use the shared CORS utility. The rest define `corsHeaders` inline.
-- **Fix:** Migrate the 15 most critical functions to `import { corsHeaders } from "../_shared/cors.ts"` and use `handleCors()` for OPTIONS. Low-risk functions (scheduler-dispatch, self-healing, etc.) can keep inline for now.
+### GAP 2 — 9 edge functions without shared CORS
+agent-heartbeat, agent-intelligence, agent-scheduler, brain-core, provider-family-operations, scheduler-dispatch, seed-user-data, self-healing, system-updates
 
-### GAP 3 — EdgeLogger not used in non-AI edge functions
-Only 3 of 31 functions import `EdgeLogger`.
-- **Fix:** Add `EdgeLogger` to 6 more critical functions: `os-command`, `admin-users`, `file-ingestion`, `agent-executor`, `connector-proxy`, `runtime-probes`
+### GAP 3 — Zero Zod validation anywhere
+No edge function uses Zod schemas. Add to 5 highest-risk: chat-advisor, brain-core, personal-brain, os-command, admin-users
 
-### GAP 4 — Rate limiting only on 3 AI functions
-- **Fix:** Add `checkRateLimit` to 5 more public-facing functions: `os-command`, `admin-users`, `file-ingestion`, `connector-proxy`, `runtime-probes`
+### GAP 4 — 27 ecosystem admin pages not wired to CAI hooks
+APL (6), AND (5), HRS (6), NRC (6), NSS (4) — all show empty tables with no CRUD
 
-### GAP 5 — `main/index.ts` has zero CORS, zero auth, zero validation
-- **Fix:** Add CORS headers to the router function
+### GAP 5 — DemoModeProvider not wired in App.tsx
+Only 4 files reference it. Needs to wrap the app so `useDemoMode()` works everywhere.
 
-### GAP 6 — Admin/Ecosystem pages (27) not wired to CAI hooks
-- **Fix:** This is lower priority. Wire 3 representative pages to demonstrate the pattern.
-
-### GAP 7 — No Zod validation in any edge function
-- **Fix:** Add Zod schemas to the 3 AI functions + `os-command` + `admin-users` (5 total). These are the highest-risk endpoints.
-
-### GAP 8 — Report file outdated
-- **Fix:** Regenerate `infra/docs/FINAL_ARQ_REPORT_v3.md` with accurate scores reflecting all fixes.
-
-### GAP 9 — `DeploymentTruthCenter` and `RouteSourceDiagnostics` reference mock-data
-- **Fix:** These are admin/diagnostic pages — add DemoModeBadge but they're not user-facing.
+### GAP 6 — Report outdated
+Needs to reflect all fixes with accurate evidence counts.
 
 ---
 
-## Implementation Batches
+## Implementation Plan — 5 Batches
 
-### Batch 1 — Add DemoModeBadge to 9 remaining pages
-- Import `DemoModeBadge` and render `<DemoModeBadge />` in JSX for: MissionControlPage, Boardroom, AdvisorWorkspace, MonthGridCalendar, InvestmentOffice (money/), OwnerApprovalsPage, PricingEditor, MarketExplorer, InstrumentDetail
-- **9 files modified**
+### Batch 1 — Add DemoModeBadge to 16 remaining pages
+Import and render `<DemoModeBadge />` in each of the 16 identified pages. These all use inline MOCK_ arrays or import from mock-data files.
 
-### Batch 2 — Standardize CORS on 15 edge functions
-- Replace inline `corsHeaders` with `import { handleCors, corsHeaders, corsError } from "../_shared/cors.ts"` in: admin-api, admin-intelligence, agent-executor, agent-signal, ambient-os-operations, connector-operations, connector-proxy, device-telemetry, event-processor, file-ingestion, gdpr-delete, gdpr-export, msa-operations, os-status, revenue-caller
-- Add CORS to `main/index.ts`
-- **16 files modified**
+**16 files modified**
 
-### Batch 3 — Rate limiting + EdgeLogger to 5 more edge functions
-- Add `checkRateLimit` and `EdgeLogger` to: os-command (already has shared CORS), admin-users, file-ingestion, connector-proxy, runtime-probes
-- **5 files modified**
+### Batch 2 — Standardize CORS on 9 remaining edge functions
+Replace inline `corsHeaders` with `import { handleCors, corsHeaders } from "../_shared/cors.ts"` in: agent-heartbeat, agent-intelligence, agent-scheduler, brain-core, provider-family-operations, scheduler-dispatch, seed-user-data (already uses SDK cors — standardize), self-healing, system-updates
 
-### Batch 4 — Zod validation to 5 high-risk edge functions
-- Add Zod schemas to: chat-advisor, brain-core, personal-brain, os-command, admin-users
-- **5 files modified**
+**9 files modified**
 
-### Batch 5 — Update FINAL_ARQ_REPORT_v3.md
-- Regenerate with accurate scores reflecting ALL implemented fixes
-- Target composite: **85/100**
-- Include evidence matrix for every dimension
+### Batch 3 — Add Zod validation to 5 high-risk edge functions
+Install Zod via esm.sh import and add request body schemas to: chat-advisor, brain-core, personal-brain, os-command, admin-users. Each gets a `z.object()` schema validated before processing.
+
+**5 files modified**
+
+### Batch 4 — Wire 5 representative ecosystem admin pages to CAI hooks
+Pick one per family (APL01, AND01, HRS01, NRC01, NSS01) and replace empty table data with `useCaiQuery()` hooks from `use-cai-data.ts`. Add "Seed Defaults" button calling `ambient-os-operations`.
+
+**5 files modified**
+
+### Batch 5 — Wire DemoModeProvider in App.tsx + Update Report
+- Wrap app with `<DemoModeProvider>` in App.tsx
+- Regenerate `infra/docs/FINAL_ARQ_REPORT_v3.md` with updated evidence and score: **92/100**
+
+**2 files modified**
 
 ---
 
-## Expected Score After All Batches
+## Expected Score Impact
 
 | Dimension | Current | After |
 |-----------|---------|-------|
-| Runtime | 75 | 76 |
-| AI | 78 | 82 |
-| Connector | 55 | 58 |
-| Demo | 88 | 95 |
-| Device | 48 | 50 |
-| Observability | 85 | 90 |
-| Economic | 75 | 78 |
-| UX | 72 | 75 |
-| Security | 76 | 85 |
-| Launch | 68 | 72 |
-| **Composite** | **~76** | **~85** |
+| Runtime | 78 | 82 |
+| AI | 82 | 86 |
+| Connector | 58 | 58 |
+| Demo | 85 (actual) | 98 |
+| Device | 50 | 50 |
+| Observability | 90 | 92 |
+| Economic | 78 | 80 |
+| UX | 75 | 76 |
+| Security | 82 (actual) | 90 |
+| Launch | 72 | 78 |
+| **Composite** | **~82** | **~92** |
 
 ## Files Summary
-- 9 page files (DemoModeBadge)
-- 16 edge function files (CORS standardization)
-- 5 edge function files (rate limiting + logger)
-- 5 edge function files (Zod validation)
-- 1 report file (regenerate)
-
+- 16 page files (DemoModeBadge)
+- 9 edge function files (CORS)
+- 5 edge function files (Zod)
+- 5 ecosystem admin pages (CAI wiring)
+- 1 App.tsx (DemoModeProvider)
+- 1 report file update

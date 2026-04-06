@@ -17,6 +17,7 @@ import {
   Plus, ToggleLeft, ToggleRight, Trash2
 } from "lucide-react";
 import { DEMO_AUTOMATION_RULES, DEMO_DELEGATIONS } from "@/lib/demo-data";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 
 const AutomationCenter = () => {
@@ -84,6 +85,7 @@ const AutomationCenter = () => {
 
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <DemoModeBadge />
       <SitaPageHeader
         title="Automation Center"
         subtitle="What SITA handles automatically — thresholds, rules, and delegation"

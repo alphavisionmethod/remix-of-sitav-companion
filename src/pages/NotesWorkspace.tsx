@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 interface Note {
   id: string;
@@ -56,6 +57,7 @@ const NotesWorkspace = () => {
 
   return (
     <div className="min-h-screen pb-12">
+      <DemoModeBadge />
       <SitaPageHeader title="Notes & Knowledge" subtitle="Capture, organize, and connect your thinking" actions={
         <Button size="sm" variant="outline" className="gap-1.5 border-border/50">
           <Plus className="w-3.5 h-3.5" /> New Note
