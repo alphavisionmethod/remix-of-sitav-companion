@@ -164,16 +164,143 @@ Deno.serve(async (req) => {
     }
   }
 
+  // ── Probe 8: Notification Queue Health ──
+  if (!filterProbe || filterProbe === "notification-health") {
+    try {
+      const t = Date.now();
+      const { data, error } = await supabase.from("notifications_queue")
+        .select("id, status")
+        .eq("status", "pending")
+        .limit(100);
+      const pendingCount = data?.length ?? 0;
+      results.push({
+        probe_id: "notification-health", name: "Notification Queue", target: "notifications_queue",
+        status: error ? "fail" : pendingCount > 50 ? "degraded" : "pass",
+        latency_ms: Date.now() - t, error: error?.message,
+        snapshot: { pending_count: pendingCount },
+      });
+    } catch (e: any) {
+      results.push({ probe_id: "notification-health", name: "Notification Queue", target: "notifications_queue", status: "fail", latency_ms: 0, error: e.message });
+    }
+  }
+
+  // ── Probe 9: Push Token Registry Health ──
+  if (!filterProbe || filterProbe === "push-tokens") {
+    try {
+      const t = Date.now();
+      const { data, error } = await supabase.from("device_push_tokens")
+        .select("id, platform, active")
+        .eq("active", true)
+        .limit(100);
+      const activeTokens = data?.length ?? 0;
+      const platforms = new Set(data?.map((d: any) => d.platform) ?? []);
+      results.push({
+        probe_id: "push-tokens", name: "Push Token Registry", target: "device_push_tokens",
+        status: error ? "fail" : "pass", latency_ms: Date.now() - t,
+        error: error?.message,
+        snapshot: { active_tokens: activeTokens, platforms: Array.from(platforms) },
+      });
+    } catch (e: any) {
+      results.push({ probe_id: "push-tokens", name: "Push Token Registry", target: "device_push_tokens", status: "fail", latency_ms: 0, error: e.message });
+    }
+  }
+
+  // ── Probe 10: AI Budget Health ──
+  if (!filterProbe || filterProbe === "ai-budget") {
+    try {
+      const t = Date.now();
+      const { data, error } = await supabase.from("ai_budget_policies")
+        .select("id, is_active, scope_type")
+        .eq("is_active", true)
+        .limit(10);
+      results.push({
+        probe_id: "ai-budget", name: "AI Budget Policies", target: "ai_budget_policies",
+        status: error ? "fail" : "pass", latency_ms: Date.now() - t,
+        error: error?.message,
+        snapshot: { active_policies: data?.length ?? 0 },
+      });
+    } catch (e: any) {
+      results.push({ probe_id: "ai-budget", name: "AI Budget Policies", target: "ai_budget_policies", status: "fail", latency_ms: 0, error: e.message });
+    }
+  }
+
+  // ── Probe 11: Audit Log Health ──
+  if (!filterProbe || filterProbe === "audit-health") {
+    try {
+      const t = Date.now();
+      const { data, error } = await supabase.from("audit_logs")
+        .select("id, created_at")
+        .order("created_at", { ascending: false })
+        .limit(1);
+      const lastAuditAge = data?.[0]
+        ? Date.now() - new Date(data[0].created_at).getTime()
+        : null;
+      results.push({
+        probe_id: "audit-health", name: "Audit System", target: "audit_logs",
+        status: error ? "fail" : "pass", latency_ms: Date.now() - t,
+        error: error?.message,
+        snapshot: { last_audit_age_ms: lastAuditAge, has_recent_activity: lastAuditAge !== null && lastAuditAge < 86400000 },
+      });
+    } catch (e: any) {
+      results.push({ probe_id: "audit-health", name: "Audit System", target: "audit_logs", status: "fail", latency_ms: 0, error: e.message });
+    }
+  }
+
+  // ── Probe 12: Realtime Health ──
+  if (!filterProbe || filterProbe === "realtime-health") {
+    try {
+      const t = Date.now();
+      const resp = await fetch(`${supabaseUrl}/realtime/v1/api/health`, {
+        headers: { apikey: anonKey },
+      });
+      await resp.text();
+      results.push({
+        probe_id: "realtime-health", name: "Realtime System", target: "supabase-realtime",
+        status: resp.ok ? "pass" : "degraded", latency_ms: Date.now() - t,
+        error: resp.ok ? undefined : `HTTP ${resp.status}`,
+      });
+    } catch (e: any) {
+      results.push({ probe_id: "realtime-health", name: "Realtime System", target: "supabase-realtime", status: "degraded", latency_ms: 0, error: e.message });
+    }
+  }
+
+  // ── Probe 13: Self-Healing Function Health ──
+  if (!filterProbe || filterProbe === "self-healing") {
+    try {
+      const t = Date.now();
+      const resp = await fetch(`${supabaseUrl}/functions/v1/self-healing`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${anonKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "status" }),
+      });
+      await resp.text();
+      results.push({
+        probe_id: "self-healing", name: "Self-Healing Engine", target: "self-healing",
+        status: resp.ok ? "pass" : "degraded", latency_ms: Date.now() - t,
+      });
+    } catch (e: any) {
+      results.push({ probe_id: "self-healing", name: "Self-Healing Engine", target: "self-healing", status: "degraded", latency_ms: 0, error: e.message });
+    }
+  }
+
   // ── Summary ──
   const passing = results.filter(r => r.status === "pass").length;
   const failing = results.filter(r => r.status === "fail").length;
   const degraded = results.filter(r => r.status === "degraded").length;
+
+  // Health index computation
+  const healthScore = results.length > 0
+    ? Math.round(results.reduce((sum, r) => sum + (r.status === "pass" ? 100 : r.status === "degraded" ? 60 : 0), 0) / results.length)
+    : 0;
+  const grade = healthScore >= 95 ? "A" : healthScore >= 85 ? "B" : healthScore >= 70 ? "C" : healthScore >= 50 ? "D" : "F";
 
   const summary = {
     timestamp: new Date().toISOString(),
     total_probes: results.length,
     passing, failing, degraded,
     overall_status: failing > 0 ? "unhealthy" : degraded > 0 ? "degraded" : "healthy",
+    health_score: healthScore,
+    health_grade: grade,
     total_latency_ms: Date.now() - startTime,
     launch_eligible: failing === 0,
     probes: results,
