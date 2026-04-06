@@ -91,6 +91,8 @@ export const AdminRoutes = () => (
     <Route path="/admin/ai-team/recommendations" element={<AIT06Recommendations />} />
     <Route path="/admin/ai-team/approvals" element={<AIT07ApprovalQueue />} />
     <Route path="/admin/ai-team/launch-truth" element={<AIT08LaunchTruth />} />
+    <Route path="/admin/ai-team/approval-queue" element={<HQApprovalQueue />} />
+    <Route path="/admin/ai-team/setup-checklist" element={<AITSetupChecklist />} />
 
     {/* UIE01-UIE11: Intelligence Architecture */}
     <Route path="/admin/intelligence/reuse" element={<IntelligenceReuseOverview />} />
