@@ -16,8 +16,7 @@ import { KPITile, SectionHeader } from "@/components/sita/SitaComponents";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-
-// ── Mock outcome data ────────────────────────────────────────
+import { DEMO_OUTCOMES, DEMO_INTERVENTIONS, DEMO_SPILLOVERS } from "@/lib/demo-data/outcome-engine";
 
 const MOCK_OUTCOMES = [
   {
