@@ -4,8 +4,10 @@
 // provides mode registry, and enables DemoModeBadge integration
 // ═══════════════════════════════════════════════════════════════
 
-import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
+import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react";
 import { useDataMode } from "./DataModeContext";
+import { loadKillSwitches } from "@/lib/dual-reality/demo-policy-engine";
+import { seedDemoGovernance } from "@/lib/dual-reality/demo-governance-seeder";
 
 export type SurfaceDataSource = "real" | "demo" | "mixed" | "empty";
 
@@ -35,6 +37,12 @@ const DemoModeContext = createContext<DemoModeContextType | null>(null);
 
 export function DemoModeProvider({ children }: { children: React.ReactNode }) {
   const [surfaces, setSurfaces] = useState<Map<string, SurfaceRegistration>>(new Map());
+
+  // Load persisted kill switches and seed governance data on mount
+  useEffect(() => {
+    loadKillSwitches();
+    seedDemoGovernance();
+  }, []);
 
   const registerSurface = useCallback((surfaceId: string, surfaceName: string, source: SurfaceDataSource) => {
     setSurfaces(prev => {

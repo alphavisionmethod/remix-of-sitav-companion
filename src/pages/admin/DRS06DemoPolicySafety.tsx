@@ -1,16 +1,24 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Loader2, Shield, ShieldOff, Zap } from "lucide-react";
-import { getKillSwitchState } from "@/lib/dual-reality/demo-policy-engine";
+import { Switch } from "@/components/ui/switch";
+import { Loader2, Shield, ShieldOff, Zap, FileText } from "lucide-react";
+import { getKillSwitchState, setKillSwitch, loadKillSwitches } from "@/lib/dual-reality/demo-policy-engine";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
 
 export default function DRS06DemoPolicySafety() {
-  const killState = getKillSwitchState();
+  const queryClient = useQueryClient();
+  const [killState, setKillState] = useState(getKillSwitchState());
 
-  const { data: profiles, isLoading } = useQuery({
+  // Load kill switches from DB on mount
+  useEffect(() => {
+    loadKillSwitches().then(() => setKillState(getKillSwitchState()));
+  }, []);
+
+  const { data: profiles, isLoading: profilesLoading } = useQuery({
     queryKey: ["drs06-profiles"],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -20,6 +28,29 @@ export default function DRS06DemoPolicySafety() {
     },
   });
 
+  const { data: recentReceipts = [], isLoading: receiptsLoading } = useQuery({
+    queryKey: ["drs06-receipts"],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+      const { data } = await (supabase as any)
+        .from("demo_receipts")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(20);
+      return data ?? [];
+    },
+  });
+
+  async function toggleSwitch(key: "demoModeGlobal" | "demoAILiveCalls" | "demoSimulatedWrites") {
+    const newVal = !killState[key];
+    await setKillSwitch(key, newVal, `Toggled via DRS06 board`);
+    setKillState(getKillSwitchState());
+    toast.success(`${key} ${newVal ? "enabled" : "disabled"}`);
+    queryClient.invalidateQueries({ queryKey: ["drs06-receipts"] });
+  }
+
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
@@ -28,18 +59,36 @@ export default function DRS06DemoPolicySafety() {
         <p className="text-sm text-muted-foreground mt-1">Govern demo mode safety controls and kill switches</p>
       </div>
 
+      {/* Kill Switch Controls */}
       <Card className={`border ${killState.demoModeGlobal ? "border-red-500/50 bg-red-500/5" : "border-green-500/30 bg-green-500/5"}`}>
-        <CardContent className="flex items-center gap-4 py-4">
-          {killState.demoModeGlobal ? <ShieldOff className="h-5 w-5 text-red-400" /> : <Shield className="h-5 w-5 text-green-400" />}
-          <div>
-            <span className="font-semibold text-foreground">{killState.demoModeGlobal ? "Demo Mode KILLED Globally" : "Demo Mode Active"}</span>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              AI live calls: {killState.demoAILiveCalls ? "killed" : "allowed"} • Simulated writes: {killState.demoSimulatedWrites ? "killed" : "allowed"} • Killed scenarios: {killState.demoSpecificScenarios.length}
-            </p>
+        <CardContent className="py-4 space-y-3">
+          <div className="flex items-center gap-4">
+            {killState.demoModeGlobal ? <ShieldOff className="h-5 w-5 text-red-400" /> : <Shield className="h-5 w-5 text-green-400" />}
+            <div className="flex-1">
+              <span className="font-semibold text-foreground">{killState.demoModeGlobal ? "Demo Mode KILLED Globally" : "Demo Mode Active"}</span>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Killed scenarios: {killState.demoSpecificScenarios.length}
+              </p>
+            </div>
+          </div>
+          <div className="grid gap-2 pl-9">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-foreground">Global Kill Switch</span>
+              <Switch checked={killState.demoModeGlobal} onCheckedChange={() => toggleSwitch("demoModeGlobal")} />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-foreground">Kill AI Live Calls</span>
+              <Switch checked={killState.demoAILiveCalls} onCheckedChange={() => toggleSwitch("demoAILiveCalls")} />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-foreground">Kill Simulated Writes</span>
+              <Switch checked={killState.demoSimulatedWrites} onCheckedChange={() => toggleSwitch("demoSimulatedWrites")} />
+            </div>
           </div>
         </CardContent>
       </Card>
 
+      {/* Safety Matrix */}
       <Card>
         <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Zap className="h-4 w-4" /> Default Safety Matrix</CardTitle></CardHeader>
         <CardContent>
@@ -59,7 +108,31 @@ export default function DRS06DemoPolicySafety() {
         </CardContent>
       </Card>
 
-      {isLoading ? <Loader2 className="h-5 w-5 animate-spin text-muted-foreground mx-auto" /> : (
+      {/* Recent Demo Receipts */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm flex items-center gap-2"><FileText className="h-4 w-4" /> Recent Demo Receipts ({recentReceipts.length})</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {receiptsLoading ? <Loader2 className="h-5 w-5 animate-spin text-muted-foreground mx-auto" /> :
+           recentReceipts.length === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-4">No demo receipts logged yet — receipts appear as policy decisions are made</p>
+          ) : (
+            <div className="space-y-1 max-h-48 overflow-auto">
+              {recentReceipts.map((r: any) => (
+                <div key={r.id} className="flex items-center gap-2 text-xs border-b border-border/20 py-1 last:border-0">
+                  <Badge variant="outline" className="text-[10px]">{r.receipt_type}</Badge>
+                  <span className="text-muted-foreground flex-1 truncate">{r.summary}</span>
+                  <span className="text-muted-foreground/60">{new Date(r.created_at).toLocaleTimeString()}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Policy Profiles */}
+      {profilesLoading ? <Loader2 className="h-5 w-5 animate-spin text-muted-foreground mx-auto" /> : (
         <Card>
           <CardHeader className="pb-2"><CardTitle className="text-sm">Policy Profiles ({profiles?.length ?? 0})</CardTitle></CardHeader>
           <CardContent>

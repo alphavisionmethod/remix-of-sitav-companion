@@ -7255,6 +7255,36 @@ export type Database = {
           },
         ]
       }
+      demo_kill_switches: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          id: string
+          key: string
+          reason: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          key: string
+          reason?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          key?: string
+          reason?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       demo_policy_profiles: {
         Row: {
           ai_execution_mode: string
