@@ -38,7 +38,7 @@ export default function IntegrationsCatalog() {
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => navigate("/integrations/connections")} className="gap-1.5">
-            <Plug className="w-3.5 h-3.5" /> My Connections ({DEMO_CONNECTIONS.length})
+            <Plug className="w-3.5 h-3.5" /> My Connections ({demoConns.length})
           </Button>
           <Button variant="outline" size="sm" onClick={() => navigate("/integrations/actions")} className="gap-1.5">
             <Shield className="w-3.5 h-3.5" /> Approvals
