@@ -4,6 +4,7 @@ import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cor
 import { EdgeLogger } from "../_shared/logger.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
+import { requireAuth } from "../_shared/auth.ts";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -23,32 +24,22 @@ serve(async (req) => {
   }
 
   try {
+    // ── Standardized auth ──
+    const authResult = await requireAuth(req);
+    if (authResult instanceof Response) return authResult;
+    const { user } = authResult;
+
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    // Get user from auth or process system events
-    const authHeader = req.headers.get("Authorization");
-    let userId: string | null = null;
-
-    if (authHeader) {
-      const supabaseUser = createClient(SUPABASE_URL, (Deno.env.get("SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_PUBLISHABLE_KEY"))!, {
-        global: { headers: { Authorization: authHeader } },
-      });
-      const { data: { user } } = await supabaseUser.auth.getUser();
-      userId = user?.id || null;
-    }
+    const userId = user.id;
 
     const body = await req.json().catch(() => ({}));
     const mode = body.mode || "process"; // "process" | "emit"
 
     // ── Emit Mode: Create a new event ──
     if (mode === "emit") {
-      if (!userId) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-          status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
       if (!body.type) {
         return new Response(JSON.stringify({ error: "Event type required" }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },

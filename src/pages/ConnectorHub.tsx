@@ -8,8 +8,9 @@ const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield } from "lucide-react";
+import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield, Circle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { fetchConnectorHealth, type ConnectorHealthResult } from "@/lib/services/connector-health-service";
 
 const ConnectorHub = () => {
   const { user } = useAuth();
@@ -46,11 +47,26 @@ const ConnectorHub = () => {
     },
   });
 
+  const { data: healthResult } = useQuery<ConnectorHealthResult>({
+    queryKey: ["connector_health", user?.id],
+    enabled: !!user,
+    queryFn: fetchConnectorHealth,
+    refetchInterval: 60_000,
+  });
+
   const filtered = filter === "all" ? connectors : connectors.filter(c => c.status === filter);
   const selected = connectors.find(c => c.id === selectedId);
   const selectedLogs = syncLogs.filter(l => l.connector_id === selectedId);
   const selectedCred = credentials.find(c => selected && c.connector_id === selected.id);
   const activeCount = connectors.filter(c => c.status === "active").length;
+
+  const getHealthColor = (connectorId: string) => {
+    const health = healthResult?.connectors.find(h => h.connectorId === connectorId);
+    if (!health) return "text-muted-foreground";
+    if (health.status === "up") return "text-primary";
+    if (health.status === "degraded") return "text-yellow-500";
+    return "text-destructive";
+  };
 
   return (
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
@@ -89,7 +105,10 @@ const ConnectorHub = () => {
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       {conn.status === "active" ? <Wifi className="h-4 w-4 text-primary shrink-0" /> : conn.status === "error" ? <WifiOff className="h-4 w-4 text-destructive shrink-0" /> : <WifiOff className="h-4 w-4 text-muted-foreground shrink-0" />}
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-foreground capitalize">{conn.service}</p>
+                        <div className="flex items-center gap-1.5">
+                          <Circle className={`h-2 w-2 fill-current ${getHealthColor(conn.id)}`} />
+                          <p className="text-sm font-medium text-foreground capitalize">{conn.service}</p>
+                        </div>
                         <p className="text-xs text-muted-foreground">
                           {conn.last_sync_at ? `Last sync: ${new Date(conn.last_sync_at).toLocaleString()}` : "Never synced"}
                         </p>
