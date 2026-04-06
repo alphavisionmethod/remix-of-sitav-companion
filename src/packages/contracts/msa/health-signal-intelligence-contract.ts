@@ -6,7 +6,7 @@
 export type SignalProviderKey = "apple_health" | "health_connect" | "fitbit" | "garmin" | "oura" | "whoop" | "polar" | "samsung_health" | "manual_input" | "device_focus_state";
 export type SignalCategory = "heart_rate" | "hrv" | "sleep" | "activity" | "strain" | "recovery" | "readiness" | "temperature" | "respiratory" | "blood_oxygen" | "stress" | "focus" | "movement" | "workout";
 export type NormalizedState = "activity_state" | "sleep_state" | "strain_load" | "recovery_state" | "focus_proxy" | "interruption_sensitivity" | "workout_state" | "movement_state";
-export type ReadinessLevel = "high" | "medium" | "low" | "overload_risk" | "recovery_priority" | "deep_focus" | "dnd_recommended" | "low_interruption" | "ideal_strategic_window";
+export type SignalReadinessLevel = "high" | "medium" | "low" | "overload_risk" | "recovery_priority" | "deep_focus" | "dnd_recommended" | "low_interruption" | "ideal_strategic_window";
 export type VisibilityScope = "raw_only" | "derived_only" | "user_visible" | "assistant_visible" | "boardroom_visible" | "not_visible";
 export type SignalLaunchTarget = "signal_ingestion" | "normalization" | "readiness_derivation" | "routing_influence" | "assistant_timing" | "demo_signals";
 
