@@ -152,6 +152,36 @@ const CANONICAL_CAPABILITIES: Omit<SurfacePortabilityRecord, "id">[] = [
     web_ready: true, mobile_ready: true, desktop_ready: true, tablet_ready: true, watch_ready: true,
     response_envelope_neutral: true, surface_adapter_exists: true, portability_score: 100, notes: "Self-referential — this service itself is surface-neutral",
   },
+  {
+    capability_key: "household_ops",
+    capability_name: "Household Operations",
+    web_ready: true, mobile_ready: true, desktop_ready: true, tablet_ready: true, watch_ready: true,
+    response_envelope_neutral: true, surface_adapter_exists: true, portability_score: 100, notes: "Household domain + mobile surface + adaptive profiles",
+  },
+  {
+    capability_key: "document_management",
+    capability_name: "Document Management",
+    web_ready: true, mobile_ready: true, desktop_ready: true, tablet_ready: true, watch_ready: true,
+    response_envelope_neutral: true, surface_adapter_exists: true, portability_score: 100, notes: "Document storage + file-ingestion edge fn + surface adapters",
+  },
+  {
+    capability_key: "crm_relationships",
+    capability_name: "CRM & Relationships",
+    web_ready: true, mobile_ready: true, desktop_ready: true, tablet_ready: true, watch_ready: true,
+    response_envelope_neutral: true, surface_adapter_exists: true, portability_score: 100, notes: "Customers + deals + communication_log + surface adapters",
+  },
+  {
+    capability_key: "ai_budget_governance",
+    capability_name: "AI Budget & Cost Governance",
+    web_ready: true, mobile_ready: true, desktop_ready: true, tablet_ready: true, watch_ready: true,
+    response_envelope_neutral: true, surface_adapter_exists: true, portability_score: 100, notes: "Budget policies + cost ledger + portfolio allocations + adapters",
+  },
+  {
+    capability_key: "device_telemetry",
+    capability_name: "Device Telemetry & Readiness",
+    web_ready: true, mobile_ready: true, desktop_ready: true, tablet_ready: true, watch_ready: true,
+    response_envelope_neutral: true, surface_adapter_exists: true, portability_score: 100, notes: "Connected devices + device-telemetry edge fn + surface registry",
+  },
 ];
 
 export async function getSurfacePortability(): Promise<SurfacePortabilityRecord[]> {
