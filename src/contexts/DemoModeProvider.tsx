@@ -4,8 +4,9 @@
 // provides mode registry, and enables DemoModeBadge integration
 // ═══════════════════════════════════════════════════════════════
 
-import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
+import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react";
 import { useDataMode } from "./DataModeContext";
+import { loadKillSwitches } from "@/lib/dual-reality/demo-policy-engine";
 
 export type SurfaceDataSource = "real" | "demo" | "mixed" | "empty";
 
