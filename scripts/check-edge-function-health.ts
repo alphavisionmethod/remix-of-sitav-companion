@@ -8,7 +8,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 const functionsDir = "supabase/functions";
-const required = ["brain-core", "event-processor", "connector-proxy", "admin-api", "admin-intelligence"];
+const required = ["brain-core", "event-processor", "connector-proxy", "admin-api", "admin-intelligence", "invoice-generate", "payment-process", "crm-sync", "cashflow-calculate", "tax-estimate", "booking-manage"];
 
 interface FnStatus { name: string; hasIndex: boolean; hasTest: boolean; lines: number }
 const statuses: FnStatus[] = [];
