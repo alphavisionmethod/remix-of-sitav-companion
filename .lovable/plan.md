@@ -1,94 +1,44 @@
 
 
-# Update All 3 Architecture Documents to v5.0 — Full Project Reality
+# Fix Architecture Reports — Flagship Loop Key Mismatch
 
-## Summary
+## Problem
 
-All 3 documents (FINAL_ARQ_REPORT, ARCHITECTURE_STATUS, and XLSX workbook) are at v4.0 and significantly outdated. Since v4.0, the project has gained:
+The generated architecture report documents (`FINAL_ARQ_REPORT_SITA_OS_v5.md` and `ARCHITECTURE_STATUS_SITA_OS_v5.md`) contain incorrect flagship loop keys using underscores instead of hyphens, and using prompt-spec names instead of actual code names:
 
-- **+28 pages** (606 total, up from 578)
-- **+27 admin pages** (272 total, up from 245)
-- **+8 migrations** (99 total, up from 91)
-- **+3 edge functions** (40 total, up from 37): `connector-oauth`, `push-dispatch`, `verification-recorder`
-- **+8 hooks** (70 total, up from 62)
-- **+4 services** (380 total, up from 376)
-- **+23 lib modules** (821 total, up from 798)
-- **+46 routes** (683 total, up from 637)
-- **5 new DB tables**: `remediation_programs`, `outcome_verifications`, `flagship_loops`, `notification_delivery_receipts`, `notification_preferences`
-- **New columns** on `ai_workforce_recommendations`: `execution_binding_status`, `outcome_verification_id`
+| In Report (WRONG) | In Code (CORRECT) |
+|---|---|
+| `auth_dashboard_pulse` | `sign-in-dashboard-pulse` |
+| `files_ai_assist` | `files-ai-assist` |
+| `boardroom_summary_decision` | `boardroom-summary-decision` |
+| `connected_services_sync_insight` | `connected-services-sync` |
+| `admin_truth_recommendation_approval` | `admin-truth-recommendation-approval` |
 
-### New Capabilities Since v4.0
+Display names also differ from code (`title` field). The reports need to reflect the **actual codebase values** exactly.
 
-1. **AI Runtime Verification** — AIG09 board with 8-section verification matrix (AIR01-AIR08)
-2. **AI Launch Honesty Reclassifier** — evidence-driven reclassification service
-3. **AI Routing Seed Service** — provider/model/capability routing seeds
-4. **Connector OAuth** — real Google OAuth edge function (initiate/callback/disconnect)
-5. **Web Push / VAPID** — push-dispatch edge function, service worker, registration service
-6. **Notification Runtime Verification** — NOT01 board with channel truth
-7. **Notification Delivery Receipts** — NOT03 explorer
-8. **Notification Preferences** — user-facing settings page
-9. **Connector-Notification Honesty Seed** — conservative launch classification
-10. **Recommendation → Execution Loop** — full lifecycle service with state machine
-11. **Flagship Loop Registry** — 5 core loops as first-class objects
-12. **Service Ownership Registry** — 12 domains mapped
-13. **REX01-05** — 5 recommendation/execution admin boards
-14. **FL01-02** — flagship loop executive + detail boards
-15. **SERV01** — service ownership board
-16. **Customer Journey** — 9 CJ boards (CJ01-CJ09) + 46 journey entries
-17. **Verification System** — 7 verification boards (V01-V07) + verification-recorder edge fn
-18. **CN01 Enhancement** — per-capability verification matrix + diagnostics
-19. **NRC06 Upgrade** — wired to real delivery receipts data
+## Fix
 
-### Updated Truth Index Scores (v5.0)
+### 1. Regenerate `FINAL_ARQ_REPORT_SITA_OS_v5.md`
+Update Section 8 (Flagship Loop Registry) table to use the correct loop keys and titles from `flagship-loop-service.ts`:
 
-| Index | v4.0 | v5.0 | Reason |
-|-------|------|------|--------|
-| Runtime Truth | 82 | 84 | +recommendation loop, flagship loops, outcome verification |
-| Launch Honesty | 78 | 82 | +AI reclassifier, connector/notification honesty seeds |
-| AI Truth | 85 | 88 | +AIG09 verification, routing seed, reclassifier |
-| Connector Truth | 55 | 68 | +real OAuth edge fn, CN01 per-capability matrix, honesty seed |
-| Demo Governance | 95 | 95 | Stable |
-| Surface Portability | 92 | 92 | Stable |
-| Device Readiness | 88 | 88 | Stable |
-| Observability | 85 | 87 | +verification boards, runtime probes |
-| Security & Privacy | 78 | 80 | +notification preferences RLS, delivery receipts RLS |
-| UX Trust | 80 | 82 | +NotificationPreferences page, CJ boards |
-| **Composite** | **82** | **85** | **+3 points** |
+| Loop Key | Display Name | Launch Importance | Status |
+|---|---|---|---|
+| `sign-in-dashboard-pulse` | Sign In → Dashboard → Pulse | launch_critical | active |
+| `files-ai-assist` | Files → AI Assistance → Results | launch_critical | needs_proof |
+| `boardroom-summary-decision` | Boardroom → Synthesis → Decision | launch_critical | needs_polish |
+| `connected-services-sync` | Connected Services → Connect → Health | important_to_launch | active |
+| `admin-truth-recommendation-approval` | Admin Truth → Recommendation → Approval → Execute | operator_critical | active |
 
-## Implementation Plan
+### 2. Update `ARCHITECTURE_STATUS_SITA_OS_v5.md`
+Add a Flagship Loops section (currently missing from this doc) with the correct data.
 
-### Step 1: Generate FINAL_ARQ_REPORT_SITA_OS_v5.md
-Full rewrite of the 449-line report with all updated metrics, new sections for:
-- Recommendation → Execution closure system
-- Flagship loop governance
-- Service ownership registry
-- Connector OAuth reality
-- Web push / VAPID reality
-- Customer Journey system (9 boards, 46 entries)
-- Verification system (7 boards)
-- Updated domain reality classification matrix
-- Updated edge function inventory (40 functions)
-- Updated delta table (v4.0 → v5.0)
+### 3. Regenerate `SITA_OS_ARCHITECTURE_AUDIT_v2.xlsx`
+Update any sheets referencing flagship loop keys to use the correct hyphenated keys.
 
-### Step 2: Generate ARCHITECTURE_STATUS_SITA_OS_v5.md
-Mirror update with same metrics, focused on status view.
-
-### Step 3: Generate SITA_OS_ARCHITECTURE_AUDIT_v2.xlsx
-Updated Excel workbook with sheets:
-- **Executive Summary** — composite scores, key metrics
-- **Project Topology** — all counts with v4→v5 deltas
-- **Domain Reality Matrix** — all domains with structural/wiring/runtime percentages
-- **Edge Functions** — 40 functions with status
-- **Truth Index** — 10 indices with scores and grades
-- **New Systems (v5)** — all 19 new capabilities listed
-- **Admin Pages Inventory** — 272 admin pages by category
-- **Wiring Audit** — broken chains with severity
-- **Delta v4→v5** — comprehensive change log
-
-### Files Produced
-| File | Format |
-|------|--------|
-| `/mnt/documents/FINAL_ARQ_REPORT_SITA_OS_v5.md` | Markdown |
-| `/mnt/documents/ARCHITECTURE_STATUS_SITA_OS_v5.md` | Markdown |
-| `/mnt/documents/SITA_OS_ARCHITECTURE_AUDIT_v2.xlsx` | Excel |
+### Files Modified
+| File | Action |
+|---|---|
+| `/mnt/documents/FINAL_ARQ_REPORT_SITA_OS_v5.md` | Fix Section 8 loop keys + titles |
+| `/mnt/documents/ARCHITECTURE_STATUS_SITA_OS_v5.md` | Add flagship section with correct data |
+| `/mnt/documents/SITA_OS_ARCHITECTURE_AUDIT_v2.xlsx` | Regenerate with correct loop keys |
 
