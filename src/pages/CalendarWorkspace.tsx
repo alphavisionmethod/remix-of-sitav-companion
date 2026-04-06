@@ -46,7 +46,13 @@ const CalendarWorkspace = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [domainFilter, setDomainFilter] = useState<string>("all");
   const [selectedEvent, setSelectedEvent] = useState<CalEvent | null>(null);
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [eventForm, setEventForm] = useState({ title: "", event_date: "", start_time: "", end_time: "", domain: "personal", event_type: "meeting", location: "" });
   const { mode } = useRealityProvider();
+  const createEvent = useCreateCalendarEvent();
+  const updateEvent = useUpdateCalendarEvent();
+  const deleteEvent = useDeleteCalendarEvent();
 
   // DB query for real calendar events
   const { data: dbEvents } = useQuery({
