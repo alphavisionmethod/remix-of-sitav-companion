@@ -28,7 +28,7 @@ export default function ISA06UnifiedAccountGraphExplorer() {
         .from("unified_account_nodes")
         .select("*")
         .order("node_type")
-        .order("display_label");
+        .order("display_name");
       return data || [];
     },
   });
