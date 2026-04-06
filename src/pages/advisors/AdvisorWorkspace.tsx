@@ -3,7 +3,8 @@
 // Premium executive operating system — not a chatbot UI
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 import { useNavigate, useParams } from "react-router-dom";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaMetric, SitaButton } from "@/components/sita/SitaCard";
 import { TrustBadge, type TrustLevel } from "@/components/sita/TrustBadge";
