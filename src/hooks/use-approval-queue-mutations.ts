@@ -1,19 +1,36 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
+export function useApprovalQueue(status?: string) {
+  return useQuery({
+    queryKey: ["approval-queue", status],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+      let q = supabase.from("approval_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50);
+      if (status && status !== "all") q = q.eq("status", status);
+      const { data, error } = await q;
+      if (error) throw error;
+      return data || [];
+    },
+    staleTime: 15_000,
+  });
+}
 
 export function useApproveApprovalItem() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, reason }: { id: string; reason?: string }) => {
       const { data: { user } } = await supabase.auth.getUser();
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from("approval_queue")
-        .update({ status: "approved", reviewed_by: user?.id, review_notes: reason || null, reviewed_at: new Date().toISOString() })
+        .update({ status: "approved", reviewed_by: user?.id, decision_reason: reason || null, decided_at: new Date().toISOString() })
         .eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["approval-queue"] });
       qc.invalidateQueries({ queryKey: ["approvals"] });
       qc.invalidateQueries({ queryKey: ["admin-durable-state"] });
       toast.success("Approval granted");
@@ -27,13 +44,14 @@ export function useRejectApprovalItem() {
   return useMutation({
     mutationFn: async ({ id, reason }: { id: string; reason?: string }) => {
       const { data: { user } } = await supabase.auth.getUser();
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from("approval_queue")
-        .update({ status: "rejected", reviewed_by: user?.id, review_notes: reason || null, reviewed_at: new Date().toISOString() })
+        .update({ status: "rejected", reviewed_by: user?.id, decision_reason: reason || null, decided_at: new Date().toISOString() })
         .eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["approval-queue"] });
       qc.invalidateQueries({ queryKey: ["approvals"] });
       qc.invalidateQueries({ queryKey: ["admin-durable-state"] });
       toast.success("Approval rejected");
@@ -46,13 +64,14 @@ export function useDismissApprovalItem() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from("approval_queue")
-        .update({ status: "dismissed", reviewed_at: new Date().toISOString() })
+        .update({ status: "dismissed", decided_at: new Date().toISOString() })
         .eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["approval-queue"] });
       qc.invalidateQueries({ queryKey: ["approvals"] });
       qc.invalidateQueries({ queryKey: ["admin-durable-state"] });
       toast.success("Item dismissed");

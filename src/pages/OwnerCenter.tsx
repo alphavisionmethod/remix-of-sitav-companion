@@ -39,7 +39,7 @@ import {
   useTrustCenter, useReleases, useModelRouting, useKnowledgeHealth,
   useSupportCases, useChangeReview, useRollbackCenter, useServiceMap,
 } from "@/hooks/use-admin-data";
-import { useApproveApprovalItem, useRejectApprovalItem, useDismissApprovalItem } from "@/hooks/use-approval-queue-mutations";
+import { useApproveApprovalItem, useRejectApprovalItem, useDismissApprovalItem, useApprovalQueue } from "@/hooks/use-approval-queue-mutations";
 import {
   AUTONOMY_TIERS, NEVER_ALLOWED, DESIGN_DRIFT_CHECKLIST, WATCHDOG_CONCERNS, getAutonomyLevel,
   MAY_AUTO_EXECUTE, MUST_SIMULATE_FIRST, PROMOTION_RULES, DEMOTION_TRIGGERS, MUST_REQUIRE_HUMAN_APPROVAL,
