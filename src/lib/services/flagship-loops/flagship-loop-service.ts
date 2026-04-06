@@ -19,6 +19,15 @@ export interface FlagshipLoopSeed {
   ux_quality: string;
   launch_claim_status: string;
   demo_vs_real: string;
+  // v5 extended fields
+  description?: string;
+  primary_persona?: string;
+  launch_importance?: string;
+  status?: string;
+  owner_team?: string;
+  ux_quality_target?: string;
+  proof_required?: boolean;
+  launch_honesty_class?: string;
 }
 
 export const FLAGSHIP_LOOP_SEEDS: FlagshipLoopSeed[] = [
