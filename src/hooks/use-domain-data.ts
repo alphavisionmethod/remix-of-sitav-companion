@@ -39,6 +39,43 @@ export function useFileSettings() { return useQuery({ queryKey: ["file-settings"
 
 // Money
 export function useReservesSavings() { return useQuery({ queryKey: ["reserves-savings"], queryFn: () => unwrap(fetchReservesSavings) }); }
+export function useFinancialAccounts() { return useQuery({ queryKey: ["financial-accounts"], queryFn: () => unwrap(fetchFinancialAccounts) }); }
+export function useMoneyPolicies() { return useQuery({ queryKey: ["money-policies"], queryFn: () => unwrap(fetchMoneyPolicies) }); }
+export function useMoneyApprovals() { return useQuery({ queryKey: ["money-approvals"], queryFn: () => unwrap(fetchMoneyApprovals) }); }
+export function useMoneyProofItems() { return useQuery({ queryKey: ["money-proof"], queryFn: () => unwrap(fetchMoneyProof) }); }
+export function useFinancialDocuments() { return useQuery({ queryKey: ["financial-documents"], queryFn: () => unwrap(fetchFinancialDocuments) }); }
+export function useCashTimingWindows() { return useQuery({ queryKey: ["cash-timing-windows"], queryFn: () => unwrap(fetchCashTimingWindows) }); }
+export function useMoneyKPIs() { return useQuery({ queryKey: ["money-kpis"], queryFn: () => unwrap(fetchMoneyKPIs) }); }
+
+// Money mutations
+export function useToggleMoneyPolicy() {
+  const qc = useQueryClient();
+  return useMutation({ mutationFn: ({ id, enabled }: { id: string; enabled: boolean }) => toggleMoneyPolicy(id, enabled), onSuccess: () => qc.invalidateQueries({ queryKey: ["money-policies"] }) });
+}
+export function useApproveMoneyAction() {
+  const qc = useQueryClient();
+  return useMutation({ mutationFn: (id: string) => approveMoneyAction(id), onSuccess: () => qc.invalidateQueries({ queryKey: ["money-approvals"] }) });
+}
+export function useRejectMoneyAction() {
+  const qc = useQueryClient();
+  return useMutation({ mutationFn: (id: string) => rejectMoneyAction(id), onSuccess: () => qc.invalidateQueries({ queryKey: ["money-approvals"] }) });
+}
+export function useCreateFinancialAccount() {
+  const qc = useQueryClient();
+  return useMutation({ mutationFn: createFinancialAccount, onSuccess: () => qc.invalidateQueries({ queryKey: ["financial-accounts"] }) });
+}
+export function useDeleteFinancialAccount() {
+  const qc = useQueryClient();
+  return useMutation({ mutationFn: deleteFinancialAccount, onSuccess: () => qc.invalidateQueries({ queryKey: ["financial-accounts"] }) });
+}
+export function useCreateMoneyPolicy() {
+  const qc = useQueryClient();
+  return useMutation({ mutationFn: createMoneyPolicy, onSuccess: () => qc.invalidateQueries({ queryKey: ["money-policies"] }) });
+}
+export function useDeleteMoneyPolicy() {
+  const qc = useQueryClient();
+  return useMutation({ mutationFn: deleteMoneyPolicy, onSuccess: () => qc.invalidateQueries({ queryKey: ["money-policies"] }) });
+}
 
 // Mobile
 export function useMobileAlerts() { return useQuery({ queryKey: ["mobile-alerts"], queryFn: fetchMobileAlerts }); }
