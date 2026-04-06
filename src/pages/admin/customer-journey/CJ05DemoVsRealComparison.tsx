@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════
 // SITA OS — CJ05: Demo vs Real Journey Comparison
-// Persisted mode comparisons + claim risk flags
+// Uses v_customer_journey_mode_deltas + persisted comparisons
 // ═══════════════════════════════════════════════════════
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,41 +8,71 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useCustomerJourneys, useCustomerJourneyRuns } from "@/lib/customer-journey/journey-hooks";
 import { useModeComparisons, useUpsertModeComparison } from "@/lib/customer-journey/journey-scoring-hooks";
+import { useModeDeltas } from "@/lib/customer-journey/journey-ingestion-hooks";
 import { JOURNEY_STATUS_CONFIG } from "@/lib/customer-journey/journey-registry";
 import { GitCompare, Loader2, AlertTriangle, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
+
+const comparisonLabels: Record<string, { label: string; color: string }> = {
+  both_work: { label: "Both Work", color: "bg-emerald-500/15 text-emerald-400" },
+  demo_works_real_broken: { label: "Demo OK / Real Broken", color: "bg-destructive/15 text-destructive" },
+  real_works_demo_broken: { label: "Real OK / Demo Broken", color: "bg-amber-500/15 text-amber-400" },
+  both_issues: { label: "Both Have Issues", color: "bg-orange-500/15 text-orange-400" },
+  demo_only: { label: "Demo Only", color: "bg-blue-500/15 text-blue-400" },
+  real_only: { label: "Real Only", color: "bg-purple-500/15 text-purple-400" },
+  no_data: { label: "No Runs", color: "bg-muted text-muted-foreground" },
+};
 
 export default function CJ05DemoVsRealComparison() {
   const { data: journeys, isLoading } = useCustomerJourneys();
   const { data: runs } = useCustomerJourneyRuns();
   const { data: persistedComparisons } = useModeComparisons();
+  const { data: viewDeltas } = useModeDeltas();
   const upsertComparison = useUpsertModeComparison();
 
-  // Compute comparisons from runs
-  const comparisons = (journeys ?? []).map((j: any) => {
-    const jRuns = (runs ?? []).filter((r: any) => r.journey_key === j.journey_key);
-    const demoRun = jRuns.find((r: any) => r.mode === "demo");
-    const realRun = jRuns.find((r: any) => r.mode === "real");
+  // Prefer view data if available, otherwise compute from runs
+  const useViewData = (viewDeltas ?? []).length > 0;
 
-    // Check persisted comparison
-    const persisted = (persistedComparisons ?? []).find((c: any) => c.journey_key === j.journey_key);
+  const comparisons = useViewData
+    ? (viewDeltas ?? []).map((d: any) => ({
+        journey: { journey_key: d.journey_key, display_name: d.display_name, domain_family: d.domain_family, id: d.comparison_id },
+        demoRun: null,
+        realRun: null,
+        comparison: d.comparison_summary || "no_data",
+        claim_risk: d.claim_risk,
+        persisted: d,
+        demoStatus: d.demo_status,
+        realStatus: d.real_status,
+      }))
+    : (journeys ?? []).map((j: any) => {
+        const jRuns = (runs ?? []).filter((r: any) => r.journey_key === j.journey_key);
+        const demoRun = jRuns.find((r: any) => r.mode === "demo");
+        const realRun = jRuns.find((r: any) => r.mode === "real");
+        const persisted = (persistedComparisons ?? []).find((c: any) => c.journey_key === j.journey_key);
 
-    let comparison = "no_data";
-    const demoStatus = demoRun?.status || persisted?.demo_status;
-    const realStatus = realRun?.status || persisted?.real_status;
+        let comparison = "no_data";
+        const demoStatus = demoRun?.status || persisted?.demo_status;
+        const realStatus = realRun?.status || persisted?.real_status;
 
-    if (demoStatus && realStatus) {
-      if (demoStatus === "working" && realStatus === "working") comparison = "both_work";
-      else if (demoStatus === "working" && realStatus !== "working") comparison = "demo_works_real_broken";
-      else if (demoStatus !== "working" && realStatus === "working") comparison = "real_works_demo_broken";
-      else comparison = "both_issues";
-    } else if (demoStatus && !realStatus) comparison = "demo_only";
-    else if (!demoStatus && realStatus) comparison = "real_only";
+        if (demoStatus && realStatus) {
+          if (demoStatus === "working" && realStatus === "working") comparison = "both_work";
+          else if (demoStatus === "working" && realStatus !== "working") comparison = "demo_works_real_broken";
+          else if (demoStatus !== "working" && realStatus === "working") comparison = "real_works_demo_broken";
+          else comparison = "both_issues";
+        } else if (demoStatus && !realStatus) comparison = "demo_only";
+        else if (!demoStatus && realStatus) comparison = "real_only";
 
-    const claim_risk = comparison === "demo_works_real_broken";
-
-    return { journey: j, demoRun, realRun, comparison, claim_risk, persisted };
-  });
+        return {
+          journey: j,
+          demoRun,
+          realRun,
+          comparison,
+          claim_risk: comparison === "demo_works_real_broken",
+          persisted,
+          demoStatus,
+          realStatus,
+        };
+      });
 
   const handlePersistAll = async () => {
     try {
@@ -51,8 +81,8 @@ export default function CJ05DemoVsRealComparison() {
         if (c.comparison === "no_data") continue;
         await upsertComparison.mutateAsync({
           journey_key: c.journey.journey_key,
-          real_status: c.realRun?.status || c.persisted?.real_status,
-          demo_status: c.demoRun?.status || c.persisted?.demo_status,
+          real_status: c.realStatus || c.realRun?.status || c.persisted?.real_status,
+          demo_status: c.demoStatus || c.demoRun?.status || c.persisted?.demo_status,
           comparison_summary: c.comparison,
           claim_risk: c.claim_risk,
         });
@@ -62,16 +92,6 @@ export default function CJ05DemoVsRealComparison() {
     } catch (e: any) {
       toast.error(e.message);
     }
-  };
-
-  const comparisonLabels: Record<string, { label: string; color: string }> = {
-    both_work: { label: "Both Work", color: "bg-emerald-500/15 text-emerald-400" },
-    demo_works_real_broken: { label: "Demo OK / Real Broken", color: "bg-destructive/15 text-destructive" },
-    real_works_demo_broken: { label: "Real OK / Demo Broken", color: "bg-amber-500/15 text-amber-400" },
-    both_issues: { label: "Both Have Issues", color: "bg-orange-500/15 text-orange-400" },
-    demo_only: { label: "Demo Only", color: "bg-blue-500/15 text-blue-400" },
-    real_only: { label: "Real Only", color: "bg-purple-500/15 text-purple-400" },
-    no_data: { label: "No Runs", color: "bg-muted text-muted-foreground" },
   };
 
   const claimRiskCount = comparisons.filter((c) => c.claim_risk).length;
@@ -123,13 +143,14 @@ export default function CJ05DemoVsRealComparison() {
         <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-muted-foreground" /></div>
       ) : (
         <div className="space-y-2">
-          {comparisons.map(({ journey: j, demoRun, realRun, comparison, claim_risk }) => {
-            const cLabel = comparisonLabels[comparison];
-            const demoCfg = demoRun ? JOURNEY_STATUS_CONFIG[demoRun.status] || JOURNEY_STATUS_CONFIG.unverified : null;
-            const realCfg = realRun ? JOURNEY_STATUS_CONFIG[realRun.status] || JOURNEY_STATUS_CONFIG.unverified : null;
+          {comparisons.map((c, idx) => {
+            const { journey: j, comparison, claim_risk, demoStatus, realStatus } = c;
+            const cLabel = comparisonLabels[comparison] || comparisonLabels.no_data;
+            const demoCfg = demoStatus ? JOURNEY_STATUS_CONFIG[demoStatus] || JOURNEY_STATUS_CONFIG.unverified : null;
+            const realCfg = realStatus ? JOURNEY_STATUS_CONFIG[realStatus] || JOURNEY_STATUS_CONFIG.unverified : null;
 
             return (
-              <Card key={j.id} className={claim_risk ? "border-amber-500/30" : ""}>
+              <Card key={j.id || idx} className={claim_risk ? "border-amber-500/30" : ""}>
                 <CardContent className="p-3 grid grid-cols-12 gap-2 items-center">
                   <div className="col-span-4">
                     <div className="font-medium text-sm flex items-center gap-1">
