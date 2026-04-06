@@ -186,7 +186,7 @@ const LeadsInbox = () => {
       <SitaPageHeader
         title="Leads Inbox"
         subtitle="Capture, qualify, and convert"
-        actions={<SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton>}
+        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton></div>}
       />
 
       {/* Add/Edit Modal */}
