@@ -1,0 +1,111 @@
+// ═══════════════════════════════════════════════════════
+// SITA OS — CJ04: Launch Blocker View
+// Only journeys that block launch/pilot or create claim risk
+// ═══════════════════════════════════════════════════════
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useCustomerJourneys, useCustomerJourneyBlockers } from "@/lib/customer-journey/journey-hooks";
+import { JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/lib/customer-journey/journey-registry";
+import { ShieldAlert, Loader2 } from "lucide-react";
+
+export default function CJ04LaunchBlockerView() {
+  const { data: journeys, isLoading } = useCustomerJourneys();
+  const { data: blockers } = useCustomerJourneyBlockers();
+
+  const criticalJourneys = (journeys ?? []).filter((j: any) =>
+    j.launch_importance === "launch_blocker" || j.launch_importance === "pilot_blocker" || j.launch_importance === "claim_risk"
+  );
+
+  const unresolvedBlockers = (blockers ?? []).filter((b: any) => !b.resolved);
+  const resolvedBlockers = (blockers ?? []).filter((b: any) => b.resolved);
+
+  return (
+    <div className="space-y-6 p-6" data-testid="cj04-launch-blockers">
+      <div>
+        <h1 className="text-2xl font-bold flex items-center gap-2">
+          <ShieldAlert className="h-6 w-6 text-destructive" />
+          CJ04 — Launch Blocker View
+        </h1>
+        <p className="text-muted-foreground mt-1">Critical journeys that must work before launch</p>
+      </div>
+
+      {isLoading ? (
+        <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-muted-foreground" /></div>
+      ) : (
+        <>
+          {/* Active Blockers */}
+          {unresolvedBlockers.length > 0 && (
+            <Card className="border-destructive/30">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-destructive text-lg">🚫 Active Blockers ({unresolvedBlockers.length})</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {unresolvedBlockers.map((b: any) => (
+                  <div key={b.id} className="p-3 rounded border border-destructive/20 bg-destructive/5 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-sm font-medium">{b.journey_key}</span>
+                      <Badge variant="outline" className="bg-destructive/15 text-destructive text-[10px]">{b.blocker_type}</Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground">{b.summary}</p>
+                    {b.recommended_fix && <p className="text-xs text-amber-400">Fix: {b.recommended_fix}</p>}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Critical Journeys Status */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Launch-Critical Journeys ({criticalJourneys.length})</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {criticalJourneys.map((j: any) => {
+                  const statusCfg = JOURNEY_STATUS_CONFIG[j.current_status] || JOURNEY_STATUS_CONFIG.unverified;
+                  const impactCfg = LAUNCH_IMPACT_CONFIG[j.launch_importance] || LAUNCH_IMPACT_CONFIG.non_blocking;
+                  return (
+                    <div key={j.id} className="flex items-center justify-between p-3 rounded border bg-card">
+                      <div>
+                        <div className="font-medium text-sm">{j.display_name}</div>
+                        <div className="font-mono text-[10px] text-muted-foreground">{j.journey_key}</div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className={`${statusCfg.color} text-[10px]`}>{statusCfg.label}</Badge>
+                        <Badge variant="outline" className={`${impactCfg.color} text-[10px]`}>{impactCfg.label}</Badge>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Resolved */}
+          {resolvedBlockers.length > 0 && (
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg text-emerald-400">✅ Resolved Blockers ({resolvedBlockers.length})</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-1">
+                {resolvedBlockers.map((b: any) => (
+                  <div key={b.id} className="p-2 rounded bg-emerald-500/5 border border-emerald-500/20 text-xs">
+                    <span className="font-mono">{b.journey_key}</span>
+                    <span className="text-muted-foreground ml-2">{b.summary}</span>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          )}
+
+          {criticalJourneys.length === 0 && unresolvedBlockers.length === 0 && (
+            <Card>
+              <CardContent className="py-8 text-center text-muted-foreground">No launch-critical journeys found. Seed from registry first.</CardContent>
+            </Card>
+          )}
+        </>
+      )}
+    </div>
+  );
+}

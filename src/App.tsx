@@ -281,6 +281,15 @@ const V05FailureTriageBoard = lazy(() => import("./pages/admin/verification/V05F
 const V06EvidenceExplorer = lazy(() => import("./pages/admin/verification/V06EvidenceExplorer"));
 const V07LaunchBlockerBoard = lazy(() => import("./pages/admin/verification/V07LaunchBlockerBoard"));
 
+// CJ — Customer Journey Proof System
+const CJ01ExecutiveReport = lazy(() => import("./pages/admin/customer-journey/CJ01ExecutiveReport"));
+const CJ02JourneyTruthMatrix = lazy(() => import("./pages/admin/customer-journey/CJ02JourneyTruthMatrix"));
+const CJ03JourneyDetailView = lazy(() => import("./pages/admin/customer-journey/CJ03JourneyDetailView"));
+const CJ04LaunchBlockerView = lazy(() => import("./pages/admin/customer-journey/CJ04LaunchBlockerView"));
+const CJ05DemoVsRealComparison = lazy(() => import("./pages/admin/customer-journey/CJ05DemoVsRealComparison"));
+const CJ06BrokenClicksExplorer = lazy(() => import("./pages/admin/customer-journey/CJ06BrokenClicksExplorer"));
+const CJ07OwnerRemediationView = lazy(() => import("./pages/admin/customer-journey/CJ07OwnerRemediationView"));
+
 const CN01ConnectorRealityOverview = lazy(() => import("./pages/admin/CN01ConnectorRealityOverview"));
 const CN02ConnectorRegistryConsole = lazy(() => import("./pages/admin/CN02ConnectorRegistryConsole"));
 const CN03AccountLinkageBoard = lazy(() => import("./pages/admin/CN03AccountLinkageBoard"));
@@ -796,6 +805,16 @@ const App = () => (
                     <Route path="/admin/verification/failures" element={<V05FailureTriageBoard />} />
                     <Route path="/admin/verification/evidence" element={<V06EvidenceExplorer />} />
                     <Route path="/admin/verification/blockers" element={<V07LaunchBlockerBoard />} />
+
+                    {/* CJ — Customer Journey Proof System */}
+                    <Route path="/admin/customer-journey/executive" element={<CJ01ExecutiveReport />} />
+                    <Route path="/admin/customer-journey/matrix" element={<CJ02JourneyTruthMatrix />} />
+                    <Route path="/admin/customer-journey/detail" element={<CJ03JourneyDetailView />} />
+                    <Route path="/admin/customer-journey/blockers" element={<CJ04LaunchBlockerView />} />
+                    <Route path="/admin/customer-journey/demo-vs-real" element={<CJ05DemoVsRealComparison />} />
+                    <Route path="/admin/customer-journey/broken-clicks" element={<CJ06BrokenClicksExplorer />} />
+                    <Route path="/admin/customer-journey/remediation" element={<CJ07OwnerRemediationView />} />
+
                     {/* Digital Presence Office */}
                     <Route path="/digital-presence" element={<PresenceGate />} />
                     <Route path="/digital-presence/boardroom" element={<PresenceBoardroom />} />
