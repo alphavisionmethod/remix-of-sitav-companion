@@ -3,21 +3,20 @@ import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ReserveProgressChart, ReserveOverTimeChart } from "@/components/sita/SitaCharts";
 import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
-import { PiggyBank, Target, Shield, TrendingUp, Plus, Sparkles } from "lucide-react";
+import { PiggyBank, Target, Shield, TrendingUp, Plus, Sparkles, Trash2 } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { motion } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { db } from "@/integrations/supabase/db";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
 import { useReservesSavings } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
-
 const ReservesSavings = () => {
   const { data: reservesData = [] } = useReservesSavings();
-
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
@@ -37,6 +36,38 @@ const ReservesSavings = () => {
     staleTime: isDemoMode ? Infinity : 10000,
   });
 
+  // Create reserve mutation
+  const createReserve = useMutation({
+    mutationFn: async (reserve: { name: string; target_amount: number; category: string; contribution_amount: number }) => {
+      if (!user) throw new Error("Not authenticated");
+      const { data, error } = await (db as any).from("reserves").insert({
+        ...reserve, user_id: user.id, current_amount: 0, priority: reserves.length + 1,
+      }).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["reserves"] });
+      queryClient.invalidateQueries({ queryKey: ["reserves-savings"] });
+      toast.success("Reserve goal created");
+    },
+    onError: (e: any) => toast.error(e.message),
+  });
+
+  // Delete reserve mutation
+  const deleteReserve = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await (db as any).from("reserves").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["reserves"] });
+      queryClient.invalidateQueries({ queryKey: ["reserves-savings"] });
+      toast.success("Reserve goal deleted");
+    },
+    onError: (e: any) => toast.error(e.message),
+  });
+
   const totalCurrent = reserves.reduce((s: number, r: any) => s + (r.current_amount || 0), 0);
   const totalTarget = reserves.reduce((s: number, r: any) => s + (r.target_amount || 0), 0);
   const overallHealth = totalTarget > 0 ? Math.round((totalCurrent / totalTarget) * 100) : 0;
@@ -45,7 +76,8 @@ const ReservesSavings = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <DemoModeBadge />
-      <SitaPageHeader title="Reserves & Savings" subtitle="Build stability, track goals, and maintain financial resilience" actions={<SitaButton variant="primary"><Plus className="h-4 w-4" /> New Goal</SitaButton>} />
+      <SitaPageHeader title="Reserves & Savings" subtitle="Build stability, track goals, and maintain financial resilience"
+        actions={<SitaButton variant="primary" onClick={() => createReserve.mutate({ name: "New Goal", target_amount: 5000, category: "goal", contribution_amount: 200 })}><Plus className="h-4 w-4" /> New Goal</SitaButton>} />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Total Reserved" value={`$${(totalCurrent / 1000).toFixed(1)}K`} icon={PiggyBank} sub={`of $${(totalTarget / 1000).toFixed(0)}K target`} className="gradient-sita-subtle" />
@@ -69,7 +101,6 @@ const ReservesSavings = () => {
             const pct = r.target_amount > 0 ? Math.round((r.current_amount / r.target_amount) * 100) : 0;
             const healthColor = pct >= 80 ? "bg-trust-verified" : pct >= 50 ? "bg-trust-review" : "bg-urgency-high";
             const healthText = pct >= 80 ? "text-trust-verified" : pct >= 50 ? "text-trust-review" : "text-urgency-high";
-
             return (
               <SitaCard key={r.id} className="p-5">
                 <div className="flex items-start justify-between gap-4">
@@ -80,7 +111,6 @@ const ReservesSavings = () => {
                       {r.auto_contribute && <span className="text-[10px] bg-primary/10 text-primary rounded px-1.5 py-px">Auto</span>}
                     </div>
                     <p className="text-xs text-muted-foreground">{r.notes || ""}</p>
-
                     <div className="mt-3 flex items-center gap-3">
                       <div className="flex-1">
                         <div className="h-2.5 w-full rounded-full bg-secondary overflow-hidden">
@@ -89,16 +119,19 @@ const ReservesSavings = () => {
                       </div>
                       <span className={`font-display text-sm font-bold ${healthText}`}>{pct}%</span>
                     </div>
-
                     <div className="mt-3 flex items-center gap-6 text-xs text-muted-foreground">
                       <span>Current: <span className="font-semibold text-foreground">${(r.current_amount || 0).toLocaleString()}</span></span>
                       <span>Target: <span className="font-semibold text-foreground">${(r.target_amount || 0).toLocaleString()}</span></span>
                       {r.contribution_amount > 0 && <span>Monthly: <span className="font-semibold text-foreground">${r.contribution_amount}</span></span>}
                     </div>
                   </div>
-
-                  <div className="shrink-0">
+                  <div className="shrink-0 flex flex-col items-end gap-2">
                     <TrustBadge level={pct >= 80 ? "verified" : pct >= 50 ? "review" : "degraded"} label={pct >= 80 ? "Healthy" : pct >= 50 ? "Building" : "Behind"} size="sm" />
+                    {!isDemoMode && (
+                      <button onClick={() => deleteReserve.mutate(r.id)} className="text-muted-foreground hover:text-destructive transition-colors">
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    )}
                   </div>
                 </div>
               </SitaCard>
@@ -113,7 +146,7 @@ const ReservesSavings = () => {
         demoName="Reserve Intelligence"
         demoRole="Savings Advisor"
         demoConfidence="High"
-        demoRecommendation={`Emergency fund at ${reserves[0] ? Math.round(((reserves[0] as any).current_amount / (reserves[0] as any).target_amount) * 100) : 0}% — increase monthly contribution by $200 to hit target 3 months sooner. Tax reserve is on track for Q2 estimated payment.`}
+        demoRecommendation={`Reserve health at ${overallHealth}%. ${reserves.length} active goals with $${monthlyTotal.toLocaleString()}/mo in contributions.`}
         demoReasoning="Based on reserve health analysis, contribution rates, target timelines, and upcoming obligations."
       />
     </motion.div>

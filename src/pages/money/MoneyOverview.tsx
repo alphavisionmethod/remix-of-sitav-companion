@@ -7,6 +7,7 @@ import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { useNavigate } from "react-router-dom";
 import { useBills, useSubscriptions, useInvoices } from "@/hooks/use-sita-data";
+import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { useDataMode } from "@/contexts/DataModeContext";
 import {
   DollarSign, TrendingUp, TrendingDown, CreditCard, AlertTriangle, PiggyBank, Wallet, Briefcase,
@@ -18,25 +19,9 @@ import { FraudSentinelService, type FraudSummary } from "@/lib/core-services/fra
 import { BudgetAutomationPanel } from "@/components/sita/BudgetAutomationPanel";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
-const accounts = [
-  { name: "Business Checking", balance: "$14,230", institution: "Chase", trend: "up" as const, icon: Briefcase },
-  { name: "Business Savings", balance: "$28,500", institution: "Chase", trend: "flat" as const, icon: PiggyBank },
-  { name: "Personal Checking", balance: "$3,840", institution: "Wells Fargo", trend: "down" as const, icon: Wallet },
-  { name: "Emergency Fund", balance: "$12,000", institution: "Ally", trend: "flat" as const, icon: Building },
-];
-
-const upcomingBills = [
-  { name: "Office Rent", amount: "$2,400", due: "Apr 1", daysLeft: 1 },
-  { name: "AWS Hosting", amount: "$340", due: "Apr 3", daysLeft: 3 },
-  { name: "Phone & Internet", amount: "$189", due: "Apr 5", daysLeft: 5 },
-];
-
-const changes = [
-  { icon: CheckCircle, color: "text-trust-verified", title: "Rent payment scheduled — $2,400", subtitle: "Auto-pay confirmed for Apr 1", time: "2h ago" },
-  { icon: AlertTriangle, color: "text-urgency-high", title: "Zoom Pro renewal in 3 days — $15.99", subtitle: "Usage: Low — consider canceling", time: "Today" },
-  { icon: DollarSign, color: "text-trust-verified", title: "Invoice #1038 payment received — $4,200", subtitle: "Marcus Johnson via Stripe", time: "2h ago" },
-  { icon: TrendingDown, color: "text-urgency-medium", title: "Personal checking below $4,000", subtitle: "Consider transferring from savings", time: "Today" },
-];
+const accountIcons: Record<string, typeof Briefcase> = {
+  checking: Wallet, savings: PiggyBank, investment: Building, default: Briefcase,
+};
 
 const MoneyOverview = () => {
   const navigate = useNavigate();
@@ -44,8 +29,10 @@ const MoneyOverview = () => {
   const { data: bills = [] } = useBills();
   const { data: subscriptions = [] } = useSubscriptions();
   const { data: invoices = [] } = useInvoices();
+  const { data: accounts = [] } = useFinancialAccounts();
+  const { data: kpis } = useMoneyKPIs();
 
-  const hasLiveData = isDemoMode || bills.length > 0 || subscriptions.length > 0 || invoices.length > 0;
+  const hasLiveData = isDemoMode || bills.length > 0 || subscriptions.length > 0 || invoices.length > 0 || accounts.length > 0;
 
   const fraudSummary = useMemo<FraudSummary>(() => {
     const sentinel = new FraudSentinelService();
@@ -61,10 +48,37 @@ const MoneyOverview = () => {
     return sentinel.getActiveSignals();
   }, []);
 
+  // Upcoming bills from DB (next 7 days)
+  const upcomingBills = useMemo(() => {
+    const now = new Date();
+    return bills
+      .filter((b: any) => {
+        const due = new Date(b.due_date);
+        const diff = Math.ceil((due.getTime() - now.getTime()) / 86400000);
+        return diff >= 0 && diff <= 7;
+      })
+      .map((b: any) => {
+        const due = new Date(b.due_date);
+        const daysLeft = Math.max(0, Math.ceil((due.getTime() - now.getTime()) / 86400000));
+        return { name: b.name || b.payee, amount: `$${Number(b.amount).toLocaleString()}`, due: due.toLocaleDateString("en", { month: "short", day: "numeric" }), daysLeft };
+      })
+      .slice(0, 5);
+  }, [bills]);
+
+  // Recent receivables from DB
+  const pendingInvoices = useMemo(() =>
+    invoices.filter((i: any) => i.status !== "paid").slice(0, 3), [invoices]);
+
+  // Waste subscriptions from DB
+  const wasteSubscriptions = useMemo(() =>
+    subscriptions.filter((s: any) => s.is_waste).slice(0, 3), [subscriptions]);
+
+  const k = kpis || { totalBalance: 0, safeToSpend: 0, billsDue7d: 0, billsDue7dCount: 0, reserveHealth: 0, subscriptionMonthly: 0, subscriptionCount: 0, estWaste: 0, wasteCount: 0, receivables: 0, receivableCount: 0, monthlyBurn: 0 };
+
   if (!hasLiveData) {
     return (
       <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <DemoModeBadge />
+        <DemoModeBadge />
         <SitaPageHeader title="Money Center" subtitle="Cash posture, obligations, and financial intelligence" />
         <EmptyStateCTA
           icon={DollarSign}
@@ -83,25 +97,20 @@ const MoneyOverview = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DomainHeader
-        title="Money Center"
-        subtitle="Cash posture, obligations, and financial intelligence"
-        icon={DollarSign}
-        domain="money"
-      />
+      <DomainHeader title="Money Center" subtitle="Cash posture, obligations, and financial intelligence" icon={DollarSign} domain="money" />
 
-      {/* KPI Strip */}
+      {/* KPI Strip — from DB */}
       <motion.div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8"
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05 } } }} initial="hidden" animate="show">
         {[
-          { label: "Total Balance", value: "$58,570", trend: "up" as const, sub: "4 accounts", className: "gradient-sita-subtle" },
-          { label: "Safe to Spend", value: "$3,180", sub: "After obligations" },
-          { label: "Bills Due (7d)", value: "$2,929", sub: "3 bills" },
-          { label: "Reserve Health", value: "94%", trend: "up" as const, sub: "On target" },
-          { label: "Subscriptions", value: "$105/mo", sub: "5 active" },
-          { label: "Est. Waste", value: "$28/mo", sub: "2 flagged" },
-          { label: "Receivables", value: "$7,400", sub: "2 expected" },
-          { label: "Monthly Burn", value: "$6,200", trend: "down" as const, sub: "-$300" },
+          { label: "Total Balance", value: `$${k.totalBalance.toLocaleString()}`, trend: "up" as const, sub: `${accounts.length} accounts`, className: "gradient-sita-subtle" },
+          { label: "Safe to Spend", value: `$${k.safeToSpend.toLocaleString()}`, sub: "After obligations" },
+          { label: "Bills Due (7d)", value: `$${k.billsDue7d.toLocaleString()}`, sub: `${k.billsDue7dCount} bills` },
+          { label: "Reserve Health", value: `${k.reserveHealth}%`, trend: "up" as const, sub: "On target" },
+          { label: "Subscriptions", value: `$${k.subscriptionMonthly}/mo`, sub: `${k.subscriptionCount} active` },
+          { label: "Est. Waste", value: `$${k.estWaste}/mo`, sub: `${k.wasteCount} flagged` },
+          { label: "Receivables", value: `$${k.receivables.toLocaleString()}`, sub: `${k.receivableCount} expected` },
+          { label: "Monthly Burn", value: `$${k.monthlyBurn.toLocaleString()}`, trend: "down" as const, sub: "Projected" },
         ].map((kpi, i) => (
           <motion.div key={i} variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
             <KPITile {...kpi} />
@@ -135,69 +144,65 @@ const MoneyOverview = () => {
       </SitaCard>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Column 1 — Accounts + Cash Timing */}
+        {/* Column 1 — Accounts from DB */}
         <div className="space-y-6">
           <div className="space-y-3">
             <SitaSectionHeader title="Accounts" />
-            {accounts.map((acc, i) => (
-              <SitaCard key={i} className="p-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-xl bg-primary/8 p-2.5"><acc.icon className="h-4 w-4 text-primary" /></div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground">{acc.name}</p>
-                      <p className="text-xs text-muted-foreground">{acc.institution}</p>
+            {accounts.map((acc: any) => {
+              const Icon = accountIcons[acc.account_type] || accountIcons.default;
+              return (
+                <SitaCard key={acc.id} className="p-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-xl bg-primary/8 p-2.5"><Icon className="h-4 w-4 text-primary" /></div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">{acc.name}</p>
+                        <p className="text-xs text-muted-foreground">{acc.institution}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-display text-base font-bold text-foreground">${Number(acc.balance).toLocaleString()}</p>
+                      {acc.trend > 0 && <TrendingUp className="h-3.5 w-3.5 text-trust-safe ml-auto" />}
+                      {acc.trend < 0 && <TrendingDown className="h-3.5 w-3.5 text-urgency-high ml-auto" />}
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-display text-base font-bold text-foreground">{acc.balance}</p>
-                    {acc.trend === "up" && <TrendingUp className="h-3.5 w-3.5 text-trust-safe ml-auto" />}
-                    {acc.trend === "down" && <TrendingDown className="h-3.5 w-3.5 text-urgency-high ml-auto" />}
-                  </div>
-                </div>
-              </SitaCard>
-            ))}
+                </SitaCard>
+              );
+            })}
           </div>
 
-          {/* Safe-to-Spend — Deterministic Calculation */}
+          {/* Safe-to-Spend — Deterministic */}
           <SitaCard hover={false} className="gradient-sita-subtle p-5">
             <div className="flex items-center gap-2 mb-4">
               <Shield className="h-4 w-4 text-primary" />
               <SitaCardTitle>Safe to Spend</SitaCardTitle>
               <span className="ml-auto text-[10px] text-muted-foreground rounded-full bg-secondary px-2 py-0.5">Deterministic</span>
             </div>
-            <p className="font-display text-4xl font-bold text-foreground tracking-tight">$3,180</p>
+            <p className="font-display text-4xl font-bold text-foreground tracking-tight">${k.safeToSpend.toLocaleString()}</p>
             <p className="mt-1 text-xs text-muted-foreground">Available after all obligations</p>
-            
-            {/* Breakdown */}
             <div className="mt-4 space-y-2 border-t border-border/30 pt-4">
               {[
-                { label: "Total Cash", value: "$58,570", color: "text-foreground" },
-                { label: "− Bills due (7d)", value: "−$2,929", color: "text-[hsl(var(--sita-gold))]" },
-                { label: "− Reserve minimum", value: "−$12,000", color: "text-muted-foreground" },
-                { label: "− Scheduled payments", value: "−$40,461", color: "text-muted-foreground" },
-                { label: "= Safe to spend", value: "$3,180", color: "text-[hsl(var(--trust-safe))]" },
+                { label: "Total Cash", value: `$${k.totalBalance.toLocaleString()}`, color: "text-foreground" },
+                { label: "− Bills due (7d)", value: `−$${k.billsDue7d.toLocaleString()}`, color: "text-[hsl(var(--sita-gold))]" },
+                { label: "= Safe to spend", value: `$${k.safeToSpend.toLocaleString()}`, color: "text-[hsl(var(--trust-safe))]" },
               ].map((row, i) => (
-                <div key={i} className={`flex items-center justify-between text-[12px] ${i === 4 ? "font-semibold pt-2 border-t border-border/20" : ""}`}>
+                <div key={i} className={`flex items-center justify-between text-[12px] ${i === 2 ? "font-semibold pt-2 border-t border-border/20" : ""}`}>
                   <span className="text-muted-foreground">{row.label}</span>
                   <span className={`font-mono tabular-nums ${row.color}`}>{row.value}</span>
                 </div>
               ))}
             </div>
-            
-            <ConfidenceBar value={42} label="Spending capacity" size="md" className="mt-4" />
-            
+            <ConfidenceBar value={Math.min(100, Math.round((k.safeToSpend / Math.max(k.totalBalance, 1)) * 100))} label="Spending capacity" size="md" className="mt-4" />
             <SitaButton variant="accent" size="sm" className="mt-3" onClick={() => navigate("/money/cash-timing")}>
               View Cash Timing <ArrowRight className="h-3 w-3" />
             </SitaButton>
           </SitaCard>
         </div>
 
-        {/* Column 2 — Bills + Obligations */}
+        {/* Column 2 — Bills from DB */}
         <div className="space-y-6">
           <div className="space-y-3">
             <SitaSectionHeader title="Bill Calendar" action={<button onClick={() => navigate("/money/bills")} className="text-xs text-primary hover:underline">View all</button>} />
-            {/* Visual calendar strip */}
             <SitaCard hover={false} className="p-4">
               <div className="flex gap-1 mb-3">
                 {Array.from({ length: 7 }, (_, i) => {
@@ -236,84 +241,72 @@ const MoneyOverview = () => {
             ))}
           </div>
 
-          {/* Waste Detection */}
+          {/* Waste Detection from DB */}
           <div className="space-y-3">
             <SitaSectionHeader title="Waste Detector" action={<button onClick={() => navigate("/money/subscriptions")} className="text-xs text-primary hover:underline">View all</button>} />
-            <SitaCard hover={false} className="p-4 border-l-4 border-l-[hsl(var(--sita-gold))]">
-              <div className="flex items-center gap-2 mb-3">
-                <AlertTriangle className="h-4 w-4 text-[hsl(var(--sita-gold))]" />
-                <span className="text-sm font-semibold text-foreground">$336/yr potential savings</span>
-                <span className="ml-auto text-[10px] text-muted-foreground bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))] rounded-full px-2 py-0.5 font-medium">2 flagged</span>
-              </div>
-              <div className="space-y-2">
-                {[
-                  { name: "Zoom Pro", cost: "$15.99/mo", usage: "Low", savings: "$192/yr", lastUsed: "3 weeks ago", risk: "medium" as const },
-                  { name: "Calendly Pro", cost: "$12/mo", usage: "Very Low", savings: "$144/yr", lastUsed: "5 weeks ago", risk: "low" as const },
-                ].map((sub, i) => (
-                  <div key={i} className="flex items-center gap-3 rounded-lg bg-secondary/30 px-3 py-2.5">
-                    <div className={`h-2 w-2 rounded-full ${sub.risk === "medium" ? "bg-[hsl(var(--sita-gold))]" : "bg-muted-foreground/40"}`} />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[12px] font-medium text-foreground">{sub.name} — {sub.cost}</p>
-                      <p className="text-[10px] text-muted-foreground">Usage: {sub.usage} · Last used {sub.lastUsed}</p>
+            {wasteSubscriptions.length > 0 ? (
+              <SitaCard hover={false} className="p-4 border-l-4 border-l-[hsl(var(--sita-gold))]">
+                <div className="flex items-center gap-2 mb-3">
+                  <AlertTriangle className="h-4 w-4 text-[hsl(var(--sita-gold))]" />
+                  <span className="text-sm font-semibold text-foreground">${k.estWaste * 12}/yr potential savings</span>
+                  <span className="ml-auto text-[10px] text-muted-foreground bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))] rounded-full px-2 py-0.5 font-medium">{k.wasteCount} flagged</span>
+                </div>
+                <div className="space-y-2">
+                  {wasteSubscriptions.map((sub: any, i: number) => (
+                    <div key={i} className="flex items-center gap-3 rounded-lg bg-secondary/30 px-3 py-2.5">
+                      <div className="h-2 w-2 rounded-full bg-[hsl(var(--sita-gold))]" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[12px] font-medium text-foreground">{sub.name} — ${Number(sub.cost).toFixed(2)}/mo</p>
+                        <p className="text-[10px] text-muted-foreground">Usage: {sub.usage_level || "Low"}</p>
+                      </div>
+                      <span className="text-[11px] font-semibold text-[hsl(var(--trust-safe))]">Save ${(Number(sub.cost) * 12).toFixed(0)}/yr</span>
                     </div>
-                    <span className="text-[11px] font-semibold text-[hsl(var(--trust-safe))]">Save {sub.savings}</span>
-                  </div>
-                ))}
-              </div>
-            </SitaCard>
+                  ))}
+                </div>
+              </SitaCard>
+            ) : (
+              <SitaCard hover={false} className="p-4">
+                <p className="text-sm text-muted-foreground">No waste detected</p>
+              </SitaCard>
+            )}
           </div>
 
-          {/* Receivables */}
+          {/* Receivables from DB */}
           <div className="space-y-3">
             <SitaSectionHeader title="Expected Inflows" action={<button onClick={() => navigate("/money/receivables")} className="text-xs text-primary hover:underline">View all</button>} />
-            <SitaCard className="p-4" lane="opportunity">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-foreground">Invoice #1039 — Apex Corp</p>
-                  <p className="text-xs text-muted-foreground">Expected Apr 5</p>
+            {pendingInvoices.map((inv: any) => (
+              <SitaCard key={inv.id} className="p-4" lane="opportunity">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{inv.client_name || inv.description || `Invoice #${inv.invoice_number}`}</p>
+                    <p className="text-xs text-muted-foreground">Expected {new Date(inv.due_date).toLocaleDateString("en", { month: "short", day: "numeric" })}</p>
+                  </div>
+                  <p className="font-display text-sm font-bold text-trust-verified">${Number(inv.amount).toLocaleString()}</p>
                 </div>
-                <p className="font-display text-sm font-bold text-trust-verified">$3,200</p>
-              </div>
-            </SitaCard>
-            <SitaCard className="p-4" lane="opportunity">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-foreground">Invoice #1040 — Lisa Thompson</p>
-                  <p className="text-xs text-muted-foreground">Expected Apr 12</p>
-                </div>
-                <p className="font-display text-sm font-bold text-trust-verified">$4,200</p>
-              </div>
-            </SitaCard>
+              </SitaCard>
+            ))}
           </div>
         </div>
 
-        {/* Column 3 — What Changed + Advisor + Boardroom */}
+        {/* Column 3 — Advisor + Proof + Boardroom */}
         <div className="space-y-6">
-          <div className="space-y-3">
-            <SitaSectionHeader title="What Changed Today" />
-            <SitaCard hover={false} className="p-4">
-              {changes.map((c, i) => <TimelineItem key={i} {...c} />)}
-            </SitaCard>
-          </div>
-
           <LiveAdvisorCard
             advisor="money"
             intent="cash_posture"
-            context={{ total_balance: 58570, monthly_burn: 6200, safe_to_spend: 3180 }}
+            context={{ total_balance: k.totalBalance, monthly_burn: k.monthlyBurn, safe_to_spend: k.safeToSpend }}
             demoName="Money Advisor"
             demoRole="Cash & Obligation Intelligence"
             demoConfidence="High"
-            demoRecommendation="Cash position is stable. Office rent auto-pays tomorrow — confirmed. Consider canceling Zoom Pro before renewal in 3 days to save $192/yr. Personal checking is getting low — transfer $1,000 from savings."
-            demoReasoning="Based on 4-account analysis, upcoming bills, and subscription usage patterns."
+            demoRecommendation={`Cash position: $${k.totalBalance.toLocaleString()}. Safe to spend: $${k.safeToSpend.toLocaleString()}. ${k.wasteCount > 0 ? `${k.wasteCount} waste subscription${k.wasteCount > 1 ? "s" : ""} detected.` : "No waste detected."}`}
+            demoReasoning={`Based on ${accounts.length}-account analysis, upcoming bills, and subscription usage patterns.`}
           />
 
           <div className="space-y-3">
             <SitaSectionHeader title="Recent Proof" />
-            <ProofCard title="Rent payment scheduled" artifact="Auto-pay confirmed — $2,400 on Apr 1" time="2h ago" trust="verified" state="completed" />
-            <ProofCard title="Invoice payment received" artifact="Stripe — $4,200 from Marcus Johnson" time="2h ago" trust="verified" state="verified" />
+            <ProofCard title="Rent payment scheduled" artifact="Auto-pay confirmed" time="2h ago" trust="verified" state="completed" />
+            <ProofCard title="Invoice payment received" artifact="Stripe payment recorded" time="2h ago" trust="verified" state="verified" />
           </div>
 
-          {/* Budget Automation */}
           <BudgetAutomationPanel />
 
           <SitaCard hover={false} className="gradient-sita-subtle p-5">

@@ -10797,6 +10797,48 @@ export type Database = {
         }
         Relationships: []
       }
+      financial_accounts: {
+        Row: {
+          account_type: string
+          balance: number
+          created_at: string
+          currency: string
+          id: string
+          institution: string | null
+          last_synced_at: string | null
+          name: string
+          trend: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_type?: string
+          balance?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          institution?: string | null
+          last_synced_at?: string | null
+          name: string
+          trend?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_type?: string
+          balance?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          institution?: string | null
+          last_synced_at?: string | null
+          name?: string
+          trend?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       financial_documents: {
         Row: {
           category: string
@@ -14281,6 +14323,45 @@ export type Database = {
           launch_claim_class?: string
           mode_key?: string
           proof_label_style?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      money_policies: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          enabled: boolean
+          icon_key: string | null
+          id: string
+          threshold: number | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          icon_key?: string | null
+          id?: string
+          threshold?: number | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          icon_key?: string | null
+          id?: string
+          threshold?: number | null
+          title?: string
           updated_at?: string
           user_id?: string
         }
