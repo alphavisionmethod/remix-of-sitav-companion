@@ -58,7 +58,7 @@ const BillsWorkspace = () => {
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<BillForm>(emptyForm);
 
-  const { data: bills = [], isLoading } = useQuery({
+  const billsQuery = useQuery({
     queryKey: ["bills"],
     queryFn: async () => {
       const { data, error } = await (supabase as any).from("bills").select("*").order("due_date", { ascending: true });
@@ -66,6 +66,9 @@ const BillsWorkspace = () => {
       return data;
     },
   });
+  const bills = billsQuery.data ?? [];
+  const isLoading = billsQuery.isLoading;
+  const freshness = useQueryFreshness(billsQuery);
 
   const createMutation = useMutation({
     mutationFn: async (bill: BillForm) => {
