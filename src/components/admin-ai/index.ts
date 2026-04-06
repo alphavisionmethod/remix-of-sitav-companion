@@ -7,3 +7,5 @@ export { AIWorkforceRoleDetailDrawer } from "./AIWorkforceRoleDetailDrawer";
 export { AIWorkforceRecommendationCard } from "./AIWorkforceRecommendationCard";
 export { AIWorkforceApprovalQueueTable } from "./AIWorkforceApprovalQueueTable";
 export { AIWorkforceLaunchTruthBoard } from "./AIWorkforceLaunchTruthBoard";
+export { AIWorkforceScoreForm } from "./AIWorkforceScoreForm";
+export { AIWorkforceActivityFeed } from "./AIWorkforceActivityFeed";
