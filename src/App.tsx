@@ -296,6 +296,14 @@ const PFA08AccountGraphExplorer = lazy(() => import("./pages/admin/PFA08AccountG
 const PFA09ConnectedAccountsCenter = lazy(() => import("./pages/admin/PFA09ConnectedAccountsCenter"));
 const PFA10IntegrationLaunchHonesty = lazy(() => import("./pages/admin/PFA10IntegrationLaunchHonesty"));
 
+const ISA01IdentityProviderRegistryBoard = lazy(() => import("./pages/admin/ISA01IdentityProviderRegistryBoard"));
+const ISA02ConnectorProviderRegistryBoard = lazy(() => import("./pages/admin/ISA02ConnectorProviderRegistryBoard"));
+const ISA03OAuthClientRegistryConsole = lazy(() => import("./pages/admin/ISA03OAuthClientRegistryConsole"));
+const ISA04ConsentLedgerExplorer = lazy(() => import("./pages/admin/ISA04ConsentLedgerExplorer"));
+const ISA05ScopePolicyMatrixBoard = lazy(() => import("./pages/admin/ISA05ScopePolicyMatrixBoard"));
+const ISA06UnifiedAccountGraphExplorer = lazy(() => import("./pages/admin/ISA06UnifiedAccountGraphExplorer"));
+const ISA07AuthConnectorTruthBoard = lazy(() => import("./pages/admin/ISA07AuthConnectorTruthBoard"));
+
 const UAO01PresenceContinuity = lazy(() => import("./pages/admin/UAO01PresenceContinuity"));
 const UAO02ConnectedDevices = lazy(() => import("./pages/admin/UAO02ConnectedDevices"));
 const UAO03AmbientTeamControl = lazy(() => import("./pages/admin/UAO03AmbientTeamControl"));
@@ -1132,6 +1140,13 @@ const App = () => (
                     <Route path="/admin/pfa/account-graph" element={<PFA08AccountGraphExplorer />} />
                     <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
                     <Route path="/admin/pfa/launch-honesty" element={<PFA10IntegrationLaunchHonesty />} />
+                    <Route path="/admin/isa/identity-providers" element={<ISA01IdentityProviderRegistryBoard />} />
+                    <Route path="/admin/isa/connector-providers" element={<ISA02ConnectorProviderRegistryBoard />} />
+                    <Route path="/admin/isa/oauth-clients" element={<ISA03OAuthClientRegistryConsole />} />
+                    <Route path="/admin/isa/consent-ledger" element={<ISA04ConsentLedgerExplorer />} />
+                    <Route path="/admin/isa/scope-policy" element={<ISA05ScopePolicyMatrixBoard />} />
+                    <Route path="/admin/isa/account-graph" element={<ISA06UnifiedAccountGraphExplorer />} />
+                    <Route path="/admin/isa/truth-board" element={<ISA07AuthConnectorTruthBoard />} />
                     <Route path="/admin/uao/presence" element={<UAO01PresenceContinuity />} />
                     <Route path="/admin/uao/devices" element={<UAO02ConnectedDevices />} />
                     <Route path="/admin/uao/team" element={<UAO03AmbientTeamControl />} />
