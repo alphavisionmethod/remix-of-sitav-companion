@@ -24,7 +24,7 @@ import {
   CostAnomalyCard, PolicyAnomalyCard, ReleaseSafetyCard, SafeModeCard,
   PermissionsCard,
 } from "@/components/sita/MissionControlComponents";
-import { useAdvisorMissionControl, type SafeModeState } from "@/hooks/useAdvisorMissionControl";
+import { mockAdvisors, mockRecommendations, mockInternalAgents, mockIncidents, mockConnectorHealth, mockStuckWorkflows, mockCostAnomalies, mockPolicyAnomalies, mockReleaseSafety, mockApprovals, mockSafeMode, type SafeModeState } from "@/hooks/useAdvisorMissionControl";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { cn } from "@/lib/utils";
 import { FraudSentinelService } from "@/lib/core-services/fraud-sentinel";
