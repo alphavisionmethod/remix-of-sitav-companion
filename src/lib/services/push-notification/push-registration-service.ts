@@ -85,7 +85,9 @@ async function registerWebPush(vapidPublicKey: string): Promise<{
 
 async function registerCapacitorPush(): Promise<string | null> {
   try {
-    const { PushNotifications } = await import("@capacitor/push-notifications");
+    // Dynamic import — only available when @capacitor/push-notifications is installed
+    const mod = await import(/* @vite-ignore */ "@capacitor/push-notifications");
+    const PushNotifications = mod.PushNotifications;
     const permResult = await PushNotifications.requestPermissions();
     if (permResult.receive !== "granted") return null;
 
