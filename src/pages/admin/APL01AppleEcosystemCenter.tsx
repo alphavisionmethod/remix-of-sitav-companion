@@ -37,6 +37,8 @@ const PROVIDER_CAPS = [
 
 const APL01AppleEcosystemCenter = () => {
   const [showDependencies, setShowDependencies] = useState(false);
+  const [showAddDevice, setShowAddDevice] = useState(false);
+  const [newDevice, setNewDevice] = useState({ surface: "iphone", device_model: "", os_version: "" });
   const { data: devices, isLoading: devicesLoading } = useEcosystemDevices("apple");
   const { data: launchData, isLoading: launchLoading } = useEcosystemLaunchReadiness("apple");
   const { data: trustRecords } = useEcosystemTrustRecords("apple");
@@ -45,6 +47,11 @@ const APL01AppleEcosystemCenter = () => {
   const { data: pushRoutes } = useEcosystemPushRoutes("apple");
   const { data: continuityEvents } = useEcosystemContinuityEvents("apple");
   const seedMutation = useSeedEcosystemData();
+  const addDevice = useAddEcosystemDevice();
+  const removeDevice = useRemoveEcosystemDevice();
+  const updateTrust = useUpdateDeviceTrust();
+  const toggleConsent = useToggleHealthConsent();
+  const updatePush = useUpdatePushRoute();
 
   const hasData = (devices?.length ?? 0) > 0;
   const trustedCount = trustRecords?.filter((t: any) => t.biometric_verified).length ?? 0;
