@@ -4145,6 +4145,53 @@ export type Database = {
           },
         ]
       }
+      consent_scope_records: {
+        Row: {
+          consent_ledger_id: string | null
+          created_at: string
+          grant_reason: string | null
+          granted: boolean
+          id: string
+          revoke_reason: string | null
+          revoked_at: string | null
+          scope: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          consent_ledger_id?: string | null
+          created_at?: string
+          grant_reason?: string | null
+          granted?: boolean
+          id?: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          scope: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          consent_ledger_id?: string | null
+          created_at?: string
+          grant_reason?: string | null
+          granted?: boolean
+          id?: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          scope?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consent_scope_records_consent_ledger_id_fkey"
+            columns: ["consent_ledger_id"]
+            isOneToOne: false
+            referencedRelation: "consent_ledger"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       consent_upgrades: {
         Row: {
           approval_required: boolean | null
