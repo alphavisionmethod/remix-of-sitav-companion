@@ -99,6 +99,11 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
       label: getLabel(observabilityScore),
       detail: `Runtime probes + health snapshots + telemetry`,
     },
+    securityPrivacy: {
+      score: securityScore,
+      label: getLabel(securityScore),
+      detail: securityResult.detail,
+    },
     overallScore,
     lastComputed: new Date().toISOString(),
   };
