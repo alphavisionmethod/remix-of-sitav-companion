@@ -1298,6 +1298,7 @@ const App = () => (
           </SitaKernelProvider>
           </EntityContextProvider>
           </DisplayModeProvider>
+          </DemoModeProvider>
           </DataModeProvider>
           </ThemeProvider>
           </ConnectivityProvider>
