@@ -235,6 +235,27 @@ const SettingsPage = () => {
                   {isDemoMode ? <><ToggleLeft className="h-4 w-4" /><span>Demo</span></> : <><ToggleRight className="h-4 w-4" /><span>Live</span></>}
                 </button>
               </div>
+              {/* Seed Demo Data */}
+              <div className="flex items-center justify-between py-3 border-b border-border">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-xl bg-accent/8 p-2"><Database className="h-4 w-4 text-accent" /></div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Seed Demo Data</p>
+                    <p className="text-xs text-muted-foreground">Populate tables with sample data for testing</p>
+                  </div>
+                </div>
+                <SitaButton variant="secondary" size="sm" onClick={async () => {
+                  try {
+                    toast.info("Seeding data...");
+                    const { data, error } = await supabase.functions.invoke("seed-user-data", { method: "POST", body: {} });
+                    if (error) throw error;
+                    if (data?.skipped) toast.info("Data already seeded");
+                    else toast.success("Demo data seeded successfully");
+                  } catch (e: any) { toast.error(e.message || "Seed failed"); }
+                }}>
+                  <RefreshCw className="h-3.5 w-3.5 mr-1" /> Seed Data
+                </SitaButton>
+              </div>
             </div>
           </SitaCard>
         );
@@ -295,10 +316,33 @@ const SettingsPage = () => {
               ]} />
               <ToggleSetting label="PII Redaction" description="Strip names from documents before AI processing" enabled={piiRedaction} onChange={() => setPiiRedaction(!piiRedaction)} />
               <div className="py-3 space-y-2">
-                <button className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-2 text-xs text-foreground hover:bg-secondary/80 transition-colors w-full">
+                <button
+                  className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-2 text-xs text-foreground hover:bg-secondary/80 transition-colors w-full"
+                  onClick={async () => {
+                    try {
+                      const { data, error } = await supabase.functions.invoke("gdpr-export", { method: "POST", body: { format: "json" } });
+                      if (error) throw error;
+                      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement("a"); a.href = url; a.download = `sita-export-${new Date().toISOString().slice(0, 10)}.json`; a.click();
+                      URL.revokeObjectURL(url);
+                      toast.success("Data exported");
+                    } catch (e: any) { toast.error(e.message || "Export failed"); }
+                  }}
+                >
                   <Download className="h-3.5 w-3.5 text-muted-foreground" /> Export All Data (JSON)
                 </button>
-                <button className="flex items-center gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-xs text-destructive hover:bg-destructive/20 transition-colors w-full">
+                <button
+                  className="flex items-center gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-xs text-destructive hover:bg-destructive/20 transition-colors w-full"
+                  onClick={async () => {
+                    if (!confirm("Are you sure? This will permanently delete all your data.")) return;
+                    try {
+                      const { error } = await supabase.functions.invoke("gdpr-delete", { method: "POST", body: {} });
+                      if (error) throw error;
+                      toast.success("Deletion request submitted");
+                    } catch (e: any) { toast.error(e.message || "Deletion failed"); }
+                  }}
+                >
                   <Trash2 className="h-3.5 w-3.5" /> Delete All Data
                 </button>
               </div>

@@ -4,6 +4,11 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, useRef, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useApprovalQueue } from "@/hooks/use-brain-core";
 import ReactMarkdown from "react-markdown";
 import { useNavigate, useParams } from "react-router-dom";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaMetric, SitaButton } from "@/components/sita/SitaCard";
@@ -373,67 +378,117 @@ const SimulationStudio = () => (
 
 // ── Approval Queue ──────────────────────────────────────────────
 
-const ApprovalQueue = () => (
-  <div className="space-y-6">
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-      className="rounded-xl border border-trust-approval/20 bg-trust-approval/5 p-5"
-    >
-      <div className="flex items-center gap-3 mb-2">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-trust-approval/15">
-          <ShieldCheck className="h-5 w-5 text-trust-approval" />
-        </div>
-        <div>
-          <h2 className="text-base font-bold text-foreground font-display">Approval Queue</h2>
-          <p className="text-xs text-muted-foreground">Actions that need your decision before execution</p>
-        </div>
-      </div>
-      <p className="text-xs text-muted-foreground">
-        Each shows what happens if approved, delayed, or rejected — with linked proof and policy context.
-      </p>
-    </motion.div>
+const ApprovalQueue = () => {
+  const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
+  const { pendingApprovals, isLoading } = useApprovalQueue();
 
-    {mockApprovals.length > 0 ? (
-      <div className="space-y-4">
-        {mockApprovals.map((a, i) => (
-          <motion.div key={a.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
-            <ApprovalCard approval={a} />
-          </motion.div>
-        ))}
-      </div>
-    ) : (
-      <EmptyState icon={CheckCircle} title="All caught up" description="No approvals pending — your advisors are operating within policy" />
-    )}
-  </div>
-);
+  // Use DB approvals if available, otherwise mock
+  const approvals = (!isDemoMode && pendingApprovals.length > 0)
+    ? pendingApprovals.map((a: any) => ({
+        id: a.id,
+        advisorId: "system",
+        title: a.action_summary || "Pending Approval",
+        description: a.decision_reason || "Awaiting your decision",
+        type: a.action_type || "action",
+        status: "pending" as const,
+        impact: "medium" as const,
+        requiresApproval: true,
+      }))
+    : mockApprovals;
+
+  return (
+    <div className="space-y-6">
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+        className="rounded-xl border border-trust-approval/20 bg-trust-approval/5 p-5"
+      >
+        <div className="flex items-center gap-3 mb-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-trust-approval/15">
+            <ShieldCheck className="h-5 w-5 text-trust-approval" />
+          </div>
+          <div>
+            <h2 className="text-base font-bold text-foreground font-display">Approval Queue</h2>
+            <p className="text-xs text-muted-foreground">Actions that need your decision before execution</p>
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Each shows what happens if approved, delayed, or rejected — with linked proof and policy context.
+        </p>
+      </motion.div>
+
+      {isLoading ? (
+        <div className="text-center py-8 text-muted-foreground text-sm">Loading approvals…</div>
+      ) : approvals.length > 0 ? (
+        <div className="space-y-4">
+          {approvals.map((a: any, i: number) => (
+            <motion.div key={a.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
+              <ApprovalCard approval={a} />
+            </motion.div>
+          ))}
+        </div>
+      ) : (
+        <EmptyState icon={CheckCircle} title="All caught up" description="No approvals pending — your advisors are operating within policy" />
+      )}
+    </div>
+  );
+};
 
 // ── Memory Transparency ─────────────────────────────────────────
 
-const MemoryTransparency = () => (
-  <div className="space-y-6">
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-      className="rounded-xl border border-primary/15 bg-primary/5 p-5"
-    >
-      <div className="flex items-center gap-3 mb-2">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15">
-          <Eye className="h-5 w-5 text-primary" />
-        </div>
-        <div>
-          <h2 className="text-base font-bold text-foreground font-display">Why This Knows You</h2>
-          <p className="text-xs text-muted-foreground">Everything your advisors learned, inferred, and use — fully transparent</p>
-        </div>
-      </div>
-      <p className="text-xs text-muted-foreground">You can correct or forget any item. Your memory, your control.</p>
-    </motion.div>
+const MemoryTransparency = () => {
+  const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
+  const db: any = supabase;
 
-    <div className="space-y-2">
-      {mockMemoryItems.map((m, i) => (
-        <motion.div key={m.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
-          <MemoryCard item={m} />
-        </motion.div>
-      ))}
+  const { data: dbMemory = [] } = useQuery({
+    queryKey: ["advisor-memory", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data } = await db.from("user_memory").select("*").order("created_at", { ascending: false }).limit(20);
+      return data || [];
+    },
+  });
+
+  // Map DB memory to mock format, or use mocks
+  const memoryItems = (!isDemoMode && dbMemory.length > 0)
+    ? dbMemory.map((m: any) => ({
+        id: m.id,
+        type: m.memory_type || "learned",
+        source: m.source || "System",
+        content: m.content || m.key,
+        learnedAt: m.created_at,
+        confidence: m.confidence || 0.8,
+        usedCount: 0,
+      }))
+    : mockMemoryItems;
+
+  return (
+    <div className="space-y-6">
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+        className="rounded-xl border border-primary/15 bg-primary/5 p-5"
+      >
+        <div className="flex items-center gap-3 mb-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15">
+            <Eye className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <h2 className="text-base font-bold text-foreground font-display">Why This Knows You</h2>
+            <p className="text-xs text-muted-foreground">Everything your advisors learned, inferred, and use — fully transparent</p>
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground">You can correct or forget any item. Your memory, your control.</p>
+      </motion.div>
+
+      <div className="space-y-2">
+        {memoryItems.map((m: any, i: number) => (
+          <motion.div key={m.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
+            <MemoryCard item={m} />
+          </motion.div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ── Proof & History ─────────────────────────────────────────────
 

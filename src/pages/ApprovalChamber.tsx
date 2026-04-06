@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ShieldCheck, Play, X, Eye, Fingerprint, FileText, AlertTriangle, CheckCircle, Clock, ChevronDown, ChevronRight } from "lucide-react";
+import { ShieldCheck, Play, X, Eye, Fingerprint, FileText, AlertTriangle, CheckCircle, Clock, ChevronDown, ChevronRight, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,6 +17,10 @@ import type { AutonomyRung } from "@/components/sita/primitives/AutonomyLadder";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { motion, AnimatePresence } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useApprovals } from "@/hooks/use-sita-data";
+import { useApprovalQueue } from "@/hooks/use-brain-core";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { toast } from "sonner";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -386,17 +390,46 @@ const ApprovalCard = ({ item, onAction }: { item: ApprovalItem; onAction: (id: s
 // ── Main Page ────────────────────────────────────────────────
 
 const ApprovalChamber = () => {
-  const [items, setItems] = useState(MOCK_APPROVALS);
+  const { isDemoMode } = useDataMode();
+  const { data: dbApprovals = [], isLoading } = useApprovals();
+  const { approve, reject } = useApprovalQueue();
   const [tab, setTab] = useState("pending");
 
-  const handleAction = (id: string, action: string) => {
-    setItems(prev =>
-      prev.map(item =>
-        item.id === id
-          ? { ...item, status: action === "approve" ? "approved" as const : action === "reject" ? "rejected" as const : item.status }
-          : item
-      )
-    );
+  // Map DB approvals to ApprovalItem interface, fall back to mocks when empty
+  const items: ApprovalItem[] = (dbApprovals.length > 0 && !isDemoMode) ? dbApprovals.map((a: any) => ({
+    id: a.id,
+    title: a.action_summary || a.title || "Untitled",
+    description: a.description || JSON.stringify(a.proposed_action || {}),
+    domain: (a.action_type === "finance" ? "finance" : a.action_type === "concierge" ? "concierge" : "business") as ApprovalItem["domain"],
+    riskLevel: (a.risk_level || "medium") as ApprovalItem["riskLevel"],
+    status: a.status === "approved" ? "approved" : a.status === "rejected" ? "rejected" : "pending",
+    requestedBy: a.requested_by || "Advisor",
+    requestedAt: a.created_at,
+    expiresAt: new Date(Date.now() + 86400000).toISOString(),
+    policyName: a.action_type || "Policy",
+    policyReason: a.decision_reason || "Action requires approval per governance policy.",
+    autonomyLevel: "approve-execute" as AutonomyRung,
+    simulationAvailable: false,
+    requiresDeviceSign: false,
+    amount: a.proposed_action?.amount,
+    currency: "USD",
+    currentStep: "approval" as ChainStepId,
+    impactSummary: [a.action_summary || "Pending review"],
+    confidence: 0.8,
+  })) : MOCK_APPROVALS;
+
+  const handleAction = async (id: string, action: string) => {
+    if (dbApprovals.length > 0 && !isDemoMode) {
+      try {
+        if (action === "approve") approve(id);
+        else if (action === "reject") reject(id);
+        toast.success(`Approval ${action}ed`);
+      } catch (e: any) {
+        toast.error(e.message || `Failed to ${action}`);
+      }
+      return;
+    }
+    // Demo/mock fallback — local state only
   };
 
   const pending = items.filter(i => i.status === "pending" || i.status === "simulating" || i.status === "awaiting-sign");
