@@ -5,7 +5,7 @@ import { History, ArrowRight, TrendingUp, TrendingDown, AlertTriangle, CheckCirc
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const TIMELINE = [
+const DEMO_TIMELINE = [
   {
     time: "Apr 5, 10:12", event: "Preview deploy v2.15.0-rc2", type: "deploy" as const,
     details: "Added 8 AI Engineering Board pages, updated App.tsx routing",
@@ -52,6 +52,7 @@ const typeIcons: Record<string, typeof GitBranch> = { deploy: GitBranch, config:
 const impactColors: Record<string, string> = { positive: "text-[hsl(var(--trust-safe))]", negative: "text-destructive", mixed: "text-amber-500" };
 
 const AITimeMachine = () => {
+  const { isDemoMode } = useDataMode();
   const [selectedIdx, setSelectedIdx] = useState<number | null>(1);
 
   return (
@@ -62,7 +63,7 @@ const AITimeMachine = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Timeline */}
         <div className="lg:col-span-2 space-y-0">
-          {TIMELINE.map((event, i) => {
+          {DEMO_TIMELINE.map((event, i) => {
             const Icon = typeIcons[event.type] || GitBranch;
             return (
               <div key={i} className="flex gap-3">
@@ -78,7 +79,7 @@ const AITimeMachine = () => {
                       event.impact === "mixed" ? "bg-amber-500" : "bg-[hsl(var(--trust-safe))]"
                     }`} />
                   </div>
-                  {i < TIMELINE.length - 1 && <div className="w-px flex-1 bg-border/40 min-h-[16px]" />}
+                  {i < DEMO_TIMELINE.length - 1 && <div className="w-px flex-1 bg-border/40 min-h-[16px]" />}
                 </div>
 
                 {/* Event Card */}
@@ -105,7 +106,7 @@ const AITimeMachine = () => {
         {/* Detail Panel */}
         <div className="rounded-xl border border-border/40 bg-card p-5">
           {selectedIdx !== null ? (() => {
-            const event = TIMELINE[selectedIdx];
+            const event = DEMO_TIMELINE[selectedIdx];
             const Icon = typeIcons[event.type] || GitBranch;
             return (
               <div className="space-y-4">

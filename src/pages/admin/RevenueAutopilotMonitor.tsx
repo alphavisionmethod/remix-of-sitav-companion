@@ -7,17 +7,18 @@ import { BarChart3, TrendingUp, DollarSign, ArrowUpRight, RefreshCw, Zap, Target
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
+const fadeUp = {
+  const { isDemoMode } = useDataMode(); hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
-const AUTOPILOT_ACTIONS = [
+const DEMO_AUTOPILOT_ACTIONS = [
   { id: "ra-1", action: "Re-engagement email to 12 dormant leads", result: "3 reopened conversations", value: "$2,400", confidence: 0.85, status: "completed" as const },
   { id: "ra-2", action: "Pricing optimization suggestion for Premium tier", result: "Pending approval", value: "$800/mo est.", confidence: 0.72, status: "pending" as const },
   { id: "ra-3", action: "Churn risk mitigation — 2 at-risk accounts contacted", result: "1 saved, 1 pending", value: "$1,200", confidence: 0.68, status: "active" as const },
   { id: "ra-4", action: "Upsell recommendation for 5 qualified accounts", result: "2 accepted", value: "$3,100", confidence: 0.91, status: "completed" as const },
 ];
 
-const WINBACKS = [
+const DEMO_WINBACKS = [
   { name: "Acme Corp", lostRevenue: 2400, probability: 0.65, lastContact: "12d ago" },
   { name: "StartupXYZ", lostRevenue: 800, probability: 0.45, lastContact: "30d ago" },
   { name: "TechFlow Inc", lostRevenue: 1600, probability: 0.78, lastContact: "5d ago" },
@@ -47,8 +48,8 @@ const RevenueAutopilotMonitor = () => {
           {[
             { label: "Recovered Value", value: `$${totalRecovered.toLocaleString()}`, icon: DollarSign, color: "text-emerald-500" },
             { label: "Cost Saved", value: `$${totalSaved.toLocaleString()}`, icon: TrendingUp, color: "text-blue-500" },
-            { label: "Autopilot Actions", value: String(AUTOPILOT_ACTIONS.length), icon: Zap, color: "text-primary" },
-            { label: "Win-Back Queue", value: String(WINBACKS.length), icon: Target, color: "text-amber-500" },
+            { label: "Autopilot Actions", value: String(DEMO_AUTOPILOT_ACTIONS.length), icon: Zap, color: "text-primary" },
+            { label: "Win-Back Queue", value: String(DEMO_WINBACKS.length), icon: Target, color: "text-amber-500" },
           ].map(m => (
             <Card key={m.label} className="hover:-translate-y-0.5 transition-transform">
               <CardContent className="p-3.5">
@@ -64,7 +65,7 @@ const RevenueAutopilotMonitor = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Autopilot Actions</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {AUTOPILOT_ACTIONS.map(a => (
+              {DEMO_AUTOPILOT_ACTIONS.map(a => (
                 <div key={a.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-sm font-medium text-foreground">{a.action}</span>
@@ -86,7 +87,7 @@ const RevenueAutopilotMonitor = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Win-Back Opportunities</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {WINBACKS.map(w => (
+              {DEMO_WINBACKS.map(w => (
                 <div key={w.name} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-foreground">{w.name}</p>

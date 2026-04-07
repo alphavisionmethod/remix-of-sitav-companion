@@ -12,7 +12,8 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 type ExportMode = "json" | "markdown" | "approval" | "pr-ready" | "investor";
 
-const EXPORT_MODES: { mode: ExportMode; label: string; icon: typeof FileJson; description: string }[] = [
+const EXPORT_MODES: {
+  const { isDemoMode } = useDataMode(); mode: ExportMode; label: string; icon: typeof FileJson; description: string }[] = [
   { mode: "json", label: "JSON Bundle", icon: FileJson, description: "Machine-readable evidence bundle with full metadata" },
   { mode: "markdown", label: "Markdown Report", icon: BookOpen, description: "Human-readable report for docs, wikis, or runbooks" },
   { mode: "approval", label: "Approval Attachment", icon: Shield, description: "Attach to approval queue item with risk & evidence summary" },
@@ -20,7 +21,7 @@ const EXPORT_MODES: { mode: ExportMode; label: string; icon: typeof FileJson; de
   { mode: "investor", label: "Investor/Compliance", icon: Users, description: "High-level proof of engineering governance and quality" },
 ];
 
-const BUNDLE_ITEMS = [
+const DEMO_BUNDLE_ITEMS = [
   {
     id: "b1", missionTitle: "Fix projection cache corruption", type: "fix" as const,
     confidence: 87, status: "applied", agent: "Backend Engineer",
@@ -85,14 +86,14 @@ const typeColors: Record<string, string> = {
 
 const AIEvidenceBundleComposer = () => {
   const [selectedMode, setSelectedMode] = useState<ExportMode>("markdown");
-  const [selectedItems, setSelectedItems] = useState<string[]>(BUNDLE_ITEMS.map(b => b.id));
+  const [selectedItems, setSelectedItems] = useState<string[]>(DEMO_BUNDLE_ITEMS.map(b => b.id));
   const [tab, setTab] = useState("compose");
 
   const toggleItem = (id: string) => {
     setSelectedItems(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
   };
 
-  const selected = BUNDLE_ITEMS.filter(b => selectedItems.includes(b.id));
+  const selected = DEMO_BUNDLE_ITEMS.filter(b => selectedItems.includes(b.id));
   const totalEvidence = selected.reduce((a, b) => a + b.evidence.length, 0);
   const totalTests = selected.reduce((a, b) => a + b.tests.length, 0);
   const avgConfidence = selected.length > 0 ? Math.round(selected.reduce((a, b) => a + b.confidence, 0) / selected.length) : 0;
@@ -149,7 +150,7 @@ const AIEvidenceBundleComposer = () => {
           <div>
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Items to Include</p>
             <div className="space-y-2">
-              {BUNDLE_ITEMS.map(b => (
+              {DEMO_BUNDLE_ITEMS.map(b => (
                 <div
                   key={b.id}
                   onClick={() => toggleItem(b.id)}

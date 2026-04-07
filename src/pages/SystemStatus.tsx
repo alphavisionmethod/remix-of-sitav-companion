@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import { useSLOs } from "@/hooks/use-admin-data";
 // Engine-backed connector data (replaces @/lib/mocks import)
-const ENGINE_CONNECTORS = [
+const DEMO_ENGINE_CONNECTORS = [
   { id: "slack", name: "Slack", status: "connected" as const, lastSync: "2 min ago", category: "communication" },
   { id: "resend", name: "Resend", status: "connected" as const, lastSync: "Just now", category: "email" },
   { id: "twilio", name: "Twilio", status: "connected" as const, lastSync: "5 min ago", category: "sms" },
@@ -148,7 +148,7 @@ const StateBadgeInline = ({ state }: { state: string }) => {
 
 // ── Main Component ──────────────────────────────────────────────
 
-const FALLBACK_APPROVALS = [
+const DEMO_FALLBACK_APPROVALS = [
   { action: "Bill payment: AWS — $340", result: "Auto-approved", time: "1h ago", trust: "verified" as const },
   { action: "Quote #1042 to Sarah Chen — $2,500", result: "User approved", time: "3h ago", trust: "verified" as const },
   { action: "Follow-up email to Emily Watson", result: "Pending review", time: "4h ago", trust: "review" as const },
@@ -179,7 +179,7 @@ const SystemStatus = () => {
     else navigate(`/system/${key}`);
   };
 
-  const connectors = ENGINE_CONNECTORS;
+  const connectors = DEMO_ENGINE_CONNECTORS;
   const sloData = (slos || []) as Array<{ service: string; slo: number; current: number; burnRate: string; period: string }>;
 
   const incidents = healingService.getAllIncidents();
@@ -297,7 +297,7 @@ const SystemStatus = () => {
             </div>
 
             <SitaSectionHeader title="Recent Approvals" />
-            {FALLBACK_APPROVALS.map((a, i) => (
+            {DEMO_FALLBACK_APPROVALS.map((a, i) => (
               <SitaCard key={i} hover={false} className="p-3">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
@@ -708,7 +708,7 @@ const SystemStatus = () => {
 
       {activeTab === "history" && (
         <div className="space-y-3">
-          {[...FALLBACK_APPROVALS.map((a, i) => ({
+          {[...DEMO_FALLBACK_APPROVALS.map((a, i) => ({
             id: `approval-${i}`,
             type: "approval" as const,
             title: a.action,
@@ -743,7 +743,7 @@ const SystemStatus = () => {
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-foreground">Execution Summary</p>
               <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                <span>{FALLBACK_APPROVALS.length} approvals</span>
+                <span>{DEMO_FALLBACK_APPROVALS.length} approvals</span>
                 <span>{incidents.length} incidents</span>
                 <span className="text-trust-safe">{incidents.filter(i => i.state === "resolved").length} resolved</span>
               </div>

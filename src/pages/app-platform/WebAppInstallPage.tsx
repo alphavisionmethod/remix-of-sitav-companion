@@ -16,7 +16,7 @@ import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const DETECTED_SITES = [
+const DEMO_DETECTED_SITES = [
   { url: "https://mail.google.com", name: "Gmail", icon: "📧", trustLevel: "sita-verified" as const, installable: true },
   { url: "https://github.com", name: "GitHub", icon: "🐙", trustLevel: "sita-verified" as const, installable: true },
   { url: "https://linear.app", name: "Linear", icon: "📐", trustLevel: "sita-verified" as const, installable: true },
@@ -28,7 +28,7 @@ const DETECTED_SITES = [
 const WebAppInstallPage = () => {
   const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
-  const [selectedSite, setSelectedSite] = useState<typeof DETECTED_SITES[0] | null>(null);
+  const [selectedSite, setSelectedSite] = useState<typeof DEMO_DETECTED_SITES[0] | null>(null);
   const [installing, setInstalling] = useState(false);
   const [installed, setInstalled] = useState(false);
   const [config, setConfig] = useState({ pinToDock: true, notifications: true, separateWindow: true, startupLaunch: false });
@@ -71,7 +71,7 @@ const WebAppInstallPage = () => {
           <div className="space-y-3">
             <h3 className="text-sm font-semibold text-foreground">Installable Web Apps</h3>
             <div className="grid gap-3 sm:grid-cols-2">
-              {DETECTED_SITES.map(site => (
+              {DEMO_DETECTED_SITES.map(site => (
                 <motion.button key={site.url} whileHover={{ y: -2 }} onClick={() => setSelectedSite(site)}
                   className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 text-left transition-all hover:border-primary/20 hover:shadow-lg group">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 text-2xl">

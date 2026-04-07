@@ -2,9 +2,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Ruler, AlertTriangle, Check, Info, Shield, Target } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
-const SIZING_SCENARIOS = [
+const DEMO_SIZING_SCENARIOS = [
   {
     asset: "NVDA", icon: "💚", proposedSize: 15000,
     currentAllocation: 6.2, postAllocation: 9.2,
@@ -32,8 +33,9 @@ const SIZING_SCENARIOS = [
 ];
 
 export default function PositionSizingCoach() {
+  const { isDemoMode } = useDataMode();
   const [selectedIdx, setSelectedIdx] = useState(0);
-  const scenario = SIZING_SCENARIOS[selectedIdx];
+  const scenario = DEMO_SIZING_SCENARIOS[selectedIdx];
 
 
   return (
@@ -46,7 +48,7 @@ export default function PositionSizingCoach() {
 
       {/* Scenario Selector */}
       <div className="flex gap-2">
-        {SIZING_SCENARIOS.map((s, i) => (
+        {DEMO_SIZING_SCENARIOS.map((s, i) => (
           <button key={s.asset} onClick={() => setSelectedIdx(i)}
             className={`rounded-xl border px-4 py-3 flex items-center gap-2 transition-all ${selectedIdx === i ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"}`}>
             <span className="text-lg">{s.icon}</span>

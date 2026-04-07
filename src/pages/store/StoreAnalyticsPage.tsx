@@ -27,7 +27,7 @@ const PACK_ANALYTICS: PackAnalytics[] = [
   { pack_id: "pack-lead-recovery", attach_rate: 0.34, time_to_first_value_avg: "1.5 hr", retention_lift: 0.12, arpu_uplift: 0.20, activation_speed: "Fast", workflow_completion_lift: 0.30, install_completion_rate: 0.93, uninstall_reasons: ["Low lead volume"], revenue_generated: 27000 },
 ];
 
-const REVENUE_TREND = [
+const DEMO_REVENUE_TREND = [
   { month: "Oct", revenue: 18200, installs: 420 },
   { month: "Nov", revenue: 22800, installs: 510 },
   { month: "Dec", revenue: 19500, installs: 380 },
@@ -36,7 +36,7 @@ const REVENUE_TREND = [
   { month: "Mar", revenue: 38500, installs: 840 },
 ];
 
-const CATEGORY_REVENUE = [
+const DEMO_CATEGORY_REVENUE = [
   { name: "Founders", value: 100310, color: "hsl(var(--accent))" },
   { name: "Families", value: 38400, color: "hsl(var(--trust-safe))" },
   { name: "Service Biz", value: 22620, color: "hsl(var(--primary))" },
@@ -44,7 +44,7 @@ const CATEGORY_REVENUE = [
   { name: "Workflows", value: 66900, color: "hsl(var(--trust-review))" },
 ];
 
-const RETENTION_DATA = [
+const DEMO_RETENTION_DATA = [
   { month: "M0", withPack: 100, withoutPack: 100 },
   { month: "M1", withPack: 92, withoutPack: 78 },
   { month: "M2", withPack: 87, withoutPack: 65 },
@@ -97,7 +97,7 @@ const StoreAnalyticsPage = () => {
             <SitaCardTitle sub="Monthly revenue and install volume">Revenue & Install Trend</SitaCardTitle>
             <div className="mt-4 h-72">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={REVENUE_TREND}>
+                <AreaChart data={DEMO_REVENUE_TREND}>
                   <defs>
                     <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
@@ -123,8 +123,8 @@ const StoreAnalyticsPage = () => {
               <div className="mt-4 h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
-                    <Pie data={CATEGORY_REVENUE} cx="50%" cy="50%" innerRadius={50} outerRadius={90} paddingAngle={3} dataKey="value">
-                      {CATEGORY_REVENUE.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                    <Pie data={DEMO_CATEGORY_REVENUE} cx="50%" cy="50%" innerRadius={50} outerRadius={90} paddingAngle={3} dataKey="value">
+                      {DEMO_CATEGORY_REVENUE.map((entry, i) => <Cell key={i} fill={entry.color} />)}
                     </Pie>
                     <Tooltip formatter={(v: number) => `$${(v / 1000).toFixed(1)}k`} contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 12, fontSize: 12 }} />
                     <Legend wrapperStyle={{ fontSize: 11 }} />
@@ -182,7 +182,7 @@ const StoreAnalyticsPage = () => {
             <SitaCardTitle sub="Pack users vs non-pack users over time">Retention Differential</SitaCardTitle>
             <div className="mt-4 h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={RETENTION_DATA}>
+                <AreaChart data={DEMO_RETENTION_DATA}>
                   <defs>
                     <linearGradient id="retWith" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="hsl(var(--trust-safe))" stopOpacity={0.3} />

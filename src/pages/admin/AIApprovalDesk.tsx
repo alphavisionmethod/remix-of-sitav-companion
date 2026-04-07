@@ -6,7 +6,7 @@ import { FileCheck, AlertTriangle, Shield, Eye, CheckCircle2, XCircle, Code, Pal
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const APPROVALS = [
+const DEMO_APPROVALS = [
   {
     id: 1, title: "Improve loading speed — admin shell code splitting", proposedBy: "Performance Optimizer", type: "code" as const,
     reason: "Admin shell loads 30+ pages synchronously, causing >3s initial load. Proposal converts to lazy imports with Suspense boundaries.",
@@ -44,6 +44,7 @@ const APPROVALS = [
 const typeIcons: Record<string, typeof Code> = { code: Code, design: Palette, ops: Wrench };
 
 const AIApprovalDesk = () => {
+  const { isDemoMode } = useDataMode();
   const [expanded, setExpanded] = useState<number | null>(null);
 
   return (
@@ -53,10 +54,10 @@ const AIApprovalDesk = () => {
 
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Awaiting Approval", v: APPROVALS.length, c: "text-amber-500" },
-          { l: "High Blast Radius", v: APPROVALS.filter(a => a.blastRadius === "high").length, c: "text-destructive" },
-          { l: "Rollback Ready", v: APPROVALS.filter(a => a.rollbackReady).length, c: "text-[hsl(var(--trust-safe))]" },
-          { l: "Avg Confidence", v: `${Math.round(APPROVALS.reduce((a,ap) => a + ap.confidence, 0) / APPROVALS.length)}%`, c: "text-primary" },
+          { l: "Awaiting Approval", v: DEMO_APPROVALS.length, c: "text-amber-500" },
+          { l: "High Blast Radius", v: DEMO_APPROVALS.filter(a => a.blastRadius === "high").length, c: "text-destructive" },
+          { l: "Rollback Ready", v: DEMO_APPROVALS.filter(a => a.rollbackReady).length, c: "text-[hsl(var(--trust-safe))]" },
+          { l: "Avg Confidence", v: `${Math.round(DEMO_APPROVALS.reduce((a,ap) => a + ap.confidence, 0) / DEMO_APPROVALS.length)}%`, c: "text-primary" },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className={`text-xl font-bold ${c.c}`}>{c.v}</p>
@@ -66,7 +67,7 @@ const AIApprovalDesk = () => {
       </div>
 
       <div className="space-y-3">
-        {APPROVALS.map(a => {
+        {DEMO_APPROVALS.map(a => {
           const TypeIcon = typeIcons[a.type] || Code;
           return (
             <div key={a.id} className={`rounded-xl border bg-card ${a.blastRadius === "high" ? "border-amber-500/30" : "border-border/40"}`}>

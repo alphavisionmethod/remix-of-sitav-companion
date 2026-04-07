@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { Landmark, Shield, TrendingUp, Wallet, Zap, Calendar, Target, Coins } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const PURPOSES = [
+const DEMO_PURPOSES = [
   { id: "ltw", label: "Long-Term Wealth", icon: <TrendingUp className="h-5 w-5" />, emoji: "🏦", allocated: 245000, target: 60, actual: 49.2, color: "bg-primary" },
   { id: "fam", label: "Family Security", icon: <Shield className="h-5 w-5" />, emoji: "🛡️", allocated: 85000, target: 20, actual: 17.1, color: "bg-[hsl(var(--trust-safe))]" },
   { id: "res", label: "Reserve Cash", icon: <Wallet className="h-5 w-5" />, emoji: "💵", allocated: 62000, target: 10, actual: 12.4, color: "bg-muted-foreground" },
@@ -12,10 +13,10 @@ const PURPOSES = [
   { id: "inc", label: "Income Sleeve", icon: <Coins className="h-5 w-5" />, emoji: "💰", allocated: 11000, target: 1, actual: 2.2, color: "bg-amber-500" },
 ];
 
-const TOTAL = PURPOSES.reduce((s, p) => s + p.allocated, 0);
+const TOTAL = DEMO_PURPOSES.reduce((s, p) => s + p.allocated, 0);
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3).toFixed(1)}K`;
 
-const RULES = [
+const DEMO_RULES = [
   { rule: "Speculative sleeve must not exceed 5% of total capital", status: "violated", detail: "Currently 7.0% — trim $10K" },
   { rule: "Reserve cash must cover 6 months of expenses", status: "pass", detail: "$62K covers ~8 months" },
   { rule: "Family security must be in low-volatility assets only", status: "pass", detail: "Gold + bonds + cash" },
@@ -23,6 +24,7 @@ const RULES = [
 ];
 
 export default function CapitalPurpose() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <DemoModeBadge />
@@ -39,7 +41,7 @@ export default function CapitalPurpose() {
 
       {/* Purpose Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {PURPOSES.map((p, i) => {
+        {DEMO_PURPOSES.map((p, i) => {
           const overTarget = p.actual > p.target * 1.2;
           return (
             <motion.div key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
@@ -69,7 +71,7 @@ export default function CapitalPurpose() {
       {/* Policy Rules */}
       <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
         <h3 className="text-sm font-bold text-foreground">Capital Purpose Rules</h3>
-        {RULES.map((r, i) => (
+        {DEMO_RULES.map((r, i) => (
           <div key={i} className={`rounded-xl border p-3 flex items-start gap-2 ${r.status === "violated" ? "border-destructive/20 bg-destructive/5" : "border-border bg-secondary/20"}`}>
             {r.status === "pass" ? <Shield className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0 mt-0.5" /> : <Zap className="h-4 w-4 text-destructive shrink-0 mt-0.5" />}
             <div>

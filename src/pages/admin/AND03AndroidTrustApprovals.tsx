@@ -12,14 +12,14 @@ const TRUST_CLASSES = [
   { cls: "trusted_watch", label: "Wear OS", bio: "Wrist detection", keystore: false, playIntegrity: false, riskCeiling: "medium", trustScore: 60, session: "while_worn" },
 ];
 
-const ESCALATION_MATRIX = [
+const DEMO_ESCALATION_MATRIX = [
   { risk: "Low", action: "Approve on any trusted device", bio: "None", escalate: false },
   { risk: "Medium", action: "Biometric required on phone/tablet", bio: "Fingerprint/Face", escalate: false },
   { risk: "High", action: "Phone with biometric + session elevation", bio: "Required + elevated", escalate: true },
   { risk: "Critical", action: "Escalate to web/desktop with MFA", bio: "Required + MFA", escalate: true },
 ];
 
-const VERIFICATION_EVENTS = [
+const DEMO_VERIFICATION_EVENTS = [
   { event: "App launch", method: "biometric_or_pin", frequency: "once_per_session" },
   { event: "Approval action", method: "biometric", frequency: "per_action" },
   { event: "Financial transaction", method: "biometric + session_elevation", frequency: "per_action" },
@@ -81,7 +81,7 @@ const AND03AndroidTrustApprovals = () => (
             <table className="w-full text-xs">
               <thead><tr className="border-b"><th className="text-left p-2">Risk</th><th className="text-left p-2">Action</th><th className="p-2">Biometric</th><th className="p-2">Escalates</th></tr></thead>
               <tbody>
-                {ESCALATION_MATRIX.map((r) => (
+                {DEMO_ESCALATION_MATRIX.map((r) => (
                   <tr key={r.risk} className="border-b hover:bg-muted/30">
                     <td className="p-2"><Badge variant={r.risk === "Critical" ? "destructive" : r.risk === "High" ? "default" : "secondary"}>{r.risk}</Badge></td>
                     <td className="p-2">{r.action}</td>
@@ -115,7 +115,7 @@ const AND03AndroidTrustApprovals = () => (
             <table className="w-full text-xs">
               <thead><tr className="border-b"><th className="text-left p-2">Event</th><th className="text-left p-2">Method</th><th className="p-2">Frequency</th></tr></thead>
               <tbody>
-                {VERIFICATION_EVENTS.map((v) => (
+                {DEMO_VERIFICATION_EVENTS.map((v) => (
                   <tr key={v.event} className="border-b hover:bg-muted/30">
                     <td className="p-2 font-medium">{v.event}</td>
                     <td className="p-2"><Badge variant="outline">{v.method}</Badge></td>

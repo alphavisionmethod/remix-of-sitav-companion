@@ -30,7 +30,7 @@ const FIELD_TYPES = [
   { type: "rating", label: "Rating", icon: Star },
 ];
 
-const SAMPLE_FIELDS = [
+const DEMO_SAMPLE_FIELDS = [
   { id: "sf1", type: "text", label: "Full Name", required: true, placeholder: "Enter your name" },
   { id: "sf2", type: "email", label: "Email Address", required: true, placeholder: "your@email.com" },
   { id: "sf3", type: "phone", label: "Phone Number", required: false, placeholder: "+1 (555) 000-0000" },
@@ -39,7 +39,7 @@ const SAMPLE_FIELDS = [
   { id: "sf6", type: "dropdown", label: "Budget Range", required: true, options: ["$1K-$5K", "$5K-$15K", "$15K-$50K", "$50K+"] },
 ];
 
-const STATS = [
+const DEMO_STATS = [
   { label: "Total Forms", value: DEMO_FORMS.length },
   { label: "Total Submissions", value: "721" },
   { label: "Avg. Conversion", value: "42%" },
@@ -65,7 +65,7 @@ export default function FormsBuilder() {
       </motion.div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {STATS.map(s => (
+        {DEMO_STATS.map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
               <p className="text-xl font-bold text-foreground">{s.value}</p>
@@ -149,7 +149,7 @@ export default function FormsBuilder() {
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    {SAMPLE_FIELDS.map(field => (
+                    {DEMO_SAMPLE_FIELDS.map(field => (
                       <div key={field.id} className="flex items-center gap-2 p-3 rounded-lg bg-background/50 border border-border/30 group">
                         <GripVertical className="w-3 h-3 text-muted-foreground cursor-grab" />
                         <div className="flex-1">

@@ -5,7 +5,7 @@ import { Network, ArrowRight, AlertTriangle, Bug, Server, Layout, Database, Shie
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const GRAPH_NODES = [
+const DEMO_GRAPH_NODES = [
   { id: "symptom-1", type: "symptom" as const, label: "500 errors on /api/projections/rebuild", severity: "critical" },
   { id: "symptom-2", type: "symptom" as const, label: "Stale projection data on admin dashboard", severity: "high" },
   { id: "symptom-3", type: "symptom" as const, label: "Timeout on boardroom synthesis", severity: "medium" },
@@ -17,7 +17,7 @@ const GRAPH_NODES = [
   { id: "root-1", type: "root_cause" as const, label: "Race condition: concurrent rebuilds corrupt cache entries", confidence: 87 },
 ];
 
-const GRAPH_EDGES = [
+const DEMO_GRAPH_EDGES = [
   { from: "symptom-1", to: "service-3", label: "triggers" },
   { from: "symptom-2", to: "service-2", label: "served by" },
   { from: "symptom-3", to: "service-1", label: "depends on" },
@@ -38,9 +38,10 @@ const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }
 };
 
 const AIRootCauseGraph = () => {
+  const { isDemoMode } = useDataMode();
   const [selectedNode, setSelectedNode] = useState<string | null>("root-1");
-  const selected = GRAPH_NODES.find(n => n.id === selectedNode);
-  const connectedEdges = GRAPH_EDGES.filter(e => e.from === selectedNode || e.to === selectedNode);
+  const selected = DEMO_GRAPH_NODES.find(n => n.id === selectedNode);
+  const connectedEdges = DEMO_GRAPH_EDGES.filter(e => e.from === selectedNode || e.to === selectedNode);
   const connectedNodes = connectedEdges.map(e => e.from === selectedNode ? e.to : e.from);
 
   return (
@@ -52,7 +53,7 @@ const AIRootCauseGraph = () => {
         {/* Graph Visualization (structured list view) */}
         <div className="lg:col-span-2 space-y-4">
           {(["symptom", "service", "release", "config", "root_cause"] as const).map(type => {
-            const nodes = GRAPH_NODES.filter(n => n.type === type);
+            const nodes = DEMO_GRAPH_NODES.filter(n => n.type === type);
             if (!nodes.length) return null;
             const style = typeStyles[type];
             return (
@@ -101,7 +102,7 @@ const AIRootCauseGraph = () => {
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Connections ({connectedEdges.length})</p>
                 <div className="space-y-2">
                   {connectedEdges.map((e, i) => {
-                    const other = GRAPH_NODES.find(n => n.id === (e.from === selectedNode ? e.to : e.from));
+                    const other = DEMO_GRAPH_NODES.find(n => n.id === (e.from === selectedNode ? e.to : e.from));
                     const direction = e.from === selectedNode ? "→" : "←";
                     return (
                       <div key={i} className="flex items-center gap-2 text-xs">

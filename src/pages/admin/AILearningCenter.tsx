@@ -7,7 +7,7 @@ import { TrendingUp, Brain, AlertTriangle, CheckCircle2, RotateCcw, Sparkles, Ta
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const PATTERNS = [
+const DEMO_PATTERNS = [
   { pattern: "Route mapping errors recur after lazy-import refactors", frequency: "4x in 30 days", domain: "Frontend", confidence: 88, severity: "high", improvement: "Added pre-commit route validation check", status: "implemented" as const },
   { pattern: "Feature flag rollbacks within 2 hours of activation", frequency: "5x in 30 days", domain: "Deployment", confidence: 82, severity: "medium", improvement: "Proposed canary rollout requirement for all flags", status: "proposed" as const },
   { pattern: "CDN cache staleness after brand kit mutations", frequency: "Weekly", domain: "Infrastructure", confidence: 91, severity: "medium", improvement: "Auto-invalidate cache on brand kit save", status: "implemented" as const },
@@ -16,7 +16,7 @@ const PATTERNS = [
   { pattern: "UI regression in admin cards after design updates", frequency: "2x in 14 days", domain: "Design", confidence: 79, severity: "medium", improvement: "Add visual regression snapshots for admin surfaces", status: "proposed" as const },
 ];
 
-const OUTCOMES = [
+const DEMO_OUTCOMES = [
   { recommendation: "Add mutex lock on projection rebuilds", accepted: true, outcome: "success", impact: "Eliminated 14 concurrent rebuild errors", confidence_delta: "+8%" },
   { recommendation: "Canary rollout for sidebar feature flag", accepted: true, outcome: "success", impact: "Caught rendering bug before 100% rollout", confidence_delta: "+5%" },
   { recommendation: "Raise prices 10% on premium tier", accepted: false, outcome: "rejected", impact: "User chose conservative approach", confidence_delta: "-2%" },
@@ -24,7 +24,7 @@ const OUTCOMES = [
   { recommendation: "Disable brand-kit preview caching", accepted: true, outcome: "partial", impact: "Fixed staleness but increased load by 200ms", confidence_delta: "+1%" },
 ];
 
-const CALIBRATION = [
+const DEMO_CALIBRATION = [
   { agent: "Error Fixer", accuracy: 91, falsePositives: 3, missedIssues: 1, trend: "improving" as const },
   { agent: "QA Engineer", accuracy: 88, falsePositives: 5, missedIssues: 2, trend: "stable" as const },
   { agent: "Design Engineer", accuracy: 79, falsePositives: 8, missedIssues: 1, trend: "improving" as const },
@@ -34,6 +34,7 @@ const CALIBRATION = [
 ];
 
 const AILearningCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("patterns");
 
   return (
@@ -43,10 +44,10 @@ const AILearningCenter = () => {
 
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Patterns Discovered", v: PATTERNS.length },
-          { l: "Improvements Implemented", v: PATTERNS.filter(p => p.status === "implemented").length },
-          { l: "Recommendations Tracked", v: OUTCOMES.length },
-          { l: "Avg Agent Accuracy", v: `${Math.round(CALIBRATION.reduce((a,c) => a + c.accuracy, 0) / CALIBRATION.length)}%` },
+          { l: "Patterns Discovered", v: DEMO_PATTERNS.length },
+          { l: "Improvements Implemented", v: DEMO_PATTERNS.filter(p => p.status === "implemented").length },
+          { l: "Recommendations Tracked", v: DEMO_OUTCOMES.length },
+          { l: "Avg Agent Accuracy", v: `${Math.round(DEMO_CALIBRATION.reduce((a,c) => a + c.accuracy, 0) / DEMO_CALIBRATION.length)}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className="text-xl font-bold">{c.v}</p>
@@ -63,7 +64,7 @@ const AILearningCenter = () => {
         </TabsList>
 
         <TabsContent value="patterns" className="space-y-2 mt-4">
-          {PATTERNS.map((p, i) => (
+          {DEMO_PATTERNS.map((p, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-semibold">{p.pattern}</span>
@@ -80,7 +81,7 @@ const AILearningCenter = () => {
         </TabsContent>
 
         <TabsContent value="outcomes" className="space-y-2 mt-4">
-          {OUTCOMES.map((o, i) => (
+          {DEMO_OUTCOMES.map((o, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4 flex items-center gap-3">
               {o.outcome === "success" ? <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0" /> :
                o.outcome === "rejected" ? <RotateCcw className="h-4 w-4 text-muted-foreground shrink-0" /> :
@@ -98,7 +99,7 @@ const AILearningCenter = () => {
         </TabsContent>
 
         <TabsContent value="calibration" className="space-y-2 mt-4">
-          {CALIBRATION.map((c, i) => (
+          {DEMO_CALIBRATION.map((c, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-semibold">{c.agent}</span>

@@ -40,7 +40,7 @@ function CheckRow({ label, ok, detail }: { label: string; ok: boolean | null; de
   );
 }
 
-const AI_FEATURES = [
+const DEMO_AI_FEATURES = [
   { name: "Chat Advisor", fn: "chat-advisor", surface: "AdvisorChat", description: "Streaming advisor conversations across money/business/concierge/family/growth" },
   { name: "Brain Core", fn: "brain-core", surface: "BrainCore hook", description: "Structured advisory with rules engine + LLM escalation" },
   { name: "Personal Brain", fn: "personal-brain", surface: "Personal Brain page", description: "Think/Learn/Build/Create modes with streaming" },
@@ -165,7 +165,7 @@ export default function AIRuntimeStatus() {
                   </tr>
                 </thead>
                 <tbody>
-                  {AI_FEATURES.map((feature) => {
+                  {DEMO_AI_FEATURES.map((feature) => {
                     const fnHealthy = health?.checks.edge_functions_healthy?.[feature.fn];
                     const usesAI = feature.fn === "chat-advisor" || feature.fn === "brain-core" || feature.fn === "personal-brain";
                     const featureStatus = usesAI

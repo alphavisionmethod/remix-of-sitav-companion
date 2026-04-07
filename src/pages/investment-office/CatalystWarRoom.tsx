@@ -2,8 +2,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Zap, AlertTriangle, Clock, Target, TrendingUp } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const CATALYST_EVENTS = [
+const DEMO_CATALYST_EVENTS = [
   { id: "ce1", title: "CPI Release", date: "2026-05-14", type: "macro", impact: "high", assets: ["SPY", "XAUUSD", "FED-CUT-JUN"], description: "Key inflation data — determines Fed rate path", portfolioExposure: 45 },
   { id: "ce2", title: "Fed FOMC Meeting", date: "2026-06-18", type: "macro", impact: "high", assets: ["SPY", "XAUUSD", "BTC", "FED-CUT-JUN"], description: "Rate decision and forward guidance", portfolioExposure: 80 },
   { id: "ce3", title: "AAPL Q3 Earnings", date: "2026-07-31", type: "earnings", impact: "moderate", assets: ["AAPL"], description: "Fiscal Q3 results — AI integration and Services growth", portfolioExposure: 8 },
@@ -22,8 +23,9 @@ const TYPE_COLORS: Record<string, string> = {
 };
 
 export default function CatalystWarRoom() {
+  const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState<string>("all");
-  const sorted = [...CATALYST_EVENTS]
+  const sorted = [...DEMO_CATALYST_EVENTS]
     .filter(e => filter === "all" || e.type === filter)
     .sort((a, b) => a.date.localeCompare(b.date));
 

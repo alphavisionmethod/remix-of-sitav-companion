@@ -7,7 +7,7 @@ import { Heart, ShieldCheck, Eye, EyeOff, Lock, Clock, Activity, Trash2, CheckCi
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const SIGNALS = [
+const DEMO_SIGNALS = [
   { key: "heart_rate", label: "Heart Rate", unit: "bpm", sensitivity: "high", retention: 90 },
   { key: "steps", label: "Steps", unit: "count", sensitivity: "low", retention: 365 },
   { key: "sleep", label: "Sleep Sessions", unit: "hours", sensitivity: "medium", retention: 180 },
@@ -23,8 +23,9 @@ const SIGNALS = [
 type ConsentMap = Record<string, { read: boolean; routing: boolean; assistant: boolean }>;
 
 const AND04AndroidHealthConsent = () => {
+  const { isDemoMode } = useDataMode();
   const [consents, setConsents] = useState<ConsentMap>(
-    Object.fromEntries(SIGNALS.map(s => [s.key, { read: false, routing: false, assistant: false }]))
+    Object.fromEntries(DEMO_SIGNALS.map(s => [s.key, { read: false, routing: false, assistant: false }]))
   );
 
   const toggle = (sig: string, scope: keyof ConsentMap[string]) => {
@@ -44,7 +45,7 @@ const AND04AndroidHealthConsent = () => {
             <p className="text-muted-foreground">Health Connect signal permissions and privacy controls</p>
           </div>
         </div>
-        <Badge variant={consentedCount > 0 ? "default" : "secondary"}>{consentedCount}/{SIGNALS.length} consented</Badge>
+        <Badge variant={consentedCount > 0 ? "default" : "secondary"}>{consentedCount}/{DEMO_SIGNALS.length} consented</Badge>
       </div>
 
       <Tabs defaultValue="matrix" className="space-y-4">
@@ -69,7 +70,7 @@ const AND04AndroidHealthConsent = () => {
                     <th className="p-2"><Heart className="h-3 w-3 mx-auto" /> Assistant</th>
                   </tr></thead>
                   <tbody>
-                    {SIGNALS.map((sig) => (
+                    {DEMO_SIGNALS.map((sig) => (
                       <tr key={sig.key} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-mono">{sig.key}</td>
                         <td className="p-2 text-center text-muted-foreground">{sig.unit}</td>
@@ -121,7 +122,7 @@ const AND04AndroidHealthConsent = () => {
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Signal</th><th className="p-2">Sensitivity</th><th className="p-2">Retention</th></tr></thead>
                 <tbody>
-                  {SIGNALS.map((sig) => (
+                  {DEMO_SIGNALS.map((sig) => (
                     <tr key={sig.key} className="border-b hover:bg-muted/30">
                       <td className="p-2 font-mono">{sig.key}</td>
                       <td className="p-2 text-center"><Badge variant={sig.sensitivity === "high" ? "destructive" : "secondary"}>{sig.sensitivity}</Badge></td>

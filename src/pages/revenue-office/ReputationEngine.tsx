@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const STATS = [
+const DEMO_STATS = [
   { label: "Average Rating", value: "4.8", icon: Star, trend: "+0.1", color: "text-amber-400" },
   { label: "Total Reviews", value: "186", icon: MessageCircle, trend: "+12 this month", color: "text-blue-400" },
   { label: "NPS Score", value: "72", icon: ThumbsUp, trend: "+4", color: "text-emerald-400" },
@@ -27,7 +27,7 @@ const DEMO_REVIEWS = [
   { id: "r7", author: "Brian M.", rating: 4, text: "Solid program with measurable results. Pricing is fair for the value.", platform: "Trustpilot", date: "1 month ago", responded: true, sentiment: "positive", helpfulCount: 4 },
 ];
 
-const RATING_DIST = [
+const DEMO_RATING_DIST = [
   { stars: 5, count: 142, pct: 76 },
   { stars: 4, count: 28, pct: 15 },
   { stars: 3, count: 10, pct: 5 },
@@ -35,20 +35,20 @@ const RATING_DIST = [
   { stars: 1, count: 2, pct: 1 },
 ];
 
-const PLATFORMS = [
+const DEMO_PLATFORMS = [
   { name: "Google Business", reviews: 98, rating: 4.9, linked: true, lastSync: "2h ago" },
   { name: "Trustpilot", reviews: 52, rating: 4.7, linked: true, lastSync: "4h ago" },
   { name: "Yelp", reviews: 24, rating: 4.4, linked: true, lastSync: "6h ago" },
   { name: "Facebook", reviews: 12, rating: 4.8, linked: false, lastSync: "—" },
 ];
 
-const CAMPAIGNS = [
+const DEMO_CAMPAIGNS = [
   { name: "Post-VIP Day Review Request", status: "active", sent: 34, responses: 28, convRate: "82%", lastSent: "1d ago" },
   { name: "Quarterly NPS Survey", status: "active", sent: 120, responses: 86, convRate: "72%", lastSent: "2w ago" },
   { name: "3-Month Anniversary", status: "paused", sent: 45, responses: 18, convRate: "40%", lastSent: "1m ago" },
 ];
 
-const TESTIMONIALS = [
+const DEMO_TESTIMONIALS = [
   { author: "Sarah K.", text: "Absolutely transformed our business strategy.", rating: 5, approved: true, featured: true, usedOn: ["landing-page", "funnel-1"] },
   { author: "Lisa W.", text: "The VIP Day was worth every penny.", rating: 5, approved: true, featured: true, usedOn: ["homepage"] },
   { author: "James C.", text: "Best investment we've made this year.", rating: 5, approved: true, featured: false, usedOn: [] },
@@ -73,7 +73,7 @@ export default function ReputationEngine() {
       </motion.div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {STATS.map(s => (
+        {DEMO_STATS.map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center"><s.icon className={cn("w-5 h-5", s.color)} /></div>
@@ -106,7 +106,7 @@ export default function ReputationEngine() {
               <Card className="bg-card/50 border-border/50">
                 <CardHeader className="pb-3"><CardTitle className="text-sm">Rating Distribution</CardTitle></CardHeader>
                 <CardContent className="space-y-2">
-                  {RATING_DIST.map(r => (
+                  {DEMO_RATING_DIST.map(r => (
                     <div key={r.stars} className="flex items-center gap-2">
                       <span className="text-xs text-muted-foreground w-8">{r.stars}★</span>
                       <Progress value={r.pct} className="h-2 flex-1" />
@@ -158,7 +158,7 @@ export default function ReputationEngine() {
           <TabsContent value="platforms">
             <h3 className="text-sm font-semibold mb-4">Connected Platforms</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {PLATFORMS.map(p => (
+              {DEMO_PLATFORMS.map(p => (
                 <Card key={p.name} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-3">
@@ -186,7 +186,7 @@ export default function ReputationEngine() {
           <TabsContent value="campaigns">
             <h3 className="text-sm font-semibold mb-4">Review Request Campaigns</h3>
             <div className="space-y-3">
-              {CAMPAIGNS.map(c => (
+              {DEMO_CAMPAIGNS.map(c => (
                 <Card key={c.name} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -212,7 +212,7 @@ export default function ReputationEngine() {
           <TabsContent value="testimonials">
             <h3 className="text-sm font-semibold mb-4">Testimonial Library</h3>
             <div className="space-y-3">
-              {TESTIMONIALS.map((t, i) => (
+              {DEMO_TESTIMONIALS.map((t, i) => (
                 <Card key={i} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between">

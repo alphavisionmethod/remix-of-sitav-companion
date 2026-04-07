@@ -2,8 +2,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Settings2, Eye, Search, Zap, Calendar, Activity, Shield } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const MODES = [
+const DEMO_MODES = [
   {
     id: "quiet", label: "Quiet Monitoring", icon: <Eye className="h-5 w-5" />, emoji: "🌙",
     description: "Low-intensity passive observation. Advisors watch silently. Alerts only for material changes.",
@@ -43,6 +44,7 @@ const MODES = [
 ];
 
 export default function OperatingModes() {
+  const { isDemoMode } = useDataMode();
   const [activeMode, setActiveMode] = useState("quiet");
 
   return (
@@ -54,7 +56,7 @@ export default function OperatingModes() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {MODES.map((mode, i) => {
+        {DEMO_MODES.map((mode, i) => {
           const isActive = activeMode === mode.id;
           return (
             <motion.button key={mode.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
@@ -91,9 +93,9 @@ export default function OperatingModes() {
       {/* Active Mode Detail */}
       <motion.div key={activeMode} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-primary/15 bg-primary/5 p-6 text-center space-y-2">
-        <p className="text-3xl">{MODES.find(m => m.id === activeMode)?.emoji}</p>
-        <p className="text-lg font-bold text-foreground">{MODES.find(m => m.id === activeMode)?.label} Mode Active</p>
-        <p className="text-sm text-muted-foreground max-w-md mx-auto">{MODES.find(m => m.id === activeMode)?.description}</p>
+        <p className="text-3xl">{DEMO_MODES.find(m => m.id === activeMode)?.emoji}</p>
+        <p className="text-lg font-bold text-foreground">{DEMO_MODES.find(m => m.id === activeMode)?.label} Mode Active</p>
+        <p className="text-sm text-muted-foreground max-w-md mx-auto">{DEMO_MODES.find(m => m.id === activeMode)?.description}</p>
       </motion.div>
     </div>
   );

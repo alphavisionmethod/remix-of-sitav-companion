@@ -2,8 +2,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { FlaskConical, TrendingUp, TrendingDown, AlertTriangle, ChevronRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const EVENTS = [
+const DEMO_EVENTS = [
   {
     id: "e1", title: "Fed Rate Cut — June 2026", probability: 62, previousProbability: 55, trend: "rising",
     branches: [
@@ -34,7 +35,8 @@ const EVENTS = [
 ];
 
 export default function EventProbabilityLab() {
-  const [selected, setSelected] = useState(EVENTS[0]);
+  const { isDemoMode } = useDataMode();
+  const [selected, setSelected] = useState(DEMO_EVENTS[0]);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -46,7 +48,7 @@ export default function EventProbabilityLab() {
 
       {/* Event Selector */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {EVENTS.map(e => (
+        {DEMO_EVENTS.map(e => (
           <button key={e.id} onClick={() => setSelected(e)}
             className={`shrink-0 rounded-xl border px-4 py-3 text-left transition-all ${selected.id === e.id ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"}`}>
             <p className="text-xs font-bold text-foreground">{e.title}</p>

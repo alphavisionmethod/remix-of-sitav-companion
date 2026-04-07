@@ -6,7 +6,7 @@ import { MessageSquare, Code, Palette, Shield, Gauge, AlertTriangle, CheckCircle
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const DEBATES = [
+const DEMO_DEBATES = [
   {
     id: 1, topic: "How to fix projection cache corruption",
     status: "resolved" as const,
@@ -53,6 +53,7 @@ const stanceColors: Record<string, string> = {
 };
 
 const AIAgentDebate = () => {
+  const { isDemoMode } = useDataMode();
   const [expanded, setExpanded] = useState<number | null>(2);
 
   return (
@@ -62,9 +63,9 @@ const AIAgentDebate = () => {
 
       <div className="grid grid-cols-3 gap-3">
         {[
-          { l: "Active Debates", v: DEBATES.filter(d => d.status === "active").length },
-          { l: "Resolved", v: DEBATES.filter(d => d.status === "resolved").length },
-          { l: "Avg Consensus", v: `${Math.round(DEBATES.reduce((a,d) => a + d.consensus, 0) / DEBATES.length)}%` },
+          { l: "Active Debates", v: DEMO_DEBATES.filter(d => d.status === "active").length },
+          { l: "Resolved", v: DEMO_DEBATES.filter(d => d.status === "resolved").length },
+          { l: "Avg Consensus", v: `${Math.round(DEMO_DEBATES.reduce((a,d) => a + d.consensus, 0) / DEMO_DEBATES.length)}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className="text-xl font-bold">{c.v}</p>
@@ -74,7 +75,7 @@ const AIAgentDebate = () => {
       </div>
 
       <div className="space-y-4">
-        {DEBATES.map(d => (
+        {DEMO_DEBATES.map(d => (
           <div key={d.id} className={`rounded-xl border bg-card ${d.status === "active" ? "border-primary/30" : "border-border/40"}`}>
             <div className="p-4 cursor-pointer" onClick={() => setExpanded(expanded === d.id ? null : d.id)}>
               <div className="flex items-center justify-between mb-1">

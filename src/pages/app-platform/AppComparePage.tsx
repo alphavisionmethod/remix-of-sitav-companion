@@ -12,7 +12,7 @@ import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const COMPARE_PAIRS = [
+const DEMO_COMPARE_PAIRS = [
   { label: "Browsers", ids: ["chrome", "firefox"] },
   { label: "Git Clients", ids: ["github-desktop", "github-web"] },
   { label: "Note Taking", ids: ["notion", "obsidian"] },
@@ -25,7 +25,7 @@ const AppComparePage = () => {
   const [searchParams] = useSearchParams();
   const [installTarget, setInstallTarget] = useState<AppDefinition | null>(null);
 
-  const ids = searchParams.get("apps")?.split(",") || COMPARE_PAIRS[0].ids;
+  const ids = searchParams.get("apps")?.split(",") || DEMO_COMPARE_PAIRS[0].ids;
   const apps = ids.map(id => APP_CATALOG.find(a => a.id === id)).filter(Boolean) as AppDefinition[];
 
   if (apps.length < 2) {
@@ -60,7 +60,7 @@ const AppComparePage = () => {
 
       {/* Quick Pairs */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {COMPARE_PAIRS.map(p => (
+        {DEMO_COMPARE_PAIRS.map(p => (
           <button key={p.label} onClick={() => navigate(`/app-store/compare?apps=${p.ids.join(",")}`)}
             className={cn("shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition-all",
               JSON.stringify(ids) === JSON.stringify(p.ids) ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground")}>

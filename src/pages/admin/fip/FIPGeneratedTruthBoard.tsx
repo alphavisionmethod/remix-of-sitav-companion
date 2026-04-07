@@ -6,7 +6,7 @@ import { useGeneratedTruthImpacts } from "@/hooks/use-fip-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const GENERATED_ARTIFACTS = [
+const DEMO_GENERATED_ARTIFACTS = [
   'generated/feature-integration-index.json', 'generated/service-manifest.json',
   'generated/route-manifest.json', 'generated/subject-manifest.json',
   'generated/startup-order.json', 'generated/capability-index.json',
@@ -16,6 +16,7 @@ const GENERATED_ARTIFACTS = [
 ];
 
 const FIPGeneratedTruthBoard = () => {
+  const { isDemoMode } = useDataMode();
   const { data: impacts = [], isLoading } = useGeneratedTruthImpacts();
 
   const verified = impacts.filter((i: any) => i.verified).length;
@@ -33,14 +34,14 @@ const FIPGeneratedTruthBoard = () => {
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{impacts.length}</p><p className="text-xs text-muted-foreground">Total Impacts</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{verified}</p><p className="text-xs text-muted-foreground">Verified</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-destructive">{missing}</p><p className="text-xs text-muted-foreground">Missing Updates</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{GENERATED_ARTIFACTS.length}</p><p className="text-xs text-muted-foreground">Artifact Types</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{DEMO_GENERATED_ARTIFACTS.length}</p><p className="text-xs text-muted-foreground">Artifact Types</p></CardContent></Card>
       </div>
 
       <Card>
         <CardHeader><CardTitle className="text-base">Generated Artifact Matrix</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-3">
-            {GENERATED_ARTIFACTS.map(artifact => {
+            {DEMO_GENERATED_ARTIFACTS.map(artifact => {
               const relatedImpacts = impacts.filter((i: any) => i.artifact_path === artifact);
               const allVerified = relatedImpacts.length > 0 && relatedImpacts.every((i: any) => i.verified);
               const hasMissing = relatedImpacts.some((i: any) => i.current_state === 'missing');

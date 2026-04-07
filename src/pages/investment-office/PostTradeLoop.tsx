@@ -2,8 +2,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { RotateCcw, TrendingUp, TrendingDown, Brain, Check, AlertTriangle, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const ACTIVE_POSITIONS = [
+const DEMO_ACTIVE_POSITIONS = [
   {
     id: "p1", symbol: "NVDA", name: "NVIDIA", icon: "💚", entryPrice: 95.50, currentPrice: 135.20, entryDate: "2025-08-15",
     thesisStatus: "strengthened", recommendation: "hold", advisorNote: "AI capex cycle confirmed. Thesis intact. Consider trimming 10% to manage concentration.",
@@ -31,7 +32,8 @@ const ACTIVE_POSITIONS = [
 ];
 
 export default function PostTradeLoop() {
-  const [selected, setSelected] = useState(ACTIVE_POSITIONS[0]);
+  const { isDemoMode } = useDataMode();
+  const [selected, setSelected] = useState(DEMO_ACTIVE_POSITIONS[0]);
   const pnlPct = ((selected.currentPrice - selected.entryPrice) / selected.entryPrice * 100).toFixed(1);
   const isPositive = selected.currentPrice >= selected.entryPrice;
 
@@ -45,7 +47,7 @@ export default function PostTradeLoop() {
 
       {/* Position Selector */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {ACTIVE_POSITIONS.map(p => (
+        {DEMO_ACTIVE_POSITIONS.map(p => (
           <button key={p.id} onClick={() => setSelected(p)}
             className={`shrink-0 rounded-xl border px-4 py-3 flex items-center gap-2 transition-all ${selected.id === p.id ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"}`}>
             <span className="text-lg">{p.icon}</span>

@@ -4,8 +4,9 @@ import { Map, TrendingUp, Zap, Eye, AlertTriangle, ChevronRight } from "lucide-r
 import { useNavigate } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS } from "@/hooks/useInvestmentOfficeData";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const THEMES = [
+const DEMO_THEMES = [
   { id: "ai", label: "AI Infrastructure", icon: "🤖", strength: 92, crowding: 75, uncertainty: 30, instruments: ["NVDA", "MSFT", "AAPL"], advisorView: "Strong secular theme. Crowding risk rising but fundamentals support continuation.", color: "hsl(var(--primary))" },
   { id: "digital-gold", label: "Digital Store of Value", icon: "₿", strength: 78, crowding: 55, uncertainty: 45, instruments: ["BTC"], advisorView: "Post-halving dynamics supportive. Institutional adoption creating structural demand floor.", color: "hsl(38 85% 58%)" },
   { id: "defi", label: "DeFi & Smart Contracts", icon: "⟠", strength: 65, crowding: 40, uncertainty: 55, instruments: ["ETH", "SOL"], advisorView: "Growing ecosystem but regulatory uncertainty creates two-sided risk.", color: "hsl(280 60% 55%)" },
@@ -17,8 +18,9 @@ const THEMES = [
 ];
 
 export default function OpportunityMap() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
-  const [selectedTheme, setSelectedTheme] = useState(THEMES[0]);
+  const [selectedTheme, setSelectedTheme] = useState(DEMO_THEMES[0]);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -30,7 +32,7 @@ export default function OpportunityMap() {
 
       {/* Theme Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-        {THEMES.map((theme, i) => (
+        {DEMO_THEMES.map((theme, i) => (
           <motion.button key={theme.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
             onClick={() => setSelectedTheme(theme)}
             className={`rounded-2xl border p-4 text-left transition-all ${

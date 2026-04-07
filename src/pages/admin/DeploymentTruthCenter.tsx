@@ -53,7 +53,7 @@ const PROMOTION_GATES: PromotionGate[] = [
   { name: "Data Migration", status: "skipped", description: "No schema changes in this release" },
 ];
 
-const ENVIRONMENTS = [
+const DEMO_ENVIRONMENTS = [
   { name: "Development", status: "healthy", version: "v2.14.0-dev.42", uptime: "99.9%", lastDeploy: "2h ago", features: ["hot-reload", "debug-mode", "mock-data"] },
   { name: "Staging", status: "healthy", version: "v2.13.1-rc.3", uptime: "99.5%", lastDeploy: "1d ago", features: ["seeded-data", "integration-tests"] },
   { name: "Production", status: "healthy", version: "v2.13.0", uptime: "99.99%", lastDeploy: "3d ago", features: ["full-rls", "monitoring", "alerting"] },
@@ -211,7 +211,7 @@ export default function DeploymentTruthCenter() {
 
           <TabsContent value="environments">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {ENVIRONMENTS.map(env => (
+              {DEMO_ENVIRONMENTS.map(env => (
                 <Card key={env.name} className="bg-card/50 border-border/50">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">

@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { Gauge, AlertTriangle, Check } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const POSITIONS = [
+const DEMO_POSITIONS = [
   {
     symbol: "NVDA", name: "NVIDIA", icon: "💚",
     conviction: 82, uncertainty: 28, catalystStrength: 85, downsideFragility: 35,
@@ -35,7 +36,7 @@ const POSITIONS = [
   },
 ];
 
-const DIMS: Array<{ key: keyof Pick<typeof POSITIONS[0], "conviction" | "uncertainty" | "catalystStrength" | "downsideFragility" | "thesisClarity" | "portfolioFit" | "timeHorizonFit">; label: string; color: string; inverted?: boolean }> = [
+const DIMS: Array<{ key: keyof Pick<typeof DEMO_POSITIONS[0], "conviction" | "uncertainty" | "catalystStrength" | "downsideFragility" | "thesisClarity" | "portfolioFit" | "timeHorizonFit">; label: string; color: string; inverted?: boolean }> = [
   { key: "conviction", label: "Conviction", color: "bg-primary" },
   { key: "uncertainty", label: "Uncertainty", color: "bg-destructive", inverted: true },
   { key: "catalystStrength", label: "Catalyst Strength", color: "bg-[hsl(var(--trust-safe))]" },
@@ -46,6 +47,7 @@ const DIMS: Array<{ key: keyof Pick<typeof POSITIONS[0], "conviction" | "uncerta
 ];
 
 export default function ConvictionEngine() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <DemoModeBadge />
@@ -54,7 +56,7 @@ export default function ConvictionEngine() {
         <p className="text-sm text-muted-foreground mt-0.5">Multi-dimensional conviction scoring for every position — conviction, uncertainty, catalyst strength, fragility, and fit</p>
       </div>
 
-      {POSITIONS.map((p, pi) => (
+      {DEMO_POSITIONS.map((p, pi) => (
         <motion.div key={p.symbol} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: pi * 0.05 }}
           className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <div className="flex items-center gap-3">

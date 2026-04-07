@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { Dna, Info } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const DNA_DIMENSIONS = [
+const DEMO_DNA_DIMENSIONS = [
   { label: "Value-Tilted", score: 35, description: "Preference for undervalued assets based on fundamentals" },
   { label: "Growth-Oriented", score: 72, description: "Tendency toward high-growth, high-multiple companies" },
   { label: "Macro-Reactive", score: 58, description: "Sensitivity to macro regime changes in decision-making" },
@@ -17,7 +18,7 @@ const DNA_DIMENSIONS = [
 
 const STRATEGY_SUMMARY = "Your portfolio reveals a growth-oriented, thesis-disciplined investor with moderate macro awareness. You show strong patience but occasionally drift toward speculation. Event markets are underweight relative to your macro interest.";
 
-const SUGGESTIONS = [
+const DEMO_SUGGESTIONS = [
   "Consider adding value exposure to balance growth concentration",
   "Your thesis discipline is strong — leverage it for event-driven positions",
   "Diversification score is low — review correlation clusters",
@@ -25,6 +26,7 @@ const SUGGESTIONS = [
 ];
 
 export default function StrategyDNA() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <DemoModeBadge />
@@ -43,7 +45,7 @@ export default function StrategyDNA() {
       <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
         <h3 className="text-sm font-bold text-foreground">Your Strategy Profile</h3>
         <div className="space-y-3">
-          {DNA_DIMENSIONS.map((d, i) => (
+          {DEMO_DNA_DIMENSIONS.map((d, i) => (
             <motion.div key={d.label} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}>
               <div className="flex items-center justify-between mb-1">
                 <p className="text-xs font-medium text-foreground">{d.label}</p>
@@ -67,7 +69,7 @@ export default function StrategyDNA() {
       {/* Suggestions */}
       <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
         <h3 className="text-sm font-bold text-foreground">Advisor Suggestions Based on DNA</h3>
-        {SUGGESTIONS.map((s, i) => (
+        {DEMO_SUGGESTIONS.map((s, i) => (
           <div key={i} className="flex items-start gap-2 text-sm text-foreground">
             <span className="text-primary font-bold shrink-0">→</span>
             <span>{s}</span>

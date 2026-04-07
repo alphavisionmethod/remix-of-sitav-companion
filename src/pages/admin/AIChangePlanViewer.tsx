@@ -7,7 +7,7 @@ import { FileCheck, CheckCircle2, AlertTriangle, XCircle, Clock, ArrowRight, Shi
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const PLANS = [
+const DEMO_PLANS = [
   {
     id: "cp-1", title: "Add Redis mutex for projection cache writes", missionId: "Fix projection corruption",
     agent: "Backend Engineer", status: "approved" as const, confidence: 87, autonomy: "approval_required",
@@ -112,13 +112,14 @@ const statusColors: Record<string, string> = {
 };
 
 const AIChangePlanViewer = () => {
+  const { isDemoMode } = useDataMode();
   const [expanded, setExpanded] = useState<string | null>("cp-1");
   const [tab, setTab] = useState("all");
 
-  const filtered = tab === "all" ? PLANS :
-    tab === "pending" ? PLANS.filter(p => ["draft", "proposed"].includes(p.status)) :
-    tab === "approved" ? PLANS.filter(p => ["approved", "applied"].includes(p.status)) :
-    PLANS;
+  const filtered = tab === "all" ? DEMO_PLANS :
+    tab === "pending" ? DEMO_PLANS.filter(p => ["draft", "proposed"].includes(p.status)) :
+    tab === "approved" ? DEMO_PLANS.filter(p => ["approved", "applied"].includes(p.status)) :
+    DEMO_PLANS;
 
   return (
     <div className="space-y-6 p-6">
@@ -127,10 +128,10 @@ const AIChangePlanViewer = () => {
 
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Total Plans", v: PLANS.length },
-          { l: "Pending Review", v: PLANS.filter(p => ["draft", "proposed"].includes(p.status)).length },
-          { l: "Applied", v: PLANS.filter(p => p.status === "applied").length },
-          { l: "Avg Confidence", v: `${Math.round(PLANS.reduce((a, p) => a + p.confidence, 0) / PLANS.length)}%` },
+          { l: "Total Plans", v: DEMO_PLANS.length },
+          { l: "Pending Review", v: DEMO_PLANS.filter(p => ["draft", "proposed"].includes(p.status)).length },
+          { l: "Applied", v: DEMO_PLANS.filter(p => p.status === "applied").length },
+          { l: "Avg Confidence", v: `${Math.round(DEMO_PLANS.reduce((a, p) => a + p.confidence, 0) / DEMO_PLANS.length)}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className="text-xl font-bold">{c.v}</p>

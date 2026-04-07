@@ -2,8 +2,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldAlert, Brain, AlertTriangle, Check, Clock, Eye, TrendingUp, Zap, MessageSquare } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const BEHAVIORAL_SIGNALS = [
+const DEMO_BEHAVIORAL_SIGNALS = [
   { id: "bs1", type: "attention", severity: "moderate", title: "Attention Clustering on NVDA", detail: "You've checked NVDA 12 times this week (baseline: 3). This pattern correlates with loss-aversion monitoring after drawdowns.", suggestion: "Set a price alert at your limit order ($130) and reduce manual checking. The thesis is either valid or invalidated — checking the price doesn't change that.", timestamp: "Today", icon: "👁️" },
   { id: "bs2", type: "discipline", severity: "positive", title: "SOL Entry Was Disciplined", detail: "You waited for the pullback rather than chasing the rally — exactly what Mirror recommended. Good pattern.", suggestion: "Continue this approach. Thesis-first, price-second discipline is your strongest investing habit.", timestamp: "Last week", icon: "✅" },
   { id: "bs3", type: "allocation", severity: "warning", title: "Crypto Sleeve Drift Unaddressed", detail: "Crypto allocation has been above your 20% policy target for 3 weeks without action. This could indicate either intentional override or passive drift.", suggestion: "Either formally update your constitution to reflect new target, or trim to bring within policy. Ambiguity erodes discipline.", timestamp: "3 weeks", icon: "⚠️" },
@@ -20,8 +21,9 @@ const FIREWALL_STATUS = {
 };
 
 export default function BehavioralFirewall() {
+  const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState<string>("all");
-  const filtered = BEHAVIORAL_SIGNALS.filter(s => filter === "all" || s.type === filter);
+  const filtered = DEMO_BEHAVIORAL_SIGNALS.filter(s => filter === "all" || s.type === filter);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">

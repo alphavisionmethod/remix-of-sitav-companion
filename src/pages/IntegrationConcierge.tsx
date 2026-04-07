@@ -29,7 +29,7 @@ const CATEGORIES = [
   { id: "operations", label: "Operations", icon: Package },
 ] as const;
 
-const BUNDLES = [
+const DEMO_BUNDLES = [
   { id: "founder-productivity", name: "Founder Productivity Bundle", useCases: ["founder-productivity", "lead-recovery"], icon: "🚀", description: "Gmail, Calendar, and lead recovery for founders", savings: "5+ hrs/week" },
   { id: "lead-recovery-bundle", name: "Lead Recovery Bundle", useCases: ["lead-recovery", "crm-recovery", "campaign-to-cash"], icon: "💰", description: "Recover missed leads and track campaign ROI", savings: "$2k-10k/mo" },
   { id: "money-os-bundle", name: "QuickBooks Money OS Bundle", useCases: ["invoice-cash-timing"], icon: "📊", description: "Invoices, cash flow, and expense tracking", savings: "30-day forecast" },
@@ -247,7 +247,7 @@ function SetupWizard({ useCase, onClose }: { useCase: ConnectorUseCase; onClose:
 }
 
 // ── Bundle Card ────────────────────────────────────────────────
-function BundleCard({ bundle, onSelect }: { bundle: typeof BUNDLES[0]; onSelect: () => void }) {
+function BundleCard({ bundle, onSelect }: { bundle: typeof DEMO_BUNDLES[0]; onSelect: () => void }) {
   return (
     <motion.div
       whileHover={{ y: -2 }}
@@ -393,7 +393,7 @@ export default function IntegrationConcierge() {
         </TabsContent>
 
         <TabsContent value="bundles" className="mt-5 space-y-4">
-          {BUNDLES.map(b => (
+          {DEMO_BUNDLES.map(b => (
             <BundleCard key={b.id} bundle={b} onSelect={() => {
               const firstUc = engines.integrations.getUseCase(b.useCases[0]);
               if (firstUc) setActiveUseCase(firstUc);

@@ -19,7 +19,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Spillover data ───────────────────────────────────────────
 
-const ACTIVE_SPILLOVERS = [
+const DEMO_ACTIVE_SPILLOVERS = [
   {
     from: "concierge" as const,
     to: "business" as const,
@@ -62,7 +62,7 @@ const ACTIVE_SPILLOVERS = [
   },
 ];
 
-const TOP_INTERVENTIONS = [
+const DEMO_TOP_INTERVENTIONS = [
   {
     title: "Unblock Thursday — one reschedule fixes 3 domains",
     description: "Moving Maya's dentist from Thursday 10am to Monday 2pm clears the schedule conflict, opens a callback window for 2 cooling leads, and reduces household stress.",
@@ -94,7 +94,7 @@ const SpilloverGraph = () => (
   <div className="relative aspect-square max-w-[280px] mx-auto">
     <svg viewBox="0 0 100 100" className="w-full h-full">
       {/* Connection lines */}
-      {ACTIVE_SPILLOVERS.map((s, i) => {
+      {DEMO_ACTIVE_SPILLOVERS.map((s, i) => {
         const from = DOMAINS.find(d => d.id === s.from);
         const to = DOMAINS.find(d => d.id === s.to);
         if (!from || !to) return null;
@@ -133,8 +133,8 @@ const SpilloverGraph = () => (
 
 export default function SpilloverDashboard() {
   const { isDemoMode } = useDataMode();
-  const highCount = ACTIVE_SPILLOVERS.filter(s => s.impact === "high").length;
-  const medCount = ACTIVE_SPILLOVERS.filter(s => s.impact === "medium").length;
+  const highCount = DEMO_ACTIVE_SPILLOVERS.filter(s => s.impact === "high").length;
+  const medCount = DEMO_ACTIVE_SPILLOVERS.filter(s => s.impact === "medium").length;
 
   return (
     <div className="space-y-8 p-6 max-w-7xl mx-auto">
@@ -154,10 +154,10 @@ export default function SpilloverDashboard() {
 
       {/* KPI Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <KPITile label="Active Spillovers" value={ACTIVE_SPILLOVERS.length} trend="down" icon={ArrowLeftRight} sub="Cross-domain impacts" />
+        <KPITile label="Active Spillovers" value={DEMO_ACTIVE_SPILLOVERS.length} trend="down" icon={ArrowLeftRight} sub="Cross-domain impacts" />
         <KPITile label="High Impact" value={highCount} trend="down" icon={AlertTriangle} sub="Urgent attention needed" />
         <KPITile label="Domains Affected" value={4} icon={Activity} sub="All interconnected" />
-        <KPITile label="Interventions Ready" value={TOP_INTERVENTIONS.length} trend="up" icon={Sparkles} sub="Cross-cutting fixes" />
+        <KPITile label="Interventions Ready" value={DEMO_TOP_INTERVENTIONS.length} trend="up" icon={Sparkles} sub="Cross-cutting fixes" />
       </div>
 
       {/* Main content grid */}
@@ -192,7 +192,7 @@ export default function SpilloverDashboard() {
           <div className="rounded-xl border border-border bg-card p-4">
             <h4 className="text-xs font-semibold text-muted-foreground mb-3">Active Flows</h4>
             <div className="flex flex-wrap gap-2">
-              {ACTIVE_SPILLOVERS.map((s, i) => (
+              {DEMO_ACTIVE_SPILLOVERS.map((s, i) => (
                 <SpilloverBadge key={i} from={s.from} to={s.to} impact={s.impact} description={s.title} />
               ))}
             </div>
@@ -203,14 +203,14 @@ export default function SpilloverDashboard() {
         <div className="lg:col-span-2 space-y-6">
           <SectionHeader title="Top Interventions" subtitle="Single actions that fix multiple spillovers" />
           <div className="grid gap-4 md:grid-cols-2">
-            {TOP_INTERVENTIONS.map((intervention, i) => (
+            {DEMO_TOP_INTERVENTIONS.map((intervention, i) => (
               <InterventionCard key={i} {...intervention} />
             ))}
           </div>
 
           <SectionHeader title="Active Spillovers" subtitle="Ordered by impact severity" />
           <div className="grid gap-4 md:grid-cols-2">
-            {ACTIVE_SPILLOVERS.map((s, i) => (
+            {DEMO_ACTIVE_SPILLOVERS.map((s, i) => (
               <SpilloverCard key={i} {...s} />
             ))}
           </div>

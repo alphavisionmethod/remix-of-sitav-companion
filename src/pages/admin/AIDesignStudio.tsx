@@ -6,7 +6,7 @@ import { Palette, Eye, CheckCircle2, ArrowRight, Sparkles, Sun, Moon, Accessibil
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const IMPROVEMENTS = [
+const DEMO_IMPROVEMENTS = [
   { id: 1, title: "Admin header — improve information hierarchy", area: "Admin Shell", type: "layout" as const, before: "Flat header with icon + title, no visual depth", after: "Gradient header with accent icon badge, subtitle, and action slot", rationale: "Improves scannability and creates premium feel consistent with boardroom surfaces", confidence: 84, impact: "medium", consistency: 92, status: "ready" as const },
   { id: 2, title: "Sidebar icons — add consistent sizing and alignment", area: "Navigation", type: "consistency" as const, before: "Mixed icon sizes (h-4, h-5) and inconsistent padding", after: "Standardized h-4 w-4 with 12px padding and active indicator", rationale: "Creates visual rhythm and reduces cognitive load during navigation", confidence: 91, impact: "low", consistency: 96, status: "ready" as const },
   { id: 3, title: "Dark mode — fix low-contrast table headers", area: "Data Tables", type: "accessibility" as const, before: "bg-muted/30 with text-muted-foreground — contrast ratio 3.2:1", after: "bg-muted/50 with text-foreground — contrast ratio 5.1:1", rationale: "WCAG AA requires 4.5:1 for normal text. Current headers fail", confidence: 95, impact: "high", consistency: 88, status: "applied" as const },
@@ -24,6 +24,7 @@ const typeIcons: Record<string, typeof Layout> = {
 };
 
 const AIDesignStudio = () => {
+  const { isDemoMode } = useDataMode();
   const [expanded, setExpanded] = useState<number | null>(null);
 
   return (
@@ -33,10 +34,10 @@ const AIDesignStudio = () => {
 
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Improvements Ready", v: IMPROVEMENTS.filter(i => i.status === "ready").length },
-          { l: "Applied", v: IMPROVEMENTS.filter(i => i.status === "applied").length },
-          { l: "Avg Confidence", v: `${Math.round(IMPROVEMENTS.reduce((a,i) => a + i.confidence, 0) / IMPROVEMENTS.length)}%` },
-          { l: "Avg Consistency", v: `${Math.round(IMPROVEMENTS.reduce((a,i) => a + i.consistency, 0) / IMPROVEMENTS.length)}%` },
+          { l: "Improvements Ready", v: DEMO_IMPROVEMENTS.filter(i => i.status === "ready").length },
+          { l: "Applied", v: DEMO_IMPROVEMENTS.filter(i => i.status === "applied").length },
+          { l: "Avg Confidence", v: `${Math.round(DEMO_IMPROVEMENTS.reduce((a,i) => a + i.confidence, 0) / DEMO_IMPROVEMENTS.length)}%` },
+          { l: "Avg Consistency", v: `${Math.round(DEMO_IMPROVEMENTS.reduce((a,i) => a + i.consistency, 0) / DEMO_IMPROVEMENTS.length)}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className="text-xl font-bold">{c.v}</p>
@@ -46,7 +47,7 @@ const AIDesignStudio = () => {
       </div>
 
       <div className="space-y-3">
-        {IMPROVEMENTS.map(imp => {
+        {DEMO_IMPROVEMENTS.map(imp => {
           const TypeIcon = typeIcons[imp.type] || Palette;
           return (
             <div key={imp.id} className="rounded-xl border border-border/40 bg-card overflow-hidden">

@@ -19,7 +19,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 // ═══════════════════════════════════════════════════════════════
 // DATA — Engineering Overview Band
 // ═══════════════════════════════════════════════════════════════
-const OVERVIEW_BAND = [
+const DEMO_OVERVIEW_BAND = [
   { label: "Open Issues", value: 12, icon: AlertTriangle, color: "text-amber-500", bg: "bg-amber-500/10" },
   { label: "Critical Issues", value: 2, icon: XCircle, color: "text-destructive", bg: "bg-destructive/10" },
   { label: "Active Missions", value: 5, icon: Target, color: "text-primary", bg: "bg-primary/10" },
@@ -31,7 +31,7 @@ const OVERVIEW_BAND = [
 ];
 
 // Needs Attention
-const ATTENTION_ITEMS = [
+const DEMO_ATTENTION_ITEMS = [
   { title: "Elevated 500 errors on /api/projections/rebuild", type: "critical-issue", severity: "critical" as const, agent: "Reliability Engineer", time: "18m" },
   { title: "Admin shell LCP 3.2s — exceeds 1.5s budget", type: "regression", severity: "high" as const, agent: "Performance Optimizer", time: "4h" },
   { title: "Failed self-heal: layout restore caused secondary shift", type: "failed-heal", severity: "medium" as const, agent: "Self-Healing Supervisor", time: "1d" },
@@ -40,7 +40,7 @@ const ATTENTION_ITEMS = [
 ];
 
 // Agent Signal Rail
-const AGENT_SIGNALS = [
+const DEMO_AGENT_SIGNALS = [
   { name: "Engineering Lead", signal: "Coordinating shell performance sprint", confidence: 92, autonomy: "supervised", escalation: false, tasks: 3 },
   { name: "Backend Engineer", signal: "Projection mutex lock ready for review", confidence: 88, autonomy: "draft-only", escalation: false, tasks: 2 },
   { name: "Frontend Engineer", signal: "Accessibility sweep — 2 violations remaining", confidence: 85, autonomy: "supervised", escalation: false, tasks: 4 },
@@ -57,7 +57,7 @@ const AGENT_SIGNALS = [
 ];
 
 // Mission Lane
-const MISSIONS = [
+const DEMO_MISSIONS = [
   { title: "Fix projection cache corruption", agent: "Backend Engineer", progress: 75, status: "ready_for_approval", blocker: "Awaiting human approval", confidence: 87 },
   { title: "Reduce admin shell load time to <1.2s", agent: "Performance Optimizer", progress: 68, status: "in_progress", blocker: null, confidence: 76 },
   { title: "Achieve 95% test coverage on core flows", agent: "QA Engineer", progress: 82, status: "in_progress", blocker: null, confidence: 91 },
@@ -66,8 +66,9 @@ const MISSIONS = [
 ];
 
 // Self-Healing Lane
-const HEAL_STATS = { attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };
-const RECENT_HEALS = [
+const HEAL_STATS = {
+  const { isDemoMode } = useDataMode(); attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };
+const DEMO_RECENT_HEALS = [
   { action: "Restarted unhealthy projection worker", time: "12m ago", verified: true },
   { action: "Reverted bad feature flag: revenue-sidebar-v2", time: "1h ago", verified: true },
   { action: "Auto-fixed broken route /admin/durability", time: "2h ago", verified: true },
@@ -75,7 +76,7 @@ const RECENT_HEALS = [
 ];
 
 // Learning Lane
-const LEARNING_HIGHLIGHTS = [
+const DEMO_LEARNING_HIGHLIGHTS = [
   { type: "pattern", detail: "Feature flag rollbacks cluster within 2h of activation", confidence: 82 },
   { type: "optimization", detail: "Error Fixer accuracy improved +4% after lazy-import checks", confidence: 91 },
   { type: "rejected", detail: "Design proposal using hardcoded colors — rejected 2x", confidence: 79 },
@@ -83,7 +84,7 @@ const LEARNING_HIGHLIGHTS = [
 ];
 
 // What Changed Lane
-const CHANGES = [
+const DEMO_CHANGES = [
   { action: "Auto-fixed broken route /admin/durability", agent: "Error Fixer", time: "12m ago", type: "auto-heal" as const },
   { action: "Proposed layout improvement for Mission Control header", agent: "Design Engineer", time: "28m ago", type: "proposal" as const },
   { action: "Reverted bad feature flag for revenue-office sidebar", agent: "Reliability Engineer", time: "1h ago", type: "rollback" as const },
@@ -95,13 +96,13 @@ const CHANGES = [
 ];
 
 // Environments + Release Gates
-const ENVIRONMENTS = [
+const DEMO_ENVIRONMENTS = [
   { env: "Production", status: "healthy" as const, confidence: 94, deployedAt: "2h ago", drift: "none", version: "v2.14.3" },
   { env: "Staging", status: "warning" as const, confidence: 78, deployedAt: "35m ago", drift: "2 config diffs", version: "v2.15.0-rc1" },
   { env: "Preview", status: "healthy" as const, confidence: 88, deployedAt: "12m ago", drift: "none", version: "v2.15.0-rc2" },
 ];
 
-const RELEASE_GATES = [
+const DEMO_RELEASE_GATES = [
   { gate: "Unit Tests", status: "pass" as const, detail: "1,247/1,247 passing" },
   { gate: "Integration Tests", status: "pass" as const, detail: "89/89 passing" },
   { gate: "Auth Smoke Test", status: "pass" as const, detail: "Login + OAuth verified" },
@@ -202,7 +203,7 @@ const AIEngineeringBoard = () => {
 
       {/* A. Engineering Overview Band */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
-        {OVERVIEW_BAND.map(c => (
+        {DEMO_OVERVIEW_BAND.map(c => (
           <div key={c.label} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <div className={`mx-auto mb-1.5 flex h-8 w-8 items-center justify-center rounded-lg ${c.bg}`}>
               <c.icon className={`h-3.5 w-3.5 ${c.color}`} />
@@ -230,10 +231,10 @@ const AIEngineeringBoard = () => {
           <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-4 space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-sm font-semibold text-destructive">
-                <AlertTriangle className="h-4 w-4" /> Needs Attention ({ATTENTION_ITEMS.length})
+                <AlertTriangle className="h-4 w-4" /> Needs Attention ({DEMO_ATTENTION_ITEMS.length})
               </div>
             </div>
-            {ATTENTION_ITEMS.map((item, i) => (
+            {DEMO_ATTENTION_ITEMS.map((item, i) => (
               <div key={i} className={`rounded-lg border p-3 ${attentionColor(item.severity)}`}>
                 <div className="flex items-center justify-between mb-0.5">
                   <span className="text-sm font-medium">{item.title}</span>
@@ -254,7 +255,7 @@ const AIEngineeringBoard = () => {
               <Link to="/admin/ai-missions" className="text-xs text-primary hover:underline flex items-center gap-1">Mission Center <ArrowUpRight className="h-3 w-3" /></Link>
             </div>
             <div className="space-y-2">
-              {MISSIONS.map(m => (
+              {DEMO_MISSIONS.map(m => (
                 <div key={m.title} className="rounded-lg border border-border/20 p-3">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-sm font-medium">{m.title}</span>
@@ -295,7 +296,7 @@ const AIEngineeringBoard = () => {
               ))}
             </div>
             <div className="space-y-1">
-              {RECENT_HEALS.map((h, i) => (
+              {DEMO_RECENT_HEALS.map((h, i) => (
                 <div key={i} className="flex items-center gap-2 py-1.5 border-b border-border/10 last:border-0">
                   <CheckCircle2 className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))] shrink-0" />
                   <span className="text-xs flex-1 truncate">{h.action}</span>
@@ -312,7 +313,7 @@ const AIEngineeringBoard = () => {
               <Link to="/admin/ai-learning" className="text-xs text-primary hover:underline flex items-center gap-1">Learning Center <ArrowUpRight className="h-3 w-3" /></Link>
             </div>
             <div className="space-y-2">
-              {LEARNING_HIGHLIGHTS.map((l, i) => (
+              {DEMO_LEARNING_HIGHLIGHTS.map((l, i) => (
                 <div key={i} className="rounded-lg bg-muted/20 p-2.5 flex items-start gap-2">
                   <Badge variant="outline" className="text-[9px] shrink-0 mt-0.5">{l.type}</Badge>
                   <div className="flex-1">
@@ -331,7 +332,7 @@ const AIEngineeringBoard = () => {
               <Link to="/admin/ai-time-machine" className="text-xs text-primary hover:underline flex items-center gap-1">Time Machine <ArrowUpRight className="h-3 w-3" /></Link>
             </div>
             <div className="space-y-1">
-              {CHANGES.slice(0, 6).map((a, i) => (
+              {DEMO_CHANGES.slice(0, 6).map((a, i) => (
                 <div key={i} className="flex items-center gap-3 py-2 border-b border-border/20 last:border-0">
                   <div className={`h-2 w-2 rounded-full shrink-0 ${typeDotColor(a.type)}`} />
                   <div className="flex-1 min-w-0">
@@ -348,11 +349,11 @@ const AIEngineeringBoard = () => {
         {/* ── TAB 2: AI TEAM ── */}
         <TabsContent value="team" className="mt-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm text-muted-foreground">{AGENT_SIGNALS.length} specialists · {AGENT_SIGNALS.filter(t => t.escalation).length} escalated</p>
+            <p className="text-sm text-muted-foreground">{DEMO_AGENT_SIGNALS.length} specialists · {DEMO_AGENT_SIGNALS.filter(t => t.escalation).length} escalated</p>
             <Link to="/admin/ai-team-roster" className="text-xs text-primary hover:underline flex items-center gap-1">Full Roster <ArrowUpRight className="h-3 w-3" /></Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {AGENT_SIGNALS.map(t => (
+            {DEMO_AGENT_SIGNALS.map(t => (
               <div key={t.name} className={`rounded-xl border p-3 flex items-center gap-3 ${t.escalation ? "border-amber-500/30 bg-amber-500/5" : "border-border/40 bg-card"}`}>
                 <div className={`h-2 w-2 rounded-full shrink-0 ${t.escalation ? "bg-amber-500" : t.tasks > 0 ? "bg-[hsl(var(--trust-safe))]" : "bg-muted-foreground/30"}`} />
                 <div className="flex-1 min-w-0">
@@ -371,14 +372,14 @@ const AIEngineeringBoard = () => {
           </div>
         </TabsContent>
 
-        {/* ── TAB 3: MISSIONS ── */}
+        {/* ── TAB 3: DEMO_MISSIONS ── */}
         <TabsContent value="missions" className="mt-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm text-muted-foreground">{MISSIONS.length} active missions</p>
+            <p className="text-sm text-muted-foreground">{DEMO_MISSIONS.length} active missions</p>
             <Link to="/admin/ai-missions" className="text-xs text-primary hover:underline flex items-center gap-1">Mission Center <ArrowUpRight className="h-3 w-3" /></Link>
           </div>
           <div className="space-y-2">
-            {MISSIONS.map(m => (
+            {DEMO_MISSIONS.map(m => (
               <div key={m.title} className="rounded-xl border border-border/40 bg-card p-4">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium">{m.title}</span>
@@ -446,7 +447,7 @@ const AIEngineeringBoard = () => {
             ))}
           </div>
           <div className="space-y-2">
-            {RECENT_HEALS.map((h, i) => (
+            {DEMO_RECENT_HEALS.map((h, i) => (
               <div key={i} className="rounded-xl border border-border/40 bg-card p-3 flex items-center gap-3">
                 <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0" />
                 <div className="flex-1 min-w-0">
@@ -462,7 +463,7 @@ const AIEngineeringBoard = () => {
         {/* ── TAB 6: RELEASES ── */}
         <TabsContent value="releases" className="space-y-4 mt-4">
           <div className="space-y-2">
-            {ENVIRONMENTS.map(e => (
+            {DEMO_ENVIRONMENTS.map(e => (
               <div key={e.env} className="rounded-xl border border-border/40 bg-card p-4">
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
@@ -479,7 +480,7 @@ const AIEngineeringBoard = () => {
           <div className="rounded-xl border border-border/40 bg-card p-4">
             <div className="flex items-center gap-2 mb-3"><Shield className="h-4 w-4 text-primary" /><span className="text-sm font-semibold">Release Gates</span></div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {RELEASE_GATES.map(g => (
+              {DEMO_RELEASE_GATES.map(g => (
                 <div key={g.gate} className={`rounded-lg border p-3 ${g.status === "pass" ? "border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5" : "border-amber-500/20 bg-amber-500/5"}`}>
                   <div className="flex items-center gap-1.5 mb-1">
                     {g.status === "pass" ? <CheckCircle2 className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />}

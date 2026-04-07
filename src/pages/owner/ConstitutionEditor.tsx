@@ -39,7 +39,7 @@ const CATEGORY_CONFIG: Record<string, { icon: React.ElementType; color: string; 
   escalation: { icon: ChevronRight, color: "text-orange-400 bg-orange-400/10", label: "Escalation" },
 };
 
-const EXAMPLE_RULES = [
+const DEMO_EXAMPLE_RULES = [
   "Never bother me after 8pm",
   "My spouse must approve transfers above $500",
   "When I'm overwhelmed, reduce options",
@@ -254,7 +254,7 @@ function RuleComposer({ onCompile }: { onCompile: (text: string) => void }) {
             className="overflow-hidden"
           >
             <div className="flex flex-wrap gap-1.5 mt-2">
-              {EXAMPLE_RULES.map(ex => (
+              {DEMO_EXAMPLE_RULES.map(ex => (
                 <button
                   key={ex}
                   onClick={() => setInput(ex)}

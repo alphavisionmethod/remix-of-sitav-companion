@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link2, Plus, RefreshCw, CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PLATFORM_CONNECTIONS } from "@/hooks/useInvestmentOfficeData";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const STATUS_CONFIG = {
   connected: { icon: CheckCircle2, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
@@ -10,7 +11,7 @@ const STATUS_CONFIG = {
   error: { icon: AlertTriangle, color: "text-destructive", bg: "bg-destructive/10" },
 };
 
-const AVAILABLE_PLATFORMS = [
+const DEMO_AVAILABLE_PLATFORMS = [
   { name: "Robinhood", type: "brokerage", icon: "🪶" },
   { name: "Binance", type: "exchange", icon: "🟡" },
   { name: "Kraken", type: "exchange", icon: "🐙" },
@@ -21,6 +22,7 @@ const AVAILABLE_PLATFORMS = [
 ];
 
 export default function PlatformConnections() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <DemoModeBadge />
@@ -80,7 +82,7 @@ export default function PlatformConnections() {
       <div className="space-y-3">
         <h3 className="text-sm font-semibold text-foreground">Available to Connect</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {AVAILABLE_PLATFORMS.map(ap => (
+          {DEMO_AVAILABLE_PLATFORMS.map(ap => (
             <div key={ap.name} className="rounded-2xl border border-dashed border-border bg-card p-4 flex items-center gap-3 hover:border-primary/20 transition-all cursor-pointer">
               <span className="text-xl">{ap.icon}</span>
               <div className="flex-1">

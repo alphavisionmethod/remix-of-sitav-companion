@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
-const EXPORTABLE_TABLES = [
+const DEMO_EXPORTABLE_TABLES = [
   { name: "Profiles", rows: 1, size: "2 KB" },
   { name: "Connector Configs", rows: 5, size: "8 KB" },
   { name: "Workflows", rows: 34, size: "45 KB" },
@@ -23,7 +23,7 @@ const EXPORTABLE_TABLES = [
   { name: "Communication Log", rows: 89, size: "67 KB" },
 ];
 
-const PAST_EXPORTS = [
+const DEMO_PAST_EXPORTS = [
   { id: "1", date: "2026-03-28", format: "JSON", size: "1.2 MB", status: "completed" as const },
   { id: "2", date: "2026-02-15", format: "CSV", size: "890 KB", status: "completed" as const },
 ];
@@ -31,7 +31,7 @@ const PAST_EXPORTS = [
 export default function SovereignExportPage() {
   const { isDemoMode } = useDataMode();
   const { user, isDemo } = useAuth();
-  const [selectedTables, setSelectedTables] = useState<string[]>(EXPORTABLE_TABLES.map(t => t.name));
+  const [selectedTables, setSelectedTables] = useState<string[]>(DEMO_EXPORTABLE_TABLES.map(t => t.name));
   const [exporting, setExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
   const [deleting, setDeleting] = useState(false);
@@ -131,11 +131,11 @@ export default function SovereignExportPage() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-sm">Select Data to Export</CardTitle>
             <Button variant="ghost" size="sm" onClick={() => setSelectedTables(
-              selectedTables.length === EXPORTABLE_TABLES.length ? [] : EXPORTABLE_TABLES.map(t => t.name)
-            )}>{selectedTables.length === EXPORTABLE_TABLES.length ? "Deselect All" : "Select All"}</Button>
+              selectedTables.length === DEMO_EXPORTABLE_TABLES.length ? [] : DEMO_EXPORTABLE_TABLES.map(t => t.name)
+            )}>{selectedTables.length === DEMO_EXPORTABLE_TABLES.length ? "Deselect All" : "Select All"}</Button>
           </CardHeader>
           <CardContent className="space-y-3">
-            {EXPORTABLE_TABLES.map(table => (
+            {DEMO_EXPORTABLE_TABLES.map(table => (
               <div key={table.name} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/30 transition-colors">
                 <div className="flex items-center gap-3">
                   <Checkbox checked={selectedTables.includes(table.name)} onCheckedChange={() => toggleTable(table.name)} />
@@ -157,7 +157,7 @@ export default function SovereignExportPage() {
           <Card className="border-border/50">
             <CardHeader><CardTitle className="text-sm">Export History</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {PAST_EXPORTS.map(exp => (
+              {DEMO_PAST_EXPORTS.map(exp => (
                 <div key={exp.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
                   <div className="flex items-center gap-3">
                     <CheckCircle className="h-4 w-4 text-emerald-500" />
