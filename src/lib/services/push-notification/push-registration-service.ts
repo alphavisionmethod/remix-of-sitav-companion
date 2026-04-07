@@ -212,7 +212,7 @@ export async function getRegisteredTokens(): Promise<PushTokenRecord[]> {
     .order("created_at", { ascending: false });
 
   if (error) return [];
-  return (data || []) as unknown as PushTokenRecord[];
+  return (data || []) as never as PushTokenRecord[];
 }
 
 export async function refreshToken(): Promise<PushTokenRecord | null> {

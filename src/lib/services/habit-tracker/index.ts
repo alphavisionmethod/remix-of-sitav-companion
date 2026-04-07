@@ -126,7 +126,7 @@ class HabitStreakService {
         totalCompletions: 0,
         lastCompletedDate: null,
         lastCompletedAt: null,
-      }) as unknown,
+      }) as never,
       category: 'habit',
     });
   }
@@ -150,7 +150,7 @@ class HabitStreakService {
     val.lastCompletedDate = today;
     val.lastCompletedAt = new Date().toISOString();
 
-    await fromTable('user_memory').update({ value: JSON.stringify(val) as unknown }).eq('id', habitId);
+    await fromTable('user_memory').update({ value: JSON.stringify(val) as never }).eq('id', habitId);
   }
 
   async deleteHabit(userId: string, habitId: string): Promise<void> {

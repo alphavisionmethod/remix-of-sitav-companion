@@ -48,7 +48,7 @@ export async function getOAuthFlows(): Promise<OAuthFlowRecord[]> {
     console.error("[ConnectorTruth] OAuth flows error:", error);
     return [];
   }
-  return (data ?? []) as unknown as OAuthFlowRecord[];
+  return (data ?? []) as never as OAuthFlowRecord[];
 }
 
 export async function getSyncJobs(): Promise<SyncJobRecord[]> {
@@ -61,7 +61,7 @@ export async function getSyncJobs(): Promise<SyncJobRecord[]> {
     console.error("[ConnectorTruth] Sync jobs error:", error);
     return [];
   }
-  return (data ?? []) as unknown as SyncJobRecord[];
+  return (data ?? []) as never as SyncJobRecord[];
 }
 
 export async function createOAuthFlow(

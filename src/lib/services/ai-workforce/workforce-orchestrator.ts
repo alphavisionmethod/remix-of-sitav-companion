@@ -55,7 +55,7 @@ export async function getWorkforceRoles(): Promise<WorkforceRole[]> {
     console.error("[Workforce] Roles error:", error);
     return [];
   }
-  return (data ?? []) as unknown as WorkforceRole[];
+  return (data ?? []) as never as WorkforceRole[];
 }
 
 // ── Invocations ──
@@ -70,7 +70,7 @@ export async function getRecentInvocations(limit = 50): Promise<WorkforceInvocat
     console.error("[Workforce] Invocations error:", error);
     return [];
   }
-  return (data ?? []) as unknown as WorkforceInvocation[];
+  return (data ?? []) as never as WorkforceInvocation[];
 }
 
 export async function createInvocation(

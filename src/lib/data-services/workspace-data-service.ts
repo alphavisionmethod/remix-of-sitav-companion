@@ -23,7 +23,7 @@ export async function fetchDocs(mode: RealityModeKey = "real"): Promise<ModeAwar
     .order("updated_at", { ascending: false });
   const mapped = (!error && data?.length) ? data.map((d: any): MockDoc => ({
     id: d.id, title: d.title, type: d.document_type as unknown,
-    status: d.status as unknown, lastModified: d.updated_at, author: d.author || "You",
+    status: d.status as never, lastModified: d.updated_at, author: d.author || "You",
     linkedEntity: d.linked_entity, linkedWorkflow: d.linked_workflow,
     version: d.version || 1, privacy: d.privacy as unknown, content: d.content || "",
     governed: d.governed || false, tags: d.tags || [],
@@ -39,7 +39,7 @@ export async function fetchSheets(mode: RealityModeKey = "real"): Promise<ModeAw
     .eq("user_id", user.id).eq("document_type", "sheet")
     .order("updated_at", { ascending: false });
   const mapped = (!error && data?.length) ? data.map((d: any): MockSheet => ({
-    id: d.id, name: d.title, type: (d.linked_domain || "custom") as unknown,
+    id: d.id, name: d.title, type: (d.linked_domain || "custom") as never,
     lastModified: d.updated_at, linkedDomain: d.linked_domain || "",
     columns: Array.isArray(d.columns_config) ? d.columns_config : [],
     data: Array.isArray(d.data_rows) ? d.data_rows : [],
@@ -56,9 +56,9 @@ export async function fetchDecks(mode: RealityModeKey = "real"): Promise<ModeAwa
     .eq("user_id", user.id).eq("document_type", "deck")
     .order("updated_at", { ascending: false });
   const mapped = (!error && data?.length) ? data.map((d: any): MockDeck => ({
-    id: d.id, title: d.title, type: (d.linked_domain || "custom") as unknown,
+    id: d.id, title: d.title, type: (d.linked_domain || "custom") as never,
     slides: Array.isArray(d.slides) ? d.slides : [],
-    status: d.status as unknown, lastModified: d.updated_at,
+    status: d.status as never, lastModified: d.updated_at,
     linkedBoardroom: d.linked_entity, privacy: d.privacy as unknown,
   })) : null;
   return resolveByMode({ mode, realData: mapped, demoData: MOCK_DECKS, emptyDefault: [] });
