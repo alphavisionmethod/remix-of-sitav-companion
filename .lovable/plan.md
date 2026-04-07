@@ -1,104 +1,121 @@
 
 
-# SITA OS — God-Tier Architecture Integration Plan
+# God-Tier Architecture Safe Adaptation — Full Implementation
 
-## Current Reality Assessment
+## Status: 0% Implemented
 
-SITA already has **most of the God-Tier modules in partial or complete form**:
+The approved plan specified 13 files. **None were created.** Only the planning/governance engine (GOD01) from the prior phase exists. All runtime modules must now be built.
 
-| Proposed Module | Current SITA Equivalent | Status |
-|---|---|---|
-| Brain Core | `src/lib/services/brain-core/` (10 files) + `brain-core` edge function | **Exists — needs elevation** |
-| ConscienceGate | `groundedness-gate/` + `no-hallucination/` types + launch honesty systems | **Partial — needs unification** |
-| ModelRouter | `model-router/` (210 lines, full routing logic) + `ai-gateway` edge function | **Exists — needs formalization** |
-| InferenceEngine | `inference-gateway/` (193 lines) + `ai-gateway` edge function | **Exists — already the canonical inference path** |
-| Mnemosyne | `mnemosyne/` (34 lines, basic memory service) | **Stub — needs real implementation** |
-| Math-OS | `sovereign-calculation/` (formulas, regime, risk, scenario, reserves, receivables) | **Exists — rename only** |
-| Desk / Tool Executor | `executor-service/` + `recommendation-execution/` + `connector-runners/` | **Fragmented — needs consolidation** |
-| Journeys / Autopilot | `operating-autopilot/` + customer journey + workflow-engine | **Exists — needs consolidation** |
-| Event Bus | `event-bus/` (envelope, publish, subscribe) + `event-broker/` | **Exists — dual service needs merge** |
+## What Will Be Created
 
-**Key finding: SITA does NOT need new modules. It needs consolidation, elevation, and wiring of what already exists.**
+### 1. Global Contracts Registry
+**`src/lib/contracts/global-contracts-registry.ts`** (~250 lines)
 
----
+- `TaskContract` interface with inputSchema, outputSchema, evidenceRequirements, budgetClass, routingClass, allowedProviders, requiresRetrieval, requiresDeterministicVerification, requiresCritique, requiresApproval
+- `GLOBAL_TASK_REGISTRY`: 15 task contracts — chat-query, file-assist, boardroom-synthesis, financial-calculation, recommendation-generate, connector-action, approval-review, document-analysis, email-draft, scenario-simulation, kpi-calculation, tax-estimation, executive-briefing, risk-assessment, workflow-step
+- `getTaskContract()`, `validateTaskInput()`, `getRoutingPolicy()` functions
+- Links to existing `CapabilityContract` types
 
-## Implementation Plan
+### 2. ConscienceGate
+**`src/lib/services/conscience-gate/conscience-gate.ts`** (~200 lines)
 
-### Phase 1: God-Tier Integration Engine + Admin Board (Immediate)
+Replaces and elevates the existing `groundedness-gate` (31 lines, basic check only).
 
-**File 1: `src/lib/services/architecture/god-tier-integration-engine.ts`** (~600 lines)
+- `ConscienceGateService` class with `evaluate()` returning `GateVerdict` (pass/caveat/block/refuse)
+- Checks: input validation, risk classification, evidence requirements, budget policy, retrieval required, deterministic required, approval required, critique required
+- Consumes Global Contracts Registry task contracts
+- Uses existing `ConfidenceMetadata` and `RefusalState` types from contracts
 
-The definitive integration report as executable data, containing:
+### 3. CritiqueLoop
+**`src/lib/services/conscience-gate/critique-loop.ts`** (~120 lines)
 
-1. **Module Mapping Matrix** — All 9 proposed modules mapped to current SITA equivalents with `integrate_now | elevate | consolidate | defer | reject` classifications
-2. **Integrate/Defer/Reject/Rename Matrix** — For every proposed concept with strategic value, launch value, complexity cost, sprawl risk, rationale, and exact next step
-3. **Flagship Loop Impact Matrix** — How each God-Tier concept maps to the 5 flagship loops
-4. **Security/Governance Impact Matrix** — Per-module safety, traceability, leakage risk, blast radius assessment
-5. **Complexity vs Leverage Matrix** — Effort vs value for each proposed integration
-6. **Anti-Sprawl Risk Matrix** — Whether each concept reduces or increases sprawl (critical given 160+ service directories)
-7. **Task Type Mapping** — Math/Proof, Tool Execution, Vision/OCR, Draft/Rewrite, Deep Reasoning, Embeddings, On-device — each classified as `immediate | near_term | later | avoid`
-8. **Phased Implementation Plan** — Phase A (immediate high-leverage), Phase B (near-term strengthening), Phase C (advanced intelligence), Phase D (long-term evolution)
-9. **Contract Map Analysis** — Which contracts already exist, which new ones are needed, where contract sprawl would be dangerous
-10. **What to Integrate Now vs What Not to Integrate Yet** — Explicit, opinionated sections
+- `CritiqueResult` interface: passed, issues, confidenceAdjustment, groundednessScore, determinismVerified, recommendation
+- `runCritique()`: validates AI output against task contract requirements
+- `verifyGroundedness()`, `verifyDeterminism()`, `verifyCompleteness()` checks
 
-**Key integration recommendations encoded in the engine:**
-- **Brain Core**: Already canonical. Elevate `orchestrate-intent.ts` as the single intelligence entry point. Do NOT create a second brain.
-- **ConscienceGate**: Rename `groundedness-gate` → formalize as ConscienceGate. Wire it as a pre-response validation step. Merge with existing no-hallucination types.
-- **ModelRouter**: Already complete (210 lines, routing, fallback, health, cost). Just formalize as the canonical model selection layer.
-- **InferenceEngine**: Already exists as `inference-gateway`. Keep as-is. Do NOT create a second inference layer.
-- **Mnemosyne**: Exists as stub. Expand to include file context assembly, profile retrieval, conversation history. Defer advanced embeddings/reranking.
-- **Math-OS**: Rename `sovereign-calculation` → acknowledge as Math-OS. Already has formulas, regime, risk, scenario. No rebuild needed.
-- **Desk**: Consolidate `executor-service` + `recommendation-execution` + `connector-runners` into one Desk concept. Defer autonomous tool execution.
-- **Autopilot**: Consolidate `operating-autopilot` + `workflow-engine`. Defer fully autonomous flows until approval/proof hardened.
-- **Event Bus**: Merge `event-bus` + `event-broker` into single canonical event system. Already has envelopes.
-- **CritiqueLoop**: NEW concept — add as a lightweight post-inference validation step that feeds back to ConscienceGate. Not a full module, just a pattern.
+### 4. ConscienceGate Barrel
+**`src/lib/services/conscience-gate/index.ts`** (~15 lines)
 
-**What NOT to integrate yet:**
-- Local/on-device model support (no runtime need)
-- Vision/OCR task routing (no flagship loop needs it now)
-- Advanced LoRA orchestration
-- Multi-agent debate as a runtime system (already has `multi-agent-debate/` directory — leave as-is)
-- Full autonomous autopilot (approval/proof discipline not ready)
+### 5. Pipeline Orchestrator
+**`src/lib/services/canonical-pipeline/pipeline-orchestrator.ts`** (~250 lines)
 
-**File 2: `src/pages/admin/architecture/GodTierIntegrationBoard.tsx`**
+- `PipelineStage` enum: INTAKE, CONSCIENCE_GATE, RETRIEVAL, ROUTING, INFERENCE, TOOL_EXECUTION, CRITIQUE, RETURN, RECEIPT
+- `PipelineContext`: tracks request through stages with timing and decisions
+- `PipelineOrchestrator` class with `execute()` running canonical sequence
+- `PipelineTrace` interface for stage-by-stage audit trail
+- Delegates to ConscienceGate, existing model-router, inference-gateway, Desk, CritiqueLoop
 
-Admin board (GOD01) displaying:
-- Module mapping with current SITA equivalents
-- Integrate/Defer/Reject classification with rationale
-- Flagship loop impact view
-- Anti-sprawl risk assessment
-- Phased implementation timeline
-- Security/governance impact per module
-- Missing-to-safe-integration matrix
+### 6. Pipeline Barrel
+**`src/lib/services/canonical-pipeline/index.ts`** (~10 lines)
 
-### Phase 2: Route Wiring
+### 7. Mnemosyne Context Assembler
+**`src/lib/services/mnemosyne/context-assembler.ts`** (~150 lines)
 
-**File 3: `src/App.tsx`** — Add lazy import and route for `/admin/architecture/god-tier-integration`
+Expands the existing stub (34 lines, key-value only) with real context assembly:
 
----
+- `ContextAssembler` class with `assembleContext()`, `getFileContext()`, `getUserProfile()`, `getConversationWindow()`, `getEvidenceContext()`, `scopeContext()`
+- Strict per-user/per-workspace isolation
+- Returns `AssembledContext` with sources, tokenCount, scopingDecisions
 
-## Technical Details
+### 8. Mnemosyne Index Update
+**`src/lib/services/mnemosyne/index.ts`** — re-export ContextAssembler alongside existing MnemosyneService
 
-### Files Created/Modified
+### 9. Desk Executor
+**`src/lib/services/desk/desk-executor.ts`** (~200 lines)
 
-| File | Action | Lines |
-|---|---|---|
-| `src/lib/services/architecture/god-tier-integration-engine.ts` | CREATE | ~600 |
-| `src/pages/admin/architecture/GodTierIntegrationBoard.tsx` | CREATE | ~350 |
-| `src/App.tsx` | MODIFY | +4 lines (lazy import + route) |
+Unified facade over existing `executor-service/` (3 action files), `recommendation-execution/`, and `connector-runners/`.
 
-### No Database Changes Required
-All data is static architecture analysis in TypeScript.
+- `DeskExecutor` class with `planExecution()`, `execute()`, `executeConnectorAction()`, `executeRecommendation()`, `executeWorkflowStep()`
+- All executions require ConscienceGate clearance + approval token for high-risk actions + receipt emission
+- `ToolPlan` and `ExecutionReceipt` interfaces
 
-### Success Criteria
-1. All 9 proposed modules mapped to current SITA equivalents
-2. Integrate/Defer/Reject matrix with rationale for every concept
-3. 5 flagship loops mapped with God-Tier component impact
-4. Anti-sprawl risk explicitly assessed for each module
-5. Phased implementation plan (A/B/C/D) with clear boundaries
-6. Task type mapping with maturity classification
-7. Contract map analysis identifying existing vs needed contracts
-8. Security/governance impact per module
-9. Admin board with `data-testid` attributes
+### 10. Desk Barrel
+**`src/lib/services/desk/index.ts`** (~10 lines)
+
+### 11. Unified Event Service
+**`src/lib/services/event-bus/unified-event-service.ts`** (~120 lines)
+
+Merges `event-bus/` (4 files) + `event-broker/` (1 file) into single canonical system:
+
+- `UnifiedEventService` class with `publish()`, `subscribe()`, `getEventLog()`, `getTraceByCorrelation()`
+- Uses existing `EventEnvelope` from event-envelope.ts
+- No Kafka/NATS — stays application-level
+
+### 12. GOD02 Runtime Board
+**`src/pages/admin/architecture/GodTierRuntimeBoard.tsx`** (~350 lines)
+
+Admin board showing:
+- Pipeline stage implementation status
+- ConscienceGate verdict history
+- Global Contracts Registry overview (15 task types)
+- Desk execution log
+- CritiqueLoop pass/fail rates
+- Mnemosyne context assembly stats
+- Event Bus unified trace
+- All sections with `data-testid` attributes
+
+### 13. App.tsx Route Wiring
+Add lazy import + route for `/admin/architecture/god-tier-runtime`
+
+## Anti-Sprawl Compliance
+- ConscienceGate **replaces** groundedness-gate concept (elevation, not addition)
+- Desk **facades** over executor-service + recommendation-execution + connector-runners
+- Unified Event Service **merges** event-broker into event-bus (net -1 service concept)
+- canonical-pipeline is NOT a second brain — formalized stage sequence consumed by brain-core
+- Net: +3 new directories, -1 merged = **+2 net, replacing 4 scattered concepts**
+
+## No Database Changes Required
+All runtime code is TypeScript service layer consuming existing DB tables.
+
+## Success Criteria
+1. Global Contracts Registry with 15 task contracts
+2. ConscienceGate evaluates risk, evidence, budget, retrieval, critique requirements
+3. CritiqueLoop validates outputs against task contracts
+4. Pipeline Orchestrator defines canonical 9-stage sequence
+5. Mnemosyne assembles scoped context (files, profile, conversation, evidence)
+6. Desk unifies tool execution with mandatory approval gates
+7. Event Bus merged into single service
+8. GOD02 board visualizes runtime health
+9. All boards have `data-testid` attributes
 10. 0 TypeScript errors
 
