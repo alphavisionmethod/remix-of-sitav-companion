@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface StreamMessage {
   role: "user" | "assistant";
@@ -6,6 +7,13 @@ export interface StreamMessage {
 }
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-advisor`;
+
+const ERROR_MESSAGES: Record<number, string> = {
+  401: "Session expired — please sign in again.",
+  402: "AI credits need attention. Visit Settings to continue.",
+  429: "You're asking great questions. Give me a moment to catch up.",
+  503: "AI advisor is warming up. Your request will be processed when available.",
+};
 
 export function useStreamingChat() {
   const [messages, setMessages] = useState<StreamMessage[]>([]);
@@ -19,6 +27,13 @@ export function useStreamingChat() {
     context?: Record<string, unknown>
   ) => {
     if (!input.trim()) return;
+
+    // Get user session for auth
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.access_token) {
+      setError("Not authenticated — please sign in to use the advisor.");
+      return;
+    }
 
     const userMsg: StreamMessage = { role: "user", content: input.trim() };
     setMessages(prev => [...prev, userMsg]);
@@ -38,15 +53,21 @@ export function useStreamingChat() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${session.access_token}`,
+          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
         },
         body: JSON.stringify({ messages: allMessages, advisor, context }),
         signal: abortRef.current.signal,
       });
 
       if (!resp.ok) {
-        const errData = await resp.json().catch(() => ({ error: `Error ${resp.status}` }));
-        setError(errData.error || `Error ${resp.status}`);
+        const premiumMsg = ERROR_MESSAGES[resp.status];
+        if (premiumMsg) {
+          setError(premiumMsg);
+        } else {
+          const errData = await resp.json().catch(() => ({ error: `Error ${resp.status}` }));
+          setError(errData.error || `Error ${resp.status}`);
+        }
         setIsStreaming(false);
         return;
       }

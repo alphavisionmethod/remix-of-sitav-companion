@@ -54,7 +54,7 @@ export const AdvisorChat = ({ isOpen, onClose }: AdvisorChatProps) => {
   const [input, setInput] = useState("");
   const { isDemoMode } = useDataMode();
   const { ask, isLoading } = useBrainCore({ advisor: activeAdvisor });
-  const { messages: streamMsgs, isStreaming, send: streamSend, stop: streamStop, clear: streamClear } = useStreamingChat();
+  const { messages: streamMsgs, isStreaming, error: streamError, send: streamSend, stop: streamStop, clear: streamClear } = useStreamingChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -294,11 +294,14 @@ export const AdvisorChat = ({ isOpen, onClose }: AdvisorChatProps) => {
             {/* Streaming messages (live mode) */}
             {!isDemoMode && streamMsgs.map((msg, i) => (
               <div key={`stream-${i}`} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
-                  msg.role === "user"
-                    ? "bg-primary text-primary-foreground rounded-br-md"
-                    : "bg-secondary/60 border border-border text-foreground rounded-bl-md"
-                }`}>
+                <div
+                  data-testid={msg.role === "assistant" ? "advisor-message-assistant" : undefined}
+                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
+                    msg.role === "user"
+                      ? "bg-primary text-primary-foreground rounded-br-md"
+                      : "bg-secondary/60 border border-border text-foreground rounded-bl-md"
+                  }`}
+                >
                   {msg.role === "assistant" && (
                     <span className="text-[9px] text-muted-foreground flex items-center gap-1 mb-1">
                       <Sparkles className="h-2.5 w-2.5" /> Streaming AI
@@ -314,10 +317,21 @@ export const AdvisorChat = ({ isOpen, onClose }: AdvisorChatProps) => {
               </div>
             ))}
 
-            {(isLoading || isStreaming) && streamMsgs.filter(m => m.role === "assistant").length === 0 && (
+            {/* Degraded state banner */}
+            {streamError && (
+              <div data-testid="advisor-degraded-banner" className="flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3">
+                <AlertTriangle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs font-medium text-destructive">Advisor Unavailable</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{streamError}</p>
+                </div>
+              </div>
+            )}
+
+            {(isLoading || isStreaming) && streamMsgs.filter(m => m.role === "assistant").length === 0 && !streamError && (
               <div className="flex justify-start">
                 <div className="bg-secondary/60 border border-border rounded-2xl rounded-bl-md px-4 py-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2" data-testid="advisor-streaming-indicator">
                     <div className="flex gap-1">
                       <div className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: "0ms" }} />
                       <div className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: "150ms" }} />
@@ -342,6 +356,7 @@ export const AdvisorChat = ({ isOpen, onClose }: AdvisorChatProps) => {
                 placeholder={`Ask ${meta.label.replace(" Advisor", "")}...`}
                 className="flex-1 rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all"
                 disabled={isLoading || isStreaming}
+                data-testid="advisor-chat-input"
               />
               {isStreaming ? (
                 <button
@@ -356,6 +371,7 @@ export const AdvisorChat = ({ isOpen, onClose }: AdvisorChatProps) => {
                   type="submit"
                   disabled={!input.trim() || isLoading}
                   className="rounded-xl bg-primary p-2.5 text-primary-foreground transition-all hover:bg-primary/90 disabled:opacity-50"
+                  data-testid="advisor-chat-send"
                 >
                   <Send className="h-4 w-4" />
                 </button>

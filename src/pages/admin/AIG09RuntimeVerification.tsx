@@ -106,9 +106,26 @@ function AIR02ProviderHealth() {
         .select("provider, health_state, last_success_at, last_failure_at, avg_latency_ms, error_rate")
         .order("updated_at", { ascending: false })
         .limit(20);
+      // Latest receipt per provider from ai_inference_receipts
+      const { data: receipts } = await supabase
+        .from("ai_inference_receipts")
+        .select("provider, latency_ms, cost_actual_cents, created_at")
+        .order("created_at", { ascending: false })
+        .limit(50);
       return (data ?? []).map(p => {
         const h = health?.find(h => h.provider === p.provider_key);
-        return { ...p, health_state: h?.health_state ?? "unknown", last_success_at: h?.last_success_at, last_failure_at: h?.last_failure_at, avg_latency_ms: h?.avg_latency_ms, error_rate: h?.error_rate };
+        const latestReceipt = receipts?.find(r => r.provider === p.provider_key);
+        return {
+          ...p,
+          health_state: h?.health_state ?? "unknown",
+          last_success_at: h?.last_success_at,
+          last_failure_at: h?.last_failure_at,
+          avg_latency_ms: h?.avg_latency_ms,
+          error_rate: h?.error_rate,
+          last_receipt_at: latestReceipt?.created_at,
+          last_receipt_latency: latestReceipt?.latency_ms,
+          last_receipt_cost: latestReceipt?.cost_actual_cents,
+        };
       });
     },
     staleTime: 30_000,
@@ -126,6 +143,7 @@ function AIR02ProviderHealth() {
           <TableHead>Latency</TableHead>
           <TableHead>Error Rate</TableHead>
           <TableHead>Last Success</TableHead>
+          <TableHead>Last Receipt</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -143,6 +161,13 @@ function AIR02ProviderHealth() {
             <TableCell className="text-xs">{p.avg_latency_ms ? `${Math.round(p.avg_latency_ms)}ms` : "—"}</TableCell>
             <TableCell className="text-xs">{p.error_rate != null ? `${(p.error_rate * 100).toFixed(1)}%` : "—"}</TableCell>
             <TableCell className="text-xs">{p.last_success_at ? formatDistanceToNow(new Date(p.last_success_at), { addSuffix: true }) : "—"}</TableCell>
+            <TableCell className="text-xs">
+              {p.last_receipt_at ? (
+                <span title={`Latency: ${p.last_receipt_latency ?? "—"}ms | Cost: ${p.last_receipt_cost != null ? `${p.last_receipt_cost}¢` : "—"}`}>
+                  {formatDistanceToNow(new Date(p.last_receipt_at), { addSuffix: true })}
+                </span>
+              ) : "—"}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -313,6 +338,21 @@ function AIR06ReceiptUsageTruth() {
     staleTime: 30_000,
   });
 
+  // Latest receipt card
+  const { data: latestReceipt } = useQuery({
+    queryKey: ["air-latest-receipt"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("ai_receipt_records")
+        .select("id, capability_key, decision_class, mode, created_at, provider_id, model_id")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data;
+    },
+    staleTime: 30_000,
+  });
+
   if (!stats) return <p className="text-sm text-muted-foreground p-4">Loading…</p>;
 
   return (
@@ -333,6 +373,21 @@ function AIR06ReceiptUsageTruth() {
           </Card>
         ))}
       </div>
+      {latestReceipt && (
+        <Card>
+          <CardHeader className="py-3 px-4">
+            <CardTitle className="text-sm flex items-center gap-2"><Receipt className="h-4 w-4" /> Latest Receipt</CardTitle>
+          </CardHeader>
+          <CardContent className="px-4 pb-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+              <div><span className="text-muted-foreground">Capability:</span> <span className="font-mono">{latestReceipt.capability_key}</span></div>
+              <div><span className="text-muted-foreground">Decision:</span> <Badge variant="outline" className="text-xs ml-1">{latestReceipt.decision_class ?? "—"}</Badge></div>
+              <div><span className="text-muted-foreground">Mode:</span> {latestReceipt.mode}</div>
+              <div><span className="text-muted-foreground">Time:</span> {formatDistanceToNow(new Date(latestReceipt.created_at), { addSuffix: true })}</div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
       {Object.keys(stats.capCosts).length > 0 && (
         <Table>
           <TableHeader><TableRow><TableHead>Capability</TableHead><TableHead>Cost Today</TableHead></TableRow></TableHeader>
