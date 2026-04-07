@@ -710,6 +710,7 @@ const App = () => (
                     <Route path="/money/cash-timing" element={<MoneyCenter />} />
                     <Route path="/money/receivables" element={<MoneyCenter />} />
                     <Route path="/money/investment-office" element={<MoneyCenter />} />
+                    <Route path="/money/tax" element={<MoneyCenter />} />
                     <Route path="/money/family-office" element={<MoneyCenter />} />
                     <Route path="/money/approvals" element={<MoneyCenter />} />
                     <Route path="/money/proof" element={<MoneyCenter />} />

@@ -188,7 +188,7 @@ const LeadsInbox = () => {
       <SitaPageHeader
         title="Leads Inbox"
         subtitle="Capture, qualify, and convert"
-        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton></div>}
+        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="secondary" size="sm" onClick={() => { if (leads.length > 0) crmSync.syncLeads.mutate(leads.map(l => ({ name: l.name, email: l.email || undefined, phone: l.phone || undefined, source: l.source || undefined, status: l.status }))); }} disabled={crmSync.syncLeads.isPending || leads.length === 0}><RefreshCw className={`h-3.5 w-3.5 ${crmSync.syncLeads.isPending ? "animate-spin" : ""}`} /> Sync</SitaButton><SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton></div>}
       />
 
       {/* Add/Edit Modal */}

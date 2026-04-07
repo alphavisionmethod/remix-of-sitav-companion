@@ -163,7 +163,10 @@ const CustomersPage = () => {
           subtitle="Relationships, health scores, and revenue intelligence"
           domain="business"
         />
-        <SitaButton variant="primary" size="sm" onClick={() => setShowAdd(true)}><Plus className="h-3.5 w-3.5" /> Add Customer</SitaButton>
+        <div className="flex gap-2">
+          <SitaButton variant="secondary" size="sm" onClick={() => { if (customers.length > 0) crmSync.syncCustomers.mutate(customers.map(c => ({ name: c.name, email: c.email || "unknown@example.com", phone: c.phone || undefined, company: c.company || undefined }))); }} disabled={crmSync.syncCustomers.isPending || customers.length === 0}><RefreshCw className={`h-3.5 w-3.5 ${crmSync.syncCustomers.isPending ? "animate-spin" : ""}`} /> Sync</SitaButton>
+          <SitaButton variant="primary" size="sm" onClick={() => setShowAdd(true)}><Plus className="h-3.5 w-3.5" /> Add Customer</SitaButton>
+        </div>
       </div>
 
       {showAdd && (

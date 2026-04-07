@@ -129,7 +129,16 @@ const BusinessOverview = () => {
       <SitaPageHeader
         title="Business Center"
         subtitle="Your operating overview — leads, revenue, and execution"
-        actions={<SitaButton variant="primary" onClick={() => navigate("/business/leads")}><UserPlus className="h-4 w-4" /> New Lead</SitaButton>}
+        actions={
+          <div className="flex items-center gap-3">
+            {crmHealth && (
+              <span className="text-[10px] text-muted-foreground">
+                CRM: {crmHealth.leads?.count ?? 0} leads · {crmHealth.customers?.count ?? 0} customers · {crmHealth.opportunities?.count ?? 0} opps
+              </span>
+            )}
+            <SitaButton variant="primary" onClick={() => navigate("/business/leads")}><UserPlus className="h-4 w-4" /> New Lead</SitaButton>
+          </div>
+        }
       />
 
       {/* KPI Strip */}

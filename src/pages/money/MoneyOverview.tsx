@@ -74,7 +74,16 @@ const MoneyOverview = () => {
   const wasteSubscriptions = useMemo(() =>
     subscriptions.filter((s: any) => s.is_waste).slice(0, 3), [subscriptions]);
 
-  const k = kpis || { totalBalance: 0, safeToSpend: 0, billsDue7d: 0, billsDue7dCount: 0, reserveHealth: 0, subscriptionMonthly: 0, subscriptionCount: 0, estWaste: 0, wasteCount: 0, receivables: 0, receivableCount: 0, monthlyBurn: 0 };
+  const kBase = kpis || { totalBalance: 0, safeToSpend: 0, billsDue7d: 0, billsDue7dCount: 0, reserveHealth: 0, subscriptionMonthly: 0, subscriptionCount: 0, estWaste: 0, wasteCount: 0, receivables: 0, receivableCount: 0, monthlyBurn: 0 };
+
+  // Overlay edge function data when available
+  const k = {
+    ...kBase,
+    totalBalance: cf?.total_liquid_cents ? Math.round(cf.total_liquid_cents / 100) : kBase.totalBalance,
+    receivables: cf?.total_receivable_cents ? Math.round(cf.total_receivable_cents / 100) : kBase.receivables,
+    monthlyBurn: br?.monthly_burn_cents ? Math.round(br.monthly_burn_cents / 100) : kBase.monthlyBurn,
+    safeToSpend: cf?.net_position_cents ? Math.round(cf.net_position_cents / 100) : kBase.safeToSpend,
+  };
 
   if (!hasLiveData) {
     return (

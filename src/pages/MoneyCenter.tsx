@@ -82,6 +82,7 @@ const MoneyCenter = () => {
             { key: "cash-timing", label: "Cash Timing" },
             { key: "receivables", label: "Receivables" },
             { key: "investment-office", label: "Investment Office" },
+            { key: "tax", label: "Tax" },
             { key: "approvals", label: "Approvals" },
             { key: "proof", label: "Proof" },
             { key: "files", label: "Documents" },
