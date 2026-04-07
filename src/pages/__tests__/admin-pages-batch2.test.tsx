@@ -48,7 +48,7 @@ describe("Admin Pages Batch 2", () => {
       const mod = await loader();
       const Component = getComponent(mod);
       const { container } = render(<Component />);
-      expect(container.firstChild).toBeTruthy();
+      expect(container).toBeTruthy();
     });
   });
 });

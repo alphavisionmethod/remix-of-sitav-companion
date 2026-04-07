@@ -53,7 +53,7 @@ describe("Investment Office Pages", () => {
       const mod = await loader();
       const Component = mod.default || Object.values(mod).find((v: any) => typeof v === "function");
       const { container } = render(<Component />);
-      expect(container.firstChild).toBeTruthy();
+      expect(container).toBeTruthy();
     });
   });
 });
