@@ -7,7 +7,7 @@ export type KernelEvidenceType = "receipt" | "memory" | "external" | "user-input
 
 export interface EvidenceReference {
   id: string;
-  type: EvidenceType;
+  type: KernelEvidenceType;
   sourceId: string;
   sourceLabel: string;
   trustLevel: "verified" | "inferred" | "external" | "user-provided" | "unverified";

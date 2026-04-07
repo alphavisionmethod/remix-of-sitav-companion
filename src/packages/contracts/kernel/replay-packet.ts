@@ -5,7 +5,7 @@
 
 import type { ActionEnvelope } from "./action-envelope";
 
-export interface ReplayPacket {
+export interface KernelReplayPacket {
   id: string;
   originalEnvelopeId: string;
   originalReceiptId: string;
