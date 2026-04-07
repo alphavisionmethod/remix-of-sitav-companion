@@ -92,31 +92,35 @@ const CommunicationsCenter = () => {
     setEditingId(null);
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.subject.trim()) { toast.error("Subject is required"); return; }
+    if (!user) return;
     if (editingId) {
-      setCommunications(prev => prev.map(c => c.id === editingId ? { ...c, ...form } : c));
+      await supabase.from("communications").update({
+        channel: form.type, subject: form.subject, body: form.body,
+        status: form.status, customer_name: form.customer_name,
+      }).eq("id", editingId);
       toast.success("Communication updated");
     } else {
-      const newComm: Communication = {
-        id: `c${nextId++}`,
-        ...form,
-        created_at: new Date().toISOString(),
-        sent_at: null,
-      };
-      setCommunications(prev => [newComm, ...prev]);
+      await supabase.from("communications").insert({
+        user_id: user.id, channel: form.type, subject: form.subject,
+        body: form.body, status: form.status, customer_name: form.customer_name,
+      });
       toast.success("Communication created");
     }
+    queryClient.invalidateQueries({ queryKey: ["communications"] });
     resetForm();
   };
 
-  const handleSend = (id: string) => {
-    setCommunications(prev => prev.map(c => c.id === id ? { ...c, status: "sent" as CommStatus, sent_at: new Date().toISOString() } : c));
+  const handleSend = async (id: string) => {
+    await supabase.from("communications").update({ status: "sent", sent_at: new Date().toISOString() }).eq("id", id);
+    queryClient.invalidateQueries({ queryKey: ["communications"] });
     toast.success("Communication sent!");
   };
 
-  const handleDelete = (id: string) => {
-    setCommunications(prev => prev.filter(c => c.id !== id));
+  const handleDelete = async (id: string) => {
+    await supabase.from("communications").delete().eq("id", id);
+    queryClient.invalidateQueries({ queryKey: ["communications"] });
     setSelectedId(null);
     toast.success("Communication deleted");
   };
