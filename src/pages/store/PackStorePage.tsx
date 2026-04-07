@@ -3,7 +3,7 @@
 // Premium curated expansion layer
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { SitaSectionHeader } from "@/components/sita/SitaCard";
 import {
@@ -17,9 +17,13 @@ import {
 } from "@/lib/pack-store";
 import { ArrowRight, Package, RefreshCw, Sparkles, TrendingUp } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { usePackInstalls } from "@/hooks/use-live-data";
 
 const PackStorePage = () => {
   const navigate = useNavigate();
+  const { isDemoMode } = useDataMode();
+  const { data: liveInstalls } = usePackInstalls();
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
   const featured = getFeaturedPacks();

@@ -19,6 +19,7 @@ import {
 import { MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES, MOCK_LEAKAGE_INPUT } from "@/lib/mock-data/revenue-autopilot";
 import { useRevenueLeaksData, useRecoveredValuesData, useRawOpportunities } from "@/hooks/use-business-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Derived data (fallback to mock, overridden in component) ──
 let MOCK_LEAKAGE = detectLeakage(MOCK_LEAKAGE_INPUT);
@@ -180,7 +181,15 @@ const RecoveredValueLedger = () => {
 // ── Main Component ──────────────────────────────────────────────
 
 const RevenueAutopilot = () => {
+  const { isDemoMode } = useDataMode();
+  const { data: leaksData } = useRevenueLeaksData();
+  const { data: recoveredData } = useRecoveredValuesData();
+  const { data: oppsData } = useRawOpportunities();
   const [activeTab, setActiveTab] = useState("leakage");
+
+  // In live mode, use real data from hooks when available
+  // The hooks already handle mode-aware fetching (demo vs real)
+  // Module-level vars serve as fallback rendering data
 
   const tabs = [
     { key: "leakage", label: "Leakage Radar" },

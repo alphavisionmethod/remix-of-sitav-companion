@@ -27,6 +27,8 @@ import { MOCK_CONTACTS, MOCK_CALL_LOGS, MOCK_CALL_SCRIPTS as MOCK_SCRIPTS } from
 import type { CallingContact as Contact, CallingCallLog as CallLog, CallingCallScript as CallScript } from "@/lib/mock-data/revenue-calling";
 import { useCallingContactsData } from "@/hooks/use-business-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";
 
 type DialerState = "idle" | "dialing" | "connected" | "wrapping-up";
 
@@ -65,10 +67,10 @@ const OUTCOME_COLORS: Record<string, string> = {
 
 // ── Sub-Components ──────────────────────────────────────────────
 
-function CallStats() {
-  const today = MOCK_CALL_LOGS.filter(l => Date.now() - l.timestamp < 86400000);
-  const week = MOCK_CALL_LOGS.filter(l => Date.now() - l.timestamp < 604800000);
-  const totalRevenue = MOCK_CALL_LOGS.reduce((s, l) => s + (l.revenue || 0), 0);
+function CallStats({ contacts, callLogs }: { contacts: Contact[]; callLogs: CallLog[] }) {
+  const today = callLogs.filter(l => Date.now() - l.timestamp < 86400000);
+  const week = callLogs.filter(l => Date.now() - l.timestamp < 604800000);
+  const totalRevenue = callLogs.reduce((s, l) => s + (l.revenue || 0), 0);
   const avgDuration = week.length > 0 ? Math.round(week.reduce((s, l) => s + l.duration, 0) / week.length) : 0;
   const connectRate = week.length > 0 ? Math.round(week.filter(l => l.status === "completed").length / week.length * 100) : 0;
 
@@ -79,7 +81,7 @@ function CallStats() {
         { label: "This Week", value: week.length.toString(), icon: BarChart3, color: "text-foreground" },
         { label: "Connect Rate", value: `${connectRate}%`, icon: PhoneCall, color: connectRate >= 60 ? "text-trust-safe" : "text-amber-500" },
         { label: "Avg Duration", value: formatDuration(avgDuration), icon: Timer, color: "text-foreground" },
-        { label: "Pipeline Value", value: `$${(MOCK_CONTACTS.reduce((s, c) => s + c.value, 0) / 1000).toFixed(0)}K`, icon: Target, color: "text-primary" },
+        { label: "Pipeline Value", value: `$${(contacts.reduce((s, c) => s + c.value, 0) / 1000).toFixed(0)}K`, icon: Target, color: "text-primary" },
         { label: "Revenue Won", value: `$${(totalRevenue / 1000).toFixed(0)}K`, icon: DollarSign, color: "text-trust-safe" },
       ].map(m => (
         <div key={m.label} className="rounded-xl border border-border/40 bg-card/40 p-2.5 flex items-center gap-2">
@@ -245,6 +247,9 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
 
 const RevenueCallingPage = () => {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
+  const { data: liveContacts } = useCallingContacts();
+  const { data: liveLogs } = useCallLogs();
   const [activeView, setActiveView] = useState<"queue" | "dialer" | "logs" | "scripts">("queue");
   const [dialerContact, setDialerContact] = useState<Contact | null>(null);
   const [dialerQueue, setDialerQueue] = useState<Contact[]>([]);
@@ -252,8 +257,46 @@ const RevenueCallingPage = () => {
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
   const [stageFilter, setStageFilter] = useState<string>("all");
 
+  // Map live contacts to Contact shape or use demo data
+  const contacts: Contact[] = useMemo(() => {
+    if (isDemoMode) return MOCK_CONTACTS;
+    if (!liveContacts?.length) return [];
+    return liveContacts.map((c: any) => ({
+      id: c.id,
+      name: c.name,
+      company: c.company || "",
+      phone: c.phone || "",
+      email: c.email || "",
+      value: Number(c.value) || 0,
+      priority: (c.priority || "medium") as any,
+      stage: (c.stage || "new") as any,
+      callCount: 0,
+      lastContact: c.last_called_at ? new Date(c.last_called_at).getTime() : undefined,
+      notes: c.notes || "",
+    }));
+  }, [isDemoMode, liveContacts]);
+
+  const callLogs: CallLog[] = useMemo(() => {
+    if (isDemoMode) return MOCK_CALL_LOGS;
+    if (!liveLogs?.length) return [];
+    return liveLogs.map((l: any): CallLog => ({
+      id: l.id,
+      contactId: l.contact_id || "",
+      contactName: l.contact_name || "",
+      phone: "",
+      duration: l.duration_seconds || 0,
+      status: l.status as any,
+      outcome: (l.outcome || "no-answer") as any,
+      notes: l.notes || "",
+      revenue: Number(l.revenue_impact) || 0,
+      timestamp: new Date(l.recorded_at || l.created_at).getTime(),
+      direction: "outbound" as const,
+      recordingUrl: null,
+    }));
+  }, [isDemoMode, liveLogs]);
+
   const filteredContacts = useMemo(() => {
-    let result = MOCK_CONTACTS;
+    let result = contacts;
     if (priorityFilter !== "all") result = result.filter(c => c.priority === priorityFilter);
     if (stageFilter !== "all") result = result.filter(c => c.stage === stageFilter);
     return result.sort((a, b) => {
@@ -303,7 +346,7 @@ const RevenueCallingPage = () => {
       <DemoModeBadge />
       <SitaPageHeader title="Revenue Calling" subtitle="Power dialer, call scripts, and logging — powered by Twilio" />
 
-      <CallStats />
+      <CallStats contacts={contacts} callLogs={callLogs} />
 
       {/* View Tabs */}
       <div className="flex gap-1">
@@ -407,7 +450,7 @@ const RevenueCallingPage = () => {
       {/* Call History */}
       {activeView === "logs" && (
         <div className="space-y-2">
-          {MOCK_CALL_LOGS.sort((a, b) => b.timestamp - a.timestamp).map(log => (
+          {callLogs.sort((a, b) => b.timestamp - a.timestamp).map(log => (
             <SitaCard key={log.id} className="p-3">
               <div className="flex items-center gap-3">
                 <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-lg",
