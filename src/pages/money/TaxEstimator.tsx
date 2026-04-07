@@ -14,8 +14,8 @@ const TaxEstimator = () => {
   const { data: taxData, isLoading: taxLoading, error: taxError } = useTaxEstimate(period);
   const { data: deductions, isLoading: dedLoading } = useTaxDeductions();
 
-  const t = taxData as any;
-  const d = deductions as any;
+  const t = taxData;
+  const d = deductions;
 
   const fmt = (cents: number) => `$${(cents / 100).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
   const fmtPct = (v: number) => `${v.toFixed(1)}%`;
