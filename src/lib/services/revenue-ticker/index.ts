@@ -158,10 +158,10 @@ class RevenueTickerService {
       }, (payload) => {
         if (payload.new && (payload.new as Record<string, unknown>).status === 'paid' && (payload.old as Record<string, unknown>)?.status !== 'paid') {
           this.addEvent({
-            id: (payload.new as Record<string, unknown>).id,
+            id: String((payload.new as Record<string, unknown>).id),
             type: 'invoice_paid',
             amount: Number((payload.new as Record<string, unknown>).amount),
-            customerName: (payload.new as Record<string, unknown>).invoice_number,
+            customerName: String((payload.new as Record<string, unknown>).invoice_number),
             timestamp: new Date(),
             domain: 'business',
           });

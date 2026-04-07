@@ -425,13 +425,14 @@ export class SitaKernel {
       return { blocked: true, blockReason: `Approval ${approvalId} not found` };
     }
 
+    const approvalData = approval as unknown as Record<string, unknown>;
     // Re-execute with the original payload, bypassing approval gate
     const result = await this.chain.execute({
       intent: `resume:${approvalId}`,
-      domain: (approval as Record<string, unknown>).domain ?? "system",
-      capabilityId: (approval as Record<string, unknown>).capabilityId ?? "unknown",
+      domain: String(approvalData.domain ?? "system"),
+      capabilityId: String(approvalData.capabilityId ?? "unknown"),
       payload: {
-        ...((approval as Record<string, unknown>).payload ?? {}),
+        ...((approvalData.payload && typeof approvalData.payload === "object" ? approvalData.payload : {}) as Record<string, unknown>),
         _resumedFromApproval: approvalId,
       },
     });

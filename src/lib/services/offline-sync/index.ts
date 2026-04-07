@@ -148,13 +148,13 @@ class OfflineSyncEngine {
           let error;
           switch (item.operation) {
             case 'insert':
-              ({ error } = await fromDynamicTable(item.table as Record<string, unknown>).insert(item.data as never));
+              ({ error } = await fromDynamicTable(String(item.table)).insert(item.data as never));
               break;
             case 'update':
-              ({ error } = await fromDynamicTable(item.table as Record<string, unknown>).update(item.data as Record<string, unknown>).eq('id', item.data.id));
+              ({ error } = await fromDynamicTable(String(item.table)).update(item.data as Record<string, unknown>).eq('id', item.data.id));
               break;
             case 'delete':
-              ({ error } = await fromDynamicTable(item.table as Record<string, unknown>).delete().eq('id', item.data.id));
+              ({ error } = await fromDynamicTable(String(item.table)).delete().eq('id', item.data.id));
               break;
           }
 

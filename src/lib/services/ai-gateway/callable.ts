@@ -56,7 +56,7 @@ export async function callAIGateway(
       temperature: options?.temperature,
     },
   });
-  if (error) throw new Error((error as Error)?.message ?? String(error) || "AI Gateway error");
+  if (error) throw new Error((error as Error)?.message ?? (String(error) || "AI Gateway error"));
   return data as AIGatewayResponse;
 }
 
