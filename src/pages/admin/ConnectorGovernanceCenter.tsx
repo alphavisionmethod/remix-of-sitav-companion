@@ -110,6 +110,9 @@ export default function ConnectorGovernanceCenter() {
         body: { action: "submit", operations: activeConnectors.filter(c => c.status !== "disconnected").map(c => ({ type: "sync", connector_type: c.id })) },
       });
       toast.success("Sync All triggered");
+      queryClient.invalidateQueries({ queryKey: ["connector-sync-history"] });
+      queryClient.invalidateQueries({ queryKey: ["governance-connectors"] });
+      queryClient.invalidateQueries({ queryKey: ["connector-sync-dashboard"] });
     } catch {
       toast.error("Sync failed");
     }
