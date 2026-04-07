@@ -32,7 +32,7 @@ export class BootPersistenceService {
     this.flushed.add(key);
 
     try {
-      await (supabase as any).from("boot_phase_logs").insert({
+      await supabase.from("boot_phase_logs").insert({
         user_id: this.config.userId,
         device_id: this.config.deviceId,
         session_id: this.config.sessionId,

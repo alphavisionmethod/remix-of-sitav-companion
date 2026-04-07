@@ -25,8 +25,8 @@ export async function rollupAccountHealth(account: CRMAccount): Promise<AccountH
   try {
     // Fetch real opportunities and invoices for this account
     const [oppsRes, invsRes] = await Promise.all([
-      (supabase as any).from("opportunities").select("id, stage, confidence").eq("customer_id", account.id).limit(50),
-      (supabase as any).from("invoices").select("id, status, due_date").eq("customer_id", account.id).limit(50),
+      supabase.from("opportunities").select("id, stage, confidence").eq("customer_id", account.id).limit(50),
+      supabase.from("invoices").select("id, status, due_date").eq("customer_id", account.id).limit(50),
     ]);
 
     const opps = oppsRes.data || [];

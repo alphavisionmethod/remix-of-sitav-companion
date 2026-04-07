@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Activity, HeartPulse, Shield, Lock } from "lucide-react";
-import { db } from "@/integrations/supabase/db";
+import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -14,10 +14,10 @@ export default function DWE03WearableSignalsCenter() {
   const [readiness, setReadiness] = useState<any[]>([]);
 
   useEffect(() => {
-    db.from("wearable_providers").select("*").order("name").then(({ data }: any) => setProviders(data || []));
-    db.from("wearable_signals").select("*").order("captured_at", { ascending: false }).limit(50).then(({ data }: any) => setSignals(data || []));
-    db.from("health_signal_consents").select("*").then(({ data }: any) => setConsents(data || []));
-    db.from("readiness_states").select("*").order("created_at", { ascending: false }).limit(10).then(({ data }: any) => setReadiness(data || []));
+    supabase.from("wearable_providers").select("*").order("name").then(({ data }: any) => setProviders(data || []));
+    supabase.from("wearable_signals").select("*").order("captured_at", { ascending: false }).limit(50).then(({ data }: any) => setSignals(data || []));
+    supabase.from("health_signal_consents").select("*").then(({ data }: any) => setConsents(data || []));
+    supabase.from("readiness_states").select("*").order("created_at", { ascending: false }).limit(10).then(({ data }: any) => setReadiness(data || []));
   }, []);
 
   return (

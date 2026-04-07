@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle, AlertTriangle, XCircle, Beaker } from "lucide-react";
-import { db } from "@/integrations/supabase/db";
+import { supabase } from "@/integrations/supabase/client";
 import { DEVICE_ROADMAP } from "@/packages/contracts/msa/device-family-contract";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -12,7 +12,7 @@ export default function DWE07DeviceLaunchHonestyBoard() {
   const [readiness, setReadiness] = useState<any[]>([]);
 
   useEffect(() => {
-    db.from("ambient_launch_readiness").select("*").order("target_type", { ascending: true }).then(({ data }: any) => setReadiness(data || []));
+    supabase.from("ambient_launch_readiness").select("*").order("target_type", { ascending: true }).then(({ data }: any) => setReadiness(data || []));
   }, []);
 
   const statusIcon = (ready: boolean, pilot: boolean) => {

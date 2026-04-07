@@ -16,7 +16,7 @@ export async function persistChainReceipt(
   domain?: string
 ): Promise<void> {
   try {
-    await (supabase as any).from("receipts").insert({
+    await supabase.from("receipts").insert({
       user_id: userId,
       type: receipt.receiptType,
       hash: receipt.hash,
@@ -58,7 +58,7 @@ export async function persistChainProof(
       hash = Math.abs(h).toString(16).padStart(16, "0");
     }
 
-    await (supabase as any).from("proof_records").insert({
+    await supabase.from("proof_records").insert({
       user_id: userId,
       action,
       actor: "canonical-chain",
@@ -81,7 +81,7 @@ export async function persistChainEnvelope(
   correlationId: string
 ): Promise<void> {
   try {
-    await (supabase as any).from("execution_envelopes").insert({
+    await supabase.from("execution_envelopes").insert({
       user_id: userId,
       capability_id: envelope.capabilityId,
       status: envelope.status,
@@ -119,12 +119,12 @@ export async function persistChainProjection(
       .maybeSingle();
 
     if (existing) {
-      await (supabase as any).from("projections").update({
+      await supabase.from("projections").update({
         data: { state: projection.state, eventCount: projection.eventCount, lastEventId: projection.lastEventId, snapshotAt: projection.snapshotAt },
         generated_at: new Date().toISOString(),
       }).eq("id", existing.id);
     } else {
-      await (supabase as any).from("projections").insert({
+      await supabase.from("projections").insert({
         user_id: userId,
         type: projection.type,
         domain,
@@ -148,7 +148,7 @@ export async function persistChainApproval(
   domain?: string
 ): Promise<void> {
   try {
-    await (supabase as any).from("approval_queue").insert({
+    await supabase.from("approval_queue").insert({
       user_id: userId,
       action_summary: actionSummary,
       proposed_action: proposedAction,
@@ -172,7 +172,7 @@ export async function persistChainEvent(
   domain?: string
 ): Promise<void> {
   try {
-    await (supabase as any).from("events").insert({
+    await supabase.from("events").insert({
       user_id: userId,
       event_type: eventType,
       payload,

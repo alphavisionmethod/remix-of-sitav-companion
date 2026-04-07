@@ -22,7 +22,7 @@ import type { ConstitutionRule, ConstitutionRuleCategory } from "@/lib/core-serv
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { db } from "@/integrations/supabase/db";
+import { supabase } from "@/integrations/supabase/client";
 import { PlainEnglishPolicyEditor } from "@/components/sita/PlainEnglishPolicyEditor";
 
 // ── Category Config ─────────────────────────────────────────────
@@ -321,7 +321,7 @@ export default function ConstitutionEditor() {
           const rules = compiler.getAllRules();
           const added = rules.find((r: ConstitutionRule) => r.naturalLanguage === d);
           if (added) {
-            await db.from("constitution_rules").insert({
+            await supabase.from("constitution_rules").insert({
               user_id: user.id,
               natural_text: d,
               category: added.category,
@@ -358,7 +358,7 @@ export default function ConstitutionEditor() {
       const rules = compiler.getAllRules();
       const added = rules.find((r: ConstitutionRule) => r.naturalLanguage === text);
       if (added) {
-        await db.from("constitution_rules").insert({
+        await supabase.from("constitution_rules").insert({
           user_id: user.id,
           natural_text: text,
           category: added.category,

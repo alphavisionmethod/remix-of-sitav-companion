@@ -84,7 +84,7 @@ export async function probeRealtime(): Promise<ProbeResult> {
 /** 6. AI Gateway probe — verify AI provider registry has active providers */
 export async function probeAiGateway(): Promise<ProbeResult> {
   return probe("ai_gateway", async () => {
-    const { data, error } = await (supabase as any).from("ai_provider_registry").select("id").eq("is_active", true).limit(1);
+    const { data, error } = await supabase.from("ai_provider_registry").select("id").eq("is_active", true).limit(1);
     if (error) throw new Error(error.message);
     if (!data || data.length === 0) throw new Error("No active AI providers");
   });
@@ -93,7 +93,7 @@ export async function probeAiGateway(): Promise<ProbeResult> {
 /** 7. Connector Health probe */
 export async function probeConnectors(): Promise<ProbeResult> {
   return probe("connectors", async () => {
-    const { data, error } = await (supabase as any).from("connector_registry").select("id").eq("is_active", true).limit(1);
+    const { data, error } = await supabase.from("connector_registry").select("id").eq("is_active", true).limit(1);
     if (error) throw new Error(error.message);
     if (!data || data.length === 0) throw new Error("No active connectors");
   });
@@ -102,7 +102,7 @@ export async function probeConnectors(): Promise<ProbeResult> {
 /** 8. Workflow Engine probe */
 export async function probeWorkflows(): Promise<ProbeResult> {
   return probe("workflows", async () => {
-    const { error } = await (supabase as any).from("workflows").select("id").limit(1);
+    const { error } = await supabase.from("workflows").select("id").limit(1);
     if (error) throw new Error(error.message);
   });
 }
@@ -110,7 +110,7 @@ export async function probeWorkflows(): Promise<ProbeResult> {
 /** 9. Notification Queue probe */
 export async function probeNotifications(): Promise<ProbeResult> {
   return probe("notifications", async () => {
-    const { error } = await (supabase as any).from("notifications_queue").select("id").limit(1);
+    const { error } = await supabase.from("notifications_queue").select("id").limit(1);
     if (error) throw new Error(error.message);
   });
 }
@@ -118,7 +118,7 @@ export async function probeNotifications(): Promise<ProbeResult> {
 /** 10. Telemetry / OS Event Log probe */
 export async function probeTelemetry(): Promise<ProbeResult> {
   return probe("telemetry", async () => {
-    const { error } = await (supabase as any).from("os_event_log").select("id").limit(1);
+    const { error } = await supabase.from("os_event_log").select("id").limit(1);
     if (error) throw new Error(error.message);
   });
 }

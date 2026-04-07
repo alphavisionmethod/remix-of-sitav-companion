@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bell, Route, Volume2, VolumeX, Smartphone, Watch, Laptop } from "lucide-react";
-import { db } from "@/integrations/supabase/db";
+import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -13,9 +13,9 @@ export default function DWE04NotificationRoutingStudio() {
   const [interruption, setInterruption] = useState<any[]>([]);
 
   useEffect(() => {
-    db.from("ambient_notification_routes").select("*").order("priority", { ascending: false }).then(({ data }: any) => setRoutes(data || []));
-    db.from("notification_fatigue_profiles").select("*").then(({ data }: any) => setFatigue(data || []));
-    db.from("interruption_policies").select("*").then(({ data }: any) => setInterruption(data || []));
+    supabase.from("ambient_notification_routes").select("*").order("priority", { ascending: false }).then(({ data }: any) => setRoutes(data || []));
+    supabase.from("notification_fatigue_profiles").select("*").then(({ data }: any) => setFatigue(data || []));
+    supabase.from("interruption_policies").select("*").then(({ data }: any) => setInterruption(data || []));
   }, []);
 
   const surfaceIcon = (s: string) => {
