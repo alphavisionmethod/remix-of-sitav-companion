@@ -38,11 +38,15 @@ const pages = [
   ["BuilderKnowledgeBase", () => import("@/pages/admin/BuilderKnowledgeBase")],
 ] as const;
 
+function getComponent(mod: any) {
+  return mod.default || Object.values(mod).find((v: any) => typeof v === "function");
+}
+
 describe("Admin Pages Batch 2", () => {
   pages.forEach(([name, loader]) => {
     it(`${name} renders without crashing`, async () => {
       const mod = await loader();
-      const Component = mod.default;
+      const Component = getComponent(mod);
       const { container } = render(<Component />);
       expect(container.firstChild).toBeTruthy();
     });
