@@ -12,6 +12,7 @@ import { fetchPersistedEvents, getEventLineage, markEventReplayed, fetchActionLi
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useWorkflowRecovery, useCanonicalAction } from "@/contexts/SitaKernelContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
