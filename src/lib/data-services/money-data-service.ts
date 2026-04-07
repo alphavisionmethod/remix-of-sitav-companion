@@ -149,8 +149,8 @@ export async function fetchFinancialAccounts(mode: RealityModeKey = "real"): Pro
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_ACCOUNTS, emptyDefault: [] });
   const { data, error } = await fromDynamicTable("financial_accounts").select("*").eq("user_id", userId).order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? ((data as unknown as Record<string, unknown>[])).map((a): FinancialAccount => ({
-    id: a.id, name: a.name, institution: a.institution || "", account_type: a.account_type,
-    balance: Number(a.balance), currency: a.currency, trend: Number(a.trend || 0), last_synced_at: a.last_synced_at,
+    id: String(a.id), name: String(a.name), institution: String(a.institution || ""), account_type: String(a.account_type),
+    balance: Number(a.balance), currency: String(a.currency), trend: Number(a.trend || 0), last_synced_at: String(a.last_synced_at),
   })) : null;
   return resolveByMode({ mode, realData: mapped, demoData: DEMO_ACCOUNTS, emptyDefault: [] });
 }
