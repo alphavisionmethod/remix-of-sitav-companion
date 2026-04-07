@@ -50,7 +50,7 @@ function SignalBars({ strength }: { strength: number }) {
 function detectConnectionType(): ConnectionType {
   const conn = navigator.connection;
   if (conn) {
-    const t = conn.type as string;
+    const t = conn.effectiveType;
     if (t === "ethernet") return "ethernet";
     if (t === "wifi") return "wifi";
     if (t === "cellular") return "cellular";
