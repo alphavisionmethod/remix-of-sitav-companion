@@ -1,138 +1,181 @@
 
+# Phase 1: Behavioral Proof Activation
 
-# Wire Remaining 16 Demo-Data Pages to Real Backend — 100% Active
+## Current State
 
-## The Real Gap
+**What exists and is solid:**
+- 36 Playwright spec files across auth, route-smoke, journeys, admin, demo-vs-real, degraded, responsive
+- 17 customer-journey specs in structured subdirectories with JourneyRecorder + evidence capture
+- Helper infrastructure: auth, navigation, assertions, selectors, evidence, journey-recorder
+- Journey reporter outputting structured JSON
+- DB tables: `customer_journey_registry`, `journey_verification_runs`, `journey_step_results`, `customer_journey_status`
+- Ingestion script: `scripts/ingest-journey-results.ts`
+- CI workflows: `ci.yml` (has e2e-p0 job), `e2e.yml`, `customer-journey-nightly.yml`, `customer-journey-manual.yml`
+- Admin surfaces: FL01 Flagship Loops, V02-V07 verification boards, AIG09 Runtime Verification
 
-Your technology stack (React, Vite, Tailwind, Supabase, TanStack Query, etc.) is genuinely production-ready. The gap is that **16 page components still contain hardcoded const arrays** (DEMO_AGENTS, TEAM_MEMBERS, PLAYBOOK_REVENUE, etc.) instead of querying Supabase. They look great but don't persist or fetch real data.
+**What's missing (the gap):**
+- Tests have never actually been run — zero proven passes exist
+- CI e2e-p0 job serves the static build (`npx serve dist`) but the app requires Supabase env vars at runtime (VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY) — the build step uses dummy values so the app likely fails at runtime
+- No `data-testid` attributes on key elements the tests look for (`demo-mode-badge`, `error-state`, `sidebar-nav`, etc.)
+- Auth tests require `TEST_USER_EMAIL`/`TEST_USER_PASSWORD` secrets — when missing, most tests skip silently
+- No proof classification or failure-to-loop mapping exists
+- FL01 board reads from DB but no test results have ever been ingested
 
-## Pages With Hardcoded Data → Real Backend
+## Implementation Plan
 
-| # | Page | Hardcoded Arrays | Wire To |
-|---|------|-----------------|---------|
-| 1 | `EnterpriseControlPlane.tsx` | TEAM_MEMBERS, CAPABILITIES, COMPLIANCE_ITEMS, SLA_METRICS, DEPLOYMENTS | `profiles` + `user_roles` + `audit_logs` |
-| 2 | `RevenueImpactDashboard.tsx` | PLAYBOOK_REVENUE, generateTrend() | `invoices` + `payment_transactions` aggregation |
-| 3 | `AIWorkforcePage.tsx` | DEMO_AGENTS | `ai_agents` table |
-| 4 | `CapitalAllocationPage.tsx` | DEMO_ALLOCATIONS | `financial_accounts` table |
-| 5 | `PeopleWorkspace.tsx` | Inline demo fallback array | `customers` + `leads` + `household_members` (already partially wired) |
-| 6 | `BoardroomHistory.tsx` | DEMO_SESSIONS | `boardroom_sessions` (already wired, just needs demo fallback removed) |
-| 7 | `CommunicationsCenter.tsx` | Inline demo messages | `communications` table |
-| 8 | `CollectionsCommandCenter.tsx` | Hardcoded collections data | `invoices` where status = overdue |
-| 9 | `ApprovalChamber.tsx` | MOCK_APPROVALS from demo-data | `approvals` table (exists) |
-| 10 | `AppReceiptsPage.tsx` | MOCK_RECEIPTS from demo-data | `proof_receipts` table |
-| 11 | `OpenWithPage.tsx` | DEMO_FILES | `file_metadata` table |
-| 12 | `InvestmentReceipts.tsx` | SAMPLE_RECEIPTS | `proof_receipts` table |
-| 13 | `MonthGridCalendar.tsx` | generateCalendarDemoEvents() | `bookings` + `tasks` tables |
-| 14 | `MockReplacementProgram.tsx` | MOCK_TYPES inline data | `mock_replacement_items` table or remove page |
-| 15 | `LifeSimulator.tsx` | Inline scenario data | `scenarios` table |
-| 16 | `ScenarioLabPage.tsx` | Inline scenario arrays | `scenarios` table |
+### Step 1 — Fix CI Build for Runtime Testability
 
-## Implementation Pattern (Same for Every Page)
+The `ci.yml` e2e-p0 job builds with dummy Supabase keys, then serves statically. The app needs real (or at least valid-looking) env vars at build time since Vite embeds them.
 
-Each page follows the identical transformation:
+**Changes to `.github/workflows/ci.yml`** (e2e-p0 job):
+- Pass `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` from secrets during the build step
+- Add `TEST_USER_EMAIL` and `TEST_USER_PASSWORD` env vars to the test run step
+- Add journey reporter output and evidence capture to artifacts
 
-1. **Remove** the hardcoded `const DEMO_*` array
-2. **Add** a `useQuery` that fetches from the relevant Supabase table
-3. **Keep** the existing demo array as fallback ONLY when `isDemoMode` is true (via `useDataMode()`)
-4. **Add** `useQueryClient().invalidateQueries()` on any mutation (create/update/delete)
-5. **Add** loading skeleton and empty state
+### Step 2 — Add Missing data-testid Attributes
 
+Add stable test IDs to these components (minimum set for reliable proof):
+
+| Component | Attribute |
+|-----------|-----------|
+| `DemoModeBadge.tsx` | `data-testid="demo-mode-badge"` |
+| Sidebar nav container | `data-testid="sidebar-nav"` |
+| Error boundary / error state | `data-testid="error-state"` |
+| Sign out button | `data-testid="sign-out-btn"` |
+| Empty state components | `data-testid="empty-state"` |
+| Degraded/unavailable banners | `data-testid="degraded-banner"` |
+
+~6 component files touched, 1 line each.
+
+### Step 3 — Make Auth Tests Work Without Credentials
+
+Currently 30+ tests skip when `TEST_USER_EMAIL` is empty. The auth-free tests (5 in `auth.spec.ts`) should always run. For the credential-dependent tests, add a clear annotation so the proof report distinguishes "skipped_not_configured" from "fail".
+
+**Changes to `tests/e2e/helpers/auth.ts`:**
+- Add a `skipOrLogin` helper that properly annotates skip reason
+
+### Step 4 — Create Proof Classification System
+
+New file: `tests/e2e/helpers/proof-classifier.ts`
+
+Classifies each test result into:
+- `pass_verified` / `fail_behavioral` / `fail_setup` / `fail_env` / `fail_selector` / `fail_auth` / `skipped_not_configured`
+
+And launch impact:
+- `launch_blocker` / `pilot_blocker` / `claim_risk` / `non_blocking`
+
+Maps each test to its flagship loop:
 ```text
-BEFORE:
-  const DEMO_ITEMS = [{ ... }, { ... }];
-  return <List items={DEMO_ITEMS} />
+Loop 1 — Auth + Dashboard + Pulse
+  auth.spec.ts, auth-journeys.spec.ts, sign-in-primary, sign-out-primary, dashboard-load-primary
 
-AFTER:
-  const { data, isLoading } = useQuery({
-    queryKey: ["items", user?.id],
-    queryFn: () => supabase.from("table").select("*").eq("user_id", user.id),
-    enabled: !isDemoMode && !!user?.id,
-  });
-  const items = isDemoMode ? DEMO_FALLBACK : (data ?? []);
-  if (isLoading) return <Skeleton />;
-  return <List items={items} />
+Loop 2 — Files + AI Assist
+  files-journey.spec.ts, files-upload-primary, assistant-chat-primary
+
+Loop 3 — Boardroom + Summary + Decision
+  boardroom-journey.spec.ts, boardroom-summary-view-primary, boardroom-demo-vs-real
+
+Loop 4 — Connected Services + Sync
+  connectors-journey.spec.ts, connected-services-open-primary, connected-services-demo-vs-real
+
+Loop 5 — Admin Truth + Recommendation + Approval
+  admin-boards.spec.ts, verification-boards.spec.ts, ai-team-open-primary, runtime-truth-open-primary, launch-truth-open-primary, customer-journey-report-open-primary, approvals-journey.spec.ts
 ```
 
-## Execution Order (4 Batches)
+### Step 5 — Enhanced Journey Reporter with Proof Classification
 
-**Batch 1 — High-Impact Business Pages (4 files)**
-- EnterpriseControlPlane.tsx → profiles + user_roles
-- RevenueImpactDashboard.tsx → invoices + payment_transactions
-- AIWorkforcePage.tsx → ai_agents
-- CapitalAllocationPage.tsx → financial_accounts
+Update `tests/e2e/reporters/journey-reporter.ts` to:
+- Classify failures using the proof classifier
+- Map tests to flagship loops
+- Output a `flagship-loop-proof-summary.json` alongside the journey results
+- Generate a markdown summary for CI step summary
 
-**Batch 2 — Core Loop Pages (4 files)**
-- ApprovalChamber.tsx → approvals
-- BoardroomHistory.tsx → boardroom_sessions (remove demo fallback)
-- PeopleWorkspace.tsx → remove inline demo fallback
-- CommunicationsCenter.tsx → communications
+### Step 6 — Create Playwright Proof PR Workflow
 
-**Batch 3 — Concierge + Files (4 files)**
-- MonthGridCalendar.tsx → bookings + tasks
-- OpenWithPage.tsx → file_metadata
-- AppReceiptsPage.tsx → proof_receipts
-- InvestmentReceipts.tsx → proof_receipts
+New file: `.github/workflows/playwright-proof-pr.yml`
 
-**Batch 4 — Remaining Pages (4 files)**
-- CollectionsCommandCenter.tsx → invoices (overdue)
-- LifeSimulator.tsx → scenarios
-- ScenarioLabPage.tsx → scenarios
-- MockReplacementProgram.tsx → audit (or deprecate)
+- Triggers on PR to main + push to main/develop
+- Builds with real Supabase env vars
+- Runs full 36-spec suite
+- Captures: HTML report, screenshots, traces, videos on failure
+- Generates flagship loop proof summary
+- Posts proof summary to PR as step summary
+- Uploads all artifacts (30-day retention)
+- Fails on P0 launch-critical regressions only
 
-## Database Migration
+### Step 7 — Create Playwright Proof Nightly Workflow
 
-One migration to create any missing tables:
+New file: `.github/workflows/playwright-proof-nightly.yml`
 
-```sql
--- scenarios table (for LifeSimulator + ScenarioLab)
-CREATE TABLE IF NOT EXISTS scenarios (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-  title text NOT NULL,
-  description text,
-  category text DEFAULT 'general',
-  parameters jsonb DEFAULT '{}',
-  results jsonb DEFAULT '{}',
-  status text DEFAULT 'draft',
-  created_at timestamptz DEFAULT now(),
-  updated_at timestamptz DEFAULT now()
-);
-ALTER TABLE scenarios ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users manage own scenarios" ON scenarios
-  FOR ALL TO authenticated USING (auth.uid() = user_id)
-  WITH CHECK (auth.uid() = user_id);
+- Runs twice daily (6am/6pm UTC)
+- Full suite with richer artifact capture
+- Ingests results to DB via `ingest-journey-results.ts`
+- Generates trend-aware summary
+- Produces flagship loop proof dashboard data
 
--- communications table (for CommunicationsCenter)
-CREATE TABLE IF NOT EXISTS communications (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-  type text DEFAULT 'email',
-  subject text,
-  body text,
-  recipient text,
-  status text DEFAULT 'draft',
-  sent_at timestamptz,
-  created_at timestamptz DEFAULT now(),
-  updated_at timestamptz DEFAULT now()
-);
-ALTER TABLE communications ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users manage own communications" ON communications
-  FOR ALL TO authenticated USING (auth.uid() = user_id)
-  WITH CHECK (auth.uid() = user_id);
-```
+### Step 8 — Wire Proof Results to Admin FL01 Board
 
-All other tables (`ai_agents`, `approvals`, `invoices`, `financial_accounts`, `proof_receipts`, `bookings`, `file_metadata`, `profiles`, `user_roles`, `boardroom_sessions`, `customers`, `leads`) already exist.
+Update `src/pages/admin/FL01FlagshipLoopsExecutive.tsx` to:
+- Query `journey_verification_runs` for latest proof state per loop
+- Show real pass/fail/skip counts from CI evidence
+- Display "last proven" timestamp and commit
+- Show proof confidence as `verified_e2e` (from CI) vs `inferred` (no runs)
+- Add "Proof Evidence" section linking to latest artifacts
 
-## Files Modified
+### Step 9 — Create Proof Evidence Explorer
 
-16 page files updated (remove hardcoded arrays, add useQuery wiring).
+New page: `src/pages/admin/verification/V06EvidenceExplorer.tsx` (update if exists)
 
-## Result
+- Lists all verification runs from `journey_verification_runs`
+- Shows step-level results from `journey_step_results`
+- Failure classification badges
+- Flagship loop grouping
+- Links to screenshots/traces (stored as artifact references)
 
-| Metric | Before | After |
-|--------|--------|-------|
-| Pages with hardcoded data | 16 | 0 |
-| Pages wired to Supabase | ~70% | 100% |
-| Demo mode still works | Yes | Yes (controlled by DataModeContext toggle) |
-| Tech stack status | Production | Production — fully wired |
+### Step 10 — Launch Blocker Board Wiring
 
+Update V07 Launch Blockers board to:
+- Pull from `customer_journey_status` where `current_status = 'broken'`
+- Map to flagship loops
+- Show immediate fix recommendations based on failure classification
+
+## Files Created/Modified
+
+| File | Action | Purpose |
+|------|--------|---------|
+| `tests/e2e/helpers/proof-classifier.ts` | Create | Failure classification + loop mapping |
+| `tests/e2e/reporters/journey-reporter.ts` | Modify | Add proof classification + loop summary |
+| `.github/workflows/playwright-proof-pr.yml` | Create | PR proof workflow |
+| `.github/workflows/playwright-proof-nightly.yml` | Create | Nightly proof workflow |
+| `.github/workflows/ci.yml` | Modify | Fix env vars for e2e-p0 job |
+| `src/components/sita/DemoModeBadge.tsx` | Modify | Add data-testid |
+| `src/components/layout/AppSidebar.tsx` | Modify | Add data-testid to nav |
+| `src/components/ErrorBoundary.tsx` | Modify | Add data-testid |
+| `src/pages/admin/FL01FlagshipLoopsExecutive.tsx` | Modify | Wire real proof data |
+| `src/pages/admin/verification/V06EvidenceExplorer.tsx` | Modify | Wire real run data |
+| `src/pages/admin/verification/V07LaunchBlockers.tsx` | Modify | Wire proof-based blockers |
+
+## No New Database Changes
+
+All required tables already exist: `customer_journey_registry`, `journey_verification_runs`, `journey_step_results`, `customer_journey_status`, `launch_blocker_scores`.
+
+## Success Criteria
+
+1. The 36 Playwright specs execute in CI (not just exist)
+2. Auth-free tests (auth.spec.ts = 5 tests) pass in CI
+3. Auth-dependent tests properly annotate skip vs fail
+4. Artifacts uploaded: HTML report + screenshots + traces
+5. Flagship loop proof summary generated per CI run
+6. FL01 admin board shows real proof state from DB
+7. Failures classified by type and launch impact
+8. Launch blockers derived from actual test outcomes, not inference
+
+## What This Does NOT Do
+
+- Does not write new tests (runs the existing 36)
+- Does not redesign product UI
+- Does not solve AI runtime gaps
+- Does not add new route families
+- Does not expand product breadth
+
+This phase converts structural proof architecture into live executed proof with artifacts, evidence, and launch-honest reporting.
