@@ -60,7 +60,9 @@ const BusinessLeakagePanel = () => {
       <DemoModeBadge />
       <SitaSectionHeader title="Revenue Leakage Signals" subtitle="From Revenue Intelligence Engine" action={<button onClick={() => navigate("/recovered-value")} className="text-xs text-primary hover:underline">Full ledger →</button>} />
       {leakageData.rankings.map(r => {
-        const autoDecision = engines.revenue.shouldAutoRecover(Array.from(("signals" in engines.revenue ? (engines.revenue as unknown as { signals: Map<string, unknown> }).signals : new Map())?.values?.() || []).find((s: Record<string, unknown>) => s.id === r.opportunityId);
+        const signalMap = "signals" in engines.revenue ? (engines.revenue as unknown as { signals: Map<string, unknown> }).signals : new Map<string, unknown>();
+        const matchedSignal = Array.from(signalMap.values()).find((s: unknown) => typeof s === "object" && s !== null && "id" in s && (s as Record<string, unknown>).id === r.opportunityId);
+        const autoDecision = engines.revenue.shouldAutoRecover(matchedSignal as Parameters<typeof engines.revenue.shouldAutoRecover>[0]);
         return (
           <SitaCard key={r.opportunityId} lane="action" className="p-3">
             <div className="flex items-center gap-3">
