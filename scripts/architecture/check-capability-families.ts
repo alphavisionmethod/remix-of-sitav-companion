@@ -16,7 +16,7 @@ if (!capIndex) {
 }
 
 const capabilities = capIndex.capabilities || capIndex.entries || [];
-const VALID_FAMILIES = ["business-os", "finance-os", "concierge-os", "platform"];
+const VALID_FAMILIES = ["business-os", "finance-os", "concierge-os", "platform", "policy"];
 
 // Check every capability has a classifiable family
 const capIdsByFamily: Record<string, string[]> = {};

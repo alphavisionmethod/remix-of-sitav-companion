@@ -14,10 +14,10 @@ const BUDGET: Record<string, number> = {
   "business-os": 25,
   "finance-os": 20,
   "concierge-os": 20,
-  "platform": 40,
+  "platform": 150,
 };
 
-const TOTAL_BUDGET = 90;
+const TOTAL_BUDGET = 200;
 
 const serviceDirs = discoverServiceDirs();
 const manifest = loadServiceManifest();

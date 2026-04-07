@@ -1,16 +1,110 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-04-04T19:57:56.698Z",
+  "generatedAt": "2026-04-07T00:00:00.000Z",
   "total": 9,
   "connectors": [
-    "id: plaid",
-    "id: stripe",
-    "id: quickbooks",
-    "id: google-calendar",
-    "id: google-drive",
-    "id: gmail",
-    "id: twilio",
-    "id: sendgrid",
-    "id: instacart"
+    {
+      "id": "plaid",
+      "name": "Plaid",
+      "status": "supported",
+      "auth": "oauth",
+      "domain": "finance",
+      "capabilities": [
+        "account-aggregation",
+        "transaction-sync"
+      ]
+    },
+    {
+      "id": "stripe",
+      "name": "Stripe",
+      "status": "supported",
+      "auth": "api-key",
+      "domain": "finance",
+      "capabilities": [
+        "payment-processing",
+        "invoice-sync",
+        "subscription-management"
+      ]
+    },
+    {
+      "id": "quickbooks",
+      "name": "QuickBooks",
+      "status": "planned",
+      "auth": "oauth",
+      "domain": "finance",
+      "capabilities": [
+        "accounting-sync",
+        "invoice-sync",
+        "expense-tracking"
+      ]
+    },
+    {
+      "id": "google-calendar",
+      "name": "Google Calendar",
+      "status": "supported",
+      "auth": "oauth",
+      "domain": "calendar",
+      "capabilities": [
+        "calendar-sync",
+        "event-management",
+        "conflict-detection"
+      ]
+    },
+    {
+      "id": "google-drive",
+      "name": "Google Drive",
+      "status": "planned",
+      "auth": "oauth",
+      "domain": "storage",
+      "capabilities": [
+        "file-sync",
+        "document-import"
+      ]
+    },
+    {
+      "id": "gmail",
+      "name": "Gmail",
+      "status": "planned",
+      "auth": "oauth",
+      "domain": "communication",
+      "capabilities": [
+        "email-sync",
+        "inbox-capture",
+        "outbound-email"
+      ]
+    },
+    {
+      "id": "twilio",
+      "name": "Twilio",
+      "status": "planned",
+      "auth": "api-key",
+      "domain": "communication",
+      "capabilities": [
+        "sms-send",
+        "voice-call"
+      ]
+    },
+    {
+      "id": "sendgrid",
+      "name": "SendGrid",
+      "status": "planned",
+      "auth": "api-key",
+      "domain": "communication",
+      "capabilities": [
+        "transactional-email",
+        "marketing-email"
+      ]
+    },
+    {
+      "id": "instacart",
+      "name": "Instacart",
+      "status": "planned",
+      "auth": "oauth",
+      "domain": "household",
+      "capabilities": [
+        "grocery-ordering",
+        "delivery-tracking"
+      ]
+    }
   ]
 }
