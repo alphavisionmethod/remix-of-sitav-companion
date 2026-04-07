@@ -197,8 +197,8 @@ export class PolicyDepthEngine {
         case "gte": return typeof fieldValue === "number" && fieldValue >= (c.value as number);
         case "lt": return typeof fieldValue === "number" && fieldValue < (c.value as number);
         case "lte": return typeof fieldValue === "number" && fieldValue <= (c.value as number);
-        case "in": return Array.isArray(c.value) && (c.value as never[]).includes(fieldValue);
-        case "not_in": return Array.isArray(c.value) && !(c.value as never[]).includes(fieldValue);
+        case "in": return Array.isArray(c.value) && (c.value as unknown[]).includes(fieldValue);
+        case "not_in": return Array.isArray(c.value) && !(c.value as unknown[]).includes(fieldValue);
         case "contains": return typeof fieldValue === "string" && fieldValue.includes(c.value as string);
         default: return true;
       }

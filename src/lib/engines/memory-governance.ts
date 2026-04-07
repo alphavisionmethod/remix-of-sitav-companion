@@ -283,6 +283,6 @@ export class MemoryGovernanceEngine {
     if (state.corrections) this.corrections = state.corrections as typeof this.corrections;
     if (state.forgetRequests) this.forgetRequests = state.forgetRequests as typeof this.forgetRequests;
     if (state.auditTrail) this.auditTrail = state.auditTrail as typeof this.auditTrail;
-    if (state.config) this.config = { ...this.config, ...(state.config as never) };
+    if (state.config) this.config = { ...this.config, ...(state.config as Record<string, unknown>) };
   }
 }
