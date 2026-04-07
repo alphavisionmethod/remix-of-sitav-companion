@@ -1528,13 +1528,10 @@ const App = () => (
             } />
           </Routes>
           </Suspense>
-          </InspectorProvider>
-          </OSRuntimeProvider>
-          </SitaKernelProvider>
-          </EntityContextProvider>
-          </DisplayModeProvider>
-          </DemoModeProvider>
-          </DataModeProvider>
+              </AuthenticatedProviders>
+            } />
+          </Routes>
+          </Suspense>
           </RealityModeProvider>
           </ThemeProvider>
           </ConnectivityProvider>
