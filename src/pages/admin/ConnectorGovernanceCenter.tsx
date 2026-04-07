@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -54,14 +54,12 @@ const CRED_CONFIG: Record<string, { color: string }> = {
   missing: { color: "text-muted-foreground" },
 };
 
-const SYNC_HISTORY = [
+const FALLBACK_SYNC_HISTORY = [
   { connector: "Plaid Banking", time: "15m ago", status: "success", records: 24, duration: "1.2s" },
   { connector: "Stripe Payments", time: "5m ago", status: "success", records: 8, duration: "0.4s" },
   { connector: "Gmail", time: "10m ago", status: "success", records: 15, duration: "2.1s" },
   { connector: "Google Calendar", time: "2h ago", status: "partial", records: 6, duration: "3.8s" },
   { connector: "CRM Sync", time: "6h ago", status: "failed", records: 0, duration: "12s" },
-  { connector: "Plaid Banking", time: "1h ago", status: "success", records: 22, duration: "1.1s" },
-  { connector: "Stripe Payments", time: "1h ago", status: "success", records: 12, duration: "0.5s" },
 ];
 
 const POLICIES = [
@@ -75,6 +73,31 @@ const POLICIES = [
 export default function ConnectorGovernanceCenter() {
   const [tab, setTab] = useState("connectors");
   const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  // Fetch real sync history from audit_logs
+  const { data: syncHistory = FALLBACK_SYNC_HISTORY } = useQuery({
+    queryKey: ["connector-sync-history", user?.id],
+    enabled: !!user,
+    refetchInterval: tab === "history" ? 5000 : false,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("audit_logs")
+        .select("*")
+        .or("category.eq.connector,action.ilike.sync%")
+        .order("created_at", { ascending: false })
+        .limit(30);
+      if (error || !data || data.length === 0) return FALLBACK_SYNC_HISTORY;
+      return data.map((log: any) => ({
+        connector: log.details?.connector_type || log.target_type || "Unknown",
+        time: new Date(log.created_at).toLocaleString(),
+        status: log.details?.status || (log.action?.includes("fail") ? "failed" : "success"),
+        records: log.details?.records_synced ?? log.details?.record_count ?? 0,
+        duration: log.details?.duration_ms ? `${(log.details.duration_ms / 1000).toFixed(1)}s` : "—",
+      }));
+    },
+    staleTime: 5000,
+  });
 
   // Fetch real connectors from DB, fallback to hardcoded
   const { data: dbConnectors } = useQuery({
@@ -112,6 +135,9 @@ export default function ConnectorGovernanceCenter() {
         body: { action: "submit", operations: activeConnectors.filter(c => c.status !== "disconnected").map(c => ({ type: "sync", connector_type: c.id })) },
       });
       toast.success("Sync All triggered");
+      queryClient.invalidateQueries({ queryKey: ["connector-sync-history"] });
+      queryClient.invalidateQueries({ queryKey: ["governance-connectors"] });
+      queryClient.invalidateQueries({ queryKey: ["connector-sync-dashboard"] });
     } catch {
       toast.error("Sync failed");
     }
@@ -123,6 +149,9 @@ export default function ConnectorGovernanceCenter() {
         body: { action: "submit", connector_type: connectorId, operations: [{ type: "sync", payload: {} }] },
       });
       toast.success(`Sync triggered for ${connectorId}`);
+      queryClient.invalidateQueries({ queryKey: ["connector-sync-history"] });
+      queryClient.invalidateQueries({ queryKey: ["governance-connectors"] });
+      queryClient.invalidateQueries({ queryKey: ["connector-sync-dashboard"] });
     } catch {
       toast.error("Sync failed");
     }
@@ -217,7 +246,8 @@ export default function ConnectorGovernanceCenter() {
           </TabsContent>
 
           <TabsContent value="history">
-            <div className="overflow-x-auto">
+            <ConnectorSyncDashboard compact />
+            <div className="overflow-x-auto mt-4">
               <table className="w-full text-xs">
                 <thead><tr className="text-muted-foreground border-b border-border/30">
                   <th className="text-left py-2 px-2">Connector</th>
@@ -227,9 +257,9 @@ export default function ConnectorGovernanceCenter() {
                   <th className="text-right py-2">Duration</th>
                 </tr></thead>
                 <tbody>
-                  {SYNC_HISTORY.map((s, i) => (
+                  {syncHistory.map((s: any, i: number) => (
                     <tr key={i} className="border-t border-border/20">
-                      <td className="py-2 px-2 font-medium text-foreground">{s.connector}</td>
+                      <td className="py-2 px-2 font-medium text-foreground capitalize">{s.connector}</td>
                       <td className="py-2 text-muted-foreground">{s.time}</td>
                       <td className="py-2">
                         <Badge variant={s.status === "success" ? "default" : s.status === "partial" ? "secondary" : "destructive"} className="text-[9px]">{s.status}</Badge>

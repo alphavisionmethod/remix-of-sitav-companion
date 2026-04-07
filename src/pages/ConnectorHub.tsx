@@ -8,7 +8,8 @@ const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield, Circle, AlertTriangle, ExternalLink, Unplug } from "lucide-react";
+import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield, Circle, AlertTriangle, ExternalLink, Unplug, Search } from "lucide-react";
+import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { fetchConnectorHealth, type ConnectorHealthResult } from "@/lib/services/connector-health-service";
 import { Badge } from "@/components/ui/badge";
@@ -147,6 +148,26 @@ const ConnectorHub = () => {
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
       <DemoModeBadge />
       <SitaPageHeader title="Connector Hub" subtitle="Manage integrations, health status, and sync history" />
+
+      {/* Sync Health Dashboard */}
+      <ConnectorSyncDashboard />
+
+      {/* Discover New Connectors */}
+      <SitaCard hover={false} className="p-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-foreground">Discover Available Connectors</p>
+            <p className="text-xs text-muted-foreground">Scan for new integration endpoints</p>
+          </div>
+          <SitaButton variant="primary" onClick={async () => {
+            try {
+              await supabase.functions.invoke("connector-discover", { body: { action: "scan" } });
+              toast.success("Discovery scan started");
+              queryClient.invalidateQueries({ queryKey: ["connector-registry-hub"] });
+            } catch { toast.error("Discovery failed"); }
+          }}><Search className="h-3.5 w-3.5" /> Discover</SitaButton>
+        </div>
+      </SitaCard>
 
       {/* Real Connector Connect Section */}
       <SitaCard hover={false} className="p-5">
@@ -289,7 +310,17 @@ const ConnectorHub = () => {
                 )}
 
                 <div className="flex gap-2">
-                  <SitaButton variant="primary" className="flex-1"><RefreshCw className="h-3.5 w-3.5" /> Sync Now</SitaButton>
+                  <SitaButton variant="primary" className="flex-1" onClick={async () => {
+                    try {
+                      await supabase.functions.invoke("connector-batch", {
+                        body: { action: "submit", connector_type: selected.service, operations: [{ type: "sync", payload: {} }] },
+                      });
+                      toast.success(`Sync triggered for ${selected.service}`);
+                      queryClient.invalidateQueries({ queryKey: ["sync_logs"] });
+                      queryClient.invalidateQueries({ queryKey: ["connector_configs"] });
+                      queryClient.invalidateQueries({ queryKey: ["real-connector-accounts"] });
+                    } catch { toast.error("Sync failed"); }
+                  }}><RefreshCw className="h-3.5 w-3.5" /> Sync Now</SitaButton>
                   <SitaButton variant="danger"><WifiOff className="h-3.5 w-3.5" /> Disconnect</SitaButton>
                 </div>
               </>

@@ -270,6 +270,33 @@ export function AIT06Recommendations() {
           <p className="text-muted-foreground mt-1 text-sm">AI-generated findings and proposals with accept/reject/defer workflow</p>
         </div>
         <div className="flex gap-2">
+          <Button variant="default" size="sm" className="gap-1.5 text-xs" onClick={async () => {
+            try {
+              toast.info("Generating AI recommendations…");
+              const { data } = await supabase.functions.invoke("brain-core", {
+                body: { intent: "generate_recommendations", context: { scope: "all_domains", include_low_scoring: true } },
+              });
+              if (data?.recommendations) {
+                for (const rec of data.recommendations) {
+                  await supabase.from("ai_workforce_recommendations").insert({
+                    user_id: (await supabase.auth.getUser()).data.user?.id,
+                    title: rec.title,
+                    description: rec.description,
+                    domain: rec.domain || "general",
+                    severity: rec.severity || "medium",
+                    status: "pending",
+                    confidence: rec.confidence || 75,
+                    evidence_summary: rec.evidence || "",
+                    role_source: "brain-core",
+                  } as any);
+                }
+                qc.invalidateQueries({ queryKey: ["ai-workforce-recommendations"] });
+                toast.success(`${data.recommendations.length} recommendations generated`);
+              } else {
+                toast.success("Analysis complete — no new recommendations");
+              }
+            } catch { toast.error("AI recommendation generation failed"); }
+          }}><Zap className="h-3 w-3" />Generate AI Recommendations</Button>
           <Select value={filterDomain} onValueChange={setFilterDomain}>
             <SelectTrigger className="w-[140px] h-8 text-xs"><SelectValue /></SelectTrigger>
             <SelectContent>
@@ -445,8 +472,42 @@ export function AIT08LaunchTruth() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
-      <h1 className="text-2xl font-bold flex items-center gap-2"><Shield className="h-6 w-6 text-primary" /> AIT08 — Launch Truth & Runtime Reality</h1>
-      <p className="text-muted-foreground text-sm">Live truth indices with contradiction detection and risk analysis</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold flex items-center gap-2"><Shield className="h-6 w-6 text-primary" /> AIT08 — Launch Truth & Runtime Reality</h1>
+          <p className="text-muted-foreground text-sm">Live truth indices with contradiction detection and risk analysis</p>
+        </div>
+        <Button variant="outline" size="sm" className="gap-1.5 text-xs" onClick={async () => {
+          try {
+            toast.info("Analyzing truth gaps…");
+            const lowScoring = indices ? Object.entries(indices)
+              .filter(([k, v]: any) => v?.score !== undefined && v.score < 80 && k !== "overallScore")
+              .map(([k, v]: any) => ({ index: k, score: v.score, detail: v.detail })) : [];
+            const { data } = await supabase.functions.invoke("brain-core", {
+              body: { intent: "analyze_truth_gaps", context: { low_scoring_indices: lowScoring, overall_score: indices?.overallScore } },
+            });
+            if (data?.recommendations) {
+              const userId = (await supabase.auth.getUser()).data.user?.id;
+              for (const rec of data.recommendations) {
+                await supabase.from("ai_workforce_recommendations").insert({
+                  user_id: userId,
+                  title: rec.title,
+                  description: rec.description,
+                  domain: rec.domain || "truth",
+                  severity: rec.severity || "high",
+                  status: "pending",
+                  confidence: rec.confidence || 80,
+                  evidence_summary: rec.evidence || "",
+                  role_source: "brain-core",
+                } as any);
+              }
+              toast.success(`${data.recommendations.length} gap remediation recommendations created`);
+            } else {
+              toast.success("No gaps requiring remediation");
+            }
+          } catch { toast.error("Gap analysis failed"); }
+        }}><AlertTriangle className="h-3 w-3" />Analyze Gaps</Button>
+      </div>
 
       {indices && (
         <>
