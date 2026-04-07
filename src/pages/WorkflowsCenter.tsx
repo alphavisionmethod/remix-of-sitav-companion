@@ -214,7 +214,7 @@ const WorkflowsCenter = () => {
 
                 <div className="flex gap-2">
                   <SitaButton variant="primary" className="flex-1"><Eye className="h-3.5 w-3.5" /> Inspect</SitaButton>
-                  <SitaButton variant="danger" onClick={async () => { if (await confirm({ title: "Delete this run?", description: "This workflow run record will be permanently removed.", variant: "destructive" })) deleteRun.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /> Delete</SitaButton>
+                  <SitaButton variant="danger" onClick={async () => { if (await confirm({ title: "Delete this run?", description: "This workflow run record will be permanently removed.", variant: "destructive" })) deleteRun.mutate({ id: selected.id }); }}><Trash2 className="h-3.5 w-3.5" /> Delete</SitaButton>
                 </div>
               </>
             ) : (

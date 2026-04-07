@@ -104,7 +104,7 @@ const InvoicesCollections = () => {
                 <input value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} placeholder="Notes" className="rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
               </div>
               <div className="flex justify-end mt-4">
-                <button onClick={() => addInvoice.mutate()} disabled={addInvoice.isPending || !form.invoice_number.trim() || !form.amount || !form.due_date} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">{addInvoice.isPending ? "Creating..." : "Create Invoice"}</button>
+                <button onClick={() => addInvoice.mutate({ invoice_number: form.invoice_number.trim(), amount: parseFloat(form.amount), due_date: form.due_date, notes: form.notes || null, status: "draft" })} disabled={addInvoice.isPending || !form.invoice_number.trim() || !form.amount || !form.due_date} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">{addInvoice.isPending ? "Creating..." : "Create Invoice"}</button>
               </div>
             </SitaCard>
           </motion.div>

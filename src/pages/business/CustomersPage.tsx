@@ -166,7 +166,7 @@ const CustomersPage = () => {
             <input value={formCompany} onChange={e => setFormCompany(e.target.value)} placeholder="Company" className="rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm" />
             <input value={formPhone} onChange={e => setFormPhone(e.target.value)} placeholder="Phone" className="rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm" />
           </div>
-          <SitaButton variant="primary" size="sm" className="mt-3" onClick={() => createCustomer.mutate()} disabled={!formName.trim()}>Create Customer</SitaButton>
+          <SitaButton variant="primary" size="sm" className="mt-3" onClick={() => createCustomer.mutate({ name: formName, email: formEmail || null, company: formCompany || null, phone: formPhone || null, status: "active" })} disabled={!formName.trim()}>Create Customer</SitaButton>
         </SitaCard>
       )}
 
