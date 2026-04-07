@@ -44,3 +44,4 @@ export function shouldAdjustPosture(regime: MarketRegimeResult): { adjust: boole
   if (regime.currentRegime === "risk-off") return { adjust: true, reason: "Risk-off regime — shift to defensive posture" };
   return { adjust: false, reason: "Current posture aligned with regime" };
 }
+

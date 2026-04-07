@@ -83,3 +83,4 @@ export function computeCorrectionStats(): CorrectionStats {
 
   return { totalCorrections: corrections.length, byDomain, bySource, avgConfidenceImpact: avgImpact, frequentFields };
 }
+

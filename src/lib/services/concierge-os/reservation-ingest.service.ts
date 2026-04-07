@@ -12,3 +12,4 @@ export function ingestReservationFromEmail(emailData: Record<string, string>): R
     currency: "USD", status: "confirmed", ingestedAt: new Date().toISOString(),
   };
 }
+

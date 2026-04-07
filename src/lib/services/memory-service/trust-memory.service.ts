@@ -88,3 +88,4 @@ export function resolveFlag(userId: string, index: number): boolean {
   state.flags[index].resolved = true;
   return true;
 }
+

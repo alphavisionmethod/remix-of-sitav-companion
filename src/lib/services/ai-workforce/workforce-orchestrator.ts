@@ -173,3 +173,4 @@ export async function getWorkforceStats() {
       : 0,
   };
 }
+

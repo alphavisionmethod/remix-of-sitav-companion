@@ -51,3 +51,4 @@ describe("BillingService", () => {
     expect(svc2.getInvoices("u1").length).toBe(1);
   });
 });
+

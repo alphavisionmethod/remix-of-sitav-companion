@@ -70,3 +70,4 @@ export function getBootPersistenceService(): BootPersistenceService {
   if (!_instance) _instance = new BootPersistenceService();
   return _instance;
 }
+

@@ -35,3 +35,4 @@ export function generateProofProjection(): ProofProjection {
     lastVerification: { actionId: "act-45", match: true, timestamp: new Date(Date.now() - 3600000).toISOString() },
   };
 }
+

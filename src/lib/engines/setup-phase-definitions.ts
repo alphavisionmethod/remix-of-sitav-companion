@@ -472,3 +472,4 @@ export const BACKGROUND_TASK_FACTORIES: Record<string, BackgroundTaskFactory> = 
     execute: async (onProgress) => { onProgress(50); await new Promise(r => setTimeout(r, 320 + Math.random() * 150)); onProgress(100); },
   },
 };
+

@@ -137,3 +137,4 @@ class CompetitiveIntelligenceService {
 }
 
 export const competitiveIntelligenceService = new CompetitiveIntelligenceService();
+

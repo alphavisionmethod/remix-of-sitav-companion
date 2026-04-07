@@ -272,3 +272,4 @@ export class HealthAggregatorService {
 export function createHealthAggregator(): HealthAggregatorService {
   return new HealthAggregatorService();
 }
+

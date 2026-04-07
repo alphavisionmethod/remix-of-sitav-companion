@@ -17,3 +17,4 @@ export function computeAdminLoad(trackers: PersonalAdminTracker[]): { active: nu
     totalAnnualCost: trackers.reduce((s, t) => s + (t.cost || 0), 0),
   };
 }
+

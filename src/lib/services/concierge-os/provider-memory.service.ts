@@ -16,3 +16,4 @@ export function suggestProvider(providers: ServiceProviderRecord[], category: st
   const matches = findProvider(providers, category);
   return matches.find(p => p.isFavorite) || matches[0] || null;
 }
+

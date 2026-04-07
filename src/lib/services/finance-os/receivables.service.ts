@@ -39,3 +39,4 @@ export function buildAgingReport(receivables: Receivable[]): ReceivableAgingRepo
 export function flagOverdueReceivables(receivables: Receivable[], thresholdDays: number = 30): Receivable[] {
   return receivables.filter(r => r.status === "expected" && r.agingDays > thresholdDays);
 }
+

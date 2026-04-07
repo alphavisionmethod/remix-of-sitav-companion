@@ -162,3 +162,4 @@ class AnomalyAlertSystem {
 }
 
 export const anomalyAlertSystem = new AnomalyAlertSystem();
+

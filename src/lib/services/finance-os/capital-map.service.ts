@@ -36,3 +36,4 @@ export function computeEntityConcentration(map: CapitalMap): { entityName: strin
     warning: total > 0 && e.netWorthCents / total > 0.5,
   }));
 }
+

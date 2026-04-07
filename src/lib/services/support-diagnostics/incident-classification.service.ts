@@ -16,3 +16,4 @@ export function classifyIncident(description: string, systemHealth: number): Inc
     suggestedRunbook: autoHealable ? "auto-heal-retry" : isCritical ? "critical-incident-response" : "standard-triage",
   };
 }
+

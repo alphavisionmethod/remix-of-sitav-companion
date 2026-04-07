@@ -245,3 +245,4 @@ export class AIEconomicsService {
 export function createAIEconomics(): AIEconomicsService {
   return new AIEconomicsService();
 }
+

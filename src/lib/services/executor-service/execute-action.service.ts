@@ -99,3 +99,4 @@ export function listExecutions(capabilityId?: string): ExecutionEnvelope[] {
   const all = Array.from(executionLog.values());
   return capabilityId ? all.filter((e) => e.capabilityId === capabilityId) : all;
 }
+

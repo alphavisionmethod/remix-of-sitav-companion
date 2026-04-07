@@ -60,3 +60,4 @@ export function revokeAuth(connectorId: string): boolean {
   state.status = "revoked";
   return true;
 }
+

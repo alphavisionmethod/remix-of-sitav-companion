@@ -162,3 +162,4 @@ export async function getDegradedDiagnostics(): Promise<DegradedDiagnostic[]> {
 
   return diagnostics;
 }
+

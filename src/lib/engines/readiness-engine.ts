@@ -201,3 +201,4 @@ export class ReadinessEngine {
     return `Readiness ${(score * 100).toFixed(0)}%. Recommended: ${tier.replace(/_/g, " ")}. Weak areas: ${weak.join(", ")}. Address these before promoting autonomy.`;
   }
 }
+

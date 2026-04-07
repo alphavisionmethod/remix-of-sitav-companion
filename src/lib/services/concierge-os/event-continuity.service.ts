@@ -14,3 +14,4 @@ export function getMockEventPlans(): EventPlan[] {
     buildEventPlan("Anniversary Dinner", new Date(Date.now() + 30 * 86400000).toISOString(), ["Make reservation", "Order flowers", "Arrange babysitter"]),
   ];
 }
+

@@ -42,3 +42,4 @@ export function buildPortfolioRiskReport(): PortfolioRiskReport {
     generatedAt: new Date().toISOString(),
   };
 }
+

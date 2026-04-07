@@ -15,3 +15,4 @@ export function createCrmConnector(): CrmCapabilities {
     updateDeal: (dealId, updates) => ({ success: true, data: { dealId, ...updates, updatedAt: new Date().toISOString() } }),
   };
 }
+

@@ -109,3 +109,4 @@ export function getLaunchHonestyIndex(gates: LaunchGateRecord[]): number {
   const total = gates.reduce((sum, g) => sum + g.gate_score, 0);
   return Math.round(total / gates.length);
 }
+

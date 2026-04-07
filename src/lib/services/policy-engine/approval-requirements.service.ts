@@ -90,3 +90,4 @@ export function resolveApprovalRequirements(
 export function getThresholdsForDomain(domain: string): ApprovalThreshold[] {
   return DEFAULT_THRESHOLDS.filter((t) => t.domain === domain);
 }
+

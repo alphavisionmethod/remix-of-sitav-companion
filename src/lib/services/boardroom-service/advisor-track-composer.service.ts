@@ -18,3 +18,4 @@ export function composeAdvisorTracks(tracks: AdvisorTrack[]): ComposedAdvisorVie
 export function getAdvisorName(advisorId: string): string {
   return ADVISOR_CONFIGS.find((a) => a.id === advisorId)?.name || advisorId;
 }
+

@@ -40,3 +40,4 @@ export function buildBusinessBoardroomPacket(): BusinessBoardroomPacket {
     generatedAt: new Date().toISOString(),
   };
 }
+

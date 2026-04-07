@@ -168,3 +168,4 @@ export class InjectionFirewallService {
 export function createInjectionFirewall(): InjectionFirewallService {
   return new InjectionFirewallService();
 }
+

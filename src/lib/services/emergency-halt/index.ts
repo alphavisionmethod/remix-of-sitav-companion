@@ -156,3 +156,4 @@ export class EmergencyHaltService {
 export function createEmergencyHalt(): EmergencyHaltService {
   return new EmergencyHaltService();
 }
+

@@ -107,3 +107,4 @@ export interface AIProviderStatus {
   healthy: boolean;
   incidentStatus: string | null;
 }
+

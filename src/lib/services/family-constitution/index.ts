@@ -189,3 +189,4 @@ export class FamilyConstitutionEngine {
 }
 
 export const createFamilyConstitution = () => new FamilyConstitutionEngine();
+

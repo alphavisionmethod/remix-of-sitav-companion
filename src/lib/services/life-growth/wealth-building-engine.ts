@@ -302,3 +302,4 @@ export class WealthBuildingEngine {
 export function createWealthBuildingEngine(): WealthBuildingEngine {
   return new WealthBuildingEngine();
 }
+

@@ -180,3 +180,4 @@ function gradeRank(grade: EvidenceGrade): number {
 export function getCiteCheckPolicy(domain: DomainId): CiteCheckPolicy | undefined {
   return CITE_CHECK_POLICIES[domain];
 }
+

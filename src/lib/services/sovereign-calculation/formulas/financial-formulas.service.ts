@@ -40,3 +40,4 @@ export function debtServiceCoverageRatio(netOperatingIncome: number, totalDebtSe
 export function quickRatio(cashCents: number, receivablesCents: number, currentLiabilitiesCents: number): number {
   return currentLiabilitiesCents === 0 ? Infinity : (cashCents + receivablesCents) / currentLiabilitiesCents;
 }
+

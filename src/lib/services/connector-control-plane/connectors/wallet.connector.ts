@@ -15,3 +15,4 @@ export function createWalletConnector(): WalletCapabilities {
     estimateGas: () => ({ success: true, data: { estimatedGasGwei: 25, estimatedCostCents: 450, estimatedTimeSeconds: 15 } }),
   };
 }
+

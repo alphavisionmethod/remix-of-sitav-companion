@@ -56,3 +56,4 @@ export function detectSubscriptions(transactions: TransactionRecord[]): Detected
 
   return detected.sort((a, b) => b.confidence - a.confidence);
 }
+

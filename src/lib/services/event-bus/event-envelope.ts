@@ -59,3 +59,4 @@ export function incrementRetry<T extends BaseEvent>(envelope: EventEnvelope<T>):
   if (updated.retryCount >= updated.maxRetries) updated.deadLettered = true;
   return updated;
 }
+

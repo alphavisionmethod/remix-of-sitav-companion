@@ -150,3 +150,4 @@ export class MarketIntelligenceService {
 export function createMarketIntelligence(): MarketIntelligenceService {
   return new MarketIntelligenceService();
 }
+

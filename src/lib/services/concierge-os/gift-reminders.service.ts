@@ -14,3 +14,4 @@ export function getUpcomingGiftReminders(): GiftReminder[] {
 export function filterUrgent(reminders: GiftReminder[], daysThreshold: number = 14): GiftReminder[] {
   return reminders.filter(r => r.daysUntil <= daysThreshold && !r.purchased);
 }
+

@@ -295,3 +295,4 @@ export class IncidentManagementService {
 export function createIncidentManagement(): IncidentManagementService {
   return new IncidentManagementService();
 }
+

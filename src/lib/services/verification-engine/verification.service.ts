@@ -61,3 +61,4 @@ export function getVerificationStats(): { total: number; matched: number; mismat
     rollbackRecommended: verificationLog.filter((r) => r.recommendation === "rollback").length,
   };
 }
+

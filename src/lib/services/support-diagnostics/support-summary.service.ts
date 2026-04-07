@@ -19,3 +19,4 @@ function classifyCategory(desc: string): string {
   if (lower.includes("login") || lower.includes("auth")) return "authentication";
   return "general";
 }
+

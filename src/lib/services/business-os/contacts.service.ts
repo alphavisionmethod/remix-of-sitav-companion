@@ -63,3 +63,4 @@ export function enrichContact(contact: CRMContact): CRMContact & { enriched: boo
 export function mergeContacts(primary: CRMContact, duplicate: CRMContact): CRMContact {
   return { ...primary, email: primary.email || duplicate.email };
 }
+

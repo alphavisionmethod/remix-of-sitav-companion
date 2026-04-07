@@ -17,3 +17,4 @@ export function createGmailConnector(): GmailCapabilities {
     label: (params) => ({ success: true, data: { messageId: params.messageId, labelsApplied: params.addLabels } }),
   };
 }
+

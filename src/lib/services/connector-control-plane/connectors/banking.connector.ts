@@ -15,3 +15,4 @@ export function createBankingConnector(): BankingCapabilities {
     initiateTransfer: (p) => ({ success: true, data: { transferId: crypto.randomUUID(), ...p, status: "pending", initiatedAt: new Date().toISOString() } }),
   };
 }
+

@@ -108,3 +108,4 @@ describe("Truth Index Aggregator", () => {
     expect(typeof result.overallScore).toBe("number");
   });
 });
+

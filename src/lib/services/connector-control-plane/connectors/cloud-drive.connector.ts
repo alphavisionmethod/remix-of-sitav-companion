@@ -15,3 +15,4 @@ export function createCloudDriveConnector(): CloudDriveCapabilities {
     shareFile: (p) => ({ success: true, data: { fileId: p.fileId, sharedWith: p.email, role: p.role } }),
   };
 }
+

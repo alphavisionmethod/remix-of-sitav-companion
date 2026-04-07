@@ -14,3 +14,4 @@ export function calculateReserveWaterfall(availableCents: number, funds: Omit<Re
   const totalFunded = allocations.reduce((a, f) => a + f.currentCents, 0);
   return { allocations, totalTargetCents: totalTarget, totalFundedCents: totalFunded, overallFundedPct: totalTarget > 0 ? (totalFunded / totalTarget) * 100 : 0, shortfallCents: Math.max(0, totalTarget - totalFunded) };
 }
+

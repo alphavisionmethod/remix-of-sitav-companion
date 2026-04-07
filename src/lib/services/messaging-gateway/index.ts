@@ -165,3 +165,4 @@ export class MessagingGatewayService {
 export function createMessagingGateway(): MessagingGatewayService {
   return new MessagingGatewayService();
 }
+

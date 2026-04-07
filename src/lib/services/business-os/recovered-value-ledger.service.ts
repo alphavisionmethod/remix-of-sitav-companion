@@ -46,3 +46,4 @@ export function summarizeLedger(entries: RecoveredValueEntry[], totalLeakedCents
     generatedAt: new Date().toISOString(),
   };
 }
+

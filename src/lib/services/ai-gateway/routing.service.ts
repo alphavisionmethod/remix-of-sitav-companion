@@ -67,3 +67,4 @@ export async function getCapabilityRoutingByKey(capabilityKey: string): Promise<
   if (error) throw error;
   return data;
 }
+

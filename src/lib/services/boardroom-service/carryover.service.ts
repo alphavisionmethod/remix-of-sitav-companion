@@ -24,3 +24,4 @@ export function resolveCarryoverItem(id: string): boolean {
 
 export function getOpenCarryovers(): CarryoverItem[] { return items.filter((i) => i.status === "open" || i.status === "escalated"); }
 export function getAllCarryovers(): CarryoverItem[] { return [...items]; }
+

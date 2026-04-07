@@ -46,3 +46,4 @@ export function buildNoShowRecoveryActions(noShows: NoShowEvent[]): NoShowRecove
 export function computeNoShowRate(total: number, noShows: number): number {
   return total > 0 ? Math.round((noShows / total) * 100) : 0;
 }
+

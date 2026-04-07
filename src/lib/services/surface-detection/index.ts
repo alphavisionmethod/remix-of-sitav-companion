@@ -127,3 +127,4 @@ export function useSurfaceType(): ExtendedSurfaceType {
 
   return surface;
 }
+

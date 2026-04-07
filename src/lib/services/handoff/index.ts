@@ -115,3 +115,4 @@ export function getHandoffService(): HandoffService {
   if (!_instance) _instance = new HandoffService();
   return _instance;
 }
+

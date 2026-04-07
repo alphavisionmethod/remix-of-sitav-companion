@@ -472,3 +472,4 @@ export function getThreatsByStatus(status: SecurityLevel) {
 export function getHighRiskFunctions() {
   return EDGE_FUNCTION_AUDIT.filter(f => f.classification === 'high_risk' || f.missingHardening.length >= 2);
 }
+

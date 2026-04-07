@@ -86,3 +86,4 @@ export function setConnectorHealth(connectorId: string, healthy: boolean): void 
     state.lastChecked = new Date().toISOString();
   }
 }
+

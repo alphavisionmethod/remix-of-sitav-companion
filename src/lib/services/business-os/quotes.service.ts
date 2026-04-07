@@ -36,3 +36,4 @@ export function isQuoteExpired(quote: Quote): boolean {
 export function reviseQuote(quote: Quote, newTotalCents: number, newDiscount: number): Quote {
   return { ...quote, id: `quote-${Date.now()}`, totalCents: Math.round(newTotalCents * (1 - newDiscount / 100)), discountPercent: newDiscount, version: quote.version + 1, createdAt: new Date().toISOString(), status: "draft" };
 }
+

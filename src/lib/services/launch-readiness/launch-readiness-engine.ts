@@ -281,3 +281,4 @@ export function getGoNoGoConditions(result: LaunchReadinessResult): GoNoGoCondit
     { label: "≤ 2 high-severity blockers", met: result.softBlockerCount <= 2, requiredForMode: ["private_beta_ready"] },
   ];
 }
+

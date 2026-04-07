@@ -83,3 +83,4 @@ export async function getPendingUpgradeRequests(): Promise<PermissionUpgradeRequ
   if (error) throw error;
   return data ?? [];
 }
+

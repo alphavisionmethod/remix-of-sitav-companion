@@ -193,3 +193,4 @@ export class DragEngine {
     return { period: "week", dataPoints, direction, changePercent: first > 0 ? ((second - first) / first) * 100 : 0 };
   }
 }
+

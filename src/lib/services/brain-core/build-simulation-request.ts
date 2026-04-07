@@ -79,3 +79,4 @@ function buildDefaultScenarios(domain: string): SimulationScenario[] {
     { id: "pessimistic", label: "Pessimistic", description: "Stress-test assumptions", adjustments: { conversionRate: 0.6, churnRate: 2.0 } },
   ];
 }
+

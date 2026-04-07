@@ -61,3 +61,4 @@ export function getNextDueBills(obligations: ObligationRecord[], count: number =
     .sort((a, b) => new Date(a.nextDueDate).getTime() - new Date(b.nextDueDate).getTime())
     .slice(0, count);
 }
+

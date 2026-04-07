@@ -54,3 +54,4 @@ export function computeMonthlyGroceryBudget(supplies: RecurringSupplyItem[]): nu
     return sum + Math.round(s.avgPriceCents * purchasesPerMonth);
   }, 0);
 }
+

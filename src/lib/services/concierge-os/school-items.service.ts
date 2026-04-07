@@ -12,3 +12,4 @@ export function getUpcomingSchoolItems(items: SchoolItem[], daysAhead: number = 
 export function groupByChild(items: SchoolItem[]): Record<string, SchoolItem[]> {
   return items.reduce((acc, i) => { (acc[i.childId] = acc[i.childId] || []).push(i); return acc; }, {} as Record<string, SchoolItem[]>);
 }
+

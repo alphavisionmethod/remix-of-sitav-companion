@@ -237,3 +237,4 @@ export class TrustDebtEngine {
     return Math.min(totalWeight / 10, 1); // Normalize to 0-1, cap at 1
   }
 }
+

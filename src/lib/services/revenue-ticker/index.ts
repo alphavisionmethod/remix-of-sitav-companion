@@ -181,3 +181,4 @@ class RevenueTickerService {
 }
 
 export const revenueTickerService = new RevenueTickerService();
+

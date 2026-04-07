@@ -38,3 +38,4 @@ export function identifyReactivationCandidates(accounts: CRMAccount[], dormantTh
     })
     .sort((a, b) => b.reactivationScore - a.reactivationScore);
 }
+

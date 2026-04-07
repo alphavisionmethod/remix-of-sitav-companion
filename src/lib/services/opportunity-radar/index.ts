@@ -191,3 +191,4 @@ export class OpportunityRadarEngine {
 }
 
 export const createOpportunityRadar = () => new OpportunityRadarEngine();
+

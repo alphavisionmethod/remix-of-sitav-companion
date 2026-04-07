@@ -40,3 +40,4 @@ export function runLiquidityStressTest(accounts: FinancialAccount[], shockPercen
   }));
   return computeLiquidity(shocked);
 }
+

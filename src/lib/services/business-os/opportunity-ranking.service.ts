@@ -49,3 +49,4 @@ export function rankOpportunitiesWeighted(opportunities: Opportunity[], config: 
     .sort((a, b) => b.compositeScore - a.compositeScore)
     .map((ro, i) => ({ ...ro, rank: i + 1 }));
 }
+

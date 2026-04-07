@@ -172,3 +172,4 @@ class LifeScoreService {
 }
 
 export const lifeScoreService = new LifeScoreService();
+

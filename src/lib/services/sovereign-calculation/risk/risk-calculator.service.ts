@@ -45,3 +45,4 @@ export function calculatePortfolioRisk(returns: number[], benchmarkReturns?: num
   }
   return { valueAtRisk95: var95, valueAtRisk99: var99, maxDrawdown: maxDD, sharpeRatio: sharpe, sortinoRatio: sortino, beta };
 }
+

@@ -263,3 +263,4 @@ export function getCritiqueStats(): { total: number; passed: number; failed: num
   }
   return stats;
 }
+

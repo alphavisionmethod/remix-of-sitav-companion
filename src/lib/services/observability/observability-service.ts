@@ -208,3 +208,4 @@ export async function computeDeviceReadinessIndex(): Promise<number> {
 
   return Math.min(100, score);
 }
+

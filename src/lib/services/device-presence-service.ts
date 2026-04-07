@@ -102,3 +102,4 @@ export function stopHeartbeat(): void {
     heartbeatInterval = null;
   }
 }
+

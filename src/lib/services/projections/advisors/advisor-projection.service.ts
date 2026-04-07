@@ -48,3 +48,4 @@ export function generateAdvisorProjection(): AdvisorProjection {
 
   return { timestamp: new Date().toISOString(), advisors, recentRecommendations: recommendations, activeDisagreements: 1 };
 }
+

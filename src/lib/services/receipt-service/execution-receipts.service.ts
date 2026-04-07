@@ -50,3 +50,4 @@ export function generateBatchExecutionReceipts(
     return receipt;
   });
 }
+

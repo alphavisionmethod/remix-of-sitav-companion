@@ -136,3 +136,4 @@ export function getGroundingStats(): { totalChecks: number; passRate: number; to
   }
   return { totalChecks: groundingLog.length, passRate: groundingLog.length > 0 ? passed / groundingLog.length : 1, totalViolations, blockViolations, byFieldType };
 }
+

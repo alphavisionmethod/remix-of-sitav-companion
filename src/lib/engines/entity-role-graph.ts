@@ -217,3 +217,4 @@ export class EntityRoleGraph {
     if (state.visibilityRules) this.visibilityRules = state.visibilityRules as typeof this.visibilityRules;
   }
 }
+

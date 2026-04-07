@@ -123,3 +123,4 @@ class BiometricAuthBridge {
 }
 
 export const biometricAuthBridge = new BiometricAuthBridge();
+

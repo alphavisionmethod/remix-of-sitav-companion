@@ -58,3 +58,4 @@ export function summarizeRecurringObligations(obligations: ObligationRecord[]): 
     generatedAt: new Date().toISOString(),
   };
 }
+

@@ -198,3 +198,4 @@ export class CommunicationService {
 export function createCommunicationService(): CommunicationService {
   return new CommunicationService();
 }
+

@@ -162,3 +162,4 @@ export function getAdapterCountSummary() {
     glanceOnly: SURFACE_ADAPTER_REGISTRY.filter(a => a.capabilitySupport === "glance_only").length,
   };
 }
+

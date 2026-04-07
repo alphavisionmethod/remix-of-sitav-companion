@@ -87,3 +87,4 @@ export function stopPeriodicFlush(): void {
     flushInterval = null;
   }
 }
+

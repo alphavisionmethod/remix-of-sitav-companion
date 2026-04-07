@@ -232,3 +232,4 @@ export class TokenGovernanceEngine {
     if (state.config) this.config = { ...this.config, ...(state.config as Record<string, unknown>) };
   }
 }
+

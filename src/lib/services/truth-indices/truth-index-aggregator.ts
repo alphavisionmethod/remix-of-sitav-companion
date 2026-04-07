@@ -161,3 +161,4 @@ async function computeAITruthScore(): Promise<number> {
 
   return Math.round(infraScore * 0.4 + runtimeScore * 0.6);
 }
+

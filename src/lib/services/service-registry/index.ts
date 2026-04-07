@@ -147,3 +147,4 @@ export class ServiceRegistryService {
 export function createServiceRegistry(): ServiceRegistryService {
   return new ServiceRegistryService();
 }
+

@@ -40,3 +40,4 @@ export function computeCollectionsKpis(packets: CollectionsEscalationPacket[]) {
     requiresApproval: packets.filter(p => p.approvalRequired).length,
   };
 }
+

@@ -41,3 +41,4 @@ export function detectStaleLead(lead: Lead): StaleLeadState | null {
 export function buildCallbackQueue(leads: Lead[]): Lead[] {
   return leads.filter(l => l.status === "qualified" || l.status === "nurturing").sort((a, b) => b.score - a.score).slice(0, 20);
 }
+

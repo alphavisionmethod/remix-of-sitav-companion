@@ -314,3 +314,4 @@ export function getStatusBadge(status: string): { label: string; color: string }
     default: return { label: status || "Unknown", color: "bg-muted text-muted-foreground" };
   }
 }
+

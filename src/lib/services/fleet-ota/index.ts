@@ -320,3 +320,4 @@ export class FleetOTAService {
 export function createFleetOTA(): FleetOTAService {
   return new FleetOTAService();
 }
+

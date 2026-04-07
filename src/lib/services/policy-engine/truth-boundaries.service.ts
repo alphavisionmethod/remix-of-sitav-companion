@@ -79,3 +79,4 @@ export function listProtectedFields(domain?: string): TruthBoundaryRule[] {
 export function isFieldProtected(domain: string, field: string): boolean {
   return TRUTH_BOUNDARIES.some((r) => r.domain === domain && r.field === field);
 }
+

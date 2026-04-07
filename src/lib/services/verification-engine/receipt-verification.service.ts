@@ -152,3 +152,4 @@ export class ReceiptVerificationService {
 export function createReceiptVerificationService(): ReceiptVerificationService {
   return new ReceiptVerificationService();
 }
+

@@ -71,3 +71,4 @@ export function clearConnectorHealthCache() {
   cachedResult = null;
   cacheExpiry = 0;
 }
+

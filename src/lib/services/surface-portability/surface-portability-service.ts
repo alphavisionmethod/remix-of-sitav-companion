@@ -155,3 +155,4 @@ export function getSurfaceAdapterSummary() {
     surfaceClasses: [...new Set(CANONICAL_SURFACE_ADAPTERS.map(a => a.surfaceClass))],
   };
 }
+

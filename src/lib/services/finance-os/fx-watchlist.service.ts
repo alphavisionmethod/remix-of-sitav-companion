@@ -40,3 +40,4 @@ export function monitorFxExposure(exposure: FxExposureSummary): FxAlert[] {
 
   return alerts;
 }
+

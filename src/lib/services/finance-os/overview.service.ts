@@ -76,3 +76,4 @@ export function computeAllocationDrift(allocations: AssetAllocation[]): { totalD
   const sorted = [...allocations].sort((a, b) => Math.abs(b.drift) - Math.abs(a.drift));
   return { totalDrift, maxDriftClass: sorted[0]?.assetClass || "none", rebalanceNeeded: totalDrift > 10 };
 }
+

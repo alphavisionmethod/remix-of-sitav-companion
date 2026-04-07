@@ -106,3 +106,4 @@ class WidgetMarketplaceService {
 }
 
 export const widgetMarketplaceService = new WidgetMarketplaceService();
+

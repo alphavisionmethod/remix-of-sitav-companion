@@ -120,3 +120,4 @@ export const SystemUpdateService = {
 
   getAppVersion: () => APP_VERSION,
 };
+

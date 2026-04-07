@@ -14,3 +14,4 @@ export function getMockActivityChecklists(): ActivityChecklist[] {
     buildActivityChecklist("Piano Lesson", ["Print sheet music", "Practice 30 min", "Pack lesson book"]),
   ];
 }
+

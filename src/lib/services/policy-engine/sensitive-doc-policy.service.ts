@@ -75,3 +75,4 @@ export function getRedactionRules(documentType: string): RedactionPolicy | null 
 export function bulkClassify(documents: { content: string; filename?: string }[]): DocumentClassification[] {
   return documents.map((d) => classifyDocument(d.content, d.filename));
 }
+

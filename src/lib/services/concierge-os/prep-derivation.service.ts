@@ -13,3 +13,4 @@ export function derivePrepTasks(events: CalendarEvent[]): HouseholdTask[] {
     priority: "medium" as const, status: "pending" as const, estimatedMinutes: 15, dependencies: [], tags: ["auto-derived"],
   }));
 }
+

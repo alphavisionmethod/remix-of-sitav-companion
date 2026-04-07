@@ -40,3 +40,4 @@ export function computeWinRate(proposals: Proposal[]): number {
   if (decided.length === 0) return 0;
   return Math.round((decided.filter(p => p.status === "accepted").length / decided.length) * 100);
 }
+

@@ -31,3 +31,4 @@ export class ProfilesService {
   }
 }
 export const createProfiles = () => new ProfilesService();
+

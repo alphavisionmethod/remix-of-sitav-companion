@@ -187,3 +187,4 @@ export function getMetaGovernanceCollector(): MetaGovernanceCollectorService {
   }
   return collectorInstance;
 }
+

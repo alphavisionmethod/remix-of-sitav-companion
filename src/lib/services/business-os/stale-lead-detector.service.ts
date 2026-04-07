@@ -57,3 +57,4 @@ export function buildStaleLeadReport(leads: Lead[]): StaleLeadReport {
     generatedAt: new Date().toISOString(),
   };
 }
+

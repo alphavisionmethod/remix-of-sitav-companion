@@ -59,3 +59,4 @@ export async function callAIGateway(
   if (error) throw new Error(error.message || "AI Gateway error");
   return data as AIGatewayResponse;
 }
+

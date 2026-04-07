@@ -45,3 +45,4 @@ export function detectStaleAccounts(accounts: FinancialAccount[], thresholdHours
   const cutoff = Date.now() - thresholdHours * 3600000;
   return accounts.filter(a => a.isActive && new Date(a.lastSyncedAt).getTime() < cutoff);
 }
+

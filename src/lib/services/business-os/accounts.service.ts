@@ -76,3 +76,4 @@ export function segmentAccounts(accounts: CRMAccount[]): Record<string, CRMAccou
   }
   return segments;
 }
+

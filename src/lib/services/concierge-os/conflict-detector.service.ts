@@ -27,3 +27,4 @@ export function suggestResolutions(conflicts: CalendarConflict[]): ConflictResol
     autoResolvable: c.overlapMinutes < 15,
   }));
 }
+

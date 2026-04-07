@@ -200,3 +200,4 @@ export async function seedPlatformReadiness(): Promise<void> {
 
   sessionStorage.setItem(SEED_KEY, "true");
 }
+

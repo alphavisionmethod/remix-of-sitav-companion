@@ -56,3 +56,4 @@ export function getDemoGovernanceIndex(statuses: DemoGovernanceStatus[]): number
   const total = statuses.reduce((sum, s) => sum + s.score, 0);
   return Math.round(total / statuses.length);
 }
+

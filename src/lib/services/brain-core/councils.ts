@@ -71,3 +71,4 @@ function buildDecision(type: CouncilDecision["councilType"], votes: CouncilVote[
     decidedAt: new Date().toISOString(),
   };
 }
+

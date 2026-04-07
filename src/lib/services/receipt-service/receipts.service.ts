@@ -181,3 +181,4 @@ export function createFirstBootReceipt(params: {
 
   return receipt;
 }
+

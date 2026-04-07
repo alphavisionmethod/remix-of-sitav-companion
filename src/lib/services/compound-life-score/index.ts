@@ -131,3 +131,4 @@ export class CompoundLifeScoreEngine {
 }
 
 export const createCompoundLifeScore = () => new CompoundLifeScoreEngine();
+

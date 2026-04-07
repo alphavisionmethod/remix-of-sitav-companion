@@ -225,3 +225,4 @@ export function getNegativeReceiptStats(): {
 
   return { total: negativeReceiptLedger.length, byReason, byDomain, bySeverity, byGateSource, last24h: negativeReceiptLedger.filter((r) => r.timestamp >= dayAgo).length };
 }
+

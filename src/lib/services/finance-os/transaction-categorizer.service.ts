@@ -59,3 +59,4 @@ export function aggregateSpend(transactions: TransactionRecord[]): CategorizedSp
     trendPercent: 0,
   })).sort((a, b) => b.totalCents - a.totalCents);
 }
+

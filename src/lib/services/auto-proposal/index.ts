@@ -150,3 +150,4 @@ class AutoProposalGenerator {
 }
 
 export const autoProposalGenerator = new AutoProposalGenerator();
+

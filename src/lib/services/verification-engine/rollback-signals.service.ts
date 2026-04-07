@@ -80,3 +80,4 @@ export function generateRollbackProof(
     restoredState: computeHash(`restored:${signal.affectedActionId}:${Date.now()}`),
   };
 }
+

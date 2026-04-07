@@ -17,3 +17,4 @@ export function generateExtendedDiagnostic(): DiagnosticBundle & { connectorHeal
     memoryUsage: { profileEntries: 15, workflowCheckpoints: 3, corrections: 2, trustStates: 1 },
   };
 }
+

@@ -249,3 +249,4 @@ export function getInvariants(): Invariant[] {
 export function getInvariantById(id: string): Invariant | undefined {
   return INVARIANTS.find((inv) => inv.id === id);
 }
+

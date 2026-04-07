@@ -20,3 +20,4 @@ export type {
 
 // Convenience re-export for consumers that used the old simple factory
 export { createSelfHealingService as createSelfHealing } from "@/lib/core-services/self-healing/service";
+

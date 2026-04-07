@@ -138,3 +138,4 @@ export function getConnectorTruthIndex(
 
   return Math.round(score / connectors.size);
 }
+
