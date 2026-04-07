@@ -791,6 +791,7 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
+                {phase === "quick-identity" && (
                   <QuickIdentityStep key="quick-identity"
                     data={state.quickIdentity}
                     onUpdate={qi => setState(s => ({ ...s, quickIdentity: qi }))}
