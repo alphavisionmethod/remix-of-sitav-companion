@@ -55,6 +55,22 @@ import type { CommsContextData } from "@/components/sita/onboarding/Communicatio
 import { PlanningStyleStep } from "@/components/sita/onboarding/PlanningStyleStep";
 import type { PlanningStyleData } from "@/components/sita/onboarding/PlanningStyleStep";
 import { EnvironmentSummaryStep } from "@/components/sita/onboarding/EnvironmentSummaryStep";
+import { WantLessOfStep } from "@/components/sita/onboarding/WantLessOfStep";
+import { ProtectMostStep } from "@/components/sita/onboarding/ProtectMostStep";
+import { ExplanationStyleStep } from "@/components/sita/onboarding/ExplanationStyleStep";
+import { PresenceStyleStep } from "@/components/sita/onboarding/PresenceStyleStep";
+import { InterruptionStyleStep } from "@/components/sita/onboarding/InterruptionStyleStep";
+import { RitualsStep } from "@/components/sita/onboarding/RitualsStep";
+import { HouseholdGraphStep } from "@/components/sita/onboarding/HouseholdGraphStep";
+import { MemoryConsentStep } from "@/components/sita/onboarding/MemoryConsentStep";
+import { HomeCompositionStep } from "@/components/sita/onboarding/HomeCompositionStep";
+import { DesktopPreviewStep } from "@/components/sita/onboarding/DesktopPreviewStep";
+import { FirstSimulationStep } from "@/components/sita/onboarding/FirstSimulationStep";
+import { FirstActionsStep } from "@/components/sita/onboarding/FirstActionsStep";
+import { RecoverFirstStep } from "@/components/sita/onboarding/RecoverFirstStep";
+import { CinematicIntro } from "@/components/sita/onboarding/CinematicIntro";
+import { RestorePreviewStep } from "@/components/sita/onboarding/RestorePreviewStep";
+import { ContextualWelcomeTour } from "@/components/sita/onboarding/ContextualWelcomeTour";
 import { Progress } from "@/components/ui/progress";
 
 // ── Types ───────────────────────────────────────────────────
@@ -97,6 +113,16 @@ interface SetupData {
   stressMap: StressMapData;
   commsContext: CommsContextData;
   planningStyle: PlanningStyleData;
+  wantLessOf: string[];
+  protectMost: string[];
+  explanationStyle: string;
+  presenceStyle: string;
+  interruptionStyle: string;
+  rituals: string[];
+  householdGraph: { name: string; role: string }[];
+  memoryConsent: string;
+  homeComposition: string;
+  recoverFirst: string;
 }
 
 // ── Phase Status Indicator ──────────────────────────────────
@@ -423,6 +449,16 @@ export function OSSetupExperience() {
     stressMap: { heavierThanShould: [], affectedFirst: [] },
     commsContext: { communicationStress: "", supportNeeds: [] },
     planningStyle: { viewPreference: "", focusPreference: "" },
+    wantLessOf: [],
+    protectMost: [],
+    explanationStyle: "",
+    presenceStyle: "",
+    interruptionStyle: "",
+    rituals: [],
+    householdGraph: [],
+    memoryConsent: "",
+    homeComposition: "",
+    recoverFirst: "",
   });
 
   // Sync setup state to engine for branch evaluation
@@ -471,6 +507,16 @@ export function OSSetupExperience() {
         { user_id: user.id, key: "stress_map", value: JSON.stringify(state.stressMap), category: "preference" },
         { user_id: user.id, key: "comms_context", value: JSON.stringify(state.commsContext), category: "preference" },
         { user_id: user.id, key: "planning_style", value: JSON.stringify(state.planningStyle), category: "preference" },
+        { user_id: user.id, key: "want_less_of", value: JSON.stringify(state.wantLessOf), category: "preference" },
+        { user_id: user.id, key: "protect_most", value: JSON.stringify(state.protectMost), category: "preference" },
+        { user_id: user.id, key: "explanation_style", value: JSON.stringify(state.explanationStyle), category: "preference" },
+        { user_id: user.id, key: "presence_style", value: JSON.stringify(state.presenceStyle), category: "preference" },
+        { user_id: user.id, key: "interruption_style", value: JSON.stringify(state.interruptionStyle), category: "preference" },
+        { user_id: user.id, key: "rituals", value: JSON.stringify(state.rituals), category: "preference" },
+        { user_id: user.id, key: "household_graph", value: JSON.stringify(state.householdGraph), category: "preference" },
+        { user_id: user.id, key: "memory_consent", value: JSON.stringify(state.memoryConsent), category: "privacy" },
+        { user_id: user.id, key: "home_composition", value: JSON.stringify(state.homeComposition), category: "preference" },
+        { user_id: user.id, key: "recover_first", value: JSON.stringify(state.recoverFirst), category: "preference" },
       ].filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
 
       await (supabase as any).from("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
@@ -704,6 +750,15 @@ export function OSSetupExperience() {
                     onPathChange={path => setState(s => ({ ...s, accountPath: path }))} onNext={goNext} onPrev={goPrev} />
                 )}
 
+                {phase === "restore-preview" && (
+                  <RestorePreviewStep key="restore-preview"
+                    displayName={state.displayName}
+                    onRestore={() => goNext()}
+                    onRestoreLater={goNext}
+                    onStartFresh={goNext}
+                    onPrev={goPrev} />
+                )}
+
                 {phase === "setup-style" && (
                   <SetupStyleChooser key="setup-style" selected={state.setupStyle}
                     onSelect={s => setState(prev => ({ ...prev, setupStyle: s }))}
@@ -715,10 +770,24 @@ export function OSSetupExperience() {
                     onStateChange={({ accessMethod, recoveryMethod }) => setState(s => ({ ...s, accessMethod, recoveryMethod }))} />
                 )}
 
+                {phase === "recover-first" && (
+                  <RecoverFirstStep key="recover-first"
+                    selected={state.recoverFirst}
+                    onSelect={v => setState(s => ({ ...s, recoverFirst: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
                 {phase === "privacy-transparency" && (
                   <PrivacyTransparencyStep key="privacy-transparency"
                     permissionChoices={state.permissionChoices}
                     onUpdate={choices => setState(s => ({ ...s, permissionChoices: choices }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "memory-consent" && (
+                  <MemoryConsentStep key="memory-consent"
+                    selected={state.memoryConsent}
+                    onSelect={v => setState(s => ({ ...s, memoryConsent: v }))}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
@@ -729,10 +798,31 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
+                {phase === "want-less-of" && (
+                  <WantLessOfStep key="want-less-of"
+                    selected={state.wantLessOf}
+                    onToggle={key => setState(s => ({ ...s, wantLessOf: s.wantLessOf.includes(key) ? s.wantLessOf.filter(k => k !== key) : [...s.wantLessOf, key] }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "protect-most" && (
+                  <ProtectMostStep key="protect-most"
+                    selected={state.protectMost}
+                    onToggle={key => setState(s => ({ ...s, protectMost: s.protectMost.includes(key) ? s.protectMost.filter(k => k !== key) : [...s.protectMost, key] }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
                 {phase === "deep-world-modeling" && (
                   <DeepWorldModelingStep key="deep-world-modeling"
                     data={state.worldModel}
                     onUpdate={wm => setState(s => ({ ...s, worldModel: wm }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "household-graph" && (
+                  <HouseholdGraphStep key="household-graph"
+                    nodes={state.householdGraph}
+                    onUpdate={nodes => setState(s => ({ ...s, householdGraph: nodes }))}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
@@ -754,6 +844,45 @@ export function OSSetupExperience() {
                 {phase === "planning-style" && (
                   <PlanningStyleStep key="planning-style" data={state.planningStyle}
                     onUpdate={ps => setState(s => ({ ...s, planningStyle: ps }))} onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "explanation-style" && (
+                  <ExplanationStyleStep key="explanation-style"
+                    selected={state.explanationStyle}
+                    onSelect={v => setState(s => ({ ...s, explanationStyle: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "presence-style" && (
+                  <PresenceStyleStep key="presence-style"
+                    selected={state.presenceStyle}
+                    onSelect={v => setState(s => ({ ...s, presenceStyle: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "interruption-style" && (
+                  <InterruptionStyleStep key="interruption-style"
+                    selected={state.interruptionStyle}
+                    onSelect={v => setState(s => ({ ...s, interruptionStyle: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "rituals" && (
+                  <RitualsStep key="rituals"
+                    selected={state.rituals}
+                    onToggle={key => setState(s => ({ ...s, rituals: s.rituals.includes(key) ? s.rituals.filter(r => r !== key) : [...s.rituals, key] }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "home-composition" && (
+                  <HomeCompositionStep key="home-composition"
+                    selected={state.homeComposition}
+                    onSelect={v => setState(s => ({ ...s, homeComposition: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "desktop-preview" && (
+                  <DesktopPreviewStep key="desktop-preview" onNext={goNext} onPrev={goPrev} />
                 )}
 
                 {phase === "primary-use-mode" && (
@@ -804,12 +933,23 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
+                {phase === "first-simulation" && (
+                  <FirstSimulationStep key="first-simulation" onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "first-actions" && (
+                  <FirstActionsStep key="first-actions"
+                    enabledDomains={state.enabledDomains}
+                    protectionPriorities={state.protectMost}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
                 {phase === "arrival-prep" && (
                   <ArrivalPrepStep key="arrival-prep"
                     displayName={state.displayName}
                     enabledDomains={state.enabledDomains}
                     trustLevel={state.trustLevel}
-                    rituals={[]}
+                    rituals={state.rituals}
                     aiStyle={state.aiStyle}
                     primaryUseMode={state.primaryUseMode}
                     activeAdvisors={state.advisorActivation}
@@ -833,7 +973,7 @@ export function OSSetupExperience() {
                     displayName={state.displayName}
                     trustLevel={state.trustLevel}
                     enabledDomains={state.enabledDomains}
-                    rituals={[]}
+                    rituals={state.rituals}
                     onFinish={finishSetup} />
                 )}
               </AnimatePresence>

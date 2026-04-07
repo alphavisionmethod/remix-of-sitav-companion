@@ -46,6 +46,7 @@ const MissionError = lazy(() => import("./pages/mission/MissionErrorPage"));
 const AdvisorWorkspace = lazy(() => import("./pages/advisors/AdvisorWorkspace"));
 const AdvisorCouncilDashboard = lazy(() => import("./pages/advisors/AdvisorCouncilDashboard"));
 const Onboarding = lazy(() => import("./pages/OnboardingWrapper"));
+const LearnLaterPage = lazy(() => import("./pages/LearnLaterPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const Signup = lazy(() => import("./pages/auth/Signup"));
@@ -676,6 +677,7 @@ const App = () => (
             <Route path="/onboarding" element={<OnboardingGuard><Onboarding /></OnboardingGuard>} />
             <Route path="/auth/callback" element={<EmailVerificationHandler />} />
             <Route path="/first-win" element={<ProtectedRoute><FirstWinActivation /></ProtectedRoute>} />
+            <Route path="/learn-later" element={<ProtectedRoute><LearnLaterPage /></ProtectedRoute>} />
             <Route path="/" element={<HomeRoute />} />
 
             <Route path="/mobile" element={<ProtectedRoute><MobileHome /></ProtectedRoute>} />
