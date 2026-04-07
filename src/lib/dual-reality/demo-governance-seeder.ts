@@ -48,7 +48,7 @@ export async function seedDemoGovernance(): Promise<void> {
     { user_id: uid, domain_key: "storage", domain_name: "File Storage", runtime_class: "real", has_real_data: true, has_real_service: true, has_db_tables: true, has_rls_policies: true, has_edge_functions: false, demo_provider_exists: true, empty_state_handled: true, truth_score: 85, last_verified_at: now, notes: "Supabase storage with RLS" },
   ];
 
-  await fromTable("domain_runtime_status").insert(domains);
+  await fromDynamicTable("domain_runtime_status").insert(domains);
 
   // ── 2. Launch Gates (feature governance) ──
   const gates = [
@@ -64,7 +64,7 @@ export async function seedDemoGovernance(): Promise<void> {
     { user_id: uid, name: "Workflow Engine", feature_key: "workflows.engine", feature_name: "Workflow Execution", domain: "workflows", state: "demo_only", honesty_class: "planned", has_real_backend: false, has_real_data: false, has_real_auth: true, has_tests: false, has_error_handling: true, demo_available: true, gate_score: 30, criteria_met: 2, criteria_total: 6, blockers_count: 2, truth_threshold: 80, current_truth_score: 30, environment: "production", blockers: ["No workflow executor", "No trigger system"], status: "active" },
   ];
 
-  await fromTable("launch_gates").insert(gates);
+  await fromDynamicTable("launch_gates").insert(gates);
 
   // ── 3. Demo Scenarios ──
   const scenarios = [
@@ -75,7 +75,7 @@ export async function seedDemoGovernance(): Promise<void> {
     { user_id: uid, scenario_key: "compliance_review", name: "Compliance Review", description: "Compliance officer demo of governance controls", category: "compliance", target_audience: "compliance_officers", status: "active", version: 1, narrative_summary: "Full governance, audit trail, and policy demonstration", domain_coverage: ["governance", "security", "ai"], active: true },
   ];
 
-  await fromTable("demo_scenarios").insert(scenarios);
+  await fromDynamicTable("demo_scenarios").insert(scenarios);
 
   // ── 4. Demo Policy Profiles ──
   const policies = [
@@ -84,7 +84,7 @@ export async function seedDemoGovernance(): Promise<void> {
     { user_id: uid, name: "Full Sandbox", external_writes_allowed: false, connector_writes_allowed: false, notifications_live: false, approval_executes_live: false, billing_live: false, ai_execution_mode: "scenario_grounded", receipt_mode: "simulated_receipt", analytics_mode: "discard" },
   ];
 
-  await fromTable("demo_policy_profiles").insert(policies);
+  await fromDynamicTable("demo_policy_profiles").insert(policies);
 
   // ── 5. Kill Switch Defaults ──
   const killSwitches = [
@@ -93,10 +93,10 @@ export async function seedDemoGovernance(): Promise<void> {
     { user_id: uid, key: "demo_simulated_writes", enabled: false, reason: "Default: simulated writes allowed" },
   ];
 
-  await fromTable("demo_kill_switches").upsert(killSwitches, { onConflict: "user_id,key" });
+  await fromDynamicTable("demo_kill_switches").upsert(killSwitches, { onConflict: "user_id,key" });
 
   // ── 6. Demo Receipts (sample governance trail) ──
-  const { data: savedScenarios } = await fromTable("demo_scenarios").select("id, scenario_key").eq("user_id", uid);
+  const { data: savedScenarios } = await fromDynamicTable("demo_scenarios").select("id, scenario_key").eq("user_id", uid);
   const scenarioMap = new Map((savedScenarios ?? []).map((s: any) => [s.scenario_key, s.id]));
   const investorId = scenarioMap.get("investor_demo");
   const salesId = scenarioMap.get("sales_demo");
@@ -109,7 +109,7 @@ export async function seedDemoGovernance(): Promise<void> {
     { user_id: uid, feature_id: "billing", receipt_type: "demo_receipt", actor_id: "policy_engine", summary: "Billing operations blocked in demo mode", simulated: true, visible_to_roles: ["admin", "owner"] },
   ];
 
-  await fromTable("demo_receipts").insert(receipts);
+  await fromDynamicTable("demo_receipts").insert(receipts);
 
   // ── 7. Demo Actions ──
   const actions = [
@@ -120,7 +120,7 @@ export async function seedDemoGovernance(): Promise<void> {
     { user_id: uid, scenario_id: salesId, feature_id: "finance.allocations", action_type: "view_page", actor_id: "demo_user", route: "/finance/capital", execution_mode: "simulated", outcome_summary: "Capital allocation demo view" },
   ];
 
-  await fromTable("demo_actions").insert(actions);
+  await fromDynamicTable("demo_actions").insert(actions);
 
   sessionStorage.setItem(SEED_KEY, "true");
 }

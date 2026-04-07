@@ -211,7 +211,7 @@ export class AdvisorOrchestrationEngine {
   }
 
   hydrate(state: Record<string, unknown>): void {
-    if (state.advisors) this.advisors = new Map(state.advisors as [string, unknown][]);
+    if (state.advisors) this.advisors = new Map(state.advisors as Iterable<[string, never]>) as typeof this.advisors;
     if (state.escalationRules) this.escalationRules = state.escalationRules as typeof this.escalationRules;
     if (state.activeHandoffs) this.activeHandoffs = state.activeHandoffs as typeof this.activeHandoffs;
     if (state.activeCollaborations) this.activeCollaborations = state.activeCollaborations as typeof this.activeCollaborations;

@@ -210,7 +210,7 @@ export class EntityRoleGraph {
   }
 
   hydrate(state: Record<string, unknown>): void {
-    if (state.entities) this.entities = new Map(state.entities as [string, unknown][]);
+    if (state.entities) this.entities = new Map(state.entities as Iterable<[string, never]>) as typeof this.entities;
     if (state.relationships) this.relationships = state.relationships as typeof this.relationships;
     if (state.roles) this.roles = state.roles as typeof this.roles;
     if (state.delegations) this.delegations = state.delegations as typeof this.delegations;

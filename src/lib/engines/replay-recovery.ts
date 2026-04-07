@@ -217,8 +217,8 @@ export class ReplayRecoveryEngine {
   }
 
   hydrate(state: Record<string, unknown>): void {
-    if (state.packets) this.packets = new Map(state.packets as [string, unknown][]);
-    if (state.rollbacks) this.rollbacks = new Map(state.rollbacks as [string, unknown][]);
-    if (state.diagnostics) this.diagnostics = new Map(state.diagnostics as [string, unknown][]);
+    if (state.packets) this.packets = new Map(state.packets as Iterable<[string, never]>) as typeof this.packets;
+    if (state.rollbacks) this.rollbacks = new Map(state.rollbacks as Iterable<[string, never]>) as typeof this.rollbacks;
+    if (state.diagnostics) this.diagnostics = new Map(state.diagnostics as Iterable<[string, never]>) as typeof this.diagnostics;
   }
 }
