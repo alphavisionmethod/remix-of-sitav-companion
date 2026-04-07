@@ -1,107 +1,183 @@
 
 
-# Phase 5 Verification: Service-Layer Unification — Implementation Status
+# Phase 7: Launch Honesty Enforcement, Claim Safety, Truth Score Uplift & Launch Readiness Command Center
 
-## What Already Exists (Substantially Complete)
+## Current State Assessment
 
-The Phase 5 infrastructure is **~85% implemented**. Here's what's in place:
+SITA already has substantial launch truth infrastructure:
 
-### Data Layer (Complete)
-- **`service-ownership-registry.ts`** (191 lines): 12 domains mapped with `primaryService`, `dependentServices`, `routes`, `capabilities`, `launchCriticality`, `flagshipLoop`, `duplicateRisk`, `shadowServiceRisk`, and `notes`
-- **`route-to-service-inventory.ts`** (488 lines): 20 flagship routes mapped with full action-level traceability — handler locations, primary/secondary services, provider deps, DB deps, customer journey keys, canonical confidence, shadow risk
-- **Helper functions**: `getRoutesByFlagshipLoop()`, `getRoutesWithShadowRisk()`, `getRoutesWithLowConfidence()`, `getAllActions()`, `getDuplicateActionPatterns()`, `getDomainByKey()`, `getDomainsByFlagshipLoop()`, `getHighRiskDomains()`
+- **Truth Index Aggregator** (`truth-index-aggregator.ts`): Computes 9 truth indices (runtime, launch honesty, AI, connector, demo governance, surface portability, device readiness, observability, security/privacy) from real DB data
+- **Launch Gate Service** (`launch-gate-service.ts`): Feature-level gates with `launch_gates` and `launch_gate_checks` DB tables
+- **Flagship Loop Service** (`flagship-loop-service.ts`): 5 loops with truth_pct, structural/runtime/proof/ux scores, launch_claim_status, next_actions
+- **AIT08 Launch Truth Board**: Shows overall truth score, 6 index cards, contradictions, risk areas, claim classification (launch-safe / qualified / internal-only)
+- **V07 Launch Blocker Board**: Derives blockers from failed verification runs
+- **CJ04 Launch Blocker View**: Journey-based blocker ranking
+- **LaunchBlockerPanel component**: Reusable blocker UI
+- **LaunchHonestyBadge component**: 7 honesty classes with icons/colors
+- **SERV06 Flagship Traceability**: Per-loop trace scores with launch_claim_status badges
 
-### Admin Boards (All 6 SERV boards exist and are routed)
-| Board | Route | Status |
-|-------|-------|--------|
-| SERV01 — Domain Service Ownership | `/admin/services/ownership` | Live, wired to registry |
-| SERV02 — Domain Ownership Detail | `/admin/services/domains` | Live, route/action counts |
-| SERV03 — Route-to-Service Trace | `/admin/services/route-trace` | Live, filterable, expandable |
-| SERV04 — Service Duplication/Shadow | `/admin/services/duplication` | Live, 6 shadow patterns, risk assessment |
-| SERV05 — Canonical Action Entry Points | `/admin/services/canonical-actions` | Live, canonical vs non-canonical split |
-| SERV06 — Flagship Loop Traceability | `/admin/services/flagship-trace` | Live, per-loop trace scores |
+### What's Missing for Phase 7
 
-### Shadow Cluster Identification (Complete)
-SERV04 identifies 6 shadow patterns: summary card duplication, advisor/assistant overlap, admin board proliferation, connector/provider overlap, direct Supabase calls from pages, recommendation score aggregation. Each has severity, domain, description, and recommendation.
+1. **No unified Launch Readiness Command Center** — blocker/truth/claim data is scattered across AIT08, V07, CJ04, SERV06
+2. **No Capability Claim Safety Matrix** — no single surface answering "what can we say publicly?"
+3. **No Go/No-Go Decision Board** — no explicit launch-mode recommendation engine
+4. **No Launch Narrative Board** — no safe/qualified/unsafe claim guidance for GTM
+5. **Truth scores are partially hardcoded** — AI truth score returns 100% because all checks default to `true`
+6. **No composite launch readiness score** combining all dimensions
+7. **Flagship loop scores are static seeds** — not dynamically computed from DB evidence
 
-### Thin Re-export Services (Already Rationalized)
-- `immune-controller/index.ts` → re-exports from `core-services/self-healing/immune-controller`
-- `self-healing/index.ts` → re-exports from `core-services/self-healing/service`
-- `observability-hub/index.ts` → thin wrapper (31 lines)
+## Implementation Steps
 
-### Architecture Validation Scripts (Exist)
-- `check-module-count.ts`, `check-service-sprawl.ts` — budget enforcement, sprawl detection
-- PowerShell equivalents for CI
+### Step 1 — Create the Launch Classification & Scoring Engine
 
-## Gaps Remaining (~15%)
+Create `src/lib/services/launch-readiness/launch-readiness-engine.ts`:
 
-### 1. Anti-Sprawl Guardrails Document
-No codified rules file exists at `src/lib/services/service-registry/` for governance conventions (e.g., "no new gateway without justification", "pages must not own domain logic"). The shadow patterns in SERV04 are hardcoded but there's no formal governance ruleset.
+- Define `LaunchMode` type: `"internal_only" | "pilot_ready" | "private_beta_ready" | "public_launch_qualified" | "public_launch_ready" | "not_launch_safe"`
+- Define `CapabilityClassification` with: capability key, structural/runtime/proof/ux scores, claim safety (`"safe" | "qualify" | "unsafe"`), launch honesty class, evidence references, blocker count
+- Define 20+ capability families (auth, dashboard, files, AI, boardroom, connectors, notifications, etc.) with static + DB-derived scoring
+- Compute composite launch readiness score from truth indices + flagship loop scores + blocker severity
+- Compute recommended launch mode from blocker analysis + flagship readiness
+- Generate claim safety matrix from capability classifications
+- Generate launch narrative recommendations (safe claims, qualified claims, unsafe claims)
 
-**Fix**: Create `src/lib/services/service-registry/anti-sprawl-rules.ts` with typed rules, severity, and enforcement status. Wire into SERV04 or a new section.
+### Step 2 — Fix AI Truth Score Inflation
 
-### 2. Duplicate Cluster Rationalization Map
-The shadow patterns describe problems but don't define the **canonical resolution** for each cluster (which service wins, which becomes adapter, which is deprecated).
+In `truth-index-aggregator.ts`, the `computeAITruthScore()` function defaults all checks to `true`, inflating the score to ~100%. Fix by:
 
-**Fix**: Add a `DUPLICATE_CLUSTER_RESOLUTIONS` registry to `service-ownership-registry.ts` mapping each cluster to canonical/adapter/deprecated classification.
+- Check actual row counts (not `|| true` fallback)
+- Check for real `ai_inference_receipts` with `status = 'success'`
+- Check for real `ai_usage_ledger` entries
+- Weight infrastructure existence (~40%) vs runtime proof (~60%)
 
-### 3. Route Inventory Coverage
-20 routes are mapped but 678 total routes exist. The flagship loops are covered but some critical non-flagship routes (e.g., `/notification-settings`, `/connector-hub/callback`) are unmapped.
+### Step 3 — Create LAUNCH01 — Launch Readiness Executive Board
 
-**Fix**: Add ~10 more critical route entries covering notification settings, connector callbacks, mobile surfaces, and key admin boards.
+Route: `/admin/launch/readiness`
 
-### 4. Service Directory Count vs Budget
-162 service directories exist against a budget of ~45 canonical services. The registry maps 12 domains but doesn't explicitly classify which of the 162 directories are canonical vs speculative vs deprecated.
+Shows:
+- Composite readiness score (large, prominent)
+- Recommended launch mode badge
+- Hard blockers / soft blockers / claim risks counts
+- Flagship loop readiness cards (5 loops, each with scores + classification)
+- Truth index summary (9 indices from aggregator)
+- Last computed timestamp
+- "Refresh Analysis" button
 
-**Fix**: Add a `SERVICE_DIRECTORY_CLASSIFICATION` map classifying top service directories into canonical/supporting/speculative/deprecated.
+### Step 4 — Create LAUNCH02 — Flagship Loop Readiness Board
 
-### 5. Architecture Guardrails as Runtime Check
-The anti-sprawl scripts exist in `scripts/architecture/` but aren't surfaced in Admin OS. SERV boards show static data but don't run or display architecture check results.
+Route: `/admin/launch/flagship-loops`
 
-**Fix**: Add a summary card to SERV01 showing architecture check status (service count vs budget, sprawl threshold).
+Shows per-loop:
+- 4 dimension scores (structural, runtime, proof, UX) with progress bars
+- Launch classification badge
+- Blocker list with severity
+- Claim safety state
+- Next critical fix actions
+- Evidence references
 
-## Implementation Plan
+### Step 5 — Create LAUNCH03 — Capability Claim Safety Matrix
 
-### Step 1 — Add duplicate cluster resolution map
-Add `DUPLICATE_CLUSTER_RESOLUTIONS` to `service-ownership-registry.ts` — 6 clusters (AI gateway, notifications, observability, finance, self-healing, connectors) with canonical/adapter/deprecated classifications.
+Route: `/admin/launch/claim-safety`
 
-### Step 2 — Add anti-sprawl governance rules
-Create typed `ANTI_SPRAWL_RULES` in `service-ownership-registry.ts` — 6 rules covering gateway creation, page logic, service ownership, provider calls, naming conventions, and flagship alignment.
+Table/grid showing 20+ capabilities:
+- Capability name and domain
+- Current classification (live_verified / partial / blocked / planned)
+- Safe to claim? / Qualify carefully? / Not safe to claim?
+- Evidence strength indicator
+- Notes column
+- Filterable by domain/safety level
 
-### Step 3 — Add service directory classification
-Add `SERVICE_DIRECTORY_CLASSIFICATION` mapping the 162 directories into categories: canonical (~30), supporting (~25), speculative (~50), re-export (~10), deprecated-candidate (~47).
+### Step 6 — Create LAUNCH04 — Blocker Command Board
 
-### Step 4 — Expand route inventory
-Add ~10 more entries to `route-to-service-inventory.ts` for notification settings, connector callbacks, mobile settings, key finance routes, and recommendation execution routes.
+Route: `/admin/launch/blockers`
 
-### Step 5 — Upgrade SERV01 with budget/sprawl summary
-Add service count vs budget display, directory classification breakdown, and governance rule compliance summary.
+Shows all blockers ranked by severity and launch impact:
+- Blocker ID, title, severity, domain
+- Flagship loop impact
+- Evidence/source
+- Recommended fix
+- Expected score uplift if resolved
+- Owner assignment
 
-### Step 6 — Upgrade SERV04 with resolution map
-Show duplicate cluster resolutions alongside shadow patterns — what's canonical, what's adapter, what's deprecated.
+Data sourced from: `FLAGSHIP_LOOP_SEEDS.launch_blockers`, verification run failures, journey blockers, and the new engine's analysis.
 
-### Step 7 — Add data-testid attributes to all SERV boards
-For Playwright proof stability.
+### Step 7 — Create LAUNCH06 — Launch Narrative & Claim Guide
 
-## Files Modified/Created
+Route: `/admin/launch/narrative`
 
+Three sections:
+- **Safe to Say**: Claims backed by runtime + proof evidence
+- **Qualify Carefully**: Claims that need caveats (e.g., "web push only", "Google Drive only")
+- **Do Not Claim**: Features that are planned/blocked/internal-only
+
+Plus launch-mode-specific narrative templates:
+- Pilot narrative constraints
+- Private beta narrative constraints
+- Public launch narrative constraints
+
+### Step 8 — Create LAUNCH07 — Go/No-Go Decision Board
+
+Route: `/admin/launch/go-no-go`
+
+Shows:
+- Current recommendation with rationale
+- Required conditions for each launch mode (checklist)
+- Blockers preventing upgrade to next mode
+- Readiness by dimension (radar/grid)
+- Last review timestamp
+- Sign-off placeholder
+
+### Step 9 — Wire Routes and Navigation
+
+Add all 7 LAUNCH routes to `App.tsx`. Add `data-testid` attributes to all boards.
+
+## Technical Details
+
+### Scoring Formula
+```
+compositeScore = avg(
+  truthIndices.overallScore,          // from truth-index-aggregator
+  flagshipAvg,                         // avg of 5 loop truth_pct values
+  100 - (hardBlockerCount * 15),       // penalty per hard blocker
+  claimSafetyPct                       // % of capabilities that are claim-safe
+)
+
+launchMode = 
+  compositeScore >= 85 && hardBlockers == 0 → "public_launch_ready"
+  compositeScore >= 75 && hardBlockers == 0 → "public_launch_qualified"
+  compositeScore >= 60 && hardBlockers <= 2 → "private_beta_ready"
+  compositeScore >= 45 → "pilot_ready"
+  compositeScore >= 25 → "internal_only"
+  else → "not_launch_safe"
+```
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `src/lib/services/launch-readiness/launch-readiness-engine.ts` | Classification model, scoring, claim safety, narrative generation |
+| `src/pages/admin/launch/LAUNCH01ReadinessExecutive.tsx` | Executive command center |
+| `src/pages/admin/launch/LAUNCH02FlagshipReadiness.tsx` | Per-loop readiness detail |
+| `src/pages/admin/launch/LAUNCH03ClaimSafetyMatrix.tsx` | Capability claim safety grid |
+| `src/pages/admin/launch/LAUNCH04BlockerCommand.tsx` | Ranked blocker board |
+| `src/pages/admin/launch/LAUNCH06NarrativeGuide.tsx` | GTM-safe claim guidance |
+| `src/pages/admin/launch/LAUNCH07GoNoGo.tsx` | Final decision board |
+
+### Files Modified
 | File | Change |
-|------|--------|
-| `src/lib/services/service-registry/service-ownership-registry.ts` | Add cluster resolutions, anti-sprawl rules, directory classification |
-| `src/lib/services/service-registry/route-to-service-inventory.ts` | Add ~10 more critical route entries |
-| `src/pages/admin/SERV01ServiceOwnership.tsx` | Budget/sprawl summary cards, governance compliance |
-| `src/pages/admin/SERV04ServiceDuplication.tsx` | Resolution map display |
-| All 6 SERV board files | Add `data-testid` attributes |
+|------|---------|
+| `src/lib/services/truth-indices/truth-index-aggregator.ts` | Fix AI truth score inflation |
+| `src/App.tsx` | Add 6 LAUNCH routes |
 
-## No Database Changes Required
-
-All data is static registry data in TypeScript files.
+### No Database Changes Required
+All data derives from existing tables (`launch_gates`, `launch_gate_checks`, `journey_verification_runs`, `ai_usage_ledger`, `ai_inference_receipts`, `notification_delivery_receipts`, `device_push_tokens`, `connector_oauth_flows`, `connector_sync_jobs`) plus static registry data.
 
 ## Success Criteria
-1. All 6 major duplicate clusters have explicit canonical/deprecated classification
-2. 6 anti-sprawl governance rules are codified and visible
-3. 162 service directories are classified by category
-4. 30+ flagship routes are traced with service mapping
-5. SERV01 shows budget compliance (162/90 — over budget, visible)
-6. All SERV boards have `data-testid` attributes for Playwright
+1. Composite launch readiness score computed from real evidence
+2. AI truth score no longer inflated to 100%
+3. 20+ capabilities classified with claim safety
+4. 5 flagship loops have final readiness states
+5. Blockers ranked by severity and launch impact
+6. Launch mode recommendation generated automatically
+7. Narrative guide distinguishes safe/qualified/unsafe claims
+8. Go/No-Go board provides defensible decision framework
+9. All boards have `data-testid` attributes
 
