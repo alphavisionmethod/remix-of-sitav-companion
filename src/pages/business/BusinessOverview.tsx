@@ -85,6 +85,8 @@ const BusinessLeakagePanel = () => {
 const BusinessOverview = () => {
   const navigate = useNavigate();
   const { isDemoMode } = useDataMode();
+  const crmSync = useCRMSync();
+  const crmHealth = crmSync.healthCheck.data as any;
   const { data: leads = [], isLoading: leadsLoading } = useLeads();
   const { data: customers = [], isLoading: custLoading } = useCustomers();
   const { data: invoices = [], isLoading: invLoading } = useInvoices();
