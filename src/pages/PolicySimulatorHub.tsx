@@ -42,7 +42,7 @@ const presets: PresetScenario[] = [
 ];
 
 export default function PolicySimulatorHub() {
-  const { isDemoMode } = useDataMode();
+  const gov = useGovernanceSimulator();
   const navigate = useNavigate();
   const [results, setResults] = useState<Map<string, SimulationResult>>(new Map());
 
