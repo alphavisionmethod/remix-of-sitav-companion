@@ -34,7 +34,7 @@ const pages = [
   ["AR08KillSwitchCenter", () => import("@/pages/admin/AR08KillSwitchCenter")],
   ["AR09AutomationLaunchGate", () => import("@/pages/admin/AR09AutomationLaunchGate")],
   ["ActionLineageExplorer", () => import("@/pages/admin/ActionLineageExplorer")],
-  ["AdminDurabilityBoard", () => import("@/pages/admin/AdminDurabilityBoard")],
+  ["AdminMutationAudit", () => import("@/pages/admin/AdminMutationAudit")],
   ["AlertTriageBoard", () => import("@/pages/admin/AlertTriageBoard")],
   ["BuilderKnowledgeBase", () => import("@/pages/admin/BuilderKnowledgeBase")],
 ] as const;

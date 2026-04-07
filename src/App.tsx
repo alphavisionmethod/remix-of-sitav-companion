@@ -549,7 +549,7 @@ const OpportunityBoard = lazy(() => import("./pages/revenue-office/OpportunityBo
 const TrustPulse = lazy(() => import("./pages/revenue-office/TrustPulse"));
 const WhiteLabelOffice = lazy(() => import("./pages/revenue-office/WhiteLabelOffice"));
 const BusinessTimeMachine = lazy(() => import("./pages/revenue-office/BusinessTimeMachine"));
-const RevenueDecisionTheater = lazy(() => import("./pages/revenue-office/DecisionTheater"));
+const RevenueDecisionTheater = lazy(() => import("./pages/revenue-office/RevenueDecisionTheater"));
 const WhatBreaksGrowth = lazy(() => import("./pages/revenue-office/WhatBreaksGrowth"));
 const GrowthDNA = lazy(() => import("./pages/revenue-office/GrowthDNA"));
 const GrowthOperatingModes = lazy(() => import("./pages/revenue-office/GrowthOperatingModes"));
