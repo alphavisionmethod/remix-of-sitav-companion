@@ -69,17 +69,20 @@ export default function AR07RetryFailureCenter() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {failures.slice(0, 50).map((f: any) => (
-                <TableRow key={f.id}>
-                  <TableCell className="text-xs font-medium">{((f as any).scheduled_jobs as any)?.name || f.job_id.slice(0, 8)}</TableCell>
-                  <TableCell><Badge variant="secondary" className="text-[9px]">{((f as any).scheduled_jobs as any)?.domain || "—"}</Badge></TableCell>
-                  <TableCell className="text-[10px] text-destructive max-w-[200px] truncate">{f.error_message || "Unknown"}</TableCell>
-                  <TableCell className="text-[10px]">#{f.attempt_number}</TableCell>
+              {failures.slice(0, 50).map((f: Record<string, unknown>) => {
+                const job = getRelation(f, "scheduled_jobs", parseScheduledJobRef);
+                return (
+                <TableRow key={String(f.id)}>
+                  <TableCell className="text-xs font-medium">{job.name || String(f.job_id ?? "").slice(0, 8)}</TableCell>
+                  <TableCell><Badge variant="secondary" className="text-[9px]">{job.domain || "—"}</Badge></TableCell>
+                  <TableCell className="text-[10px] text-destructive max-w-[200px] truncate">{String(f.error_message || "Unknown")}</TableCell>
+                  <TableCell className="text-[10px]">#{String(f.attempt_number)}</TableCell>
                   <TableCell>{f.retryable ? <RotateCcw className="h-3 w-3 text-accent" /> : <XCircle className="h-3 w-3 text-muted-foreground" />}</TableCell>
                   <TableCell>{f.escalated ? <ArrowUpRight className="h-3 w-3 text-destructive" /> : <span className="text-[10px] text-muted-foreground">No</span>}</TableCell>
-                  <TableCell className="text-[10px] text-muted-foreground">{new Date(f.started_at).toLocaleString()}</TableCell>
+                  <TableCell className="text-[10px] text-muted-foreground">{new Date(String(f.started_at)).toLocaleString()}</TableCell>
                 </TableRow>
-              ))}
+                );
+              })}
             </TableBody>
           </Table>
         )}
