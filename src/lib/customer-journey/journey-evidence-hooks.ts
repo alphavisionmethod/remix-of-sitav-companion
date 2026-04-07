@@ -5,6 +5,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 // ── Step Results ──
 
@@ -13,8 +14,7 @@ export function useStepResults(runId?: string) {
     queryKey: ["journey-step-results", runId],
     queryFn: async () => {
       if (!runId) return [];
-      const { data, error } = await (supabase as unknown)
-        .from("journey_step_results")
+      const { data, error } = await fromTable("journey_step_results")
         .select("*")
         .eq("verification_run_id", runId)
         .order("step_order", { ascending: true });
@@ -41,8 +41,7 @@ export function useRecordStepResult() {
     }) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
-      const { data, error } = await (supabase as unknown)
-        .from("journey_step_results")
+      const { data, error } = await fromTable("journey_step_results")
         .insert({ ...step, user_id: user.id })
         .select()
         .single();
@@ -62,8 +61,7 @@ export function useEvidenceAssets(runId?: string) {
     queryKey: ["verification-evidence-assets", runId],
     queryFn: async () => {
       if (!runId) return [];
-      const { data, error } = await (supabase as unknown)
-        .from("verification_evidence_assets")
+      const { data, error } = await fromTable("verification_evidence_assets")
         .select("*")
         .eq("verification_run_id", runId)
         .order("created_at", { ascending: true });
@@ -85,8 +83,7 @@ export function useAddEvidenceAsset() {
     }) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
-      const { data, error } = await (supabase as unknown)
-        .from("verification_evidence_assets")
+      const { data, error } = await fromTable("verification_evidence_assets")
         .insert({ ...asset, user_id: user.id })
         .select()
         .single();

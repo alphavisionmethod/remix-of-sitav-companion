@@ -36,8 +36,7 @@ function useSitaQuery<T>(
       if (!user) return [];
 
       try {
-        const { data, error } = await (supabase as unknown)
-          .from(table)
+        const { data, error } = await fromTable(table)
           .select(options?.select || "*")
           .order(options?.orderBy || "created_at", { ascending: options?.ascending ?? false })
           .limit(100);

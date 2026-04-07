@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 
 export interface UserPreferences {
@@ -51,15 +52,13 @@ export function useUserPreferences() {
       if (!user) return DEFAULTS;
 
       // Fetch profile for onboarding_completed
-      const { data: profile } = await (supabase as unknown)
-        .from("profiles")
+      const { data: profile } = await fromTable("profiles")
         .select("onboarding_completed, role")
         .eq("user_id", user.id)
         .single();
 
       // Fetch all user_memory preference records
-      const { data: memories } = await (supabase as unknown)
-        .from("user_memory")
+      const { data: memories } = await fromTable("user_memory")
         .select("key, value")
         .eq("user_id", user.id)
         .in("category", ["preference", "profile"]);

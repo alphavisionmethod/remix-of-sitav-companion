@@ -3,6 +3,7 @@ import { SitaPageHeader } from "@/components/sita/SitaCard";
 import { Activity, Brain, Briefcase, DollarSign, Headphones, BarChart3, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -104,8 +105,7 @@ const MyActivity = () => {
     }
     // Load from audit_logs
     (async () => {
-      const { data } = await (supabase as unknown)
-        .from("audit_logs")
+      const { data } = await fromTable("audit_logs")
         .select("created_at, category")
         .eq("user_id", user.id)
         .gte("created_at", new Date(Date.now() - WEEKS * 7 * 86400000).toISOString())

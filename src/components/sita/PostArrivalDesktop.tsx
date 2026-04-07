@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import {
   Brain, Sparkles, Bell, Calendar, ArrowRight, CheckCircle,
@@ -65,8 +66,7 @@ export function PostArrivalDesktop({ onDismiss }: { onDismiss: () => void }) {
     if (!user) return;
     const load = async () => {
       try {
-        const { data } = await (supabase as unknown)
-          .from("user_memory")
+        const { data } = await fromTable("user_memory")
           .select("key, value")
           .eq("user_id", user.id);
 

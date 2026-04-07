@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, Bell, Smartphone, Monitor, Apple } from "lucide-react";
@@ -20,16 +21,14 @@ function useNotificationLaunchHonesty() {
     queryKey: ["nrc06-notification-launch-honesty-real"],
     queryFn: async () => {
       // Fetch delivery receipts
-      const { data: receipts, error: rErr } = await (supabase as unknown)
-        .from("notification_delivery_receipts")
+      const { data: receipts, error: rErr } = await fromTable("notification_delivery_receipts")
         .select("channel, delivery_status, created_at")
         .order("created_at", { ascending: false })
         .limit(500);
       if (rErr) throw rErr;
 
       // Fetch push subscriptions
-      const { data: tokens, error: tErr } = await (supabase as unknown)
-        .from("device_push_tokens")
+      const { data: tokens, error: tErr } = await fromTable("device_push_tokens")
         .select("id, platform, created_at");
       // table may not exist yet — graceful fallback
       const pushTokens = tErr ? [] : (tokens || []);

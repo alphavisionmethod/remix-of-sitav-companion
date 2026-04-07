@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   evaluatePolicy,
@@ -145,8 +146,7 @@ export function useDemoMode() {
     queryKey: ["demo-mode", user?.id],
     queryFn: async () => {
       if (!user) return true;
-      const { data, error } = await (supabase as unknown)
-        .from("profiles")
+      const { data, error } = await fromTable("profiles")
         .select("demo_mode")
         .eq("user_id", user.id)
         .maybeSingle();
@@ -159,8 +159,7 @@ export function useDemoMode() {
   const toggleDemoMode = useMutation({
     mutationFn: async (newValue: boolean) => {
       if (!user) throw new Error("Not authenticated");
-      const { error } = await (supabase as unknown)
-        .from("profiles")
+      const { error } = await fromTable("profiles")
         .update({ demo_mode: newValue } as never)
         .eq("user_id", user.id);
       if (error) throw error;
@@ -215,8 +214,7 @@ export function useApprovalQueue() {
     queryKey: ["approval-queue", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data, error } = await (supabase as unknown)
-        .from("approval_queue")
+      const { data, error } = await fromTable("approval_queue")
         .select("*")
         .eq("user_id", user.id)
         .eq("status", "pending")
@@ -230,8 +228,7 @@ export function useApprovalQueue() {
 
   const decide = useMutation({
     mutationFn: async ({ id, status, reason }: { id: string; status: "approved" | "rejected"; reason?: string }) => {
-      const { error } = await (supabase as unknown)
-        .from("approval_queue")
+      const { error } = await fromTable("approval_queue")
         .update({
           status,
           decided_at: new Date().toISOString(),

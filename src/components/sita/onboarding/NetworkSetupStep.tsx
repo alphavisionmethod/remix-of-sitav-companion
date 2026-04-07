@@ -48,7 +48,7 @@ function SignalBars({ strength }: { strength: number }) {
 }
 
 function detectConnectionType(): ConnectionType {
-  const conn = (navigator as Record<string, unknown>).connection;
+  const conn = navigator.connection;
   if (conn) {
     const t = conn.type as string;
     if (t === "ethernet") return "ethernet";
@@ -91,7 +91,7 @@ export function NetworkSetupStep({ onNext, onPrev, onStateChange }: Props) {
     if (type === "ethernet") {
       setConnectionState("ethernet_connected");
     }
-    const conn = (navigator as Record<string, unknown>).connection;
+    const conn = navigator.connection;
     if (conn) {
       const handler = () => setDetectedType(detectConnectionType());
       conn.addEventListener?.("change", handler);

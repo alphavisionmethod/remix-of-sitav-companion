@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
@@ -33,12 +34,10 @@ export function ConnectorSyncDashboard({ compact = false }: ConnectorSyncDashboa
     queryKey: ["connector-sync-dashboard", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data: registry } = await (supabase as unknown)
-        .from("connector_registry")
+      const { data: registry } = await fromTable("connector_registry")
         .select("*")
         .eq("user_id", user!.id);
-      const { data: accounts } = await (supabase as unknown)
-        .from("connector_accounts")
+      const { data: accounts } = await fromTable("connector_accounts")
         .select("*")
         .eq("user_id", user!.id);
 

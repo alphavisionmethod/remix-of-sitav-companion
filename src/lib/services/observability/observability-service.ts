@@ -45,8 +45,7 @@ export interface HealthSnapshot {
 
 /** Fetch all registered probes */
 export async function getRegisteredProbes(): Promise<RuntimeProbe[]> {
-  const { data } = await (supabase as unknown)
-    .from("runtime_probes")
+  const { data } = await fromTable("runtime_probes")
     .select("*")
     .order("probe_id");
   return (data ?? []) as RuntimeProbe[];
@@ -54,8 +53,7 @@ export async function getRegisteredProbes(): Promise<RuntimeProbe[]> {
 
 /** Fetch latest health snapshots */
 export async function getHealthSnapshots(): Promise<HealthSnapshot[]> {
-  const { data } = await (supabase as unknown)
-    .from("platform_health_snapshots")
+  const { data } = await fromTable("platform_health_snapshots")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(50);

@@ -44,7 +44,7 @@ export const SitaCompanionBar = () => {
   const recognitionRef = useRef<any>(null);
 
   const startVoice = useCallback(() => {
-    const SpeechRecognition = (window as Record<string, unknown>).SpeechRecognition || (window as Record<string, unknown>).webkitSpeechRecognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
       toast.error("Voice input not supported in this browser");
       return;
