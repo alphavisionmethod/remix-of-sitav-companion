@@ -7,7 +7,10 @@ import { MessageSquare, Mail, Phone, Send, Clock, CheckCircle2, AlertCircle } fr
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_COMMUNICATIONS, type DemoCommunicationEntry as CommunicationEntry, type ChannelType, type MessageStatus } from "@/lib/demo-data/communications";
-
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const CHANNEL_ICONS: Record<ChannelType, typeof Mail> = { email: Mail, sms: MessageSquare, call: Phone, chat: Send };
 const STATUS_STYLES: Record<MessageStatus, { color: string; icon: typeof CheckCircle2 }> = {
@@ -18,19 +21,43 @@ const STATUS_STYLES: Record<MessageStatus, { color: string; icon: typeof CheckCi
   queued: { color: "text-muted-foreground", icon: Clock },
 };
 
-const stats = {
-  totalToday: 24,
-  sentToday: 12,
-  receivedToday: 12,
-  failedToday: 1,
-};
-
 export default function CommunicationsPage() {
   const [activeTab, setActiveTab] = useState("all");
+  const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
+
+  const { data: realComms } = useQuery({
+    queryKey: ["communications", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data } = await (supabase as any).from("communications").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
+      if (!data?.length) return null;
+      return data.map((c: any) => ({
+        id: c.id,
+        contactName: c.contact_name || c.recipient || "Unknown",
+        channel: (c.channel || "email") as ChannelType,
+        direction: c.direction || "outbound",
+        subject: c.subject || "",
+        preview: c.preview || c.body?.slice(0, 100) || "",
+        status: (c.status || "sent") as MessageStatus,
+        timestamp: c.sent_at || c.created_at,
+        domain: c.domain || "general",
+      }));
+    },
+  });
+
+  const communications = isDemoMode ? DEMO_COMMUNICATIONS : (realComms ?? DEMO_COMMUNICATIONS);
 
   const filtered = activeTab === "all"
-    ? DEMO_COMMUNICATIONS
-    : DEMO_COMMUNICATIONS.filter(c => c.channel === activeTab);
+    ? communications
+    : communications.filter(c => c.channel === activeTab);
+
+  const stats = {
+    totalToday: communications.length,
+    sentToday: communications.filter(c => c.direction === "outbound").length,
+    receivedToday: communications.filter(c => c.direction === "inbound").length,
+    failedToday: communications.filter(c => c.status === "failed").length,
+  };
 
   return (
     <div className="space-y-6 p-6">

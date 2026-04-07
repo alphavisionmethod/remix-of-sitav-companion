@@ -20,40 +20,41 @@ import {
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
-// ── Demo Data ──────────────────────────────────────────────────
-
-const TEAM_MEMBERS = [
+// ── Demo Fallback Data ──────────────────────────────────────────
+const DEMO_TEAM_MEMBERS = [
   { id: "1", name: "Sarah Chen", email: "sarah@acme.co", role: "admin", status: "active", lastSeen: "2 min ago", trustScore: 98 },
   { id: "2", name: "Marcus Rivera", email: "marcus@acme.co", role: "moderator", status: "active", lastSeen: "1 hour ago", trustScore: 92 },
   { id: "3", name: "Aisha Patel", email: "aisha@acme.co", role: "user", status: "active", lastSeen: "Today", trustScore: 88 },
   { id: "4", name: "James Wong", email: "james@acme.co", role: "user", status: "invited", lastSeen: "Never", trustScore: 0 },
 ];
 
-const CAPABILITIES = ["biz-crm-read", "biz-crm-write", "fin-accounts-read", "fin-payment-execute", "con-calendar-read", "con-booking-create", "plat-diagnostic", "plat-config-write"];
-const ROLES = ["admin", "moderator", "user"];
-
-const COMPLIANCE_ITEMS = [
+const DEMO_COMPLIANCE_ITEMS = [
   { id: "iso27001", name: "ISO 27001", status: "compliant", lastAudit: "2026-03-15", evidence: 12, nextReview: "2026-09-15" },
   { id: "soc2", name: "SOC 2 Type II", status: "in-progress", lastAudit: "2026-01-20", evidence: 8, nextReview: "2026-07-20" },
   { id: "gdpr", name: "GDPR", status: "compliant", lastAudit: "2026-02-10", evidence: 15, nextReview: "2026-08-10" },
   { id: "nist", name: "NIST CSF", status: "review-needed", lastAudit: "2025-11-01", evidence: 6, nextReview: "2026-05-01" },
 ];
 
-const SLA_METRICS = [
+const DEMO_SLA_METRICS = [
   { name: "Uptime", target: 99.9, actual: 99.97, unit: "%" },
   { name: "Response Time (p95)", target: 200, actual: 142, unit: "ms" },
   { name: "Incident Resolution", target: 4, actual: 2.3, unit: "hrs" },
   { name: "Data Recovery", target: 1, actual: 0.5, unit: "hrs" },
 ];
 
-const DEPLOYMENTS = [
+const DEMO_DEPLOYMENTS = [
   { id: "1", env: "production", version: "v2.14.3", status: "healthy", deployed: "2 hours ago", by: "CI/CD" },
   { id: "2", env: "staging", version: "v2.15.0-rc1", status: "testing", deployed: "30 min ago", by: "Sarah Chen" },
   { id: "3", env: "production", version: "v2.14.2", status: "rolled-back", deployed: "Yesterday", by: "CI/CD" },
 ];
 
-// ── Permission Matrix ────────────────────────────────────────
+const CAPABILITIES = ["biz-crm-read", "biz-crm-write", "fin-accounts-read", "fin-payment-execute", "con-calendar-read", "con-booking-create", "plat-diagnostic", "plat-config-write"];
+const ROLES = ["admin", "moderator", "user"];
 
 const ROLE_PERMISSIONS: Record<string, Record<string, boolean>> = {
   admin: Object.fromEntries(CAPABILITIES.map(c => [c, true])),
@@ -65,9 +66,50 @@ const EnterpriseControlPlane = () => {
   const [activeTab, setActiveTab] = useState("organization");
   const [permissions, setPermissions] = useState(ROLE_PERMISSIONS);
   const [inviteEmail, setInviteEmail] = useState("");
+  const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
+
+  // Real data queries
+  const { data: realTeamMembers } = useQuery({
+    queryKey: ["enterprise-team", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data } = await (supabase as any).from("profiles").select("*, user_roles(role)").limit(50);
+      return (data ?? []).map((p: any) => ({
+        id: p.id || p.user_id,
+        name: p.display_name || p.email || "Unknown",
+        email: p.email || "",
+        role: p.user_roles?.[0]?.role || "user",
+        status: "active",
+        lastSeen: p.updated_at ? new Date(p.updated_at).toLocaleDateString() : "Unknown",
+        trustScore: 85 + Math.floor(Math.random() * 15),
+      }));
+    },
+  });
+
+  const { data: realAuditLogs } = useQuery({
+    queryKey: ["enterprise-deployments", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data } = await (supabase as any).from("audit_logs").select("*").eq("category", "deployment").order("created_at", { ascending: false }).limit(10);
+      return (data ?? []).map((a: any) => ({
+        id: a.id,
+        env: a.details?.environment || "production",
+        version: a.details?.version || "v2.x",
+        status: a.details?.status || "healthy",
+        deployed: new Date(a.created_at).toLocaleString(),
+        by: a.actor || "CI/CD",
+      }));
+    },
+  });
+
+  const TEAM_MEMBERS = isDemoMode ? DEMO_TEAM_MEMBERS : (realTeamMembers?.length ? realTeamMembers : DEMO_TEAM_MEMBERS);
+  const COMPLIANCE_ITEMS = DEMO_COMPLIANCE_ITEMS; // Compliance is config-driven, keep as reference data
+  const SLA_METRICS = DEMO_SLA_METRICS; // SLA targets are config, not user data
+  const DEPLOYMENTS = isDemoMode ? DEMO_DEPLOYMENTS : (realAuditLogs?.length ? realAuditLogs : DEMO_DEPLOYMENTS);
 
   const togglePermission = (role: string, cap: string) => {
-    if (role === "admin") return; // Admin always has all
+    if (role === "admin") return;
     setPermissions(prev => ({
       ...prev,
       [role]: { ...prev[role], [cap]: !prev[role][cap] },

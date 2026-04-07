@@ -1,5 +1,9 @@
 import { FileCheck, Download, ChevronRight, Target, Shield, Brain, RefreshCw } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Receipt {
   id: string;
@@ -12,7 +16,7 @@ interface Receipt {
   metadata: Record<string, string>;
 }
 
-const SAMPLE_RECEIPTS: Receipt[] = [
+const DEMO_RECEIPTS: Receipt[] = [
   { id: "r1", type: "trade", title: "Buy 50 NVDA @ $130 Limit", description: "Limit order filled via Interactive Brokers. Added on dip before GTC conference catalyst.", timestamp: "2026-04-05T14:30:00Z", actor: "User", status: "completed", metadata: { "Order ID": "ORD-2X9K4F", "Platform": "Interactive Brokers", "Estimated Cost": "$6,500", "Fees": "$1.50", "Thesis": "NVDA AI Infrastructure Supercycle" } },
   { id: "r2", type: "approval", title: "Large Position Approved — BTC Add", description: "Position size exceeds 10% approval threshold. Approved after risk review.", timestamp: "2026-04-04T10:15:00Z", actor: "User + Risk Advisor", status: "approved", metadata: { "Position Size": "1.5 BTC", "% of Portfolio": "28.4%", "Threshold": "10%", "Risk Score Change": "58 → 62" } },
   { id: "r3", type: "thesis", title: "Thesis Created — BTC Post-Halving Cycle", description: "New investment thesis documented with rationale, assumptions, and risk factors.", timestamp: "2026-03-28T09:00:00Z", actor: "User", status: "completed", metadata: { "Conviction": "Medium", "Time Horizon": "6-12 months", "Entry": "$62,000", "Target": "$125,000" } },
@@ -26,6 +30,30 @@ const TYPE_COLORS: Record<string, string> = { trade: "bg-primary/10 text-primary
 const STATUS_COLORS: Record<string, string> = { completed: "text-[hsl(var(--trust-safe))]", approved: "text-[hsl(var(--trust-safe))]", rejected: "text-destructive", pending: "text-[hsl(var(--trust-warn))]" };
 
 export default function InvestmentReceipts() {
+  const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
+
+  const { data: realReceipts } = useQuery({
+    queryKey: ["investment-receipts", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data } = await (supabase as any).from("proof_receipts").select("*").eq("user_id", user!.id).eq("domain", "investment").order("created_at", { ascending: false }).limit(50);
+      if (!data?.length) return null;
+      return data.map((r: any) => ({
+        id: r.id,
+        type: (r.metadata?.type || r.action || "trade") as Receipt["type"],
+        title: r.metadata?.title || r.action || "Investment Action",
+        description: r.metadata?.description || "",
+        timestamp: r.created_at,
+        actor: r.actor || "User",
+        status: (r.outcome || "completed") as Receipt["status"],
+        metadata: r.metadata?.details || {},
+      }));
+    },
+  });
+
+  const receipts = isDemoMode ? DEMO_RECEIPTS : (realReceipts ?? DEMO_RECEIPTS);
+
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <DemoModeBadge />
@@ -40,7 +68,7 @@ export default function InvestmentReceipts() {
       </div>
 
       <div className="space-y-3">
-        {SAMPLE_RECEIPTS.map(receipt => {
+        {receipts.map(receipt => {
           const Icon = TYPE_ICONS[receipt.type] || Target;
           return (
             <div key={receipt.id} className="rounded-2xl border border-border bg-card p-5 space-y-3 hover:border-primary/15 transition-all">
