@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ShieldAlert, Brain, AlertTriangle, Check, Clock, Eye, TrendingUp, Zap, MessageSquare } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useRiskScenarios } from "@/hooks/use-investment-office";
 
 const DEMO_BEHAVIORAL_SIGNALS = [
   { id: "bs1", type: "attention", severity: "moderate", title: "Attention Clustering on NVDA", detail: "You've checked NVDA 12 times this week (baseline: 3). This pattern correlates with loss-aversion monitoring after drawdowns.", suggestion: "Set a price alert at your limit order ($130) and reduce manual checking. The thesis is either valid or invalidated — checking the price doesn't change that.", timestamp: "Today", icon: "👁️" },
@@ -22,6 +23,7 @@ const FIREWALL_STATUS = {
 
 export default function BehavioralFirewall() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useRiskScenarios();
   const [filter, setFilter] = useState<string>("all");
   const filtered = DEMO_BEHAVIORAL_SIGNALS.filter(s => filter === "all" || s.type === filter);
 

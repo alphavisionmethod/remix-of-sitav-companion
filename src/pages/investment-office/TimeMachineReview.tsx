@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Clock, Brain, Check, X, AlertTriangle, ArrowRight, TrendingUp, TrendingDown } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 
 const DEMO_PAST_DECISIONS = [
   {
@@ -54,6 +55,7 @@ const DEMO_PAST_DECISIONS = [
 
 export default function TimeMachineReview() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useInvestmentDecisions();
   const [selected, setSelected] = useState(DEMO_PAST_DECISIONS[0]);
 
 

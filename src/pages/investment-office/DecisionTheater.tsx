@@ -5,6 +5,7 @@ import { Theater, Shield, AlertTriangle, Check, X, Brain, Target, Zap, Clock, Fi
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, SAMPLE_ORDERS, SAMPLE_SCENARIOS } from "@/hooks/useInvestmentOfficeData";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 
 const DEMO_READINESS_DIMENSIONS = [
   { label: "Research Completeness", score: 85, status: "ready" },
@@ -19,6 +20,7 @@ const DEMO_READINESS_DIMENSIONS = [
 
 export default function DecisionTheater() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useInvestmentDecisions();
   const navigate = useNavigate();
   const order = SAMPLE_ORDERS[0];
   const overallReadiness = Math.round(DEMO_READINESS_DIMENSIONS.reduce((s, d) => s + d.score, 0) / DEMO_READINESS_DIMENSIONS.length);

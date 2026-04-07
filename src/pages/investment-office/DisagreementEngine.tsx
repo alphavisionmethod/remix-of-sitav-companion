@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { GitCompareArrows, AlertTriangle, Check, HelpCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 
 const DEMO_DISAGREEMENTS = [
   {
@@ -32,6 +33,7 @@ const DEMO_DISAGREEMENTS = [
 
 export default function DisagreementEngine() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useInvestmentDecisions();
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <DemoModeBadge />

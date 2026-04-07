@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ShieldOff, AlertTriangle, Clock, Zap, TrendingDown, Globe } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useRiskScenarios } from "@/hooks/use-investment-office";
 
 const DEMO_TRADES = [
   {
@@ -33,6 +34,7 @@ const DEMO_TRADES = [
 
 export default function WhatWouldBreak() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useRiskScenarios();
   const [selected, setSelected] = useState(DEMO_TRADES[0]);
 
   return (

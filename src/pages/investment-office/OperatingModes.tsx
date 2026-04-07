@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Settings2, Eye, Search, Zap, Calendar, Activity, Shield } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 
 const DEMO_MODES = [
   {
@@ -45,6 +46,7 @@ const DEMO_MODES = [
 
 export default function OperatingModes() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const [activeMode, setActiveMode] = useState("quiet");
 
   return (

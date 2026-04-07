@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Landmark, Shield, TrendingUp, Wallet, Zap, Calendar, Target, Coins } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 
 const DEMO_PURPOSES = [
   { id: "ltw", label: "Long-Term Wealth", icon: <TrendingUp className="h-5 w-5" />, emoji: "🏦", allocated: 245000, target: 60, actual: 49.2, color: "bg-primary" },
@@ -25,6 +26,7 @@ const DEMO_RULES = [
 
 export default function CapitalPurpose() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <DemoModeBadge />

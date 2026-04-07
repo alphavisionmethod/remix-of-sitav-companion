@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Gauge, AlertTriangle, Check } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { usePortfolioPositions } from "@/hooks/use-investment-office";
 
 const DEMO_POSITIONS = [
   {
@@ -48,6 +49,7 @@ const DIMS: Array<{ key: keyof Pick<typeof DEMO_POSITIONS[0], "conviction" | "un
 
 export default function ConvictionEngine() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = usePortfolioPositions();
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <DemoModeBadge />

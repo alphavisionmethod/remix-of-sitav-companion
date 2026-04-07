@@ -3,6 +3,7 @@ import { Link2, Plus, RefreshCw, CheckCircle2, AlertTriangle, XCircle } from "lu
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PLATFORM_CONNECTIONS } from "@/hooks/useInvestmentOfficeData";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 
 const STATUS_CONFIG = {
   connected: { icon: CheckCircle2, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
@@ -23,6 +24,7 @@ const DEMO_AVAILABLE_PLATFORMS = [
 
 export default function PlatformConnections() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useMarketWatchlistItems();
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <DemoModeBadge />

@@ -6,10 +6,12 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
+import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 
 export default function InvestmentGate() {
+  const { data: liveData, isLoading } = useInvestmentDecisions();
   const navigate = useNavigate();
   const p = PORTFOLIO;
   const connected = PLATFORM_CONNECTIONS.filter(c => c.status === "connected").length;

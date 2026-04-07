@@ -5,6 +5,7 @@ import { Layers, Shield, TrendingUp, Zap, DollarSign, Target, AlertTriangle, Che
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 
 const DEMO_PURPOSES = [
   { id: "long-term", label: "Long-Term Wealth", icon: "🏛️", color: "hsl(var(--primary))", allocated: 45, value: PORTFOLIO.totalValue * 0.45, target: 50, risk: "moderate" },
@@ -24,6 +25,7 @@ const DEMO_SHOCK_ZONES = [
 
 export default function CapitalTwin() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   const navigate = useNavigate();
   const [view, setView] = useState<"purpose" | "exposure" | "readiness">("purpose");
 

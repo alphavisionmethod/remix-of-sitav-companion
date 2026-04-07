@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { FlaskConical, TrendingUp, TrendingDown, AlertTriangle, ChevronRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 
 const DEMO_EVENTS = [
   {
@@ -36,6 +37,7 @@ const DEMO_EVENTS = [
 
 export default function EventProbabilityLab() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useMarketWatchlistItems();
   const [selected, setSelected] = useState(DEMO_EVENTS[0]);
 
   return (

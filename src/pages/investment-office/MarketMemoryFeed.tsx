@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { History, TrendingUp, TrendingDown, AlertTriangle, Brain, RefreshCw, Zap, Shield, FileText, Globe } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 
 const DEMO_MEMORY_EVENTS = [
   { id: "m1", time: "2 hours ago", type: "holding", icon: "📉", title: "NVDA dipped -1.74%", detail: "No fundamental news. Likely positioning ahead of GTC conference catalyst.", severity: "info" },
@@ -27,6 +28,7 @@ const SEVERITY_STYLES: Record<string, string> = {
 
 export default function MarketMemoryFeed() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useMarketWatchlistItems();
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <DemoModeBadge />

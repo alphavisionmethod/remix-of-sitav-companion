@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ShieldCheck, AlertTriangle, Check, X, Clock, Search, Brain } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 
 const DEMO_PENDING_DECISIONS = [
   {
@@ -62,6 +63,7 @@ const VERDICT_CONFIG = {
 
 export default function DecisionReadiness() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useInvestmentDecisions();
   const [selected, setSelected] = useState(DEMO_PENDING_DECISIONS[0]);
   const vc = VERDICT_CONFIG[selected.verdict];
 

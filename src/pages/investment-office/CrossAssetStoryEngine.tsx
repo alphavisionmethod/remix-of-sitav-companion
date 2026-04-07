@@ -3,6 +3,7 @@ import { Network, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 
 const DEMO_NARRATIVES = [
   {
@@ -51,6 +52,7 @@ const DEMO_NARRATIVES = [
 
 export default function CrossAssetStoryEngine() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
 
   return (

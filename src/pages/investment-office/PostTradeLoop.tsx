@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { RotateCcw, TrendingUp, TrendingDown, Brain, Check, AlertTriangle, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { usePortfolioPositions } from "@/hooks/use-investment-office";
 
 const DEMO_ACTIVE_POSITIONS = [
   {
@@ -33,6 +34,7 @@ const DEMO_ACTIVE_POSITIONS = [
 
 export default function PostTradeLoop() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = usePortfolioPositions();
   const [selected, setSelected] = useState(DEMO_ACTIVE_POSITIONS[0]);
   const pnlPct = ((selected.currentPrice - selected.entryPrice) / selected.entryPrice * 100).toFixed(1);
   const isPositive = selected.currentPrice >= selected.entryPrice;

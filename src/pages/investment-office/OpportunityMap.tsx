@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS } from "@/hooks/useInvestmentOfficeData";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 
 const DEMO_THEMES = [
   { id: "ai", label: "AI Infrastructure", icon: "🤖", strength: 92, crowding: 75, uncertainty: 30, instruments: ["NVDA", "MSFT", "AAPL"], advisorView: "Strong secular theme. Crowding risk rising but fundamentals support continuation.", color: "hsl(var(--primary))" },
@@ -19,6 +20,7 @@ const DEMO_THEMES = [
 
 export default function OpportunityMap() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
   const [selectedTheme, setSelectedTheme] = useState(DEMO_THEMES[0]);
 

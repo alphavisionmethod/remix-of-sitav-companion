@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ScrollText, Shield, Check, AlertTriangle, Settings, Lock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 
 interface Rule {
   id: string;
@@ -45,6 +46,7 @@ const DEMO_CURRENT_VIOLATIONS = [
 
 export default function InvestmentConstitution() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const [filter, setFilter] = useState("all");
   const filtered = CONSTITUTION_RULES.filter(r => filter === "all" || r.category === filter);
 

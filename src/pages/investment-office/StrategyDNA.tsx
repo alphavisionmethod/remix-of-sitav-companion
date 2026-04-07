@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Dna, Info } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 
 const DEMO_DNA_DIMENSIONS = [
   { label: "Value-Tilted", score: 35, description: "Preference for undervalued assets based on fundamentals" },
@@ -27,6 +28,7 @@ const DEMO_SUGGESTIONS = [
 
 export default function StrategyDNA() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <DemoModeBadge />

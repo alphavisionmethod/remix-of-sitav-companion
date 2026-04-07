@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Users, Shield, Landmark, Heart, GraduationCap, Home, Check, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 
 const DEMO_FAMILY_MEMBERS = [
   { name: "You (Owner)", role: "Primary", permissions: "Full access", emoji: "👤" },
@@ -28,6 +29,7 @@ const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3
 
 export default function FamilyOffice() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <DemoModeBadge />
