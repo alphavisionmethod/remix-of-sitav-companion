@@ -121,7 +121,8 @@ export default function AR06ExecutionTraceExplorer() {
                 )}
               </div>
             </SitaCard>
-          ) : (
+            );
+          })() : (
             <SitaCard className="flex items-center justify-center h-[300px]">
               <div className="text-center">
                 <Search className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
