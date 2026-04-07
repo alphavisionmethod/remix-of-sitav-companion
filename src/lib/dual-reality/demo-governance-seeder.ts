@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromDynamicTable } from "@/lib/supabase-helpers";
 
 const SEED_KEY = "sita-demo-governance-seeded";
 
