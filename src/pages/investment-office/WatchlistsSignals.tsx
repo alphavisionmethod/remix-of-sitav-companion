@@ -11,12 +11,35 @@ export default function WatchlistsSignals() {
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
   const [activeList, setActiveList] = useState(WATCHLISTS[0].id);
+  const [specialView, setSpecialView] = useState<"none" | "advisor" | "risk" | "catalyst">("none");
   const current = WATCHLISTS.find(w => w.id === activeList) || WATCHLISTS[0];
 
   // Derive advisor-driven and risk watchlists
   const highRiskHoldings = PORTFOLIO.holdings.filter(h => h.weight > 12);
   const catalystInstruments = INSTRUMENTS.filter(i => i.catalysts.length > 0);
 
+  // Build display instruments based on active view
+  const displayInstruments = specialView === "advisor"
+    ? highRiskHoldings.map(h => h.instrument)
+    : specialView === "catalyst"
+    ? catalystInstruments
+    : specialView === "risk"
+    ? highRiskHoldings.map(h => h.instrument)
+    : current.instruments;
+
+  const displayTitle = specialView === "advisor" ? "Advisor Picks"
+    : specialView === "catalyst" ? "Catalyst Watch"
+    : specialView === "risk" ? "Risk Watch"
+    : current.name;
+
+  const handleSelectWatchlist = (id: string) => {
+    setActiveList(id);
+    setSpecialView("none");
+  };
+
+  const handleSpecialView = (view: "advisor" | "risk" | "catalyst") => {
+    setSpecialView(prev => prev === view ? "none" : view);
+  };
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
