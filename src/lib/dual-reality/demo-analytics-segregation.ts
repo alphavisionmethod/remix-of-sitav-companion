@@ -54,7 +54,7 @@ export async function recordDemoAction(action: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 
-  await fromTable("demo_actions").insert({
+  await fromDynamicTable("demo_actions").insert({
     user_id: user.id,
     scenario_id: action.scenarioId,
     feature_id: action.featureId,
@@ -79,7 +79,7 @@ export async function createDemoReceipt(receipt: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data, error } = await fromTable("demo_receipts").insert({
+  const { data, error } = await fromDynamicTable("demo_receipts").insert({
     user_id: user.id,
     scenario_id: receipt.scenarioId,
     feature_id: receipt.featureId,
