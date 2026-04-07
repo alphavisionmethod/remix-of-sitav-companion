@@ -36,7 +36,7 @@ const defaultScenarios: ScenarioInput[] = [
 ];
 
 export default function PolicySimulatorPage() {
-  const { isDemoMode } = useDataMode();
+  const gov = useGovernanceSimulator();
   const navigate = useNavigate();
   const [scenarios, setScenarios] = useState<ScenarioInput[]>(defaultScenarios);
   const [result, setResult] = useState<SimulationResult | null>(null);
