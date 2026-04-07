@@ -21,6 +21,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/tax")) return "tax";
   if (path.includes("/investment-office")) return "investment-office";
   if (path.includes("/bills")) return "bills";
   if (path.includes("/subscriptions")) return "subscriptions";
