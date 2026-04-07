@@ -270,6 +270,33 @@ export function AIT06Recommendations() {
           <p className="text-muted-foreground mt-1 text-sm">AI-generated findings and proposals with accept/reject/defer workflow</p>
         </div>
         <div className="flex gap-2">
+          <Button variant="default" size="sm" className="gap-1.5 text-xs" onClick={async () => {
+            try {
+              toast.info("Generating AI recommendations…");
+              const { data } = await supabase.functions.invoke("brain-core", {
+                body: { intent: "generate_recommendations", context: { scope: "all_domains", include_low_scoring: true } },
+              });
+              if (data?.recommendations) {
+                for (const rec of data.recommendations) {
+                  await supabase.from("ai_workforce_recommendations").insert({
+                    user_id: (await supabase.auth.getUser()).data.user?.id,
+                    title: rec.title,
+                    description: rec.description,
+                    domain: rec.domain || "general",
+                    severity: rec.severity || "medium",
+                    status: "pending",
+                    confidence: rec.confidence || 75,
+                    evidence_summary: rec.evidence || "",
+                    role_source: "brain-core",
+                  } as any);
+                }
+                qc.invalidateQueries({ queryKey: ["ai-workforce-recommendations"] });
+                toast.success(`${data.recommendations.length} recommendations generated`);
+              } else {
+                toast.success("Analysis complete — no new recommendations");
+              }
+            } catch { toast.error("AI recommendation generation failed"); }
+          }}><Zap className="h-3 w-3" />Generate AI Recommendations</Button>
           <Select value={filterDomain} onValueChange={setFilterDomain}>
             <SelectTrigger className="w-[140px] h-8 text-xs"><SelectValue /></SelectTrigger>
             <SelectContent>
