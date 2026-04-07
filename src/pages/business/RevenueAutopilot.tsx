@@ -19,6 +19,7 @@ import {
 import { MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES, MOCK_LEAKAGE_INPUT } from "@/lib/mock-data/revenue-autopilot";
 import { useRevenueLeaksData, useRecoveredValuesData, useRawOpportunities } from "@/hooks/use-business-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Derived data (fallback to mock, overridden in component) ──
 let MOCK_LEAKAGE = detectLeakage(MOCK_LEAKAGE_INPUT);
