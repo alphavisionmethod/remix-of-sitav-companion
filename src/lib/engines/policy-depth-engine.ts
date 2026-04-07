@@ -261,7 +261,7 @@ export class PolicyDepthEngine {
   hydrate(state: Record<string, unknown>): void {
     if (state.policies) this.policies = new Map(state.policies as [string, unknown][]);
     if (state.consents) this.consents = new Map(state.consents as [string, unknown][]);
-    if (state.auditLog) this.auditLog = state.auditLog as never;
-    if (state.freezes) this.freezes = state.freezes as never;
+    if (state.auditLog) this.auditLog = state.auditLog as typeof this.auditLog;
+    if (state.freezes) this.freezes = state.freezes as typeof this.freezes;
   }
 }

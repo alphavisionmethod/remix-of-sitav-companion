@@ -230,6 +230,6 @@ export class ScenarioIntelligenceEngine {
     return { simulations: this.simulations };
   }
   hydrate(state: Record<string, unknown>): void {
-    if (state.simulations) this.simulations = state.simulations as never;
+    if (state.simulations) this.simulations = state.simulations as typeof this.simulations;
   }
 }
