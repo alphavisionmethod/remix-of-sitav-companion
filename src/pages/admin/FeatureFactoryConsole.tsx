@@ -36,8 +36,6 @@ const FeatureFactoryConsole = () => {
     const artifacts = generateFeatureArtifacts(blueprint);
     const deps = mapDependencies(blueprint);
     toast.success(`Generated ${artifacts.readinessChecklist.length} checklist items, ${deps.totalCount} dependencies`);
-    console.log("[FeatureFactory] Artifacts:", artifacts);
-    console.log("[FeatureFactory] Dependencies:", deps);
   };
 
   return (
