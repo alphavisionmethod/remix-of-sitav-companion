@@ -27,6 +27,8 @@ import type { ServiceReliabilityView } from "@/packages/contracts";
 import type { DriftDetection, VerificationOutcome } from "@/packages/reality-contracts";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DegradedStatePanel } from "@/components/reality/DegradedStatePanel";
+import { DiagnosticsContextBar } from "@/components/admin-os/DiagnosticsContextBar";
 
 /* Count-up KPI tile for observability */
 const ObsKPITile = ({ label, value, ok, icon: Icon }: { label: string; value: string; ok: boolean; icon: React.ElementType }) => {
