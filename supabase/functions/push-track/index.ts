@@ -34,11 +34,10 @@ Deno.serve(async (req) => {
     const updateData: Record<string, string> = {};
 
     if (action === "clicked") {
-      updateData.clicked_at = now;
-      updateData.delivery_status = "clicked";
+      updateData.opened_at = now;
+      updateData.status = "clicked";
     } else {
-      updateData.dismissed_at = now;
-      updateData.delivery_status = "dismissed";
+      updateData.status = "dismissed";
     }
 
     const { error } = await supabase
