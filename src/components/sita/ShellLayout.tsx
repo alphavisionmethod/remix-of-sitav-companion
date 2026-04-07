@@ -17,6 +17,9 @@ import { QuickAddWizard, QuickAddFAB } from "./QuickAddWizard";
 import { CopilotBar } from "./CopilotBar";
 import { InteractionTracker } from "./InteractionTracker";
 import { ErrorBoundary } from "./ErrorBoundary";
+import { DevicePresenceIndicator } from "./DevicePresenceIndicator";
+import { SuccessCelebration } from "./SuccessCelebration";
+import { ModeResolutionBanner } from "@/components/reality/ModeResolutionBanner";
 import { DesktopEntryCeremony } from "./DesktopEntryCeremony";
 import { PWAInstallPrompt } from "./PWAInstallPrompt";
 import { ContinuityBanner } from "./ContinuityBanner";
@@ -188,6 +191,21 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
       {/* Trust Transition Indicator */}
       <TrustTransitionIndicator />
+
+      {/* Device Presence Indicator — status bar */}
+      <div className="fixed bottom-20 left-4 z-50 hidden lg:block">
+        <DevicePresenceIndicator />
+      </div>
+
+      {/* Mode Resolution Banner — reality mode info */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 px-4 pb-1 pointer-events-none">
+        <div className="max-w-md mx-auto pointer-events-auto">
+          <ModeResolutionBanner />
+        </div>
+      </div>
+
+      {/* Success Celebration overlay — triggered via events */}
+      <SuccessCelebration show={false} />
 
       {/* Behavioral Interaction Tracker — invisible */}
       <InteractionTracker />

@@ -18,6 +18,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { NotificationInbox } from "@/components/notifications/NotificationInbox";
 
 const fadeUp = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -169,6 +170,7 @@ export default function AdminDashboard() {
           <p className="text-sm text-muted-foreground">System overview · {now.toLocaleDateString()} {now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
         </div>
         <div className="flex items-center gap-2">
+          <NotificationInbox />
           <Badge variant="outline" className="gap-1.5 text-emerald-500 border-emerald-500/30">
             <StatusDot status={(openIncidents || 0) > 0 ? "warning" : "healthy"} />
             {(openIncidents || 0) > 0 ? `${openIncidents} Open Incidents` : "All Systems Operational"}

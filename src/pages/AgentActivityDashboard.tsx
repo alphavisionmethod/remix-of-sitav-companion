@@ -24,6 +24,9 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { AIEmbeddedRecommendation } from "@/components/ai/AIEmbeddedRecommendation";
+import { AIResponsePanel } from "@/components/ai/AIResponsePanel";
+import { DataLoadingWrapper } from "@/components/sita/DataLoadingWrapper";
 
 // ── Fleet Overview Hero ─────────────────────────────────────────
 
