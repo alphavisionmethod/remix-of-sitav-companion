@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { getMaturityGrade, getMaturityLabel } from "@/lib/delivery-methodology/maturity-model";
 import { CANONICAL_DOMAIN_PACKS } from "@/lib/delivery-methodology/domain-packs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const gradeColors: Record<string, string> = {
   S: "text-yellow-400 bg-yellow-400/10", A: "text-green-400 bg-green-400/10",

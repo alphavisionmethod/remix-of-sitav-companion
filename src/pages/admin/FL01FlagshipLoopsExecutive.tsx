@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 function TruthRing({ pct, size = 80 }: { pct: number; size?: number }) {
   const radius = (size - 8) / 2;
@@ -76,6 +77,7 @@ function DimensionBar({ label, score, icon }: { label: string; score: number; ic
 }
 
 export default function FL01FlagshipLoopsExecutive() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { data: loops, isLoading } = useQuery({

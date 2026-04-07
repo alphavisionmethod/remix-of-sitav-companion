@@ -11,6 +11,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
 import { toast } from "sonner";
 
@@ -71,6 +72,7 @@ const POLICIES = [
 ];
 
 export default function ConnectorGovernanceCenter() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("connectors");
   const { user } = useAuth();
   const queryClient = useQueryClient();

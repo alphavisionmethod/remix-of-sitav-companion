@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useGatewayStats, useTaskRequests, useProviderHealth } from "@/hooks/use-sag-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SAGOverview = () => {
   const { data: stats } = useGatewayStats();

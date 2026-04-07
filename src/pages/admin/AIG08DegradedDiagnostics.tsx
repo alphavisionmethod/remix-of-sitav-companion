@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AlertOctagon, KeyRound, Gauge, ServerCrash, DollarSign, FileWarning, Ban } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { getDegradedDiagnostics, type DegradedDiagnostic } from "@/lib/services/ai-gateway/diagnostics.service";
 
 const CATEGORY_META: Record<DegradedDiagnostic["category"], { label: string; icon: React.ReactNode; color: string }> = {
@@ -25,6 +26,7 @@ const SEVERITY_VARIANT: Record<string, string> = {
 };
 
 export default function AIG08DegradedDiagnostics() {
+  const { isDemoMode } = useDataMode();
   const { data: diagnostics = [], isLoading } = useQuery({
     queryKey: ["ai-degraded-diagnostics"],
     queryFn: getDegradedDiagnostics,

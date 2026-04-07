@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useFeatureSpecs, useCreateSpec } from "@/hooks/use-fip-data";
 import { COMPLIANCE_SECTIONS } from "@/lib/fip/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SPEC_SECTIONS = [
   'outcome_statement', 'capability_map', 'owner_map', 'surface_map',

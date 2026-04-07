@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useGoogleProviderFamily } from "@/hooks/use-google-provider-family";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import type { GoogleCapabilityKey } from "@/lib/services/google-provider-family/types";
 import { GOOGLE_API_REQUIREMENTS, GOOGLE_OAUTH_CLIENT_TEMPLATES } from "@/lib/services/google-provider-family/types";
 
@@ -32,6 +33,7 @@ const CAPABILITY_ICONS: Record<string, React.ReactNode> = {
 };
 
 export default function GoogleProviderFamilyDashboard() {
+  const { isDemoMode } = useDataMode();
   const {
     isLoading, state, identity, connectors,
     oauthClients, scopePolicies, launchHonesty,

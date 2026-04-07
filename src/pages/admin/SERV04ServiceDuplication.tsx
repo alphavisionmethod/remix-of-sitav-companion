@@ -9,6 +9,7 @@ import { SERVICE_OWNERSHIP_REGISTRY, DUPLICATE_CLUSTER_RESOLUTIONS, type Cluster
 import { getDuplicateActionPatterns, getRoutesWithShadowRisk } from "@/lib/services/service-registry/route-to-service-inventory";
 import { AlertTriangle, Copy, Ghost, Shield, CheckCircle, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface ShadowPattern {
   pattern: string;
@@ -122,6 +123,7 @@ function ClusterResolutionCard({ cluster }: { cluster: ClusterResolution }) {
 }
 
 export default function SERV04ServiceDuplication() {
+  const { isDemoMode } = useDataMode();
   const duplicateActions = getDuplicateActionPatterns();
   const shadowRoutes = getRoutesWithShadowRisk();
   const highRiskDomains = SERVICE_OWNERSHIP_REGISTRY.filter(

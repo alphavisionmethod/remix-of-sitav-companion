@@ -5,8 +5,10 @@ import { Rocket, CheckCircle, AlertTriangle, XCircle, Beaker } from "lucide-reac
 import { db } from "@/integrations/supabase/db";
 import { DEVICE_ROADMAP } from "@/packages/contracts/msa/device-family-contract";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DWE07DeviceLaunchHonestyBoard() {
+  const { isDemoMode } = useDataMode();
   const [readiness, setReadiness] = useState<any[]>([]);
 
   useEffect(() => {

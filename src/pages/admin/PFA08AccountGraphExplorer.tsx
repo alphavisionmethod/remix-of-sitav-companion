@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Network, User, Link2, CheckCircle, XCircle, Shield, ScrollText } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import {
   getAccountNodes,
   getAccountEdges,
@@ -16,6 +17,7 @@ import {
 } from "@/lib/services/identity-auth";
 
 export default function PFA08AccountGraphExplorer() {
+  const { isDemoMode } = useDataMode();
   const { data: nodes = [] } = useQuery({
     queryKey: ["account-nodes"],
     queryFn: getAccountNodes,

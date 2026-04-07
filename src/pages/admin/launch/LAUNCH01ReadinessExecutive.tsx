@@ -8,6 +8,7 @@ import { Rocket, RefreshCw, Shield, AlertTriangle, CheckCircle, XCircle, Target 
 import { computeLaunchReadiness, type LaunchReadinessResult } from "@/lib/services/launch-readiness/launch-readiness-engine";
 import { computeTruthIndices } from "@/lib/services/truth-indices/truth-index-aggregator";
 import { cn } from "@/lib/utils";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const MODE_COLORS: Record<string, string> = {
   public_launch_ready: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
@@ -19,6 +20,7 @@ const MODE_COLORS: Record<string, string> = {
 };
 
 export default function LAUNCH01ReadinessExecutive() {
+  const { isDemoMode } = useDataMode();
   const [result, setResult] = useState<LaunchReadinessResult | null>(null);
   const [loading, setLoading] = useState(true);
 

@@ -11,6 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const mockAgents = [
   { id: "a-1", name: "Finance Advisor", composite: 82, quality: 88, costEff: 76, acceptance: 0.92, override: 0.08, falsePositive: 0.03, verification: 0.95, reuse: 0.45, downstream: 78, trend: "improving" },

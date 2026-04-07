@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Grid3X3, Shield, Lock, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const riskColors: Record<string, string> = {
   low: "bg-green-500/20 text-green-400",
@@ -23,6 +24,7 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function ISA05ScopePolicyMatrixBoard() {
+  const { isDemoMode } = useDataMode();
   const { data: scopes = [] } = useQuery({
     queryKey: ["isa05-scope-policy"],
     queryFn: async () => {

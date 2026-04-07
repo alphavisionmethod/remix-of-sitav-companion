@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertTriangle, TrendingDown, Activity, BellOff } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useFatigueProfiles } from "@/hooks/use-notification-calm-data";
 import { DEMO_SUPPRESSION_ACTIONS, DEMO_OVERLOAD_TRIGGERS } from "@/lib/demo-data/notification-calm";
 

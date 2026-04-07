@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRolloutRecords } from "@/hooks/use-fip-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ROLLOUT_RINGS = ['dev', 'staging', 'internal-shadow', 'internal-real', 'limited-tenant', 'premium', 'ga'];
 const KILL_CLASSES = ['ui-hide', 'side-effects-disabled', 'connector-writes-disabled', 'recurring-disabled', 'approval-paused', 'full-workflow-disabled'];

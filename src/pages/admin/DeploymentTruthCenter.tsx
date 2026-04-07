@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type GateStatus = "passed" | "failed" | "pending" | "skipped" | "blocked";
 type RingStatus = "deployed" | "canary" | "staging" | "blocked" | "pending";
@@ -75,6 +76,7 @@ const RING_COLORS: Record<RingStatus, string> = {
 };
 
 export default function DeploymentTruthCenter() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("rings");
 
   const passedGates = PROMOTION_GATES.filter(g => g.status === "passed").length;

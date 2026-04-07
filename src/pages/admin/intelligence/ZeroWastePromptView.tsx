@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const mockProfiles = [
   { domain: "engineering", taskType: "root-cause", version: "v3.2", maxContext: "B", packetDriven: true, redundancy: 8, costReduction: 42, qualityImpact: 2, active: true },

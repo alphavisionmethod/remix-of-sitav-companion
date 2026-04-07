@@ -17,6 +17,7 @@ import { Shield, Eye, Cpu, CheckCircle2, Plus, Trash2, Search, BarChart3, Pencil
 import type { RealityClassification } from "@/lib/persistence/reality-classification-persistence";
 import { SCOPE_LEVELS, EVIDENCE_SIGNALS, PROGRESSION_REQUIREMENTS, type ScopeLevel, type LaunchImpact } from "@/lib/persistence/reality-classification-persistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const CLASSIFICATION_CONFIG = {
   presentational: { label: "Presentational", color: "bg-muted text-muted-foreground", icon: Eye, description: "UI shell — no backing logic or data truth" },
@@ -370,6 +371,7 @@ function ProgressionCard({ data }: { data: RealityClassification[] }) {
 }
 
 export default function RealityClassificationMatrix() {
+  const { isDemoMode } = useDataMode();
   const { data, isLoading } = useRealityClassifications();
   const upsert = useUpsertClassification();
   const remove = useDeleteClassification();

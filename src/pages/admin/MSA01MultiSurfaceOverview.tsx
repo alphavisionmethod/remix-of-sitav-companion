@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Globe, Smartphone, Monitor, Glasses, Mic, RefreshCw, CheckCircle, XCircle, Layers, AlertTriangle, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const surfaceIcons: Record<string, React.ReactNode> = {
   web: <Globe className="h-5 w-5" />, mobile_ios: <Smartphone className="h-5 w-5" />,
@@ -23,6 +24,7 @@ const stageColors: Record<string, string> = {
 };
 
 export default function MSA01MultiSurfaceOverview() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: surfaces = [] } = useQuery({

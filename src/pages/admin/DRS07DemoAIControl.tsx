@@ -3,8 +3,10 @@ import { Badge } from "@/components/ui/badge";
 import { Brain, Zap, Database, DollarSign } from "lucide-react";
 import { evaluateAIPolicy } from "@/lib/dual-reality/demo-policy-engine";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DRS07DemoAIControl() {
+  const { isDemoMode } = useDataMode();
   const demoAI = evaluateAIPolicy("demo");
   const realAI = evaluateAIPolicy("real");
   const sandboxAI = evaluateAIPolicy("sandbox");

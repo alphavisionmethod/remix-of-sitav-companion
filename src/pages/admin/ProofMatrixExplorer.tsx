@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface ProofRecord {
   id: string;
@@ -61,6 +62,7 @@ function timeAgo(d: string) {
 }
 
 export default function ProofMatrixExplorer() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("proofs");
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");

@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProviderHealth } from "@/hooks/use-sag-data";
 import { PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SAGProviderHealth = () => {
   const { data: health = [], isLoading } = useProviderHealth();

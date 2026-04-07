@@ -14,6 +14,7 @@ import {
   FileText, PenSquare, Eye, Layers
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface FeatureReality {
   feature: string;
@@ -111,6 +112,7 @@ const pathColor = (p: string) => {
 };
 
 export default function DomainRealityBoard() {
+  const { isDemoMode } = useDataMode();
   const [selectedDomain, setSelectedDomain] = useState(0);
   const domain = DOMAINS[selectedDomain];
 

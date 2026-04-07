@@ -5,10 +5,12 @@ import { registerAllProviders } from "@/lib/dual-reality/providers";
 import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
 import { Plug, CheckCircle2, AlertCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ALL_DOMAINS: ProviderDomain[] = ["boardroom", "investment", "money", "business", "workspace", "owner", "calendar", "advisor"];
 
 export default function DRS05ProviderConsole() {
+  const { isDemoMode } = useDataMode();
   registerAllProviders();
   const { mode } = useRealityModeSafe();
   const registered = getRegisteredDomains();

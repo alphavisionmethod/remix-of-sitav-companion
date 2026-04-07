@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { useComplianceRecords } from "@/hooks/use-fip-data";
 import { COMPLIANCE_SECTIONS, READINESS_STAGES } from "@/lib/fip/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const FIPComplianceBoard = () => {
   const { data: records = [], isLoading } = useComplianceRecords();

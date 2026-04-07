@@ -8,6 +8,7 @@ import {
   FileJson, BookOpen, GitBranch, Users, Sparkles, RotateCcw, Eye
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type ExportMode = "json" | "markdown" | "approval" | "pr-ready" | "investor";
 

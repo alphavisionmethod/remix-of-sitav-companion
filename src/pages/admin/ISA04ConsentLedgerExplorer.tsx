@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ScrollText, Shield, Plug, ArrowUpCircle, XCircle, CheckCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const typeColors: Record<string, string> = {
   identity_link: "bg-blue-500/20 text-blue-400",
@@ -17,6 +18,7 @@ const typeColors: Record<string, string> = {
 };
 
 export default function ISA04ConsentLedgerExplorer() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
 
   const { data: consents = [] } = useQuery({

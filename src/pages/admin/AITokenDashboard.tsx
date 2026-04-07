@@ -9,12 +9,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Gauge, DollarSign, Cpu, TrendingUp, Users, Zap, Plus, Trash2, Shield, Loader2 } from "lucide-react";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import {
   useBudgetPolicies, useBudgetSummary, useUsageLedger, useDailyAggregation,
   useCreateBudgetPolicy, useUpdateBudgetPolicy, useDeleteBudgetPolicy,
 } from "@/hooks/use-ai-budget-data";
 
 export default function AITokenDashboard() {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading: adminLoading } = useRequireAdmin();
   const { data: policies } = useBudgetPolicies();
   const { data: summary } = useBudgetSummary();

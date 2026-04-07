@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatDistanceToNow } from "date-fns";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 function useRecommendationExecution() {
   return useQuery({
@@ -32,6 +33,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function REX03RecommendationExecution() {
+  const { isDemoMode } = useDataMode();
   const { data: recs, isLoading } = useRecommendationExecution();
 
   return (

@@ -13,6 +13,7 @@ import { getWorkforceRoles, getWorkforceStats } from "@/lib/services/ai-workforc
 import { DEFAULT_THRESHOLDS, ROLE_BUDGET_POLICIES } from "@/lib/services/ai-workforce/admin-budget-routing-policy";
 import { ClipboardCheck, Shield, DollarSign, Zap, CheckCircle, AlertTriangle, Eye, Lock, Repeat, FileText, BarChart3, Users } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface CheckItem {
   id: string;
@@ -25,6 +26,7 @@ interface CheckItem {
 }
 
 export default function AITSetupChecklist() {
+  const { isDemoMode } = useDataMode();
   const { data: roles = [] } = useQuery({ queryKey: ["setup-roles"], queryFn: getWorkforceRoles });
   const { data: stats } = useQuery({ queryKey: ["setup-stats"], queryFn: getWorkforceStats });
   const [manualChecks, setManualChecks] = useState<Record<string, boolean>>({});

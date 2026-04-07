@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_INCIDENTS, type DemoIncident as Incident, type Severity, type IncidentStatus } from "@/lib/demo-data/incidents";
 
 const SEVERITY_CONFIG: Record<Severity, { color: string; bg: string; border: string }> = {
@@ -39,6 +40,7 @@ function timeAgo(d: string) {
 }
 
 export default function IncidentCommandCenter() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("active");
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState<string | null>(null);

@@ -5,9 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Server, Shield, Activity, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { getProviderRegistry, getProviderHealth, getDistinctProviders } from "@/lib/services/ai-gateway";
 
 export default function AIG01ProviderRegistry() {
+  const { isDemoMode } = useDataMode();
   const { data: registry = [] } = useQuery({
     queryKey: ["ai-provider-registry"],
     queryFn: getProviderRegistry,

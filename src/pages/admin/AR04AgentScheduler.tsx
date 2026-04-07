@@ -9,8 +9,10 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Bot, CheckCircle, XCircle, Clock, AlertTriangle, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function AR04AgentScheduler() {
+  const { isDemoMode } = useDataMode();
   const { data: agentJobs = [] } = useQuery({
     queryKey: ["agent-scheduled-jobs"],
     queryFn: async () => {

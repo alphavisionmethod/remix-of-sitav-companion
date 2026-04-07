@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Radio, CheckCircle2, Wifi, Smartphone, Loader2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useWearableProviders } from "@/hooks/use-health-signal-data";
 import { DEMO_SIGNAL_PROVIDERS } from "@/lib/demo-data/health-signals";
 

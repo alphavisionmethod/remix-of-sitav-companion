@@ -19,6 +19,7 @@ import { AIWorkforceInvocationPanel } from "@/components/ai/AIWorkforceInvocatio
 import { Terminal, Play, Loader2, DollarSign, AlertTriangle, Clock, Save, History, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
 
 const TASK_TYPES = [
@@ -47,6 +48,7 @@ const SCOPE_DOMAINS = [
 ];
 
 export default function AIT03TaskInvocation() {
+  const { isDemoMode } = useDataMode();
   const [selectedRole, setSelectedRole] = useState("");
   const [selectedTask, setSelectedTask] = useState("");
   const [budgetPosture, setBudgetPosture] = useState("economy_admin");

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useInferenceReceipts, useTaskRequests } from "@/hooks/use-sag-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SAGReceiptExplorer = () => {
   const { data: receipts = [], isLoading } = useInferenceReceipts();

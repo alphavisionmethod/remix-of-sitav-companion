@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { ShieldCheck, AlertTriangle, XCircle, Activity, Route, Brain, FileCheck } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const LT01BehavioralTruthOverview = () => {
   const { data: routeTruth } = useQuery({

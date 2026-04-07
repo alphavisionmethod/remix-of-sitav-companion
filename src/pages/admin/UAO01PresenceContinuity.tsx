@@ -8,10 +8,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Radio, RefreshCw, Monitor, Smartphone, Watch, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const surfaceIcons: Record<string, React.ReactNode> = { web: <Monitor className="h-4 w-4" />, phone: <Smartphone className="h-4 w-4" />, watch: <Watch className="h-4 w-4" /> };
 
 export default function UAO01PresenceContinuity() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: presence = [] } = useQuery({

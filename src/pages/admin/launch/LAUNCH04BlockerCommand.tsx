@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { AlertOctagon, ArrowUp, Target } from "lucide-react";
 import { computeLaunchReadiness, type LaunchBlockerEntry } from "@/lib/services/launch-readiness/launch-readiness-engine";
 import { cn } from "@/lib/utils";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SEV_COLORS: Record<string, string> = {
   critical: "bg-destructive/15 text-destructive border-destructive/30",
@@ -14,6 +15,7 @@ const SEV_COLORS: Record<string, string> = {
 };
 
 export default function LAUNCH04BlockerCommand() {
+  const { isDemoMode } = useDataMode();
   const [blockers, setBlockers] = useState<LaunchBlockerEntry[]>([]);
   useEffect(() => { const r = computeLaunchReadiness(null); setBlockers(r.blockers); }, []);
 

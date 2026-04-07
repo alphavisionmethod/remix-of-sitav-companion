@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface UserRecord {
   id: string;
@@ -23,6 +24,7 @@ interface UserRecord {
 }
 
 export default function UserManagement() {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading: adminLoading } = useRequireAdmin();
   const [search, setSearch] = useState("");
   const queryClient = useQueryClient();

@@ -14,6 +14,7 @@ import {
 import { generateChiefSynthesis } from "@/lib/ai-engineering";
 import { getIntegrationHealthSummary, getIntegrationsByCategory } from "@/lib/ai-engineering/platform-integration";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ═══════════════════════════════════════════════════════════════
 // DATA — Engineering Overview Band

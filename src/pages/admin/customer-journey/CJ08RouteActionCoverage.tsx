@@ -12,6 +12,7 @@ import { useRouteCoverageSummary } from "@/lib/customer-journey/journey-ingestio
 import { Grid3X3, Loader2, Database, AlertTriangle, BarChart3 } from "lucide-react";
 import { toast } from "sonner";
 import { useState, useMemo } from "react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PRIORITY_COLORS: Record<string, string> = {
   p0: "bg-destructive/15 text-destructive border-destructive/30",
@@ -22,6 +23,7 @@ const PRIORITY_COLORS: Record<string, string> = {
 const WEAK_THRESHOLD = 30;
 
 export default function CJ08RouteActionCoverage() {
+  const { isDemoMode } = useDataMode();
   const { data: actions, isLoading: actionsLoading } = useActionInventory();
   const { data: coverage, isLoading: coverageLoading } = useRouteCoverage();
   const { data: coverageSummary } = useRouteCoverageSummary();

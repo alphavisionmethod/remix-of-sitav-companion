@@ -6,10 +6,12 @@ import { Switch } from "@/components/ui/switch";
 import { Loader2, Shield, ShieldOff, Zap, FileText } from "lucide-react";
 import { getKillSwitchState, setKillSwitch, loadKillSwitches } from "@/lib/dual-reality/demo-policy-engine";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 
 export default function DRS06DemoPolicySafety() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
   const [killState, setKillState] = useState(getKillSwitchState());
 

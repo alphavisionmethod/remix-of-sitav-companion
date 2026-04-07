@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Eye, Shield, Layers, BarChart3, Activity } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 function useModeSummary() {
   return useQuery({
@@ -28,6 +29,7 @@ function useModeSummary() {
 }
 
 export default function DRS01RealityModeOverview() {
+  const { isDemoMode } = useDataMode();
   const { data, isLoading } = useModeSummary();
   if (isLoading) return <div className="flex items-center justify-center p-12"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>;
 

@@ -12,6 +12,7 @@ import { runAllProbes, getOverallHealth, type ProbeResult } from "@/lib/observab
 import { getCostSummary, type CostSummary } from "@/lib/observability/cost-governance";
 import { getLogBuffer, type LogEntry } from "@/lib/observability/structured-logger";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusColor = (s: string) => {
   switch (s) {
@@ -23,6 +24,7 @@ const statusColor = (s: string) => {
 };
 
 export default function SystemHealthDashboard() {
+  const { isDemoMode } = useDataMode();
   const [probes, setProbes] = useState<ProbeResult[]>([]);
   const [overallHealth, setOverallHealth] = useState<string>("unknown");
   const [costSummary, setCostSummary] = useState<CostSummary | null>(null);

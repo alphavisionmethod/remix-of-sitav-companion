@@ -7,6 +7,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useQualityFloors } from "@/lib/hooks/useIntelligencePersistence";
 import { DEFAULT_QUALITY_FLOORS } from "@/lib/strategic-intelligence/quality-floor-engine";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const enfColors: Record<string,string> = { pass: "text-emerald-400 bg-emerald-500/10", block: "text-rose-400 bg-rose-500/10", escalate: "text-amber-400 bg-amber-500/10", reroute: "text-blue-400 bg-blue-500/10", warn: "text-amber-400 bg-amber-500/10" };
 

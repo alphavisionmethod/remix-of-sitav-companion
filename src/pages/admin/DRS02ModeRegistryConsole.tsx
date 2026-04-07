@@ -5,8 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Settings } from "lucide-react";
 import { CANONICAL_MODES, type RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DRS02ModeRegistryConsole() {
+  const { isDemoMode } = useDataMode();
   const modes = Object.values(CANONICAL_MODES);
 
   const { data: truthLabels } = useQuery({

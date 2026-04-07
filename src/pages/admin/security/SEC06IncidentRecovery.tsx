@@ -2,6 +2,7 @@ import { Shield, AlertTriangle, ToggleLeft, Database, ArrowUpDown } from "lucide
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   INCIDENT_SEVERITY_TAXONOMY,
   KILL_SWITCHES,
   BACKUP_RECOVERY_PLAN,
@@ -18,6 +19,7 @@ const severityColor = (level: string) => {
 };
 
 export default function SEC06IncidentRecovery() {
+  const { isDemoMode } = useDataMode();
   const publicBlockers = MISSING_TO_SECURE_LAUNCH.filter(g => g.blocksPublicLaunch);
 
   return (

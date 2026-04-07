@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Bell, CheckCircle, XCircle, Ban, Clock, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusConfig: Record<string, { color: string; icon: React.ReactNode }> = {
   sent: { color: "bg-emerald-500/15 text-emerald-400", icon: <CheckCircle className="h-3 w-3" /> },
@@ -20,6 +21,7 @@ const statusConfig: Record<string, { color: string; icon: React.ReactNode }> = {
 };
 
 export default function NOT03DeliveryReceiptsExplorer() {
+  const { isDemoMode } = useDataMode();
   const { data: receipts = [], isLoading } = useQuery({
     queryKey: ["notification-delivery-receipts"],
     queryFn: async () => {

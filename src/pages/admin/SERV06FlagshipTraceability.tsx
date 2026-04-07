@@ -10,8 +10,10 @@ import { getDomainsByFlagshipLoop, SERVICE_OWNERSHIP_REGISTRY } from "@/lib/serv
 import { FLAGSHIP_LOOP_SEEDS } from "@/lib/services/flagship-loops/flagship-loop-service";
 import { Layers, Route, Database, AlertTriangle, CheckCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function SERV06FlagshipTraceability() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="space-y-6 p-6" data-testid="serv06-board">
       <DemoModeBadge />

@@ -8,8 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { useCustomerJourneyRuns } from "@/lib/customer-journey/journey-hooks";
 import { JOURNEY_STATUS_CONFIG } from "@/lib/customer-journey/journey-registry";
 import { Bug, Loader2 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function CJ06BrokenClicksExplorer() {
+  const { isDemoMode } = useDataMode();
   const { data: runs, isLoading } = useCustomerJourneyRuns();
 
   const brokenRuns = (runs ?? []).filter((r: any) =>

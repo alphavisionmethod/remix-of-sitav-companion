@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface PolicyDraft {
   id: string;
@@ -72,6 +73,7 @@ const STATUS_CONFIG: Record<string, { color: string }> = {
 };
 
 export default function PolicySimulator() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("drafts");
   const [selectedPolicy, setSelectedPolicy] = useState<string | null>("POL-001");
   const [undoStack] = useState<string[]>(["Initial draft"]);

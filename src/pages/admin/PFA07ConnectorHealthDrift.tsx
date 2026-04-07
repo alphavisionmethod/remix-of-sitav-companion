@@ -8,11 +8,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Activity, RefreshCw, AlertTriangle, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const sevColors: Record<string, string> = { critical: "bg-red-500/20 text-red-400", high: "bg-orange-500/20 text-orange-400", medium: "bg-yellow-500/20 text-yellow-400", low: "bg-muted text-muted-foreground" };
 const healthColors: Record<string, string> = { healthy: "bg-green-500/20 text-green-400", degraded: "bg-yellow-500/20 text-yellow-400", error: "bg-red-500/20 text-red-400", unknown: "bg-muted text-muted-foreground" };
 
 export default function PFA07ConnectorHealthDrift() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: drifts = [] } = useQuery({

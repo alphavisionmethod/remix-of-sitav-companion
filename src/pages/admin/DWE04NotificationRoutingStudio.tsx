@@ -4,8 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Bell, Route, Volume2, VolumeX, Smartphone, Watch, Laptop } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DWE04NotificationRoutingStudio() {
+  const { isDemoMode } = useDataMode();
   const [routes, setRoutes] = useState<any[]>([]);
   const [fatigue, setFatigue] = useState<any[]>([]);
   const [interruption, setInterruption] = useState<any[]>([]);

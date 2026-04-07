@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Key, CheckCircle, XCircle, Filter, Shield, Plug } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const purposeLabels: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
   identity_web: { label: "Identity Web", color: "bg-blue-500/20 text-blue-400", icon: <Shield className="h-3 w-3" /> },
@@ -19,6 +20,7 @@ const purposeLabels: Record<string, { label: string; color: string; icon: React.
 };
 
 export default function ISA03OAuthClientRegistryConsole() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
 
   const { data: clients = [] } = useQuery({

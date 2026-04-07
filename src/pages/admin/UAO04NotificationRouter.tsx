@@ -6,10 +6,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Bell, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const urgencyColors: Record<string, string> = { critical: "bg-red-500/20 text-red-400", high: "bg-orange-500/20 text-orange-400", normal: "bg-blue-500/20 text-blue-400", low: "bg-muted text-muted-foreground" };
 
 export default function UAO04NotificationRouter() {
+  const { isDemoMode } = useDataMode();
   const { data: routes = [] } = useQuery({
     queryKey: ["notification-routes"],
     queryFn: async () => { const { data } = await supabase.from("ambient_notification_routes").select("*").order("priority"); return data || []; },

@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Rocket, CheckCircle2, AlertTriangle, Shield, Clock, ArrowRight, RotateCcw, Activity, GitBranch, Eye, TrendingUp } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ENVIRONMENTS = [
   { env: "Production", status: "healthy" as const, confidence: 94, version: "v2.14.3", deployedAt: "Apr 4, 14:22", drift: "none", rollbackTo: "v2.14.2" },

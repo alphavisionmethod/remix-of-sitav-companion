@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Shield, AlertTriangle, Zap, Bot, Heart, Wrench } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SCOPES = [
   { scope: "global", label: "Global Kill Switch", description: "Stops ALL recurring automation", icon: Shield, color: "text-destructive" },
@@ -21,6 +22,7 @@ const SCOPES = [
 ];
 
 export default function AR08KillSwitchCenter() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
   const { data: switches = [] } = useQuery({
     queryKey: ["kill-switches"],

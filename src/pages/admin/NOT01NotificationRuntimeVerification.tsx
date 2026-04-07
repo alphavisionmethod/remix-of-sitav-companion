@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Bell, CheckCircle, XCircle, AlertTriangle, Shield, Smartphone, Apple, Globe } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusBadge = (ok: boolean, label: string) => (
   <Badge variant="outline" className={`text-[10px] ${ok ? "bg-emerald-500/15 text-emerald-400" : "bg-muted text-muted-foreground"}`}>
@@ -30,6 +31,7 @@ interface ChannelRow {
 }
 
 export default function NOT01NotificationRuntimeVerification() {
+  const { isDemoMode } = useDataMode();
   const { data: subscriptions = [] } = useQuery({
     queryKey: ["admin-push-subscriptions"],
     queryFn: async () => {

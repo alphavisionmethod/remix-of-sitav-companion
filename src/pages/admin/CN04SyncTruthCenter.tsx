@@ -9,6 +9,7 @@ import { RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusColors: Record<string, string> = {
   completed: "bg-green-500/20 text-green-400", running: "bg-blue-500/20 text-blue-400",
@@ -17,6 +18,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function CN04SyncTruthCenter() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: syncRuns = [] } = useQuery({

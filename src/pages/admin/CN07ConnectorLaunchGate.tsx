@@ -8,6 +8,7 @@ import { CheckCircle, XCircle, AlertTriangle, Shield } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const stageColors: Record<string, string> = {
   shell_only: "bg-muted text-muted-foreground", framework_ready: "bg-blue-500/20 text-blue-400",
@@ -17,6 +18,7 @@ const stageColors: Record<string, string> = {
 };
 
 export default function CN07ConnectorLaunchGate() {
+  const { isDemoMode } = useDataMode();
   const { data: readiness = [] } = useQuery({
     queryKey: ["connector-launch-readiness"],
     queryFn: async () => { const { data } = await supabase.from("connector_launch_readiness").select("*"); return data || []; },

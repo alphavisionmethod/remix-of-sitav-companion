@@ -4,8 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Shield, Fingerprint, ShieldCheck, ShieldAlert, KeyRound } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DWE05DeviceTrustApprovalsCenter() {
+  const { isDemoMode } = useDataMode();
   const [trustRecords, setTrustRecords] = useState<any[]>([]);
   const [policies, setPolicies] = useState<any[]>([]);
   const [receipts, setReceipts] = useState<any[]>([]);

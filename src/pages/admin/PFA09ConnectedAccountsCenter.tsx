@@ -5,11 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Shield, Link2, CheckCircle, XCircle, AlertTriangle, ArrowUpCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusColors: Record<string, string> = { connected: "bg-green-500/20 text-green-400", disconnected: "bg-muted text-muted-foreground", error: "bg-red-500/20 text-red-400" };
 const healthIcons: Record<string, React.ReactNode> = { healthy: <CheckCircle className="h-4 w-4 text-green-400" />, degraded: <AlertTriangle className="h-4 w-4 text-yellow-400" />, error: <XCircle className="h-4 w-4 text-red-400" />, unknown: <div className="h-4 w-4 rounded-full bg-muted-foreground/30" /> };
 
 export default function PFA09ConnectedAccountsCenter() {
+  const { isDemoMode } = useDataMode();
   const { data: identities = [] } = useQuery({
     queryKey: ["identity-links"],
     queryFn: async () => { const { data } = await supabase.from("identity_provider_links").select("*, provider_families(name, provider_key)").order("created_at"); return data || []; },

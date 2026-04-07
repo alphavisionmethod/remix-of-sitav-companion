@@ -6,8 +6,10 @@ import { Progress } from "@/components/ui/progress";
 import { Target, AlertTriangle, CheckCircle } from "lucide-react";
 import { computeLaunchReadiness, type FlagshipLoopReadiness } from "@/lib/services/launch-readiness/launch-readiness-engine";
 import { cn } from "@/lib/utils";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function LAUNCH02FlagshipReadiness() {
+  const { isDemoMode } = useDataMode();
   const [loops, setLoops] = useState<FlagshipLoopReadiness[]>([]);
   useEffect(() => { const r = computeLaunchReadiness(null); setLoops(r.flagshipLoopReadiness); }, []);
 

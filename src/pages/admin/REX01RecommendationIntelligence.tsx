@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BarChart3, CheckCircle2, XCircle, Clock, TrendingUp, AlertTriangle } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 function useRecommendationStats() {
   return useQuery({
@@ -51,6 +52,7 @@ function useRecommendationScores() {
 }
 
 export default function REX01RecommendationIntelligence() {
+  const { isDemoMode } = useDataMode();
   const { data: stats, isLoading: statsLoading } = useRecommendationStats();
   const { data: scores, isLoading: scoresLoading } = useRecommendationScores();
 

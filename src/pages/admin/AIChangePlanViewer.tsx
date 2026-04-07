@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { FileCheck, CheckCircle2, AlertTriangle, XCircle, Clock, ArrowRight, Shield, Code, Eye, RotateCcw, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PLANS = [
   {

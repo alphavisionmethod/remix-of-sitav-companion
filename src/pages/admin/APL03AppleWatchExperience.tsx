@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Watch, Vibrate, CheckCircle, ArrowRight, Clock, Zap, Eye, AlertTriangle, Smartphone, Bell } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const GLANCE_CARDS = [
   { id: "wmn", name: "What Matters Now", priority: 1, refresh: "30s", maxItems: 3, sources: ["approvals", "alerts", "tasks"], interaction: "tap → open on phone" },

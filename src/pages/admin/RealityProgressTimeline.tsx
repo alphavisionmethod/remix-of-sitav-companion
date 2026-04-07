@@ -6,8 +6,10 @@ import { useRealityClassifications, useClassificationStats } from "@/hooks/useRe
 import { useMockReplacements, useMockReplacementStats } from "@/hooks/useMockReplacements";
 import { TrendingUp, CheckCircle2, ArrowRight, Clock, Target } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function RealityProgressTimeline() {
+  const { isDemoMode } = useDataMode();
   const { data: classifications = [] } = useRealityClassifications();
   const { data: mockReplacements = [] } = useMockReplacements();
   const cStats = useClassificationStats(classifications);

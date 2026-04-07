@@ -5,8 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CheckCircle2, XCircle, TrendingUp } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function REX05OutcomeVerification() {
+  const { isDemoMode } = useDataMode();
   const { data: verifications, isLoading } = useQuery({
     queryKey: ["rex05-outcome-verifications"],
     queryFn: fetchOutcomeVerifications,

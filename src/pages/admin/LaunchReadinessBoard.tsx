@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type BlockerSeverity = "critical" | "high" | "medium" | "low";
 type BlockerStatus = "open" | "in-progress" | "resolved" | "accepted-risk";
@@ -123,6 +124,7 @@ const CHECK_ICON: Record<string, { icon: typeof CheckCircle; color: string }> = 
 };
 
 export default function LaunchReadinessBoard() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("blockers");
 
   const openBlockers = BLOCKERS.filter(b => b.status === "open").length;

@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LayoutGrid } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useInterruptionPolicies } from "@/hooks/use-notification-calm-data";
 import { DEMO_DELIVERY_TYPES, DEMO_QUICK_ACTIONS } from "@/lib/demo-data/notification-calm";
 

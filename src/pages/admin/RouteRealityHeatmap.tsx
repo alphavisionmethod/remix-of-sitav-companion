@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { Map, Eye, Cpu, Shield, CheckCircle2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const STATE_BG: Record<string, string> = {
   presentational: "bg-muted/60 border-muted-foreground/20",
@@ -14,6 +15,7 @@ const STATE_BG: Record<string, string> = {
 const STATE_TEXT: Record<string, string> = { presentational: "text-muted-foreground", simulated: "text-yellow-400", persisted: "text-blue-400", proven: "text-emerald-400" };
 
 export default function RouteRealityHeatmap() {
+  const { isDemoMode } = useDataMode();
   const { data: classifications = [] } = useRealityClassifications();
 
   const domainGroups = useMemo(() => {

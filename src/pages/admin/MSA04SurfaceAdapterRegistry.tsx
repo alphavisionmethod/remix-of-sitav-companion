@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Settings2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusColors: Record<string, string> = {
   active: "bg-green-500/20 text-green-400", in_development: "bg-blue-500/20 text-blue-400",
@@ -13,6 +14,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function MSA04SurfaceAdapterRegistry() {
+  const { isDemoMode } = useDataMode();
   const { data: adapters = [] } = useQuery({
     queryKey: ["surface-adapters"],
     queryFn: async () => { const { data } = await supabase.from("surface_adapters").select("*"); return data || []; },

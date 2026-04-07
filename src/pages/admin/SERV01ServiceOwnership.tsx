@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
 import { Server, AlertTriangle, ShieldCheck, Package, Shield, BarChart3 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const critColors: Record<string, string> = {
   critical: "bg-destructive/15 text-destructive",
@@ -27,6 +28,7 @@ const classColors: Record<string, string> = {
 };
 
 export default function SERV01ServiceOwnership() {
+  const { isDemoMode } = useDataMode();
   const highRisk = getHighRiskDomains();
   const summary = getClassificationSummary();
   const budgetPct = Math.round((summary.total / summary.budget) * 100);

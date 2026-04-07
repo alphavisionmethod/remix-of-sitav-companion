@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Shield, Smartphone, Watch, Monitor, Fingerprint, Lock, ArrowRight, AlertTriangle, CheckCircle2, XCircle, Eye } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const TRUST_CLASSES = [
   { cls: "trusted_iphone", label: "iPhone", bio: "Face ID / Touch ID", riskCeiling: "critical", keychain: true, attestation: true, icon: Smartphone, sessionDuration: "24h", reauth: "biometric", trustScore: 95 },

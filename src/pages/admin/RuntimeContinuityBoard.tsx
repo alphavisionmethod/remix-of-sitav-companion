@@ -11,6 +11,7 @@ import {
   fetchActionLineage, getAssetStats, loadAllEngineStates,
 } from "@/lib/persistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -23,6 +24,7 @@ interface ContinuityCheck {
 }
 
 export default function RuntimeContinuityBoard() {
+  const { isDemoMode } = useDataMode();
   const [checks, setChecks] = useState<ContinuityCheck[]>([]);
   const [running, setRunning] = useState(false);
 

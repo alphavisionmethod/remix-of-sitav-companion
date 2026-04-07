@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { LIFECYCLE_STAGES, getStageLabel, getStageIndex, computeReadiness } from "@/lib/delivery-methodology/feature-lifecycle";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const stageColors: Record<string, string> = {
   proposed: "bg-muted", specified: "bg-blue-500/20", generated: "bg-cyan-500/20",

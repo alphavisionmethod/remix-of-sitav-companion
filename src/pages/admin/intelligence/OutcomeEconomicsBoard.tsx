@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const mockOutcomes = [
   { type: "incident_prevented", count: 8, costCents: 2400, valueCents: 48000, roi: 20.0, accepted: 8, rejected: 0, domain: "engineering" },

@@ -13,6 +13,7 @@ import { JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/lib/customer-jour
 import { ShieldAlert, Loader2, CheckCircle2, Clock, Users, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { useMemo } from "react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const BLOCKER_TYPE_COLORS: Record<string, string> = {
   launch_blocker: "bg-destructive/15 text-destructive",
@@ -27,6 +28,7 @@ function daysSince(dateStr: string): number {
 }
 
 export default function CJ04LaunchBlockerView() {
+  const { isDemoMode } = useDataMode();
   const { data: journeys, isLoading } = useCustomerJourneys();
   const { data: blockers } = useCustomerJourneyBlockers();
   const { data: scores } = useBlockerScores(false);

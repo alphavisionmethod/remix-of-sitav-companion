@@ -10,6 +10,7 @@ import { useStepResults, useEvidenceAssets } from "@/lib/customer-journey/journe
 import { JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/lib/customer-journey/journey-registry";
 import { ListChecks, Loader2, ChevronDown, ChevronRight, Image, FileText, AlertCircle, Layers, Wrench } from "lucide-react";
 import { useState } from "react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 function StepResultsPanel({ runId }: { runId: string }) {
   const { data: stepResults } = useStepResults(runId);
@@ -61,6 +62,7 @@ function StepResultsPanel({ runId }: { runId: string }) {
 }
 
 export default function CJ03JourneyDetailView() {
+  const { isDemoMode } = useDataMode();
   const { data: journeys, isLoading } = useCustomerJourneys();
   const { data: runs } = useCustomerJourneyRuns();
   const [expanded, setExpanded] = useState<string | null>(null);

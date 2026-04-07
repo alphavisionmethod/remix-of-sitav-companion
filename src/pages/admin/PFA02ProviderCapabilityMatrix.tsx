@@ -6,8 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Layers, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function PFA02ProviderCapabilityMatrix() {
+  const { isDemoMode } = useDataMode();
   const { data: capabilities = [] } = useQuery({
     queryKey: ["provider-capabilities"],
     queryFn: async () => { const { data } = await supabase.from("provider_capabilities").select("*, provider_families(name, provider_key)").order("capability_key"); return data || []; },

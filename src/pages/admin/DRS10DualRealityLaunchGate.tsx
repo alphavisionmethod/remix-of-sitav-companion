@@ -4,6 +4,7 @@ import { CheckCircle2, AlertTriangle, XCircle, ShieldCheck, Layers } from "lucid
 import { getRegisteredDomains, type ProviderDomain } from "@/lib/dual-reality/mode-aware-provider";
 import { registerAllProviders } from "@/lib/dual-reality/providers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { CILaunchGateWidget } from "@/components/sita/CILaunchGateWidget";
 
 const ALL_DOMAINS: ProviderDomain[] = ["boardroom", "investment", "money", "business", "workspace", "owner", "calendar", "advisor"];
@@ -15,6 +16,7 @@ interface GateCheck {
 }
 
 export default function DRS10DualRealityLaunchGate() {
+  const { isDemoMode } = useDataMode();
   registerAllProviders();
   const registered = getRegisteredDomains();
 

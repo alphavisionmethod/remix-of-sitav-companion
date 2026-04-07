@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { KeyRound, Link, User, Shield, ArrowRight, CheckCircle2, AlertTriangle, Lock, Mail, Fingerprint } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const IDENTITY_ARCHITECTURE = [
   { field: "Provider", value: "apple_sign_in", badge: "primary" },

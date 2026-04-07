@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Network, Shield, Plug, Smartphone, Users, ArrowRight, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const nodeTypeConfig: Record<string, { color: string; icon: React.ReactNode; label: string }> = {
   identity_provider: { color: "bg-blue-500/20 text-blue-400 border-blue-500/30", icon: <Shield className="h-4 w-4" />, label: "Identity" },
@@ -21,6 +22,7 @@ const statusIcons: Record<string, React.ReactNode> = {
 };
 
 export default function ISA06UnifiedAccountGraphExplorer() {
+  const { isDemoMode } = useDataMode();
   const { data: nodes = [] } = useQuery({
     queryKey: ["isa06-graph-nodes"],
     queryFn: async () => {

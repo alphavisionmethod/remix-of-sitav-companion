@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Server, CheckCircle, AlertTriangle, ArrowRight, Database, Shield } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -36,6 +37,7 @@ const PHASE_ORDER = ["not-started", "adapter-built", "wired", "validated", "comp
 const PHASE_COLORS: Record<string, string> = { "not-started": "bg-red-500/20 text-red-400", "adapter-built": "bg-amber-500/20 text-amber-400", "wired": "bg-blue-500/20 text-blue-400", "validated": "bg-emerald-500/20 text-emerald-400", "complete": "bg-teal-500/20 text-teal-400" };
 
 export default function CoreServiceMigrationBoard() {
+  const { isDemoMode } = useDataMode();
   const completed = SERVICES.filter(s => s.phase === "complete").length;
   const pct = (completed / SERVICES.length) * 100;
 

@@ -18,6 +18,7 @@ import { formatFreshness } from "@/lib/ai/ai-surface-grammar";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ═══════════════════════════════════════════════════════════════
 // AIT04 — Workforce Activity Feed (Full Spec)

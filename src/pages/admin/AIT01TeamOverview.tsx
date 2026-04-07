@@ -13,8 +13,10 @@ import { computeTruthIndices } from "@/lib/services/truth-indices/truth-index-ag
 import { Bot, DollarSign, Zap, Clock, Shield, Activity, AlertTriangle, CheckCircle2, Lightbulb, TrendingUp, ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function AIT01TeamOverview() {
+  const { isDemoMode } = useDataMode();
   const { data: stats, isLoading } = useQuery({ queryKey: ["ai-workforce-stats"], queryFn: getWorkforceStats });
   const { data: roles = [] } = useQuery({ queryKey: ["ai-workforce-roles"], queryFn: getWorkforceRoles });
   const { data: invocations = [] } = useQuery({ queryKey: ["ai-workforce-invocations"], queryFn: () => getRecentInvocations(50) });

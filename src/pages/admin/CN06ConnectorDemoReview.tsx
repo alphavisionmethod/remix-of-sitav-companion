@@ -8,8 +8,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Presentation, Play } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function CN06ConnectorDemoReview() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: demoBindings = [] } = useQuery({

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   computeSecurityScore,
   THREAT_MODEL,
   EDGE_FUNCTION_AUDIT,
@@ -17,6 +18,7 @@ const scoreBg = (score: number) =>
   score >= 85 ? "bg-green-500/20" : score >= 70 ? "bg-yellow-500/20" : score >= 50 ? "bg-orange-500/20" : "bg-red-500/20";
 
 export default function SEC01PostureExecutive() {
+  const { isDemoMode } = useDataMode();
   const scores = computeSecurityScore();
   const criticalThreats = THREAT_MODEL.filter(t => t.severity === 'critical' && t.status !== 'secure_verified');
   const unhardenedFns = EDGE_FUNCTION_AUDIT.filter(f => f.missingHardening.length > 0);

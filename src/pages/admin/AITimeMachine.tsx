@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { History, ArrowRight, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, Zap, RotateCcw, GitBranch } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const TIMELINE = [
   {

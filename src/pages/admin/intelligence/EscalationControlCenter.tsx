@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const mockEscalations = [
   { id: "esc-1", domain: "engineering", trigger: "low_confidence", from: "utility", to: "premium", cost: 180, justified: true, outcome: "accepted", desc: "Complex race condition in payment flow", ago: "2hr" },

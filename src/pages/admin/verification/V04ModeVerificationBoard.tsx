@@ -8,10 +8,12 @@ import { Badge } from "@/components/ui/badge";
 import { SURFACE_REGISTRY } from "@/lib/verification/surface-registry";
 import { useVerificationSurfaces } from "@/lib/verification/verification-hooks";
 import { Layers } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const modes = ["real", "demo", "degraded", "unavailable"];
 
 export default function ModeVerificationBoard() {
+  const { isDemoMode } = useDataMode();
   const { data: dbSurfaces } = useVerificationSurfaces();
 
   // Group by domain → mode coverage

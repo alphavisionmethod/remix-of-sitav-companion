@@ -8,6 +8,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, AlertTriangle, Shield, Rocket } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface GateCheck {
   label: string;
@@ -17,6 +18,7 @@ interface GateCheck {
 }
 
 export default function AR09AutomationLaunchGate() {
+  const { isDemoMode } = useDataMode();
   const { data: jobs = [] } = useQuery({
     queryKey: ["scheduled-jobs"],
     queryFn: async () => {

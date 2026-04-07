@@ -20,6 +20,7 @@ import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SystemManagement = () => {
   const { isAdmin, loading: adminLoading } = useRequireAdmin();

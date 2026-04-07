@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { AlertTriangle, CheckCircle, RefreshCw, Layers } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const layerColors: Record<string, string> = {
   core_runtime: "bg-green-500/20 text-green-400", contract: "bg-cyan-500/20 text-cyan-400",
@@ -21,6 +22,7 @@ const priorityColors: Record<string, string> = {
 };
 
 export default function MSA02CoreSurfaceBoundary() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: boundaries = [] } = useQuery({

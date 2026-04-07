@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Radar, RefreshCw, AlertTriangle, CheckCircle, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const sevColors: Record<string, string> = {
   critical: "bg-red-500/20 text-red-400", high: "bg-orange-500/20 text-orange-400",
@@ -22,6 +23,7 @@ const heatCell = (status: string) => {
 };
 
 export default function MSA05CompatibilityRadar() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: consistency = [] } = useQuery({

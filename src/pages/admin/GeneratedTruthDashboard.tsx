@@ -19,6 +19,7 @@ import validationSummary from "../../../generated/validation-summary.json";
 import operationalScorecards from "../../../generated/operational-scorecards.json";
 import architectureCompliance from "../../../generated/architecture-compliance-report.json";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Types ───────────────────────────────────────────────────
 interface ValidationCheck { file: string; exists: boolean; validJson: boolean }

@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useCapabilities, useCreateCapability } from "@/hooks/use-fip-data";
 import { CAPABILITY_CLASSES } from "@/lib/fip/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const FIPCapabilityRegistry = () => {
   const { data: caps = [], isLoading } = useCapabilities();

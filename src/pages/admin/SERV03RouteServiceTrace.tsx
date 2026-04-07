@@ -11,6 +11,7 @@ import { ROUTE_SERVICE_INVENTORY, type RouteInventoryEntry } from "@/lib/service
 import { Route, ArrowRight, Database, Plug } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 function ConfidenceBadge({ level }: { level: string }) {
   if (level === "high") return <Badge className="bg-emerald-500/20 text-emerald-400">{level}</Badge>;
@@ -57,6 +58,7 @@ function RouteDetail({ route }: { route: RouteInventoryEntry }) {
 }
 
 export default function SERV03RouteServiceTrace() {
+  const { isDemoMode } = useDataMode();
   const [domainFilter, setDomainFilter] = useState<string>("all");
   const [loopFilter, setLoopFilter] = useState<string>("all");
 

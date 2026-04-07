@@ -6,11 +6,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Route, ArrowRight, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const qualityColors: Record<string, string> = { seamless: "bg-green-500/20 text-green-400", good: "bg-blue-500/20 text-blue-400", friction: "bg-yellow-500/20 text-yellow-400", failed: "bg-red-500/20 text-red-400", unknown: "bg-muted text-muted-foreground" };
 const statusColors: Record<string, string> = { completed: "bg-green-500/20 text-green-400", initiated: "bg-blue-500/20 text-blue-400", failed: "bg-red-500/20 text-red-400", abandoned: "bg-muted text-muted-foreground" };
 
 export default function UAO07CrossSurfaceJourney() {
+  const { isDemoMode } = useDataMode();
   const { data: handoffs = [] } = useQuery({
     queryKey: ["handoff-sessions-journey"],
     queryFn: async () => { const { data } = await supabase.from("handoff_sessions").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
