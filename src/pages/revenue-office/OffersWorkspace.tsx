@@ -31,7 +31,7 @@ export default function OffersWorkspace() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Offers Workspace</h1>
-            <p className="text-sm text-muted-foreground">Products, services, memberships, courses, and bundles</p>
+            <p className="text-sm text-muted-foreground">Products, DEMO_services, memberships, DEMO_courses, and bundles</p>
           </div>
           <Button className="gap-2"><Plus className="w-4 h-4" /> New Offer</Button>
         </div>
@@ -90,7 +90,7 @@ export default function OffersWorkspace() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><Layers className="w-4 h-4 text-primary" /> Bundles</CardTitle></CardHeader>
         <CardContent className="space-y-3">
-          {BUNDLES.map(b => (
+          {DEMO_BUNDLES.map(b => (
             <div key={b.name} className="p-4 rounded-lg bg-muted/10 border border-border/30">
               <div className="flex items-center justify-between mb-2">
                 <p className="font-medium text-foreground">{b.name}</p>

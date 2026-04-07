@@ -50,7 +50,7 @@ export default function ConnectorControlCenter() {
       <SitaPageHeader title="Connector Control Center" subtitle="Connector lifecycle, health matrix, capability registry, audit lineage, and failure recovery" />
 
       {DEMO_connectors.some(c => c.status === "error") && (
-        <DegradedStateBanner severity="warning" reason={`${DEMO_connectors.filter(c => c.status === "error").length} connector(s) in error state`} impact="Data sync affected for failed connectors" affectedCapabilities={DEMO_connectors.filter(c => c.status === "error").flatMap(c => c.capabilities)} dismissible />
+        <DegradedStateBanner severity="warning" reason={`${DEMO_connectors.filter(c => c.status === "error").length} connector(s) in error state`} impact="Data sync affected for failed DEMO_connectors" affectedCapabilities={DEMO_connectors.filter(c => c.status === "error").flatMap(c => c.capabilities)} dismissible />
       )}
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
@@ -58,7 +58,7 @@ export default function ConnectorControlCenter() {
           { label: "Active", value: healthy, color: "text-green-400" },
           { label: "Error", value: DEMO_connectors.filter(c => c.status === "error").length, color: DEMO_connectors.some(c => c.status === "error") ? "text-red-400" : "text-green-400" },
           { label: "Paused", value: DEMO_connectors.filter(c => c.status === "paused").length, color: "text-amber-400" },
-          { label: "Avg Health", value: `${Math.round(DEMO_connectors.reduce((s, c) => s + c.health, 0) / connectors.length)}%`, color: "text-blue-400" },
+          { label: "Avg Health", value: `${Math.round(DEMO_connectors.reduce((s, c) => s + c.health, 0) / DEMO_connectors.length)}%`, color: "text-blue-400" },
           { label: "Total Capabilities", value: DEMO_connectors.reduce((s, c) => s + c.capabilities.length, 0), color: "text-foreground" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
