@@ -98,13 +98,14 @@ const CommunicationsCenter = () => {
     if (editingId) {
       await supabase.from("communications").update({
         channel: form.type, subject: form.subject, body: form.body,
-        status: form.status, customer_name: form.customer_name,
+        status: form.status, contact_name: form.customer_name,
       }).eq("id", editingId);
       toast.success("Communication updated");
     } else {
       await supabase.from("communications").insert({
-        user_id: user.id, channel: form.type, subject: form.subject,
-        body: form.body, status: form.status, customer_name: form.customer_name,
+        user_id: user.id, type: form.type, channel: form.type,
+        subject: form.subject, body: form.body, status: form.status,
+        contact_name: form.customer_name, direction: "outbound",
       });
       toast.success("Communication created");
     }
