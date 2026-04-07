@@ -717,7 +717,8 @@ function MCCosts() {
 
 function MCTrust() {
   const { trustCenter } = useMCAdmin();
-  const [simResult, setSimResult] = useState<SimulationResult | null>(null);
+  const gov = useGovernanceSimulator();
+  const [simResult, setSimResult] = useState<ReturnType<typeof gov.runComplianceAudit> | null>(null);
 
   const tc = trustCenter;
   const posture = tc?.posture ?? "verified";
