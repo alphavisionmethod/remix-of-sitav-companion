@@ -108,7 +108,7 @@ export async function persistActionTransition(
 
   if (!current) return false;
 
-  const history = [...(current.state_history ?? []), transition];
+  const history = [...((current.state_history as unknown[]) ?? []), transition];
 
   const updatePayload: Record<string, unknown> = {
     current_state: newState,
