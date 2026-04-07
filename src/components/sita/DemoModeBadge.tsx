@@ -23,7 +23,7 @@ export function DemoModeBadge({ forceShow, label, compact }: DemoModeBadgeProps)
 
   if (compact) {
     return (
-      <span role="status" aria-label="Demo Mode" className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500/20 text-amber-400" title="Demo Mode">
+      <span role="status" aria-label="Demo Mode" data-testid="demo-mode-badge" className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500/20 text-amber-400" title="Demo Mode">
         <FlaskConical className="w-3 h-3" />
       </span>
     );
