@@ -25,7 +25,7 @@ const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transi
 
 const LifeSimulator = () => {
   const { isDemoMode } = useDataMode();
-  const simulator = useMemo(() => new LifeShockSimulator(500), []);
+  const simulator = useLifeSimulator(500);
   const shockTypes = useMemo(() => simulator.getShockTypes(), [simulator]);
 
   const [selectedShock, setSelectedShock] = useState<ShockType | null>(null);

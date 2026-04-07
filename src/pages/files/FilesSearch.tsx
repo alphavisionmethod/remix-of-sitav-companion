@@ -36,11 +36,11 @@ const FilesSearch = () => {
   const [aiSearching, setAiSearching] = useState(false);
   const aiInsight = useAIInsight();
 
+  const kernelSearchFabric = useSearchFabric();
   const searchService = useMemo(() => {
-    const svc = new SearchFabricService();
-    svc.addBatch(searchData);
-    return svc;
-  }, [searchData]);
+    kernelSearchFabric.addBatch(searchData);
+    return kernelSearchFabric;
+  }, [searchData, kernelSearchFabric]);
 
   const handleSearch = (q?: string) => {
     const searchQuery = q ?? query;

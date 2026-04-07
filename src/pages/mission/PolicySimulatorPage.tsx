@@ -54,7 +54,6 @@ export default function PolicySimulatorPage() {
   };
 
   const runSimulation = () => {
-    const gov = new GovernanceSimulatorService();
     const sim = gov.runComplianceAudit(scenarios.map(s => ({
       domain: s.domain, capabilityId: s.capabilityId, riskTier: s.riskTier,
       amount: s.amount, isSimulation: s.isSimulation,

@@ -47,7 +47,7 @@ export default function PolicySimulatorHub() {
   const [results, setResults] = useState<Map<string, SimulationResult>>(new Map());
 
   const runPreset = (preset: PresetScenario) => {
-    const gov = new GovernanceSimulatorService();
+    const result = gov.runComplianceAudit([{
     const result = gov.runComplianceAudit([{
       domain: preset.domain, capabilityId: preset.capabilityId,
       riskTier: preset.riskTier, amount: preset.amount,
