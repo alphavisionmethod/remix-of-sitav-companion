@@ -70,6 +70,7 @@ const CustomersPage = () => {
   const navigate = useNavigate();
   const { inspect } = useInspector();
   const { isDemoMode } = useDataMode();
+  const crmSync = useCRMSync();
   const queryClient = useQueryClient();
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");

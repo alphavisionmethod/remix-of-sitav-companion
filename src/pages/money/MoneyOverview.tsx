@@ -33,6 +33,12 @@ const MoneyOverview = () => {
   const { data: accounts = [] } = useFinancialAccounts();
   const { data: kpis } = useMoneyKPIs();
 
+  // Wire to cashflow-calculate edge function
+  const { data: cfAnalysis } = useCashflowAnalysis();
+  const { data: burnRateData } = useBurnRate();
+  const cf = cfAnalysis as any;
+  const br = burnRateData as any;
+
   const hasLiveData = isDemoMode || bills.length > 0 || subscriptions.length > 0 || invoices.length > 0 || accounts.length > 0;
 
   const fraudSummary = useMemo<FraudSummary>(() => {
