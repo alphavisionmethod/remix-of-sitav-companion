@@ -28,9 +28,9 @@ const TaxEstimator = () => {
   const seTax = demo ? 4200_00 : (t?.se_tax_cents ?? 0);
   const totalTax = demo ? 26600_00 : (t?.total_tax_cents ?? 0);
   const effectiveRate = demo ? 18.5 : (t?.effective_rate ?? 0);
-  const marginalRate = demo ? 24 : (t?.marginal_rate ?? 0);
-  const quarterly = demo ? [6650_00, 6650_00, 6650_00, 6650_00] : (t?.quarterly_estimates ?? []);
-  const grossIncome = demo ? 144000_00 : (t?.gross_income_cents ?? 0);
+  const marginalRate = demo ? 24 : ((t as Record<string, unknown>)?.marginal_rate as number ?? 0);
+  const quarterly = demo ? [6650_00, 6650_00, 6650_00, 6650_00] : (Array.isArray((t as Record<string, unknown>)?.quarterly_estimates) ? (t as Record<string, unknown>).quarterly_estimates as number[] : []);
+  const grossIncome = demo ? 144000_00 : ((t as Record<string, unknown>)?.gross_income_cents as number ?? 0);
 
   const totalDeductions = demo ? 14600_00 : (d?.total_deductions_cents ?? 0);
   const deductionItems = demo
@@ -39,7 +39,7 @@ const TaxEstimator = () => {
         { category: "Home Office", amount_cents: 3200_00, type: "itemized" },
         { category: "Health Insurance", amount_cents: 4800_00, type: "itemized" },
       ]
-    : (d?.deductions ?? []);
+    : (Array.isArray((d as Record<string, unknown>)?.deductions) ? (d as Record<string, unknown>).deductions as Array<{ category: string; amount_cents: number; type?: string }> : d?.items ?? []);
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
