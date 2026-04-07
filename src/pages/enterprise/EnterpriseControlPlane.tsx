@@ -53,11 +53,11 @@ const DEMO_DEPLOYMENTS = [
   { id: "3", env: "production", version: "v2.14.2", status: "rolled-back", deployed: "Yesterday", by: "CI/CD" },
 ];
 
-const CAPABILITIES = ["biz-crm-read", "biz-crm-write", "fin-accounts-read", "fin-payment-execute", "con-calendar-read", "con-booking-create", "plat-diagnostic", "plat-config-write"];
-const ROLES = ["admin", "moderator", "user"];
+const DEMO_CAPABILITIES = ["biz-crm-read", "biz-crm-write", "fin-accounts-read", "fin-payment-execute", "con-calendar-read", "con-booking-create", "plat-diagnostic", "plat-config-write"];
+const DEMO_ROLES = ["admin", "moderator", "user"];
 
 const ROLE_PERMISSIONS: Record<string, Record<string, boolean>> = {
-  admin: Object.fromEntries(CAPABILITIES.map(c => [c, true])),
+  admin: Object.fromEntries(DEMO_CAPABILITIES.map(c => [c, true])),
   moderator: { "biz-crm-read": true, "biz-crm-write": true, "fin-accounts-read": true, "fin-payment-execute": false, "con-calendar-read": true, "con-booking-create": true, "plat-diagnostic": true, "plat-config-write": false },
   user: { "biz-crm-read": true, "biz-crm-write": false, "fin-accounts-read": true, "fin-payment-execute": false, "con-calendar-read": true, "con-booking-create": false, "plat-diagnostic": false, "plat-config-write": false },
 };
@@ -187,23 +187,23 @@ const EnterpriseControlPlane = () => {
           </div>
         </TabsContent>
 
-        {/* ═══ ROLES & PERMISSIONS ═══ */}
+        {/* ═══ DEMO_ROLES & PERMISSIONS ═══ */}
         <TabsContent value="roles" className="space-y-4 mt-4">
           <SitaCard hover={false} className="p-4 overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
                 <tr className="border-b border-border/30">
                   <th className="text-left py-2 px-3 font-semibold text-muted-foreground">Capability</th>
-                  {ROLES.map(role => (
+                  {DEMO_ROLES.map(role => (
                     <th key={role} className="text-center py-2 px-3 font-semibold text-muted-foreground capitalize">{role}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {CAPABILITIES.map(cap => (
+                {DEMO_CAPABILITIES.map(cap => (
                   <tr key={cap} className="border-b border-border/10 hover:bg-secondary/20 transition-colors">
                     <td className="py-2 px-3 font-mono text-foreground">{cap}</td>
-                    {ROLES.map(role => (
+                    {DEMO_ROLES.map(role => (
                       <td key={role} className="text-center py-2 px-3">
                         <Switch
                           checked={permissions[role]?.[cap] ?? false}

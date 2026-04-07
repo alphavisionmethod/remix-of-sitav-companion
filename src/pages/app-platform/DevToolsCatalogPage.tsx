@@ -12,7 +12,7 @@ import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const DEV_CATEGORIES = [
+const DEMO_DEV_CATEGORIES = [
   { id: "all", label: "All", icon: Code },
   { id: "editors", label: "Editors", icon: Code },
   { id: "git", label: "Git & SCM", icon: GitBranch },
@@ -69,7 +69,7 @@ const DevToolsCatalogPage = () => {
 
       {/* Categories */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {DEV_CATEGORIES.map(c => {
+        {DEMO_DEV_CATEGORIES.map(c => {
           const Icon = c.icon;
           return (
             <button key={c.id} onClick={() => setActiveCat(c.id)}

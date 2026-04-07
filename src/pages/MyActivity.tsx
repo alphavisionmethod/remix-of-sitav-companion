@@ -11,7 +11,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 const DAYS = 7;
 const WEEKS = 20;
-const DAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
+const DEMO_DAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
 
 function generateDemoData(): Record<string, number> {
   const data: Record<string, number> = {};
@@ -52,7 +52,7 @@ const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
       <DemoModeBadge />
       {/* Day labels */}
       <div className="flex flex-col gap-[3px] mr-1 pt-5">
-        {DAY_LABELS.map((l, i) => (
+        {DEMO_DAY_LABELS.map((l, i) => (
           <span key={i} className="text-[8px] text-muted-foreground h-[14px] flex items-center">{l}</span>
         ))}
       </div>
