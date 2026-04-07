@@ -66,18 +66,15 @@ const SubscriptionsWaste = () => {
 
   const createMutation = useMutation({
     mutationFn: async (sub: SubForm) => {
-      const { error } = await fromTable("subscriptions").insert({
-        service_name: sub.service_name,
+      const { error } = await fromTable("subscriptions").insert([{
+        name: sub.service_name,
         amount: parseFloat(sub.amount),
-        billing_cycle: sub.billing_cycle,
+        frequency: sub.billing_cycle,
         category: sub.category || null,
-        renewal_date: sub.renewal_date || null,
-        usage_level: sub.usage_level,
-        waste_flag: sub.waste_flag,
-        duplicate_of: sub.duplicate_of || null,
+        next_billing_date: sub.renewal_date || null,
         notes: sub.notes || null,
         user_id: user!.id,
-      });
+      }]);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["subscriptions"] }); setShowForm(false); setForm(emptyForm); toast.success("Subscription added"); },
