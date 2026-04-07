@@ -198,12 +198,23 @@ export class VerificationLayer {
       });
     }
 
-    // 12. Regression Comparison
-    gates.push({
-      type: "regression-comparison", result: "pass",
-      detail: "No regressions detected vs. baseline",
-      required: false, durationMs: 4500, timestamp: now, confidenceImpact: 5,
-    });
+    // 12. Regression Comparison (real engine)
+    {
+      const rStart = Date.now();
+      const regressionReport = this.regressionEngine.compareAll();
+      const rDuration = Date.now() - rStart;
+      const rResult = VERDICT_TO_GATE[regressionReport.overallVerdict];
+      const rImpact = rResult === "pass" ? 5 : rResult === "warning" ? -3 : -10;
+      gates.push({
+        type: "regression-comparison",
+        result: rResult,
+        detail: regressionReport.summary,
+        required: false,
+        durationMs: rDuration,
+        timestamp: now,
+        confidenceImpact: rImpact,
+      });
+    }
 
     // 13. Environment Fit
     gates.push({

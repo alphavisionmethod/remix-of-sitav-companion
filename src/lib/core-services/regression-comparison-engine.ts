@@ -145,29 +145,27 @@ export class RegressionComparisonEngine {
 
     // Emit events + receipt for regressions
     if (report.regressionsFound > 0) {
-      this.eventBus.publish({
-        id: uid(),
-        topic: "regression.detected",
-        payload: {
+      this.eventBus.publish(
+        "regression.detected",
+        {
           domains,
           regressionsFound: report.regressionsFound,
           verdict: report.overallVerdict,
           summary: report.summary,
         },
-        timestamp: Date.now(),
-        source: "RegressionComparisonEngine",
-      });
+        { source: "RegressionComparisonEngine" },
+      );
 
-      this.receiptService.issue({
-        correlationId: report.id,
-        receiptType: "verification-proof",
-        capabilityId: "regression-comparison",
-        data: {
+      this.receiptService.createReceipt(
+        report.id,
+        "verification-proof",
+        {
           regressionsFound: report.regressionsFound,
           verdict: report.overallVerdict,
           regressions: report.comparisons.filter(c => c.severity !== "none"),
         },
-      });
+        { capabilityId: "regression-comparison" },
+      );
     }
 
     return report;
