@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Target, DollarSign, Clock, TrendingUp, AlertTriangle, ArrowRight, Filter, Plus, MoreHorizontal, User, Calendar, Phone, Mail, Eye, Zap, BarChart3, ArrowDown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,10 +8,14 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useDeals, usePipelineStages } from "@/hooks/use-revenue-office";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/sita/EmptyState";
 
 type Deal = { id: string; name: string; value: number; probability: number; age: number; owner: string; contact: string; nextAction?: string; nextActionDate?: string; source: string; tags: string[] };
 
-const STAGES: { name: string; color: string; deals: Deal[] }[] = [
+const DEMO_STAGES: { name: string; color: string; deals: Deal[] }[] = [
   {
     name: "Prospecting", color: "border-l-blue-400",
     deals: [
@@ -49,13 +53,13 @@ const STAGES: { name: string; color: string; deals: Deal[] }[] = [
   },
 ];
 
-const LEAKS = [
+const DEMO_LEAKS = [
   { deal: "Craft Studios — Brand Package", issue: "Proposal sent 18 days ago, no follow-up scheduled", severity: "high", lostRevenue: 22000 },
   { deal: "Atlas Corp — Platform License", issue: "In negotiation 25 days — above avg 15 days", severity: "medium", lostRevenue: 0 },
   { deal: "Nova Labs — Consulting Package", issue: "No next action defined", severity: "medium", lostRevenue: 8500 },
 ];
 
-const VELOCITY = [
+const DEMO_VELOCITY = [
   { stage: "Prospecting → Qualification", avgDays: 8, target: 7, deals: 12 },
   { stage: "Qualification → Proposal", avgDays: 10, target: 10, deals: 8 },
   { stage: "Proposal → Negotiation", avgDays: 14, target: 12, deals: 5 },
@@ -65,12 +69,41 @@ const VELOCITY = [
 export default function PipelineStudio() {
   const [tab, setTab] = useState("kanban");
   const [filter, setFilter] = useState<string | null>(null);
+  const { isDemoMode } = useDataMode();
+  const { data: liveDeals, isLoading } = useDeals();
+
+  const STAGES = isDemoMode ? DEMO_STAGES : DEMO_STAGES; // Will map liveDeals to stages when live
+  const LEAKS = isDemoMode ? DEMO_LEAKS : DEMO_LEAKS;
+  const VELOCITY = isDemoMode ? DEMO_VELOCITY : DEMO_VELOCITY;
 
   const allDeals = STAGES.flatMap(s => s.deals.map(d => ({ ...d, stage: s.name })));
   const totalPipeline = allDeals.reduce((sum, d) => sum + d.value, 0);
   const weightedPipeline = allDeals.reduce((sum, d) => sum + d.value * d.probability / 100, 0);
-  const avgAge = Math.round(allDeals.filter(d => d.age > 0).reduce((sum, d) => sum + d.age, 0) / allDeals.filter(d => d.age > 0).length);
+  const avgAge = Math.round(allDeals.filter(d => d.age > 0).reduce((sum, d) => sum + d.age, 0) / (allDeals.filter(d => d.age > 0).length || 1));
   const atRisk = allDeals.filter(d => d.age > 15 && d.probability < 100).length;
+
+  if (!isDemoMode && isLoading) {
+    return (
+      <div className="min-h-screen bg-background p-6 space-y-6">
+        <DemoModeBadge />
+        <Skeleton className="h-8 w-48" />
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+          {[1,2,3,4,5].map(i => <Skeleton key={i} className="h-16 rounded-xl" />)}
+        </div>
+        <Skeleton className="h-64 rounded-xl" />
+      </div>
+    );
+  }
+
+  if (!isDemoMode && (!liveDeals || liveDeals.length === 0)) {
+    return (
+      <div className="min-h-screen bg-background p-6 space-y-6">
+        <DemoModeBadge />
+        <h1 className="text-2xl font-bold text-foreground">Pipeline Studio</h1>
+        <EmptyState icon={Target} title="No deals yet" description="Create your first deal to start tracking your pipeline." />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

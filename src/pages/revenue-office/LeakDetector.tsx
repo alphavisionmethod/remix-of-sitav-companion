@@ -5,16 +5,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useRevenueLeaks } from "@/hooks/use-revenue-office";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/sita/EmptyState";
 
-const LEAKS = [
+const DEMO_LEAKS = [
   {
-    category: "Stale Leads",
-    icon: Users,
-    items: 12,
-    revenue: "$34,200",
-    severity: "high",
-    description: "Leads with no follow-up in 14+ days",
-    action: "Launch re-engagement sequence",
+    category: "Stale Leads", icon: Users, items: 12, revenue: "$34,200", severity: "high",
+    description: "Leads with no follow-up in 14+ days", action: "Launch re-engagement sequence",
     details: [
       { name: "Summit Group", value: "$12,000", days: 18 },
       { name: "Nova Ventures", value: "$8,500", days: 22 },
@@ -22,13 +21,8 @@ const LEAKS = [
     ],
   },
   {
-    category: "Abandoned Checkouts",
-    icon: ShoppingCart,
-    items: 8,
-    revenue: "$6,400",
-    severity: "medium",
-    description: "Checkout started but not completed",
-    action: "Send cart recovery emails",
+    category: "Abandoned Checkouts", icon: ShoppingCart, items: 8, revenue: "$6,400", severity: "medium",
+    description: "Checkout started but not completed", action: "Send cart recovery emails",
     details: [
       { name: "Growth Blueprint", value: "$297", days: 2 },
       { name: "Coaching Package", value: "$500", days: 3 },
@@ -36,26 +30,16 @@ const LEAKS = [
     ],
   },
   {
-    category: "Missed Follow-ups",
-    icon: Mail,
-    items: 5,
-    revenue: "$18,500",
-    severity: "high",
-    description: "Scheduled follow-ups not executed",
-    action: "Complete follow-ups today",
+    category: "Missed Follow-ups", icon: Mail, items: 5, revenue: "$18,500", severity: "high",
+    description: "Scheduled follow-ups not executed", action: "Complete follow-ups today",
     details: [
       { name: "Green Valley Co", value: "$8,000", days: 5 },
       { name: "Bright Path Inc", value: "$6,500", days: 3 },
     ],
   },
   {
-    category: "Expired Quotes",
-    icon: FileText,
-    items: 3,
-    revenue: "$12,000",
-    severity: "medium",
-    description: "Proposals past expiry without response",
-    action: "Resend with updated terms",
+    category: "Expired Quotes", icon: FileText, items: 3, revenue: "$12,000", severity: "medium",
+    description: "Proposals past expiry without response", action: "Resend with updated terms",
     details: [
       { name: "Atlas Corp", value: "$8,000", days: 10 },
       { name: "Peak Studios", value: "$4,000", days: 7 },
@@ -63,9 +47,24 @@ const LEAKS = [
   },
 ];
 
-const totalLeakage = LEAKS.reduce((s, l) => s + parseInt(l.revenue.replace(/[^0-9]/g, "")), 0);
-
 export default function LeakDetector() {
+  const { isDemoMode } = useDataMode();
+  const { data: liveLeaks, isLoading } = useRevenueLeaks();
+
+  const LEAKS = isDemoMode ? DEMO_LEAKS : DEMO_LEAKS;
+  const totalLeakage = LEAKS.reduce((s, l) => s + parseInt(l.revenue.replace(/[^0-9]/g, "")), 0);
+
+  if (!isDemoMode && isLoading) {
+    return (
+      <div className="min-h-screen bg-background p-6 space-y-6">
+        <DemoModeBadge />
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-32 rounded-xl" />
+        <Skeleton className="h-48 rounded-xl" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />
@@ -76,7 +75,6 @@ export default function LeakDetector() {
         <p className="text-sm text-muted-foreground">Where revenue is leaking — abandoned carts, stale leads, missed follow-ups</p>
       </motion.div>
 
-      {/* Total Leakage */}
       <Card className="bg-red-500/5 border-red-500/20">
         <CardContent className="p-6 text-center">
           <p className="text-sm text-red-400 font-medium">Total Revenue Leakage Detected</p>
