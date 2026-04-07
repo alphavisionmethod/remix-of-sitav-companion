@@ -1886,7 +1886,7 @@ const OwnerCenter = () => {
             </SitaCard>
             <SitaSectionHeader title="Domain Trust Scores" />
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {((trustData as Record<string, unknown>)?.domains || []).map((d: any) => (
+              {(trustData?.domains || []).map((d: any) => (
                 <SitaCard key={d.domain} hover={false} className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-semibold text-foreground">{d.domain}</p>
