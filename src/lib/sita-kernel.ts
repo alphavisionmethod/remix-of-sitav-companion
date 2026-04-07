@@ -124,6 +124,8 @@ export class SitaKernel {
 
     // ── Isolated services ──────────────────────────────────
     this.fraudSentinel = new FraudSentinelService();
+    this.governanceSimulator = new GovernanceSimulatorService();
+    this.searchFabric = new SearchFabricService();
 
     // ── Wire the canonical chain to shared services ─────────
     this.chain = new CanonicalChainOrchestrator(
