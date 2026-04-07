@@ -4,6 +4,7 @@ import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents"
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { format } from "date-fns";
 import { Users, Search, Plus, Mail, Phone, Building2, Star, ChevronRight, Clock, MessageSquare, FileText, DollarSign, UserCircle, Heart, Shield } from "lucide-react";
@@ -13,8 +14,6 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const db: any = supabase;
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
 type PersonRole = "client" | "lead" | "vendor" | "team" | "household" | "personal";
@@ -38,7 +37,7 @@ const PeopleWorkspace = () => {
     queryKey: ["people_customers", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data } = await db.from("customers").select("*").eq("user_id", user.id).order("updated_at", { ascending: false });
+      const { data } = await fromTable("customers").select("*").eq("user_id", user.id).order("updated_at", { ascending: false });
       return data || [];
     },
     enabled: !!user,
@@ -48,7 +47,7 @@ const PeopleWorkspace = () => {
     queryKey: ["people_leads", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data } = await db.from("leads").select("*").eq("user_id", user.id).order("updated_at", { ascending: false });
+      const { data } = await fromTable("leads").select("*").eq("user_id", user.id).order("updated_at", { ascending: false });
       return data || [];
     },
     enabled: !!user,
@@ -58,7 +57,7 @@ const PeopleWorkspace = () => {
     queryKey: ["people_household", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data } = await db.from("household_members").select("*");
+      const { data } = await fromTable("household_members").select("*");
       return data || [];
     },
     enabled: !!user,

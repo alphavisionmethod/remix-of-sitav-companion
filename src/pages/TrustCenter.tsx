@@ -4,6 +4,7 @@ import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents"
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { Shield, Lock, Eye, Smartphone, Key, Pause, Play, AlertTriangle, CheckCircle2, Settings2, ChevronRight, Fingerprint, Bell, Globe, RotateCcw, ShieldCheck, ShieldAlert, Wifi, WifiOff, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -12,8 +13,6 @@ import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const db: any = supabase;
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
@@ -28,7 +27,7 @@ const TrustCenter = () => {
     queryKey: ["trust_devices", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data } = await db.from("device_statuses").select("*").eq("user_id", user.id).order("last_seen", { ascending: false });
+      const { data } = await fromTable("device_statuses").select("*").eq("user_id", user.id).order("last_seen", { ascending: false });
       return data || [];
     },
     enabled: !!user,
@@ -38,7 +37,7 @@ const TrustCenter = () => {
     queryKey: ["trust_approvals", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data } = await db.from("approval_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5);
+      const { data } = await fromTable("approval_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5);
       return data || [];
     },
     enabled: !!user,
@@ -48,7 +47,7 @@ const TrustCenter = () => {
     queryKey: ["trust_receipts", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data } = await db.from("proof_records").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5);
+      const { data } = await fromTable("proof_records").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5);
       return data || [];
     },
     enabled: !!user,

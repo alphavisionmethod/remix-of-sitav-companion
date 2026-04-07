@@ -8,7 +8,6 @@ import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { motion, AnimatePresence } from "framer-motion";

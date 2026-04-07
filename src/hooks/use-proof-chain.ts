@@ -6,10 +6,8 @@
 
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-
-const db: any = supabase;
-
 export interface ProofChainNode {
   id: string;
   action_summary: string;
@@ -102,7 +100,7 @@ export async function emitProofRecord(
   }
 ) {
   const hash = await computeRecordHash(opts.actionSummary, new Date().toISOString());
-  await db.from("proof_records").insert({
+  await fromTable("proof_records").insert({
     user_id: userId,
     action_summary: opts.actionSummary,
     domain: opts.domain,

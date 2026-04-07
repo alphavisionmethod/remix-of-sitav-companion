@@ -8,19 +8,17 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Moon, Shield, Clock, Volume2, VolumeX, Bell, BellOff } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
-
-const db: any = supabase;
-
 export default function NOT04CalmPolicyBoard() {
   const { isDemoMode } = useDataMode();
   const { data: policies = [] } = useQuery({
     queryKey: ["not04-policies"],
     queryFn: async () => {
-      const { data } = await db.from("interruption_policies").select("*").order("created_at", { ascending: false });
+      const { data } = await fromTable("interruption_policies").select("*").order("created_at", { ascending: false });
       return data || [];
     },
   });

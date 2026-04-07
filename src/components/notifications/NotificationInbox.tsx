@@ -7,12 +7,10 @@ import { useState, useRef, useEffect } from "react";
 import { Bell, AlertCircle, CheckCircle, XCircle, ExternalLink } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-
-const db: any = supabase;
-
 const urgencyDot: Record<string, string> = {
   critical: "bg-destructive animate-pulse",
   high: "bg-yellow-400",
@@ -52,7 +50,7 @@ export function NotificationInbox() {
   const unread = notifications.filter((n: any) => !n.read_at && n.status !== "sent").length;
 
   const handleMarkRead = async (id: string) => {
-    await db.from("notifications_queue").update({ read_at: new Date().toISOString() }).eq("id", id);
+    await fromTable("notifications_queue").update({ read_at: new Date().toISOString() }).eq("id", id);
     queryClient.invalidateQueries({ queryKey: ["notification-inbox"] });
   };
 

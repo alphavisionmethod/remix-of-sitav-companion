@@ -17,7 +17,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";

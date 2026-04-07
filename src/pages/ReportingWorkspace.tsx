@@ -13,9 +13,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const db: any = supabase;
-
 const DEMO_REVENUE_DATA = [
   { month: "Jan", revenue: 42000, expenses: 28000, profit: 14000 },
   { month: "Feb", revenue: 38000, expenses: 26000, profit: 12000 },

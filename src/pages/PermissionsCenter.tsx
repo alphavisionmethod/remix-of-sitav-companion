@@ -3,7 +3,7 @@ import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents"
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db: any = supabase;
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -39,7 +39,7 @@ const PermissionsCenter = () => {
     queryKey: ["perm_advisors", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("advisor_registry").select("*").order("display_name");
+      const { data, error } = await fromTable("advisor_registry").select("*").order("display_name");
       if (error) throw error;
       return data;
     },
@@ -50,7 +50,7 @@ const PermissionsCenter = () => {
     queryKey: ["perm_connectors", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("connector_configs").select("*").order("service");
+      const { data, error } = await fromTable("connector_configs").select("*").order("service");
       if (error) throw error;
       return data;
     },
@@ -61,7 +61,7 @@ const PermissionsCenter = () => {
     queryKey: ["perm_devices", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("device_statuses").select("*").order("last_seen_at", { ascending: false });
+      const { data, error } = await fromTable("device_statuses").select("*").order("last_seen_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -72,7 +72,7 @@ const PermissionsCenter = () => {
     queryKey: ["perm_policies", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("policies").select("*").order("created_at", { ascending: false });
+      const { data, error } = await fromTable("policies").select("*").order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },

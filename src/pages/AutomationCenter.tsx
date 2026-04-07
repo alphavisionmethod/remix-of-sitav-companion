@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db: any = supabase;
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { motion } from "framer-motion";
@@ -45,7 +45,7 @@ const AutomationCenter = () => {
     queryKey: ["workflows_automation", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data, error } = await db.from("workflows").select("*").order("created_at", { ascending: false });
+      const { data, error } = await fromTable("workflows").select("*").order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -56,7 +56,7 @@ const AutomationCenter = () => {
     queryKey: ["workflow_runs_stats", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data, error } = await db.from("workflow_runs").select("status, completed_at").limit(200);
+      const { data, error } = await fromTable("workflow_runs").select("status, completed_at").limit(200);
       if (error) throw error;
       return data;
     },
@@ -64,7 +64,7 @@ const AutomationCenter = () => {
 
   const toggleWorkflow = useMutation({
     mutationFn: async ({ id, active }: { id: string; active: boolean }) => {
-      const { error } = await db.from("workflows").update({ active }).eq("id", id);
+      const { error } = await fromTable("workflows").update({ active }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["workflows_automation"] }); toast.success("Workflow updated"); },
