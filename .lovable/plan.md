@@ -1,54 +1,73 @@
 
 
-# SITA OS — Final Audit Results
+# SITA OS — Full Contract & Implementation Audit
 
-## What's 100% Done (Confirmed)
-- Landing, Login, Signup, Forgot Password pages: Beautiful, functional, zero errors
-- 50 edge functions: All substantive with Zod, CORS, auth, rate limiting
-- 443 tables, all with RLS enabled
-- CI/CD: 12-job pipeline + manual deploy
-- PWA: manifest, icons, SW with offline + push (icon paths correct)
-- Error handling: GlobalErrorBoundary + RouteErrorBoundary + query error toasts
-- CSP, OG meta, Twitter cards, robots.txt, sitemap.xml, canonical
-- Accessibility: All loading spinners have role="status" + aria-label
-- Health.json generated at build time
-- Avatar bucket: Created, RLS correct, upload paths fixed
-- Zero console errors, zero network errors
-- TypeScript compiles clean
+## Audit Scope
+Reviewed: 30 packages, 18 contract families, 50 edge functions, 600+ routes, 443 tables, all barrel exports, all service directories, security scan, TSC compilation, test coverage.
 
-## One Remaining Gap: RLS Policies Target `public` Instead of `authenticated`
+## What's 100% Solid (No Action Needed)
+- TypeScript compiles clean (zero errors)
+- All 30 packages have valid barrel exports with actual type exports
+- All 18 contract families (core, capability, approval, execution, proof, advisor, runtime, memory, graph, read-models, specialized, admin, kernel, MSA, native, api-schemas, domain-types, msa) are properly wired through the root barrel
+- 600+ routes, all lazy-loaded (518 lazy imports)
+- All 443 tables have RLS enabled, all policies target `authenticated` role
+- Security scan: clean (leaked password protection is dashboard-only, already marked as ignored)
+- Domain engines (business-os, finance-os, concierge-os, investment-office, revenue-autopilot, playbook-simulator) — all implemented, no TODOs
+- Mnemosyne context assembler — fully implemented (286 lines), not a stub
+- Push registration service — fully wired with VAPID from env, Capacitor, Electron support
+- VITE_VAPID_PUBLIC_KEY configured in `.env`
+- All secrets present (VAPID, OpenAI, Anthropic, Twilio, Supabase)
+- 20 E2E specs, 34+ unit tests, 16 Deno edge function tests
 
-**Severity: HIGH (Security Hardening)**
+---
 
-The security scan found that **431 of 615 RLS policies** apply to the `{public}` role instead of `{authenticated}`. While `auth.uid() = user_id` prevents actual data leakage (returns NULL for anon), this is defense-in-depth: the `authenticated` role ensures Supabase rejects unauthenticated API calls before RLS evaluation even runs.
+## Gap 1: 17 Edge Functions Missing from API Schema Map (MEDIUM)
 
-This means tables like `customers`, `leads`, `connector_oauth_tokens`, `financial_accounts`, `encrypted_secrets`, and hundreds more are technically queryable by unauthenticated clients (though the WHERE clause blocks actual rows).
+**Issue:** `EdgeFunctionMap` in `api-schemas/index.ts` defines typed request/response for 33 functions but is missing 17:
 
-**Fix:** A single migration that:
-1. Drops all 431 `public`-role policies
-2. Recreates them identically but targeting `authenticated` role
+`admin-ai-workforce-run`, `ai-gateway`, `booking-manage`, `cashflow-calculate`, `connector-batch`, `connector-discover`, `connector-oauth`, `connector-transform`, `crm-sync`, `ecosystem-operations`, `invoice-generate`, `payment-process`, `push-dispatch`, `push-track`, `tax-estimate`, `vapid-public-key`, `verification-recorder`
 
-This is a bulk SQL operation. The policies themselves (qual + with_check) remain unchanged -- only the role changes from `public` to `authenticated`.
+**Impact:** These functions work fine but lack typed contracts. Any frontend code invoking them uses untyped responses.
 
-### Technical approach
+**Fix:** Add request/response interfaces and EdgeFunctionMap entries for all 17 functions. Read each function's Zod schema to derive the correct types.
 
-Generate the migration SQL by querying `pg_policies` for all policies where `'public' = ANY(roles)` in the `public` schema, then for each:
-```sql
-DROP POLICY "policy_name" ON public.table_name;
-CREATE POLICY "policy_name" ON public.table_name
-  FOR cmd TO authenticated
-  USING (original_qual) WITH CHECK (original_with_check);
-```
+---
 
-This will be a large migration (~1200 lines) but is purely mechanical and safe -- no data changes, no schema changes, just role reassignment.
+## Gap 2: 5 Edge Functions Not Referenced from Frontend (LOW)
 
-### Dashboard-only item (no code fix)
-- **Leaked password protection**: Enable via Supabase Dashboard -> Auth -> Settings -> Password Security
+**Issue:** These edge functions exist but are never invoked from any frontend code:
+- `connector-transform` — backend-only data transformer
+- `payment-process` — payment processing (should be wired to payment flows)
+- `push-track` — delivery tracking (called by push-dispatch internally)
+- `vapid-public-key` — public key endpoint (frontend uses env var directly)
+- `verification-recorder` — called by other edge functions
 
-### Files
-| Action | File |
-|---|---|
-| Create | New migration: bulk RLS role change from `public` to `authenticated` |
+**Impact:** `payment-process` is the only concern — it should be wired to payment execution UI. The others are backend-to-backend or env-var-based, which is correct.
 
-After this single migration, the security scan will be clean and the project is truly 100% deployment-ready.
+**Fix:** Wire `payment-process` to the payment execution page/service. The other 4 are correctly backend-only — no action needed.
+
+---
+
+## Gap 3: Security Posture Engine Lists Known Gaps (INFO)
+
+**Issue:** `src/lib/services/security/security-posture-engine.ts` self-documents 15 known gaps (G01-G15) as an honesty engine. Key ones:
+- G12: "Database backup recovery not tested" (HIGH, blocks launch)
+- G13: "Maintenance mode kill switch not implemented" (MEDIUM)
+- G01: "Virus/malware scanning on uploads" — not implemented (LOW — type validation only)
+
+**Impact:** These are accurately self-reported. G12 is an operational procedure (run Supabase test restore), not code. G13 is a feature request.
+
+**Fix:** No code changes needed — these are operational items. The honesty engine correctly reports them. Optionally add a maintenance-mode edge function.
+
+---
+
+## Implementation Plan
+
+| # | Task | Files | Priority |
+|---|------|-------|----------|
+| 1 | Add 17 missing EdgeFunctionMap entries | `src/packages/contracts/api-schemas/index.ts` | MEDIUM |
+| 2 | Wire payment-process to payment UI | `src/pages/*` payment pages + service | MEDIUM |
+| 3 | (Optional) Add maintenance-mode edge function | `supabase/functions/maintenance-mode/index.ts` | LOW |
+
+**Total: 2 actionable gaps, 1 optional enhancement.** The project's contract layer, routing, security, and service architecture are fully connected and implemented.
 
