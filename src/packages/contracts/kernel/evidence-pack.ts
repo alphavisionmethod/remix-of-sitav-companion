@@ -3,7 +3,7 @@
 // Bundles evidence references for trust-aware execution.
 // ═══════════════════════════════════════════════════════════════
 
-export type EvidenceType = "receipt" | "memory" | "external" | "user-input" | "advisor-output" | "verification" | "policy-decision";
+export type KernelEvidenceType = "receipt" | "memory" | "external" | "user-input" | "advisor-output" | "verification" | "policy-decision";
 
 export interface EvidenceReference {
   id: string;
