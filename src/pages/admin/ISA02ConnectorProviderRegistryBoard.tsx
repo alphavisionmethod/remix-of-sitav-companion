@@ -170,7 +170,7 @@ export default function ISA02ConnectorProviderRegistryBoard() {
                   <CardContent className="pt-4">
                     <div className="flex items-center justify-between mb-2">
                       <p className="font-medium text-sm">
-                        {(svc as Record<string, unknown>).provider_capabilities?.display_name || svc.account_label || "Service"}
+                        {((svc as any).provider_capabilities as any)?.display_name || svc.account_label || "Service"}
                       </p>
                       <Badge className={healthColors[svc.health_state || "unknown"]}>
                         {svc.health_state || "unknown"}
