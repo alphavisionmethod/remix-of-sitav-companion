@@ -19,7 +19,7 @@ import { createOSUnificationService } from "@/lib/services/os-unification";
 import { buildActiveSurface } from "@/lib/services/surface-detection";
 import { getOfflineQueueService } from "@/lib/services/offline-queue";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface OSRuntime {
   context: OSRuntimeContext;

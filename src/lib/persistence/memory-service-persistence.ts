@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import type { MemoryEntry, MemoryForgetRecord, MemoryQuery } from "@/lib/core-services/memory-service";
 
 // ── Types ───────────────────────────────────────────────────────

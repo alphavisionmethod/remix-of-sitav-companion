@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export const SCOPE_LEVELS = ["route", "page", "feature", "component_group", "service", "domain", "workspace", "office"] as const;
 export type ScopeLevel = typeof SCOPE_LEVELS[number];

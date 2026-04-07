@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { runFullDetection, type DetectionReport } from "@/lib/detection/reality-detection-engine";
 import type {
   LaunchHonestyRecord,
