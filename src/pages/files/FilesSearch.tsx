@@ -29,6 +29,9 @@ const FilesSearch = () => {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<FilterType>("all");
   const [searchResponse, setSearchResponse] = useState<SearchResponse | null>(null);
+  const [aiSearchResult, setAiSearchResult] = useState<string | null>(null);
+  const [aiSearching, setAiSearching] = useState(false);
+  const aiInsight = useAIInsight();
 
   const searchService = useMemo(() => {
     const svc = new SearchFabricService();
