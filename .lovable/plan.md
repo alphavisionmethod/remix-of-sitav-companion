@@ -1,111 +1,116 @@
 
 
-# Fix 23 Non-Admin Pages — Redirect Direct OS Imports to Kernel Hooks
+# Eliminate All `as any` and `as unknown as` Casts from Pages
 
 ## Problem
 
-23 app pages bypass the kernel by importing service classes/functions directly from `@/lib/core-services/` or `@/lib/services/`. This means service instantiation happens per-component (e.g., `new FraudSentinelService()`, `new GovernanceSimulatorService()`) instead of through the kernel's shared, audited service tree.
+69 `as any` casts and 8 `as unknown as` double-casts across ~20 page files. The build compiles (0 errors), but these hide real type gaps and will rot the codebase. The user's instructions 11–13 call for typed parser functions, per-page view-model mappers, and eliminating unsafe casts.
 
-## Strategy
+## Categorized Clusters
 
-Two categories of fix based on what's imported:
+### Cluster A: Supabase relation payloads (28 casts, 7 files)
+Files: `AR06ExecutionTraceExplorer`, `AR07RetryFailureCenter`, `ISA01–ISA05`, `ISA07`
 
-### Category A: Service class instantiation (must route through kernel)
-Pages that do `new SomeService()` and call methods — these need kernel hooks.
+Pattern: `((row as any).scheduled_jobs as any)?.name` or `((row as any).provider_families as any)?.name`
 
-### Category B: Pure data/config/type imports (acceptable, just redirect path)
-Pages importing constants (`INTEGRATION_PROVIDERS`, `DEMO_CONNECTIONS`), types, or pure functions (`classifyFile`, `simulatePayment`) — these aren't execution bypasses, they're data. Redirect from `core-services` to `lib/services` where possible, or keep if no equivalent exists.
+These are nested Supabase `select("*, scheduled_jobs(name, domain, ...)")` results where the relation object is inferred as `unknown`.
 
-## Step 1: Create 5 new kernel-domain hooks in `src/contexts/SitaKernelContext.tsx`
+**Fix**: Create shared parser types and helpers:
+- `parseRelation<T>(raw: unknown): T` in `src/lib/types/relation-parsers.ts`
+- `ScheduledJobRef { name, domain, job_class, target_function }`
+- `ProviderFamilyRef { name, provider_key }`
+- `ProviderCapabilityRef { display_name }`
+- Apply at the query boundary, not in JSX
 
-Add hooks that expose kernel-managed service instances. The kernel singleton (`sita-kernel.ts`) already instantiates `FraudSentinelService`. For missing services, add them to the kernel.
+### Cluster B: Edge function / hook results used as `any` (15 casts, 7 files)
+Files: `MoneyOverview` (`cf`, `br`), `CashTiming` (`safeToSpendData`), `TaxEstimator` (`t`, `d`), `BusinessOverview` (`crmHealth`), `MissionControlPage` (`adminIncidents`, `tokenEngine.routes`), `OwnerCenter` (`intelligenceData`, `simulatePolicy.data`)
 
-**New hooks:**
-```ts
-export function useFraudSentinel() {
-  const kernel = useSitaKernel();
-  return kernel.fraudSentinel;
-}
+**Fix**: Add proper generic types to `useQuery` calls in `use-backend-actions.ts`:
+- `SafeToSpendResult { safe_to_spend_cents: number }`
+- `BurnRateResult { monthly_burn_cents, runway_months, ... }`
+- `TaxEstimateResult { federal_tax_cents, se_tax_cents, total_tax_cents, ... }`
+- `TaxDeductionsResult { total_deductions_cents, items: ... }`
+- Then pages destructure typed data directly — no casts needed
 
-export function useGovernanceSimulator() {
-  // kernel doesn't have this yet — instantiate via useMemo from the kernel context
-  return useMemo(() => new GovernanceSimulatorService(), []);
-}
+### Cluster C: Mixed union / joined items (10 casts, 3 files)
+Files: `RecoveryCenter` (workflow_runs + incidents union), `FL01FlagshipLoopsExecutive` (verification runs), `SubscriptionsWaste` (`waste_flag`, `duplicate_of`)
 
-export function useSearchFabric() {
-  return useMemo(() => new SearchFabricService(), []);
-}
+**Fix**:
+- `RecoveryCenter`: Define `RecoveryItem` union type with discriminant (`_isIncident`). Normalize `selected` via a `toRecoveryDetail()` parser
+- `FL01`: Type `verificationRuns` with explicit generic on `useQuery<VerificationRun[]>`
+- `SubscriptionsWaste`: `waste_flag` and `duplicate_of` are metadata fields — parse from `metadata` column via `getString`/`getBoolean` guards, or if they're real columns, ensure the DB type includes them
 
-export function useFileIngestion() {
-  return useMemo(() => ({
-    classifyFile, detectSensitivity // re-export pure functions
-  }), []);
-}
+### Cluster D: JSON metadata access (8 casts, 4 files)
+Files: `PermissionsCenter` (device metadata), `PersistenceStatus` (receipt fields), `FilesSettings` (settings blob), `ComputeGovernanceBoard` (`downgradeReason`)
 
-export function useSelfHealingServices() {
-  return useMemo(() => ({
-    selfHealing: createSelfHealingService(),
-    immune: createImmuneController(),
-    fleet: createFleetHealthService(),
-    capabilities: HEALING_CAPABILITY_MAP,
-    escalation: ESCALATION_RULES,
-    degradedModes: DEGRADED_MODES,
-  }), []);
-}
+**Fix**: Use existing `isRecord`/`getString`/`getNumber`/`getBoolean` guards from `src/lib/types/guards.ts` at the data boundary
+
+### Cluster E: In-memory engine hacks (8 casts, 3 files)
+Files: `BusinessOverview` (revenue engine signals), `LeaseDashboard` (mutating lease object), `AutomationSimLab` (static simulation object policy check)
+
+**Fix**:
+- `AutomationSimLab`: The `simulation.policyCheck` is a static const — just type it properly with an interface
+- `LeaseDashboard`: Use `leaseManager.expireLease(id)` method instead of direct property mutation; if method doesn't exist, add it
+- `BusinessOverview`: Type the revenue engine's `signals` and `shouldAutoRecover` properly
+
+### Cluster F: Remaining scattered casts (8 casts, 5 files)
+Files: `AR08KillSwitchCenter`, `TeamManagement`, `CJ01ExecutiveReport`, `CJ08RouteActionCoverage`, `SAGFallbackCenter`
+
+**Fix**: Apply `isRecord` + field extractors at data boundaries
+
+## Implementation Plan
+
+### Step 1: Create `src/lib/types/relation-parsers.ts`
+Shared parsers for Supabase relation objects:
+```
+parseScheduledJobRef(raw) → { name, domain, job_class, target_function }
+parseProviderFamilyRef(raw) → { name, provider_key }
+parseProviderCapabilityRef(raw) → { display_name }
 ```
 
-**Add `governanceSimulator` and `searchFabric` to the kernel singleton** in `src/lib/sita-kernel.ts` so they're shared across the tree.
+### Step 2: Add typed generics to edge function hooks
+In `src/hooks/use-backend-actions.ts`:
+- Add `SafeToSpendResult`, `BurnRateResult`, `TaxEstimateResult`, `TaxDeductionsResult` interfaces
+- Apply as generics to `useQuery<T>` calls
 
-**Files**: `src/lib/sita-kernel.ts`, `src/contexts/SitaKernelContext.tsx`
+### Step 3: Type the `AutomationSimLab` simulation object
+Define a `PolicyCheckEntry` interface so `Object.entries(simulation.policyCheck)` yields typed values
 
-## Step 2: Fix 13 pages importing `@/lib/core-services/`
+### Step 4: Fix RecoveryCenter union typing
+Define `RecoveryItem` type. Normalize `selected` before render.
 
-| Page | Current | Fix |
-|---|---|---|
-| `MoneyOverview.tsx` | `new FraudSentinelService()` | Use `useFraudSentinel()` hook |
-| `MissionControlPage.tsx` | `new FraudSentinelService()`, `new GovernanceSimulatorService()` | Use `useFraudSentinel()`, `useGovernanceSimulator()` |
-| `SettingsPage.tsx` | `new GovernanceSimulatorService()` | Use `useGovernanceSimulator()` |
-| `PolicySimulatorPage.tsx` | `new GovernanceSimulatorService()` | Use `useGovernanceSimulator()` |
-| `PolicySimulatorHub.tsx` | `new GovernanceSimulatorService()` | Use `useGovernanceSimulator()` |
-| `FilesSearch.tsx` | `new SearchFabricService()` | Use `useSearchFabric()` |
-| `FilesAll.tsx` | `classifyFile, detectSensitivity` | Import from `useFileIngestion()` or keep pure function import (not a bypass) |
-| `FilesOverview.tsx` | `classifyFile, detectSensitivity` | Same as FilesAll |
-| `BillsWorkspace.tsx` | `simulatePayment` (pure function) | Keep — pure function, not a service bypass |
-| `ConstitutionEditor.tsx` | `type ConstitutionRule` (type-only) | Keep — type imports are not bypasses |
-| `LeaseDashboard.tsx` | `type CapabilityLease` (type-only) | Keep — type imports are not bypasses |
-| `SystemStatus.tsx` | `createSelfHealingService()` etc. | Use `useSelfHealingServices()` hook |
-| `InvestmentOffice.tsx` | service functions from `finance-os` | These are pure domain functions (deterministic engines), not stateful services — keep |
+### Step 5: Fix SubscriptionsWaste metadata fields
+Parse `waste_flag` / `duplicate_of` from metadata or ensure DB types include them.
 
-**Files modified**: ~8 page files (excluding type-only and pure-function imports which are architecturally acceptable)
+### Step 6: Apply relation parsers to ISA01–07, AR06, AR07
+Replace all `((row as any).provider_families as any)?.name` with `parseProviderFamilyRef(row.provider_families).name`
 
-## Step 3: Fix 10 pages importing `@/lib/services/`
+### Step 7: Fix remaining scattered casts
+- `AR08KillSwitchCenter`: Type `existing` from query result
+- `TeamManagement`: Type `perf` record
+- `CJ01/CJ08`: Type loop variables from query results
+- `SAGFallbackCenter`: Type health check record
+- `FilesSettings`: Type settings blob
+- `MoneyOverview/CashTiming`: Use typed hook results (from step 2)
+- `OwnerCenter`: Type `intelligenceData` and `simulatePolicy.data`
+- `MissionControlPage`: Type `adminIncidents` and `tokenEngine.routes`
+- `LeaseDashboard`: Use proper lease mutation method
+- `BusinessOverview`: Type revenue engine access
+- `ComputeGovernanceBoard`: Type routing record with `downgradeReason`
+- `PersistenceStatus`: Use guards for receipt fields
+- `PermissionsCenter`: Use metadata guards (already partially done)
 
-| Page | Current Import | Classification | Fix |
-|---|---|---|---|
-| `IntegrationsCatalog.tsx` | `INTEGRATION_PROVIDERS`, `DEMO_CONNECTIONS` | Pure data constants | Keep — not a service bypass |
-| `ConnectionsList.tsx` | `DEMO_CONNECTIONS`, `getProviderById` | Pure data/lookup | Keep |
-| `ConnectionDetail.tsx` | `DEMO_CONNECTIONS`, `getProviderById` | Pure data/lookup | Keep |
-| `ProviderDetail.tsx` | `getProviderById`, `DEMO_CONNECTIONS` | Pure data/lookup | Keep |
-| `ActionsApprovals.tsx` | `DEMO_ACTION_REQUESTS` | Pure data constant | Keep |
-| `GoogleConnectedAccounts.tsx` | `type GoogleConnectorState` | Type-only | Keep |
-| `PackEditor.tsx` | `listPacks` | Pure function | Keep |
-| `ConnectorHub.tsx` | `fetchConnectorHealth` | Async fetch function | Wrap in kernel query or keep (read-only) |
-| `InvestmentOffice.tsx` | Service functions from `finance-os` | Pure deterministic functions | Keep |
-| `LifeSimulator.tsx` | `LifeShockSimulator` class | Stateful service | Create `useLifeSimulator()` hook |
+### Step 8: Verify
+Run `npx tsc --noEmit` — must remain 0 errors. Grep for `as any` in pages — target: 0.
 
-Most `@/lib/services/` imports are pure data constants, types, or stateless lookup functions — these are **not** execution bypasses. Only `LifeSimulator.tsx` and `ConnectorHub.tsx` instantiate stateful services.
+## Files Modified
+- 1 new: `src/lib/types/relation-parsers.ts`
+- 1 modified: `src/hooks/use-backend-actions.ts` (add result types)
+- ~20 page files modified (remove `as any`, apply parsers/types)
 
-**Files modified**: 2 page files
-
-## Summary
-
-| Action | Count |
-|---|---|
-| New kernel hooks added to `SitaKernelContext.tsx` | 5 hooks |
-| Services added to `sita-kernel.ts` singleton | 2 (`governanceSimulator`, `searchFabric`) |
-| Page files modified (service → hook) | ~10 |
-| Page files kept as-is (type/data/pure-fn imports) | ~13 |
-| **Total files modified** | ~12 |
-
-After this fix, every stateful service access in non-admin pages goes through the kernel. Pure data constants, types, and deterministic functions remain importable directly — these don't violate the architecture since they carry no state and produce no side effects.
+## What This Does NOT Do
+- No `@ts-ignore` or `@ts-expect-error`
+- No `as unknown as SomeType` without validation
+- No rendering raw JSON in JSX
+- No `useState([])` without explicit generic
 
