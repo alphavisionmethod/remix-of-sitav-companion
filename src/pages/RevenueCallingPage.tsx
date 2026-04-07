@@ -27,6 +27,8 @@ import { MOCK_CONTACTS, MOCK_CALL_LOGS, MOCK_CALL_SCRIPTS as MOCK_SCRIPTS } from
 import type { CallingContact as Contact, CallingCallLog as CallLog, CallingCallScript as CallScript } from "@/lib/mock-data/revenue-calling";
 import { useCallingContactsData } from "@/hooks/use-business-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";
 
 type DialerState = "idle" | "dialing" | "connected" | "wrapping-up";
 
