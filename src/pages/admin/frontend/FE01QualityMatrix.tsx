@@ -2,8 +2,8 @@ import { BarChart3, Star, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import {
 import { useDataMode } from "@/contexts/DataModeContext";
+import {
   ROUTE_FAMILY_QUALITY,
   FLAGSHIP_LOOP_READINESS,
   STATE_MATURITY,
