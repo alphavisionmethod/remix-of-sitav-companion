@@ -511,9 +511,9 @@ export function useReleases() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["releases", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<ReleasesData> => {
       if (isDemoMode) return mockReleases;
-      return callAdminAPI("releases");
+      return callAdminAPI<ReleasesData>("releases");
     },
     staleTime: isDemoMode ? Infinity : 30000,
   });
