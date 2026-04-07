@@ -187,7 +187,7 @@ const EnterpriseControlPlane = () => {
           </div>
         </TabsContent>
 
-        {/* ═══ DEMO_ROLES & PERMISSIONS ═══ */}
+        {/* ═══ ROLES & PERMISSIONS ═══ */}
         <TabsContent value="roles" className="space-y-4 mt-4">
           <SitaCard hover={false} className="p-4 overflow-x-auto">
             <table className="w-full text-xs">
