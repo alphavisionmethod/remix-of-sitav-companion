@@ -43,8 +43,8 @@ export async function getAILaunchHonestyBoard(): Promise<AICapabilityLaunchStatu
     fromTable("ai_task_requests").select("capability_id, created_at, status, provider_chosen, model_chosen").order("created_at", { ascending: false }).limit(500),
   ]);
 
-  const honestyMap = new Map((honesty ?? []).map((h: any) => [h.capability_key, h]));
-  const policyMap = new Map((policies ?? []).map((p: any) => [p.capability_id, p]));
+  const honestyMap = new Map<string, any>((honesty ?? []).map((h: any) => [h.capability_key, h]));
+  const policyMap = new Map<string, any>((policies ?? []).map((p: any) => [p.capability_id, p]));
   const requestMap = new Map<string, any>();
   (requests ?? []).forEach((r: any) => {
     if (r.capability_id && !requestMap.has(r.capability_id)) {
