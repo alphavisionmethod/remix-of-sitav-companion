@@ -479,8 +479,5 @@ export function useSelfHealingServices() {
 // ── Life Simulator Hook ─────────────────────────────────────────
 
 export function useLifeSimulator(scenarioCount = 500) {
-  return useMemo(() => {
-    const { LifeShockSimulator } = require("@/lib/services/life-simulation");
-    return new LifeShockSimulator(scenarioCount);
-  }, [scenarioCount]);
+  return useMemo(() => new LifeShockSimulator(scenarioCount), [scenarioCount]);
 }
