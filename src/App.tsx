@@ -454,6 +454,7 @@ const FE02DesignGovernance = lazy(() => import("./pages/admin/frontend/FE02Desig
 // Architecture
 const GodTierIntegrationBoard = lazy(() => import("./pages/admin/architecture/GodTierIntegrationBoard"));
 const GodTierRuntimeBoard = lazy(() => import("./pages/admin/architecture/GodTierRuntimeBoard"));
+const EpistemicFirewallBoard = lazy(() => import("./pages/admin/architecture/EpistemicFirewallBoard"));
 
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
@@ -1437,6 +1438,7 @@ const App = () => (
                      {/* Architecture */}
                      <Route path="/admin/architecture/god-tier-integration" element={<GodTierIntegrationBoard />} />
                      <Route path="/admin/architecture/god-tier-runtime" element={<GodTierRuntimeBoard />} />
+                     <Route path="/admin/architecture/epistemic-firewall" element={<EpistemicFirewallBoard />} />
 
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
