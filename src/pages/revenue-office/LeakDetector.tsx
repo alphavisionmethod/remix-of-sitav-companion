@@ -49,7 +49,7 @@ const DEMO_LEAKS = [
 
 export default function LeakDetector() {
   const { isDemoMode } = useDataMode();
-  const { data: liveLeaks, isLoading } = useRevenueLeaks();
+  const { data: liveLeaks, isLoading } = useRevenueLeakItems();
 
   const LEAKS = isDemoMode ? DEMO_LEAKS : DEMO_LEAKS;
   const totalLeakage = LEAKS.reduce((s, l) => s + parseInt(l.revenue.replace(/[^0-9]/g, "")), 0);

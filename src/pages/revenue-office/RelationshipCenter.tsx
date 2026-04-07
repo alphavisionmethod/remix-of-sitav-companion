@@ -30,7 +30,7 @@ const DEMO_CONTACTS = [
 
 export default function RelationshipCenter() {
   const { isDemoMode } = useDataMode();
-  const { data: liveContacts, isLoading } = useContacts();
+  const { data: liveContacts, isLoading } = useCustomers();
 
   const LIFECYCLE_STAGES = isDemoMode ? DEMO_LIFECYCLE_STAGES : DEMO_LIFECYCLE_STAGES;
   const CONTACTS = isDemoMode ? DEMO_CONTACTS : (liveContacts?.map((c: any) => ({
