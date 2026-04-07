@@ -25,6 +25,7 @@ export interface Receipt {
   sequenceNumber: number;
   status: "valid" | "tampered" | "superseded";
   createdAt: number;
+  updatedAt?: number;
 }
 
 export interface ProofPack {
@@ -60,6 +61,48 @@ export class ReceiptService {
   private sequenceCounter = 0;
   private persistenceEnabled = true;
   private persistenceErrors = 0;
+
+  /** Create a placeholder receipt BEFORE execution begins */
+  async createPlaceholder(
+    correlationId: string,
+    capabilityId: string,
+    envelopeId?: string
+  ): Promise<Receipt> {
+    const receipt = await this.createReceipt(correlationId, "execution-summary", {
+      capabilityId,
+      placeholderStatus: "pending",
+    }, { capabilityId, envelopeId });
+    // Override status to pending (placeholder)
+    receipt.status = "valid"; // placeholder is valid but data.placeholderStatus tracks lifecycle
+    return receipt;
+  }
+
+  /** Transition a placeholder receipt to executing */
+  markExecuting(receiptId: string): boolean {
+    const receipt = this.receipts.find(r => r.id === receiptId);
+    if (!receipt) return false;
+    receipt.data = { ...receipt.data, placeholderStatus: "executing" };
+    receipt.updatedAt = Date.now();
+    return true;
+  }
+
+  /** Finalize a receipt after execution completes */
+  async finalizeReceipt(
+    receiptId: string,
+    result: Record<string, unknown>,
+    finalStatus: "completed" | "failed" = "completed"
+  ): Promise<Receipt | null> {
+    const receipt = this.receipts.find(r => r.id === receiptId);
+    if (!receipt) return null;
+    receipt.data = {
+      ...receipt.data,
+      ...result,
+      placeholderStatus: finalStatus,
+      finalizedAt: Date.now(),
+    };
+    receipt.updatedAt = Date.now();
+    return receipt;
+  }
 
   async createReceipt(
     correlationId: string,

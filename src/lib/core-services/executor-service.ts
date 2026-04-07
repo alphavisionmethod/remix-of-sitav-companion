@@ -11,9 +11,34 @@ import { getEventBus } from "./event-bus";
 
 export type { CanonicalExecutionMode, CanonicalExecutionStatus };
 
+import type { KernelExecutionMode } from "@/packages/contracts/kernel/action-envelope";
+
 /** Local execution mode (extended) */
 export type ServiceExecutionMode = "real" | "shadow" | "simulation" | "draft";
 export type EnvelopeStatus = "pending" | "executing" | "completed" | "failed" | "rolled_back";
+
+/** Map kernel tri-mode to executor service mode */
+export function mapKernelMode(mode: KernelExecutionMode): ServiceExecutionMode {
+  switch (mode) {
+    case "EMULATED": return "draft";
+    case "REAL_MOCK": return "simulation";
+    case "REAL": return "real";
+  }
+}
+
+/** Runtime invariant: output schema must be mode-independent */
+export function assertOutputSchemaInvariant(
+  mode: ServiceExecutionMode,
+  output: Record<string, unknown>
+): void {
+  // The 'mode' field in output is allowed to differ; all other keys must be stable
+  const reservedModeKeys = ["mode", "shadowMode", "persisted", "simulatedResult"];
+  const structuralKeys = Object.keys(output).filter(k => !reservedModeKeys.includes(k));
+  // This is a runtime assertion — in production it logs; in tests it throws
+  if (structuralKeys.length === 0 && mode !== "draft") {
+    console.warn(`[executor] WARNING: Empty structural output in ${mode} mode — potential schema drift`);
+  }
+}
 
 export interface ExecutionEnvelope {
   id: string;

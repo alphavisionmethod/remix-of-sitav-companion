@@ -17,6 +17,9 @@ import {
 /** @deprecated Use CanonicalPrivacyTier from contracts */
 export type ServicePrivacyTier = CanonicalPrivacyTier;
 
+/** Trust level for memory entries (epistemic transparency) */
+export type MemoryTrustLevel = "verified" | "inferred" | "external" | "user-provided" | "unverified";
+
 export interface MemoryEntry {
   id: string;
   key: string;
@@ -32,6 +35,12 @@ export interface MemoryEntry {
   entityId?: string;
   entityType?: string;
   accessLog: { role: string; timestamp: number }[];
+  // Trust lens fields
+  trustLevel: MemoryTrustLevel;
+  ingestedAt: number;
+  sourceType: string;
+  sanitized: boolean;
+  evidenceIds?: string[];
 }
 
 export interface MemoryForgetRecord {
@@ -86,7 +95,32 @@ export class MemoryService {
   private forgetLog: MemoryForgetRecord[] = [];
   private persistenceEnabled = true;
 
-  /** Store a memory entry with automatic privacy classification and durable persistence */
+  /** Sanitize value to prevent prompt injection via memory */
+  private sanitize(value: unknown): { sanitized: unknown; wasSanitized: boolean } {
+    if (typeof value === "string") {
+      // Strip HTML/script tags and common injection patterns
+      const cleaned = value
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+        .replace(/<[^>]*>/g, "")
+        .replace(/javascript:/gi, "")
+        .replace(/on\w+\s*=/gi, "");
+      return { sanitized: cleaned, wasSanitized: cleaned !== value };
+    }
+    if (typeof value === "object" && value !== null) {
+      // Recursively sanitize object values
+      const result: Record<string, unknown> = {};
+      let anySanitized = false;
+      for (const [k, v] of Object.entries(value)) {
+        const { sanitized, wasSanitized } = this.sanitize(v);
+        result[k] = sanitized;
+        if (wasSanitized) anySanitized = true;
+      }
+      return { sanitized: result, wasSanitized: anySanitized };
+    }
+    return { sanitized: value, wasSanitized: false };
+  }
+
+  /** Store a memory entry with automatic privacy classification, trust lens, and durable persistence */
   store(
     key: string,
     value: unknown,
@@ -100,27 +134,40 @@ export class MemoryService {
       expiresAt?: number;
       scope?: MemoryScope;
       domain?: string;
+      trustLevel?: MemoryTrustLevel;
+      sourceType?: string;
+      evidenceIds?: string[];
     }
   ): MemoryEntry {
     const detectedTier = options?.privacyTier ?? this.detectPrivacyTier(key);
 
+    // Sanitize value (trust lens: ingestion corridor)
+    const { sanitized: sanitizedValue, wasSanitized } = this.sanitize(value);
+
     // Check for supersession
     const existing = this.findByKey(key, options?.entityId);
 
+    const now = Date.now();
     const entry: MemoryEntry = {
       id: crypto.randomUUID(),
       key,
-      value,
+      value: sanitizedValue,
       privacyTier: detectedTier,
       confidence: options?.confidence ?? 1.0,
       source: options?.source ?? "user",
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      createdAt: now,
+      updatedAt: now,
       expiresAt: options?.expiresAt,
       tags: options?.tags ?? [],
       entityId: options?.entityId,
       entityType: options?.entityType,
       accessLog: [],
+      // Trust lens
+      trustLevel: options?.trustLevel ?? this.inferTrustLevel(options?.source),
+      ingestedAt: now,
+      sourceType: options?.sourceType ?? options?.source ?? "unknown",
+      sanitized: wasSanitized,
+      evidenceIds: options?.evidenceIds,
     };
 
     // Mark existing as superseded
@@ -238,6 +285,10 @@ export class MemoryService {
           entityId: p.entity_id ?? undefined,
           entityType: p.entity_type ?? undefined,
           accessLog: [],
+          trustLevel: "verified",
+          ingestedAt: new Date(p.created_at).getTime(),
+          sourceType: p.source,
+          sanitized: false,
         });
         loaded++;
       }
@@ -283,6 +334,16 @@ export class MemoryService {
       }
     }
     return undefined;
+  }
+
+  /** Infer trust level from source */
+  private inferTrustLevel(source?: string): MemoryTrustLevel {
+    if (!source) return "unverified";
+    if (source === "canonical-chain" || source === "kernel" || source === "system") return "verified";
+    if (source === "advisor" || source === "agent") return "inferred";
+    if (source === "user" || source === "ui") return "user-provided";
+    if (source === "external" || source === "connector") return "external";
+    return "unverified";
   }
 }
 

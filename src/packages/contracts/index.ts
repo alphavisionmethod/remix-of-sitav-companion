@@ -69,6 +69,9 @@ export * from "./specialized";
 // ── Admin contracts ─────────────────────────────────────────
 export * from "./admin";
 
+// ── Kernel contracts (sacred — zero runtime deps) ───────────
+export * from "./kernel";
+
 // ── Deprecated redirect stubs REMOVED ────────────────────────
 // consent-contracts → approval/consent (via approval barrel)
 // organization-contracts → graph/organization (via graph barrel)
