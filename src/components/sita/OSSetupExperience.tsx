@@ -757,7 +757,7 @@ export function OSSetupExperience() {
                     onStartFresh={goNext} />
                 )}
 
-
+                {phase === "setup-style" && (
                   <SetupStyleChooser key="setup-style" selected={state.setupStyle}
                     onSelect={s => setState(prev => ({ ...prev, setupStyle: s }))}
                     onNext={goNext} onPrev={goPrev} />
