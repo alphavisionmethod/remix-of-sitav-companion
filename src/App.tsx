@@ -1283,6 +1283,9 @@ const App = () => (
                     <Route path="/admin/nrc/launch-honesty" element={<NRC06NotificationLaunchHonesty />} />
                     <Route path="/admin/nrc/delivery-receipts" element={<NOT03DeliveryReceiptsExplorer />} />
                     <Route path="/admin/nrc/runtime-verification" element={<NOT01NotificationRuntimeVerification />} />
+                    <Route path="/admin/nrc/routing-board" element={<NOT02NotificationRoutingBoard />} />
+                    <Route path="/admin/nrc/calm-policy" element={<NOT04CalmPolicyBoard />} />
+                    <Route path="/admin/nrc/notification-preferences" element={<NOT05NotificationPreferencesBoard />} />
                     {/* NSS — Native Shell Strategy */}
                     <Route path="/admin/nss/strategy" element={<NSS01StrategyBoard />} />
                     <Route path="/admin/nss/capability-matrix" element={<NSS02CapabilityMatrix />} />
