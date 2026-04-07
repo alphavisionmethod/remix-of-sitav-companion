@@ -15,6 +15,7 @@ import MoneyProof from "./money/MoneyProof";
 import MoneyDocuments from "./money/MoneyDocuments";
 import MoneySettings from "./money/MoneySettings";
 import InvestmentOffice from "./money/InvestmentOffice";
+import TaxEstimator from "./money/TaxEstimator";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "approvals" | "boardroom" | "proof" | "files" | "settings";
