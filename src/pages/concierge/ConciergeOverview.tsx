@@ -251,9 +251,9 @@ const ConciergeOverview = () => {
 
       {/* Overload Assessment */}
       <OverloadCard
-        level="moderate"
-        message="Your household has 6 commitments today with 2 overdue items drifting. School logistics are adding pressure this week — 4 items need attention across both children."
-        recommendation="Defer the insurance review and oil change to next week. Focus today on the permission slip, grocery run, and plumber call."
+        level={kpiSummary.overdueHousehold > 3 ? "high" : kpiSummary.todayCommitments > 5 ? "moderate" : "low"}
+        message={`Your household has ${kpiSummary.todayCommitments} commitments today with ${kpiSummary.overdueHousehold} overdue items drifting. ${kpiSummary.schoolItems > 0 ? `School logistics: ${kpiSummary.schoolItems} items need attention.` : ""}`}
+        recommendation={kpiSummary.overdueHousehold > 0 ? "Focus on overdue items first, then today's priorities." : "You're in good shape — stay on top of today's schedule."}
       />
 
       <div className="grid gap-6 lg:grid-cols-3">
