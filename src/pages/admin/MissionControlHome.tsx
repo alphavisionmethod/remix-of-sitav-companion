@@ -15,8 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const fadeUp = {
-  const { isDemoMode } = useDataMode(); hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
+const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 type HealthStatus = "healthy" | "warning" | "degraded" | "critical";
