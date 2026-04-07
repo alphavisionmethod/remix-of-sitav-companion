@@ -57,7 +57,24 @@ export interface VerificationReport {
   verifiedAt: string;
 }
 
+const VERDICT_TO_GATE: Record<RegressionVerdict, GateResult> = {
+  clean: "pass",
+  warning: "warning",
+  regressed: "fail",
+};
+
 export class VerificationLayer {
+  private regressionEngine: RegressionComparisonEngine;
+
+  constructor(opts?: { regressionEngine?: RegressionComparisonEngine }) {
+    this.regressionEngine = opts?.regressionEngine ?? createRegressionComparisonEngine();
+  }
+
+  /** Expose engine for baseline capture by callers */
+  getRegressionEngine(): RegressionComparisonEngine {
+    return this.regressionEngine;
+  }
+
   async verify(plan: ChangePlan): Promise<VerificationReport> {
     const gates = await this.runGates(plan);
     const requiredGates = gates.filter(g => g.required);
