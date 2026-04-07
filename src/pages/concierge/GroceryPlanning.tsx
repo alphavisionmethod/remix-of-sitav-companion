@@ -6,6 +6,7 @@ import { ShoppingCart, Plus, Check, Clock, DollarSign, Leaf, AlertCircle, Rotate
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface GroceryItem {
   id: string; name: string; category: string; quantity: string; estimated: string;

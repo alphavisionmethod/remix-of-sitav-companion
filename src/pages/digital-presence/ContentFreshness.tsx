@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const STALE_PAGES = [
   { page: "/blog/2023-trends", lastUpdated: "14 months ago", views: 120, category: "Blog", staleness: 95 },
@@ -33,6 +34,7 @@ const INCONSISTENCIES = [
 ];
 
 export default function ContentFreshness() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />

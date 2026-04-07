@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const TOTAL_STEPS = 10;
 
@@ -517,6 +518,7 @@ function Step10({ state }: { state: OnboardingState }) {
 }
 
 export default function DPOOnboarding() {
+  const { isDemoMode } = useDataMode();
   const [step, setStep] = useState(1);
   const [state, setOnboardingState] = useState<OnboardingState>(DEFAULT_STATE);
 

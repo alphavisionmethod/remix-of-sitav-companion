@@ -14,6 +14,7 @@ import { motion } from "framer-motion";
 import { simulatePayment, type PaymentSimulation } from "@/lib/core-services/payment-execution";
 import { initiatePayment } from "@/lib/api/payment-api";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";

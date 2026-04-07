@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Heart, Activity, Moon, Dumbbell, Brain, Droplets, Apple, TrendingUp, Plus, Smile, Meh, Frown, Sun, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -23,6 +24,7 @@ const stepsData = [8200, 6500, 10200, 7800, 5600, 12400, 9100];
 const waterData = [6, 8, 5, 7, 8, 4, 7];
 
 export default function HealthApp() {
+  const { isDemoMode } = useDataMode();
   const [selectedMood, setSelectedMood] = useState(2);
   const lifeScore = 78;
   const streak = 12;

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const EXPERIENCE_TYPES = [
   { type: "App Landing Page", desc: "Mobile-first marketing page for your app", icon: Smartphone, color: "text-blue-400" },
@@ -43,6 +44,7 @@ const PORTAL_FEATURES = [
 ];
 
 export default function AppExperienceStudio() {
+  const { isDemoMode } = useDataMode();
   const [aiPrompt, setAiPrompt] = useState("");
 
   return (

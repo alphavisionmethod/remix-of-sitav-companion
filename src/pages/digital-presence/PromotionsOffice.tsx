@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ACTIVE_PROMOTIONS = [
   { name: "Summer Sale — 20% Off", type: "Site Banner", placement: "Homepage Hero", status: "active", expires: "3 days", impressions: 4201, clicks: 342, ctr: "8.1%" },
@@ -27,6 +28,7 @@ const EMAIL_SMS_SYNC = [
 ];
 
 export default function PromotionsOffice() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />

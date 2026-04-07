@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Mail, Inbox, Send, Star, Trash2, Archive, Search, Plus, Paperclip, ChevronRight, Clock, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Email {
   id: string;
@@ -36,6 +37,7 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function EmailApp() {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
   const unread = mockEmails.filter(e => !e.read).length;

@@ -6,6 +6,7 @@ import { Lock, Plus, Search, Eye, EyeOff, Copy, Shield, AlertTriangle, Key, Glob
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface VaultEntry {
   id: string;
@@ -31,6 +32,7 @@ const categoryIcons: Record<string, React.ElementType> = { login: Globe, card: C
 const strengthColors: Record<string, string> = { strong: "text-emerald-500", medium: "text-amber-500", weak: "text-red-500" };
 
 export default function VaultApp() {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
   const { toast } = useToast();

@@ -10,6 +10,7 @@ import {
 import { motion } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useMoneyKPIs, useReservesSavings } from "@/hooks/use-domain-data";
 import { useSubscriptions } from "@/hooks/use-sita-data";
 

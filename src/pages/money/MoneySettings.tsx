@@ -4,6 +4,7 @@ import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, Link, AlertTriangle, CheckCircle, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useMoneyPolicies, useToggleMoneyPolicy } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
 import { toast } from "sonner";

@@ -6,6 +6,7 @@ import { useState, useMemo } from "react";
 import { DollarSign, ArrowDownLeft, ArrowUpRight, Clock, AlertTriangle, CheckCircle, Send, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvoices, useBills } from "@/hooks/use-sita-data";
 
 const ReceivablesObligations = () => {

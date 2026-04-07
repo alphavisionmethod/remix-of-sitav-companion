@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const READINESS_CHECKS = [
   { area: "Landing Page", status: "ready", score: 95, details: "Page live, CTA strong, mobile optimized" },
@@ -31,6 +32,7 @@ const LAUNCH_TIMELINE = [
 const overallScore = Math.round(READINESS_CHECKS.reduce((sum, c) => sum + c.score, 0) / READINESS_CHECKS.length);
 
 export default function LaunchWarRoom() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />

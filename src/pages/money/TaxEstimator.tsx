@@ -4,6 +4,7 @@ import { KPITile } from "@/components/sita/SitaComponents";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useTaxEstimate, useTaxDeductions } from "@/hooks/use-backend-actions";
 import { DollarSign, Calculator, Calendar, TrendingDown, FileText, AlertTriangle, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";

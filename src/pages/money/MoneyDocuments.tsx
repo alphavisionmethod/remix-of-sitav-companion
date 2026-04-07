@@ -6,6 +6,7 @@ import { useState, useMemo } from "react";
 import { FileText, Upload, Search, DollarSign, Calendar, Shield, Clock, AlertCircle, Eye, Paperclip, FolderOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useFinancialDocuments } from "@/hooks/use-domain-data";
 import { formatDistanceToNow } from "date-fns";
 

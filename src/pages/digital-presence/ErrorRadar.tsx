@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ERRORS = [
   { type: "Broken Link", icon: Link2, page: "/blog/old-post", detail: "Links to /resources/guide → 404", severity: "high", autoFixable: true },
@@ -26,6 +27,7 @@ const OPPORTUNITIES = [
 ];
 
 export default function ErrorRadar() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />

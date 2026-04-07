@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PRODUCTS = [
   { name: "Premium Yoga Mat", price: "$79", stock: 24, views: 1200, conversion: "4.2%", rating: 4.8, status: "active" },
@@ -35,6 +36,7 @@ const MERCHANDISING_OPS = [
 ];
 
 export default function EcommerceOffice() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />

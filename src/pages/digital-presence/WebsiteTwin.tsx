@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PAGE_TREE = [
   { path: "/", label: "Homepage", health: 92, views: 4201, mobile: 88, children: [
@@ -57,6 +58,7 @@ function PageNode({ page, depth = 0 }: { page: typeof PAGE_TREE[0]; depth?: numb
 }
 
 export default function WebsiteTwin() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
