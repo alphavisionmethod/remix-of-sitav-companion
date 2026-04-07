@@ -1,181 +1,122 @@
 
-# Phase 1: Behavioral Proof Activation
 
-## Current State
+# Phase 1: Behavioral Proof Activation — Implementation Plan
 
-**What exists and is solid:**
-- 36 Playwright spec files across auth, route-smoke, journeys, admin, demo-vs-real, degraded, responsive
-- 17 customer-journey specs in structured subdirectories with JourneyRecorder + evidence capture
-- Helper infrastructure: auth, navigation, assertions, selectors, evidence, journey-recorder
-- Journey reporter outputting structured JSON
-- DB tables: `customer_journey_registry`, `journey_verification_runs`, `journey_step_results`, `customer_journey_status`
-- Ingestion script: `scripts/ingest-journey-results.ts`
-- CI workflows: `ci.yml` (has e2e-p0 job), `e2e.yml`, `customer-journey-nightly.yml`, `customer-journey-manual.yml`
-- Admin surfaces: FL01 Flagship Loops, V02-V07 verification boards, AIG09 Runtime Verification
+## What This Solves
 
-**What's missing (the gap):**
-- Tests have never actually been run — zero proven passes exist
-- CI e2e-p0 job serves the static build (`npx serve dist`) but the app requires Supabase env vars at runtime (VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY) — the build step uses dummy values so the app likely fails at runtime
-- No `data-testid` attributes on key elements the tests look for (`demo-mode-badge`, `error-state`, `sidebar-nav`, etc.)
-- Auth tests require `TEST_USER_EMAIL`/`TEST_USER_PASSWORD` secrets — when missing, most tests skip silently
-- No proof classification or failure-to-loop mapping exists
-- FL01 board reads from DB but no test results have ever been ingested
+SITA has 36 Playwright specs, strong journey architecture, DB tables for proof storage, CI workflows, and admin boards — but zero proven test passes exist. All proof is inferred. This phase makes the truth executable and visible.
 
-## Implementation Plan
+## Implementation Steps
 
-### Step 1 — Fix CI Build for Runtime Testability
+### Step 1 — Add data-testid Attributes (4 files, 1 line each)
 
-The `ci.yml` e2e-p0 job builds with dummy Supabase keys, then serves statically. The app needs real (or at least valid-looking) env vars at build time since Vite embeds them.
+- `src/components/sita/DemoModeBadge.tsx` — add `data-testid="demo-mode-badge"` to both the compact span (line 26) and the Badge (line 33)
+- `src/components/sita/ErrorBoundary.tsx` — add `data-testid="error-state"` to the error container div (line 39)
+- `src/components/sita/AppSidebar.tsx` — add `data-testid="sidebar-nav"` to the Sidebar component (line 191)
+- Find and add `data-testid="sign-out-btn"` to the sign-out button in AppSidebar (already referenced in auth helper tests)
 
-**Changes to `.github/workflows/ci.yml`** (e2e-p0 job):
-- Pass `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` from secrets during the build step
-- Add `TEST_USER_EMAIL` and `TEST_USER_PASSWORD` env vars to the test run step
-- Add journey reporter output and evidence capture to artifacts
-
-### Step 2 — Add Missing data-testid Attributes
-
-Add stable test IDs to these components (minimum set for reliable proof):
-
-| Component | Attribute |
-|-----------|-----------|
-| `DemoModeBadge.tsx` | `data-testid="demo-mode-badge"` |
-| Sidebar nav container | `data-testid="sidebar-nav"` |
-| Error boundary / error state | `data-testid="error-state"` |
-| Sign out button | `data-testid="sign-out-btn"` |
-| Empty state components | `data-testid="empty-state"` |
-| Degraded/unavailable banners | `data-testid="degraded-banner"` |
-
-~6 component files touched, 1 line each.
-
-### Step 3 — Make Auth Tests Work Without Credentials
-
-Currently 30+ tests skip when `TEST_USER_EMAIL` is empty. The auth-free tests (5 in `auth.spec.ts`) should always run. For the credential-dependent tests, add a clear annotation so the proof report distinguishes "skipped_not_configured" from "fail".
-
-**Changes to `tests/e2e/helpers/auth.ts`:**
-- Add a `skipOrLogin` helper that properly annotates skip reason
-
-### Step 4 — Create Proof Classification System
+### Step 2 — Create Proof Classifier
 
 New file: `tests/e2e/helpers/proof-classifier.ts`
 
-Classifies each test result into:
-- `pass_verified` / `fail_behavioral` / `fail_setup` / `fail_env` / `fail_selector` / `fail_auth` / `skipped_not_configured`
+Maps every spec file to its flagship loop and provides failure classification:
 
-And launch impact:
-- `launch_blocker` / `pilot_blocker` / `claim_risk` / `non_blocking`
-
-Maps each test to its flagship loop:
 ```text
-Loop 1 — Auth + Dashboard + Pulse
+Loop 1 (Auth + Dashboard + Pulse):
   auth.spec.ts, auth-journeys.spec.ts, sign-in-primary, sign-out-primary, dashboard-load-primary
 
-Loop 2 — Files + AI Assist
+Loop 2 (Files + AI Assist):
   files-journey.spec.ts, files-upload-primary, assistant-chat-primary
 
-Loop 3 — Boardroom + Summary + Decision
+Loop 3 (Boardroom + Summary + Decision):
   boardroom-journey.spec.ts, boardroom-summary-view-primary, boardroom-demo-vs-real
 
-Loop 4 — Connected Services + Sync
+Loop 4 (Connected Services + Sync):
   connectors-journey.spec.ts, connected-services-open-primary, connected-services-demo-vs-real
 
-Loop 5 — Admin Truth + Recommendation + Approval
-  admin-boards.spec.ts, verification-boards.spec.ts, ai-team-open-primary, runtime-truth-open-primary, launch-truth-open-primary, customer-journey-report-open-primary, approvals-journey.spec.ts
+Loop 5 (Admin Truth + Recommendation + Approval):
+  admin-boards.spec.ts, verification-boards.spec.ts, approvals-journey.spec.ts,
+  ai-team-open-primary, runtime-truth-open-primary, launch-truth-open-primary,
+  customer-journey-report-open-primary
 ```
 
-### Step 5 — Enhanced Journey Reporter with Proof Classification
+Classification categories: `pass_verified`, `fail_behavioral`, `fail_setup`, `fail_env`, `fail_selector`, `fail_auth`, `skipped_not_configured`
+
+Launch impact: `launch_blocker`, `pilot_blocker`, `claim_risk`, `non_blocking`
+
+### Step 3 — Enhanced Journey Reporter
 
 Update `tests/e2e/reporters/journey-reporter.ts` to:
-- Classify failures using the proof classifier
+- Use the proof classifier to categorize each failure
 - Map tests to flagship loops
-- Output a `flagship-loop-proof-summary.json` alongside the journey results
-- Generate a markdown summary for CI step summary
+- Output `flagship-loop-proof-summary.json` alongside journey results
+- Generate markdown summary for CI step summary
 
-### Step 6 — Create Playwright Proof PR Workflow
+### Step 4 — Fix CI e2e-p0 Environment Variables
+
+Update `.github/workflows/ci.yml` e2e-p0 job:
+- Pass `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` from secrets during build
+- Add `TEST_USER_EMAIL`/`TEST_USER_PASSWORD` to test run step
+- Add journey report artifacts to upload
+
+### Step 5 — Create Playwright Proof PR Workflow
 
 New file: `.github/workflows/playwright-proof-pr.yml`
-
 - Triggers on PR to main + push to main/develop
 - Builds with real Supabase env vars
 - Runs full 36-spec suite
-- Captures: HTML report, screenshots, traces, videos on failure
+- Captures HTML report, screenshots, traces, videos on failure
 - Generates flagship loop proof summary
 - Posts proof summary to PR as step summary
-- Uploads all artifacts (30-day retention)
 - Fails on P0 launch-critical regressions only
 
-### Step 7 — Create Playwright Proof Nightly Workflow
+### Step 6 — Create Playwright Proof Nightly Workflow
 
 New file: `.github/workflows/playwright-proof-nightly.yml`
-
 - Runs twice daily (6am/6pm UTC)
 - Full suite with richer artifact capture
 - Ingests results to DB via `ingest-journey-results.ts`
 - Generates trend-aware summary
-- Produces flagship loop proof dashboard data
 
-### Step 8 — Wire Proof Results to Admin FL01 Board
+### Step 7 — Wire FL01 Flagship Loops Board to Real Proof Data
 
-Update `src/pages/admin/FL01FlagshipLoopsExecutive.tsx` to:
+Update `src/pages/admin/FL01FlagshipLoopsExecutive.tsx`:
 - Query `journey_verification_runs` for latest proof state per loop
 - Show real pass/fail/skip counts from CI evidence
-- Display "last proven" timestamp and commit
-- Show proof confidence as `verified_e2e` (from CI) vs `inferred` (no runs)
-- Add "Proof Evidence" section linking to latest artifacts
+- Display "last proven" timestamp and commit SHA
+- Show proof confidence as `verified_e2e` vs `inferred`
 
-### Step 9 — Create Proof Evidence Explorer
+### Step 8 — Wire V06 Evidence Explorer + V07 Launch Blockers
 
-New page: `src/pages/admin/verification/V06EvidenceExplorer.tsx` (update if exists)
+- V06: List all verification runs from `journey_verification_runs` with step-level results, failure classification badges, flagship loop grouping
+- V07: Pull from `customer_journey_status` where broken, map to flagship loops, show fix recommendations
 
-- Lists all verification runs from `journey_verification_runs`
-- Shows step-level results from `journey_step_results`
-- Failure classification badges
-- Flagship loop grouping
-- Links to screenshots/traces (stored as artifact references)
+## Files Summary
 
-### Step 10 — Launch Blocker Board Wiring
+| File | Action |
+|------|--------|
+| `src/components/sita/DemoModeBadge.tsx` | Add data-testid |
+| `src/components/sita/ErrorBoundary.tsx` | Add data-testid |
+| `src/components/sita/AppSidebar.tsx` | Add data-testid (sidebar + sign-out) |
+| `tests/e2e/helpers/proof-classifier.ts` | Create |
+| `tests/e2e/reporters/journey-reporter.ts` | Enhance with classification + loop summary |
+| `.github/workflows/ci.yml` | Fix e2e-p0 env vars |
+| `.github/workflows/playwright-proof-pr.yml` | Create |
+| `.github/workflows/playwright-proof-nightly.yml` | Create |
+| `src/pages/admin/FL01FlagshipLoopsExecutive.tsx` | Wire real proof data |
+| `src/pages/admin/verification/V06EvidenceExplorer.tsx` | Wire real run data |
+| `src/pages/admin/verification/V07LaunchBlockers.tsx` | Wire proof-based blockers |
 
-Update V07 Launch Blockers board to:
-- Pull from `customer_journey_status` where `current_status = 'broken'`
-- Map to flagship loops
-- Show immediate fix recommendations based on failure classification
+## No Database Changes Required
 
-## Files Created/Modified
-
-| File | Action | Purpose |
-|------|--------|---------|
-| `tests/e2e/helpers/proof-classifier.ts` | Create | Failure classification + loop mapping |
-| `tests/e2e/reporters/journey-reporter.ts` | Modify | Add proof classification + loop summary |
-| `.github/workflows/playwright-proof-pr.yml` | Create | PR proof workflow |
-| `.github/workflows/playwright-proof-nightly.yml` | Create | Nightly proof workflow |
-| `.github/workflows/ci.yml` | Modify | Fix env vars for e2e-p0 job |
-| `src/components/sita/DemoModeBadge.tsx` | Modify | Add data-testid |
-| `src/components/layout/AppSidebar.tsx` | Modify | Add data-testid to nav |
-| `src/components/ErrorBoundary.tsx` | Modify | Add data-testid |
-| `src/pages/admin/FL01FlagshipLoopsExecutive.tsx` | Modify | Wire real proof data |
-| `src/pages/admin/verification/V06EvidenceExplorer.tsx` | Modify | Wire real run data |
-| `src/pages/admin/verification/V07LaunchBlockers.tsx` | Modify | Wire proof-based blockers |
-
-## No New Database Changes
-
-All required tables already exist: `customer_journey_registry`, `journey_verification_runs`, `journey_step_results`, `customer_journey_status`, `launch_blocker_scores`.
+All tables exist: `customer_journey_registry`, `journey_verification_runs`, `journey_step_results`, `customer_journey_status`, `launch_blocker_scores`.
 
 ## Success Criteria
 
-1. The 36 Playwright specs execute in CI (not just exist)
-2. Auth-free tests (auth.spec.ts = 5 tests) pass in CI
-3. Auth-dependent tests properly annotate skip vs fail
-4. Artifacts uploaded: HTML report + screenshots + traces
-5. Flagship loop proof summary generated per CI run
-6. FL01 admin board shows real proof state from DB
-7. Failures classified by type and launch impact
-8. Launch blockers derived from actual test outcomes, not inference
-
-## What This Does NOT Do
-
-- Does not write new tests (runs the existing 36)
-- Does not redesign product UI
-- Does not solve AI runtime gaps
-- Does not add new route families
-- Does not expand product breadth
-
-This phase converts structural proof architecture into live executed proof with artifacts, evidence, and launch-honest reporting.
+1. 36 Playwright specs execute in CI (not just exist)
+2. Auth-free tests (5 in auth.spec.ts) pass in CI
+3. Artifacts uploaded: HTML report + screenshots + traces
+4. Flagship loop proof summary generated per CI run
+5. FL01 admin board shows real proof state from DB
+6. Failures classified by type and launch impact
+7. Launch blockers derived from actual test outcomes
