@@ -95,21 +95,37 @@ export function useCashflowForecast(horizonDays = 90) {
   });
 }
 
+export interface SafeToSpendResult {
+  safe_to_spend_cents: number;
+  liquid_balance_cents: number;
+  reserved_cents: number;
+  upcoming_bills_cents: number;
+  calculation: string;
+}
+
 export function useSafeToSpend(reserveTargetCents = 0) {
   const { user } = useAuth();
-  return useQuery({
+  return useQuery<SafeToSpendResult>({
     queryKey: ["safe-to-spend", user?.id, reserveTargetCents],
-    queryFn: () => invokeEdge("cashflow-calculate", { action: "safe-to-spend", reserve_target_cents: reserveTargetCents }),
+    queryFn: () => invokeEdge<SafeToSpendResult>("cashflow-calculate", { action: "safe-to-spend", reserve_target_cents: reserveTargetCents }),
     enabled: !!user,
     staleTime: 30000,
   });
 }
 
+export interface BurnRateResult {
+  monthly_burn_cents: number;
+  runway_months: number;
+  avg_daily_spend_cents: number;
+  trend: string;
+  calculation: string;
+}
+
 export function useBurnRate() {
   const { user } = useAuth();
-  return useQuery({
+  return useQuery<BurnRateResult>({
     queryKey: ["burn-rate", user?.id],
-    queryFn: () => invokeEdge("cashflow-calculate", { action: "burn-rate" }),
+    queryFn: () => invokeEdge<BurnRateResult>("cashflow-calculate", { action: "burn-rate" }),
     enabled: !!user,
     staleTime: 60000,
   });
