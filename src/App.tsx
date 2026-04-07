@@ -612,7 +612,7 @@ const PageLoader = () => (
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, isDemo } = useAuth();
   const { preferences, isLoading: prefsLoading } = useUserPreferences();
-  if (loading || prefsLoading) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
+  if (loading || prefsLoading) return <div className="min-h-screen flex items-center justify-center bg-background" role="status" aria-label="Loading"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
   if (!user) return <Navigate to="/login" replace />;
   if (!isDemo && !preferences.onboardingCompleted && window.location.pathname !== "/onboarding") {
     return <Navigate to="/onboarding" replace />;
