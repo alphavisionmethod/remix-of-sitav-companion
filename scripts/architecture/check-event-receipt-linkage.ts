@@ -23,7 +23,10 @@ const EVENT_EXCLUSIONS = new Set([
   "TimelineEvent", "CalendarEvent", "ScheduledEvent", "EventAttendee",
   "LifecycleEvent", "EventMetadata", "EventContext", "EventHandler",
   "EventListener", "EventEmitter", "EventBusEvent", "SystemEvent",
-  "DomainEvent", "ContinuityEvent",
+  "DomainEvent", "ContinuityEvent", "DragEvent",
+  "InvisibleLaborEvent", "FounderBottleneckEvent", "LearningEvent",
+  "TrustStateEvent", "CrashEvent", "LifecycleGovernanceEvent",
+  "ControlPlaneEvent", "BillingEvent", "SitaEvent", "MoatEvent", "TelemetryEvent",
 ]);
 
 for (const file of contractFiles) {
