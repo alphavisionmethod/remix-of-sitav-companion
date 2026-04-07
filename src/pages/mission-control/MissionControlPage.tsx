@@ -1190,7 +1190,7 @@ export default function MissionControlPage() {
   const { data: fleetHealth } = useFleetHealth();
   const { data: trustCenter } = useTrustCenter();
   const { data: missionGoals } = useMissionGoals();
-  const openIncidents = (adminIncidents as any)?.summary?.open ?? mockIncidents.filter(i => i.status !== "resolved").length;
+  const openIncidents = (adminIncidents && typeof adminIncidents === "object" && "summary" in adminIncidents ? (adminIncidents.summary as Record<string, unknown>)?.open as number : undefined) ?? mockIncidents.filter(i => i.status !== "resolved").length;
 
   const ownerTabs = [
     { value: "home", label: "Home", icon: Cpu },

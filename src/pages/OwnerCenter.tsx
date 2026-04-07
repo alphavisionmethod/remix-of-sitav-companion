@@ -2400,7 +2400,7 @@ const OwnerCenter = () => {
                   })()}
                 </div>
                 {(() => {
-                  const r = simResult?.simulation || (simulatePolicy.data as any)?.simulation;
+                  const r = simResult?.simulation || (simulatePolicy.data && typeof simulatePolicy.data === "object" && "simulation" in simulatePolicy.data ? (simulatePolicy.data as Record<string, unknown>).simulation : undefined) as Record<string, unknown> | undefined;
                   if (!r) return null;
                   return (
                     <div className="space-y-2">
