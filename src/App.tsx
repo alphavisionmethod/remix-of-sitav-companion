@@ -623,7 +623,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 // Auth gate for onboarding — requires auth but skips onboarding-completion redirect
 const OnboardingGuard = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-background" role="status" aria-label="Loading"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
   if (!user) return <Navigate to="/login" replace />;
   return <>{children}</>;
 };
