@@ -1,72 +1,65 @@
 
+# SITA OS — Phase 3: Real Google OAuth Connector Completion
 
-# SITA OS — Full System Master Report (PDF)
+## Current State Assessment
 
-## What Will Be Produced
+**What Already Exists (Strong Foundation):**
+- `connector-oauth` edge function: 366 lines — full initiate/callback/disconnect with Zod validation, state tokens, token exchange, consent ledger, receipts ✅
+- `connector-proxy` edge function: 162 lines — gateway proxy for Slack/Resend/Twilio ✅
+- `ConnectorHub.tsx`: 337 lines — queries connector_accounts, connector_registry, OAuth config check, connect/disconnect mutations wired ✅
+- 10+ connector DB tables: connector_accounts, connector_oauth_flows, connector_oauth_tokens, connector_credentials, consent_scope_records, consent_ledger, connector_receipts, connector_disconnection_events, connector_health_records, connector_launch_readiness ✅
+- Auth/connector separation types: `src/lib/types/auth-connector-separation.types.ts` ✅
+- Multiple admin connector pages: CN01-CN07, ISA02, ISA07, PFA07, PFA09 ✅
 
-A comprehensive 50+ page PDF report covering all 39 sections requested, generated from live codebase analysis. The report will include exact counts, matrices, and assessments based on the actual project state.
+**What's Missing (Blockers):**
+1. **GOOGLE_CONNECTOR_CLIENT_ID and GOOGLE_CONNECTOR_CLIENT_SECRET secrets** — not set (only 9 secrets exist, neither is present)
+2. **connector-proxy doesn't support Google Drive** — only maps Slack/Resend/Twilio
+3. **No reauth mutation** in ConnectorHub UI
+4. **ConnectorHub UX** doesn't show premium connection states (reauth_required, limited_scope, etc.)
+5. **No OAuth callback return page** — after Google redirects back, user needs a landing page
+6. **Admin connector boards** (CN01-CN07) need real data wiring
 
-## Key Metrics Discovered
+## Implementation Plan (8 Steps)
 
-- **2,381 TypeScript files** / **347,786 lines of code**
-- **693 routes** / **632 pages** (297 admin, 335 user-facing)
-- **339 components** / **71 hooks** / **9 contexts**
-- **170 service directories** / **51 edge functions** / **469 database tables**
-- **105 migrations** / **159 contract files** / **40 E2E specs**
-- **86 migrations with RLS policies** / **61 with triggers**
-- **16 data services** / **42 lib modules** / **80+ package directories**
+### Step 1: Add Google Connector OAuth Secrets
+- Request `GOOGLE_CONNECTOR_CLIENT_ID` and `GOOGLE_CONNECTOR_CLIENT_SECRET` via secrets tool
+- These are separate from Google Auth login credentials
 
-## Report Sections (All 39)
+### Step 2: Create OAuth Callback Landing Page
+- New page at `/connectors/callback` that handles the redirect from Google
+- Extracts `code` and `state` from URL params
+- Calls `connector-oauth` with `action: "callback"`
+- Shows success/error state and returns user to ConnectorHub
 
-1. Executive System Overview (maturity score, deployability %, delta to 100%)
-2. Full Project Topology (counts + interpretation)
-3. Full Domain Map (25+ domains with status per domain)
-4. Full Feature Inventory (60+ features with maturity/status)
-5. Full Frontend Organization Report (route families, shell, layout)
-6. Full Service-Layer Organization Report (170 services, ownership, duplication)
-7. Full Database/Schema Report (469 tables, utilization, speculation)
-8. Full Edge Function Report (50 functions, operational maturity)
-9. Full Contracts Report (159 files, usage maturity)
-10. Full Connection/Dependency Report (end-to-end traces)
-11. Full CUSTOMER JOURNEY Report
-12. Full Runtime Truth Report
-13. Full Launch-Critical vs Non-Critical Map
-14. Full CRM/Finance/Taxes/Business Operations Map
-15. Full AI/Connector/Notification/Proof Map
-16. Full Admin OS Report (297 admin pages)
-17. Full UX/Design/State Report
-18. Full Security/Privacy/Consent Report
-19. Full Proof/CI/Testing Report
-20. Full Route-to-Service Map
-21. Full Duplication/Sprawl/Speculation Report
-22. Development Maturity Matrix (V)
-23. Built/Wired/Proven/Deployable Matrix (W)
-24. Missing-to-100%-Deployable-OS Matrix (X)
-25. Dependency-Criticality Matrix (Y)
-26. Flagship Loop Completion Matrix (Z)
-27. Route Family Usefulness Matrix (AA)
-28. Service Ownership Maturity Matrix (AB)
-29. Table Utilization/Speculative Schema Matrix (AC)
-30. Contract Usage Maturity Matrix (AD)
-31. Edge Function Operational Maturity Matrix (AE)
-32. Proof Maturity Matrix (AF)
-33. Frontend Readiness Matrix (AG)
-34. "What Must Be Completed Before Calling It an OS" (AH)
-35. "Built But Not Operationalized" (AI)
-36. "Overbuilt Relative to Current Proof" (AJ)
-37. Path to 100% Deployable OS Roadmap (AK)
-38. Go/No-Go Readiness Rubric (AL)
-39. Final Strategic Conclusion (AM)
+### Step 3: Add Google Drive to connector-proxy
+- Add `google_drive` to CONNECTOR_KEYS mapping
+- Add Google Drive API actions (list files, get file metadata)
+- Use stored OAuth tokens from connector_oauth_tokens table
 
-## Technical Approach
+### Step 4: Upgrade ConnectorHub UX to Premium States
+- Add reauth mutation
+- Show all connector states: connected, reauth_required, limited_scope, disconnected, planned
+- Premium Google Drive card with scope summary
+- Proper connect/reconnect/disconnect affordances
 
-- Python script using `reportlab` to generate a professionally formatted PDF
-- Data sourced from actual codebase exploration performed above
-- Tables and matrices formatted with color-coded status indicators
-- Output to `/mnt/documents/SITA_OS_Master_Report.pdf`
-- Visual QA via `pdftoppm` before delivery
+### Step 5: Add Reauth Flow
+- Add `action: "reauth"` handler to connector-oauth edge function
+- Detect expired/revoked tokens and surface reauth_required state
+- Add token refresh logic using refresh_token
 
-## Estimated Size
+### Step 6: Wire Admin Connector Boards with Real Data
+- CN01 (Connector Reality Overview): real connector_accounts + oauth_flows data
+- PFA09 (Connected Accounts Center): live account status, token health
+- ISA07 (Auth Connector Truth Board): separation audit data
 
-60-80 pages, ~200KB PDF
+### Step 7: Add Connector Journey Evidence
+- Seed customer journey entries for connector flows
+- Update journey truth based on runtime proof
 
+### Step 8: Deploy and Verify
+- Deploy updated edge functions
+- Test OAuth config check endpoint
+- Verify UI states render correctly
+
+## Estimated Effort: ~4-6 hours
+## Files Changed: ~8-12 files
