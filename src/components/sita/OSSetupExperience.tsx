@@ -770,7 +770,14 @@ export function OSSetupExperience() {
                     onStateChange={({ accessMethod, recoveryMethod }) => setState(s => ({ ...s, accessMethod, recoveryMethod }))} />
                 )}
 
-                {phase === "privacy-transparency" && (
+                {phase === "recover-first" && (
+                  <RecoverFirstStep key="recover-first"
+                    selected={state.recoverFirst}
+                    onSelect={v => setState(s => ({ ...s, recoverFirst: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+
                   <PrivacyTransparencyStep key="privacy-transparency"
                     permissionChoices={state.permissionChoices}
                     onUpdate={choices => setState(s => ({ ...s, permissionChoices: choices }))}
