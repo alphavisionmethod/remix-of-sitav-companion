@@ -53,7 +53,7 @@ export default function AR06ExecutionTraceExplorer() {
                      e.status === "failure" ? <XCircle className="h-3 w-3 text-destructive shrink-0" /> :
                      <Clock className="h-3 w-3 text-accent shrink-0" />}
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] font-medium truncate">{(e as Record<string, unknown>).scheduled_jobs?.name || e.job_id.slice(0, 8)}</p>
+                      <p className="text-[10px] font-medium truncate">{((e as any).scheduled_jobs as any)?.name || e.job_id.slice(0, 8)}</p>
                       <p className="text-[9px] text-muted-foreground">{new Date(e.started_at).toLocaleString()}</p>
                     </div>
                     <ChevronRight className="h-3 w-3 text-muted-foreground shrink-0" />
