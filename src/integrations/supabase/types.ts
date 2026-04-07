@@ -4103,6 +4103,45 @@ export type Database = {
         }
         Relationships: []
       }
+      automation_rules: {
+        Row: {
+          action_type: string | null
+          conditions: Json | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          last_triggered_at: string | null
+          name: string
+          trigger_type: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          action_type?: string | null
+          conditions?: Json | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          name: string
+          trigger_type?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          action_type?: string | null
+          conditions?: Json | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          name?: string
+          trigger_type?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       behavioral_regressions: {
         Row: {
           created_at: string
@@ -14367,6 +14406,45 @@ export type Database = {
         }
         Relationships: []
       }
+      investment_thesis_entries: {
+        Row: {
+          asset_class: string | null
+          conviction_level: string | null
+          created_at: string | null
+          id: string
+          status: string | null
+          thesis: string | null
+          time_horizon: string | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          asset_class?: string | null
+          conviction_level?: string | null
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          thesis?: string | null
+          time_horizon?: string | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          asset_class?: string | null
+          conviction_level?: string | null
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          thesis?: string | null
+          time_horizon?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       investment_watchlists: {
         Row: {
           asset_ids: string[] | null
@@ -15749,6 +15827,45 @@ export type Database = {
           mode_key?: string
           proof_label_style?: string
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      money_accounts: {
+        Row: {
+          account_type: string | null
+          balance: number | null
+          created_at: string | null
+          currency: string | null
+          id: string
+          institution: string | null
+          is_active: boolean | null
+          name: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          account_type?: string | null
+          balance?: number | null
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          institution?: string | null
+          is_active?: boolean | null
+          name: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          account_type?: string | null
+          balance?: number | null
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          institution?: string | null
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -21839,6 +21956,42 @@ export type Database = {
           success_criteria?: string | null
           target_system?: string
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      savings_goals: {
+        Row: {
+          created_at: string | null
+          current_amount: number | null
+          id: string
+          name: string
+          status: string | null
+          target_amount: number | null
+          target_date: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          current_amount?: number | null
+          id?: string
+          name: string
+          status?: string | null
+          target_amount?: number | null
+          target_date?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          current_amount?: number | null
+          id?: string
+          name?: string
+          status?: string | null
+          target_amount?: number | null
+          target_date?: string | null
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []

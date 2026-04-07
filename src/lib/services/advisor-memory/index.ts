@@ -17,7 +17,7 @@ export interface AdvisorMemory {
 
 export class AdvisorMemoryService {
   async saveConversationSummary(advisorId: string, userId: string, summary: string, metadata?: Record<string, unknown>): Promise<void> {
-    await (supabase.from("advisor_memories") as any).insert({
+    await supabase.from("advisor_memories").insert({
       advisor_id: advisorId,
       user_id: userId,
       memory_type: "summary",
@@ -32,7 +32,7 @@ export class AdvisorMemoryService {
     const isDuplicate = existing.some(m => m.content.toLowerCase() === fact.toLowerCase());
     if (isDuplicate) return;
 
-    await (supabase.from("advisor_memories") as any).insert({
+    await supabase.from("advisor_memories").insert({
       advisor_id: advisorId,
       user_id: userId,
       memory_type: "fact",

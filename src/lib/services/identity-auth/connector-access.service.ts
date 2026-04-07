@@ -37,7 +37,7 @@ export async function getConnectedServicesByStatus(status: string): Promise<Conn
 // ── Connected accounts center view ─────────────────────────────
 export async function getConnectedAccountsCenter(): Promise<ConnectedAccountView[]> {
   const { data, error } = await supabase
-    .from("v_connected_accounts_center" as any)
+    .from("v_connected_accounts_center")
     .select("*");
   if (error) throw error;
   return (data ?? []) as unknown as ConnectedAccountView[];

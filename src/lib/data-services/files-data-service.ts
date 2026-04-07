@@ -124,7 +124,7 @@ export async function fetchFileSettings() {
   if (!user) return null;
 
   const { data, error } = await supabase
-    .from("file_settings" as any)
+    .from("file_settings")
     .select("*")
     .eq("user_id", user.id)
     .maybeSingle();
@@ -138,7 +138,7 @@ export async function upsertFileSettings(settings: Record<string, any>) {
   if (!user) return null;
 
   const { data, error } = await supabase
-    .from("file_settings" as any)
+    .from("file_settings")
     .upsert({ user_id: user.id, ...settings }, { onConflict: "user_id" })
     .select()
     .single();

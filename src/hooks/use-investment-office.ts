@@ -73,7 +73,7 @@ export function useInvestmentWatchlists() {
     queryKey: ["investment-watchlists", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("investment_watchlists" as any).select("*").eq("user_id", uid!);
+      const { data } = await supabase.from("investment_watchlists").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -85,7 +85,7 @@ export function useInvestmentStrategyRecords() {
     queryKey: ["investment-strategy-records", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("investment_strategy_records" as any).select("*").eq("user_id", uid!);
+      const { data } = await supabase.from("investment_strategy_records").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -97,7 +97,7 @@ export function useCapitalPurposeBuckets() {
     queryKey: ["capital-purpose-buckets", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("capital_purpose_buckets" as any).select("*").eq("user_id", uid!);
+      const { data } = await supabase.from("capital_purpose_buckets").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -109,7 +109,7 @@ export function useInvestmentThesisEntries() {
     queryKey: ["investment-thesis-entries", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("investment_thesis_entries" as any).select("*").eq("user_id", uid!);
+      const { data } = await supabase.from("investment_thesis_entries").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });

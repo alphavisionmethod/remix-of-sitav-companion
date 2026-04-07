@@ -33,7 +33,7 @@ export async function getAccountEdges(): Promise<UnifiedAccountEdge[]> {
 // ── Graph summary view ─────────────────────────────────────────
 export async function getAccountGraphSummary(): Promise<AccountGraphSummaryView[]> {
   const { data, error } = await supabase
-    .from("v_account_graph_summary" as any)
+    .from("v_account_graph_summary")
     .select("*");
   if (error) throw error;
   return (data ?? []) as unknown as AccountGraphSummaryView[];
