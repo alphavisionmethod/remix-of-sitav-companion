@@ -338,6 +338,21 @@ function AIR06ReceiptUsageTruth() {
     staleTime: 30_000,
   });
 
+  // Latest receipt card
+  const { data: latestReceipt } = useQuery({
+    queryKey: ["air-latest-receipt"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("ai_receipt_records")
+        .select("id, capability_key, decision_class, mode, created_at, provider_id, model_id")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data;
+    },
+    staleTime: 30_000,
+  });
+
   if (!stats) return <p className="text-sm text-muted-foreground p-4">Loading…</p>;
 
   return (
@@ -358,6 +373,21 @@ function AIR06ReceiptUsageTruth() {
           </Card>
         ))}
       </div>
+      {latestReceipt && (
+        <Card>
+          <CardHeader className="py-3 px-4">
+            <CardTitle className="text-sm flex items-center gap-2"><Receipt className="h-4 w-4" /> Latest Receipt</CardTitle>
+          </CardHeader>
+          <CardContent className="px-4 pb-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+              <div><span className="text-muted-foreground">Capability:</span> <span className="font-mono">{latestReceipt.capability_key}</span></div>
+              <div><span className="text-muted-foreground">Decision:</span> <Badge variant="outline" className="text-xs ml-1">{latestReceipt.decision_class ?? "—"}</Badge></div>
+              <div><span className="text-muted-foreground">Mode:</span> {latestReceipt.mode}</div>
+              <div><span className="text-muted-foreground">Time:</span> {formatDistanceToNow(new Date(latestReceipt.created_at), { addSuffix: true })}</div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
       {Object.keys(stats.capCosts).length > 0 && (
         <Table>
           <TableHeader><TableRow><TableHead>Capability</TableHead><TableHead>Cost Today</TableHead></TableRow></TableHeader>

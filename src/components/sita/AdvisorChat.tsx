@@ -371,6 +371,7 @@ export const AdvisorChat = ({ isOpen, onClose }: AdvisorChatProps) => {
                   type="submit"
                   disabled={!input.trim() || isLoading}
                   className="rounded-xl bg-primary p-2.5 text-primary-foreground transition-all hover:bg-primary/90 disabled:opacity-50"
+                  data-testid="advisor-chat-send"
                 >
                   <Send className="h-4 w-4" />
                 </button>
