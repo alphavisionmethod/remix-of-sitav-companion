@@ -115,7 +115,7 @@ export default function ISA07AuthConnectorTruthBoard() {
       findings.push({
         type: "ux_confusion",
         severity: "info",
-        family: fam,
+        family: fam as string,
         description: `${fam}: User has both identity link and connector access. Verify UX doesn't conflate them.`,
         resolved: true,
       });

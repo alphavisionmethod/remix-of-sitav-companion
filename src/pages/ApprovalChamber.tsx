@@ -302,7 +302,7 @@ const ApprovalChamber = () => {
     description: a.description || JSON.stringify(a.proposed_action || {}),
     domain: (a.action_type === "finance" ? "finance" : a.action_type === "concierge" ? "concierge" : "business") as ApprovalItem["domain"],
     riskLevel: (a.risk_level || "medium") as ApprovalItem["riskLevel"],
-    status: a.status === "approved" ? "approved" : a.status === "rejected" ? "rejected" : "pending",
+    status: (a.status === "approved" ? "approved" : a.status === "rejected" ? "rejected" : "pending") as ApprovalItem["status"],
     requestedBy: a.requested_by || "Advisor",
     requestedAt: a.created_at,
     expiresAt: new Date(Date.now() + 86400000).toISOString(),

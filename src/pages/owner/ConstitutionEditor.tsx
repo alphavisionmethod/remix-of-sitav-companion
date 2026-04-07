@@ -390,8 +390,7 @@ export default function ConstitutionEditor() {
     const rule = compiler.getAllRules().find((r: ConstitutionRule) => r.id === id);
     deleteRule(id);
     if (!isDemo && user?.id && rule) {
-      await db
-        .from("constitution_rules")
+      await fromTable("constitution_rules")
         .delete()
         .eq("user_id", user.id)
         .eq("natural_text", rule.naturalLanguage);
