@@ -559,9 +559,9 @@ export function useChangeReview() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["change-review", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<ChangeReview[]> => {
       if (isDemoMode) return mockChangeReviews;
-      return callAdminAPI("change-review");
+      return callAdminAPI<ChangeReview[]>("change-review");
     },
     staleTime: isDemoMode ? Infinity : 60000,
   });
