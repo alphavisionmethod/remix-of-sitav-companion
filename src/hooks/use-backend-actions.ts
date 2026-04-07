@@ -158,11 +158,28 @@ export function useInvoiceSend() {
 
 // ── Tax Estimate ────────────────────────────────────────────────
 
+export interface TaxEstimateResult {
+  federal_tax_cents: number;
+  se_tax_cents: number;
+  total_tax_cents: number;
+  effective_rate: number;
+  quarterly_payment_cents: number;
+  next_deadline: string;
+  period: string;
+  calculation: string;
+}
+
+export interface TaxDeductionsResult {
+  total_deductions_cents: number;
+  items: Array<{ category: string; amount_cents: number; description: string }>;
+  calculation: string;
+}
+
 export function useTaxEstimate(period: "quarterly" | "annual" = "quarterly") {
   const { user } = useAuth();
-  return useQuery({
+  return useQuery<TaxEstimateResult>({
     queryKey: ["tax-estimate", user?.id, period],
-    queryFn: () => invokeEdge("tax-estimate", { action: "estimate", period }),
+    queryFn: () => invokeEdge<TaxEstimateResult>("tax-estimate", { action: "estimate", period }),
     enabled: !!user,
     staleTime: 120000,
     retry: 1,
@@ -171,9 +188,9 @@ export function useTaxEstimate(period: "quarterly" | "annual" = "quarterly") {
 
 export function useTaxDeductions() {
   const { user } = useAuth();
-  return useQuery({
+  return useQuery<TaxDeductionsResult>({
     queryKey: ["tax-deductions", user?.id],
-    queryFn: () => invokeEdge("tax-estimate", { action: "deductions" }),
+    queryFn: () => invokeEdge<TaxDeductionsResult>("tax-estimate", { action: "deductions" }),
     enabled: !!user,
     staleTime: 120000,
   });
