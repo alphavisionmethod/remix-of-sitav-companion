@@ -475,6 +475,8 @@ const TrustCenter = lazy(() => import("./pages/TrustCenter"));
 const MediaWorkspace = lazy(() => import("./pages/MediaWorkspace"));
 const TemplateCenter = lazy(() => import("./pages/TemplateCenter"));
 const ImportExportCenter = lazy(() => import("./pages/ImportExportCenter"));
+const PolicySimulatorHub = lazy(() => import("./pages/PolicySimulatorHub"));
+const WorkflowReplayHub = lazy(() => import("./pages/WorkflowReplayHub"));
 const MobileHome = lazy(() => import("./pages/mobile/MobileHome"));
 const MobileApprovals = lazy(() => import("./pages/mobile/MobileApprovals"));
 const MobileProof = lazy(() => import("./pages/mobile/MobileProof"));
@@ -1132,6 +1134,8 @@ const App = () => (
                     <Route path="/mission/releases/:releaseId" element={<MissionReleaseDetailPage />} />
                     <Route path="/mission/workflows/:workflowId/replay" element={<MissionWorkflowReplayPage />} />
                     <Route path="/mission/error" element={<MissionError />} />
+                    <Route path="/mission/policy-simulator" element={<PolicySimulatorHub />} />
+                    <Route path="/mission/workflow-replay" element={<WorkflowReplayHub />} />
 
                     {/* ATLAS Gap Closure — Operator Command Surfaces */}
                     <Route path="/atlas" element={<AtlasHub />} />

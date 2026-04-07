@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { DollarSign, Clock, AlertTriangle, CheckCircle, Send, Phone, Receipt, Plus, X, Trash2, FileText, Loader2 } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useInvoiceGenerate } from "@/hooks/use-backend-actions";
+import { useInvoiceGenerate, useInvoiceSend } from "@/hooks/use-backend-actions";
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
@@ -34,6 +34,7 @@ const InvoicesCollections = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ invoice_number: "", amount: "", due_date: "", notes: "" });
   const generatePdf = useInvoiceGenerate();
+  const sendInvoice = useInvoiceSend();
 
   const { data: invoices = [], isLoading } = useQuery({
     queryKey: ["invoices", user?.id],
@@ -196,6 +197,16 @@ const InvoicesCollections = () => {
               </SitaCard>
               <div className="flex gap-2 flex-wrap">
                 {selected.status === "draft" && <button onClick={() => updateStatus.mutate({ id: selected.id, status: "sent" })} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><Send className="h-3.5 w-3.5" /> Mark Sent</button>}
+                {["draft", "sent"].includes(selected.status) && (
+                  <button
+                    onClick={() => sendInvoice.mutate({ action: "send", invoice_id: selected.id })}
+                    disabled={sendInvoice.isPending}
+                    className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-primary/30 bg-primary/5 px-3 py-2 text-xs font-medium text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
+                  >
+                    {sendInvoice.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
+                    Send Invoice
+                  </button>
+                )}
                 {selected.status !== "paid" && <button onClick={() => updateStatus.mutate({ id: selected.id, status: "paid" })} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><Receipt className="h-3.5 w-3.5" /> Mark Paid</button>}
                 <button
                   onClick={() => generatePdf.mutate({ action: "generate", invoice_id: selected.id, format: "pdf" })}
