@@ -1995,10 +1995,10 @@ const OwnerCenter = () => {
         {activePage === "knowledge" && (
           <motion.div key="knowledge" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-4">
-              <KPITile label="Total Docs" value={(knowledgeData as Record<string, unknown>)?.totalDocs || 0} icon={BookOpen} className="gradient-sita-subtle" />
-              <KPITile label="Fresh" value={(knowledgeData as Record<string, unknown>)?.freshDocs || 0} icon={CheckCircle} trend="up" />
-              <KPITile label="Stale" value={(knowledgeData as Record<string, unknown>)?.staleDocs || 0} icon={AlertTriangle} />
-              <KPITile label="Registry Sync" value={`${(knowledgeData as Record<string, unknown>)?.registryInSync || 0}/${(knowledgeData as Record<string, unknown>)?.registryFiles || 0}`} icon={Database} />
+              <KPITile label="Total Docs" value={knowledgeData?.totalDocs || 0} icon={BookOpen} className="gradient-sita-subtle" />
+              <KPITile label="Fresh" value={knowledgeData?.freshDocs || 0} icon={CheckCircle} trend="up" />
+              <KPITile label="Stale" value={knowledgeData?.staleDocs || 0} icon={AlertTriangle} />
+              <KPITile label="Registry Sync" value={`${knowledgeData?.registryInSync || 0}/${knowledgeData?.registryFiles || 0}`} icon={Database} />
             </div>
             <SitaSectionHeader title="Stale Documents" />
             {((knowledgeData as Record<string, unknown>)?.staleDcosList || []).map((d: any) => (
