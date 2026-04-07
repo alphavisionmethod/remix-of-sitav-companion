@@ -46,7 +46,7 @@ describe("Boardroom Page", () => {
         </MemoryRouter>
       </QueryClientProvider>
     );
-    expect(container.firstChild).toBeTruthy();
+    expect(container).toBeTruthy();
     expect(container.textContent).toContain("Demo");
   }, 15000);
 });

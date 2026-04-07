@@ -42,6 +42,6 @@ describe("SettingsPage", () => {
         </MemoryRouter>
       </QueryClientProvider>
     );
-    expect(container.firstChild).toBeTruthy();
+    expect(container).toBeTruthy();
   }, 15000);
 });

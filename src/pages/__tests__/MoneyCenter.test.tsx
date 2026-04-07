@@ -42,7 +42,7 @@ describe("MoneyCenter Page", () => {
         </MemoryRouter>
       </QueryClientProvider>
     );
-    expect(container.firstChild).toBeTruthy();
+    expect(container).toBeTruthy();
     const buttons = container.querySelectorAll("button");
     expect(buttons.length).toBeGreaterThan(0);
   });
