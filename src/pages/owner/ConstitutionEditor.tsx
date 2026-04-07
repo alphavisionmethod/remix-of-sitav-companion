@@ -3,7 +3,7 @@
 // Natural-language rule authoring with real-time compilation
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
@@ -21,6 +21,8 @@ import { cn } from "@/lib/utils";
 import type { ConstitutionRule, ConstitutionRuleCategory } from "@/lib/core-services/constitution-compiler";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { db } from "@/integrations/supabase/db";
 
 // ── Category Config ─────────────────────────────────────────────
 
