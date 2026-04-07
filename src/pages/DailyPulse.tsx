@@ -18,6 +18,7 @@ import { useLeads, useInvoices, useBills, useCashFlow, useApprovals, useHousehol
 import { useCalendarEvents } from "@/hooks/use-calendar-data";
 import { useFinanceProjection } from "@/hooks/use-domain-projections";
 import { useAIInsight, useCashflowAnalysis, useCRMSync } from "@/hooks/use-backend-actions";
+import { PulseSummaryStrip } from "@/components/user-app/PulseSummaryStrip";
 import { evaluateCrossDomainIntelligence } from "@/lib/cross-domain";
 import { assessBusinessHealth } from "@/lib/domain-engines/business-os";
 import { analyzeCashflow, assessBudgetHealth, assessReserves, analyzeInvoiceAging, assessFinancialHealth, analyzeBillCalendar } from "@/lib/domain-engines/finance-os";
