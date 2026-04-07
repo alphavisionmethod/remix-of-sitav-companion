@@ -8,11 +8,8 @@ import { AuthDivider } from "@/components/auth/AuthDivider";
 import { motion } from "framer-motion";
 import { EnhancedLockScreen as LockScreen } from "@/components/sita/shell/EnhancedLockScreen";
 import { FirstBootScreen } from "@/components/sita/FirstBootScreen";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const Login = () => {
-  const { isDemoMode } = useDataMode();
   const { signIn, signInAsDemo } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -73,7 +70,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex bg-background">
-      <DemoModeBadge />
+      
       {/* Left: Brand panel */}
       <div className="hidden lg:flex lg:w-[45%] relative overflow-hidden">
         {/* Background layers */}
