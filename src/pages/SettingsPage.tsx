@@ -108,6 +108,8 @@ const SettingsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [auditResult, setAuditResult] = useState<SimulationResult | null>(null);
   const [displayName, setDisplayName] = useState(user?.user_metadata?.full_name || "");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   // Fetch profile
