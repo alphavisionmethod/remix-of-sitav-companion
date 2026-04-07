@@ -17,6 +17,7 @@ import {
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useCRMSync } from "@/hooks/use-backend-actions";
 
 const todayCallbacks = [
   { name: "Sarah Chen", time: "10:30 AM", reason: "Quote follow-up — $2,500 website redesign", stale: false },
