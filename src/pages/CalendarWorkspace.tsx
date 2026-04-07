@@ -17,6 +17,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_CALENDAR_EVENTS, type CalWorkspaceEvent as CalEvent } from "@/lib/demo-data/calendar-workspace";
 import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
 import { useCreateCalendarEvent, useUpdateCalendarEvent, useDeleteCalendarEvent } from "@/hooks/use-calendar-mutations";
+import { useBookingList, useBookingCreate, useBookingCancel } from "@/hooks/use-backend-actions";
 
 type CalView = "day" | "week" | "month" | "agenda";
 
