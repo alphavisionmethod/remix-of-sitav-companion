@@ -104,6 +104,16 @@ const FilesSearch = () => {
         </SitaButton>
       </div>
 
+      {aiSearchResult && (
+        <SitaCard className="p-4 border-primary/20 bg-primary/5">
+          <div className="flex items-center gap-2 mb-2">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <p className="text-xs font-semibold text-primary">AI Search Result</p>
+          </div>
+          <p className="text-sm text-foreground">{aiSearchResult}</p>
+        </SitaCard>
+      )}
+
       <SitaTabs
         tabs={[
           { key: "all", label: "All Results" },
