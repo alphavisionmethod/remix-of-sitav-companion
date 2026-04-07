@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 const VALID_TRANSITIONS: Record<string, string[]> = {
   new: ["triaged", "under_review", "rejected", "deferred", "closed_no_action"],

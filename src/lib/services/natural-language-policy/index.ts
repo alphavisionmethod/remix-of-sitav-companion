@@ -1,4 +1,4 @@
-import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Natural Language Policy Builder
 // Converts plain English rules into executable policy objects

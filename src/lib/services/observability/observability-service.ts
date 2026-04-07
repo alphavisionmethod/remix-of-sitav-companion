@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { runAllProbes, type ProbeResult } from "@/lib/observability/health-probes";
 
 export interface RuntimeProbe {

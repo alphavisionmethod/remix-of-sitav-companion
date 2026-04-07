@@ -6,7 +6,7 @@
 import type { Message, NotificationPreferences, CommunicationTemplate, DeliveryReport, ChannelType, DeliveryStatus, MessageCategory, MessagePriority } from "@/packages/contracts/domain-types/communication";
 import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // @persistence: os_service_state — state survives refresh via universal adapter
 
 export type { Message, NotificationPreferences, CommunicationTemplate, DeliveryReport, ChannelType, DeliveryStatus, MessageCategory, MessagePriority };

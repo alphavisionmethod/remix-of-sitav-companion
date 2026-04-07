@@ -1,4 +1,4 @@
-import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Predictive Intent Engine
 // Anticipates user needs before they ask using behavioral patterns

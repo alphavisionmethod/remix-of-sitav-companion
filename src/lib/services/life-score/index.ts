@@ -1,4 +1,4 @@
-import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Life Score Dashboard Service
 // Single composite score across health, wealth, relationships, career

@@ -1,4 +1,4 @@
-import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Family Command Center Service
 // Unified calendar + tasks + meals + budget for the household

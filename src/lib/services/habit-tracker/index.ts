@@ -1,4 +1,4 @@
-import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Habit Streak Tracker
 // Gamified daily habits with streaks, rewards, family challenges

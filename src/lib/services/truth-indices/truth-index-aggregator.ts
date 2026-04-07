@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { getDomainRuntimeStatuses, getRuntimeTruthIndex } from "../domain-runtime/domain-runtime-service";
 import { getLaunchGates, getLaunchHonestyIndex } from "../launch-gate/launch-gate-service";
 import { getOAuthFlows, getSyncJobs, getConnectorTruthIndex } from "../connector-truth/connector-truth-service";
