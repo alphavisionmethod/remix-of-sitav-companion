@@ -728,7 +728,6 @@ function MCTrust() {
 
   const runSim = () => {
     const result = gov.runComplianceAudit([
-    const result = gov.runComplianceAudit([
       { domain: "finance", capabilityId: "finance.transfer", riskTier: "high", amount: 8000 },
       { domain: "finance", capabilityId: "finance.budget.update", riskTier: "medium", amount: 500 },
       { domain: "business", capabilityId: "crm.lead.update", riskTier: "low" },
