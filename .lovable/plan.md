@@ -1,130 +1,149 @@
 
 
-# Eliminate All 761 `as any` Casts — Full Plan
+# Get Kernel Adoption to 100% — Plan
 
-## Scope
+## The Problem
 
-761 project-owned `as any` casts across 302 files. Target: **0 casts**.
+The canonical execution chain exists and works:
+- `SitaKernel.executeAction()` — full 12-stage pipeline (surface → api-gateway → brain-core → domain-os → policy → approval → capability-router → executor → receipt → verification → event-bus → projections)
+- `useCanonicalAction()` — React hook exposing `execute(domain, capabilityId, payload)`
+- Only **1 page** (`ReplayRecoveryConsole`) actually uses it out of ~200+ pages/components
+- **513 direct database calls** (`fromTable()`) scattered across pages, hooks, and components bypass the kernel completely
 
-## Category Breakdown & Fix Strategy
+## Why It's Only 0.15%
 
-| # | Category | Count | Fix |
-|---|----------|-------|-----|
-| 1 | **Service hydration** (`state.X as any`) | 177 | Add typed `hydrate(state: ServiceSnapshot)` interface per service |
-| 2 | **`(supabase as any).from()`** direct calls | 99 | Replace with `fromTable()` helper (already exists) |
-| 3 | **`fromTable` helper itself** | 3 | Replace with typed overloads using `Database["public"]["Tables"]` keyof union |
-| 4 | **Browser APIs** (`window/navigator/Intl`) | 21 | Add `src/types/browser.d.ts` ambient declarations |
-| 5 | **`return data as any[]`** in hooks | 14 | Add proper return types from Supabase Row types |
-| 6 | **Page-level casts** (`trustData as any`, `modelData as any`) | 108 | Define interfaces for each data shape, cast to those |
-| 7 | **Edge functions** | 38 | Type request/response bodies, remove casts |
-| 8 | **Test files** | 27 | Use `Partial<T>` or proper test fixtures |
-| 9 | **Scripts** | 11 | Type script data properly |
-| 10 | **Misc** (engines, dual-reality, observability, components, etc.) | ~63 | Individual fixes per pattern |
+Every page does its own `fromTable("table").select(...)` or `.insert(...)` or `.update(...)` directly. This means:
+- No policy checks on reads or writes
+- No receipts generated
+- No trust verification
+- No event bus notifications
+- No proof chain entries
+- The entire kernel is decorative
 
-## Implementation — 8 Batches
+## The Fix — Two-Layer Strategy
 
-### Batch 1: Foundation — Typed `fromTable` + Browser Declarations (24 casts)
+### Layer 1: Kernel-Routed Mutations (Priority — all writes go through kernel)
 
-**`src/lib/supabase-helpers.ts`** — Replace the untyped helper with a typed overload:
-```
-type TableName = keyof Database["public"]["Tables"];
-function fromTable<T extends TableName>(table: T) {
-  return supabase.from(table);
-}
-```
-This makes every `fromTable("table_name")` call fully typed, eliminating the cast at source.
+Every `.insert()`, `.update()`, `.upsert()`, `.delete()` call must be replaced with `useCanonicalAction().execute(domain, capabilityId, payload)`.
 
-**`src/types/browser.d.ts`** — Ambient declarations for:
-- `window.SpeechRecognition` / `webkitSpeechRecognition`
-- `window.electron` (with platform, sendNotification, downloadUpdate, etc.)
-- `navigator.connection` (NetworkInformation API)
-- `Intl.supportedValuesOf`
+**Create a `useKernelMutation` hook** that wraps `useCanonicalAction` with React Query mutation patterns:
 
-### Batch 2: Service Hydration Pattern (177 casts, ~100 service files)
-
-Every service follows the same pattern:
-```ts
-hydrate(state: Record<string, unknown>) {
-  if (state.plans) this.plans = new Map(state.plans as any);
-  if (state.usage) this.usage = state.usage as any;
+```typescript
+// src/hooks/use-kernel-mutation.ts
+export function useKernelMutation(domain: string, capabilityId: string) {
+  const { execute } = useCanonicalAction();
+  return useMutation({
+    mutationFn: (payload: Record<string, unknown>) =>
+      execute(domain, capabilityId, payload),
+  });
 }
 ```
 
-Fix: For each service, define a `Snapshot` interface matching `serialize()` output, then type `hydrate`:
-```ts
-interface BillingSnapshot {
-  plans?: [string, BillingPlan][];
-  usage?: UsageRecord[];
-  invoices?: BillingInvoice[];
-}
-hydrate(state: BillingSnapshot) {
-  if (state.plans) this.plans = new Map(state.plans);
-  if (state.usage) this.usage = state.usage;
+Then replace every direct write. Example — `AR08KillSwitchCenter.tsx`:
+```diff
+- await fromTable("automation_kill_switches").insert({ user_id, scope, enabled: true });
++ await execute("system", "kill-switch.toggle", { scope, enabled: true });
+```
+
+**Scope**: ~180 write calls across ~80 files.
+
+### Layer 2: Kernel-Routed Reads (all queries go through projections)
+
+Create a `useKernelQuery` hook that routes reads through the kernel's projection service, generating read-receipts and respecting policy:
+
+```typescript
+// src/hooks/use-kernel-query.ts
+export function useKernelQuery<T>(domain: string, projection: string, filters?: Record<string, unknown>) {
+  const kernel = useSitaKernel();
+  return useQuery({
+    queryKey: [domain, projection, filters],
+    queryFn: () => kernel.projections.query(domain, projection, filters),
+  });
 }
 ```
 
-This is mechanical — same pattern across ~100 files.
+The `ProjectionService` internally calls `fromTable()` but wraps it with:
+- Read-receipt generation
+- Policy-based row filtering
+- Trust-level access checks
+- Event emission for audit
 
-### Batch 3: Direct `(supabase as any)` in Components/Hooks (99 casts, ~30 files)
+**Scope**: ~330 read calls across ~150 files.
 
-Replace every `(supabase as any).from("table")` with `fromTable("table")` (now typed from Batch 1). Files include:
-- `ConnectorSyncDashboard.tsx`, `NotificationPanel.tsx`, `PostArrivalDesktop.tsx`
-- `use-brain-core.ts`, `use-health-signal-mutations.ts`, `use-user-preferences.ts`, `useOfflineStore.ts`
-- `use-adaptive-personalization.ts`, `use-sita-data.ts`
-- `canonical-chain-persistence.ts`, `blocker-scoring-engine.ts`
-- Multiple CJ hooks, dual-reality files, AI clients
+### Layer 3: Kernel Capability Registration
 
-### Batch 4: Hook Return Types (14 casts, ~5 files)
+Each domain needs its capabilities registered so the `CapabilityRouter` can route them:
 
-Files like `use-fip-data.ts` (10 casts) and `use-sag-data.ts` (3 casts) do `return data as any[]`. Fix: Import Supabase Row types and return properly typed arrays.
-
-### Batch 5: Page-Level Data Casts (108 casts, ~40 files)
-
-Pages like `OwnerCenter.tsx` (28 casts) do `(trustData as any)?.overallScore`. Fix: Define typed interfaces for each data shape (e.g., `TrustOverview`, `ReleaseRingData`, `ModelUsageData`) and type the state/hook returns.
-
-Files: `OwnerCenter`, `DailyPulse`, `RecoveryCenter`, `FilesSettings`, `AutomationCenter`, `CalendarWorkspace`, `MissionControlPage`, plus ~30 admin pages.
-
-### Batch 6: Edge Functions (38 casts, ~10 files)
-
-Type request bodies and Supabase client calls in edge functions. Replace `(supabase as any)` with typed Supabase client using `Database` generic.
-
-### Batch 7: Engine + Core Services + Observability (66 casts, ~20 files)
-
-- Engines (53 casts): `enterprise-maturity.ts` (17), `memory-governance.ts` (6), etc. — add typed state interfaces
-- Core services (7): `canonical-chain-persistence.ts`, `executor-service.ts`, etc.
-- Observability (6): `cost-governance.ts`, `telemetry-collector.ts`
-
-### Batch 8: Tests, Scripts, Remaining (38 casts)
-
-- Test files (27): Use `Partial<Type>` instead of `as any` for partial mocks
-- Scripts (11): Type the ingestion data in `ingest-journey-results.ts`
-
-## Technical Detail
-
-**Why `fromTable` typing works**: `types.ts` already has 515 tables defined in `Database["public"]["Tables"]`. A typed `fromTable<T extends TableName>(table: T)` returns `PostgrestQueryBuilder<Database["public"]["Tables"][T]["Row"]>`, giving full autocomplete and type safety for every query.
-
-**Service snapshot pattern**: A shared generic could reduce boilerplate:
-```ts
-type MapSnapshot<K, V> = [K, V][];
+```typescript
+kernel.capabilityRouter.register("finance", "invoice.create", async (payload) => {
+  const { data } = await fromTable("invoices").insert(payload);
+  return data;
+});
 ```
-This lets `new Map(state.plans)` work without casts when `state.plans` is typed as `MapSnapshot<string, BillingPlan>`.
+
+Create capability handlers for each domain:
+- `src/lib/capabilities/finance-capabilities.ts`
+- `src/lib/capabilities/business-capabilities.ts`
+- `src/lib/capabilities/concierge-capabilities.ts`
+- `src/lib/capabilities/system-capabilities.ts`
+- `src/lib/capabilities/admin-capabilities.ts`
+
+## Implementation Batches
+
+### Batch 1: Foundation (3 files)
+1. **`src/hooks/use-kernel-mutation.ts`** — Mutation hook wrapping `useCanonicalAction`
+2. **`src/hooks/use-kernel-query.ts`** — Query hook wrapping `ProjectionService`
+3. **`src/lib/core-services/projection-service.ts`** — Add `query(domain, projection, filters)` method that does the actual `fromTable()` call internally
+
+### Batch 2: Capability Handlers (5 files)
+Register actual database operations as capabilities so the executor has real handlers:
+- `src/lib/capabilities/finance-capabilities.ts` — invoices, bills, payments, cashflow
+- `src/lib/capabilities/business-capabilities.ts` — contacts, leads, opportunities, CRM
+- `src/lib/capabilities/concierge-capabilities.ts` — tasks, bookings, household
+- `src/lib/capabilities/system-capabilities.ts` — devices, notifications, preferences, kill-switches
+- `src/lib/capabilities/admin-capabilities.ts` — policies, operator actions, audit logs
+
+### Batch 3: Migrate Writes (~80 files)
+Replace all `fromTable().insert/update/upsert/delete` in pages/hooks/components with `useKernelMutation()`. Each call becomes:
+```typescript
+const { mutate } = useKernelMutation("finance", "invoice.create");
+// ...
+mutate({ customer_id, amount, due_date });
+```
+
+### Batch 4: Migrate Reads (~150 files)
+Replace all `fromTable().select` in pages/hooks/components with `useKernelQuery()`. Each call becomes:
+```typescript
+const { data } = useKernelQuery("finance", "invoices", { user_id, status: "overdue" });
+```
+
+### Batch 5: Kill Direct Access
+- Remove `fromTable` export from `supabase-helpers.ts` (keep only as internal for projection-service and capability handlers)
+- Add ESLint rule: `no-restricted-imports` for `fromTable` outside `src/lib/`
+- Verify 100% kernel routing with grep
+
+## What This Achieves
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Kernel adoption | 0.15% (1 page) | 100% (all pages) |
+| Receipted writes | 0 | ~180 |
+| Policy-checked reads | 0 | ~330 |
+| Proof chain coverage | decorative | full |
+| Kill switch effectiveness | none | total |
 
 ## Files Changed
 
-- **1 modified**: `src/lib/supabase-helpers.ts` — typed overload
-- **1 new**: `src/types/browser.d.ts` — ambient declarations
-- **~100 modified**: `src/lib/services/*/index.ts` — typed hydration
-- **~30 modified**: Components/hooks — `(supabase as any)` → `fromTable()`
-- **~5 modified**: Hook files — typed returns
-- **~40 modified**: Page files — typed data interfaces
-- **~10 modified**: Edge functions — typed bodies
-- **~20 modified**: Engines/core-services/observability — typed state
-- **~10 modified**: Tests/scripts — proper typing
+- **3 new**: `use-kernel-mutation.ts`, `use-kernel-query.ts`, capability registration index
+- **5 new**: Domain capability handler files
+- **1 modified**: `projection-service.ts` — add query method
+- **~230 modified**: Pages, hooks, components — replace direct DB calls with kernel hooks
+- **1 modified**: `supabase-helpers.ts` — restrict `fromTable` exports
 
-**Total: ~220 files modified, 2 new files**
+## Risk Mitigation
 
-## Verification
-
-After all batches: `grep -rn "as any" src/ supabase/ scripts/ tests/ | wc -l` must return **0**.
-`npx tsc --noEmit` must return **0 errors**.
+- All `useKernelQuery` calls fall back to direct `fromTable` if kernel is unavailable
+- Capability handlers are thin wrappers — same Supabase calls, just routed through the chain
+- React Query caching is preserved — `useKernelQuery` returns standard `useQuery` results
+- No schema changes needed — same tables, same data, different access path
 
