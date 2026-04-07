@@ -113,6 +113,16 @@ interface SetupData {
   stressMap: StressMapData;
   commsContext: CommsContextData;
   planningStyle: PlanningStyleData;
+  wantLessOf: string[];
+  protectMost: string[];
+  explanationStyle: string;
+  presenceStyle: string;
+  interruptionStyle: string;
+  rituals: string[];
+  householdGraph: { name: string; role: string }[];
+  memoryConsent: string;
+  homeComposition: string;
+  recoverFirst: string;
 }
 
 // ── Phase Status Indicator ──────────────────────────────────
