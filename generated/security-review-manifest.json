@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-04-04T20:00:00.664Z",
-  "totalFunctions": 14,
-  "averageScore": 60,
+  "generatedAt": "2026-04-07T23:17:20.375Z",
+  "totalFunctions": 51,
+  "averageScore": 88,
   "checklist": [
     "rls-policies",
     "auth-middleware",
@@ -15,14 +15,40 @@
   ],
   "entries": [
     {
-      "functionName": "admin-api",
+      "functionName": "_shared",
       "totalChecks": 5,
-      "passedChecks": 3,
-      "score": 60,
+      "passedChecks": 0,
+      "score": 0,
+      "checks": {
+        "auth-middleware": false,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": false,
+        "cors-configured": false
+      }
+    },
+    {
+      "functionName": "admin-ai-workforce-run",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
       "checks": {
         "auth-middleware": true,
         "input-validation": false,
-        "rate-limiting": false,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "admin-api",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
       }
@@ -30,12 +56,25 @@
     {
       "functionName": "admin-intelligence",
       "totalChecks": 5,
-      "passedChecks": 3,
-      "score": 60,
+      "passedChecks": 5,
+      "score": 100,
       "checks": {
         "auth-middleware": true,
-        "input-validation": false,
-        "rate-limiting": false,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "admin-users",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": false,
+        "input-validation": true,
+        "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
       }
@@ -43,12 +82,12 @@
     {
       "functionName": "agent-executor",
       "totalChecks": 5,
-      "passedChecks": 3,
-      "score": 60,
+      "passedChecks": 5,
+      "score": 100,
       "checks": {
         "auth-middleware": true,
-        "input-validation": false,
-        "rate-limiting": false,
+        "input-validation": true,
+        "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
       }
@@ -56,12 +95,12 @@
     {
       "functionName": "agent-heartbeat",
       "totalChecks": 5,
-      "passedChecks": 3,
-      "score": 60,
+      "passedChecks": 5,
+      "score": 100,
       "checks": {
         "auth-middleware": true,
-        "input-validation": false,
-        "rate-limiting": false,
+        "input-validation": true,
+        "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
       }
@@ -69,12 +108,12 @@
     {
       "functionName": "agent-intelligence",
       "totalChecks": 5,
-      "passedChecks": 3,
-      "score": 60,
+      "passedChecks": 5,
+      "score": 100,
       "checks": {
         "auth-middleware": true,
-        "input-validation": false,
-        "rate-limiting": false,
+        "input-validation": true,
+        "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
       }
@@ -82,12 +121,12 @@
     {
       "functionName": "agent-scheduler",
       "totalChecks": 5,
-      "passedChecks": 3,
-      "score": 60,
+      "passedChecks": 5,
+      "score": 100,
       "checks": {
         "auth-middleware": true,
-        "input-validation": false,
-        "rate-limiting": false,
+        "input-validation": true,
+        "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
       }
@@ -95,12 +134,64 @@
     {
       "functionName": "agent-signal",
       "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "ai-gateway",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "ai-health",
+      "totalChecks": 5,
       "passedChecks": 3,
       "score": 60,
       "checks": {
         "auth-middleware": true,
         "input-validation": false,
         "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "ambient-os-operations",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "booking-manage",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": false,
+        "input-validation": true,
+        "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
       }
@@ -108,12 +199,25 @@
     {
       "functionName": "brain-core",
       "totalChecks": 5,
-      "passedChecks": 3,
-      "score": 60,
+      "passedChecks": 5,
+      "score": 100,
       "checks": {
         "auth-middleware": true,
-        "input-validation": false,
-        "rate-limiting": false,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "cashflow-calculate",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": false,
+        "input-validation": true,
+        "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
       }
@@ -121,12 +225,77 @@
     {
       "functionName": "chat-advisor",
       "totalChecks": 5,
-      "passedChecks": 3,
-      "score": 60,
+      "passedChecks": 5,
+      "score": 100,
       "checks": {
         "auth-middleware": true,
-        "input-validation": false,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "connector-batch",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": false,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "connector-discover",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": false,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "connector-health",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "connector-oauth",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
         "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "connector-operations",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
       }
@@ -134,12 +303,77 @@
     {
       "functionName": "connector-proxy",
       "totalChecks": 5,
-      "passedChecks": 3,
-      "score": 60,
+      "passedChecks": 5,
+      "score": 100,
       "checks": {
         "auth-middleware": true,
-        "input-validation": false,
-        "rate-limiting": false,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "connector-transform",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": false,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "cost-alert",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "crm-sync",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": false,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "device-telemetry",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "ecosystem-operations",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
       }
@@ -147,12 +381,12 @@
     {
       "functionName": "event-processor",
       "totalChecks": 5,
-      "passedChecks": 3,
-      "score": 60,
+      "passedChecks": 5,
+      "score": 100,
       "checks": {
         "auth-middleware": true,
-        "input-validation": false,
-        "rate-limiting": false,
+        "input-validation": true,
+        "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
       }
@@ -160,18 +394,148 @@
     {
       "functionName": "file-ingestion",
       "totalChecks": 5,
-      "passedChecks": 3,
-      "score": 60,
+      "passedChecks": 5,
+      "score": 100,
       "checks": {
         "auth-middleware": true,
-        "input-validation": false,
-        "rate-limiting": false,
+        "input-validation": true,
+        "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
       }
     },
     {
-      "functionName": "seed-user-data",
+      "functionName": "gdpr-delete",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "gdpr-export",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "invoice-generate",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "main",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": false,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "msa-operations",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "os-command",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": false,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "os-status",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "payment-process",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "personal-brain",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "provider-family-operations",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "push-dispatch",
       "totalChecks": 5,
       "passedChecks": 3,
       "score": 60,
@@ -184,7 +548,124 @@
       }
     },
     {
+      "functionName": "push-track",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "revenue-caller",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "runtime-probes",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "scheduler-dispatch",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "seed-user-data",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
       "functionName": "self-healing",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "system-updates",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "tax-estimate",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": false,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "vapid-public-key",
+      "totalChecks": 5,
+      "passedChecks": 1,
+      "score": 20,
+      "checks": {
+        "auth-middleware": false,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": false,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "verification-recorder",
       "totalChecks": 5,
       "passedChecks": 3,
       "score": 60,
