@@ -91,7 +91,8 @@ const MemoryCenter = () => {
   });
 
   // Filter by active tab category
-  const memories = allMemories as never[];
+  interface MemoryItem { id: string; key: string; value: unknown; category: string; source?: string; updated_at: string; expires_at?: string; confidence?: number; }
+  const memories = allMemories as MemoryItem[];
   const dbCategory = categoryMap[activeTab] || "context";
   const tabMemories = memories.filter((m: any) => m.category === dbCategory);
 

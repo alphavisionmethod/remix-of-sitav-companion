@@ -257,7 +257,7 @@ export default function FirstWinActivation() {
           .eq("key", "first_recovery")
           .single();
 
-        const choice = data?.value ? JSON.parse(data.value) : null;
+        const choice = data?.value ? JSON.parse(String(data.value)) : null;
         setWorkflow(WORKFLOWS[choice] || DEFAULT_WORKFLOW);
       } catch {
         setWorkflow(DEFAULT_WORKFLOW);

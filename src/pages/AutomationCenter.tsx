@@ -73,10 +73,10 @@ const AutomationCenter = () => {
   const rules = isDemoMode ? MOCK_AUTOMATION_RULES : liveWorkflows.map(w => ({
     id: w.id,
     name: w.name,
-    trigger_event: w.trigger_event,
-    steps: w.steps as Array<{ action?: string }>,
+    trigger_event: w.trigger_type || "unknown",
+    steps: (w.steps ?? []) as Array<{ action?: string }>,
     active: w.active,
-    domain: w.trigger_event.split(".")[0] || "System",
+    domain: (w.trigger_type || "system").split(".")[0] || "System",
   }));
 
   const totalRuns = runs.length;
@@ -93,7 +93,7 @@ const AutomationCenter = () => {
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KPITile label="Active Rules" value={rules.filter(r => r.active).length} icon={Zap} />
+        <KPITile label="Active Rules" value={rules.filter(r => 'active' in r ? r.active : ('enabled' in r ? r.enabled : false)).length} icon={Zap} />
         <KPITile label="Total Runs" value={isDemoMode ? 124 : totalRuns} trend="up" icon={CheckCircle} />
         <KPITile label="Success Rate" value={isDemoMode ? "97.2%" : `${successRate}%`} trend="up" icon={Shield} />
         <KPITile label="Rules" value={rules.length} icon={Settings} />
@@ -131,7 +131,7 @@ const AutomationCenter = () => {
                       </p>
                       {rule.steps?.[0] && (
                         <p className="text-xs text-muted-foreground">
-                          <span className="text-muted-foreground/70">Action:</span> {(rule.steps[0] as never).action || JSON.stringify(rule.steps[0]).slice(0, 60)}
+                          <span className="text-muted-foreground/70">Action:</span> {rule.steps[0].action || JSON.stringify(rule.steps[0]).slice(0, 60)}
                         </p>
                       )}
                     </div>

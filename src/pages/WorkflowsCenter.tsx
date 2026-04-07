@@ -64,7 +64,7 @@ const WorkflowsCenter = () => {
 
   const createWorkflow = useMutation({
     mutationFn: async () => {
-      const { data: wf, error: wfErr } = await fromTable("workflows").insert({ user_id: user!.id, name: newName, trigger_event: newTrigger, active: true, steps: [] }).select().single();
+      const { data: wf, error: wfErr } = await fromTable("workflows").insert({ name: newName, trigger_type: newTrigger, active: true, steps: [] as unknown[] } as Record<string, unknown>).select().single();
       if (wfErr) throw wfErr;
       // Create initial run
       const { error: runErr } = await fromTable("workflow_runs").insert({ user_id: user!.id, workflow_id: wf.id, status: "pending", current_step: 0 });
@@ -173,10 +173,10 @@ const WorkflowsCenter = () => {
                         {isStuck && <TrustBadge level="low-confidence" label="Stuck" size="sm" />}
                       </div>
                       <p className="text-sm font-medium text-foreground">
-                        {(run as Record<string, unknown>).workflows?.name || `Workflow ${run.workflow_id.slice(0, 8)}`}
+                        {String((run as Record<string, unknown>).workflows && typeof (run as Record<string, unknown>).workflows === "object" ? ((run as Record<string, unknown>).workflows as Record<string, unknown>)?.name : null) || `Workflow ${run.workflow_id.slice(0, 8)}`}
                       </p>
                       <p className="mt-0.5 text-xs text-muted-foreground">
-                        Step {run.current_step} · {timeInState(run)} · {(run as Record<string, unknown>).workflows?.trigger_event || "unknown trigger"}
+                        Step {run.current_step} · {timeInState(run)} · {String((run as Record<string, unknown>).workflows && typeof (run as Record<string, unknown>).workflows === "object" ? ((run as Record<string, unknown>).workflows as Record<string, unknown>)?.trigger_event : null) || "unknown trigger"}
                       </p>
                     </div>
                     <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0 mt-2" />
@@ -191,7 +191,7 @@ const WorkflowsCenter = () => {
               <>
                 <SitaCard hover={false} glow className="p-5">
                   <SitaCardTitle sub={`Status: ${selected.status}`}>
-                    {(selected as Record<string, unknown>).workflows?.name || "Workflow Run"}
+                    {String((selected as Record<string, unknown>).workflows && typeof (selected as Record<string, unknown>).workflows === "object" ? ((selected as Record<string, unknown>).workflows as Record<string, unknown>)?.name : null) || "Workflow Run"}
                   </SitaCardTitle>
                   <div className="mt-4 space-y-3">
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">State</span><StateBadge state={statusToState(selected.status)} /></div>

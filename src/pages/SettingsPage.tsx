@@ -120,7 +120,7 @@ const SettingsPage = () => {
       const { data } = await fromTable("profiles").select("*").eq("user_id", user!.id).single();
       if (data?.display_name) setDisplayName(data.display_name);
       if (data?.avatar_url) setAvatarUrl(data.avatar_url);
-      if (data?.preferences) loadPrefs(data.preferences);
+      if (data?.preferences && typeof data.preferences === "object" && !Array.isArray(data.preferences)) loadPrefs(data.preferences as Record<string, any>);
       return data;
     },
   });
