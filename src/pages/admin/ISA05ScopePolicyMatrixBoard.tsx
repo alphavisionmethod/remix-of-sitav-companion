@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Grid3X3, Shield, Lock, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { getRelation, parseProviderFamilyRef, parseProviderCapabilityRef } from "@/lib/types/relation-parsers";
 
 const riskColors: Record<string, string> = {
   low: "bg-green-500/20 text-green-400",
@@ -117,8 +118,8 @@ export default function ISA05ScopePolicyMatrixBoard() {
             <TableBody>
               {scopes.map((s: any) => (
                 <TableRow key={s.id}>
-                  <TableCell className="font-medium">{((s as any).provider_families as any)?.name || "—"}</TableCell>
-                  <TableCell className="text-sm">{((s as any).provider_capabilities as any)?.display_name || "—"}</TableCell>
+                  <TableCell className="font-medium">{getRelation(s, "provider_families", parseProviderFamilyRef).name || "—"}</TableCell>
+                  <TableCell className="text-sm">{getRelation(s, "provider_capabilities", parseProviderCapabilityRef).display_name || "—"}</TableCell>
                   <TableCell><code className="text-xs bg-muted px-1.5 py-0.5 rounded">{s.scope_key}</code></TableCell>
                   <TableCell><Badge className={categoryColors[s.category] || "bg-muted text-muted-foreground"}>{s.category?.replace(/_/g, " ")}</Badge></TableCell>
                   <TableCell><Badge className={riskColors[s.risk_level] || "bg-muted text-muted-foreground"}>{s.risk_level}</Badge></TableCell>
