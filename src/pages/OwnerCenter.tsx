@@ -2094,7 +2094,7 @@ const OwnerCenter = () => {
             </SitaCard>
             <SitaSectionHeader title="Per-Service Rollback Readiness" />
             <div className="grid gap-3 sm:grid-cols-2">
-              {((rollbackData as Record<string, unknown>)?.services || []).map((s: any) => (
+              {(rollbackData?.services || []).map((s: any) => (
                 <SitaCard key={s.name} hover={false} className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
