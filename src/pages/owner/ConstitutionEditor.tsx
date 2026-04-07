@@ -462,7 +462,6 @@ export default function ConstitutionEditor() {
                     onDelete={handleDeleteRule}
                   />
                 ))
-                ))
               )}
             </AnimatePresence>
           </div>
