@@ -72,6 +72,15 @@ export * from "./admin";
 // ── Kernel contracts (sacred — zero runtime deps) ───────────
 export * from "./kernel";
 
+// ── MSA (Multi-Surface Architecture) contracts ──────────────
+export * from "./msa";
+
+// ── Native (Electron/Desktop) contracts ─────────────────────
+export * from "./native";
+
+// ── API schema contracts ────────────────────────────────────
+export * from "./api-schemas";
+
 // ── Deprecated redirect stubs REMOVED ────────────────────────
 // consent-contracts → approval/consent (via approval barrel)
 // organization-contracts → graph/organization (via graph barrel)
