@@ -130,14 +130,14 @@ const SubscriptionsWaste = () => {
 
   const openEdit = (s: typeof subscriptions[0]) => {
     setForm({
-      service_name: s.service_name,
+      service_name: s.name,
       amount: String(s.amount),
-      billing_cycle: s.billing_cycle || "monthly",
+      billing_cycle: s.frequency || "monthly",
       category: s.category || "",
-      renewal_date: s.renewal_date || "",
-      usage_level: s.usage_level || "unknown",
-      waste_flag: s.waste_flag || false,
-      duplicate_of: s.duplicate_of || "",
+      renewal_date: s.next_billing_date || "",
+      usage_level: String(s.usage_score ?? "unknown"),
+      waste_flag: (s as any).waste_flag || false,
+      duplicate_of: (s as any).duplicate_of || "",
       notes: s.notes || "",
     });
     setEditId(s.id);
