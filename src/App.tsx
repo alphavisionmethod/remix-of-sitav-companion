@@ -431,6 +431,14 @@ const SERV04ServiceDuplication = lazy(() => import("./pages/admin/SERV04ServiceD
 const SERV05CanonicalActions = lazy(() => import("./pages/admin/SERV05CanonicalActions"));
 const SERV06FlagshipTraceability = lazy(() => import("./pages/admin/SERV06FlagshipTraceability"));
 
+// ── LAUNCH: Launch Readiness Command Center ──
+const LAUNCH01ReadinessExecutive = lazy(() => import("./pages/admin/launch/LAUNCH01ReadinessExecutive"));
+const LAUNCH02FlagshipReadiness = lazy(() => import("./pages/admin/launch/LAUNCH02FlagshipReadiness"));
+const LAUNCH03ClaimSafetyMatrix = lazy(() => import("./pages/admin/launch/LAUNCH03ClaimSafetyMatrix"));
+const LAUNCH04BlockerCommand = lazy(() => import("./pages/admin/launch/LAUNCH04BlockerCommand"));
+const LAUNCH06NarrativeGuide = lazy(() => import("./pages/admin/launch/LAUNCH06NarrativeGuide"));
+const LAUNCH07GoNoGo = lazy(() => import("./pages/admin/launch/LAUNCH07GoNoGo"));
+
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
