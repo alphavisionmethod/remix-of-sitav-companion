@@ -593,7 +593,7 @@ export function OSSetupExperience() {
         const phaseNames = ["boot", "setup-style", "quick-identity", "primary-use-mode", "trust-calibration", "advisor-activation", "trust-certificate"];
         for (const phaseName of phaseNames) {
           await bootService.persistPhase({
-            phase: phaseName as unknown,
+            phase: phaseName as BootPhase,
             status: "completed",
             completedAt: new Date().toISOString(),
             durationMs: 0,
