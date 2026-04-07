@@ -32,11 +32,9 @@ export async function persistEngineState(
   const userId = await getUserId();
   if (!userId) return false;
 
+  const row: Record<string, unknown> = { user_id: userId, engine_name: engineName, state_data: stateData };
   const { error } = await fromDynamicTable("engine_state")
-    .upsert(
-      { user_id: userId, engine_name: engineName, state_data: stateData },
-      { onConflict: "user_id,engine_name" }
-    );
+    .upsert(row as never, { onConflict: "user_id,engine_name" });
 
   if (error) {
     console.error(`[persistence] engine_state upsert failed for ${engineName}:`, error);
