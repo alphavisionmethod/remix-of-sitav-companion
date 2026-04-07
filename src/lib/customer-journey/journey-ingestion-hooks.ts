@@ -30,7 +30,7 @@ export function useBlockersView() {
   return useQuery({
     queryKey: ["v-customer-journey-blockers"],
     queryFn: async () => {
-      const { data, error } = await fromTable("v_customer_journey_blockers")
+      const { data, error } = await fromDynamicTable("v_customer_journey_blockers")
         .select("*");
       if (error) throw error;
       return data ?? [];
