@@ -99,7 +99,7 @@ function useRecentWrites() {
         fromTable("os_event_log").select("id, topic, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
         fromTable("os_memory_scoped").select("id, key, updated_at").eq("user_id", user.id).order("updated_at", { ascending: false }).limit(3),
         fromTable("os_policy_evaluations").select("id, rule_name, effect, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
-        fromTable("sita_receipts").select("id, receipt_type, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
+        fromTable("sita_receipts").select("id, type, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
         fromTable("os_action_lineage").select("id, domain, current_state, updated_at").eq("user_id", user.id).order("updated_at", { ascending: false }).limit(3),
       ]);
 
