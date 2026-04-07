@@ -12,6 +12,7 @@ import { CheckCircle, XCircle, Clock, ChevronRight, Search } from "lucide-react"
 import { Input } from "@/components/ui/input";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { getRelation, parseScheduledJobRef } from "@/lib/types/relation-parsers";
 
 export default function AR06ExecutionTraceExplorer() {
   const { isDemoMode } = useDataMode();
