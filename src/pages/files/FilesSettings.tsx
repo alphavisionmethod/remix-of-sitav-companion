@@ -41,7 +41,7 @@ const FilesSettings = () => {
 
   useEffect(() => {
     if (savedSettings) {
-      const s = savedSettings as any;
+      const s = savedSettings as Record<string, unknown>;
       setSettings({
         auto_classify: s.auto_classify ?? true,
         auto_extract: s.auto_extract ?? true,

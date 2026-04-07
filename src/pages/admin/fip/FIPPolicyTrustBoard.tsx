@@ -42,14 +42,14 @@ const FIPPolicyTrustBoard = () => {
             <div className="border rounded-lg p-4">
               <h3 className="font-medium text-sm mb-3 flex items-center gap-2"><Eye className="h-4 w-4" /> Approval Requirements</h3>
               {['none', 'single', 'dual', 'owner-only'].map(type => {
-                const count = intakes.filter((i: any) => (i.metadata as any)?.approval_type === type).length;
+                const count = intakes.filter((i: any) => ((i.metadata (i.metadata as any)?.approval_type(i.metadata as any)?.approval_type typeof i.metadata === "object" (i.metadata as any)?.approval_type(i.metadata as any)?.approval_type !Array.isArray(i.metadata)) ? (i.metadata as Record<string, unknown>).approval_type : undefined) === type).length;
                 return <div key={type} className="flex justify-between text-sm py-1"><span>{type}</span><Badge variant="outline">{count}</Badge></div>;
               })}
             </div>
             <div className="border rounded-lg p-4">
               <h3 className="font-medium text-sm mb-3 flex items-center gap-2"><Shield className="h-4 w-4" /> Autonomy Tiers</h3>
               {['observe', 'diagnose', 'recommend', 'draft', 'simulate', 'approval_ready', 'constrained_action_ready'].map(tier => {
-                const count = intakes.filter((i: any) => i.autonomy_tier === tier).length;
+                const count = intakes.filter((i: Record<string, unknown>) => i.autonomy_tier === tier).length;
                 return <div key={tier} className="flex justify-between text-sm py-1"><span className="truncate">{tier.replace(/_/g, ' ')}</span><Badge variant="outline">{count}</Badge></div>;
               })}
             </div>

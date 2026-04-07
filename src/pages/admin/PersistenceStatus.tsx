@@ -115,7 +115,7 @@ function useRecentWrites() {
         writes.push({ service: "Policy", detail: `${p.rule_name} → ${p.effect}`, time: p.created_at });
       }
       for (const r of receiptsRes.data ?? []) {
-        writes.push({ service: "Receipt", detail: (r as any).type, time: (r as any).created_at });
+        writes.push({ service: "Receipt", detail: String(r.type ?? ""), time: String(r.created_at ?? "") });
       }
       for (const a of actionsRes.data ?? []) {
         writes.push({ service: "Action", detail: `${a.domain} → ${a.current_state}`, time: a.updated_at });
