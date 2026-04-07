@@ -197,7 +197,16 @@ const InvoicesCollections = () => {
               </SitaCard>
               <div className="flex gap-2 flex-wrap">
                 {selected.status === "draft" && <button onClick={() => updateStatus.mutate({ id: selected.id, status: "sent" })} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><Send className="h-3.5 w-3.5" /> Mark Sent</button>}
-                {selected.status !== "paid" && <button onClick={() => updateStatus.mutate({ id: selected.id, status: "paid" })} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><Receipt className="h-3.5 w-3.5" /> Mark Paid</button>}
+                {["draft", "sent"].includes(selected.status) && (
+                  <button
+                    onClick={() => sendInvoice.mutate({ action: "send", invoice_id: selected.id })}
+                    disabled={sendInvoice.isPending}
+                    className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-primary/30 bg-primary/5 px-3 py-2 text-xs font-medium text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
+                  >
+                    {sendInvoice.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
+                    Send Invoice
+                  </button>
+                )}
                 <button
                   onClick={() => generatePdf.mutate({ action: "generate", invoice_id: selected.id, format: "pdf" })}
                   disabled={generatePdf.isPending}
