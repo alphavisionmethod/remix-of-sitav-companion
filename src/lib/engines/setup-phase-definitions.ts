@@ -363,7 +363,7 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
       "check-fraud-sentinel", "check-workflow-engine",
     ],
     branchConditions: [], requiredHardware: [],
-    timeout: SYSTEM_TIMEOUT, order: 24, excludedFromSteps: true,
+    timeout: SYSTEM_TIMEOUT, order: 35, excludedFromSteps: true,
     statusUX: defaultStatusUX("System Check"),
   },
   {
@@ -371,7 +371,7 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     dependencies: ["system-check"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 25, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 36, excludedFromSteps: true,
     statusUX: defaultStatusUX("Trust Certificate"),
   },
 ];
