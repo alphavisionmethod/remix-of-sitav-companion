@@ -418,7 +418,7 @@ export class SitaKernel {
 
   async resumeAction(approvalId: string): Promise<unknown> {
     // Look up the approval to find the original correlation/envelope
-    const pendingApprovals = this.approvals.getPendingApprovals?.() ?? [];
+    const pendingApprovals = this.approvals.getPending?.() ?? [];
     const approval = pendingApprovals.find((a: any) => a.id === approvalId);
 
     if (!approval) {
