@@ -1,152 +1,176 @@
 
 
-# SITA OS — 100% Test Coverage Implementation Plan
+# SITA OS — Full Module Implementation Audit & 100% Plan
 
-## Current State
+## Audit Summary
 
-| Layer | Source Files | Test Files | Coverage |
-|-------|------------|-----------|----------|
-| **Pages** | 629 | 9 | ~1.4% |
-| **Components** | 332 | 8 | ~2.4% |
-| **Hooks** | 64 | 7 | ~11% |
-| **Lib/Services** | 797 | 51 | ~6.4% |
-| **E2E (Playwright)** | — | 37 specs | Partial |
-| **Edge Functions** | 51 functions | 16 tests | ~31% |
-| **Unit tests (src/test/)** | — | 50 files | Misc coverage |
+| Module | Pages | Live Data | CRUD | Status | Grade |
+|--------|-------|-----------|------|--------|-------|
+| **Auth** | 4 | 0 (auth is via hooks) | N/A | ✅ Complete | A |
+| **Money** | 13 | 3 (23%) | 3 | ⚠️ 10 pages static | C |
+| **Business** | 15 | 8 (53%) | 4 | ⚠️ 7 pages static | B- |
+| **Concierge** | 16 | 3 (19%) | 2 | ❌ 13 pages static | D |
+| **Investment Office** | 38 | 1 (3%) | 1 | ❌ 37 pages static | F |
+| **Revenue Office** | 63 | 0 (0%) | 0 | ❌ All static | F |
+| **Digital Presence** | 19 | 0 (0%) | 0 | ❌ All static | F |
+| **Workspace** | 5 | 0 (hooks in service layer) | 0 | ⚠️ Partially wired | C |
+| **Store** | 6 | 0 | 0 | ⚠️ Partially wired | C |
+| **Atlas** | 11 | 1 | 0 | ❌ 10 static | D |
+| **Apps** | 6 | 0 | 0 | ❌ All static | F |
+| **Mobile** | 9 | 0 | 0 | ❌ All static | F |
+| **Mission** | 8 | 0 | 0 | ❌ All static | F |
+| **Owner** | 8 | 0 | 0 | ❌ All static | F |
+| **Admin** | 297 | 135 (45%) | N/A | ⚠️ Internal tooling | C |
+| **Top-level pages** | ~65 | ~30 | Mixed | ⚠️ Mixed | C |
 
-**Total: ~184 test files covering ~1,822 source files. Estimated line coverage: <15%.**
-
-Missing dependency: `@vitest/coverage-v8` is not installed, so coverage reporting doesn't work.
-
----
-
-## Strategy: Tiered Test Pyramid
-
-```text
-         ╱  E2E (Playwright)  ╲     ← 37 specs (good)
-        ╱  Integration Tests    ╲    ← ~50 unit/integration (ok)
-       ╱  Component Tests (RTL)  ╲   ← 8 tests (CRITICAL GAP)
-      ╱  Hook Tests               ╲  ← 7 tests (GAP)
-     ╱  Service/Lib Unit Tests     ╲ ← 51 tests (GAP)
-    ╱  Contract/Type Tests          ╲← some exist (ok)
-   ╱  Edge Function Tests (Deno)    ╲← 16/51 (GAP)
-```
+**Overall: 629 page files. 169 (27%) have live data queries. 460 (73%) are completely static with inline hardcoded arrays.**
 
 ---
 
-## Implementation Plan
+## What "100% Implemented" Means
 
-### Phase 1: Infrastructure (Must Do First)
+Every user-facing page must:
+1. **Query real Supabase data** when `isDemoMode === false`
+2. **Fall back to demo data** when `isDemoMode === true`
+3. **Have CRUD operations** where applicable (create, edit, delete via mutations)
+4. **Show proper empty states** when no data exists
+5. **Have loading/error states** via `useQuery` suspense
 
-| # | Task | Details |
-|---|------|---------|
-| 1 | Install `@vitest/coverage-v8` | Add to devDependencies so `npm run test -- --coverage` works |
-| 2 | Add coverage scripts to `package.json` | `"test:coverage": "vitest run --coverage"` |
-| 3 | Create test utilities file | `src/test/test-utils.tsx` — custom render with providers (QueryClient, Auth, Theme, DataMode, Router) so every component test gets proper context |
-| 4 | Create mock factories | `src/test/factories/` — reusable builders for User, Document, Note, Receipt, etc. |
+---
 
-### Phase 2: Critical Path — Page Smoke Tests (629 pages → ~50 test files)
+## Implementation Plan — 8 Phases
 
-**Approach:** Group pages by domain and create batch smoke-test files that verify each page renders without crashing. This is the fastest path to high coverage.
+### Phase 1: Revenue Office (63 pages, 0% live) — CRITICAL
 
-| # | Test File | Pages Covered | Tests |
-|---|-----------|---------------|-------|
-| 1 | `src/pages/__tests__/auth-pages.test.tsx` | Login, Signup, ForgotPassword, ResetPassword, AuthCallback | 5 |
-| 2 | `src/pages/__tests__/money-pages.test.tsx` | MoneyCenter, BillsWorkspace, TaxCenter, InvoiceGenerator, etc. | ~15 |
-| 3 | `src/pages/__tests__/business-pages.test.tsx` | BusinessCenter, RevenueAutopilot, CRM, Pipeline, etc. | ~20 |
-| 4 | `src/pages/__tests__/concierge-pages.test.tsx` | ConciergeCenter, CalendarWorkspace, Communications, etc. | ~15 |
-| 5 | `src/pages/__tests__/workspace-pages.test.tsx` | DocsWorkspace, SheetsWorkspace, SlidesWorkspace, Notes, Media | ~10 |
-| 6 | `src/pages/__tests__/admin-pages.test.tsx` | All admin/system pages | ~30 |
-| 7 | `src/pages/__tests__/intelligence-pages.test.tsx` | PersonalBrain, Boardroom, AdvisorCouncil, etc. | ~15 |
-| 8 | `src/pages/__tests__/investment-pages.test.tsx` | InvestmentOffice, CapitalAllocation, etc. | ~10 |
+The largest module with zero live data. Pages like PipelineStudio, CallDesk, FormsBuilder, AutomationOffice all have rich UI but 100% inline hardcoded arrays.
 
-**Pattern per page:**
+**Tables needed** (most already exist): `deals`, `customers`, `communication_log`, `calling_contacts`, `revenue_leak_items`, `automation_rules`
+
+**New tables needed**: `pipeline_stages`, `campaigns`, `bookings`, `forms`, `funnels`, `offers`, `memberships`, `reputation_reviews`, `retention_alerts`
+
+**Work**: Create ~10 new tables. Create `src/hooks/use-revenue-office.ts` with ~15 hooks. Wire all 63 pages with isDemoMode gate.
+
+| Sub-task | Pages |
+|----------|-------|
+| Pipeline & Deals (PipelineStudio, OpportunityBoard, ConversionLab, LeakDetector) | 4 |
+| Automation suite (AutomationOffice, Builder, Health, Policy, Receipts, SimLab, Templates) | 7 |
+| Communication (CallDesk, CampaignOrchestrator, RelationshipCenter) | 3 |
+| Growth suite (GrowthDNA, GrowthBoardroom, GrowthAdvisorBoard, GrowthOperatingModes) | 4 |
+| Commerce (BookingCenter, OffersWorkspace, QuoteStudio, FormsBuilder, FunnelBuilder) | 5 |
+| Intelligence (RevenueIntelligence, ChiefRevenueSynthesis, SegmentationEngine, ReputationEngine) | 4 |
+| Remaining (RetentionOffice, ClientOnboarding, JourneyTwin, MembershipCourseOffice, etc.) | 16+ |
+
+### Phase 2: Investment Office (38 pages, 3% live) — CRITICAL
+
+Tables exist: `investment_watchlists`, `investment_strategy_records`, `capital_purpose_buckets`, `investment_thesis_entries`
+
+**New tables needed**: `portfolio_positions`, `trade_orders`, `market_watchlist_items`, `investment_decisions`, `risk_scenarios`
+
+**Work**: Create ~5 new tables. Create `src/hooks/use-investment-office.ts` with ~10 hooks. Wire all 38 pages.
+
+### Phase 3: Digital Presence (19 pages, 0% live) — HIGH
+
+Brand new module with zero backend. Pages like SiteBuilder, BrandStudio, CROOffice, PresenceAnalytics all render inline data.
+
+**New tables needed**: `sites`, `site_pages`, `brand_assets`, `seo_reports`, `campaigns_dp`, `promotions`
+
+**Work**: Create ~6 new tables. Create `src/hooks/use-digital-presence.ts`. Wire all 19 pages.
+
+### Phase 4: Concierge (16 pages, 19% live) — HIGH
+
+HouseholdCommandCenter and HouseholdTasks are wired. 13 pages (TravelPlanning, GroceryPlanning, FamilyCalendar, ServiceProviders, etc.) are static.
+
+**Tables exist**: `households`, `household_members`, `calendar_events`
+
+**New tables needed**: `travel_plans`, `grocery_lists`, `grocery_items`, `service_providers`, `school_activities`, `gift_tracker`, `appointments`
+
+**Work**: Create ~7 new tables. Wire 13 pages.
+
+### Phase 5: Money (13 pages, 23% live) — MEDIUM
+
+BillsWorkspace, SubscriptionsWaste, ReservesSavings are wired. 10 pages static.
+
+**Tables exist**: `bills`, `subscriptions`, `savings_goals`, `money_accounts`
+
+**New tables needed**: `tax_estimates`, `receivables`, `money_approvals`
+
+**Work**: Create ~3 tables. Wire 10 pages.
+
+### Phase 6: Apps + Mobile + Mission + Owner (31 pages, 0% live) — MEDIUM
+
+- **Apps** (6): HealthApp, EmailApp, MessengerApp, VaultApp, GalleryApp, WeatherNewsApp — these are "companion apps" that need their own tables or to aggregate from existing ones
+- **Mobile** (9): Mobile shell versions of core features — should reuse the same hooks as desktop
+- **Mission** (8): Mission/goal tracking pages — need `mission_goals` table
+- **Owner** (8): Owner dashboard/control pages — need owner-specific views
+
+**New tables needed**: `health_logs`, `vault_items`, `mission_goals`, `mission_milestones`
+
+### Phase 7: Remaining Business + Workspace + Store + Atlas — LOW
+
+- **Business** (7 remaining): Wire to existing `deals`, `customers`, `invoices` tables
+- **Workspace** (5): Already partially wired via workspace-data-service — verify mode gates
+- **Store** (6): PackStorePage partially wired — complete remaining 5
+- **Atlas** (10): System admin pages — wire to system health tables
+
+### Phase 8: Admin Pages (162 remaining static) — LOW
+
+These are internal admin/diagnostic pages. Many are config-driven, not user-data-driven. Add isDemoMode gates and empty states. Not all need CRUD.
+
+---
+
+## Database Migration Summary
+
+| Phase | New Tables | Count |
+|-------|-----------|-------|
+| 1 — Revenue Office | pipeline_stages, campaigns, bookings, forms, funnels, offers, memberships, reputation_reviews, retention_alerts | 9 |
+| 2 — Investment Office | portfolio_positions, trade_orders, market_watchlist_items, investment_decisions, risk_scenarios | 5 |
+| 3 — Digital Presence | sites, site_pages, brand_assets, seo_reports, promotions, ecommerce_products | 6 |
+| 4 — Concierge | travel_plans, grocery_lists, grocery_items, service_providers_list, school_activities, gift_tracker, appointments | 7 |
+| 5 — Money | tax_estimates, receivables, money_approvals | 3 |
+| 6 — Apps/Mobile/Mission/Owner | health_logs, vault_items, mission_goals, mission_milestones | 4 |
+| **Total** | | **34 new tables** |
+
+## Hook Files to Create
+
+| File | Hooks | Serves |
+|------|-------|--------|
+| `src/hooks/use-revenue-office.ts` | ~15 hooks | 63 pages |
+| `src/hooks/use-investment-office.ts` | ~10 hooks | 38 pages |
+| `src/hooks/use-digital-presence.ts` | ~8 hooks | 19 pages |
+| `src/hooks/use-concierge-data.ts` | ~7 hooks | 13 pages |
+| `src/hooks/use-money-data.ts` | ~5 hooks | 10 pages |
+| `src/hooks/use-apps-data.ts` | ~4 hooks | 6 pages |
+| `src/hooks/use-mission-data.ts` | ~3 hooks | 8 pages |
+
+## Implementation Pattern (same across all phases)
+
 ```typescript
-import { render, screen } from "@/test/test-utils";
-import MoneyCenter from "@/pages/MoneyCenter";
-
-describe("MoneyCenter", () => {
-  it("renders without crashing", () => {
-    render(<MoneyCenter />);
-    expect(document.querySelector("[data-testid], h1, h2, main")).toBeTruthy();
+// In hook file:
+export function usePipelineDeals() {
+  const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ["pipeline-deals", user?.id],
+    enabled: !isDemoMode && !!user,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("deals").select("*").eq("user_id", user!.id);
+      return data ?? [];
+    },
   });
-});
+}
+
+// In page:
+const { data: liveDeals } = usePipelineDeals();
+const deals = isDemoMode ? DEMO_DEALS : (liveDeals ?? []);
 ```
 
-### Phase 3: Component Tests (332 components → ~30 test files)
+## Total Scope
 
-Group by component directory. Test rendering + key interactions.
+- **34 new database tables** (1 large migration)
+- **7 new hook files** (~52 hooks total)
+- **~460 page files updated** with isDemoMode gates
+- **~30 new empty state designs** for when users have no data yet
 
-| # | Test File | Components |
-|---|-----------|-----------|
-| 1 | `src/components/sita/__tests__/primitives.test.tsx` | All 6 SITA primitives |
-| 2 | `src/components/auth/__tests__/auth-forms.test.tsx` | LoginForm, SignupForm, PasswordReset |
-| 3 | `src/components/layout/__tests__/layout.test.tsx` | Sidebar, AppLayout, MobileNav |
-| 4 | `src/components/advisor/__tests__/advisor.test.tsx` | AdvisorChat, AdvisorCard |
-| 5 | `src/components/money/__tests__/money-widgets.test.tsx` | BillCard, InvoicePreview, etc. |
-| 6-30 | Domain-grouped test files | Remaining components |
-
-### Phase 4: Hook Tests (64 hooks → ~15 test files)
-
-Test each hook with `renderHook` from RTL. Mock Supabase client.
-
-| # | Test File | Hooks |
-|---|-----------|-------|
-| 1 | `src/hooks/__tests__/use-live-data.test.ts` | All 7 live-data hooks |
-| 2 | `src/hooks/__tests__/use-auth-hooks.test.ts` | useAuth, useSession |
-| 3 | `src/hooks/__tests__/use-navigation.test.ts` | useNavigation, useBreadcrumbs |
-| 4-15 | Domain hooks | Remaining hooks |
-
-### Phase 5: Lib/Service Unit Tests (797 files → ~40 test files)
-
-Focus on business logic, engines, and services.
-
-| # | Test File | Coverage |
-|---|-----------|----------|
-| 1 | `src/lib/__tests__/kernel-contracts.test.ts` | All kernel contracts (envelope, receipt, evidence, replay, reasoning) |
-| 2 | `src/lib/__tests__/domain-engines.test.ts` | Business-OS, Finance-OS, Concierge-OS engines |
-| 3 | `src/lib/__tests__/security-services.test.ts` | Security posture, fraud sentinel, kill switch |
-| 4 | `src/lib/__tests__/capability-registry.test.ts` | Full capability CRUD + routing |
-| 5-40 | Remaining services | Workflow, event bus, approval, memory, etc. |
-
-### Phase 6: Edge Function Tests (35 missing → 35 test files)
-
-Create Deno test files for all untested edge functions.
-
-| # | Functions | Pattern |
-|---|-----------|---------|
-| 1-35 | All 35 untested functions | `Deno.test()` with fetch to function URL, assert status + response shape |
-
-### Phase 7: Coverage Thresholds
-
-Update `vitest.config.ts` thresholds progressively:
-
-| Milestone | Lines | Branches | Functions | Statements |
-|-----------|-------|----------|-----------|------------|
-| Current | 40% | 30% | 35% | 40% |
-| After Phase 2 | 60% | 45% | 50% | 60% |
-| After Phase 3-4 | 75% | 60% | 70% | 75% |
-| After Phase 5 | 85% | 75% | 80% | 85% |
-| Final | 90% | 80% | 85% | 90% |
-
-> Note: 100% line coverage is impractical (error boundaries, platform-specific code, etc.). Industry standard for production apps is 80-90%. We target 90%.
-
----
-
-## Files Created/Modified
-
-| Action | File |
-|--------|------|
-| Install | `@vitest/coverage-v8` devDependency |
-| Create | `src/test/test-utils.tsx` (custom render) |
-| Create | `src/test/factories/index.ts` (mock builders) |
-| Create | ~50 page test files in `src/pages/__tests__/` |
-| Create | ~30 component test files |
-| Create | ~15 hook test files |
-| Create | ~40 lib/service test files |
-| Create | ~35 edge function test files |
-| Update | `vitest.config.ts` (thresholds) |
-| Update | `package.json` (scripts + coverage dep) |
-
-**Total: ~170 new test files. Due to the volume, implementation will proceed in phases, starting with infrastructure + page smoke tests (highest coverage gain per file).**
+This is a large undertaking. I recommend executing Phase 1 (Revenue Office) first as it's the largest gap, then Phase 2 (Investment Office), and so on. Each phase is independent and can be shipped separately.
 
