@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const FORMS = [
+const DEMO_FORMS = [
   { id: "f1", name: "Free Consultation Application", status: "live", submissions: 186, convRate: "24%", lastSubmission: "2h ago", fields: 8, linkedFunnel: "Free Consultation Funnel", tags: ["lead-gen", "discovery"] },
   { id: "f2", name: "VIP Day Inquiry", status: "live", submissions: 34, convRate: "67%", lastSubmission: "1d ago", fields: 12, linkedFunnel: "VIP Funnel", tags: ["high-value", "qualification"] },
   { id: "f3", name: "Webinar Registration", status: "live", submissions: 412, convRate: "38%", lastSubmission: "45m ago", fields: 4, linkedFunnel: "Webinar Registration", tags: ["event", "lead-gen"] },

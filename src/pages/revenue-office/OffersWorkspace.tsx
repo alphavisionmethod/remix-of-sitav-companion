@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const PRODUCTS = [
+const DEMO_PRODUCTS = [
   { name: "Growth Strategy Blueprint", type: "digital", price: "$297", sales: 142, revenue: "$42,174", status: "active", category: "Course" },
   { name: "1:1 Coaching — Monthly", type: "service", price: "$500/mo", sales: 18, revenue: "$9,000", status: "active", category: "Membership" },
   { name: "VIP Day Experience", type: "service", price: "$2,000", sales: 8, revenue: "$16,000", status: "active", category: "Service" },

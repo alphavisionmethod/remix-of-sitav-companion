@@ -14,7 +14,7 @@ const HEALTH_SEGMENTS = [
   { label: "At Risk", count: 5, pct: 7, color: "bg-red-400" },
 ];
 
-const AT_RISK = [
+const DEMO_AT_RISK = [
   { name: "Michael Park", company: "Summit Group", ltv: "$8,200", lastActive: "3 weeks ago", signals: ["No login 21d", "Support ticket unresolved", "Engagement ↓ 60%"] },
   { name: "Rachel Kim", company: "Bright Ideas", ltv: "$4,600", lastActive: "2 weeks ago", signals: ["Usage ↓ 40%", "Skipped last session", "No email opens 14d"] },
 ];

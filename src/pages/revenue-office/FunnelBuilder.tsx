@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const FUNNELS = [
+const DEMO_FUNNELS = [
   {
     name: "Launch Pro Funnel",
     status: "live",

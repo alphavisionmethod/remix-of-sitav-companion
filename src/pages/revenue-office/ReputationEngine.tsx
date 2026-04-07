@@ -17,7 +17,7 @@ const STATS = [
   { label: "Response Rate", value: "96%", icon: Clock, trend: "+2%", color: "text-purple-400" },
 ];
 
-const REVIEWS = [
+const DEMO_REVIEWS = [
   { id: "r1", author: "Sarah K.", rating: 5, text: "Absolutely transformed our business strategy. The coaching sessions were invaluable and the follow-through was exceptional.", platform: "Google", date: "2 days ago", responded: true, sentiment: "positive", helpfulCount: 8 },
   { id: "r2", author: "James C.", rating: 5, text: "Best investment we've made this year. Clear, actionable, and premium. Would recommend to anyone.", platform: "Trustpilot", date: "5 days ago", responded: true, sentiment: "positive", helpfulCount: 12 },
   { id: "r3", author: "Michael R.", rating: 4, text: "Great results overall, scheduling could be smoother. The strategy framework was excellent.", platform: "Google", date: "1 week ago", responded: false, sentiment: "mixed", helpfulCount: 3 },

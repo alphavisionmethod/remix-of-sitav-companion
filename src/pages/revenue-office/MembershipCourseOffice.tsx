@@ -6,7 +6,7 @@ import { GraduationCap, Users, BookOpen, PlayCircle, Star, TrendingUp, AlertTria
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const courses = [
+const DEMO_courses = [
   { name: "Business Growth Masterclass", members: 342, completion: 67, modules: 12, rating: 4.8, status: "live", revenue: 28400, churnRisk: 8 },
   { name: "Marketing Foundations", members: 189, completion: 54, modules: 8, rating: 4.6, status: "live", revenue: 12600, churnRisk: 15 },
   { name: "Leadership Accelerator", members: 78, completion: 82, modules: 6, rating: 4.9, status: "live", revenue: 15600, churnRisk: 3 },
