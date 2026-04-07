@@ -2128,7 +2128,7 @@ const OwnerCenter = () => {
             </div>
             <SitaSectionHeader title="Platform Topology" subtitle="All 9 architectural layers" />
             <div className="space-y-2">
-              {((serviceMapData as Record<string, unknown>)?.layers || []).map((layer: any) => (
+              {(serviceMapData?.layers || []).map((layer: any) => (
                 <SitaCard key={layer.id} hover={false} className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-semibold text-foreground">{layer.name}</p>
