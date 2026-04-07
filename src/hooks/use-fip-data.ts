@@ -77,7 +77,7 @@ export const useCreateSpec = () => {
     mutationFn: async (spec: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_spec_records').insert({ ...spec, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_spec_records').insert({ ...spec, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
