@@ -105,7 +105,7 @@ class DigitalLegacyVaultService {
       name: `vault_${full.type}_${full.id}`,
       encrypted_value: full.encryptedContent,
       service: 'legacy_vault',
-      metadata: { title: full.title, type: full.type, tags: full.tags, beneficiaries: full.beneficiaries } as any,
+      metadata: { title: full.title, type: full.type, tags: full.tags, beneficiaries: full.beneficiaries } as never,
     });
 
     return full;
@@ -120,11 +120,11 @@ class DigitalLegacyVaultService {
 
     return (data || []).map((d) => ({
       id: d.id,
-      type: ((d.metadata as any)?.type || 'note') as VaultItemType,
-      title: (d.metadata as any)?.title || d.name,
+      type: ((d.metadata as unknown)?.type || 'note') as VaultItemType,
+      title: (d.metadata as unknown)?.title || d.name,
       encryptedContent: d.encrypted_value,
-      tags: (d.metadata as any)?.tags || [],
-      beneficiaries: (d.metadata as any)?.beneficiaries || [],
+      tags: (d.metadata as unknown)?.tags || [],
+      beneficiaries: (d.metadata as unknown)?.beneficiaries || [],
       lastUpdated: new Date(d.updated_at || d.created_at || ''),
     }));
   }
@@ -142,7 +142,7 @@ class DigitalLegacyVaultService {
     await fromTable('user_memory').upsert({
       user_id: userId,
       key: 'vault_last_checkin',
-      value: JSON.stringify({ checkedInAt: new Date().toISOString() }) as any,
+      value: JSON.stringify({ checkedInAt: new Date().toISOString() }) as unknown,
       category: 'legacy_vault',
     }, { onConflict: 'user_id,key' });
   }

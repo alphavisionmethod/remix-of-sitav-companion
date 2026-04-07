@@ -121,7 +121,7 @@ export class CompoundLifeScoreEngine {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.history) this.history = state.history as any;
+    if (state.history) this.history = state.history as never;
   }
 
   async loadPersistedState(): Promise<void> {

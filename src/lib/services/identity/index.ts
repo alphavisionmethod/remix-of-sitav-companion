@@ -27,7 +27,7 @@ export class IdentityService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.identities) this.identities = new Map(state.identities as any);
+    if (state.identities) this.identities = new Map(state.identities as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

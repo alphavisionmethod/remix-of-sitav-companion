@@ -144,7 +144,7 @@ export class EmergencyHaltService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.orders) this.orders = new Map(state.orders as any);
+    if (state.orders) this.orders = new Map(state.orders as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

@@ -17,7 +17,7 @@ const makeHook = (table: string, key: string) => () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable(table).select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return data as unknown[];
   }
 });
 
@@ -72,8 +72,8 @@ export const useGatewayStats = () => useQuery({
       fromTable('ai_portfolio_allocations').select('*'),
       fromTable('ai_compliance_violations').select('*').eq('resolved', false),
     ]);
-    const t = (tasks.data || []) as any[];
-    const r = (receipts.data || []) as any[];
+    const t = (tasks.data || []) as unknown[];
+    const r = (receipts.data || []) as unknown[];
     const totalCost = t.reduce((s: number, x: any) => s + (x.cost_actual_cents || 0), 0);
     const cacheHits = t.filter((x: any) => x.cache_hit).length;
     const fallbacks = t.filter((x: any) => x.fallback_used).length;

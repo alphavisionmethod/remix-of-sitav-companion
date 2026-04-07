@@ -52,9 +52,9 @@ export class BillingService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.plans) this.plans = new Map(state.plans as any);
-    if (state.usage) this.usage = state.usage as any;
-    if (state.invoices) this.invoices = state.invoices as any;
+    if (state.plans) this.plans = new Map(state.plans as [string, unknown][]);
+    if (state.usage) this.usage = state.usage as never;
+    if (state.invoices) this.invoices = state.invoices as never;
   }
 
   async loadPersistedState(): Promise<void> {

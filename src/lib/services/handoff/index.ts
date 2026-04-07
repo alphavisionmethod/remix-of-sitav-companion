@@ -41,7 +41,7 @@ export class HandoffService {
       Date.now() + (input.ttlMinutes ?? 30) * 60 * 1000
     ).toISOString();
 
-    const { data, error } = await (supabase as any)
+    const { data, error } = await (supabase as unknown)
       .from("handoff_packets")
       .insert({
         user_id: userId,
@@ -67,7 +67,7 @@ export class HandoffService {
   }
 
   async getPendingHandoffs(userId: string, surfaceId?: string): Promise<PersistedHandoff[]> {
-    let query = (supabase as any)
+    let query = (supabase as unknown)
       .from("handoff_packets")
       .select("*")
       .eq("user_id", userId)
@@ -88,7 +88,7 @@ export class HandoffService {
   }
 
   async acceptHandoff(handoffId: string): Promise<boolean> {
-    const { error } = await (supabase as any)
+    const { error } = await (supabase as unknown)
       .from("handoff_packets")
       .update({
         accepted: true,

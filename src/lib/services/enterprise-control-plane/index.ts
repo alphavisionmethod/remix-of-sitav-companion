@@ -27,8 +27,8 @@ export class EnterpriseControlPlaneService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.tenants) this.tenants = new Map(state.tenants as any);
-    if (state.packs) this.packs = new Map(state.packs as any);
+    if (state.tenants) this.tenants = new Map(state.tenants as [string, unknown][]);
+    if (state.packs) this.packs = new Map(state.packs as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

@@ -77,10 +77,10 @@ export default function CJ01ExecutiveReport() {
     const source = hasViewData ? viewJourneys : (journeys ?? []);
     const map: Record<string, { total: number; working: number }> = {};
     for (const j of source) {
-      const s = (j as any).surface_class || "web_app";
+      const s = (j as Record<string, unknown>).surface_class || "web_app";
       if (!map[s]) map[s] = { total: 0, working: 0 };
       map[s].total++;
-      if ((j as any).current_status === "working") map[s].working++;
+      if ((j as Record<string, unknown>).current_status === "working") map[s].working++;
     }
     return Object.entries(map).map(([surface, stats]) => ({
       surface,

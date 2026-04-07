@@ -14,7 +14,7 @@ import { toast } from "sonner";
 async function invokeEdge<T = unknown>(name: string, body: Record<string, unknown>): Promise<T> {
   const { data, error } = await supabase.functions.invoke(name, { body });
   if (error) {
-    const status = (error as any)?.status;
+    const status = (error as Record<string, unknown>)?.status;
     if (status === 429) throw new Error("Rate limited — try again in a moment.");
     if (status === 402) throw new Error("AI credits exhausted. Add funds in Settings → Workspace → Usage.");
     throw new Error(error.message || "Edge function error");

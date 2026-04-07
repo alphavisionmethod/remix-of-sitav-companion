@@ -47,7 +47,7 @@ export function useAdaptivePersonalization() {
 
     const load = async () => {
       try {
-        const { data: memories } = await (supabase as any)
+        const { data: memories } = await (supabase as unknown)
           .from("user_memory")
           .select("key, value")
           .eq("user_id", userId)

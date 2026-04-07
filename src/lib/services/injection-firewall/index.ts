@@ -156,7 +156,7 @@ export class InjectionFirewallService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.scanHistory) this.scanHistory = state.scanHistory as any;
+    if (state.scanHistory) this.scanHistory = state.scanHistory as never;
   }
 
   async loadPersistedState(): Promise<void> {

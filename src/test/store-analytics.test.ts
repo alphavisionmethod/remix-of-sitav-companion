@@ -9,7 +9,7 @@ describe("Pack Store System", () => {
       category: "founders", author: "SITA", icon: "🧪", capabilities: ["cap1", "cap2"],
       dependencies: [], requiredTier: "starter",
       installConfig: { autoActivate: true, requiredConnectors: [], requiredPermissions: ["read"], setupSteps: [] },
-      surfaces: ["dashboard" as any],
+      surfaces: ["dashboard" as unknown],
     };
 
     it("accepts valid manifests", () => {

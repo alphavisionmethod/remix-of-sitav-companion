@@ -84,9 +84,9 @@ const FeatureLifecycleBoard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {(blueprints ?? []).map((bp: any) => {
           const currentStage = getLatestStage(bp.feature_id);
-          const stageIdx = getStageIndex(currentStage as any);
+          const stageIdx = getStageIndex(currentStage as unknown);
           const progress = Math.round(((stageIdx + 1) / LIFECYCLE_STAGES.length) * 100);
-          const readiness = computeReadiness(currentStage as any, []);
+          const readiness = computeReadiness(currentStage as unknown, []);
 
           return (
             <motion.div key={bp.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -94,7 +94,7 @@ const FeatureLifecycleBoard = () => {
                 <CardContent className="pt-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <h3 className="font-semibold text-sm">{bp.title}</h3>
-                    <Badge className={`text-xs ${stageColors[currentStage]}`}>{getStageLabel(currentStage as any)}</Badge>
+                    <Badge className={`text-xs ${stageColors[currentStage]}`}>{getStageLabel(currentStage as unknown)}</Badge>
                   </div>
                   <div className="flex gap-2 flex-wrap">
                     <Badge variant="outline" className="text-xs">{bp.domain}</Badge>

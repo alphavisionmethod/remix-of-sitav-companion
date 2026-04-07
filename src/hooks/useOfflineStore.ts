@@ -59,7 +59,7 @@ export function useOfflineStore<T = unknown>({
 
     startSyncManager(async (action) => {
       try {
-        const { error } = await (supabase as any)
+        const { error } = await (supabase as unknown)
           .from(action.table)
           [action.operation === 'insert' ? 'insert' : action.operation === 'update' ? 'update' : 'delete'](
             action.payload

@@ -13,7 +13,7 @@ export function useActionInventory(filters?: { priority?: string; domain?: strin
   return useQuery({
     queryKey: ["ui-action-inventory", filters],
     queryFn: async () => {
-      let q = (supabase as any)
+      let q = (supabase as unknown)
         .from("ui_action_inventory")
         .select("*")
         .order("route_key", { ascending: true });
@@ -53,7 +53,7 @@ export function useSeedActionInventory() {
         is_active: true,
       }));
 
-      const { error } = await (supabase as any)
+      const { error } = await (supabase as unknown)
         .from("ui_action_inventory")
         .upsert(rows, { onConflict: "user_id,route_key,action_key" });
       if (error) throw error;
@@ -69,7 +69,7 @@ export function useRouteCoverage() {
   return useQuery({
     queryKey: ["route-verification-coverage"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("route_verification_coverage")
         .select("*")
         .order("coverage_percent", { ascending: true });
@@ -110,7 +110,7 @@ export function useSeedRouteCoverage() {
         coverage_percent: 0,
       }));
 
-      const { error } = await (supabase as any)
+      const { error } = await (supabase as unknown)
         .from("route_verification_coverage")
         .upsert(rows, { onConflict: "user_id,route_key" });
       if (error) throw error;

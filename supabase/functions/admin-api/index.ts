@@ -109,7 +109,7 @@ serve(async (req) => {
       };
     }
     else if (endpoint === "incidents" && !subId && method === "POST") {
-      const { title, severity, impact, description } = body as any;
+      const { title, severity, impact, description } = body as unknown;
       if (!title || !severity) {
         return new Response(JSON.stringify({ error: "title and severity required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
@@ -130,7 +130,7 @@ serve(async (req) => {
     }
     else if (endpoint === "incidents" && subId && !subAction && method === "PUT") {
       const { data: before } = await supabase.from("incidents").select("*").eq("id", subId).eq("user_id", user.id).single();
-      const { title, severity, impact, description, status: newStatus, assigned_to } = body as any;
+      const { title, severity, impact, description, status: newStatus, assigned_to } = body as unknown;
       const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
       if (title) updates.title = title;
       if (severity) updates.severity = severity;
@@ -159,7 +159,7 @@ serve(async (req) => {
       result = data;
     }
     else if (endpoint === "incidents" && subId && subAction === "resolve") {
-      const { root_cause, notes } = body as any;
+      const { root_cause, notes } = body as unknown;
       const { data: incident, error: fetchError } = await supabase.from("incidents").select("*").eq("id", subId).eq("user_id", user.id).single();
       if (fetchError || !incident) return new Response(JSON.stringify({ error: "Incident not found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const timeline = [...(incident.timeline || []), { action: "resolved", actor: user.id, timestamp: new Date().toISOString(), notes }];
@@ -188,7 +188,7 @@ serve(async (req) => {
       };
     }
     else if (endpoint === "policies" && !subId && method === "POST") {
-      const { name, category, conditions, actions, approval_required, active } = body as any;
+      const { name, category, conditions, actions, approval_required, active } = body as unknown;
       if (!name || !category) return new Response(JSON.stringify({ error: "name and category required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const policy = { name, category, conditions: conditions || {}, actions: actions || {}, approval_required: approval_required ?? false, active: active ?? true, user_id: user.id };
       const { data, error } = await supabase.from("policies").insert(policy).select().single();
@@ -203,7 +203,7 @@ serve(async (req) => {
     }
     else if (endpoint === "policies" && subId && !subAction && method === "PUT") {
       const { data: before } = await supabase.from("policies").select("*").eq("id", subId).eq("user_id", user.id).single();
-      const { name, category, conditions, actions, approval_required, active, description } = body as any;
+      const { name, category, conditions, actions, approval_required, active, description } = body as unknown;
       const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
       if (name) updates.name = name;
       if (category) updates.category = category;
@@ -224,7 +224,7 @@ serve(async (req) => {
       result = { deleted: true };
     }
     else if (endpoint === "simulate" && method === "POST") {
-      const { domain, action: simAction, amount, context: simContext } = body as any;
+      const { domain, action: simAction, amount, context: simContext } = body as unknown;
       const { data: policies } = await supabase.from("policies").select("*").eq("user_id", user.id).eq("active", true);
       const matchingPolicies = (policies || []).filter((p: any) => !domain || p.category === domain);
       const results = matchingPolicies.map((p: any) => {
@@ -254,7 +254,7 @@ serve(async (req) => {
       result = { logs: data || [], total: data?.length || 0, offset, limit };
     }
     else if (endpoint === "audit-export" && method === "POST") {
-      const { start_date, end_date } = body as any;
+      const { start_date, end_date } = body as unknown;
       const startFilter = start_date || since;
       const endFilter = end_date || new Date().toISOString();
       const { data, error } = await supabase.from("audit_logs").select("*").eq("actor_id", user.id).gte("created_at", startFilter).lte("created_at", endFilter).order("created_at", { ascending: false }).limit(5000);
@@ -283,7 +283,7 @@ serve(async (req) => {
       result = { status: degraded > 0 || offline > 0 ? "issues" : "healthy", summary: `${total} devices: ${online} online, ${degraded} degraded, ${offline} offline`, devices: devices || [], kpis: { total, online, degraded, offline } };
     }
     else if (endpoint === "device-restart" && method === "POST") {
-      const { device_id } = body as any;
+      const { device_id } = body as unknown;
       if (!device_id) return new Response(JSON.stringify({ error: "device_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const { data, error } = await supabase.from("device_statuses").update({ health: "restarting", last_heartbeat: new Date().toISOString(), issues: [] }).eq("device_id", device_id).eq("user_id", user.id).select().single();
       if (error) throw error;
@@ -330,7 +330,7 @@ serve(async (req) => {
       result = { council_id: subId, pending: data || [] };
     }
     else if (endpoint === "councils" && subId && subAction === "decisions" && method === "POST") {
-      const { topic, description, domain, quorum } = body as any;
+      const { topic, description, domain, quorum } = body as unknown;
       if (!topic) return new Response(JSON.stringify({ error: "topic required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const decision = { council_id: subId, topic, description: description || "", domain: domain || "general", quorum: quorum || 3, user_id: user.id, status: "pending" };
       const { data, error } = await supabase.from("council_decisions").insert(decision).select().single();
@@ -339,7 +339,7 @@ serve(async (req) => {
       result = data;
     }
     else if (endpoint === "council-vote" && method === "POST") {
-      const { decision_id, vote } = body as any;
+      const { decision_id, vote } = body as unknown;
       if (!decision_id || !vote) return new Response(JSON.stringify({ error: "decision_id and vote required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const { data: decision, error: fetchError } = await supabase.from("council_decisions").select("*").eq("id", decision_id).eq("user_id", user.id).single();
       if (fetchError || !decision) return new Response(JSON.stringify({ error: "Decision not found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -372,7 +372,7 @@ serve(async (req) => {
     // COUNCIL AUTO-ESCALATION
     // ══════════════════════════════════════════════
     else if (endpoint === "council-auto-escalate" && method === "POST") {
-      const { event_type, severity, services_affected, threat_score, amount, domain } = body as any;
+      const { event_type, severity, services_affected, threat_score, amount, domain } = body as unknown;
       const escalations: Array<{ council: string; reason: string; priority: string }> = [];
 
       // Build Council rules
@@ -418,7 +418,7 @@ serve(async (req) => {
     // AGENT GOVERNANCE CHECK
     // ══════════════════════════════════════════════
     else if (endpoint === "agent-governance" && method === "POST") {
-      const { agent_id, action: agentAction, autonomy_level_required, risk_score, estimated_tokens } = body as any;
+      const { agent_id, action: agentAction, autonomy_level_required, risk_score, estimated_tokens } = body as unknown;
       if (!agent_id) return new Response(JSON.stringify({ error: "agent_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
       const checks: Array<{ check: string; passed: boolean; detail: string }> = [];
@@ -797,7 +797,7 @@ serve(async (req) => {
       const { data: devices } = await supabase.from("device_statuses").select("*").eq("user_id", user.id);
       const rings: Record<string, { devices: any[]; health: string }> = { canary: { devices: [], health: "healthy" }, staging: { devices: [], health: "healthy" }, production: { devices: [], health: "healthy" } };
       for (const d of devices || []) {
-        const ring = (d.metadata as any)?.ring || (d.device_type === "canary" ? "canary" : d.device_type === "staging" ? "staging" : "production");
+        const ring = (d.metadata as unknown)?.ring || (d.device_type === "canary" ? "canary" : d.device_type === "staging" ? "staging" : "production");
         if (!rings[ring]) rings[ring] = { devices: [], health: "healthy" };
         rings[ring].devices.push(d);
         if (d.health === "degraded" || d.health === "critical") rings[ring].health = d.health;

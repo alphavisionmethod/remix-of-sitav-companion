@@ -23,7 +23,7 @@ export class WebsiteManagementService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.sites) this.sites = new Map(state.sites as any);
+    if (state.sites) this.sites = new Map(state.sites as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

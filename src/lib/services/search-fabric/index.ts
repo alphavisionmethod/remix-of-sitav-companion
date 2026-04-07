@@ -25,7 +25,7 @@ export class SearchFabricService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.index) this.index = state.index as any;
+    if (state.index) this.index = state.index as never;
   }
 
   async loadPersistedState(): Promise<void> {

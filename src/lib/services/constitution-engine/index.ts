@@ -27,7 +27,7 @@ export class ConstitutionEngineService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.rules) this.rules = state.rules as any;
+    if (state.rules) this.rules = state.rules as never;
   }
 
   async loadPersistedState(): Promise<void> {

@@ -212,8 +212,8 @@ export class CouncilOrchestratorService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.sessions) this.sessions = new Map(state.sessions as any);
-    if (state.conflicts) this.conflicts = state.conflicts as any;
+    if (state.sessions) this.sessions = new Map(state.sessions as [string, unknown][]);
+    if (state.conflicts) this.conflicts = state.conflicts as never;
   }
 
   async loadPersistedState(): Promise<void> {

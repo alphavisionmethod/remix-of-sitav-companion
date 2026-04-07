@@ -35,7 +35,7 @@ export function initPerformanceMonitor() {
   try {
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
-      const last = entries[entries.length - 1] as any;
+      const last = entries[entries.length - 1] as unknown;
       if (last) log({ name: 'LCP', value: last.startTime, rating: rate('LCP', last.startTime) });
     }).observe({ type: 'largest-contentful-paint', buffered: true });
   } catch {}
@@ -44,7 +44,7 @@ export function initPerformanceMonitor() {
   try {
     new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
-        const fid = (entry as any).processingStart - entry.startTime;
+        const fid = (entry as Record<string, unknown>).processingStart - entry.startTime;
         log({ name: 'FID', value: fid, rating: rate('FID', fid) });
       }
     }).observe({ type: 'first-input', buffered: true });
@@ -55,7 +55,7 @@ export function initPerformanceMonitor() {
     let clsValue = 0;
     new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
-        if (!(entry as any).hadRecentInput) clsValue += (entry as any).value;
+        if (!(entry as Record<string, unknown>).hadRecentInput) clsValue += (entry as Record<string, unknown>).value;
       }
       log({ name: 'CLS', value: clsValue * 1000, rating: rate('CLS', clsValue) });
     }).observe({ type: 'layout-shift', buffered: true });
@@ -75,7 +75,7 @@ export function initPerformanceMonitor() {
   // Memory monitoring (Chrome only)
   if ('memory' in performance) {
     setInterval(() => {
-      const mem = (performance as any).memory;
+      const mem = (performance as Record<string, unknown>).memory;
       const usedMB = Math.round(mem.usedJSHeapSize / 1048576);
       const limitMB = Math.round(mem.jsHeapSizeLimit / 1048576);
       if (usedMB > limitMB * 0.8) {

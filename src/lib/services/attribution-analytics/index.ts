@@ -20,7 +20,7 @@ export class AttributionAnalyticsService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.events) this.events = state.events as any;
+    if (state.events) this.events = state.events as never;
   }
 
   async loadPersistedState(): Promise<void> {

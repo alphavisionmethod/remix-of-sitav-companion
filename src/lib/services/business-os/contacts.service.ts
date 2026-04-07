@@ -21,7 +21,7 @@ export interface ContactTimelineEntry {
  */
 export async function buildContactTimeline(contactId: string): Promise<ContactTimelineEntry[]> {
   try {
-    const { data, error } = await (supabase as any)
+    const { data, error } = await (supabase as unknown)
       .from("events")
       .select("id, event_type, title, description, created_at, metadata")
       .or(`metadata->>contact_id.eq.${contactId},metadata->>entity_id.eq.${contactId}`)

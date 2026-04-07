@@ -152,7 +152,7 @@ export const WidgetGrid = () => {
               layout
               draggable={editing}
               onDragStart={() => handleDragStart(idx)}
-              onDragOver={(e) => handleDragOver(e as any, idx)}
+              onDragOver={(e) => handleDragOver(e as unknown, idx)}
               onDragEnd={handleDragEnd}
               className={cn(
                 "relative rounded-2xl border bg-card p-4 min-h-[120px] transition-all",

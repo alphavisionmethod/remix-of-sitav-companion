@@ -29,7 +29,7 @@ export default function BoardroomHistory() {
     queryKey: ["boardroom-sessions", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("boardroom_sessions")
         .select("*, boardroom_decisions(id)")
         .eq("user_id", user!.id)

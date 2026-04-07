@@ -57,7 +57,7 @@ export async function computeLaunchHonesty(): Promise<LaunchHonestyRecord[]> {
 
   const domainMap = new Map<string, LaunchHonestyRecord>();
 
-  for (const c of classifications as any[]) {
+  for (const c of classifications as unknown[]) {
     const d = domainMap.get(c.domain) ?? {
       id: `lh-${c.domain}`,
       domain: c.domain,
@@ -79,7 +79,7 @@ export async function computeLaunchHonesty(): Promise<LaunchHonestyRecord[]> {
   }
 
   // Count critical mocks remaining per domain
-  for (const m of (mockReplacements ?? []) as any[]) {
+  for (const m of (mockReplacements ?? []) as unknown[]) {
     const domain = m.page_path?.split("/")[1] || "root";
     const d = domainMap.get(domain);
     if (d && m.migration_priority === "critical" && m.migration_status !== "validated" && m.migration_status !== "completed") {

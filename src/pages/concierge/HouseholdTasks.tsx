@@ -50,7 +50,7 @@ const HouseholdTasks = () => {
     queryKey: ["concierge-tasks", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("tasks")
         .select("*")
         .eq("user_id", user.id)

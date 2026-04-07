@@ -132,7 +132,7 @@ serve(async (req) => {
               target_id: op.connector_id,
               severity: "low",
               correlation_id: correlationId,
-              details: { batch_id: batchId, index: i, connector: (connector as any).display_name, payload_keys: Object.keys(op.payload || {}) },
+              details: { batch_id: batchId, index: i, connector: (connector as Record<string, unknown>).display_name, payload_keys: Object.keys(op.payload || {}) },
             });
 
             results.push({ index: i, status: "completed", connector_id: op.connector_id, action: op.action });
@@ -193,13 +193,13 @@ serve(async (req) => {
 
         result = {
           batch_id: data.batch_id,
-          status: completion ? ((completion as any).details as any)?.status || "completed" : "processing",
-          total: (header as any)?.details?.total_operations || 0,
+          status: completion ? ((completion as Record<string, unknown>).details as unknown)?.status || "completed" : "processing",
+          total: (header as Record<string, unknown>)?.details?.total_operations || 0,
           completed: opLogs.filter((l: any) => !l.action.includes("error")).length,
           failed: opLogs.filter((l: any) => l.action.includes("error")).length,
-          submitted_at: (header as any)?.created_at,
-          completed_at: (completion as any)?.created_at || null,
-          label: (header as any)?.details?.label || null,
+          submitted_at: (header as Record<string, unknown>)?.created_at,
+          completed_at: (completion as Record<string, unknown>)?.created_at || null,
+          label: (header as Record<string, unknown>)?.details?.label || null,
         };
         break;
       }

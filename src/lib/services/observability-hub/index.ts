@@ -20,7 +20,7 @@ export class ObservabilityHubService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.metrics) this.metrics = state.metrics as any;
+    if (state.metrics) this.metrics = state.metrics as never;
   }
 
   async loadPersistedState(): Promise<void> {

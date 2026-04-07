@@ -230,10 +230,10 @@ export class AIEconomicsService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.entries) this.entries = state.entries as any;
-    if (state.budgets) this.budgets = new Map(state.budgets as any);
-    if (state.modelCosts) this.modelCosts = new Map(state.modelCosts as any);
-    if (state.alerts) this.alerts = state.alerts as any;
+    if (state.entries) this.entries = state.entries as never;
+    if (state.budgets) this.budgets = new Map(state.budgets as [string, unknown][]);
+    if (state.modelCosts) this.modelCosts = new Map(state.modelCosts as [string, unknown][]);
+    if (state.alerts) this.alerts = state.alerts as never;
   }
 
   async loadPersistedState(): Promise<void> {

@@ -69,7 +69,7 @@ serve(async (req) => {
         // Group by connector_class
         const grouped: Record<string, unknown[]> = {};
         for (const c of data || []) {
-          const cls = (c as any).connector_class || "other";
+          const cls = (c as Record<string, unknown>).connector_class || "other";
           if (!grouped[cls]) grouped[cls] = [];
           grouped[cls].push(c);
         }
@@ -98,10 +98,10 @@ serve(async (req) => {
         const seen = new Set<string>();
         const matches: unknown[] = [];
         for (const item of [...(byClass || []), ...(byName || [])]) {
-          const id = (item as any).id;
+          const id = (item as Record<string, unknown>).id;
           if (!seen.has(id)) {
             seen.add(id);
-            matches.push({ ...item as any, relevance: (byClass || []).some((c: any) => c.id === id) ? "primary" : "secondary" });
+            matches.push({ ...item as unknown, relevance: (byClass || []).some((c: any) => c.id === id) ? "primary" : "secondary" });
           }
         }
         result = { matches, domain, total: matches.length };
@@ -182,7 +182,7 @@ serve(async (req) => {
       actor: "user",
       target_type: "connector_registry",
       severity: "low",
-      details: { action, domain, tags, result_count: (result as any)?.total || 0 },
+      details: { action, domain, tags, result_count: (result as Record<string, unknown>)?.total || 0 },
     });
 
     const latency = Date.now() - start;

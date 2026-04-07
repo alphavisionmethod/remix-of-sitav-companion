@@ -94,8 +94,8 @@ export function DesktopSurface({
   // Wire to edge functions for live boardroom data
   const { data: liveCf } = useCashflowAnalysis();
   const crmSync = useCRMSync();
-  const cf = liveCf as any;
-  const crmHealth = crmSync.healthCheck.data as any;
+  const cf = liveCf as unknown;
+  const crmHealth = crmSync.healthCheck.data as unknown;
 
   const boardroomItems = useMemo<BoardroomSummary[]>(() => {
     const bizDetail = crmHealth

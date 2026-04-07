@@ -13,7 +13,7 @@ export function useStepResults(runId?: string) {
     queryKey: ["journey-step-results", runId],
     queryFn: async () => {
       if (!runId) return [];
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("journey_step_results")
         .select("*")
         .eq("verification_run_id", runId)
@@ -41,7 +41,7 @@ export function useRecordStepResult() {
     }) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("journey_step_results")
         .insert({ ...step, user_id: user.id })
         .select()
@@ -62,7 +62,7 @@ export function useEvidenceAssets(runId?: string) {
     queryKey: ["verification-evidence-assets", runId],
     queryFn: async () => {
       if (!runId) return [];
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("verification_evidence_assets")
         .select("*")
         .eq("verification_run_id", runId)
@@ -85,7 +85,7 @@ export function useAddEvidenceAsset() {
     }) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("verification_evidence_assets")
         .insert({ ...asset, user_id: user.id })
         .select()

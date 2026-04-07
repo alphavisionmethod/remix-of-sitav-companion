@@ -186,15 +186,15 @@ export default function TeamManagement() {
   const agents = advisors.map(a => {
     const perf = perfMap.get(a.advisor_type) || perfMap.get(a.id);
     const tokens = tokenMap.get(a.advisor_type) || tokenMap.get(a.id) || { tokens: 0, cost: 0 };
-    const status: AgentStatus = !a.active ? "paused" : (perf && Number((perf as any).avg_satisfaction) < 70) ? "degraded" : (tokens.tokens > 0 ? "active" : "idle");
+    const status: AgentStatus = !a.active ? "paused" : (perf && Number((perf as Record<string, unknown>).avg_satisfaction) < 70) ? "degraded" : (tokens.tokens > 0 ? "active" : "idle");
     return {
       id: a.id,
       name: a.display_name,
       domain: a.domain,
       advisorType: a.advisor_type,
       status,
-      satisfaction: Number((perf as any)?.avg_satisfaction) || 0,
-      totalCalls: (perf as any)?.total_calls || 0,
+      satisfaction: Number((perf as Record<string, unknown>)?.avg_satisfaction) || 0,
+      totalCalls: (perf as Record<string, unknown>)?.total_calls || 0,
       tokensToday: tokens.tokens,
       costToday: tokens.cost,
       trustThreshold: Number(a.trust_threshold),

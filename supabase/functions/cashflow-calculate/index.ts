@@ -42,8 +42,8 @@ Deno.serve(async (req) => {
       supabase.from("financial_accounts").select("*").eq("user_id", user.id),
       supabase.from("invoices").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(500),
     ]);
-    const accounts = (accts.data || []) as any[];
-    const invs = (invoices.data || []) as any[];
+    const accounts = (accts.data || []) as unknown[];
+    const invs = (invoices.data || []) as unknown[];
     const now = new Date().toISOString();
 
     const totalLiquid = accounts.reduce((s: number, a: any) => s + (a.balance_cents || 0), 0);

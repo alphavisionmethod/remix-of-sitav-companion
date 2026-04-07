@@ -153,8 +153,8 @@ export class TimelineCalendarService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.events) this.events = new Map(state.events as any);
-    if (state.correlations) this.correlations = state.correlations as any;
+    if (state.events) this.events = new Map(state.events as [string, unknown][]);
+    if (state.correlations) this.correlations = state.correlations as never;
   }
 
   async loadPersistedState(): Promise<void> {

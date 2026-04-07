@@ -109,9 +109,9 @@ export class IntegrationConciergeService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.connectors) this.connectors = new Map(state.connectors as any);
-    if (state.pendingSetups) this.pendingSetups = state.pendingSetups as any;
-    if (state.recommendations) this.recommendations = state.recommendations as any;
+    if (state.connectors) this.connectors = new Map(state.connectors as [string, unknown][]);
+    if (state.pendingSetups) this.pendingSetups = state.pendingSetups as never;
+    if (state.recommendations) this.recommendations = state.recommendations as never;
   }
 
   async loadPersistedState(): Promise<void> {

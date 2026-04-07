@@ -38,7 +38,7 @@ export function useElectronBridge() {
     const cleanupDeepLink = bridge.onDeepLink?.((payload) => setDeepLink(payload));
 
     // Listen for update status
-    const el = window.electron as any;
+    const el = window.electron as unknown;
     const cleanupUpdate = el.onUpdateStatus?.((status: UpdateState) => setUpdateState(status));
 
     return () => {
@@ -59,12 +59,12 @@ export function useElectronBridge() {
 
   const downloadUpdate = useCallback(async (): Promise<{ success: boolean; reason?: string } | null> => {
     if (!electron) return null;
-    return (window.electron as any).downloadUpdate();
+    return (window.electron as unknown).downloadUpdate();
   }, [electron]);
 
   const installUpdate = useCallback((): void => {
     if (!electron) return;
-    (window.electron as any).installUpdate();
+    (window.electron as unknown).installUpdate();
   }, [electron]);
 
   const windowControl = useCallback((action: "minimize" | "maximize" | "close" | "fullscreen" | "restore") => {
@@ -74,17 +74,17 @@ export function useElectronBridge() {
 
   const getCrashReports = useCallback(async () => {
     if (!electron) return null;
-    return (window.electron as any).getCrashReports();
+    return (window.electron as unknown).getCrashReports();
   }, [electron]);
 
   const clearCrashReports = useCallback(async () => {
     if (!electron) return null;
-    return (window.electron as any).clearCrashReports();
+    return (window.electron as unknown).clearCrashReports();
   }, [electron]);
 
   const reportError = useCallback((error: { message: string; stack?: string; url?: string }) => {
     if (!electron) return;
-    (window.electron as any).reportRendererError(error);
+    (window.electron as unknown).reportRendererError(error);
   }, [electron]);
 
   return {
@@ -100,6 +100,6 @@ export function useElectronBridge() {
     getCrashReports,
     clearCrashReports,
     reportError,
-    platform: electron ? (window.electron as any)?.platform : null,
+    platform: electron ? (window.electron as unknown)?.platform : null,
   };
 }

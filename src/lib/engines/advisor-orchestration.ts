@@ -211,10 +211,10 @@ export class AdvisorOrchestrationEngine {
   }
 
   hydrate(state: Record<string, unknown>): void {
-    if (state.advisors) this.advisors = new Map(state.advisors as any);
-    if (state.escalationRules) this.escalationRules = state.escalationRules as any;
-    if (state.activeHandoffs) this.activeHandoffs = state.activeHandoffs as any;
-    if (state.activeCollaborations) this.activeCollaborations = state.activeCollaborations as any;
-    if (state.disagreements) this.disagreements = state.disagreements as any;
+    if (state.advisors) this.advisors = new Map(state.advisors as [string, unknown][]);
+    if (state.escalationRules) this.escalationRules = state.escalationRules as never;
+    if (state.activeHandoffs) this.activeHandoffs = state.activeHandoffs as never;
+    if (state.activeCollaborations) this.activeCollaborations = state.activeCollaborations as never;
+    if (state.disagreements) this.disagreements = state.disagreements as never;
   }
 }

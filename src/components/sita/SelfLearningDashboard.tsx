@@ -394,7 +394,7 @@ export function SelfLearningDashboard() {
           { key: "profiles", label: `Profiles (${profiles.length})`, icon: BarChart3 },
           { key: "insights", label: `Insights (${learnings.insights.length})`, icon: Lightbulb },
         ].map(v => (
-          <button key={v.key} onClick={() => setViewMode(v.key as any)}
+          <button key={v.key} onClick={() => setViewMode(v.key as unknown)}
             className={cn(
               "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] font-medium transition-all border",
               viewMode === v.key ? "bg-primary/15 text-primary border-primary/20" : "border-border/50 text-muted-foreground hover:text-foreground"

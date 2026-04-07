@@ -10,7 +10,7 @@ function useRecommendationExecution() {
   return useQuery({
     queryKey: ["rex03-recommendation-execution"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("ai_workforce_recommendations")
         .select("id, title, status, role_key, domain, execution_binding_status, linked_remediation_program_id, outcome_verification_id, created_at, updated_at")
         .order("updated_at", { ascending: false })

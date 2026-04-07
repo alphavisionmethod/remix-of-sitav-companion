@@ -15,7 +15,7 @@ export function useJourneySummaryView() {
   return useQuery({
     queryKey: ["v-customer-journey-summary"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("v_customer_journey_summary")
         .select("*");
       if (error) throw error;
@@ -30,7 +30,7 @@ export function useBlockersView() {
   return useQuery({
     queryKey: ["v-customer-journey-blockers"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("v_customer_journey_blockers")
         .select("*");
       if (error) throw error;
@@ -45,7 +45,7 @@ export function useModeDeltas() {
   return useQuery({
     queryKey: ["v-customer-journey-mode-deltas"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("v_customer_journey_mode_deltas")
         .select("*");
       if (error) throw error;
@@ -60,7 +60,7 @@ export function useRouteCoverageSummary() {
   return useQuery({
     queryKey: ["v-route-verification-summary"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("v_route_verification_summary")
         .select("*");
       if (error) throw error;
@@ -75,7 +75,7 @@ export function useRecentFailures() {
   return useQuery({
     queryKey: ["v-customer-journey-recent-failures"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("v_customer_journey_recent_failures")
         .select("*");
       if (error) throw error;
@@ -123,7 +123,7 @@ export function useRecordVerificationRun() {
   return useMutation({
     mutationFn: async (input: VerificationRunInput) => {
       // Look up journey_id from registry
-      const { data: registry } = await (supabase as any)
+      const { data: registry } = await (supabase as unknown)
         .from("customer_journey_registry")
         .select("id")
         .eq("journey_key", input.journey_key)
@@ -131,7 +131,7 @@ export function useRecordVerificationRun() {
 
       if (!registry) throw new Error(`Journey not found in registry: ${input.journey_key}`);
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("journey_verification_runs")
         .insert({
           journey_id: registry.id,
@@ -157,7 +157,7 @@ export function useRecordVerificationRun() {
       if (error) throw error;
 
       // Update customer_journey_status
-      await (supabase as any)
+      await (supabase as unknown)
         .from("customer_journey_status")
         .upsert(
           {
@@ -188,7 +188,7 @@ export function useRecordVerificationRun() {
 
         const result = computeBlockerScore(blockerInput);
 
-        await (supabase as any)
+        await (supabase as unknown)
           .from("launch_blocker_scores")
           .insert({
             journey_id: registry.id,

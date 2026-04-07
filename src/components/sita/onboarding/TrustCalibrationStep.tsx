@@ -180,7 +180,7 @@ export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCa
                   ].map(ctrl => (
                     <button
                       key={ctrl.key}
-                      onClick={() => update({ [ctrl.key]: !data[ctrl.key] } as any)}
+                      onClick={() => update({ [ctrl.key]: !data[ctrl.key] } as never)}
                       className={cn(
                         "rounded-xl border p-3 text-left transition-all",
                         data[ctrl.key]

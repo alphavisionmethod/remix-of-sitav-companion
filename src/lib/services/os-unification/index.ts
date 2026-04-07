@@ -108,8 +108,8 @@ export class OSUnificationService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.surfaces) this.surfaces = new Map(state.surfaces as any);
-    if (state.unresolvedQueues) this.unresolvedQueues = state.unresolvedQueues as any;
+    if (state.surfaces) this.surfaces = new Map(state.surfaces as [string, unknown][]);
+    if (state.unresolvedQueues) this.unresolvedQueues = state.unresolvedQueues as never;
   }
 
   async loadPersistedState(): Promise<void> {

@@ -33,11 +33,11 @@ export function ConnectorSyncDashboard({ compact = false }: ConnectorSyncDashboa
     queryKey: ["connector-sync-dashboard", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data: registry } = await (supabase as any)
+      const { data: registry } = await (supabase as unknown)
         .from("connector_registry")
         .select("*")
         .eq("user_id", user!.id);
-      const { data: accounts } = await (supabase as any)
+      const { data: accounts } = await (supabase as unknown)
         .from("connector_accounts")
         .select("*")
         .eq("user_id", user!.id);

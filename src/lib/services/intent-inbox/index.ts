@@ -22,7 +22,7 @@ export class IntentInboxService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.messages) this.messages = state.messages as any;
+    if (state.messages) this.messages = state.messages as never;
   }
 
   async loadPersistedState(): Promise<void> {

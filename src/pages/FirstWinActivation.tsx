@@ -250,7 +250,7 @@ export default function FirstWinActivation() {
 
     const loadChoice = async () => {
       try {
-        const { data } = await (supabase as any)
+        const { data } = await (supabase as unknown)
           .from("user_memory")
           .select("value")
           .eq("user_id", user.id)

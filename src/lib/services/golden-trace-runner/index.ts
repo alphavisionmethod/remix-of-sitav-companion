@@ -21,7 +21,7 @@ export class GoldenTraceRunnerService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.traces) this.traces = new Map(state.traces as any);
+    if (state.traces) this.traces = new Map(state.traces as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

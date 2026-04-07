@@ -97,8 +97,8 @@ export class ExecutorService {
 
     // Helper to create transition objects matching ActionStateTransition contract
     const mkTransition = (from: string, to: string, reason: string) => ({
-      from: from as any,
-      to: to as any,
+      from: from as unknown,
+      to: to as unknown,
       triggeredBy: "executor-service",
       timestamp: new Date().toISOString(),
       reason,
@@ -109,7 +109,7 @@ export class ExecutorService {
     const actionRecord = {
       id: envelope.id,
       workflowId: envelope.correlationId,
-      domain: domainRaw as any,
+      domain: domainRaw as unknown,
       currentState: "proposed" as const,
       stateHistory: [mkTransition("proposed", "proposed", "Execution initiated")],
       assignedAdvisor: "executor-service",

@@ -148,13 +148,13 @@ class OfflineSyncEngine {
           let error;
           switch (item.operation) {
             case 'insert':
-              ({ error } = await fromTable(item.table as any).insert(item.data as any));
+              ({ error } = await fromTable(item.table as unknown).insert(item.data as unknown));
               break;
             case 'update':
-              ({ error } = await fromTable(item.table as any).update(item.data as any).eq('id', item.data.id));
+              ({ error } = await fromTable(item.table as unknown).update(item.data as unknown).eq('id', item.data.id));
               break;
             case 'delete':
-              ({ error } = await fromTable(item.table as any).delete().eq('id', item.data.id));
+              ({ error } = await fromTable(item.table as unknown).delete().eq('id', item.data.id));
               break;
           }
 

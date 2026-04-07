@@ -516,13 +516,13 @@ export class AdminService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.auditLog) this.auditLog = state.auditLog as any;
-    if (state.dashboards) this.dashboards = new Map(state.dashboards as any);
-    if (state.hints) this.hints = state.hints as any;
-    if (state.incidents) this.incidents = new Map(state.incidents as any);
-    if (state.policies) this.policies = new Map(state.policies as any);
-    if (state.insights) this.insights = state.insights as any;
-    if (state.councilDecisions) this.councilDecisions = new Map(state.councilDecisions as any);
+    if (state.auditLog) this.auditLog = state.auditLog as never;
+    if (state.dashboards) this.dashboards = new Map(state.dashboards as [string, unknown][]);
+    if (state.hints) this.hints = state.hints as never;
+    if (state.incidents) this.incidents = new Map(state.incidents as [string, unknown][]);
+    if (state.policies) this.policies = new Map(state.policies as [string, unknown][]);
+    if (state.insights) this.insights = state.insights as never;
+    if (state.councilDecisions) this.councilDecisions = new Map(state.councilDecisions as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

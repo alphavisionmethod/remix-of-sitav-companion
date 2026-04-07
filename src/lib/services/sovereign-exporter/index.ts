@@ -170,8 +170,8 @@ export class SovereignExporterService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.jobs) this.jobs = new Map(state.jobs as any);
-    if (state.deletionRequests) this.deletionRequests = new Map(state.deletionRequests as any);
+    if (state.jobs) this.jobs = new Map(state.jobs as [string, unknown][]);
+    if (state.deletionRequests) this.deletionRequests = new Map(state.deletionRequests as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

@@ -156,12 +156,12 @@ class RevenueTickerService {
         table: 'invoices',
         filter: `user_id=eq.${userId}`,
       }, (payload) => {
-        if (payload.new && (payload.new as any).status === 'paid' && (payload.old as any)?.status !== 'paid') {
+        if (payload.new && (payload.new as unknown).status === 'paid' && (payload.old as unknown)?.status !== 'paid') {
           this.addEvent({
-            id: (payload.new as any).id,
+            id: (payload.new as unknown).id,
             type: 'invoice_paid',
-            amount: Number((payload.new as any).amount),
-            customerName: (payload.new as any).invoice_number,
+            amount: Number((payload.new as unknown).amount),
+            customerName: (payload.new as unknown).invoice_number,
             timestamp: new Date(),
             domain: 'business',
           });

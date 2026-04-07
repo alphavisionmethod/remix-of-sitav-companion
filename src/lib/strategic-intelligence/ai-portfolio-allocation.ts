@@ -106,7 +106,7 @@ export function computePortfolioSnapshot(
   spending: Record<AllocationCategory, number>,
   totalBudgetCents: number,
 ): PortfolioSnapshot {
-  const actual: Record<AllocationCategory, ActualAllocation> = {} as any;
+  const actual: Record<AllocationCategory, ActualAllocation> = {} as unknown;
   const driftAlerts: DriftAlert[] = [];
   const rebalance: RebalanceAction[] = [];
   const totalSpent = Object.values(spending).reduce((s, v) => s + v, 0);

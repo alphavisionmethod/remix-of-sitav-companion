@@ -117,8 +117,8 @@ export default function ISA05ScopePolicyMatrixBoard() {
             <TableBody>
               {scopes.map((s: any) => (
                 <TableRow key={s.id}>
-                  <TableCell className="font-medium">{(s as any).provider_families?.name || "—"}</TableCell>
-                  <TableCell className="text-sm">{(s as any).provider_capabilities?.display_name || "—"}</TableCell>
+                  <TableCell className="font-medium">{(s as Record<string, unknown>).provider_families?.name || "—"}</TableCell>
+                  <TableCell className="text-sm">{(s as Record<string, unknown>).provider_capabilities?.display_name || "—"}</TableCell>
                   <TableCell><code className="text-xs bg-muted px-1.5 py-0.5 rounded">{s.scope_key}</code></TableCell>
                   <TableCell><Badge className={categoryColors[s.category] || "bg-muted text-muted-foreground"}>{s.category?.replace(/_/g, " ")}</Badge></TableCell>
                   <TableCell><Badge className={riskColors[s.risk_level] || "bg-muted text-muted-foreground"}>{s.risk_level}</Badge></TableCell>

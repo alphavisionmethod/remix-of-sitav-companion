@@ -186,8 +186,8 @@ export class SovereignTimeService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.profiles) this.profiles = new Map(state.profiles as any);
-    if (state.deadlines) this.deadlines = new Map(state.deadlines as any);
+    if (state.profiles) this.profiles = new Map(state.profiles as [string, unknown][]);
+    if (state.deadlines) this.deadlines = new Map(state.deadlines as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

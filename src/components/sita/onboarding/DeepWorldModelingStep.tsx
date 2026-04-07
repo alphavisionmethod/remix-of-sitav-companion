@@ -76,14 +76,14 @@ export function DeepWorldModelingStep({ data, onUpdate, onNext, onPrev }: Props)
 
   const toggleChip = (path: string, value: string) => {
     const [section, field] = path.split(".");
-    const current = (data as any)[section][field] as string[];
+    const current = (data as unknown)[section][field] as string[];
     const updated = current.includes(value) ? current.filter(v => v !== value) : [...current, value];
-    onUpdate({ ...data, [section]: { ...(data as any)[section], [field]: updated } });
+    onUpdate({ ...data, [section]: { ...(data as unknown)[section], [field]: updated } });
   };
 
   const setField = (path: string, value: any) => {
     const [section, field] = path.split(".");
-    onUpdate({ ...data, [section]: { ...(data as any)[section], [field]: value } });
+    onUpdate({ ...data, [section]: { ...(data as unknown)[section], [field]: value } });
   };
 
   // Derived advisor matches

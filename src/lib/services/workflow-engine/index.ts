@@ -162,8 +162,8 @@ export class WorkflowEngineService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.definitions) this.definitions = new Map(state.definitions as any);
-    if (state.runs) this.runs = new Map(state.runs as any);
+    if (state.definitions) this.definitions = new Map(state.definitions as [string, unknown][]);
+    if (state.runs) this.runs = new Map(state.runs as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

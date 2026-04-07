@@ -63,7 +63,7 @@ export function AIWorkforceScoreForm({ recommendationId, recommendationTitle, on
       await onSubmit({
         recommendation_id: recommendationId,
         score_overall: overall,
-        ...scores as any,
+        ...scores as unknown,
         review_method: "human_review",
         notes,
       });

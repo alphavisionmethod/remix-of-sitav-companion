@@ -177,10 +177,10 @@ export class RealtimeGatewayService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.channels) this.channels = new Map(state.channels as any);
-    if (state.presence) this.presence = new Map(state.presence as any);
-    if (state.subscriptions) this.subscriptions = new Map(state.subscriptions as any);
-    if (state.eventLog) this.eventLog = state.eventLog as any;
+    if (state.channels) this.channels = new Map(state.channels as [string, unknown][]);
+    if (state.presence) this.presence = new Map(state.presence as [string, unknown][]);
+    if (state.subscriptions) this.subscriptions = new Map(state.subscriptions as [string, unknown][]);
+    if (state.eventLog) this.eventLog = state.eventLog as never;
   }
 
   async loadPersistedState(): Promise<void> {

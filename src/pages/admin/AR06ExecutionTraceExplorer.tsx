@@ -53,7 +53,7 @@ export default function AR06ExecutionTraceExplorer() {
                      e.status === "failure" ? <XCircle className="h-3 w-3 text-destructive shrink-0" /> :
                      <Clock className="h-3 w-3 text-accent shrink-0" />}
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] font-medium truncate">{(e as any).scheduled_jobs?.name || e.job_id.slice(0, 8)}</p>
+                      <p className="text-[10px] font-medium truncate">{(e as Record<string, unknown>).scheduled_jobs?.name || e.job_id.slice(0, 8)}</p>
                       <p className="text-[9px] text-muted-foreground">{new Date(e.started_at).toLocaleString()}</p>
                     </div>
                     <ChevronRight className="h-3 w-3 text-muted-foreground shrink-0" />
@@ -67,7 +67,7 @@ export default function AR06ExecutionTraceExplorer() {
         <div className="md:col-span-2">
           {selected ? (
             <SitaCard>
-              <SitaCardTitle>Execution Trace — {(selected as any).scheduled_jobs?.name || selected.job_id.slice(0, 8)}</SitaCardTitle>
+              <SitaCardTitle>Execution Trace — {(selected as Record<string, unknown>).scheduled_jobs?.name || selected.job_id.slice(0, 8)}</SitaCardTitle>
               <div className="mt-4 space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   {[
@@ -80,9 +80,9 @@ export default function AR06ExecutionTraceExplorer() {
                     { label: "Verification", value: selected.verification_result || "—" },
                     { label: "Retryable", value: selected.retryable ? "Yes" : "No" },
                     { label: "Escalated", value: selected.escalated ? "Yes" : "No" },
-                    { label: "Domain", value: (selected as any).scheduled_jobs?.domain || "—" },
-                    { label: "Job Class", value: (selected as any).scheduled_jobs?.job_class || "—" },
-                    { label: "Target", value: (selected as any).scheduled_jobs?.target_function || "—" },
+                    { label: "Domain", value: (selected as Record<string, unknown>).scheduled_jobs?.domain || "—" },
+                    { label: "Job Class", value: (selected as Record<string, unknown>).scheduled_jobs?.job_class || "—" },
+                    { label: "Target", value: (selected as Record<string, unknown>).scheduled_jobs?.target_function || "—" },
                   ].map((f) => (
                     <div key={f.label} className="rounded-lg bg-secondary/10 px-3 py-2">
                       <p className="text-[9px] text-muted-foreground">{f.label}</p>

@@ -68,7 +68,7 @@ const AlertTriageBoard = () => {
 
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp}>
-          <Tabs value={filter} onValueChange={v => setFilter(v as any)}>
+          <Tabs value={filter} onValueChange={v => setFilter(v as unknown)}>
             <TabsList>
               <TabsTrigger value="all">All ({DEMO_ALERTS.length})</TabsTrigger>
               <TabsTrigger value="critical">Critical</TabsTrigger>

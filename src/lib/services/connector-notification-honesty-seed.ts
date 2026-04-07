@@ -139,7 +139,7 @@ export async function seedConnectorNotificationHonesty(): Promise<{ seeded: numb
           qualifier_required: entry.qualifierRequired,
           seeded_at: new Date().toISOString(),
         },
-      } as any,
+      } as never,
       { onConflict: "target" }
     );
 

@@ -290,7 +290,7 @@ export function AIT06Recommendations() {
                     confidence: rec.confidence || 75,
                     evidence_summary: rec.evidence || "",
                     role_source: "brain-core",
-                  } as any);
+                  } as never);
                 }
                 qc.invalidateQueries({ queryKey: ["ai-workforce-recommendations"] });
                 toast.success(`${data.recommendations.length} recommendations generated`);
@@ -501,7 +501,7 @@ export function AIT08LaunchTruth() {
                   confidence: rec.confidence || 80,
                   evidence_summary: rec.evidence || "",
                   role_source: "brain-core",
-                } as any);
+                } as never);
               }
               toast.success(`${data.recommendations.length} gap remediation recommendations created`);
             } else {

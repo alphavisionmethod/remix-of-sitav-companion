@@ -257,9 +257,9 @@ export class EdgeDeviceRuntimeService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.runtimes) this.runtimes = new Map(state.runtimes as any);
-    if (state.syncStates) this.syncStates = new Map(state.syncStates as any);
-    if (state.taskResults) this.taskResults = state.taskResults as any;
+    if (state.runtimes) this.runtimes = new Map(state.runtimes as [string, unknown][]);
+    if (state.syncStates) this.syncStates = new Map(state.syncStates as [string, unknown][]);
+    if (state.taskResults) this.taskResults = state.taskResults as never;
   }
 
   async loadPersistedState(): Promise<void> {

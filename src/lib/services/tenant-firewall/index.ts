@@ -147,9 +147,9 @@ export class TenantFirewallService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.rules) this.rules = new Map(state.rules as any);
-    if (state.auditLog) this.auditLog = state.auditLog as any;
-    if (state.activeTenants) this.activeTenants = new Set(state.activeTenants as any);
+    if (state.rules) this.rules = new Map(state.rules as [string, unknown][]);
+    if (state.auditLog) this.auditLog = state.auditLog as never;
+    if (state.activeTenants) this.activeTenants = new Set(state.activeTenants as unknown);
   }
 
   async loadPersistedState(): Promise<void> {

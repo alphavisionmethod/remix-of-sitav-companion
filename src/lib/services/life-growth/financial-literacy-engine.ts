@@ -201,7 +201,7 @@ export class FinancialLiteracyEngine {
 
   hydrateState(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.progress) this.progress = new Map(state.progress as any);
+    if (state.progress) this.progress = new Map(state.progress as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

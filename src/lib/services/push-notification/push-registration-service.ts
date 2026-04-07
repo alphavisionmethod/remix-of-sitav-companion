@@ -22,10 +22,10 @@ export interface PushTokenRecord {
 
 function detectPlatform(): PushPlatform {
   if (typeof window === "undefined") return "web";
-  if ((window as any).electron) return "electron";
+  if ((window as Record<string, unknown>).electron) return "electron";
   // Capacitor detection
-  if ((window as any).Capacitor?.isNativePlatform?.()) {
-    return (window as any).Capacitor.getPlatform?.() === "ios" ? "ios" : "android";
+  if ((window as Record<string, unknown>).Capacitor?.isNativePlatform?.()) {
+    return (window as Record<string, unknown>).Capacitor.getPlatform?.() === "ios" ? "ios" : "android";
   }
   return "web";
 }
@@ -234,8 +234,8 @@ export async function refreshToken(): Promise<PushTokenRecord | null> {
 
 export function isPushSupported(): boolean {
   if (typeof window === "undefined") return false;
-  if ((window as any).Capacitor?.isNativePlatform?.()) return true;
-  if ((window as any).electron) return true;
+  if ((window as Record<string, unknown>).Capacitor?.isNativePlatform?.()) return true;
+  if ((window as Record<string, unknown>).electron) return true;
   return "serviceWorker" in navigator && "PushManager" in window;
 }
 

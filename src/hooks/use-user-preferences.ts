@@ -51,14 +51,14 @@ export function useUserPreferences() {
       if (!user) return DEFAULTS;
 
       // Fetch profile for onboarding_completed
-      const { data: profile } = await (supabase as any)
+      const { data: profile } = await (supabase as unknown)
         .from("profiles")
         .select("onboarding_completed, role")
         .eq("user_id", user.id)
         .single();
 
       // Fetch all user_memory preference records
-      const { data: memories } = await (supabase as any)
+      const { data: memories } = await (supabase as unknown)
         .from("user_memory")
         .select("key, value")
         .eq("user_id", user.id)

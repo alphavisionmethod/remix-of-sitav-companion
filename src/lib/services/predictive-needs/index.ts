@@ -185,9 +185,9 @@ export class PredictiveNeedsEngine {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.predictions) this.predictions = new Map(state.predictions as any);
-    if (state.patterns) this.patterns = state.patterns as any;
-    if (state.outcomes) this.outcomes = state.outcomes as any;
+    if (state.predictions) this.predictions = new Map(state.predictions as [string, unknown][]);
+    if (state.patterns) this.patterns = state.patterns as never;
+    if (state.outcomes) this.outcomes = state.outcomes as never;
   }
 
   async loadPersistedState(): Promise<void> {

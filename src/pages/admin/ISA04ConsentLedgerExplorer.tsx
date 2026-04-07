@@ -169,8 +169,8 @@ export default function ISA04ConsentLedgerExplorer() {
                             {c.consent_type === "identity_link" ? <><Shield className="h-3 w-3 mr-1" />Identity</> : <><Plug className="h-3 w-3 mr-1" />Connector</>}
                           </Badge>
                         </TableCell>
-                        <TableCell>{(c as any).provider_families?.name || "—"}</TableCell>
-                        <TableCell>{(c as any).provider_capabilities?.display_name || "—"}</TableCell>
+                        <TableCell>{(c as Record<string, unknown>).provider_families?.name || "—"}</TableCell>
+                        <TableCell>{(c as Record<string, unknown>).provider_capabilities?.display_name || "—"}</TableCell>
                         <TableCell>
                           <div className="flex flex-wrap gap-1">
                             {(c.scopes_granted || []).slice(0, 3).map((s: string) => <Badge key={s} variant="outline" className="text-xs">{s}</Badge>)}

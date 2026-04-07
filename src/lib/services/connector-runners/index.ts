@@ -22,7 +22,7 @@ export class ConnectorRunnersService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.runners) this.runners = new Map(state.runners as any);
+    if (state.runners) this.runners = new Map(state.runners as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

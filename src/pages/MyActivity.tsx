@@ -104,7 +104,7 @@ const MyActivity = () => {
     }
     // Load from audit_logs
     (async () => {
-      const { data } = await (supabase as any)
+      const { data } = await (supabase as unknown)
         .from("audit_logs")
         .select("created_at, category")
         .eq("user_id", user.id)

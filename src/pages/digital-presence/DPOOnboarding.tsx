@@ -354,9 +354,9 @@ function Step6({ state, setState }: { state: OnboardingState; setState: (s: Part
           { key: "usesPromotions" as const, label: "I run promotions / offers", icon: Megaphone },
           { key: "hasCheckout" as const, label: "I have a cart / checkout", icon: Store },
         ].map(item => (
-          <Card key={item.key} className={`cursor-pointer transition-all ${(state as any)[item.key] ? "border-primary bg-primary/5" : "bg-card/30 border-border/50"}`} onClick={() => setState({ [item.key]: !(state as any)[item.key] })}>
+          <Card key={item.key} className={`cursor-pointer transition-all ${(state as unknown)[item.key] ? "border-primary bg-primary/5" : "bg-card/30 border-border/50"}`} onClick={() => setState({ [item.key]: !(state as unknown)[item.key] })}>
             <CardContent className="p-4 flex items-center gap-3">
-              <item.icon className={`w-5 h-5 ${(state as any)[item.key] ? "text-primary" : "text-muted-foreground"}`} />
+              <item.icon className={`w-5 h-5 ${(state as unknown)[item.key] ? "text-primary" : "text-muted-foreground"}`} />
               <span className="text-xs font-medium text-foreground">{item.label}</span>
             </CardContent>
           </Card>

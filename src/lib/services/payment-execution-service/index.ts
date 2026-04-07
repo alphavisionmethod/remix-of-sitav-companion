@@ -23,7 +23,7 @@ export class PaymentExecutionService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.payments) this.payments = state.payments as any;
+    if (state.payments) this.payments = state.payments as never;
   }
 
   async loadPersistedState(): Promise<void> {

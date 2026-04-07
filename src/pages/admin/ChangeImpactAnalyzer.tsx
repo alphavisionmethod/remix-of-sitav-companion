@@ -30,7 +30,7 @@ const ChangeImpactAnalyzer = () => {
 
   const handleAnalyze = () => {
     const proposal: ChangeProposal = {
-      title: form.title, changeType: form.changeType as any,
+      title: form.title, changeType: form.changeType as unknown,
       affectedDomains: form.domains.split(",").map(s => s.trim()).filter(Boolean),
       affectedFeatureIds: form.featureIds.split(",").map(s => s.trim()).filter(Boolean),
       description: form.description,
@@ -45,12 +45,12 @@ const ChangeImpactAnalyzer = () => {
       if (!user) throw new Error("Not authenticated");
       const { error } = await fromTable("change_impact_records").insert({
         user_id: user.id, change_title: analysis.changeTitle, change_type: form.changeType,
-        affected_routes: analysis.affectedRoutes as any, affected_contracts: analysis.affectedContracts as any,
-        affected_probes: analysis.affectedProbes as any, affected_journeys: analysis.affectedJourneys as any,
-        affected_domains: analysis.affectedDomains as any, migration_risks: analysis.migrationRisks as any,
-        rollout_risks: analysis.rolloutRisks as any, trust_risks: analysis.trustRisks as any,
+        affected_routes: analysis.affectedRoutes as unknown, affected_contracts: analysis.affectedContracts as unknown,
+        affected_probes: analysis.affectedProbes as unknown, affected_journeys: analysis.affectedJourneys as unknown,
+        affected_domains: analysis.affectedDomains as unknown, migration_risks: analysis.migrationRisks as unknown,
+        rollout_risks: analysis.rolloutRisks as unknown, trust_risks: analysis.trustRisks as unknown,
         severity: analysis.severity, status: "pending",
-      } as any);
+      } as never);
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Impact analysis saved"); queryClient.invalidateQueries({ queryKey: ["change-impact-records"] }); },

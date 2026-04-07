@@ -593,7 +593,7 @@ export function OSSetupExperience() {
         const phaseNames = ["boot", "setup-style", "quick-identity", "primary-use-mode", "trust-calibration", "advisor-activation", "trust-certificate"];
         for (const phaseName of phaseNames) {
           await bootService.persistPhase({
-            phase: phaseName as any,
+            phase: phaseName as unknown,
             status: "completed",
             completedAt: new Date().toISOString(),
             durationMs: 0,
@@ -748,7 +748,7 @@ export function OSSetupExperience() {
                 )}
 
                 {phase === "account-environment" && (
-                  <AccountEnvironmentStep key="account-environment" selectedPath={state.accountPath as any}
+                  <AccountEnvironmentStep key="account-environment" selectedPath={state.accountPath as unknown}
                     onPathChange={path => setState(s => ({ ...s, accountPath: path }))} onNext={goNext} onPrev={goPrev} />
                 )}
 

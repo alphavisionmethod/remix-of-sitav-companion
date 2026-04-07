@@ -86,7 +86,7 @@ Deno.serve(async (req) => {
       if (error || !approval) return corsError("Approval not found", 404);
 
       if (approval.status === "approved") {
-        const payload = approval.payload as any;
+        const payload = approval.payload as unknown;
         const hash = await crypto.subtle.digest("SHA-256",
           new TextEncoder().encode(`${approval.id}:${payload.amount_cents}:${Date.now()}`));
         const hashHex = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, "0")).join("");

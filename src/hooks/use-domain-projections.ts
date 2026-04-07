@@ -115,14 +115,14 @@ export function useFinanceProjection() {
       const invoicesForAging = rawInvoices.map((i: any) => ({
         id: i.id, customerId: i.customer_id || "unknown", customerName: i.invoice_number || "Client",
         amount: Number(i.amount) || 0, issuedDate: new Date(i.created_at).getTime(),
-        dueDate: new Date(i.due_date).getTime(), status: i.status as any,
+        dueDate: new Date(i.due_date).getTime(), status: i.status as unknown,
         paidAmount: i.status === "paid" ? Number(i.amount) || 0 : 0, daysSinceIssued: 30,
       }));
 
       const billsForCalendar = rawBills.map((b: any) => ({
         id: b.id, vendor: b.payee, amount: Number(b.amount) || 0,
         dueDate: new Date(b.due_date).getTime(), category: b.category || "other",
-        recurring: b.recurring || false, status: b.status as any, autopay: b.auto_pay || false,
+        recurring: b.recurring || false, status: b.status as unknown, autopay: b.auto_pay || false,
       }));
 
       const cashflow = analyzeCashflow(entries, Math.max(balance, 0));
@@ -188,12 +188,12 @@ export function useBusinessProjection() {
         id: c.id, name: c.name, totalRevenue: Number(c.lifetime_revenue) || 0,
         invoiceCount: 6, overdueInvoices: 0, avgPayDays: 14,
         lastInteractionDays: c.last_contact_at ? Math.round((Date.now() - new Date(c.last_contact_at).getTime()) / 86400000) : 30,
-        tier: "mid-market" as const, status: (c.status === "active" ? "active" : "at-risk") as any,
+        tier: "mid-market" as const, status: (c.status === "active" ? "active" : "at-risk") as unknown,
         createdAt: new Date(c.created_at).getTime(),
       }));
 
       const opportunities = rawOpps.map((o: any) => ({
-        id: o.id, name: o.title, stage: (o.stage || "discovery") as any,
+        id: o.id, name: o.title, stage: (o.stage || "discovery") as unknown,
         valueCents: (Number(o.value) || 0) * 100, probability: (Number(o.confidence) || 50) / 100,
         expectedCloseDate: Date.now() + 30 * 86400000,
         daysInStage: o.last_movement_at ? Math.round((Date.now() - new Date(o.last_movement_at).getTime()) / 86400000) : 10,
@@ -202,11 +202,11 @@ export function useBusinessProjection() {
 
       const leads = rawLeads.map((l: any) => ({
         id: l.id, name: l.name, email: l.email || "",
-        source: (l.source || "direct") as any, engagementScore: l.opportunity_score || 50,
+        source: (l.source || "direct") as unknown, engagementScore: l.opportunity_score || 50,
         recencyDays: l.last_contact_at ? Math.round((Date.now() - new Date(l.last_contact_at).getTime()) / 86400000) : 7,
         fitScore: Math.min(100, (l.opportunity_score || 50) + 10),
         estimatedValue: Number(l.likely_value) || 5000,
-        status: (l.status || "new") as any,
+        status: (l.status || "new") as unknown,
         createdAt: new Date(l.created_at).getTime(),
         lastContactAt: l.last_contact_at ? new Date(l.last_contact_at).getTime() : Date.now() - 7 * 86400000,
       }));
@@ -250,9 +250,9 @@ export function useConciergeProjection() {
 
       const tasks = data.map((t: any) => ({
         id: t.id, title: t.title, category: "household" as const,
-        priority: (t.priority || "medium") as any, dueDate: new Date(t.due_date || Date.now()).getTime(),
+        priority: (t.priority || "medium") as unknown, dueDate: new Date(t.due_date || Date.now()).getTime(),
         estimatedMinutes: 30, assignedTo: t.assigned_to || "owner",
-        status: (t.status || "pending") as any, dependencies: [], recurring: false,
+        status: (t.status || "pending") as unknown, dependencies: [], recurring: false,
         energyLevel: t.priority === "high" ? "high" as const : "medium" as const,
       }));
 

@@ -162,7 +162,7 @@ export class LegacyPlanningEngine {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.vault) this.vault = new Map(state.vault as any);
+    if (state.vault) this.vault = new Map(state.vault as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

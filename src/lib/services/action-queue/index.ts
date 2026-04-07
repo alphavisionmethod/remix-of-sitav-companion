@@ -125,7 +125,7 @@ export class ActionQueueService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.queue) this.queue = state.queue as any;
+    if (state.queue) this.queue = state.queue as never;
   }
 
   async loadPersistedState(): Promise<void> {

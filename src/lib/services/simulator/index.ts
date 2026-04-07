@@ -22,7 +22,7 @@ export class SimulatorService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.runs) this.runs = state.runs as any;
+    if (state.runs) this.runs = state.runs as never;
   }
 
   async loadPersistedState(): Promise<void> {

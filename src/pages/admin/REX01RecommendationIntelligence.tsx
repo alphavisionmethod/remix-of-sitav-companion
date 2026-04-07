@@ -9,7 +9,7 @@ function useRecommendationStats() {
   return useQuery({
     queryKey: ["rex01-recommendation-stats"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("ai_workforce_recommendations")
         .select("status, execution_binding_status, role_key, domain, created_at");
       if (error) throw error;
@@ -32,7 +32,7 @@ function useRecommendationScores() {
   return useQuery({
     queryKey: ["rex01-recommendation-scores"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("ai_workforce_recommendation_scores")
         .select("score_overall, score_accuracy, score_usefulness, score_actionability");
       if (error) throw error;

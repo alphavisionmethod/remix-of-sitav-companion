@@ -114,7 +114,7 @@ class AuditTrailTimelineService {
       return { success: false, reason: 'This action cannot be undone' };
     }
 
-    const details = event.details as any;
+    const details = event.details as unknown;
     if (!details?.old || !details?.table) {
       return { success: false, reason: 'Insufficient undo data' };
     }
@@ -128,7 +128,7 @@ class AuditTrailTimelineService {
       severity: 'high',
       target_type: event.target_type,
       target_id: event.target_id,
-      details: { original_event_id: eventId, reverted_to: details.old } as any,
+      details: { original_event_id: eventId, reverted_to: details.old } as never,
       correlation_id: event.correlation_id,
     });
 

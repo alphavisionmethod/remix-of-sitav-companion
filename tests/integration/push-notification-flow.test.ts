@@ -27,7 +27,7 @@ describe("CommunicationService push integration", () => {
       recipientId: "user-1",
       recipientAddress: "device-token",
       body: "Test push notification",
-      domain: "system" as any,
+      domain: "system" as unknown,
       correlationId: "corr-1",
     });
 
@@ -47,7 +47,7 @@ describe("CommunicationService push integration", () => {
       recipientId: "user-1",
       recipientAddress: "test@test.com",
       body: "Test email",
-      domain: "system" as any,
+      domain: "system" as unknown,
       correlationId: "corr-2",
     });
 

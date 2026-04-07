@@ -35,7 +35,7 @@ export class AuthService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.sessions) this.sessions = new Map(state.sessions as any);
+    if (state.sessions) this.sessions = new Map(state.sessions as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

@@ -225,10 +225,10 @@ export class TokenGovernanceEngine {
   }
 
   hydrate(state: Record<string, unknown>): void {
-    if (state.routes) this.routes = state.routes as any;
-    if (state.budgets) this.budgets = new Map(state.budgets as any);
-    if (state.usageRecords) this.usageRecords = state.usageRecords as any;
-    if (state.anomalies) this.anomalies = state.anomalies as any;
-    if (state.config) this.config = { ...this.config, ...(state.config as any) };
+    if (state.routes) this.routes = state.routes as never;
+    if (state.budgets) this.budgets = new Map(state.budgets as [string, unknown][]);
+    if (state.usageRecords) this.usageRecords = state.usageRecords as never;
+    if (state.anomalies) this.anomalies = state.anomalies as never;
+    if (state.config) this.config = { ...this.config, ...(state.config as unknown) };
   }
 }

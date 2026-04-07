@@ -219,7 +219,7 @@ function ObservationCard({ obs }: { obs: Observation }) {
           <span className={typeColor}>{typeIcon}</span>
           <span className="text-xs font-medium text-foreground">{obs.title}</span>
         </div>
-        <Badge variant={impactColor as any} className="text-[9px] shrink-0">{obs.impact} impact</Badge>
+        <Badge variant={impactColor as unknown} className="text-[9px] shrink-0">{obs.impact} impact</Badge>
       </div>
       <p className="text-[10px] text-muted-foreground">{obs.summary}</p>
       <ConfidenceBar value={obs.confidence} label="Confidence" />

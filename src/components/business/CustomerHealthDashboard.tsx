@@ -322,8 +322,8 @@ function useLiveCustomerHealth(): { data: CustomerLifecycleRecord[] | null; load
           fromTable("digital_twins").select("id, entity_type, entity_id, twin_data, health_score, churn_probability, trend, segment"),
         ]);
 
-        const customers = (custResult.data ?? []) as any[];
-        const twins = (twinResult.data ?? []) as any[];
+        const customers = (custResult.data ?? []) as unknown[];
+        const twins = (twinResult.data ?? []) as unknown[];
         const twinsByEntity = new Map<string, any>();
         twins.forEach((t: any) => { if (t.entity_type === "customer") twinsByEntity.set(t.entity_id, t); });
 

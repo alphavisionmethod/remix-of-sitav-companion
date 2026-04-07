@@ -117,7 +117,7 @@ export default function AIG07LaunchTruth() {
                     <TableRow key={c.capabilityId}>
                       <TableCell className="font-mono text-xs">{c.capabilityId}</TableCell>
                       <TableCell>
-                        <Badge variant={LEVEL_VARIANT[c.launchLevel] as any} className="text-xs">
+                        <Badge variant={LEVEL_VARIANT[c.launchLevel] as unknown} className="text-xs">
                           {c.launchLevel.replace(/_/g, " ")}
                         </Badge>
                       </TableCell>
@@ -158,7 +158,7 @@ export default function AIG07LaunchTruth() {
                     <TableRow key={c.capabilityId}>
                       <TableCell className="font-mono text-xs font-medium">{c.capabilityId}</TableCell>
                       <TableCell>
-                        <Badge variant={LEVEL_VARIANT[c.launchLevel] as any} className="text-xs gap-1">
+                        <Badge variant={LEVEL_VARIANT[c.launchLevel] as unknown} className="text-xs gap-1">
                           {LEVEL_LABEL[c.launchLevel].icon}
                           {c.launchLevel.replace(/_/g, " ")}
                         </Badge>
@@ -215,7 +215,7 @@ export default function AIG07LaunchTruth() {
                   <TableRow key={r.id}>
                     <TableCell className="font-mono text-xs">{r.capability_key}</TableCell>
                     <TableCell>
-                      <Badge variant={LEVEL_VARIANT[r.launch_honesty_class as LaunchHonestyLevel] as any ?? "outline"} className="text-xs">
+                      <Badge variant={LEVEL_VARIANT[r.launch_honesty_class as LaunchHonestyLevel] as unknown ?? "outline"} className="text-xs">
                         {r.launch_honesty_class}
                       </Badge>
                     </TableCell>

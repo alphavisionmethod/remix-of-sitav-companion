@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 /**
  * Access a Supabase table by dynamic name.
@@ -12,5 +13,5 @@ import { supabase } from "@/integrations/supabase/client";
  * for `.from()` calls — all other files use typed literals or this helper.
  */
 export function fromTable(table: string) {
-  return (supabase as any).from(table);
+  return fromTable(table);
 }

@@ -42,7 +42,7 @@ const FIPPolicyTrustBoard = () => {
             <div className="border rounded-lg p-4">
               <h3 className="font-medium text-sm mb-3 flex items-center gap-2"><Eye className="h-4 w-4" /> Approval Requirements</h3>
               {['none', 'single', 'dual', 'owner-only'].map(type => {
-                const count = intakes.filter((i: any) => (i.metadata as any)?.approval_type === type).length;
+                const count = intakes.filter((i: any) => (i.metadata as unknown)?.approval_type === type).length;
                 return <div key={type} className="flex justify-between text-sm py-1"><span>{type}</span><Badge variant="outline">{count}</Badge></div>;
               })}
             </div>

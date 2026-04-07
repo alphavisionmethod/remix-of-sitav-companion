@@ -91,7 +91,7 @@ export class DigitalTwinEngine {
     return { twins: Array.from(this.twins.entries()) };
   }
   hydrate(state: Record<string, unknown>): void {
-    if (state.twins) this.twins = new Map(state.twins as any);
+    if (state.twins) this.twins = new Map(state.twins as [string, unknown][]);
   }
 }
 
@@ -194,7 +194,7 @@ export class BoardroomIntelligenceEngine {
     return { sessions: Array.from(this.sessions.entries()) };
   }
   hydrate(state: Record<string, unknown>): void {
-    if (state.sessions) this.sessions = new Map(state.sessions as any);
+    if (state.sessions) this.sessions = new Map(state.sessions as [string, unknown][]);
   }
 }
 
@@ -230,6 +230,6 @@ export class ScenarioIntelligenceEngine {
     return { simulations: this.simulations };
   }
   hydrate(state: Record<string, unknown>): void {
-    if (state.simulations) this.simulations = state.simulations as any;
+    if (state.simulations) this.simulations = state.simulations as never;
   }
 }

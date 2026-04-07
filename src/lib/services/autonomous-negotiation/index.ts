@@ -245,7 +245,7 @@ export class NegotiationEngine {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.negotiations) this.negotiations = new Map(state.negotiations as any);
+    if (state.negotiations) this.negotiations = new Map(state.negotiations as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

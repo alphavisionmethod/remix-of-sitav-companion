@@ -160,7 +160,7 @@ const SystemManagement = () => {
               {[
                 { label: "Platform", value: navigator.platform, icon: Cpu },
                 { label: "CPU Cores", value: `${navigator.hardwareConcurrency || "Unknown"}`, icon: Zap },
-                { label: "Memory", value: `${(navigator as any).deviceMemory || "Unknown"} GB`, icon: MemoryStick },
+                { label: "Memory", value: `${(navigator as Record<string, unknown>).deviceMemory || "Unknown"} GB`, icon: MemoryStick },
                 { label: "Language", value: navigator.language, icon: Monitor },
               ].map(({ label, value, icon: Icon }) => (
                 <div key={label} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">

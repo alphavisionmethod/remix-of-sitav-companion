@@ -706,7 +706,7 @@ serve(async (req) => {
         category: domain,
         advisor_request_id: requestId,
         correlation_id: correlationId,
-        policy_id: (ruleResult as any).policyId || null,
+        policy_id: (ruleResult as Record<string, unknown>).policyId || null,
       });
 
       if (finalResponse.requiresApproval) {

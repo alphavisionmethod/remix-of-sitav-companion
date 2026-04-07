@@ -44,10 +44,10 @@ describe("Push Registration Service", () => {
 
   describe("getPermissionState", () => {
     it("returns 'unsupported' when Notification API is unavailable", () => {
-      const origNotification = (globalThis as any).Notification;
-      delete (globalThis as any).Notification;
+      const origNotification = (globalThis as Record<string, unknown>).Notification;
+      delete (globalThis as Record<string, unknown>).Notification;
       expect(getPermissionState()).toBe("unsupported");
-      if (origNotification) (globalThis as any).Notification = origNotification;
+      if (origNotification) (globalThis as Record<string, unknown>).Notification = origNotification;
     });
   });
 });

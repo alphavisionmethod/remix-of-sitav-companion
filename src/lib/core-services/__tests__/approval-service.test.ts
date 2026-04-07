@@ -11,7 +11,7 @@ function makeRequest(svc: ApprovalService, overrides: Record<string, unknown> = 
     riskTier: "medium",
     approvers: ["approver1", "approver2"],
     ...overrides,
-  } as any);
+  } as never);
 }
 
 describe("ApprovalService", () => {
