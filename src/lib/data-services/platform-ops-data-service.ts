@@ -75,3 +75,4 @@ export const platformSecurityPosture = crud("platform_security_posture");
 export const platformTruthManifests = crud("platform_truth_manifests");
 export const platformTruthSyncLog = crud("platform_truth_sync_log");
 export const platformValidationScores = crud("platform_validation_scores");
+export const platformScenarios = crud("scenarios");
