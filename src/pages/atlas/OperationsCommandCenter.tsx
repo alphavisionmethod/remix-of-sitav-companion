@@ -72,8 +72,8 @@ export default function OperationsCommandCenter() {
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
-          { label: "Services Healthy", value: `${DEMO_services.filter(s => s.status === "healthy").length}/${services.length}`, color: DEMO_services.every(s => s.status === "healthy") ? "text-green-400" : "text-amber-400" },
-          { label: "SLO Budget Avg", value: `${Math.round(DEMO_slos.reduce((s, l) => s + l.budget, 0) / slos.length)}%`, color: "text-green-400" },
+          { label: "Services Healthy", value: `${DEMO_services.filter(s => s.status === "healthy").length}/${DEMO_services.length}`, color: DEMO_services.every(s => s.status === "healthy") ? "text-green-400" : "text-amber-400" },
+          { label: "SLO Budget Avg", value: `${Math.round(DEMO_slos.reduce((s, l) => s + l.budget, 0) / DEMO_slos.length)}%`, color: "text-green-400" },
           { label: "Active Alerts", value: DEMO_alerts.filter(a => !a.acknowledged).length, color: DEMO_alerts.some(a => !a.acknowledged) ? "text-amber-400" : "text-green-400" },
           { label: "Active Incidents", value: DEMO_incidents.filter(i => i.status !== "resolved").length, color: DEMO_incidents.some(i => i.status !== "resolved") ? "text-amber-400" : "text-green-400" },
           { label: "Runbooks", value: DEMO_runbooks.length, color: "text-blue-400" },
@@ -91,7 +91,7 @@ export default function OperationsCommandCenter() {
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5 flex-wrap">
           {[
             { value: "health", label: "Service Health", icon: Activity },
-            { value: "slos", label: "SLO Burn", icon: Gauge },
+            { value: "DEMO_slos", label: "SLO Burn", icon: Gauge },
             { value: "alerts", label: "Alert Triage", icon: AlertTriangle },
             { value: "incidents", label: "Incidents", icon: Radio },
             { value: "queues", label: "Queues & Lag", icon: BarChart3 },
@@ -120,7 +120,7 @@ export default function OperationsCommandCenter() {
             ))}
           </TabsContent>
 
-          <TabsContent value="slos">
+          <TabsContent value="DEMO_slos">
             {DEMO_slos.map(slo => (
               <Card key={slo.name} className="bg-card/50 border-border/50 mb-2">
                 <CardContent className="p-3">
