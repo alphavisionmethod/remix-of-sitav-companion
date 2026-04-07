@@ -161,8 +161,8 @@ export async function fetchMoneyPolicies(mode: RealityModeKey = "real"): Promise
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_POLICIES, emptyDefault: [] });
   const { data, error } = await fromDynamicTable("money_policies").select("*").eq("user_id", userId).order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? ((data as unknown as Record<string, unknown>[])).map((p): MoneyPolicy => ({
-    id: p.id, title: p.title, description: p.description || "", category: p.category,
-    enabled: p.enabled, threshold: p.threshold ? Number(p.threshold) : null, icon_key: p.icon_key,
+    id: String(p.id), title: String(p.title), description: String(p.description || ""), category: String(p.category),
+    enabled: Boolean(p.enabled), threshold: p.threshold ? Number(p.threshold) : null, icon_key: String(p.icon_key),
   })) : null;
   return resolveByMode({ mode, realData: mapped, demoData: DEMO_POLICIES, emptyDefault: [] });
 }
