@@ -4,6 +4,7 @@
 // not features. "What are you trying to achieve?"
 // ═══════════════════════════════════════════════════════════════
 
+import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { Target, TrendingUp, ArrowRight, Sparkles, Plus, RefreshCw } from "lucide-react";
 import { motion } from "framer-motion";
@@ -12,14 +13,40 @@ import { InterventionCard } from "@/components/sita/primitives/InterventionCard"
 import { SpilloverCard } from "@/components/sita/primitives/SpilloverBadge";
 import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
 import { ExecutionChainTimeline, buildDefaultChain } from "@/components/sita/primitives/ExecutionChainTimeline";
-import { KPITile, SectionHeader } from "@/components/sita/SitaComponents";
+import { KPITile, SectionHeader, EmptyState } from "@/components/sita/SitaComponents";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_OUTCOMES, DEMO_INTERVENTIONS, DEMO_SPILLOVERS } from "@/lib/demo-data/outcome-engine";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useOutcomes } from "@/hooks/use-live-data";
 
 export default function OutcomeEnginePage() {
-  const totalProgress = Math.round(DEMO_OUTCOMES.reduce((s, o) => s + o.progress, 0) / DEMO_OUTCOMES.length);
+  const { isDemoMode } = useDataMode();
+  const { data: liveOutcomes } = useOutcomes();
+
+  // Map live data to demo shape or use demo data
+  const outcomes = useMemo(() => {
+    if (isDemoMode) return DEMO_OUTCOMES;
+    if (!liveOutcomes?.length) return [];
+    return liveOutcomes.map((o: any) => ({
+      id: o.id,
+      title: o.title,
+      description: o.description || "",
+      progress: o.target_value > 0 ? Math.round((o.current_value / o.target_value) * 100) : 0,
+      blockers: [],
+      nextAction: "",
+      impact: o.category || "general",
+      domain: o.category || "general",
+    }));
+  }, [isDemoMode, liveOutcomes]);
+
+  const interventions = isDemoMode ? DEMO_INTERVENTIONS : [];
+  const spillovers = isDemoMode ? DEMO_SPILLOVERS : [];
+
+  const totalProgress = outcomes.length > 0
+    ? Math.round(outcomes.reduce((s: number, o: any) => s + o.progress, 0) / outcomes.length)
+    : 0;
 
   return (
     <div className="space-y-8 p-6 max-w-7xl mx-auto">
@@ -49,9 +76,9 @@ export default function OutcomeEnginePage() {
       {/* KPI Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <KPITile label="Overall Progress" value={`${totalProgress}%`} trend="up" icon={Target} sub="Across all outcomes" />
-        <KPITile label="Active Outcomes" value={DEMO_OUTCOMES.length} icon={TrendingUp} sub="5 tracked" />
-        <KPITile label="Interventions Ready" value={DEMO_INTERVENTIONS.length} trend="up" icon={Sparkles} sub="Cross-domain actions" />
-        <KPITile label="Spillovers Detected" value={DEMO_SPILLOVERS.length} trend="down" icon={RefreshCw} sub="Life ↔ work impacts" />
+        <KPITile label="Active Outcomes" value={outcomes.length} icon={TrendingUp} sub={`${outcomes.length} tracked`} />
+        <KPITile label="Interventions Ready" value={interventions.length} trend="up" icon={Sparkles} sub="Cross-domain actions" />
+        <KPITile label="Spillovers Detected" value={spillovers.length} trend="down" icon={RefreshCw} sub="Life ↔ work impacts" />
       </div>
 
       <Tabs defaultValue="outcomes" className="space-y-6">
@@ -65,40 +92,52 @@ export default function OutcomeEnginePage() {
         {/* ── Outcomes Tab ────────────────────────────────── */}
         <TabsContent value="outcomes" className="space-y-4">
           <SectionHeader title="Active Outcomes" subtitle="What you're working toward" />
-          <div className="grid gap-4 lg:grid-cols-2">
-            {DEMO_OUTCOMES.map(o => (
-              <OutcomeProgress
-                key={o.id}
-                title={o.title}
-                description={o.description}
-                progress={o.progress}
-                blockers={o.blockers}
-                nextAction={o.nextAction}
-                impact={o.impact}
-                domain={o.domain}
-              />
-            ))}
-          </div>
+          {outcomes.length === 0 ? (
+            <EmptyState icon={Target} title="No outcomes yet" description="Add your first outcome to start tracking progress." />
+          ) : (
+            <div className="grid gap-4 lg:grid-cols-2">
+              {outcomes.map((o: any) => (
+                <OutcomeProgress
+                  key={o.id}
+                  title={o.title}
+                  description={o.description}
+                  progress={o.progress}
+                  blockers={o.blockers}
+                  nextAction={o.nextAction}
+                  impact={o.impact}
+                  domain={o.domain}
+                />
+              ))}
+            </div>
+          )}
         </TabsContent>
 
         {/* ── Interventions Tab ───────────────────────────── */}
         <TabsContent value="interventions" className="space-y-4">
           <SectionHeader title="Recommended Interventions" subtitle="One action that helps across modules" />
-          <div className="grid gap-4 lg:grid-cols-2">
-            {DEMO_INTERVENTIONS.map((intervention, i) => (
-              <InterventionCard key={i} {...intervention} />
-            ))}
-          </div>
+          {interventions.length === 0 ? (
+            <EmptyState icon={Sparkles} title="No interventions" description="Interventions will appear as outcomes are tracked." />
+          ) : (
+            <div className="grid gap-4 lg:grid-cols-2">
+              {interventions.map((intervention: any, i: number) => (
+                <InterventionCard key={i} {...intervention} />
+              ))}
+            </div>
+          )}
         </TabsContent>
 
         {/* ── Spillovers Tab ──────────────────────────────── */}
         <TabsContent value="spillovers" className="space-y-4">
           <SectionHeader title="Cross-Domain Spillovers" subtitle="How one area of your life affects another" />
-          <div className="grid gap-4 lg:grid-cols-2">
-            {DEMO_SPILLOVERS.map((s, i) => (
-              <SpilloverCard key={i} {...s} />
-            ))}
-          </div>
+          {spillovers.length === 0 ? (
+            <EmptyState icon={RefreshCw} title="No spillovers detected" description="Spillover detection requires tracked outcomes across multiple domains." />
+          ) : (
+            <div className="grid gap-4 lg:grid-cols-2">
+              {spillovers.map((s: any, i: number) => (
+                <SpilloverCard key={i} {...s} />
+              ))}
+            </div>
+          )}
         </TabsContent>
 
         {/* ── Autonomy Tab ────────────────────────────────── */}

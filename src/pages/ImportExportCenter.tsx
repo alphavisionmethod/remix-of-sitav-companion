@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
 import { motion } from "framer-motion";
@@ -8,16 +8,45 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_UPLOADS, DEMO_EXPORTS, type DemoUploadItem as UploadItem, type DemoExportItem as ExportItem } from "@/lib/demo-data/import-export";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useImportExportJobs } from "@/hooks/use-live-data";
 
-const MOCK_UPLOADS = DEMO_UPLOADS;
-const MOCK_EXPORTS = DEMO_EXPORTS;
-
-const STATUS_STYLES = { uploading: "text-primary", processing: "text-amber-400", complete: "text-emerald-400", failed: "text-red-400", generating: "text-amber-400", ready: "text-emerald-400", expired: "text-muted-foreground" };
-const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircle2, failed: AlertTriangle, generating: Clock, ready: CheckCircle2, expired: AlertTriangle };
+const STATUS_STYLES = { uploading: "text-primary", processing: "text-amber-400", complete: "text-emerald-400", failed: "text-red-400", generating: "text-amber-400", ready: "text-emerald-400", expired: "text-muted-foreground", pending: "text-amber-400" };
+const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircle2, failed: AlertTriangle, generating: Clock, ready: CheckCircle2, expired: AlertTriangle, pending: Clock };
 
 const ImportExportCenter = () => {
   const [tab, setTab] = useState("upload");
   const [isDragging, setIsDragging] = useState(false);
+  const { isDemoMode } = useDataMode();
+  const { data: liveJobs } = useImportExportJobs();
+
+  const uploads = useMemo(() => {
+    if (isDemoMode) return DEMO_UPLOADS;
+    if (!liveJobs?.length) return [];
+    return liveJobs.filter((j: any) => j.job_type === "import").map((j: any) => ({
+      id: j.id,
+      name: j.file_name || "Untitled",
+      type: j.format || "file",
+      size: j.file_size ? `${(j.file_size / 1024).toFixed(0)} KB` : "—",
+      status: j.status as any,
+      progress: j.progress || 0,
+      destination: undefined,
+    }));
+  }, [isDemoMode, liveJobs]);
+
+  const exports = useMemo(() => {
+    if (isDemoMode) return DEMO_EXPORTS;
+    if (!liveJobs?.length) return [];
+    return liveJobs.filter((j: any) => j.job_type === "export").map((j: any) => ({
+      id: j.id,
+      name: j.file_name || "Export",
+      type: j.format || "file",
+      size: j.file_size ? `${(j.file_size / 1024).toFixed(0)} KB` : "—",
+      status: j.status as any,
+      generatedAt: j.completed_at || j.created_at,
+      expiresAt: undefined,
+    }));
+  }, [isDemoMode, liveJobs]);
 
   return (
     <div className="min-h-screen pb-12">
@@ -47,35 +76,39 @@ const ImportExportCenter = () => {
 
           {/* Recent uploads */}
           <SitaCardTitle className="text-xs mb-3">Recent Uploads</SitaCardTitle>
-          <div className="space-y-2">
-            {MOCK_UPLOADS.map(item => {
-              const StatusIcon = STATUS_ICONS[item.status];
-              return (
-                <SitaCard key={item.id} className="p-3" hover>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-card/50 flex items-center justify-center">
-                      {item.type === "image" ? <Image className="w-4 h-4 text-muted-foreground" /> :
-                       item.type === "spreadsheet" ? <FileSpreadsheet className="w-4 h-4 text-muted-foreground" /> :
-                       <FileText className="w-4 h-4 text-muted-foreground" />}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs font-medium truncate">{item.name}</div>
-                      <div className="text-[10px] text-muted-foreground">{item.size}{item.destination ? ` → ${item.destination}` : ""}</div>
-                    </div>
-                    {item.status === "uploading" && (
-                      <div className="w-20">
-                        <div className="h-1.5 rounded-full bg-border/30 overflow-hidden">
-                          <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${item.progress}%` }} />
-                        </div>
-                        <div className="text-[9px] text-muted-foreground text-right mt-0.5">{item.progress}%</div>
+          {uploads.length === 0 && !isDemoMode ? (
+            <EmptyState icon={Upload} title="No uploads yet" description="Upload files to see them here." />
+          ) : (
+            <div className="space-y-2">
+              {uploads.map((item: any) => {
+                const StatusIcon = STATUS_ICONS[item.status as keyof typeof STATUS_ICONS] || Clock;
+                return (
+                  <SitaCard key={item.id} className="p-3" hover>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-card/50 flex items-center justify-center">
+                        {item.type === "image" ? <Image className="w-4 h-4 text-muted-foreground" /> :
+                         item.type === "spreadsheet" ? <FileSpreadsheet className="w-4 h-4 text-muted-foreground" /> :
+                         <FileText className="w-4 h-4 text-muted-foreground" />}
                       </div>
-                    )}
-                    <StatusIcon className={cn("w-4 h-4", STATUS_STYLES[item.status])} />
-                  </div>
-                </SitaCard>
-              );
-            })}
-          </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs font-medium truncate">{item.name}</div>
+                        <div className="text-[10px] text-muted-foreground">{item.size}{item.destination ? ` → ${item.destination}` : ""}</div>
+                      </div>
+                      {item.status === "uploading" && (
+                        <div className="w-20">
+                          <div className="h-1.5 rounded-full bg-border/30 overflow-hidden">
+                            <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${item.progress}%` }} />
+                          </div>
+                          <div className="text-[9px] text-muted-foreground text-right mt-0.5">{item.progress}%</div>
+                        </div>
+                      )}
+                      <StatusIcon className={cn("w-4 h-4", STATUS_STYLES[item.status as keyof typeof STATUS_STYLES])} />
+                    </div>
+                  </SitaCard>
+                );
+              })}
+            </div>
+          )}
         </motion.div>
       )}
 
@@ -118,26 +151,30 @@ const ImportExportCenter = () => {
 
       {tab === "exports" && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <div className="space-y-2">
-            {MOCK_EXPORTS.map(item => {
-              const StatusIcon = STATUS_ICONS[item.status as keyof typeof STATUS_ICONS] || Clock;
-              return (
-                <SitaCard key={item.id} className="p-3" hover>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-card/50 flex items-center justify-center">
-                      <Download className="w-4 h-4 text-muted-foreground" />
+          {exports.length === 0 && !isDemoMode ? (
+            <EmptyState icon={Download} title="No exports yet" description="Export data to see download history here." />
+          ) : (
+            <div className="space-y-2">
+              {exports.map((item: any) => {
+                const StatusIcon = STATUS_ICONS[item.status as keyof typeof STATUS_ICONS] || Clock;
+                return (
+                  <SitaCard key={item.id} className="p-3" hover>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-card/50 flex items-center justify-center">
+                        <Download className="w-4 h-4 text-muted-foreground" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs font-medium truncate">{item.name}</div>
+                        <div className="text-[10px] text-muted-foreground">{item.size} · {(item.type || "").toUpperCase()}</div>
+                      </div>
+                      <Badge className={cn("text-[9px]", STATUS_STYLES[item.status as keyof typeof STATUS_STYLES])}>{item.status}</Badge>
+                      {item.status === "ready" && <Button size="sm" variant="ghost" className="text-xs h-7"><Download className="w-3 h-3" /></Button>}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs font-medium truncate">{item.name}</div>
-                      <div className="text-[10px] text-muted-foreground">{item.size} · {item.type.toUpperCase()}</div>
-                    </div>
-                    <Badge className={cn("text-[9px]", STATUS_STYLES[item.status as keyof typeof STATUS_STYLES])}>{item.status}</Badge>
-                    {item.status === "ready" && <Button size="sm" variant="ghost" className="text-xs h-7"><Download className="w-3 h-3" /></Button>}
-                  </div>
-                </SitaCard>
-              );
-            })}
-          </div>
+                  </SitaCard>
+                );
+              })}
+            </div>
+          )}
         </motion.div>
       )}
     </div>

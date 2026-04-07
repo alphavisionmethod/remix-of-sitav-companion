@@ -448,7 +448,7 @@ const RevenueCallingPage = () => {
       {/* Call History */}
       {activeView === "logs" && (
         <div className="space-y-2">
-          {MOCK_CALL_LOGS.sort((a, b) => b.timestamp - a.timestamp).map(log => (
+          {callLogs.sort((a, b) => b.timestamp - a.timestamp).map(log => (
             <SitaCard key={log.id} className="p-3">
               <div className="flex items-center gap-3">
                 <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-lg",
