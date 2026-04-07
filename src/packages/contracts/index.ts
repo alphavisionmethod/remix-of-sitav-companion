@@ -86,9 +86,10 @@ export type {
   // experience-grammar
   ExperienceGrammarRecord, GrammarType, GrammarValue, SurfaceRenderingRule,
   // shell-contract
-  ShellManifestRecord, ShellCapabilityBinding,
+  ShellManifest, ShellCapability,
   // surface-types
-  SurfaceType,
+  SurfaceKey, SurfaceClass, ReadinessStage, ShellType, InputMode, OutputMode,
+  SurfaceTypeRecord, ShellImplementationRecord, SurfaceReadinessRecord, SurfaceConstraintRecord,
 } from "./msa";
 export {
   DEVICE_ROADMAP, SURFACE_STRATEGY_MATRIX,
