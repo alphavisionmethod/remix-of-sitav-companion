@@ -547,9 +547,9 @@ export function useSupportCases() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["support-cases", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<SupportCase[]> => {
       if (isDemoMode) return mockSupportCases;
-      return callAdminAPI("support-cases");
+      return callAdminAPI<SupportCase[]>("support-cases");
     },
     staleTime: isDemoMode ? Infinity : 30000,
   });
