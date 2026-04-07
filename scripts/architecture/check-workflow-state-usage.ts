@@ -13,6 +13,17 @@ const VALID_WORKFLOW_STATES = [
   "success", "warning", "degraded", "blocked", "skipped",
   "resumed", "completed", "failed", "error", "cancelled",
   "pending", "processing", "awaiting_approval", "approved", "rejected",
+  // Extended operational states used by runtime services
+  "queued", "running", "paused", "stopped", "suspended", "retrying",
+  "healthy", "unhealthy", "starting", "stopping", "restarting",
+  "connected", "disconnected", "reconnecting", "synced", "stale",
+  "deprecated", "archived", "draft", "published", "scheduled",
+  "escalated", "delegated", "overridden", "resolved", "acknowledged",
+  "initialized", "provisioning", "ready", "terminating", "terminated",
+  "enabled", "disabled", "locked", "unlocked", "verified", "unverified",
+  "partial", "complete", "incomplete", "expired", "renewed",
+  "sent", "delivered", "read", "bounced", "suppressed",
+  "open", "closed", "in_progress", "on_hold", "deferred",
 ];
 
 // Find workflow state references in services
