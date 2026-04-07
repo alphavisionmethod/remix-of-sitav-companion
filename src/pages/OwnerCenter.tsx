@@ -338,9 +338,9 @@ const OwnerCenter = () => {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="System Health" value={openIncidents === 0 ? "100%" : openIncidents <= 2 ? "94%" : "82%"} trend={openIncidents === 0 ? "up" : "down"} icon={Shield} className="gradient-sita-subtle" />
         <KPITile label="Open Incidents" value={openIncidents} icon={AlertTriangle} sub={openIncidents > 0 ? `${incidents.filter((i: any) => i.severity === "SEV-1").length} critical` : "All clear"} />
-        <KPITile label="Fleet Devices" value={`${fleetData?.kpis?.online || 0}/${fleetData?.kpis?.total || 0}`} sub="Online" icon={Server} />
-        <KPITile label="Active Policies" value={policyData?.summary?.active || 0} icon={Shield} />
-        <KPITile label="Anomalies" value={intelligenceData?.anomalies?.total_anomalies || 0} icon={Zap} sub={`${intelligenceData?.anomalies?.severity_summary?.critical || 0} critical`} />
+        <KPITile label="Fleet Devices" value={`${fltD?.kpis?.online || 0}/${fltD?.kpis?.total || 0}`} sub="Online" icon={Server} />
+        <KPITile label="Active Policies" value={polD?.summary?.active || 0} icon={Shield} />
+        <KPITile label="Anomalies" value={(intelligenceData as any)?.anomalies?.total_anomalies || 0} icon={Zap} sub={`${(intelligenceData as any)?.anomalies?.severity_summary?.critical || 0} critical`} />
       </div>
 
       {/* Tabs */}
