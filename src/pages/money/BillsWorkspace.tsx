@@ -232,7 +232,7 @@ const BillsWorkspace = () => {
                   </div>
                 </SitaCard>
                 <div className="flex gap-2 flex-wrap">
-                  {selected.computedStatus !== "paid" && <SitaButton variant="primary" size="sm" className="flex-1" onClick={() => markPaidMutation.mutate(selected.id)}><CheckCircle className="h-3.5 w-3.5" /> Mark Paid</SitaButton>}
+                  {selected.computedStatus !== "paid" && <SitaButton variant="primary" size="sm" className="flex-1" onClick={() => markPaidMutation.mutate({ id: selected.id })}><CheckCircle className="h-3.5 w-3.5" /> Mark Paid</SitaButton>}
                   {selected.computedStatus !== "paid" && (
                     <SitaButton variant="secondary" size="sm" onClick={() => {
                       const sim = simulatePayment(
