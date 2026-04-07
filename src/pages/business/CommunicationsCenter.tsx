@@ -61,12 +61,12 @@ const CommunicationsCenter = () => {
   // Map DB communications to local type
   const liveComms: Communication[] = dbComms.map((c: any) => ({
     id: c.id,
-    type: (c.channel || "email") as "email" | "sms" | "message",
-    subject: c.subject || c.title || "",
-    body: c.body || c.content || "",
+    type: (c.channel || c.type || "email") as "email" | "sms" | "message",
+    subject: c.subject || "",
+    body: c.body || "",
     status: (c.status || "draft") as CommStatus,
     requires_approval: c.requires_approval || false,
-    customer_name: c.customer_name || c.recipient || "",
+    customer_name: c.contact_name || "",
     created_at: c.created_at,
     sent_at: c.sent_at || null,
   }));
