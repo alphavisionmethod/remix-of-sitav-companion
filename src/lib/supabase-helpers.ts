@@ -18,9 +18,10 @@ export function fromTable<T extends TableName>(table: T) {
 
 /**
  * Access a Supabase table by dynamic (runtime) name.
- * Use when the table name comes from a variable, not a string literal.
- * Returns untyped query builder — caller is responsible for types.
+ * Bypasses RejectExcessProperties — caller is responsible for types.
+ * Returns a loosely-typed query builder for maximum flexibility.
  */
 export function fromDynamicTable(table: string) {
-  return supabase.from(table as TableName);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (supabase as Record<string, (...args: unknown[]) => unknown>).from(table) as ReturnType<typeof supabase.from<'action_escalations'>>;
 }
