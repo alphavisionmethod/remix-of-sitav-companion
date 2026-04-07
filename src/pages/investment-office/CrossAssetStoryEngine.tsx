@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { Network, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 
-const NARRATIVES = [
+const DEMO_NARRATIVES = [
   {
     id: "n1", title: "AI Infrastructure Supercycle", icon: "🤖", strength: 90,
     connections: [
@@ -49,6 +51,8 @@ const NARRATIVES = [
 ];
 
 export default function CrossAssetStoryEngine() {
+  const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
 
   return (
@@ -59,7 +63,7 @@ export default function CrossAssetStoryEngine() {
         <p className="text-sm text-muted-foreground mt-0.5">Map narratives across markets — see what connects stocks, crypto, commodities, and events</p>
       </div>
 
-      {NARRATIVES.map((n, ni) => (
+      {DEMO_NARRATIVES.map((n, ni) => (
         <motion.div key={n.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: ni * 0.06 }}
           className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <div className="flex items-center gap-3">

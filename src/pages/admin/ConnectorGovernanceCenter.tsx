@@ -55,7 +55,7 @@ const CRED_CONFIG: Record<string, { color: string }> = {
   missing: { color: "text-muted-foreground" },
 };
 
-const FALLBACK_SYNC_HISTORY = [
+const DEMO_FALLBACK_SYNC_HISTORY = [
   { connector: "Plaid Banking", time: "15m ago", status: "success", records: 24, duration: "1.2s" },
   { connector: "Stripe Payments", time: "5m ago", status: "success", records: 8, duration: "0.4s" },
   { connector: "Gmail", time: "10m ago", status: "success", records: 15, duration: "2.1s" },
@@ -63,7 +63,7 @@ const FALLBACK_SYNC_HISTORY = [
   { connector: "CRM Sync", time: "6h ago", status: "failed", records: 0, duration: "12s" },
 ];
 
-const POLICIES = [
+const DEMO_POLICIES = [
   { connector: "plaid", maxStaleness: "1 hour", syncInterval: "30 min", retryPolicy: "3 attempts, exponential backoff", affectedFields: ["account-balances", "transaction-records"] },
   { connector: "stripe", maxStaleness: "30 min", syncInterval: "15 min", retryPolicy: "5 attempts, linear", affectedFields: ["payment-confirmations", "invoice-records"] },
   { connector: "google-cal", maxStaleness: "30 min", syncInterval: "30 min", retryPolicy: "3 attempts, exponential", affectedFields: ["calendar-events"] },
@@ -78,7 +78,7 @@ export default function ConnectorGovernanceCenter() {
   const queryClient = useQueryClient();
 
   // Fetch real sync history from audit_logs
-  const { data: syncHistory = FALLBACK_SYNC_HISTORY } = useQuery({
+  const { data: syncHistory = DEMO_FALLBACK_SYNC_HISTORY } = useQuery({
     queryKey: ["connector-sync-history", user?.id],
     enabled: !!user,
     refetchInterval: tab === "history" ? 5000 : false,
@@ -89,7 +89,7 @@ export default function ConnectorGovernanceCenter() {
         .or("category.eq.connector,action.ilike.sync%")
         .order("created_at", { ascending: false })
         .limit(30);
-      if (error || !data || data.length === 0) return FALLBACK_SYNC_HISTORY;
+      if (error || !data || data.length === 0) return DEMO_FALLBACK_SYNC_HISTORY;
       return data.map((log: any) => ({
         connector: log.details?.connector_type || log.target_type || "Unknown",
         time: new Date(log.created_at).toLocaleString(),
@@ -301,7 +301,7 @@ export default function ConnectorGovernanceCenter() {
 
           <TabsContent value="policies">
             <div className="space-y-3">
-              {POLICIES.map(pol => (
+              {DEMO_POLICIES.map(pol => (
                 <Card key={pol.connector} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <p className="text-sm font-medium text-foreground capitalize mb-2">{pol.connector}</p>

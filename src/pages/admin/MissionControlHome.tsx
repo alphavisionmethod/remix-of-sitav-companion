@@ -15,7 +15,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
+const fadeUp = {
+  const { isDemoMode } = useDataMode(); hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 type HealthStatus = "healthy" | "warning" | "degraded" | "critical";
@@ -27,7 +28,7 @@ const statusColor: Record<HealthStatus, string> = {
   critical: "bg-red-500/10 text-red-500 border-red-500/20",
 };
 
-const SERVICES = [
+const DEMO_SERVICES = [
   { name: "Brain Core", status: "healthy" as HealthStatus, latency: 12, uptime: 99.99 },
   { name: "Approval Engine", status: "healthy" as HealthStatus, latency: 18, uptime: 99.97 },
   { name: "Workflow Engine", status: "warning" as HealthStatus, latency: 45, uptime: 99.91 },
@@ -38,7 +39,7 @@ const SERVICES = [
   { name: "Admin Service", status: "healthy" as HealthStatus, latency: 10, uptime: 99.99 },
 ];
 
-const URGENT_ACTIONS = [
+const DEMO_URGENT_ACTIONS = [
   { id: "1", title: "Connector degradation — Slack sync stale >15m", severity: "high", route: "/admin/connectors" },
   { id: "2", title: "Workflow engine latency spike (p99 >200ms)", severity: "medium", route: "/admin/incidents" },
   { id: "3", title: "2 pending approval requests >1h", severity: "low", route: "/admin/dashboard" },
@@ -63,8 +64,8 @@ const MissionControlHome = () => {
     },
   });
 
-  const healthyCount = SERVICES.filter(s => s.status === "healthy").length;
-  const overallHealth: HealthStatus = SERVICES.some(s => s.status === "critical") ? "critical" : SERVICES.some(s => s.status === "degraded") ? "degraded" : SERVICES.some(s => s.status === "warning") ? "warning" : "healthy";
+  const healthyCount = DEMO_SERVICES.filter(s => s.status === "healthy").length;
+  const overallHealth: HealthStatus = DEMO_SERVICES.some(s => s.status === "critical") ? "critical" : DEMO_SERVICES.some(s => s.status === "degraded") ? "degraded" : DEMO_SERVICES.some(s => s.status === "warning") ? "warning" : "healthy";
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -89,7 +90,7 @@ const MissionControlHome = () => {
         {/* Top Metrics */}
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
           {[
-            { label: "Services Healthy", value: `${healthyCount}/${SERVICES.length}`, icon: Server, color: "text-emerald-500" },
+            { label: "Services Healthy", value: `${healthyCount}/${DEMO_SERVICES.length}`, icon: Server, color: "text-emerald-500" },
             { label: "Active Incidents", value: String(incidentCount ?? 0), icon: AlertTriangle, color: "text-amber-500" },
             { label: "Pending Approvals", value: String(approvalCount ?? 0), icon: Shield, color: "text-blue-500" },
             { label: "SLO Budget Burn", value: "2.1%", icon: Target, color: "text-emerald-500" },
@@ -119,7 +120,7 @@ const MissionControlHome = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  {SERVICES.map((svc) => (
+                  {DEMO_SERVICES.map((svc) => (
                     <div key={svc.name} className="p-3 rounded-lg border bg-card hover:bg-muted/50 transition-colors">
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-xs font-medium text-foreground">{svc.name}</span>
@@ -145,7 +146,7 @@ const MissionControlHome = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {URGENT_ACTIONS.map((a) => (
+                {DEMO_URGENT_ACTIONS.map((a) => (
                   <Link key={a.id} to={a.route} className="block p-3 rounded-lg border hover:bg-muted/50 transition-colors group">
                     <div className="flex items-start gap-2">
                       <AlertTriangle className={`h-3.5 w-3.5 mt-0.5 flex-shrink-0 ${a.severity === "high" ? "text-red-500" : a.severity === "medium" ? "text-amber-500" : "text-blue-500"}`} />
@@ -153,7 +154,7 @@ const MissionControlHome = () => {
                     </div>
                   </Link>
                 ))}
-                {URGENT_ACTIONS.length === 0 && (
+                {DEMO_URGENT_ACTIONS.length === 0 && (
                   <div className="text-center py-6 text-muted-foreground text-xs">
                     <CheckCircle className="h-8 w-8 mx-auto mb-2 text-emerald-500/50" />
                     All clear — no urgent actions

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useSites } from "@/hooks/use-digital-presence";
 
 const DEMO_PLATFORMS = [
   { name: "Shopify", icon: "🛒", connected: true, url: "mystore.myshopify.com", health: 94, lastSync: "2 min ago", products: 48, issues: 1 },
@@ -33,6 +34,7 @@ const DEMO_AI_RECOMMENDATIONS = [
 
 export default function ConnectedSites() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useSites();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />

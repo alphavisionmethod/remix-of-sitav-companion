@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const HEALTH_SEGMENTS = [
+const DEMO_HEALTH_SEGMENTS = [
   { label: "Thriving", count: 38, pct: 57, color: "bg-green-400" },
   { label: "Stable", count: 16, pct: 24, color: "bg-blue-400" },
   { label: "Cooling", count: 8, pct: 12, color: "bg-yellow-400" },
@@ -19,7 +19,7 @@ const DEMO_AT_RISK = [
   { name: "Rachel Kim", company: "Bright Ideas", ltv: "$4,600", lastActive: "2 weeks ago", signals: ["Usage ↓ 40%", "Skipped last session", "No email opens 14d"] },
 ];
 
-const WIN_BACK = [
+const DEMO_WIN_BACK = [
   { name: "Tom Bradley", churned: "45 days ago", ltv: "$3,200", reason: "Pricing concern", strategy: "Offer 20% loyalty discount" },
   { name: "Ana Santos", churned: "30 days ago", ltv: "$5,800", reason: "Competitor switch", strategy: "Feature comparison + personal call" },
 ];
@@ -56,12 +56,12 @@ export default function RetentionOffice() {
         <CardHeader className="pb-3"><CardTitle className="text-sm font-medium">Customer Health Segments</CardTitle></CardHeader>
         <CardContent>
           <div className="flex gap-1 h-8 rounded-full overflow-hidden mb-4">
-            {HEALTH_SEGMENTS.map(s => (
+            {DEMO_HEALTH_SEGMENTS.map(s => (
               <div key={s.label} className={`${s.color} transition-all`} style={{ width: `${s.pct}%` }} />
             ))}
           </div>
           <div className="flex gap-6">
-            {HEALTH_SEGMENTS.map(s => (
+            {DEMO_HEALTH_SEGMENTS.map(s => (
               <div key={s.label} className="flex items-center gap-2">
                 <div className={`w-2 h-2 rounded-full ${s.color}`} />
                 <span className="text-xs text-muted-foreground">{s.label}: {s.count}</span>
@@ -97,7 +97,7 @@ export default function RetentionOffice() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><RefreshCw className="w-4 h-4 text-primary" /> Win-Back Queue</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {WIN_BACK.map(c => (
+            {DEMO_WIN_BACK.map(c => (
               <div key={c.name} className="p-3 rounded-lg bg-muted/10 border border-border/30">
                 <div className="flex items-center justify-between mb-2">
                   <div>

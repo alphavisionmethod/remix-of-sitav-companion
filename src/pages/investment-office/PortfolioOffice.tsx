@@ -2,11 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { DollarSign, TrendingUp, TrendingDown, PieChart, Shield, RefreshCw, ExternalLink, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PLATFORM_CONNECTIONS, PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
+import { usePortfolioPositions } from "@/hooks/use-investment-office";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 
 export default function PortfolioOffice() {
+  const { data: liveData, isLoading } = usePortfolioPositions();
   const navigate = useNavigate();
   const p = PORTFOLIO;
   const sortedHoldings = [...p.holdings].sort((a, b) => b.currentValue - a.currentValue);

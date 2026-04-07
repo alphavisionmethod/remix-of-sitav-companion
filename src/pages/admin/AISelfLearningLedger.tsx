@@ -7,7 +7,7 @@ import { BookOpen, TrendingUp, CheckCircle2, AlertTriangle, RotateCcw, Brain, Ta
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const LEARNED_PATTERNS = [
+const DEMO_LEARNED_PATTERNS = [
   { pattern: "Route mapping errors recur after lazy-import refactors", frequency: "4x / 30d", confidence: 88, domain: "Frontend", action: "Added pre-commit route validation", status: "active" as const, impact: "Prevented 3 broken routes" },
   { pattern: "Feature flag rollbacks cluster within 2 hours of activation", frequency: "5x / 30d", confidence: 82, domain: "Deployment", action: "Canary rollout required for medium+ flags", status: "active" as const, impact: "Reduced flag rollbacks 60%" },
   { pattern: "CDN cache staleness correlates with brand kit mutations", frequency: "Weekly", confidence: 91, domain: "Infrastructure", action: "Auto-invalidate on brand kit save", status: "active" as const, impact: "Zero stale brand reports since" },
@@ -16,7 +16,7 @@ const LEARNED_PATTERNS = [
   { pattern: "Approval flow tests become flaky after UI dependency updates", frequency: "3x / 14d", confidence: 79, domain: "QA", action: "Replace timing-dependent assertions with waitFor", status: "proposed" as const, impact: "Estimated: -80% flaky tests" },
 ];
 
-const BEHAVIOR_CHANGES = [
+const DEMO_BEHAVIOR_CHANGES = [
   { change: "Error Fixer now checks for existing lazy imports before proposing route fixes", learnedFrom: "False positive: suggested import that already existed", date: "Apr 3", improvement: "+4% accuracy" },
   { change: "Reliability Engineer auto-reverts feature flags within 90 min if error rate > 2x baseline", learnedFrom: "revenue-sidebar-v2 flag caused 3 render errors for 45 min", date: "Apr 4", improvement: "45 min → 12 min MTTR" },
   { change: "Design Engineer includes design token audit in all proposals", learnedFrom: "2 proposals used hardcoded colors instead of semantic tokens", date: "Mar 28", improvement: "+15% consistency score" },
@@ -24,7 +24,7 @@ const BEHAVIOR_CHANGES = [
   { change: "Release Manager requires 4-hour soak time before staging→prod promotion", learnedFrom: "v2.14.0 promoted after 30 min, required rollback", date: "Mar 28", improvement: "Zero premature promotions since" },
 ];
 
-const ROUTING_WEIGHTS = [
+const DEMO_ROUTING_WEIGHTS = [
   { agent: "Error Fixer", weight: 1.12, trend: "up" as const, reason: "91% accuracy, 3% improvement this month" },
   { agent: "QA Engineer", weight: 1.05, trend: "stable" as const, reason: "88% accuracy, consistent performance" },
   { agent: "Design Engineer", weight: 0.92, trend: "up" as const, reason: "79% accuracy, improving from 71%" },
@@ -35,6 +35,7 @@ const ROUTING_WEIGHTS = [
 ];
 
 const AISelfLearningLedger = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("patterns");
 
   return (
@@ -44,10 +45,10 @@ const AISelfLearningLedger = () => {
 
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Active Patterns", v: LEARNED_PATTERNS.filter(p => p.status === "active").length },
-          { l: "Behavior Changes", v: BEHAVIOR_CHANGES.length },
-          { l: "Avg Pattern Confidence", v: `${Math.round(LEARNED_PATTERNS.reduce((a,p) => a + p.confidence, 0) / LEARNED_PATTERNS.length)}%` },
-          { l: "Top Agent Weight", v: Math.max(...ROUTING_WEIGHTS.map(w => w.weight)).toFixed(2) },
+          { l: "Active Patterns", v: DEMO_LEARNED_PATTERNS.filter(p => p.status === "active").length },
+          { l: "Behavior Changes", v: DEMO_BEHAVIOR_CHANGES.length },
+          { l: "Avg Pattern Confidence", v: `${Math.round(DEMO_LEARNED_PATTERNS.reduce((a,p) => a + p.confidence, 0) / DEMO_LEARNED_PATTERNS.length)}%` },
+          { l: "Top Agent Weight", v: Math.max(...DEMO_ROUTING_WEIGHTS.map(w => w.weight)).toFixed(2) },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className="text-xl font-bold">{c.v}</p>
@@ -64,7 +65,7 @@ const AISelfLearningLedger = () => {
         </TabsList>
 
         <TabsContent value="patterns" className="space-y-2 mt-4">
-          {LEARNED_PATTERNS.map((p, i) => (
+          {DEMO_LEARNED_PATTERNS.map((p, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-semibold">{p.pattern}</span>
@@ -88,7 +89,7 @@ const AISelfLearningLedger = () => {
         </TabsContent>
 
         <TabsContent value="behavior" className="space-y-2 mt-4">
-          {BEHAVIOR_CHANGES.map((b, i) => (
+          {DEMO_BEHAVIOR_CHANGES.map((b, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <p className="text-sm font-medium mb-1">{b.change}</p>
               <div className="rounded-lg bg-muted/30 p-2 mb-2">
@@ -103,7 +104,7 @@ const AISelfLearningLedger = () => {
         </TabsContent>
 
         <TabsContent value="routing" className="space-y-2 mt-4">
-          {ROUTING_WEIGHTS.map((w, i) => (
+          {DEMO_ROUTING_WEIGHTS.map((w, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4 flex items-center gap-3">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Gift, Heart, Calendar, PartyPopper, Star, Clock, CheckCircle, ShoppingBag, Mail } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useServiceProvidersList } from "@/hooks/use-concierge-data";
 
 interface EventItem {
   id: string;

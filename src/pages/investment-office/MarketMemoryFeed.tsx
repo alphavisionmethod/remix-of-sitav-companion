@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { History, TrendingUp, TrendingDown, AlertTriangle, Brain, RefreshCw, Zap, Shield, FileText, Globe } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 
-const MEMORY_EVENTS = [
+const DEMO_MEMORY_EVENTS = [
   { id: "m1", time: "2 hours ago", type: "holding", icon: "📉", title: "NVDA dipped -1.74%", detail: "No fundamental news. Likely positioning ahead of GTC conference catalyst.", severity: "info" },
   { id: "m2", time: "4 hours ago", type: "advisor", icon: "🌍", title: "Atlas updated macro view", detail: "Fed speaker tone shifted slightly dovish this week. Updated rate cut probability assessment.", severity: "info" },
   { id: "m3", time: "6 hours ago", type: "catalyst", icon: "📅", title: "CPI Release in 39 days", detail: "Key inflation data approaches — determines Fed rate path. 45% of portfolio exposed.", severity: "warning" },
@@ -25,6 +27,8 @@ const SEVERITY_STYLES: Record<string, string> = {
 };
 
 export default function MarketMemoryFeed() {
+  const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useMarketWatchlistItems();
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <DemoModeBadge />
@@ -51,7 +55,7 @@ export default function MarketMemoryFeed() {
 
       {/* Feed */}
       <div className="space-y-2">
-        {MEMORY_EVENTS.map((evt, i) => (
+        {DEMO_MEMORY_EVENTS.map((evt, i) => (
           <motion.div key={evt.id} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}
             className={`rounded-xl border p-4 ${SEVERITY_STYLES[evt.severity] || SEVERITY_STYLES.info}`}>
             <div className="flex items-start gap-3">

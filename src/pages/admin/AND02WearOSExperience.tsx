@@ -6,7 +6,7 @@ import { Watch, ArrowRight, Clock, Zap, Eye, Smartphone, AlertTriangle, Vibrate 
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const TILES = [
+const DEMO_TILES = [
   { id: "wmn", name: "What Matters Now", priority: 0, refresh: "30s", layout: "compact", items: 3, sources: ["approvals", "alerts", "tasks"] },
   { id: "pulse", name: "Daily Pulse", priority: 1, refresh: "60s", layout: "expanded", items: 1, sources: ["pulse_score"] },
   { id: "urgent", name: "Urgent Alerts", priority: 0, refresh: "realtime", layout: "list", items: 5, sources: ["critical_alerts"] },
@@ -14,7 +14,7 @@ const TILES = [
   { id: "focus", name: "Focus State", priority: 3, refresh: "5m", layout: "compact", items: 1, sources: ["focus_mode"] },
 ];
 
-const MICRO_ACTIONS = [
+const DEMO_MICRO_ACTIONS = [
   { action: "Approve", riskCeiling: "medium", biometric: "wrist_detection", gesture: "tap", feedback: "haptic_success" },
   { action: "Reject", riskCeiling: "medium", biometric: "wrist_detection", gesture: "tap", feedback: "haptic_failure" },
   { action: "Snooze", riskCeiling: "any", biometric: "none", gesture: "swipe", feedback: "haptic_click" },
@@ -22,7 +22,7 @@ const MICRO_ACTIONS = [
   { action: "Dismiss", riskCeiling: "any", biometric: "none", gesture: "swipe_away", feedback: "none" },
 ];
 
-const COMPLICATIONS = [
+const DEMO_COMPLICATIONS = [
   { name: "Pending Approvals", family: "graphicCircular", update: "realtime", data: "count" },
   { name: "Daily Pulse Score", family: "graphicCorner", update: "hourly", data: "gauge" },
   { name: "Next Action Timer", family: "graphicBezel", update: "per_minute", data: "countdown" },
@@ -50,7 +50,7 @@ const AND02WearOSExperience = () => (
 
       <TabsContent value="tiles">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {TILES.map((tile) => (
+          {DEMO_TILES.map((tile) => (
             <Card key={tile.id} className="hover:shadow-md transition-shadow">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
@@ -84,7 +84,7 @@ const AND02WearOSExperience = () => (
                 <th className="p-2">Feedback</th>
               </tr></thead>
               <tbody>
-                {MICRO_ACTIONS.map((a) => (
+                {DEMO_MICRO_ACTIONS.map((a) => (
                   <tr key={a.action} className="border-b hover:bg-muted/30">
                     <td className="p-2 font-medium">{a.action}</td>
                     <td className="p-2 text-center"><Badge variant={a.riskCeiling === "medium" ? "default" : "secondary"}>{a.riskCeiling}</Badge></td>
@@ -104,7 +104,7 @@ const AND02WearOSExperience = () => (
           <CardHeader><CardTitle className="text-sm">Complication Registry</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {COMPLICATIONS.map((c) => (
+              {DEMO_COMPLICATIONS.map((c) => (
                 <div key={c.name} className="p-4 rounded-lg border space-y-2">
                   <div className="text-sm font-medium">{c.name}</div>
                   <div className="flex gap-2 text-xs">

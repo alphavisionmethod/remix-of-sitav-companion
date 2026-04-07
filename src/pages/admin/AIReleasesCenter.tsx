@@ -7,13 +7,13 @@ import { Rocket, CheckCircle2, AlertTriangle, Shield, Clock, ArrowRight, RotateC
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const ENVIRONMENTS = [
+const DEMO_ENVIRONMENTS = [
   { env: "Production", status: "healthy" as const, confidence: 94, version: "v2.14.3", deployedAt: "Apr 4, 14:22", drift: "none", rollbackTo: "v2.14.2" },
   { env: "Staging", status: "warning" as const, confidence: 78, version: "v2.15.0-rc1", deployedAt: "Apr 5, 09:45", drift: "2 config diffs", rollbackTo: "v2.14.3" },
   { env: "Preview", status: "healthy" as const, confidence: 88, version: "v2.15.0-rc2", deployedAt: "Apr 5, 10:12", drift: "none", rollbackTo: "v2.15.0-rc1" },
 ];
 
-const RELEASE_GATES = [
+const DEMO_RELEASE_GATES = [
   { gate: "Unit Tests", status: "pass" as const, detail: "1,247/1,247 passing", required: true },
   { gate: "Integration Tests", status: "pass" as const, detail: "89/89 passing", required: true },
   { gate: "Auth Smoke Test", status: "pass" as const, detail: "Login + OAuth + session refresh verified", required: true },
@@ -28,7 +28,7 @@ const RELEASE_GATES = [
   { gate: "Feature Flag Review", status: "pass" as const, detail: "3 flags reviewed, 1 scheduled sunset", required: false },
 ];
 
-const ROLLOUT_HISTORY = [
+const DEMO_ROLLOUT_HISTORY = [
   { version: "v2.14.3", env: "Production", at: "Apr 4, 14:22", status: "live" as const, confidence: 94, gates: "11/12 pass", issues: 0 },
   { version: "v2.14.2", env: "Production", at: "Apr 2, 11:05", status: "replaced" as const, confidence: 91, gates: "12/12 pass", issues: 1 },
   { version: "v2.14.1", env: "Production", at: "Mar 30, 16:40", status: "replaced" as const, confidence: 88, gates: "10/12 pass", issues: 0 },
@@ -36,13 +36,13 @@ const ROLLOUT_HISTORY = [
   { version: "v2.13.5", env: "Production", at: "Mar 25, 14:30", status: "replaced" as const, confidence: 95, gates: "12/12 pass", issues: 0 },
 ];
 
-const ROLLBACK_OPTIONS = [
+const DEMO_ROLLBACK_OPTIONS = [
   { target: "v2.14.2", risk: "low", impact: "Reverts 1 edge function update + 3 UI fixes", estimated: "< 2 min", dataLoss: "None" },
   { target: "v2.14.1", risk: "medium", impact: "Reverts 5 edge functions + projection cache changes", estimated: "< 5 min", dataLoss: "None" },
   { target: "v2.13.5", risk: "high", impact: "Reverts 12 features + 2 schema-dependent changes", estimated: "< 10 min", dataLoss: "Possible projection staleness" },
 ];
 
-const PROMOTION_EVIDENCE = [
+const DEMO_PROMOTION_EVIDENCE = [
   { check: "All required gates passing", met: true },
   { check: "Staging soak time > 4 hours", met: false, detail: "Currently 35 minutes" },
   { check: "No active P0 incidents", met: true },
@@ -53,10 +53,11 @@ const PROMOTION_EVIDENCE = [
 ];
 
 const AIReleasesCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("readiness");
-  const passCount = RELEASE_GATES.filter(g => g.status === "pass").length;
-  const totalRequired = RELEASE_GATES.filter(g => g.required).length;
-  const requiredPass = RELEASE_GATES.filter(g => g.required && g.status === "pass").length;
+  const passCount = DEMO_RELEASE_GATES.filter(g => g.status === "pass").length;
+  const totalRequired = DEMO_RELEASE_GATES.filter(g => g.required).length;
+  const requiredPass = DEMO_RELEASE_GATES.filter(g => g.required && g.status === "pass").length;
 
   return (
     <div className="space-y-6 p-6">
@@ -65,7 +66,7 @@ const AIReleasesCenter = () => {
 
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Gates Passing", v: `${passCount}/${RELEASE_GATES.length}`, c: passCount === RELEASE_GATES.length ? "text-[hsl(var(--trust-safe))]" : "text-amber-500" },
+          { l: "Gates Passing", v: `${passCount}/${DEMO_RELEASE_GATES.length}`, c: passCount === DEMO_RELEASE_GATES.length ? "text-[hsl(var(--trust-safe))]" : "text-amber-500" },
           { l: "Required Gates", v: `${requiredPass}/${totalRequired}`, c: requiredPass === totalRequired ? "text-[hsl(var(--trust-safe))]" : "text-destructive" },
           { l: "Release Confidence", v: "78%", c: "text-amber-500" },
           { l: "Promotable", v: requiredPass === totalRequired ? "Yes" : "No", c: requiredPass === totalRequired ? "text-[hsl(var(--trust-safe))]" : "text-destructive" },
@@ -88,7 +89,7 @@ const AIReleasesCenter = () => {
 
         <TabsContent value="readiness" className="mt-4">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {RELEASE_GATES.map(g => (
+            {DEMO_RELEASE_GATES.map(g => (
               <div key={g.gate} className={`rounded-xl border p-3 ${
                 g.status === "pass" ? "border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5" :
                 g.status === "fail" ? "border-destructive/20 bg-destructive/5" :
@@ -108,7 +109,7 @@ const AIReleasesCenter = () => {
         </TabsContent>
 
         <TabsContent value="environments" className="space-y-3 mt-4">
-          {ENVIRONMENTS.map(e => (
+          {DEMO_ENVIRONMENTS.map(e => (
             <div key={e.env} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -131,7 +132,7 @@ const AIReleasesCenter = () => {
               <thead><tr className="border-b border-border/40 bg-muted/30">
                 <th className="text-left p-3">Version</th><th className="text-left p-3">Deployed</th><th className="text-center p-3">Gates</th><th className="text-center p-3">Confidence</th><th className="text-center p-3">Issues</th><th className="text-center p-3">Status</th>
               </tr></thead>
-              <tbody>{ROLLOUT_HISTORY.map(r => (
+              <tbody>{DEMO_ROLLOUT_HISTORY.map(r => (
                 <tr key={r.version + r.at} className="border-b border-border/20">
                   <td className="p-3 font-medium font-mono">{r.version}</td>
                   <td className="p-3">{r.at}</td>
@@ -146,7 +147,7 @@ const AIReleasesCenter = () => {
         </TabsContent>
 
         <TabsContent value="rollback" className="space-y-3 mt-4">
-          {ROLLBACK_OPTIONS.map(r => (
+          {DEMO_ROLLBACK_OPTIONS.map(r => (
             <div key={r.target} className={`rounded-xl border bg-card p-4 ${r.risk === "high" ? "border-destructive/30" : r.risk === "medium" ? "border-amber-500/30" : "border-border/40"}`}>
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -167,7 +168,7 @@ const AIReleasesCenter = () => {
           <div className="rounded-xl border border-border/40 bg-card p-4 mb-4">
             <div className="flex items-center gap-2 mb-3"><TrendingUp className="h-4 w-4 text-primary" /><span className="text-sm font-semibold">Staging → Production Promotion Evidence</span></div>
             <div className="space-y-2">
-              {PROMOTION_EVIDENCE.map((p, i) => (
+              {DEMO_PROMOTION_EVIDENCE.map((p, i) => (
                 <div key={i} className="flex items-center gap-2">
                   {p.met ? <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))]" /> : <AlertTriangle className="h-4 w-4 text-destructive" />}
                   <span className="text-sm">{p.check}</span>
@@ -176,9 +177,9 @@ const AIReleasesCenter = () => {
               ))}
             </div>
           </div>
-          <div className={`rounded-xl border p-4 text-center ${PROMOTION_EVIDENCE.every(p => p.met) ? "border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5" : "border-destructive/30 bg-destructive/5"}`}>
-            <p className={`text-sm font-semibold ${PROMOTION_EVIDENCE.every(p => p.met) ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
-              {PROMOTION_EVIDENCE.every(p => p.met) ? "✓ Ready to promote" : `⚠ ${PROMOTION_EVIDENCE.filter(p => !p.met).length} checks not met — promotion blocked`}
+          <div className={`rounded-xl border p-4 text-center ${DEMO_PROMOTION_EVIDENCE.every(p => p.met) ? "border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5" : "border-destructive/30 bg-destructive/5"}`}>
+            <p className={`text-sm font-semibold ${DEMO_PROMOTION_EVIDENCE.every(p => p.met) ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
+              {DEMO_PROMOTION_EVIDENCE.every(p => p.met) ? "✓ Ready to promote" : `⚠ ${DEMO_PROMOTION_EVIDENCE.filter(p => !p.met).length} checks not met — promotion blocked`}
             </p>
           </div>
         </TabsContent>

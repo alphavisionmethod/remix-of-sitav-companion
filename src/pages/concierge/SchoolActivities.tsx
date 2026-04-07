@@ -5,6 +5,7 @@ import { useState } from "react";
 import { GraduationCap, Calendar, FileText, DollarSign, Bus, Users, AlertTriangle, CheckCircle, Clock, ClipboardList } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useSchoolActivities } from "@/hooks/use-concierge-data";
 
 interface SchoolItem {
   id: string;

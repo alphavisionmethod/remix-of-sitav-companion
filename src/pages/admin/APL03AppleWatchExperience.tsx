@@ -7,14 +7,14 @@ import { Watch, Vibrate, CheckCircle, ArrowRight, Clock, Zap, Eye, AlertTriangle
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const GLANCE_CARDS = [
+const DEMO_GLANCE_CARDS = [
   { id: "wmn", name: "What Matters Now", priority: 1, refresh: "30s", maxItems: 3, sources: ["approvals", "alerts", "tasks"], interaction: "tap → open on phone" },
   { id: "pulse", name: "Daily Pulse", priority: 2, refresh: "60s", maxItems: 1, sources: ["pulse_score", "key_metric"], interaction: "tap → expand" },
   { id: "urgent", name: "Urgent Alerts", priority: 0, refresh: "realtime", maxItems: 5, sources: ["critical_alerts", "incidents"], interaction: "tap → detail + action" },
   { id: "schedule", name: "Next Up", priority: 3, refresh: "60s", maxItems: 2, sources: ["calendar", "tasks"], interaction: "tap → detail" },
 ];
 
-const HAPTIC_PATTERNS = [
+const DEMO_HAPTIC_PATTERNS = [
   { pattern: "Urgent Alert", type: "notification", intensity: "strong", repeat: 2, desc: "Two strong taps — demands attention" },
   { pattern: "Approval Request", type: "success", intensity: "medium", repeat: 1, desc: "Single confirmation tap" },
   { pattern: "Gentle Nudge", type: "click", intensity: "light", repeat: 1, desc: "Subtle reminder" },
@@ -23,7 +23,7 @@ const HAPTIC_PATTERNS = [
   { pattern: "Silent Pulse", type: "selection", intensity: "light", repeat: 1, desc: "Ambient awareness — no action needed" },
 ];
 
-const MICRO_CONSTRAINTS = [
+const DEMO_MICRO_CONSTRAINTS = [
   { label: "Max pending approvals", value: "5", desc: "Queue excess to phone" },
   { label: "Risk ceiling", value: "medium", desc: "High+ escalates to phone" },
   { label: "Biometric", value: "wrist detection", desc: "Passive verification only" },
@@ -35,6 +35,7 @@ const MICRO_CONSTRAINTS = [
 ];
 
 const APL03AppleWatchExperience = () => {
+  const { isDemoMode } = useDataMode();
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
   return (
@@ -58,7 +59,7 @@ const APL03AppleWatchExperience = () => {
 
         <TabsContent value="glances">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {GLANCE_CARDS.map((card) => (
+            {DEMO_GLANCE_CARDS.map((card) => (
               <Card key={card.id} className={`cursor-pointer transition-all ${selectedCard === card.id ? "ring-2 ring-primary" : "hover:shadow-md"}`} onClick={() => setSelectedCard(selectedCard === card.id ? null : card.id)}>
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
@@ -101,7 +102,7 @@ const APL03AppleWatchExperience = () => {
                     <th className="text-left p-2">Description</th>
                   </tr></thead>
                   <tbody>
-                    {HAPTIC_PATTERNS.map((h) => (
+                    {DEMO_HAPTIC_PATTERNS.map((h) => (
                       <tr key={h.pattern} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-medium">{h.pattern}</td>
                         <td className="p-2 text-center"><Badge variant="outline">{h.type}</Badge></td>
@@ -122,7 +123,7 @@ const APL03AppleWatchExperience = () => {
             <CardHeader><CardTitle className="text-sm">Micro-Approval Constraints</CardTitle></CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                {MICRO_CONSTRAINTS.map((c) => (
+                {DEMO_MICRO_CONSTRAINTS.map((c) => (
                   <div key={c.label} className="p-3 rounded border space-y-1">
                     <div className="text-xs font-medium">{c.label}</div>
                     <div className="text-sm font-mono font-bold">{c.value}</div>

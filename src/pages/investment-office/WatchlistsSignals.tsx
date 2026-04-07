@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Eye, Plus, Bell, Brain, TrendingUp, TrendingDown, ChevronRight, Star, Zap, Shield } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, PORTFOLIO, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
+import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 
 export default function WatchlistsSignals() {
+  const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
   const [activeList, setActiveList] = useState(WATCHLISTS[0].id);
   const current = WATCHLISTS.find(w => w.id === activeList) || WATCHLISTS[0];

@@ -5,7 +5,7 @@ import { KeyRound, Link, User, Shield, ArrowRight, CheckCircle2, AlertTriangle, 
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const IDENTITY_ARCHITECTURE = [
+const DEMO_IDENTITY_ARCHITECTURE = [
   { field: "Provider", value: "apple_sign_in", badge: "primary" },
   { field: "Protocol", value: "OAuth 2.0 + OIDC", badge: "outline" },
   { field: "Session model", value: "JWT (httpOnly cookie)", badge: "outline" },
@@ -16,7 +16,7 @@ const IDENTITY_ARCHITECTURE = [
   { field: "Revocation", value: "Supported (user-initiated + admin)", badge: "outline" },
 ];
 
-const LINK_FLOW_STEPS = [
+const DEMO_LINK_FLOW_STEPS = [
   { step: 1, icon: User, label: "User taps Sign in with Apple", detail: "Native AuthenticationServices dialog presented" },
   { step: 2, icon: Shield, label: "Apple verifies identity", detail: "Face ID / Touch ID + Apple ID password" },
   { step: 3, icon: Mail, label: "Email decision", detail: "User chooses real email or Apple private relay" },
@@ -26,7 +26,7 @@ const LINK_FLOW_STEPS = [
   { step: 7, icon: Fingerprint, label: "Device trust registered", detail: "Current device added to trusted devices list" },
 ];
 
-const SECURITY_POLICIES = [
+const DEMO_SECURITY_POLICIES = [
   { policy: "Token lifetime", value: "15 minutes (access) / 7 days (refresh)", severity: "medium" },
   { policy: "Concurrent sessions", value: "Max 5 devices", severity: "medium" },
   { policy: "Session revocation", value: "Immediate on user request", severity: "high" },
@@ -60,7 +60,7 @@ const APL04AppleIdentityAccounts = () => (
           <CardHeader><CardTitle className="text-sm">Sign in with Apple — Architecture</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {IDENTITY_ARCHITECTURE.map((item) => (
+              {DEMO_IDENTITY_ARCHITECTURE.map((item) => (
                 <div key={item.field} className="flex items-center justify-between p-3 rounded border text-xs">
                   <span className="font-medium">{item.field}</span>
                   <Badge variant={item.badge === "primary" ? "default" : "outline"}>{item.value}</Badge>
@@ -75,7 +75,7 @@ const APL04AppleIdentityAccounts = () => (
         <Card>
           <CardHeader><CardTitle className="text-sm">Identity Link Flow</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {LINK_FLOW_STEPS.map((s, i) => (
+            {DEMO_LINK_FLOW_STEPS.map((s, i) => (
               <div key={s.step} className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <s.icon className="h-4 w-4 text-primary" />
@@ -102,7 +102,7 @@ const APL04AppleIdentityAccounts = () => (
                   <th className="p-2">Severity</th>
                 </tr></thead>
                 <tbody>
-                  {SECURITY_POLICIES.map((p) => (
+                  {DEMO_SECURITY_POLICIES.map((p) => (
                     <tr key={p.policy} className="border-b hover:bg-muted/30">
                       <td className="p-2 font-medium">{p.policy}</td>
                       <td className="p-2 text-muted-foreground">{p.value}</td>

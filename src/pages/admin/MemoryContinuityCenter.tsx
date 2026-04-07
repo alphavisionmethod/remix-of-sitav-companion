@@ -14,7 +14,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
 const SCOPES = ["private", "workspace", "household", "domain", "operator", "agent", "system", "session", "decision"] as const;
-const PRIVACY_TIERS = ["public", "internal", "confidential", "restricted"] as const;
+const DEMO_PRIVACY_TIERS = ["public", "internal", "confidential", "restricted"] as const;
 
 function PrivacyBadge({ tier }: { tier: string }) {
   const c: Record<string, string> = { restricted: "bg-red-500/20 text-red-400", confidential: "bg-amber-500/20 text-amber-400", internal: "bg-blue-500/20 text-blue-400", public: "bg-emerald-500/20 text-emerald-400" };
@@ -74,7 +74,7 @@ export default function MemoryContinuityCenter() {
           <Card className="border-border/50 bg-card/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Shield className="h-4 w-4 text-primary" />Privacy Distribution</CardTitle></CardHeader>
             <CardContent className="flex gap-6">
-              {PRIVACY_TIERS.map(tier => {
+              {DEMO_PRIVACY_TIERS.map(tier => {
                 const count = (stats?.byPrivacy?.[tier] as number) ?? 0;
                 const pct = stats?.total ? (count / stats.total) * 100 : 0;
                 return (
@@ -104,7 +104,7 @@ export default function MemoryContinuityCenter() {
             <SelectTrigger className="w-40"><SelectValue placeholder="Privacy" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Privacy</SelectItem>
-              {PRIVACY_TIERS.map(t => <SelectItem key={t} value={t} className="capitalize">{t}</SelectItem>)}
+              {DEMO_PRIVACY_TIERS.map(t => <SelectItem key={t} value={t} className="capitalize">{t}</SelectItem>)}
             </SelectContent>
           </Select>
           <Button variant="outline" size="sm" onClick={() => refetch()}><RefreshCw className="h-3 w-3 mr-1" />Refresh</Button>

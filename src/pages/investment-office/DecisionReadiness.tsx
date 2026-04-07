@@ -2,8 +2,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, AlertTriangle, Check, X, Clock, Search, Brain } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 
-const PENDING_DECISIONS = [
+const DEMO_PENDING_DECISIONS = [
   {
     id: "d1", symbol: "NVDA", name: "Add to NVIDIA Position", icon: "💚", type: "Buy $8,000",
     dimensions: [
@@ -60,7 +62,9 @@ const VERDICT_CONFIG = {
 };
 
 export default function DecisionReadiness() {
-  const [selected, setSelected] = useState(PENDING_DECISIONS[0]);
+  const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useInvestmentDecisions();
+  const [selected, setSelected] = useState(DEMO_PENDING_DECISIONS[0]);
   const vc = VERDICT_CONFIG[selected.verdict];
 
   return (
@@ -72,7 +76,7 @@ export default function DecisionReadiness() {
       </div>
 
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {PENDING_DECISIONS.map(d => {
+        {DEMO_PENDING_DECISIONS.map(d => {
           const v = VERDICT_CONFIG[d.verdict];
           return (
             <button key={d.id} onClick={() => setSelected(d)}

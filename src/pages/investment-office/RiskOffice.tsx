@@ -1,8 +1,10 @@
 import { Shield, AlertTriangle, BarChart3, PieChart, TrendingDown, Eye } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
+import { useRiskScenarios } from "@/hooks/use-investment-office";
 
 export default function RiskOffice() {
+  const { data: liveData, isLoading } = useRiskScenarios();
   const p = PORTFOLIO;
   const riskAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "risk");
   const behavAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "behavioral");

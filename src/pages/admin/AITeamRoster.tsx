@@ -10,7 +10,7 @@ import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const AGENTS = [
+const DEMO_AGENTS = [
   { id: "eng-lead", name: "AI Engineering Lead", icon: Brain, domain: "Coordination", watching: "Cross-team synthesis, goal decomposition", currentTask: "Coordinating shell performance sprint", confidence: 92, autonomy: "supervised", escalation: "none" as const, tasksCompleted: 34, recommendations: 12, queueLoad: 3, accuracy: 89, missionIds: ["m-1", "m-2"], findings: 4, nextAction: "Synthesize sprint outcome report" },
   { id: "backend", name: "Backend Engineer", icon: Code, domain: "APIs & Services", watching: "API health, query performance, data models", currentTask: "Optimizing projection cache invalidation", confidence: 88, autonomy: "draft-only", escalation: "none" as const, tasksCompleted: 28, recommendations: 8, queueLoad: 2, accuracy: 86, missionIds: ["m-1"], findings: 3, nextAction: "Submit mutex lock change plan for review" },
   { id: "frontend", name: "Frontend Engineer", icon: Code, domain: "UI & Components", watching: "Route health, render performance, hydration", currentTask: "Fixing broken layout on Mission Control", confidence: 85, autonomy: "supervised", escalation: "none" as const, tasksCompleted: 41, recommendations: 15, queueLoad: 4, accuracy: 84, missionIds: ["m-3"], findings: 6, nextAction: "Complete accessibility sweep — 2 violations left" },
@@ -34,14 +34,15 @@ const autonomyColors: Record<string, string> = {
 };
 
 const AITeamRoster = () => {
+  const { isDemoMode } = useDataMode();
   const [selected, setSelected] = useState<string | null>("debugger");
   const [view, setView] = useState("roster");
-  const active = selected ? AGENTS.find(a => a.id === selected) : null;
+  const active = selected ? DEMO_AGENTS.find(a => a.id === selected) : null;
 
-  const sorted = view === "roster" ? AGENTS :
-    view === "severity" ? [...AGENTS].sort((a, b) => (b.escalation === "active" ? 2 : b.escalation === "pending" ? 1 : 0) - (a.escalation === "active" ? 2 : a.escalation === "pending" ? 1 : 0)) :
-    view === "workload" ? [...AGENTS].sort((a, b) => b.queueLoad - a.queueLoad) :
-    [...AGENTS].sort((a, b) => b.accuracy - a.accuracy);
+  const sorted = view === "roster" ? DEMO_AGENTS :
+    view === "severity" ? [...DEMO_AGENTS].sort((a, b) => (b.escalation === "active" ? 2 : b.escalation === "pending" ? 1 : 0) - (a.escalation === "active" ? 2 : a.escalation === "pending" ? 1 : 0)) :
+    view === "workload" ? [...DEMO_AGENTS].sort((a, b) => b.queueLoad - a.queueLoad) :
+    [...DEMO_AGENTS].sort((a, b) => b.accuracy - a.accuracy);
 
   return (
     <div className="space-y-6 p-6">
@@ -51,11 +52,11 @@ const AITeamRoster = () => {
       {/* Summary Stats */}
       <div className="grid grid-cols-5 gap-3">
         {[
-          { l: "Total Agents", v: AGENTS.length },
-          { l: "Escalated", v: AGENTS.filter(a => a.escalation !== "none").length, c: "text-amber-500" },
-          { l: "Total Queue", v: AGENTS.reduce((a, ag) => a + ag.queueLoad, 0) },
-          { l: "Avg Confidence", v: `${Math.round(AGENTS.reduce((a, ag) => a + ag.confidence, 0) / AGENTS.length)}%` },
-          { l: "Avg Accuracy", v: `${Math.round(AGENTS.reduce((a, ag) => a + ag.accuracy, 0) / AGENTS.length)}%` },
+          { l: "Total Agents", v: DEMO_AGENTS.length },
+          { l: "Escalated", v: DEMO_AGENTS.filter(a => a.escalation !== "none").length, c: "text-amber-500" },
+          { l: "Total Queue", v: DEMO_AGENTS.reduce((a, ag) => a + ag.queueLoad, 0) },
+          { l: "Avg Confidence", v: `${Math.round(DEMO_AGENTS.reduce((a, ag) => a + ag.confidence, 0) / DEMO_AGENTS.length)}%` },
+          { l: "Avg Accuracy", v: `${Math.round(DEMO_AGENTS.reduce((a, ag) => a + ag.accuracy, 0) / DEMO_AGENTS.length)}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className={`text-xl font-bold ${c.c || ""}`}>{c.v}</p>

@@ -9,7 +9,7 @@ import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppSt
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const ENTERPRISE_APPS = [
+const DEMO_ENTERPRISE_APPS = [
   { id: "ent-crm", name: "Internal CRM", publisher: "Your Organization", icon: "📊", iconBg: "from-blue-600 to-blue-400", version: "3.2.1", description: "Customer relationship management tool", status: "available", roles: ["Sales", "Support"], managed: true },
   { id: "ent-hr", name: "HR Portal", publisher: "Your Organization", icon: "👥", iconBg: "from-green-600 to-green-400", version: "2.0.0", description: "Employee self-service and HR management", status: "available", roles: ["All employees"], managed: true },
   { id: "ent-wiki", name: "Internal Wiki", publisher: "Your Organization", icon: "📚", iconBg: "from-purple-600 to-purple-400", version: "1.8.0", description: "Company knowledge base and documentation", status: "installed", roles: ["All employees"], managed: true },
@@ -56,7 +56,7 @@ const EnterpriseCatalogPage = () => {
 
       {/* Apps */}
       <div className="space-y-3">
-        {ENTERPRISE_APPS.map(app => {
+        {DEMO_ENTERPRISE_APPS.map(app => {
           const st = statusConfig[app.status];
           const Icon = st.icon;
           return (

@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import { Layers, Shield, TrendingUp, Zap, DollarSign, Target, AlertTriangle, ChevronRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 
-const PURPOSES = [
+const DEMO_PURPOSES = [
   { id: "long-term", label: "Long-Term Wealth", icon: "🏛️", color: "hsl(var(--primary))", allocated: 45, value: PORTFOLIO.totalValue * 0.45, target: 50, risk: "moderate" },
   { id: "family-security", label: "Family Security", icon: "🛡️", color: "hsl(152 55% 48%)", allocated: 15, value: PORTFOLIO.totalValue * 0.15, target: 15, risk: "very-low" },
   { id: "reserve", label: "Reserve Cash", icon: "💵", color: "hsl(200 65% 55%)", allocated: 8, value: PORTFOLIO.totalCash, target: 10, risk: "very-low" },
@@ -15,13 +17,15 @@ const PURPOSES = [
   { id: "income", label: "Income Sleeve", icon: "📈", color: "hsl(152 55% 48%)", allocated: 2, value: PORTFOLIO.totalValue * 0.02, target: 5, risk: "low" },
 ];
 
-const SHOCK_ZONES = [
+const DEMO_SHOCK_ZONES = [
   { label: "Tech + Crypto Correlation", severity: "high", exposure: 70, detail: "A risk-off event could hit ~70% of portfolio simultaneously" },
   { label: "USD Denomination", severity: "moderate", exposure: 95, detail: "Nearly all assets denominated in USD — no currency diversification" },
   { label: "Exchange/Counterparty", severity: "low", exposure: 28, detail: "Coinbase holds 28% — manageable but monitor" },
 ];
 
 export default function CapitalTwin() {
+  const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   const navigate = useNavigate();
   const [view, setView] = useState<"purpose" | "exposure" | "readiness">("purpose");
 
@@ -65,7 +69,7 @@ export default function CapitalTwin() {
 
       {view === "purpose" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {PURPOSES.map((p, i) => {
+          {DEMO_PURPOSES.map((p, i) => {
             const overTarget = p.allocated > p.target;
             return (
               <motion.div key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
@@ -101,7 +105,7 @@ export default function CapitalTwin() {
             <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Correlated Shock Zones</p>
             <p className="text-xs text-muted-foreground">Areas where a single event could create cascading impact across your portfolio</p>
           </div>
-          {SHOCK_ZONES.map((sz, i) => (
+          {DEMO_SHOCK_ZONES.map((sz, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
               className={`rounded-2xl border p-5 space-y-3 ${
                 sz.severity === "high" ? "border-destructive/20 bg-destructive/5" :

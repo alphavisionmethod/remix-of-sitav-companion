@@ -7,7 +7,7 @@ import { Target, Clock, CheckCircle2, AlertTriangle, Pause, RotateCcw, Sparkles,
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const MISSIONS = [
+const DEMO_MISSIONS = [
   {
     id: 1, title: "Fix projection cache corruption", type: "fix-issue", status: "ready_for_approval" as const, priority: "P0",
     agents: ["Backend Engineer", "QA Engineer"], confidence: 87, blastRadius: "high", rollbackSafe: false,
@@ -116,9 +116,10 @@ const taskStatusIcon = (status: string) =>
   <div className="h-3 w-3 rounded-full border border-border" />;
 
 const AIMissionCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const [expanded, setExpanded] = useState<number | null>(1);
-  const filtered = tab === "all" ? MISSIONS : MISSIONS.filter(m => m.status === tab);
+  const filtered = tab === "all" ? DEMO_MISSIONS : DEMO_MISSIONS.filter(m => m.status === tab);
 
   return (
     <div className="space-y-6 p-6">
@@ -127,11 +128,11 @@ const AIMissionCenter = () => {
 
       <div className="grid grid-cols-5 gap-3">
         {[
-          { l: "Active", v: MISSIONS.filter(m => ["in_progress","simulated","ready_for_approval"].includes(m.status)).length },
-          { l: "Awaiting Approval", v: MISSIONS.filter(m => m.status === "ready_for_approval").length },
-          { l: "P0 Critical", v: MISSIONS.filter(m => m.priority === "P0").length, c: "text-destructive" },
-          { l: "Learned From", v: MISSIONS.filter(m => m.status === "learned_from").length },
-          { l: "Avg Confidence", v: `${Math.round(MISSIONS.reduce((a,m) => a + m.confidence, 0) / MISSIONS.length)}%` },
+          { l: "Active", v: DEMO_MISSIONS.filter(m => ["in_progress","simulated","ready_for_approval"].includes(m.status)).length },
+          { l: "Awaiting Approval", v: DEMO_MISSIONS.filter(m => m.status === "ready_for_approval").length },
+          { l: "P0 Critical", v: DEMO_MISSIONS.filter(m => m.priority === "P0").length, c: "text-destructive" },
+          { l: "Learned From", v: DEMO_MISSIONS.filter(m => m.status === "learned_from").length },
+          { l: "Avg Confidence", v: `${Math.round(DEMO_MISSIONS.reduce((a,m) => a + m.confidence, 0) / DEMO_MISSIONS.length)}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className={`text-xl font-bold ${c.c || ""}`}>{c.v}</p>

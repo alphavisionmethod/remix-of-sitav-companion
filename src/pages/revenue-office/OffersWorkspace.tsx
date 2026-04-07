@@ -15,7 +15,7 @@ const DEMO_PRODUCTS = [
   { name: "Advanced Workshop Series", type: "course", price: "$497", sales: 0, revenue: "$0", status: "draft", category: "Course" },
 ];
 
-const BUNDLES = [
+const DEMO_BUNDLES = [
   { name: "Launch Package", includes: ["Growth Strategy Blueprint", "Starter Kit Bundle", "1 Coaching Session"], price: "$697", savings: "Save $197" },
   { name: "VIP All-Access", includes: ["All Courses", "Community Membership", "Monthly Coaching"], price: "$997/mo", savings: "Save $347/mo" },
 ];
@@ -90,7 +90,7 @@ export default function OffersWorkspace() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><Layers className="w-4 h-4 text-primary" /> Bundles</CardTitle></CardHeader>
         <CardContent className="space-y-3">
-          {BUNDLES.map(b => (
+          {DEMO_BUNDLES.map(b => (
             <div key={b.name} className="p-4 rounded-lg bg-muted/10 border border-border/30">
               <div className="flex items-center justify-between mb-2">
                 <p className="font-medium text-foreground">{b.name}</p>

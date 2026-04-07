@@ -4,6 +4,7 @@ import { Search, TrendingUp, TrendingDown, Filter, BarChart3, Globe, Zap, Chevro
 import type { AssetClass } from "@/lib/investment-office/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
+import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 
 const CLASS_TABS: { value: AssetClass | "all"; label: string; icon: string }[] = [
   { value: "all", label: "All", icon: "🌐" },
@@ -17,6 +18,7 @@ const CLASS_TABS: { value: AssetClass | "all"; label: string; icon: string }[] =
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 
 export default function MarketExplorer() {
+  const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [activeClass, setActiveClass] = useState<AssetClass | "all">("all");

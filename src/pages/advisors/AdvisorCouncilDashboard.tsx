@@ -27,7 +27,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 // ── Demo Data ────────────────────────────────────────────────
 
-const ADVISOR_SCORECARDS = [
+const DEMO_ADVISOR_SCORECARDS = [
   {
     id: "business-lead", name: "Business Advisor", council: "business",
     icon: "💼", grade: "A" as const, confidence: 87,
@@ -74,7 +74,7 @@ const ADVISOR_SCORECARDS = [
   },
 ];
 
-const ESCALATION_LOG = [
+const DEMO_ESCALATION_LOG = [
   { id: "esc-1", trigger: "confidence-below-threshold", severity: "standard", source: "Concierge Advisor", target: "Chief of Staff", status: "resolved", council: "concierge", resolution: "Additional calendar data gathered", timestamp: "2h ago" },
   { id: "esc-2", trigger: "consensus-failure", severity: "urgent", source: "Business Council", target: "Strategy Advisor", status: "acknowledged", council: "business", resolution: "Waiting on owner input", timestamp: "4h ago" },
   { id: "esc-3", trigger: "policy-violation", severity: "critical", source: "Money Advisor", target: "Trust Policy Advisor", status: "resolved", council: "finance", resolution: "Payment blocked per daily limit policy", timestamp: "1d ago" },
@@ -82,7 +82,7 @@ const ESCALATION_LOG = [
   { id: "esc-5", trigger: "blocking-disagreement", severity: "urgent", source: "Finance Council", target: "Owner", status: "pending", council: "finance", resolution: "", timestamp: "30m ago" },
 ];
 
-const HANDOFF_LOG = [
+const DEMO_HANDOFF_LOG = [
   { id: "h-1", from: "Business Advisor", to: "Money Advisor", reason: "cross-domain-required", status: "completed", context: "Revenue impact on cashflow", urgency: "standard", timestamp: "3h ago" },
   { id: "h-2", from: "Money Advisor", to: "Strategy Advisor", reason: "specialist-needed", status: "accepted", context: "Investment thesis review", urgency: "low", timestamp: "5h ago" },
   { id: "h-3", from: "Concierge Advisor", to: "Business Advisor", reason: "cross-domain-required", status: "completed", context: "Client meeting prep needs pipeline data", urgency: "high", timestamp: "1d ago" },
@@ -129,7 +129,7 @@ const STATUS_COLORS: Record<string, string> = {
   completed: "bg-trust-safe/10 text-trust-safe",
 };
 
-const AdvisorScorecard = ({ advisor }: { advisor: typeof ADVISOR_SCORECARDS[0] }) => (
+const AdvisorScorecard = ({ advisor }: { advisor: typeof DEMO_ADVISOR_SCORECARDS[0] }) => (
   <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="glass-panel rounded-xl p-5 space-y-4">
     <div className="flex items-start justify-between">
       <div className="flex items-center gap-3">
@@ -234,9 +234,9 @@ export default function AdvisorCouncilDashboard() {
   }, [isDemoMode]);
 
   // Use live data if available, else demo data
-  const scorecards = ADVISOR_SCORECARDS;
-  const escalations = ESCALATION_LOG;
-  const handoffs = HANDOFF_LOG;
+  const scorecards = DEMO_ADVISOR_SCORECARDS;
+  const escalations = DEMO_ESCALATION_LOG;
+  const handoffs = DEMO_HANDOFF_LOG;
   const budget = budgetData.data?.budget || MODEL_BUDGET;
 
   const pendingEscalations = escalations.filter(e => e.status === "pending").length;
@@ -270,7 +270,7 @@ export default function AdvisorCouncilDashboard() {
         <SitaCard className="glass-panel">
           <SitaCardTitle className="text-[10px]">Active Advisors</SitaCardTitle>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-2xl font-bold text-foreground">{ADVISOR_SCORECARDS.length}</span>
+            <span className="text-2xl font-bold text-foreground">{DEMO_ADVISOR_SCORECARDS.length}</span>
             <CheckCircle className="h-3.5 w-3.5 text-trust-safe ml-auto" />
           </div>
         </SitaCard>
@@ -304,7 +304,7 @@ export default function AdvisorCouncilDashboard() {
         <div className="mt-4">
           <TabsContent value="scorecards">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {ADVISOR_SCORECARDS.map(a => <AdvisorScorecard key={a.id} advisor={a} />)}
+              {DEMO_ADVISOR_SCORECARDS.map(a => <AdvisorScorecard key={a.id} advisor={a} />)}
             </div>
           </TabsContent>
 
@@ -312,9 +312,9 @@ export default function AdvisorCouncilDashboard() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="font-display text-sm font-bold text-foreground">Escalation History</h3>
-                <span className="text-xs text-muted-foreground">{ESCALATION_LOG.length} total</span>
+                <span className="text-xs text-muted-foreground">{DEMO_ESCALATION_LOG.length} total</span>
               </div>
-              {ESCALATION_LOG.map(esc => (
+              {DEMO_ESCALATION_LOG.map(esc => (
                 <motion.div key={esc.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-panel rounded-xl p-4 space-y-2">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">
@@ -339,9 +339,9 @@ export default function AdvisorCouncilDashboard() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="font-display text-sm font-bold text-foreground">Handoff Activity</h3>
-                <span className="text-xs text-muted-foreground">{HANDOFF_LOG.length} total</span>
+                <span className="text-xs text-muted-foreground">{DEMO_HANDOFF_LOG.length} total</span>
               </div>
-              {HANDOFF_LOG.map(h => (
+              {DEMO_HANDOFF_LOG.map(h => (
                 <motion.div key={h.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-panel rounded-xl p-4 space-y-2">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">

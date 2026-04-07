@@ -2,8 +2,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, Brain, Check, X, AlertTriangle, ArrowRight, TrendingUp, TrendingDown } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 
-const PAST_DECISIONS = [
+const DEMO_PAST_DECISIONS = [
   {
     id: "td1", date: "2025-08-15", action: "BUY 200 NVDA @ $95.50", instrument: "NVDA", symbol: "💚",
     thesisAtTime: "AI infrastructure supercycle — NVDA dominant with 80%+ GPU share. Blackwell architecture extends moat.",
@@ -52,7 +54,9 @@ const PAST_DECISIONS = [
 ];
 
 export default function TimeMachineReview() {
-  const [selected, setSelected] = useState(PAST_DECISIONS[0]);
+  const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useInvestmentDecisions();
+  const [selected, setSelected] = useState(DEMO_PAST_DECISIONS[0]);
 
 
   return (
@@ -65,7 +69,7 @@ export default function TimeMachineReview() {
 
       {/* Decision Selector */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {PAST_DECISIONS.map(d => (
+        {DEMO_PAST_DECISIONS.map(d => (
           <button key={d.id} onClick={() => setSelected(d)}
             className={`shrink-0 rounded-xl border px-4 py-3 text-left transition-all ${
               selected.id === d.id ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"

@@ -3,10 +3,12 @@ import { motion } from "framer-motion";
 import { GraduationCap, Shield, Brain, TrendingUp, Eye, Target, ChevronRight, HelpCircle, Lightbulb, DollarSign } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 
-const LEARN_TOPICS = [
+const DEMO_LEARN_TOPICS = [
   { icon: "📊", title: "What is a portfolio?", desc: "Your portfolio is the collection of all your investments across platforms. Think of it as your investment library." },
   { icon: "⚖️", title: "What is risk?", desc: "Risk means how much your investments could lose. Higher risk means bigger possible gains AND losses." },
   { icon: "🎯", title: "What is a thesis?", desc: "A thesis is your reason for investing. Writing it down helps you make better decisions and learn from results." },
@@ -16,6 +18,8 @@ const LEARN_TOPICS = [
 ];
 
 export default function BeginnerMode() {
+  const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const navigate = useNavigate();
   const p = PORTFOLIO;
 
@@ -89,7 +93,7 @@ export default function BeginnerMode() {
       <div className="space-y-3">
         <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><HelpCircle className="h-4 w-4 text-primary" /> Learn the Basics</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {LEARN_TOPICS.map(t => (
+          {DEMO_LEARN_TOPICS.map(t => (
             <div key={t.title} className="rounded-2xl border border-border bg-card p-4 space-y-2 hover:border-primary/15 transition-all cursor-pointer">
               <span className="text-2xl">{t.icon}</span>
               <p className="text-xs font-semibold text-foreground">{t.title}</p>

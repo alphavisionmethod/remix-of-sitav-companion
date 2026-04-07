@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useVaultItems } from "@/hooks/use-apps-data";
 
 interface VaultEntry {
   id: string;
@@ -33,6 +34,7 @@ const strengthColors: Record<string, string> = { strong: "text-emerald-500", med
 
 export default function VaultApp() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useVaultItems();
   const [search, setSearch] = useState("");
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
   const { toast } = useToast();

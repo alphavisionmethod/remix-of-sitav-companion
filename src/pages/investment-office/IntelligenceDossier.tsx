@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import { FileSearch, Brain, TrendingUp, TrendingDown, AlertTriangle, Check, Calendar, Target, Globe, Shield } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
+import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
 
 export default function IntelligenceDossier() {
+  const { data: liveData, isLoading } = useInvestmentThesisEntries();
   const [selectedId, setSelectedId] = useState("nvda");
   const inst = INSTRUMENTS.find(i => i.id === selectedId)!;
   const relevantAdvisors = INVESTMENT_ADVISORS.filter(a =>

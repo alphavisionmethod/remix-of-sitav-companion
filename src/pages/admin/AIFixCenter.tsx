@@ -7,7 +7,7 @@ import { Bug, AlertTriangle, CheckCircle2, Wrench, Shield, RotateCcw, Sparkles, 
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const FIXES = [
+const DEMO_FIXES = [
   { id: 1, title: "Elevated 500 errors on /api/projections/rebuild", area: "Backend — Projection Service", severity: "critical" as const, rootCause: "Cache invalidation race condition during concurrent rebuilds", patch: "Add mutex lock on projection rebuild queue", confidence: 87, testImpact: "3 tests affected", approvalNeeded: true, autoFixEligible: false, rollbackSafe: true, cluster: 14, blastRadius: "surface" as const, reproducibility: "always" as const, affectedRoutes: ["/admin/projections", "/boardroom"], affectedComponents: ["ProjectionService", "CacheLayer"], affectedServices: ["projection-service", "cache-layer", "rebuild-edge-fn"], environment: "production" },
   { id: 2, title: "Broken navigation on /admin/durability", area: "Frontend — Admin Routes", severity: "high" as const, rootCause: "Missing lazy import after route restructuring", patch: "Add lazy import and Route entry for AdminDurabilityBoard", confidence: 96, testImpact: "1 route test", approvalNeeded: false, autoFixEligible: true, rollbackSafe: true, cluster: 1, blastRadius: "isolated" as const, reproducibility: "always" as const, affectedRoutes: ["/admin/durability"], affectedComponents: ["App.tsx"], affectedServices: ["frontend-router"], environment: "all" },
   { id: 3, title: "Stale brand kit colors in white-label preview", area: "Frontend — Brand Kit", severity: "medium" as const, rootCause: "CDN cache not invalidated on brand kit update", patch: "Add cache-busting query param on brand asset URLs", confidence: 82, testImpact: "No existing tests", approvalNeeded: true, autoFixEligible: false, rollbackSafe: true, cluster: 3, blastRadius: "component" as const, reproducibility: "frequent" as const, affectedRoutes: ["/white-label/*"], affectedComponents: ["BrandKitPreview"], affectedServices: ["cdn", "brand-service"], environment: "staging" },
@@ -33,15 +33,16 @@ const blastRadiusColors: Record<string, string> = {
 };
 
 const AIFixCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [expanded, setExpanded] = useState<number | null>(1);
   const [tab, setTab] = useState("all");
   const [view, setView] = useState("severity");
 
-  const filtered = tab === "all" ? FIXES :
-    tab === "critical" ? FIXES.filter(f => f.severity === "critical") :
-    tab === "auto-fix" ? FIXES.filter(f => f.autoFixEligible) :
-    tab === "approval" ? FIXES.filter(f => f.approvalNeeded) :
-    FIXES;
+  const filtered = tab === "all" ? DEMO_FIXES :
+    tab === "critical" ? DEMO_FIXES.filter(f => f.severity === "critical") :
+    tab === "auto-fix" ? DEMO_FIXES.filter(f => f.autoFixEligible) :
+    tab === "approval" ? DEMO_FIXES.filter(f => f.approvalNeeded) :
+    DEMO_FIXES;
 
   const sorted = view === "severity" ? filtered :
     view === "confidence" ? [...filtered].sort((a, b) => b.confidence - a.confidence) :
@@ -58,12 +59,12 @@ const AIFixCenter = () => {
 
       <div className="grid grid-cols-6 gap-2">
         {[
-          { l: "Critical", v: FIXES.filter(f => f.severity === "critical").length, c: "text-destructive" },
-          { l: "High", v: FIXES.filter(f => f.severity === "high").length, c: "text-amber-500" },
-          { l: "Medium", v: FIXES.filter(f => f.severity === "medium").length, c: "text-foreground" },
-          { l: "Low", v: FIXES.filter(f => f.severity === "low").length, c: "text-muted-foreground" },
-          { l: "Auto-Fix Eligible", v: FIXES.filter(f => f.autoFixEligible).length, c: "text-[hsl(var(--trust-safe))]" },
-          { l: "Avg Confidence", v: `${Math.round(FIXES.reduce((a,f) => a + f.confidence, 0) / FIXES.length)}%`, c: "text-primary" },
+          { l: "Critical", v: DEMO_FIXES.filter(f => f.severity === "critical").length, c: "text-destructive" },
+          { l: "High", v: DEMO_FIXES.filter(f => f.severity === "high").length, c: "text-amber-500" },
+          { l: "Medium", v: DEMO_FIXES.filter(f => f.severity === "medium").length, c: "text-foreground" },
+          { l: "Low", v: DEMO_FIXES.filter(f => f.severity === "low").length, c: "text-muted-foreground" },
+          { l: "Auto-Fix Eligible", v: DEMO_FIXES.filter(f => f.autoFixEligible).length, c: "text-[hsl(var(--trust-safe))]" },
+          { l: "Avg Confidence", v: `${Math.round(DEMO_FIXES.reduce((a,f) => a + f.confidence, 0) / DEMO_FIXES.length)}%`, c: "text-primary" },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className={`text-lg font-bold ${c.c}`}>{c.v}</p>

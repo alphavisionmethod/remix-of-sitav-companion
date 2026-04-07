@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useTravelPlans } from "@/hooks/use-concierge-data";
 
 interface Trip {
   id: string; destination: string; dates: string; status: "planning" | "booked" | "upcoming" | "active" | "completed";

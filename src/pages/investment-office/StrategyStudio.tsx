@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Brain, TrendingUp, TrendingDown, BarChart3, Target, AlertTriangle, ChevronRight, Play, Sliders } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PORTFOLIO, SAMPLE_SCENARIOS, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
+import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;
 
 export default function StrategyStudio() {
+  const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const navigate = useNavigate();
   const [activeScenario, setActiveScenario] = useState(SAMPLE_SCENARIOS[0].id);
   const currentScenario = SAMPLE_SCENARIOS.find(s => s.id === activeScenario)!;

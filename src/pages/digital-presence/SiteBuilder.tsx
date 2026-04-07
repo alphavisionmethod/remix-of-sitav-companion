@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useSites } from "@/hooks/use-digital-presence";
 
 const DEMO_PAGE_TYPES = [
   { type: "Landing Page", desc: "High-converting campaign or product page", icon: Rocket, color: "text-blue-400" },
@@ -29,6 +30,7 @@ const DEMO_EXISTING_PAGES = [
 
 export default function SiteBuilder() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useSites();
   const [search, setSearch] = useState("");
 
   return (

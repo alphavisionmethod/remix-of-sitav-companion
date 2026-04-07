@@ -80,7 +80,7 @@ const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
 
 // ── Feature Usage Stats ─────────────────────────────────────
 
-const FEATURES = [
+const DEMO_FEATURES = [
   { key: "brain", label: "Brain / AI", icon: Brain, color: "text-primary" },
   { key: "business", label: "Business", icon: Briefcase, color: "text-primary" },
   { key: "money", label: "Finance", icon: DollarSign, color: "text-[hsl(var(--trust-safe))]" },
@@ -194,7 +194,7 @@ const MyActivity = () => {
       <div className="rounded-2xl border border-border bg-card p-5">
         <h3 className="text-sm font-semibold text-foreground mb-4">Feature Usage</h3>
         <div className="space-y-3">
-          {FEATURES.map((f) => {
+          {DEMO_FEATURES.map((f) => {
             const count = featureUsage[f.key] || 0;
             const max = Math.max(...Object.values(featureUsage), 1);
             const pct = (count / max) * 100;

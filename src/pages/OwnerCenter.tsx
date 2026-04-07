@@ -28,7 +28,7 @@ const buildDemoSimResult = (simInput: { amount: number; [key: string]: unknown }
 });
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 // Engine costs — canonical inline data (no mock import needed)
-const ENGINE_COSTS = [
+const DEMO_ENGINE_COSTS = [
   { service: "AI Model Calls", cost: "$12.40", percentage: 45, trend: "up" as const },
   { service: "Database", cost: "$3.20", percentage: 12, trend: "flat" as const },
   { service: "Edge Functions", cost: "$2.10", percentage: 8, trend: "down" as const },
@@ -1747,7 +1747,7 @@ const OwnerCenter = () => {
                 </div>
               </div>
             </SitaCard>
-            {ENGINE_COSTS.map((c, i) => (
+            {DEMO_ENGINE_COSTS.map((c, i) => (
               <SitaCard key={i} hover={false} className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">

@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import { Theater, Shield, AlertTriangle, Check, X, Brain, Target, Zap, Clock, FileText } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, SAMPLE_ORDERS, SAMPLE_SCENARIOS } from "@/hooks/useInvestmentOfficeData";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 
-const READINESS_DIMENSIONS = [
+const DEMO_READINESS_DIMENSIONS = [
   { label: "Research Completeness", score: 85, status: "ready" },
   { label: "Thesis Clarity", score: 90, status: "ready" },
   { label: "Risk Clarity", score: 72, status: "review" },
@@ -17,9 +19,11 @@ const READINESS_DIMENSIONS = [
 ];
 
 export default function DecisionTheater() {
+  const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useInvestmentDecisions();
   const navigate = useNavigate();
   const order = SAMPLE_ORDERS[0];
-  const overallReadiness = Math.round(READINESS_DIMENSIONS.reduce((s, d) => s + d.score, 0) / READINESS_DIMENSIONS.length);
+  const overallReadiness = Math.round(DEMO_READINESS_DIMENSIONS.reduce((s, d) => s + d.score, 0) / DEMO_READINESS_DIMENSIONS.length);
   const readinessLabel = overallReadiness >= 80 ? "Ready" : overallReadiness >= 65 ? "Needs Review" : overallReadiness >= 50 ? "Simulate First" : "Wait";
 
 
@@ -71,7 +75,7 @@ export default function DecisionTheater() {
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {READINESS_DIMENSIONS.map(d => (
+          {DEMO_READINESS_DIMENSIONS.map(d => (
             <div key={d.label} className="rounded-xl border border-border bg-secondary/20 p-3 space-y-2">
               <p className="text-[10px] font-medium text-muted-foreground">{d.label}</p>
               <div className="h-1.5 rounded-full bg-secondary overflow-hidden">

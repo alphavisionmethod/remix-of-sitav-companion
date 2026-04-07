@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ScrollText, Shield, Check, AlertTriangle, Settings, Lock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 
 interface Rule {
   id: string;
@@ -36,13 +38,15 @@ const CATEGORIES = [
   { id: "discipline", label: "Discipline" },
 ];
 
-const CURRENT_VIOLATIONS = [
+const DEMO_CURRENT_VIOLATIONS = [
   { ruleId: "r3", detail: "Speculative sleeve at 12% — exceeds 8% limit by 4%" },
   { ruleId: "r12", detail: "Crypto allocation at 28% — exceeds 20% cap by 8%" },
   { ruleId: "r5", detail: "Tech + Crypto correlation cluster at ~70% — exceeds 50% soft limit" },
 ];
 
 export default function InvestmentConstitution() {
+  const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const [filter, setFilter] = useState("all");
   const filtered = CONSTITUTION_RULES.filter(r => filter === "all" || r.category === filter);
 
@@ -55,12 +59,12 @@ export default function InvestmentConstitution() {
       </div>
 
       {/* Violations Banner */}
-      {CURRENT_VIOLATIONS.length > 0 && (
+      {DEMO_CURRENT_VIOLATIONS.length > 0 && (
         <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-4 space-y-2">
           <p className="text-[10px] font-semibold text-destructive uppercase tracking-wider flex items-center gap-1">
-            <AlertTriangle className="h-3 w-3" /> {CURRENT_VIOLATIONS.length} Active Violations
+            <AlertTriangle className="h-3 w-3" /> {DEMO_CURRENT_VIOLATIONS.length} Active Violations
           </p>
-          {CURRENT_VIOLATIONS.map(v => {
+          {DEMO_CURRENT_VIOLATIONS.map(v => {
             const rule = CONSTITUTION_RULES.find(r => r.id === v.ruleId);
             return (
               <div key={v.ruleId} className="flex items-start gap-2 text-sm text-foreground">
@@ -85,7 +89,7 @@ export default function InvestmentConstitution() {
       {/* Rules */}
       <div className="space-y-3">
         {filtered.map((rule, i) => {
-          const isViolated = CURRENT_VIOLATIONS.some(v => v.ruleId === rule.id);
+          const isViolated = DEMO_CURRENT_VIOLATIONS.some(v => v.ruleId === rule.id);
           return (
             <motion.div key={rule.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
               className={`rounded-2xl border p-5 space-y-2 ${

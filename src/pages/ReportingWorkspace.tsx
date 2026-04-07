@@ -16,7 +16,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 const db: any = supabase;
 
-const REVENUE_DATA = [
+const DEMO_REVENUE_DATA = [
   { month: "Jan", revenue: 42000, expenses: 28000, profit: 14000 },
   { month: "Feb", revenue: 38000, expenses: 26000, profit: 12000 },
   { month: "Mar", revenue: 51000, expenses: 30000, profit: 21000 },
@@ -25,7 +25,7 @@ const REVENUE_DATA = [
   { month: "Jun", revenue: 62000, expenses: 35000, profit: 27000 },
 ];
 
-const PIPELINE_DATA = [
+const DEMO_PIPELINE_DATA = [
   { stage: "Lead", count: 24, value: 180000 },
   { stage: "Qualified", count: 12, value: 120000 },
   { stage: "Proposal", count: 8, value: 95000 },
@@ -33,14 +33,14 @@ const PIPELINE_DATA = [
   { stage: "Closed", count: 6, value: 85000 },
 ];
 
-const DOMAIN_BREAKDOWN = [
+const DEMO_DOMAIN_BREAKDOWN = [
   { name: "Business", value: 45, color: "hsl(var(--primary))" },
   { name: "Finance", value: 25, color: "#10b981" },
   { name: "Household", value: 15, color: "#f59e0b" },
   { name: "Personal", value: 15, color: "#8b5cf6" },
 ];
 
-const COMPLETION_TREND = [
+const DEMO_COMPLETION_TREND = [
   { week: "W1", tasks: 18, workflows: 5 },
   { week: "W2", tasks: 22, workflows: 7 },
   { week: "W3", tasks: 15, workflows: 4 },
@@ -96,7 +96,7 @@ const ReportingWorkspace = () => {
               <SitaCard className="p-4">
                 <SitaCardTitle className="text-xs mb-3">Revenue & Profit Trend</SitaCardTitle>
                 <ResponsiveContainer width="100%" height={220}>
-                  <AreaChart data={REVENUE_DATA}>
+                  <AreaChart data={DEMO_REVENUE_DATA}>
                     <defs>
                       <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
@@ -123,13 +123,13 @@ const ReportingWorkspace = () => {
                 <div className="flex items-center gap-6">
                   <ResponsiveContainer width={160} height={160}>
                     <RechartsPie>
-                      <Pie data={DOMAIN_BREAKDOWN} dataKey="value" cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} strokeWidth={0}>
-                        {DOMAIN_BREAKDOWN.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                      <Pie data={DEMO_DOMAIN_BREAKDOWN} dataKey="value" cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} strokeWidth={0}>
+                        {DEMO_DOMAIN_BREAKDOWN.map((entry, i) => <Cell key={i} fill={entry.color} />)}
                       </Pie>
                     </RechartsPie>
                   </ResponsiveContainer>
                   <div className="space-y-2">
-                    {DOMAIN_BREAKDOWN.map(d => (
+                    {DEMO_DOMAIN_BREAKDOWN.map(d => (
                       <div key={d.name} className="flex items-center gap-2">
                         <div className="w-2.5 h-2.5 rounded-full" style={{ background: d.color }} />
                         <span className="text-xs text-muted-foreground">{d.name}</span>
@@ -147,7 +147,7 @@ const ReportingWorkspace = () => {
             <SitaCard className="p-4 mb-4">
               <SitaCardTitle className="text-xs mb-3">Pipeline Funnel</SitaCardTitle>
               <ResponsiveContainer width="100%" height={180}>
-                <BarChart data={PIPELINE_DATA} layout="vertical">
+                <BarChart data={DEMO_PIPELINE_DATA} layout="vertical">
                   <XAxis type="number" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} tickFormatter={v => `$${v / 1000}k`} />
                   <YAxis dataKey="stage" type="category" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} width={80} />
                   <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: 11 }} />
@@ -162,7 +162,7 @@ const ReportingWorkspace = () => {
             <SitaCard className="p-4">
               <SitaCardTitle className="text-xs mb-3">Task & Workflow Completion Trend</SitaCardTitle>
               <ResponsiveContainer width="100%" height={180}>
-                <LineChart data={COMPLETION_TREND}>
+                <LineChart data={DEMO_COMPLETION_TREND}>
                   <XAxis dataKey="week" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
                   <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: 11 }} />
