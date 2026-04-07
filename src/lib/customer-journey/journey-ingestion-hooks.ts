@@ -58,7 +58,7 @@ export function useRouteCoverageSummary() {
   return useQuery({
     queryKey: ["v-route-verification-summary"],
     queryFn: async () => {
-      const { data, error } = await fromTable("v_route_verification_summary")
+      const { data, error } = await fromDynamicTable("v_route_verification_summary")
         .select("*");
       if (error) throw error;
       return data ?? [];
