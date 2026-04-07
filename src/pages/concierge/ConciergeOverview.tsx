@@ -5,7 +5,7 @@ import { PriorityCard, QuickActionBar, HouseholdAdvisor, OverloadCard, GroceryCo
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   CheckSquare, Calendar, AlertCircle, Heart, Clock, ShoppingCart, Plane, Users, Wrench, ArrowRight,
