@@ -44,7 +44,7 @@ export function initPerformanceMonitor() {
   try {
     new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
-        const fid = (entry as unknown as Record<string, unknown>).processingStart - entry.startTime;
+        const fid = Number((entry as unknown as Record<string, number>).processingStart) - entry.startTime;
         log({ name: 'FID', value: fid, rating: rate('FID', fid) });
       }
     }).observe({ type: 'first-input', buffered: true });
