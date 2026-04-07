@@ -189,8 +189,8 @@ class TelemetryCollector {
       let clsValue = 0;
       const clsObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          if (!(entry as Record<string, unknown>).hadRecentInput) {
-            clsValue += (entry as Record<string, unknown>).value;
+          if (!(entry as unknown as Record<string, unknown>).hadRecentInput) {
+            clsValue += (entry as unknown as Record<string, unknown>).value;
           }
         }
         this.record("cls", clsValue, "score", { type: "web-vital" });
@@ -202,7 +202,7 @@ class TelemetryCollector {
     try {
       const inpObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          const duration = (entry as Record<string, unknown>).duration ?? entry.startTime;
+          const duration = (entry as unknown as Record<string, unknown>).duration ?? entry.startTime;
           if (duration > 0) {
             this.record("inp", duration, "ms", { type: "web-vital", name: entry.name });
           }
@@ -224,7 +224,7 @@ class TelemetryCollector {
 
     // Memory (Chrome only)
     setInterval(() => {
-      const mem = (performance as Record<string, unknown>).memory;
+      const mem = (performance as unknown as Record<string, unknown>).memory;
       if (mem) {
         this.record("js_heap", mem.usedJSHeapSize, "bytes", { type: "runtime" });
       }
