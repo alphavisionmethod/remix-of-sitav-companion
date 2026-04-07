@@ -30,7 +30,7 @@ const ChangeImpactAnalyzer = () => {
 
   const handleAnalyze = () => {
     const proposal: ChangeProposal = {
-      title: form.title, changeType: form.changeType as unknown,
+      title: form.title, changeType: form.changeType as never,
       affectedDomains: form.domains.split(",").map(s => s.trim()).filter(Boolean),
       affectedFeatureIds: form.featureIds.split(",").map(s => s.trim()).filter(Boolean),
       description: form.description,
@@ -45,10 +45,10 @@ const ChangeImpactAnalyzer = () => {
       if (!user) throw new Error("Not authenticated");
       const { error } = await fromTable("change_impact_records").insert({
         user_id: user.id, change_title: analysis.changeTitle, change_type: form.changeType,
-        affected_routes: analysis.affectedRoutes as unknown, affected_contracts: analysis.affectedContracts as unknown,
-        affected_probes: analysis.affectedProbes as unknown, affected_journeys: analysis.affectedJourneys as unknown,
-        affected_domains: analysis.affectedDomains as unknown, migration_risks: analysis.migrationRisks as unknown,
-        rollout_risks: analysis.rolloutRisks as unknown, trust_risks: analysis.trustRisks as unknown,
+        affected_routes: analysis.affectedRoutes as never, affected_contracts: analysis.affectedContracts as never,
+        affected_probes: analysis.affectedProbes as never, affected_journeys: analysis.affectedJourneys as never,
+        affected_domains: analysis.affectedDomains as never, migration_risks: analysis.migrationRisks as never,
+        rollout_risks: analysis.rolloutRisks as never, trust_risks: analysis.trustRisks as never,
         severity: analysis.severity, status: "pending",
       } as never);
       if (error) throw error;

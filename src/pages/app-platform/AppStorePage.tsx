@@ -33,7 +33,7 @@ const AppStorePage = () => {
 
   const filteredApps = useMemo(() => {
     if (activeCategory === "all") return APP_CATALOG;
-    return getAppsByCategory(activeCategory as unknown);
+    return getAppsByCategory(activeCategory as never);
   }, [activeCategory]);
 
   const webApps = APP_CATALOG.filter(a => a.appClass === "web-app" || a.appClass === "wrapped-app");

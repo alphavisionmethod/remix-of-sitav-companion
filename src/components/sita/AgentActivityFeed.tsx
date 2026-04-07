@@ -277,7 +277,7 @@ export function AgentActivityFeed({ compact = false, showCostTracker = false }: 
         agentName: work.agentId.replace(/^aw-/, "").replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
         council,
         schedule,
-        action: work.result ? String((work.result as unknown).action || work.trigger) : work.trigger,
+        action: work.result ? String((work.result as Record<string, unknown>)?.action || work.trigger) : work.trigger,
         status: work.status,
         timestamp: work.createdAt,
         durationMs: work.durationMs,

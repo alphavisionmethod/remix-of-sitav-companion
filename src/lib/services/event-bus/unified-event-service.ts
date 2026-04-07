@@ -33,7 +33,7 @@ export class UnifiedEventService {
     payload: Record<string, unknown>,
     options?: { correlationId?: string; causedBy?: string }
   ): { delivered: number; errors: string[] } {
-    const envelope = createEventEnvelope(eventType, domain, tenantId, payload as unknown, options);
+    const envelope = createEventEnvelope(eventType, domain, tenantId, payload as never, options);
 
     // Dispatch to unified subscribers
     let delivered = 0;
@@ -56,7 +56,7 @@ export class UnifiedEventService {
     errors.push(...legacyResult.errors);
 
     // Trace
-    const correlationId = options?.correlationId || (envelope.event as unknown)?.correlationId || "unknown";
+    const correlationId = options?.correlationId || (envelope.event as never)?.correlationId || "unknown";
     this.eventTrace.push({ eventType, domain, correlationId, timestamp: new Date().toISOString(), delivered });
     if (this.eventTrace.length > 2000) this.eventTrace = this.eventTrace.slice(-1000);
 

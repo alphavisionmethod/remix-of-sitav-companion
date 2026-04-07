@@ -110,8 +110,7 @@ export async function persistChainProjection(
   try {
     // Upsert — update if same type+id exists, insert otherwise
     const key = `${projection.type}:${projection.id}`;
-    const { data: existing } = await (supabase as unknown)
-      .from("projections")
+    const { data: existing } = await fromTable("projections")
       .select("id")
       .eq("user_id", userId)
       .eq("type", projection.type)

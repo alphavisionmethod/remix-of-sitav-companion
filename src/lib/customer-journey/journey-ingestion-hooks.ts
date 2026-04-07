@@ -6,6 +6,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { seedJourneyRegistry } from "./journey-registry-seeder";
 import { computeBlockerScore, type BlockerInput } from "./blocker-scoring-engine";
 
@@ -15,8 +16,7 @@ export function useJourneySummaryView() {
   return useQuery({
     queryKey: ["v-customer-journey-summary"],
     queryFn: async () => {
-      const { data, error } = await (supabase as unknown)
-        .from("v_customer_journey_summary")
+      const { data, error } = await fromTable("v_customer_journey_summary")
         .select("*");
       if (error) throw error;
       return data ?? [];
@@ -30,8 +30,7 @@ export function useBlockersView() {
   return useQuery({
     queryKey: ["v-customer-journey-blockers"],
     queryFn: async () => {
-      const { data, error } = await (supabase as unknown)
-        .from("v_customer_journey_blockers")
+      const { data, error } = await fromTable("v_customer_journey_blockers")
         .select("*");
       if (error) throw error;
       return data ?? [];
@@ -45,8 +44,7 @@ export function useModeDeltas() {
   return useQuery({
     queryKey: ["v-customer-journey-mode-deltas"],
     queryFn: async () => {
-      const { data, error } = await (supabase as unknown)
-        .from("v_customer_journey_mode_deltas")
+      const { data, error } = await fromTable("v_customer_journey_mode_deltas")
         .select("*");
       if (error) throw error;
       return data ?? [];
@@ -60,8 +58,7 @@ export function useRouteCoverageSummary() {
   return useQuery({
     queryKey: ["v-route-verification-summary"],
     queryFn: async () => {
-      const { data, error } = await (supabase as unknown)
-        .from("v_route_verification_summary")
+      const { data, error } = await fromTable("v_route_verification_summary")
         .select("*");
       if (error) throw error;
       return data ?? [];
@@ -75,8 +72,7 @@ export function useRecentFailures() {
   return useQuery({
     queryKey: ["v-customer-journey-recent-failures"],
     queryFn: async () => {
-      const { data, error } = await (supabase as unknown)
-        .from("v_customer_journey_recent_failures")
+      const { data, error } = await fromTable("v_customer_journey_recent_failures")
         .select("*");
       if (error) throw error;
       return data ?? [];
@@ -123,16 +119,14 @@ export function useRecordVerificationRun() {
   return useMutation({
     mutationFn: async (input: VerificationRunInput) => {
       // Look up journey_id from registry
-      const { data: registry } = await (supabase as unknown)
-        .from("customer_journey_registry")
+      const { data: registry } = await fromTable("customer_journey_registry")
         .select("id")
         .eq("journey_key", input.journey_key)
         .single();
 
       if (!registry) throw new Error(`Journey not found in registry: ${input.journey_key}`);
 
-      const { data, error } = await (supabase as unknown)
-        .from("journey_verification_runs")
+      const { data, error } = await fromTable("journey_verification_runs")
         .insert({
           journey_id: registry.id,
           mode: input.mode,
@@ -157,8 +151,7 @@ export function useRecordVerificationRun() {
       if (error) throw error;
 
       // Update customer_journey_status
-      await (supabase as unknown)
-        .from("customer_journey_status")
+      await fromTable("customer_journey_status")
         .upsert(
           {
             journey_id: registry.id,
@@ -188,8 +181,7 @@ export function useRecordVerificationRun() {
 
         const result = computeBlockerScore(blockerInput);
 
-        await (supabase as unknown)
-          .from("launch_blocker_scores")
+        await fromTable("launch_blocker_scores")
           .insert({
             journey_id: registry.id,
             journey_key: input.journey_key,

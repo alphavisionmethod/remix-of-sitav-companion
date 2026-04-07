@@ -13,6 +13,7 @@ import {
   stopSyncManager,
 } from '@/lib/offline-db';
 import { supabase } from '@/integrations/supabase/client';
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 interface UseOfflineStoreOptions {
   /** Cache key for this data */
@@ -59,8 +60,7 @@ export function useOfflineStore<T = unknown>({
 
     startSyncManager(async (action) => {
       try {
-        const { error } = await (supabase as unknown)
-          .from(action.table)
+        const { error } = await fromDynamicTable(action.table)
           [action.operation === 'insert' ? 'insert' : action.operation === 'update' ? 'update' : 'delete'](
             action.payload
           );

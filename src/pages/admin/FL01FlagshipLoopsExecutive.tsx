@@ -128,7 +128,7 @@ export default function FL01FlagshipLoopsExecutive() {
     "loop5_admin_truth": ["admin", "verification", "approval", "truth"],
   };
 
-  for (const run of (verificationRuns || []) as unknown[]) {
+  for (const run of (verificationRuns || []) as never[]) {
     for (const [loopKey, patterns] of Object.entries(LOOP_KEY_TO_JOURNEY_PATTERNS)) {
       const summary = (run.summary || "").toLowerCase();
       if (patterns.some(p => summary.includes(p))) {

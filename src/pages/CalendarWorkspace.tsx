@@ -376,11 +376,11 @@ const CalendarWorkspace = () => {
               <Plus className="w-3 h-3" /> Add Booking
             </Button>
           </div>
-          {(bookings as unknown[]).length === 0 ? (
+          {(bookings as never[]).length === 0 ? (
             <p className="text-xs text-muted-foreground text-center py-4">No bookings yet. Add your first travel or appointment booking.</p>
           ) : (
             <div className="space-y-2">
-              {(bookings as unknown[]).map((b: any) => (
+              {(bookings as never[]).map((b: any) => (
                 <div key={b.id} className="flex items-center justify-between p-3 rounded-lg border border-border/30 bg-secondary/10">
                   <div>
                     <p className="text-sm font-medium text-foreground">{b.title}</p>

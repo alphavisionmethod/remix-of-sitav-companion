@@ -47,7 +47,7 @@ const FilesSearch = () => {
     const domains = domainFilterMap[filter];
     const response = searchService.search({
       query: searchQuery,
-      domains: domains as unknown,
+      domains: domains as never,
       limit: 20,
       sortBy: "relevance",
     });
@@ -60,7 +60,7 @@ const FilesSearch = () => {
       const domains = domainFilterMap[f as FilterType];
       const response = searchService.search({
         query,
-        domains: domains as unknown,
+        domains: domains as never,
         limit: 20,
         sortBy: "relevance",
       });

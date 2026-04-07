@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Bell, CheckCircle, XCircle, Ban, Clock, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -25,8 +26,7 @@ export default function NOT03DeliveryReceiptsExplorer() {
   const { data: receipts = [], isLoading } = useQuery({
     queryKey: ["notification-delivery-receipts"],
     queryFn: async () => {
-      const { data, error } = await (supabase as unknown)
-        .from("notification_delivery_receipts")
+      const { data, error } = await fromTable("notification_delivery_receipts")
         .select("*")
         .order("sent_at", { ascending: false })
         .limit(100);

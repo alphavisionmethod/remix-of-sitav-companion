@@ -28,7 +28,7 @@ const ImportExportCenter = () => {
       name: j.file_name || "Untitled",
       type: j.format || "file",
       size: j.file_size ? `${(j.file_size / 1024).toFixed(0)} KB` : "—",
-      status: j.status as unknown,
+      status: j.status as never,
       progress: j.progress || 0,
       destination: undefined,
     }));
@@ -42,7 +42,7 @@ const ImportExportCenter = () => {
       name: j.file_name || "Export",
       type: j.format || "file",
       size: j.file_size ? `${(j.file_size / 1024).toFixed(0)} KB` : "—",
-      status: j.status as unknown,
+      status: j.status as never,
       generatedAt: j.completed_at || j.created_at,
       expiresAt: undefined,
     }));

@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { DomainId } from "@/packages/contracts/_contract-scaffold";
 
 export interface HandoffInput {
@@ -41,8 +42,7 @@ export class HandoffService {
       Date.now() + (input.ttlMinutes ?? 30) * 60 * 1000
     ).toISOString();
 
-    const { data, error } = await (supabase as unknown)
-      .from("handoff_packets")
+    const { data, error } = await fromTable("handoff_packets")
       .insert({
         user_id: userId,
         from_surface: input.fromSurface,
@@ -67,8 +67,7 @@ export class HandoffService {
   }
 
   async getPendingHandoffs(userId: string, surfaceId?: string): Promise<PersistedHandoff[]> {
-    let query = (supabase as unknown)
-      .from("handoff_packets")
+    let query = fromTable("handoff_packets")
       .select("*")
       .eq("user_id", userId)
       .eq("accepted", false)
@@ -88,8 +87,7 @@ export class HandoffService {
   }
 
   async acceptHandoff(handoffId: string): Promise<boolean> {
-    const { error } = await (supabase as unknown)
-      .from("handoff_packets")
+    const { error } = await fromTable("handoff_packets")
       .update({
         accepted: true,
         accepted_at: new Date().toISOString(),

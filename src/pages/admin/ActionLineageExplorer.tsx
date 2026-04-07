@@ -30,7 +30,7 @@ export default function ActionLineageExplorer() {
     queryKey: ["action-lineage", domainFilter, stateFilter],
     queryFn: () => fetchActionLineage({
       domain: domainFilter !== "all" ? domainFilter : undefined,
-      currentState: stateFilter !== "all" ? stateFilter as unknown : undefined,
+      currentState: stateFilter !== "all" ? stateFilter as never : undefined,
       includeArchived: true,
       limit: 200,
     }),

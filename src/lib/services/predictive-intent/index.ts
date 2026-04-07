@@ -60,7 +60,7 @@ class PredictiveIntentEngine {
     await fromTable('user_memory').upsert({
       user_id: userId,
       key: `intent_pattern_${action}_${pattern.hour}_${pattern.dayOfWeek}`,
-      value: JSON.stringify(pattern) as unknown,
+      value: JSON.stringify(pattern) as never,
       category: 'predictive_intent',
     }, { onConflict: 'user_id,key' }).select();
   }

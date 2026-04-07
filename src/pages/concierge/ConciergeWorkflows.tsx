@@ -83,7 +83,7 @@ const ConciergeWorkflows = () => {
                 <div className="flex-1 min-w-0 space-y-2">
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <p className="text-sm font-medium text-foreground">{wf.title}</p>
-                    <StateBadge state={wf.status as unknown} />
+                    <StateBadge state={wf.status as never} />
                   </div>
                   <p className="text-xs text-muted-foreground">{wf.trigger} · Affects: {wf.affectedPeople.join(", ")}</p>
                   <p className="text-xs text-foreground/80">{wf.impact}</p>

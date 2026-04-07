@@ -526,12 +526,10 @@ export function OSSetupExperience() {
 
       const snapshot = engine.toSnapshot();
       await fromTable("setup_sessions").upsert({
-        id: snapshot.id,
         user_id: snapshot.userId,
-        device_id: snapshot.deviceId,
-        session_data: snapshot,
-        current_phase: "trust-certificate",
-        completion_pct: 100,
+        current_step: "trust-certificate",
+        completed_steps: ["boot", "setup-style", "quick-identity", "primary-use-mode", "trust-calibration", "advisor-activation", "trust-certificate"],
+        preferences: snapshot as never,
         completed_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       }, { onConflict: "id" });
@@ -566,16 +564,14 @@ export function OSSetupExperience() {
         });
 
         await fromTable("device_statuses").upsert({
-          device_id: deviceId,
           user_id: user.id,
           device_name: deviceName,
           device_type: surfaceType === "mobile" || surfaceType === "capacitor" ? "mobile" : "desktop",
-          health: "healthy",
-          connectivity: "online",
-          last_heartbeat: new Date().toISOString(),
-          os_version: navigator.userAgent.slice(0, 60),
+          status: "active",
+          last_seen: new Date().toISOString(),
+          os: navigator.userAgent.slice(0, 60),
           metadata: { enrolled_via: "setup", surface: surfaceType },
-        }, { onConflict: "device_id" });
+        }, { onConflict: "user_id,device_name" });
       } catch (enrollErr) {
         console.warn("[OSSetup] Device enrollment skipped:", enrollErr);
       }
@@ -593,7 +589,7 @@ export function OSSetupExperience() {
         const phaseNames = ["boot", "setup-style", "quick-identity", "primary-use-mode", "trust-calibration", "advisor-activation", "trust-certificate"];
         for (const phaseName of phaseNames) {
           await bootService.persistPhase({
-            phase: phaseName as unknown,
+            phase: phaseName as never,
             status: "completed",
             completedAt: new Date().toISOString(),
             durationMs: 0,
@@ -748,7 +744,7 @@ export function OSSetupExperience() {
                 )}
 
                 {phase === "account-environment" && (
-                  <AccountEnvironmentStep key="account-environment" selectedPath={state.accountPath as unknown}
+                  <AccountEnvironmentStep key="account-environment" selectedPath={state.accountPath as never}
                     onPathChange={path => setState(s => ({ ...s, accountPath: path }))} onNext={goNext} onPrev={goPrev} />
                 )}
 

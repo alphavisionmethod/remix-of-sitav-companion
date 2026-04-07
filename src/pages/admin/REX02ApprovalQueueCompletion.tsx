@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, AlertTriangle, CheckCircle2, ShieldAlert, Timer } from "lucide-react";
@@ -10,8 +11,7 @@ function useApprovalQueueStats() {
   return useQuery({
     queryKey: ["rex02-approval-queue-stats"],
     queryFn: async () => {
-      const { data, error } = await (supabase as unknown)
-        .from("ai_workforce_approval_queue")
+      const { data, error } = await fromTable("ai_workforce_approval_queue")
         .select("status, risk_tier, created_at, resolved_at, updated_at");
       if (error) throw error;
       const items = data || [];

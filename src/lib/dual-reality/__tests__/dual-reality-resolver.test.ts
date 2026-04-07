@@ -45,7 +45,7 @@ describe("Reality Mode Resolver", () => {
   it("operator override takes priority over demo token", async () => {
     const { setModeOverride, resolveMode } = await import("@/lib/dual-reality/reality-mode-resolver");
     sessionStorage.setItem("sita-demo-token", "some_demo");
-    setModeOverride("sandbox" as unknown, { scenarioKey: "admin_test", durationMinutes: 60 });
+    setModeOverride("sandbox" as never, { scenarioKey: "admin_test", durationMinutes: 60 });
     const resolution = resolveMode({ searchParams: new URLSearchParams() });
     expect(resolution.mode).toBe("sandbox");
     expect(resolution.source).toBe("operator_override");

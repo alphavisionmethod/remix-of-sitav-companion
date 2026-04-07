@@ -12,7 +12,7 @@ const URGENCY_STYLES: Record<string, { icon: string; type: "success" | "error" |
 };
 
 function isElectron(): boolean {
-  return typeof window !== "undefined" && !!(window as Record<string, unknown>).electron;
+  return typeof window !== "undefined" && !!window.electron;
 }
 
 export function useRealtimeNotifications() {
@@ -48,7 +48,7 @@ export function useRealtimeNotifications() {
           // Native Electron notification
           if (isElectron()) {
             try {
-              (window as Record<string, unknown>).electron.sendNotification(
+              window.electron.sendNotification(
                 `${style.icon} ${n.title}`,
                 n.body || ""
               );

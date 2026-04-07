@@ -47,5 +47,5 @@ export async function getConsentHistoryView(): Promise<ConsentHistoryView[]> {
     .from("v_consent_history")
     .select("*");
   if (error) throw error;
-  return (data ?? []) as unknown as ConsentHistoryView[];
+  return (data ?? []) as never as ConsentHistoryView[];
 }

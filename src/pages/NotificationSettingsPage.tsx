@@ -160,7 +160,7 @@ export default function NotificationSettingsPage() {
 
       await supabase
         .from("profiles")
-        .update({ preferences: merged as unknown })
+        .update({ preferences: merged as never })
         .eq("user_id", user.id);
 
       toast.success("Notification preferences saved");

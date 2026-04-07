@@ -81,7 +81,7 @@ export async function getGateChecks(gateId: string): Promise<GateCheckRecord[]> 
     console.error("[LaunchGate] Checks error:", error);
     return [];
   }
-  return (data ?? []) as unknown as GateCheckRecord[];
+  return (data ?? []) as never as GateCheckRecord[];
 }
 
 export function calculateGateScore(gate: Partial<LaunchGateRecord>): number {

@@ -11,8 +11,7 @@ const SEED_KEY = "sita-platform-readiness-seeded";
 
 async function needsSeeding(userId: string): Promise<boolean> {
   if (sessionStorage.getItem(SEED_KEY) === "true") return false;
-  const { count } = await (supabase as unknown)
-    .from("surface_portability_registry")
+  const { count } = await fromTable("surface_portability_registry")
     .select("id", { count: "exact", head: true })
     .eq("user_id", userId);
   return (count ?? 0) === 0;

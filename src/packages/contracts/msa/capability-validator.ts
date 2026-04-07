@@ -72,7 +72,7 @@ export function validateCapabilityInvocation(
   }
 
   // mode
-  if (!inv.mode || !VALID_MODES.includes(inv.mode as unknown)) {
+  if (!inv.mode || !VALID_MODES.includes(inv.mode as never)) {
     errors.push(`mode must be one of: ${VALID_MODES.join(", ")}`);
   }
 

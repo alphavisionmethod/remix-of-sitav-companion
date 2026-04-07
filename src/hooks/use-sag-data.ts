@@ -4,7 +4,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 
 const getUser = async () => {
@@ -15,9 +15,9 @@ const getUser = async () => {
 const makeHook = (table: string, key: string) => () => useQuery({
   queryKey: ['sag', key],
   queryFn: async () => {
-    const { data, error } = await fromTable(table).select('*').order('created_at', { ascending: false });
+    const { data, error } = await fromDynamicTable(table).select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as unknown[];
+    return data as never[];
   }
 });
 
@@ -27,7 +27,7 @@ const makeMutation = (table: string, key: string, successMsg: string) => () => {
     mutationFn: async (record: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await fromTable(table).insert({ ...record, user_id: user.id }).select().single();
+      const { data, error } = await fromDynamicTable(table).insert({ ...record, user_id: user.id }).select().single();
       if (error) throw error;
       return data;
     },
@@ -72,8 +72,8 @@ export const useGatewayStats = () => useQuery({
       fromTable('ai_portfolio_allocations').select('*'),
       fromTable('ai_compliance_violations').select('*').eq('resolved', false),
     ]);
-    const t = (tasks.data || []) as unknown[];
-    const r = (receipts.data || []) as unknown[];
+    const t = (tasks.data || []) as never[];
+    const r = (receipts.data || []) as never[];
     const totalCost = t.reduce((s: number, x: any) => s + (x.cost_actual_cents || 0), 0);
     const cacheHits = t.filter((x: any) => x.cache_hit).length;
     const fallbacks = t.filter((x: any) => x.fallback_used).length;

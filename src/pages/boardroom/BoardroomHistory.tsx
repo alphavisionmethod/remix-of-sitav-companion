@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
@@ -29,8 +30,7 @@ export default function BoardroomHistory() {
     queryKey: ["boardroom-sessions", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await (supabase as unknown)
-        .from("boardroom_sessions")
+      const { data, error } = await fromTable("boardroom_sessions")
         .select("*, boardroom_decisions(id)")
         .eq("user_id", user!.id)
         .order("created_at", { ascending: false });

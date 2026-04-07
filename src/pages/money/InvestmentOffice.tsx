@@ -461,9 +461,9 @@ const InvestmentOffice = () => {
   const { data: hookTheses } = useTheses();
 
   // Update module-level refs so sub-components pick up hook data
-  if (hookBuckets?.length) { MOCK_CAPITAL_BUCKETS_REF = hookBuckets as unknown; capitalMap = buildCapitalMap(MOCK_CAPITAL_BUCKETS_REF); }
-  if (hookPositions?.length) { MOCK_INV_POSITIONS = hookPositions as unknown; riskMetrics = analyzePortfolioRisk(MOCK_INV_POSITIONS, capitalMap.reserveCapital); stressScenarios = runStressScenarios(MOCK_INV_POSITIONS, capitalMap.reserveCapital); }
-  if (hookTheses?.length) { MOCK_INV_THESES = hookTheses as unknown; }
+  if (hookBuckets?.length) { MOCK_CAPITAL_BUCKETS_REF = hookBuckets as never; capitalMap = buildCapitalMap(MOCK_CAPITAL_BUCKETS_REF); }
+  if (hookPositions?.length) { MOCK_INV_POSITIONS = hookPositions as never; riskMetrics = analyzePortfolioRisk(MOCK_INV_POSITIONS, capitalMap.reserveCapital); stressScenarios = runStressScenarios(MOCK_INV_POSITIONS, capitalMap.reserveCapital); }
+  if (hookTheses?.length) { MOCK_INV_THESES = hookTheses as never; }
   const tabs = [
     { key: "overview", label: "Capital Map" },
     { key: "portfolio", label: "Portfolio" },

@@ -31,7 +31,7 @@ export default function MemoryContinuityCenter() {
   const { data: entries = [], refetch } = useQuery({
     queryKey: ["mem-entries", scopeFilter, privacyFilter],
     queryFn: () => fetchScopedMemory({
-      scope: scopeFilter !== "all" ? scopeFilter as unknown : undefined,
+      scope: scopeFilter !== "all" ? scopeFilter as never : undefined,
       privacyTier: privacyFilter !== "all" ? privacyFilter : undefined,
       limit: 200,
     }),

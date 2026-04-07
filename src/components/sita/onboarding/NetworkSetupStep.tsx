@@ -48,13 +48,13 @@ function SignalBars({ strength }: { strength: number }) {
 }
 
 function detectConnectionType(): ConnectionType {
-  const conn = (navigator as Record<string, unknown>).connection;
+  const conn = navigator.connection;
   if (conn) {
-    const t = conn.type as string;
-    if (t === "ethernet") return "ethernet";
-    if (t === "wifi") return "wifi";
-    if (t === "cellular") return "cellular";
+    const t = conn.effectiveType;
+    if (t === "4g") return "wifi";
+    if (t === "3g" || t === "2g" || t === "slow-2g") return "cellular";
   }
+  if (navigator.onLine) return "wifi";
   return "unknown";
 }
 
@@ -91,7 +91,7 @@ export function NetworkSetupStep({ onNext, onPrev, onStateChange }: Props) {
     if (type === "ethernet") {
       setConnectionState("ethernet_connected");
     }
-    const conn = (navigator as Record<string, unknown>).connection;
+    const conn = navigator.connection;
     if (conn) {
       const handler = () => setDetectedType(detectConnectionType());
       conn.addEventListener?.("change", handler);

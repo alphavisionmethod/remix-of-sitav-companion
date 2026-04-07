@@ -57,7 +57,7 @@ class CompetitiveIntelligenceService {
     await fromTable('user_memory').upsert({
       user_id: userId,
       key: `competitor_${full.id}`,
-      value: JSON.stringify(full) as unknown,
+      value: JSON.stringify(full) as never,
       category: 'competitive_intel',
     }, { onConflict: 'user_id,key' });
 

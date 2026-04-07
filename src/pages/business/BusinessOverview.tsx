@@ -60,7 +60,7 @@ const BusinessLeakagePanel = () => {
       <DemoModeBadge />
       <SitaSectionHeader title="Revenue Leakage Signals" subtitle="From Revenue Intelligence Engine" action={<button onClick={() => navigate("/recovered-value")} className="text-xs text-primary hover:underline">Full ledger →</button>} />
       {leakageData.rankings.map(r => {
-        const autoDecision = engines.revenue.shouldAutoRecover(Array.from((engines.revenue as unknown).signals?.values?.() || []).find((s: any) => s.id === r.opportunityId) as unknown);
+        const autoDecision = engines.revenue.shouldAutoRecover(Array.from((engines.revenue as never).signals?.values?.() || []).find((s: any) => s.id === r.opportunityId) as never);
         return (
           <SitaCard key={r.opportunityId} lane="action" className="p-3">
             <div className="flex items-center gap-3">
@@ -86,7 +86,7 @@ const BusinessOverview = () => {
   const navigate = useNavigate();
   const { isDemoMode } = useDataMode();
   const crmSync = useCRMSync();
-  const crmHealth = crmSync.healthCheck.data as unknown;
+  const crmHealth = crmSync.healthCheck.data as never;
   const { data: leads = [], isLoading: leadsLoading } = useLeads();
   const { data: customers = [], isLoading: custLoading } = useCustomers();
   const { data: invoices = [], isLoading: invLoading } = useInvoices();

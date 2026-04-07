@@ -513,7 +513,7 @@ describe("Event Sourcing & Projections", () => {
     const proj = projections.getProjection("finance-dashboard", "user-1");
     expect(proj).toBeDefined();
     expect(proj!.eventCount).toBe(5);
-    expect((proj!.state.transactions as unknown[]).length).toBe(5);
+    expect((proj!.state.transactions as never[]).length).toBe(5);
   });
 
   it("rebuilds projections from full event replay", () => {
@@ -527,7 +527,7 @@ describe("Event Sourcing & Projections", () => {
 
     const rebuilt = projections.rebuildFromEvents("household-dashboard", "hh-1", events);
     expect(rebuilt.eventCount).toBe(3);
-    expect((rebuilt.state.tasks as unknown[]).length).toBe(3);
+    expect((rebuilt.state.tasks as never[]).length).toBe(3);
   });
 
   it("supports 6 projection types", () => {

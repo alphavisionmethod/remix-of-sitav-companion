@@ -111,7 +111,7 @@ const FilesSettings = () => {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <p className="text-sm text-foreground">Default sensitivity level</p>
-                <SensitivityBadge level={settings.default_sensitivity as unknown} />
+                <SensitivityBadge level={settings.default_sensitivity as never} />
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-sm text-foreground">Default retention</p>

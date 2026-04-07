@@ -29,7 +29,7 @@ export function useElectronBridge() {
   useEffect(() => {
     if (!electron) return;
 
-    const bridge = window.electron as unknown as ElectronBridgeAPI;
+    const bridge = window.electron as ElectronBridgeAPI;
 
     // Fetch system info
     bridge.getSystemInfo?.().then(setSystemInfo).catch(() => {});
@@ -38,7 +38,7 @@ export function useElectronBridge() {
     const cleanupDeepLink = bridge.onDeepLink?.((payload) => setDeepLink(payload));
 
     // Listen for update status
-    const el = window.electron as unknown;
+    const el = window.electron;
     const cleanupUpdate = el.onUpdateStatus?.((status: UpdateState) => setUpdateState(status));
 
     return () => {
@@ -49,42 +49,42 @@ export function useElectronBridge() {
 
   const sendNotification = useCallback((title: string, body: string) => {
     if (!electron) return;
-    (window.electron as unknown as ElectronBridgeAPI).sendNotification(title, body);
+    (window.electron as ElectronBridgeAPI).sendNotification(title, body);
   }, [electron]);
 
   const checkForUpdates = useCallback(async (): Promise<UpdateStatus | null> => {
     if (!electron) return null;
-    return (window.electron as unknown as ElectronBridgeAPI).checkForUpdates();
+    return (window.electron as ElectronBridgeAPI).checkForUpdates();
   }, [electron]);
 
   const downloadUpdate = useCallback(async (): Promise<{ success: boolean; reason?: string } | null> => {
     if (!electron) return null;
-    return (window.electron as unknown).downloadUpdate();
+    return (window.electron).downloadUpdate();
   }, [electron]);
 
   const installUpdate = useCallback((): void => {
     if (!electron) return;
-    (window.electron as unknown).installUpdate();
+    (window.electron).installUpdate();
   }, [electron]);
 
   const windowControl = useCallback((action: "minimize" | "maximize" | "close" | "fullscreen" | "restore") => {
     if (!electron) return;
-    (window.electron as unknown as ElectronBridgeAPI).windowControl(action);
+    (window.electron as ElectronBridgeAPI).windowControl(action);
   }, [electron]);
 
   const getCrashReports = useCallback(async () => {
     if (!electron) return null;
-    return (window.electron as unknown).getCrashReports();
+    return (window.electron).getCrashReports();
   }, [electron]);
 
   const clearCrashReports = useCallback(async () => {
     if (!electron) return null;
-    return (window.electron as unknown).clearCrashReports();
+    return (window.electron).clearCrashReports();
   }, [electron]);
 
   const reportError = useCallback((error: { message: string; stack?: string; url?: string }) => {
     if (!electron) return;
-    (window.electron as unknown).reportRendererError(error);
+    (window.electron).reportRendererError(error);
   }, [electron]);
 
   return {
@@ -100,6 +100,6 @@ export function useElectronBridge() {
     getCrashReports,
     clearCrashReports,
     reportError,
-    platform: electron ? (window.electron as unknown)?.platform : null,
+    platform: electron ? (window.electron)?.platform : null,
   };
 }

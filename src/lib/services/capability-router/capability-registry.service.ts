@@ -83,7 +83,7 @@ function _serializeState(): Record<string, unknown> {
 
 function _hydrateState(state: Record<string, unknown>): void {
   if (!state) return;
-  if (state.registry) { registry.clear(); (state.registry as unknown[]).forEach(([k, v]: any) => registry.set(k, v)); }
+  if (state.registry) { registry.clear(); (state.registry as never[]).forEach(([k, v]: any) => registry.set(k, v)); }
 }
 
 export async function loadPersistedState(): Promise<void> {

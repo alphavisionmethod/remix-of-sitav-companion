@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { CUSTOMER_JOURNEY_REGISTRY } from "./journey-registry";
 
 /**
@@ -71,14 +72,12 @@ export async function seedJourneyRegistry(): Promise<SeedResult> {
   }));
 
   // Upsert registry rows
-  const { error: regError } = await (supabase as unknown)
-    .from("customer_journey_registry")
+  const { error: regError } = await fromTable("customer_journey_registry")
     .upsert(registryRows, { onConflict: "journey_key" });
   if (regError) throw regError;
 
   // Get all registry IDs back
-  const { data: registryData, error: fetchError } = await (supabase as unknown)
-    .from("customer_journey_registry")
+  const { data: registryData, error: fetchError } = await fromTable("customer_journey_registry")
     .select("id, journey_key");
   if (fetchError) throw fetchError;
 
@@ -90,8 +89,7 @@ export async function seedJourneyRegistry(): Promise<SeedResult> {
   }));
 
   // Upsert status rows (journey_id is unique)
-  const { error: statusError } = await (supabase as unknown)
-    .from("customer_journey_status")
+  const { error: statusError } = await fromTable("customer_journey_status")
     .upsert(statusRows, { onConflict: "journey_id" });
   if (statusError) throw statusError;
 

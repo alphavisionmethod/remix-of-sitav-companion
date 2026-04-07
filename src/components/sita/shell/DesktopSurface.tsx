@@ -94,19 +94,19 @@ export function DesktopSurface({
   // Wire to edge functions for live boardroom data
   const { data: liveCf } = useCashflowAnalysis();
   const crmSync = useCRMSync();
-  const cf = liveCf as unknown;
-  const crmHealth = crmSync.healthCheck.data as unknown;
+  const cf = liveCf as unknown as Record<string, number | undefined> | undefined;
+  const crmHealth = crmSync.healthCheck.data as unknown as Record<string, Record<string, number | undefined> | undefined> | undefined;
 
   const boardroomItems = useMemo<BoardroomSummary[]>(() => {
     const bizDetail = crmHealth
       ? `${crmHealth.leads?.count ?? 0} leads · ${crmHealth.customers?.count ?? 0} customers · ${crmHealth.opportunities?.count ?? 0} opps`
       : "12 active deals · 3 need attention";
-    const bizStatus = crmHealth?.leads?.count > 0 ? "good" as const : "attention" as const;
+    const bizStatus = (crmHealth?.leads?.count ?? 0) > 0 ? "good" as const : "attention" as const;
 
     const finDetail = cf
       ? `Liquid: $${Math.round((cf.total_liquid_cents || 0) / 100).toLocaleString()} · Receivable: $${Math.round((cf.total_receivable_cents || 0) / 100).toLocaleString()}`
       : "All bills current · Reserve at 85%";
-    const finStatus = cf?.overdue_count > 0 ? "attention" as const : "good" as const;
+    const finStatus = (cf?.overdue_count ?? 0) > 0 ? "attention" as const : "good" as const;
 
     const items: BoardroomSummary[] = [
       { id: "biz", icon: Briefcase, domain: "Business", headline: "Pipeline health", detail: bizDetail, status: bizStatus },

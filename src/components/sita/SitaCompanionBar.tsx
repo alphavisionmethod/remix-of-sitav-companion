@@ -44,12 +44,12 @@ export const SitaCompanionBar = () => {
   const recognitionRef = useRef<any>(null);
 
   const startVoice = useCallback(() => {
-    const SpeechRecognition = (window as Record<string, unknown>).SpeechRecognition || (window as Record<string, unknown>).webkitSpeechRecognition;
-    if (!SpeechRecognition) {
+    const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognitionCtor) {
       toast.error("Voice input not supported in this browser");
       return;
     }
-    const recognition = new SpeechRecognition();
+    const recognition = new SpeechRecognitionCtor();
     recognition.continuous = false;
     recognition.interimResults = true;
     recognition.lang = "en-US";

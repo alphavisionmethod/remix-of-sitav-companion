@@ -19,7 +19,7 @@ import { createOSUnificationService } from "@/lib/services/os-unification";
 import { buildActiveSurface } from "@/lib/services/surface-detection";
 import { getOfflineQueueService } from "@/lib/services/offline-queue";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface OSRuntime {
   context: OSRuntimeContext;
@@ -122,17 +122,17 @@ export function OSRuntimeProvider({
     const offlineQueue = getOfflineQueueService();
     offlineQueue.setReplayHandler(async (mutation) => {
       try {
-        const table = fromTable(mutation.table);
+        const table = fromDynamicTable(mutation.table);
         let result;
         switch (mutation.operation) {
           case "insert":
             result = await table.insert(mutation.payload);
             break;
           case "update":
-            result = await table.update(mutation.payload).eq("id", (mutation.payload as unknown).id);
+            result = await table.update(mutation.payload).eq("id", (mutation.payload as never).id);
             break;
           case "delete":
-            result = await table.delete().eq("id", (mutation.payload as unknown).id);
+            result = await table.delete().eq("id", (mutation.payload as never).id);
             break;
         }
         return !result?.error;
@@ -219,7 +219,7 @@ export function OSRuntimeProvider({
         }, 30_000);
 
         // Store cleanup ref
-        (window as Record<string, unknown>).__sitaEngineSaveInterval = saveInterval;
+        (window as unknown as Record<string, unknown>).__sitaEngineSaveInterval = saveInterval;
       },
     ).catch(console.error);
 
@@ -244,7 +244,7 @@ export function OSRuntimeProvider({
     return () => {
       cancelled = true;
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      const saveInterval = (window as Record<string, unknown>).__sitaEngineSaveInterval;
+      const saveInterval = (window as unknown as Record<string, unknown>).__sitaEngineSaveInterval;
       if (saveInterval) clearInterval(saveInterval);
     };
   }, [userId, runtime]);

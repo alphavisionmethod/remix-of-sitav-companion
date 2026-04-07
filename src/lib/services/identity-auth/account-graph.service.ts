@@ -36,7 +36,7 @@ export async function getAccountGraphSummary(): Promise<AccountGraphSummaryView[
     .from("v_account_graph_summary")
     .select("*");
   if (error) throw error;
-  return (data ?? []) as unknown as AccountGraphSummaryView[];
+  return (data ?? []) as never as AccountGraphSummaryView[];
 }
 
 // ── Separation audit ───────────────────────────────────────────

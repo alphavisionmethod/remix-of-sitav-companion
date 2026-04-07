@@ -120,11 +120,11 @@ class DigitalLegacyVaultService {
 
     return (data || []).map((d) => ({
       id: d.id,
-      type: ((d.metadata as unknown)?.type || 'note') as VaultItemType,
-      title: (d.metadata as unknown)?.title || d.name,
+      type: ((d.metadata as never)?.type || 'note') as VaultItemType,
+      title: (d.metadata as never)?.title || d.name,
       encryptedContent: d.encrypted_value,
-      tags: (d.metadata as unknown)?.tags || [],
-      beneficiaries: (d.metadata as unknown)?.beneficiaries || [],
+      tags: (d.metadata as never)?.tags || [],
+      beneficiaries: (d.metadata as never)?.beneficiaries || [],
       lastUpdated: new Date(d.updated_at || d.created_at || ''),
     }));
   }
@@ -142,7 +142,7 @@ class DigitalLegacyVaultService {
     await fromTable('user_memory').upsert({
       user_id: userId,
       key: 'vault_last_checkin',
-      value: JSON.stringify({ checkedInAt: new Date().toISOString() }) as unknown,
+      value: JSON.stringify({ checkedInAt: new Date().toISOString() }) as never,
       category: 'legacy_vault',
     }, { onConflict: 'user_id,key' });
   }

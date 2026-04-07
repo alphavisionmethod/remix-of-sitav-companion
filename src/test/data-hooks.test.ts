@@ -16,13 +16,13 @@ describe("Data Hook Exports", () => {
 
     for (const hook of requiredHooks) {
       expect(mod).toHaveProperty(hook);
-      expect(typeof (mod as unknown)[hook]).toBe("function");
+      expect(typeof (mod as never)[hook]).toBe("function");
     }
   });
 
   it("exports 31 hooks total", async () => {
     const mod = await import("@/hooks/use-sita-data");
-    const exportedFunctions = Object.keys(mod).filter(k => typeof (mod as unknown)[k] === "function");
+    const exportedFunctions = Object.keys(mod).filter(k => typeof (mod as never)[k] === "function");
     expect(exportedFunctions.length).toBeGreaterThanOrEqual(31);
   });
 });

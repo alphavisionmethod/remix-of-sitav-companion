@@ -40,7 +40,7 @@ export async function getConnectedAccountsCenter(): Promise<ConnectedAccountView
     .from("v_connected_accounts_center")
     .select("*");
   if (error) throw error;
-  return (data ?? []) as unknown as ConnectedAccountView[];
+  return (data ?? []) as never as ConnectedAccountView[];
 }
 
 // ── Disconnection events ───────────────────────────────────────

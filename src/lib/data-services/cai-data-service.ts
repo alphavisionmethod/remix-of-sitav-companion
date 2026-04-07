@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 // ── Helpers ─────────────────────────────────────────────────────
 
@@ -18,7 +18,7 @@ type QueryFilters = { limit?: number; since?: string };
 async function queryTable(table: string, filters?: QueryFilters & Record<string, unknown>) {
   const userId = await uid();
   if (!userId) return [];
-  let query = fromTable(table).select("*").eq("user_id", userId).order("created_at", { ascending: false });
+  let query = fromDynamicTable(table).select("*").eq("user_id", userId).order("created_at", { ascending: false });
   if (filters?.since) query = query.gte("created_at", filters.since);
   query = query.limit(filters?.limit ?? 100);
   const { data, error } = await query;
@@ -29,19 +29,19 @@ async function queryTable(table: string, filters?: QueryFilters & Record<string,
 async function insertRow(table: string, row: Record<string, unknown>) {
   const userId = await uid();
   if (!userId) return null;
-  const { data, error } = await fromTable(table).insert({ ...row, user_id: userId }).select().single();
+  const { data, error } = await fromDynamicTable(table).insert({ ...row, user_id: userId }).select().single();
   if (error) { console.error(`[cai-data] ${table} insert failed:`, error); return null; }
   return data;
 }
 
 async function updateRow(table: string, id: string, updates: Record<string, unknown>) {
-  const { error } = await fromTable(table).update(updates).eq("id", id);
+  const { error } = await fromDynamicTable(table).update(updates).eq("id", id);
   if (error) { console.error(`[cai-data] ${table} update failed:`, error); return false; }
   return true;
 }
 
 async function deleteRow(table: string, id: string) {
-  const { error } = await fromTable(table).delete().eq("id", id);
+  const { error } = await fromDynamicTable(table).delete().eq("id", id);
   if (error) { console.error(`[cai-data] ${table} delete failed:`, error); return false; }
   return true;
 }

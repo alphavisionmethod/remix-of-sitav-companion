@@ -96,8 +96,7 @@ export async function seedDemoGovernance(): Promise<void> {
   await fromTable("demo_kill_switches").upsert(killSwitches, { onConflict: "user_id,key" });
 
   // ── 6. Demo Receipts (sample governance trail) ──
-  const { data: savedScenarios } = await (supabase as unknown)
-    .from("demo_scenarios").select("id, scenario_key").eq("user_id", uid);
+  const { data: savedScenarios } = await fromTable("demo_scenarios").select("id, scenario_key").eq("user_id", uid);
   const scenarioMap = new Map((savedScenarios ?? []).map((s: any) => [s.scenario_key, s.id]));
   const investorId = scenarioMap.get("investor_demo");
   const salesId = scenarioMap.get("sales_demo");

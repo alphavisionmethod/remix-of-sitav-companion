@@ -84,7 +84,7 @@ export default function ExecutionDesk() {
             </div>
             <div className="space-y-1.5">
               <label className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Order Type</label>
-              <select value={orderType} onChange={e => setOrderType(e.target.value as unknown)}
+              <select value={orderType} onChange={e => setOrderType(e.target.value as never)}
                 className="w-full rounded-xl border border-border bg-secondary px-3 py-2.5 text-sm text-foreground focus:border-primary/30 focus:outline-none">
                 <option value="market">Market</option>
                 <option value="limit">Limit</option>

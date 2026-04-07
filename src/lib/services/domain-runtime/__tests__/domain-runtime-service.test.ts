@@ -55,7 +55,7 @@ describe("Domain Runtime Service", () => {
       { truth_score: 90 },
       { truth_score: 80 },
       { truth_score: 100 },
-    ] as unknown[];
+    ] as never[];
     expect(getRuntimeTruthIndex(records)).toBe(90);
   });
 

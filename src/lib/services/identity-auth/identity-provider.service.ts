@@ -59,7 +59,7 @@ export async function getIdentityMethods(): Promise<IdentityMethodView[]> {
     .from("v_identity_methods")
     .select("*");
   if (error) throw error;
-  return (data ?? []) as unknown as IdentityMethodView[];
+  return (data ?? []) as never as IdentityMethodView[];
 }
 
 // ── Session audit ──────────────────────────────────────────────

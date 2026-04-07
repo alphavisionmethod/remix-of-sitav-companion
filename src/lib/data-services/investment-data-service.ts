@@ -42,7 +42,7 @@ export async function fetchPositions(mode: RealityModeKey = "real"): Promise<Mod
   if (!user) return resolveByMode({ mode, realData: null, demoData: DEMO_POSITIONS, emptyDefault: [] });
   const { data, error } = await fromTable("asset_master").select("*, asset_market_snapshots(price, daily_change)").limit(20);
   const mapped = (!error && data && data.length > 0) ? data.map((a: any): Position => ({
-    id: a.id, symbol: a.symbol, name: a.display_name, assetClass: a.asset_class as unknown, quantity: 0,
+    id: a.id, symbol: a.symbol, name: a.display_name, assetClass: a.asset_class as never, quantity: 0,
     avgCostBasis: 0, currentPrice: a.asset_market_snapshots?.[0]?.price ?? 0,
     currency: "USD", venue: a.exchange_or_venue || "Unknown", custodyType: "brokerage",
   })) : null;

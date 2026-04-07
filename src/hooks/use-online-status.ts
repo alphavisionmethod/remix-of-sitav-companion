@@ -28,7 +28,7 @@ export function useOnlineStatus(): UseOnlineStatusReturn {
   const wasOfflineRef = useRef(false);
 
   const checkConnectionQuality = useCallback(() => {
-    const conn = (navigator as Record<string, unknown>).connection;
+    const conn = navigator.connection;
     if (!navigator.onLine) {
       setConnectionQuality("offline");
       return;
@@ -68,7 +68,7 @@ export function useOnlineStatus(): UseOnlineStatusReturn {
     checkConnectionQuality();
 
     // Listen for connection quality changes
-    const conn = (navigator as Record<string, unknown>).connection;
+    const conn = navigator.connection;
     if (conn) {
       conn.addEventListener("change", checkConnectionQuality);
     }

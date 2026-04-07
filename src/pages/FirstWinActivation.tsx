@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import {
   UserCheck, DollarSign, Calendar, Home, Target,
   ArrowRight, Check, Sparkles, BarChart3, Bell,
@@ -250,8 +251,7 @@ export default function FirstWinActivation() {
 
     const loadChoice = async () => {
       try {
-        const { data } = await (supabase as unknown)
-          .from("user_memory")
+        const { data } = await fromTable("user_memory")
           .select("value")
           .eq("user_id", user.id)
           .eq("key", "first_recovery")

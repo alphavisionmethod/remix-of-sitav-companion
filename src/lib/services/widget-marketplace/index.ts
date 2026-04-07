@@ -68,7 +68,7 @@ class WidgetMarketplaceService {
     await fromTable('user_memory').upsert({
       user_id: userId,
       key: `dashboard_layout_${layout.id}`,
-      value: JSON.stringify(layout) as unknown,
+      value: JSON.stringify(layout) as never,
       category: 'dashboard',
     }, { onConflict: 'user_id,key' });
   }
@@ -82,7 +82,7 @@ class WidgetMarketplaceService {
       .single();
 
     if (data?.value) {
-      return typeof data.value === 'string' ? JSON.parse(data.value) : data.value as unknown;
+      return typeof data.value === 'string' ? JSON.parse(data.value) : data.value as never;
     }
     return this.getDefaultLayout();
   }

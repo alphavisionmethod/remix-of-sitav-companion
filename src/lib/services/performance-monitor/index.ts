@@ -35,7 +35,7 @@ export function initPerformanceMonitor() {
   try {
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
-      const last = entries[entries.length - 1] as unknown;
+      const last = entries[entries.length - 1] as never;
       if (last) log({ name: 'LCP', value: last.startTime, rating: rate('LCP', last.startTime) });
     }).observe({ type: 'largest-contentful-paint', buffered: true });
   } catch {}

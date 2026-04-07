@@ -223,11 +223,11 @@ describe("Disagreement Detection", () => {
 
 describe("Perspective Filtering", () => {
   const mockSections: BoardroomContentSection[] = [
-    { id: "s1", type: "metric-card", title: "KPIs", data: [] as unknown },
+    { id: "s1", type: "metric-card", title: "KPIs", data: [] as never },
     { id: "s2", type: "table", title: "Details", data: { columns: [], rows: [], source: "test" } },
     { id: "s3", type: "narrative", title: "Summary", data: { text: "ok", confidence: 0.9, citations: [] } },
-    { id: "s4", type: "alert", title: "Alerts", data: [] as unknown },
-    { id: "s5", type: "action-list", title: "Actions", data: [] as unknown },
+    { id: "s4", type: "alert", title: "Alerts", data: [] as never },
+    { id: "s5", type: "action-list", title: "Actions", data: [] as never },
   ];
 
   it("executive perspective hides detail tables", () => {
@@ -469,7 +469,7 @@ describe("Advisor Config Package Alignment", () => {
   });
 
   it("getAdvisorConfig throws for unknown ID", () => {
-    expect(() => getAdvisorConfig("nonexistent" as unknown)).toThrow("Unknown advisor");
+    expect(() => getAdvisorConfig("nonexistent" as never)).toThrow("Unknown advisor");
   });
 
   it("getAdvisorsByDomain returns correct results", () => {
@@ -601,7 +601,7 @@ describe("Council Protocol E2E with Mission Mode", () => {
     expect(synth.overallConfidence).toBeGreaterThan(0);
 
     // 5. Generate packet
-    const packet = await generateBoardroomPacket(active.boardroomPacketType as unknown);
+    const packet = await generateBoardroomPacket(active.boardroomPacketType as never);
     expect(packet.sections.length).toBeGreaterThan(0);
 
     // 6. Filter by perspective

@@ -163,26 +163,26 @@ const DailyPulse = () => {
   // Wire to edge functions for live finance + CRM data
   const { data: liveCashflow } = useCashflowAnalysis();
   const crmSync = useCRMSync();
-  const liveCf = liveCashflow as unknown;
-  const crmHealth = crmSync.healthCheck.data as unknown;
+  const liveCf = liveCashflow as never;
+  const crmHealth = crmSync.healthCheck.data as never;
 
   const hasAnyData = isDemoMode || leads.length > 0 || invoices.length > 0 || bills.length > 0 || householdTasks.length > 0;
 
   const pendingApprovals = approvals.filter((a: any) => a.status === "pending");
 
   const crossDomainInsights = evaluateCrossDomainIntelligence({
-    invoices: invoices as unknown[], bills: bills as unknown[], leads: leads as unknown[], cashFlow: cashFlow as unknown,
-    householdTasks: householdTasks as unknown[], familyEvents: familyEvents as unknown[], travel: travel as unknown[], subscriptions: subscriptions as unknown[],
+    invoices: invoices as never[], bills: bills as never[], leads: leads as never[], cashFlow: cashFlow as never,
+    householdTasks: householdTasks as never[], familyEvents: familyEvents as never[], travel: travel as never[], subscriptions: subscriptions as never[],
   });
 
-  const staleLeads = (leads as unknown[]).filter((l: any) => l.status === "cooling" || l.lastTouch?.includes("d ago"));
-  const overdueBills = (bills as unknown[]).filter((b: any) => b.status === "overdue");
-  const upcomingBills = (bills as unknown[]).filter((b: any) => b.status === "upcoming");
+  const staleLeads = (leads as never[]).filter((l: any) => l.status === "cooling" || l.lastTouch?.includes("d ago"));
+  const overdueBills = (bills as never[]).filter((b: any) => b.status === "overdue");
+  const upcomingBills = (bills as never[]).filter((b: any) => b.status === "upcoming");
   const actionCount = staleLeads.length + overdueBills.length + pendingApprovals.length;
 
   // ── Domain Engine Computations ──────────────────────────────
   const businessHealth = useMemo(() => {
-    const bizLeads = adaptMockLeads(leads as unknown[]);
+    const bizLeads = adaptMockLeads(leads as never[]);
     const bizCustomers = adaptMockCustomers([
       { id: "C-001", name: "Acme Corp", mrr: "$2,400", health: "healthy", lastInteraction: "Yesterday" },
       { id: "C-002", name: "Bloom Studio", mrr: "$1,200", health: "at-risk", lastInteraction: "2 weeks ago" },
@@ -200,16 +200,16 @@ const DailyPulse = () => {
     const entries = buildMockCashflowEntries();
     const budgets = buildMockBudgets();
     const reserves = buildMockReserves();
-    const finInvoices = adaptMockInvoicesForAging(invoices as unknown[]);
+    const finInvoices = adaptMockInvoicesForAging(invoices as never[]);
     const cf = analyzeCashflow(entries, 24680);
     const bh = assessBudgetHealth(budgets);
     const ra = assessReserves(reserves, 7500);
     const ia = analyzeInvoiceAging(finInvoices);
-    return { health: assessFinancialHealth(cf, bh, ra, ia), cashflow: cf, billCalendar: analyzeBillCalendar(adaptMockBills(bills as unknown[])), reserves: ra };
+    return { health: assessFinancialHealth(cf, bh, ra, ia), cashflow: cf, billCalendar: analyzeBillCalendar(adaptMockBills(bills as never[])), reserves: ra };
   }, [invoices, bills]);
 
   const taskPrioritization = useMemo(() => {
-    const tasks = adaptMockHouseholdTasks(householdTasks as unknown[]);
+    const tasks = adaptMockHouseholdTasks(householdTasks as never[]);
     return prioritizeTasks(tasks);
   }, [householdTasks]);
 
@@ -256,7 +256,7 @@ const DailyPulse = () => {
   const kpiTiles = {
     business: <KPITile key="biz" label="Business Health" value={`${businessHealth.overallScore}/100`} trend={scoreTrend(businessHealth.overallScore)} sub={formatScore(businessHealth.overallScore)} icon={Briefcase} />,
     finance: <KPITile key="fin" label="Financial Health" value={`${finHealth.health.overallScore}/100`} trend={scoreTrend(finHealth.health.overallScore)} sub={finHealth.health.summary.split("—")[0].trim()} icon={DollarSign} />,
-    leads: <KPITile key="leads" label="Active Leads" value={String((leads as unknown[]).length)} trend="up" sub={`${staleLeads.length} cooling`} icon={Target} />,
+    leads: <KPITile key="leads" label="Active Leads" value={String((leads as never[]).length)} trend="up" sub={`${staleLeads.length} cooling`} icon={Target} />,
     actions: <KPITile key="actions" label="Pending Actions" value={String(actionCount)} sub={`${pendingApprovals.length} approvals · ${taskPrioritization.prioritized.length} tasks`} icon={Workflow} />,
   };
   const orderedKpis = modeConfig.kpiOrder.map(k => kpiTiles[k as keyof typeof kpiTiles]);

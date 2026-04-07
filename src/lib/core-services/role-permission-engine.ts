@@ -134,7 +134,7 @@ export class RolePermissionEngine {
       switch (cond.operator) {
         case "eq": return value === cond.value;
         case "neq": return value !== cond.value;
-        case "in": return Array.isArray(cond.value) && (cond.value as unknown[]).includes(value);
+        case "in": return Array.isArray(cond.value) && (cond.value as never[]).includes(value);
         case "gt": return typeof value === "number" && typeof cond.value === "number" && value > cond.value;
         case "lt": return typeof value === "number" && typeof cond.value === "number" && value < cond.value;
         case "contains": return typeof value === "string" && typeof cond.value === "string" && value.includes(cond.value);

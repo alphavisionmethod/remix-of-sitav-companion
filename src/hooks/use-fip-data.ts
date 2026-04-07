@@ -18,7 +18,7 @@ export const useFeatureIntakes = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_intake_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as unknown[];
+    return data as never[];
   }
 });
 
@@ -43,7 +43,7 @@ export const useCapabilities = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('capability_registry').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as unknown[];
+    return data as never[];
   }
 });
 
@@ -68,7 +68,7 @@ export const useFeatureSpecs = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_spec_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as unknown[];
+    return data as never[];
   }
 });
 
@@ -93,7 +93,7 @@ export const useOwnerDecisions = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_owner_decisions').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as unknown[];
+    return data as never[];
   }
 });
 
@@ -118,7 +118,7 @@ export const useComplianceRecords = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_compliance_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as unknown[];
+    return data as never[];
   }
 });
 
@@ -128,7 +128,7 @@ export const useExecutionPaths = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_execution_paths').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as unknown[];
+    return data as never[];
   }
 });
 
@@ -153,7 +153,7 @@ export const useRolloutRecords = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_rollout_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as unknown[];
+    return data as never[];
   }
 });
 
@@ -178,7 +178,7 @@ export const useDeprecationRecords = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_deprecation_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as unknown[];
+    return data as never[];
   }
 });
 
@@ -203,7 +203,7 @@ export const useReadinessGates = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_readiness_gates').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as unknown[];
+    return data as never[];
   }
 });
 
@@ -213,6 +213,6 @@ export const useGeneratedTruthImpacts = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_generated_truth_impacts').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as unknown[];
+    return data as never[];
   }
 });

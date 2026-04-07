@@ -269,7 +269,7 @@ const AdvisorRegistry = () => {
         domain: db.domain || "general",
         council: "internal-ops" as const,
         description: `DB-registered ${db.advisor_type} advisor`,
-        capabilities: Array.isArray((db.capabilities as unknown)) ? (db.capabilities as string[]) : [],
+        capabilities: Array.isArray((db.capabilities as never)) ? (db.capabilities as string[]) : [],
         maxAutonomy: "L1-diagnose" as const,
         confidenceThreshold: db.trust_threshold || 0.7,
         maturity: "alpha" as "alpha",

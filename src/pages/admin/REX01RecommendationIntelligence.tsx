@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BarChart3, CheckCircle2, XCircle, Clock, TrendingUp, AlertTriangle } from "lucide-react";
@@ -9,8 +10,7 @@ function useRecommendationStats() {
   return useQuery({
     queryKey: ["rex01-recommendation-stats"],
     queryFn: async () => {
-      const { data, error } = await (supabase as unknown)
-        .from("ai_workforce_recommendations")
+      const { data, error } = await fromTable("ai_workforce_recommendations")
         .select("status, execution_binding_status, role_key, domain, created_at");
       if (error) throw error;
       const recs = data || [];
@@ -32,8 +32,7 @@ function useRecommendationScores() {
   return useQuery({
     queryKey: ["rex01-recommendation-scores"],
     queryFn: async () => {
-      const { data, error } = await (supabase as unknown)
-        .from("ai_workforce_recommendation_scores")
+      const { data, error } = await fromTable("ai_workforce_recommendation_scores")
         .select("score_overall, score_accuracy, score_usefulness, score_actionability");
       if (error) throw error;
       const scores = data || [];

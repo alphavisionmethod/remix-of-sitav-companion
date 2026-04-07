@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export interface BlockerInput {
   journey_key: string;
@@ -110,8 +111,7 @@ export async function persistBlockerScore(input: BlockerInput): Promise<void> {
   // Only persist non-working statuses
   if (input.status === "working") return;
 
-  await (supabase as unknown)
-    .from("launch_blocker_scores")
+  await fromTable("launch_blocker_scores")
     .upsert(
       {
         user_id: user.id,
@@ -143,8 +143,7 @@ export async function persistModeComparison(
     else comparison_summary = "both_issues";
   }
 
-  await (supabase as unknown)
-    .from("customer_journey_mode_comparisons")
+  await fromTable("customer_journey_mode_comparisons")
     .upsert(
       {
         user_id: user.id,

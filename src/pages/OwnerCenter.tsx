@@ -2028,7 +2028,7 @@ const OwnerCenter = () => {
         {activePage === "support" && (
           <motion.div key="support" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <SitaSectionHeader title="Support Cases" subtitle="Diagnostic bundles and investigation tools" />
-            {((supportData as unknown) || []).map((c: any) => (
+            {((supportData as never) || []).map((c: any) => (
               <SitaCard key={c.id} hover={false} className="p-4" lane={c.status === "open" ? "action" : undefined}>
                 <div className="flex items-center justify-between">
                   <div>
@@ -2052,7 +2052,7 @@ const OwnerCenter = () => {
         {activePage === "change-review" && (
           <motion.div key="change-review" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <SitaSectionHeader title="Architecture Decision Records" subtitle="ADR tracking and compliance" />
-            {((changeData as unknown) || []).map((adr: any) => (
+            {((changeData as never) || []).map((adr: any) => (
               <SitaCard key={adr.id} hover={false} className="p-4">
                 <div className="flex items-center justify-between">
                   <div>

@@ -126,7 +126,7 @@ async function ingest() {
 
       // Insert step results
       for (const step of run.steps) {
-        await supabase.from("journey_step_results" as never).insert({
+        await fromTable("journey_step_results").insert({
           verification_run_id: (runData as Record<string, unknown>).id,
           step_order: step.step_order,
           status: step.status,

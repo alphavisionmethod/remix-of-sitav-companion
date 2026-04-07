@@ -5,6 +5,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 
 export function useToggleSignalConsent() {
@@ -15,25 +16,22 @@ export function useToggleSignalConsent() {
       if (!user) throw new Error("Not authenticated");
 
       if (enabled) {
-        // Upsert: enable consent
-        const { error } = await (supabase as unknown)
-          .from("health_signal_consents")
+        const { error } = await fromTable("health_signal_consents")
           .upsert({
             user_id: user.id,
-            signal_type: signalType,
-            consent_scope: consentScope,
-            read_permission: true,
-            revoked_at: null,
-          }, { onConflict: "user_id,signal_type,consent_scope" });
+            signal_category: signalType,
+            consented: true,
+            consent_granted_at: new Date().toISOString(),
+            consent_revoked_at: null,
+            share_with_advisors: consentScope === "advisors",
+            share_with_routing: consentScope === "routing",
+          }, { onConflict: "user_id,signal_category" });
         if (error) throw error;
       } else {
-        // Revoke: set revoked_at
-        const { error } = await (supabase as unknown)
-          .from("health_signal_consents")
-          .update({ revoked_at: new Date().toISOString(), read_permission: false })
+        const { error } = await fromTable("health_signal_consents")
+          .update({ consent_revoked_at: new Date().toISOString(), consented: false })
           .eq("user_id", user.id)
-          .eq("signal_type", signalType)
-          .eq("consent_scope", consentScope);
+          .eq("signal_category", signalType);
         if (error) throw error;
       }
     },
@@ -49,8 +47,7 @@ export function useUpdateReadinessState() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, readinessLevel }: { id: string; readinessLevel: string }) => {
-      const { error } = await (supabase as unknown)
-        .from("readiness_states")
+      const { error } = await fromTable("readiness_states")
         .update({ readiness_level: readinessLevel, assessed_at: new Date().toISOString() })
         .eq("id", id);
       if (error) throw error;

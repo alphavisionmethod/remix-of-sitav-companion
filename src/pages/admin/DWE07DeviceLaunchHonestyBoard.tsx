@@ -69,7 +69,7 @@ export default function DWE07DeviceLaunchHonestyBoard() {
           <CardHeader><CardTitle className="capitalize">{type.replace(/_/g, " ")} Readiness</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {(items as unknown[]).map((r: any) => (
+              {(items as never[]).map((r: any) => (
                 <div key={r.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
                   {statusIcon(r.launch_ready, r.pilot_ready)}
                   <div className="flex-1">
