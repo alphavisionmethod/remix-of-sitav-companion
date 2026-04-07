@@ -26,7 +26,7 @@ export * from "@/lib/services";
 
 // ── 7 OS services merged into core-services barrel ──
 export * from "@/lib/services/brain-core";
-export * from "@/lib/services/model-router";
+export { ModelRouterService, createModelRouter } from "@/lib/services/model-router";
 export * from "@/lib/services/conscience-gate";
 export * from "@/lib/services/inference-gateway";
 export * from "@/lib/services/mnemosyne";
