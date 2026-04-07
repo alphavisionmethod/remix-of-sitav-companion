@@ -7236,6 +7236,45 @@ export type Database = {
           },
         ]
       }
+      constitution_rules: {
+        Row: {
+          category: string
+          compiled_json: Json | null
+          created_at: string
+          enforcement_mode: string
+          id: string
+          is_active: boolean
+          natural_text: string
+          priority: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string
+          compiled_json?: Json | null
+          created_at?: string
+          enforcement_mode?: string
+          id?: string
+          is_active?: boolean
+          natural_text: string
+          priority?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          compiled_json?: Json | null
+          created_at?: string
+          enforcement_mode?: string
+          id?: string
+          is_active?: boolean
+          natural_text?: string
+          priority?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       content_freshness: {
         Row: {
           confidence: number | null

@@ -3,7 +3,7 @@
 // Natural-language rule authoring with real-time compilation
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
@@ -21,6 +21,8 @@ import { cn } from "@/lib/utils";
 import type { ConstitutionRule, ConstitutionRuleCategory } from "@/lib/core-services/constitution-compiler";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { db } from "@/integrations/supabase/db";
 
 // ── Category Config ─────────────────────────────────────────────
 
@@ -275,12 +277,70 @@ function RuleComposer({ onCompile }: { onCompile: (text: string) => void }) {
 
 export default function ConstitutionEditor() {
   const { isDemoMode } = useDataMode();
+  const { user, isDemo } = useAuth();
   const { compiler, compileRule, toggleRule, deleteRule } = useConstitution();
   const [tab, setTab] = useState("all");
+  const [dbLoaded, setDbLoaded] = useState(false);
 
-  // Seed defaults on first load
+  // Load persisted rules from DB on mount (skip for demo users)
+  useEffect(() => {
+    if (dbLoaded || isDemo || !user?.id) return;
+
+    const loadRules = async () => {
+      const { data, error } = await db
+        .from("constitution_rules")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: true });
+
+      if (!error && data && data.length > 0) {
+        // Hydrate the in-memory compiler with DB rules
+        data.forEach((row: any) => {
+          // Only add if not already in compiler
+          const existing = compiler.getAllRules();
+          if (!existing.find((r: ConstitutionRule) => r.naturalLanguage === row.natural_text)) {
+            compileRule(row.natural_text);
+            // Sync active state
+            const rules = compiler.getAllRules();
+            const added = rules.find((r: ConstitutionRule) => r.naturalLanguage === row.natural_text);
+            if (added && !row.is_active) {
+              toggleRule(added.id, false);
+            }
+          }
+        });
+      } else if (!error && (!data || data.length === 0)) {
+        // First time — seed defaults and persist them
+        const defaults = [
+          "Never bother me after 8pm",
+          "My spouse must approve transfers above $500",
+          "When I'm overwhelmed, reduce options",
+        ];
+        for (const d of defaults) {
+          compileRule(d);
+          const rules = compiler.getAllRules();
+          const added = rules.find((r: ConstitutionRule) => r.naturalLanguage === d);
+          if (added) {
+            await db.from("constitution_rules").insert({
+              user_id: user.id,
+              natural_text: d,
+              category: added.category,
+              priority: added.compiledPolicy?.parameters?.priority ?? 50,
+              enforcement_mode: added.enforcementMode,
+              is_active: true,
+              compiled_json: added.compiledPolicy,
+            });
+          }
+        }
+      }
+      setDbLoaded(true);
+    };
+
+    loadRules();
+  }, [user?.id, isDemo, dbLoaded]);
+
+  // Demo fallback: seed in-memory only
   const [seeded, setSeeded] = useState(false);
-  if (!seeded && compiler.getAllRules().length === 0) {
+  if (isDemo && !seeded && compiler.getAllRules().length === 0) {
     const defaults = [
       "Never bother me after 8pm",
       "My spouse must approve transfers above $500",
@@ -289,6 +349,54 @@ export default function ConstitutionEditor() {
     defaults.forEach(d => compileRule(d));
     setSeeded(true);
   }
+
+  // Wrap compileRule with DB persistence
+  const handleCompileRule = useCallback(async (text: string) => {
+    compileRule(text);
+    if (!isDemo && user?.id) {
+      const rules = compiler.getAllRules();
+      const added = rules.find((r: ConstitutionRule) => r.naturalLanguage === text);
+      if (added) {
+        await db.from("constitution_rules").insert({
+          user_id: user.id,
+          natural_text: text,
+          category: added.category,
+          priority: added.compiledPolicy?.parameters?.priority ?? 50,
+          enforcement_mode: added.enforcementMode,
+          is_active: true,
+          compiled_json: added.compiledPolicy,
+        });
+      }
+    }
+  }, [compileRule, isDemo, user?.id, compiler]);
+
+  // Wrap toggleRule with DB persistence
+  const handleToggleRule = useCallback(async (id: string, active: boolean) => {
+    toggleRule(id, active);
+    if (!isDemo && user?.id) {
+      const rule = compiler.getAllRules().find((r: ConstitutionRule) => r.id === id);
+      if (rule) {
+        await db
+          .from("constitution_rules")
+          .update({ is_active: active })
+          .eq("user_id", user.id)
+          .eq("natural_text", rule.naturalLanguage);
+      }
+    }
+  }, [toggleRule, isDemo, user?.id, compiler]);
+
+  // Wrap deleteRule with DB persistence
+  const handleDeleteRule = useCallback(async (id: string) => {
+    const rule = compiler.getAllRules().find((r: ConstitutionRule) => r.id === id);
+    deleteRule(id);
+    if (!isDemo && user?.id && rule) {
+      await db
+        .from("constitution_rules")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("natural_text", rule.naturalLanguage);
+    }
+  }, [deleteRule, isDemo, user?.id, compiler]);
 
   const allRules = compiler.getAllRules();
   const stats = compiler.getStats();
@@ -324,7 +432,7 @@ export default function ConstitutionEditor() {
       </div>
 
       {/* Composer */}
-      <RuleComposer onCompile={compileRule} />
+      <RuleComposer onCompile={handleCompileRule} />
 
       {/* Filter tabs */}
       <Tabs value={tab} onValueChange={setTab}>
@@ -350,8 +458,8 @@ export default function ConstitutionEditor() {
                   <RuleCard
                     key={rule.id}
                     rule={rule}
-                    onToggle={toggleRule}
-                    onDelete={deleteRule}
+                    onToggle={handleToggleRule}
+                    onDelete={handleDeleteRule}
                   />
                 ))
               )}
