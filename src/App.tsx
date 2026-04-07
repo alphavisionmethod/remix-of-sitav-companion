@@ -615,6 +615,14 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+// Auth gate for onboarding — requires auth but skips onboarding-completion redirect
+const OnboardingGuard = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
+  if (!user) return <Navigate to="/login" replace />;
+  return <>{children}</>;
+};
+
 // Handle email verification — detect ?type=signup in hash and redirect to onboarding
 const EmailVerificationHandler = () => {
   const { user } = useAuth();
@@ -631,6 +639,14 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   if (loading) return null;
   if (user) return <Navigate to="/" replace />;
   return <>{children}</>;
+};
+
+// Conditional home: landing page for unauthenticated, DailyPulse for authenticated
+const HomeRoute = () => {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
+  if (!user) return <LandingPage />;
+  return <Navigate to="/home" replace />;
 };
 
 const App = () => (
