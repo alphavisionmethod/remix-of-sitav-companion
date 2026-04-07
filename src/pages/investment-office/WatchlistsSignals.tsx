@@ -11,12 +11,35 @@ export default function WatchlistsSignals() {
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
   const [activeList, setActiveList] = useState(WATCHLISTS[0].id);
+  const [specialView, setSpecialView] = useState<"none" | "advisor" | "risk" | "catalyst">("none");
   const current = WATCHLISTS.find(w => w.id === activeList) || WATCHLISTS[0];
 
   // Derive advisor-driven and risk watchlists
   const highRiskHoldings = PORTFOLIO.holdings.filter(h => h.weight > 12);
   const catalystInstruments = INSTRUMENTS.filter(i => i.catalysts.length > 0);
 
+  // Build display instruments based on active view
+  const displayInstruments = specialView === "advisor"
+    ? highRiskHoldings.map(h => h.instrument)
+    : specialView === "catalyst"
+    ? catalystInstruments
+    : specialView === "risk"
+    ? highRiskHoldings.map(h => h.instrument)
+    : current.instruments;
+
+  const displayTitle = specialView === "advisor" ? "Advisor Picks"
+    : specialView === "catalyst" ? "Catalyst Watch"
+    : specialView === "risk" ? "Risk Watch"
+    : current.name;
+
+  const handleSelectWatchlist = (id: string) => {
+    setActiveList(id);
+    setSpecialView("none");
+  };
+
+  const handleSpecialView = (view: "advisor" | "risk" | "catalyst") => {
+    setSpecialView(prev => prev === view ? "none" : view);
+  };
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -34,23 +57,29 @@ export default function WatchlistsSignals() {
       {/* Watchlist tabs */}
       <div className="flex gap-2 flex-wrap">
         {WATCHLISTS.map(w => (
-          <button key={w.id} onClick={() => setActiveList(w.id)}
+          <button key={w.id} onClick={() => handleSelectWatchlist(w.id)}
             className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors flex items-center gap-1.5 ${
-              activeList === w.id ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
+              specialView === "none" && activeList === w.id ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
             }`}>
             <Star className="h-3 w-3" /> {w.name}
           </button>
         ))}
-        <button onClick={() => {}}
-          className="rounded-lg px-3 py-2 text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
+        <button onClick={() => handleSpecialView("advisor")}
+          className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors flex items-center gap-1.5 ${
+            specialView === "advisor" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
+          }`}>
           <Brain className="h-3 w-3" /> Advisor Picks
         </button>
-        <button onClick={() => {}}
-          className="rounded-lg px-3 py-2 text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
+        <button onClick={() => handleSpecialView("risk")}
+          className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors flex items-center gap-1.5 ${
+            specialView === "risk" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
+          }`}>
           <Shield className="h-3 w-3" /> Risk Watch
         </button>
-        <button onClick={() => {}}
-          className="rounded-lg px-3 py-2 text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
+        <button onClick={() => handleSpecialView("catalyst")}
+          className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors flex items-center gap-1.5 ${
+            specialView === "catalyst" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
+          }`}>
           <Zap className="h-3 w-3" /> Catalyst Watch
         </button>
       </div>
@@ -58,11 +87,11 @@ export default function WatchlistsSignals() {
       {/* Active Watchlist */}
       <div className="rounded-2xl border border-border bg-card overflow-hidden">
         <div className="px-5 py-3 border-b border-border flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-foreground">{current.name}</h3>
-          <span className="text-[10px] text-muted-foreground">{current.instruments.length} instruments</span>
+          <h3 className="text-sm font-semibold text-foreground">{displayTitle}</h3>
+          <span className="text-[10px] text-muted-foreground">{displayInstruments.length} instruments</span>
         </div>
         <div className="divide-y divide-border/50">
-          {current.instruments.map(inst => (
+          {displayInstruments.map(inst => (
             <button key={inst.id} onClick={() => navigate(`/investments/instrument/${inst.id}`)}
               className="w-full flex items-center gap-4 px-5 py-3.5 hover:bg-secondary/30 transition-colors text-left">
               <span className="text-xl">{inst.logoIcon}</span>
