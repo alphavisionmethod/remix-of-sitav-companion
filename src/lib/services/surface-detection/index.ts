@@ -12,11 +12,6 @@ import type { SurfaceType, ActiveSurface } from "@/packages/contracts/runtime/os
 
 declare global {
   interface Window {
-    electron?: {
-      platform?: string;
-      ipcRenderer?: unknown;
-      [key: string]: unknown;
-    };
     Capacitor?: {
       platform?: string;
       isNativePlatform?: () => boolean;
