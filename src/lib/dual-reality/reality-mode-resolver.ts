@@ -122,7 +122,7 @@ export async function persistResolution(resolution: ModeResolution): Promise<voi
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 
-  await (supabase as any).from("reality_mode_resolutions").insert({
+  await supabase.from("reality_mode_resolutions").insert({
     user_id: user.id,
     resolved_mode: resolution.mode,
     resolution_source: resolution.source,

@@ -25,7 +25,7 @@ const AppReceiptsPage = () => {
     queryKey: ["app-receipts", user?.id, appId],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      let query = (supabase as any).from("proof_receipts").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
+      let query = supabase.from("proof_records").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
       if (appId) query = query.eq("metadata->>appId", appId);
       const { data } = await query;
       if (!data?.length) return null;

@@ -13,7 +13,7 @@ export default function DRS03ScenarioLibrary() {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      const { data } = await (supabase as any).from("demo_scenarios").select("*").eq("user_id", user.id).order("updated_at", { ascending: false });
+      const { data } = await supabase.from("demo_scenarios").select("*").eq("user_id", user.id).order("updated_at", { ascending: false });
       return data ?? [];
     },
   });

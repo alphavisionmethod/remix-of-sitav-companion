@@ -42,7 +42,7 @@ const InvoicesCollections = () => {
     queryKey: ["invoices", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data, error } = await (supabase as any).from("invoices").select("*, customers(name)").eq("user_id", user.id).order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("invoices").select("*, customers(name)").eq("user_id", user.id).order("created_at", { ascending: false });
       if (error) throw error;
       return data.map((inv: any) => {
         const due = new Date(inv.due_date);
@@ -58,7 +58,7 @@ const InvoicesCollections = () => {
   const addInvoice = useMutation({
     mutationFn: async () => {
       if (!user || !form.invoice_number.trim() || !form.amount || !form.due_date) throw new Error("Number, amount, and due date required");
-      const { error } = await (supabase as any).from("invoices").insert({
+      const { error } = await supabase.from("invoices").insert({
         user_id: user.id, invoice_number: form.invoice_number.trim(), amount: parseFloat(form.amount),
         due_date: form.due_date, notes: form.notes || null, status: "draft",
       });
@@ -70,14 +70,14 @@ const InvoicesCollections = () => {
 
   const updateStatus = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await (supabase as any).from("invoices").update({ status }).eq("id", id);
+      const { error } = await supabase.from("invoices").update({ status }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["invoices"] }); toast.success("Status updated"); },
   });
 
   const deleteInvoice = useMutation({
-    mutationFn: async (id: string) => { const { error } = await (supabase as any).from("invoices").delete().eq("id", id); if (error) throw error; },
+    mutationFn: async (id: string) => { const { error } = await supabase.from("invoices").delete().eq("id", id); if (error) throw error; },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["invoices"] }); setSelectedId(null); toast.success("Deleted"); },
   });
 

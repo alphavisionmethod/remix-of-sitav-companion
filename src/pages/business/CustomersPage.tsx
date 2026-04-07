@@ -84,7 +84,7 @@ const CustomersPage = () => {
 
   const createCustomer = useMutation({
     mutationFn: async () => {
-      const { error } = await (supabase as any).from("customers").insert({
+      const { error } = await supabase.from("customers").insert({
         user_id: user!.id, name: formName, email: formEmail || null,
         company: formCompany || null, phone: formPhone || null,
         status: "active", tier: "standard", lifetime_value: 0,
@@ -101,7 +101,7 @@ const CustomersPage = () => {
 
   const deleteCustomer = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (supabase as any).from("customers").delete().eq("id", id);
+      const { error } = await supabase.from("customers").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

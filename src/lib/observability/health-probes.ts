@@ -102,7 +102,7 @@ export async function probeConnectors(): Promise<ProbeResult> {
 /** 8. Workflow Engine probe */
 export async function probeWorkflows(): Promise<ProbeResult> {
   return probe("workflows", async () => {
-    const { error } = await (supabase as any).from("workflow_definitions").select("id").limit(1);
+    const { error } = await (supabase as any).from("workflows").select("id").limit(1);
     if (error) throw new Error(error.message);
   });
 }

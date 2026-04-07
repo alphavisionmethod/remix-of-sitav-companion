@@ -61,7 +61,7 @@ const MemoryCenter = () => {
     queryKey: ["user_memory", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await (db as any)
+      const { data, error } = await supabase
         .from("user_memory")
         .select("*")
         .order("updated_at", { ascending: false });
@@ -73,7 +73,7 @@ const MemoryCenter = () => {
   // Delete mutation
   const forgetMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (db as any).from("user_memory").delete().eq("id", id);
+      const { error } = await supabase.from("user_memory").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["user_memory"] }); toast.success("Memory forgotten"); },
@@ -83,7 +83,7 @@ const MemoryCenter = () => {
   // Update mutation
   const updateMutation = useMutation({
     mutationFn: async ({ id, value }: { id: string; value: string }) => {
-      const { error } = await (db as any).from("user_memory").update({ value: JSON.parse(`"${value}"`) }).eq("id", id);
+      const { error } = await supabase.from("user_memory").update({ value: JSON.parse(`"${value}"`) }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["user_memory"] }); toast.success("Memory updated"); setEditingId(null); },

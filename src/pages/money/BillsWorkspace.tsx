@@ -66,7 +66,7 @@ const BillsWorkspace = () => {
   const billsQuery = useQuery({
     queryKey: ["bills"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any).from("bills").select("*").order("due_date", { ascending: true });
+      const { data, error } = await supabase.from("bills").select("*").order("due_date", { ascending: true });
       if (error) throw error;
       return data;
     },
@@ -79,7 +79,7 @@ const BillsWorkspace = () => {
 
   const createMutation = useMutation({
     mutationFn: async (bill: BillForm) => {
-      const { error } = await (supabase as any).from("bills").insert({
+      const { error } = await supabase.from("bills").insert({
         payee: bill.payee,
         amount: parseFloat(bill.amount),
         due_date: bill.due_date,
@@ -98,7 +98,7 @@ const BillsWorkspace = () => {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, bill }: { id: string; bill: BillForm }) => {
-      const { error } = await (supabase as any).from("bills").update({
+      const { error } = await supabase.from("bills").update({
         payee: bill.payee,
         amount: parseFloat(bill.amount),
         due_date: bill.due_date,
@@ -116,7 +116,7 @@ const BillsWorkspace = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (supabase as any).from("bills").delete().eq("id", id);
+      const { error } = await supabase.from("bills").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["bills"] }); setSelectedId(null); toast.success("Bill deleted"); },
@@ -136,7 +136,7 @@ const BillsWorkspace = () => {
           category: bill.category || "bills",
         }).catch(() => { /* non-blocking — bill still marked paid locally */ });
       }
-      const { error } = await (supabase as any).from("bills").update({ status: "paid" }).eq("id", id);
+      const { error } = await supabase.from("bills").update({ status: "paid" }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["bills"] }); toast.success("Marked as paid"); },

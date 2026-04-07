@@ -174,7 +174,7 @@ const ProofCenter = () => {
     queryKey: ["proof_approvals", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await (db as any).from("approval_queue").select("*").eq("status", "approved").order("created_at", { ascending: false }).limit(20);
+      const { data } = await supabase.from("approval_queue").select("*").eq("status", "approved").order("created_at", { ascending: false }).limit(20);
       return data || [];
     },
   });

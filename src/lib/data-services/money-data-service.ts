@@ -195,7 +195,7 @@ export async function fetchFinancialDocuments(mode: RealityModeKey = "real"): Pr
   const userId = await getUserId();
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_DOCUMENTS, emptyDefault: [] });
   // Use files table filtered to finance category
-  const { data, error } = await (supabase as any).from("files").select("*").eq("user_id", userId).eq("category", "finance").order("created_at", { ascending: false });
+  const { data, error } = await supabase.from("documents").select("*").eq("user_id", userId).eq("category", "finance").order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? (data as any[]).map((f): FinancialDocument => ({
     id: f.id, name: f.file_name || f.name, doc_type: f.subcategory || "document", classification: f.subcategory || "Document",
     sensitivity: f.sensitivity_label || "normal", linked_to: null, extracted_data: f.ai_extracted_data || {},
@@ -359,26 +359,26 @@ export async function rejectMoneyAction(id: string) {
 
 export async function listFinancialDocuments(limit = 100) {
   const userId = await getUserId();
-  const { data, error } = await (supabase as any).from("financial_documents").select("*").eq("user_id", userId).order("created_at", { ascending: false }).limit(limit);
+  const { data, error } = await supabase.from("financial_documents").select("*").eq("user_id", userId).order("created_at", { ascending: false }).limit(limit);
   if (error) { console.error("[money] financial_documents fetch:", error); return []; }
   return data ?? [];
 }
 
 export async function createFinancialDocument(row: Record<string, unknown>) {
   const userId = await getUserId();
-  const { data, error } = await (supabase as any).from("financial_documents").insert({ ...row, user_id: userId }).select().single();
+  const { data, error } = await supabase.from("financial_documents").insert({ ...row, user_id: userId }).select().single();
   if (error) { console.error("[money] financial_documents insert:", error); return null; }
   return data;
 }
 
 export async function updateFinancialDocument(id: string, updates: Record<string, unknown>) {
-  const { error } = await (supabase as any).from("financial_documents").update(updates).eq("id", id);
+  const { error } = await supabase.from("financial_documents").update(updates).eq("id", id);
   if (error) { console.error("[money] financial_documents update:", error); return false; }
   return true;
 }
 
 export async function deleteFinancialDocument(id: string) {
-  const { error } = await (supabase as any).from("financial_documents").delete().eq("id", id);
+  const { error } = await supabase.from("financial_documents").delete().eq("id", id);
   if (error) { console.error("[money] financial_documents delete:", error); return false; }
   return true;
 }

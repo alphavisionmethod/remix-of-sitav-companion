@@ -103,7 +103,7 @@ export function useReserves() {
     queryFn: async () => {
       if (isDemoMode) return mockReserves;
       if (!user) return [];
-      const { data, error } = await (db as any).from("capital_allocations").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("capital_allocations").select("*").order("created_at", { ascending: false });
       if (error) return [];
       return data || [];
     },
@@ -299,7 +299,7 @@ export function useSystemConnectors() {
     queryFn: async () => {
       if (isDemoMode) return mockConnectors;
       if (!user) return [];
-      const { data } = await (db as any).from("connector_configs").select("*").limit(20);
+      const { data } = await supabase.from("connector_configs").select("*").limit(20);
       return data?.length ? data : [];
     },
     staleTime: isDemoMode ? Infinity : 30000,
@@ -361,7 +361,7 @@ export function useApprovals() {
     queryFn: async () => {
       if (isDemoMode) return mockApprovals;
       if (!user) return [];
-      const { data, error } = await (db as any)
+      const { data, error } = await supabase
         .from("approval_queue")
         .select("*")
         .eq("user_id", user.id)
@@ -391,7 +391,7 @@ export function useProofRecords() {
     queryFn: async () => {
       if (isDemoMode) return mockProof;
       if (!user) return [];
-      const { data, error } = await (db as any)
+      const { data, error } = await supabase
         .from("proof_records")
         .select("*")
         .eq("user_id", user.id)

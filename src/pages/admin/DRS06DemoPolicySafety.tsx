@@ -25,7 +25,7 @@ export default function DRS06DemoPolicySafety() {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      const { data } = await (supabase as any).from("demo_policy_profiles").select("*").eq("user_id", user.id);
+      const { data } = await supabase.from("demo_policy_profiles").select("*").eq("user_id", user.id);
       return data ?? [];
     },
   });

@@ -82,10 +82,10 @@ export async function loadScenario(scenarioKey: string): Promise<LoadedScenario 
 
   // Load entities, relationships, artifacts, launch profile in parallel
   const [entitiesRes, relsRes, artifactsRes, launchRes] = await Promise.all([
-    (supabase as any).from("demo_scenario_entities").select("*").eq("scenario_id", scenario.id),
-    (supabase as any).from("demo_scenario_relationships").select("*").eq("scenario_id", scenario.id),
-    (supabase as any).from("demo_scenario_artifacts").select("*").eq("scenario_id", scenario.id),
-    (supabase as any).from("scenario_launch_profiles").select("*").eq("scenario_id", scenario.id).maybeSingle(),
+    supabase.from("demo_scenario_entities").select("*").eq("scenario_id", scenario.id),
+    supabase.from("demo_scenario_relationships").select("*").eq("scenario_id", scenario.id),
+    supabase.from("demo_scenario_artifacts").select("*").eq("scenario_id", scenario.id),
+    supabase.from("scenario_launch_profiles").select("*").eq("scenario_id", scenario.id).maybeSingle(),
   ]);
 
   const loaded: LoadedScenario = {

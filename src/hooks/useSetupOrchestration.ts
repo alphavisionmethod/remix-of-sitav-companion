@@ -81,7 +81,7 @@ export function useSetupOrchestration(): SetupOrchestrationHook {
     const dbInterval = setInterval(async () => {
       try {
         const snapshot = engine.toSnapshot();
-        await (supabase as any).from("setup_sessions").upsert({
+        await supabase.from("setup_sessions").upsert({
           id: snapshot.id,
           user_id: snapshot.userId,
           device_id: snapshot.deviceId,

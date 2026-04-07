@@ -58,7 +58,7 @@ export async function persistEvent(
   const userId = await uid();
   if (!userId) return false;
 
-  const { error } = await (supabase as any).from("os_event_log").insert({
+  const { error } = await supabase.from("os_event_log").insert({
     id: event.id,
     user_id: userId,
     topic: event.topic,
@@ -112,7 +112,7 @@ export async function persistEventBatch(events: BusEvent[]): Promise<number> {
     status: "processed" as EventStatus,
   }));
 
-  const { error, count } = await (supabase as any).from("os_event_log").insert(rows);
+  const { error, count } = await supabase.from("os_event_log").insert(rows);
   if (error) {
     console.error("[event-persistence] batch insert failed:", error);
     return 0;
@@ -134,7 +134,7 @@ export async function fetchPersistedEvents(filters?: {
   const userId = await uid();
   if (!userId) return [];
 
-  let query = (supabase as any).from("os_event_log")
+  let query = supabase.from("os_event_log")
     .select("*")
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
@@ -161,7 +161,7 @@ export async function fetchDeadLetters(limit = 50): Promise<PersistedEvent[]> {
 // ── Mark event replayed ─────────────────────────────────────────
 
 export async function markEventReplayed(eventId: string): Promise<boolean> {
-  const { error } = await (supabase as any).from("os_event_log")
+  const { error } = await supabase.from("os_event_log")
     .update({ status: "replayed" })
     .eq("id", eventId);
 
@@ -184,7 +184,7 @@ export async function getEventLineage(correlationId: string): Promise<PersistedE
   const userId = await uid();
   if (!userId) return [];
 
-  const { data, error } = await (supabase as any).from("os_event_log")
+  const { data, error } = await supabase.from("os_event_log")
     .select("*")
     .eq("user_id", userId)
     .eq("correlation_id", correlationId)

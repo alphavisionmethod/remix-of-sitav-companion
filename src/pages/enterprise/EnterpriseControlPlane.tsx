@@ -74,7 +74,7 @@ const EnterpriseControlPlane = () => {
     queryKey: ["enterprise-team", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await (supabase as any).from("profiles").select("*, user_roles(role)").limit(50);
+      const { data } = await supabase.from("profiles").select("*, user_roles(role)").limit(50);
       return (data ?? []).map((p: any) => ({
         id: p.id || p.user_id,
         name: p.display_name || p.email || "Unknown",
@@ -91,7 +91,7 @@ const EnterpriseControlPlane = () => {
     queryKey: ["enterprise-deployments", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await (supabase as any).from("audit_logs").select("*").eq("category", "deployment").order("created_at", { ascending: false }).limit(10);
+      const { data } = await supabase.from("audit_logs").select("*").eq("category", "deployment").order("created_at", { ascending: false }).limit(10);
       return (data ?? []).map((a: any) => ({
         id: a.id,
         env: a.details?.environment || "production",

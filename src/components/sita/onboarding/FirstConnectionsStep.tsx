@@ -154,7 +154,7 @@ export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onConnect
     setConnecting(connector.id);
 
     try {
-      const { error } = await (supabase as any).from("connector_configs").upsert({
+      const { error } = await supabase.from("connector_configs").upsert({
         user_id: user.id,
         connector_id: connector.id,
         provider: connector.provider,
@@ -170,7 +170,7 @@ export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onConnect
 
       await new Promise(r => setTimeout(r, 1200));
 
-      await (supabase as any).from("connector_configs")
+      await supabase.from("connector_configs")
         .update({ status: "connected" })
         .eq("user_id", user.id)
         .eq("connector_id", connector.id);

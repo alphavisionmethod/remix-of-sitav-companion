@@ -14,7 +14,7 @@ export default function DRS09TruthLabeling() {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      const { data } = await (supabase as any).from("mode_truth_labels").select("*").eq("user_id", user.id);
+      const { data } = await supabase.from("mode_truth_labels").select("*").eq("user_id", user.id);
       return data ?? [];
     },
   });

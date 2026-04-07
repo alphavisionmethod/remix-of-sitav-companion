@@ -97,7 +97,7 @@ export const NotificationPanel = ({ isOpen, onClose }: NotificationPanelProps) =
   const markRead = async (id: string) => {
     setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
     if (user && !isDemo) {
-      await (supabase as any).from("notifications").update({ read: true }).eq("id", id).eq("user_id", user.id);
+      await supabase.from("notifications").update({ read: true }).eq("id", id).eq("user_id", user.id);
     }
   };
 

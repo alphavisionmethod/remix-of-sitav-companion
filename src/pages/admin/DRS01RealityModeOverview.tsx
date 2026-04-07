@@ -13,10 +13,10 @@ function useModeSummary() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
       const [resolutions, scenarios, providers, policies] = await Promise.all([
-        (supabase as any).from("reality_mode_resolutions").select("resolved_mode, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50),
-        (supabase as any).from("demo_scenarios").select("id, name, status, active, category").eq("user_id", user.id),
-        (supabase as any).from("mode_aware_providers").select("domain, current_version").eq("user_id", user.id),
-        (supabase as any).from("demo_policy_profiles").select("id, name, ai_execution_mode").eq("user_id", user.id),
+        supabase.from("reality_mode_resolutions").select("resolved_mode, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50),
+        supabase.from("demo_scenarios").select("id, name, status, active, category").eq("user_id", user.id),
+        supabase.from("mode_aware_providers").select("domain, current_version").eq("user_id", user.id),
+        supabase.from("demo_policy_profiles").select("id, name, ai_execution_mode").eq("user_id", user.id),
       ]);
       const modeDistribution: Record<string, number> = {};
       for (const r of resolutions.data ?? []) {

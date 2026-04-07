@@ -117,7 +117,7 @@ const SettingsPage = () => {
     queryKey: ["profile", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await (db as any).from("profiles").select("*").eq("user_id", user!.id).single();
+      const { data } = await supabase.from("profiles").select("*").eq("user_id", user!.id).single();
       if (data?.display_name) setDisplayName(data.display_name);
       if (data?.avatar_url) setAvatarUrl(data.avatar_url);
       if (data?.preferences) loadPrefs(data.preferences);
@@ -147,7 +147,7 @@ const SettingsPage = () => {
     setIsSaving(true);
     try {
       const preferences = { autonomy, trustMode, notifFreq, dndEnabled, piiRedaction, budgetMode, confidence, simPref, contradictions, docRetention, largeFontMode };
-      const { error } = await (db as any).from("profiles").update({ display_name: displayName, preferences }).eq("user_id", user.id);
+      const { error } = await supabase.from("profiles").update({ display_name: displayName, preferences }).eq("user_id", user.id);
       if (error) throw error;
       toast.success("Settings saved");
     } catch (e: any) {
@@ -162,7 +162,7 @@ const SettingsPage = () => {
     queryKey: ["settings_devices", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await (db as any).from("device_statuses").select("*").order("last_seen", { ascending: false }).limit(10);
+      const { data } = await supabase.from("device_statuses").select("*").order("last_seen", { ascending: false }).limit(10);
       return data || [];
     },
   });
@@ -172,9 +172,9 @@ const SettingsPage = () => {
     queryKey: ["settings_connectors", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data: accounts } = await (db as any).from("connector_accounts").select("*").eq("user_id", user!.id);
-      const { data: registry } = await (db as any).from("connector_registry").select("*").eq("user_id", user!.id);
-      const { data: configs } = await (db as any).from("connector_configs").select("*").order("updated_at", { ascending: false });
+      const { data: accounts } = await supabase.from("connector_accounts").select("*").eq("user_id", user!.id);
+      const { data: registry } = await supabase.from("connector_registry").select("*").eq("user_id", user!.id);
+      const { data: configs } = await supabase.from("connector_configs").select("*").order("updated_at", { ascending: false });
       
       // Merge accounts with registry display names
       const merged = (accounts || []).map((acc: any) => {
@@ -249,7 +249,7 @@ const SettingsPage = () => {
                       const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);
                       const url = urlData.publicUrl;
                       setAvatarUrl(url);
-                      await (db as any).from("profiles").update({ avatar_url: url }).eq("user_id", user.id);
+                      await supabase.from("profiles").update({ avatar_url: url }).eq("user_id", user.id);
                       toast.success("Photo updated");
                     } catch (err: any) { toast.error(err.message || "Upload failed"); }
                     finally { setUploadingAvatar(false); }

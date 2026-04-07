@@ -118,7 +118,7 @@ const SITA_DOMAINS: readonly DomainDefinition[] = [
   {
     key: "workflows",
     name: "Workflow Engine",
-    tablePatterns: ["workflow_definitions", "workflow_runs", "workflow_steps"],
+    tablePatterns: ["workflows", "workflow_runs", "workflow_steps"],
     edgeFunctions: ["agent-executor", "agent-signal", "os-command"],
     hasRealService: true,
     hasDemoProvider: true,

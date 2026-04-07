@@ -264,7 +264,7 @@ export default function BoardroomReplay() {
   const handleSaveSession = async () => {
     if (!user || sessionSaved) return;
     try {
-      await (supabase as any).from("boardroom_sessions").insert({
+      await supabase.from("boardroom_sessions").insert({
         user_id: user.id,
         session_type: "weekly",
         title: "Weekly Executive Review",
