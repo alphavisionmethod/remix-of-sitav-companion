@@ -1,66 +1,45 @@
 
 
-# Fix Section 7: Pages With Forms But No Mutation
+# Fix Section 9: Duplicate Page Filenames (7 pairs)
 
-## Current Status
+## Problem
 
-| File | Status | Details |
-|------|--------|---------|
-| `auth/Login.tsx` | ✅ Already fixed | Calls `signIn()` → `supabase.auth.signInWithPassword()` |
-| `auth/Signup.tsx` | ✅ Already fixed | Calls `signUp()` → `supabase.auth.signUp()` |
-| `auth/ForgotPassword.tsx` | ✅ Already fixed | Calls `resetPassword()` → `supabase.auth.resetPasswordForEmail()` |
-| `auth/ResetPassword.tsx` | ✅ Already fixed | Calls `updatePassword()` → `supabase.auth.updateUser()` |
-| `admin/fip/FIPIntakeDesk.tsx` | ✅ Already fixed | Uses `useCreateIntake()` mutation hook |
-| `owner/ConstitutionEditor.tsx` | ❌ Needs fix | Uses in-memory kernel compiler only — rules lost on refresh |
+7 component filenames exist in two different directories. Both versions are **actively routed** in `App.tsx` with aliased lazy names, so both are real pages serving different domains. The filenames cause confusion and risk wrong-file imports.
 
-**5 of 6 files are already fully functional.** Only ConstitutionEditor needs work.
+## Current state in App.tsx
 
-## Fix: ConstitutionEditor DB Persistence
+All 7 pairs already have unique lazy variable names — no routing bugs exist. The problem is purely filename ambiguity.
 
-### Step 1: Create `constitution_rules` table (migration)
+| Duplicate name | Location 1 (keep as-is) | Location 2 (rename) |
+|---------------|------------------------|---------------------|
+| AdminDurabilityBoard | `atlas/` | `admin/` → rename to `AdminMutationAudit.tsx` |
+| DeploymentTruthCenter | `atlas/` | `admin/` → rename to `AdminDeploymentRings.tsx` |
+| OperationsCommandCenter | `atlas/` | `admin/` → rename to `AdminOperationsHub.tsx` |
+| PlatformTruthRegistry | `atlas/` | `admin/` → rename to `AdminTruthClaims.tsx` |
+| ProjectionControlCenter | `atlas/` | `admin/` → rename to `AdminProjectionModels.tsx` |
+| AppDetailPage | `app-platform/` | `store/` → rename to `StoreAppDetailPage.tsx` |
+| DecisionTheater | `investment-office/` | `revenue-office/` → rename to `RevenueDecisionTheater.tsx` |
 
-```sql
-CREATE TABLE public.constitution_rules (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  natural_text TEXT NOT NULL,
-  category TEXT NOT NULL DEFAULT 'general',
-  priority INTEGER NOT NULL DEFAULT 50,
-  enforcement_mode TEXT NOT NULL DEFAULT 'advisory',
-  is_active BOOLEAN NOT NULL DEFAULT true,
-  compiled_json JSONB,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
+## Approach
 
-ALTER TABLE public.constitution_rules ENABLE ROW LEVEL SECURITY;
+For each of the 7 admin/store/revenue duplicates:
 
-CREATE POLICY "Users manage own rules"
-  ON public.constitution_rules FOR ALL
-  TO authenticated
-  USING (user_id = auth.uid())
-  WITH CHECK (user_id = auth.uid());
+1. Create the new file with the renamed export (copy content, update the `export default function` name)
+2. Delete the old file
+3. Update the `lazy()` import path in `App.tsx`
+4. Update any test file imports in `__tests__/`
 
-CREATE TRIGGER update_constitution_rules_updated_at
-  BEFORE UPDATE ON public.constitution_rules
-  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-```
+## What stays the same
 
-### Step 2: Update ConstitutionEditor.tsx
+- All routes remain identical (paths unchanged)
+- Atlas, app-platform, and investment-office versions are untouched
+- No functional changes — only filenames and import paths
 
-- On mount: query `constitution_rules` for the current user and hydrate the in-memory compiler
-- On `compileRule`: insert new rule into DB, then compile in-memory
-- On `toggleRule`: update `is_active` in DB
-- On `deleteRule`: delete from DB
-- Remove the hardcoded seed defaults (replace with DB-loaded rules)
-- Use `useAuth` to get `user.id` for queries
-
-### Step 3: Verify
-
-- `npx tsc --noEmit` — 0 errors
-- Rules persist across page refreshes
-
-## Files changed
-- 1 migration (new `constitution_rules` table)
-- 1 TypeScript file (`src/pages/owner/ConstitutionEditor.tsx`)
+## Files changed: 14
+- 7 new files (renamed duplicates)
+- 7 old files deleted
+- `src/App.tsx` — update 7 lazy import paths
+- `src/pages/__tests__/admin-pages-batch2.test.tsx` — update 5 test imports
+- `src/pages/__tests__/store-apps-pages.test.tsx` — update 1 test import
+- `src/pages/__tests__/revenue-office-pages.test.tsx` — update 1 test import
 
