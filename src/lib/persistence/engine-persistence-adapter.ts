@@ -99,7 +99,7 @@ export async function loadAllEngineStates(): Promise<
 
   const result: Record<string, Record<string, unknown>> = {};
   for (const row of data ?? []) {
-    result[row.engine_name] = row.state_data;
+    result[row.engine_name] = row.state_data as Record<string, unknown>;
   }
   return result;
 }
