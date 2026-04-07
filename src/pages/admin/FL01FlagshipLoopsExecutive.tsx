@@ -84,6 +84,20 @@ export default function FL01FlagshipLoopsExecutive() {
     staleTime: 30_000,
   });
 
+  // Fetch latest verification runs for proof overlay
+  const { data: verificationRuns } = useQuery({
+    queryKey: ["fl01-verification-runs"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("journey_verification_runs")
+        .select("*")
+        .order("completed_at", { ascending: false })
+        .limit(50);
+      return data || [];
+    },
+    staleTime: 60_000,
+  });
+
   const seedMutation = useMutation({
     mutationFn: seedFlagshipLoops,
     onSuccess: (results) => {
@@ -101,6 +115,34 @@ export default function FL01FlagshipLoopsExecutive() {
   const criticalCount = loopList.filter((l: any) => l.launch_importance === "launch_critical").length;
   const activeCount = loopList.filter((l: any) => l.status === "active").length;
   const blockerCount = loopList.reduce((s: number, l: any) => s + (Array.isArray(l.launch_blockers) ? l.launch_blockers.length : 0), 0);
+
+  // Map verification runs to loop keys for proof overlay
+  const loopProofMap = new Map<string, { passed: number; failed: number; lastRun: string; confidence: string; commitSha: string }>();
+  const LOOP_KEY_TO_JOURNEY_PATTERNS: Record<string, string[]> = {
+    "loop1_auth_dashboard": ["auth", "dashboard", "sign-in", "sign-out"],
+    "loop2_files_ai": ["files", "ai-assist", "upload"],
+    "loop3_boardroom": ["boardroom", "summary", "decision"],
+    "loop4_connectors_sync": ["connector", "sync", "connected"],
+    "loop5_admin_truth": ["admin", "verification", "approval", "truth"],
+  };
+
+  for (const run of (verificationRuns || []) as any[]) {
+    for (const [loopKey, patterns] of Object.entries(LOOP_KEY_TO_JOURNEY_PATTERNS)) {
+      const summary = (run.summary || "").toLowerCase();
+      if (patterns.some(p => summary.includes(p))) {
+        const existing = loopProofMap.get(loopKey);
+        if (!existing || new Date(run.completed_at) > new Date(existing.lastRun)) {
+          loopProofMap.set(loopKey, {
+            passed: run.steps_passed || 0,
+            failed: run.steps_failed || 0,
+            lastRun: run.completed_at,
+            confidence: run.proof_confidence || "inferred",
+            commitSha: run.commit_sha || "",
+          });
+        }
+      }
+    }
+  }
 
   return (
     <div className="space-y-6">
