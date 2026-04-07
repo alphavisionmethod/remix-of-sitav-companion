@@ -12,7 +12,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const CATEGORIES = [
+const DEMO_CATEGORIES = [
   { key: "incident", label: "Incidents & Alerts", description: "Critical system issues and security alerts" },
   { key: "approval", label: "Approvals", description: "Pending approval requests and decisions" },
   { key: "ai_activity", label: "AI Activity", description: "Agent completions, learning events, and recommendations" },
@@ -129,7 +129,7 @@ export default function NotificationPreferences() {
           <CardDescription>Choose which categories send push vs in-app only</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {CATEGORIES.map((cat) => {
+          {DEMO_CATEGORIES.map((cat) => {
             const pref = getPref(cat.key);
             return (
               <div key={cat.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">

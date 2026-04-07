@@ -24,7 +24,7 @@ const DEMO_WHAT_CHANGED = [
   { text: "Invoice #1042 overdue by 7 days", time: "1d ago", type: "alert" },
 ];
 
-const QUICK_ACTIONS = [
+const DEMO_QUICK_ACTIONS = [
   { label: "Growth Boardroom", path: "/revenue-office/boardroom", icon: BarChart3 },
   { label: "Pipeline", path: "/revenue-office/pipeline", icon: Target },
   { label: "Campaigns", path: "/revenue-office/campaigns", icon: Zap },
@@ -85,7 +85,7 @@ export default function RevenueGate() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium text-muted-foreground">Quick Navigation</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {QUICK_ACTIONS.map(a => (
+            {DEMO_QUICK_ACTIONS.map(a => (
               <Button key={a.label} variant="ghost" className="w-full justify-between text-foreground hover:bg-accent/50" onClick={() => navigate(a.path)}>
                 <span className="flex items-center gap-2"><a.icon className="w-4 h-4 text-primary" />{a.label}</span>
                 <ArrowRight className="w-3 h-3 text-muted-foreground" />

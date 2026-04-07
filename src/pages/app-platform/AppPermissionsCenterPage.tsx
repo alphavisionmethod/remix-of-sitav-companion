@@ -11,7 +11,7 @@ import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const PERMISSION_DOMAINS = [
+const DEMO_PERMISSION_DOMAINS = [
   { id: "files", label: "Files & Folders", icon: FolderOpen, description: "Access to read/write files" },
   { id: "camera", label: "Camera", icon: Camera, description: "Access to camera hardware" },
   { id: "microphone", label: "Microphone", icon: Mic, description: "Access to microphone" },
@@ -31,7 +31,7 @@ const AppPermissionsCenterPage = () => {
     app.permissions.some(p => p.domain === activeDomain)
   );
 
-  const activeDomainInfo = PERMISSION_DOMAINS.find(d => d.id === activeDomain)!;
+  const activeDomainInfo = DEMO_PERMISSION_DOMAINS.find(d => d.id === activeDomain)!;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -47,7 +47,7 @@ const AppPermissionsCenterPage = () => {
 
       {/* Permission Domain Tabs */}
       <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
-        {PERMISSION_DOMAINS.map(d => {
+        {DEMO_PERMISSION_DOMAINS.map(d => {
           const Icon = d.icon;
           const count = APP_CATALOG.filter(a => a.permissions.some(p => p.domain === d.id)).length;
           return (

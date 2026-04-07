@@ -81,7 +81,7 @@ const STEP_TYPES: { type: BuilderStep["type"]; label: string; icon: typeof Zap; 
   { type: "gate", label: "Approval Gate", icon: Shield, description: "Require human approval" },
 ];
 
-const TRIGGER_EVENTS = [
+const DEMO_TRIGGER_EVENTS = [
   { value: "invoice-overdue", label: "Invoice becomes overdue" },
   { value: "lead-cold", label: "Lead goes cold (no activity 30d)" },
   { value: "customer-churn-risk", label: "Customer churn risk detected" },
@@ -92,7 +92,7 @@ const TRIGGER_EVENTS = [
   { value: "deal-stage-change", label: "Deal stage changes" },
 ];
 
-const CONDITION_FIELDS = [
+const DEMO_CONDITION_FIELDS = [
   { value: "customer.ltv", label: "Customer LTV" },
   { value: "customer.health_score", label: "Health Score" },
   { value: "invoice.amount", label: "Invoice Amount" },
@@ -103,15 +103,9 @@ const CONDITION_FIELDS = [
   { value: "customer.last_contact_days", label: "Days Since Contact" },
 ];
 
-const OPERATORS = [
-  { value: "gt", label: ">" }, { value: "lt", label: "<" },
-  { value: "eq", label: "=" }, { value: "not_eq", label: "≠" },
-  { value: "contains", label: "contains" }, { value: "exists", label: "exists" },
-];
+import { OPERATORS, DELAY_OPTIONS } from "@/lib/constants/ui-config";
 
-const DELAY_OPTIONS = ["1 hour", "4 hours", "1 day", "2 days", "3 days", "1 week", "2 weeks"];
-
-const CATEGORIES: { value: PlaybookDraft["category"]; label: string; color: string }[] = [
+const DEMO_CATEGORIES: { value: PlaybookDraft["category"]; label: string; color: string }[] = [
   { value: "recovery", label: "Recovery", color: "bg-trust-safe/10 text-trust-safe" },
   { value: "growth", label: "Growth", color: "bg-accent/10 text-accent" },
   { value: "retention", label: "Retention", color: "bg-primary/10 text-primary" },
@@ -287,7 +281,7 @@ const StepCard = ({
                             onUpdate({ ...step, conditions: updated });
                           }}
                             className="flex-1 rounded-lg border border-border bg-secondary/50 px-2 py-1.5 text-[11px] text-foreground focus:outline-none">
-                            {CONDITION_FIELDS.map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
+                            {DEMO_CONDITION_FIELDS.map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
                           </select>
                           <select value={cond.operator} onChange={e => {
                             const updated = [...step.conditions];
@@ -418,7 +412,7 @@ const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange
       {trigger.type === "event" && (
         <select value={trigger.event || ""} onChange={e => onChange({ ...trigger, event: e.target.value })}
           className="w-full rounded-lg border border-border bg-secondary/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary/50">
-          {TRIGGER_EVENTS.map(te => <option key={te.value} value={te.value}>{te.label}</option>)}
+          {DEMO_TRIGGER_EVENTS.map(te => <option key={te.value} value={te.value}>{te.label}</option>)}
         </select>
       )}
 
@@ -437,7 +431,7 @@ const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange
         <div className="flex items-center gap-2">
           <select value={trigger.threshold?.field || "customer.ltv"} onChange={e => onChange({ ...trigger, threshold: { ...trigger.threshold!, field: e.target.value, operator: trigger.threshold?.operator || "gt", value: trigger.threshold?.value || "" } })}
             className="flex-1 rounded-lg border border-border bg-secondary/50 px-2 py-1.5 text-[11px] text-foreground focus:outline-none">
-            {CONDITION_FIELDS.map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
+            {DEMO_CONDITION_FIELDS.map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
           </select>
           <select value={trigger.threshold?.operator || "gt"} onChange={e => onChange({ ...trigger, threshold: { ...trigger.threshold!, operator: e.target.value } })}
             className="w-16 rounded-lg border border-border bg-secondary/50 px-2 py-1.5 text-[11px] text-foreground text-center focus:outline-none">
@@ -461,7 +455,7 @@ const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange
 
 const PreviewPanel = ({ draft }: { draft: PlaybookDraft }) => {
   const triggerLabel = draft.trigger.type === "event"
-    ? TRIGGER_EVENTS.find(e => e.value === draft.trigger.event)?.label || draft.trigger.event
+    ? DEMO_TRIGGER_EVENTS.find(e => e.value === draft.trigger.event)?.label || draft.trigger.event
     : draft.trigger.type === "schedule" ? draft.trigger.schedule
     : draft.trigger.type === "threshold" ? `${draft.trigger.threshold?.field} ${draft.trigger.threshold?.operator} ${draft.trigger.threshold?.value}`
     : "Manual trigger";
@@ -628,7 +622,7 @@ const PlaybookBuilder = () => {
               <div>
                 <label className="text-[10px] font-semibold text-muted-foreground uppercase">Category</label>
                 <div className="mt-1.5 flex gap-2">
-                  {CATEGORIES.map(c => (
+                  {DEMO_CATEGORIES.map(c => (
                     <button key={c.value} onClick={() => setDraft(d => ({ ...d, category: c.value }))}
                       className={`px-3 py-1.5 rounded-lg text-[11px] font-medium capitalize transition-all ${
                         draft.category === c.value ? `${c.color} ring-1 ring-current/20` : "bg-secondary text-muted-foreground hover:text-foreground"

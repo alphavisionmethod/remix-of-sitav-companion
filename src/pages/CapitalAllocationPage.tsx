@@ -21,7 +21,7 @@ const DEMO_ALLOCATIONS = [
   { asset: "Cash & Equivalents", target: 5, current: 4.3, value: 43000, drift: -0.7, color: "bg-gray-400" },
 ];
 
-const ASSET_COLORS = ["bg-blue-500", "bg-purple-500", "bg-emerald-500", "bg-amber-500", "bg-gray-400", "bg-rose-500", "bg-cyan-500"];
+import { ASSET_COLORS } from "@/lib/constants/ui-config";
 
 export default function CapitalAllocationPage() {
   const { isDemoMode } = useDataMode();

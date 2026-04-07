@@ -17,7 +17,7 @@ const DEMO_FORMS = [
   { id: "f5", name: "Partnership Application", status: "draft", submissions: 0, convRate: "—", lastSubmission: "—", fields: 15, tags: ["partnership", "b2b"] },
 ];
 
-const FIELD_TYPES = [
+const DEMO_FIELD_TYPES = [
   { type: "text", label: "Short Text", icon: Type },
   { type: "email", label: "Email", icon: Mail },
   { type: "phone", label: "Phone", icon: Phone },
@@ -127,7 +127,7 @@ export default function FormsBuilder() {
               <Card className="bg-card/50 border-border/50">
                 <CardHeader className="pb-2"><CardTitle className="text-xs">Field Types</CardTitle></CardHeader>
                 <CardContent className="space-y-1">
-                  {FIELD_TYPES.map(ft => (
+                  {DEMO_FIELD_TYPES.map(ft => (
                     <div key={ft.type} className="flex items-center gap-2 p-2 rounded-lg bg-muted/10 border border-border/20 cursor-grab hover:bg-muted/20 transition-colors">
                       <ft.icon className="w-3.5 h-3.5 text-primary" />
                       <span className="text-xs text-foreground">{ft.label}</span>

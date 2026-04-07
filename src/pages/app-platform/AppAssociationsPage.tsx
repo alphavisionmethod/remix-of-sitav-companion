@@ -11,7 +11,7 @@ import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const DEFAULT_APP_SLOTS = [
+const DEMO_APP_SLOTS = [
   { id: "browser", label: "Default Browser", icon: Globe, currentApp: "chrome", candidates: ["chrome", "firefox"] },
   { id: "email", label: "Default Email", icon: Mail, currentApp: "gmail", candidates: ["gmail"] },
   { id: "calendar", label: "Default Calendar", icon: Calendar, currentApp: null, candidates: [] },
@@ -20,7 +20,7 @@ const DEFAULT_APP_SLOTS = [
   { id: "code", label: "Code Editor", icon: FileCode, currentApp: "vscode", candidates: ["vscode", "obsidian"] },
 ];
 
-const FILE_TYPES = [
+const DEMO_FILE_TYPES = [
   { ext: ".html", label: "HTML files", apps: ["chrome", "firefox", "vscode"] },
   { ext: ".js", label: "JavaScript", apps: ["vscode"] },
   { ext: ".ts", label: "TypeScript", apps: ["vscode"] },
@@ -62,7 +62,7 @@ const AppAssociationsPage = () => {
 
       {activeTab === "defaults" && (
         <div className="space-y-3">
-          {DEFAULT_APP_SLOTS.map(slot => {
+          {DEMO_APP_SLOTS.map(slot => {
             const Icon = slot.icon;
             const currentApp = slot.currentApp ? APP_CATALOG.find(a => a.id === slot.currentApp) : null;
             return (
@@ -92,7 +92,7 @@ const AppAssociationsPage = () => {
 
       {activeTab === "files" && (
         <div className="space-y-2">
-          {FILE_TYPES.map(ft => {
+          {DEMO_FILE_TYPES.map(ft => {
             const apps = ft.apps.map(id => APP_CATALOG.find(a => a.id === id)).filter(Boolean);
             return (
               <div key={ft.ext} className="rounded-xl border border-border bg-card p-3 flex items-center gap-3">

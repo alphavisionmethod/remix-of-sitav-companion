@@ -17,10 +17,7 @@ const SHOCK_ICONS: Record<ShockType, typeof AlertTriangle> = {
   'business-failure': TrendingDown, 'market-crash': BarChart3,
 };
 
-const SEVERITY_COLORS = [
-  'bg-trust-safe', 'bg-trust-safe', 'bg-sita-gold', 'bg-sita-gold',
-  'bg-destructive/80', 'bg-destructive', 'bg-destructive', 'bg-destructive',
-];
+import { SEVERITY_COLORS } from "@/lib/constants/ui-config";
 
 const stagger = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.06 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
