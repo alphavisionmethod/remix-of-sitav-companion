@@ -11,6 +11,11 @@ import { classifyFile, detectSensitivity, type FileClassification, type Sensitiv
 import { FileUploader } from "@/components/sita/FileUploader";
 import { useFilesOverview } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useAIInsight } from "@/hooks/use-backend-actions";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 type ViewVariant = "founder" | "household" | "finance" | "premium";
 
