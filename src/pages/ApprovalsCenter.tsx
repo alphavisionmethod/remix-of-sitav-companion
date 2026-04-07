@@ -51,9 +51,9 @@ const ApprovalsCenter = () => {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Pending" value={pending.length} icon={Clock} className="gradient-sita-subtle" />
-        <KPITile label="Approved (30d)" value="18" icon={CheckCircle} />
-        <KPITile label="Rejected (30d)" value="3" icon={XCircle} />
-        <KPITile label="Auto-Executed" value="12" sub="Below threshold" icon={Zap} />
+        <KPITile label="Approved (30d)" value={decided.filter((a: any) => a.status === "approved").length} icon={CheckCircle} />
+        <KPITile label="Rejected (30d)" value={decided.filter((a: any) => a.status === "rejected").length} icon={XCircle} />
+        <KPITile label="Total Decided" value={decided.length} sub="All time" icon={Zap} />
       </div>
 
       {/* Trust Ladder */}
