@@ -63,7 +63,12 @@ export function AIWorkforceScoreForm({ recommendationId, recommendationTitle, on
       await onSubmit({
         recommendation_id: recommendationId,
         score_overall: overall,
-        ...(scores as Record<string, number>),
+        score_accuracy: scores.score_accuracy ?? 50,
+        score_usefulness: scores.score_usefulness ?? 50,
+        score_actionability: scores.score_actionability ?? 50,
+        score_evidence_quality: scores.score_evidence_quality ?? 50,
+        score_cost_efficiency: scores.score_cost_efficiency ?? 50,
+        score_launch_honesty_alignment: scores.score_launch_honesty_alignment ?? 50,
         review_method: "human_review",
         notes,
       });

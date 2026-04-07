@@ -30,7 +30,7 @@ export function useRealtime() {
       .channel("sita-realtime")
       .on("postgres_changes", { event: "*", schema: "public", table: "events" }, (payload) => {
         const evt: RealtimeEvent = {
-          id: (payload.new as unknown)?.id || crypto.randomUUID(),
+          id: (payload.new as Record<string, string>)?.id || crypto.randomUUID(),
           type: payload.eventType,
           payload: payload.new as Record<string, unknown>,
           created_at: new Date().toISOString(),
