@@ -226,9 +226,35 @@ const SettingsPage = () => {
             </SitaCardTitle>
             <div className="mt-4 space-y-3">
               <div className="flex items-center gap-4 p-4 rounded-xl bg-secondary/30">
-                <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center">
-                  <User className="h-6 w-6 text-primary" />
-                </div>
+                <label className="cursor-pointer relative group">
+                  <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
+                    {avatarUrl ? (
+                      <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+                    ) : (
+                      <User className="h-6 w-6 text-primary" />
+                    )}
+                  </div>
+                  <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                    <span className="text-[9px] text-white font-medium">{uploadingAvatar ? "..." : "Edit"}</span>
+                  </div>
+                  <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file || !user) return;
+                    setUploadingAvatar(true);
+                    try {
+                      const ext = file.name.split(".").pop();
+                      const path = `avatars/${user.id}.${ext}`;
+                      const { error: uploadError } = await supabase.storage.from("documents").upload(path, file, { upsert: true });
+                      if (uploadError) throw uploadError;
+                      const { data: urlData } = supabase.storage.from("documents").getPublicUrl(path);
+                      const url = urlData.publicUrl;
+                      setAvatarUrl(url);
+                      await (db as any).from("profiles").update({ avatar_url: url }).eq("user_id", user.id);
+                      toast.success("Photo updated");
+                    } catch (err: any) { toast.error(err.message || "Upload failed"); }
+                    finally { setUploadingAvatar(false); }
+                  }} />
+                </label>
                 <div className="flex-1">
                   <input
                     value={displayName}
