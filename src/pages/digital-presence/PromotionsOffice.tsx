@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useSites } from "@/hooks/use-digital-presence";
 
 const DEMO_ACTIVE_PROMOTIONS = [
   { name: "Summer Sale — 20% Off", type: "Site Banner", placement: "Homepage Hero", status: "active", expires: "3 days", impressions: 4201, clicks: 342, ctr: "8.1%" },
@@ -29,6 +30,7 @@ const DEMO_EMAIL_SMS_SYNC = [
 
 export default function PromotionsOffice() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useSites();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />

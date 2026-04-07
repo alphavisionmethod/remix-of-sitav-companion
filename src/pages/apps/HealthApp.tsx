@@ -7,6 +7,7 @@ import { Heart, Activity, Moon, Dumbbell, Brain, Droplets, Apple, TrendingUp, Pl
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useHealthLogs } from "@/hooks/use-apps-data";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -25,6 +26,7 @@ const DEMO_waterData = [6, 8, 5, 7, 8, 4, 7];
 
 export default function HealthApp() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useHealthLogs();
   const [selectedMood, setSelectedMood] = useState(2);
   const lifeScore = 78;
   const streak = 12;

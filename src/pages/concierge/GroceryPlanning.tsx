@@ -7,6 +7,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useGroceryLists } from "@/hooks/use-concierge-data";
 
 interface GroceryItem {
   id: string; name: string; category: string; quantity: string; estimated: string;

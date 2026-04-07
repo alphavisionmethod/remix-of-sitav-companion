@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useSeoReports } from "@/hooks/use-digital-presence";
 
 const DEMO_OVERVIEW_METRICS = [
   { label: "Total Visitors", value: "12,847", change: "+14.2%", up: true, icon: Eye },
@@ -49,6 +50,7 @@ const DEMO_AGENT_CONFIDENCE = [
 
 export default function PresenceAnalytics() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useSeoReports();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />

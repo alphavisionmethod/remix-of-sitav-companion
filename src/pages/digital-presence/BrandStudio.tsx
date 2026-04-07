@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useBrandAssets } from "@/hooks/use-digital-presence";
 
 const DEMO_BRAND_COLORS = [
   { name: "Primary", value: "#3B82F6", hsl: "217 91% 60%" },
@@ -42,6 +43,7 @@ const DEMO_REUSABLE_BLOCKS = [
 
 export default function BrandStudio() {
   const { isDemoMode } = useDataMode();
+  const { data: liveData, isLoading } = useBrandAssets();
   const [logoPrompt, setLogoPrompt] = useState("");
 
   return (
