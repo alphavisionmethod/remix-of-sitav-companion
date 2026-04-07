@@ -12,7 +12,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 type ExportMode = "json" | "markdown" | "approval" | "pr-ready" | "investor";
 
-const EXPORT_MODES: {
+const DEMO_EXPORT_MODES: {
   mode: ExportMode; label: string; icon: typeof FileJson; description: string }[] = [
   { mode: "json", label: "JSON Bundle", icon: FileJson, description: "Machine-readable evidence bundle with full metadata" },
   { mode: "markdown", label: "Markdown Report", icon: BookOpen, description: "Human-readable report for docs, wikis, or runbooks" },
@@ -131,7 +131,7 @@ const AIEvidenceBundleComposer = () => {
           <div>
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Export Format</p>
             <div className="grid grid-cols-5 gap-2">
-              {EXPORT_MODES.map(m => (
+              {DEMO_EXPORT_MODES.map(m => (
                 <div
                   key={m.mode}
                   onClick={() => setSelectedMode(m.mode)}
@@ -298,7 +298,7 @@ const AIEvidenceBundleComposer = () => {
               <div className="rounded-xl border border-border/40 p-4">
                 <p className="text-sm font-semibold mb-1">Bundle Summary</p>
                 <div className="space-y-1 text-xs text-muted-foreground">
-                  <p>Format: <strong className="text-foreground">{EXPORT_MODES.find(m => m.mode === selectedMode)?.label}</strong></p>
+                  <p>Format: <strong className="text-foreground">{DEMO_EXPORT_MODES.find(m => m.mode === selectedMode)?.label}</strong></p>
                   <p>Items: <strong className="text-foreground">{selected.length}</strong></p>
                   <p>Evidence: <strong className="text-foreground">{totalEvidence} pieces</strong></p>
                   <p>Tests: <strong className="text-foreground">{totalTests}</strong></p>
@@ -334,7 +334,7 @@ const AIEvidenceBundleComposer = () => {
               </p>
               <div className="flex justify-center gap-2 mt-3">
                 <Badge variant="outline" className="cursor-pointer hover:bg-primary/10 transition-colors px-3 py-1">
-                  <Download className="h-3 w-3 mr-1" /> Download {EXPORT_MODES.find(m => m.mode === selectedMode)?.label}
+                  <Download className="h-3 w-3 mr-1" /> Download {DEMO_EXPORT_MODES.find(m => m.mode === selectedMode)?.label}
                 </Badge>
                 <Badge variant="outline" className="cursor-pointer hover:bg-primary/10 transition-colors px-3 py-1">
                   <Code className="h-3 w-3 mr-1" /> Copy to Clipboard

@@ -35,7 +35,7 @@ interface Alert {
   likelyImpact: string;
 }
 
-const ALERTS: Alert[] = [
+const DEMO_ALERTS: Alert[] = [
   { id: "al-1", title: "Database connection pool exhaustion", severity: "critical", status: "active", source: "db-monitor", cluster: "database", timeToBreachMin: 5, runbookId: "rb-db-pool", createdAt: "2026-04-05T10:22:00Z", likelyImpact: "API failures, user-facing errors" },
   { id: "al-2", title: "Connector Slack OAuth token expiring", severity: "high", status: "active", source: "connector-health", cluster: "connectors", timeToBreachMin: 120, runbookId: "rb-conn-refresh", createdAt: "2026-04-05T10:15:00Z", likelyImpact: "Slack integration failure" },
   { id: "al-3", title: "Workflow engine memory pressure", severity: "medium", status: "acknowledged", source: "k8s-monitor", cluster: "compute", assignee: "ops-team", createdAt: "2026-04-05T09:50:00Z", likelyImpact: "Workflow processing delays" },
@@ -44,10 +44,11 @@ const ALERTS: Alert[] = [
 ];
 
 const AlertTriageBoard = () => {
+  const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState<"all" | AlertSeverity>("all");
 
-  const filtered = filter === "all" ? ALERTS : ALERTS.filter(a => a.severity === filter);
-  const criticalCount = ALERTS.filter(a => a.severity === "critical" && a.status === "active").length;
+  const filtered = filter === "all" ? DEMO_ALERTS : DEMO_ALERTS.filter(a => a.severity === filter);
+  const criticalCount = DEMO_ALERTS.filter(a => a.severity === "critical" && a.status === "active").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -69,7 +70,7 @@ const AlertTriageBoard = () => {
         <motion.div variants={fadeUp}>
           <Tabs value={filter} onValueChange={v => setFilter(v as any)}>
             <TabsList>
-              <TabsTrigger value="all">All ({ALERTS.length})</TabsTrigger>
+              <TabsTrigger value="all">All ({DEMO_ALERTS.length})</TabsTrigger>
               <TabsTrigger value="critical">Critical</TabsTrigger>
               <TabsTrigger value="high">High</TabsTrigger>
               <TabsTrigger value="medium">Medium</TabsTrigger>

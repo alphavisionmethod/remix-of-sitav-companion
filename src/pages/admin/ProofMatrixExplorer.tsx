@@ -26,7 +26,7 @@ interface ProofRecord {
   rollbackEligible: boolean;
 }
 
-const PROOFS: ProofRecord[] = [
+const DEMO_PROOFS: ProofRecord[] = [
   { id: "PR-001", type: "approval", action: "Invoice #1042 approved for payment", actor: "owner", timestamp: new Date(Date.now() - 3600000).toISOString(), verified: true, receiptId: "REC-A001", evidenceCount: 3, chain: ["approval_queue", "payment_engine", "audit_log"], domain: "finance", finality: "committed", rollbackEligible: true },
   { id: "PR-002", type: "action", action: "Connector re-auth: Google Calendar", actor: "system", timestamp: new Date(Date.now() - 7200000).toISOString(), verified: true, receiptId: "REC-A002", evidenceCount: 2, chain: ["connector_engine", "credential_store"], domain: "platform", finality: "finalized", rollbackEligible: false },
   { id: "PR-003", type: "verification", action: "Cash flow projection recalculated", actor: "finance-advisor", timestamp: new Date(Date.now() - 14400000).toISOString(), verified: true, receiptId: "REC-V001", evidenceCount: 5, chain: ["calculation_engine", "projection_store", "truth_registry"], domain: "finance", finality: "provisional", rollbackEligible: true },
@@ -68,18 +68,18 @@ export default function ProofMatrixExplorer() {
   const [typeFilter, setTypeFilter] = useState("all");
   const [expanded, setExpanded] = useState<string | null>(null);
 
-  const filtered = PROOFS.filter(p => {
+  const filtered = DEMO_PROOFS.filter(p => {
     if (typeFilter !== "all" && p.type !== typeFilter) return false;
     if (search && !p.action.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
-  const verifiedCount = PROOFS.filter(p => p.verified).length;
-  const withReceipts = PROOFS.filter(p => p.receiptId).length;
-  const totalEvidence = PROOFS.reduce((s, p) => s + p.evidenceCount, 0);
+  const verifiedCount = DEMO_PROOFS.filter(p => p.verified).length;
+  const withReceipts = DEMO_PROOFS.filter(p => p.receiptId).length;
+  const totalEvidence = DEMO_PROOFS.reduce((s, p) => s + p.evidenceCount, 0);
 
   // Coverage by domain
-  const domainCoverage = PROOFS.reduce((acc, p) => {
+  const domainCoverage = DEMO_PROOFS.reduce((acc, p) => {
     acc[p.domain] = (acc[p.domain] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
@@ -98,11 +98,11 @@ export default function ProofMatrixExplorer() {
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
-          { label: "Total Proofs", value: PROOFS.length, color: "text-foreground" },
-          { label: "Verified", value: `${verifiedCount}/${PROOFS.length}`, color: "text-emerald-400" },
-          { label: "With Receipts", value: `${withReceipts}/${PROOFS.length}`, color: "text-blue-400" },
+          { label: "Total Proofs", value: DEMO_PROOFS.length, color: "text-foreground" },
+          { label: "Verified", value: `${verifiedCount}/${DEMO_PROOFS.length}`, color: "text-emerald-400" },
+          { label: "With Receipts", value: `${withReceipts}/${DEMO_PROOFS.length}`, color: "text-blue-400" },
           { label: "Evidence Items", value: totalEvidence, color: "text-purple-400" },
-          { label: "Rollbackable", value: PROOFS.filter(p => p.rollbackEligible).length, color: "text-amber-400" },
+          { label: "Rollbackable", value: DEMO_PROOFS.filter(p => p.rollbackEligible).length, color: "text-amber-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -212,8 +212,8 @@ export default function ProofMatrixExplorer() {
                       <p className="text-sm font-medium text-foreground capitalize">{domain}</p>
                       <p className="text-lg font-bold text-primary">{count}</p>
                     </div>
-                    <Progress value={(count / PROOFS.length) * 100} className="h-1.5" />
-                    <p className="text-[10px] text-muted-foreground mt-1">{Math.round((count / PROOFS.length) * 100)}% of total proofs</p>
+                    <Progress value={(count / DEMO_PROOFS.length) * 100} className="h-1.5" />
+                    <p className="text-[10px] text-muted-foreground mt-1">{Math.round((count / DEMO_PROOFS.length) * 100)}% of total proofs</p>
                   </CardContent>
                 </Card>
               ))}
@@ -222,11 +222,11 @@ export default function ProofMatrixExplorer() {
               <CardHeader className="pb-2"><CardTitle className="text-xs">Finality Distribution</CardTitle></CardHeader>
               <CardContent className="space-y-2">
                 {(["tentative", "provisional", "committed", "finalized", "irreversible"] as const).map(f => {
-                  const count = PROOFS.filter(p => p.finality === f).length;
+                  const count = DEMO_PROOFS.filter(p => p.finality === f).length;
                   return (
                     <div key={f} className="flex items-center gap-2">
                       <span className={cn("text-[10px] w-20 capitalize", FINALITY_CONFIG[f].color)}>{f}</span>
-                      <div className="flex-1 h-2 bg-muted/20 rounded-full overflow-hidden"><div className="h-full bg-primary/60 rounded-full" style={{ width: `${(count / PROOFS.length) * 100}%` }} /></div>
+                      <div className="flex-1 h-2 bg-muted/20 rounded-full overflow-hidden"><div className="h-full bg-primary/60 rounded-full" style={{ width: `${(count / DEMO_PROOFS.length) * 100}%` }} /></div>
                       <span className="text-[10px] text-foreground w-4 text-right">{count}</span>
                     </div>
                   );
@@ -238,7 +238,7 @@ export default function ProofMatrixExplorer() {
           <TabsContent value="chains">
             <h3 className="text-sm font-semibold mb-4">Evidence Chain Visualization</h3>
             <div className="space-y-4">
-              {PROOFS.filter(p => p.chain.length >= 3).map(proof => (
+              {DEMO_PROOFS.filter(p => p.chain.length >= 3).map(proof => (
                 <Card key={proof.id} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-center gap-2 mb-3">

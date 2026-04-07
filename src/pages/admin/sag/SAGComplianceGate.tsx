@@ -6,7 +6,7 @@ import { useComplianceViolations, useGatewayStats } from "@/hooks/use-sag-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const VIOLATION_TYPES = [
+const DEMO_VIOLATION_TYPES = [
   { type: 'direct_provider_call', label: 'Direct Provider Call', severity: 'critical', icon: Ban },
   { type: 'missing_capability_id', label: 'Missing Capability ID', severity: 'high', icon: AlertTriangle },
   { type: 'missing_prompt_family', label: 'Missing Prompt Family', severity: 'high', icon: AlertTriangle },
@@ -25,13 +25,14 @@ const sevColors: Record<string, string> = {
 };
 
 const SAGComplianceGate = () => {
+  const { isDemoMode } = useDataMode();
   const { data: violations = [], isLoading } = useComplianceViolations();
   const { data: stats } = useGatewayStats();
   const s = stats || { totalRequests: 0, violations: 0 };
 
   const blockers = violations.filter((v: any) => v.blocks_launch);
   const resolved = violations.filter((v: any) => v.resolved);
-  const typeCounts = VIOLATION_TYPES.map(vt => ({ ...vt, count: violations.filter((v: any) => v.violation_type === vt.type && !v.resolved).length }));
+  const typeCounts = DEMO_VIOLATION_TYPES.map(vt => ({ ...vt, count: violations.filter((v: any) => v.violation_type === vt.type && !v.resolved).length }));
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">

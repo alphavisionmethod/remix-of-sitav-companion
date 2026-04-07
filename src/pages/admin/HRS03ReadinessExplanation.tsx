@@ -7,14 +7,14 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useReadinessStates } from "@/hooks/use-health-signal-data";
 import { DEMO_READINESS_FACTORS } from "@/lib/demo-data/health-signals";
 
-const PIPELINE_STAGES = [
+const DEMO_PIPELINE_STAGES = [
   { stage: 1, name: "Raw Signals", desc: "heart_rate, sleep, steps, hrv, workout, focus_mode", color: "bg-blue-500/10", examples: ["72 bpm", "7.2h sleep", "8,500 steps"] },
   { stage: 2, name: "Normalized States", desc: "activity, sleep_quality, strain, recovery, focus", color: "bg-green-500/10", examples: ["activity: moderate", "sleep: good", "strain: high"] },
   { stage: 3, name: "Readiness Level", desc: "high, medium, low, overload_risk, deep_focus", color: "bg-amber-500/10", examples: ["readiness: medium", "context: post-workout"] },
   { stage: 4, name: "Interruption Posture", desc: "open, selective, restricted, silent", color: "bg-purple-500/10", examples: ["posture: selective", "override: emergency-only"] },
 ];
 
-const COMBINE_STRATEGIES = [
+const DEMO_COMBINE_STRATEGIES = [
   { name: "worst_case", desc: "If any signal indicates low readiness, overall is low", use: "Default for health-sensitive decisions" },
   { name: "highest_priority", desc: "Highest-priority rule wins regardless of others", use: "Override scenarios (emergency, DND)" },
   { name: "weighted_average", desc: "Confidence-weighted combination of all signals", use: "Normal ambient assessment" },
@@ -22,6 +22,7 @@ const COMBINE_STRATEGIES = [
 ];
 
 const HRS03ReadinessExplanation = () => {
+  const { isDemoMode } = useDataMode();
   const { data: dbReadiness, isLoading } = useReadinessStates(10);
 
   return (
@@ -48,7 +49,7 @@ const HRS03ReadinessExplanation = () => {
             <CardHeader><CardTitle className="text-sm">Signal → Readiness Pipeline</CardTitle></CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-stretch gap-3 flex-wrap">
-                {PIPELINE_STAGES.map((s, i) => (
+                {DEMO_PIPELINE_STAGES.map((s, i) => (
                   <div key={s.stage} className="flex items-center gap-3 flex-1 min-w-[200px]">
                     {i > 0 && <ArrowRight className="h-5 w-5 text-muted-foreground shrink-0" />}
                     <div className={`p-4 rounded-lg border ${s.color} flex-1`}>
@@ -114,7 +115,7 @@ const HRS03ReadinessExplanation = () => {
 
         <TabsContent value="combine">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {COMBINE_STRATEGIES.map((s) => (
+            {DEMO_COMBINE_STRATEGIES.map((s) => (
               <Card key={s.name}>
                 <CardHeader className="pb-2"><CardTitle className="text-sm font-mono">{s.name}</CardTitle></CardHeader>
                 <CardContent className="text-xs space-y-2">

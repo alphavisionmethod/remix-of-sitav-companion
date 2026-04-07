@@ -35,8 +35,8 @@ const statusConfig: Record<AgentStatus, { color: string; icon: React.ElementType
   degraded: { color: "text-red-500 bg-red-500/10", icon: AlertTriangle, label: "Degraded" },
 };
 
-const DOMAIN_OPTIONS = ["general", "finance", "business", "household", "health", "legal", "travel", "education", "lifestyle"];
-const ADVISOR_TYPE_OPTIONS = ["reactive", "proactive", "autonomous", "observing", "specialist"];
+const DEMO_DOMAIN_OPTIONS = ["general", "finance", "business", "household", "health", "legal", "travel", "education", "lifestyle"];
+const DEMO_ADVISOR_TYPE_OPTIONS = ["reactive", "proactive", "autonomous", "observing", "specialist"];
 
 interface AdvisorFormData {
   display_name: string;
@@ -485,14 +485,14 @@ export default function TeamManagement() {
                 <Label className="text-xs">Domain</Label>
                 <Select value={formDialog.data.domain} onValueChange={v => updateForm({ domain: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>{DOMAIN_OPTIONS.map(d => <SelectItem key={d} value={d} className="capitalize">{d}</SelectItem>)}</SelectContent>
+                  <SelectContent>{DEMO_DOMAIN_OPTIONS.map(d => <SelectItem key={d} value={d} className="capitalize">{d}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
               <div className="space-y-1.5">
                 <Label className="text-xs">Advisor Type</Label>
                 <Select value={formDialog.data.advisor_type} onValueChange={v => updateForm({ advisor_type: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>{ADVISOR_TYPE_OPTIONS.map(t => <SelectItem key={t} value={t} className="capitalize">{t}</SelectItem>)}</SelectContent>
+                  <SelectContent>{DEMO_ADVISOR_TYPE_OPTIONS.map(t => <SelectItem key={t} value={t} className="capitalize">{t}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
             </div>

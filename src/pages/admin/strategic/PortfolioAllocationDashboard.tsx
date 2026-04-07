@@ -8,7 +8,7 @@ import { useComputeSnapshots } from "@/lib/hooks/useIntelligencePersistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const DEFAULT_CATEGORIES = [
+const DEMO_DEFAULT_CATEGORIES = [
   { cat: "defensive", target: 25, desc: "Monitoring, self-healing, compliance" },
   { cat: "growth", target: 35, desc: "Revenue, lead scoring, optimization" },
   { cat: "strategic_premium", target: 20, desc: "Deep analysis, synthesis, strategy" },
@@ -17,6 +17,7 @@ const DEFAULT_CATEGORIES = [
 ];
 
 const PortfolioAllocationDashboard = () => {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading: authLoading } = useRequireAdmin();
   const { snapshots, latest, loading: dataLoading } = useComputeSnapshots({ limit: 30 });
 
@@ -26,7 +27,7 @@ const PortfolioAllocationDashboard = () => {
   const modelMix = (latest?.model_mix as Record<string, number>) || {};
   const totalSpent = latest?.used_cents ?? 0;
 
-  const cats = DEFAULT_CATEGORIES.map(c => {
+  const cats = DEMO_DEFAULT_CATEGORIES.map(c => {
     const actual = modelMix[c.cat] ?? c.target;
     const spent = Math.round(totalSpent * (actual / 100));
     return { ...c, actual, spent };

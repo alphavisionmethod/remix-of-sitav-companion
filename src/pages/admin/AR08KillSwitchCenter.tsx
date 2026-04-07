@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const SCOPES = [
+const DEMO_SCOPES = [
   { scope: "global", label: "Global Kill Switch", description: "Stops ALL recurring automation", icon: Shield, color: "text-destructive" },
   { scope: "domain", scope_id: "self-healing", label: "Self-Healing", description: "Disable self-healing execution", icon: Heart, color: "text-accent" },
   { scope: "domain", scope_id: "agent", label: "Agent Execution", description: "Disable agent scheduler jobs", icon: Bot, color: "text-primary" },
@@ -82,7 +82,7 @@ export default function AR08KillSwitchCenter() {
       />
 
       <div className="space-y-3">
-        {SCOPES.map((s) => {
+        {DEMO_SCOPES.map((s) => {
           const active = isEnabled(s.scope, s.scope_id);
           return (
             <SitaCard key={`${s.scope}-${s.scope_id}`} className={active ? "border-destructive/30 bg-destructive/5" : ""}>

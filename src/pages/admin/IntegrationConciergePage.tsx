@@ -22,7 +22,7 @@ interface UseCase {
   readiness: number;
 }
 
-const USE_CASES: UseCase[] = [
+const DEMO_USE_CASES: UseCase[] = [
   {
     id: "uc-1", title: "Lead Recovery & Nurture", description: "Automatically capture, score, and nurture leads across channels",
     connectors: [{ name: "Email (Resend)", status: "connected" }, { name: "CRM", status: "available" }, { name: "Analytics", status: "required" }],
@@ -52,8 +52,9 @@ const USE_CASES: UseCase[] = [
 const connectorStatusColor = { connected: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", available: "bg-blue-500/10 text-blue-500 border-blue-500/20", required: "bg-amber-500/10 text-amber-500 border-amber-500/20" };
 
 const IntegrationConciergePage = () => {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
-  const filtered = USE_CASES.filter(uc => uc.title.toLowerCase().includes(search.toLowerCase()));
+  const filtered = DEMO_USE_CASES.filter(uc => uc.title.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

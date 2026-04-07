@@ -24,7 +24,7 @@ interface DomainMigration {
   priority: "critical" | "high" | "medium" | "low";
 }
 
-const DOMAIN_MIGRATIONS: DomainMigration[] = [
+const DEMO_DOMAIN_MIGRATIONS: DomainMigration[] = [
   { domain: "Investment Office", status: "demo_provider", totalPages: 22, migratedPages: 22, realProviderReady: true, demoProviderReady: true, tablesExist: true, blockers: [], priority: "critical" },
   { domain: "Boardroom", status: "demo_provider", totalPages: 1, migratedPages: 1, realProviderReady: true, demoProviderReady: true, tablesExist: true, blockers: [], priority: "critical" },
   { domain: "Business CRM", status: "demo_provider", totalPages: 4, migratedPages: 4, realProviderReady: true, demoProviderReady: true, tablesExist: true, blockers: [], priority: "high" },
@@ -47,10 +47,10 @@ const statusConfig: Record<DomainStatus, { label: string; color: string; icon: t
 
 export default function MockEliminationCenter() {
   const { isDemoMode } = useDataMode();
-  const totalPages = DOMAIN_MIGRATIONS.reduce((s, d) => s + d.totalPages, 0);
-  const migratedPages = DOMAIN_MIGRATIONS.reduce((s, d) => s + d.migratedPages, 0);
+  const totalPages = DEMO_DOMAIN_MIGRATIONS.reduce((s, d) => s + d.totalPages, 0);
+  const migratedPages = DEMO_DOMAIN_MIGRATIONS.reduce((s, d) => s + d.migratedPages, 0);
   const migrationPct = Math.round((migratedPages / totalPages) * 100);
-  const domainsConverted = DOMAIN_MIGRATIONS.filter(d => d.status !== "mock_direct" && d.status !== "blocked").length;
+  const domainsConverted = DEMO_DOMAIN_MIGRATIONS.filter(d => d.status !== "mock_direct" && d.status !== "blocked").length;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">
@@ -61,7 +61,7 @@ export default function MockEliminationCenter() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
           { label: "Pages Migrated", value: `${migratedPages}/${totalPages}`, sub: `${migrationPct}%` },
-          { label: "Domains Converted", value: `${domainsConverted}/${DOMAIN_MIGRATIONS.length}`, sub: "off direct mocks" },
+          { label: "Domains Converted", value: `${domainsConverted}/${DEMO_DOMAIN_MIGRATIONS.length}`, sub: "off direct mocks" },
           { label: "Data Services", value: "12", sub: "mode-aware" },
           { label: "Demo Providers", value: "8", sub: "scenario-backed" },
         ].map(kpi => (
@@ -87,7 +87,7 @@ export default function MockEliminationCenter() {
           <SitaCardTitle>Domain Reality Conversion Status</SitaCardTitle>
         </div>
         <div className="divide-y divide-border">
-          {DOMAIN_MIGRATIONS.map(d => {
+          {DEMO_DOMAIN_MIGRATIONS.map(d => {
             const cfg = statusConfig[d.status];
             const Icon = cfg.icon;
             const pct = Math.round((d.migratedPages / d.totalPages) * 100);

@@ -32,7 +32,7 @@ interface PromotionGate {
   blocker?: boolean;
 }
 
-const RINGS: DeploymentRing[] = [
+const DEMO_RINGS: DeploymentRing[] = [
   { name: "Development", status: "deployed", version: "v2.14.0-dev.42", deployedAt: "2h ago", health: 100, instances: 1, errorRate: 0 },
   { name: "Staging", status: "deployed", version: "v2.13.1-rc.3", deployedAt: "1d ago", health: 98, instances: 2, errorRate: 0.2 },
   { name: "Canary", status: "canary", version: "v2.13.1-rc.3", deployedAt: "6h ago", health: 96, instances: 1, errorRate: 0.8 },
@@ -40,7 +40,7 @@ const RINGS: DeploymentRing[] = [
   { name: "Production (Ring 2)", status: "blocked", version: "v2.12.4", deployedAt: "1w ago", health: 99, instances: 8, errorRate: 0.05 },
 ];
 
-const PROMOTION_GATES: PromotionGate[] = [
+const DEMO_PROMOTION_GATES: PromotionGate[] = [
   { name: "Unit Tests", status: "passed", description: "All unit tests passing", evidence: "342/342 passed", checkedAt: "2h ago" },
   { name: "Integration Tests", status: "passed", description: "API and DB integration tests", evidence: "89/89 passed", checkedAt: "2h ago" },
   { name: "Type Safety", status: "passed", description: "TypeScript strict mode", evidence: "0 errors", checkedAt: "2h ago" },
@@ -79,9 +79,9 @@ export default function DeploymentTruthCenter() {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("rings");
 
-  const passedGates = PROMOTION_GATES.filter(g => g.status === "passed").length;
-  const totalGates = PROMOTION_GATES.length;
-  const blockers = PROMOTION_GATES.filter(g => g.blocker && g.status !== "passed");
+  const passedGates = DEMO_PROMOTION_GATES.filter(g => g.status === "passed").length;
+  const totalGates = DEMO_PROMOTION_GATES.length;
+  const blockers = DEMO_PROMOTION_GATES.filter(g => g.blocker && g.status !== "passed");
   const promotionReady = blockers.length === 0;
 
   return (
@@ -133,7 +133,7 @@ export default function DeploymentTruthCenter() {
           <TabsContent value="rings">
             {/* Ring visualization */}
             <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
-              {RINGS.map((ring, ri) => (
+              {DEMO_RINGS.map((ring, ri) => (
                 <div key={ring.name} className="flex items-center gap-2">
                   <Card className={cn("min-w-[180px] bg-card/50 border-border/50", ring.status === "blocked" && "border-red-500/30")}>
                     <CardContent className="p-3 text-center">
@@ -144,14 +144,14 @@ export default function DeploymentTruthCenter() {
                       {ring.deployedAt && <p className="text-[9px] text-muted-foreground mt-1">{ring.deployedAt}</p>}
                     </CardContent>
                   </Card>
-                  {ri < RINGS.length - 1 && <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />}
+                  {ri < DEMO_RINGS.length - 1 && <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />}
                 </div>
               ))}
             </div>
 
             {/* Ring details */}
             <div className="space-y-3">
-              {RINGS.map(ring => (
+              {DEMO_RINGS.map(ring => (
                 <Card key={ring.name} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
@@ -179,7 +179,7 @@ export default function DeploymentTruthCenter() {
             <h3 className="text-sm font-semibold mb-4">Promotion Gates — {passedGates}/{totalGates} passed</h3>
             <Progress value={(passedGates / totalGates) * 100} className="h-2 mb-4" />
             <div className="space-y-2">
-              {PROMOTION_GATES.map((gate, i) => {
+              {DEMO_PROMOTION_GATES.map((gate, i) => {
                 const gcfg = GATE_ICONS[gate.status];
                 const GIcon = gcfg.icon;
                 return (

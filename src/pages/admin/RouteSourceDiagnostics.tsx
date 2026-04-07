@@ -29,7 +29,7 @@ interface RouteSource {
   notes: string;
 }
 
-const ROUTES: RouteSource[] = [
+const DEMO_ROUTES: RouteSource[] = [
   // Investment Office
   { path: "/investment-office", pageName: "Investment Gate", domain: "Investment", activeProvider: "demo", dataServices: ["investment-data-service"], mockImports: ["investment-office/mock-data"], scenarioBinding: "investor-demo", launchHonesty: "demo-backed", notes: "Rich demo data via classified provider" },
   { path: "/investment-office/portfolio", pageName: "Portfolio Office", domain: "Investment", activeProvider: "demo", dataServices: ["investment-data-service"], mockImports: ["investment-office/mock-data"], scenarioBinding: "investor-demo", launchHonesty: "demo-backed", notes: "Classified demo provider" },
@@ -70,14 +70,14 @@ export default function RouteSourceDiagnostics() {
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
-    if (!search) return ROUTES;
+    if (!search) return DEMO_ROUTES;
     const q = search.toLowerCase();
-    return ROUTES.filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
+    return DEMO_ROUTES.filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
   }, [search]);
 
-  const truthful = ROUTES.filter(r => r.launchHonesty === "truthful").length;
-  const demoBacked = ROUTES.filter(r => r.launchHonesty === "demo-backed").length;
-  const mixed = ROUTES.filter(r => r.launchHonesty === "mixed").length;
+  const truthful = DEMO_ROUTES.filter(r => r.launchHonesty === "truthful").length;
+  const demoBacked = DEMO_ROUTES.filter(r => r.launchHonesty === "demo-backed").length;
+  const mixed = DEMO_ROUTES.filter(r => r.launchHonesty === "mixed").length;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">

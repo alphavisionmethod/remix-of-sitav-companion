@@ -32,7 +32,7 @@ interface DomainReality {
   overallReadiness: number;
 }
 
-const DOMAINS: DomainReality[] = [
+const DEMO_DOMAINS: DomainReality[] = [
   {
     domain: "Investment Office",
     overallReadiness: 72,
@@ -114,7 +114,7 @@ const pathColor = (p: string) => {
 export default function DomainRealityBoard() {
   const { isDemoMode } = useDataMode();
   const [selectedDomain, setSelectedDomain] = useState(0);
-  const domain = DOMAINS[selectedDomain];
+  const domain = DEMO_DOMAINS[selectedDomain];
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">
@@ -122,9 +122,9 @@ export default function DomainRealityBoard() {
       <SitaPageHeader title="Domain Reality Conversion Board" subtitle="Feature-level real vs demo readiness across every flagship domain" />
 
       <SitaTabs
-        tabs={DOMAINS.map(d => ({ key: d.domain, label: d.domain }))}
-        active={DOMAINS[selectedDomain].domain}
-        onChange={(tab) => setSelectedDomain(DOMAINS.findIndex(d => d.domain === tab))}
+        tabs={DEMO_DOMAINS.map(d => ({ key: d.domain, label: d.domain }))}
+        active={DEMO_DOMAINS[selectedDomain].domain}
+        onChange={(tab) => setSelectedDomain(DEMO_DOMAINS.findIndex(d => d.domain === tab))}
       />
 
       <SitaCard className="p-4">

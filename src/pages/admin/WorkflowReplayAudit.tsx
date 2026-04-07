@@ -34,7 +34,7 @@ interface WorkflowStep {
   receiptRef?: string;
 }
 
-const RUNS: WorkflowRun[] = [
+const DEMO_RUNS: WorkflowRun[] = [
   {
     id: "WF-RUN-001", workflowName: "Invoice Approval & Payment", status: "completed", startedAt: "2h ago", completedAt: "1h 45m ago", actor: "owner", receiptId: "REC-W001", branchPath: "standard → approved → paid",
     steps: [
@@ -96,7 +96,7 @@ export default function WorkflowReplayAudit() {
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState<string | null>("WF-RUN-001");
 
-  const filtered = RUNS.filter(r => !search || r.workflowName.toLowerCase().includes(search.toLowerCase()));
+  const filtered = DEMO_RUNS.filter(r => !search || r.workflowName.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -108,10 +108,10 @@ export default function WorkflowReplayAudit() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: "Total Runs", value: RUNS.length },
-          { label: "Completed", value: RUNS.filter(r => r.status === "completed").length, color: "text-emerald-400" },
-          { label: "Failed", value: RUNS.filter(r => r.status === "failed").length, color: "text-red-400" },
-          { label: "Rolled Back", value: RUNS.filter(r => r.status === "rolled-back").length, color: "text-amber-400" },
+          { label: "Total Runs", value: DEMO_RUNS.length },
+          { label: "Completed", value: DEMO_RUNS.filter(r => r.status === "completed").length, color: "text-emerald-400" },
+          { label: "Failed", value: DEMO_RUNS.filter(r => r.status === "failed").length, color: "text-red-400" },
+          { label: "Rolled Back", value: DEMO_RUNS.filter(r => r.status === "rolled-back").length, color: "text-amber-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50"><CardContent className="p-3 text-center">
             <p className={cn("text-xl font-bold", k.color || "text-foreground")}>{k.value}</p>

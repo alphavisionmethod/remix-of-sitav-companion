@@ -6,8 +6,8 @@ import { useRolloutRecords } from "@/hooks/use-fip-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const ROLLOUT_RINGS = ['dev', 'staging', 'internal-shadow', 'internal-real', 'limited-tenant', 'premium', 'ga'];
-const KILL_CLASSES = ['ui-hide', 'side-effects-disabled', 'connector-writes-disabled', 'recurring-disabled', 'approval-paused', 'full-workflow-disabled'];
+const DEMO_ROLLOUT_RINGS = ['dev', 'staging', 'internal-shadow', 'internal-real', 'limited-tenant', 'premium', 'ga'];
+const DEMO_KILL_CLASSES = ['ui-hide', 'side-effects-disabled', 'connector-writes-disabled', 'recurring-disabled', 'approval-paused', 'full-workflow-disabled'];
 
 const ringColors: Record<string, string> = {
   dev: 'bg-muted text-muted-foreground', staging: 'bg-blue-500/10 text-blue-500',
@@ -17,6 +17,7 @@ const ringColors: Record<string, string> = {
 };
 
 const FIPRolloutPlanner = () => {
+  const { isDemoMode } = useDataMode();
   const { data: rollouts = [], isLoading } = useRolloutRecords();
 
   return (
@@ -38,7 +39,7 @@ const FIPRolloutPlanner = () => {
         <CardHeader><CardTitle className="text-base">Rollout Ring Distribution</CardTitle></CardHeader>
         <CardContent>
           <div className="flex gap-2">
-            {ROLLOUT_RINGS.map(ring => {
+            {DEMO_ROLLOUT_RINGS.map(ring => {
               const count = rollouts.filter((r: any) => r.current_ring === ring).length;
               return (
                 <div key={ring} className={`flex-1 text-center p-3 rounded-lg border ${count > 0 ? 'border-primary/30' : ''}`}>

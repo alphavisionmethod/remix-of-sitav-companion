@@ -26,7 +26,7 @@ const CLASSIFICATION_CONFIG = {
   proven: { label: "Proven", color: "bg-emerald-500/20 text-emerald-400", icon: CheckCircle2, description: "Persisted + verified + contract-aligned + launch-honest" },
 } as const;
 
-const CONTRACT_STATUSES = ["none", "partial", "aligned", "verified"] as const;
+const DEMO_CONTRACT_STATUSES = ["none", "partial", "aligned", "verified"] as const;
 const LAUNCH_IMPACT_CONFIG = {
   blocking: { label: "Blocking", color: "text-destructive" },
   degraded: { label: "Degraded", color: "text-yellow-400" },
@@ -181,7 +181,7 @@ function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; in
               <Label>Contract Status</Label>
               <Select value={form.contract_status} onValueChange={v => setForm(f => ({ ...f, contract_status: v as any }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{CONTRACT_STATUSES.map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}</SelectContent>
+                <SelectContent>{DEMO_CONTRACT_STATUSES.map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><Label>Backend Target</Label><Input value={form.backend_target} onChange={e => setForm(f => ({ ...f, backend_target: e.target.value }))} placeholder="supabase.customers + RLS" /></div>

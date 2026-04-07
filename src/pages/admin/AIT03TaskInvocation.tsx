@@ -22,7 +22,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
 
-const TASK_TYPES = [
+const DEMO_TASK_TYPES = [
   { key: "summarize", label: "Summarize", desc: "Generate synthesis of scope area" },
   { key: "diagnose", label: "Diagnose", desc: "Root-cause analysis" },
   { key: "classify", label: "Classify", desc: "Categorize inputs" },
@@ -35,14 +35,14 @@ const TASK_TYPES = [
   { key: "propose", label: "Propose Change", desc: "Draft a governed proposal" },
 ];
 
-const BUDGET_POSTURES = [
+const DEMO_BUDGET_POSTURES = [
   { key: "economy_admin", label: "Economy", desc: "Cheapest — flash models", costBand: "$0.001–$0.01", icon: "💰" },
   { key: "balanced_admin", label: "Balanced", desc: "Good quality/cost ratio", costBand: "$0.01–$0.05", icon: "⚖️" },
   { key: "premium_architecture", label: "Premium", desc: "Full reasoning — architecture only", costBand: "$0.05–$0.30", icon: "🏆" },
   { key: "auto", label: "Auto", desc: "Let routing decide", costBand: "varies", icon: "🤖" },
 ];
 
-const SCOPE_DOMAINS = [
+const DEMO_SCOPE_DOMAINS = [
   "architecture", "runtime-truth", "connectors", "ai-governance", "launch-readiness",
   "budget", "data-schema", "device-surface", "quality-ci", "incidents",
 ];
@@ -64,8 +64,8 @@ export default function AIT03TaskInvocation() {
 
   const { data: roles = [] } = useQuery({ queryKey: ["ai-workforce-roles"], queryFn: getWorkforceRoles });
 
-  const selectedBudget = BUDGET_POSTURES.find(b => b.key === budgetPosture);
-  const selectedTaskMeta = TASK_TYPES.find(t => t.key === selectedTask);
+  const selectedBudget = DEMO_BUDGET_POSTURES.find(b => b.key === budgetPosture);
+  const selectedTaskMeta = DEMO_TASK_TYPES.find(t => t.key === selectedTask);
   const selectedRoleMeta = roles.find(r => r.role_key === selectedRole);
   const isApprovalNeeded = selectedRoleMeta?.approval_required || selectedTask === "propose";
 
@@ -152,7 +152,7 @@ export default function AIT03TaskInvocation() {
                   <Select value={selectedTask} onValueChange={setSelectedTask}>
                     <SelectTrigger><SelectValue placeholder="Select task..." /></SelectTrigger>
                     <SelectContent>
-                      {TASK_TYPES.map(t => <SelectItem key={t.key} value={t.key}>{t.label} — {t.desc}</SelectItem>)}
+                      {DEMO_TASK_TYPES.map(t => <SelectItem key={t.key} value={t.key}>{t.label} — {t.desc}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -161,7 +161,7 @@ export default function AIT03TaskInvocation() {
                   <Select value={budgetPosture} onValueChange={setBudgetPosture}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {BUDGET_POSTURES.map(b => <SelectItem key={b.key} value={b.key}>{b.icon} {b.label} ({b.costBand})</SelectItem>)}
+                      {DEMO_BUDGET_POSTURES.map(b => <SelectItem key={b.key} value={b.key}>{b.icon} {b.label} ({b.costBand})</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -174,7 +174,7 @@ export default function AIT03TaskInvocation() {
                   <Select value={scopeDomain} onValueChange={setScopeDomain}>
                     <SelectTrigger><SelectValue placeholder="Optional scope..." /></SelectTrigger>
                     <SelectContent>
-                      {SCOPE_DOMAINS.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                      {DEMO_SCOPE_DOMAINS.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>

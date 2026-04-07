@@ -10,7 +10,7 @@ import { LIFECYCLE_STAGES, getStageLabel } from "@/lib/delivery-methodology/feat
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const ARCHETYPE_DOCS = [
+const DEMO_ARCHETYPE_DOCS = [
   { key: "boardroom", label: "Boardroom", desc: "Executive synthesis surface with advisor views and overlays", files: ["BoardroomPage.tsx", "SynthesisPanel.tsx", "AdvisorOverlay.tsx"], contracts: ["synthesis-contract", "advisor-panel-contract"] },
   { key: "office", label: "Office / Workspace", desc: "Full workspace with panels, actions, and deep domain logic", files: ["OfficePage.tsx", "PanelRegistry.tsx", "ActionCenter.tsx"], contracts: ["workspace-contract", "panel-registry-contract"] },
   { key: "workflow", label: "Workflow", desc: "Multi-step process with approvals and state transitions", files: ["WorkflowPage.tsx", "StepRenderer.tsx", "ApprovalGate.tsx"], contracts: ["workflow-definition-contract", "approval-contract"] },
@@ -22,6 +22,7 @@ const ARCHETYPE_DOCS = [
 ];
 
 const BuilderKnowledgeBase = () => {
+  const { isDemoMode } = useDataMode();
   const { data: archetypes } = useQuery({
     queryKey: ["kb-archetypes"],
     queryFn: async () => {
@@ -51,7 +52,7 @@ const BuilderKnowledgeBase = () => {
 
         <TabsContent value="archetypes" className="space-y-4 mt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {ARCHETYPE_DOCS.map(arch => (
+            {DEMO_ARCHETYPE_DOCS.map(arch => (
               <Card key={arch.key}>
                 <CardHeader><CardTitle className="text-base">{arch.label}</CardTitle></CardHeader>
                 <CardContent className="space-y-3">

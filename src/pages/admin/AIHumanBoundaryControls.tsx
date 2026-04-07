@@ -39,7 +39,7 @@ interface ChangeTypeBoundary {
   rationale: string;
 }
 
-const AGENT_BOUNDARIES: AgentBoundary[] = [
+const DEMO_AGENT_BOUNDARIES: AgentBoundary[] = [
   { agent: "Engineering Lead", icon: Brain, autonomy: "approval_required", scope: "Sprint coordination, cross-agent synthesis" },
   { agent: "Backend Engineer", icon: Wrench, autonomy: "draft_only", scope: "APIs, services, data models, runtime" },
   { agent: "Frontend Engineer", icon: Wrench, autonomy: "draft_only", scope: "Routes, components, state, rendering" },
@@ -55,7 +55,7 @@ const AGENT_BOUNDARIES: AgentBoundary[] = [
   { agent: "Learning Analyst", icon: Brain, autonomy: "observe_only", scope: "Pattern detection, routing improvements" },
 ];
 
-const MISSION_BOUNDARIES: MissionBoundary[] = [
+const DEMO_MISSION_BOUNDARIES: MissionBoundary[] = [
   { missionType: "Fix broken route", defaultAutonomy: "safe_auto_heal", overridable: true, rationale: "Isolated, low-risk, easily verifiable" },
   { missionType: "Performance optimization", defaultAutonomy: "draft_only", overridable: true, rationale: "Can have subtle cascading effects" },
   { missionType: "Design improvement", defaultAutonomy: "approval_required", overridable: false, rationale: "Visual changes need human judgment" },
@@ -68,7 +68,7 @@ const MISSION_BOUNDARIES: MissionBoundary[] = [
   { missionType: "Core routing change", defaultAutonomy: "approval_required", overridable: false, rationale: "Affects all surfaces and navigation" },
 ];
 
-const CHANGE_TYPE_BOUNDARIES: ChangeTypeBoundary[] = [
+const DEMO_CHANGE_TYPE_BOUNDARIES: ChangeTypeBoundary[] = [
   { changeType: "UI copy/label fix", maxAutonomy: "safe_auto_heal", requiresSimulation: false, requiresCanary: false, rationale: "Minimal risk, instantly verifiable" },
   { changeType: "Component style change", maxAutonomy: "draft_only", requiresSimulation: false, requiresCanary: false, rationale: "Visual impact needs review" },
   { changeType: "Route mapping fix", maxAutonomy: "safe_auto_heal", requiresSimulation: false, requiresCanary: false, rationale: "Isolated, verifiable via route test" },
@@ -82,6 +82,7 @@ const CHANGE_TYPE_BOUNDARIES: ChangeTypeBoundary[] = [
 ];
 
 const AIHumanBoundaryControls = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("agents");
 
   return (
@@ -107,7 +108,7 @@ const AIHumanBoundaryControls = () => {
         </TabsList>
 
         <TabsContent value="agents" className="space-y-2 mt-4">
-          {AGENT_BOUNDARIES.map(a => {
+          {DEMO_AGENT_BOUNDARIES.map(a => {
             const level = AUTONOMY_LABELS[a.autonomy];
             return (
               <div key={a.agent} className="rounded-xl border border-border/40 bg-card p-3 flex items-center gap-3">
@@ -126,7 +127,7 @@ const AIHumanBoundaryControls = () => {
         </TabsContent>
 
         <TabsContent value="missions" className="space-y-2 mt-4">
-          {MISSION_BOUNDARIES.map(m => {
+          {DEMO_MISSION_BOUNDARIES.map(m => {
             const level = AUTONOMY_LABELS[m.defaultAutonomy];
             return (
               <div key={m.missionType} className="rounded-xl border border-border/40 bg-card p-3">
@@ -153,7 +154,7 @@ const AIHumanBoundaryControls = () => {
                 <th className="text-center p-3">Canary</th>
                 <th className="text-left p-3">Rationale</th>
               </tr></thead>
-              <tbody>{CHANGE_TYPE_BOUNDARIES.map(c => {
+              <tbody>{DEMO_CHANGE_TYPE_BOUNDARIES.map(c => {
                 const level = AUTONOMY_LABELS[c.maxAutonomy];
                 return (
                   <tr key={c.changeType} className="border-b border-border/20">

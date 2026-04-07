@@ -26,7 +26,7 @@ const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tec
   health_connect: { title: "Health Connect", icon: Heart, desc: "Android health signal path with consent", tech: ["Health Connect API", "Permission model"], capabilities: ["heart_rate", "sleep", "steps", "exercise"] },
 };
 
-const PROVIDER_CAPS = [
+const DEMO_PROVIDER_CAPS = [
   { key: "android_mobile_shell", label: "Mobile Shell", priority: "P0" },
   { key: "wearos_surface", label: "Wear OS Surface", priority: "P1" },
   { key: "android_push_channel", label: "Push Channel (FCM)", priority: "P0" },
@@ -35,6 +35,7 @@ const PROVIDER_CAPS = [
 ];
 
 const AND01AndroidEcosystemCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [showDeps, setShowDeps] = useState(false);
   const [showAddDevice, setShowAddDevice] = useState(false);
   const [newDevice, setNewDevice] = useState({ surface: "android_phone", device_model: "", os_version: "" });
@@ -188,7 +189,7 @@ const AND01AndroidEcosystemCenter = () => {
                     <th className="p-2">Priority</th>
                   </tr></thead>
                   <tbody>
-                    {PROVIDER_CAPS.map((cap) => {
+                    {DEMO_PROVIDER_CAPS.map((cap) => {
                       const matchingLaunch = launchData?.find((r: any) => r.target.includes(cap.key.replace("android_", "")));
                       const status = matchingLaunch?.launch_stage || "planned";
                       return (

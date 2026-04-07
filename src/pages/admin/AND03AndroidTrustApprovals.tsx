@@ -6,7 +6,7 @@ import { Shield, Fingerprint, Smartphone, Watch, Lock, CheckCircle2, XCircle, Ar
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const TRUST_CLASSES = [
+const DEMO_TRUST_CLASSES = [
   { cls: "trusted_phone", label: "Phone", bio: "Fingerprint / Face", keystore: true, playIntegrity: true, riskCeiling: "critical", trustScore: 90, session: "24h" },
   { cls: "trusted_tablet", label: "Tablet", bio: "Fingerprint / Face", keystore: true, playIntegrity: true, riskCeiling: "critical", trustScore: 88, session: "24h" },
   { cls: "trusted_watch", label: "Wear OS", bio: "Wrist detection", keystore: false, playIntegrity: false, riskCeiling: "medium", trustScore: 60, session: "while_worn" },
@@ -48,7 +48,7 @@ const AND03AndroidTrustApprovals = () => (
 
       <TabsContent value="classes">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {TRUST_CLASSES.map((t) => (
+          {DEMO_TRUST_CLASSES.map((t) => (
             <Card key={t.cls}>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
