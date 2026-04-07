@@ -13,7 +13,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 type ExportMode = "json" | "markdown" | "approval" | "pr-ready" | "investor";
 
 const EXPORT_MODES: {
-  const { isDemoMode } = useDataMode(); mode: ExportMode; label: string; icon: typeof FileJson; description: string }[] = [
+  mode: ExportMode; label: string; icon: typeof FileJson; description: string }[] = [
   { mode: "json", label: "JSON Bundle", icon: FileJson, description: "Machine-readable evidence bundle with full metadata" },
   { mode: "markdown", label: "Markdown Report", icon: BookOpen, description: "Human-readable report for docs, wikis, or runbooks" },
   { mode: "approval", label: "Approval Attachment", icon: Shield, description: "Attach to approval queue item with risk & evidence summary" },
