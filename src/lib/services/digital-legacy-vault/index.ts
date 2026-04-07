@@ -120,11 +120,11 @@ class DigitalLegacyVaultService {
 
     return (data || []).map((d) => ({
       id: d.id,
-      type: ((d.metadata as never)?.type || 'note') as VaultItemType,
-      title: (d.metadata as never)?.title || d.name,
+      type: ((d.metadata as Record<string, unknown>)?.type || 'note') as VaultItemType,
+      title: (d.metadata as Record<string, unknown>)?.title as string || d.name,
       encryptedContent: d.encrypted_value,
-      tags: (d.metadata as never)?.tags || [],
-      beneficiaries: (d.metadata as never)?.beneficiaries || [],
+      tags: ((d.metadata as Record<string, unknown>)?.tags || []) as string[],
+      beneficiaries: ((d.metadata as Record<string, unknown>)?.beneficiaries || []) as string[],
       lastUpdated: new Date(d.updated_at || d.created_at || ''),
     }));
   }
