@@ -316,6 +316,17 @@ export default function ObservabilityPage() {
           </TabsContent>
         </div>
       </Tabs>
+
+      {/* Degraded state fallback panel */}
+      {services.some(s => s.status === "degraded") && (
+        <DegradedStatePanel
+          degradedReason="One or more services are operating in degraded mode"
+          retryAllowed
+          onRetry={() => window.location.reload()}
+          surfaceClass="admin_os"
+          nextStep="Investigate connector gateway latency"
+        />
+      )}
     </div>
   );
 }
