@@ -115,10 +115,17 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         {/* Ambient background — subtle, always present */}
         <ShellAmbientBackground intensity="subtle" className="fixed" />
 
+        <DemoStateBanner />
         <NetworkStatusBar />
         <UpdateBanner />
         <ContinuityBanner />
         <SitaTopBar
+          onNotifOpen={() => setNotifOpen(true)}
+          onTimelineOpen={() => setTimelineOpen(true)}
+          onCommandOpen={() => setCommandOpen(true)}
+        >
+          <RealityStateBadge />
+        </SitaTopBar>
           onNotifOpen={() => setNotifOpen(true)}
           onTimelineOpen={() => setTimelineOpen(true)}
           onCommandOpen={() => setCommandOpen(true)}
