@@ -12,7 +12,7 @@ import { DEMO_CONSENT_CATEGORIES, DEMO_REVOCATION_ACTIONS } from "@/lib/demo-dat
 
 const ICON_MAP: Record<string, any> = { ingestion: Eye, routing: ShieldCheck, boardroom: FileText, assistant: Heart };
 
-const PRINCIPLES = [
+const DEMO_PRINCIPLES = [
   "Every signal type requires explicit opt-in",
   "Routing influence requires separate consent from ingestion",
   "Boardroom visibility requires explicit signal-level approval",
@@ -26,6 +26,7 @@ const PRINCIPLES = [
 ];
 
 const HRS01HealthConsentCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [enabledCats, setEnabledCats] = useState<Record<string, boolean>>(
     Object.fromEntries(DEMO_CONSENT_CATEGORIES.map(c => [c.key, false]))
   );
@@ -127,7 +128,7 @@ const HRS01HealthConsentCenter = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Lock className="h-4 w-4" />Core Consent Principles</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {PRINCIPLES.map((p, i) => (
+              {DEMO_PRINCIPLES.map((p, i) => (
                 <div key={i} className="flex items-start gap-2 p-2 rounded border text-xs"><CheckCircle2 className="h-3 w-3 text-green-500 shrink-0 mt-0.5" />{p}</div>
               ))}
             </CardContent>

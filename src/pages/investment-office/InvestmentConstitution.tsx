@@ -15,7 +15,7 @@ interface Rule {
   severity: "hard" | "soft";
 }
 
-const CONSTITUTION_RULES: Rule[] = [
+const DEMO_CONSTITUTION_RULES: Rule[] = [
   { id: "r1", label: "Max Position Size", description: "No single position may exceed this % of total portfolio", value: "7%", category: "sizing", active: true, severity: "hard" },
   { id: "r2", label: "Max Platform Concentration", description: "No single platform/exchange may hold more than this % of total capital", value: "40%", category: "sizing", active: true, severity: "hard" },
   { id: "r3", label: "Max Speculative Sleeve", description: "Total speculative allocation may not exceed this %", value: "8%", category: "sizing", active: true, severity: "hard" },
@@ -30,7 +30,7 @@ const CONSTITUTION_RULES: Rule[] = [
   { id: "r12", label: "Crypto Allocation Cap", description: "Total crypto exposure hard ceiling", value: "20%", category: "sizing", active: true, severity: "hard" },
 ];
 
-const CATEGORIES = [
+const DEMO_CATEGORIES = [
   { id: "all", label: "All Rules" },
   { id: "sizing", label: "Position Sizing" },
   { id: "behavior", label: "Behavioral" },
@@ -48,7 +48,7 @@ export default function InvestmentConstitution() {
   const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const [filter, setFilter] = useState("all");
-  const filtered = CONSTITUTION_RULES.filter(r => filter === "all" || r.category === filter);
+  const filtered = DEMO_CONSTITUTION_RULES.filter(r => filter === "all" || r.category === filter);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -65,7 +65,7 @@ export default function InvestmentConstitution() {
             <AlertTriangle className="h-3 w-3" /> {DEMO_CURRENT_VIOLATIONS.length} Active Violations
           </p>
           {DEMO_CURRENT_VIOLATIONS.map(v => {
-            const rule = CONSTITUTION_RULES.find(r => r.id === v.ruleId);
+            const rule = DEMO_CONSTITUTION_RULES.find(r => r.id === v.ruleId);
             return (
               <div key={v.ruleId} className="flex items-start gap-2 text-sm text-foreground">
                 <AlertTriangle className="h-3.5 w-3.5 text-destructive shrink-0 mt-0.5" />
@@ -78,7 +78,7 @@ export default function InvestmentConstitution() {
 
       {/* Filter Tabs */}
       <div className="flex gap-1.5">
-        {CATEGORIES.map(c => (
+        {DEMO_CATEGORIES.map(c => (
           <button key={c.id} onClick={() => setFilter(c.id)}
             className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
               filter === c.id ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"

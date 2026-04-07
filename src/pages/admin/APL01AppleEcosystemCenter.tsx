@@ -26,7 +26,7 @@ const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tec
   vision_pro: { title: "Vision Pro", icon: Monitor, desc: "Spatial computing surface", tech: ["RealityKit", "SwiftUI"], capabilities: ["gaze", "gesture", "spatial_audio"] },
 };
 
-const PROVIDER_CAPS = [
+const DEMO_PROVIDER_CAPS = [
   { key: "apple_identity", label: "Identity", priority: "P0" },
   { key: "apple_mobile_shell", label: "Mobile Shell", priority: "P0" },
   { key: "apple_watch_surface", label: "Watch Surface", priority: "P1" },
@@ -37,6 +37,7 @@ const PROVIDER_CAPS = [
 ];
 
 const APL01AppleEcosystemCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [showDependencies, setShowDependencies] = useState(false);
   const [showAddDevice, setShowAddDevice] = useState(false);
   const [newDevice, setNewDevice] = useState({ surface: "iphone", device_model: "", os_version: "" });
@@ -189,7 +190,7 @@ const APL01AppleEcosystemCenter = () => {
                     <th className="p-2">Priority</th>
                   </tr></thead>
                   <tbody>
-                    {PROVIDER_CAPS.map((cap) => {
+                    {DEMO_PROVIDER_CAPS.map((cap) => {
                       const matchingLaunch = launchData?.find((r: any) => r.target.includes(cap.key.replace("apple_", "")));
                       const status = matchingLaunch?.launch_stage || "planned";
                       return (

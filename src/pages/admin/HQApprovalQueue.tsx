@@ -52,10 +52,10 @@ interface QueueItem {
   user_id: string;
 }
 
-const STATUSES = ["pending", "under_review", "approved", "rejected", "returned_for_revision", "deferred", "queued_for_execution", "executed", "expired"];
-const RISK_TIERS = ["low", "medium", "high", "critical"];
-const RECOMMENDATION_TYPES = ["recommendation", "proposed_policy_change", "proposed_config_change", "proposed_remediation", "proposed_launch_decision", "proposed_followup_task"];
-const DOMAINS = ["architecture", "runtime-truth", "connectors", "ai-governance", "launch-readiness", "budget", "data-schema", "device-surface", "quality-ci", "incidents"];
+const DEMO_STATUSES = ["pending", "under_review", "approved", "rejected", "returned_for_revision", "deferred", "queued_for_execution", "executed", "expired"];
+const DEMO_RISK_TIERS = ["low", "medium", "high", "critical"];
+const DEMO_RECOMMENDATION_TYPES = ["recommendation", "proposed_policy_change", "proposed_config_change", "proposed_remediation", "proposed_launch_decision", "proposed_followup_task"];
+const DEMO_DOMAINS = ["architecture", "runtime-truth", "connectors", "ai-governance", "launch-readiness", "budget", "data-schema", "device-surface", "quality-ci", "incidents"];
 
 // ── Data fetching ──
 async function fetchQueue(filters: Record<string, string>) {
@@ -153,7 +153,7 @@ function HQ01Overview() {
         <CardHeader><CardTitle className="text-sm">Pending by Risk Tier</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-4 gap-3">
-            {RISK_TIERS.map(tier => {
+            {DEMO_RISK_TIERS.map(tier => {
               const count = pending.filter(i => i.risk_tier === tier).length;
               return (
                 <div key={tier} className="text-center p-3 rounded border">
@@ -231,10 +231,10 @@ function HQ02QueueDetail() {
           <div className="flex items-center gap-2 flex-wrap">
             <Filter className="h-4 w-4 text-muted-foreground" />
             {[
-              { key: "status", label: "Status", options: ["all", ...STATUSES] },
-              { key: "risk_tier", label: "Risk", options: ["all", ...RISK_TIERS] },
+              { key: "status", label: "Status", options: ["all", ...DEMO_STATUSES] },
+              { key: "risk_tier", label: "Risk", options: ["all", ...DEMO_RISK_TIERS] },
               { key: "severity", label: "Severity", options: ["all", "low", "medium", "high", "critical"] },
-              { key: "impacted_domain", label: "Domain", options: ["all", ...DOMAINS] },
+              { key: "impacted_domain", label: "Domain", options: ["all", ...DEMO_DOMAINS] },
             ].map(f => (
               <Select key={f.key} value={filters[f.key] ?? "all"} onValueChange={v => setFilter(f.key, v)}>
                 <SelectTrigger className="w-[130px] h-7 text-[10px]"><SelectValue placeholder={f.label} /></SelectTrigger>

@@ -31,7 +31,7 @@ interface ConnectorStatus {
   dataFreshness: string;
 }
 
-const CONNECTORS: ConnectorStatus[] = [
+const DEMO_CONNECTORS: ConnectorStatus[] = [
   { id: "plaid", name: "Plaid Banking", type: "finance", status: "healthy", lastSyncAt: "15m ago", staleness: "fresh", errorRate: 0.1, syncCount24h: 48, credentialStatus: "valid", affectedDomains: ["finance", "cash-flow"], latencyMs: 245, dataFreshness: "Real-time" },
   { id: "stripe", name: "Stripe Payments", type: "payments", status: "healthy", lastSyncAt: "5m ago", staleness: "fresh", errorRate: 0, syncCount24h: 96, credentialStatus: "valid", affectedDomains: ["finance", "invoicing"], latencyMs: 120, dataFreshness: "Real-time" },
   { id: "google-cal", name: "Google Calendar", type: "calendar", status: "degraded", lastSyncAt: "2h ago", staleness: "warning", errorRate: 2.1, syncCount24h: 24, credentialStatus: "expiring", credentialExpiresIn: "3 days", affectedDomains: ["concierge", "scheduling"], latencyMs: 890, dataFreshness: "2h stale" },
@@ -114,10 +114,10 @@ export default function ConnectorGovernanceCenter() {
     staleTime: 30000,
   });
 
-  const activeConnectors = dbConnectors ? CONNECTORS.map(c => {
+  const activeConnectors = dbConnectors ? DEMO_CONNECTORS.map(c => {
     const acc = dbConnectors.accounts.find((a: any) => a.connector_type === c.id);
     return acc ? { ...c, status: acc.status === "active" ? "healthy" as const : c.status, lastSyncAt: acc.last_sync_at ? new Date(acc.last_sync_at).toLocaleTimeString() : c.lastSyncAt } : c;
-  }) : CONNECTORS;
+  }) : DEMO_CONNECTORS;
 
   const healthy = activeConnectors.filter(c => c.status === "healthy").length;
   const issues = activeConnectors.filter(c => !["healthy"].includes(c.status)).length;

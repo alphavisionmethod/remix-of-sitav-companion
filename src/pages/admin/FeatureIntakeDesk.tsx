@@ -14,13 +14,14 @@ import { classifyFeatureDomain } from "@/lib/delivery-methodology/feature-factor
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const ARCHETYPES = [
+const DEMO_ARCHETYPES = [
   "boardroom","office","simulator","workflow","onboarding","crud",
   "action-center","dashboard","detail-view","connector-flow",
   "intelligence","proof-evidence","admin-control","timeline","settings",
 ];
 
 const FeatureIntakeDesk = () => {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
   const [form, setForm] = useState({
     title: "", description: "", userIntent: "", domain: "", archetypeKey: "dashboard",
@@ -102,7 +103,7 @@ const FeatureIntakeDesk = () => {
                 <label className="text-sm font-medium">Archetype</label>
                 <Select value={form.archetypeKey} onValueChange={v => setForm({ ...form, archetypeKey: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>{ARCHETYPES.map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
+                  <SelectContent>{DEMO_ARCHETYPES.map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
               <div>

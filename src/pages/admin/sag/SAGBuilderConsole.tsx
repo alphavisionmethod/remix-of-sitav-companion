@@ -9,7 +9,7 @@ import { TASK_CLASSES, MODEL_CLASSES } from "@/lib/sovereign-ai-gateway/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const BUILDER_STEPS = [
+const DEMO_BUILDER_STEPS = [
   { step: 1, label: 'Capability', icon: Layers, desc: 'Select capability ID for this AI feature' },
   { step: 2, label: 'Prompt Family', icon: MessageSquare, desc: 'Select or create prompt family' },
   { step: 3, label: 'Task Class', icon: Zap, desc: 'Assign task classification' },
@@ -23,6 +23,7 @@ const BUILDER_STEPS = [
 ];
 
 const SAGBuilderConsole = () => {
+  const { isDemoMode } = useDataMode();
   const { data: models = [] } = useModelRegistry();
   const { data: prompts = [] } = usePromptFamilies();
   const { data: policies = [] } = useRoutingPolicies();
@@ -48,7 +49,7 @@ const SAGBuilderConsole = () => {
         <CardHeader><CardTitle className="text-base">AI Feature Builder Workflow</CardTitle></CardHeader>
         <CardContent>
           <div className="flex gap-1">
-            {BUILDER_STEPS.map(s => (
+            {DEMO_BUILDER_STEPS.map(s => (
               <button key={s.step} onClick={() => setActiveStep(s.step)}
                 className={`flex-1 p-3 rounded-lg border text-center transition-colors ${activeStep === s.step ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/30'}`}>
                 <s.icon className={`h-4 w-4 mx-auto mb-1 ${activeStep === s.step ? 'text-primary' : 'text-muted-foreground'}`} />
@@ -57,8 +58,8 @@ const SAGBuilderConsole = () => {
             ))}
           </div>
           <div className="mt-4 p-4 bg-muted/30 rounded-lg">
-            <h3 className="font-medium text-sm mb-1">Step {activeStep}: {BUILDER_STEPS[activeStep - 1].label}</h3>
-            <p className="text-sm text-muted-foreground">{BUILDER_STEPS[activeStep - 1].desc}</p>
+            <h3 className="font-medium text-sm mb-1">Step {activeStep}: {DEMO_BUILDER_STEPS[activeStep - 1].label}</h3>
+            <p className="text-sm text-muted-foreground">{DEMO_BUILDER_STEPS[activeStep - 1].desc}</p>
             <div className="mt-3 flex gap-2">
               <Button variant="outline" size="sm" disabled={activeStep === 1} onClick={() => setActiveStep(p => p - 1)}>Previous</Button>
               <Button size="sm" disabled={activeStep === 10} onClick={() => setActiveStep(p => p + 1)}>Next <ArrowRight className="h-3 w-3 ml-1" /></Button>

@@ -15,7 +15,7 @@ interface CoreService {
   owner: string;
 }
 
-const CORE_SERVICES: CoreService[] = [
+const DEMO_CORE_SERVICES: CoreService[] = [
   { name: "EventBus", backing: "memory-only", domains: ["system", "all"], persistenceTarget: "Supabase agent_signals", stateLossSeverity: "high", migrationStatus: "not_started", owner: "Platform" },
   { name: "MemoryService", backing: "memory-only", domains: ["advisors", "mission-control"], persistenceTarget: "Supabase advisor_memories", stateLossSeverity: "high", migrationStatus: "planned", owner: "AI Team" },
   { name: "PolicyEngine", backing: "memory-only", domains: ["owner", "approvals", "governance"], persistenceTarget: "Supabase owner_policies", stateLossSeverity: "critical", migrationStatus: "not_started", owner: "Platform" },
@@ -42,7 +42,7 @@ export default function SimulatedCoreServicesBoard() {
 
       <div className="grid grid-cols-4 gap-4">
         {(["critical", "high", "medium", "low"] as const).map(sev => {
-          const count = CORE_SERVICES.filter(s => s.stateLossSeverity === sev).length;
+          const count = DEMO_CORE_SERVICES.filter(s => s.stateLossSeverity === sev).length;
           return (
             <Card key={sev}>
               <CardContent className="p-4">
@@ -69,7 +69,7 @@ export default function SimulatedCoreServicesBoard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {CORE_SERVICES.map(s => {
+              {DEMO_CORE_SERVICES.map(s => {
                 const Icon = BACKING_ICONS[s.backing] ?? Server;
                 return (
                   <TableRow key={s.name}>

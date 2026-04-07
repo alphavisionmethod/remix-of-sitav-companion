@@ -8,7 +8,7 @@ import { computeLaunchReadiness, getGoNoGoConditions, type LaunchReadinessResult
 import { cn } from "@/lib/utils";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const MODE_ORDER: LaunchMode[] = ["not_launch_safe", "internal_only", "pilot_ready", "private_beta_ready", "public_launch_qualified", "public_launch_ready"];
+const DEMO_MODE_ORDER: LaunchMode[] = ["not_launch_safe", "internal_only", "pilot_ready", "private_beta_ready", "public_launch_qualified", "public_launch_ready"];
 const MODE_LABELS: Record<LaunchMode, string> = {
   not_launch_safe: "Not Launch Safe",
   internal_only: "Internal Only",
@@ -31,7 +31,7 @@ export default function LAUNCH07GoNoGo() {
 
   if (!result) return null;
 
-  const currentModeIdx = MODE_ORDER.indexOf(result.recommendedMode);
+  const currentModeIdx = DEMO_MODE_ORDER.indexOf(result.recommendedMode);
 
   return (
     <div className="space-y-6 p-6" data-testid="launch07-go-no-go">
@@ -54,7 +54,7 @@ export default function LAUNCH07GoNoGo() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-1">
-            {MODE_ORDER.map((mode, idx) => (
+            {DEMO_MODE_ORDER.map((mode, idx) => (
               <div key={mode} className={cn("flex-1 p-2 rounded text-center text-[9px]", idx <= currentModeIdx ? "bg-primary/15 text-primary border border-primary/30" : "bg-muted/30 text-muted-foreground")}>
                 {idx <= currentModeIdx && <CheckCircle className="h-3 w-3 mx-auto mb-0.5" />}
                 {MODE_LABELS[mode]}

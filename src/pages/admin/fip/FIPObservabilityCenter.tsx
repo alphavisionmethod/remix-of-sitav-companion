@@ -6,9 +6,10 @@ import { useComplianceRecords, useFeatureSpecs } from "@/hooks/use-fip-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const OBSERVABILITY_FIELDS = ['structured_logs', 'metrics', 'traces', 'correlation_ids', 'error_codes', 'diagnostic_bundles', 'replay_path', 'incident_summary', 'runbooks'];
+const DEMO_OBSERVABILITY_FIELDS = ['structured_logs', 'metrics', 'traces', 'correlation_ids', 'error_codes', 'diagnostic_bundles', 'replay_path', 'incident_summary', 'runbooks'];
 
 const FIPObservabilityCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { data: compliance = [] } = useComplianceRecords();
   const { data: specs = [] } = useFeatureSpecs();
 
@@ -33,7 +34,7 @@ const FIPObservabilityCenter = () => {
         <CardHeader><CardTitle className="text-base">Observability Checklist</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-3">
-            {OBSERVABILITY_FIELDS.map(field => {
+            {DEMO_OBSERVABILITY_FIELDS.map(field => {
               const count = specsWithObs.filter((s: any) => s.observability_support?.[field]).length;
               return (
                 <div key={field} className="flex items-center justify-between p-2 border rounded">

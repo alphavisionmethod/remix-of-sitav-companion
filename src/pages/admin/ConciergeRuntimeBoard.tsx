@@ -32,7 +32,7 @@ interface ConciergeTask {
   receiptRef?: string;
 }
 
-const TASKS: ConciergeTask[] = [
+const DEMO_TASKS: ConciergeTask[] = [
   { id: "ct-1", title: "Book dentist appointment for Tuesday", domain: "task", state: "active", assignee: "Concierge Agent", lastUpdated: "2026-04-05T10:00:00Z", continuityBroken: false },
   { id: "ct-2", title: "Flight rebooking — SFO→JFK May 12", domain: "travel", state: "active", assignee: "Travel Agent", lastUpdated: "2026-04-05T09:30:00Z", continuityBroken: false },
   { id: "ct-3", title: "Grocery delivery coordination", domain: "household", state: "completed", assignee: "Household Agent", lastUpdated: "2026-04-04T18:00:00Z", continuityBroken: false, receiptRef: "rcpt-445" },
@@ -43,6 +43,7 @@ const TASKS: ConciergeTask[] = [
 const domainIcon: Record<string, typeof Activity> = { task: Activity, travel: Plane, household: Home, promise: CheckCircle };
 
 const ConciergeRuntimeBoard = () => {
+  const { isDemoMode } = useDataMode();
   const { data: householdTasks } = useQuery({
     queryKey: ["concierge-household-tasks"],
     queryFn: async () => {
@@ -51,8 +52,8 @@ const ConciergeRuntimeBoard = () => {
     },
   });
 
-  const activeCount = TASKS.filter(t => t.state === "active").length;
-  const brokenCount = TASKS.filter(t => t.continuityBroken).length;
+  const activeCount = DEMO_TASKS.filter(t => t.state === "active").length;
+  const brokenCount = DEMO_TASKS.filter(t => t.continuityBroken).length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -72,7 +73,7 @@ const ConciergeRuntimeBoard = () => {
           {[
             { label: "Active Tasks", value: String(activeCount), color: "text-blue-500" },
             { label: "Broken Continuity", value: String(brokenCount), color: brokenCount > 0 ? "text-red-500" : "text-emerald-500" },
-            { label: "Promises Tracked", value: String(TASKS.filter(t => t.domain === "promise").length), color: "text-primary" },
+            { label: "Promises Tracked", value: String(DEMO_TASKS.filter(t => t.domain === "promise").length), color: "text-primary" },
             { label: "Household Tasks", value: String(householdTasks?.length ?? 0), color: "text-muted-foreground" },
           ].map(m => (
             <Card key={m.label}>
@@ -88,7 +89,7 @@ const ConciergeRuntimeBoard = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Concierge Task Registry</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {TASKS.map(t => {
+              {DEMO_TASKS.map(t => {
                 const DomainIcon = domainIcon[t.domain] || Activity;
                 return (
                   <div key={t.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">

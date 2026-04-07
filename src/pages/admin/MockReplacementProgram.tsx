@@ -34,9 +34,9 @@ const PRIORITY_COLORS: Record<string, string> = {
   low: "text-muted-foreground",
 };
 
-const MOCK_TYPES = ["hardcoded", "local_array", "localstorage", "in_memory_engine", "pure_function", "demo_flow"] as const;
-const STATUSES = ["identified", "planned", "in_progress", "blocked", "completed", "validated"] as const;
-const PRIORITIES = ["critical", "high", "medium", "low"] as const;
+const DEMO_MOCK_TYPES = ["hardcoded", "local_array", "localstorage", "in_memory_engine", "pure_function", "demo_flow"] as const;
+const DEMO_STATUSES = ["identified", "planned", "in_progress", "blocked", "completed", "validated"] as const;
+const DEMO_PRIORITIES = ["critical", "high", "medium", "low"] as const;
 
 interface MockFormData {
   feature_name: string;
@@ -79,7 +79,7 @@ function MockFormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode
               <Label>Mock Type</Label>
               <Select value={form.mock_type} onValueChange={v => setForm(f => ({ ...f, mock_type: v as any }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{MOCK_TYPES.map(t => <SelectItem key={t} value={t}>{t.replace(/_/g, " ")}</SelectItem>)}</SelectContent>
+                <SelectContent>{DEMO_MOCK_TYPES.map(t => <SelectItem key={t} value={t}>{t.replace(/_/g, " ")}</SelectItem>)}</SelectContent>
               </Select>
             </div>
           </div>
@@ -90,7 +90,7 @@ function MockFormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode
               <Label>Priority</Label>
               <Select value={form.migration_priority} onValueChange={v => setForm(f => ({ ...f, migration_priority: v as any }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{PRIORITIES.map(p => <SelectItem key={p} value={p} className="capitalize">{p}</SelectItem>)}</SelectContent>
+                <SelectContent>{DEMO_PRIORITIES.map(p => <SelectItem key={p} value={p} className="capitalize">{p}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><Label>Owner</Label><Input value={form.migration_owner} onChange={e => setForm(f => ({ ...f, migration_owner: e.target.value }))} placeholder="team/person" /></div>
@@ -126,7 +126,7 @@ function toFormData(r: MockReplacement): MockFormData {
 function PriorityBreakdownCard({ data }: { data: MockReplacement[] }) {
   const byPriority = useMemo(() => {
     const map: Record<string, { total: number; done: number; blocked: number }> = {};
-    PRIORITIES.forEach(p => { map[p] = { total: 0, done: 0, blocked: 0 }; });
+    DEMO_PRIORITIES.forEach(p => { map[p] = { total: 0, done: 0, blocked: 0 }; });
     data.forEach(d => {
       map[d.migration_priority].total++;
       if (d.migration_status === "completed" || d.migration_status === "validated") map[d.migration_priority].done++;
@@ -139,7 +139,7 @@ function PriorityBreakdownCard({ data }: { data: MockReplacement[] }) {
     <Card>
       <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Flame className="h-4 w-4" />Priority Breakdown</CardTitle></CardHeader>
       <CardContent className="space-y-3">
-        {PRIORITIES.map(p => {
+        {DEMO_PRIORITIES.map(p => {
           const { total, done, blocked } = byPriority[p];
           if (total === 0) return null;
           return (
@@ -336,14 +336,14 @@ export default function MockReplacementProgram() {
               <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                {STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}
+                {DEMO_STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}
               </SelectContent>
             </Select>
             <Select value={filterPriority} onValueChange={setFilterPriority}>
               <SelectTrigger className="w-[130px]"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Priorities</SelectItem>
-                {PRIORITIES.map(p => <SelectItem key={p} value={p} className="capitalize">{p}</SelectItem>)}
+                {DEMO_PRIORITIES.map(p => <SelectItem key={p} value={p} className="capitalize">{p}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
@@ -385,7 +385,7 @@ export default function MockReplacementProgram() {
                       <TableCell>
                         <Select value={row.migration_status} onValueChange={v => updateStatus.mutate({ id: row.id, status: v as any })}>
                           <SelectTrigger className="h-7 text-xs w-[120px]"><SelectValue /></SelectTrigger>
-                          <SelectContent>{STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}</SelectContent>
+                          <SelectContent>{DEMO_STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}</SelectContent>
                         </Select>
                       </TableCell>
                       <TableCell>

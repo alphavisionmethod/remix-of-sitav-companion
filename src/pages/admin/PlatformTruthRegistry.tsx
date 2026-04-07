@@ -29,7 +29,7 @@ interface TruthClaim {
   remediation?: string;
 }
 
-const CLAIMS: TruthClaim[] = [
+const DEMO_CLAIMS: TruthClaim[] = [
   { id: "tc-1", capability: "User Authentication", claimedStatus: "Fully operational with RLS", runtimeEvidence: "Auth endpoints responding, RLS policies active", status: "verified", severity: "low", lastChecked: "2026-04-05T10:20:00Z" },
   { id: "tc-2", capability: "Real-time Subscriptions", claimedStatus: "Active on all tables", runtimeEvidence: "Only 12/45 tables have realtime enabled", status: "drift", severity: "high", lastChecked: "2026-04-05T10:15:00Z", remediation: "Enable realtime on remaining tables or update documentation" },
   { id: "tc-3", capability: "Edge Function Auto-deploy", claimedStatus: "All functions auto-deploy on push", runtimeEvidence: "Deployment pipeline active", status: "verified", severity: "low", lastChecked: "2026-04-05T10:18:00Z" },
@@ -39,8 +39,9 @@ const CLAIMS: TruthClaim[] = [
 ];
 
 const PlatformTruthRegistry = () => {
-  const verified = CLAIMS.filter(c => c.status === "verified").length;
-  const drifts = CLAIMS.filter(c => c.status === "drift").length;
+  const { isDemoMode } = useDataMode();
+  const verified = DEMO_CLAIMS.filter(c => c.status === "verified").length;
+  const drifts = DEMO_CLAIMS.filter(c => c.status === "drift").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -57,16 +58,16 @@ const PlatformTruthRegistry = () => {
 
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Verified Claims</p><p className="text-2xl font-bold text-emerald-500">{verified}/{CLAIMS.length}</p></CardContent></Card>
+          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Verified Claims</p><p className="text-2xl font-bold text-emerald-500">{verified}/{DEMO_CLAIMS.length}</p></CardContent></Card>
           <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Drift Detected</p><p className="text-2xl font-bold text-red-500">{drifts}</p></CardContent></Card>
-          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Unverified</p><p className="text-2xl font-bold text-amber-500">{CLAIMS.filter(c => c.status === "unverified").length}</p></CardContent></Card>
+          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Unverified</p><p className="text-2xl font-bold text-amber-500">{DEMO_CLAIMS.filter(c => c.status === "unverified").length}</p></CardContent></Card>
         </motion.div>
 
         <motion.div variants={fadeUp}>
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Capability Claims</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {CLAIMS.map(c => (
+              {DEMO_CLAIMS.map(c => (
                 <div key={c.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">

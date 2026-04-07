@@ -8,7 +8,7 @@ import { Shield, Smartphone, Watch, Monitor, Fingerprint, Lock, ArrowRight, Aler
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const TRUST_CLASSES = [
+const DEMO_TRUST_CLASSES = [
   { cls: "trusted_iphone", label: "iPhone", bio: "Face ID / Touch ID", riskCeiling: "critical", keychain: true, attestation: true, icon: Smartphone, sessionDuration: "24h", reauth: "biometric", trustScore: 95 },
   { cls: "trusted_ipad", label: "iPad", bio: "Face ID / Touch ID", riskCeiling: "critical", keychain: true, attestation: true, icon: Monitor, sessionDuration: "24h", reauth: "biometric", trustScore: 92 },
   { cls: "trusted_watch", label: "Apple Watch", bio: "Wrist detection", riskCeiling: "medium", keychain: false, attestation: false, icon: Watch, sessionDuration: "while_worn", reauth: "proximity", trustScore: 65 },
@@ -56,7 +56,7 @@ const APL02AppleDevicesTrust = () => {
 
         <TabsContent value="trust-classes">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {TRUST_CLASSES.map((t) => (
+            {DEMO_TRUST_CLASSES.map((t) => (
               <Card key={t.cls} className={`cursor-pointer transition-all ${selectedClass === t.cls ? "ring-2 ring-primary" : "hover:shadow-md"}`} onClick={() => setSelectedClass(selectedClass === t.cls ? null : t.cls)}>
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">

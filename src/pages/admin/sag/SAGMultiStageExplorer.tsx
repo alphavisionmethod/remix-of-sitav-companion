@@ -6,7 +6,7 @@ import { useRoutingPolicies } from "@/hooks/use-sag-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const EXAMPLE_STAGES = [
+const DEMO_EXAMPLE_STAGES = [
   { pattern: 'Classify → Synthesize → Resolve', stages: [
     { label: 'Utility Classifier', model: 'gemini-2.5-flash-lite', cost: '0.1¢', purpose: 'Cheap task classification' },
     { label: 'Standard Synthesis', model: 'gemini-3-flash', cost: '2¢', purpose: 'Mid-tier content synthesis' },
@@ -30,6 +30,7 @@ const EXAMPLE_STAGES = [
 ];
 
 const SAGMultiStageExplorer = () => {
+  const { isDemoMode } = useDataMode();
   const { data: policies = [] } = useRoutingPolicies();
 
   return (
@@ -41,13 +42,13 @@ const SAGMultiStageExplorer = () => {
       </motion.div>
 
       <div className="grid grid-cols-3 gap-4">
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{EXAMPLE_STAGES.length}</p><p className="text-xs text-muted-foreground">Stage Patterns</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{DEMO_EXAMPLE_STAGES.length}</p><p className="text-xs text-muted-foreground">Stage Patterns</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: any) => p.fallback_chain?.length > 0).length}</p><p className="text-xs text-muted-foreground">Policies with Fallback Chains</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: any) => p.reuse_eligible).length}</p><p className="text-xs text-muted-foreground">Reuse-Eligible Policies</p></CardContent></Card>
       </div>
 
       <div className="space-y-4">
-        {EXAMPLE_STAGES.map((pattern, pi) => (
+        {DEMO_EXAMPLE_STAGES.map((pattern, pi) => (
           <Card key={pi}>
             <CardHeader className="pb-2"><CardTitle className="text-base">{pattern.pattern}</CardTitle></CardHeader>
             <CardContent>

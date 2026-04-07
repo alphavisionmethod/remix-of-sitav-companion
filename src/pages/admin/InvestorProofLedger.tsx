@@ -22,7 +22,7 @@ interface ProofEntry {
   exportable: boolean;
 }
 
-const PROOF_ENTRIES: ProofEntry[] = [
+const DEMO_PROOF_ENTRIES: ProofEntry[] = [
   {
     id: "pf-1", action: "Policy: Enable auto-approval for low-risk connectors", actor: "admin@sita.os", timestamp: "2026-04-05T10:20:00Z",
     proofChain: [{ step: "Trigger", status: "verified" }, { step: "Policy Eval", status: "verified" }, { step: "Approval", status: "verified" }, { step: "Execution", status: "verified" }, { step: "Receipt", status: "verified" }],
@@ -43,8 +43,9 @@ const PROOF_ENTRIES: ProofEntry[] = [
 const stepColor = { verified: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", pending: "bg-amber-500/10 text-amber-500 border-amber-500/20", missing: "bg-red-500/10 text-red-500 border-red-500/20" };
 
 const InvestorProofLedger = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("ledger");
-  const fullProof = PROOF_ENTRIES.filter(p => p.proofChain.every(s => s.status === "verified")).length;
+  const fullProof = DEMO_PROOF_ENTRIES.filter(p => p.proofChain.every(s => s.status === "verified")).length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -64,16 +65,16 @@ const InvestorProofLedger = () => {
 
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Full Proof</p><p className="text-2xl font-bold text-emerald-500">{fullProof}/{PROOF_ENTRIES.length}</p></CardContent></Card>
-          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">With Rollback Evidence</p><p className="text-2xl font-bold text-foreground">{PROOF_ENTRIES.filter(p => p.rollbackEvidence).length}</p></CardContent></Card>
-          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Exportable</p><p className="text-2xl font-bold text-foreground">{PROOF_ENTRIES.filter(p => p.exportable).length}</p></CardContent></Card>
+          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Full Proof</p><p className="text-2xl font-bold text-emerald-500">{fullProof}/{DEMO_PROOF_ENTRIES.length}</p></CardContent></Card>
+          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">With Rollback Evidence</p><p className="text-2xl font-bold text-foreground">{DEMO_PROOF_ENTRIES.filter(p => p.rollbackEvidence).length}</p></CardContent></Card>
+          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Exportable</p><p className="text-2xl font-bold text-foreground">{DEMO_PROOF_ENTRIES.filter(p => p.exportable).length}</p></CardContent></Card>
         </motion.div>
 
         <motion.div variants={fadeUp}>
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Proof Ledger</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {PROOF_ENTRIES.map(p => (
+              {DEMO_PROOF_ENTRIES.map(p => (
                 <div key={p.id} className="p-4 rounded-lg border hover:bg-muted/30 transition-colors">
                   <div className="flex items-center justify-between mb-2">
                     <div>

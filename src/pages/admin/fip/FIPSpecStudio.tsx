@@ -13,7 +13,7 @@ import { COMPLIANCE_SECTIONS } from "@/lib/fip/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const SPEC_SECTIONS = [
+const DEMO_SPEC_SECTIONS = [
   'outcome_statement', 'capability_map', 'owner_map', 'surface_map',
   'contract_schema_map', 'workflow_model', 'policy_trust_model', 'execution_model',
   'memory_graph_effects', 'observability_support', 'testing_model',
@@ -21,6 +21,7 @@ const SPEC_SECTIONS = [
 ];
 
 const FIPSpecStudio = () => {
+  const { isDemoMode } = useDataMode();
   const { data: specs = [], isLoading } = useFeatureSpecs();
   const createSpec = useCreateSpec();
   const [showForm, setShowForm] = useState(false);
@@ -28,7 +29,7 @@ const FIPSpecStudio = () => {
 
   const handleCreate = () => {
     if (!form.feature_id) return;
-    const missing = SPEC_SECTIONS.filter(s => s !== 'outcome_statement' || !form.outcome_statement);
+    const missing = DEMO_SPEC_SECTIONS.filter(s => s !== 'outcome_statement' || !form.outcome_statement);
     createSpec.mutate({ ...form, missing_sections: missing, completeness_score: form.outcome_statement ? 8 : 0 });
     setShowForm(false);
     setForm({ feature_id: '', feature_name: '', outcome_statement: '' });

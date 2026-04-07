@@ -7,7 +7,7 @@ import { Plug, CheckCircle2, AlertCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const ALL_DOMAINS: ProviderDomain[] = ["boardroom", "investment", "money", "business", "workspace", "owner", "calendar", "advisor"];
+const DEMO_ALL_DOMAINS: ProviderDomain[] = ["boardroom", "investment", "money", "business", "workspace", "owner", "calendar", "advisor"];
 
 export default function DRS05ProviderConsole() {
   const { isDemoMode } = useDataMode();
@@ -38,7 +38,7 @@ export default function DRS05ProviderConsole() {
                 </tr>
               </thead>
               <tbody>
-                {ALL_DOMAINS.map(domain => {
+                {DEMO_ALL_DOMAINS.map(domain => {
                   const isRegistered = registered.includes(domain);
                   const meta = isRegistered ? getProviderMetadata(domain, mode) : null;
                   return (

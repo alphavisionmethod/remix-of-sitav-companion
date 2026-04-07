@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const INDEX_CONFIG = [
+const DEMO_INDEX_CONFIG = [
   { key: "runtimeTruth", label: "Runtime Truth Index", icon: Shield, color: "text-blue-400" },
   { key: "launchHonesty", label: "Launch Honesty Index", icon: Eye, color: "text-emerald-400" },
   { key: "aiTruth", label: "AI Truth Index", icon: Brain, color: "text-purple-400" },
@@ -84,7 +84,7 @@ export default function TruthIndexDashboard() {
 
       {/* Individual Indices */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {INDEX_CONFIG.map(cfg => {
+        {DEMO_INDEX_CONFIG.map(cfg => {
           const idx = indices?.[cfg.key as keyof TruthIndexSummary] as { score: number; label: string; detail: string } | undefined;
           const score = idx?.score ?? 0;
           return (

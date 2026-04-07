@@ -33,7 +33,7 @@ interface ReadModel {
   rebuildSuccess: boolean;
 }
 
-const MODELS: ReadModel[] = [
+const DEMO_MODELS: ReadModel[] = [
   { id: "rm-1", name: "Dashboard Metrics", source: "events → aggregator", freshness: "fresh", lagMs: 450, lastRebuilt: "2026-04-05T10:20:00Z", affectedSurfaces: ["AdminDashboard", "MissionControl"], eventToProjectionDelay: 450, rebuildSuccess: true },
   { id: "rm-2", name: "Incident Summary", source: "incidents → materializer", freshness: "fresh", lagMs: 200, lastRebuilt: "2026-04-05T10:22:00Z", affectedSurfaces: ["IncidentCommand"], eventToProjectionDelay: 200, rebuildSuccess: true },
   { id: "rm-3", name: "Connector Health", source: "connector_sync → projector", freshness: "stale", lagMs: 18500, lastRebuilt: "2026-04-05T09:55:00Z", affectedSurfaces: ["ConnectorGovernance", "MissionControl"], eventToProjectionDelay: 18500, rebuildSuccess: true },
@@ -43,8 +43,9 @@ const MODELS: ReadModel[] = [
 ];
 
 const ProjectionControlCenter = () => {
-  const freshCount = MODELS.filter(m => m.freshness === "fresh").length;
-  const avgLag = Math.round(MODELS.reduce((s, m) => s + m.lagMs, 0) / MODELS.length);
+  const { isDemoMode } = useDataMode();
+  const freshCount = DEMO_MODELS.filter(m => m.freshness === "fresh").length;
+  const avgLag = Math.round(DEMO_MODELS.reduce((s, m) => s + m.lagMs, 0) / DEMO_MODELS.length);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -62,10 +63,10 @@ const ProjectionControlCenter = () => {
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-1 md:grid-cols-4 gap-3">
           {[
-            { label: "Fresh Models", value: `${freshCount}/${MODELS.length}`, color: freshCount === MODELS.length ? "text-emerald-500" : "text-amber-500" },
+            { label: "Fresh Models", value: `${freshCount}/${DEMO_MODELS.length}`, color: freshCount === DEMO_MODELS.length ? "text-emerald-500" : "text-amber-500" },
             { label: "Average Lag", value: avgLag < 1000 ? `${avgLag}ms` : `${(avgLag / 1000).toFixed(1)}s`, color: avgLag < 5000 ? "text-emerald-500" : "text-amber-500" },
             { label: "Rebuild Queue", value: "1", color: "text-blue-500" },
-            { label: "Degraded Models", value: String(MODELS.filter(m => m.freshness === "degraded" || m.freshness === "fallback").length), color: "text-orange-500" },
+            { label: "Degraded Models", value: String(DEMO_MODELS.filter(m => m.freshness === "degraded" || m.freshness === "fallback").length), color: "text-orange-500" },
           ].map(m => (
             <Card key={m.label}>
               <CardContent className="p-4">
@@ -82,7 +83,7 @@ const ProjectionControlCenter = () => {
               <CardTitle className="text-sm font-semibold">Read Model Inventory</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              {MODELS.map((model) => {
+              {DEMO_MODELS.map((model) => {
                 const cfg = freshnessConfig[model.freshness];
                 return (
                   <div key={model.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">

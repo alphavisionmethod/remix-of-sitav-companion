@@ -32,7 +32,7 @@ interface ReadinessCheck {
   checks: { name: string; status: "pass" | "fail" | "warning" | "skip"; detail: string }[];
 }
 
-const BLOCKERS: LaunchBlocker[] = [
+const DEMO_BLOCKERS: LaunchBlocker[] = [
   {
     id: "BLK-001", title: "Canary error rate above threshold", severity: "critical", status: "open", domain: "deployment", owner: "Platform Team",
     description: "Canary ring showing 0.8% error rate — needs to be below 0.5% for 2h before promotion.",
@@ -58,7 +58,7 @@ const BLOCKERS: LaunchBlocker[] = [
   },
 ];
 
-const READINESS_CHECKS: ReadinessCheck[] = [
+const DEMO_READINESS_CHECKS: ReadinessCheck[] = [
   {
     category: "Security", checks: [
       { name: "RLS policies on all tables", status: "pass", detail: "48/48 tables covered" },
@@ -127,8 +127,8 @@ export default function LaunchReadinessBoard() {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("blockers");
 
-  const openBlockers = BLOCKERS.filter(b => b.status === "open").length;
-  const allChecks = READINESS_CHECKS.flatMap(r => r.checks);
+  const openBlockers = DEMO_BLOCKERS.filter(b => b.status === "open").length;
+  const allChecks = DEMO_READINESS_CHECKS.flatMap(r => r.checks);
   const passedChecks = allChecks.filter(c => c.status === "pass").length;
   const totalChecks = allChecks.length;
   const readinessScore = Math.round((passedChecks / totalChecks) * 100);
@@ -155,7 +155,7 @@ export default function LaunchReadinessBoard() {
           { label: "Readiness Score", value: `${readinessScore}%`, color: readinessScore >= 90 ? "text-emerald-400" : readinessScore >= 70 ? "text-amber-400" : "text-red-400" },
           { label: "Checks Passed", value: `${passedChecks}/${totalChecks}`, color: "text-foreground" },
           { label: "Open Blockers", value: openBlockers, color: openBlockers > 0 ? "text-red-400" : "text-emerald-400" },
-          { label: "Accepted Risks", value: BLOCKERS.filter(b => b.status === "accepted-risk").length, color: "text-blue-400" },
+          { label: "Accepted Risks", value: DEMO_BLOCKERS.filter(b => b.status === "accepted-risk").length, color: "text-blue-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -171,7 +171,7 @@ export default function LaunchReadinessBoard() {
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5">
           {[
-            { value: "blockers", label: `Blockers (${BLOCKERS.length})`, icon: AlertTriangle },
+            { value: "blockers", label: `Blockers (${DEMO_BLOCKERS.length})`, icon: AlertTriangle },
             { value: "readiness", label: "Readiness Checks", icon: CheckCircle },
           ].map(t => (
             <TabsTrigger key={t.value} value={t.value} className="text-[10px] h-7 px-2.5 gap-1"><t.icon className="h-3 w-3" />{t.label}</TabsTrigger>
@@ -181,7 +181,7 @@ export default function LaunchReadinessBoard() {
         <div className="mt-4">
           <TabsContent value="blockers">
             <div className="space-y-3">
-              {BLOCKERS.map((blocker, idx) => {
+              {DEMO_BLOCKERS.map((blocker, idx) => {
                 const sevCfg = SEV_CONFIG[blocker.severity];
                 const stCfg = STATUS_ICON[blocker.status];
                 const StIcon = stCfg.icon;
@@ -231,7 +231,7 @@ export default function LaunchReadinessBoard() {
 
           <TabsContent value="readiness">
             <div className="space-y-4">
-              {READINESS_CHECKS.map(category => {
+              {DEMO_READINESS_CHECKS.map(category => {
                 const passed = category.checks.filter(c => c.status === "pass").length;
                 return (
                   <Card key={category.category} className="bg-card/50 border-border/50">

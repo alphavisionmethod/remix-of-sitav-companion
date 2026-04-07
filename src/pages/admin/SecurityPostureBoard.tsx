@@ -20,7 +20,7 @@ interface PostureItem {
   gaps: string[];
 }
 
-const POSTURE: PostureItem[] = [
+const DEMO_POSTURE: PostureItem[] = [
   { domain: "User Auth & Profiles", encryption: "full", rlsEnabled: true, secretsIntegrity: "verified", sensitiveData: true, lastVerified: "2026-04-05T08:00:00Z", gaps: [] },
   { domain: "Financial Data", encryption: "full", rlsEnabled: true, secretsIntegrity: "verified", sensitiveData: true, lastVerified: "2026-04-05T07:30:00Z", gaps: [] },
   { domain: "Connector Credentials", encryption: "full", rlsEnabled: true, secretsIntegrity: "verified", sensitiveData: true, lastVerified: "2026-04-05T09:00:00Z", gaps: [] },
@@ -33,9 +33,10 @@ const encColor = { full: "text-emerald-500 bg-emerald-500/10 border-emerald-500/
 const secColor = { verified: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20", unverified: "text-amber-500 bg-amber-500/10 border-amber-500/20", expired: "text-red-500 bg-red-500/10 border-red-500/20" };
 
 const SecurityPostureBoard = () => {
-  const fullEncryption = POSTURE.filter(p => p.encryption === "full").length;
-  const allRls = POSTURE.filter(p => p.rlsEnabled).length;
-  const totalGaps = POSTURE.reduce((s, p) => s + p.gaps.length, 0);
+  const { isDemoMode } = useDataMode();
+  const fullEncryption = DEMO_POSTURE.filter(p => p.encryption === "full").length;
+  const allRls = DEMO_POSTURE.filter(p => p.rlsEnabled).length;
+  const totalGaps = DEMO_POSTURE.reduce((s, p) => s + p.gaps.length, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -53,9 +54,9 @@ const SecurityPostureBoard = () => {
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-1 md:grid-cols-4 gap-3">
           {[
-            { label: "Encryption Coverage", value: `${fullEncryption}/${POSTURE.length}`, pct: Math.round((fullEncryption / POSTURE.length) * 100), color: fullEncryption === POSTURE.length ? "text-emerald-500" : "text-amber-500" },
-            { label: "RLS Enabled", value: `${allRls}/${POSTURE.length}`, pct: Math.round((allRls / POSTURE.length) * 100), color: allRls === POSTURE.length ? "text-emerald-500" : "text-red-500" },
-            { label: "Secrets Verified", value: `${POSTURE.filter(p => p.secretsIntegrity === "verified").length}/${POSTURE.length}`, pct: Math.round((POSTURE.filter(p => p.secretsIntegrity === "verified").length / POSTURE.length) * 100), color: "text-emerald-500" },
+            { label: "Encryption Coverage", value: `${fullEncryption}/${DEMO_POSTURE.length}`, pct: Math.round((fullEncryption / DEMO_POSTURE.length) * 100), color: fullEncryption === DEMO_POSTURE.length ? "text-emerald-500" : "text-amber-500" },
+            { label: "RLS Enabled", value: `${allRls}/${DEMO_POSTURE.length}`, pct: Math.round((allRls / DEMO_POSTURE.length) * 100), color: allRls === DEMO_POSTURE.length ? "text-emerald-500" : "text-red-500" },
+            { label: "Secrets Verified", value: `${DEMO_POSTURE.filter(p => p.secretsIntegrity === "verified").length}/${DEMO_POSTURE.length}`, pct: Math.round((DEMO_POSTURE.filter(p => p.secretsIntegrity === "verified").length / DEMO_POSTURE.length) * 100), color: "text-emerald-500" },
             { label: "Open Gaps", value: String(totalGaps), color: totalGaps === 0 ? "text-emerald-500" : "text-amber-500" },
           ].map(m => (
             <Card key={m.label}>
@@ -72,7 +73,7 @@ const SecurityPostureBoard = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Domain Security Posture</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {POSTURE.map((p) => (
+              {DEMO_POSTURE.map((p) => (
                 <div key={p.domain} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">

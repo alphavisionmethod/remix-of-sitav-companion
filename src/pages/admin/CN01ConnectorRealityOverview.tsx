@@ -32,7 +32,7 @@ interface VerificationCheck {
   check: (data: { registry: any[]; accounts: any[]; tokens: any[]; receipts: any[]; oauthConfig: any }) => boolean;
 }
 
-const VERIFICATION_CHECKS: VerificationCheck[] = [
+const DEMO_VERIFICATION_CHECKS: VerificationCheck[] = [
   { label: "OAuth Configured", check: ({ oauthConfig }) => oauthConfig?.google_oauth_configured === true },
   { label: "Registry Seeded", check: ({ registry }) => registry.some((r: any) => r.connector_class === "real") },
   { label: "Callback Verified", check: ({ receipts }) => receipts.some((r: any) => r.event_type === "oauth_connect") },
@@ -42,7 +42,7 @@ const VERIFICATION_CHECKS: VerificationCheck[] = [
   { label: "Disconnect Flow", check: ({ receipts }) => receipts.some((r: any) => r.event_type === "disconnect") },
 ];
 
-const CAPABILITIES = [
+const DEMO_CAPABILITIES = [
   { key: "google_drive", label: "Google Drive", scopes: ["drive.readonly"] },
   { key: "google_gmail", label: "Gmail", scopes: ["gmail.readonly"] },
   { key: "google_calendar", label: "Google Calendar", scopes: ["calendar.readonly"] },
@@ -124,7 +124,7 @@ export default function CN01ConnectorRealityOverview() {
   const connectedAccounts = accounts.filter((a: any) => a.status === "connected" || a.status === "demo_simulated" || a.status === "internal_test");
 
   const verificationData = { registry, accounts, tokens, receipts, oauthConfig };
-  const passedChecks = VERIFICATION_CHECKS.filter((c) => c.check(verificationData)).length;
+  const passedChecks = DEMO_VERIFICATION_CHECKS.filter((c) => c.check(verificationData)).length;
 
   const failureGroups = [
     { type: "Missing OAuth Config", count: oauthConfig?.google_oauth_configured ? 0 : 1, icon: <AlertTriangle className="h-3 w-3" /> },
@@ -150,14 +150,14 @@ export default function CN01ConnectorRealityOverview() {
           <CardTitle className="text-lg flex items-center gap-2">
             <Shield className="h-5 w-5 text-primary" />
             OAuth Runtime Verification Matrix
-            <Badge variant="outline" className={passedChecks === VERIFICATION_CHECKS.length ? "bg-emerald-500/15 text-emerald-400" : "bg-amber-500/15 text-amber-400"}>
-              {passedChecks}/{VERIFICATION_CHECKS.length} passed
+            <Badge variant="outline" className={passedChecks === DEMO_VERIFICATION_CHECKS.length ? "bg-emerald-500/15 text-emerald-400" : "bg-amber-500/15 text-amber-400"}>
+              {passedChecks}/{DEMO_VERIFICATION_CHECKS.length} passed
             </Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {VERIFICATION_CHECKS.map((check) => {
+            {DEMO_VERIFICATION_CHECKS.map((check) => {
               const passed = check.check(verificationData);
               return (
                 <div key={check.label} className="flex items-center gap-2 p-2 rounded-lg bg-muted/30 border border-border">
@@ -217,7 +217,7 @@ export default function CN01ConnectorRealityOverview() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {CAPABILITIES.map((cap) => {
+                  {DEMO_CAPABILITIES.map((cap) => {
                     const capTokens = tokens.filter((t: any) => t.scopes?.some((s: string) => cap.scopes.some((cs) => s.includes(cs))));
                     const hasCallback = receipts.some((r: any) => r.event_type === "oauth_connect");
                     const hasDisconnect = receipts.some((r: any) => r.event_type === "disconnect");

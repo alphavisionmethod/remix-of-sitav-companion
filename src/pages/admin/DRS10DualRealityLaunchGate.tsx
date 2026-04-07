@@ -7,7 +7,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { CILaunchGateWidget } from "@/components/sita/CILaunchGateWidget";
 
-const ALL_DOMAINS: ProviderDomain[] = ["boardroom", "investment", "money", "business", "workspace", "owner", "calendar", "advisor"];
+const DEMO_ALL_DOMAINS: ProviderDomain[] = ["boardroom", "investment", "money", "business", "workspace", "owner", "calendar", "advisor"];
 
 interface GateCheck {
   label: string;
@@ -23,8 +23,8 @@ export default function DRS10DualRealityLaunchGate() {
   const checks: GateCheck[] = [
     {
       label: "All domains have mode-aware providers",
-      status: ALL_DOMAINS.every(d => registered.includes(d)) ? "pass" : "warn",
-      detail: `${registered.length}/${ALL_DOMAINS.length} domains registered`,
+      status: DEMO_ALL_DOMAINS.every(d => registered.includes(d)) ? "pass" : "warn",
+      detail: `${registered.length}/${DEMO_ALL_DOMAINS.length} domains registered`,
     },
     {
       label: "Demo mode blocks external writes",

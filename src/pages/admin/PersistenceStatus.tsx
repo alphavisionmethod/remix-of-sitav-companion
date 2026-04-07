@@ -16,7 +16,7 @@ interface ServiceStatus {
   description: string;
 }
 
-const CORE_SERVICES: ServiceStatus[] = [
+const DEMO_CORE_SERVICES: ServiceStatus[] = [
   {
     name: "EventBus",
     icon: <Layers className="h-4 w-4" />,
@@ -132,7 +132,7 @@ export default function PersistenceStatus() {
   const { data: stats, isLoading: statsLoading, refetch: refetchStats } = useSubstrateStats();
   const { data: recentWrites, isLoading: writesLoading, refetch: refetchWrites, isFetching } = useRecentWrites();
 
-  const allWired = CORE_SERVICES.every(s => s.wired);
+  const allWired = DEMO_CORE_SERVICES.every(s => s.wired);
 
   return (
     <div className="space-y-6 p-6">
@@ -157,7 +157,7 @@ export default function PersistenceStatus() {
               {allWired ? "All Core Services Wired to Persistence" : "Partial Wiring"}
             </span>
             <p className="text-sm text-muted-foreground mt-0.5">
-              {CORE_SERVICES.filter(s => s.wired).length}/{CORE_SERVICES.length} services durably backed
+              {DEMO_CORE_SERVICES.filter(s => s.wired).length}/{DEMO_CORE_SERVICES.length} services durably backed
             </p>
           </div>
         </CardContent>
@@ -182,7 +182,7 @@ export default function PersistenceStatus() {
                   </tr>
                 </thead>
                 <tbody>
-                  {CORE_SERVICES.map((svc) => {
+                  {DEMO_CORE_SERVICES.map((svc) => {
                     const count = stats ? (
                       svc.name === "EventBus" ? stats.events :
                       svc.name === "MemoryService" ? stats.memory :

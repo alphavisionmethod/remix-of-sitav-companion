@@ -9,7 +9,7 @@ import { READINESS_STAGES } from "@/lib/fip/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const BUILDER_STEPS = [
+const DEMO_BUILDER_STEPS = [
   { step: 1, label: 'Intake', icon: FileText, description: 'Answer protocol intake questions' },
   { step: 2, label: 'Owner', icon: Shield, description: 'Confirm owner boundary' },
   { step: 3, label: 'Capabilities', icon: Layers, description: 'Register capability IDs' },
@@ -22,7 +22,7 @@ const BUILDER_STEPS = [
   { step: 10, label: 'Validate', icon: CheckCircle2, description: 'Compliance validation' },
 ];
 
-const DOMAIN_PACKS = [
+const DEMO_DOMAIN_PACKS = [
   { id: 'business-os', name: 'Business OS', features: ['CRM', 'Invoicing', 'Revenue', 'Communications'], color: 'bg-blue-500/10 text-blue-500' },
   { id: 'finance-os', name: 'Finance OS', features: ['Budgets', 'Bills', 'Capital', 'Subscriptions'], color: 'bg-green-500/10 text-green-500' },
   { id: 'concierge-os', name: 'Concierge OS', features: ['Household', 'Calendar', 'Travel', 'Bookings'], color: 'bg-purple-500/10 text-purple-500' },
@@ -31,6 +31,7 @@ const DOMAIN_PACKS = [
 ];
 
 const FIPBuilderConsole = () => {
+  const { isDemoMode } = useDataMode();
   const { data: intakes = [] } = useFeatureIntakes();
   const { data: caps = [] } = useCapabilities();
   const { data: specs = [] } = useFeatureSpecs();
@@ -58,7 +59,7 @@ const FIPBuilderConsole = () => {
         <CardHeader><CardTitle className="text-base">Builder Workflow — Feature Methodology Steps</CardTitle></CardHeader>
         <CardContent>
           <div className="flex gap-1">
-            {BUILDER_STEPS.map((s, i) => (
+            {DEMO_BUILDER_STEPS.map((s, i) => (
               <button key={s.step} onClick={() => setActiveStep(s.step)}
                 className={`flex-1 p-3 rounded-lg border text-center transition-colors ${activeStep === s.step ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/30'}`}>
                 <s.icon className={`h-4 w-4 mx-auto mb-1 ${activeStep === s.step ? 'text-primary' : 'text-muted-foreground'}`} />
@@ -67,8 +68,8 @@ const FIPBuilderConsole = () => {
             ))}
           </div>
           <div className="mt-4 p-4 bg-muted/30 rounded-lg">
-            <h3 className="font-medium text-sm mb-1">Step {activeStep}: {BUILDER_STEPS[activeStep - 1].label}</h3>
-            <p className="text-sm text-muted-foreground">{BUILDER_STEPS[activeStep - 1].description}</p>
+            <h3 className="font-medium text-sm mb-1">Step {activeStep}: {DEMO_BUILDER_STEPS[activeStep - 1].label}</h3>
+            <p className="text-sm text-muted-foreground">{DEMO_BUILDER_STEPS[activeStep - 1].description}</p>
             <div className="mt-3 flex gap-2">
               <Button variant="outline" size="sm" disabled={activeStep === 1} onClick={() => setActiveStep(p => p - 1)}>Previous</Button>
               <Button size="sm" disabled={activeStep === 10} onClick={() => setActiveStep(p => p + 1)}>Next Step <ArrowRight className="h-3 w-3 ml-1" /></Button>
@@ -81,7 +82,7 @@ const FIPBuilderConsole = () => {
         <CardHeader><CardTitle className="text-base">Domain Methodology Packs</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-5 gap-3">
-            {DOMAIN_PACKS.map(pack => (
+            {DEMO_DOMAIN_PACKS.map(pack => (
               <div key={pack.id} className="p-3 border rounded-lg hover:border-primary/30 transition-colors cursor-pointer">
                 <Badge className={`text-xs mb-2 ${pack.color}`}>{pack.name}</Badge>
                 <div className="space-y-1">

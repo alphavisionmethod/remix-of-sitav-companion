@@ -36,7 +36,7 @@ interface SimulationResult {
   adoptionForecast: string;
 }
 
-const DRAFTS: PolicyDraft[] = [
+const DEMO_DRAFTS: PolicyDraft[] = [
   { id: "POL-001", name: "Auto-approve low-risk invoices under $100", description: "Skip manual approval for invoices below threshold from trusted vendors", rule: "IF invoice.amount < 100 AND vendor.trust_score >= 80 THEN auto_approve", status: "simulated", affectedSystems: ["approval_queue", "payment_engine", "audit_log"], affectedUsers: 12, riskLevel: "low", approvalPath: ["Owner", "Finance Advisor"], createdAt: "2h ago" },
   { id: "POL-002", name: "Require 2FA for all admin mutations", description: "Enforce multi-factor authentication for any admin-level data change", rule: "IF actor.role == 'admin' AND action.type == 'mutation' THEN require_2fa", status: "draft", affectedSystems: ["auth_service", "admin_service", "audit_log"], affectedUsers: 3, riskLevel: "medium", approvalPath: ["Owner", "Security Council"], createdAt: "1d ago" },
   { id: "POL-003", name: "Rate limit AI advisor to 500 calls/day", description: "Prevent cost overruns by capping daily advisor invocations", rule: "IF advisor.daily_calls >= 500 THEN throttle_to_queue", status: "active", affectedSystems: ["advisor_router", "cost_ledger", "notification_queue"], affectedUsers: 1, riskLevel: "low", approvalPath: ["Owner"], createdAt: "5d ago" },
@@ -98,7 +98,7 @@ export default function PolicySimulator() {
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5">
           {[
-            { value: "drafts", label: `Policies (${DRAFTS.length})`, icon: FileText },
+            { value: "drafts", label: `Policies (${DEMO_DRAFTS.length})`, icon: FileText },
             { value: "simulate", label: "Simulation Results", icon: Play },
             { value: "compose", label: "Compose", icon: GitBranch },
           ].map(t => (
@@ -109,7 +109,7 @@ export default function PolicySimulator() {
         <div className="mt-4">
           <TabsContent value="drafts">
             <div className="space-y-3">
-              {DRAFTS.map((policy, idx) => {
+              {DEMO_DRAFTS.map((policy, idx) => {
                 const riskCfg = RISK_CONFIG[policy.riskLevel];
                 const stCfg = STATUS_CONFIG[policy.status];
                 const isSelected = selectedPolicy === policy.id;

@@ -37,7 +37,7 @@ const DEMO_POSITIONS = [
   },
 ];
 
-const DIMS: Array<{ key: keyof Pick<typeof DEMO_POSITIONS[0], "conviction" | "uncertainty" | "catalystStrength" | "downsideFragility" | "thesisClarity" | "portfolioFit" | "timeHorizonFit">; label: string; color: string; inverted?: boolean }> = [
+const DEMO_DIMS: Array<{ key: keyof Pick<typeof DEMO_POSITIONS[0], "conviction" | "uncertainty" | "catalystStrength" | "downsideFragility" | "thesisClarity" | "portfolioFit" | "timeHorizonFit">; label: string; color: string; inverted?: boolean }> = [
   { key: "conviction", label: "Conviction", color: "bg-primary" },
   { key: "uncertainty", label: "Uncertainty", color: "bg-destructive", inverted: true },
   { key: "catalystStrength", label: "Catalyst Strength", color: "bg-[hsl(var(--trust-safe))]" },
@@ -74,7 +74,7 @@ export default function ConvictionEngine() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
-            {DIMS.map(d => {
+            {DEMO_DIMS.map(d => {
               const val = p[d.key];
               const isGood = d.inverted ? val < 40 : val >= 70;
               const isBad = d.inverted ? val >= 60 : val < 50;

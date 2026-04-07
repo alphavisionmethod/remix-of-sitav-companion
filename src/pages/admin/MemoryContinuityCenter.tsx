@@ -13,7 +13,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
-const SCOPES = ["private", "workspace", "household", "domain", "operator", "agent", "system", "session", "decision"] as const;
+const DEMO_SCOPES = ["private", "workspace", "household", "domain", "operator", "agent", "system", "session", "decision"] as const;
 const DEMO_PRIVACY_TIERS = ["public", "internal", "confidential", "restricted"] as const;
 
 function PrivacyBadge({ tier }: { tier: string }) {
@@ -97,7 +97,7 @@ export default function MemoryContinuityCenter() {
             <SelectTrigger className="w-40"><SelectValue placeholder="Scope" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Scopes</SelectItem>
-              {SCOPES.map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}
+              {DEMO_SCOPES.map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}
             </SelectContent>
           </Select>
           <Select value={privacyFilter} onValueChange={setPrivacyFilter}>

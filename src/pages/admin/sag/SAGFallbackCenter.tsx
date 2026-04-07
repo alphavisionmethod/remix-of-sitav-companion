@@ -7,7 +7,7 @@ import { PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const FALLBACK_STRATEGIES = [
+const DEMO_FALLBACK_STRATEGIES = [
   { id: 'same_provider_downgrade', label: 'Same Provider Downgrade', desc: 'Use cheaper model from same provider', icon: '↓' },
   { id: 'cross_provider', label: 'Cross-Provider Failover', desc: 'Switch to alternative provider', icon: '↔' },
   { id: 'degrade_summary', label: 'Degrade to Summary', desc: 'Return cheaper summary instead', icon: '📝' },
@@ -16,6 +16,7 @@ const FALLBACK_STRATEGIES = [
 ];
 
 const SAGFallbackCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { data: policies = [] } = useRoutingPolicies();
   const { data: health = [] } = useProviderHealth();
   const { data: tasks = [] } = useTaskRequests();
@@ -40,7 +41,7 @@ const SAGFallbackCenter = () => {
         <CardHeader><CardTitle className="text-base">Fallback Strategy Types</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-5 gap-3">
-            {FALLBACK_STRATEGIES.map(s => (
+            {DEMO_FALLBACK_STRATEGIES.map(s => (
               <div key={s.id} className="p-3 border rounded-lg text-center">
                 <span className="text-2xl">{s.icon}</span>
                 <p className="text-xs font-medium mt-1">{s.label}</p>
