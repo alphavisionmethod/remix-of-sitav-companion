@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FileText, Plus, DollarSign, Clock, CheckCircle, AlertTriangle, Send, Edit, X, Trash2 } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
@@ -25,6 +26,7 @@ const statusLabels: Record<string, { label: string; color: string }> = {
 const initials = (name: string) => name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
 const QuotesWorkspace = () => {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [tab, setTab] = useState("all");

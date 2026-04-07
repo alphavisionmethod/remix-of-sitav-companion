@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import type { PolicyScenario } from "@/packages/contracts";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface ScenarioInput {
   id: string;
@@ -34,6 +35,7 @@ const defaultScenarios: ScenarioInput[] = [
 ];
 
 export default function PolicySimulatorPage() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [scenarios, setScenarios] = useState<ScenarioInput[]>(defaultScenarios);
   const [result, setResult] = useState<SimulationResult | null>(null);

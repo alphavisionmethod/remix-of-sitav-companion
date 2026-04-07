@@ -4,8 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Lock, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ResetPassword = () => {
+  const { isDemoMode } = useDataMode();
   const { updatePassword } = useAuth();
   const navigate = useNavigate();
   const [password, setPassword] = useState("");

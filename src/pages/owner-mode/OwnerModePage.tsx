@@ -26,6 +26,7 @@ import {
   Clock, Users, Undo2, FileSearch,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Section: What Matters Now ───────────────────────────────────
 function WhatMattersNow() {
@@ -527,6 +528,7 @@ function RecentActivity() {
 // Main Owner Mode Page — 8 tabs covering all 16 sections
 // ═══════════════════════════════════════════════════════════════
 export default function OwnerModePage() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("now");
   const summary = useMissionControlSummary();
 

@@ -17,6 +17,7 @@ import {
   Settings, Activity, Lock,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface RegistryItem {
   id: string;
@@ -86,6 +87,7 @@ const tabConfig = [
 const statusDot = (s: string) => s === "active" ? "bg-trust-safe" : s === "degraded" ? "bg-accent" : s === "deprecated" ? "bg-muted-foreground" : "bg-muted-foreground";
 
 export default function MissionRegistryPage() {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
 
   return (

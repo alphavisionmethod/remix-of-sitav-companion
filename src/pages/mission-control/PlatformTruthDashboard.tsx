@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Demo truth data ─────────────────────────────────────────────
 
@@ -377,6 +378,7 @@ function MutationReceiptsPanel() {
 // ── Main Dashboard ──────────────────────────────────────────────
 
 export default function PlatformTruthDashboard() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
 
   return (

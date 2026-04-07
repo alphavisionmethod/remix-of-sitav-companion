@@ -21,6 +21,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Icon & Color Maps ────────────────────────────────────────
 
@@ -108,6 +109,7 @@ const DATE_RANGES = [
 ];
 
 const SearchPage = () => {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

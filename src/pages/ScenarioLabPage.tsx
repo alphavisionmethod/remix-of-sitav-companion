@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import type { ScenarioTemplate, ScenarioSimulation, ScenarioOutcome } from "@/packages/contracts";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Template Card ──────────────────────────────────────────────
 function TemplateCard({ template, onRun }: { template: ScenarioTemplate; onRun: () => void }) {
@@ -222,6 +223,7 @@ function SimulationRunner({ template, onClose }: { template: ScenarioTemplate; o
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function ScenarioLabPage() {
+  const { isDemoMode } = useDataMode();
   const { engines } = useOSRuntime();
   const [activeTemplate, setActiveTemplate] = useState<ScenarioTemplate | null>(null);
   const templates = engines.scenarios.getTemplates();

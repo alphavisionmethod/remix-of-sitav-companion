@@ -3,8 +3,10 @@ import { ProofCard, type ProofItem } from "@/components/mobile/ProofCard";
 import { useNavigate } from "react-router-dom";
 import { useMobileProofs } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const MobileProof = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { data: proofs = [] } = useMobileProofs();
   const verified = proofs.filter((p) => p.status === "verified").length;

@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useGoogleProviderFamily } from "@/hooks/use-google-provider-family";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import type { GoogleConnectorState } from "@/lib/services/google-provider-family/types";
 
 const CAPABILITY_ICONS: Record<string, React.ReactNode> = {
@@ -74,6 +75,7 @@ function ConnectorCard({ connector }: { connector: GoogleConnectorState }) {
 }
 
 export default function GoogleConnectedAccounts() {
+  const { isDemoMode } = useDataMode();
   const {
     isLoading, identity, connectors, summary,
     launchHonesty, realityMode, loaded,

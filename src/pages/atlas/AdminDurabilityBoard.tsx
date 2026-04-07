@@ -17,6 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -65,6 +66,7 @@ const provenanceDetail = {
 };
 
 export default function AdminDurabilityBoard() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("mutations");
   const [inspectIdx, setInspectIdx] = useState<number | null>(null);
   const persisted = mutations.filter(m => m.durability === "persisted").length;

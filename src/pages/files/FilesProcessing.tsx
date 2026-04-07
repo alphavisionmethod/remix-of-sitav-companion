@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useFilesProcessing } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const stageFromStatus = (status: string): ProcessingStage => {
   const map: Record<string, ProcessingStage> = {
@@ -27,6 +28,7 @@ const stageFromStatus = (status: string): ProcessingStage => {
 const inProgressStatuses = ["uploading", "processing", "classifying", "scanning", "review"];
 
 const FilesProcessing = () => {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const { data: mockData = [] } = useFilesProcessing();
 

@@ -28,6 +28,7 @@ import {
 import { useBoardroomPacket } from "@/hooks/use-boardroom";
 import { mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory } from "@/hooks/useAdvisorMissionControl";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import type {
   BoardroomType, BoardroomPacket, BoardroomContentSection, MetricCardData,
   TableData, NarrativeData, AlertData, ActionItemData, ChartData, BOARDROOM_META
@@ -247,6 +248,7 @@ const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
 // ── NEW: Disagreement Card ────────────────────────────────────
 
 const DisagreementCards = () => {
+  const { isDemoMode } = useDataMode();
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
   if (disagreements.length === 0) return null;
 

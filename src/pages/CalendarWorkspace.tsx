@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CALENDAR_EVENTS, type CalWorkspaceEvent as CalEvent } from "@/lib/demo-data/calendar-workspace";
 import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
 import { useCreateCalendarEvent, useUpdateCalendarEvent, useDeleteCalendarEvent } from "@/hooks/use-calendar-mutations";
@@ -43,6 +44,7 @@ const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 const HOURS = Array.from({ length: 14 }, (_, i) => i + 7); // 7am-8pm
 
 const CalendarWorkspace = () => {
+  const { isDemoMode } = useDataMode();
   const [view, setView] = useState<CalView>("week");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [domainFilter, setDomainFilter] = useState<string>("all");

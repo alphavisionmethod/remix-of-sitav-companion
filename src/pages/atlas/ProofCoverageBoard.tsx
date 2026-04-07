@@ -9,6 +9,7 @@ import { Shield, CheckCircle, XCircle, AlertTriangle, GitBranch, RotateCcw, Eye,
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const proofDomains = [
   { domain: "approvals", capabilities: [
@@ -72,6 +73,7 @@ const chainEntries = [
 ];
 
 export default function ProofCoverageBoard() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("matrix");
 
   return (

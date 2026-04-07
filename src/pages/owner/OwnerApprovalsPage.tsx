@@ -17,6 +17,7 @@ import {
 import { useOwnerApprovals } from "@/hooks/use-domain-data";
 import type { OwnerApprovalItem as ApprovalItem } from "@/lib/mock-data/owner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const riskStyles: Record<string, string> = {
   critical: "bg-destructive/10 text-destructive",
@@ -80,6 +81,7 @@ function ApprovalList({ items }: { items: ApprovalItem[] }) {
 }
 
 export default function OwnerApprovalsPage() {
+  const { isDemoMode } = useDataMode();
   const { data: approvalsData = [] } = useOwnerApprovals();
 
   const pending = approvalsData.filter(a => a.status === "pending");

@@ -11,12 +11,14 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const db: any = supabase;
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 const TrustCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [tab, setTab] = useState("overview");
   const [automationsPaused, setAutomationsPaused] = useState(false);

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Template { id: string; title: string; description: string; category: string; domain: string; usageCount: number; starred: boolean; }
 
@@ -26,6 +27,7 @@ const DOMAIN_COLORS: Record<string, string> = { business: "text-primary", financ
 const DOMAIN_ICONS: Record<string, React.ElementType> = { business: Briefcase, finance: DollarSign, personal: Users, household: Home };
 
 const TemplateCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const categories = [...new Set(TEMPLATES.map(t => t.category))];

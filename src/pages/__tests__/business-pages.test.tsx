@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render } from "@/test/test-utils";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");

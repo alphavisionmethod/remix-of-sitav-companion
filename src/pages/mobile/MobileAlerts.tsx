@@ -4,8 +4,10 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useMobileAlerts } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const MobileAlerts = () => {
+  const { isDemoMode } = useDataMode();
   const { data: alerts = [] } = useMobileAlerts();
   const [filter, setFilter] = useState<"all" | "unread">("all");
   const filtered = filter === "unread" ? alerts.filter((a) => !a.read) : alerts;

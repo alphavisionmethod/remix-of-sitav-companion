@@ -13,6 +13,7 @@ import {
   ChevronLeft, Zap, Shield, DollarSign, Package,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface UpdateEntry {
   id: string;
@@ -43,6 +44,7 @@ const typeStyles: Record<string, { icon: React.ElementType; bg: string; text: st
 };
 
 export default function OwnerAiTeamUpdatesPage() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (

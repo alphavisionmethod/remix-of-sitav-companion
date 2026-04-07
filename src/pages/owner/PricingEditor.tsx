@@ -17,8 +17,10 @@ import { motion } from "framer-motion";
 import { usePricingItems } from "@/hooks/use-domain-data";
 import type { OwnerPricingItem as PricingItem } from "@/lib/mock-data/owner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PricingEditor = () => {
+  const { isDemoMode } = useDataMode();
   const { data: pricingData = [] } = usePricingItems();
 
   const [items, setItems] = useState<PricingItem[]>([]);

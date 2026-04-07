@@ -8,9 +8,11 @@ import { BarChart3, CheckCircle, AlertTriangle, Sparkles, Clock, DollarSign, Use
 import { motion } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useLeads, useCustomers, useInvoices, useOpportunities } from "@/hooks/use-sita-data";
 
 const BusinessBoardroom = () => {
+  const { isDemoMode } = useDataMode();
   const [mode, setMode] = useState("weekly");
   const { data: leads = [] } = useLeads();
   const { data: customers = [] } = useCustomers();

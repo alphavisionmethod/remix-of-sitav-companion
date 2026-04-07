@@ -7,6 +7,7 @@ import { ArrowLeft, Building, Shield, Lock, Check, Users, AlertTriangle } from "
 import { cn } from "@/lib/utils";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ENTERPRISE_APPS = [
   { id: "ent-crm", name: "Internal CRM", publisher: "Your Organization", icon: "📊", iconBg: "from-blue-600 to-blue-400", version: "3.2.1", description: "Customer relationship management tool", status: "available", roles: ["Sales", "Support"], managed: true },
@@ -25,6 +26,7 @@ const statusConfig: Record<string, { label: string; color: string; icon: typeof 
 };
 
 const EnterpriseCatalogPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (

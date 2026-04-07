@@ -13,8 +13,10 @@ import {
   ToggleLeft, ToggleRight, Zap, Brain, ChevronRight
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PermissionsCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();

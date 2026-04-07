@@ -19,6 +19,7 @@ import FamilyBoardroom from "./concierge/FamilyBoardroom";
 import ConciergeSettings from "./concierge/ConciergeSettings";
 import HouseholdCommandCenter from "./concierge/HouseholdCommandCenter";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type SubPage = "overview" | "calendar" | "tasks" | "household" | "school" | "grocery" | "appointments" | "travel" | "providers" | "events" | "workflows" | "proof" | "files" | "boardroom" | "settings";
 
@@ -59,6 +60,7 @@ const pages: Record<SubPage, React.ComponentType> = {
 };
 
 const ConciergeCenter = () => {
+  const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);

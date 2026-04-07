@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEMO_FILES = [
   { name: "report.html", ext: ".html", candidates: ["chrome", "firefox", "vscode"] },
@@ -20,6 +21,7 @@ const DEMO_FILES = [
 ];
 
 const OpenWithPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(DEMO_FILES[0]);
   const [alwaysUse, setAlwaysUse] = useState(false);

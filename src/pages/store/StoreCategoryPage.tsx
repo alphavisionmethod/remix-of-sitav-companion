@@ -11,6 +11,7 @@ import { PACK_CATALOG, type StoreCategory, type PackManifest } from "@/lib/pack-
 import { ArrowRight, Crown, Home, DollarSign, Briefcase, Sparkles, Target, Zap, Shield, TrendingUp, BarChart3, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Segment Configs ─────────────────────────────────────────────
 
@@ -122,6 +123,7 @@ const SEGMENT_CONFIGS: Record<string, SegmentConfig> = {
 };
 
 const StoreCategoryPage = () => {
+  const { isDemoMode } = useDataMode();
   const { segment } = useParams<{ segment: string }>();
   const navigate = useNavigate();
   const config = SEGMENT_CONFIGS[segment || ""];

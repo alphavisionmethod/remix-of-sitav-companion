@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -52,6 +53,7 @@ const docsRuntimeDrift = [
 ];
 
 export default function PlatformTruthRegistry() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("manifests");
   const drifted = manifests.filter(m => m.sourceHash !== m.runtimeHash).length;
   const claimsVerified = capabilityClaims.filter(c => c.verified).length;

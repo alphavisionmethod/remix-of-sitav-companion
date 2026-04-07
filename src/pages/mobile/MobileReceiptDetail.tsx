@@ -7,8 +7,10 @@ import { useParams } from "react-router-dom";
 import { CheckCircle2, Copy, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const MobileReceiptDetail = () => {
+  const { isDemoMode } = useDataMode();
   const { id } = useParams();
   const [copied, setCopied] = useState(false);
   const hash = "a3f8c1d9e2b4567890abcdef1234567890abcdef1234567890abcdef12345678";

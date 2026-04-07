@@ -18,8 +18,10 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PackDetailPage = () => {
+  const { isDemoMode } = useDataMode();
   const { packId } = useParams<{ packId: string }>();
   const navigate = useNavigate();
   const [installing, setInstalling] = useState(false);

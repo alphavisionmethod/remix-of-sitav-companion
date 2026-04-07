@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import type { ServiceReliabilityView } from "@/packages/contracts";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 /* Count-up KPI tile for observability */
 const ObsKPITile = ({ label, value, ok, icon: Icon }: { label: string; value: string; ok: boolean; icon: React.ElementType }) => {
@@ -40,6 +41,7 @@ const ObsKPITile = ({ label, value, ok, icon: Icon }: { label: string; value: st
 };
 
 export default function ObservabilityPage() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
   const { engines } = useOSRuntime();
   const summary = useMissionControlSummary();

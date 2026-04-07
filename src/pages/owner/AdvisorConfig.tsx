@@ -13,6 +13,7 @@ import { Brain, Users, Shield, Eye, Sparkles, DollarSign, Briefcase, Heart, Head
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface AdvisorConfigItem {
   id: string;
@@ -42,6 +43,7 @@ const councilIcons: Record<string, typeof Brain> = {
 };
 
 const AdvisorConfig = () => {
+  const { isDemoMode } = useDataMode();
   const [advisors, setAdvisors] = useState(ADVISORS);
 
   const updateAdvisor = (id: string, field: keyof AdvisorConfigItem, value: any) => {

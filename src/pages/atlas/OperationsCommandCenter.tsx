@@ -14,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -57,6 +58,7 @@ const incidents = [
 ];
 
 export default function OperationsCommandCenter() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("health");
 
   return (

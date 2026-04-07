@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Initialize services with demo data ──────────────────────────
 
@@ -155,6 +156,7 @@ const FALLBACK_APPROVALS = [
 ];
 
 const SystemStatus = () => {
+  const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
   const { data: slos } = useSLOs();

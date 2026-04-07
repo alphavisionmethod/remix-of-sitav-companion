@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const TOOLBAR_GROUPS = [
   [{ icon: Heading1, label: "H1" }, { icon: Heading2, label: "H2" }],
@@ -17,6 +18,7 @@ const TOOLBAR_GROUPS = [
 ];
 
 const DocumentEditor = () => {
+  const { isDemoMode } = useDataMode();
   const [mode, setMode] = useState<"edit" | "preview" | "review">("edit");
   const [title, setTitle] = useState("Untitled Document");
   const [content, setContent] = useState("Start writing your document here.\n\nThis rich text editor supports headings, bold, italic, lists, links, images, code blocks, and attachments.\n\nYou can switch between Edit, Preview, and Review modes using the toolbar above.");

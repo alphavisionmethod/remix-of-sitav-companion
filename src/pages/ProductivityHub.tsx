@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { lazy, Suspense } from "react";
 import { FileText, Table2, Presentation, Sparkles, Clock, Star, Plus } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DocsWorkspace = lazy(() => import("./workspace/DocsWorkspace"));
 const SheetsWorkspace = lazy(() => import("./workspace/SheetsWorkspace"));
@@ -30,6 +31,7 @@ const recentDocs = [
 ];
 
 const OverviewPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   return (
     <div className="space-y-6">

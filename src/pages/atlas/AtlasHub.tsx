@@ -9,6 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const surfaces = [
   { id: "ops", label: "Operations Command Center", desc: "Service health, SLO burn, alerts, incidents, runbooks", route: "/atlas/operations", icon: Activity, status: "live", metrics: "6 services • 5 SLOs • 8 runbooks" },
@@ -24,6 +25,7 @@ const surfaces = [
 ];
 
 export default function AtlasHub() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (

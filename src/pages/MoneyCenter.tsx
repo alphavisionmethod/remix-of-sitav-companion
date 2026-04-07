@@ -17,6 +17,7 @@ import MoneySettings from "./money/MoneySettings";
 import InvestmentOffice from "./money/InvestmentOffice";
 import TaxEstimator from "./money/TaxEstimator";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings";
 
@@ -53,6 +54,7 @@ const pages: Record<SubPage, React.ComponentType> = {
 };
 
 const MoneyCenter = () => {
+  const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);

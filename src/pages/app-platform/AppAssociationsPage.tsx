@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEFAULT_APP_SLOTS = [
   { id: "browser", label: "Default Browser", icon: Globe, currentApp: "chrome", candidates: ["chrome", "firefox"] },
@@ -33,6 +34,7 @@ const FILE_TYPES = [
 ];
 
 const AppAssociationsPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"defaults" | "files" | "protocols">("defaults");
 

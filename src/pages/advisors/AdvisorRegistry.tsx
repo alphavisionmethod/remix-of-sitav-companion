@@ -23,6 +23,7 @@ import {
   type AdvisorBehavioralProfile,
 } from "@/packages/advisor-config/behavioral-engine";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -241,6 +242,7 @@ function AdvisorDetailPanel({ advisor }: { advisor: ExtendedAdvisorConfig }) {
 
 // ── Main Page ───────────────────────────────────────────────
 const AdvisorRegistry = () => {
+  const { isDemoMode } = useDataMode();
   const [council, setCouncil] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [search, setSearch] = useState("");

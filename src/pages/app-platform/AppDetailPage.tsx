@@ -18,8 +18,10 @@ import {
   PermissionDomainCard, InstallSheet, AppReceiptCard,
 } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const AppDetailPage = () => {
+  const { isDemoMode } = useDataMode();
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
   const [showInstall, setShowInstall] = useState(false);

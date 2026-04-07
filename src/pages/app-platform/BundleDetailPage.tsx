@@ -11,8 +11,10 @@ import { getBundleById, APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon, VerificationBadge, AppSourceLabel, InstallSheet } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const BundleDetailPage = () => {
+  const { isDemoMode } = useDataMode();
   const { bundleId } = useParams<{ bundleId: string }>();
   const navigate = useNavigate();
   const [selectedApps, setSelectedApps] = useState<Set<string>>(new Set());

@@ -11,6 +11,7 @@ import FilesMemoryReview from "./files/FilesMemoryReview";
 import FilesSensitive from "./files/FilesSensitive";
 import FilesSettings from "./files/FilesSettings";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type SubPage = "overview" | "all" | "processing" | "review" | "search" | "memory" | "sensitive" | "settings";
 
@@ -37,6 +38,7 @@ const pages: Record<SubPage, React.ComponentType> = {
 };
 
 const FilesCenter = () => {
+  const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);

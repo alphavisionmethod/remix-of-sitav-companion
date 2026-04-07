@@ -14,6 +14,7 @@ import { APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DETECTED_SITES = [
   { url: "https://mail.google.com", name: "Gmail", icon: "📧", trustLevel: "sita-verified" as const, installable: true },
@@ -25,6 +26,7 @@ const DETECTED_SITES = [
 ];
 
 const WebAppInstallPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [selectedSite, setSelectedSite] = useState<typeof DETECTED_SITES[0] | null>(null);
   const [installing, setInstalling] = useState(false);

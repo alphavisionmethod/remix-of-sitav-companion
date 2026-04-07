@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import type { CapabilityLease, LeaseViolation } from "@/lib/core-services/lease-manager";
 import { useLeases } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Status helpers ──────────────────────────────────────────────
 
@@ -335,6 +336,7 @@ function useSeedLeases(leasesData: any[]) {
 // ── Main Page ───────────────────────────────────────────────────
 
 export default function LeaseDashboard() {
+  const { isDemoMode } = useDataMode();
   const { data: leasesData = [] } = useLeases();
 
   const { leaseManager, revokeLease: revokeLeaseHook } = useCapabilityLease();

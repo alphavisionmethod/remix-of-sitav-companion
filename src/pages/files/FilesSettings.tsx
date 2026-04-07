@@ -9,6 +9,7 @@ import { upsertFileSettings } from "@/lib/data-services/files-data-service";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface SettingsState {
   auto_classify: boolean;
@@ -33,6 +34,7 @@ const defaultSettings: SettingsState = {
 };
 
 const FilesSettings = () => {
+  const { isDemoMode } = useDataMode();
   const { data: savedSettings, isLoading } = useFileSettings();
   const queryClient = useQueryClient();
   const [settings, setSettings] = useState<SettingsState>(defaultSettings);

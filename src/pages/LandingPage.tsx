@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { Shield, Brain, Wallet, Briefcase, Sparkles, Receipt, Lock, Eye } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const LandingPage = () => {
+  const { isDemoMode } = useDataMode();
   const { signInAsDemo } = useAuth();
 
   return (

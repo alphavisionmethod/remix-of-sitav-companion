@@ -7,6 +7,7 @@ import { Receipt, Shield, CheckCircle, FileText, Clock, Eye, Search } from "luci
 import { motion } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface ProofItem {
   id: number; action: string; customer: string; workflow: string; policy: string;
@@ -26,6 +27,7 @@ const proofItems: ProofItem[] = [
 ];
 
 const BusinessProof = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const selected = proofItems.find(p => p.id === selectedId);

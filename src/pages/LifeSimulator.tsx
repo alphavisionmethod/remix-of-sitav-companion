@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { LifeShockSimulator, type ShockType, type ShockImpactReport } from "@/lib/services/life-simulation";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SHOCK_ICONS: Record<ShockType, typeof AlertTriangle> = {
   'job-loss': Briefcase, 'new-baby': Baby, 'divorce': HeartCrack,
@@ -25,6 +26,7 @@ const stagger = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { stag
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 
 const LifeSimulator = () => {
+  const { isDemoMode } = useDataMode();
   const simulator = useMemo(() => new LifeShockSimulator(500), []);
   const shockTypes = useMemo(() => simulator.getShockTypes(), [simulator]);
 

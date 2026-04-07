@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Service Module Definitions ─────────────────────────────────
 
@@ -151,6 +152,7 @@ const RISK_BADGE = {
 // ── Component ──────────────────────────────────────────────────
 
 export default function ServiceArchitectureDashboard() {
+  const { isDemoMode } = useDataMode();
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("overview");
 

@@ -17,6 +17,7 @@ import {
   PolarRadiusAxis, Radar as RechartsRadar, AreaChart, Area
 } from "recharts";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Animation Variants ──────────────────────────────────────────
 
@@ -58,6 +59,7 @@ const STATUS_STYLES: Record<string, { bg: string; text: string }> = {
 // ── Page Component ──────────────────────────────────────────────
 
 const LifeDashboard = () => {
+  const { isDemoMode } = useDataMode();
   const { lifeContext, dailyBriefing, obligations } = useCompanion();
   const { business, money, household, timing } = lifeContext;
 

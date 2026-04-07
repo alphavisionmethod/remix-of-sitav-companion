@@ -17,11 +17,13 @@ import {
 import { useSheets } from "@/hooks/use-domain-data";
 import type { MockSheet } from "@/lib/mock-data/workspace";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 
 
 const SheetsWorkspace = () => {
+  const { isDemoMode } = useDataMode();
   const { data: sheetsData = [] } = useSheets();
 
   const [activeTab, setActiveTab] = useState("all");

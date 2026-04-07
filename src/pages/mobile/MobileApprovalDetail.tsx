@@ -8,8 +8,10 @@ import { ShieldCheck, AlertTriangle, CheckCircle2, XCircle } from "lucide-react"
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const MobileApprovalDetail = () => {
+  const { isDemoMode } = useDataMode();
   const { id } = useParams();
   const navigate = useNavigate();
   const [status, setStatus] = useState<"pending" | "approved" | "rejected">("pending");

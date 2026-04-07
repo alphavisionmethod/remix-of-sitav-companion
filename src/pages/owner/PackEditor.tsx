@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { listPacks } from "@/lib/services/capability-router/pack-enablement.service";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface PackState {
   packId: string;
@@ -24,6 +25,7 @@ interface PackState {
 }
 
 const PackEditor = () => {
+  const { isDemoMode } = useDataMode();
   const packs = listPacks();
   const [packStates, setPackStates] = useState<PackState[]>(
     packs.map(p => ({ packId: p.packId, name: p.name, status: "active" as const, capabilities: p.capabilities, connectors: p.connectors, requiredTier: p.requiredTier }))
