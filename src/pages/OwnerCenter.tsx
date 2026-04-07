@@ -2013,7 +2013,7 @@ const OwnerCenter = () => {
               </SitaCard>
             ))}
             <SitaSectionHeader title="Registry Drift Detection" />
-            {((knowledgeData as Record<string, unknown>)?.driftDetections || []).map((d: any) => (
+            {(knowledgeData?.driftDetections || []).map((d: any) => (
               <SitaCard key={d.file} hover={false} className="p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
