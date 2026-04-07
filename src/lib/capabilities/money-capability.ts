@@ -9,7 +9,7 @@ import type { CapabilityResult } from "@/packages/contracts/msa/capability-contr
 
 registerCapability("money.accounts.list", async (_params, context): Promise<CapabilityResult> => {
   const { data, error } = await supabase
-    .from("financial_accounts" as any)
+    .from("financial_accounts")
     .select("*")
     .eq("user_id", context.userId);
 

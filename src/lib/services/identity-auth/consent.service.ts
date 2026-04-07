@@ -44,7 +44,7 @@ export async function recordConsent(entry: ConsentLedgerInsert): Promise<Consent
 // ── Consent history view ───────────────────────────────────────
 export async function getConsentHistoryView(): Promise<ConsentHistoryView[]> {
   const { data, error } = await supabase
-    .from("v_consent_history" as any)
+    .from("v_consent_history")
     .select("*");
   if (error) throw error;
   return (data ?? []) as unknown as ConsentHistoryView[];

@@ -56,7 +56,7 @@ export async function getPrimaryIdentity(): Promise<IdentityProviderLink | null>
 // ── Identity methods view ──────────────────────────────────────
 export async function getIdentityMethods(): Promise<IdentityMethodView[]> {
   const { data, error } = await supabase
-    .from("v_identity_methods" as any)
+    .from("v_identity_methods")
     .select("*");
   if (error) throw error;
   return (data ?? []) as unknown as IdentityMethodView[];
