@@ -15,7 +15,8 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { useState } from "react";
 
 const primaryNav = [
-  { title: "Daily Pulse", url: "/", icon: Home },
+  { title: "Desktop", url: "/desktop", icon: LayoutDashboard },
+  { title: "Daily Pulse", url: "/home", icon: Home },
   { title: "Brain", url: "/personal-brain", icon: Brain },
   { title: "Life Dashboard", url: "/life", icon: Heart },
   { title: "Business", url: "/business", icon: Briefcase },

@@ -59,7 +59,8 @@ const COMMAND_INDEX: CommandItem[] = [
   { id: "act-workflow", label: "Start workflow", sublabel: "Launch an automation", icon: Play, path: "/workflows", category: "action", keywords: ["workflow", "start", "automation", "launch"], riskLevel: "medium" },
   { id: "act-export", label: "Export data", sublabel: "Sovereign data export", icon: ExternalLink, path: "/settings", category: "action", keywords: ["export", "data", "download", "sovereign"] },
   // Navigation
-  { id: "nav-home", label: "Home", sublabel: "Daily Pulse", icon: Home, path: "/", category: "navigate", keywords: ["home", "desktop", "pulse"] },
+  { id: "nav-desktop", label: "Desktop", sublabel: "OS home screen", icon: Layout, path: "/desktop", category: "navigate", keywords: ["desktop", "home", "shell", "surface"] },
+  { id: "nav-home", label: "Daily Pulse", sublabel: "Morning review", icon: Home, path: "/home", category: "navigate", keywords: ["home", "pulse", "daily"] },
   { id: "nav-business", label: "Business Center", sublabel: "Leads, customers, pipeline", icon: Briefcase, path: "/business", category: "navigate", domain: "business", keywords: ["business", "crm", "leads", "sales"] },
   { id: "nav-money", label: "Money Center", sublabel: "Bills, accounts, reserves", icon: DollarSign, path: "/money", category: "navigate", domain: "finance", keywords: ["money", "finance", "bills", "budget"] },
   { id: "nav-concierge", label: "Concierge", sublabel: "Household, calendar, tasks", icon: Headphones, path: "/concierge", category: "navigate", domain: "concierge", keywords: ["concierge", "household", "calendar"] },
