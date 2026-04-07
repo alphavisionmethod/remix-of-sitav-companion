@@ -135,7 +135,7 @@ const BusinessOverview = () => {
           <div className="flex items-center gap-3">
             {crmHealth && (
               <span className="text-[10px] text-muted-foreground">
-                CRM: {crmHealth.leads?.count ?? 0} leads · {crmHealth.customers?.count ?? 0} customers · {crmHealth.opportunities?.count ?? 0} opps
+                CRM: {(crmHealth as Record<string, Record<string, unknown>>)?.leads?.count ?? 0} leads · {(crmHealth as Record<string, Record<string, unknown>>)?.customers?.count ?? 0} customers · {(crmHealth as Record<string, Record<string, unknown>>)?.opportunities?.count ?? 0} opps
               </span>
             )}
             <SitaButton variant="primary" onClick={() => navigate("/business/leads")}><UserPlus className="h-4 w-4" /> New Lead</SitaButton>

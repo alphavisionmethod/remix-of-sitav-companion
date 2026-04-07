@@ -43,14 +43,14 @@ const FilesSettings = () => {
     if (savedSettings) {
       const s = savedSettings as Record<string, unknown>;
       setSettings({
-        auto_classify: s.auto_classify ?? true,
-        auto_extract: s.auto_extract ?? true,
-        generate_suggestions: s.generate_suggestions ?? true,
-        auto_link: s.auto_link ?? false,
-        boardroom_attach: s.boardroom_attach ?? true,
-        default_sensitivity: s.default_sensitivity ?? "internal",
-        default_retention: s.default_retention ?? "7 years",
-        memory_write_permission: s.memory_write_permission ?? "allowed_with_review",
+        auto_classify: typeof s.auto_classify === "boolean" ? s.auto_classify : true,
+        auto_extract: typeof s.auto_extract === "boolean" ? s.auto_extract : true,
+        generate_suggestions: typeof s.generate_suggestions === "boolean" ? s.generate_suggestions : true,
+        auto_link: typeof s.auto_link === "boolean" ? s.auto_link : false,
+        boardroom_attach: typeof s.boardroom_attach === "boolean" ? s.boardroom_attach : true,
+        default_sensitivity: typeof s.default_sensitivity === "string" ? s.default_sensitivity : "internal",
+        default_retention: typeof s.default_retention === "string" ? s.default_retention : "7 years",
+        memory_write_permission: typeof s.memory_write_permission === "string" ? s.memory_write_permission : "allowed_with_review",
       });
     }
   }, [savedSettings]);

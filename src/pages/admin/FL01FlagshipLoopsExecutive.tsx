@@ -130,16 +130,16 @@ export default function FL01FlagshipLoopsExecutive() {
 
   for (const run of ((verificationRuns || []) as Array<Record<string, unknown>>)) {
     for (const [loopKey, patterns] of Object.entries(LOOP_KEY_TO_JOURNEY_PATTERNS)) {
-      const summary = (run.summary || "").toLowerCase();
+      const summary = String(run.summary || "").toLowerCase();
       if (patterns.some(p => summary.includes(p))) {
         const existing = loopProofMap.get(loopKey);
-        if (!existing || new Date(run.completed_at) > new Date(existing.lastRun)) {
+        if (!existing || new Date(String(run.completed_at)) > new Date(existing.lastRun)) {
           loopProofMap.set(loopKey, {
-            passed: run.steps_passed || 0,
-            failed: run.steps_failed || 0,
-            lastRun: run.completed_at,
-            confidence: run.proof_confidence || "inferred",
-            commitSha: run.commit_sha || "",
+            passed: Number(run.steps_passed) || 0,
+            failed: Number(run.steps_failed) || 0,
+            lastRun: String(run.completed_at),
+            confidence: String(run.proof_confidence || "inferred"),
+            commitSha: String(run.commit_sha || ""),
           });
         }
       }
