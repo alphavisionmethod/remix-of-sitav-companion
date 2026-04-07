@@ -37,7 +37,7 @@ export class AdvisorMemoryService {
       user_id: userId,
       memory_type: "fact",
       content: fact,
-      metadata: metadata ?? {},
+      metadata: metadata ?? {} as any,
     });
   }
 

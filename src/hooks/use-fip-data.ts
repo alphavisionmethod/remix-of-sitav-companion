@@ -187,7 +187,7 @@ export const useCreateDeprecation = () => {
     mutationFn: async (dep: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_deprecation_records').insert({ ...dep, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_deprecation_records').insert({ ...dep, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
