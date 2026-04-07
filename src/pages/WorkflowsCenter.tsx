@@ -115,7 +115,7 @@ const WorkflowsCenter = () => {
               <option value="webhook">Webhook</option>
             </select>
             <div className="flex gap-2">
-              <SitaButton variant="primary" onClick={() => createWorkflow.mutate()} disabled={!newName.trim()}>Create</SitaButton>
+              <SitaButton variant="primary" onClick={() => createWorkflow.mutate({ name: newName, trigger_type: newTrigger })} disabled={!newName.trim()}>Create</SitaButton>
               <SitaButton variant="secondary" onClick={() => setShowCreate(false)}>Cancel</SitaButton>
             </div>
           </div>
