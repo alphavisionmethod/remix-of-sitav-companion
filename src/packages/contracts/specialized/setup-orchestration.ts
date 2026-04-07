@@ -3,14 +3,15 @@
 // Full type system for the setup lifecycle engine
 // ═══════════════════════════════════════════════════════════════
 
-/** Clean 24-phase setup flow */
+/** Clean 38-phase setup flow */
 export type SetupPhaseId =
   | "boot" | "secure-foundation" | "language-region" | "network-setup" | "device-readiness" | "device-ownership"
-  | "account-environment" | "setup-style" | "access-protection"
-  | "privacy-transparency" | "quick-identity" | "deep-world-modeling"
+  | "account-environment" | "restore-preview" | "setup-style" | "access-protection" | "recover-first"
+  | "privacy-transparency" | "memory-consent" | "quick-identity" | "want-less-of" | "protect-most" | "deep-world-modeling" | "household-graph"
   | "life-rhythm" | "stress-slippage" | "communications-context" | "planning-style"
+  | "explanation-style" | "presence-style" | "interruption-style" | "rituals" | "home-composition" | "desktop-preview"
   | "primary-use-mode" | "trust-calibration" | "advisor-activation"
-  | "environment-summary" | "first-connections" | "first-win-setup"
+  | "environment-summary" | "first-connections" | "first-win-setup" | "first-simulation" | "first-actions"
   | "arrival-prep" | "desktop-transition" | "system-check" | "trust-certificate";
 
 /** 12-state per-phase status */
