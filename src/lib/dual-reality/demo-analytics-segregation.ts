@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromDynamicTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "./reality-mode-registry";
 
 export interface DemoAnalyticsEvent {
