@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable} from "@/lib/supabase-helpers";
 import type { BootPhaseRecord } from "@/packages/contracts/runtime/trusted-boot-runtime";
 
 export interface BootPersistenceConfig {
