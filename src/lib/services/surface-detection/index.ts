@@ -26,7 +26,7 @@ export function detectSurfaceType(): ExtendedSurfaceType {
   if (typeof window === "undefined") return "api";
 
   // Electron
-  if (window.electron || navigator.userAgent.includes("Electron")) {
+  if (('electron' in window) || navigator.userAgent.includes("Electron")) {
     return "electron";
   }
 
