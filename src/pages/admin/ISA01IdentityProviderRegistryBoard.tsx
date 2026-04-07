@@ -202,7 +202,7 @@ export default function ISA01IdentityProviderRegistryBoard() {
                 {oauthClients.map((c: any) => (
                   <TableRow key={c.id}>
                     <TableCell className="font-medium">{c.client_name}</TableCell>
-                    <TableCell>{(c as Record<string, unknown>).provider_families?.name || "—"}</TableCell>
+                    <TableCell>{((c as any).provider_families as any)?.name || "—"}</TableCell>
                     <TableCell><Badge className="bg-blue-500/20 text-blue-400">{c.client_purpose}</Badge></TableCell>
                     <TableCell>{c.environment_bindings || "production"}</TableCell>
                     <TableCell>
