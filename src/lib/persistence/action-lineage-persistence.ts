@@ -76,7 +76,10 @@ export async function persistActionRecord(
       confidence_score: record.confidenceScore,
       proof_ids: record.proofIds,
       initiating_surface: opts?.initiatingSurface ?? null,
-    })
+  };
+
+  const { data, error } = await fromDynamicTable("os_action_lineage")
+    .insert(payload)
     .select("id")
     .single();
 
