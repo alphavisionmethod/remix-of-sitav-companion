@@ -9,6 +9,7 @@
 import { evaluatePolicy, classifyRiskTier, type PolicyContext, type PolicyEvaluationResult } from "./policy-engine";
 import { ExecutorService, createEnvelope, type ExecutionEnvelope } from "./executor-service";
 import { ReceiptService, type Receipt } from "./receipt-service";
+import type { ActionEnvelope as KernelActionEnvelope } from "@/packages/contracts/kernel/action-envelope";
 import { WorkflowEngine, type WorkflowInstance, type ServiceWorkflowState as WorkflowState } from "./workflow-engine";
 import { ProjectionService, type ProjectionEvent } from "./projection-service";
 import { EventBus } from "./event-bus";
