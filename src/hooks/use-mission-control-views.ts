@@ -199,7 +199,7 @@ export function useIncidentDetail(incidentId: string): IncidentDetailView | null
       impactedUsers: Math.floor(Math.random() * 50),
       relatedReleases: [], relatedConnectors: [], relatedWorkflows: i.affectedFlows,
       mitigationActions: i.recommendedActions.map((a, idx) => ({
-        label: a, status: (idx === 0 ? "done" : idx === 1 ? "in_progress" : "pending") as any,
+        label: a, status: (idx === 0 ? "done" : idx === 1 ? "in_progress" : "pending") as unknown,
       })),
       rollbackCandidates: i.rollbackSuggestion
         ? [{ id: "rb-1", label: i.rollbackSuggestion, risk: "low" as const }]
@@ -294,7 +294,7 @@ export function useAITeamSummary(): AITeamSummaryView {
       pods: Array.from(pods.entries()).map(([name, agents]) => ({
         name,
         agents: agents.map(a => ({
-          id: a.id, name: a.name, role: a.role, health: a.health as any,
+          id: a.id, name: a.name, role: a.role, health: a.health as unknown,
           autonomyLevel: a.autonomyLevel, tokens24h: a.costTokens24h,
           invocations24h: a.invocations24h, currentTasks: a.currentTasks,
           recentFindings: a.recentFindings, lastAction: a.lastMajorAction,

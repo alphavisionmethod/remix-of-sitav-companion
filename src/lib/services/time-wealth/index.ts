@@ -165,8 +165,8 @@ export class TimeWealthEngine {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.activities) this.activities = new Map(state.activities as any);
-    if (state.debts) this.debts = state.debts as any;
+    if (state.activities) this.activities = new Map(state.activities as [string, unknown][]);
+    if (state.debts) this.debts = state.debts as never;
   }
 
   async loadPersistedState(): Promise<void> {

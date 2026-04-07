@@ -43,13 +43,13 @@ export function publish(envelope: EventEnvelope): { delivered: number; errors: s
 
   // Fire-and-forget persistence via the core event bus adapter
   const busEvent: BusEvent = {
-    id: (event as any).id ?? crypto.randomUUID(),
+    id: (event as Record<string, unknown>).id ?? crypto.randomUUID(),
     topic: event.type ?? "unknown",
     payload: event as unknown as Record<string, unknown>,
-    source: (event as any).source ?? "event-bus",
-    correlationId: (event as any).correlationId,
-    tenantId: (event as any).tenantId,
-    metadata: (event as any).metadata,
+    source: (event as Record<string, unknown>).source ?? "event-bus",
+    correlationId: (event as Record<string, unknown>).correlationId,
+    tenantId: (event as Record<string, unknown>).tenantId,
+    metadata: (event as Record<string, unknown>).metadata,
     timestamp: Date.now(),
   };
   persistEvent(busEvent, { domain: event.domain }).catch(() => {});

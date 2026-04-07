@@ -72,7 +72,7 @@ const BillsWorkspace = () => {
       return data;
     },
     // Fallback to moneyBills data if this query hasn't loaded yet
-    placeholderData: moneyBills.data as any,
+    placeholderData: moneyBills.data as unknown,
   });
   const bills = billsQuery.data ?? [];
   const isLoading = billsQuery.isLoading;

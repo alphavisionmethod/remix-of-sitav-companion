@@ -75,7 +75,7 @@ export const NotificationPanel = ({ isOpen, onClose }: NotificationPanelProps) =
 
   useEffect(() => {
     if (!user || isDemo || !isOpen) return;
-    (supabase as any)
+    (supabase as unknown)
       .from("notifications")
       .select("*")
       .eq("user_id", user.id)
@@ -374,7 +374,7 @@ export function useUnreadCount() {
 
   useEffect(() => {
     if (!user || isDemo) { setCount(3); return; }
-    (supabase as any)
+    (supabase as unknown)
       .from("notifications")
       .select("id", { count: "exact", head: true })
       .eq("user_id", user.id)
@@ -387,7 +387,7 @@ export function useUnreadCount() {
     const channel = supabase
       .channel("notif-count")
       .on("postgres_changes", { event: "*", schema: "public", table: "notifications", filter: `user_id=eq.${user.id}` }, () => {
-        (supabase as any)
+        (supabase as unknown)
           .from("notifications")
           .select("id", { count: "exact", head: true })
           .eq("user_id", user.id)

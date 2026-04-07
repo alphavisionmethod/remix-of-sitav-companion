@@ -109,8 +109,8 @@ export class OpportunityGraphService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.nodes) this.nodes = new Map(state.nodes as any);
-    if (state.edges) this.edges = state.edges as any;
+    if (state.nodes) this.nodes = new Map(state.nodes as [string, unknown][]);
+    if (state.edges) this.edges = state.edges as never;
   }
 
   async loadPersistedState(): Promise<void> {

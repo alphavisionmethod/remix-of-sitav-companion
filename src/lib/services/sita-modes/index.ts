@@ -31,7 +31,7 @@ export class SitaModesService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.configs) this.configs = new Map(state.configs as any);
+    if (state.configs) this.configs = new Map(state.configs as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

@@ -305,10 +305,10 @@ export class FleetOTAService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.releases) this.releases = new Map(state.releases as any);
-    if (state.plans) this.plans = new Map(state.plans as any);
-    if (state.reports) this.reports = state.reports as any;
-    if (state.deviceVersions) this.deviceVersions = new Map(state.deviceVersions as any);
+    if (state.releases) this.releases = new Map(state.releases as [string, unknown][]);
+    if (state.plans) this.plans = new Map(state.plans as [string, unknown][]);
+    if (state.reports) this.reports = state.reports as never;
+    if (state.deviceVersions) this.deviceVersions = new Map(state.deviceVersions as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

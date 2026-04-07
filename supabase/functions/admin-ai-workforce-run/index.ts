@@ -247,8 +247,8 @@ Deno.serve(async (req) => {
     }
 
     // STEP 4: Resolve budget & routing
-    const resolvedBudgetClass = (perm as any).preferred_budget_class || (role as any).budget_class || "balanced_admin";
-    const resolvedRoutingClass = (perm as any).preferred_routing_class || (role as any).default_routing_class || "balanced_assistant";
+    const resolvedBudgetClass = (perm as Record<string, unknown>).preferred_budget_class || (role as Record<string, unknown>).budget_class || "balanced_admin";
+    const resolvedRoutingClass = (perm as Record<string, unknown>).preferred_routing_class || (role as Record<string, unknown>).default_routing_class || "balanced_assistant";
     const selectedModel = selectModel(resolvedBudgetClass);
 
     // STEP 5: Budget policy check
@@ -279,7 +279,7 @@ Deno.serve(async (req) => {
     // STEP 6: Check cache
     const scopeHash = btoa(JSON.stringify({ role_key, task_key, scope_type, scope_ref, scope_payload })).slice(0, 64);
     let cachedOutput = null;
-    if ((task as any).allows_cached_output !== false) {
+    if ((task as Record<string, unknown>).allows_cached_output !== false) {
       const { data: cached } = await supabaseAdmin
         .from("ai_workforce_cached_outputs")
         .select("*")
@@ -402,7 +402,7 @@ Provide your structured analysis with findings and recommendations.`;
       .insert({
         user_id: user.id,
         invocation_id: invocation.id,
-        output_type: (task as any).task_family || "summary",
+        output_type: (task as Record<string, unknown>).task_family || "summary",
         title: `${role.display_name}: ${task.display_name}`,
         summary_text: parsed.summary,
         structured_payload: parsed,
@@ -492,7 +492,7 @@ Provide your structured analysis with findings and recommendations.`;
       }, { onConflict: "role_id" });
 
     // Increment role cost/invocation counters
-    await supabaseAdmin.rpc("increment_workforce_role_stats" as any, {
+    await supabaseAdmin.rpc("increment_workforce_role_stats" as unknown, {
       p_role_id: role.id,
       p_cost_cents: costCents,
     }).catch(() => {
@@ -500,7 +500,7 @@ Provide your structured analysis with findings and recommendations.`;
     });
 
     // STEP 15: Cache output
-    if ((task as any).allows_cached_output !== false && output) {
+    if ((task as Record<string, unknown>).allows_cached_output !== false && output) {
       const freshUntil = new Date(Date.now() + 3600_000).toISOString();
       await supabaseAdmin.from("ai_workforce_cached_outputs")
         .upsert({
@@ -533,7 +533,7 @@ Provide your structured analysis with findings and recommendations.`;
       output_id: output?.id,
       cached: false,
       output: {
-        type: (task as any).task_family || "summary",
+        type: (task as Record<string, unknown>).task_family || "summary",
         title: `${role.display_name}: ${task.display_name}`,
         summary: parsed.summary,
         confidence: parsed.confidence,

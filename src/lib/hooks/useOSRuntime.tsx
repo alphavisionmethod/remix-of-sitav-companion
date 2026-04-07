@@ -129,10 +129,10 @@ export function OSRuntimeProvider({
             result = await table.insert(mutation.payload);
             break;
           case "update":
-            result = await table.update(mutation.payload).eq("id", (mutation.payload as any).id);
+            result = await table.update(mutation.payload).eq("id", (mutation.payload as unknown).id);
             break;
           case "delete":
-            result = await table.delete().eq("id", (mutation.payload as any).id);
+            result = await table.delete().eq("id", (mutation.payload as unknown).id);
             break;
         }
         return !result?.error;
@@ -219,7 +219,7 @@ export function OSRuntimeProvider({
         }, 30_000);
 
         // Store cleanup ref
-        (window as any).__sitaEngineSaveInterval = saveInterval;
+        (window as Record<string, unknown>).__sitaEngineSaveInterval = saveInterval;
       },
     ).catch(console.error);
 
@@ -244,7 +244,7 @@ export function OSRuntimeProvider({
     return () => {
       cancelled = true;
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      const saveInterval = (window as any).__sitaEngineSaveInterval;
+      const saveInterval = (window as Record<string, unknown>).__sitaEngineSaveInterval;
       if (saveInterval) clearInterval(saveInterval);
     };
   }, [userId, runtime]);

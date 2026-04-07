@@ -92,7 +92,7 @@ class HabitStreakService {
       .eq('category', 'habit');
 
     return (data || []).map((d) => {
-      const val = typeof d.value === 'string' ? JSON.parse(d.value) : d.value as any;
+      const val = typeof d.value === 'string' ? JSON.parse(d.value) : d.value as unknown;
       return {
         id: d.id,
         title: val.title || d.key,
@@ -126,7 +126,7 @@ class HabitStreakService {
         totalCompletions: 0,
         lastCompletedDate: null,
         lastCompletedAt: null,
-      }) as any,
+      }) as unknown,
       category: 'habit',
     });
   }
@@ -135,7 +135,7 @@ class HabitStreakService {
     const { data } = await fromTable('user_memory').select('*').eq('id', habitId).single();
     if (!data) return;
 
-    const val = typeof data.value === 'string' ? JSON.parse(data.value) : data.value as any;
+    const val = typeof data.value === 'string' ? JSON.parse(data.value) : data.value as unknown;
     const today = new Date().toISOString().split('T')[0];
 
     if (val.lastCompletedDate === today) return; // Already completed
@@ -150,7 +150,7 @@ class HabitStreakService {
     val.lastCompletedDate = today;
     val.lastCompletedAt = new Date().toISOString();
 
-    await fromTable('user_memory').update({ value: JSON.stringify(val) as any }).eq('id', habitId);
+    await fromTable('user_memory').update({ value: JSON.stringify(val) as unknown }).eq('id', habitId);
   }
 
   async deleteHabit(userId: string, habitId: string): Promise<void> {

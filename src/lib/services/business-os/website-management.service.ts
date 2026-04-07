@@ -349,8 +349,8 @@ export class WebsiteManager {
 
   hydrateState(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.pages) this.pages = new Map(state.pages as any);
-    if (state.domains) this.domains = new Map(state.domains as any);
+    if (state.pages) this.pages = new Map(state.pages as [string, unknown][]);
+    if (state.domains) this.domains = new Map(state.domains as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

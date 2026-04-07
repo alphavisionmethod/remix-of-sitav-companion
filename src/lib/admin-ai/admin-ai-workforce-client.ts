@@ -127,7 +127,7 @@ export async function updateRecommendationStatus(id: string, status: string) {
 export async function updateApprovalQueueItem(id: string, updates: Record<string, unknown>) {
   const { error } = await supabase
     .from("ai_workforce_approval_queue")
-    .update({ ...updates, updated_at: new Date().toISOString() } as any)
+    .update({ ...updates, updated_at: new Date().toISOString() } as never)
     .eq("id", id);
   if (error) throw error;
 }
@@ -148,7 +148,7 @@ export async function insertRecommendationScore(score: {
   if (!user) throw new Error("Not authenticated");
   const { error } = await supabase
     .from("ai_workforce_recommendation_scores")
-    .insert({ ...score, user_id: user.id, reviewed_by_user_id: user.id } as any);
+    .insert({ ...score, user_id: user.id, reviewed_by_user_id: user.id } as never);
   if (error) throw error;
 }
 

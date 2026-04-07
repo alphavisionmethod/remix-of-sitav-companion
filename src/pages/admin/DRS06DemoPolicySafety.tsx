@@ -36,7 +36,7 @@ export default function DRS06DemoPolicySafety() {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      const { data } = await (supabase as any)
+      const { data } = await (supabase as unknown)
         .from("demo_receipts")
         .select("*")
         .eq("user_id", user.id)

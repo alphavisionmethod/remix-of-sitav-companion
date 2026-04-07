@@ -210,10 +210,10 @@ export class EntityRoleGraph {
   }
 
   hydrate(state: Record<string, unknown>): void {
-    if (state.entities) this.entities = new Map(state.entities as any);
-    if (state.relationships) this.relationships = state.relationships as any;
-    if (state.roles) this.roles = state.roles as any;
-    if (state.delegations) this.delegations = state.delegations as any;
-    if (state.visibilityRules) this.visibilityRules = state.visibilityRules as any;
+    if (state.entities) this.entities = new Map(state.entities as [string, unknown][]);
+    if (state.relationships) this.relationships = state.relationships as never;
+    if (state.roles) this.roles = state.roles as never;
+    if (state.delegations) this.delegations = state.delegations as never;
+    if (state.visibilityRules) this.visibilityRules = state.visibilityRules as never;
   }
 }

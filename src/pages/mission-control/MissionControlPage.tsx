@@ -581,13 +581,13 @@ function MCCosts() {
   // Seed demo usage so the dashboard has data
   const dashboard = useMemo(() => {
     for (const u of tokenUsages) {
-      try { tokenEngine.recordUsage(u as any); } catch {}
+      try { tokenEngine.recordUsage(u as unknown); } catch {}
     }
     return tokenEngine.getDashboard("today");
   }, [tokenEngine, tokenUsages]);
 
   const modelRoutes = useMemo(() => {
-    return (tokenEngine as any).routes as Array<{ id: string; name: string; tier: string; model: string; costPer1kTokens: number; latencyMs: number; active: boolean }>;
+    return (tokenEngine as Record<string, unknown>).routes as Array<{ id: string; name: string; tier: string; model: string; costPer1kTokens: number; latencyMs: number; active: boolean }>;
   }, [tokenEngine]);
 
   const dailyBudget = 5.00;

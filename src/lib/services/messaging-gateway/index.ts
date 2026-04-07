@@ -151,9 +151,9 @@ export class MessagingGatewayService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.channels) this.channels = new Map(state.channels as any);
-    if (state.outbound) this.outbound = state.outbound as any;
-    if (state.inbound) this.inbound = state.inbound as any;
+    if (state.channels) this.channels = new Map(state.channels as [string, unknown][]);
+    if (state.outbound) this.outbound = state.outbound as never;
+    if (state.inbound) this.inbound = state.inbound as never;
   }
 
   async loadPersistedState(): Promise<void> {

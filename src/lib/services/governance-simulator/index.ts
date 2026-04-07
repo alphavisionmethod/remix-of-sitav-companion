@@ -24,8 +24,8 @@ export class GovernanceSimulatorService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.scenarios) this.scenarios = new Map(state.scenarios as any);
-    if (state.results) this.results = state.results as any;
+    if (state.scenarios) this.scenarios = new Map(state.scenarios as [string, unknown][]);
+    if (state.results) this.results = state.results as never;
   }
 
   async loadPersistedState(): Promise<void> {

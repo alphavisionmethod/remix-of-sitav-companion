@@ -24,7 +24,7 @@ export class PackManagementService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.packs) this.packs = new Map(state.packs as any);
+    if (state.packs) this.packs = new Map(state.packs as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

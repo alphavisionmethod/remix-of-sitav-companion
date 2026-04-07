@@ -386,10 +386,10 @@ export class AgentHealthMonitorService {
 
   hydrateState(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.metrics) this.metrics = new Map(state.metrics as any);
-    if (state.snapshots) this.snapshots = new Map(state.snapshots as any);
-    if (state.restartTimestamps) this.restartTimestamps = new Map(state.restartTimestamps as any);
-    if (state.budgets) this.budgets = new Map(state.budgets as any);
+    if (state.metrics) this.metrics = new Map(state.metrics as [string, unknown][]);
+    if (state.snapshots) this.snapshots = new Map(state.snapshots as [string, unknown][]);
+    if (state.restartTimestamps) this.restartTimestamps = new Map(state.restartTimestamps as [string, unknown][]);
+    if (state.budgets) this.budgets = new Map(state.budgets as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

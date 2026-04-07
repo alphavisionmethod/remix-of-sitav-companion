@@ -72,8 +72,8 @@ class MultiAgentDebateEngine {
       user_id: userId,
       question,
       domain,
-      participants: participantConfigs as any,
-      votes: [] as any,
+      participants: participantConfigs as unknown,
+      votes: [] as unknown,
       status: 'deliberating',
     });
 

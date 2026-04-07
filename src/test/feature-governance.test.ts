@@ -382,19 +382,19 @@ describe("Feature Design Intake Protocol", () => {
     });
 
     it("catches missing featureId", () => {
-      const errors = validateIntake(makeFullIntake({ featureId: "" } as any));
+      const errors = validateIntake(makeFullIntake({ featureId: "" } as never));
       expect(errors).toContain("Missing featureId");
     });
 
     it("catches missing outcome section", () => {
       const intake = { ...makeFullIntake() };
-      const partial = { ...intake, outcome: undefined } as any;
+      const partial = { ...intake, outcome: undefined } as unknown;
       const errors = validateIntake(partial);
       expect(errors.some(e => e.includes("outcome"))).toBe(true);
     });
 
     it("catches missing governance section", () => {
-      const partial = { ...makeFullIntake(), governance: undefined } as any;
+      const partial = { ...makeFullIntake(), governance: undefined } as unknown;
       const errors = validateIntake(partial);
       expect(errors.some(e => e.includes("governance"))).toBe(true);
     });
@@ -613,7 +613,7 @@ describe("Capability Protocol", () => {
 
     it("rejects invalid capability class", () => {
       const errors = validateCapabilityRegistration(makeValidCapability({
-        capabilityClass: "invalid-class" as any,
+        capabilityClass: "invalid-class" as unknown,
       }));
       expect(errors.some(e => e.includes("Invalid capabilityClass"))).toBe(true);
     });
@@ -661,7 +661,7 @@ describe("Capability Protocol", () => {
 
     it("rejects invalid registration", () => {
       const registry = new CapabilityRegistry();
-      const errors = registry.register({} as any);
+      const errors = registry.register({} as never);
       expect(errors.length).toBeGreaterThan(0);
       expect(registry.count()).toBe(0);
     });

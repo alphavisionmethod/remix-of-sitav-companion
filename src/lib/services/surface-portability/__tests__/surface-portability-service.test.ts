@@ -37,7 +37,7 @@ describe("Surface Portability Service", () => {
 
   it("index returns 100 for all-100 capabilities", async () => {
     const { getSurfacePortabilityIndex } = await import("@/lib/services/surface-portability/surface-portability-service");
-    const records = [{ portability_score: 100 }, { portability_score: 100 }] as any[];
+    const records = [{ portability_score: 100 }, { portability_score: 100 }] as unknown[];
     expect(getSurfacePortabilityIndex(records)).toBe(100);
   });
 

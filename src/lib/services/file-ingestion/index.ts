@@ -22,7 +22,7 @@ export class FileIngestionService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.files) this.files = state.files as any;
+    if (state.files) this.files = state.files as never;
   }
 
   async loadPersistedState(): Promise<void> {

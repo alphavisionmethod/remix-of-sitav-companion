@@ -177,9 +177,9 @@ export class InferenceGatewayService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.providers) this.providers = new Map(state.providers as any);
-    if (state.cache) this.cache = new Map(state.cache as any);
-    if (state.history) this.history = state.history as any;
+    if (state.providers) this.providers = new Map(state.providers as [string, unknown][]);
+    if (state.cache) this.cache = new Map(state.cache as [string, unknown][]);
+    if (state.history) this.history = state.history as never;
   }
 
   async loadPersistedState(): Promise<void> {

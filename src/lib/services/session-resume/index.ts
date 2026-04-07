@@ -88,7 +88,7 @@ export class SessionResumeService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.tokens) this.tokens = new Map(state.tokens as any);
+    if (state.tokens) this.tokens = new Map(state.tokens as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

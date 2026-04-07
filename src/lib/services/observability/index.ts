@@ -166,10 +166,10 @@ export class ObservabilityService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.metrics) this.metrics = new Map(state.metrics as any);
-    if (state.slos) this.slos = new Map(state.slos as any);
-    if (state.alerts) this.alerts = new Map(state.alerts as any);
-    if (state.triggeredAlerts) this.triggeredAlerts = state.triggeredAlerts as any;
+    if (state.metrics) this.metrics = new Map(state.metrics as [string, unknown][]);
+    if (state.slos) this.slos = new Map(state.slos as [string, unknown][]);
+    if (state.alerts) this.alerts = new Map(state.alerts as [string, unknown][]);
+    if (state.triggeredAlerts) this.triggeredAlerts = state.triggeredAlerts as never;
   }
 
   async loadPersistedState(): Promise<void> {

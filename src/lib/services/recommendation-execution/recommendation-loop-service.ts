@@ -20,7 +20,7 @@ const VALID_TRANSITIONS: Record<string, string[]> = {
 };
 
 export async function advanceRecommendationLifecycle(id: string, newStatus: string) {
-  const { data: rec, error: fetchErr } = await (supabase as any)
+  const { data: rec, error: fetchErr } = await (supabase as unknown)
     .from("ai_workforce_recommendations")
     .select("status")
     .eq("id", id)
@@ -34,7 +34,7 @@ export async function advanceRecommendationLifecycle(id: string, newStatus: stri
     throw new Error(`Invalid transition: ${currentStatus} → ${newStatus}. Allowed: ${allowed.join(", ")}`);
   }
 
-  const { error } = await (supabase as any)
+  const { error } = await (supabase as unknown)
     .from("ai_workforce_recommendations")
     .update({ status: newStatus, updated_at: new Date().toISOString() })
     .eq("id", id);
@@ -42,7 +42,7 @@ export async function advanceRecommendationLifecycle(id: string, newStatus: stri
 }
 
 export async function bindToExecution(recommendationId: string, executionRef: string) {
-  const { error } = await (supabase as any)
+  const { error } = await (supabase as unknown)
     .from("ai_workforce_recommendations")
     .update({
       execution_binding_status: "bound",
@@ -54,7 +54,7 @@ export async function bindToExecution(recommendationId: string, executionRef: st
 }
 
 export async function bindToRemediationProgram(recommendationId: string, programId: string) {
-  const { error } = await (supabase as any)
+  const { error } = await (supabase as unknown)
     .from("ai_workforce_recommendations")
     .update({
       linked_remediation_program_id: programId,
@@ -79,7 +79,7 @@ export async function verifyOutcome(
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabase as unknown)
     .from("outcome_verifications")
     .insert({
       user_id: user.id,
@@ -93,7 +93,7 @@ export async function verifyOutcome(
   if (error) throw error;
 
   // Link back to recommendation
-  await (supabase as any)
+  await (supabase as unknown)
     .from("ai_workforce_recommendations")
     .update({
       outcome_verification_id: data.id,
@@ -120,7 +120,7 @@ export async function createExecutionBinding(binding: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabase as unknown)
     .from("recommendation_execution_bindings")
     .insert({ ...binding, user_id: user.id })
     .select()
@@ -128,7 +128,7 @@ export async function createExecutionBinding(binding: {
   if (error) throw error;
 
   // Update recommendation lifecycle
-  await (supabase as any)
+  await (supabase as unknown)
     .from("ai_workforce_recommendations")
     .update({
       lifecycle_status: "bound_to_execution",
@@ -142,7 +142,7 @@ export async function createExecutionBinding(binding: {
 }
 
 export async function fetchExecutionBindings(recommendationId?: string) {
-  let query = (supabase as any)
+  let query = (supabase as unknown)
     .from("recommendation_execution_bindings")
     .select("*")
     .order("created_at", { ascending: false });
@@ -161,14 +161,14 @@ export async function logExecutionEvent(event: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { error } = await (supabase as any)
+  const { error } = await (supabase as unknown)
     .from("recommendation_execution_events")
     .insert({ ...event, user_id: user.id, created_by_user_id: user.id });
   if (error) throw error;
 }
 
 export async function fetchExecutionEvents(bindingId: string) {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabase as unknown)
     .from("recommendation_execution_events")
     .select("*")
     .eq("binding_id", bindingId)
@@ -189,14 +189,14 @@ export async function recordLearningSignal(signal: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { error } = await (supabase as any)
+  const { error } = await (supabase as unknown)
     .from("recommendation_learning_signals")
     .insert({ ...signal, user_id: user.id });
   if (error) throw error;
 }
 
 export async function fetchLearningSignals(recommendationId: string) {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabase as unknown)
     .from("recommendation_learning_signals")
     .select("*")
     .eq("recommendation_id", recommendationId)
@@ -220,7 +220,7 @@ export async function createOutcomeVerification(verification: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabase as unknown)
     .from("recommendation_outcome_verifications")
     .insert({ ...verification, user_id: user.id })
     .select()
@@ -228,7 +228,7 @@ export async function createOutcomeVerification(verification: {
   if (error) throw error;
 
   // Update lifecycle
-  await (supabase as any)
+  await (supabase as unknown)
     .from("ai_workforce_recommendations")
     .update({
       lifecycle_status: "outcome_verified",
@@ -241,7 +241,7 @@ export async function createOutcomeVerification(verification: {
 }
 
 export async function fetchOutcomeVerificationsNew(recommendationId?: string) {
-  let query = (supabase as any)
+  let query = (supabase as unknown)
     .from("recommendation_outcome_verifications")
     .select("*")
     .order("created_at", { ascending: false });
@@ -267,7 +267,7 @@ export async function createRemediationTask(task: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabase as unknown)
     .from("remediation_tasks")
     .insert({ ...task, user_id: user.id })
     .select()
@@ -277,7 +277,7 @@ export async function createRemediationTask(task: {
 }
 
 export async function fetchRemediationTasks(programId?: string) {
-  let query = (supabase as any)
+  let query = (supabase as unknown)
     .from("remediation_tasks")
     .select("*")
     .order("created_at", { ascending: false });
@@ -290,7 +290,7 @@ export async function fetchRemediationTasks(programId?: string) {
 // ── Existing functions (kept) ──
 
 export async function fetchRemediationPrograms() {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabase as unknown)
     .from("remediation_programs")
     .select("*")
     .order("created_at", { ascending: false });
@@ -311,7 +311,7 @@ export async function createRemediationProgram(program: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabase as unknown)
     .from("remediation_programs")
     .insert({ ...program, user_id: user.id })
     .select()
@@ -321,7 +321,7 @@ export async function createRemediationProgram(program: {
 }
 
 export async function fetchOutcomeVerifications() {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabase as unknown)
     .from("outcome_verifications")
     .select("*")
     .order("created_at", { ascending: false });
@@ -336,7 +336,7 @@ export function getValidTransitions(currentStatus: string): string[] {
 // ── Pipeline Summary ──
 
 export async function fetchClosureSummary() {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabase as unknown)
     .from("v_recommendation_closure_summary")
     .select("*");
   if (error) throw error;
@@ -344,7 +344,7 @@ export async function fetchClosureSummary() {
 }
 
 export async function fetchExecutionPipeline() {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabase as unknown)
     .from("v_recommendation_execution_pipeline")
     .select("*");
   if (error) throw error;

@@ -173,10 +173,10 @@ const WorkflowsCenter = () => {
                         {isStuck && <TrustBadge level="low-confidence" label="Stuck" size="sm" />}
                       </div>
                       <p className="text-sm font-medium text-foreground">
-                        {(run as any).workflows?.name || `Workflow ${run.workflow_id.slice(0, 8)}`}
+                        {(run as Record<string, unknown>).workflows?.name || `Workflow ${run.workflow_id.slice(0, 8)}`}
                       </p>
                       <p className="mt-0.5 text-xs text-muted-foreground">
-                        Step {run.current_step} · {timeInState(run)} · {(run as any).workflows?.trigger_event || "unknown trigger"}
+                        Step {run.current_step} · {timeInState(run)} · {(run as Record<string, unknown>).workflows?.trigger_event || "unknown trigger"}
                       </p>
                     </div>
                     <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0 mt-2" />
@@ -191,7 +191,7 @@ const WorkflowsCenter = () => {
               <>
                 <SitaCard hover={false} glow className="p-5">
                   <SitaCardTitle sub={`Status: ${selected.status}`}>
-                    {(selected as any).workflows?.name || "Workflow Run"}
+                    {(selected as Record<string, unknown>).workflows?.name || "Workflow Run"}
                   </SitaCardTitle>
                   <div className="mt-4 space-y-3">
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">State</span><StateBadge state={statusToState(selected.status)} /></div>

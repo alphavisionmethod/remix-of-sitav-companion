@@ -24,7 +24,7 @@ export class AdvisorMemoryService {
       memory_type: "summary",
       content: summary,
       metadata: metadata ?? {},
-    } as any);
+    } as never);
   }
 
   async saveUserFact(advisorId: string, userId: string, fact: string, metadata?: Record<string, unknown>): Promise<void> {
@@ -38,7 +38,7 @@ export class AdvisorMemoryService {
       user_id: userId,
       memory_type: "fact",
       content: fact,
-      metadata: metadata ?? {} as any,
+      metadata: metadata ?? {} as never,
     });
   }
 

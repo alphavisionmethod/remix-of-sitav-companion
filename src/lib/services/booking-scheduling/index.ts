@@ -176,8 +176,8 @@ export class BookingSchedulingService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.bookings) this.bookings = new Map(state.bookings as any);
-    if (state.availability) this.availability = new Map(state.availability as any);
+    if (state.bookings) this.bookings = new Map(state.bookings as [string, unknown][]);
+    if (state.availability) this.availability = new Map(state.availability as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

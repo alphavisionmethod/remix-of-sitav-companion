@@ -24,7 +24,7 @@ export class OpportunityEngineService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.signals) this.signals = state.signals as any;
+    if (state.signals) this.signals = state.signals as never;
   }
 
   async loadPersistedState(): Promise<void> {

@@ -109,7 +109,7 @@ export class AccuracyClassifierService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.config) this.config = state.config as any;
+    if (state.config) this.config = state.config as never;
   }
 
   async loadPersistedState(): Promise<void> {

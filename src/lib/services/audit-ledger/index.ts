@@ -24,7 +24,7 @@ export class AuditLedgerService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.entries) this.entries = state.entries as any;
+    if (state.entries) this.entries = state.entries as never;
   }
 
   async loadPersistedState(): Promise<void> {

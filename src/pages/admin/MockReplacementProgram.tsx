@@ -77,7 +77,7 @@ function MockFormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode
             <div><Label>Mock Source</Label><Input value={form.mock_source} onChange={e => setForm(f => ({ ...f, mock_source: e.target.value }))} placeholder="MOCK_DEMO_CUSTOMERS" /></div>
             <div>
               <Label>Mock Type</Label>
-              <Select value={form.mock_type} onValueChange={v => setForm(f => ({ ...f, mock_type: v as any }))}>
+              <Select value={form.mock_type} onValueChange={v => setForm(f => ({ ...f, mock_type: v as unknown }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>{DEMO_MOCK_TYPES.map(t => <SelectItem key={t} value={t}>{t.replace(/_/g, " ")}</SelectItem>)}</SelectContent>
               </Select>
@@ -88,7 +88,7 @@ function MockFormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode
           <div className="grid grid-cols-3 gap-3">
             <div>
               <Label>Priority</Label>
-              <Select value={form.migration_priority} onValueChange={v => setForm(f => ({ ...f, migration_priority: v as any }))}>
+              <Select value={form.migration_priority} onValueChange={v => setForm(f => ({ ...f, migration_priority: v as unknown }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>{DEMO_PRIORITIES.map(p => <SelectItem key={p} value={p} className="capitalize">{p}</SelectItem>)}</SelectContent>
               </Select>
@@ -383,7 +383,7 @@ export default function MockReplacementProgram() {
                       <TableCell className="text-xs text-muted-foreground">{row.migration_owner || "—"}</TableCell>
                       <TableCell><Badge variant="outline" className={`capitalize ${PRIORITY_COLORS[row.migration_priority]}`}>{row.migration_priority}</Badge></TableCell>
                       <TableCell>
-                        <Select value={row.migration_status} onValueChange={v => updateStatus.mutate({ id: row.id, status: v as any })}>
+                        <Select value={row.migration_status} onValueChange={v => updateStatus.mutate({ id: row.id, status: v as unknown })}>
                           <SelectTrigger className="h-7 text-xs w-[120px]"><SelectValue /></SelectTrigger>
                           <SelectContent>{DEMO_STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}</SelectContent>
                         </Select>

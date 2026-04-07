@@ -150,8 +150,8 @@ export class OutcomeEngineService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.outcomes) this.outcomes = new Map(state.outcomes as any);
-    if (state.impacts) this.impacts = state.impacts as any;
+    if (state.outcomes) this.outcomes = new Map(state.outcomes as [string, unknown][]);
+    if (state.impacts) this.impacts = state.impacts as never;
   }
 
   async loadPersistedState(): Promise<void> {

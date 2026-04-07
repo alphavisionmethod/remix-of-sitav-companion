@@ -65,7 +65,7 @@ export function PostArrivalDesktop({ onDismiss }: { onDismiss: () => void }) {
     if (!user) return;
     const load = async () => {
       try {
-        const { data } = await (supabase as any)
+        const { data } = await (supabase as unknown)
           .from("user_memory")
           .select("key, value")
           .eq("user_id", user.id);

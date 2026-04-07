@@ -106,7 +106,7 @@ export class ContextAssembler {
 
     try {
       // Best-effort file retrieval — table may not exist in all deployments
-      const { data: files } = await (supabase as any)
+      const { data: files } = await (supabase as unknown)
         .from("documents")
         .select("id, title, content, updated_at")
         .in("id", fileIds)

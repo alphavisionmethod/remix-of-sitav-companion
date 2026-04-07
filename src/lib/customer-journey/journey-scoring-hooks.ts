@@ -12,7 +12,7 @@ export function useBlockerScores(resolved?: boolean) {
   return useQuery({
     queryKey: ["launch-blocker-scores", resolved],
     queryFn: async () => {
-      let q = (supabase as any)
+      let q = (supabase as unknown)
         .from("launch_blocker_scores")
         .select("*")
         .order("severity_score", { ascending: false });
@@ -28,7 +28,7 @@ export function useResolveBlockerScore() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (supabase as any)
+      const { error } = await (supabase as unknown)
         .from("launch_blocker_scores")
         .update({ resolved: true, resolved_at: new Date().toISOString() })
         .eq("id", id);
@@ -44,7 +44,7 @@ export function useModeComparisons() {
   return useQuery({
     queryKey: ["customer-journey-mode-comparisons"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("customer_journey_mode_comparisons")
         .select("*")
         .order("updated_at", { ascending: false });
@@ -67,7 +67,7 @@ export function useUpsertModeComparison() {
     }) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("customer_journey_mode_comparisons")
         .upsert(
           { ...comp, user_id: user.id, updated_at: new Date().toISOString() },

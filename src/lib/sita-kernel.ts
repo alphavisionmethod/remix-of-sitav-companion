@@ -428,10 +428,10 @@ export class SitaKernel {
     // Re-execute with the original payload, bypassing approval gate
     const result = await this.chain.execute({
       intent: `resume:${approvalId}`,
-      domain: (approval as any).domain ?? "system",
-      capabilityId: (approval as any).capabilityId ?? "unknown",
+      domain: (approval as Record<string, unknown>).domain ?? "system",
+      capabilityId: (approval as Record<string, unknown>).capabilityId ?? "unknown",
       payload: {
-        ...((approval as any).payload ?? {}),
+        ...((approval as Record<string, unknown>).payload ?? {}),
         _resumedFromApproval: approvalId,
       },
     });

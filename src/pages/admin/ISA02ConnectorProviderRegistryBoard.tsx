@@ -129,7 +129,7 @@ export default function ISA02ConnectorProviderRegistryBoard() {
                     {categoryIcons[cap.category] || <Plug className="h-4 w-4" />}
                     {cap.display_name}
                   </TableCell>
-                  <TableCell>{(cap as any).provider_families?.name || "—"}</TableCell>
+                  <TableCell>{(cap as Record<string, unknown>).provider_families?.name || "—"}</TableCell>
                   <TableCell><Badge variant="outline">{cap.category}</Badge></TableCell>
                   <TableCell className="text-xs text-muted-foreground">{cap.auth_type || "oauth2"}</TableCell>
                   <TableCell>
@@ -170,14 +170,14 @@ export default function ISA02ConnectorProviderRegistryBoard() {
                   <CardContent className="pt-4">
                     <div className="flex items-center justify-between mb-2">
                       <p className="font-medium text-sm">
-                        {(svc as any).provider_capabilities?.display_name || svc.account_label || "Service"}
+                        {(svc as Record<string, unknown>).provider_capabilities?.display_name || svc.account_label || "Service"}
                       </p>
                       <Badge className={healthColors[svc.health_state || "unknown"]}>
                         {svc.health_state || "unknown"}
                       </Badge>
                     </div>
                     <div className="space-y-1 text-xs text-muted-foreground">
-                      <p>Family: {(svc as any).provider_families?.name || "—"}</p>
+                      <p>Family: {(svc as Record<string, unknown>).provider_families?.name || "—"}</p>
                       <p>Mode: <Badge variant="outline" className="text-xs ml-1">{svc.mode || "real"}</Badge></p>
                       <p>Access: <Badge variant="outline" className="text-xs ml-1">{svc.read_write_mode || "read_only"}</Badge></p>
                       {svc.last_sync_at && <p>Last sync: {new Date(svc.last_sync_at).toLocaleDateString()}</p>}

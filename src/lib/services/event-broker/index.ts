@@ -22,7 +22,7 @@ export class EventBrokerService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.subscriptions) this.subscriptions = state.subscriptions as any;
+    if (state.subscriptions) this.subscriptions = state.subscriptions as never;
   }
 
   async loadPersistedState(): Promise<void> {

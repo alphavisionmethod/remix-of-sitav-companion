@@ -622,7 +622,7 @@ export function InstallScopeSelector({ scope, onSelect, allowedScopes }: {
 // ── RUX06: Sandbox Recommendation Card ──
 
 const SANDBOX_LABELS: Record<AppSandboxLevel, { label: string; desc: string; icon: typeof Lock }> = {
-  standard: { label: "Standard access", desc: "Full access to allowed resources", icon: Check as any },
+  standard: { label: "Standard access", desc: "Full access to allowed resources", icon: Check as unknown },
   restricted: { label: "Restricted sandbox", desc: "Limited to its own data and selected files", icon: Lock },
   "limited-files": { label: "Limited file access", desc: "Can open documents you choose", icon: FileText },
   "enterprise-managed": { label: "Managed by your organization", desc: "Policy controls what this app can do", icon: Building },

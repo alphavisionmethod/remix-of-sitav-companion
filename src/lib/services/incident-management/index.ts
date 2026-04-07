@@ -282,8 +282,8 @@ export class IncidentManagementService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.incidents) this.incidents = new Map(state.incidents as any);
-    if (state.postmortems) this.postmortems = new Map(state.postmortems as any);
+    if (state.incidents) this.incidents = new Map(state.incidents as [string, unknown][]);
+    if (state.postmortems) this.postmortems = new Map(state.postmortems as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

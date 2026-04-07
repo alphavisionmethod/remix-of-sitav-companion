@@ -112,7 +112,7 @@ export default function AIG08DegradedDiagnostics() {
                   return (
                     <TableRow key={d.id}>
                       <TableCell>
-                        <Badge variant={SEVERITY_VARIANT[d.severity] as any} className="text-xs capitalize">
+                        <Badge variant={SEVERITY_VARIANT[d.severity] as unknown} className="text-xs capitalize">
                           {d.severity}
                         </Badge>
                       </TableCell>

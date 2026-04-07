@@ -12,7 +12,7 @@ const pages = [
   ["AIT02RoleRegistry", () => import("@/pages/admin/AIT02RoleRegistry")],
   ["AIT03TaskInvocation", () => import("@/pages/admin/AIT03TaskInvocation")],
   ["AIT04to08Boards", () => import("@/pages/admin/AIT04to08Boards")],
-  ["AIT05CostEfficiency", () => import("@/pages/admin/AIT05CostEfficiency").then(m => ({ default: (m as any).default || (m as any).AIT05CostEfficiency }))],
+  ["AIT05CostEfficiency", () => import("@/pages/admin/AIT05CostEfficiency").then(m => ({ default: (m as Record<string, unknown>).default || (m as Record<string, unknown>).AIT05CostEfficiency }))],
   ["AND01AndroidEcosystemCenter", () => import("@/pages/admin/AND01AndroidEcosystemCenter")],
   ["AND02WearOSExperience", () => import("@/pages/admin/AND02WearOSExperience")],
   ["AND03AndroidTrustApprovals", () => import("@/pages/admin/AND03AndroidTrustApprovals")],

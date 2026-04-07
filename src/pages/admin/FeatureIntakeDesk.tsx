@@ -54,7 +54,7 @@ const FeatureIntakeDesk = () => {
         journey_criticality: form.journeyCriticality,
         launch_criticality: form.launchCriticality,
         status: "draft",
-      } as any);
+      } as never);
       if (error) throw error;
     },
     onSuccess: () => {

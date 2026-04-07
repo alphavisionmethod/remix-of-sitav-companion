@@ -145,7 +145,7 @@ export function useDemoMode() {
     queryKey: ["demo-mode", user?.id],
     queryFn: async () => {
       if (!user) return true;
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("profiles")
         .select("demo_mode")
         .eq("user_id", user.id)
@@ -159,9 +159,9 @@ export function useDemoMode() {
   const toggleDemoMode = useMutation({
     mutationFn: async (newValue: boolean) => {
       if (!user) throw new Error("Not authenticated");
-      const { error } = await (supabase as any)
+      const { error } = await (supabase as unknown)
         .from("profiles")
-        .update({ demo_mode: newValue } as any)
+        .update({ demo_mode: newValue } as never)
         .eq("user_id", user.id);
       if (error) throw error;
     },
@@ -215,7 +215,7 @@ export function useApprovalQueue() {
     queryKey: ["approval-queue", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("approval_queue")
         .select("*")
         .eq("user_id", user.id)
@@ -230,13 +230,13 @@ export function useApprovalQueue() {
 
   const decide = useMutation({
     mutationFn: async ({ id, status, reason }: { id: string; status: "approved" | "rejected"; reason?: string }) => {
-      const { error } = await (supabase as any)
+      const { error } = await (supabase as unknown)
         .from("approval_queue")
         .update({
           status,
           decided_at: new Date().toISOString(),
           decision_reason: reason || null,
-        } as any)
+        } as never)
         .eq("id", id);
       if (error) throw error;
     },

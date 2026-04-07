@@ -32,8 +32,8 @@ describe("Capability Registry — Integration", () => {
     });
 
     expect(result.success).toBe(true);
-    expect((result as any).data?.echo).toBe("hello");
-    expect(typeof (result as any).latencyMs).toBe("number");
+    expect((result as Record<string, unknown>).data?.echo).toBe("hello");
+    expect(typeof (result as Record<string, unknown>).latencyMs).toBe("number");
   });
 
   it("returns error for unregistered capability", async () => {
@@ -54,7 +54,7 @@ describe("Capability Registry — Integration", () => {
       capabilityKey: "",
       userId: "",
       surface: "",
-      mode: "" as any,
+      mode: "" as unknown,
       params: {},
     });
 
@@ -78,6 +78,6 @@ describe("Capability Registry — Integration", () => {
 
     expect(result.success).toBe(false);
     expect(result.error).toContain("Intentional test failure");
-    expect(typeof (result as any).latencyMs).toBe("number");
+    expect(typeof (result as Record<string, unknown>).latencyMs).toBe("number");
   });
 });

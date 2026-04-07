@@ -20,7 +20,7 @@ export class GroundednessGateService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.checks) this.checks = state.checks as any;
+    if (state.checks) this.checks = state.checks as never;
   }
 
   async loadPersistedState(): Promise<void> {

@@ -195,8 +195,8 @@ export class ModelRouterService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.endpoints) this.endpoints = new Map(state.endpoints as any);
-    if (state.routingHistory) this.routingHistory = state.routingHistory as any;
+    if (state.endpoints) this.endpoints = new Map(state.endpoints as [string, unknown][]);
+    if (state.routingHistory) this.routingHistory = state.routingHistory as never;
   }
 
   async loadPersistedState(): Promise<void> {

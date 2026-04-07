@@ -18,7 +18,7 @@ export const useFeatureIntakes = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_intake_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return data as unknown[];
   }
 });
 
@@ -28,7 +28,7 @@ export const useCreateIntake = () => {
     mutationFn: async (intake: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await fromTable('feature_intake_records').insert({ ...intake, user_id: user.id } as any).select().single();
+      const { data, error } = await fromTable('feature_intake_records').insert({ ...intake, user_id: user.id } as never).select().single();
       if (error) throw error;
       return data;
     },
@@ -43,7 +43,7 @@ export const useCapabilities = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('capability_registry').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return data as unknown[];
   }
 });
 
@@ -53,7 +53,7 @@ export const useCreateCapability = () => {
     mutationFn: async (cap: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await fromTable('capability_registry').insert({ ...cap, user_id: user.id } as any).select().single();
+      const { data, error } = await fromTable('capability_registry').insert({ ...cap, user_id: user.id } as never).select().single();
       if (error) throw error;
       return data;
     },
@@ -68,7 +68,7 @@ export const useFeatureSpecs = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_spec_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return data as unknown[];
   }
 });
 
@@ -78,7 +78,7 @@ export const useCreateSpec = () => {
     mutationFn: async (spec: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await fromTable('feature_spec_records').insert({ ...spec, user_id: user.id } as any).select().single();
+      const { data, error } = await fromTable('feature_spec_records').insert({ ...spec, user_id: user.id } as never).select().single();
       if (error) throw error;
       return data;
     },
@@ -93,7 +93,7 @@ export const useOwnerDecisions = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_owner_decisions').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return data as unknown[];
   }
 });
 
@@ -103,7 +103,7 @@ export const useCreateOwnerDecision = () => {
     mutationFn: async (dec: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await fromTable('feature_owner_decisions').insert({ ...dec, user_id: user.id } as any).select().single();
+      const { data, error } = await fromTable('feature_owner_decisions').insert({ ...dec, user_id: user.id } as never).select().single();
       if (error) throw error;
       return data;
     },
@@ -118,7 +118,7 @@ export const useComplianceRecords = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_compliance_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return data as unknown[];
   }
 });
 
@@ -128,7 +128,7 @@ export const useExecutionPaths = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_execution_paths').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return data as unknown[];
   }
 });
 
@@ -138,7 +138,7 @@ export const useCreateExecutionPath = () => {
     mutationFn: async (path: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await fromTable('feature_execution_paths').insert({ ...path, user_id: user.id } as any).select().single();
+      const { data, error } = await fromTable('feature_execution_paths').insert({ ...path, user_id: user.id } as never).select().single();
       if (error) throw error;
       return data;
     },
@@ -153,7 +153,7 @@ export const useRolloutRecords = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_rollout_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return data as unknown[];
   }
 });
 
@@ -163,7 +163,7 @@ export const useCreateRollout = () => {
     mutationFn: async (rollout: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await fromTable('feature_rollout_records').insert({ ...rollout, user_id: user.id } as any).select().single();
+      const { data, error } = await fromTable('feature_rollout_records').insert({ ...rollout, user_id: user.id } as never).select().single();
       if (error) throw error;
       return data;
     },
@@ -178,7 +178,7 @@ export const useDeprecationRecords = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_deprecation_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return data as unknown[];
   }
 });
 
@@ -188,7 +188,7 @@ export const useCreateDeprecation = () => {
     mutationFn: async (dep: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await fromTable('feature_deprecation_records').insert({ ...dep, user_id: user.id } as any).select().single();
+      const { data, error } = await fromTable('feature_deprecation_records').insert({ ...dep, user_id: user.id } as never).select().single();
       if (error) throw error;
       return data;
     },
@@ -203,7 +203,7 @@ export const useReadinessGates = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_readiness_gates').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return data as unknown[];
   }
 });
 
@@ -213,6 +213,6 @@ export const useGeneratedTruthImpacts = () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromTable('feature_generated_truth_impacts').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return data as unknown[];
   }
 });

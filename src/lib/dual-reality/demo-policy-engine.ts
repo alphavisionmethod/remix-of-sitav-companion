@@ -45,7 +45,7 @@ export async function loadKillSwitches(): Promise<void> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    const { data } = await (supabase as any)
+    const { data } = await (supabase as unknown)
       .from("demo_kill_switches")
       .select("key, enabled")
       .eq("user_id", user.id);
@@ -72,7 +72,7 @@ export async function setKillSwitch(
   value: boolean,
   reason?: string
 ): Promise<void> {
-  (killSwitchCache as any)[key] = value;
+  (killSwitchCache as unknown)[key] = value;
 
   try {
     const { data: { user } } = await supabase.auth.getUser();

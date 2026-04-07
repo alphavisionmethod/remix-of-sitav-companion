@@ -84,7 +84,7 @@ export async function persistPolicyEvaluation(
       domain: context.domain ?? null,
       capability_id: context.capabilityId ?? null,
       risk_tier: context.riskTier ?? null,
-      action_target: (context as any).actionTarget ?? null,
+      action_target: (context as Record<string, unknown>).actionTarget ?? null,
       actor_id: context.userId ?? null,
       evaluation_time_ms: result.evaluationTimeMs,
       confidence: null,

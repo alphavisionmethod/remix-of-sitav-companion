@@ -110,7 +110,7 @@ export async function persistBlockerScore(input: BlockerInput): Promise<void> {
   // Only persist non-working statuses
   if (input.status === "working") return;
 
-  await (supabase as any)
+  await (supabase as unknown)
     .from("launch_blocker_scores")
     .upsert(
       {
@@ -143,7 +143,7 @@ export async function persistModeComparison(
     else comparison_summary = "both_issues";
   }
 
-  await (supabase as any)
+  await (supabase as unknown)
     .from("customer_journey_mode_comparisons")
     .upsert(
       {

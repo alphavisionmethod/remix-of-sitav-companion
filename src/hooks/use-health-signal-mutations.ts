@@ -16,7 +16,7 @@ export function useToggleSignalConsent() {
 
       if (enabled) {
         // Upsert: enable consent
-        const { error } = await (supabase as any)
+        const { error } = await (supabase as unknown)
           .from("health_signal_consents")
           .upsert({
             user_id: user.id,
@@ -28,7 +28,7 @@ export function useToggleSignalConsent() {
         if (error) throw error;
       } else {
         // Revoke: set revoked_at
-        const { error } = await (supabase as any)
+        const { error } = await (supabase as unknown)
           .from("health_signal_consents")
           .update({ revoked_at: new Date().toISOString(), read_permission: false })
           .eq("user_id", user.id)
@@ -49,7 +49,7 @@ export function useUpdateReadinessState() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, readinessLevel }: { id: string; readinessLevel: string }) => {
-      const { error } = await (supabase as any)
+      const { error } = await (supabase as unknown)
         .from("readiness_states")
         .update({ readiness_level: readinessLevel, assessed_at: new Date().toISOString() })
         .eq("id", id);

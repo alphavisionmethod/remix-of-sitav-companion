@@ -10,7 +10,7 @@ function useApprovalQueueStats() {
   return useQuery({
     queryKey: ["rex02-approval-queue-stats"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("ai_workforce_approval_queue")
         .select("status, risk_tier, created_at, resolved_at, updated_at");
       if (error) throw error;

@@ -1,16 +1,18 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Centralized Supabase Table Accessor
 // Single cast point for dynamic table name queries.
-// All data-service files use this instead of inline `as any`.
+// All data-service files use this instead of inline casts.
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
+
+type TableName = keyof Database["public"]["Tables"];
 
 /**
- * Access a Supabase table by dynamic name.
- * This is the ONLY place in the codebase where `as any` is used
- * for `.from()` calls — all other files use typed literals or this helper.
+ * Access a Supabase table by dynamic name with full type safety.
+ * This is the ONLY accessor for `.from()` calls in the codebase.
  */
-export function fromTable(table: string) {
-  return (supabase as any).from(table);
+export function fromTable<T extends TableName>(table: T) {
+  return supabase.from(table);
 }

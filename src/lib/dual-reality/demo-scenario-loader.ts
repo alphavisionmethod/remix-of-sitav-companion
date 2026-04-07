@@ -71,7 +71,7 @@ export async function loadScenario(scenarioKey: string): Promise<LoadedScenario 
   if (!user) return null;
 
   // Load scenario
-  const { data: scenario } = await (supabase as any)
+  const { data: scenario } = await (supabase as unknown)
     .from("demo_scenarios")
     .select("*")
     .eq("user_id", user.id)
@@ -147,7 +147,7 @@ export async function listScenarios(): Promise<Array<{
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
-  const { data } = await (supabase as any)
+  const { data } = await (supabase as unknown)
     .from("demo_scenarios")
     .select("id, scenario_key, name, category, status, active, domain_coverage")
     .eq("user_id", user.id)

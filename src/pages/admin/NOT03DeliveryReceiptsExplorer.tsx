@@ -25,7 +25,7 @@ export default function NOT03DeliveryReceiptsExplorer() {
   const { data: receipts = [], isLoading } = useQuery({
     queryKey: ["notification-delivery-receipts"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown)
         .from("notification_delivery_receipts")
         .select("*")
         .order("sent_at", { ascending: false })

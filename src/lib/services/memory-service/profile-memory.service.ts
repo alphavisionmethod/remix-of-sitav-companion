@@ -42,7 +42,7 @@ export function storeProfileMemory(params: {
       source: memory.source,
       confidence: memory.confidence,
       tags: [],
-    } as any, { scope: "private", domain: params.domain }).catch(() => {});
+    } as never, { scope: "private", domain: params.domain }).catch(() => {});
   } else {
     persistMemoryEntry({
       id: memory.id,
@@ -52,7 +52,7 @@ export function storeProfileMemory(params: {
       source: memory.source,
       confidence: memory.confidence,
       tags: [],
-    } as any, { scope: "private", domain: params.domain }).catch(() => {});
+    } as never, { scope: "private", domain: params.domain }).catch(() => {});
   }
 
   profileStore.set(params.key, memory);

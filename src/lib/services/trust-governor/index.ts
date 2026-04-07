@@ -185,8 +185,8 @@ export class TrustGovernorService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.profiles) this.profiles = new Map(state.profiles as any);
-    if (state.events) this.events = state.events as any;
+    if (state.profiles) this.profiles = new Map(state.profiles as [string, unknown][]);
+    if (state.events) this.events = state.events as never;
   }
 
   async loadPersistedState(): Promise<void> {

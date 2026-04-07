@@ -144,7 +144,7 @@ export class OwnerControlRoomService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.delegations) this.delegations = new Map(state.delegations as any);
+    if (state.delegations) this.delegations = new Map(state.delegations as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

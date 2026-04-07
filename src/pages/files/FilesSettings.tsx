@@ -42,14 +42,14 @@ const FilesSettings = () => {
   useEffect(() => {
     if (savedSettings) {
       setSettings({
-        auto_classify: (savedSettings as any).auto_classify ?? true,
-        auto_extract: (savedSettings as any).auto_extract ?? true,
-        generate_suggestions: (savedSettings as any).generate_suggestions ?? true,
-        auto_link: (savedSettings as any).auto_link ?? false,
-        boardroom_attach: (savedSettings as any).boardroom_attach ?? true,
-        default_sensitivity: (savedSettings as any).default_sensitivity ?? "internal",
-        default_retention: (savedSettings as any).default_retention ?? "7 years",
-        memory_write_permission: (savedSettings as any).memory_write_permission ?? "allowed_with_review",
+        auto_classify: (savedSettings as Record<string, unknown>).auto_classify ?? true,
+        auto_extract: (savedSettings as Record<string, unknown>).auto_extract ?? true,
+        generate_suggestions: (savedSettings as Record<string, unknown>).generate_suggestions ?? true,
+        auto_link: (savedSettings as Record<string, unknown>).auto_link ?? false,
+        boardroom_attach: (savedSettings as Record<string, unknown>).boardroom_attach ?? true,
+        default_sensitivity: (savedSettings as Record<string, unknown>).default_sensitivity ?? "internal",
+        default_retention: (savedSettings as Record<string, unknown>).default_retention ?? "7 years",
+        memory_write_permission: (savedSettings as Record<string, unknown>).memory_write_permission ?? "allowed_with_review",
       });
     }
   }, [savedSettings]);
@@ -111,7 +111,7 @@ const FilesSettings = () => {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <p className="text-sm text-foreground">Default sensitivity level</p>
-                <SensitivityBadge level={settings.default_sensitivity as any} />
+                <SensitivityBadge level={settings.default_sensitivity as unknown} />
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-sm text-foreground">Default retention</p>

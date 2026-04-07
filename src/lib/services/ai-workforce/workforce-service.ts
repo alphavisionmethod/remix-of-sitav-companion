@@ -162,10 +162,10 @@ export class AIWorkforceService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.agents) this.agents = new Map(state.agents as any);
-    if (state.tasks) this.tasks = new Map(state.tasks as any);
-    if (state.teams) this.teams = new Map(state.teams as any);
-    if (state.councils) this.councils = new Map(state.councils as any);
+    if (state.agents) this.agents = new Map(state.agents as [string, unknown][]);
+    if (state.tasks) this.tasks = new Map(state.tasks as [string, unknown][]);
+    if (state.teams) this.teams = new Map(state.teams as [string, unknown][]);
+    if (state.councils) this.councils = new Map(state.councils as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

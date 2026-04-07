@@ -22,7 +22,7 @@ export class ProfilesService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.profiles) this.profiles = new Map(state.profiles as any);
+    if (state.profiles) this.profiles = new Map(state.profiles as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

@@ -42,8 +42,8 @@ export class AnalyticsService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.events) this.events = state.events as any;
-    if (state.metrics) this.metrics = state.metrics as any;
+    if (state.events) this.events = state.events as never;
+    if (state.metrics) this.metrics = state.metrics as never;
   }
 
   async loadPersistedState(): Promise<void> {

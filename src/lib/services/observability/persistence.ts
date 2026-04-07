@@ -22,8 +22,8 @@ export async function flushMetricsToDatabase(
     metric_name: m.name,
     metric_type: m.type,
     value: m.value,
-    tags: { unit: m.unit, labels: m.labels || {} } as any,
-    metadata: { source: "observability-service" } as any,
+    tags: { unit: m.unit, labels: m.labels || {} } as never,
+    metadata: { source: "observability-service" } as never,
     recorded_at: m.timestamp || new Date().toISOString(),
   }));
 
@@ -35,8 +35,8 @@ export async function flushMetricsToDatabase(
       metric_name: `slo.${slo.name}`,
       metric_type: "gauge",
       value: slo.currentValue ?? 0,
-      tags: { target: slo.target, isMet: slo.isMet, burnRate: slo.burnRate } as any,
-      metadata: { sloId: slo.id, window: slo.window } as any,
+      tags: { target: slo.target, isMet: slo.isMet, burnRate: slo.burnRate } as never,
+      metadata: { sloId: slo.id, window: slo.window } as never,
       recorded_at: new Date().toISOString(),
     });
   }

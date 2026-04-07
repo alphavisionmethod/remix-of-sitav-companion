@@ -15,8 +15,8 @@ export function isPersistable(obj: unknown): obj is Persistable {
   return (
     typeof obj === "object" &&
     obj !== null &&
-    typeof (obj as any).serialize === "function" &&
-    typeof (obj as any).hydrate === "function"
+    typeof (obj as Record<string, unknown>).serialize === "function" &&
+    typeof (obj as Record<string, unknown>).hydrate === "function"
   );
 }
 

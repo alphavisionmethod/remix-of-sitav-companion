@@ -83,7 +83,7 @@ async function ingest() {
     for (const run of runs) {
       // Look up journey in registry
       const { data: registry } = await supabase
-        .from("customer_journey_registry" as any)
+        .from("customer_journey_registry" as never)
         .select("id")
         .eq("journey_key", run.journey_key)
         .single();
@@ -95,9 +95,9 @@ async function ingest() {
 
       // Insert verification run
       const { data: runData, error: runError } = await supabase
-        .from("journey_verification_runs" as any)
+        .from("journey_verification_runs" as never)
         .insert({
-          journey_id: (registry as any).id,
+          journey_id: (registry as Record<string, unknown>).id,
           mode: run.mode,
           environment: "ci",
           verification_type: "e2e_playwright",
@@ -113,7 +113,7 @@ async function ingest() {
           branch_name: BRANCH_NAME,
           started_at: run.started_at,
           completed_at: run.completed_at,
-        } as any)
+        } as never)
         .select()
         .single();
 
@@ -126,29 +126,29 @@ async function ingest() {
 
       // Insert step results
       for (const step of run.steps) {
-        await supabase.from("journey_step_results" as any).insert({
-          verification_run_id: (runData as any).id,
+        await supabase.from("journey_step_results" as never).insert({
+          verification_run_id: (runData as Record<string, unknown>).id,
           step_order: step.step_order,
           status: step.status,
           actual_behavior: step.test_title,
           error_summary: step.error_summary || null,
           duration_ms: step.duration_ms,
-        } as any);
+        } as never);
         totalSteps++;
       }
 
       // Update journey status
       await supabase
-        .from("customer_journey_status" as any)
+        .from("customer_journey_status" as never)
         .upsert(
           {
-            journey_id: (registry as any).id,
+            journey_id: (registry as Record<string, unknown>).id,
             current_status: run.status === "pass" ? "working" : run.status === "partial" ? "partial" : "broken",
-            last_verified_run_id: (runData as any).id,
+            last_verified_run_id: (runData as Record<string, unknown>).id,
             last_verified_at: new Date().toISOString(),
             proof_confidence: run.proof_confidence || "verified_e2e",
             actual_outcome_summary: `${run.steps_passed}/${run.steps_total} steps passed`,
-          } as any,
+          } as never,
           { onConflict: "journey_id" }
         );
     }

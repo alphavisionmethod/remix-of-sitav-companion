@@ -41,8 +41,8 @@ export class EntityGraphService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.entities) this.entities = new Map(state.entities as any);
-    if (state.relations) this.relations = state.relations as any;
+    if (state.entities) this.entities = new Map(state.entities as [string, unknown][]);
+    if (state.relations) this.relations = state.relations as never;
   }
 
   async loadPersistedState(): Promise<void> {

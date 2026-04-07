@@ -81,7 +81,7 @@ class VoiceCommandEngine {
   start(): boolean {
     if (!this.isSupported) return false;
 
-    const SpeechRecognitionAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const SpeechRecognitionAPI = (window as Record<string, unknown>).SpeechRecognition || (window as Record<string, unknown>).webkitSpeechRecognition;
     this.recognition = new SpeechRecognitionAPI();
     this.synthesis = window.speechSynthesis;
 

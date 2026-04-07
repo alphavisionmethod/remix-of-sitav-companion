@@ -583,7 +583,7 @@ export class ConstitutionCompiler {
         if (operator === "gte") return currentMinutes >= targetMinutes;
         if (operator === "lte") return currentMinutes <= targetMinutes;
         if (operator === "between" && Array.isArray(value)) {
-          return currentMinutes >= (value as any)[0] && currentMinutes <= (value as any)[1];
+          return currentMinutes >= (value as unknown)[0] && currentMinutes <= (value as unknown)[1];
         }
         return false;
       }

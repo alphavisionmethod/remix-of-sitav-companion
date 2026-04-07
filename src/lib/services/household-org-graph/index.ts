@@ -22,7 +22,7 @@ export class HouseholdOrgGraphService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.nodes) this.nodes = new Map(state.nodes as any);
+    if (state.nodes) this.nodes = new Map(state.nodes as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

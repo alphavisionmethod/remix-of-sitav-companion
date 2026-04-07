@@ -86,7 +86,7 @@ serve(async (req) => {
       const lastRun = schedule.last_run_at ? new Date(schedule.last_run_at).getTime() : 0;
 
       if (now - lastRun >= interval) {
-        dueAgents.push(schedule as any);
+        dueAgents.push(schedule as unknown);
       }
     }
 

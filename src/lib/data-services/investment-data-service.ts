@@ -20,8 +20,8 @@ const DEMO_POSITIONS: Position[] = [
 ];
 
 const DEMO_THESES: Thesis[] = [
-  { id: "t1", title: "AI Infrastructure Buildout", asset: "NVDA", direction: "long", rationale: "AI compute demand", catalysts: ["GTC"], invalidationConditions: [], sizeLogic: "15%", regimeContext: "bull", confidence: 0.85, status: "active" } as any,
-  { id: "t2", title: "Rate Normalization", asset: "BND", direction: "long", rationale: "Rate cuts benefit bonds", catalysts: ["Fed"], invalidationConditions: [], sizeLogic: "10%", regimeContext: "neutral", confidence: 0.65, status: "active" } as any,
+  { id: "t1", title: "AI Infrastructure Buildout", asset: "NVDA", direction: "long", rationale: "AI compute demand", catalysts: ["GTC"], invalidationConditions: [], sizeLogic: "15%", regimeContext: "bull", confidence: 0.85, status: "active" } as never,
+  { id: "t2", title: "Rate Normalization", asset: "BND", direction: "long", rationale: "Rate cuts benefit bonds", catalysts: ["Fed"], invalidationConditions: [], sizeLogic: "10%", regimeContext: "neutral", confidence: 0.65, status: "active" } as never,
 ];
 
 export async function fetchCapitalBuckets(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CapitalBucket[]>> {
@@ -42,7 +42,7 @@ export async function fetchPositions(mode: RealityModeKey = "real"): Promise<Mod
   if (!user) return resolveByMode({ mode, realData: null, demoData: DEMO_POSITIONS, emptyDefault: [] });
   const { data, error } = await fromTable("asset_master").select("*, asset_market_snapshots(price, daily_change)").limit(20);
   const mapped = (!error && data && data.length > 0) ? data.map((a: any): Position => ({
-    id: a.id, symbol: a.symbol, name: a.display_name, assetClass: a.asset_class as any, quantity: 0,
+    id: a.id, symbol: a.symbol, name: a.display_name, assetClass: a.asset_class as unknown, quantity: 0,
     avgCostBasis: 0, currentPrice: a.asset_market_snapshots?.[0]?.price ?? 0,
     currency: "USD", venue: a.exchange_or_venue || "Unknown", custodyType: "brokerage",
   })) : null;

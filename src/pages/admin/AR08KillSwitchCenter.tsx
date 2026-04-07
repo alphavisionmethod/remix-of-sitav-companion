@@ -52,11 +52,11 @@ export default function AR08KillSwitchCenter() {
         await fromTable("automation_kill_switches")
           .update({
             enabled: enable,
-            activated_at: enable ? new Date().toISOString() : (existing as any).activated_at,
+            activated_at: enable ? new Date().toISOString() : (existing as Record<string, unknown>).activated_at,
             deactivated_at: enable ? null : new Date().toISOString(),
             reason: enable ? "Manual activation" : undefined,
           })
-          .eq("id", (existing as any).id);
+          .eq("id", (existing as Record<string, unknown>).id);
       } else {
         await fromTable("automation_kill_switches").insert({
           user_id: user.id,

@@ -136,8 +136,8 @@ export class TrustedDeviceService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.devices) this.devices = new Map(state.devices as any);
-    if (state.pendingAttestations) this.pendingAttestations = state.pendingAttestations as any;
+    if (state.devices) this.devices = new Map(state.devices as [string, unknown][]);
+    if (state.pendingAttestations) this.pendingAttestations = state.pendingAttestations as never;
   }
 
   async loadPersistedState(): Promise<void> {

@@ -190,7 +190,7 @@ export class DecisionIntelligenceEngine {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.journal) this.journal = new Map(state.journal as any);
+    if (state.journal) this.journal = new Map(state.journal as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

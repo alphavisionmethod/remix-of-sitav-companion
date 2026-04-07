@@ -137,7 +137,7 @@ export class NotificationsService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.notifications) this.notifications = new Map(state.notifications as any);
+    if (state.notifications) this.notifications = new Map(state.notifications as [string, unknown][]);
   }
 
   async loadPersistedState(): Promise<void> {

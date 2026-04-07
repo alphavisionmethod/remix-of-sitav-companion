@@ -212,9 +212,9 @@ export default function AutomationSimLab() {
               <CardContent className="p-3 flex items-center justify-between">
                 <div>
                   <p className="text-sm text-foreground capitalize">{key.replace(/([A-Z])/g, ' $1')}</p>
-                  {"limit" in value && <p className="text-xs text-muted-foreground">Limit: {value.limit} · This week: {(value as any).thisWeek}</p>}
+                  {"limit" in value && <p className="text-xs text-muted-foreground">Limit: {value.limit} · This week: {(value as Record<string, unknown>).thisWeek}</p>}
                 </div>
-                <Badge className={`text-[10px] ${(value as any).status?.includes("within") || (value as any).status?.includes("compliant") || (value as any).status?.includes("consented") ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"}`}>{(value as any).status?.replace(/_/g, ' ')}</Badge>
+                <Badge className={`text-[10px] ${(value as Record<string, unknown>).status?.includes("within") || (value as Record<string, unknown>).status?.includes("compliant") || (value as Record<string, unknown>).status?.includes("consented") ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"}`}>{(value as Record<string, unknown>).status?.replace(/_/g, ' ')}</Badge>
               </CardContent>
             </Card>
           ))}

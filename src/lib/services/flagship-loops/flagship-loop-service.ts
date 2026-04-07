@@ -218,7 +218,7 @@ export async function seedFlagshipLoops() {
   const results: Array<{ loop_key: string; status: string }> = [];
 
   for (const seed of FLAGSHIP_LOOP_SEEDS) {
-    const { data: existing } = await (supabase as any)
+    const { data: existing } = await (supabase as unknown)
       .from("flagship_loops")
       .select("id")
       .eq("loop_key", seed.loop_key)
@@ -227,7 +227,7 @@ export async function seedFlagshipLoops() {
 
     if (existing) {
       // Update existing with latest seed data
-      await (supabase as any)
+      await (supabase as unknown)
         .from("flagship_loops")
         .update({
           title: seed.title,
@@ -256,7 +256,7 @@ export async function seedFlagshipLoops() {
       continue;
     }
 
-    const { error } = await (supabase as any)
+    const { error } = await (supabase as unknown)
       .from("flagship_loops")
       .insert({ ...seed, user_id: user.id });
 
@@ -267,7 +267,7 @@ export async function seedFlagshipLoops() {
 }
 
 export async function fetchFlagshipLoops() {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabase as unknown)
     .from("flagship_loops")
     .select("*")
     .order("created_at", { ascending: true });
@@ -276,7 +276,7 @@ export async function fetchFlagshipLoops() {
 }
 
 export async function updateFlagshipLoop(id: string, updates: Partial<FlagshipLoopSeed>) {
-  const { error } = await (supabase as any)
+  const { error } = await (supabase as unknown)
     .from("flagship_loops")
     .update({ ...updates, updated_at: new Date().toISOString() })
     .eq("id", id);

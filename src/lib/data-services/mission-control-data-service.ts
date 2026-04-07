@@ -16,7 +16,7 @@ export async function fetchAdvisorProfiles(): Promise<AdvisorSummary[]> {
   if (error || !data || data.length === 0) return mockAdvisors;
 
   return data.map((a: any) => ({
-    id: a.id, name: a.display_name, domain: a.domain as any,
+    id: a.id, name: a.display_name, domain: a.domain as unknown,
     mission: "", specialAbility: "", confidence: a.trust_threshold,
     uncertainty: null, topMove: "", pendingApprovals: 0,
     availableSimulations: 0, recentActions: 0, memoryItems: 0,

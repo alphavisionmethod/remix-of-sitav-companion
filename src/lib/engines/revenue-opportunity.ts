@@ -189,9 +189,9 @@ export class RevenueOpportunityEngine {
   }
 
   hydrate(state: Record<string, unknown>): void {
-    if (state.signals) this.signals = new Map(state.signals as any);
-    if (state.recoveries) this.recoveries = state.recoveries as any;
-    if (state.outcomes) this.outcomes = state.outcomes as any;
-    if (state.config) this.config = { ...this.config, ...(state.config as any) };
+    if (state.signals) this.signals = new Map(state.signals as [string, unknown][]);
+    if (state.recoveries) this.recoveries = state.recoveries as never;
+    if (state.outcomes) this.outcomes = state.outcomes as never;
+    if (state.config) this.config = { ...this.config, ...(state.config as unknown) };
   }
 }

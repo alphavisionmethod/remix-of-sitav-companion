@@ -20,7 +20,7 @@ function useNotificationLaunchHonesty() {
     queryKey: ["nrc06-notification-launch-honesty-real"],
     queryFn: async () => {
       // Fetch delivery receipts
-      const { data: receipts, error: rErr } = await (supabase as any)
+      const { data: receipts, error: rErr } = await (supabase as unknown)
         .from("notification_delivery_receipts")
         .select("channel, delivery_status, created_at")
         .order("created_at", { ascending: false })
@@ -28,7 +28,7 @@ function useNotificationLaunchHonesty() {
       if (rErr) throw rErr;
 
       // Fetch push subscriptions
-      const { data: tokens, error: tErr } = await (supabase as any)
+      const { data: tokens, error: tErr } = await (supabase as unknown)
         .from("device_push_tokens")
         .select("id, platform, created_at");
       // table may not exist yet — graceful fallback
