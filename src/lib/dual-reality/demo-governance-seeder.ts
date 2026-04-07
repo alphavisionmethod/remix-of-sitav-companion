@@ -11,7 +11,7 @@ const SEED_KEY = "sita-demo-governance-seeded";
 
 async function needsSeeding(userId: string): Promise<boolean> {
   if (sessionStorage.getItem(SEED_KEY) === "true") return false;
-  const { count } = await (supabase as any)
+  const { count } = await fromTable("demo_scenarios")
     .from("demo_scenarios")
     .select("id", { count: "exact", head: true })
     .eq("user_id", userId);
