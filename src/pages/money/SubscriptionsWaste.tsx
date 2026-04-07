@@ -205,24 +205,24 @@ const SubscriptionsWaste = () => {
         <div className="grid gap-6 lg:grid-cols-5">
           <div className="lg:col-span-3 space-y-2">
             {filtered.map((sub) => {
-              const usage = usageLabelMap[sub.usage_level || "unknown"] || usageLabelMap.unknown;
-              return (
+               const usage = usageLabelMap[String((sub as any).usage_level || sub.usage_score || "unknown")] || usageLabelMap.unknown;
+               return (
                 <SitaCard key={sub.id} onClick={() => setSelectedId(sub.id)} selected={selectedId === sub.id}
-                  lane={sub.waste_flag ? "action" : undefined} className="p-4">
+                  lane={(sub as any).waste_flag ? "action" : undefined} className="p-4">
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <p className="text-sm font-medium text-foreground">{sub.service_name}</p>
+                        <p className="text-sm font-medium text-foreground">{sub.name}</p>
                         {sub.status === "paused" && <span className="text-[10px] text-muted-foreground bg-muted rounded px-1.5 py-px">Paused</span>}
                         {sub.status === "cancelled" && <span className="text-[10px] text-muted-foreground bg-muted rounded px-1.5 py-px line-through">Cancelled</span>}
-                        {sub.waste_flag && <span className="inline-flex items-center gap-1 rounded-md bg-urgency-high/10 border border-urgency-high/20 px-1.5 py-px text-[10px] font-medium text-urgency-high"><AlertTriangle className="h-2.5 w-2.5" /> Waste</span>}
-                        {sub.duplicate_of && <span className="text-[10px] text-trust-review bg-trust-review/10 rounded px-1.5 py-px">Duplicate</span>}
+                        {(sub as any).waste_flag && <span className="inline-flex items-center gap-1 rounded-md bg-urgency-high/10 border border-urgency-high/20 px-1.5 py-px text-[10px] font-medium text-urgency-high"><AlertTriangle className="h-2.5 w-2.5" /> Waste</span>}
+                        {(sub as any).duplicate_of && <span className="text-[10px] text-trust-review bg-trust-review/10 rounded px-1.5 py-px">Duplicate</span>}
                       </div>
                       <p className="text-xs text-muted-foreground">{sub.category || "Uncategorized"} · Usage: {usage.label}</p>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="font-display text-sm font-bold text-foreground">${Number(sub.amount).toFixed(2)}/{sub.billing_cycle === "annually" ? "yr" : "mo"}</p>
-                      <p className="text-[10px] text-muted-foreground">${annualized(Number(sub.amount), sub.billing_cycle).toFixed(0)}/yr</p>
+                      <p className="font-display text-sm font-bold text-foreground">${Number(sub.amount).toFixed(2)}/{sub.frequency === "annually" ? "yr" : "mo"}</p>
+                      <p className="text-[10px] text-muted-foreground">${annualized(Number(sub.amount), sub.frequency).toFixed(0)}/yr</p>
                     </div>
                   </div>
                 </SitaCard>
