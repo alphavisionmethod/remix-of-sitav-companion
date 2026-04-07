@@ -20,6 +20,7 @@ import { CG06MissionCostTab } from "@/components/admin/compute-governance/CG06Mi
 import { CG10PricingSimulatorTab } from "@/components/admin/compute-governance/CG10PricingSimulatorTab";
 import { classColors, tierColors, budgetStatusColors, fmt } from "@/components/admin/compute-governance/shared";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Mock Data ───────────────────────────────────────────────
 

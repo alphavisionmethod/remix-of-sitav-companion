@@ -6,8 +6,10 @@
 import { DesktopSurface } from "@/components/sita/shell/DesktopSurface";
 import { useShellState } from "@/components/sita/shell/useShellState";
 import { useAuth } from "@/contexts/AuthContext";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DesktopPage() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const { state, openCommand } = useShellState();
 

@@ -4,8 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Bot, Brain, Zap, Shield, HeartHandshake } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DWE06AmbientAssistantCenter() {
+  const { isDemoMode } = useDataMode();
   const [roles, setRoles] = useState<any[]>([]);
   const [interventions, setInterventions] = useState<any[]>([]);
 

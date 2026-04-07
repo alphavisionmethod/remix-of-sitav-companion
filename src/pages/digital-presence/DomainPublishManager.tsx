@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DOMAINS = [
   { domain: "mybusiness.com", type: "primary", ssl: true, status: "active", dnsOk: true, lastPublished: "2 hours ago" },
@@ -38,6 +39,7 @@ const PUBLISH_RULES = [
 ];
 
 export default function DomainPublishManager() {
+  const { isDemoMode } = useDataMode();
   const [newDomain, setNewDomain] = useState("");
 
   return (

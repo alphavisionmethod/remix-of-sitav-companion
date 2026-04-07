@@ -7,6 +7,7 @@ import { PulseCard } from "@/components/mobile/PulseCard";
 import { useNavigate } from "react-router-dom";
 import { Heart, TrendingUp, Shield, Wallet, Calendar, Users, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const quickActions = [
   { label: "Approvals", path: "/mobile/approvals", count: 3 },
@@ -16,6 +17,7 @@ const quickActions = [
 ];
 
 const MobileHome = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (

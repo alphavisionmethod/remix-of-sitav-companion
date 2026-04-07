@@ -6,6 +6,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useOperatorTaste } from "@/lib/hooks/useIntelligencePersistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const OperatorTasteDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();

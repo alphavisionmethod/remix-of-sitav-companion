@@ -9,6 +9,7 @@ import { SERVICE_OWNERSHIP_REGISTRY } from "@/lib/services/service-registry/serv
 import { ROUTE_SERVICE_INVENTORY } from "@/lib/services/service-registry/route-to-service-inventory";
 import { Shield, AlertTriangle, Layers } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 function getRiskBadge(risk: string) {
   if (risk === "high") return <Badge variant="destructive">{risk}</Badge>;
@@ -17,6 +18,7 @@ function getRiskBadge(risk: string) {
 }
 
 export default function SERV02DomainOwnership() {
+  const { isDemoMode } = useDataMode();
   const domainRouteCount = (domain: string) =>
     ROUTE_SERVICE_INVENTORY.filter((r) => r.domainFamily === domain).length;
 

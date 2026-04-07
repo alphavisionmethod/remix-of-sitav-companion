@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type Intensity = "quiet" | "balanced" | "proactive";
 type AgentStatus = "active" | "inactive" | "watching";
@@ -271,6 +272,7 @@ function AgentDetailPanel({ agent }: { agent: AgentProfile }) {
 }
 
 export default function AIWebTeam() {
+  const { isDemoMode } = useDataMode();
   const [expandedAgent, setExpandedAgent] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("team");
   const [intensities, setIntensities] = useState<Record<string, Intensity>>(

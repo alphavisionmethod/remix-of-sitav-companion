@@ -5,10 +5,12 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useMobileApprovals } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const filters = ["All", "Critical", "Finance", "Business", "Concierge"];
 
 const MobileApprovals = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { data: approvals = [] } = useMobileApprovals();
   const [activeFilter, setActiveFilter] = useState("All");

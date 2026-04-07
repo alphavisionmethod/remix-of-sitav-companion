@@ -11,6 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useModelRegistry, useCreateModel } from "@/hooks/use-sag-data";
 import { MODEL_CLASSES, PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SAGModelRegistry = () => {
   const { data: models = [], isLoading } = useModelRegistry();

@@ -15,10 +15,12 @@ import { Progress } from "@/components/ui/progress";
 import { getWorkforceRoles, getRecentInvocations } from "@/lib/services/ai-workforce/workforce-orchestrator";
 import { Users, X, ChevronRight, TrendingUp, TrendingDown, Filter } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type SortKey = "cost" | "invocations" | "name" | "stage";
 
 export default function AIT02RoleRegistry() {
+  const { isDemoMode } = useDataMode();
   const [selectedRole, setSelectedRole] = useState<any>(null);
   const [sortBy, setSortBy] = useState<SortKey>("name");
   const [filterStatus, setFilterStatus] = useState<string>("all");

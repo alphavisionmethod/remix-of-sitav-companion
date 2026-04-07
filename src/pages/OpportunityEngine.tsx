@@ -11,8 +11,10 @@ import {
   ArrowRight, AlertTriangle, CreditCard, Home, Headphones
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const OpportunityEngine = () => {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const { data: opportunities = [] } = useQuery({

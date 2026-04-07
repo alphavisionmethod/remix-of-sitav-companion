@@ -7,6 +7,7 @@ import { EVIDENCE_GRADE_POLICIES } from "@/lib/services/epistemic-firewall/evide
 import { GROUNDING_RULES } from "@/lib/services/epistemic-firewall/tool-grounding";
 import { getInvariants } from "@/lib/services/epistemic-firewall/sentinel-engine";
 import { CORTEX_LOOP_CONFIGS } from "@/lib/services/epistemic-firewall/cortex-loop";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 function EpistemicFirewallBoard() {
   const [activeTab, setActiveTab] = useState("overview");

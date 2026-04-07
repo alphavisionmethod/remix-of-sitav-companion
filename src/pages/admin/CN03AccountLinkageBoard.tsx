@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Unplug } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusColors: Record<string, string> = {
   connected: "bg-green-500/20 text-green-400", pending: "bg-yellow-500/20 text-yellow-400",
@@ -17,6 +18,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function CN03AccountLinkageBoard() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: accounts = [] } = useQuery({

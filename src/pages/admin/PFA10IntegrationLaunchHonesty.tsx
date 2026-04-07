@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Flag, CheckCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const labelColors: Record<string, string> = {
   shell_only: "bg-muted text-muted-foreground", identity_only: "bg-blue-500/20 text-blue-400",
@@ -17,6 +18,7 @@ const labelColors: Record<string, string> = {
 };
 
 export default function PFA10IntegrationLaunchHonesty() {
+  const { isDemoMode } = useDataMode();
   const { data: honesty = [] } = useQuery({
     queryKey: ["integration-launch-honesty"],
     queryFn: async () => { const { data } = await supabase.from("integration_launch_honesty").select("*, provider_families(name, provider_key), provider_capabilities(display_name, capability_key)").order("created_at"); return data || []; },

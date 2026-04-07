@@ -7,8 +7,10 @@ import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { ShieldCheck, Activity, Database, Zap, CheckCircle2, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function RuntimeRealityValidation() {
+  const { isDemoMode } = useDataMode();
   const { data: mockReplacements = [] } = useMockReplacements();
   const { data: classifications = [] } = useRealityClassifications();
 

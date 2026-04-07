@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const GROWTH_TRAITS = [
   { trait: "Revenue Concentration", score: 72, status: "warning", insight: "Top 3 clients represent 58% of revenue", recommendation: "Target 3 new mid-market clients this quarter" },

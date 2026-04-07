@@ -15,6 +15,7 @@ import {
   RotateCcw, Users, GitBranch, Wifi, Activity, Eye, Loader2,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const severityColor: Record<string, string> = {
   critical: "bg-destructive/10 text-destructive border-destructive/20",
@@ -28,6 +29,7 @@ const statusIcon: Record<string, React.ElementType> = {
 };
 
 export default function IncidentDetailPage() {
+  const { isDemoMode } = useDataMode();
   const { incidentId } = useParams<{ incidentId: string }>();
   const navigate = useNavigate();
   const detail = useIncidentDetail(incidentId || "");

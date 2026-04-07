@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const mockPatterns = [
   { id: "p-1", type: "issue_fingerprint", domain: "engineering", label: "API timeout cascade after deploy", confidence: 94, falsePositive: 2, sourceCount: 42, privacy: "anonymizable", reusable: true, description: "Cascading timeout pattern detected post-deployment in microservice mesh" },

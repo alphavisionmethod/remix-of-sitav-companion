@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Plug, Shield, Activity, TestTube, Presentation, RefreshCw, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusColors: Record<string, string> = {
   healthy: "bg-emerald-500/15 text-emerald-400", connected: "bg-emerald-500/15 text-emerald-400",
@@ -48,6 +49,7 @@ const CAPABILITIES = [
 ];
 
 export default function CN01ConnectorRealityOverview() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: registry = [] } = useQuery({

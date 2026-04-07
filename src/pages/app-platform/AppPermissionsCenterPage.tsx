@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PERMISSION_DOMAINS = [
   { id: "files", label: "Files & Folders", icon: FolderOpen, description: "Access to read/write files" },
@@ -22,6 +23,7 @@ const PERMISSION_DOMAINS = [
 ];
 
 const AppPermissionsCenterPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [activeDomain, setActiveDomain] = useState("files");
 

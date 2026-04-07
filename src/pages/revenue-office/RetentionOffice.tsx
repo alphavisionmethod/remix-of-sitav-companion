@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const HEALTH_SEGMENTS = [
   { label: "Thriving", count: 38, pct: 57, color: "bg-green-400" },
@@ -24,6 +25,7 @@ const WIN_BACK = [
 ];
 
 export default function RetentionOffice() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />

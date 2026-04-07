@@ -19,6 +19,7 @@ import {
   ArrowRight, Zap, ShieldCheck, Database, Globe, Key, GitBranch,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── SLO Card ───────────────────────────────────────────────────
 function SLOCard({ slo }: { slo: { id: string; name: string; target: number; currentValue: number; budget: number; budgetConsumed: number; status: string; window: string } }) {
@@ -137,6 +138,7 @@ function ReleaseCard({ release }: { release: any }) {
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function EnterpriseMaturityDashboard() {
+  const { isDemoMode } = useDataMode();
   const { engines } = useOSRuntime();
   const [activeTab, setActiveTab] = useState("overview");
 

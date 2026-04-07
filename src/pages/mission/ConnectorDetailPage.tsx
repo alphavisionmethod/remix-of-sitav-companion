@@ -17,6 +17,7 @@ import {
   Clock, RefreshCw, Eye, ChevronRight, Database, Lock, Zap, Server,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
@@ -29,6 +30,7 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function ConnectorDetailPage() {
+  const { isDemoMode } = useDataMode();
   const { connectorId } = useParams<{ connectorId: string }>();
   const navigate = useNavigate();
   const [tab, setTab] = useState("overview");

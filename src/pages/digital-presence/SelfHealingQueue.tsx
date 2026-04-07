@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type PatchStatus = "pending" | "approved" | "applied" | "rejected" | "verified";
 
@@ -42,6 +43,7 @@ const STATS = [
 ];
 
 export default function SelfHealingQueue() {
+  const { isDemoMode } = useDataMode();
   const [patches, setPatches] = useState(INITIAL_PATCHES);
 
   const updateStatus = (id: string, status: PatchStatus) => {

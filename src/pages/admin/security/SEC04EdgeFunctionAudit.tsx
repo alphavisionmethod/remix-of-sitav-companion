@@ -2,6 +2,7 @@ import { Shield, ShieldAlert, ShieldCheck, Code } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { EDGE_FUNCTION_AUDIT } from "@/lib/services/security/security-posture-engine";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const classificationBadge = (c: string) => {
   switch (c) {
@@ -15,6 +16,7 @@ const classificationBadge = (c: string) => {
 };
 
 export default function SEC04EdgeFunctionAudit() {
+  const { isDemoMode } = useDataMode();
   const sorted = [...EDGE_FUNCTION_AUDIT].sort((a, b) => b.missingHardening.length - a.missingHardening.length);
   const fullyHardened = EDGE_FUNCTION_AUDIT.filter(f => f.missingHardening.length === 0).length;
 

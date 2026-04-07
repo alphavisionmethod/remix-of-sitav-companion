@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { useReadinessGates } from "@/hooks/use-fip-data";
 import { READINESS_STAGES, RED_TEAM_QUESTIONS } from "@/lib/fip/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const stageIndex = (stage: string) => READINESS_STAGES.indexOf(stage as any);
 

@@ -7,6 +7,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
 import { useIntelligenceAssets } from "@/lib/hooks/useIntelligencePersistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const sevColors: Record<string,string> = { critical: "text-rose-400 bg-rose-500/10", high: "text-amber-400 bg-amber-500/10", medium: "text-yellow-400 bg-yellow-500/10", low: "text-muted-foreground bg-secondary/30" };
 

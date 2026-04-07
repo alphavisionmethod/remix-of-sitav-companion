@@ -5,8 +5,10 @@ import { toast } from "sonner";
 import { Mail, ArrowLeft } from "lucide-react";
 import sitaLogo from "@/assets/logo.jpeg";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ForgotPassword = () => {
+  const { isDemoMode } = useDataMode();
   const { resetPassword } = useAuth();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);

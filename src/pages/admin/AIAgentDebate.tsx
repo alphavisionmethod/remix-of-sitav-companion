@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { MessageSquare, Code, Palette, Shield, Gauge, AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEBATES = [
   {

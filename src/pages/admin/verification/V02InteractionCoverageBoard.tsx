@@ -9,8 +9,10 @@ import { Progress } from "@/components/ui/progress";
 import { useVerificationSurfaces } from "@/lib/verification/verification-hooks";
 import { SURFACE_REGISTRY, getVerificationStats } from "@/lib/verification/surface-registry";
 import { CheckCircle2, XCircle, MinusCircle, BarChart3 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function InteractionCoverageBoard() {
+  const { isDemoMode } = useDataMode();
   const { data: dbSurfaces } = useVerificationSurfaces();
   const surfaces = dbSurfaces && dbSurfaces.length > 0 ? dbSurfaces : [];
   const stats = getVerificationStats();

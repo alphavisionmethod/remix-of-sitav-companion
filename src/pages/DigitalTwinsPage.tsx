@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import type { TwinType } from "@/packages/contracts";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Seed Demo Twins ────────────────────────────────────────────
 function useDemoTwins() {
@@ -193,6 +194,7 @@ function TwinDetailView({ twinType }: { twinType: TwinType }) {
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function DigitalTwinsPage() {
+  const { isDemoMode } = useDataMode();
   const { unified } = useDemoTwins();
   const [activeTab, setActiveTab] = useState<string>("overview");
 

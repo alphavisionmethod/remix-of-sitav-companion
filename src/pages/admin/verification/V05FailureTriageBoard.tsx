@@ -8,8 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useVerificationSurfaces, useVerificationRuns } from "@/lib/verification/verification-hooks";
 import { AlertTriangle, XCircle } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function FailureTriageBoard() {
+  const { isDemoMode } = useDataMode();
   const { data: dbSurfaces } = useVerificationSurfaces();
   const { data: runs } = useVerificationRuns();
 

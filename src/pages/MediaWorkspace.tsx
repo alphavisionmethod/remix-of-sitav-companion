@@ -12,11 +12,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_MEDIA, type DemoMediaItem as MediaItem } from "@/lib/demo-data/media";
 
 const db: any = supabase;
 
 const MediaWorkspace = () => {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [typeFilter, setTypeFilter] = useState("all");

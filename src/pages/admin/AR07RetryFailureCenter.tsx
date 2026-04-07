@@ -9,8 +9,10 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AlertTriangle, XCircle, RotateCcw, ArrowUpRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function AR07RetryFailureCenter() {
+  const { isDemoMode } = useDataMode();
   const { data: failures = [] } = useQuery({
     queryKey: ["failed-executions"],
     queryFn: async () => {

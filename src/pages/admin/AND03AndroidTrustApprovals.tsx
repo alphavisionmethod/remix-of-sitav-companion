@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Shield, Fingerprint, Smartphone, Watch, Lock, CheckCircle2, XCircle, ArrowRight, AlertTriangle, Key } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const TRUST_CLASSES = [
   { cls: "trusted_phone", label: "Phone", bio: "Fingerprint / Face", keystore: true, playIntegrity: true, riskCeiling: "critical", trustScore: 90, session: "24h" },

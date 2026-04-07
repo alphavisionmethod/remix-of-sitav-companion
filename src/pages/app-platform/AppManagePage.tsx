@@ -14,8 +14,10 @@ import { cn } from "@/lib/utils";
 import { getAppById } from "@/lib/app-platform";
 import { AppIcon, VerificationBadge, AppSourceLabel, PermissionDomainCard, AppReceiptCard } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const AppManagePage = () => {
+  const { isDemoMode } = useDataMode();
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
   const [showPerms, setShowPerms] = useState(true);

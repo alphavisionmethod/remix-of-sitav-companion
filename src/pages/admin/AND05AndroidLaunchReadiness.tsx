@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, ArrowRight, Clock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const TARGETS = [
   { target: "Android Shell", key: "and_shell", stage: "planned", readiness: 10, demo: false, pilot: false, launch: false, blockers: ["Architecture design", "Material Design implementation"], deps: [], critical: true },

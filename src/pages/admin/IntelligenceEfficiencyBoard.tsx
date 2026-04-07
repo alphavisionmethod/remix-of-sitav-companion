@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { IntelligenceAssetType, EfficiencyScore, OutcomeType, DomainId } from "@/lib/intelligence-architecture";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Mock Data ───────────────────────────────────────────────
 

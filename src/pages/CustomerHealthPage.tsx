@@ -2,6 +2,7 @@ import { SitaPageHeader } from "@/components/sita/SitaCard";
 import { motion } from "framer-motion";
 import { CustomerHealthDashboard } from "@/components/business/CustomerHealthDashboard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const CustomerHealthPage = () => (
   <motion.div className="mx-auto max-w-7xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>

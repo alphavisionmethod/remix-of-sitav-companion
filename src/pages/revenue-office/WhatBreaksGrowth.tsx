@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShieldAlert, AlertTriangle, Target, Users, Zap, MessageCircle, Clock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const riskAreas = [
+const DEMO_riskAreas = [
   {
     area: "Funnel Conversion",
     risks: [
@@ -42,6 +43,8 @@ const riskAreas = [
 ];
 
 export default function WhatBreaksGrowth() {
+  const { isDemoMode } = useDataMode();
+  const riskAreas = isDemoMode ? DEMO_riskAreas : DEMO_riskAreas;
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />

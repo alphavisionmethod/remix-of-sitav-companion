@@ -10,6 +10,7 @@ import {
   AlertTriangle, Briefcase, MessageSquare, Calendar, Receipt, BarChart3, Sparkles, Star, TrendingUp, TrendingDown, Shield
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // Mock customer data keyed by ID
 const customersData: Record<string, {
@@ -64,6 +65,7 @@ const documents = [
 ];
 
 const CustomerDetail = () => {
+  const { isDemoMode } = useDataMode();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [tab, setTab] = useState("overview");

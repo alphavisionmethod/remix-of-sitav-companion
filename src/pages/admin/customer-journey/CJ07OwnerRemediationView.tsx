@@ -8,8 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { useCustomerJourneys, useCustomerJourneyRuns } from "@/lib/customer-journey/journey-hooks";
 import { JOURNEY_STATUS_CONFIG } from "@/lib/customer-journey/journey-registry";
 import { Wrench, Loader2 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function CJ07OwnerRemediationView() {
+  const { isDemoMode } = useDataMode();
   const { data: journeys, isLoading } = useCustomerJourneys();
   const { data: runs } = useCustomerJourneyRuns();
 

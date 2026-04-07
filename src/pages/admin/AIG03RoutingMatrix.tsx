@@ -5,9 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Route, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { getRoutingPolicies, getCapabilityRouting } from "@/lib/services/ai-gateway";
 
 export default function AIG03RoutingMatrix() {
+  const { isDemoMode } = useDataMode();
   const { data: policies = [] } = useQuery({
     queryKey: ["ai-routing-policies"],
     queryFn: getRoutingPolicies,

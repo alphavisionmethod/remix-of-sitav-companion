@@ -5,8 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Eye, Tag, ShieldCheck } from "lucide-react";
 import { CANONICAL_MODES } from "@/lib/dual-reality/reality-mode-registry";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DRS09TruthLabeling() {
+  const { isDemoMode } = useDataMode();
   const { data: labels, isLoading } = useQuery({
     queryKey: ["drs09-labels"],
     queryFn: async () => {

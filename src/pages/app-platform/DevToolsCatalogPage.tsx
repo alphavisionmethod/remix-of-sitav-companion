@@ -10,6 +10,7 @@ import { APP_CATALOG, APP_BUNDLES } from "@/lib/app-platform";
 import { AppCard, BundleCard, AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEV_CATEGORIES = [
   { id: "all", label: "All", icon: Code },
@@ -22,6 +23,7 @@ const DEV_CATEGORIES = [
 ];
 
 const DevToolsCatalogPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [activeCat, setActiveCat] = useState("all");
 

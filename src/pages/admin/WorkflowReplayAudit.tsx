@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface WorkflowRun {
   id: string;
@@ -90,6 +91,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function WorkflowReplayAudit() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("runs");
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState<string | null>("WF-RUN-001");

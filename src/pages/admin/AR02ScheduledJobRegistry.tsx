@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Calendar, Zap, Clock, AlertTriangle, Pause, Play, Ban } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const stateColors: Record<string, string> = {
   active: "bg-trust-verified/10 text-trust-safe border-trust-verified/20",
@@ -25,6 +26,7 @@ const stateIcons: Record<string, any> = {
 };
 
 export default function AR02ScheduledJobRegistry() {
+  const { isDemoMode } = useDataMode();
   const { data: jobs = [] } = useQuery({
     queryKey: ["scheduled-jobs"],
     queryFn: async () => {

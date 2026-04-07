@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const db: any = supabase;
 
@@ -52,6 +53,7 @@ const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transi
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
 
 const ReportingWorkspace = () => {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [period, setPeriod] = useState("6m");
   const [tab, setTab] = useState("executive");

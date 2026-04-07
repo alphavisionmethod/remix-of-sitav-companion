@@ -9,6 +9,7 @@ import { Bell, Mail, MessageSquare, Shield, DollarSign, Calendar, AlertTriangle,
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -92,6 +93,7 @@ const URGENCY_COLORS: Record<string, string> = {
 };
 
 export default function NotificationSettingsPage() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
   const [quietHoursEnabled, setQuietHoursEnabled] = useState(false);

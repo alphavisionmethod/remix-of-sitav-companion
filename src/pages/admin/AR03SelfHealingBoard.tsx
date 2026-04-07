@@ -9,8 +9,10 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Heart, CheckCircle, XCircle, Clock, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function AR03SelfHealingBoard() {
+  const { isDemoMode } = useDataMode();
   const { data: rules = [] } = useQuery({
     queryKey: ["self-healing-rules"],
     queryFn: async () => {

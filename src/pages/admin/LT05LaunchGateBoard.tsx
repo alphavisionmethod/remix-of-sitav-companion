@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle, XCircle, AlertTriangle, Shield } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { CILaunchGateWidget } from "@/components/sita/CILaunchGateWidget";
 
 const LT05LaunchGateBoard = () => {

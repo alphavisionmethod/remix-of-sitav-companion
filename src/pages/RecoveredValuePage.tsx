@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useCountUpFormatted } from "@/hooks/useCountUp";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Seed demo recovered values ─────────────────────────────────
 function useDemoRecoveries() {
@@ -64,6 +65,7 @@ const RecoveredKPI = ({ label, value, color, delay }: { label: string; value: st
 };
 
 export default function RecoveredValuePage() {
+  const { isDemoMode } = useDataMode();
   const { stats, rankings, ledger, outcomeSummary } = useDemoRecoveries();
 
   const outcomeIcons: Record<string, typeof DollarSign> = {

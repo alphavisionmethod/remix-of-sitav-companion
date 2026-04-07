@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Grid3X3, CheckCircle2, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useCapabilitySurfaceBindings } from "@/hooks/use-native-shell-data";
 
 const getBadgeVariant = (v: string) => v === "full" ? "default" as const : v === "n/a" ? "outline" as const : "secondary" as const;

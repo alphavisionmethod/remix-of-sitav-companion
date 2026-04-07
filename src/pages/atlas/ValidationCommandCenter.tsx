@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const testSuites = [
   { name: "Unit Tests", total: 42, passed: 42, failed: 0, pending: 0, duration: "4.2s" },
@@ -69,6 +70,7 @@ const criticalFlows = [
 ];
 
 export default function ValidationCommandCenter() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("coverage");
   const passRate = Math.round((totalPassed / totalTests) * 100);
 

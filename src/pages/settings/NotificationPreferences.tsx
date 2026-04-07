@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const CATEGORIES = [
   { key: "incident", label: "Incidents & Alerts", description: "Critical system issues and security alerts" },
@@ -20,6 +21,7 @@ const CATEGORIES = [
 ];
 
 export default function NotificationPreferences() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { isSupported, isRegistered, permissionState, requestPermission, unregister, isLoading: pushLoading } = usePushNotifications();

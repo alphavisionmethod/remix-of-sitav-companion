@@ -12,10 +12,12 @@ import { AppCard, AppIcon, VerificationBadge, AppSourceLabel, CategoryStrip } fr
 import { APP_CATEGORIES } from "@/lib/app-platform/catalog";
 import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type LibView = "all" | "pinned" | "recent" | "web" | "native" | "updates";
 
 const AppLibraryPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [view, setView] = useState<LibView>("all");

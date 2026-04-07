@@ -11,6 +11,7 @@ import { classifyFile, detectSensitivity, type FileClassification, type Sensitiv
 import { FileUploader } from "@/components/sita/FileUploader";
 import { useFilesOverview } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useAIInsight } from "@/hooks/use-backend-actions";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -28,6 +29,7 @@ const sensitivityColor: Record<SensitivityLevel, string> = {
 };
 
 const FilesOverview = () => {
+  const { isDemoMode } = useDataMode();
   const { data: filesData = [] } = useFilesOverview();
   const { user } = useAuth();
   const aiInsight = useAIInsight();

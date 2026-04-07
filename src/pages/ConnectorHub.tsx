@@ -11,11 +11,13 @@ import { motion } from "framer-motion";
 import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield, Circle, AlertTriangle, ExternalLink, Unplug, Search } from "lucide-react";
 import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { fetchConnectorHealth, type ConnectorHealthResult } from "@/lib/services/connector-health-service";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
 const ConnectorHub = () => {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [filter, setFilter] = useState("all");

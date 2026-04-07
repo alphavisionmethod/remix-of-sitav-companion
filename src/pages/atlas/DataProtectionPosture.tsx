@@ -12,6 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -59,6 +60,7 @@ const policyChecks = [
 const classColors = { public: "text-muted-foreground", internal: "text-blue-400", confidential: "text-amber-400", restricted: "text-red-400" };
 
 export default function DataProtectionPosture() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
 
   return (

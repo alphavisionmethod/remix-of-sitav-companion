@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { usePortfolioAllocations, useTaskRequests, useGatewayStats } from "@/hooks/use-sag-data";
 import { ALLOCATION_CLASSES } from "@/lib/sovereign-ai-gateway/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SAGEconomicsBoard = () => {
   const { data: allocations = [] } = usePortfolioAllocations();

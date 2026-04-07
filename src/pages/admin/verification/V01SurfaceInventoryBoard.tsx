@@ -13,11 +13,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useVerificationSurfaces, useSeedSurfaces } from "@/lib/verification/verification-hooks";
 import { SURFACE_REGISTRY, getVerificationStats } from "@/lib/verification/surface-registry";
 import { Database, Layers, Search, Loader2, Download, RefreshCw } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const priorityColors: Record<string, string> = { P0: "bg-destructive text-destructive-foreground", P1: "bg-orange-500/20 text-orange-400", P2: "bg-muted text-muted-foreground" };
 const statusColors: Record<string, string> = { untested: "bg-muted text-muted-foreground", pass: "bg-green-500/20 text-green-400", fail: "bg-destructive/20 text-destructive", blocked: "bg-orange-500/20 text-orange-400" };
 
 export default function SurfaceInventoryBoard() {
+  const { isDemoMode } = useDataMode();
   const { data: dbSurfaces, isLoading } = useVerificationSurfaces();
   const seedMutation = useSeedSurfaces();
   const [search, setSearch] = useState("");

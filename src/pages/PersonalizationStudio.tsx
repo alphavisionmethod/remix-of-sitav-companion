@@ -12,6 +12,7 @@ import {
   ChevronRight, RotateCcw, Power, X, CheckCircle2
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type SubPage = "profile" | "preferences" | "memory" | "automation" | "boardroom";
 
@@ -26,6 +27,7 @@ const subpageFromPath = (path: string): SubPage => {
 // ─── Profile Section ───────────────────────────────────────
 
 const ProfileSection = () => {
+  const { isDemoMode } = useDataMode();
   const { preferences, patterns, setPreference, confirmPattern, dismissPattern, getLayer } = useAdaptivePersonalization();
   const [editing, setEditing] = useState(false);
 

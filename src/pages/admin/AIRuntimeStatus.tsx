@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Activity, Zap, Shield, DollarSign, Clock, Server } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusColors = {
   healthy: "bg-green-500/20 text-green-400 border-green-500/30",
@@ -48,6 +49,7 @@ const AI_FEATURES = [
 ];
 
 export default function AIRuntimeStatus() {
+  const { isDemoMode } = useDataMode();
   const { data: health, isLoading, refetch, isFetching } = useAIHealth();
 
   const status = health?.status || "unknown";

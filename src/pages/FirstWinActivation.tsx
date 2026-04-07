@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Workflow definitions mapped to onboarding firstRecovery choices ──
 
@@ -237,6 +238,7 @@ function ActivationSequence({
 // ── Main Page ──
 
 export default function FirstWinActivation() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [workflow, setWorkflow] = useState<FirstWinWorkflow | null>(null);

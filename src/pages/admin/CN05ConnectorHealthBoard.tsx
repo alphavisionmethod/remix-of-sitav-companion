@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Activity, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusColors: Record<string, string> = {
   healthy: "bg-green-500/20 text-green-400", degraded: "bg-yellow-500/20 text-yellow-400",
@@ -18,6 +19,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function CN05ConnectorHealthBoard() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: healthRecords = [] } = useQuery({

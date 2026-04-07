@@ -21,6 +21,7 @@ import {
   Server, Cpu, FileCheck, DollarSign, AlertOctagon, Receipt, Eye, Loader2, Database,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const STATUS_CONFIG: Record<CapabilityVerification["last_status"], { icon: React.ReactNode; label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
   success: { icon: <CheckCircle2 className="h-4 w-4" />, label: "Pass", variant: "default" },
@@ -508,6 +509,7 @@ function AIR08SeedActivation() {
 
 // ─── Main Board ─────────────────────────────────────────────
 export default function AIG09RuntimeVerification() {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading: adminLoading } = useRequireAdmin();
   const { health, healthLoading, capabilities, capabilitiesLoading, runSmokeTest } = useAIRuntimeVerification();
 

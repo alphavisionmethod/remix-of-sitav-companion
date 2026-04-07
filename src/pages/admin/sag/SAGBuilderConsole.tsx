@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { useModelRegistry, usePromptFamilies, useRoutingPolicies, useTaskRequests } from "@/hooks/use-sag-data";
 import { TASK_CLASSES, MODEL_CLASSES } from "@/lib/sovereign-ai-gateway/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const BUILDER_STEPS = [
   { step: 1, label: 'Capability', icon: Layers, desc: 'Select capability ID for this AI feature' },

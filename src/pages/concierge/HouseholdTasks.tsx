@@ -13,6 +13,7 @@ import {
   Users, GraduationCap, Stethoscope, ArrowUpRight, RotateCcw, Sparkles, Shield, X, Trash2, Check
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type ViewFilter = "all" | "today" | "this-week" | "overdue" | "by-person" | "high-priority";
 

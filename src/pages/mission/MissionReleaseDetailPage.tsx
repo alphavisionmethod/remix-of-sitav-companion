@@ -14,6 +14,7 @@ import {
   RotateCcw, Play, Pause, Server, Clock, Users, Zap, Eye,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const releaseData = {
   id: "rel-241",
@@ -38,6 +39,7 @@ const releaseData = {
 };
 
 export default function MissionReleaseDetailPage() {
+  const { isDemoMode } = useDataMode();
   const { releaseId } = useParams();
   const navigate = useNavigate();
   const r = releaseData; // In production: fetch by releaseId

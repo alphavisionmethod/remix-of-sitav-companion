@@ -5,59 +5,47 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const EXPERIMENTS = [
+const DEMO_EXPERIMENTS = [
   {
-    name: "Landing Page Headline Test",
-    status: "running",
-    startDate: "Mar 15, 2026",
+    name: "Landing Page Headline Test", status: "running", startDate: "Mar 15, 2026",
     variants: [
       { name: "Control", visitors: 1420, conversions: 341, rate: 24.0 },
       { name: "Variant A — Social Proof", visitors: 1418, conversions: 398, rate: 28.1 },
     ],
-    lift: "+17.1%",
-    confidence: 94,
-    winner: "Variant A",
+    lift: "+17.1%", confidence: 94, winner: "Variant A",
   },
   {
-    name: "Checkout Flow — Single vs Multi-Step",
-    status: "running",
-    startDate: "Mar 22, 2026",
+    name: "Checkout Flow — Single vs Multi-Step", status: "running", startDate: "Mar 22, 2026",
     variants: [
       { name: "Multi-Step (Control)", visitors: 680, conversions: 47, rate: 6.9 },
       { name: "Single-Step", visitors: 675, conversions: 54, rate: 8.0 },
     ],
-    lift: "+15.9%",
-    confidence: 78,
-    winner: null,
+    lift: "+15.9%", confidence: 78, winner: null,
   },
   {
-    name: "Email Subject Line — Urgency vs Curiosity",
-    status: "completed",
-    startDate: "Mar 1, 2026",
+    name: "Email Subject Line — Urgency vs Curiosity", status: "completed", startDate: "Mar 1, 2026",
     variants: [
       { name: "Urgency", visitors: 2400, conversions: 456, rate: 19.0 },
       { name: "Curiosity", visitors: 2398, conversions: 528, rate: 22.0 },
     ],
-    lift: "+15.8%",
-    confidence: 99,
-    winner: "Curiosity",
+    lift: "+15.8%", confidence: 99, winner: "Curiosity",
   },
   {
-    name: "Pricing Page — Annual Toggle Default",
-    status: "draft",
-    startDate: "—",
+    name: "Pricing Page — Annual Toggle Default", status: "draft", startDate: "—",
     variants: [
       { name: "Monthly Default", visitors: 0, conversions: 0, rate: 0 },
       { name: "Annual Default", visitors: 0, conversions: 0, rate: 0 },
     ],
-    lift: "—",
-    confidence: 0,
-    winner: null,
+    lift: "—", confidence: 0, winner: null,
   },
 ];
 
 export default function ConversionLab() {
+  const { isDemoMode } = useDataMode();
+  const EXPERIMENTS = isDemoMode ? DEMO_EXPERIMENTS : DEMO_EXPERIMENTS;
+
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />

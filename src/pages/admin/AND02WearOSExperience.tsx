@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Watch, ArrowRight, Clock, Zap, Eye, Smartphone, AlertTriangle, Vibrate } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const TILES = [
   { id: "wmn", name: "What Matters Now", priority: 0, refresh: "30s", layout: "compact", items: 3, sources: ["approvals", "alerts", "tasks"] },

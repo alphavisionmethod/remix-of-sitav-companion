@@ -4,8 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Smartphone, MonitorSmartphone, ArrowRightLeft, Eye, Radio } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DWE02PresenceContinuityCenter() {
+  const { isDemoMode } = useDataMode();
   const [presence, setPresence] = useState<any[]>([]);
   const [handoffs, setHandoffs] = useState<any[]>([]);
   const [contextRecords, setContextRecords] = useState<any[]>([]);

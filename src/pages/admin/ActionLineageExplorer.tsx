@@ -8,6 +8,7 @@ import { GitBranch, RefreshCw, Eye, RotateCcw, Link2, Shield, Activity, FileText
 import { useQuery } from "@tanstack/react-query";
 import { fetchActionLineage, getActionExplanation, findStuckActions, type PersistedActionLineage } from "@/lib/persistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -20,6 +21,7 @@ const STATE_COLORS: Record<string, string> = {
 };
 
 export default function ActionLineageExplorer() {
+  const { isDemoMode } = useDataMode();
   const [domainFilter, setDomainFilter] = useState<string>("all");
   const [stateFilter, setStateFilter] = useState<string>("all");
   const [selected, setSelected] = useState<PersistedActionLineage | null>(null);

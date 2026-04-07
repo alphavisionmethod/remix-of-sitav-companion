@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const FORMS = [
   { id: "f1", name: "Free Consultation Application", status: "live", submissions: 186, convRate: "24%", lastSubmission: "2h ago", fields: 8, linkedFunnel: "Free Consultation Funnel", tags: ["lead-gen", "discovery"] },
@@ -46,6 +47,7 @@ const STATS = [
 ];
 
 export default function FormsBuilder() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("forms");
   const [selectedForm, setSelectedForm] = useState<string | null>(null);
 

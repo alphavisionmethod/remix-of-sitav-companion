@@ -9,6 +9,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import {
   Search, Database, Shield, CheckCircle, AlertTriangle,
   XCircle, Eye, ArrowRight, Globe, Code
@@ -65,6 +66,7 @@ const honestyConfig: Record<LaunchHonesty, { label: string; color: string; icon:
 };
 
 export default function RouteSourceDiagnostics() {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {

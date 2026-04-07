@@ -13,6 +13,7 @@ import { Package, TrendingUp, DollarSign, Users, Activity, ArrowRight, Target, Z
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Mock Analytics Data ─────────────────────────────────────────
 
@@ -53,6 +54,7 @@ const RETENTION_DATA = [
 ];
 
 const StoreAnalyticsPage = () => {
+  const { isDemoMode } = useDataMode();
   const [activeTab, setActiveTab] = useState("overview");
 
   const totalRevenue = PACK_ANALYTICS.reduce((s, a) => s + a.revenue_generated, 0);

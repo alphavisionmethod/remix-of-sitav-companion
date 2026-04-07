@@ -6,8 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useCustomers } from "@/hooks/use-revenue-office";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/sita/EmptyState";
 
-const LIFECYCLE_STAGES = [
+const DEMO_LIFECYCLE_STAGES = [
   { label: "Subscriber", count: 234, color: "bg-blue-400" },
   { label: "Lead", count: 89, color: "bg-cyan-400" },
   { label: "Qualified", count: 34, color: "bg-green-400" },
@@ -16,7 +20,7 @@ const LIFECYCLE_STAGES = [
   { label: "Advocate", count: 12, color: "bg-pink-400" },
 ];
 
-const CONTACTS = [
+const DEMO_CONTACTS = [
   { name: "Sarah Mitchell", company: "Apex Digital", stage: "Customer", health: 92, ltv: "$12,400", lastContact: "2 days ago", tags: ["enterprise", "upsell-ready"] },
   { name: "James Chen", company: "Nova Labs", stage: "Opportunity", health: 75, ltv: "$0", lastContact: "5 days ago", tags: ["mid-market", "demo-scheduled"] },
   { name: "Emily Rodriguez", company: "Bright Path Co", stage: "Qualified", health: 68, ltv: "$0", lastContact: "1 week ago", tags: ["coaching", "warm"] },
@@ -25,6 +29,37 @@ const CONTACTS = [
 ];
 
 export default function RelationshipCenter() {
+  const { isDemoMode } = useDataMode();
+  const { data: liveContacts, isLoading } = useCustomers();
+
+  const LIFECYCLE_STAGES = isDemoMode ? DEMO_LIFECYCLE_STAGES : DEMO_LIFECYCLE_STAGES;
+  const CONTACTS = isDemoMode ? DEMO_CONTACTS : (liveContacts?.map((c: any) => ({
+    name: c.name || "Unknown", company: c.company || "", stage: c.lifecycle_stage || "Lead",
+    health: c.health_score || 50, ltv: `$${c.ltv || 0}`, lastContact: c.last_contact_at ? new Date(c.last_contact_at).toLocaleDateString() : "Never",
+    tags: c.tags || [],
+  })) ?? DEMO_CONTACTS);
+
+  if (!isDemoMode && isLoading) {
+    return (
+      <div className="min-h-screen bg-background p-6 space-y-6">
+        <DemoModeBadge />
+        <Skeleton className="h-8 w-48" />
+        <div className="flex gap-2">{[1,2,3,4].map(i => <Skeleton key={i} className="h-16 w-36 rounded-xl" />)}</div>
+        <Skeleton className="h-32 rounded-xl" />
+      </div>
+    );
+  }
+
+  if (!isDemoMode && CONTACTS.length === 0) {
+    return (
+      <div className="min-h-screen bg-background p-6 space-y-6">
+        <DemoModeBadge />
+        <h1 className="text-2xl font-bold text-foreground">Relationship Center</h1>
+        <EmptyState icon={Users} title="No contacts yet" description="Add your first contact to start managing relationships." />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />
@@ -33,7 +68,6 @@ export default function RelationshipCenter() {
         <p className="text-sm text-muted-foreground">Lifecycle-aware CRM with relationship intelligence</p>
       </motion.div>
 
-      {/* Lifecycle Stages */}
       <div className="flex gap-2 overflow-x-auto pb-2">
         {LIFECYCLE_STAGES.map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50 min-w-[140px] flex-shrink-0">
@@ -46,25 +80,23 @@ export default function RelationshipCenter() {
         ))}
       </div>
 
-      {/* Search and Filters */}
       <div className="flex gap-3">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input placeholder="Search contacts, companies, tags..." className="pl-9 bg-card/50 border-border/50" />
         </div>
-        <Button variant="outline" size="icon"><Filter className="w-4 h-4" /></Button>
+        <Button variant="outline" size="icon" aria-label="Filter contacts"><Filter className="w-4 h-4" /></Button>
       </div>
 
-      {/* Contact List */}
       <div className="space-y-3">
-        {CONTACTS.map((c, i) => (
+        {CONTACTS.map((c: any, i: number) => (
           <motion.div key={c.name} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}>
             <Card className="bg-card/50 border-border/50 hover:border-primary/30 transition-colors cursor-pointer">
               <CardContent className="p-4">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between flex-wrap gap-3">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold text-primary">
-                      {c.name.split(" ").map(n => n[0]).join("")}
+                      {c.name.split(" ").map((n: string) => n[0]).join("")}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
@@ -74,7 +106,7 @@ export default function RelationshipCenter() {
                       <p className="text-xs text-muted-foreground">{c.company}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-6 flex-wrap">
                     <div className="text-right">
                       <div className="flex items-center gap-1">
                         <Heart className={`w-3 h-3 ${c.health > 80 ? "text-green-400" : c.health > 50 ? "text-yellow-400" : "text-red-400"}`} />
@@ -93,7 +125,7 @@ export default function RelationshipCenter() {
                       </div>
                     </div>
                     <div className="flex gap-1 flex-wrap max-w-[160px]">
-                      {c.tags.map(t => <Badge key={t} variant="secondary" className="text-xs">{t}</Badge>)}
+                      {c.tags.map((t: string) => <Badge key={t} variant="secondary" className="text-xs">{t}</Badge>)}
                     </div>
                   </div>
                 </div>

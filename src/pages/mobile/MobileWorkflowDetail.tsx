@@ -4,6 +4,7 @@ import { CheckCircle2, Clock, ArrowRight, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMobileWorkflowSteps } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusIcon = {
   completed: <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))]" />,
@@ -13,6 +14,7 @@ const statusIcon = {
 };
 
 const MobileWorkflowDetail = () => {
+  const { isDemoMode } = useDataMode();
   const { id } = useParams();
   const { data: steps = [] } = useMobileWorkflowSteps();
 

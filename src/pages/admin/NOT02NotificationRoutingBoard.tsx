@@ -10,11 +10,13 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowRight, Filter, Bell, BellOff, Shield, Clock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
 
 const db: any = supabase;
 
 export default function NOT02NotificationRoutingBoard() {
+  const { isDemoMode } = useDataMode();
   const { data: queue = [] } = useQuery({
     queryKey: ["not02-queue"],
     queryFn: async () => {

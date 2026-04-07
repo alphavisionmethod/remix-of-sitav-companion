@@ -7,8 +7,10 @@ import { RefreshCw, Check, Shield, Clock, Download, ArrowLeft } from "lucide-rea
 import { APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const AppUpdatesPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const updatable = APP_CATALOG.filter(a => a.installStatus === "update-available");
   const installed = APP_CATALOG.filter(a => a.installStatus === "installed");

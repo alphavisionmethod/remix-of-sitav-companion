@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Smartphone, Watch, Laptop, Monitor, Wifi, WifiOff, Shield, Activity } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const iconMap: Record<string, React.ReactNode> = {
   phone: <Smartphone className="h-5 w-5" />,
@@ -17,6 +18,7 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 export default function DWE01ConnectedDevicesCenter() {
+  const { isDemoMode } = useDataMode();
   const [devices, setDevices] = useState<any[]>([]);
   const [families, setFamilies] = useState<any[]>([]);
 

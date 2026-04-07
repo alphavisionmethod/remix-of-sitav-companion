@@ -12,6 +12,7 @@ import { useModeDeltas } from "@/lib/customer-journey/journey-ingestion-hooks";
 import { JOURNEY_STATUS_CONFIG } from "@/lib/customer-journey/journey-registry";
 import { GitCompare, Loader2, AlertTriangle, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const comparisonLabels: Record<string, { label: string; color: string }> = {
   both_work: { label: "Both Work", color: "bg-emerald-500/15 text-emerald-400" },
@@ -36,6 +37,7 @@ function getNextAction(comparison: string, realStatus?: string): string {
 }
 
 export default function CJ05DemoVsRealComparison() {
+  const { isDemoMode } = useDataMode();
   const { data: journeys, isLoading } = useCustomerJourneys();
   const { data: runs } = useCustomerJourneyRuns();
   const { data: persistedComparisons } = useModeComparisons();

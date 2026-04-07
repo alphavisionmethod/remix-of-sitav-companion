@@ -8,6 +8,7 @@ import { Shield, AlertTriangle, CheckCircle, Link2, RefreshCw, Eye } from "lucid
 import { useQuery } from "@tanstack/react-query";
 import { fetchPolicyEvaluations, getPolicyEvaluationStats, type PersistedPolicyEvaluation } from "@/lib/persistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -17,6 +18,7 @@ function EffectBadge({ effect }: { effect: string }) {
 }
 
 export default function PolicyDecisionLedger() {
+  const { isDemoMode } = useDataMode();
   const [effectFilter, setEffectFilter] = useState<string>("all");
   const [domainFilter, setDomainFilter] = useState<string>("all");
   const [selectedEval, setSelectedEval] = useState<PersistedPolicyEvaluation | null>(null);

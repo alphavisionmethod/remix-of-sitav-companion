@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Radio, Zap, UserX, Megaphone, Package, Heart, Shield, Users, TrendingUp, CheckCircle, AlertTriangle, Clock, ArrowRight, Settings, Brain, Target } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface OperatingMode {
   name: string;
@@ -82,6 +83,7 @@ const modes: OperatingMode[] = [
 ];
 
 export default function GrowthOperatingModes() {
+  const { isDemoMode } = useDataMode();
   const [activeMode, setActiveMode] = useState(modes.findIndex(m => m.active));
   const [tab, setTab] = useState("overview");
   const currentMode = modes[activeMode];

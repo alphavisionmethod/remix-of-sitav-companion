@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Image, Upload, Search, Grid3X3, LayoutList, Calendar, Tag, FolderOpen, X, Heart, Share2, Download, MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Photo {
   id: string;
@@ -45,6 +46,7 @@ const mockPhotos: Photo[] = Array.from({ length: 12 }, (_, i) => ({
 const albums = ["All", "Work", "Personal", "Screenshots", "Documents"];
 
 export default function GalleryApp() {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [album, setAlbum] = useState("All");

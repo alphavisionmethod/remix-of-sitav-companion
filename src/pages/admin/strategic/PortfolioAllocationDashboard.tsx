@@ -6,6 +6,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useComputeSnapshots } from "@/lib/hooks/useIntelligencePersistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEFAULT_CATEGORIES = [
   { cat: "defensive", target: 25, desc: "Monitoring, self-healing, compliance" },

@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { analyzeChangeImpact, type ChangeProposal } from "@/lib/delivery-methodology/change-impact-analyzer";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ChangeImpactAnalyzer = () => {
   const queryClient = useQueryClient();

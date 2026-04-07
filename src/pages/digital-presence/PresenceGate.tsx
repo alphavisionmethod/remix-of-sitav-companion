@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const WORKSPACES = [
   { label: "Presence Boardroom", desc: "Health, traffic, conversions, advisors", icon: BarChart3, path: "/digital-presence/boardroom", color: "text-blue-400" },
@@ -34,6 +35,7 @@ const HEALTH_STATS = [
 ];
 
 export default function PresenceGate() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (

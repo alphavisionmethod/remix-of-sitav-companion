@@ -19,6 +19,7 @@ import {
   CheckCircle, Activity,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface PulseItem {
   label: string;
@@ -72,6 +73,7 @@ function PulseGrid({ items }: { items: PulseItem[] }) {
 }
 
 export default function OwnerPulsePage() {
+  const { isDemoMode } = useDataMode();
   const summary = useMissionControlSummary();
   const cost = useFounderCostSummary();
   const trust = useTrustSummary();

@@ -11,10 +11,12 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type AnalysisState = "idle" | "analyzing" | "verified" | "unknown" | "blocked";
 
 const ExternalInstallerPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [file, setFile] = useState<string | null>(null);
   const [state, setState] = useState<AnalysisState>("idle");

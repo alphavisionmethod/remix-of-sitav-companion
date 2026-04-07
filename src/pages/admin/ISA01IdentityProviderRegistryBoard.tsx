@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Shield, CheckCircle, XCircle, Fingerprint, Key, Smartphone, Globe, Monitor } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const platformIcons: Record<string, React.ReactNode> = {
   web: <Globe className="h-4 w-4" />,
@@ -23,6 +24,7 @@ const authTypeColors: Record<string, string> = {
 };
 
 export default function ISA01IdentityProviderRegistryBoard() {
+  const { isDemoMode } = useDataMode();
   const { data: families = [] } = useQuery({
     queryKey: ["isa01-families"],
     queryFn: async () => {

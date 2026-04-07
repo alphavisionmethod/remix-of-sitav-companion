@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const mockAssets = [
   { id: "ia-1", type: "root-cause-analysis", domain: "engineering", title: "Memory leak in portfolio renderer", confidence: 92, freshness: "2hr", verificationState: "verified", reuseEligible: true, usageCount: 12, qualityScore: 92, acceptanceRate: 0.95, status: "active", savings: 540, invalidationTriggers: ["deployment", "dependency_update"], evidenceRefs: 3, lastUsed: "1hr ago" },

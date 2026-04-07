@@ -4,8 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Activity, HeartPulse, Shield, Lock } from "lucide-react";
 import { db } from "@/integrations/supabase/db";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DWE03WearableSignalsCenter() {
+  const { isDemoMode } = useDataMode();
   const [providers, setProviders] = useState<any[]>([]);
   const [signals, setSignals] = useState<any[]>([]);
   const [consents, setConsents] = useState<any[]>([]);

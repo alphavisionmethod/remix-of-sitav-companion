@@ -9,10 +9,12 @@ import { Progress } from "@/components/ui/progress";
 import { useQuery } from "@tanstack/react-query";
 import { fetchIntelligenceAssets, getAssetStats, invalidateAsset, type IntelligenceAssetRow } from "@/lib/persistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
 export default function IntelligenceArtifactLibrary() {
+  const { isDemoMode } = useDataMode();
   const [domainFilter, setDomainFilter] = useState<string>("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [showInvalidated, setShowInvalidated] = useState(false);

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const TIMELINE_EVENTS = [
   { date: "Apr 3", event: "Homepage hero redesign", type: "design", impact: "+18% CTR", positive: true, details: "New value prop + hero image. CRO Advisor recommended duplicating CTA." },
@@ -18,6 +19,7 @@ const TIMELINE_EVENTS = [
 ];
 
 export default function PresenceTimeMachine() {
+  const { isDemoMode } = useDataMode();
   const [selectedIdx, setSelectedIdx] = useState(0);
   const selected = TIMELINE_EVENTS[selectedIdx];
 

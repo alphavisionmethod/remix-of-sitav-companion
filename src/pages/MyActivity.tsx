@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Heatmap Grid ────────────────────────────────────────────
 
@@ -88,6 +89,7 @@ const FEATURES = [
 ];
 
 const MyActivity = () => {
+  const { isDemoMode } = useDataMode();
   const { user, isDemo } = useAuth();
   const [heatmapData, setHeatmapData] = useState<Record<string, number>>({});
   const [featureUsage, setFeatureUsage] = useState<Record<string, number>>({});

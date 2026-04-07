@@ -15,6 +15,7 @@ import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Spillover data ───────────────────────────────────────────
 
@@ -131,6 +132,7 @@ const SpilloverGraph = () => (
 );
 
 export default function SpilloverDashboard() {
+  const { isDemoMode } = useDataMode();
   const highCount = ACTIVE_SPILLOVERS.filter(s => s.impact === "high").length;
   const medCount = ACTIVE_SPILLOVERS.filter(s => s.impact === "medium").length;
 

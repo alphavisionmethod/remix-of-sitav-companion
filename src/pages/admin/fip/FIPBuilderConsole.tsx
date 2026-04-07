@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { useFeatureIntakes, useCapabilities, useFeatureSpecs, useComplianceRecords, useRolloutRecords } from "@/hooks/use-fip-data";
 import { READINESS_STAGES } from "@/lib/fip/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const BUILDER_STEPS = [
   { step: 1, label: 'Intake', icon: FileText, description: 'Answer protocol intake questions' },

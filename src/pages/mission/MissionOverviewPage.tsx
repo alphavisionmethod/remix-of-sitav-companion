@@ -16,8 +16,10 @@ import {
   Heart, Target, Lock, Server, BarChart3,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function MissionOverviewPage() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const summary = useMissionControlSummary();
   const trust = useTrustSummary();

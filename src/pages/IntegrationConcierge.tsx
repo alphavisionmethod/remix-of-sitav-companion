@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import type { ConnectorUseCase } from "@/lib/engines/connector-concierge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Category Config ────────────────────────────────────────────
 const CATEGORIES = [
@@ -307,6 +308,7 @@ function ConnectedPanel() {
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function IntegrationConcierge() {
+  const { isDemoMode } = useDataMode();
   const { engines } = useOSRuntime();
   const [category, setCategory] = useState("all");
   const [activeUseCase, setActiveUseCase] = useState<ConnectorUseCase | null>(null);

@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CANONICAL_DOMAIN_PACKS } from "@/lib/delivery-methodology/domain-packs";
 import { LIFECYCLE_STAGES, getStageLabel } from "@/lib/delivery-methodology/feature-lifecycle";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ARCHETYPE_DOCS = [
   { key: "boardroom", label: "Boardroom", desc: "Executive synthesis surface with advisor views and overlays", files: ["BoardroomPage.tsx", "SynthesisPanel.tsx", "AdvisorOverlay.tsx"], contracts: ["synthesis-contract", "advisor-panel-contract"] },

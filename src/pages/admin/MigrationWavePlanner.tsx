@@ -4,8 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { Layers, Users, Clock, Target, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function MigrationWavePlanner() {
+  const { isDemoMode } = useDataMode();
   const { data: mockReplacements = [] } = useMockReplacements();
 
   const waves = useMemo(() => {

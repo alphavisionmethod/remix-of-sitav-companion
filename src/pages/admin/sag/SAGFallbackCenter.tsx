@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRoutingPolicies, useProviderHealth, useTaskRequests } from "@/hooks/use-sag-data";
 import { PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const FALLBACK_STRATEGIES = [
   { id: 'same_provider_downgrade', label: 'Same Provider Downgrade', desc: 'Use cheaper model from same provider', icon: '↓' },

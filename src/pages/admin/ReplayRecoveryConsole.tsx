@@ -11,10 +11,12 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { fetchPersistedEvents, getEventLineage, markEventReplayed, fetchActionLineage, fetchPolicyEvaluations } from "@/lib/persistence";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
 export default function ReplayRecoveryConsole() {
+  const { isDemoMode } = useDataMode();
   const [replayScope, setReplayScope] = useState<string>("topic");
   const [scopeValue, setScopeValue] = useState("");
   const [dryRun, setDryRun] = useState(true);

@@ -14,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -52,6 +53,7 @@ const receiptFeed = [
 ];
 
 export default function ConciergeCommandCenter() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("tasks");
   const active = tasks.filter(t => t.status !== "completed").length;
   const urgent = tasks.filter(t => t.priority === "high" && t.status !== "completed").length;

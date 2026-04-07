@@ -6,6 +6,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Users, Home, Plus, Trash2, Shield, UserPlus } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const HouseholdCommandCenter = () => {
   const { data: households, isLoading } = useHouseholds();

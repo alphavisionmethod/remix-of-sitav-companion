@@ -7,8 +7,10 @@ import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { PROGRESSION_REQUIREMENTS, EVIDENCE_SIGNALS } from "@/lib/persistence/reality-classification-persistence";
 import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, ArrowRight, FileCode, Database, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function FeatureRealityDetail() {
+  const { isDemoMode } = useDataMode();
   const { data: classifications = [] } = useRealityClassifications();
   const { data: mockReplacements = [] } = useMockReplacements();
   const [selectedId, setSelectedId] = useState<string>("");

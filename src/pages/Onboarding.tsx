@@ -13,6 +13,7 @@ import {
   Home, Users, CreditCard, BarChart3, Heart, Globe, Lock, Eye, Sliders
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type Step = "welcome" | "role" | "business" | "finance" | "concierge" | "trust" | "preferences" | "first-win" | "review" | "complete";
 
@@ -63,6 +64,7 @@ const ProgressBar = ({ current, total }: { current: number; total: number }) => 
 );
 
 const Onboarding = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [step, setStep] = useState<Step>("welcome");

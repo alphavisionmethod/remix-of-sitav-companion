@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { GraduationCap, Users, BookOpen, PlayCircle, Star, TrendingUp, AlertTriangle, Clock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const courses = [
   { name: "Business Growth Masterclass", members: 342, completion: 67, modules: 12, rating: 4.8, status: "live", revenue: 28400, churnRisk: 8 },
@@ -25,6 +26,7 @@ const dropOffPoints = [
 ];
 
 export default function MembershipCourseOffice() {
+  const { isDemoMode } = useDataMode();
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />

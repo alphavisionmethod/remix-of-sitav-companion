@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { RefreshCw, Globe, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const stageColors: Record<string, string> = {
   production: "bg-green-500/20 text-green-400", alpha: "bg-blue-500/20 text-blue-400",
@@ -15,6 +16,7 @@ const stageColors: Record<string, string> = {
 };
 
 export default function PFA01ProviderFamilyRegistry() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: families = [] } = useQuery({

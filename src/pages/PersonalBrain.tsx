@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import ReactMarkdown from "react-markdown";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type Mode = "think" | "learn" | "build" | "create";
 
@@ -188,6 +189,7 @@ function PersonalBrainInner() {
 }
 
 export default function PersonalBrain() {
+  const { isDemoMode } = useDataMode();
   return (
     <GlobalErrorBoundary>
       <PersonalBrainInner />

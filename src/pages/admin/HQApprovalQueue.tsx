@@ -20,6 +20,7 @@ import {
   DollarSign, Zap, RotateCcw, MessageSquare,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Types ──
 interface QueueItem {
@@ -79,6 +80,7 @@ const severityColor = (sev: string) =>
 // Main Page
 // ════════════════════════════════════════════════════════════════
 export default function HQApprovalQueue() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
 
   return (

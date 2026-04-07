@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Key, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const purposeColors: Record<string, string> = {
   identity_web: "bg-blue-500/20 text-blue-400", connector_web: "bg-green-500/20 text-green-400",
@@ -14,6 +15,7 @@ const purposeColors: Record<string, string> = {
 };
 
 export default function PFA03OAuthClientRegistry() {
+  const { isDemoMode } = useDataMode();
   const { data: clients = [] } = useQuery({
     queryKey: ["oauth-clients"],
     queryFn: async () => { const { data } = await supabase.from("oauth_client_registry").select("*, provider_families(name)").order("created_at"); return data || []; },

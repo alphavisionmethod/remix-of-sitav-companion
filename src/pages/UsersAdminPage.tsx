@@ -17,8 +17,10 @@ import {
 } from "lucide-react";
 import { useAdminUsers } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function UsersAdminPage() {
+  const { isDemoMode } = useDataMode();
   const { data: mockUsers = [] } = useAdminUsers();
   const [search, setSearch] = useState("");
   const [selectedUser, setSelectedUser] = useState<UserRowView | null>(null);

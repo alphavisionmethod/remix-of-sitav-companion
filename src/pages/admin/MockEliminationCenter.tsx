@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle, AlertTriangle, XCircle, Database, Shield, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type DomainStatus = "real" | "demo_provider" | "mock_direct" | "mixed" | "blocked";
 
@@ -45,6 +46,7 @@ const statusConfig: Record<DomainStatus, { label: string; color: string; icon: t
 };
 
 export default function MockEliminationCenter() {
+  const { isDemoMode } = useDataMode();
   const totalPages = DOMAIN_MIGRATIONS.reduce((s, d) => s + d.totalPages, 0);
   const migratedPages = DOMAIN_MIGRATIONS.reduce((s, d) => s + d.migratedPages, 0);
   const migrationPct = Math.round((migratedPages / totalPages) * 100);

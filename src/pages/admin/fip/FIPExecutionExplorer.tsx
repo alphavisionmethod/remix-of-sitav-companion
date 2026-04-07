@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useExecutionPaths } from "@/hooks/use-fip-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PathNode = ({ label, value, active }: { label: string; value?: string; active: boolean }) => (
   <div className={`flex flex-col items-center p-2 rounded-lg border ${active ? 'border-primary bg-primary/5' : 'border-border bg-muted/30'}`}>

@@ -6,8 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BookOpen } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function PFA04ConsentLedgerExplorer() {
+  const { isDemoMode } = useDataMode();
   const { data: consents = [] } = useQuery({
     queryKey: ["consent-ledger"],
     queryFn: async () => { const { data } = await supabase.from("consent_ledger").select("*, provider_families(name), provider_capabilities(display_name)").order("created_at", { ascending: false }).limit(100); return data || []; },

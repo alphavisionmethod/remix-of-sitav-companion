@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { useVerificationSurfaces, useVerificationRuns } from "@/lib/verification/verification-hooks";
 import { getP0Surfaces } from "@/lib/verification/surface-registry";
 import { ShieldCheck, CheckCircle2, XCircle, Clock } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const journeyFamilies = [
   { key: "auth", label: "Identity / Auth", routes: ["auth.login", "auth.login.submit", "auth.signup", "auth.signup.submit", "auth.signout"] },
@@ -21,6 +22,7 @@ const journeyFamilies = [
 ];
 
 export default function P0JourneyBoard() {
+  const { isDemoMode } = useDataMode();
   const { data: dbSurfaces } = useVerificationSurfaces();
   const { data: runs } = useVerificationRuns();
   const p0s = getP0Surfaces();

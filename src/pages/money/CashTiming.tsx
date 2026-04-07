@@ -7,6 +7,7 @@ import { Shield, DollarSign, TrendingUp, TrendingDown, AlertTriangle, Clock, Arr
 import { motion } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useCashTimingWindows, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { useCashflowAnalysis, useCashflowForecast, useSafeToSpend } from "@/hooks/use-backend-actions";
 

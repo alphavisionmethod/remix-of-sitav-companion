@@ -8,8 +8,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { getAllActions } from "@/lib/services/service-registry/route-to-service-inventory";
 import { Crosshair, CheckCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function SERV05CanonicalActions() {
+  const { isDemoMode } = useDataMode();
   const allActions = getAllActions();
   const canonicalActions = allActions.filter((a) => a.isCanonical);
   const nonCanonicalActions = allActions.filter((a) => !a.isCanonical);

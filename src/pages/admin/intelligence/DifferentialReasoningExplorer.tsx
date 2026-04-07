@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const mockDiffs = [
   { id: "dr-1", domain: "investment-finance", desc: "Portfolio state — minor price fluctuation", materiality: 22, action: "reuse-as-is", costFull: 120, costActual: 5, deltas: 2, confidence: 92, preserved: 8, invalidated: 0, changes: ["AAPL +1.2%", "Bond yield -0.05%"] },

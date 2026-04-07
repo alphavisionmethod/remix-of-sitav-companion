@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { useRoutingPolicies, useCreateRoutingPolicy } from "@/hooks/use-sag-data";
 import { TASK_CLASSES } from "@/lib/sovereign-ai-gateway/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SAGRoutingPolicy = () => {
   const { data: policies = [], isLoading } = useRoutingPolicies();

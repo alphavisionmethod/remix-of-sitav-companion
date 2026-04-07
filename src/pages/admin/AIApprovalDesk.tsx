@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { FileCheck, AlertTriangle, Shield, Eye, CheckCircle2, XCircle, Code, Palette, Wrench, RotateCcw } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const APPROVALS = [
   {

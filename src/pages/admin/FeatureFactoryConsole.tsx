@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { generateFeatureArtifacts, type FeatureBlueprint } from "@/lib/delivery-methodology/feature-factory";
 import { mapDependencies } from "@/lib/delivery-methodology/dependency-mapper";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const FeatureFactoryConsole = () => {
   const { data: blueprints } = useQuery({

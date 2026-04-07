@@ -4,8 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, CheckCircle, AlertTriangle, XCircle } from "lucide-react";
 import { computeLaunchReadiness, type LaunchNarrative } from "@/lib/services/launch-readiness/launch-readiness-engine";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function LAUNCH06NarrativeGuide() {
+  const { isDemoMode } = useDataMode();
   const [narrative, setNarrative] = useState<LaunchNarrative | null>(null);
   const [mode, setMode] = useState("");
   useEffect(() => { const r = computeLaunchReadiness(null); setNarrative(r.narrative); setMode(r.modeLabel); }, []);

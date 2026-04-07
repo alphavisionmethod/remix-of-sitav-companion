@@ -7,6 +7,7 @@ import { Shield, Fingerprint, Bell, Moon, LogOut, ChevronRight, Smartphone } fro
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { usePushNotifications } from "@/hooks/use-push-notifications";
 
 const ToggleRow = ({ icon: Icon, label, description, defaultOn = false, controlled, onToggle }: {
@@ -54,6 +55,7 @@ const NavRow = ({ icon: Icon, label, onClick }: { icon: any; label: string; onCl
 );
 
 const MobileSettings = () => {
+  const { isDemoMode } = useDataMode();
   const { isSupported, isRegistered, requestPermission, unregister, devices } = usePushNotifications();
 
   const handlePushToggle = async (on: boolean) => {

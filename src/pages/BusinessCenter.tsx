@@ -19,6 +19,7 @@ import RevenueImpactDashboard from "./business/RevenueImpactDashboard";
 import PlaybookBuilder from "./business/PlaybookBuilder";
 import RevenueForecast from "./business/RevenueForecast";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type SubPage = "overview" | "leads" | "customers" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast";
 
@@ -59,6 +60,7 @@ const pages: Record<SubPage, React.ComponentType> = {
 };
 
 const BusinessCenter = () => {
+  const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);

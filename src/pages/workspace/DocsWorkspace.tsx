@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDocs } from "@/hooks/use-domain-data";
 import type { MockDoc } from "@/lib/mock-data/workspace";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import ReactMarkdown from "react-markdown";
 import {
   FileText, Plus, Search, Clock, Users, Shield, Workflow,
@@ -55,6 +56,7 @@ const TOOLBAR_ACTIONS = [
 ];
 
 const DocsWorkspace = () => {
+  const { isDemoMode } = useDataMode();
   const { data: docsData = [] } = useDocs();
 
   const [activeTab, setActiveTab] = useState("all");

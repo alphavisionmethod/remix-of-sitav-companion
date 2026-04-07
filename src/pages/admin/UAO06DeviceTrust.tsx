@@ -6,10 +6,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ShieldCheck, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const trustColors: Record<string, string> = { high: "bg-green-500/20 text-green-400", standard: "bg-blue-500/20 text-blue-400", low: "bg-muted text-muted-foreground", untrusted: "bg-red-500/20 text-red-400" };
 
 export default function UAO06DeviceTrust() {
+  const { isDemoMode } = useDataMode();
   const { data: trust = [] } = useQuery({
     queryKey: ["device-trust"],
     queryFn: async () => { const { data } = await supabase.from("device_trust_records").select("*, connected_devices(device_name, platform)").order("created_at"); return data || []; },

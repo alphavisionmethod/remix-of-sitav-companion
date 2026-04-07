@@ -18,6 +18,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { toast } from "sonner";
@@ -58,6 +59,7 @@ const EMPTY_FORM: AdvisorFormData = {
 };
 
 export default function TeamManagement() {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedAdvisor, setSelectedAdvisor] = useState<string | null>(null);
   const [formDialog, setFormDialog] = useState<{ open: boolean; mode: "create" | "edit"; data: AdvisorFormData; editId?: string }>({

@@ -4,8 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, BookOpen, Users, Layers } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DRS03ScenarioLibrary() {
+  const { isDemoMode } = useDataMode();
   const { data: scenarios, isLoading } = useQuery({
     queryKey: ["drs03-scenarios"],
     queryFn: async () => {

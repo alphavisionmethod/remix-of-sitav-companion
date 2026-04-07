@@ -6,6 +6,7 @@ import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { FileCode, AlertTriangle, Layers } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface MockSourceEntry {
   source: string;
@@ -18,6 +19,7 @@ interface MockSourceEntry {
 }
 
 export default function MockSourceInventory() {
+  const { isDemoMode } = useDataMode();
   const { data: mockReplacements = [] } = useMockReplacements();
   const { data: classifications = [] } = useRealityClassifications();
 

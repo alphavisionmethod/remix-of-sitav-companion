@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 function ScoreCard({ label, score, icon, description }: { label: string; score: number; icon: React.ReactNode; description: string }) {
   const { grade, color } = getLoopGrade(score);
@@ -46,6 +47,7 @@ function ScoreCard({ label, score, icon, description }: { label: string; score: 
 }
 
 export default function FL02FlagshipLoopDetail() {
+  const { isDemoMode } = useDataMode();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const loopKey = searchParams.get("loop") || "";

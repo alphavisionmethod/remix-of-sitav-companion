@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Network, User, Building2, FileText, Briefcase } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ENTITY_ICONS: Record<string, React.ReactNode> = {
   person: <User className="h-3 w-3" />, company: <Building2 className="h-3 w-3" />,
@@ -11,6 +12,7 @@ const ENTITY_ICONS: Record<string, React.ReactNode> = {
 };
 
 export default function DRS04ScenarioEntityGraph() {
+  const { isDemoMode } = useDataMode();
   const { data, isLoading } = useQuery({
     queryKey: ["drs04-entities"],
     queryFn: async () => {

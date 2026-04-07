@@ -7,6 +7,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
 import { useIntelligenceAssets } from "@/lib/hooks/useIntelligencePersistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const IntelligenceMarketDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();

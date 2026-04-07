@@ -8,8 +8,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Heart, RefreshCw, CheckCircle, XCircle, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function UAO05HealthReadiness() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: consents = [] } = useQuery({

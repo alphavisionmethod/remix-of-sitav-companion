@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Activity, Zap, AlertTriangle, Shield, Clock, CheckCircle, XCircle, Pause } from "lucide-react";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 function useScheduledJobs() {
   return useQuery({
@@ -41,6 +42,7 @@ function useKillSwitches() {
 }
 
 export default function AR01AutomationOverview() {
+  const { isDemoMode } = useDataMode();
   const { data: jobs = [] } = useScheduledJobs();
   const { data: executions = [] } = useRecentExecutions();
   const { data: killSwitches = [] } = useKillSwitches();

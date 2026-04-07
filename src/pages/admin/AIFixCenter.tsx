@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Bug, AlertTriangle, CheckCircle2, Wrench, Shield, RotateCcw, Sparkles, FileCheck, Eye, Code, Server, Layout } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const FIXES = [
   { id: 1, title: "Elevated 500 errors on /api/projections/rebuild", area: "Backend — Projection Service", severity: "critical" as const, rootCause: "Cache invalidation race condition during concurrent rebuilds", patch: "Add mutex lock on projection rebuild queue", confidence: 87, testImpact: "3 tests affected", approvalNeeded: true, autoFixEligible: false, rollbackSafe: true, cluster: 14, blastRadius: "surface" as const, reproducibility: "always" as const, affectedRoutes: ["/admin/projections", "/boardroom"], affectedComponents: ["ProjectionService", "CacheLayer"], affectedServices: ["projection-service", "cache-layer", "rebuild-edge-fn"], environment: "production" },

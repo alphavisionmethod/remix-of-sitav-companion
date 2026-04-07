@@ -11,10 +11,12 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { Shield, Plus, Edit, Trash2, ToggleLeft, ToggleRight, ChevronRight, Play, AlertTriangle, FileText, Lock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const CATEGORIES = ["general", "financial", "business", "household", "advisor", "device"];
 
 const PolicyEditor = () => {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const qc = useQueryClient();
   const [category, setCategory] = useState("all");

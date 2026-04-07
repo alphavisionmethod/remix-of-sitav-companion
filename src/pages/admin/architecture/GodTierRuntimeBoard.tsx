@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { GLOBAL_TASK_REGISTRY, listTaskTypes, type TaskContract } from "@/lib/contracts/global-contracts-registry";
 import { PipelineStage } from "@/lib/services/canonical-pipeline";
 import { Shield, GitBranch, Layers, Cpu, Activity, Database, CheckCircle2, XCircle, AlertTriangle, Clock } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const riskColors: Record<string, string> = {
   standard: "bg-green-500/20 text-green-300 border-green-500/30",

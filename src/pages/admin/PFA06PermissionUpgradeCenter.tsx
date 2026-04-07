@@ -6,8 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ArrowUpCircle, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function PFA06PermissionUpgradeCenter() {
+  const { isDemoMode } = useDataMode();
   const { data: levels = [] } = useQuery({
     queryKey: ["permission-levels"],
     queryFn: async () => { const { data } = await supabase.from("permission_levels").select("*, provider_capabilities(capability_key, display_name)").order("created_at"); return data || []; },

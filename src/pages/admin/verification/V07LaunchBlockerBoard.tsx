@@ -9,8 +9,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShieldAlert, CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function LaunchBlockerBoard() {
+  const { isDemoMode } = useDataMode();
   // Fetch latest verification runs
   const { data: runs } = useQuery({
     queryKey: ["v07-verification-runs"],

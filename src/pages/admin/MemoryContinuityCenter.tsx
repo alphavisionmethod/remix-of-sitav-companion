@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { useQuery } from "@tanstack/react-query";
 import { fetchScopedMemory, getScopedMemoryStats, forgetScopedMemory, type PersistedScopedMemory } from "@/lib/persistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -21,6 +22,7 @@ function PrivacyBadge({ tier }: { tier: string }) {
 }
 
 export default function MemoryContinuityCenter() {
+  const { isDemoMode } = useDataMode();
   const [scopeFilter, setScopeFilter] = useState<string>("all");
   const [privacyFilter, setPrivacyFilter] = useState<string>("all");
   const [selectedEntry, setSelectedEntry] = useState<PersistedScopedMemory | null>(null);

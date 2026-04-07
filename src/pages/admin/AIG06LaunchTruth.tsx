@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Eye, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { getAILaunchHonestyBoard, getLaunchHonestyRecords } from "@/lib/services/ai-gateway";
 import type { LaunchHonestyLevel } from "@/lib/services/ai-gateway";
 
@@ -27,6 +28,7 @@ const LEVEL_ICONS: Record<LaunchHonestyLevel, React.ReactNode> = {
 };
 
 export default function AIG06LaunchTruth() {
+  const { isDemoMode } = useDataMode();
   const { data: capabilities = [] } = useQuery({
     queryKey: ["ai-launch-honesty"],
     queryFn: getAILaunchHonestyBoard,

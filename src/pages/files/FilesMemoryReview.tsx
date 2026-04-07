@@ -9,8 +9,10 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const FilesMemoryReview = () => {
+  const { isDemoMode } = useDataMode();
   const { data: files = [], isLoading: loadingFiles } = useAllFiles();
 
   // Fetch advisor memories derived from files

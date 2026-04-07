@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Brain, ArrowRight, AlertTriangle, CheckCircle2, Loader2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useReadinessStates } from "@/hooks/use-health-signal-data";
 import { DEMO_READINESS_FACTORS } from "@/lib/demo-data/health-signals";
 

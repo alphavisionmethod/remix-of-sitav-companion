@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const JOURNEYS = [
   {
@@ -54,6 +55,7 @@ const ACTIVE_CLIENTS = [
 const stepTypeIcons: Record<string, typeof Mail> = { email: Mail, form: FileText, booking: Calendar, meeting: Calendar, payment: Package, access: Settings, delivery: Package, document: FileText };
 
 export default function ClientOnboarding() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("journeys");
 
   return (

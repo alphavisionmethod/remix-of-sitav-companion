@@ -11,6 +11,7 @@ import {
   MessageSquare, UserPlus, Heart, Package, ArrowUpRight, Layers
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const automationStats = [
   { label: "Active Automations", value: "24", delta: "+3 this week", icon: Play, color: "text-emerald-400" },
@@ -92,6 +93,7 @@ const urgencyColors: Record<string, string> = {
 };
 
 export default function AutomationOffice() {
+  const { isDemoMode } = useDataMode();
   const [selectedTab, setSelectedTab] = useState("overview");
 
   return (

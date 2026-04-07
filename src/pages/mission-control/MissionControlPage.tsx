@@ -26,6 +26,7 @@ import {
 } from "@/components/sita/MissionControlComponents";
 import { mockAdvisors, mockRecommendations, mockInternalAgents, mockIncidents, mockConnectorHealth, mockStuckWorkflows, mockCostAnomalies, mockPolicyAnomalies, mockReleaseSafety, mockApprovals, mockSafeMode, type SafeModeState } from "@/hooks/useAdvisorMissionControl";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
 import { FraudSentinelService } from "@/lib/core-services/fraud-sentinel";
 import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
@@ -1179,6 +1180,7 @@ function ModeToggle({ mode, setMode }: { mode: "owner" | "advanced"; setMode: (m
 // ── Main Page ───────────────────────────────────────────────────────────────
 
 export default function MissionControlPage() {
+  const { isDemoMode } = useDataMode();
   const [activeTab, setActiveTab] = useState("home");
   const { mode, setMode, isOwner } = useControlMode();
   const navigate = useNavigate();

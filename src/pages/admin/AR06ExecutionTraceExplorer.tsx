@@ -10,8 +10,10 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, Clock, ChevronRight, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function AR06ExecutionTraceExplorer() {
+  const { isDemoMode } = useDataMode();
   const [selectedExecId, setSelectedExecId] = useState<string | null>(null);
 
   const { data: executions = [] } = useQuery({

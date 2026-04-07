@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useDecks } from "@/hooks/use-domain-data";
 import type { MockDeck, MockSlide } from "@/lib/mock-data/workspace";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
@@ -30,6 +31,7 @@ const typeColors: Record<string, string> = {
 };
 
 const SlidesWorkspace = () => {
+  const { isDemoMode } = useDataMode();
   const { data: decksData = [] } = useDecks();
 
   const [selectedDeck, setSelectedDeck] = useState<MockDeck | null>(null);

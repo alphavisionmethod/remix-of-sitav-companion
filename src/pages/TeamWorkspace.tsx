@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface TeamMember { id: string; name: string; role: string; activeTasks: number; completedThisWeek: number; overdue: number; load: "light" | "normal" | "heavy" | "overloaded"; avatar: string; }
 interface Delegation { id: string; task: string; from: string; to: string; status: "pending" | "accepted" | "in-progress" | "completed"; dueDate: string; priority: string; }
@@ -29,6 +30,7 @@ const STATUS_COLORS = { pending: "bg-amber-500/15 text-amber-300", accepted: "bg
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
 const TeamWorkspace = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("workload");
 
   return (

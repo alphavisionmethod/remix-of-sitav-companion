@@ -20,8 +20,10 @@ import {
   ChevronRight, Shield, Zap, Eye,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function WorkflowReplayHub() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("all");

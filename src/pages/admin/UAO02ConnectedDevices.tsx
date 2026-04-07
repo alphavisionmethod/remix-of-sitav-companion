@@ -8,10 +8,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Cpu, RefreshCw, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const stageColors: Record<string, string> = { alpha: "bg-blue-500/20 text-blue-400", planned: "bg-muted text-muted-foreground", future: "bg-muted text-muted-foreground/50", production: "bg-green-500/20 text-green-400" };
 
 export default function UAO02ConnectedDevices() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: families = [] } = useQuery({

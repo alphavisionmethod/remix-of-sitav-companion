@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plug, CheckCircle, XCircle, AlertTriangle, RefreshCw, HardDrive, Mail, Calendar } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const categoryIcons: Record<string, React.ReactNode> = {
   storage: <HardDrive className="h-4 w-4" />,
@@ -21,6 +22,7 @@ const healthColors: Record<string, string> = {
 };
 
 export default function ISA02ConnectorProviderRegistryBoard() {
+  const { isDemoMode } = useDataMode();
   const { data: capabilities = [] } = useQuery({
     queryKey: ["isa02-capabilities"],
     queryFn: async () => {

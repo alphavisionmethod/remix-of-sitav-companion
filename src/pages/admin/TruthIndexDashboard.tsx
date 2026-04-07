@@ -11,6 +11,7 @@ import { computeTruthIndices, type TruthIndexSummary } from "@/lib/services/trut
 import { Shield, Brain, Plug, Monitor, Eye, Layers, RefreshCw, Activity, Smartphone, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const INDEX_CONFIG = [
   { key: "runtimeTruth", label: "Runtime Truth Index", icon: Shield, color: "text-blue-400" },
@@ -39,6 +40,7 @@ function getScoreBadgeVariant(score: number): "default" | "secondary" | "destruc
 }
 
 export default function TruthIndexDashboard() {
+  const { isDemoMode } = useDataMode();
   const { data: indices, isLoading, refetch } = useQuery({
     queryKey: ["truth-indices"],
     queryFn: computeTruthIndices,

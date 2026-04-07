@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CheckCircle, XCircle, Minus, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const portColors: Record<string, string> = {
   portable: "bg-green-500/20 text-green-400", web_preferred: "bg-cyan-500/20 text-cyan-400",
@@ -19,6 +20,7 @@ const bindingColors: Record<string, string> = {
 };
 
 export default function MSA03CapabilityPortability() {
+  const { isDemoMode } = useDataMode();
   const { data: capabilities = [] } = useQuery({
     queryKey: ["capability-definitions"],
     queryFn: async () => { const { data } = await supabase.from("capability_definitions").select("*").order("domain"); return data || []; },

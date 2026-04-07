@@ -5,9 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Receipt, BarChart3, ArrowDownUp } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { getInferenceReceipts, getReceiptStats, getReceiptRecords, getFallbackEvents } from "@/lib/services/ai-gateway";
 
 export default function AIG05ReceiptsExplorer() {
+  const { isDemoMode } = useDataMode();
   const { data: receipts = [] } = useQuery({
     queryKey: ["ai-inference-receipts"],
     queryFn: () => getInferenceReceipts(100),

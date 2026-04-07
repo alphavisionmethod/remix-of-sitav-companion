@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { MessageSquare, Send, Search, Plus, Paperclip, Smile, Phone, Video, MoreVertical, CheckCheck } from "lucide-react";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Chat {
   id: string;
@@ -43,6 +44,7 @@ const mockMessages: Message[] = [
 ];
 
 export default function MessengerApp() {
+  const { isDemoMode } = useDataMode();
   const [selectedChat, setSelectedChat] = useState<Chat | null>(mockChats[0]);
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");

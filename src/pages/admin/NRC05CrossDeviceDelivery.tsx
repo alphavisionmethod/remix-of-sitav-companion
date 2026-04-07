@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MonitorSmartphone, Smartphone, Watch, Monitor, CheckCircle2, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useCrossDeviceSurfaces, useDeliveryRules, useHandoffFlows } from "@/hooks/use-notification-calm-data";
 
 const NRC05CrossDeviceDelivery = () => {

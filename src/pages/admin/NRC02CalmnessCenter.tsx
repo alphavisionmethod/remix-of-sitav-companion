@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, Users, MessageSquare, Shield, Zap, Eye } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useAssistantRolePresences } from "@/hooks/use-notification-calm-data";
 import { DEMO_CALM_PRINCIPLES, DEMO_INTERVENTION_SCENARIOS } from "@/lib/demo-data/notification-calm";
 

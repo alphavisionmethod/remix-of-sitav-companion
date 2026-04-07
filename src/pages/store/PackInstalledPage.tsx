@@ -9,8 +9,10 @@ import { getInstalledPacks, getPacksWithUpdates } from "@/lib/pack-store";
 import { ArrowLeft, Settings, RefreshCw, Pause, Trash2, Shield, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PackInstalledPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const installed = getInstalledPacks();
   const withUpdates = getPacksWithUpdates();

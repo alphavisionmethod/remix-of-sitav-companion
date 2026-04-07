@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const receipts = [
   { time: "14 min ago", automation: "Stale Lead Recovery", action: "Sent recovery email to 24 leads", contacts: 24, approvedBy: "Auto-run (L3)", outcome: "22 delivered, 2 bounced, 8 opened so far", rollback: true, category: "Lead Recovery", impact: "$8,200 at risk", details: { emailVariants: 3, segmentsUsed: ["warm", "hot"], exclusions: 3, fatigueDelays: 5 } },
@@ -31,6 +32,7 @@ const categoryIcons: Record<string, typeof Mail> = {
 };
 
 export default function AutomationReceipts() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const categories = ["all", ...Array.from(new Set(receipts.map(r => r.category)))];
 

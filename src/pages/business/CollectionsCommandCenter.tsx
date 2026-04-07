@@ -17,6 +17,7 @@ import {
 import { useCollectionsAccounts } from "@/hooks/use-domain-data";
 import type { CollectionsAccount } from "@/lib/mock-data/collections";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 
 // ── Types ───────────────────────────────────────────────────────
@@ -363,6 +364,7 @@ const CollectionsInsights = ({ accounts }: { accounts: CollectionsAccount[] }) =
 // ── Main Component ──────────────────────────────────────────────
 
 const CollectionsCommandCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { data: collectionsData = [] } = useCollectionsAccounts();
 
   const [activeTab, setActiveTab] = useState("overview");

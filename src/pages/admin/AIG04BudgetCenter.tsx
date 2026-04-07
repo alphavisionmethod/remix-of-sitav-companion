@@ -5,9 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DollarSign, TrendingUp, AlertTriangle, ShieldAlert } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { getBudgetSummary, getPortfolioAllocations, getCostLedger, getBudgetPolicies, getBudgetAlerts } from "@/lib/services/ai-gateway";
 
 export default function AIG04BudgetCenter() {
+  const { isDemoMode } = useDataMode();
   const { data: summary } = useQuery({
     queryKey: ["ai-budget-summary"],
     queryFn: getBudgetSummary,

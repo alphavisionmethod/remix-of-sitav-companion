@@ -9,6 +9,7 @@ import { Activity, Search, RotateCcw, AlertTriangle, Link2, Filter } from "lucid
 import { useQuery } from "@tanstack/react-query";
 import { fetchPersistedEvents, fetchDeadLetters, getEventLineage, markEventReplayed, type PersistedEvent } from "@/lib/persistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -18,6 +19,7 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function EventStreamExplorer() {
+  const { isDemoMode } = useDataMode();
   const [topicFilter, setTopicFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [correlationSearch, setCorrelationSearch] = useState("");

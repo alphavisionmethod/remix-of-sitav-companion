@@ -9,8 +9,10 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Wrench, CheckCircle, XCircle, Clock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function AR05SystemMaintenanceBoard() {
+  const { isDemoMode } = useDataMode();
   const { data: maintenanceJobs = [] } = useQuery({
     queryKey: ["maintenance-jobs"],
     queryFn: async () => {

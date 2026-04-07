@@ -16,6 +16,7 @@ import {
   DollarSign, Wifi, Users, Zap, Lock, Eye, RotateCcw, Package,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface PresetScenario {
   id: string;
@@ -40,6 +41,7 @@ const presets: PresetScenario[] = [
 ];
 
 export default function PolicySimulatorHub() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [results, setResults] = useState<Map<string, SimulationResult>>(new Map());
 

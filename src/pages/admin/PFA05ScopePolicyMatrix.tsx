@@ -6,8 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Shield, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function PFA05ScopePolicyMatrix() {
+  const { isDemoMode } = useDataMode();
   const { data: policies = [] } = useQuery({
     queryKey: ["scope-policies"],
     queryFn: async () => { const { data } = await supabase.from("scope_policy_matrix").select("*, provider_capabilities(capability_key, display_name, provider_families(name))").order("created_at"); return data || []; },

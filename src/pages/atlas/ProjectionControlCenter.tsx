@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -51,6 +52,7 @@ const surfaceTruth = [
 ];
 
 export default function ProjectionControlCenter() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("projections");
   const fresh = projections.filter(p => p.status === "fresh").length;
   const stale = projections.filter(p => p.status === "stale").length;

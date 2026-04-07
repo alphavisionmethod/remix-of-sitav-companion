@@ -7,8 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Shield, ArrowLeft, RefreshCw, RotateCcw, MessageCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function MissionErrorPage() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (

@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ShieldAlert, CheckCircle, XCircle, AlertTriangle, Shield, Plug, Eye, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const severityColors: Record<string, string> = {
   info: "bg-blue-500/20 text-blue-400",
@@ -22,6 +23,7 @@ const auditTypeIcons: Record<string, React.ReactNode> = {
 };
 
 export default function ISA07AuthConnectorTruthBoard() {
+  const { isDemoMode } = useDataMode();
   // Run separation audit checks
   const { data: families = [] } = useQuery({
     queryKey: ["isa07-families"],

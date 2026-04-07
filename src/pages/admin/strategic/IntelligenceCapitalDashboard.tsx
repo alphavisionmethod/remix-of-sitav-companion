@@ -8,6 +8,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useIntelligenceAssets } from "@/lib/hooks/useIntelligencePersistence";
 import { useMemo } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const H = ({ icon: I, label, value, sub, color }: any) => (
   <Card className="bg-card/80 border-border/50"><CardContent className="p-3 text-center">

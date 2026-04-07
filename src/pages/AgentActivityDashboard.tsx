@@ -21,6 +21,7 @@ import {
   Clock, Gauge, BarChart3, RefreshCw, Heart,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Fleet Overview Hero ─────────────────────────────────────────
 
@@ -248,6 +249,7 @@ function AlertSummaryPanel() {
 // ── Main Dashboard Page ─────────────────────────────────────────
 
 export default function AgentActivityDashboard() {
+  const { isDemoMode } = useDataMode();
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}

@@ -16,6 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Seed demo usage ────────────────────────────────────────────
 function useDemoEconomics() {
@@ -82,6 +83,7 @@ function useDemoEconomics() {
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function AIEconomicsPage() {
+  const { isDemoMode } = useDataMode();
   const { dashboard, routingExamples } = useDemoEconomics();
 
   const tierColors: Record<string, string> = {

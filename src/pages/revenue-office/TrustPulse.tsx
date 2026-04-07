@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const CLIENTS = [
   { client: "Bloom Studio", score: 92, trend: "up" as const, lastContact: "2d ago", signals: { resp: 95, pay: 100, engage: 88, sat: 85 }, risks: [] as string[], opps: ["Referral candidate", "Case study"] },

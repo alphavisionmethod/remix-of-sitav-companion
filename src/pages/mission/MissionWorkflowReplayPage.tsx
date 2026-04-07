@@ -15,6 +15,7 @@ import {
   ArrowRight, Lock, Wifi, Receipt,
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface WorkflowEvent {
   id: string;
@@ -59,6 +60,7 @@ const typeColors: Record<string, string> = {
 };
 
 export default function MissionWorkflowReplayPage() {
+  const { isDemoMode } = useDataMode();
   const { workflowId } = useParams();
   const navigate = useNavigate();
   const [simulating, setSimulating] = useState(false);

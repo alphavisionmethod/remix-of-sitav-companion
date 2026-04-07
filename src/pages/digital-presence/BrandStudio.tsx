@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const BRAND_COLORS = [
   { name: "Primary", value: "#3B82F6", hsl: "217 91% 60%" },
@@ -40,6 +41,7 @@ const REUSABLE_BLOCKS = [
 ];
 
 export default function BrandStudio() {
+  const { isDemoMode } = useDataMode();
   const [logoPrompt, setLogoPrompt] = useState("");
 
   return (

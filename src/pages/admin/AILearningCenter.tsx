@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { TrendingUp, Brain, AlertTriangle, CheckCircle2, RotateCcw, Sparkles, Target, Users } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PATTERNS = [
   { pattern: "Route mapping errors recur after lazy-import refactors", frequency: "4x in 30 days", domain: "Frontend", confidence: 88, severity: "high", improvement: "Added pre-commit route validation check", status: "implemented" as const },

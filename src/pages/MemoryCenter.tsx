@@ -14,6 +14,7 @@ import {
   Brain, Search, Edit, Trash2, Eye, Lock, Shield, Clock, Sparkles, X, Check, Save
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const categoryMap: Record<string, string> = {
   profile: "context",
@@ -25,6 +26,7 @@ const categoryMap: Record<string, string> = {
 };
 
 const MemoryCenter = () => {
+  const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();

@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, ArrowRight, Loader2, Database } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useSignalSubsystemReadiness } from "@/hooks/use-health-signal-data";
 import { useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
 

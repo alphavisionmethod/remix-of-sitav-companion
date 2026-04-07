@@ -6,6 +6,7 @@ import { Radar, AlertTriangle, CheckCircle, XCircle, ArrowRight } from "lucide-r
 import { useQuery } from "@tanstack/react-query";
 import { fetchPersistedEvents, getScopedMemoryStats, getPolicyEvaluationStats, fetchActionLineage, getAssetStats } from "@/lib/persistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -18,6 +19,7 @@ interface DriftItem {
 }
 
 export default function PersistenceDriftRadar() {
+  const { isDemoMode } = useDataMode();
   const { data: events = [] } = useQuery({ queryKey: ["drift-events"], queryFn: () => fetchPersistedEvents({ limit: 1 }), staleTime: 60000 });
   const { data: memStats } = useQuery({ queryKey: ["drift-mem"], queryFn: getScopedMemoryStats, staleTime: 60000 });
   const { data: polStats } = useQuery({ queryKey: ["drift-pol"], queryFn: getPolicyEvaluationStats, staleTime: 60000 });
