@@ -16,7 +16,7 @@ export function useJourneySummaryView() {
   return useQuery({
     queryKey: ["v-customer-journey-summary"],
     queryFn: async () => {
-      const { data, error } = await fromTable("v_customer_journey_summary")
+      const { data, error } = await fromDynamicTable("v_customer_journey_summary")
         .select("*");
       if (error) throw error;
       return data ?? [];
