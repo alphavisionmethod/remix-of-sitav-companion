@@ -949,7 +949,7 @@ export function OSSetupExperience() {
                     displayName={state.displayName}
                     enabledDomains={state.enabledDomains}
                     trustLevel={state.trustLevel}
-                    rituals={[]}
+                    rituals={state.rituals}
                     aiStyle={state.aiStyle}
                     primaryUseMode={state.primaryUseMode}
                     activeAdvisors={state.advisorActivation}
