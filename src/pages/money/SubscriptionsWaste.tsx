@@ -84,14 +84,11 @@ const SubscriptionsWaste = () => {
   const updateMutation = useMutation({
     mutationFn: async ({ id, sub }: { id: string; sub: SubForm }) => {
       const { error } = await fromTable("subscriptions").update({
-        service_name: sub.service_name,
+        name: sub.service_name,
         amount: parseFloat(sub.amount),
-        billing_cycle: sub.billing_cycle,
+        frequency: sub.billing_cycle,
         category: sub.category || null,
-        renewal_date: sub.renewal_date || null,
-        usage_level: sub.usage_level,
-        waste_flag: sub.waste_flag,
-        duplicate_of: sub.duplicate_of || null,
+        next_billing_date: sub.renewal_date || null,
         notes: sub.notes || null,
       }).eq("id", id);
       if (error) throw error;
