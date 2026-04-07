@@ -2058,7 +2058,7 @@ const OwnerCenter = () => {
         {activePage === "change-review" && (
           <motion.div key="change-review" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <SitaSectionHeader title="Architecture Decision Records" subtitle="ADR tracking and compliance" />
-            {((changeData as never) || []).map((adr: any) => (
+            {(changeData || []).map((adr: any) => (
               <SitaCard key={adr.id} hover={false} className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
