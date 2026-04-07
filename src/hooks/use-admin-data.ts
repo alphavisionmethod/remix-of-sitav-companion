@@ -20,7 +20,7 @@ async function callAdminAPI(endpoint: string, options?: { method?: string; body?
   const queryStr = params ? "?" + new URLSearchParams(params).toString() : "";
 
   const { data, error } = await supabase.functions.invoke("admin-api", {
-    method: method as unknown,
+    method: method as "DELETE" | "GET" | "PATCH" | "POST" | "PUT",
     body: method === "GET" ? undefined : { ...body, _endpoint: endpoint },
     headers: { "x-admin-endpoint": endpoint + queryStr },
   });

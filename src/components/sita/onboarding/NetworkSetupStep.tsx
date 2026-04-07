@@ -51,10 +51,10 @@ function detectConnectionType(): ConnectionType {
   const conn = navigator.connection;
   if (conn) {
     const t = conn.effectiveType;
-    if (t === "ethernet") return "ethernet";
-    if (t === "wifi") return "wifi";
-    if (t === "cellular") return "cellular";
+    if (t === "4g") return "wifi";
+    if (t === "3g" || t === "2g" || t === "slow-2g") return "cellular";
   }
+  if (navigator.onLine) return "wifi";
   return "unknown";
 }
 
