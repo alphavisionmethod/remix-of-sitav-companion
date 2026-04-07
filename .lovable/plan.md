@@ -1,176 +1,104 @@
 
 
-# SITA OS — Full Module Implementation Audit & 100% Plan
+# SITA OS — Admin & Frontend Pages: 100% Implementation Plan
 
-## Audit Summary
+## Current State Summary
 
-| Module | Pages | Live Data | CRUD | Status | Grade |
-|--------|-------|-----------|------|--------|-------|
-| **Auth** | 4 | 0 (auth is via hooks) | N/A | ✅ Complete | A |
-| **Money** | 13 | 3 (23%) | 3 | ⚠️ 10 pages static | C |
-| **Business** | 15 | 8 (53%) | 4 | ⚠️ 7 pages static | B- |
-| **Concierge** | 16 | 3 (19%) | 2 | ❌ 13 pages static | D |
-| **Investment Office** | 38 | 1 (3%) | 1 | ❌ 37 pages static | F |
-| **Revenue Office** | 63 | 0 (0%) | 0 | ❌ All static | F |
-| **Digital Presence** | 19 | 0 (0%) | 0 | ❌ All static | F |
-| **Workspace** | 5 | 0 (hooks in service layer) | 0 | ⚠️ Partially wired | C |
-| **Store** | 6 | 0 | 0 | ⚠️ Partially wired | C |
-| **Atlas** | 11 | 1 | 0 | ❌ 10 static | D |
-| **Apps** | 6 | 0 | 0 | ❌ All static | F |
-| **Mobile** | 9 | 0 | 0 | ❌ All static | F |
-| **Mission** | 8 | 0 | 0 | ❌ All static | F |
-| **Owner** | 8 | 0 | 0 | ❌ All static | F |
-| **Admin** | 297 | 135 (45%) | N/A | ⚠️ Internal tooling | C |
-| **Top-level pages** | ~65 | ~30 | Mixed | ⚠️ Mixed | C |
+| Category | Total | Live Data | Static/Mock | % Complete |
+|----------|-------|-----------|-------------|------------|
+| Admin (root) | 215 | 132 | 83 | 61% |
+| Admin (subdirs) | 82 | 3 | 79 | 4% |
+| **Admin Total** | **297** | **135** | **162** | **45%** |
+| Revenue Office | 39 | 0 | 39 | 0% |
+| Digital Presence | ~19 | 0 | 19 | 0% |
+| Concierge (sub-pages) | ~16 | 3 | 13 | 19% |
+| Apps | 6 | 0 | 6 | 0% |
+| Top-level pages | 71 | 30 | 41 | 42% |
 
-**Overall: 629 page files. 169 (27%) have live data queries. 460 (73%) are completely static with inline hardcoded arrays.**
+**Key finding:** The hook files (`use-revenue-office.ts`, `use-investment-office.ts`, etc.) were created but **zero pages actually import them**. The hooks exist, the tables exist, but the pages still render hardcoded arrays.
 
----
+## What Needs to Happen
 
-## What "100% Implemented" Means
+### Track A: Wire All User-Facing Pages to Live Hooks (highest impact)
 
-Every user-facing page must:
-1. **Query real Supabase data** when `isDemoMode === false`
-2. **Fall back to demo data** when `isDemoMode === true`
-3. **Have CRUD operations** where applicable (create, edit, delete via mutations)
-4. **Show proper empty states** when no data exists
-5. **Have loading/error states** via `useQuery` suspense
+Every page that has inline `const DATA = [...]` needs to:
+1. Import the relevant hook from `src/hooks/use-*.ts`
+2. Import `useDataMode` to check `isDemoMode`
+3. Keep the existing hardcoded array as `DEMO_*` fallback
+4. Use `const data = isDemoMode ? DEMO_DATA : (liveData ?? [])` pattern
+5. Add loading skeleton when `isLoading && !isDemoMode`
+6. Add empty state when `!isDemoMode && data.length === 0`
 
----
+**Files to update:**
 
-## Implementation Plan — 8 Phases
+| Module | Pages | Hook File |
+|--------|-------|-----------|
+| Revenue Office | 39 pages | `use-revenue-office.ts` |
+| Digital Presence | 19 pages | `use-digital-presence.ts` |
+| Concierge | 13 pages | `use-concierge-data.ts` |
+| Apps | 6 pages | `use-apps-data.ts` |
+| Money sub-pages | 10 pages | `use-money-data.ts` |
+| Top-level static pages | ~30 pages | Various existing hooks |
+| **Subtotal** | **~117 pages** | |
 
-### Phase 1: Revenue Office (63 pages, 0% live) — CRITICAL
+### Track B: Wire Admin Pages (162 static)
 
-The largest module with zero live data. Pages like PipelineStudio, CallDesk, FormsBuilder, AutomationOffice all have rich UI but 100% inline hardcoded arrays.
+Admin pages are operator/diagnostic tools. They should query system tables (audit_logs, incidents, ai_usage_ledger, workflow_runs, etc.) rather than domain-specific user tables.
 
-**Tables needed** (most already exist): `deals`, `customers`, `communication_log`, `calling_contacts`, `revenue_leak_items`, `automation_rules`
+**Approach:** Create `src/hooks/use-admin-data.ts` with ~20 hooks querying existing system tables. Then update 162 admin pages to use isDemoMode gate.
 
-**New tables needed**: `pipeline_stages`, `campaigns`, `bookings`, `forms`, `funnels`, `offers`, `memberships`, `reputation_reviews`, `retention_alerts`
+| Admin Domain | Pages | Tables to Query |
+|--------------|-------|----------------|
+| AI Agent suite (Debate, Fix, Healing, etc.) | 19 | `ai_usage_ledger`, `incidents`, `audit_logs` |
+| AI Gateway (AIG01-09) | 9 | `ai_usage_ledger`, `user_ai_budgets`, `ai_budget_policies` |
+| AI Team (AIT01-08) | 8 | `ai_usage_ledger`, `agent_signals` |
+| Connectors (CN01-07) | 7 | `connected_accounts` |
+| Dual Reality (DRS01-10) | 10 | `feature_flags`, system config |
+| Automation (AR01-09) | 9 | `workflow_definitions`, `workflow_runs` |
+| Apple/Android (APL, AND) | 11 | Platform readiness tables |
+| Customer Journey (CJ01-09) | 9 | `route_verification_results` |
+| FIP (14 pages) | 14 | `feature_flags`, capabilities |
+| Security (SEC01-06) | 6 | `audit_logs`, `incidents` |
+| Strategic (12 dashboards) | 12 | Aggregate from multiple tables |
+| Verification (V01-07) | 7 | `route_verification_results` |
+| Architecture, Launch, Frontend, Intelligence, SAG | ~41 | Mixed system tables |
+| **Subtotal** | **162 pages** | |
 
-**Work**: Create ~10 new tables. Create `src/hooks/use-revenue-office.ts` with ~15 hooks. Wire all 63 pages with isDemoMode gate.
+### Track C: UI/UX Polish Pass
 
-| Sub-task | Pages |
-|----------|-------|
-| Pipeline & Deals (PipelineStudio, OpportunityBoard, ConversionLab, LeakDetector) | 4 |
-| Automation suite (AutomationOffice, Builder, Health, Policy, Receipts, SimLab, Templates) | 7 |
-| Communication (CallDesk, CampaignOrchestrator, RelationshipCenter) | 3 |
-| Growth suite (GrowthDNA, GrowthBoardroom, GrowthAdvisorBoard, GrowthOperatingModes) | 4 |
-| Commerce (BookingCenter, OffersWorkspace, QuoteStudio, FormsBuilder, FunnelBuilder) | 5 |
-| Intelligence (RevenueIntelligence, ChiefRevenueSynthesis, SegmentationEngine, ReputationEngine) | 4 |
-| Remaining (RetentionOffice, ClientOnboarding, JourneyTwin, MembershipCourseOffice, etc.) | 16+ |
+All pages already use the SITA design system (Cards, Badges, Progress, Tabs, motion animations). Quality is generally high. Specific improvements needed:
 
-### Phase 2: Investment Office (38 pages, 3% live) — CRITICAL
+1. **Empty states** — Currently no pages show a meaningful empty state when the user has no data. Need a reusable `<EmptyState icon={...} title="..." action="..." />` component.
+2. **Loading skeletons** — `PageSkeleton` exists but most pages don't use it for data loading states.
+3. **Error boundaries** — `GlobalErrorBoundary` exists but isn't wrapped around all page-level components.
+4. **Responsive polish** — Some admin pages use `grid-cols-6` without responsive breakpoints, breaking on mobile.
+5. **Accessibility** — Missing aria-labels on icon-only buttons in several admin pages.
 
-Tables exist: `investment_watchlists`, `investment_strategy_records`, `capital_purpose_buckets`, `investment_thesis_entries`
+## Implementation Order
 
-**New tables needed**: `portfolio_positions`, `trade_orders`, `market_watchlist_items`, `investment_decisions`, `risk_scenarios`
+### Phase 1: Shared Infrastructure (1 step)
+- Create `<EmptyState>` component
+- Create `src/hooks/use-admin-data.ts` with system-level hooks
+- Add `<PageSkeleton>` usage to page template
 
-**Work**: Create ~5 new tables. Create `src/hooks/use-investment-office.ts` with ~10 hooks. Wire all 38 pages.
+### Phase 2: Wire User-Facing Pages (~117 pages, 6 batches)
+Wire in order: Revenue Office → Digital Presence → Concierge → Apps → Money → Top-level pages. Each batch: import hook, rename hardcoded array to `DEMO_*`, add isDemoMode gate, add loading/empty states.
 
-### Phase 3: Digital Presence (19 pages, 0% live) — HIGH
+### Phase 3: Wire Admin Pages (~162 pages, 8 batches)
+Wire in order: AI Gateway → AI Team → Connectors → Customer Journey → Verification → Security → Strategic → Remaining. Each batch: import admin hook, add isDemoMode gate.
 
-Brand new module with zero backend. Pages like SiteBuilder, BrandStudio, CROOffice, PresenceAnalytics all render inline data.
+### Phase 4: UI Polish Pass
+- Add responsive breakpoints to all grid layouts
+- Add aria-labels to icon-only buttons
+- Wrap all page exports in GlobalErrorBoundary
+- Verify all pages have proper loading/error/empty states
 
-**New tables needed**: `sites`, `site_pages`, `brand_assets`, `seo_reports`, `campaigns_dp`, `promotions`
+## Scope
 
-**Work**: Create ~6 new tables. Create `src/hooks/use-digital-presence.ts`. Wire all 19 pages.
+- **~280 page files updated** with live data wiring
+- **2 new files** (EmptyState component, admin hooks)
+- **0 new tables** (all tables already created in previous migration)
+- **0 new edge functions**
 
-### Phase 4: Concierge (16 pages, 19% live) — HIGH
-
-HouseholdCommandCenter and HouseholdTasks are wired. 13 pages (TravelPlanning, GroceryPlanning, FamilyCalendar, ServiceProviders, etc.) are static.
-
-**Tables exist**: `households`, `household_members`, `calendar_events`
-
-**New tables needed**: `travel_plans`, `grocery_lists`, `grocery_items`, `service_providers`, `school_activities`, `gift_tracker`, `appointments`
-
-**Work**: Create ~7 new tables. Wire 13 pages.
-
-### Phase 5: Money (13 pages, 23% live) — MEDIUM
-
-BillsWorkspace, SubscriptionsWaste, ReservesSavings are wired. 10 pages static.
-
-**Tables exist**: `bills`, `subscriptions`, `savings_goals`, `money_accounts`
-
-**New tables needed**: `tax_estimates`, `receivables`, `money_approvals`
-
-**Work**: Create ~3 tables. Wire 10 pages.
-
-### Phase 6: Apps + Mobile + Mission + Owner (31 pages, 0% live) — MEDIUM
-
-- **Apps** (6): HealthApp, EmailApp, MessengerApp, VaultApp, GalleryApp, WeatherNewsApp — these are "companion apps" that need their own tables or to aggregate from existing ones
-- **Mobile** (9): Mobile shell versions of core features — should reuse the same hooks as desktop
-- **Mission** (8): Mission/goal tracking pages — need `mission_goals` table
-- **Owner** (8): Owner dashboard/control pages — need owner-specific views
-
-**New tables needed**: `health_logs`, `vault_items`, `mission_goals`, `mission_milestones`
-
-### Phase 7: Remaining Business + Workspace + Store + Atlas — LOW
-
-- **Business** (7 remaining): Wire to existing `deals`, `customers`, `invoices` tables
-- **Workspace** (5): Already partially wired via workspace-data-service — verify mode gates
-- **Store** (6): PackStorePage partially wired — complete remaining 5
-- **Atlas** (10): System admin pages — wire to system health tables
-
-### Phase 8: Admin Pages (162 remaining static) — LOW
-
-These are internal admin/diagnostic pages. Many are config-driven, not user-data-driven. Add isDemoMode gates and empty states. Not all need CRUD.
-
----
-
-## Database Migration Summary
-
-| Phase | New Tables | Count |
-|-------|-----------|-------|
-| 1 — Revenue Office | pipeline_stages, campaigns, bookings, forms, funnels, offers, memberships, reputation_reviews, retention_alerts | 9 |
-| 2 — Investment Office | portfolio_positions, trade_orders, market_watchlist_items, investment_decisions, risk_scenarios | 5 |
-| 3 — Digital Presence | sites, site_pages, brand_assets, seo_reports, promotions, ecommerce_products | 6 |
-| 4 — Concierge | travel_plans, grocery_lists, grocery_items, service_providers_list, school_activities, gift_tracker, appointments | 7 |
-| 5 — Money | tax_estimates, receivables, money_approvals | 3 |
-| 6 — Apps/Mobile/Mission/Owner | health_logs, vault_items, mission_goals, mission_milestones | 4 |
-| **Total** | | **34 new tables** |
-
-## Hook Files to Create
-
-| File | Hooks | Serves |
-|------|-------|--------|
-| `src/hooks/use-revenue-office.ts` | ~15 hooks | 63 pages |
-| `src/hooks/use-investment-office.ts` | ~10 hooks | 38 pages |
-| `src/hooks/use-digital-presence.ts` | ~8 hooks | 19 pages |
-| `src/hooks/use-concierge-data.ts` | ~7 hooks | 13 pages |
-| `src/hooks/use-money-data.ts` | ~5 hooks | 10 pages |
-| `src/hooks/use-apps-data.ts` | ~4 hooks | 6 pages |
-| `src/hooks/use-mission-data.ts` | ~3 hooks | 8 pages |
-
-## Implementation Pattern (same across all phases)
-
-```typescript
-// In hook file:
-export function usePipelineDeals() {
-  const { isDemoMode } = useDataMode();
-  const { user } = useAuth();
-  return useQuery({
-    queryKey: ["pipeline-deals", user?.id],
-    enabled: !isDemoMode && !!user,
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("deals").select("*").eq("user_id", user!.id);
-      return data ?? [];
-    },
-  });
-}
-
-// In page:
-const { data: liveDeals } = usePipelineDeals();
-const deals = isDemoMode ? DEMO_DEALS : (liveDeals ?? []);
-```
-
-## Total Scope
-
-- **34 new database tables** (1 large migration)
-- **7 new hook files** (~52 hooks total)
-- **~460 page files updated** with isDemoMode gates
-- **~30 new empty state designs** for when users have no data yet
-
-This is a large undertaking. I recommend executing Phase 1 (Revenue Office) first as it's the largest gap, then Phase 2 (Investment Office), and so on. Each phase is independent and can be shipped separately.
+This is a very large implementation. I recommend starting with Phase 1 + Phase 2 (Revenue Office batch) in the first message, then continuing in subsequent messages.
 
