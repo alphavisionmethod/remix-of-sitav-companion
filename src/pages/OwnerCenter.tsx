@@ -2390,7 +2390,7 @@ const OwnerCenter = () => {
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold text-foreground">Result:</span>
                   {(() => {
-                    const r = simResult?.simulation || (simulatePolicy.data as any)?.simulation;
+                    const r = simResult?.simulation || (simulatePolicy.data && typeof simulatePolicy.data === "object" && "simulation" in simulatePolicy.data ? (simulatePolicy.data as Record<string, unknown>).simulation : undefined) as Record<string, unknown> | undefined;
                     if (!r) return null;
                     return (
                       <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${r.final_effect === "allow" ? "bg-trust-safe/10 text-trust-safe" : r.final_effect === "deny" ? "bg-destructive/10 text-destructive" : "bg-accent/10 text-accent"}`}>
