@@ -54,14 +54,12 @@ const CRED_CONFIG: Record<string, { color: string }> = {
   missing: { color: "text-muted-foreground" },
 };
 
-const SYNC_HISTORY = [
+const FALLBACK_SYNC_HISTORY = [
   { connector: "Plaid Banking", time: "15m ago", status: "success", records: 24, duration: "1.2s" },
   { connector: "Stripe Payments", time: "5m ago", status: "success", records: 8, duration: "0.4s" },
   { connector: "Gmail", time: "10m ago", status: "success", records: 15, duration: "2.1s" },
   { connector: "Google Calendar", time: "2h ago", status: "partial", records: 6, duration: "3.8s" },
   { connector: "CRM Sync", time: "6h ago", status: "failed", records: 0, duration: "12s" },
-  { connector: "Plaid Banking", time: "1h ago", status: "success", records: 22, duration: "1.1s" },
-  { connector: "Stripe Payments", time: "1h ago", status: "success", records: 12, duration: "0.5s" },
 ];
 
 const POLICIES = [
