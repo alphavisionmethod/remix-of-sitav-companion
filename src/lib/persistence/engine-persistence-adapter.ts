@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 // ── Debounce map for auto-save ──────────────────────────────────
 const saveTimers = new Map<string, ReturnType<typeof setTimeout>>();
