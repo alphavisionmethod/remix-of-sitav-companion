@@ -26,6 +26,7 @@ import {
   GitCompare, Lock, Target, TrendingUp, MessageSquare, Calendar
 } from "lucide-react";
 import { useBoardroomPacket } from "@/hooks/use-boardroom";
+import type { BoardroomSession, BoardroomDecision, StrategicInsight } from "@/packages/boardroom-contracts";
 import { mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory } from "@/hooks/useAdvisorMissionControl";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";

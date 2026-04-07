@@ -38,7 +38,5 @@ export * from "./microinteraction-engine";
 //   @/packages/moat-contracts
 //   @/packages/enterprise-contracts
 //   @/packages/reality-contracts
-//   @/packages/approval-contracts
 //   @/packages/audit-contracts
-//   @/packages/auth-permissions
 //   @/packages/boardroom-contracts

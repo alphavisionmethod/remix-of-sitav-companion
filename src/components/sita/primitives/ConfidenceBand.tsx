@@ -6,6 +6,8 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Shield, TrendingUp } from "lucide-react";
+import { springs } from "@/packages/microinteraction-engine";
+import { COLORS } from "@/packages/design-tokens";
 
 interface DataPoint {
   label: string;

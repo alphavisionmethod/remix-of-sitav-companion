@@ -16,6 +16,7 @@ import { Crown, Shield, AlertTriangle, ArrowRight, Bell, CheckCircle, Eye, Lock,
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import type { GovernanceBoardroomSection } from "@/packages/contracts";
+import type { BoardroomSession, AdvisorCouncilState } from "@/packages/boardroom-contracts";
 import type { ReadinessInput } from "@/lib/engines/readiness-engine";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
