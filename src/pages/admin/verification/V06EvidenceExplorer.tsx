@@ -33,7 +33,7 @@ export default function VerificationEvidenceExplorer() {
       const { data } = await supabase
         .from("journey_step_results")
         .select("*")
-        .eq("run_id", selectedRunId)
+        .eq("verification_run_id", selectedRunId)
         .order("step_order", { ascending: true });
       return data || [];
     },
