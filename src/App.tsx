@@ -1398,6 +1398,13 @@ const App = () => (
                      <Route path="/admin/services/duplication" element={<SERV04ServiceDuplication />} />
                      <Route path="/admin/services/canonical-actions" element={<SERV05CanonicalActions />} />
                      <Route path="/admin/services/flagship-trace" element={<SERV06FlagshipTraceability />} />
+                     {/* LAUNCH — Launch Readiness Command Center */}
+                     <Route path="/admin/launch/readiness" element={<LAUNCH01ReadinessExecutive />} />
+                     <Route path="/admin/launch/flagship-loops" element={<LAUNCH02FlagshipReadiness />} />
+                     <Route path="/admin/launch/claim-safety" element={<LAUNCH03ClaimSafetyMatrix />} />
+                     <Route path="/admin/launch/blockers" element={<LAUNCH04BlockerCommand />} />
+                     <Route path="/admin/launch/narrative" element={<LAUNCH06NarrativeGuide />} />
+                     <Route path="/admin/launch/go-no-go" element={<LAUNCH07GoNoGo />} />
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
