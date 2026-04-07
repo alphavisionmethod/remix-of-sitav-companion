@@ -29,7 +29,7 @@ export async function trackModeAwareEvent(event: DemoAnalyticsEvent): Promise<vo
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 
-  await fromTable("demo_analytics").insert({
+  await fromDynamicTable("demo_analytics").insert({
     user_id: user.id,
     scenario_id: event.scenarioId,
     event_name: event.eventName,

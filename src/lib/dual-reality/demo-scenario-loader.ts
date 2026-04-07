@@ -126,7 +126,7 @@ export async function loadScenario(scenarioKey: string): Promise<LoadedScenario 
       routeSet: launchRes.data.route_set ?? [],
       enabledDomains: launchRes.data.enabled_domains ?? [],
       hiddenDomains: launchRes.data.hidden_domains ?? [],
-      startupContext: launchRes.data.startup_context ?? {},
+      startupContext: (launchRes.data.startup_context ?? {}) as Record<string, unknown>,
     } : undefined,
   };
 
