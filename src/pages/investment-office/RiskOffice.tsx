@@ -2,8 +2,10 @@ import { Shield, AlertTriangle, BarChart3, PieChart, TrendingDown, Eye } from "l
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function RiskOffice() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useRiskScenarios();
   const p = PORTFOLIO;
   const riskAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "risk");

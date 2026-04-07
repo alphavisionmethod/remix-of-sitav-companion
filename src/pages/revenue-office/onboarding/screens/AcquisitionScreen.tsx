@@ -3,6 +3,7 @@ import { Toggle, SectionTitle, ScreenHeader, SingleSelect } from "../primitives"
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const leadSourceOptions = [
   { id: "referrals", label: "Referrals", icon: Users },
@@ -17,6 +18,7 @@ const leadSourceOptions = [
 ];
 
 export default function AcquisitionScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const toggle = useCallback((v: string) => {
     setState(p => ({ ...p, leadSources: p.leadSources.includes(v) ? p.leadSources.filter(x => x !== v) : [...p.leadSources, v] }));
   }, [setState]);

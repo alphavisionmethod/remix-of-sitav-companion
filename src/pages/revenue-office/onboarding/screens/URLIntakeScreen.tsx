@@ -4,6 +4,7 @@ import { Globe, Brain, ShoppingCart, Calendar, Target, Users, Megaphone } from "
 import { ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const urlSlots = [
   { key: "website", label: "Website URL", placeholder: "https://yourbusiness.com", icon: Globe },
@@ -15,6 +16,7 @@ const urlSlots = [
 ];
 
 export default function URLIntakeScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const [urls, setUrls] = useState<Record<string, string>>({});
 
   const handleChange = (key: string, val: string) => {

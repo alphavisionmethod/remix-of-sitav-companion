@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { Crown, ArrowRight, Zap } from "lucide-react";
 import { CHAPTERS, type ScreenProps } from "../types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function CeremonyScreen({ state, setState, onNext }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="text-center py-12 max-w-lg mx-auto">
       <DemoModeBadge />

@@ -4,8 +4,10 @@ import { Eye, Plus, Bell, Brain, TrendingUp, TrendingDown, ChevronRight, Star, Z
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, PORTFOLIO, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function WatchlistsSignals() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
   const [activeList, setActiveList] = useState(WATCHLISTS[0].id);

@@ -5,8 +5,10 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type { TradeAction, Instrument } from "@/lib/investment-office/types";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, SAMPLE_ORDERS } from "@/hooks/useInvestmentOfficeData";
 import { useTradeOrders } from "@/hooks/use-investment-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ExecutionDesk() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useTradeOrders();
   const navigate = useNavigate();
   const [selectedInstrument, setSelectedInstrument] = useState<Instrument | null>(INSTRUMENTS[2]);

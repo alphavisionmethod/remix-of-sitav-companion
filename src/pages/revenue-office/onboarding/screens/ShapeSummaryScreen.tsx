@@ -6,8 +6,10 @@ import { ScreenHeader } from "../primitives";
 import { inferBusinessSignals } from "../branching";
 import type { ScreenProps } from "../types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ShapeSummaryScreen({ state }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const signals = useMemo(() => inferBusinessSignals(state), [state]);
 
   const strengths = useMemo(() => {

@@ -6,8 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { Sparkles, Brain, Target, ArrowRight, AlertTriangle, CheckCircle, BarChart3, Zap, Phone, FileText, Heart, Search, TrendingUp, Rocket } from "lucide-react";
 import type { ScreenProps } from "../types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function RevealScreen({ state }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   const modules = [

@@ -6,8 +6,10 @@ import { Progress } from "@/components/ui/progress";
 import { Gauge, Brain, Activity, CircleDot, Layers, MapPin, Heart, Phone, Users, AlertTriangle, Star, MessageSquare, TrendingUp, Link2, FileText, Target } from "lucide-react";
 import type { OnboardingState } from "./types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function LiveOfficeSidebar({ state, stage }: { state: OnboardingState; stage: number }) {
+  const { isDemoMode } = useDataMode();
   const insights = useMemo(() => {
     const items: { icon: any; text: string; type: "detected" | "ready" | "warning" | "opportunity" }[] = [];
     if (state.businessTypes.length > 1) items.push({ icon: Layers, text: `Hybrid model: ${state.businessTypes.length} types`, type: "detected" });

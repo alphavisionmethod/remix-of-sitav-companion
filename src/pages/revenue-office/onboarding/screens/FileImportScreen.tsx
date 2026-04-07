@@ -3,6 +3,7 @@ import { ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const importTypes = [
   { id: "contacts", label: "Contacts CSV", icon: Users },
@@ -18,6 +19,7 @@ const importTypes = [
 ];
 
 export default function FileImportScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const toggle = useCallback((v: string) => {
     setState(p => ({ ...p, importedFiles: p.importedFiles.includes(v) ? p.importedFiles.filter(x => x !== v) : [...p.importedFiles, v] }));
   }, [setState]);

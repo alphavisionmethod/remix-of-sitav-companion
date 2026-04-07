@@ -4,11 +4,13 @@ import { Sparkles, Calendar, TrendingUp, TrendingDown, AlertTriangle, Target, Sh
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, SAMPLE_SCENARIOS } from "@/hooks/useInvestmentOfficeData";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 const eventInstruments = INSTRUMENTS.filter(i => i.assetClass === "events");
 const allCatalysts = INSTRUMENTS.flatMap(i => i.catalysts.map(c => ({ ...c, instrument: i }))).sort((a, b) => a.date.localeCompare(b.date));
 const eventAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "events");
 
 export default function EventMarketsWorkspace() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
   const [tab, setTab] = useState<"markets" | "catalysts" | "scenarios">("markets");

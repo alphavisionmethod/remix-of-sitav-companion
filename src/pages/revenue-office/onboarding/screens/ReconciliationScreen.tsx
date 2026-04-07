@@ -5,8 +5,10 @@ import { Search, Users, Briefcase, FileText, Calendar, Star, Megaphone, AlertTri
 import { ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ReconciliationScreen({ state }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const entities = useMemo(() => {
     const e: { label: string; icon: any; count: number; issues: string; confidence: number }[] = [];
     if (state.importedFiles.includes("contacts") || state.importedFiles.includes("customers")) e.push({ label: "Contacts", icon: Users, count: 347, issues: "12 likely duplicates", confidence: 88 });

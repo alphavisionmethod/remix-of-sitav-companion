@@ -10,6 +10,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type { InvestmentAdvisor, AdvisorConfidenceLevel, AdvisorRecommendation } from "@/lib/investment-office/types";
 import { ADVISOR_SYNTHESIS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type ViewMode = "council" | "synthesis" | "debate" | "detail" | "compare";
 
@@ -421,6 +422,7 @@ function ComparePanel({ advisors }: { advisors: InvestmentAdvisor[] }) {
 
 // ── Main Page ──
 export default function AdvisorBoard() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentDecisions();
   const navigate = useNavigate();
   const [view, setView] = useState<ViewMode>("council");

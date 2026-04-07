@@ -3,6 +3,7 @@ import { Toggle, SectionTitle, ChapterBanner } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const postSaleOptions = [
   { id: "onboarding_call", label: "Onboarding call", icon: Phone },
@@ -28,6 +29,7 @@ const slipOptions = [
 ];
 
 export default function DeliveryScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const togglePost = useCallback((v: string) => {
     setState(p => ({ ...p, postSaleSteps: p.postSaleSteps.includes(v) ? p.postSaleSteps.filter(x => x !== v) : [...p.postSaleSteps, v] }));
   }, [setState]);

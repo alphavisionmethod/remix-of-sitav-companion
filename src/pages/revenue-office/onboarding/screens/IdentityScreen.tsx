@@ -5,6 +5,7 @@ import { getBusinessTypeBranch } from "../branching";
 import type { ScreenProps } from "../types";
 import { useCallback, useMemo } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const businessTypes = [
   { id: "service", label: "Service Business", desc: "Appointments, proposals, delivery milestones, reviews", icon: Briefcase },
@@ -19,6 +20,7 @@ const businessTypes = [
 ];
 
 export default function IdentityScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const toggle = useCallback((v: string) => {
     setState(p => ({ ...p, businessTypes: p.businessTypes.includes(v) ? p.businessTypes.filter(x => x !== v) : [...p.businessTypes, v] }));
   }, [setState]);

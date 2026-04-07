@@ -5,6 +5,7 @@ import { Target, Briefcase, GraduationCap, ShoppingCart, MapPin, Users, PenTool,
 import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const templates = [
   { id: "service", label: "Service Business", flow: ["Lead", "Inquiry", "Call", "Quote", "Close", "Onboarding", "Delivery", "Review"], icon: Briefcase },
@@ -29,6 +30,7 @@ const painOptions = [
 ];
 
 export default function JourneyScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const selected = useMemo(() => templates.find(t => t.id === state.journeyTemplate), [state.journeyTemplate]);
 
   const togglePain = useCallback((v: string) => {

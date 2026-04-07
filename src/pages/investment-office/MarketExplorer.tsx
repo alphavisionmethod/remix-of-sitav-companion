@@ -5,6 +5,7 @@ import type { AssetClass } from "@/lib/investment-office/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const CLASS_TABS: { value: AssetClass | "all"; label: string; icon: string }[] = [
   { value: "all", label: "All", icon: "🌐" },
@@ -18,6 +19,7 @@ const CLASS_TABS: { value: AssetClass | "all"; label: string; icon: string }[] =
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 
 export default function MarketExplorer() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");

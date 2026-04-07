@@ -3,8 +3,10 @@ import { BookOpen, Search, Calendar, Tag, ChevronRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, SAMPLE_RESEARCH } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ResearchLibrary() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentThesisEntries();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<string>("all");
