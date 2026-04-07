@@ -64,12 +64,12 @@ export interface TaskContract {
 
 // ── 15 Canonical Task Contracts ────────────────────────────────
 
-const CONTRACT_DEFAULTS = {
+const CONTRACT_DEFAULTS: Pick<TaskContract, "allowedProviders" | "allowedModels" | "requiresReceipt" | "ttlSeconds"> = {
   allowedProviders: ["openai", "anthropic"],
   allowedModels: ["gpt-4o", "gpt-4o-mini", "claude-sonnet"],
   requiresReceipt: true,
   ttlSeconds: 300,
-} as const;
+};
 
 export const GLOBAL_TASK_REGISTRY: Record<string, TaskContract> = {
   "chat-query": {
