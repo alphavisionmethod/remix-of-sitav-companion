@@ -63,25 +63,16 @@ const WorkflowsCenter = () => {
     },
   });
 
-  const createWorkflow = useMutation({
-    mutationFn: async () => {
-      const { data: wf, error: wfErr } = await fromTable("workflows").insert([{ name: newName, trigger_type: newTrigger, active: true, steps: [] as unknown as any, user_id: user!.id }]).select().single();
-      if (wfErr) throw wfErr;
-      // Create initial run
-      const { error: runErr } = await fromTable("workflow_runs").insert({ user_id: user!.id, workflow_id: wf.id, status: "pending", current_step: 0 });
-      if (runErr) throw runErr;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["workflow_runs"] }); toast.success("Workflow created"); setShowCreate(false); setNewName(""); },
-    onError: (e: Error) => toast.error(e.message),
+  const createWorkflow = useAction("system", "workflow.create", {
+    successMessage: "Workflow created",
+    invalidateKeys: [["workflow_runs"]],
+    onSuccess: () => { setShowCreate(false); setNewName(""); },
   });
 
-  const deleteRun = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("workflow_runs").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["workflow_runs"] }); setSelectedId(null); toast.success("Run deleted"); },
-    onError: (e: Error) => toast.error(e.message),
+  const deleteRun = useAction("system", "workflow-run.delete", {
+    successMessage: "Run deleted",
+    invalidateKeys: [["workflow_runs"]],
+    onSuccess: () => { setSelectedId(null); },
   });
 
   const filtered = filter === "all" ? runs : runs.filter(r => r.status === filter);

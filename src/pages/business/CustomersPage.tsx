@@ -84,34 +84,16 @@ const CustomersPage = () => {
   const [formPhone, setFormPhone] = useState("");
   const { data: customers = [], isLoading } = useCustomers();
 
-  const createCustomer = useMutation({
-    mutationFn: async () => {
-      const { error } = await fromTable("customers").insert([{
-        user_id: user!.id, name: formName, email: formEmail || null,
-        company: formCompany || null, phone: formPhone || null,
-        status: "active",
-      }]);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["customers"] });
-      toast.success("Customer created");
-      setShowAdd(false); setFormName(""); setFormEmail(""); setFormCompany(""); setFormPhone("");
-    },
-    onError: (e: Error) => toast.error(e.message),
+  const createCustomer = useAction("business", "customer.create", {
+    successMessage: "Customer created",
+    invalidateKeys: [["customers"]],
+    onSuccess: () => { setShowAdd(false); setFormName(""); setFormEmail(""); setFormCompany(""); setFormPhone(""); },
   });
 
-  const deleteCustomer = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("customers").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["customers"] });
-      toast.success("Customer deleted");
-      setSelectedId(null);
-    },
-    onError: (e: Error) => toast.error(e.message),
+  const deleteCustomer = useAction("business", "customer.delete", {
+    successMessage: "Customer deleted",
+    invalidateKeys: [["customers"]],
+    onSuccess: () => { setSelectedId(null); },
   });
 
   const inspectCustomer = (c: Customer) => {

@@ -57,30 +57,21 @@ const InvoicesCollections = () => {
     enabled: !!user,
   });
 
-  const addInvoice = useMutation({
-    mutationFn: async () => {
-      if (!user || !form.invoice_number.trim() || !form.amount || !form.due_date) throw new Error("Number, amount, and due date required");
-      const { error } = await fromTable("invoices").insert({
-        user_id: user.id, invoice_number: form.invoice_number.trim(), amount: parseFloat(form.amount),
-        due_date: form.due_date, notes: form.notes || null, status: "draft",
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["invoices"] }); setShowAdd(false); setForm({ invoice_number: "", amount: "", due_date: "", notes: "" }); toast.success("Invoice created"); },
-    onError: (e: Error) => toast.error(e.message),
+  const addInvoice = useAction("finance", "invoice.create", {
+    successMessage: "Invoice created",
+    invalidateKeys: [["invoices"]],
+    onSuccess: () => { setShowAdd(false); setForm({ invoice_number: "", amount: "", due_date: "", notes: "" }); },
   });
 
-  const updateStatus = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await fromTable("invoices").update({ status }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["invoices"] }); toast.success("Status updated"); },
+  const updateStatus = useAction("finance", "invoice.status", {
+    successMessage: "Status updated",
+    invalidateKeys: [["invoices"]],
   });
 
-  const deleteInvoice = useMutation({
-    mutationFn: async (id: string) => { const { error } = await fromTable("invoices").delete().eq("id", id); if (error) throw error; },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["invoices"] }); setSelectedId(null); toast.success("Deleted"); },
+  const deleteInvoice = useAction("finance", "invoice.delete", {
+    successMessage: "Deleted",
+    invalidateKeys: [["invoices"]],
+    onSuccess: () => { setSelectedId(null); },
   });
 
   const selected = invoices.find((i: any) => i.id === selectedId);

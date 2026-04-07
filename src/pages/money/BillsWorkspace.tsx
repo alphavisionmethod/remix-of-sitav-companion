@@ -79,70 +79,27 @@ const BillsWorkspace = () => {
   const isLoading = billsQuery.isLoading;
   const freshness = useQueryFreshness(billsQuery);
 
-  const createMutation = useMutation({
-    mutationFn: async (bill: BillForm) => {
-      const { error } = await fromTable("bills").insert({
-        payee: bill.payee,
-        amount: parseFloat(bill.amount),
-        due_date: bill.due_date,
-        category: bill.category || null,
-        recurring: bill.recurring,
-        frequency: bill.recurring ? bill.frequency : null,
-        auto_pay: bill.auto_pay,
-        notes: bill.notes || null,
-        user_id: user!.id,
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["bills"] }); setShowForm(false); setForm(emptyForm); toast.success("Bill created"); },
-    onError: (e: any) => toast.error(e.message),
+  const createMutation = useAction("finance", "bill.create", {
+    successMessage: "Bill created",
+    invalidateKeys: [["bills"]],
+    onSuccess: () => { setShowForm(false); setForm(emptyForm); },
   });
 
-  const updateMutation = useMutation({
-    mutationFn: async ({ id, bill }: { id: string; bill: BillForm }) => {
-      const { error } = await fromTable("bills").update({
-        payee: bill.payee,
-        amount: parseFloat(bill.amount),
-        due_date: bill.due_date,
-        category: bill.category || null,
-        recurring: bill.recurring,
-        frequency: bill.recurring ? bill.frequency : null,
-        auto_pay: bill.auto_pay,
-        notes: bill.notes || null,
-      }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["bills"] }); setShowForm(false); setEditId(null); setForm(emptyForm); toast.success("Bill updated"); },
-    onError: (e: any) => toast.error(e.message),
+  const updateMutation = useAction("finance", "bill.update", {
+    successMessage: "Bill updated",
+    invalidateKeys: [["bills"]],
+    onSuccess: () => { setShowForm(false); setEditId(null); setForm(emptyForm); },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("bills").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["bills"] }); setSelectedId(null); toast.success("Bill deleted"); },
-    onError: (e: any) => toast.error(e.message),
+  const deleteMutation = useAction("finance", "bill.delete", {
+    successMessage: "Bill deleted",
+    invalidateKeys: [["bills"]],
+    onSuccess: () => { setSelectedId(null); },
   });
 
-  const markPaidMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const bill = enriched.find(b => b.id === id);
-      if (bill && user) {
-        // Fire payment-process edge function for audit trail & approval
-        await initiatePayment({
-          amount_cents: Math.round(Number(bill.amount || 0) * 100),
-          account_id: (bill as any).account_id || user.id,
-          description: `Bill payment: ${bill.payee || "Unknown"}`,
-          recipient: bill.payee,
-          category: bill.category || "bills",
-        }).catch(() => { /* non-blocking — bill still marked paid locally */ });
-      }
-      const { error } = await fromTable("bills").update({ status: "paid" }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["bills"] }); toast.success("Marked as paid"); },
-    onError: (e: any) => toast.error(e.message),
+  const markPaidMutation = useAction("finance", "bill.pay", {
+    successMessage: "Marked as paid",
+    invalidateKeys: [["bills"]],
   });
 
   const enriched = bills.map(b => ({

@@ -63,12 +63,9 @@ const AutomationCenter = () => {
     },
   });
 
-  const toggleWorkflow = useMutation({
-    mutationFn: async ({ id, active }: { id: string; active: boolean }) => {
-      const { error } = await fromTable("workflows").update({ active }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["workflows_automation"] }); toast.success("Workflow updated"); },
+  const toggleWorkflow = useAction("system", "workflow.toggle", {
+    successMessage: "Workflow updated",
+    invalidateKeys: [["workflows_automation"]],
   });
 
   const rules = isDemoMode ? MOCK_AUTOMATION_RULES : liveWorkflows.map(w => ({

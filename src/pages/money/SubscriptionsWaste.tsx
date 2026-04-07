@@ -65,55 +65,27 @@ const SubscriptionsWaste = () => {
   const isLoading = subsQuery.isLoading;
   const freshness = useQueryFreshness(subsQuery);
 
-  const createMutation = useMutation({
-    mutationFn: async (sub: SubForm) => {
-      const { error } = await fromTable("subscriptions").insert([{
-        name: sub.service_name,
-        amount: parseFloat(sub.amount),
-        frequency: sub.billing_cycle,
-        category: sub.category || null,
-        next_billing_date: sub.renewal_date || null,
-        notes: sub.notes || null,
-        user_id: user!.id,
-      }]);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["subscriptions"] }); setShowForm(false); setForm(emptyForm); toast.success("Subscription added"); },
-    onError: (e: any) => toast.error(e.message),
+  const createMutation = useAction("finance", "subscription.create", {
+    successMessage: "Subscription added",
+    invalidateKeys: [["subscriptions"]],
+    onSuccess: () => { setShowForm(false); setForm(emptyForm); },
   });
 
-  const updateMutation = useMutation({
-    mutationFn: async ({ id, sub }: { id: string; sub: SubForm }) => {
-      const { error } = await fromTable("subscriptions").update({
-        name: sub.service_name,
-        amount: parseFloat(sub.amount),
-        frequency: sub.billing_cycle,
-        category: sub.category || null,
-        next_billing_date: sub.renewal_date || null,
-        notes: sub.notes || null,
-      }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["subscriptions"] }); setShowForm(false); setEditId(null); setForm(emptyForm); toast.success("Subscription updated"); },
-    onError: (e: any) => toast.error(e.message),
+  const updateMutation = useAction("finance", "subscription.update", {
+    successMessage: "Subscription updated",
+    invalidateKeys: [["subscriptions"]],
+    onSuccess: () => { setShowForm(false); setEditId(null); setForm(emptyForm); },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("subscriptions").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["subscriptions"] }); setSelectedId(null); toast.success("Subscription deleted"); },
-    onError: (e: any) => toast.error(e.message),
+  const deleteMutation = useAction("finance", "subscription.delete", {
+    successMessage: "Subscription deleted",
+    invalidateKeys: [["subscriptions"]],
+    onSuccess: () => { setSelectedId(null); },
   });
 
-  const statusMutation = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await fromTable("subscriptions").update({ status }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["subscriptions"] }); toast.success("Status updated"); },
-    onError: (e: any) => toast.error(e.message),
+  const statusMutation = useAction("finance", "subscription.status", {
+    successMessage: "Status updated",
+    invalidateKeys: [["subscriptions"]],
   });
 
   const active = subscriptions.filter(s => s.status === "active");

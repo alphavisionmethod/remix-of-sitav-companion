@@ -99,31 +99,22 @@ const LeadsInbox = () => {
   const isLoading = leadsQuery.isLoading;
   const freshness = useQueryFreshness(leadsQuery);
 
-  const addMutation = useMutation({
-    mutationFn: async (lead: { name: string; email?: string; phone?: string; company?: string; source?: string; likely_value?: number }) => {
-      const { error } = await fromTable("leads").insert({ ...lead, user_id: user!.id });
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["leads"] }); toast.success("Lead added"); resetForm(); },
-    onError: (e: any) => toast.error(e.message),
+  const addMutation = useAction("business", "lead.create", {
+    successMessage: "Lead added",
+    invalidateKeys: [["leads"]],
+    onSuccess: () => { resetForm(); },
   });
 
-  const updateMutation = useMutation({
-    mutationFn: async ({ id, ...updates }: Partial<Lead> & { id: string }) => {
-      const { error } = await fromTable("leads").update(updates).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["leads"] }); toast.success("Lead updated"); resetForm(); },
-    onError: (e: any) => toast.error(e.message),
+  const updateMutation = useAction("business", "lead.update", {
+    successMessage: "Lead updated",
+    invalidateKeys: [["leads"]],
+    onSuccess: () => { resetForm(); },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("leads").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["leads"] }); setSelectedId(null); toast.success("Lead deleted"); },
-    onError: (e: any) => toast.error(e.message),
+  const deleteMutation = useAction("business", "lead.delete", {
+    successMessage: "Lead deleted",
+    invalidateKeys: [["leads"]],
+    onSuccess: () => { setSelectedId(null); },
   });
 
   const resetForm = () => {
