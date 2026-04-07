@@ -152,6 +152,12 @@ const DailyPulse = () => {
   const { data: travel = [] } = useTravel();
   const { data: subscriptions = [] } = useSubscriptions();
 
+  // Wire to edge functions for live finance + CRM data
+  const { data: liveCashflow } = useCashflowAnalysis();
+  const crmSync = useCRMSync();
+  const liveCf = liveCashflow as any;
+  const crmHealth = crmSync.healthCheck.data as any;
+
   const hasAnyData = isDemoMode || leads.length > 0 || invoices.length > 0 || bills.length > 0 || householdTasks.length > 0;
 
   const pendingApprovals = approvals.filter((a: any) => a.status === "pending");
