@@ -247,6 +247,9 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
 
 const RevenueCallingPage = () => {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
+  const { data: liveContacts } = useCallingContacts();
+  const { data: liveLogs } = useCallLogs();
   const [activeView, setActiveView] = useState<"queue" | "dialer" | "logs" | "scripts">("queue");
   const [dialerContact, setDialerContact] = useState<Contact | null>(null);
   const [dialerQueue, setDialerQueue] = useState<Contact[]>([]);
@@ -254,8 +257,44 @@ const RevenueCallingPage = () => {
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
   const [stageFilter, setStageFilter] = useState<string>("all");
 
+  // Map live contacts to Contact shape or use demo data
+  const contacts: Contact[] = useMemo(() => {
+    if (isDemoMode) return MOCK_CONTACTS;
+    if (!liveContacts?.length) return [];
+    return liveContacts.map((c: any) => ({
+      id: c.id,
+      name: c.name,
+      company: c.company || "",
+      phone: c.phone || "",
+      email: c.email || "",
+      value: Number(c.value) || 0,
+      priority: (c.priority || "medium") as any,
+      stage: (c.stage || "new") as any,
+      callCount: 0,
+      lastContact: c.last_called_at ? new Date(c.last_called_at).getTime() : undefined,
+      notes: c.notes || "",
+    }));
+  }, [isDemoMode, liveContacts]);
+
+  const callLogs: CallLog[] = useMemo(() => {
+    if (isDemoMode) return MOCK_CALL_LOGS;
+    if (!liveLogs?.length) return [];
+    return liveLogs.map((l: any) => ({
+      id: l.id,
+      contactId: l.contact_id || "",
+      contactName: l.contact_name || "",
+      duration: l.duration_seconds || 0,
+      status: l.status as any,
+      outcome: l.outcome || "no-answer",
+      notes: l.notes || "",
+      revenue: Number(l.revenue_impact) || 0,
+      timestamp: new Date(l.recorded_at || l.created_at).getTime(),
+      direction: "outbound" as const,
+    }));
+  }, [isDemoMode, liveLogs]);
+
   const filteredContacts = useMemo(() => {
-    let result = MOCK_CONTACTS;
+    let result = contacts;
     if (priorityFilter !== "all") result = result.filter(c => c.priority === priorityFilter);
     if (stageFilter !== "all") result = result.filter(c => c.stage === stageFilter);
     return result.sort((a, b) => {
