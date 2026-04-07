@@ -173,7 +173,7 @@ const WorkflowsCenter = () => {
                         {isStuck && <TrustBadge level="low-confidence" label="Stuck" size="sm" />}
                       </div>
                       <p className="text-sm font-medium text-foreground">
-                        {(run as Record<string, unknown>).workflows?.name || `Workflow ${run.workflow_id.slice(0, 8)}`}
+                        {String((run as Record<string, unknown>).workflows && typeof (run as Record<string, unknown>).workflows === "object" ? ((run as Record<string, unknown>).workflows as Record<string, unknown>)?.name : null) || `Workflow ${run.workflow_id.slice(0, 8)}`}
                       </p>
                       <p className="mt-0.5 text-xs text-muted-foreground">
                         Step {run.current_step} · {timeInState(run)} · {(run as Record<string, unknown>).workflows?.trigger_event || "unknown trigger"}
