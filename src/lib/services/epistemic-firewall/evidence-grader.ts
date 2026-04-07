@@ -4,7 +4,7 @@
 // Integrated with ConscienceGate and CritiqueLoop
 // ═══════════════════════════════════════════════════════════════
 
-import type { DomainId, RiskTier } from "@/packages/contracts/_contract-scaffold";
+import type { DomainId } from "@/packages/contracts/_contract-scaffold";
 
 // ── Evidence Grade Hierarchy ───────────────────────────────────
 
@@ -15,51 +15,16 @@ export interface EvidenceGradePolicy {
   label: string;
   description: string;
   maxAgeSec: number;
-  trustFactor: number; // 0–1
+  trustFactor: number;
   allowedForHighStakes: boolean;
 }
 
 export const EVIDENCE_GRADE_POLICIES: Record<EvidenceGrade, EvidenceGradePolicy> = {
-  A: {
-    grade: "A",
-    label: "Verified / Signed",
-    description: "Cryptographically signed receipt, trusted API response, or deterministic tool output. Very fresh.",
-    maxAgeSec: 300,
-    trustFactor: 1.0,
-    allowedForHighStakes: true,
-  },
-  B: {
-    grade: "B",
-    label: "Trusted / Cached",
-    description: "Trusted cached data within acceptable age. From known reliable source.",
-    maxAgeSec: 3600,
-    trustFactor: 0.85,
-    allowedForHighStakes: true,
-  },
-  C: {
-    grade: "C",
-    label: "Observed / Indirect",
-    description: "Scraped, inferred, heuristic, low-confidence, or older indirect data.",
-    maxAgeSec: 86400,
-    trustFactor: 0.5,
-    allowedForHighStakes: false,
-  },
-  D: {
-    grade: "D",
-    label: "Stale / Unverified",
-    description: "Old data, unverified source, or user-reported without confirmation.",
-    maxAgeSec: 604800,
-    trustFactor: 0.25,
-    allowedForHighStakes: false,
-  },
-  F: {
-    grade: "F",
-    label: "No Evidence",
-    description: "LLM-generated claim with no backing evidence. Weight-based only.",
-    maxAgeSec: 0,
-    trustFactor: 0,
-    allowedForHighStakes: false,
-  },
+  A: { grade: "A", label: "Verified / Signed", description: "Cryptographically signed receipt, trusted API response, or deterministic tool output. Very fresh.", maxAgeSec: 300, trustFactor: 1.0, allowedForHighStakes: true },
+  B: { grade: "B", label: "Trusted / Cached", description: "Trusted cached data within acceptable age. From known reliable source.", maxAgeSec: 3600, trustFactor: 0.85, allowedForHighStakes: true },
+  C: { grade: "C", label: "Observed / Indirect", description: "Scraped, inferred, heuristic, low-confidence, or older indirect data.", maxAgeSec: 86400, trustFactor: 0.5, allowedForHighStakes: false },
+  D: { grade: "D", label: "Stale / Unverified", description: "Old data, unverified source, or user-reported without confirmation.", maxAgeSec: 604800, trustFactor: 0.25, allowedForHighStakes: false },
+  F: { grade: "F", label: "No Evidence", description: "LLM-generated claim with no backing evidence. Weight-based only.", maxAgeSec: 0, trustFactor: 0, allowedForHighStakes: false },
 };
 
 // ── Evidence Item ──────────────────────────────────────────────
@@ -98,7 +63,7 @@ export interface DomainEvidencePolicy {
   maxStalenessSec: number;
 }
 
-const HIGH_TRUST_DOMAINS: DomainId[] = ["finance", "legal", "health"];
+const HIGH_TRUST_DOMAINS: DomainId[] = ["finance"];
 
 const DOMAIN_EVIDENCE_POLICIES: Partial<Record<DomainId, DomainEvidencePolicy>> = {
   finance: {
@@ -110,22 +75,22 @@ const DOMAIN_EVIDENCE_POLICIES: Partial<Record<DomainId, DomainEvidencePolicy>> 
     refuseOnWeakEvidence: true,
     maxStalenessSec: 3600,
   },
-  legal: {
-    domain: "legal",
-    minGrade: "B",
+  business: {
+    domain: "business",
+    minGrade: "C",
     minSources: 1,
     requiresSigned: false,
-    requiresCitation: true,
-    refuseOnWeakEvidence: true,
+    requiresCitation: false,
+    refuseOnWeakEvidence: false,
     maxStalenessSec: 86400,
   },
-  health: {
-    domain: "health",
-    minGrade: "B",
+  platform: {
+    domain: "platform",
+    minGrade: "C",
     minSources: 1,
     requiresSigned: false,
-    requiresCitation: true,
-    refuseOnWeakEvidence: true,
+    requiresCitation: false,
+    refuseOnWeakEvidence: false,
     maxStalenessSec: 86400,
   },
 };
@@ -145,15 +110,9 @@ export function gradeEvidence(item: EvidenceItem, now?: Date): GradedEvidence {
     grade = "A";
   } else if (item.signed || (item.sourceType === "calculation" && ageSec <= 300)) {
     grade = "A";
-  } else if (
-    ["api", "connector", "receipt", "calculation"].includes(item.sourceType) &&
-    ageSec <= 3600
-  ) {
+  } else if (["api", "connector", "receipt", "calculation"].includes(item.sourceType) && ageSec <= 3600) {
     grade = "B";
-  } else if (
-    ["file", "cache", "user-input"].includes(item.sourceType) &&
-    ageSec <= 86400
-  ) {
+  } else if (["file", "cache", "user-input"].includes(item.sourceType) && ageSec <= 86400) {
     grade = "C";
   } else if (ageSec <= 604800) {
     grade = "D";
@@ -161,71 +120,34 @@ export function gradeEvidence(item: EvidenceItem, now?: Date): GradedEvidence {
     grade = "F";
   }
 
-  // Expired data downgrades
   if (item.expiresAt && new Date(item.expiresAt) < currentTime) {
     grade = grade === "A" ? "C" : grade === "B" ? "D" : "F";
   }
 
   const gradePolicy = EVIDENCE_GRADE_POLICIES[grade];
-  const domainPolicy = DOMAIN_EVIDENCE_POLICIES[item.domain];
   const isHighTrust = HIGH_TRUST_DOMAINS.includes(item.domain);
+  const usableForDomain = isHighTrust ? gradePolicy.allowedForHighStakes : true;
+  const gradingReason = `Source: ${item.sourceType} (${item.provenance}) | Age: ${ageSec}s | Signed: ${item.signed} | Grade: ${grade}${!usableForDomain ? " | NOT usable for high-trust domain" : ""}`;
 
-  const usableForDomain = isHighTrust
-    ? gradePolicy.allowedForHighStakes
-    : true;
-
-  const gradingReason = buildGradingReason(item, grade, ageSec, usableForDomain);
-
-  return {
-    ...item,
-    grade,
-    gradePolicy,
-    ageSec,
-    trustScore: gradePolicy.trustFactor,
-    usableForDomain,
-    gradingReason,
-  };
+  return { ...item, grade, gradePolicy, ageSec, trustScore: gradePolicy.trustFactor, usableForDomain, gradingReason };
 }
 
-export function gradeEvidenceSet(
-  items: EvidenceItem[],
-  domain: DomainId,
-  now?: Date
-): GradedEvidenceSet {
+export function gradeEvidenceSet(items: EvidenceItem[], domain: DomainId, now?: Date): GradedEvidenceSet {
   const graded = items.map((item) => gradeEvidence(item, now));
   const domainPolicy = DOMAIN_EVIDENCE_POLICIES[domain];
-
   const usable = graded.filter((e) => e.usableForDomain);
-  const bestGrade = usable.length > 0
+  const bestGrade: EvidenceGrade = usable.length > 0
     ? usable.reduce((best, e) => (gradeRank(e.grade) < gradeRank(best.grade) ? e : best)).grade
     : "F";
-
-  const avgTrust = usable.length > 0
-    ? usable.reduce((sum, e) => sum + e.trustScore, 0) / usable.length
-    : 0;
-
-  const meetsMinGrade = domainPolicy
-    ? gradeRank(bestGrade) <= gradeRank(domainPolicy.minGrade)
-    : true;
-
-  const meetsMinSources = domainPolicy
-    ? usable.length >= domainPolicy.minSources
-    : usable.length > 0;
-
-  const sufficient = meetsMinGrade && meetsMinSources;
+  const avgTrust = usable.length > 0 ? usable.reduce((sum, e) => sum + e.trustScore, 0) / usable.length : 0;
+  const meetsMinGrade = domainPolicy ? gradeRank(bestGrade) <= gradeRank(domainPolicy.minGrade) : true;
+  const meetsMinSources = domainPolicy ? usable.length >= domainPolicy.minSources : usable.length > 0;
 
   return {
-    items: graded,
-    domain,
-    bestGrade,
-    avgTrustScore: avgTrust,
-    totalItems: items.length,
-    usableItems: usable.length,
-    sufficient,
-    meetsMinGrade,
-    meetsMinSources,
-    domainPolicy: domainPolicy || null,
-    gradedAt: (now || new Date()).toISOString(),
+    items: graded, domain, bestGrade, avgTrustScore: avgTrust,
+    totalItems: items.length, usableItems: usable.length,
+    sufficient: meetsMinGrade && meetsMinSources, meetsMinGrade, meetsMinSources,
+    domainPolicy: domainPolicy || null, gradedAt: (now || new Date()).toISOString(),
   };
 }
 
@@ -243,26 +165,8 @@ export interface GradedEvidenceSet {
   gradedAt: string;
 }
 
-// ── Helpers ────────────────────────────────────────────────────
-
 function gradeRank(grade: EvidenceGrade): number {
-  const ranks: Record<EvidenceGrade, number> = { A: 1, B: 2, C: 3, D: 4, F: 5 };
-  return ranks[grade];
-}
-
-function buildGradingReason(
-  item: EvidenceItem,
-  grade: EvidenceGrade,
-  ageSec: number,
-  usable: boolean
-): string {
-  const parts: string[] = [];
-  parts.push(`Source: ${item.sourceType} (${item.provenance})`);
-  parts.push(`Age: ${ageSec}s`);
-  parts.push(`Signed: ${item.signed}`);
-  parts.push(`Grade: ${grade}`);
-  if (!usable) parts.push("NOT usable for high-trust domain");
-  return parts.join(" | ");
+  return { A: 1, B: 2, C: 3, D: 4, F: 5 }[grade];
 }
 
 export function getDomainEvidencePolicy(domain: DomainId): DomainEvidencePolicy | undefined {

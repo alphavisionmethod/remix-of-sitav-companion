@@ -1,12 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Sentinel Guard / Invariant Engine
 // Runtime invariant enforcement for critical system rules
-// Integrates with ConscienceGate, Desk, Pipeline, and admin boards
 // ═══════════════════════════════════════════════════════════════
 
 import type { DomainId, RiskTier } from "@/packages/contracts/_contract-scaffold";
-
-// ── Invariant Types ────────────────────────────────────────────
 
 export type InvariantSeverity = "warning" | "block" | "critical";
 export type InvariantScope = "runtime" | "ci-cd" | "admin" | "audit";
@@ -63,32 +60,22 @@ export interface SentinelReport {
   overallHealthy: boolean;
 }
 
-// ── Canonical Invariants ───────────────────────────────────────
-
 const INVARIANTS: Invariant[] = [
   {
-    id: "INV-001",
-    name: "Receipt Required for High-Trust Actions",
+    id: "INV-001", name: "Receipt Required for High-Trust Actions",
     description: "All high-trust actions must produce receipts.",
-    scope: "runtime",
-    severity: "critical",
-    domains: ["finance", "legal", "health"],
-    enabled: true,
+    scope: "runtime", severity: "critical", domains: ["finance"], enabled: true,
     check: (ctx) => ({
       invariantId: "INV-001",
-      passed: ctx.hasReceipt !== false || ctx.riskTier === "low" || ctx.riskTier === "informational",
-      message: ctx.hasReceipt === false ? "High-trust action completed without receipt emission" : "Receipt requirement met",
+      passed: ctx.hasReceipt !== false || ctx.riskTier === "standard",
+      message: ctx.hasReceipt === false && ctx.riskTier !== "standard" ? "High-trust action completed without receipt emission" : "Receipt requirement met",
       severity: "critical",
     }),
   },
   {
-    id: "INV-002",
-    name: "Policy Gate Required",
+    id: "INV-002", name: "Policy Gate Required",
     description: "No action bypasses policy gate.",
-    scope: "runtime",
-    severity: "block",
-    domains: ["finance", "legal", "health", "general"],
-    enabled: true,
+    scope: "runtime", severity: "block", domains: ["finance", "business", "platform", "concierge", "cross-domain"], enabled: true,
     check: (ctx) => ({
       invariantId: "INV-002",
       passed: ctx.passedPolicyGate !== false,
@@ -97,13 +84,9 @@ const INVARIANTS: Invariant[] = [
     }),
   },
   {
-    id: "INV-003",
-    name: "Cost Gate Required",
+    id: "INV-003", name: "Cost Gate Required",
     description: "No AI invocation bypasses cost gate when budget policies exist.",
-    scope: "runtime",
-    severity: "block",
-    domains: ["finance", "general"],
-    enabled: true,
+    scope: "runtime", severity: "block", domains: ["finance", "business", "platform", "concierge", "cross-domain"], enabled: true,
     check: (ctx) => ({
       invariantId: "INV-003",
       passed: ctx.passedCostGate !== false,
@@ -112,13 +95,9 @@ const INVARIANTS: Invariant[] = [
     }),
   },
   {
-    id: "INV-004",
-    name: "Finance Deterministic Verification",
-    description: "No finance/tax response passes without deterministic verification if policy requires it.",
-    scope: "runtime",
-    severity: "critical",
-    domains: ["finance"],
-    enabled: true,
+    id: "INV-004", name: "Finance Deterministic Verification",
+    description: "No finance response passes without deterministic verification if policy requires it.",
+    scope: "runtime", severity: "critical", domains: ["finance"], enabled: true,
     check: (ctx) => ({
       invariantId: "INV-004",
       passed: ctx.domain !== "finance" || ctx.deterministicVerified !== false,
@@ -127,13 +106,9 @@ const INVARIANTS: Invariant[] = [
     }),
   },
   {
-    id: "INV-005",
-    name: "No Unsupported Claims in High-Trust",
+    id: "INV-005", name: "No Unsupported Claims in High-Trust",
     description: "No unsupported claim reaches the user in high-trust domains.",
-    scope: "runtime",
-    severity: "block",
-    domains: ["finance", "legal", "health"],
-    enabled: true,
+    scope: "runtime", severity: "block", domains: ["finance"], enabled: true,
     check: (ctx) => ({
       invariantId: "INV-005",
       passed: ctx.hasCiteCheck !== false,
@@ -142,13 +117,9 @@ const INVARIANTS: Invariant[] = [
     }),
   },
   {
-    id: "INV-006",
-    name: "Approval Gate for Critical Actions",
+    id: "INV-006", name: "Approval Gate for Critical Actions",
     description: "Critical-risk actions must have approval before execution.",
-    scope: "runtime",
-    severity: "critical",
-    domains: ["finance", "legal"],
-    enabled: true,
+    scope: "runtime", severity: "critical", domains: ["finance", "business"], enabled: true,
     check: (ctx) => ({
       invariantId: "INV-006",
       passed: ctx.riskTier !== "critical" || ctx.passedApprovalGate === true,
@@ -157,13 +128,9 @@ const INVARIANTS: Invariant[] = [
     }),
   },
   {
-    id: "INV-007",
-    name: "Evidence Grade Visibility",
+    id: "INV-007", name: "Evidence Grade Visibility",
     description: "Evidence grade must be visible to runtime and inspectable by admin.",
-    scope: "runtime",
-    severity: "warning",
-    domains: ["finance", "legal", "health"],
-    enabled: true,
+    scope: "runtime", severity: "warning", domains: ["finance"], enabled: true,
     check: (ctx) => ({
       invariantId: "INV-007",
       passed: ctx.hasEvidenceGrade !== false,
@@ -172,13 +139,9 @@ const INVARIANTS: Invariant[] = [
     }),
   },
   {
-    id: "INV-008",
-    name: "Brain Routing Required",
+    id: "INV-008", name: "Brain Routing Required",
     description: "No provider should be called directly — all must route through Brain/canonical path.",
-    scope: "runtime",
-    severity: "block",
-    domains: ["finance", "legal", "health", "general"],
-    enabled: true,
+    scope: "runtime", severity: "block", domains: ["finance", "business", "platform", "concierge", "cross-domain"], enabled: true,
     check: (ctx) => ({
       invariantId: "INV-008",
       passed: !ctx.providerCalled || ctx.routedThroughBrain === true,
@@ -187,28 +150,20 @@ const INVARIANTS: Invariant[] = [
     }),
   },
   {
-    id: "INV-009",
-    name: "Dedup Invariant",
+    id: "INV-009", name: "Dedup Invariant",
     description: "No duplicate action execution within the same correlation.",
-    scope: "runtime",
-    severity: "warning",
-    domains: ["general"],
-    enabled: true,
+    scope: "runtime", severity: "warning", domains: ["platform", "cross-domain"], enabled: true,
     check: (ctx) => ({
       invariantId: "INV-009",
-      passed: true, // Checked at execution layer via Desk
+      passed: true,
       message: "Dedup check delegated to Desk executor",
       severity: "warning",
     }),
   },
   {
-    id: "INV-010",
-    name: "Event Integrity",
+    id: "INV-010", name: "Event Integrity",
     description: "Critical events must have correlation IDs and timestamps.",
-    scope: "audit",
-    severity: "warning",
-    domains: ["general"],
-    enabled: true,
+    scope: "audit", severity: "warning", domains: ["platform", "cross-domain"], enabled: true,
     check: (ctx) => ({
       invariantId: "INV-010",
       passed: !!ctx.correlationId,
@@ -217,13 +172,9 @@ const INVARIANTS: Invariant[] = [
     }),
   },
   {
-    id: "INV-011",
-    name: "Connector Action Governance",
+    id: "INV-011", name: "Connector Action Governance",
     description: "Connector actions must pass through Desk executor with receipt.",
-    scope: "runtime",
-    severity: "block",
-    domains: ["general"],
-    enabled: true,
+    scope: "runtime", severity: "block", domains: ["platform", "cross-domain"], enabled: true,
     check: (ctx) => ({
       invariantId: "INV-011",
       passed: ctx.actionType !== "connector" || (ctx.passedPolicyGate === true && ctx.hasReceipt !== false),
@@ -232,55 +183,40 @@ const INVARIANTS: Invariant[] = [
     }),
   },
   {
-    id: "INV-012",
-    name: "Assumption Disclosure",
+    id: "INV-012", name: "Assumption Disclosure",
     description: "High-impact assumptions must be disclosed to the user.",
-    scope: "runtime",
-    severity: "warning",
-    domains: ["finance", "legal", "health"],
-    enabled: true,
+    scope: "runtime", severity: "warning", domains: ["finance", "business"], enabled: true,
     check: (ctx) => ({
       invariantId: "INV-012",
-      passed: true, // Checked at response assembly layer
+      passed: true,
       message: "Assumption disclosure delegated to response assembler",
       severity: "warning",
     }),
   },
 ];
 
-// ── Sentinel Engine ────────────────────────────────────────────
-
-export function runSentinelCheck(
-  context: InvariantContext,
-  scopes?: InvariantScope[]
-): SentinelReport {
+export function runSentinelCheck(context: InvariantContext, scopes?: InvariantScope[]): SentinelReport {
   const applicable = INVARIANTS.filter((inv) => {
     if (!inv.enabled) return false;
     if (scopes && !scopes.includes(inv.scope)) return false;
-    if (context.domain && !inv.domains.includes(context.domain) && !inv.domains.includes("general")) return false;
+    if (context.domain && !inv.domains.includes(context.domain)) return false;
     return true;
   });
 
   const results = applicable.map((inv) => inv.check(context));
-
   const failed = results.filter((r) => !r.passed);
   const blocked = failed.filter((r) => r.severity === "block" || r.severity === "critical");
 
   return {
     reportId: `sentinel-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     timestamp: new Date().toISOString(),
-    totalChecks: results.length,
-    passed: results.filter((r) => r.passed).length,
-    failed: failed.length,
-    blocked: blocked.length,
+    totalChecks: results.length, passed: results.filter((r) => r.passed).length,
+    failed: failed.length, blocked: blocked.length,
     warnings: failed.filter((r) => r.severity === "warning").length,
     critical: failed.filter((r) => r.severity === "critical").length,
-    results,
-    overallHealthy: blocked.length === 0,
+    results, overallHealthy: blocked.length === 0,
   };
 }
-
-// ── Sentinel Log ───────────────────────────────────────────────
 
 const sentinelLog: SentinelReport[] = [];
 
@@ -293,35 +229,17 @@ export function getSentinelHistory(limit = 50): SentinelReport[] {
   return sentinelLog.slice(-limit);
 }
 
-export function getSentinelStats(): {
-  totalReports: number;
-  healthyRate: number;
-  totalViolations: number;
-  byInvariant: Record<string, { passed: number; failed: number }>;
-} {
+export function getSentinelStats(): { totalReports: number; healthyRate: number; totalViolations: number; byInvariant: Record<string, { passed: number; failed: number }> } {
   const byInvariant: Record<string, { passed: number; failed: number }> = {};
-
   for (const report of sentinelLog) {
     for (const r of report.results) {
-      if (!byInvariant[r.invariantId]) {
-        byInvariant[r.invariantId] = { passed: 0, failed: 0 };
-      }
-      if (r.passed) {
-        byInvariant[r.invariantId].passed++;
-      } else {
-        byInvariant[r.invariantId].failed++;
-      }
+      if (!byInvariant[r.invariantId]) byInvariant[r.invariantId] = { passed: 0, failed: 0 };
+      if (r.passed) byInvariant[r.invariantId].passed++;
+      else byInvariant[r.invariantId].failed++;
     }
   }
-
   const healthy = sentinelLog.filter((r) => r.overallHealthy).length;
-
-  return {
-    totalReports: sentinelLog.length,
-    healthyRate: sentinelLog.length > 0 ? healthy / sentinelLog.length : 1,
-    totalViolations: sentinelLog.reduce((sum, r) => sum + r.failed, 0),
-    byInvariant,
-  };
+  return { totalReports: sentinelLog.length, healthyRate: sentinelLog.length > 0 ? healthy / sentinelLog.length : 1, totalViolations: sentinelLog.reduce((sum, r) => sum + r.failed, 0), byInvariant };
 }
 
 export function getInvariants(): Invariant[] {
