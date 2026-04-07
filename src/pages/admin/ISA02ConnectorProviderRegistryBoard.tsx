@@ -129,7 +129,7 @@ export default function ISA02ConnectorProviderRegistryBoard() {
                     {categoryIcons[cap.category] || <Plug className="h-4 w-4" />}
                     {cap.display_name}
                   </TableCell>
-                  <TableCell>{(cap as Record<string, unknown>).provider_families?.name || "—"}</TableCell>
+                  <TableCell>{((cap as any).provider_families as any)?.name || "—"}</TableCell>
                   <TableCell><Badge variant="outline">{cap.category}</Badge></TableCell>
                   <TableCell className="text-xs text-muted-foreground">{cap.auth_type || "oauth2"}</TableCell>
                   <TableCell>
