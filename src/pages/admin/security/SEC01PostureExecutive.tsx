@@ -2,8 +2,8 @@ import { Shield, ShieldAlert, ShieldCheck, AlertTriangle, Lock, Eye } from "luci
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import {
 import { useDataMode } from "@/contexts/DataModeContext";
+import {
   computeSecurityScore,
   THREAT_MODEL,
   EDGE_FUNCTION_AUDIT,
