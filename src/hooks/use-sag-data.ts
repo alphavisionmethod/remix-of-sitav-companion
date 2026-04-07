@@ -17,14 +17,14 @@ const makeHook = (table: string, key: string) => () => useQuery({
   queryFn: async () => {
     const { data, error } = await fromDynamicTable(table).select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as never[];
+    return data as Record<string, unknown>[];
   }
 });
 
 const makeMutation = (table: string, key: string, successMsg: string) => () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (record: Record<string, any>) => {
+    mutationFn: async (record: Record<string, unknown>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
       const { data, error } = await fromDynamicTable(table).insert({ ...record, user_id: user.id }).select().single();
@@ -32,7 +32,7 @@ const makeMutation = (table: string, key: string, successMsg: string) => () => {
       return data;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['sag'] }); toast.success(successMsg); },
-    onError: (e: any) => toast.error(e.message),
+    onError: (e: Error) => toast.error(e.message),
   });
 };
 
@@ -72,19 +72,19 @@ export const useGatewayStats = () => useQuery({
       fromTable('ai_portfolio_allocations').select('*'),
       fromTable('ai_compliance_violations').select('*').eq('resolved', false),
     ]);
-    const t = (tasks.data || []) as never[];
-    const r = (receipts.data || []) as never[];
-    const totalCost = t.reduce((s: number, x: any) => s + (x.cost_actual_cents || 0), 0);
-    const cacheHits = t.filter((x: any) => x.cache_hit).length;
-    const fallbacks = t.filter((x: any) => x.fallback_used).length;
+    const t = (tasks.data || []) as Record<string, unknown>[];
+    const r = (receipts.data || []) as Record<string, unknown>[];
+    const totalCost = t.reduce((s: number, x) => s + ((x.cost_actual_cents as number) || 0), 0);
+    const cacheHits = t.filter((x) => x.cache_hit).length;
+    const fallbacks = t.filter((x) => x.fallback_used).length;
     const providers: Record<string, number> = {};
-    t.forEach((x: any) => { if (x.provider_chosen) providers[x.provider_chosen] = (providers[x.provider_chosen] || 0) + 1; });
+    t.forEach((x) => { if (x.provider_chosen) providers[x.provider_chosen as string] = (providers[x.provider_chosen as string] || 0) + 1; });
     return {
       totalRequests: t.length, totalCost, cacheHitRate: t.length ? cacheHits / t.length : 0,
       fallbackRate: t.length ? fallbacks / t.length : 0, providers,
       receipts: r.length, healthRecords: (health.data || []).length,
       allocations: (portfolio.data || []).length, violations: (violations.data || []).length,
-      premiumRate: t.length ? t.filter((x: any) => x.model_chosen?.includes('pro') || x.model_chosen?.includes('premium')).length / t.length : 0,
+      premiumRate: t.length ? t.filter((x) => ((x.model_chosen as string) || '').includes('pro') || ((x.model_chosen as string) || '').includes('premium')).length / t.length : 0,
     };
   }
 });

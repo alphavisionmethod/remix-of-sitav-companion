@@ -3,8 +3,7 @@
 // Persists receipts, proofs, projections, envelopes, approvals to DB
 // ═══════════════════════════════════════════════════════════════
 
-import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromDynamicTable } from "@/lib/supabase-helpers";
 import type { Receipt } from "./receipt-service";
 import type { ExecutionEnvelope } from "./executor-service";
 import type { Projection } from "./projection-service";
@@ -17,7 +16,7 @@ export async function persistChainReceipt(
   domain?: string
 ): Promise<void> {
   try {
-    await fromTable("receipts").insert({
+    await fromDynamicTable("receipts").insert({
       user_id: userId,
       type: receipt.receiptType,
       hash: receipt.hash,
@@ -59,7 +58,7 @@ export async function persistChainProof(
       hash = Math.abs(h).toString(16).padStart(16, "0");
     }
 
-    await fromTable("proof_records").insert({
+    await fromDynamicTable("proof_records").insert({
       user_id: userId,
       action,
       actor: "canonical-chain",
@@ -82,13 +81,12 @@ export async function persistChainEnvelope(
   correlationId: string
 ): Promise<void> {
   try {
-    await fromTable("execution_envelopes").insert({
+    await fromDynamicTable("execution_envelopes").insert({
       user_id: userId,
       capability_id: envelope.capabilityId,
       status: envelope.status,
       intent: { correlationId, mode: envelope.mode, payload: envelope.payload },
       result: envelope.result || null,
-      approved_by: (envelope as Record<string, unknown>).approvedBy || null,
       metadata: {
         correlationId,
         durationMs: envelope.durationMs,
@@ -108,9 +106,8 @@ export async function persistChainProjection(
   domain: string
 ): Promise<void> {
   try {
-    // Upsert — update if same type+id exists, insert otherwise
     const key = `${projection.type}:${projection.id}`;
-    const { data: existing } = await fromTable("projections")
+    const { data: existing } = await fromDynamicTable("projections")
       .select("id")
       .eq("user_id", userId)
       .eq("type", projection.type)
@@ -119,12 +116,12 @@ export async function persistChainProjection(
       .maybeSingle();
 
     if (existing) {
-      await fromTable("projections").update({
+      await fromDynamicTable("projections").update({
         data: { state: projection.state, eventCount: projection.eventCount, lastEventId: projection.lastEventId, snapshotAt: projection.snapshotAt },
         generated_at: new Date().toISOString(),
-      }).eq("id", existing.id);
+      }).eq("id", (existing as Record<string, string>).id);
     } else {
-      await fromTable("projections").insert({
+      await fromDynamicTable("projections").insert({
         user_id: userId,
         type: projection.type,
         domain,
@@ -148,7 +145,7 @@ export async function persistChainApproval(
   domain?: string
 ): Promise<void> {
   try {
-    await fromTable("approval_queue").insert({
+    await fromDynamicTable("approval_queue").insert({
       user_id: userId,
       action_summary: actionSummary,
       proposed_action: proposedAction,
@@ -172,7 +169,7 @@ export async function persistChainEvent(
   domain?: string
 ): Promise<void> {
   try {
-    await fromTable("events").insert({
+    await fromDynamicTable("events").insert({
       user_id: userId,
       event_type: eventType,
       payload,
