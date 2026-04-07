@@ -10,14 +10,7 @@ import type { SurfaceType, ActiveSurface } from "@/packages/contracts/runtime/os
 
 // ── Surface detection ───────────────────────────────────────────
 
-declare global {
-  interface Window {
-    Capacitor?: CapacitorGlobal | {
-      platform?: string;
-      isNativePlatform?: () => boolean;
-      [key: string]: unknown;
-    };
-  }
+// Window augmentation removed — using vite-env.d.ts global declarations
 }
 
 export type ExtendedSurfaceType = SurfaceType | "pwa" | "electron" | "capacitor";
