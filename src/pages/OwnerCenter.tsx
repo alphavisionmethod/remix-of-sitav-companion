@@ -2001,7 +2001,7 @@ const OwnerCenter = () => {
               <KPITile label="Registry Sync" value={`${knowledgeData?.registryInSync || 0}/${knowledgeData?.registryFiles || 0}`} icon={Database} />
             </div>
             <SitaSectionHeader title="Stale Documents" />
-            {((knowledgeData as Record<string, unknown>)?.staleDcosList || []).map((d: any) => (
+            {(knowledgeData?.staleDcosList || []).map((d: any) => (
               <SitaCard key={d.name} hover={false} className="p-3" lane="action">
                 <div className="flex items-center justify-between">
                   <div>
