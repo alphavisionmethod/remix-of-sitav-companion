@@ -44,7 +44,7 @@ export function useModeDeltas() {
   return useQuery({
     queryKey: ["v-customer-journey-mode-deltas"],
     queryFn: async () => {
-      const { data, error } = await fromTable("v_customer_journey_mode_deltas")
+      const { data, error } = await fromDynamicTable("v_customer_journey_mode_deltas")
         .select("*");
       if (error) throw error;
       return data ?? [];
