@@ -23,6 +23,8 @@ import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { useCustomers } from "@/hooks/use-domain-data";
 import type { MockCustomer } from "@/lib/data-services/business-data-service";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useCRMSync } from "@/hooks/use-backend-actions";
+import { RefreshCw } from "lucide-react";
 
 type Customer = MockCustomer;
 
