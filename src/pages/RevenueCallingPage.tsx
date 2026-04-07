@@ -67,10 +67,10 @@ const OUTCOME_COLORS: Record<string, string> = {
 
 // ── Sub-Components ──────────────────────────────────────────────
 
-function CallStats() {
-  const today = MOCK_CALL_LOGS.filter(l => Date.now() - l.timestamp < 86400000);
-  const week = MOCK_CALL_LOGS.filter(l => Date.now() - l.timestamp < 604800000);
-  const totalRevenue = MOCK_CALL_LOGS.reduce((s, l) => s + (l.revenue || 0), 0);
+function CallStats({ contacts, callLogs }: { contacts: Contact[]; callLogs: CallLog[] }) {
+  const today = callLogs.filter(l => Date.now() - l.timestamp < 86400000);
+  const week = callLogs.filter(l => Date.now() - l.timestamp < 604800000);
+  const totalRevenue = callLogs.reduce((s, l) => s + (l.revenue || 0), 0);
   const avgDuration = week.length > 0 ? Math.round(week.reduce((s, l) => s + l.duration, 0) / week.length) : 0;
   const connectRate = week.length > 0 ? Math.round(week.filter(l => l.status === "completed").length / week.length * 100) : 0;
 
@@ -81,7 +81,7 @@ function CallStats() {
         { label: "This Week", value: week.length.toString(), icon: BarChart3, color: "text-foreground" },
         { label: "Connect Rate", value: `${connectRate}%`, icon: PhoneCall, color: connectRate >= 60 ? "text-trust-safe" : "text-amber-500" },
         { label: "Avg Duration", value: formatDuration(avgDuration), icon: Timer, color: "text-foreground" },
-        { label: "Pipeline Value", value: `$${(MOCK_CONTACTS.reduce((s, c) => s + c.value, 0) / 1000).toFixed(0)}K`, icon: Target, color: "text-primary" },
+        { label: "Pipeline Value", value: `$${(contacts.reduce((s, c) => s + c.value, 0) / 1000).toFixed(0)}K`, icon: Target, color: "text-primary" },
         { label: "Revenue Won", value: `$${(totalRevenue / 1000).toFixed(0)}K`, icon: DollarSign, color: "text-trust-safe" },
       ].map(m => (
         <div key={m.label} className="rounded-xl border border-border/40 bg-card/40 p-2.5 flex items-center gap-2">
