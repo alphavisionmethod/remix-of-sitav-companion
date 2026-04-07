@@ -33,7 +33,7 @@ export async function invokeAICapability(
 
     if (error) {
       // Supabase functions.invoke wraps HTTP errors
-      const status = (error as Record<string, unknown>)?.status ?? 500;
+      const status = Number((error as Record<string, unknown>)?.status ?? 500);
       const errorBody = typeof data === "object" ? data : { error: error.message };
       return normalizeGatewayResponse(errorBody ?? {}, capabilityKey, status);
     }

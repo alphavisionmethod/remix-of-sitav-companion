@@ -65,18 +65,9 @@ interface NetworkInformation extends EventTarget {
   onchange: ((this: NetworkInformation, ev: Event) => void) | null;
 }
 
-interface ElectronBridge {
-  platform: string;
-  sendNotification: (title: string, body: string) => void;
-  downloadUpdate: () => void;
-  onUpdateAvailable: (callback: () => void) => void;
-  getVersion: () => string;
-}
-
 interface Window {
   SpeechRecognition?: typeof SpeechRecognition;
   webkitSpeechRecognition?: typeof webkitSpeechRecognition;
-  electron?: ElectronBridge;
 }
 
 interface Navigator {
