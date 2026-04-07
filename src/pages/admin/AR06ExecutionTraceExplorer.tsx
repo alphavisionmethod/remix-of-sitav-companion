@@ -67,7 +67,7 @@ export default function AR06ExecutionTraceExplorer() {
         <div className="md:col-span-2">
           {selected ? (
             <SitaCard>
-              <SitaCardTitle>Execution Trace — {(selected as Record<string, unknown>).scheduled_jobs?.name || selected.job_id.slice(0, 8)}</SitaCardTitle>
+              <SitaCardTitle>Execution Trace — {((selected as any).scheduled_jobs as any)?.name || selected.job_id.slice(0, 8)}</SitaCardTitle>
               <div className="mt-4 space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   {[
