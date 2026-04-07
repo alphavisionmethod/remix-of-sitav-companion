@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useBills, useSubscriptions, useInvoices } from "@/hooks/use-sita-data";
 import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useCashflowAnalysis, useBurnRate } from "@/hooks/use-backend-actions";
 import {
   DollarSign, TrendingUp, TrendingDown, CreditCard, AlertTriangle, PiggyBank, Wallet, Briefcase,
   Building, CheckCircle, Clock, ArrowRight, BarChart3, Shield, Zap, Receipt, Calendar, ShieldAlert
