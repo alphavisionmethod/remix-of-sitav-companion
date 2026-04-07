@@ -775,7 +775,21 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {phase === "deep-world-modeling" && (
+                {phase === "want-less-of" && (
+                  <WantLessOfStep key="want-less-of"
+                    selected={state.wantLessOf}
+                    onToggle={key => setState(s => ({ ...s, wantLessOf: s.wantLessOf.includes(key) ? s.wantLessOf.filter(k => k !== key) : [...s.wantLessOf, key] }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "protect-most" && (
+                  <ProtectMostStep key="protect-most"
+                    selected={state.protectMost}
+                    onToggle={key => setState(s => ({ ...s, protectMost: s.protectMost.includes(key) ? s.protectMost.filter(k => k !== key) : [...s.protectMost, key] }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+
                   <DeepWorldModelingStep key="deep-world-modeling"
                     data={state.worldModel}
                     onUpdate={wm => setState(s => ({ ...s, worldModel: wm }))}
