@@ -784,7 +784,13 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {phase === "quick-identity" && (
+                {phase === "memory-consent" && (
+                  <MemoryConsentStep key="memory-consent"
+                    selected={state.memoryConsent}
+                    onSelect={v => setState(s => ({ ...s, memoryConsent: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
                   <QuickIdentityStep key="quick-identity"
                     data={state.quickIdentity}
                     onUpdate={qi => setState(s => ({ ...s, quickIdentity: qi }))}
