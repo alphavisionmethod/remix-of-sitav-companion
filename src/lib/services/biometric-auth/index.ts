@@ -75,7 +75,7 @@ class BiometricAuthBridge {
         },
       };
     } catch (error: any) {
-      return { success: false, error: (error as Error)?.message ?? String(error) || 'Registration failed' };
+      return { success: false, error: (error as Error)?.message ?? (String(error) || 'Registration failed') };
     }
   }
 
