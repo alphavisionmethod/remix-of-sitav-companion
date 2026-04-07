@@ -243,7 +243,7 @@ const SettingsPage = () => {
                     setUploadingAvatar(true);
                     try {
                       const ext = file.name.split(".").pop();
-                      const path = `avatars/${user.id}.${ext}`;
+                      const path = `${user.id}/avatar.${ext}`;
                       const { error: uploadError } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
                       if (uploadError) throw uploadError;
                       const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);

@@ -85,8 +85,8 @@ self.addEventListener('push', (event) => {
 
   const options = {
     body: payload.body || '',
-    icon: payload.icon || '/pwa-192x192.png',
-    badge: payload.badge || '/pwa-64x64.png',
+    icon: payload.icon || '/icons/icon-192.png',
+    badge: payload.badge || '/icons/icon-192.png',
     tag: payload.tag || 'sita-os-notification',
     renotify: true,
     data: payload.data || {},
