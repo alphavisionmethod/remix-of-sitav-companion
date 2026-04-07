@@ -7,6 +7,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { ChangePlan } from "./change-plan-layer";
+import { RegressionComparisonEngine, createRegressionComparisonEngine } from "@/lib/core-services/regression-comparison-engine";
+import type { RegressionVerdict } from "@/packages/contracts/runtime/regression-comparison-runtime";
 
 export type VerificationGateType =
   | "unit-tests"
