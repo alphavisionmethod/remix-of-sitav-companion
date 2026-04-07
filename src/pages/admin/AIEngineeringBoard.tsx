@@ -125,6 +125,7 @@ const attentionColor = (severity: string) =>
   "border-border/40 bg-card";
 
 const AIEngineeringBoard = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
 
   const chiefSynthesis = useMemo(() => generateChiefSynthesis({

@@ -85,6 +85,7 @@ const typeColors: Record<string, string> = {
 };
 
 const AIEvidenceBundleComposer = () => {
+  const { isDemoMode } = useDataMode();
   const [selectedMode, setSelectedMode] = useState<ExportMode>("markdown");
   const [selectedItems, setSelectedItems] = useState<string[]>(DEMO_BUNDLE_ITEMS.map(b => b.id));
   const [tab, setTab] = useState("compose");
