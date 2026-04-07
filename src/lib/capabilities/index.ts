@@ -10,3 +10,8 @@ import "./files-capability";
 import "./advisor-capability";
 import "./connector-capability";
 import "./money-capability";
+import "./finance-capabilities";
+import "./business-capabilities";
+import "./concierge-capabilities";
+import "./system-capabilities";
+import "./admin-capabilities";

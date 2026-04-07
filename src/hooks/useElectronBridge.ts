@@ -4,7 +4,23 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback } from "react";
-import type { SystemInfo, DeepLinkPayload, UpdateStatus, ElectronBridgeAPI } from "@/packages/contracts/native/electron-ipc";
+import type { SystemInfo, DeepLinkPayload, UpdateStatus } from "@/packages/contracts/native/electron-ipc";
+
+interface ElectronBridge {
+  getSystemInfo?: () => Promise<SystemInfo>;
+  onDeepLink?: (cb: (payload: DeepLinkPayload) => void) => (() => void) | undefined;
+  onUpdateStatus?: (cb: (status: UpdateState) => void) => (() => void) | undefined;
+  sendNotification?: (title: string, body: string) => void;
+  checkForUpdates?: () => Promise<UpdateStatus>;
+  downloadUpdate?: () => Promise<{ success: boolean; reason?: string }>;
+  installUpdate?: () => void;
+  windowControl?: (action: string) => void;
+  getCrashReports?: () => Promise<unknown[]>;
+  clearCrashReports?: () => Promise<void>;
+  reportRendererError?: (error: { message: string; stack?: string; url?: string }) => void;
+  getAppVersion?: () => Promise<string>;
+  platform?: string;
+}
 
 interface UpdateState {
   checking: boolean;
@@ -14,6 +30,12 @@ interface UpdateState {
   error: string | null;
   info: { version: string; releaseDate?: string; releaseNotes?: string } | null;
   currentVersion: string;
+}
+
+declare global {
+  interface Window {
+    electron?: ElectronBridge;
+  }
 }
 
 function isElectron(): boolean {
@@ -29,17 +51,11 @@ export function useElectronBridge() {
   useEffect(() => {
     if (!electron) return;
 
-    const bridge = window.electron as ElectronBridgeAPI;
+    const bridge = window.electron!;
 
-    // Fetch system info
     bridge.getSystemInfo?.().then(setSystemInfo).catch(() => {});
-
-    // Listen for deep links
     const cleanupDeepLink = bridge.onDeepLink?.((payload) => setDeepLink(payload));
-
-    // Listen for update status
-    const el = window.electron;
-    const cleanupUpdate = el.onUpdateStatus?.((status: UpdateState) => setUpdateState(status));
+    const cleanupUpdate = bridge.onUpdateStatus?.((status: UpdateState) => setUpdateState(status));
 
     return () => {
       cleanupDeepLink?.();
@@ -49,42 +65,42 @@ export function useElectronBridge() {
 
   const sendNotification = useCallback((title: string, body: string) => {
     if (!electron) return;
-    (window.electron as ElectronBridgeAPI).sendNotification(title, body);
+    window.electron!.sendNotification?.(title, body);
   }, [electron]);
 
   const checkForUpdates = useCallback(async (): Promise<UpdateStatus | null> => {
     if (!electron) return null;
-    return (window.electron as ElectronBridgeAPI).checkForUpdates();
+    return window.electron!.checkForUpdates?.() ?? null;
   }, [electron]);
 
   const downloadUpdate = useCallback(async (): Promise<{ success: boolean; reason?: string } | null> => {
     if (!electron) return null;
-    return (window.electron).downloadUpdate();
+    return window.electron!.downloadUpdate?.() ?? null;
   }, [electron]);
 
   const installUpdate = useCallback((): void => {
     if (!electron) return;
-    (window.electron).installUpdate();
+    window.electron!.installUpdate?.();
   }, [electron]);
 
   const windowControl = useCallback((action: "minimize" | "maximize" | "close" | "fullscreen" | "restore") => {
     if (!electron) return;
-    (window.electron as ElectronBridgeAPI).windowControl(action);
+    window.electron!.windowControl?.(action);
   }, [electron]);
 
   const getCrashReports = useCallback(async () => {
     if (!electron) return null;
-    return (window.electron).getCrashReports();
+    return window.electron!.getCrashReports?.() ?? null;
   }, [electron]);
 
   const clearCrashReports = useCallback(async () => {
     if (!electron) return null;
-    return (window.electron).clearCrashReports();
+    return window.electron!.clearCrashReports?.() ?? null;
   }, [electron]);
 
   const reportError = useCallback((error: { message: string; stack?: string; url?: string }) => {
     if (!electron) return;
-    (window.electron).reportRendererError(error);
+    window.electron!.reportRendererError?.(error);
   }, [electron]);
 
   return {
@@ -100,6 +116,6 @@ export function useElectronBridge() {
     getCrashReports,
     clearCrashReports,
     reportError,
-    platform: electron ? (window.electron)?.platform : null,
+    platform: electron ? window.electron?.platform ?? null : null,
   };
 }

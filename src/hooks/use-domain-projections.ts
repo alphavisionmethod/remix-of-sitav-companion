@@ -83,15 +83,28 @@ export function useFinanceProjection() {
         return buildDemoFinance();
       }
 
-      const entries = rawInvoices.map((i: any) => ({
-        id: i.id, type: "inflow" as const, category: "revenue",
-        amount: Math.abs(Number(i.amount) || 0), date: new Date(i.created_at).getTime(),
-        recurring: false, description: i.invoice_number || "Invoice",
-      })).concat(rawBills.map((b: any) => ({
-        id: b.id, type: "outflow" as const, category: b.category || "expense",
-        amount: Math.abs(Number(b.amount) || 0), date: new Date(b.due_date).getTime(),
-        recurring: b.recurring || false, description: b.payee || "Bill",
-      })));
+      interface CashflowEntry {
+        id: string;
+        type: "inflow" | "outflow";
+        category: string;
+        amount: number;
+        date: number;
+        recurring: boolean;
+        description: string;
+      }
+
+      const entries: CashflowEntry[] = [
+        ...rawInvoices.map((i: Record<string, unknown>) => ({
+          id: i.id as string, type: "inflow" as const, category: "revenue",
+          amount: Math.abs(Number(i.amount) || 0), date: new Date(i.created_at as string).getTime(),
+          recurring: false, description: (i.invoice_number as string) || "Invoice",
+        })),
+        ...rawBills.map((b: Record<string, unknown>) => ({
+          id: b.id as string, type: "outflow" as const, category: (b.category as string) || "expense",
+          amount: Math.abs(Number(b.amount) || 0), date: new Date(b.due_date as string).getTime(),
+          recurring: !!(b.recurring), description: (b.payee as string) || "Bill",
+        })),
+      ];
 
       const balance = rawBudgets.reduce((s: number, b: any) => s + ((Number(b.allocated) || 0) - (Number(b.spent) || 0)), 0);
       const now = Date.now();

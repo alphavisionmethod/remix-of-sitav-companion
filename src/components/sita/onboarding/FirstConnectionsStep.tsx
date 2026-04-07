@@ -157,15 +157,15 @@ export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onConnect
     try {
       const { error } = await fromTable("connector_configs").upsert({
         user_id: user.id,
-        connector_id: connector.id,
-        provider: connector.provider,
+        service: connector.id,
         status: "pending_auth",
         config: {
           name: connector.name,
+          provider: connector.provider,
           connected_at: new Date().toISOString(),
           setup_source: "onboarding",
         },
-      }, { onConflict: "user_id,connector_id" });
+      }, { onConflict: "user_id,service" });
 
       if (error) throw error;
 
@@ -174,7 +174,7 @@ export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onConnect
       await fromTable("connector_configs")
         .update({ status: "connected" })
         .eq("user_id", user.id)
-        .eq("connector_id", connector.id);
+        .eq("service", connector.id);
 
       setConnected(prev => {
         const next = new Set([...prev, connector.id]);

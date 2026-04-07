@@ -5,7 +5,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 
 export function useToggleSignalConsent() {
@@ -47,8 +47,8 @@ export function useUpdateReadinessState() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, readinessLevel }: { id: string; readinessLevel: string }) => {
-      const { error } = await fromTable("readiness_states")
-        .update({ readiness_level: readinessLevel, assessed_at: new Date().toISOString() })
+      const { error } = await fromDynamicTable("readiness_states")
+        .update({ readiness_level: readinessLevel })
         .eq("id", id);
       if (error) throw error;
     },

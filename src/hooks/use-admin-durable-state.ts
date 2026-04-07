@@ -23,8 +23,8 @@ async function logOperatorAction(
     action_type: actionType,
     target_table: targetTable,
     target_id: targetId,
-    payload,
-    result,
+    payload: payload as import("@/integrations/supabase/types").Json,
+    result: result as import("@/integrations/supabase/types").Json,
   });
 }
 
@@ -145,7 +145,7 @@ export function usePolicyVersioning() {
   const updatePolicyWithVersion = useMutation({
     mutationFn: async ({ policyId, changes, versionNumber }: { policyId: string; changes: Record<string, unknown>; versionNumber: number }) => {
       // Update the policy
-      const { error } = await fromTable("policies").update(changes).eq("id", policyId);
+      const { error } = await fromTable("policies").update(changes as import("@/integrations/supabase/types").Database["public"]["Tables"]["policies"]["Update"]).eq("id", policyId);
       if (error) throw error;
 
       // Create version record
@@ -153,7 +153,7 @@ export function usePolicyVersioning() {
         user_id: user!.id,
         policy_id: policyId,
         version_number: versionNumber,
-        diff_json: changes,
+        diff_json: changes as import("@/integrations/supabase/types").Json,
         changed_by: user!.id,
       });
 
