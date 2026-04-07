@@ -74,9 +74,59 @@ const POLICIES = [
 
 export default function ConnectorGovernanceCenter() {
   const [tab, setTab] = useState("connectors");
+  const { user } = useAuth();
 
-  const healthy = CONNECTORS.filter(c => c.status === "healthy").length;
-  const issues = CONNECTORS.filter(c => !["healthy"].includes(c.status)).length;
+  // Fetch real connectors from DB, fallback to hardcoded
+  const { data: dbConnectors } = useQuery({
+    queryKey: ["governance-connectors", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data: registry } = await (supabase as any).from("connector_registry").select("*").eq("user_id", user!.id);
+      const { data: accounts } = await (supabase as any).from("connector_accounts").select("*").eq("user_id", user!.id);
+      if ((!registry || registry.length === 0) && (!accounts || accounts.length === 0)) return null;
+      return { registry: registry || [], accounts: accounts || [] };
+    },
+    staleTime: 30000,
+  });
+
+  const activeConnectors = dbConnectors ? CONNECTORS.map(c => {
+    const acc = dbConnectors.accounts.find((a: any) => a.connector_type === c.id);
+    return acc ? { ...c, status: acc.status === "active" ? "healthy" as const : c.status, lastSyncAt: acc.last_sync_at ? new Date(acc.last_sync_at).toLocaleTimeString() : c.lastSyncAt } : c;
+  }) : CONNECTORS;
+
+  const healthy = activeConnectors.filter(c => c.status === "healthy").length;
+  const issues = activeConnectors.filter(c => !["healthy"].includes(c.status)).length;
+
+  const handleDiscover = async () => {
+    try {
+      await supabase.functions.invoke("connector-discover", { body: { action: "scan" } });
+      toast.success("Discovery scan started");
+    } catch {
+      toast.error("Discovery failed");
+    }
+  };
+
+  const handleSyncAll = async () => {
+    try {
+      await supabase.functions.invoke("connector-batch", {
+        body: { action: "submit", operations: activeConnectors.filter(c => c.status !== "disconnected").map(c => ({ type: "sync", connector_type: c.id })) },
+      });
+      toast.success("Sync All triggered");
+    } catch {
+      toast.error("Sync failed");
+    }
+  };
+
+  const handleSyncOne = async (connectorId: string) => {
+    try {
+      await supabase.functions.invoke("connector-batch", {
+        body: { action: "submit", connector_type: connectorId, operations: [{ type: "sync", payload: {} }] },
+      });
+      toast.success(`Sync triggered for ${connectorId}`);
+    } catch {
+      toast.error("Sync failed");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
