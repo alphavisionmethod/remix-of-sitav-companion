@@ -1,7 +1,7 @@
-import { config } from "https://deno.land/std@0.224.0/dotenv/mod.ts";
+import { loadSync } from "https://deno.land/std@0.224.0/dotenv/mod.ts";
 import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
 
-await config({ export: true, allowEmptyValues: true });
+try { loadSync({ export: true, allowEmptyValues: true }); } catch { /* ok */ }
 
 const SUPABASE_URL = Deno.env.get("VITE_SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("VITE_SUPABASE_PUBLISHABLE_KEY")!;
