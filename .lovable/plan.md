@@ -1,119 +1,57 @@
 
 
-# Implement 3 Flagship Loops to 100% — Files + AI, Boardroom, Connected Services
+# Get Connected Services + Sync (67%) and Admin Truth + Recommendation (90%) to 100%
 
-## Database Migration Required
+## Analysis
 
-Create two new tables:
+**Connected Services + Sync (67%)** — Three gaps remain:
+1. **Sync History tab is hardcoded** — `SYNC_HISTORY` array on line 57 of `ConnectorGovernanceCenter.tsx` is static demo data, never queries `audit_logs`
+2. **ConnectorHub.tsx doesn't use edge functions** — has DB queries but no "Sync Now" or "Discover" button wiring to `connector-batch`/`connector-discover`
+3. **No real-time sync status updates** — no polling/refetch after sync triggers
 
-```sql
-CREATE TABLE boardroom_sessions (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-  session_type text DEFAULT 'weekly',
-  title text,
-  started_at timestamptz DEFAULT now(),
-  completed_at timestamptz,
-  slides_data jsonb DEFAULT '[]',
-  summary_text text,
-  confidence_score integer,
-  status text DEFAULT 'active',
-  created_at timestamptz DEFAULT now(),
-  updated_at timestamptz DEFAULT now()
-);
+**Admin Truth + Recommendation (90%)** — Two gaps:
+1. **AIT06 Recommendations lack AI generation** — shows DB-stored recommendations but never calls `brain-core` to generate new ones
+2. **Truth Index lacks "Generate Recommendations" action** — the truth dashboard shows scores but has no button to trigger AI analysis of low-scoring areas and auto-create recommendations
 
-CREATE TABLE boardroom_decisions (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  session_id uuid REFERENCES boardroom_sessions(id) ON DELETE CASCADE NOT NULL,
-  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-  decision_text text NOT NULL,
-  status text DEFAULT 'pending',
-  advisor text,
-  domain text,
-  decided_at timestamptz DEFAULT now(),
-  created_at timestamptz DEFAULT now()
-);
+## Implementation Plan
 
--- RLS + trigger
-ALTER TABLE boardroom_sessions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE boardroom_decisions ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users manage own sessions" ON boardroom_sessions FOR ALL USING (auth.uid() = user_id);
-CREATE POLICY "Users manage own decisions" ON boardroom_decisions FOR ALL USING (auth.uid() = user_id);
-CREATE TRIGGER set_boardroom_sessions_updated_at BEFORE UPDATE ON boardroom_sessions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-```
+### 1. Wire Sync History to `audit_logs` table
+**Edit: `src/pages/admin/ConnectorGovernanceCenter.tsx`**
+- Replace hardcoded `SYNC_HISTORY` array with a `useQuery` that fetches from `audit_logs` where `category = 'connector'` or `action LIKE 'sync%'`
+- Show real connector, time, status, records, duration from the audit log entries
+- Add auto-refetch after sync triggers (invalidate query on sync success)
 
-## Loop 1: Files + AI Assist (72% → 95%)
+### 2. Wire ConnectorHub with edge function actions
+**Edit: `src/pages/ConnectorHub.tsx`**
+- Add "Sync Now" button per connector that calls `connector-batch` edge function
+- Add "Discover" button that calls `connector-discover` edge function
+- Add query invalidation after successful sync
+- Import and embed `ConnectorSyncDashboard` widget for health overview
 
-### FilesOverview.tsx — Add AI + Real Data
-- Import `useAIInsight` from `use-backend-actions` and `useQuery` from tanstack
-- Query `file_metadata` table for real classified files (replace demo array)
-- Add "Analyze" button on each file card calling `brain-core` with `intent: "file_analysis"`
-- Display AI recommendation inline when returned
-- Replace hardcoded KPIs (obligations, linked) with real counts from `file_metadata`
+### 3. Add AI-powered recommendation generation to Admin Truth
+**Edit: `src/pages/admin/AIT04to08Boards.tsx`**
+- In `AIT06Recommendations`: add "Generate AI Recommendations" button that calls `brain-core` with `intent: "generate_recommendations"` and low-scoring truth index data as context
+- On success, insert returned recommendations into `ai_workforce_recommendations` table
+- In `AIT08LaunchTruth`: add "Analyze Gaps" button that calls `brain-core` to produce remediation suggestions for any truth index below 80%
 
-### FilesProcessing.tsx — Real Processing Queue
-- Replace fake `FileIngestionService()` with query to `file_metadata` filtered by status
-- Show actual files in processing vs completed based on `status` column
-
-### FilesSearch.tsx — AI Search Mode
-- Add "AI Search" button calling `brain-core` with `intent: "file_search"` + query text
-
-## Loop 2: Boardroom + Summary + Decision (77% → 95%)
-
-### BoardroomReplay.tsx — Real Data + Persistence
-- Replace `generateWeeklySlides()` hardcoded data with real queries:
-  - Business slide: query `invoices`, `leads`, `opportunities`
-  - Finance slide: call `cashflow-calculate` edge function
-  - Concierge slide: query `household_tasks`, `family_events`
-  - Decisions slide: query `approval_queue`
-- Call `brain-core` for "Advisor Consensus" text per domain
-- Add "Save Session" button writing to `boardroom_sessions`
-- Add decision status toggles writing to `boardroom_decisions`
-
-### BoardroomHistory.tsx — New Page
-- Query `boardroom_sessions` ordered by date
-- Show decision count, confidence score, status per session
-- Click to navigate to replay with session data
-
-### App.tsx — Add Route
-- Add `/boardroom/history` → `BoardroomHistory`
-
-## Loop 3: Connected Services + Sync (67% → 92%)
-
-### ConnectorGovernanceCenter.tsx — Real Connector Data
-- Replace hardcoded `CONNECTORS` array with queries to `connector_registry` + `connector_accounts` + `connector_configs`
-- Add "Discover New" button calling `connector-discover` edge function (scan action)
-- Add "Sync Now" button per connector calling `connector-batch` (submit action)
-- Show real sync history from `audit_logs`
-
-### ConnectorSyncDashboard.tsx — Reusable Widget
-- Shows: last sync time, record counts, error rate, health badge
-- Used in ConnectorGovernanceCenter + Settings integrations
-
-### SettingsPage.tsx (integrations section)
-- Replace static connector list with `connector_registry` + `connector_accounts` query
-- Show real connection status and health
-
-## Files Created
-| File | Lines |
-|------|-------|
-| `src/pages/boardroom/BoardroomHistory.tsx` | ~120 |
-| `src/components/sita/ConnectorSyncDashboard.tsx` | ~80 |
+### 4. Add real-time refetch after sync actions
+**Edit: `src/pages/admin/ConnectorGovernanceCenter.tsx`**
+- Use `useQueryClient().invalidateQueries` on sync success to refresh connector list, sync history, and KPIs
+- Add 5-second polling on sync history tab for live updates
 
 ## Files Modified
 | File | Change |
 |------|--------|
-| `src/pages/files/FilesOverview.tsx` | AI analyze buttons, real file_metadata KPIs |
-| `src/pages/files/FilesProcessing.tsx` | Real processing queue from DB |
-| `src/pages/files/FilesSearch.tsx` | AI search mode |
-| `src/pages/boardroom/BoardroomReplay.tsx` | Real data slides, decision persistence, AI consensus |
-| `src/pages/admin/ConnectorGovernanceCenter.tsx` | Real connector data, discover/sync buttons |
-| `src/pages/SettingsPage.tsx` | Real integrations section |
-| `src/App.tsx` | Add boardroom/history route |
+| `src/pages/admin/ConnectorGovernanceCenter.tsx` | Real sync history from `audit_logs`, query invalidation |
+| `src/pages/ConnectorHub.tsx` | Sync/Discover buttons wired to edge functions, embed SyncDashboard |
+| `src/pages/admin/AIT04to08Boards.tsx` | AI recommendation generation + gap analysis buttons |
+
+## No New Files or Migrations Needed
+All tables (`audit_logs`, `ai_workforce_recommendations`) and edge functions (`connector-batch`, `connector-discover`, `brain-core`) already exist.
 
 ## Result
 | Loop | Before | After |
 |------|--------|-------|
-| Files + AI Assist | 72% | 95%+ |
-| Boardroom + Summary + Decision | 77% | 95%+ |
-| Connected Services + Sync | 67% | 92%+ |
+| Connected Services + Sync | 67% | 95%+ |
+| Admin Truth + Recommendation | 90% | 98%+ |
+
