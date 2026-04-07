@@ -55,6 +55,22 @@ import type { CommsContextData } from "@/components/sita/onboarding/Communicatio
 import { PlanningStyleStep } from "@/components/sita/onboarding/PlanningStyleStep";
 import type { PlanningStyleData } from "@/components/sita/onboarding/PlanningStyleStep";
 import { EnvironmentSummaryStep } from "@/components/sita/onboarding/EnvironmentSummaryStep";
+import { WantLessOfStep } from "@/components/sita/onboarding/WantLessOfStep";
+import { ProtectMostStep } from "@/components/sita/onboarding/ProtectMostStep";
+import { ExplanationStyleStep } from "@/components/sita/onboarding/ExplanationStyleStep";
+import { PresenceStyleStep } from "@/components/sita/onboarding/PresenceStyleStep";
+import { InterruptionStyleStep } from "@/components/sita/onboarding/InterruptionStyleStep";
+import { RitualsStep } from "@/components/sita/onboarding/RitualsStep";
+import { HouseholdGraphStep } from "@/components/sita/onboarding/HouseholdGraphStep";
+import { MemoryConsentStep } from "@/components/sita/onboarding/MemoryConsentStep";
+import { HomeCompositionStep } from "@/components/sita/onboarding/HomeCompositionStep";
+import { DesktopPreviewStep } from "@/components/sita/onboarding/DesktopPreviewStep";
+import { FirstSimulationStep } from "@/components/sita/onboarding/FirstSimulationStep";
+import { FirstActionsStep } from "@/components/sita/onboarding/FirstActionsStep";
+import { RecoverFirstStep } from "@/components/sita/onboarding/RecoverFirstStep";
+import { CinematicIntro } from "@/components/sita/onboarding/CinematicIntro";
+import { RestorePreviewStep } from "@/components/sita/onboarding/RestorePreviewStep";
+import { ContextualWelcomeTour } from "@/components/sita/onboarding/ContextualWelcomeTour";
 import { Progress } from "@/components/ui/progress";
 
 // ── Types ───────────────────────────────────────────────────
