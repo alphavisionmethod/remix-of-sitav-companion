@@ -138,7 +138,8 @@ export default function ConnectorGovernanceCenter() {
             <p className="text-sm text-muted-foreground">Health monitoring, credential governance, staleness policies, and sync history</p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="gap-1.5"><RefreshCw className="w-3.5 h-3.5" />Sync All</Button>
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={handleSyncAll}><RefreshCw className="w-3.5 h-3.5" />Sync All</Button>
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={handleDiscover}><Search className="w-3.5 h-3.5" />Discover</Button>
             <Button size="sm" className="gap-1.5"><Plug className="w-3.5 h-3.5" />Add Connector</Button>
           </div>
         </div>
