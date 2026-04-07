@@ -523,9 +523,9 @@ export function useModelRouting() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["model-routing", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<ModelRoutingData> => {
       if (isDemoMode) return mockModelRouting;
-      return callAdminAPI("model-routing");
+      return callAdminAPI<ModelRoutingData>("model-routing");
     },
     staleTime: isDemoMode ? Infinity : 30000,
   });
