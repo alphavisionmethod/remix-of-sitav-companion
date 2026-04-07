@@ -1412,6 +1412,14 @@ const App = () => (
                      <Route path="/admin/launch/blockers" element={<LAUNCH04BlockerCommand />} />
                      <Route path="/admin/launch/narrative" element={<LAUNCH06NarrativeGuide />} />
                      <Route path="/admin/launch/go-no-go" element={<LAUNCH07GoNoGo />} />
+
+                     {/* Security Command Center */}
+                     <Route path="/admin/security/posture" element={<SEC01PostureExecutive />} />
+                     <Route path="/admin/security/privileged-actions" element={<SEC02PrivilegedActions />} />
+                     <Route path="/admin/security/sensitive-assets" element={<SEC03SensitiveAssets />} />
+                     <Route path="/admin/security/edge-functions" element={<SEC04EdgeFunctionAudit />} />
+                     <Route path="/admin/security/claim-safety" element={<SEC05ClaimSafety />} />
+
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
