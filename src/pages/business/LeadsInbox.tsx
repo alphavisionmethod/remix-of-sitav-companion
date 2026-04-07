@@ -19,6 +19,8 @@ import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
+import { useCRMSync } from "@/hooks/use-backend-actions";
+import { RefreshCw } from "lucide-react";
 
 interface Lead {
   id: string; name: string; company?: string | null; source: string | null; status: string;
