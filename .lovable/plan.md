@@ -1,183 +1,104 @@
 
 
-# Phase 7: Launch Honesty Enforcement, Claim Safety, Truth Score Uplift & Launch Readiness Command Center
+# SITA OS — God-Tier Architecture Integration Plan
 
-## Current State Assessment
+## Current Reality Assessment
 
-SITA already has substantial launch truth infrastructure:
+SITA already has **most of the God-Tier modules in partial or complete form**:
 
-- **Truth Index Aggregator** (`truth-index-aggregator.ts`): Computes 9 truth indices (runtime, launch honesty, AI, connector, demo governance, surface portability, device readiness, observability, security/privacy) from real DB data
-- **Launch Gate Service** (`launch-gate-service.ts`): Feature-level gates with `launch_gates` and `launch_gate_checks` DB tables
-- **Flagship Loop Service** (`flagship-loop-service.ts`): 5 loops with truth_pct, structural/runtime/proof/ux scores, launch_claim_status, next_actions
-- **AIT08 Launch Truth Board**: Shows overall truth score, 6 index cards, contradictions, risk areas, claim classification (launch-safe / qualified / internal-only)
-- **V07 Launch Blocker Board**: Derives blockers from failed verification runs
-- **CJ04 Launch Blocker View**: Journey-based blocker ranking
-- **LaunchBlockerPanel component**: Reusable blocker UI
-- **LaunchHonestyBadge component**: 7 honesty classes with icons/colors
-- **SERV06 Flagship Traceability**: Per-loop trace scores with launch_claim_status badges
+| Proposed Module | Current SITA Equivalent | Status |
+|---|---|---|
+| Brain Core | `src/lib/services/brain-core/` (10 files) + `brain-core` edge function | **Exists — needs elevation** |
+| ConscienceGate | `groundedness-gate/` + `no-hallucination/` types + launch honesty systems | **Partial — needs unification** |
+| ModelRouter | `model-router/` (210 lines, full routing logic) + `ai-gateway` edge function | **Exists — needs formalization** |
+| InferenceEngine | `inference-gateway/` (193 lines) + `ai-gateway` edge function | **Exists — already the canonical inference path** |
+| Mnemosyne | `mnemosyne/` (34 lines, basic memory service) | **Stub — needs real implementation** |
+| Math-OS | `sovereign-calculation/` (formulas, regime, risk, scenario, reserves, receivables) | **Exists — rename only** |
+| Desk / Tool Executor | `executor-service/` + `recommendation-execution/` + `connector-runners/` | **Fragmented — needs consolidation** |
+| Journeys / Autopilot | `operating-autopilot/` + customer journey + workflow-engine | **Exists — needs consolidation** |
+| Event Bus | `event-bus/` (envelope, publish, subscribe) + `event-broker/` | **Exists — dual service needs merge** |
 
-### What's Missing for Phase 7
+**Key finding: SITA does NOT need new modules. It needs consolidation, elevation, and wiring of what already exists.**
 
-1. **No unified Launch Readiness Command Center** — blocker/truth/claim data is scattered across AIT08, V07, CJ04, SERV06
-2. **No Capability Claim Safety Matrix** — no single surface answering "what can we say publicly?"
-3. **No Go/No-Go Decision Board** — no explicit launch-mode recommendation engine
-4. **No Launch Narrative Board** — no safe/qualified/unsafe claim guidance for GTM
-5. **Truth scores are partially hardcoded** — AI truth score returns 100% because all checks default to `true`
-6. **No composite launch readiness score** combining all dimensions
-7. **Flagship loop scores are static seeds** — not dynamically computed from DB evidence
+---
 
-## Implementation Steps
+## Implementation Plan
 
-### Step 1 — Create the Launch Classification & Scoring Engine
+### Phase 1: God-Tier Integration Engine + Admin Board (Immediate)
 
-Create `src/lib/services/launch-readiness/launch-readiness-engine.ts`:
+**File 1: `src/lib/services/architecture/god-tier-integration-engine.ts`** (~600 lines)
 
-- Define `LaunchMode` type: `"internal_only" | "pilot_ready" | "private_beta_ready" | "public_launch_qualified" | "public_launch_ready" | "not_launch_safe"`
-- Define `CapabilityClassification` with: capability key, structural/runtime/proof/ux scores, claim safety (`"safe" | "qualify" | "unsafe"`), launch honesty class, evidence references, blocker count
-- Define 20+ capability families (auth, dashboard, files, AI, boardroom, connectors, notifications, etc.) with static + DB-derived scoring
-- Compute composite launch readiness score from truth indices + flagship loop scores + blocker severity
-- Compute recommended launch mode from blocker analysis + flagship readiness
-- Generate claim safety matrix from capability classifications
-- Generate launch narrative recommendations (safe claims, qualified claims, unsafe claims)
+The definitive integration report as executable data, containing:
 
-### Step 2 — Fix AI Truth Score Inflation
+1. **Module Mapping Matrix** — All 9 proposed modules mapped to current SITA equivalents with `integrate_now | elevate | consolidate | defer | reject` classifications
+2. **Integrate/Defer/Reject/Rename Matrix** — For every proposed concept with strategic value, launch value, complexity cost, sprawl risk, rationale, and exact next step
+3. **Flagship Loop Impact Matrix** — How each God-Tier concept maps to the 5 flagship loops
+4. **Security/Governance Impact Matrix** — Per-module safety, traceability, leakage risk, blast radius assessment
+5. **Complexity vs Leverage Matrix** — Effort vs value for each proposed integration
+6. **Anti-Sprawl Risk Matrix** — Whether each concept reduces or increases sprawl (critical given 160+ service directories)
+7. **Task Type Mapping** — Math/Proof, Tool Execution, Vision/OCR, Draft/Rewrite, Deep Reasoning, Embeddings, On-device — each classified as `immediate | near_term | later | avoid`
+8. **Phased Implementation Plan** — Phase A (immediate high-leverage), Phase B (near-term strengthening), Phase C (advanced intelligence), Phase D (long-term evolution)
+9. **Contract Map Analysis** — Which contracts already exist, which new ones are needed, where contract sprawl would be dangerous
+10. **What to Integrate Now vs What Not to Integrate Yet** — Explicit, opinionated sections
 
-In `truth-index-aggregator.ts`, the `computeAITruthScore()` function defaults all checks to `true`, inflating the score to ~100%. Fix by:
+**Key integration recommendations encoded in the engine:**
+- **Brain Core**: Already canonical. Elevate `orchestrate-intent.ts` as the single intelligence entry point. Do NOT create a second brain.
+- **ConscienceGate**: Rename `groundedness-gate` → formalize as ConscienceGate. Wire it as a pre-response validation step. Merge with existing no-hallucination types.
+- **ModelRouter**: Already complete (210 lines, routing, fallback, health, cost). Just formalize as the canonical model selection layer.
+- **InferenceEngine**: Already exists as `inference-gateway`. Keep as-is. Do NOT create a second inference layer.
+- **Mnemosyne**: Exists as stub. Expand to include file context assembly, profile retrieval, conversation history. Defer advanced embeddings/reranking.
+- **Math-OS**: Rename `sovereign-calculation` → acknowledge as Math-OS. Already has formulas, regime, risk, scenario. No rebuild needed.
+- **Desk**: Consolidate `executor-service` + `recommendation-execution` + `connector-runners` into one Desk concept. Defer autonomous tool execution.
+- **Autopilot**: Consolidate `operating-autopilot` + `workflow-engine`. Defer fully autonomous flows until approval/proof hardened.
+- **Event Bus**: Merge `event-bus` + `event-broker` into single canonical event system. Already has envelopes.
+- **CritiqueLoop**: NEW concept — add as a lightweight post-inference validation step that feeds back to ConscienceGate. Not a full module, just a pattern.
 
-- Check actual row counts (not `|| true` fallback)
-- Check for real `ai_inference_receipts` with `status = 'success'`
-- Check for real `ai_usage_ledger` entries
-- Weight infrastructure existence (~40%) vs runtime proof (~60%)
+**What NOT to integrate yet:**
+- Local/on-device model support (no runtime need)
+- Vision/OCR task routing (no flagship loop needs it now)
+- Advanced LoRA orchestration
+- Multi-agent debate as a runtime system (already has `multi-agent-debate/` directory — leave as-is)
+- Full autonomous autopilot (approval/proof discipline not ready)
 
-### Step 3 — Create LAUNCH01 — Launch Readiness Executive Board
+**File 2: `src/pages/admin/architecture/GodTierIntegrationBoard.tsx`**
 
-Route: `/admin/launch/readiness`
+Admin board (GOD01) displaying:
+- Module mapping with current SITA equivalents
+- Integrate/Defer/Reject classification with rationale
+- Flagship loop impact view
+- Anti-sprawl risk assessment
+- Phased implementation timeline
+- Security/governance impact per module
+- Missing-to-safe-integration matrix
 
-Shows:
-- Composite readiness score (large, prominent)
-- Recommended launch mode badge
-- Hard blockers / soft blockers / claim risks counts
-- Flagship loop readiness cards (5 loops, each with scores + classification)
-- Truth index summary (9 indices from aggregator)
-- Last computed timestamp
-- "Refresh Analysis" button
+### Phase 2: Route Wiring
 
-### Step 4 — Create LAUNCH02 — Flagship Loop Readiness Board
+**File 3: `src/App.tsx`** — Add lazy import and route for `/admin/architecture/god-tier-integration`
 
-Route: `/admin/launch/flagship-loops`
-
-Shows per-loop:
-- 4 dimension scores (structural, runtime, proof, UX) with progress bars
-- Launch classification badge
-- Blocker list with severity
-- Claim safety state
-- Next critical fix actions
-- Evidence references
-
-### Step 5 — Create LAUNCH03 — Capability Claim Safety Matrix
-
-Route: `/admin/launch/claim-safety`
-
-Table/grid showing 20+ capabilities:
-- Capability name and domain
-- Current classification (live_verified / partial / blocked / planned)
-- Safe to claim? / Qualify carefully? / Not safe to claim?
-- Evidence strength indicator
-- Notes column
-- Filterable by domain/safety level
-
-### Step 6 — Create LAUNCH04 — Blocker Command Board
-
-Route: `/admin/launch/blockers`
-
-Shows all blockers ranked by severity and launch impact:
-- Blocker ID, title, severity, domain
-- Flagship loop impact
-- Evidence/source
-- Recommended fix
-- Expected score uplift if resolved
-- Owner assignment
-
-Data sourced from: `FLAGSHIP_LOOP_SEEDS.launch_blockers`, verification run failures, journey blockers, and the new engine's analysis.
-
-### Step 7 — Create LAUNCH06 — Launch Narrative & Claim Guide
-
-Route: `/admin/launch/narrative`
-
-Three sections:
-- **Safe to Say**: Claims backed by runtime + proof evidence
-- **Qualify Carefully**: Claims that need caveats (e.g., "web push only", "Google Drive only")
-- **Do Not Claim**: Features that are planned/blocked/internal-only
-
-Plus launch-mode-specific narrative templates:
-- Pilot narrative constraints
-- Private beta narrative constraints
-- Public launch narrative constraints
-
-### Step 8 — Create LAUNCH07 — Go/No-Go Decision Board
-
-Route: `/admin/launch/go-no-go`
-
-Shows:
-- Current recommendation with rationale
-- Required conditions for each launch mode (checklist)
-- Blockers preventing upgrade to next mode
-- Readiness by dimension (radar/grid)
-- Last review timestamp
-- Sign-off placeholder
-
-### Step 9 — Wire Routes and Navigation
-
-Add all 7 LAUNCH routes to `App.tsx`. Add `data-testid` attributes to all boards.
+---
 
 ## Technical Details
 
-### Scoring Formula
-```
-compositeScore = avg(
-  truthIndices.overallScore,          // from truth-index-aggregator
-  flagshipAvg,                         // avg of 5 loop truth_pct values
-  100 - (hardBlockerCount * 15),       // penalty per hard blocker
-  claimSafetyPct                       // % of capabilities that are claim-safe
-)
+### Files Created/Modified
 
-launchMode = 
-  compositeScore >= 85 && hardBlockers == 0 → "public_launch_ready"
-  compositeScore >= 75 && hardBlockers == 0 → "public_launch_qualified"
-  compositeScore >= 60 && hardBlockers <= 2 → "private_beta_ready"
-  compositeScore >= 45 → "pilot_ready"
-  compositeScore >= 25 → "internal_only"
-  else → "not_launch_safe"
-```
-
-### Files Created
-| File | Purpose |
-|------|---------|
-| `src/lib/services/launch-readiness/launch-readiness-engine.ts` | Classification model, scoring, claim safety, narrative generation |
-| `src/pages/admin/launch/LAUNCH01ReadinessExecutive.tsx` | Executive command center |
-| `src/pages/admin/launch/LAUNCH02FlagshipReadiness.tsx` | Per-loop readiness detail |
-| `src/pages/admin/launch/LAUNCH03ClaimSafetyMatrix.tsx` | Capability claim safety grid |
-| `src/pages/admin/launch/LAUNCH04BlockerCommand.tsx` | Ranked blocker board |
-| `src/pages/admin/launch/LAUNCH06NarrativeGuide.tsx` | GTM-safe claim guidance |
-| `src/pages/admin/launch/LAUNCH07GoNoGo.tsx` | Final decision board |
-
-### Files Modified
-| File | Change |
-|------|---------|
-| `src/lib/services/truth-indices/truth-index-aggregator.ts` | Fix AI truth score inflation |
-| `src/App.tsx` | Add 6 LAUNCH routes |
+| File | Action | Lines |
+|---|---|---|
+| `src/lib/services/architecture/god-tier-integration-engine.ts` | CREATE | ~600 |
+| `src/pages/admin/architecture/GodTierIntegrationBoard.tsx` | CREATE | ~350 |
+| `src/App.tsx` | MODIFY | +4 lines (lazy import + route) |
 
 ### No Database Changes Required
-All data derives from existing tables (`launch_gates`, `launch_gate_checks`, `journey_verification_runs`, `ai_usage_ledger`, `ai_inference_receipts`, `notification_delivery_receipts`, `device_push_tokens`, `connector_oauth_flows`, `connector_sync_jobs`) plus static registry data.
+All data is static architecture analysis in TypeScript.
 
-## Success Criteria
-1. Composite launch readiness score computed from real evidence
-2. AI truth score no longer inflated to 100%
-3. 20+ capabilities classified with claim safety
-4. 5 flagship loops have final readiness states
-5. Blockers ranked by severity and launch impact
-6. Launch mode recommendation generated automatically
-7. Narrative guide distinguishes safe/qualified/unsafe claims
-8. Go/No-Go board provides defensible decision framework
-9. All boards have `data-testid` attributes
+### Success Criteria
+1. All 9 proposed modules mapped to current SITA equivalents
+2. Integrate/Defer/Reject matrix with rationale for every concept
+3. 5 flagship loops mapped with God-Tier component impact
+4. Anti-sprawl risk explicitly assessed for each module
+5. Phased implementation plan (A/B/C/D) with clear boundaries
+6. Task type mapping with maturity classification
+7. Contract map analysis identifying existing vs needed contracts
+8. Security/governance impact per module
+9. Admin board with `data-testid` attributes
+10. 0 TypeScript errors
 
