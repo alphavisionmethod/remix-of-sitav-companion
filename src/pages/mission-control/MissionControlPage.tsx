@@ -727,7 +727,7 @@ function MCTrust() {
   const lastAudit = tc?.lastAudit ? new Date(tc.lastAudit).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "1h ago";
 
   const runSim = () => {
-    const gov = new GovernanceSimulatorService();
+    const result = gov.runComplianceAudit([
     const result = gov.runComplianceAudit([
       { domain: "finance", capabilityId: "finance.transfer", riskTier: "high", amount: 8000 },
       { domain: "finance", capabilityId: "finance.budget.update", riskTier: "medium", amount: 500 },
