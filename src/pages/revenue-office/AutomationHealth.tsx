@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const healthMetrics = [
   { label: "Overall Health", value: 94, target: 95, color: "text-emerald-400", icon: Activity },
@@ -51,6 +52,7 @@ const statusIcon = { healthy: CheckCircle, warning: AlertTriangle, error: XCircl
 const statusColor = { healthy: "text-emerald-400", warning: "text-amber-400", error: "text-red-400", underperforming: "text-blue-400" };
 
 export default function AutomationHealth() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
 
   return (

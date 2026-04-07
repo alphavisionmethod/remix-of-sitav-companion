@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Theater, AlertTriangle, CheckCircle, Users, TrendingUp, Shield, Zap, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const pendingDecisions = [
   {
@@ -33,6 +34,7 @@ const pendingDecisions = [
 ];
 
 export default function DecisionTheater() {
+  const { isDemoMode } = useDataMode();
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />

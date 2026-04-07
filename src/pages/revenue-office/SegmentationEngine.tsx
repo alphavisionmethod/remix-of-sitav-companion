@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SEGMENTS = [
   { id: "s1", name: "High-Value Clients", type: "dynamic", contacts: 34, revenue: "$284,000", criteria: ["LTV > $5,000", "Active in last 30d"], color: "border-l-emerald-400", growth: "+3 this month" },
@@ -42,6 +43,7 @@ const TOP_LEADS = [
 ];
 
 export default function SegmentationEngine() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("segments");
 
   return (

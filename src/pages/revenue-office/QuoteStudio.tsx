@@ -10,6 +10,7 @@ import {
   Star, Shield, Target, RefreshCw, Zap, BarChart3, XCircle
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const quoteStats = [
   { label: "Active Quotes", value: "18", delta: "+4 this week", icon: FileText, color: "text-blue-400" },
@@ -53,6 +54,7 @@ const pricingInsights = [
 ];
 
 export default function QuoteStudio() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("pipeline");
 
   return (

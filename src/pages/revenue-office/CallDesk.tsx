@@ -10,6 +10,7 @@ import {
   Star, Mail, Zap, Eye, Shield, BarChart3, RefreshCw
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const callStats = [
   { label: "Calls Today", value: "8", delta: "3 completed, 5 remaining", icon: Phone, color: "text-blue-400" },
@@ -49,6 +50,7 @@ const callAnalytics = [
 const priorityColors: Record<string, string> = { critical: "bg-red-500/10 text-red-400", high: "bg-amber-500/10 text-amber-400", medium: "bg-blue-500/10 text-blue-400", low: "bg-muted text-muted-foreground" };
 
 export default function CallDesk() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("queue");
 
   return (

@@ -9,6 +9,7 @@ import {
   Clock, CheckCircle, Brain, Package, DollarSign, AlertTriangle, Workflow
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const templates = [
   { name: "Stale Lead Recovery (48hr)", desc: "Detect leads with no next step for 48hrs. Enrich with CRM data, send personalized email, assign callback task, follow up via SMS if no response, escalate high-value leads.", category: "Lead Recovery", popularity: 94, icon: Users, steps: 8, trustLevel: "L3", impact: "$8,200/mo recovered", difficulty: "Easy", timeToSetup: "5 min", advisorNote: "CRM Advisor: Most impactful first automation for service businesses" },
@@ -31,6 +32,7 @@ const templates = [
 const categories = ["All", "Lead Recovery", "Sales", "Booking", "Reputation", "Onboarding", "Nurture", "Retention", "Growth", "Operations", "Revenue"];
 
 export default function AutomationTemplates() {
+  const { isDemoMode } = useDataMode();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const filtered = selectedCategory === "All" ? templates : templates.filter(t => t.category === selectedCategory);
 

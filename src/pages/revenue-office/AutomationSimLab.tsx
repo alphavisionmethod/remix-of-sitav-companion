@@ -10,6 +10,7 @@ import {
   ArrowDown, Zap, Target, XCircle, RefreshCw
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const simulation = {
   name: "Stale Lead Recovery (48hr Advanced)",
@@ -81,6 +82,7 @@ const simulation = {
 };
 
 export default function AutomationSimLab() {
+  const { isDemoMode } = useDataMode();
   const [activeTab, setActiveTab] = useState("overview");
 
   return (

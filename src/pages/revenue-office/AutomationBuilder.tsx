@@ -10,6 +10,7 @@ import {
   Package, Send, ArrowRight, Layers, DollarSign
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const sampleNodes = [
   { id: 1, type: "trigger", label: "Lead enters 'Stale' status (>48hrs no contact)", icon: Zap, color: "bg-amber-500/10 border-amber-500/30 text-amber-400", config: { event: "lead.status_changed", condition: "stale_48h" } },
@@ -61,6 +62,7 @@ const nodeTypes = [
 ];
 
 export default function AutomationBuilder() {
+  const { isDemoMode } = useDataMode();
   const [trustLevel, setTrustLevel] = useState("draft_review");
 
   return (

@@ -8,6 +8,7 @@ import {
   CheckCircle, XCircle, Eye
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const policies = [
   { category: "Email & SMS Sending", icon: Mail, rules: [
@@ -85,6 +86,7 @@ const humanVsAI = [
 ];
 
 export default function AutomationPolicy() {
+  const { isDemoMode } = useDataMode();
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />

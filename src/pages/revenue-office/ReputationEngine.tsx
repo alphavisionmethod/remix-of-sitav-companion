@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const STATS = [
   { label: "Average Rating", value: "4.8", icon: Star, trend: "+0.1", color: "text-amber-400" },
@@ -55,6 +56,7 @@ const TESTIMONIALS = [
 ];
 
 export default function ReputationEngine() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("reviews");
 
   return (
