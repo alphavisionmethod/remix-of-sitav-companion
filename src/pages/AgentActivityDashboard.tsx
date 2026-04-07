@@ -255,6 +255,7 @@ export default function AgentActivityDashboard() {
   // Wire fleet live data + CAI graph for agent orchestration
   const fleetLive = useAgentFleetLive();
   const graphNodes = useGraphNodes();
+  return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
