@@ -19,8 +19,9 @@ import { ShellLayout } from "@/components/sita/ShellLayout";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { RouteErrorBoundary } from "@/components/sita/RouteErrorBoundary";
 import { createQueryClient } from "@/lib/query-config";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, type ReactNode } from "react";
 import { PlatformInit } from "@/components/sita/PlatformInit";
+import { PublicLayout } from "@/components/sita/PublicLayout";
 
 // ═══════════════════════════════════════════════════
 // CODE-SPLIT: Lazy-load all page components
