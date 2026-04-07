@@ -10,7 +10,8 @@ import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/Si
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/admin";
-import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
+import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
+import type { SimulationResult } from "@/lib/core-services/governance-simulator";
 import {
   Shield, Play, AlertTriangle, CheckCircle, ChevronRight,
   DollarSign, Wifi, Users, Zap, Lock, Eye, RotateCcw, Package,

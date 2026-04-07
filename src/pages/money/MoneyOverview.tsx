@@ -42,19 +42,18 @@ const MoneyOverview = () => {
 
   const hasLiveData = isDemoMode || bills.length > 0 || subscriptions.length > 0 || invoices.length > 0 || accounts.length > 0;
 
+  const sentinel = useFraudSentinel();
+
   const fraudSummary = useMemo<FraudSummary>(() => {
-    const sentinel = new FraudSentinelService();
     sentinel.evaluate({ userId: "demo", timestamp: Date.now(), amount: 28000, isNewRecipient: true, method: "wire", recentTransactionCount: 5, recentTotalAmount: 35000 });
     sentinel.evaluate({ userId: "demo", timestamp: Date.now(), amount: 500, method: "ach", recentTransactionCount: 2, recentTotalAmount: 1000 });
     sentinel.evaluate({ userId: "demo", timestamp: Date.now(), amount: 12000, isNewRecipient: false, method: "ach", recentTransactionCount: 1, recentTotalAmount: 12000 });
     return sentinel.getSummary();
-  }, []);
+  }, [sentinel]);
 
   const activeSignals = useMemo(() => {
-    const sentinel = new FraudSentinelService();
-    sentinel.evaluate({ userId: "demo", timestamp: Date.now(), amount: 28000, isNewRecipient: true, method: "wire", recentTransactionCount: 5, recentTotalAmount: 35000 });
     return sentinel.getActiveSignals();
-  }, []);
+  }, [sentinel]);
 
   // Upcoming bills from DB (next 7 days)
   const upcomingBills = useMemo(() => {

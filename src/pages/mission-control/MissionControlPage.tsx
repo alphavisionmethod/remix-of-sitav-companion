@@ -79,11 +79,12 @@ function SystemPulseHero() {
   const stuckWorkflows = mockStuckWorkflows.length;
   const totalTokens = mockInternalAgents.reduce((s, a) => s + a.costTokens24h, 0);
 
+  const sentinel = useFraudSentinel();
+
   const fraudSentinel = useMemo(() => {
-    const s = new FraudSentinelService();
-    s.evaluate({ userId: "demo", timestamp: Date.now(), amount: 28000, isNewRecipient: true, method: "wire", recentTransactionCount: 5, recentTotalAmount: 35000 });
-    return s.getSummary();
-  }, []);
+    sentinel.evaluate({ userId: "demo", timestamp: Date.now(), amount: 28000, isNewRecipient: true, method: "wire", recentTransactionCount: 5, recentTotalAmount: 35000 });
+    return sentinel.getSummary();
+  }, [sentinel]);
 
   const systemScore = Math.round(
     ((healthyAgents / totalAgents) * 40) +

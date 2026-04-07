@@ -5,7 +5,8 @@
 
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
+import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
+import type { SimulationResult } from "@/lib/core-services/governance-simulator";
 import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";

@@ -7,7 +7,8 @@ import {
   HeartCrack, Baby, Briefcase, MapPin, Gift, Accessibility,
   TrendingDown, BarChart3, ChevronRight
 } from "lucide-react";
-import { LifeShockSimulator, type ShockType, type ShockImpactReport } from "@/lib/services/life-simulation";
+import { useLifeSimulator } from "@/contexts/SitaKernelContext";
+import type { ShockType, ShockImpactReport } from "@/lib/services/life-simulation";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
