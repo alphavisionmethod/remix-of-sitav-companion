@@ -4,10 +4,11 @@ import { KPITile, CustomerRow, EmptyState, SitaTabs, AdvisorCard, TimelineItem, 
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAction } from "@/lib/hooks/useAction";
 import { toast } from "sonner";
 import {
   Search, Plus, Phone, Mail, Clock, User, Filter, Sparkles, CheckCircle, FileText, Calendar,
