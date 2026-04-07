@@ -83,7 +83,7 @@ export default function ISA07AuthConnectorTruthBoard() {
     return acc;
   }, {});
 
-  Object.entries(clientsByFamily).forEach(([fam, clients]) => {
+  Object.entries(clientsByFamily).forEach(([fam, clients]: [string, any[]]) => {
     const purposes = clients.map((c: any) => c.client_purpose);
     const hasIdentity = purposes.some((p: string) => p?.startsWith("identity"));
     const hasConnector = purposes.some((p: string) => p?.startsWith("connector"));
