@@ -90,6 +90,7 @@ const ChoiceGroup = ({ label, options, value, onChange }: {
 );
 
 const SettingsPage = () => {
+  const gov = useGovernanceSimulator();
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
   const { isLoading, toggleDemoMode } = useDemoMode();
