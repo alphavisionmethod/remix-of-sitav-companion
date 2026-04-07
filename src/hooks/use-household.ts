@@ -1,11 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-
-// Tables not yet created — use untyped client to avoid TS errors
-const db: any = supabase;
-
 export function useHouseholds() {
   const { user } = useAuth();
   return useQuery({
@@ -59,7 +56,7 @@ export function useCreateHousehold() {
   const { user } = useAuth();
   return useMutation({
     mutationFn: async (data: { name: string; type: string }) => {
-      const { error } = await db.from("households").insert({ ...data, owner_id: user!.id });
+      const { error } = await fromTable("households").insert({ ...data, owner_id: user!.id });
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["households"] }); toast.success("Household created"); },
@@ -71,7 +68,7 @@ export function useAddHouseholdMember() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (data: { household_id: string; display_name: string; role: string }) => {
-      const { error } = await db.from("household_members").insert(data);
+      const { error } = await fromTable("household_members").insert(data);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["household_members"] }); toast.success("Member added"); },
@@ -83,7 +80,7 @@ export function useDeleteHouseholdMember() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await db.from("household_members").delete().eq("id", id);
+      const { error } = await fromTable("household_members").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["household_members"] }); toast.success("Member removed"); },

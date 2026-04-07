@@ -5,7 +5,7 @@ import { KPITile } from "@/components/sita/SitaComponents";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-const db: any = supabase;
+import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery } from "@tanstack/react-query";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { generateCalendarDemoEvents } from "@/lib/mock-data/calendar";
@@ -39,8 +39,8 @@ function useCalendarData(year: number, month: number) {
       const endDate = `${year}-${String(month + 2 > 12 ? 1 : month + 2).padStart(2, "0")}-01`;
 
       const [{ data: bookings }, { data: tasks }] = await Promise.all([
-        db.from("bookings").select("id, title, date, status, provider, type").eq("user_id", user.id).gte("date", startDate).lt("date", endDate),
-        db.from("tasks").select("id, title, due_date, status").eq("user_id", user.id).not("due_date", "is", null).gte("due_date", startDate).lt("due_date", endDate),
+        fromTable("bookings").select("id, title, date, status, provider, type").eq("user_id", user.id).gte("date", startDate).lt("date", endDate),
+        fromTable("tasks").select("id, title, due_date, status").eq("user_id", user.id).not("due_date", "is", null).gte("due_date", startDate).lt("due_date", endDate),
       ]);
 
       const events: CalendarEvent[] = [

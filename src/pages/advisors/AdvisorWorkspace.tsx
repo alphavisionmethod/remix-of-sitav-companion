@@ -6,6 +6,7 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useApprovalQueue } from "@/hooks/use-brain-core";
@@ -435,13 +436,11 @@ const ApprovalQueue = () => {
 const MemoryTransparency = () => {
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
-  const db: any = supabase;
-
   const { data: dbMemory = [] } = useQuery({
     queryKey: ["advisor-memory", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await db.from("user_memory").select("*").order("created_at", { ascending: false }).limit(20);
+      const { data } = await fromTable("user_memory").select("*").order("created_at", { ascending: false }).limit(20);
       return data || [];
     },
   });

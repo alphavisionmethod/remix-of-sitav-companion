@@ -4,7 +4,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db: any = supabase;
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   Sparkles, DollarSign, Users, Clock, Briefcase, TrendingUp,
@@ -21,7 +21,7 @@ const OpportunityEngine = () => {
     queryKey: ["opportunities", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("opportunities").select("*").order("created_at", { ascending: false });
+      const { data, error } = await fromTable("opportunities").select("*").order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -31,7 +31,7 @@ const OpportunityEngine = () => {
     queryKey: ["stale_leads", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("leads").select("*").eq("stale_risk", true).order("last_contact_at");
+      const { data, error } = await fromTable("leads").select("*").eq("stale_risk", true).order("last_contact_at");
       if (error) throw error;
       return data;
     },
@@ -41,7 +41,7 @@ const OpportunityEngine = () => {
     queryKey: ["overdue_invoices", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("invoices").select("*").eq("status", "overdue").order("aging_days", { ascending: false });
+      const { data, error } = await fromTable("invoices").select("*").eq("status", "overdue").order("aging_days", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -51,7 +51,7 @@ const OpportunityEngine = () => {
     queryKey: ["underused_subs", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("subscriptions").select("*").lt("usage_score", 30).eq("status", "active");
+      const { data, error } = await fromTable("subscriptions").select("*").lt("usage_score", 30).eq("status", "active");
       if (error) throw error;
       return data;
     },

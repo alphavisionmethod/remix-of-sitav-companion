@@ -5,7 +5,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db: any = supabase;
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -55,7 +55,7 @@ const RecoveryCenter = () => {
     queryKey: ["recovery_incidents", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("incidents").select("*").order("created_at", { ascending: false });
+      const { data, error } = await fromTable("incidents").select("*").order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -66,7 +66,7 @@ const RecoveryCenter = () => {
     queryKey: ["recovery_steps", selectedId],
     enabled: !!selectedId,
     queryFn: async () => {
-      const { data, error } = await db.from("workflow_steps").select("*").eq("run_id", selectedId!).order("step_index");
+      const { data, error } = await fromTable("workflow_steps").select("*").eq("run_id", selectedId!).order("step_index");
       if (error) throw error;
       return data;
     },

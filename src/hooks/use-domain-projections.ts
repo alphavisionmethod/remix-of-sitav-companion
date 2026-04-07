@@ -5,6 +5,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { analyzeCashflow, assessBudgetHealth, assessReserves, analyzeInvoiceAging, assessFinancialHealth, analyzeBillCalendar } from "@/lib/domain-engines/finance-os";
@@ -22,9 +23,6 @@ import {
 import type { CashflowAnalysis, BudgetHealthResult, ReserveAssessment, InvoiceAgingResult, FinancialHealthResult, BillCalendarResult } from "@/lib/domain-engines/finance-os";
 import type { BusinessHealthResult, PipelineAnalysis, LeadScoreResult } from "@/lib/domain-engines/business-os";
 import type { TaskPrioritization } from "@/lib/domain-engines/concierge-os";
-
-const db: any = supabase;
-
 // ── Finance Projection ──────────────────────────────────────
 export interface FinanceProjection {
   cashflow: CashflowAnalysis;
@@ -70,10 +68,10 @@ export function useFinanceProjection() {
       if (isDemoMode) return buildDemoFinance();
 
       const [invoiceRes, billRes, budgetRes, allocRes] = await Promise.all([
-        db.from("invoices").select("*").limit(200),
-        db.from("bills").select("*").limit(200),
-        db.from("budgets").select("*").limit(100),
-        db.from("capital_allocations").select("*").limit(50),
+        fromTable("invoices").select("*").limit(200),
+        fromTable("bills").select("*").limit(200),
+        fromTable("budgets").select("*").limit(100),
+        fromTable("capital_allocations").select("*").limit(50),
       ]);
 
       const rawInvoices = invoiceRes.data || [];
@@ -175,9 +173,9 @@ export function useBusinessProjection() {
       if (isDemoMode) return buildDemoBusiness();
 
       const [leadRes, custRes, oppRes] = await Promise.all([
-        db.from("leads").select("*").limit(200),
-        db.from("customers").select("*").limit(200),
-        db.from("opportunities").select("*").limit(200),
+        fromTable("leads").select("*").limit(200),
+        fromTable("customers").select("*").limit(200),
+        fromTable("opportunities").select("*").limit(200),
       ]);
 
       const rawLeads = leadRes.data || [];
@@ -244,7 +242,7 @@ export function useConciergeProjection() {
         return { taskPrioritization: prioritizeTasks(tasks), lastUpdated: new Date().toISOString() };
       }
 
-      const { data } = await db.from("household_tasks").select("*").limit(200);
+      const { data } = await fromTable("household_tasks").select("*").limit(200);
       if (!data?.length) {
         const tasks = adaptMockHouseholdTasks(mockHouseholdTasks);
         return { taskPrioritization: prioritizeTasks(tasks), lastUpdated: new Date().toISOString() };

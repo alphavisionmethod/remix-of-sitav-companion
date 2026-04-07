@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-const db: any = supabase;
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -167,9 +166,9 @@ export function useCashFlow() {
 
       // Fallback: compute from real invoices + bills
       const [invoiceRes, billRes, budgetRes] = await Promise.all([
-        db.from("invoices").select("amount, status").limit(200),
-        db.from("bills").select("amount, status, due_date").limit(200),
-        db.from("budgets").select("allocated, spent, category").limit(50),
+        fromTable("invoices").select("amount, status").limit(200),
+        fromTable("bills").select("amount, status, due_date").limit(200),
+        fromTable("budgets").select("allocated, spent, category").limit(50),
       ]);
       const invoices = invoiceRes.data || [];
       const bills = billRes.data || [];
@@ -236,7 +235,7 @@ export function useOpportunityInsights() {
     queryFn: async () => {
       if (isDemoMode) return mockOpportunityInsights;
       if (!user) return [];
-      const { data, error } = await db.from("opportunities").select("*").order("created_at", { ascending: false }).limit(20);
+      const { data, error } = await fromTable("opportunities").select("*").order("created_at", { ascending: false }).limit(20);
       if (error || !data?.length) return mockOpportunityInsights;
       return data.map((o: any) => ({
         id: o.id,
@@ -315,7 +314,7 @@ export function useAITeam() {
     queryFn: async () => {
       if (isDemoMode) return mockAITeam;
       if (!user) return [];
-      const { data } = await db.from("advisor_registry").select("*").limit(20);
+      const { data } = await fromTable("advisor_registry").select("*").limit(20);
       return data?.length ? data : [];
     },
   });
@@ -333,7 +332,7 @@ export function useCosts() {
     queryFn: async () => {
       if (isDemoMode) return mockCosts;
       if (!user) return mockCosts;
-      const { data } = await db.from("ai_cost_ledger").select("*").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("ai_cost_ledger").select("*").order("created_at", { ascending: false }).limit(50);
       if (!data?.length) return mockCosts;
       const totalCents = data.reduce((s: number, d: any) => s + (d.cost_cents || 0), 0);
       return {

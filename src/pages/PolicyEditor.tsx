@@ -4,7 +4,7 @@ import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents"
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db: any = supabase;
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -30,7 +30,7 @@ const PolicyEditor = () => {
     queryKey: ["policies", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("policies").select("*").order("created_at", { ascending: false });
+      const { data, error } = await fromTable("policies").select("*").order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -38,7 +38,7 @@ const PolicyEditor = () => {
 
   const createPolicy = useMutation({
     mutationFn: async () => {
-      const { error } = await db.from("policies").insert({
+      const { error } = await fromTable("policies").insert({
         user_id: user!.id,
         name: newName,
         category: newCategory,
@@ -54,7 +54,7 @@ const PolicyEditor = () => {
 
   const togglePolicy = useMutation({
     mutationFn: async ({ id, active }: { id: string; active: boolean }) => {
-      const { error } = await db.from("policies").update({ active }).eq("id", id);
+      const { error } = await fromTable("policies").update({ active }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["policies"] }); },
@@ -62,7 +62,7 @@ const PolicyEditor = () => {
 
   const deletePolicy = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await db.from("policies").delete().eq("id", id);
+      const { error } = await fromTable("policies").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["policies"] }); toast.success("Policy deleted"); setSelectedId(null); },

@@ -4,7 +4,7 @@ import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db: any = supabase;
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -28,7 +28,7 @@ const ConnectorHub = () => {
     queryKey: ["connector_configs", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("connector_configs").select("*").order("created_at");
+      const { data, error } = await fromTable("connector_configs").select("*").order("created_at");
       if (error) throw error;
       return data;
     },
@@ -39,7 +39,7 @@ const ConnectorHub = () => {
     queryKey: ["real-connector-accounts", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data } = await db.from("connector_accounts").select("*").order("created_at");
+      const { data } = await fromTable("connector_accounts").select("*").order("created_at");
       return data || [];
     },
   });
@@ -49,7 +49,7 @@ const ConnectorHub = () => {
     queryKey: ["connector-registry-hub", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data } = await db.from("connector_registry").select("*").eq("connector_class", "real").order("display_name");
+      const { data } = await fromTable("connector_registry").select("*").eq("connector_class", "real").order("display_name");
       return data || [];
     },
   });
@@ -67,7 +67,7 @@ const ConnectorHub = () => {
     queryKey: ["connector_credentials", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("connector_credentials").select("*").order("created_at");
+      const { data, error } = await fromTable("connector_credentials").select("*").order("created_at");
       if (error) throw error;
       return data;
     },
@@ -77,7 +77,7 @@ const ConnectorHub = () => {
     queryKey: ["sync_logs", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("sync_logs").select("*").order("synced_at", { ascending: false }).limit(50);
+      const { data, error } = await fromTable("sync_logs").select("*").order("synced_at", { ascending: false }).limit(50);
       if (error) throw error;
       return data;
     },

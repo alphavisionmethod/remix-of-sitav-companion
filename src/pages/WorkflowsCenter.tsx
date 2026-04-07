@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-const db: any = supabase;
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { Workflow, CheckCircle2, Clock, AlertTriangle, ChevronRight, Eye, RotateCcw, Shield, Plus, Trash2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -43,7 +43,7 @@ const WorkflowsCenter = () => {
     queryKey: ["workflow_runs", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("workflow_runs").select("*, workflows(name, trigger_event)").order("created_at", { ascending: false });
+      const { data, error } = await fromTable("workflow_runs").select("*, workflows(name, trigger_event)").order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -56,7 +56,7 @@ const WorkflowsCenter = () => {
     queryKey: ["workflow_steps", selectedId],
     enabled: !!selectedId,
     queryFn: async () => {
-      const { data, error } = await db.from("workflow_steps").select("*").eq("run_id", selectedId!).order("step_index");
+      const { data, error } = await fromTable("workflow_steps").select("*").eq("run_id", selectedId!).order("step_index");
       if (error) throw error;
       return data;
     },
@@ -64,10 +64,10 @@ const WorkflowsCenter = () => {
 
   const createWorkflow = useMutation({
     mutationFn: async () => {
-      const { data: wf, error: wfErr } = await db.from("workflows").insert({ user_id: user!.id, name: newName, trigger_event: newTrigger, active: true, steps: [] }).select().single();
+      const { data: wf, error: wfErr } = await fromTable("workflows").insert({ user_id: user!.id, name: newName, trigger_event: newTrigger, active: true, steps: [] }).select().single();
       if (wfErr) throw wfErr;
       // Create initial run
-      const { error: runErr } = await db.from("workflow_runs").insert({ user_id: user!.id, workflow_id: wf.id, status: "pending", current_step: 0 });
+      const { error: runErr } = await fromTable("workflow_runs").insert({ user_id: user!.id, workflow_id: wf.id, status: "pending", current_step: 0 });
       if (runErr) throw runErr;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["workflow_runs"] }); toast.success("Workflow created"); setShowCreate(false); setNewName(""); },
@@ -76,7 +76,7 @@ const WorkflowsCenter = () => {
 
   const deleteRun = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await db.from("workflow_runs").delete().eq("id", id);
+      const { error } = await fromTable("workflow_runs").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["workflow_runs"] }); setSelectedId(null); toast.success("Run deleted"); },

@@ -10,7 +10,6 @@ import { StateBadge } from "@/components/sita/StateBadge";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { motion, AnimatePresence } from "framer-motion";

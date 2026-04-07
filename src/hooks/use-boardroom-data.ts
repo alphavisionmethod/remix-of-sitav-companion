@@ -5,11 +5,9 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
-
-const db: any = supabase;
-
 export interface BoardroomPrepData {
   pendingApprovals: any[];
   activeGoals: any[];
@@ -52,7 +50,7 @@ export function useBoardroomData(): BoardroomPrepData {
     queryFn: async () => {
       if (isDemoMode) return mockPendingApprovals;
       if (!user) return [];
-      const { data, error } = await db.from("approval_queue").select("*")
+      const { data, error } = await fromTable("approval_queue").select("*")
         .eq("status", "pending").order("created_at", { ascending: false }).limit(10);
       if (error) return mockPendingApprovals;
       return data || [];
@@ -65,7 +63,7 @@ export function useBoardroomData(): BoardroomPrepData {
     queryFn: async () => {
       if (isDemoMode) return mockActiveGoals;
       if (!user) return [];
-      const { data, error } = await db.from("goals").select("*")
+      const { data, error } = await fromTable("goals").select("*")
         .eq("status", "active").order("created_at", { ascending: false }).limit(10);
       if (error) return mockActiveGoals;
       return data || [];
@@ -78,7 +76,7 @@ export function useBoardroomData(): BoardroomPrepData {
     queryFn: async () => {
       if (isDemoMode) return mockOverdueTasks;
       if (!user) return [];
-      const { data, error } = await db.from("tasks").select("*")
+      const { data, error } = await fromTable("tasks").select("*")
         .lt("due_at", new Date().toISOString())
         .neq("status", "completed")
         .order("due_at", { ascending: true }).limit(10);
@@ -93,7 +91,7 @@ export function useBoardroomData(): BoardroomPrepData {
     queryFn: async () => {
       if (isDemoMode) return mockRecentProofs;
       if (!user) return [];
-      const { data, error } = await db.from("sita_proof_records").select("*")
+      const { data, error } = await fromTable("sita_proof_records").select("*")
         .order("created_at", { ascending: false }).limit(20);
       if (error) return mockRecentProofs;
       return data || [];

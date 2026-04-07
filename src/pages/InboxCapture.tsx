@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-const db: any = supabase;
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { motion } from "framer-motion";
@@ -49,7 +49,7 @@ const InboxCapture = () => {
     queryKey: ["inbox_files", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data, error } = await db.from("file_metadata").select("*").order("created_at", { ascending: false }).limit(50);
+      const { data, error } = await fromTable("file_metadata").select("*").order("created_at", { ascending: false }).limit(50);
       if (error) throw error;
       return data;
     },
@@ -57,7 +57,7 @@ const InboxCapture = () => {
 
   const captureNote = useMutation({
     mutationFn: async (content: string) => {
-      const { error } = await db.from("events").insert({
+      const { error } = await fromTable("events").insert({
         user_id: user!.id,
         type: "inbox.capture",
         source: "quick-capture",

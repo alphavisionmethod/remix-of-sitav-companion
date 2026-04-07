@@ -1,11 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-// Tables not yet created — use untyped client
-const db: any = supabase;
-
 export function useMissionControlLive() {
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
@@ -25,11 +22,11 @@ export function useMissionControlLive() {
         { data: workflowRuns },
         { data: advisorResponses },
       ] = await Promise.all([
-        db.from("agent_telemetry").select("*").eq("user_id", user.id).gte("recorded_at", sevenDaysAgo).order("recorded_at", { ascending: false }).limit(500),
-        db.from("incidents").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50),
-        db.from("connector_configs").select("*").eq("user_id", user.id),
-        db.from("workflow_runs").select("*").eq("user_id", user.id).gte("created_at", sevenDaysAgo).limit(200),
-        db.from("advisor_responses").select("tokens_used, latency_ms, model_used, created_at").eq("user_id", user.id).gte("created_at", sevenDaysAgo).limit(500),
+        fromTable("agent_telemetry").select("*").eq("user_id", user.id).gte("recorded_at", sevenDaysAgo).order("recorded_at", { ascending: false }).limit(500),
+        fromTable("incidents").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50),
+        fromTable("connector_configs").select("*").eq("user_id", user.id),
+        fromTable("workflow_runs").select("*").eq("user_id", user.id).gte("created_at", sevenDaysAgo).limit(200),
+        fromTable("advisor_responses").select("tokens_used, latency_ms, model_used, created_at").eq("user_id", user.id).gte("created_at", sevenDaysAgo).limit(500),
       ]);
 
       // Aggregate telemetry

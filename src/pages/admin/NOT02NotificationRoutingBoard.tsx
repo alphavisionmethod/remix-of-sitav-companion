@@ -8,13 +8,11 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { ArrowRight, Filter, Bell, BellOff, Shield, Clock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
-
-const db: any = supabase;
-
 export default function NOT02NotificationRoutingBoard() {
   const { isDemoMode } = useDataMode();
   const { data: queue = [] } = useQuery({
@@ -44,7 +42,7 @@ export default function NOT02NotificationRoutingBoard() {
   const { data: preferences = [] } = useQuery({
     queryKey: ["not02-prefs"],
     queryFn: async () => {
-      const { data } = await db.from("notification_preferences").select("*");
+      const { data } = await fromTable("notification_preferences").select("*");
       return data || [];
     },
   });

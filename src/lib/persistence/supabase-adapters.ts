@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -65,7 +66,7 @@ export async function persistReceipt(receipt: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data, error } = await (supabase.from as any)("sita_receipts")
+  const { data, error } = await fromTable("sita_receipts")
     .insert({ ...receipt, user_id: user.id })
     .select()
     .single();
@@ -79,7 +80,7 @@ export async function fetchReceipts(filters?: {
   receipt_type?: string;
   limit?: number;
 }): Promise<PersistedReceipt[]> {
-  let query = (supabase.from as any)("sita_receipts").select("*").order("created_at", { ascending: false });
+  let query = fromTable("sita_receipts").select("*").order("created_at", { ascending: false });
   if (filters?.correlation_id) query = query.eq("correlation_id", filters.correlation_id);
   if (filters?.receipt_type) query = query.eq("receipt_type", filters.receipt_type);
   if (filters?.limit) query = query.limit(filters.limit);
@@ -100,7 +101,7 @@ export async function persistProof(proof: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data, error } = await (supabase.from as any)("sita_proof_records")
+  const { data, error } = await fromTable("sita_proof_records")
     .insert({ ...proof, user_id: user.id })
     .select()
     .single();
@@ -114,7 +115,7 @@ export async function fetchProofs(filters?: {
   receipt_id?: string;
   limit?: number;
 }): Promise<PersistedProof[]> {
-  let query = (supabase.from as any)("sita_proof_records").select("*").order("created_at", { ascending: false });
+  let query = fromTable("sita_proof_records").select("*").order("created_at", { ascending: false });
   if (filters?.correlation_id) query = query.eq("correlation_id", filters.correlation_id);
   if (filters?.receipt_id) query = query.eq("receipt_id", filters.receipt_id);
   if (filters?.limit) query = query.limit(filters.limit);
@@ -139,7 +140,7 @@ export async function persistMemory(entry: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data, error } = await (supabase.from as any)("sita_memory_entries")
+  const { data, error } = await fromTable("sita_memory_entries")
     .insert({ ...entry, user_id: user.id })
     .select()
     .single();
@@ -154,7 +155,7 @@ export async function fetchMemory(filters?: {
   privacy_tier?: string;
   limit?: number;
 }): Promise<PersistedMemoryEntry[]> {
-  let query = (supabase.from as any)("sita_memory_entries")
+  let query = fromTable("sita_memory_entries")
     .select("*")
     .is("superseded_by", null)
     .order("updated_at", { ascending: false });
@@ -172,7 +173,7 @@ export async function forgetMemory(entryId: string, reason: string, requestedBy:
   if (!user) return false;
 
   // Get the entry first for audit
-  const { data: entry } = await (supabase.from as any)("sita_memory_entries")
+  const { data: entry } = await fromTable("sita_memory_entries")
     .select("key, privacy_tier")
     .eq("id", entryId)
     .maybeSingle();
@@ -180,7 +181,7 @@ export async function forgetMemory(entryId: string, reason: string, requestedBy:
   if (!entry) return false;
 
   // Log the forget action
-  await (supabase.from as any)("sita_memory_forget_log").insert({
+  await fromTable("sita_memory_forget_log").insert({
     user_id: user.id,
     entry_id: entryId,
     key: entry.key,
@@ -190,7 +191,7 @@ export async function forgetMemory(entryId: string, reason: string, requestedBy:
   });
 
   // Delete the entry
-  const { error } = await (supabase.from as any)("sita_memory_entries").delete().eq("id", entryId);
+  const { error } = await fromTable("sita_memory_entries").delete().eq("id", entryId);
   if (error) { console.error("[persistence] memory delete failed:", error); return false; }
   return true;
 }

@@ -6,11 +6,9 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-
-const db: any = supabase;
-
 // ── Operator Action Logger ───────────────────────────────────
 async function logOperatorAction(
   userId: string,
@@ -20,7 +18,7 @@ async function logOperatorAction(
   payload: Record<string, unknown>,
   result: Record<string, unknown> = {}
 ) {
-  await db.from("operator_actions").insert({
+  await fromTable("operator_actions").insert({
     user_id: userId,
     action_type: actionType,
     target_table: targetTable,
@@ -38,7 +36,7 @@ async function emitAdminProof(
   category: string,
   correlationId?: string
 ) {
-  await db.from("proof_records").insert({
+  await fromTable("proof_records").insert({
     user_id: userId,
     action_summary: actionSummary,
     domain,
@@ -59,12 +57,12 @@ export function useGovernanceSummary() {
     refetchInterval: 30000,
     queryFn: async () => {
       const [incidents, policies, approvals, proofs, connectors, trustState] = await Promise.all([
-        db.from("incidents").select("id, severity, status, created_at").order("created_at", { ascending: false }).limit(100),
-        db.from("policies").select("id, active, category, approval_required"),
-        db.from("approval_queue").select("id, status, action_type, created_at").eq("status", "pending"),
-        db.from("proof_records").select("id, verification, result, domain, created_at").order("created_at", { ascending: false }).limit(50),
-        db.from("connector_configs").select("id, service, status, last_sync_at"),
-        db.from("trust_state").select("id, trust_level, score, entity_type"),
+        fromTable("incidents").select("id, severity, status, created_at").order("created_at", { ascending: false }).limit(100),
+        fromTable("policies").select("id, active, category, approval_required"),
+        fromTable("approval_queue").select("id, status, action_type, created_at").eq("status", "pending"),
+        fromTable("proof_records").select("id, verification, result, domain, created_at").order("created_at", { ascending: false }).limit(50),
+        fromTable("connector_configs").select("id, service, status, last_sync_at"),
+        fromTable("trust_state").select("id, trust_level, score, entity_type"),
       ]);
 
       const incidentData = incidents.data || [];
@@ -101,7 +99,7 @@ export function useIncidentMutations() {
 
   const resolveIncident = useMutation({
     mutationFn: async ({ id, notes }: { id: string; notes: string }) => {
-      const { error } = await db.from("incidents").update({
+      const { error } = await fromTable("incidents").update({
         status: "resolved",
         resolved_at: new Date().toISOString(),
         resolution_notes: notes,
@@ -121,7 +119,7 @@ export function useIncidentMutations() {
 
   const acknowledgeIncident = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await db.from("incidents").update({
+      const { error } = await fromTable("incidents").update({
         acknowledged_at: new Date().toISOString(),
         acknowledged_by: user!.id,
       }).eq("id", id);
@@ -147,11 +145,11 @@ export function usePolicyVersioning() {
   const updatePolicyWithVersion = useMutation({
     mutationFn: async ({ policyId, changes, versionNumber }: { policyId: string; changes: Record<string, unknown>; versionNumber: number }) => {
       // Update the policy
-      const { error } = await db.from("policies").update(changes).eq("id", policyId);
+      const { error } = await fromTable("policies").update(changes).eq("id", policyId);
       if (error) throw error;
 
       // Create version record
-      await db.from("policy_versions").insert({
+      await fromTable("policy_versions").insert({
         user_id: user!.id,
         policy_id: policyId,
         version_number: versionNumber,
@@ -199,7 +197,7 @@ export function useConnectorSyncMutation() {
 
   return useMutation({
     mutationFn: async ({ connectorId, status, error: syncError, recordsSynced }: { connectorId: string; status: string; error?: string; recordsSynced?: number }) => {
-      await db.from("connector_sync_history").insert({
+      await fromTable("connector_sync_history").insert({
         user_id: user!.id,
         connector_id: connectorId,
         status,
