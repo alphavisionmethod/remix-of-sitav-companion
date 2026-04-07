@@ -77,7 +77,7 @@ export default function ISA07AuthConnectorTruthBoard() {
 
   // Check 1: Any family with both identity and connector using SAME OAuth client?
   const clientsByFamily = oauthClients.reduce((acc: Record<string, any[]>, c: any) => {
-    const fk = (c as Record<string, unknown>).provider_families?.provider_key || "unknown";
+    const fk = ((c as any).provider_families as any)?.provider_key || "unknown";
     if (!acc[fk]) acc[fk] = [];
     acc[fk].push(c);
     return acc;
