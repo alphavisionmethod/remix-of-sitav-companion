@@ -252,7 +252,9 @@ function AlertSummaryPanel() {
 
 export default function AgentActivityDashboard() {
   const { isDemoMode } = useDataMode();
-  return (
+  // Wire fleet live data + CAI graph for agent orchestration
+  const fleetLive = useAgentFleetLive();
+  const graphNodes = useGraphNodes();
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}

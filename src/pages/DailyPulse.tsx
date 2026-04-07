@@ -141,6 +141,11 @@ const DailyPulse = () => {
   const hour = new Date().getHours();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
+  // Domain projection hooks (wired from use-domain-projections + use-calendar-data)
+  const financeProjection = useFinanceProjection();
+  const now = new Date();
+  const calendarEvents = useCalendarEvents(now.getFullYear(), now.getMonth());
+
   const modeConfig = MISSION_MODE_CONFIG[missionMode.id] || MISSION_MODE_CONFIG["normal"];
   const showSection = (s: string) => !modeConfig.hideSections.includes(s);
 
