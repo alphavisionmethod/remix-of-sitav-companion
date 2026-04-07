@@ -432,7 +432,7 @@ export default function ConstitutionEditor() {
       </div>
 
       {/* Composer */}
-      <RuleComposer onCompile={compileRule} />
+      <RuleComposer onCompile={handleCompileRule} />
 
       {/* Filter tabs */}
       <Tabs value={tab} onValueChange={setTab}>
