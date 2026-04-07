@@ -91,7 +91,7 @@ export default function OperationsCommandCenter() {
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5 flex-wrap">
           {[
             { value: "health", label: "Service Health", icon: Activity },
-            { value: "DEMO_slos", label: "SLO Burn", icon: Gauge },
+            { value: "slos", label: "SLO Burn", icon: Gauge },
             { value: "alerts", label: "Alert Triage", icon: AlertTriangle },
             { value: "incidents", label: "Incidents", icon: Radio },
             { value: "queues", label: "Queues & Lag", icon: BarChart3 },
@@ -120,7 +120,7 @@ export default function OperationsCommandCenter() {
             ))}
           </TabsContent>
 
-          <TabsContent value="DEMO_slos">
+          <TabsContent value="slos">
             {DEMO_slos.map(slo => (
               <Card key={slo.name} className="bg-card/50 border-border/50 mb-2">
                 <CardContent className="p-3">
