@@ -10,6 +10,11 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { useCommunications } from "@/hooks/use-sita-data";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 type CommStatus = "draft" | "review" | "approved" | "sent" | "delivered" | "opened" | "replied" | "failed";
 
@@ -41,19 +46,32 @@ const statusToState: Record<CommStatus, ExecutionState> = {
   delivered: "verified", opened: "completed", replied: "verified", failed: "failed",
 };
 
-const initialComms: Communication[] = [
-  { id: "c1", type: "email", subject: "Quote #1042 — Website Redesign Proposal", body: "Hi Sarah,\n\nThank you for your interest in our web design services. I've prepared a detailed proposal for your website redesign project.\n\nThe total investment would be $2,500, which includes:\n- Complete redesign with modern UI/UX\n- Mobile-responsive layouts\n- SEO optimization\n- 3 rounds of revisions\n\nI'd love to schedule a call to walk through the details. What time works best for you this week?\n\nBest regards", status: "sent", requires_approval: false, customer_name: "Sarah Chen", created_at: new Date(Date.now() - 3600000 * 4).toISOString(), sent_at: new Date(Date.now() - 3600000 * 3).toISOString() },
-  { id: "c2", type: "email", subject: "Invoice #1035 — Friendly Payment Reminder", body: "Hi David,\n\nI hope this message finds you well. I wanted to follow up on Invoice #1035 for $1,800, which was due on March 21st.\n\nCould you let me know if there are any questions about the invoice or if you need additional time? I'm happy to discuss payment arrangements if needed.\n\nThank you for your continued partnership.\n\nBest regards", status: "draft", requires_approval: true, customer_name: "David Kim", created_at: new Date(Date.now() - 3600000 * 2).toISOString(), sent_at: null },
-  { id: "c3", type: "sms", subject: "Appointment Confirmation — Tomorrow 2 PM", body: "Hi James, just confirming our meeting tomorrow at 2:00 PM. Looking forward to discussing the Q2 project scope. See you then!", status: "delivered", requires_approval: false, customer_name: "James Rodriguez", created_at: new Date(Date.now() - 3600000 * 8).toISOString(), sent_at: new Date(Date.now() - 3600000 * 7).toISOString() },
-  { id: "c4", type: "email", subject: "Follow-up: Web Design Consultation", body: "Hi Emily,\n\nIt was great speaking with you last week about your website project. I noticed we haven't connected since our call — I wanted to check if you had any additional questions about the proposal.\n\nI've also put together some additional portfolio examples that match your industry. Would you like me to send those over?\n\nLooking forward to hearing from you.", status: "review", requires_approval: true, customer_name: "Emily Watson", created_at: new Date(Date.now() - 3600000 * 24).toISOString(), sent_at: null },
-  { id: "c5", type: "message", subject: "Retainer Discussion — Monthly Package", body: "Hey Marcus, great working with you on the recent projects. Given our track record, I think a monthly retainer could work well for both of us — predictable costs for you and consistent workflow for us. Want to grab coffee and discuss?", status: "opened", requires_approval: false, customer_name: "Marcus Johnson", created_at: new Date(Date.now() - 3600000 * 48).toISOString(), sent_at: new Date(Date.now() - 3600000 * 46).toISOString() },
-  { id: "c6", type: "email", subject: "Thank You — Invoice #1038 Payment Received", body: "Hi Marcus,\n\nThis is to confirm we've received your payment of $4,200 for Invoice #1038. Thank you for the prompt payment!\n\nAll records have been updated on our end. Looking forward to continuing our work together.\n\nBest regards", status: "delivered", requires_approval: false, customer_name: "Marcus Johnson", created_at: new Date(Date.now() - 3600000 * 6).toISOString(), sent_at: new Date(Date.now() - 3600000 * 5).toISOString() },
+const fallbackComms: Communication[] = [
+  { id: "c1", type: "email", subject: "Quote #1042 — Website Redesign Proposal", body: "Hi Sarah,\n\nThank you for your interest in our web design services...", status: "sent", requires_approval: false, customer_name: "Sarah Chen", created_at: new Date(Date.now() - 3600000 * 4).toISOString(), sent_at: new Date(Date.now() - 3600000 * 3).toISOString() },
+  { id: "c2", type: "email", subject: "Invoice #1035 — Friendly Payment Reminder", body: "Hi David,\n\nI wanted to follow up on Invoice #1035 for $1,800...", status: "draft", requires_approval: true, customer_name: "David Kim", created_at: new Date(Date.now() - 3600000 * 2).toISOString(), sent_at: null },
+  { id: "c3", type: "sms", subject: "Appointment Confirmation — Tomorrow 2 PM", body: "Hi James, just confirming our meeting tomorrow at 2:00 PM.", status: "delivered", requires_approval: false, customer_name: "James Rodriguez", created_at: new Date(Date.now() - 3600000 * 8).toISOString(), sent_at: new Date(Date.now() - 3600000 * 7).toISOString() },
 ];
 
-let nextId = 7;
-
 const CommunicationsCenter = () => {
-  const [communications, setCommunications] = useState<Communication[]>(initialComms);
+  const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const { data: dbComms = [] } = useCommunications();
+
+  // Map DB communications to local type
+  const liveComms: Communication[] = dbComms.map((c: any) => ({
+    id: c.id,
+    type: (c.channel || c.type || "email") as "email" | "sms" | "message",
+    subject: c.subject || "",
+    body: c.body || "",
+    status: (c.status || "draft") as CommStatus,
+    requires_approval: c.requires_approval || false,
+    customer_name: c.contact_name || "",
+    created_at: c.created_at,
+    sent_at: c.sent_at || null,
+  }));
+
+  const communications = liveComms.length > 0 ? liveComms : (isDemoMode ? fallbackComms : []);
   const { confirmation, confirm: confirmAction } = useConfirmation();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -74,31 +92,36 @@ const CommunicationsCenter = () => {
     setEditingId(null);
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.subject.trim()) { toast.error("Subject is required"); return; }
+    if (!user) return;
     if (editingId) {
-      setCommunications(prev => prev.map(c => c.id === editingId ? { ...c, ...form } : c));
+      await supabase.from("communications").update({
+        channel: form.type, subject: form.subject, body: form.body,
+        status: form.status, contact_name: form.customer_name,
+      }).eq("id", editingId);
       toast.success("Communication updated");
     } else {
-      const newComm: Communication = {
-        id: `c${nextId++}`,
-        ...form,
-        created_at: new Date().toISOString(),
-        sent_at: null,
-      };
-      setCommunications(prev => [newComm, ...prev]);
+      await supabase.from("communications").insert({
+        user_id: user.id, type: form.type, channel: form.type,
+        subject: form.subject, body: form.body, status: form.status,
+        contact_name: form.customer_name, direction: "outbound",
+      });
       toast.success("Communication created");
     }
+    queryClient.invalidateQueries({ queryKey: ["communications"] });
     resetForm();
   };
 
-  const handleSend = (id: string) => {
-    setCommunications(prev => prev.map(c => c.id === id ? { ...c, status: "sent" as CommStatus, sent_at: new Date().toISOString() } : c));
+  const handleSend = async (id: string) => {
+    await supabase.from("communications").update({ status: "sent", sent_at: new Date().toISOString() }).eq("id", id);
+    queryClient.invalidateQueries({ queryKey: ["communications"] });
     toast.success("Communication sent!");
   };
 
-  const handleDelete = (id: string) => {
-    setCommunications(prev => prev.filter(c => c.id !== id));
+  const handleDelete = async (id: string) => {
+    await supabase.from("communications").delete().eq("id", id);
+    queryClient.invalidateQueries({ queryKey: ["communications"] });
     setSelectedId(null);
     toast.success("Communication deleted");
   };

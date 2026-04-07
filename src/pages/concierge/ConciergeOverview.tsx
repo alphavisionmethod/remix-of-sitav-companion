@@ -5,7 +5,7 @@ import { PriorityCard, QuickActionBar, HouseholdAdvisor, OverloadCard, GroceryCo
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   CheckSquare, Calendar, AlertCircle, Heart, Clock, ShoppingCart, Plane, Users, Wrench, ArrowRight,
@@ -13,55 +13,100 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
-/* ============ MOCK DATA ============ */
-const kpiSummary = {
-  todayCommitments: 6, tomorrowPrep: 3, schoolItems: 4, overdueHousehold: 2,
-  groceryAlerts: 1, appointmentPrep: 2, travelItems: 1, urgentApprovals: 1,
+/* ============ DATA DERIVATION ============ */
+
+function deriveKPIs(tasks: any[], events: any[]) {
+  const now = new Date();
+  const todayStr = now.toISOString().slice(0, 10);
+  const tomorrowStr = new Date(now.getTime() + 86400000).toISOString().slice(0, 10);
+
+  const todayTasks = tasks.filter((t: any) => t.due_date?.startsWith(todayStr));
+  const todayEvents = events.filter((e: any) => e.event_date?.startsWith(todayStr));
+  const tomorrowTasks = tasks.filter((t: any) => t.due_date?.startsWith(tomorrowStr));
+  const overdue = tasks.filter((t: any) => t.status !== "done" && t.due_date && t.due_date < todayStr);
+  const schoolTasks = tasks.filter((t: any) => (t.category || "").toLowerCase().includes("school"));
+  const groceryTasks = tasks.filter((t: any) => (t.category || "").toLowerCase().includes("grocer") || (t.category || "").toLowerCase().includes("shopping"));
+  const pendingApprovals = tasks.filter((t: any) => t.status === "escalated" || t.status === "waiting");
+
+  return {
+    todayCommitments: todayTasks.length + todayEvents.length,
+    tomorrowPrep: tomorrowTasks.length,
+    schoolItems: schoolTasks.length,
+    overdueHousehold: overdue.length,
+    groceryAlerts: groceryTasks.length,
+    appointmentPrep: todayEvents.length,
+    travelItems: events.filter((e: any) => (e.event_type || "").toLowerCase().includes("travel")).length,
+    urgentApprovals: pendingApprovals.length,
+  };
+}
+
+function derivePriorities(tasks: any[], events: any[]) {
+  const now = new Date();
+  const todayStr = now.toISOString().slice(0, 10);
+  const items: Array<{ title: string; due: string; category: string; who: string; icon: any; urgency: "high" | "medium" | "low"; prepNeeded?: string; linkedTo?: string }> = [];
+
+  // Add overdue and today's tasks
+  tasks
+    .filter((t: any) => t.status !== "done" && t.due_date && t.due_date <= todayStr)
+    .sort((a: any, b: any) => {
+      const pOrder: Record<string, number> = { high: 0, medium: 1, low: 2 };
+      return (pOrder[a.priority] ?? 1) - (pOrder[b.priority] ?? 1);
+    })
+    .slice(0, 6)
+    .forEach((t: any) => {
+      const cat = t.category || "General";
+      const urgency = t.due_date < todayStr ? "high" : t.priority === "high" ? "high" : t.priority === "low" ? "low" : "medium";
+      items.push({
+        title: t.title,
+        due: t.due_date < todayStr ? "Overdue" : t.due_date === todayStr ? "Today" : t.due_date,
+        category: cat,
+        who: t.assigned_to || "You",
+        icon: categoryIcon[cat] || Home,
+        urgency,
+        prepNeeded: t.notes || undefined,
+      });
+    });
+
+  // Add today's events
+  events
+    .filter((e: any) => e.event_date?.startsWith(todayStr))
+    .slice(0, 3)
+    .forEach((e: any) => {
+      items.push({
+        title: e.title,
+        due: e.start_time || "Today",
+        category: e.event_type || "Event",
+        who: e.participants?.join(", ") || "Family",
+        icon: Calendar,
+        urgency: "medium",
+      });
+    });
+
+  return items.length > 0 ? items : fallbackPriorities;
+}
+
+function deriveUpcomingSchedule(events: any[]) {
+  const now = new Date();
+  return events
+    .filter((e: any) => e.event_date && e.event_date >= now.toISOString().slice(0, 10))
+    .sort((a: any, b: any) => (a.event_date || "").localeCompare(b.event_date || ""))
+    .slice(0, 6)
+    .map((e: any) => ({
+      event: e.title,
+      time: e.event_date,
+      who: e.participants?.join(", ") || "Family",
+      icon: Calendar,
+    }));
+}
+
+const categoryIcon: Record<string, typeof Home> = {
+  Errands: ShoppingCart, "Home Maintenance": Wrench, School: GraduationCap,
+  Health: Stethoscope, Admin: FileText, Events: Home, Shopping: ShoppingCart,
+  Vehicle: Car, General: Home,
 };
 
-const todaysPriorities = [
-  { title: "Soccer practice carpool — Emma", due: "4:00 PM", category: "Family", who: "Emma", icon: Users, urgency: "high" as const, prepNeeded: "Shin guards + water bottle" },
-  { title: "Permission slip — Science Museum field trip", due: "Tomorrow morning", category: "School", who: "Emma", icon: GraduationCap, urgency: "high" as const, linkedTo: "Lincoln Elementary" },
-  { title: "Grocery run — 14 items (low-stock alerts)", due: "Today", category: "Shopping", who: "You", icon: ShoppingCart, urgency: "medium" as const, prepNeeded: "List ready in app" },
-  { title: "Call plumber — kitchen leak follow-up", due: "Before noon", category: "Home", who: "You", icon: Wrench, urgency: "medium" as const, linkedTo: "Ref #4421 — Mike's Plumbing" },
-  { title: "Review travel insurance quotes — Cancún", due: "This week", category: "Travel", who: "You", icon: Plane, urgency: "low" as const, linkedTo: "Spring Break trip" },
-  { title: "Annual physical prep — fasting reminder", due: "Night before Apr 10", category: "Health", who: "You", icon: Stethoscope, urgency: "low" as const },
-];
-
-const driftingItems = [
-  { item: "Oil change — 2 weeks overdue", severity: "high" as const },
-  { item: "Kids' passport renewal — expires in 60 days", severity: "high" as const },
-  { item: "Annual home insurance review — 3 weeks deferred", severity: "medium" as const },
-  { item: "Thank-you to Johnsons — 3 days overdue", severity: "low" as const },
-];
-
-const upcomingSchedule = [
-  { event: "Soccer practice", time: "Today 4:00 PM", who: "Emma", icon: Users },
-  { event: "Piano lesson", time: "Tomorrow 3:30 PM", who: "Liam", icon: Calendar },
-  { event: "Parent-teacher conference", time: "Next Tuesday 9 AM", who: "Parents", icon: GraduationCap },
-  { event: "Dentist — kids checkup", time: "Next Thursday 10 AM", who: "Emma & Liam", icon: Stethoscope },
-  { event: "Family dinner — Chez Marie", time: "Saturday 6:00 PM", who: "Everyone", icon: Heart },
-  { event: "HVAC maintenance", time: "Apr 8, 2–4 PM", who: "Home", icon: Wrench },
-];
-
-const schoolAlerts = [
-  { title: "Permission slip due tomorrow — Science Museum", child: "Emma", urgency: "high" },
-  { title: "Spring tuition payment — $2,400", child: "Liam", urgency: "high" },
-  { title: "Bus pass renewal overdue", child: "Liam", urgency: "high" },
-  { title: "Science fair materials needed by Apr 12", child: "Liam", urgency: "medium" },
-];
-
-const groceryAlerts = [
-  { item: "Laundry detergent", lastPurchased: "3 weeks ago", cycle: "Monthly", status: "out" as const },
-  { item: "Olive oil", lastPurchased: "5 weeks ago", cycle: "6 weeks", status: "low" as const },
-  { item: "Kids' yogurt tubes", lastPurchased: "1 week ago", cycle: "Weekly", status: "ok" as const },
-];
-
-const recentProof = [
-  { action: "Grocery order placed — 14 items", time: "Today 9:15 AM", verified: true },
-  { action: "Dentist appointment confirmed", time: "Yesterday 2:30 PM", verified: true },
-  { action: "Permission slip signed — Emma", time: "Yesterday 7:45 AM", verified: true },
-  { action: "HVAC maintenance scheduled", time: "Mar 30", verified: true },
+const fallbackPriorities = [
+  { title: "No tasks yet — add your first household task", due: "Today", category: "General", who: "You", icon: CheckSquare, urgency: "low" as const },
 ];
 
 const pendingApproval = {
@@ -86,6 +131,60 @@ const ConciergeOverview = () => {
   const { isDemoMode } = useDataMode();
   const { data: tasks = [] } = useHouseholdTasks();
   const { data: events = [] } = useFamilyEvents();
+
+  const kpiSummary = useMemo(() => deriveKPIs(tasks, events), [tasks, events]);
+  const todaysPriorities = useMemo(() => derivePriorities(tasks, events), [tasks, events]);
+  const upcomingSchedule = useMemo(() => deriveUpcomingSchedule(events), [events]);
+
+  // Derive drifting items from overdue tasks
+  const driftingItems = useMemo(() => {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    return tasks
+      .filter((t: any) => t.status !== "done" && t.due_date && t.due_date < todayStr)
+      .slice(0, 4)
+      .map((t: any) => ({
+        item: `${t.title} — ${Math.ceil((Date.now() - new Date(t.due_date).getTime()) / 86400000)} days overdue`,
+        severity: (t.priority === "high" ? "high" : t.priority === "medium" ? "medium" : "low") as "high" | "medium" | "low",
+      }));
+  }, [tasks]);
+
+  // Derive school alerts from tasks with school category
+  const schoolAlerts = useMemo(() => {
+    return tasks
+      .filter((t: any) => (t.category || "").toLowerCase().includes("school") && t.status !== "done")
+      .slice(0, 4)
+      .map((t: any) => ({
+        title: t.title,
+        child: t.assigned_to || "Child",
+        urgency: t.priority === "high" ? "high" : "medium",
+      }));
+  }, [tasks]);
+
+  // Derive grocery alerts from shopping/grocery tasks
+  const groceryAlerts = useMemo(() => {
+    return tasks
+      .filter((t: any) => ((t.category || "").toLowerCase().includes("grocer") || (t.category || "").toLowerCase().includes("shopping")) && t.status !== "done")
+      .slice(0, 3)
+      .map((t: any) => ({
+        item: t.title,
+        lastPurchased: t.due_date || "Unknown",
+        cycle: "As needed",
+        status: (t.priority === "high" ? "out" : t.priority === "medium" ? "low" : "ok") as "out" | "low" | "ok",
+      }));
+  }, [tasks]);
+
+  // Derive recent proof from completed tasks
+  const recentProof = useMemo(() => {
+    return tasks
+      .filter((t: any) => t.status === "done")
+      .sort((a: any, b: any) => (b.updated_at || "").localeCompare(a.updated_at || ""))
+      .slice(0, 4)
+      .map((t: any) => ({
+        action: t.title,
+        time: t.updated_at ? new Date(t.updated_at).toLocaleDateString() : "Recently",
+        verified: true,
+      }));
+  }, [tasks]);
 
   const hasLiveData = isDemoMode || tasks.length > 0 || events.length > 0;
 
@@ -152,9 +251,9 @@ const ConciergeOverview = () => {
 
       {/* Overload Assessment */}
       <OverloadCard
-        level="moderate"
-        message="Your household has 6 commitments today with 2 overdue items drifting. School logistics are adding pressure this week — 4 items need attention across both children."
-        recommendation="Defer the insurance review and oil change to next week. Focus today on the permission slip, grocery run, and plumber call."
+        level={kpiSummary.overdueHousehold > 3 ? "high" : kpiSummary.todayCommitments > 5 ? "moderate" : "low"}
+        message={`Your household has ${kpiSummary.todayCommitments} commitments today with ${kpiSummary.overdueHousehold} overdue items drifting. ${kpiSummary.schoolItems > 0 ? `School logistics: ${kpiSummary.schoolItems} items need attention.` : ""}`}
+        recommendation={kpiSummary.overdueHousehold > 0 ? "Focus on overdue items first, then today's priorities." : "You're in good shape — stay on top of today's schedule."}
       />
 
       <div className="grid gap-6 lg:grid-cols-3">
