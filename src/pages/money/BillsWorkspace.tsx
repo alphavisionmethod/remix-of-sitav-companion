@@ -5,6 +5,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useBills as useMoneyBills } from "@/hooks/use-money-data";
 import { useAuth } from "@/contexts/AuthContext";
 import { DollarSign, Clock, AlertTriangle, CheckCircle, Calendar, Receipt, Bell, FileText, CreditCard, Plus, Trash2, Zap } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
