@@ -17,7 +17,7 @@ async function getUserId(): Promise<string | null> {
 async function safeQuery<T>(fn: () => PromiseLike<{ data: T | null; error: unknown }>): Promise<T | null> {
   try {
     const { data, error } = await fn();
-    if (error) { console.warn("[persistence]", (error as Error)?.message ?? String(error); return null; }
+    if (error) { console.warn("[persistence]", String(error)); return null; }
     return data;
   } catch (e) { console.warn("[persistence]", e); return null; }
 }
