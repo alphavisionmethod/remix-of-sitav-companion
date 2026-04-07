@@ -285,6 +285,10 @@ export class MemoryService {
           entityId: p.entity_id ?? undefined,
           entityType: p.entity_type ?? undefined,
           accessLog: [],
+          trustLevel: "verified",
+          ingestedAt: new Date(p.created_at).getTime(),
+          sourceType: p.source,
+          sanitized: false,
         });
         loaded++;
       }
