@@ -228,7 +228,7 @@ export class PipelineOrchestrator {
       const lastStage = ctx.stages[ctx.stages.length - 1];
       if (lastStage && !lastStage.completedAt) {
         lastStage.status = "failed";
-        lastStage.error = error instanceof Error ? error.message : "Unknown error";
+        lastStage.error = error instanceof Error ? (error as Error)?.message ?? String(error) : "Unknown error";
         lastStage.completedAt = new Date().toISOString();
         lastStage.durationMs = Date.now() - new Date(lastStage.startedAt).getTime();
       }

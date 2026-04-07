@@ -56,7 +56,7 @@ export class UnifiedEventService {
     errors.push(...legacyResult.errors);
 
     // Trace
-    const correlationId = options?.correlationId || (envelope.event as never)?.correlationId || "unknown";
+    const correlationId = options?.correlationId || (envelope.event as Record<string, unknown>)?.correlationId || "unknown";
     this.eventTrace.push({ eventType, domain, correlationId, timestamp: new Date().toISOString(), delivered });
     if (this.eventTrace.length > 2000) this.eventTrace = this.eventTrace.slice(-1000);
 

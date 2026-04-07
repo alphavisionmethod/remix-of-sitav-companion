@@ -225,7 +225,7 @@ export class DeskExecutor {
         startedAt,
         completedAt: new Date().toISOString(),
         durationMs: Date.now() - startTime,
-        error: error instanceof Error ? error.message : "Unknown error",
+        error: error instanceof Error ? (error as Error)?.message ?? String(error) : "Unknown error",
         rollbackPerformed: false,
       };
     }

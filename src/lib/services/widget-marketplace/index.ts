@@ -1,4 +1,4 @@
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Widget Marketplace Service
 // User-configurable dashboard with drag-and-drop widgets
@@ -65,7 +65,7 @@ class WidgetMarketplaceService {
   }
 
   async saveLayout(userId: string, layout: DashboardLayout): Promise<void> {
-    await fromTable('user_memory').upsert({
+    await fromDynamicTable('user_memory').upsert({
       user_id: userId,
       key: `dashboard_layout_${layout.id}`,
       value: JSON.stringify(layout) as never,

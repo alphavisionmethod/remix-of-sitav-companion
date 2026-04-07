@@ -1,4 +1,4 @@
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Competitive Intelligence Feed
 // Tracks competitor landscape and surfaces actionable insights
@@ -54,7 +54,7 @@ class CompetitiveIntelligenceService {
     };
     this.competitors.set(full.id, full);
 
-    await fromTable('user_memory').upsert({
+    await fromDynamicTable('user_memory').upsert({
       user_id: userId,
       key: `competitor_${full.id}`,
       value: JSON.stringify(full) as never,

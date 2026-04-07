@@ -2,7 +2,7 @@
 // SITA OS — Client System Update Service
 // ═══════════════════════════════════════════════════════════════
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface UpdateRelease {
   id: string;
@@ -51,7 +51,7 @@ function getDeviceId(): string {
 
 export const SystemUpdateService = {
   async checkForUpdates(channel = 'stable'): Promise<UpdateRelease | null> {
-    const { data } = await fromTable('system_update_releases')
+    const { data } = await fromDynamicTable('system_update_releases')
       .select('*')
       .eq('channel', channel)
       .order('created_at', { ascending: false })
@@ -63,7 +63,7 @@ export const SystemUpdateService = {
   },
 
   async getDevices(): Promise<UpdateDevice[]> {
-    const { data } = await fromTable('system_update_devices').select('*').order('last_check_at', { ascending: false });
+    const { data } = await fromDynamicTable('system_update_devices').select('*').order('last_check_at', { ascending: false });
     return (data || []) as UpdateDevice[];
   },
 
@@ -80,7 +80,7 @@ export const SystemUpdateService = {
       memory: (navigator as unknown as Record<string, unknown>).deviceMemory || 0,
     };
 
-    const { data } = await fromTable('system_update_devices').upsert({
+    const { data } = await fromDynamicTable('system_update_devices').upsert({
       user_id: user.id,
       device_id: deviceId,
       hostname: hostname || window.location.hostname,
@@ -93,22 +93,22 @@ export const SystemUpdateService = {
   },
 
   async setUpdateChannel(deviceId: string, channel: 'stable' | 'beta' | 'canary') {
-    await fromTable('system_update_devices').update({ channel }).eq('id', deviceId);
+    await fromDynamicTable('system_update_devices').update({ channel }).eq('id', deviceId);
   },
 
   async setAutoUpdate(deviceId: string, enabled: boolean) {
-    await fromTable('system_update_devices').update({ auto_update_enabled: enabled }).eq('id', deviceId);
+    await fromDynamicTable('system_update_devices').update({ auto_update_enabled: enabled }).eq('id', deviceId);
   },
 
   async getUpdateHistory(): Promise<UpdateLogEntry[]> {
-    const { data } = await fromTable('system_update_log').select('*').order('created_at', { ascending: false }).limit(50);
+    const { data } = await fromDynamicTable('system_update_log').select('*').order('created_at', { ascending: false }).limit(50);
     return (data || []) as UpdateLogEntry[];
   },
 
   async logUpdate(toVersion: string, status: string, error?: string) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    await fromTable('system_update_log').insert({
+    await fromDynamicTable('system_update_log').insert({
       user_id: user.id,
       from_version: APP_VERSION,
       to_version: toVersion,

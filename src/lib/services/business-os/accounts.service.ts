@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import type { CRMAccount } from "@/packages/business-contracts";
 
 export interface AccountHealthRollup {
@@ -26,8 +26,8 @@ export async function rollupAccountHealth(account: CRMAccount): Promise<AccountH
   try {
     // Fetch real opportunities and invoices for this account
     const [oppsRes, invsRes] = await Promise.all([
-      fromTable("opportunities").select("id, stage, confidence").eq("customer_id", account.id).limit(50),
-      fromTable("invoices").select("id, status, due_date").eq("customer_id", account.id).limit(50),
+      fromDynamicTable("opportunities").select("id, stage, confidence").eq("customer_id", account.id).limit(50),
+      fromDynamicTable("invoices").select("id, status, due_date").eq("customer_id", account.id).limit(50),
     ]);
 
     const opps = oppsRes.data || [];

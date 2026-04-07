@@ -5,13 +5,13 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 const SEED_KEY = "sita-platform-readiness-seeded";
 
 async function needsSeeding(userId: string): Promise<boolean> {
   if (sessionStorage.getItem(SEED_KEY) === "true") return false;
-  const { count } = await fromTable("surface_portability_registry")
+  const { count } = await fromDynamicTable("surface_portability_registry")
     .select("id", { count: "exact", head: true })
     .eq("user_id", userId);
   return (count ?? 0) === 0;
@@ -63,7 +63,7 @@ export async function seedPlatformReadiness(): Promise<void> {
     { user_id: uid, capability_key: "boardroom.synthesis", capability_name: "Boardroom Synthesis", web_ready: true, mobile_ready: true, desktop_ready: true, tablet_ready: true, watch_ready: true, response_envelope_neutral: true, surface_adapter_exists: true, portability_score: 100 },
   ];
 
-  await fromTable("surface_portability_registry").insert(portability);
+  await fromDynamicTable("surface_portability_registry").insert(portability);
 
   // ═══════════════════════════════════════════════════════════════
   // 2. SURFACE TYPES
@@ -78,10 +78,10 @@ export async function seedPlatformReadiness(): Promise<void> {
     { user_id: uid, surface_key: "watch_os", display_name: "Apple Watch", surface_class: "planned", interaction_model: "glance", notification_model: "haptic", input_modes: ["crown", "tap"], output_modes: ["glance", "haptic"], offline_support: false, readiness_stage: "planned", constraints: { max_width: 198 } },
   ];
 
-  await fromTable("surface_types").insert(surfaceTypes);
+  await fromDynamicTable("surface_types").insert(surfaceTypes);
 
   // Get surface IDs
-  const { data: savedSurfaces } = await fromTable("surface_types").select("id, surface_key").eq("user_id", uid);
+  const { data: savedSurfaces } = await fromDynamicTable("surface_types").select("id, surface_key").eq("user_id", uid);
   const surfaceMap = new Map((savedSurfaces ?? []).map((s: any) => [s.surface_key, s.id]));
 
   // ═══════════════════════════════════════════════════════════════
@@ -97,7 +97,7 @@ export async function seedPlatformReadiness(): Promise<void> {
     { user_id: uid, surface_id: surfaceMap.get("watch_os"), adapter_name: "WatchOSShell", shell_type: "GlanceShell", status: "planned", navigation_grammar: { type: "crown_scroll", supports_complications: true, supports_short_look: true, supports_long_look: true }, interaction_grammar: { supports_force_touch: false, supports_crown: true, supports_haptic: true, supports_voice: true }, notification_grammar: { supports_haptic: true, supports_short_look: true, supports_complication_update: true }, trust_presentation: { compact_only: true, shows_complication_mode: true } },
   ];
 
-  await fromTable("surface_adapters").insert(adapters);
+  await fromDynamicTable("surface_adapters").insert(adapters);
 
   // ═══════════════════════════════════════════════════════════════
   // 4. SURFACE READINESS RECORDS
@@ -112,7 +112,7 @@ export async function seedPlatformReadiness(): Promise<void> {
     { user_id: uid, surface_id: surfaceMap.get("watch_os"), portability_score: 100, contract_coverage_pct: 100, capability_coverage_pct: 100, trust_portability: true, workflow_portability: true, receipt_portability: true, blockers: [], evidence: { contracts_defined: true, adapter_designed: true, surface_adapter: "GlanceShell", glance_only: true }, last_audited_at: new Date().toISOString() },
   ];
 
-  await fromTable("surface_readiness_records").insert(readiness);
+  await fromDynamicTable("surface_readiness_records").insert(readiness);
 
   // ═══════════════════════════════════════════════════════════════
   // 5. DEVICE FAMILIES
@@ -127,10 +127,10 @@ export async function seedPlatformReadiness(): Promise<void> {
     { user_id: uid, family_key: "smart_watch", name: "Smart Watch", description: "Apple Watch / Wear OS", interaction_type: "passive", screen_class: "glance", notification_type: "haptic", quick_action_support: true, trust_level: "standard", sensor_support: ["accelerometer", "heart_rate", "gyroscope"], passive_usage_support: true, offline_behavior: "queue", continuity_support: false, handoff_support: true, launch_stage: "planned", active: true },
   ];
 
-  await fromTable("device_families").insert(families);
+  await fromDynamicTable("device_families").insert(families);
 
   // Get family IDs
-  const { data: savedFamilies } = await fromTable("device_families").select("id, family_key").eq("user_id", uid);
+  const { data: savedFamilies } = await fromDynamicTable("device_families").select("id, family_key").eq("user_id", uid);
   const familyMap = new Map((savedFamilies ?? []).map((f: any) => [f.family_key, f.id]));
 
   // ═══════════════════════════════════════════════════════════════
@@ -162,7 +162,7 @@ export async function seedPlatformReadiness(): Promise<void> {
     },
   ];
 
-  await fromTable("connected_devices").insert(devices);
+  await fromDynamicTable("connected_devices").insert(devices);
 
   // ═══════════════════════════════════════════════════════════════
   // 7. RUNTIME PROBES (observability)
@@ -180,7 +180,7 @@ export async function seedPlatformReadiness(): Promise<void> {
     { user_id: uid, probe_id: "notification_queue", name: "Notification Queue Health", target_system: "notifications", environment: "production", cadence_seconds: 600, severity: "medium", launch_impact: "degrades", owner: "platform", success_criteria: "Queue insert succeeds", failure_criteria: "Insert fails", enabled: true },
   ];
 
-  await fromTable("runtime_probes").insert(probes);
+  await fromDynamicTable("runtime_probes").insert(probes);
 
   // ═══════════════════════════════════════════════════════════════
   // 8. PLATFORM HEALTH SNAPSHOTS (initial baseline)
@@ -196,7 +196,7 @@ export async function seedPlatformReadiness(): Promise<void> {
     { user_id: uid, domain: "security", component: "rls_enforcement", health_status: "healthy", health_score: 95, details: { all_tables_rls: true, audit_logging: true }, degraded_capabilities: [], check_duration_ms: 60 },
   ];
 
-  await fromTable("platform_health_snapshots").insert(healthSnapshots);
+  await fromDynamicTable("platform_health_snapshots").insert(healthSnapshots);
 
   sessionStorage.setItem(SEED_KEY, "true");
 }

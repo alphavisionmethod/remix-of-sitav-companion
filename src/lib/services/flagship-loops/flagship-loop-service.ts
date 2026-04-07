@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface FlagshipLoopSeed {
   loop_key: string;
@@ -219,7 +219,7 @@ export async function seedFlagshipLoops() {
   const results: Array<{ loop_key: string; status: string }> = [];
 
   for (const seed of FLAGSHIP_LOOP_SEEDS) {
-    const { data: existing } = await fromTable("flagship_loops")
+    const { data: existing } = await fromDynamicTable("flagship_loops")
       .select("id")
       .eq("loop_key", seed.loop_key)
       .eq("user_id", user.id)
@@ -227,7 +227,7 @@ export async function seedFlagshipLoops() {
 
     if (existing) {
       // Update existing with latest seed data
-      await fromTable("flagship_loops")
+      await fromDynamicTable("flagship_loops")
         .update({
           title: seed.title,
           truth_pct: seed.truth_pct,
@@ -255,17 +255,17 @@ export async function seedFlagshipLoops() {
       continue;
     }
 
-    const { error } = await fromTable("flagship_loops")
+    const { error } = await fromDynamicTable("flagship_loops")
       .insert({ ...seed, user_id: user.id });
 
-    results.push({ loop_key: seed.loop_key, status: error ? `error: ${error.message}` : "seeded" });
+    results.push({ loop_key: seed.loop_key, status: error ? `error: ${(error as Error)?.message ?? String(error)}` : "seeded" });
   }
 
   return results;
 }
 
 export async function fetchFlagshipLoops() {
-  const { data, error } = await fromTable("flagship_loops")
+  const { data, error } = await fromDynamicTable("flagship_loops")
     .select("*")
     .order("created_at", { ascending: true });
   if (error) throw error;
@@ -273,7 +273,7 @@ export async function fetchFlagshipLoops() {
 }
 
 export async function updateFlagshipLoop(id: string, updates: Partial<FlagshipLoopSeed>) {
-  const { error } = await fromTable("flagship_loops")
+  const { error } = await fromDynamicTable("flagship_loops")
     .update({ ...updates, updated_at: new Date().toISOString() })
     .eq("id", id);
   if (error) throw error;

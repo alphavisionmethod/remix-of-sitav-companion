@@ -1,4 +1,4 @@
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Family Command Center Service
 // Unified calendar + tasks + meals + budget for the household
@@ -93,7 +93,7 @@ class FamilyCommandCenterService {
   }
 
   private async getMembers(userId: string): Promise<FamilyMember[]> {
-    const { data } = await fromTable('household_members').select('id, display_name, role').limit(20);
+    const { data } = await fromDynamicTable('household_members').select('id, display_name, role').limit(20);
     const colors = ['#8B5CF6', '#F59E0B', '#10B981', '#EF4444', '#3B82F6'];
     return (data || []).map((m, i) => ({
       id: m.id,
@@ -104,17 +104,17 @@ class FamilyCommandCenterService {
   }
 
   private async getTasks(userId: string): Promise<any[]> {
-    const { data } = await fromTable('household_tasks').select('*').eq('user_id', userId).order('due_date');
+    const { data } = await fromDynamicTable('household_tasks').select('*').eq('user_id', userId).order('due_date');
     return data || [];
   }
 
   private async getBills(userId: string): Promise<any[]> {
-    const { data } = await fromTable('bills').select('*').eq('user_id', userId).order('due_date');
+    const { data } = await fromDynamicTable('bills').select('*').eq('user_id', userId).order('due_date');
     return data || [];
   }
 
   private async getBudgets(userId: string): Promise<any[]> {
-    const { data } = await fromTable('budgets').select('*').eq('user_id', userId);
+    const { data } = await fromDynamicTable('budgets').select('*').eq('user_id', userId);
     return data || [];
   }
 }
