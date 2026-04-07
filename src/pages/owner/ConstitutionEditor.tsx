@@ -458,9 +458,10 @@ export default function ConstitutionEditor() {
                   <RuleCard
                     key={rule.id}
                     rule={rule}
-                    onToggle={toggleRule}
-                    onDelete={deleteRule}
+                    onToggle={handleToggleRule}
+                    onDelete={handleDeleteRule}
                   />
+                ))
                 ))
               )}
             </AnimatePresence>
