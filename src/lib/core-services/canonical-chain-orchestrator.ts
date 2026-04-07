@@ -191,17 +191,32 @@ export class CanonicalChainOrchestrator {
       return { correlationId, policyResult, workflow: this.workflows.getWorkflow(workflow.id)!, blocked: true, blockReason: "Simulation required before execution" };
     }
 
-    // 4. Execute
+    // 4. Execute — with placeholder receipt lifecycle
     this.workflows.transition(workflow.id, "drafted", "Policy allowed");
     this.workflows.transition(workflow.id, "simulated", "Auto-simulated (policy allowed)");
     this.workflows.transition(workflow.id, "queued", "Ready for execution");
     this.workflows.transition(workflow.id, "executing", "Starting execution");
 
+    // Create placeholder receipt BEFORE execution (sacred invariant)
+    const placeholderReceipt = await this.receipts.createPlaceholder(
+      correlationId, input.capabilityId, undefined
+    );
+
     const envelope = createEnvelope(input.capabilityId, input.payload, {
       correlationId, mode: input.isSimulation ? "simulation" : "real",
       policyProof: { effect: policyResult.effect, rule: policyResult.matchedRule?.id },
     });
+
+    // Mark placeholder as executing
+    this.receipts.markExecuting(placeholderReceipt.id);
+
     const executedEnvelope = await this.executor.execute(envelope);
+
+    // Finalize placeholder receipt
+    await this.receipts.finalizeReceipt(placeholderReceipt.id, {
+      status: executedEnvelope.status,
+      envelopeId: executedEnvelope.id,
+    }, executedEnvelope.status === "failed" ? "failed" : "completed");
 
     // 5. Persist envelope
     if (this.userId) {

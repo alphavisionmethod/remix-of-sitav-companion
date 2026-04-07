@@ -25,6 +25,7 @@ export interface Receipt {
   sequenceNumber: number;
   status: "valid" | "tampered" | "superseded";
   createdAt: number;
+  updatedAt?: number;
 }
 
 export interface ProofPack {

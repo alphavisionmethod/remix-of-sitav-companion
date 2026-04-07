@@ -331,6 +331,16 @@ export class MemoryService {
     }
     return undefined;
   }
+
+  /** Infer trust level from source */
+  private inferTrustLevel(source?: string): MemoryTrustLevel {
+    if (!source) return "unverified";
+    if (source === "canonical-chain" || source === "kernel" || source === "system") return "verified";
+    if (source === "advisor" || source === "agent") return "inferred";
+    if (source === "user" || source === "ui") return "user-provided";
+    if (source === "external" || source === "connector") return "external";
+    return "unverified";
+  }
 }
 
 // ── Factory ─────────────────────────────────────────────────────
