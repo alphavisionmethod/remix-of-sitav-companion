@@ -20,6 +20,7 @@ import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { RouteErrorBoundary } from "@/components/sita/RouteErrorBoundary";
 import { createQueryClient } from "@/lib/query-config";
 import { Suspense, lazy } from "react";
+import { PlatformInit } from "@/components/sita/PlatformInit";
 
 // ═══════════════════════════════════════════════════
 // CODE-SPLIT: Lazy-load all page components
