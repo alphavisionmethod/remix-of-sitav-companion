@@ -96,7 +96,7 @@ export default function ISA07AuthConnectorTruthBoard() {
         resolved: false,
       });
     }
-    if (hasIdentity && hasConnector && clients.length >= 2) {
+    if (hasIdentity && hasConnector && (clients as any[]).length >= 2) {
       findings.push({
         type: "over_scope",
         severity: "info",
