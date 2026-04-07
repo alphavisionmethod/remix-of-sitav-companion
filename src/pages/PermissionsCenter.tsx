@@ -228,7 +228,7 @@ const PermissionsCenter = () => {
                     <div>
                       <p className="text-sm font-medium text-foreground">{dev.device_name}</p>
                       <p className="text-xs text-muted-foreground">
-                        {dev.device_type} · {dev.os || "Unknown OS"} · Trust: {Math.round(Number(dev.trust_score || 0) * 100)}%
+                        {dev.device_type} · {dev.os || "Unknown OS"} · Trust: {Math.round(Number((dev.metadata && typeof dev.metadata === 'object' && 'trust_score' in dev.metadata ? (dev.metadata as any).trust_score : 0) || 0) * 100)}%
                       </p>
                     </div>
                   </div>
