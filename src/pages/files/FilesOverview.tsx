@@ -138,8 +138,27 @@ const FilesOverview = () => {
                     </div>
                   </div>
                 </div>
-                <TrustBadge level={f.sensitivity === "restricted" ? "degraded" : f.sensitivity === "confidential" ? "review" : "verified"} size="sm" />
+                <div className="flex items-center gap-2">
+                  <SitaButton
+                    variant="ghost"
+                    className="text-[10px] h-6 px-2"
+                    onClick={() => handleAnalyze(f.name, f.text)}
+                  >
+                    {analyzingFile === f.name ? (
+                      <span className="animate-pulse">Analyzing…</span>
+                    ) : (
+                      <><Brain className="h-3 w-3" /> Analyze</>
+                    )}
+                  </SitaButton>
+                  <TrustBadge level={f.sensitivity === "restricted" ? "degraded" : f.sensitivity === "confidential" ? "review" : "verified"} size="sm" />
+                </div>
               </div>
+              {aiResult && analyzingFile === null && f.name === filesData[0]?.name && (
+                <div className="mt-2 rounded-lg bg-primary/5 border border-primary/10 p-2">
+                  <p className="text-[10px] text-primary font-medium flex items-center gap-1"><Sparkles className="h-3 w-3" /> AI Insight</p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{aiResult}</p>
+                </div>
+              )}
             </SitaCard>
           ))}
 
