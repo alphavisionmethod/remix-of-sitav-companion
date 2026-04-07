@@ -673,9 +673,10 @@ const App = () => (
             <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
             <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/onboarding" element={<OnboardingGuard><Onboarding /></OnboardingGuard>} />
             <Route path="/auth/callback" element={<EmailVerificationHandler />} />
             <Route path="/first-win" element={<ProtectedRoute><FirstWinActivation /></ProtectedRoute>} />
+            <Route path="/" element={<HomeRoute />} />
 
             <Route path="/mobile" element={<ProtectedRoute><MobileHome /></ProtectedRoute>} />
             <Route path="/mobile/approvals" element={<ProtectedRoute><MobileApprovals /></ProtectedRoute>} />
