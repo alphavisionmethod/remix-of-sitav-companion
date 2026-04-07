@@ -1879,8 +1879,8 @@ const OwnerCenter = () => {
                   <Shield className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <div>
-                  <p className="font-display text-3xl font-bold text-foreground">{(trustData as Record<string, unknown>)?.overallScore || 94}%</p>
-                  <p className="text-sm text-muted-foreground">Overall Trust Score · {(trustData as Record<string, unknown>)?.trend || "stable"}</p>
+                  <p className="font-display text-3xl font-bold text-foreground">{trustData?.overallScore || 94}%</p>
+                  <p className="text-sm text-muted-foreground">Overall Trust Score · {trustData?.trend || "stable"}</p>
                 </div>
               </div>
             </SitaCard>
