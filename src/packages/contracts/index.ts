@@ -73,7 +73,29 @@ export * from "./admin";
 export * from "./kernel";
 
 // ── MSA (Multi-Surface Architecture) contracts ──────────────
-export * from "./msa";
+// NOTE: RiskTier collides with _contract-scaffold, so MSA's RiskTier is excluded
+export type {
+  // adapter-contract
+  SurfaceAdapterRecord, InteractionGrammar, NavigationGrammar, NotificationGrammar, ReceiptPresentation, TrustPresentation,
+  // capability-contract (minus RiskTier)
+  CapabilityDefinition, CapabilityInvocation, CapabilityResult, CapabilitySurfaceBinding, CapabilityPortabilityRecord, ActionType, PortabilityClass,
+  // device-family-contract
+  DeviceFamilyKey, DeviceFamilyRecord, ConnectedDeviceRecord, DeviceTrustRecord, HandoffSessionRecord, PresenceStateRecord,
+  ConnectionState, DeviceRoleInOS, InteractionClass, SensorClass, SurfacePrimacy, TrustClass, WearablePrimaryRole,
+  NativeRequirementLevel, DeviceRoadmapPhase, RoadmapPhaseKey, SurfaceStrategyEntry,
+  // experience-grammar
+  ExperienceGrammarRecord, GrammarType, GrammarValue, SurfaceRenderingRule,
+  // shell-contract
+  ShellManifestRecord, ShellCapabilityBinding,
+  // surface-types
+  SurfaceType,
+} from "./msa";
+export {
+  DEVICE_ROADMAP, SURFACE_STRATEGY_MATRIX,
+  ACTION_STATE_GRAMMAR, ALL_GRAMMARS, BOARDROOM_GRAMMAR, COMMAND_GRAMMAR,
+  DEGRADED_STATE_GRAMMAR, NOTIFICATION_URGENCY_GRAMMAR, OPPORTUNITY_SCORING_GRAMMAR,
+  RECEIPT_PROOF_GRAMMAR, REFUSAL_GRAMMAR, TRUST_STATE_GRAMMAR, WORKFLOW_STATE_GRAMMAR,
+} from "./msa";
 
 // ── Native (Electron/Desktop) contracts ─────────────────────
 export * from "./native";
