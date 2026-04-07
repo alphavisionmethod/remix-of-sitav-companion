@@ -358,7 +358,7 @@ export default function ConstitutionEditor() {
       const rules = compiler.getAllRules();
       const added = rules.find((r: ConstitutionRule) => r.naturalLanguage === text);
       if (added) {
-        await fromTable("constitution_rules").insert({
+        await fromTable("constitution_rules").insert([{
           user_id: user.id,
           natural_text: text,
           category: added.category,
@@ -366,7 +366,7 @@ export default function ConstitutionEditor() {
           enforcement_mode: added.enforcementMode,
           is_active: true,
           compiled_json: added.compiledPolicy,
-        });
+        }]);
       }
     }
   }, [compileRule, isDemo, user?.id, compiler]);

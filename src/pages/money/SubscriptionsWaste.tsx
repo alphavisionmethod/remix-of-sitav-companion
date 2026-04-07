@@ -249,16 +249,16 @@ const SubscriptionsWaste = () => {
                   </div>
                 </SitaCard>
 
-                {selected.waste_flag && (
+                {(selected as any).waste_flag && (
                   <SitaCard hover={false}>
                     <SitaCardTitle>Recommended Action</SitaCardTitle>
                     <div className="mt-3 rounded-xl bg-accent/5 border border-accent/10 p-4">
                       <div className="flex items-start gap-2">
                         <Sparkles className="h-4 w-4 text-accent mt-0.5 shrink-0" />
                         <div>
-                          <p className="text-sm font-medium text-foreground">Cancel {selected.service_name}</p>
+                          <p className="text-sm font-medium text-foreground">Cancel {selected.name}</p>
                           <p className="mt-1 text-xs text-muted-foreground">
-                            Save ${annualized(Number(selected.amount), selected.billing_cycle).toFixed(0)}/year. {selected.duplicate_of ? `Use ${selected.duplicate_of} instead.` : "Usage doesn't justify the cost."}
+                            Save ${annualized(Number(selected.amount), selected.frequency).toFixed(0)}/year. {(selected as any).duplicate_of ? `Use ${(selected as any).duplicate_of} instead.` : "Usage doesn't justify the cost."}
                           </p>
                         </div>
                       </div>

@@ -32,8 +32,8 @@ describe("Capability Registry — Integration", () => {
     });
 
     expect(result.success).toBe(true);
-    expect((result as Record<string, unknown>).data?.echo).toBe("hello");
-    expect(typeof (result as Record<string, unknown>).latencyMs).toBe("number");
+    expect((result as unknown as Record<string, unknown>).data?.echo).toBe("hello");
+    expect(typeof (result as unknown as Record<string, unknown>).latencyMs).toBe("number");
   });
 
   it("returns error for unregistered capability", async () => {

@@ -324,8 +324,8 @@ function useSeedLeases(leasesData: any[]) {
       // Manually expire the CRM one
       const crmLease = all.find(l => l.capabilityId === "business.update-lead");
       if (crmLease) {
-        (crmLease as Record<string, unknown>).expiresAt = Date.now() - 1000;
-        (crmLease as Record<string, unknown>).status = "expired";
+        (crmLease as unknown as Record<string, unknown>).expiresAt = Date.now() - 1000;
+        (crmLease as unknown as Record<string, unknown>).status = "expired";
       }
     }
 
