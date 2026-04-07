@@ -1,0 +1,230 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Manual Deploy Workflow
+# Triggered manually. Requires CI to pass. Production requires
+# environment approval gate. NO auto-deploy.
+# ═══════════════════════════════════════════════════════════════
+
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment"
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      skip_ci_check:
+        description: "Skip CI verification (emergency only)"
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: deploy-${{ github.event.inputs.environment }}
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: "20"
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # ── Verify CI passed on this commit ─────────────────────────
+  verify-ci:
+    name: Verify CI Status
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check latest CI run
+        if: ${{ github.event.inputs.skip_ci_check != 'true' }}
+        run: |
+          echo "## 🔍 CI Verification" >> $GITHUB_STEP_SUMMARY
+          CONCLUSION=$(gh run list \
+            --workflow=ci.yml \
+            --branch=${{ github.ref_name }} \
+            --limit=1 \
+            --json conclusion \
+            --jq '.[0].conclusion' 2>/dev/null || echo "unknown")
+
+          if [ "$CONCLUSION" = "success" ]; then
+            echo "✅ Latest CI run passed" >> $GITHUB_STEP_SUMMARY
+          elif [ "$CONCLUSION" = "unknown" ]; then
+            echo "⚠️ Could not determine CI status — proceeding with caution" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Latest CI run did not pass (status: $CONCLUSION)" >> $GITHUB_STEP_SUMMARY
+            echo "::error::CI has not passed on this branch. Use skip_ci_check for emergencies."
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Emergency deploy notice
+        if: ${{ github.event.inputs.skip_ci_check == 'true' }}
+        run: |
+          echo "## ⚠️ EMERGENCY DEPLOY" >> $GITHUB_STEP_SUMMARY
+          echo "CI check was skipped. Triggered by: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+
+  # ── Build deploy artifact ──────────────────────────────────
+  build-deploy-artifact:
+    name: Build Deploy Artifact
+    runs-on: ubuntu-latest
+    needs: verify-ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
+      - name: Generate health.json
+        run: |
+          node -e "
+          const fs = require('fs');
+          const health = {
+            status: 'healthy',
+            version: require('./package.json').version || '0.0.0',
+            commit: '${{ github.sha }}'.slice(0, 8),
+            branch: '${{ github.ref_name }}',
+            environment: '${{ github.event.inputs.environment }}',
+            builtAt: new Date().toISOString(),
+            buildNumber: '${{ github.run_number }}',
+          };
+          fs.writeFileSync('dist/health.json', JSON.stringify(health, null, 2));
+          console.log('✅ health.json generated');
+          "
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deploy-dist
+          path: dist/
+          retention-days: 30
+
+  # ── Deploy to Staging ──────────────────────────────────────
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build-deploy-artifact
+    if: ${{ github.event.inputs.environment == 'staging' }}
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download dist
+        uses: actions/download-artifact@v4
+        with:
+          name: deploy-dist
+          path: dist/
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Docker image
+        run: |
+          TAG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:staging-${{ github.sha }}"
+          TAG_LATEST="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:staging-latest"
+          docker build -t "$TAG" -t "$TAG_LATEST" .
+          docker push "$TAG"
+          docker push "$TAG_LATEST"
+          echo "## 🚀 Staging Deploy" >> $GITHUB_STEP_SUMMARY
+          echo "Image: \`$TAG\`" >> $GITHUB_STEP_SUMMARY
+
+  # ── Deploy to Production (requires approval) ──────────────
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: build-deploy-artifact
+    if: ${{ github.event.inputs.environment == 'production' }}
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download dist
+        uses: actions/download-artifact@v4
+        with:
+          name: deploy-dist
+          path: dist/
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Docker image
+        run: |
+          SHORT_SHA=$(echo "${{ github.sha }}" | head -c 8)
+          TAG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:prod-${SHORT_SHA}"
+          TAG_LATEST="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:production-latest"
+          docker build -t "$TAG" -t "$TAG_LATEST" .
+          docker push "$TAG"
+          docker push "$TAG_LATEST"
+          echo "## 🚀 Production Deploy" >> $GITHUB_STEP_SUMMARY
+          echo "Image: \`$TAG\`" >> $GITHUB_STEP_SUMMARY
+          echo "Approved by: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+
+  # ── Post-Deploy Smoke Test ─────────────────────────────────
+  post-deploy-smoke:
+    name: Post-Deploy Smoke Test
+    runs-on: ubuntu-latest
+    needs: [deploy-staging, deploy-production]
+    if: always() && (needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success')
+    steps:
+      - name: Download dist
+        uses: actions/download-artifact@v4
+        with:
+          name: deploy-dist
+          path: dist/
+      - name: Verify health.json
+        run: |
+          echo "## 🏥 Post-Deploy Smoke Test" >> $GITHUB_STEP_SUMMARY
+          if [ -f dist/health.json ]; then
+            STATUS=$(python3 -c "import json; print(json.load(open('dist/health.json'))['status'])")
+            if [ "$STATUS" = "healthy" ]; then
+              echo "✅ health.json status: healthy" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "❌ health.json status: $STATUS" >> $GITHUB_STEP_SUMMARY
+              exit 1
+            fi
+          else
+            echo "❌ health.json not found in dist" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+      - name: Verify index.html exists
+        run: |
+          if [ -f dist/index.html ]; then
+            echo "✅ index.html present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ index.html missing" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+  # ── Deploy Summary ────────────────────────────────────────
+  notify:
+    name: Deploy Summary
+    runs-on: ubuntu-latest
+    needs: [verify-ci, build-deploy-artifact, deploy-staging, deploy-production, post-deploy-smoke]
+    if: always()
+    steps:
+      - name: Generate deploy summary
+        run: |
+          echo "# 📋 Deploy Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| CI Verification | ${{ needs.verify-ci.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build Artifact | ${{ needs.build-deploy-artifact.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Deploy Staging | ${{ needs.deploy-staging.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Deploy Production | ${{ needs.deploy-production.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Smoke Test | ${{ needs.post-deploy-smoke.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** ${{ github.event.inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Run:** [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY

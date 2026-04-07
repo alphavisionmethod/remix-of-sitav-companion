@@ -62,13 +62,19 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci
-      - name: Run Unit Tests
-        run: npx vitest run --reporter=verbose
+      - name: Run Unit Tests with Coverage
+        run: npx vitest run --reporter=verbose --coverage
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: unit-test-results
           path: coverage/
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-summary
+          path: coverage/coverage-summary.json
           retention-days: 14
 
   # ── Integration Tests (blocks merge) ──────────────────────
