@@ -356,6 +356,7 @@ export const AdvisorChat = ({ isOpen, onClose }: AdvisorChatProps) => {
                 placeholder={`Ask ${meta.label.replace(" Advisor", "")}...`}
                 className="flex-1 rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all"
                 disabled={isLoading || isStreaming}
+                data-testid="advisor-chat-input"
               />
               {isStreaming ? (
                 <button
