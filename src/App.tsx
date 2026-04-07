@@ -698,8 +698,9 @@ const App = () => (
                 <ShellLayout>
                   <Suspense fallback={<PageLoader />}>
                   <Routes>
-                    <Route path="/" element={<DailyPulse />} />
+                    <Route path="/" element={<DesktopPage />} />
                     <Route path="/home" element={<DailyPulse />} />
+                    <Route path="/desktop" element={<DesktopPage />} />
                     <Route path="/profile" element={<UserProfilePage />} />
                     <Route path="/life" element={<LifeDashboard />} />
                     <Route path="/life-simulator" element={<LifeSimulator />} />
