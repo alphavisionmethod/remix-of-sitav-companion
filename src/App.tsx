@@ -451,6 +451,9 @@ const SEC06IncidentRecovery = lazy(() => import("./pages/admin/security/SEC06Inc
 const FE01QualityMatrix = lazy(() => import("./pages/admin/frontend/FE01QualityMatrix"));
 const FE02DesignGovernance = lazy(() => import("./pages/admin/frontend/FE02DesignGovernance"));
 
+// Architecture
+const GodTierIntegrationBoard = lazy(() => import("./pages/admin/architecture/GodTierIntegrationBoard"));
+
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
