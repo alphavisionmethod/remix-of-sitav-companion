@@ -6,10 +6,11 @@ import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { useState, useMemo } from "react";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAction } from "@/lib/hooks/useAction";
 import { useNavigate } from "react-router-dom";
 import {
   Users, Search, DollarSign, Heart, AlertTriangle, TrendingUp, Star, Phone, Mail,
