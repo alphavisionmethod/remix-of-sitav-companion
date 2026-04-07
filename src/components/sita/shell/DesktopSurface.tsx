@@ -91,18 +91,33 @@ export function DesktopSurface({
     };
 
   // ── Boardroom Summary (adaptive by use mode) ────────────
+  // Wire to edge functions for live boardroom data
+  const { data: liveCf } = useCashflowAnalysis();
+  const crmSync = useCRMSync();
+  const cf = liveCf as any;
+  const crmHealth = crmSync.healthCheck.data as any;
+
   const boardroomItems = useMemo<BoardroomSummary[]>(() => {
+    const bizDetail = crmHealth
+      ? `${crmHealth.leads?.count ?? 0} leads · ${crmHealth.customers?.count ?? 0} customers · ${crmHealth.opportunities?.count ?? 0} opps`
+      : "12 active deals · 3 need attention";
+    const bizStatus = crmHealth?.leads?.count > 0 ? "good" as const : "attention" as const;
+
+    const finDetail = cf
+      ? `Liquid: $${Math.round((cf.total_liquid_cents || 0) / 100).toLocaleString()} · Receivable: $${Math.round((cf.total_receivable_cents || 0) / 100).toLocaleString()}`
+      : "All bills current · Reserve at 85%";
+    const finStatus = cf?.overdue_count > 0 ? "attention" as const : "good" as const;
+
     const items: BoardroomSummary[] = [
-      { id: "biz", icon: Briefcase, domain: "Business", headline: "Pipeline health", detail: "12 active deals · 3 need attention", status: "attention" },
-      { id: "fin", icon: DollarSign, domain: "Finance", headline: "Cash position", detail: "All bills current · Reserve at 85%", status: "good" },
+      { id: "biz", icon: Briefcase, domain: "Business", headline: "Pipeline health", detail: bizDetail, status: bizStatus },
+      { id: "fin", icon: DollarSign, domain: "Finance", headline: "Cash position", detail: finDetail, status: finStatus },
       { id: "life", icon: Home, domain: "Household", headline: "Week ahead", detail: "6 tasks · 2 appointments · 1 overdue", status: "attention" },
     ];
-    // Reorder by use mode
     if (primaryUseMode === "business") return [items[0], items[1], items[2]];
     if (primaryUseMode === "finance") return [items[1], items[0], items[2]];
     if (primaryUseMode === "household") return [items[2], items[0], items[1]];
     return items;
-  }, [primaryUseMode]);
+  }, [primaryUseMode, cf, crmHealth]);
 
   // ── Today's Items ──────────────────────────────────────────
   const todayItems = useMemo<TodayItem[]>(() => [
