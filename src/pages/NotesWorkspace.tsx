@@ -23,12 +23,13 @@ function mapDbNote(row: any): Note {
     id: row.id,
     title: row.title || "Untitled",
     preview: (row.content || "").slice(0, 200),
+    content: row.content || "",
     type: "note",
     folder: row.folder || "General",
     tags: row.tags || [],
     pinned: row.pinned || false,
-    starred: row.starred || false,
     updatedAt: row.updated_at,
+    createdAt: row.created_at,
     linkedEntity: undefined,
   };
 }

@@ -279,17 +279,19 @@ const RevenueCallingPage = () => {
   const callLogs: CallLog[] = useMemo(() => {
     if (isDemoMode) return MOCK_CALL_LOGS;
     if (!liveLogs?.length) return [];
-    return liveLogs.map((l: any) => ({
+    return liveLogs.map((l: any): CallLog => ({
       id: l.id,
       contactId: l.contact_id || "",
       contactName: l.contact_name || "",
+      phone: "",
       duration: l.duration_seconds || 0,
       status: l.status as any,
-      outcome: l.outcome || "no-answer",
+      outcome: (l.outcome || "no-answer") as any,
       notes: l.notes || "",
       revenue: Number(l.revenue_impact) || 0,
       timestamp: new Date(l.recorded_at || l.created_at).getTime(),
       direction: "outbound" as const,
+      recordingUrl: null,
     }));
   }, [isDemoMode, liveLogs]);
 
