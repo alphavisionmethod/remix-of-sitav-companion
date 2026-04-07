@@ -6,7 +6,7 @@ export function useReducedMotion(): boolean {
     const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)");
     if (mq?.matches) return true;
     // Low-power device detection
-    const mem = (navigator as Record<string, unknown>).deviceMemory;
+    const mem = (navigator as unknown as Record<string, unknown>).deviceMemory;
     const cores = navigator.hardwareConcurrency;
     if ((mem && mem < 4) || (cores && cores < 4)) return true;
     return false;

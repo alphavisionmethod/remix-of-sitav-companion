@@ -24,8 +24,8 @@ function detectPlatform(): PushPlatform {
   if (typeof window === "undefined") return "web";
   if (window.electron) return "electron";
   // Capacitor detection
-  if ((window as Record<string, unknown>).Capacitor?.isNativePlatform?.()) {
-    return (window as Record<string, unknown>).Capacitor.getPlatform?.() === "ios" ? "ios" : "android";
+  if ((window as unknown as Record<string, unknown>).Capacitor?.isNativePlatform?.()) {
+    return (window as unknown as Record<string, unknown>).Capacitor.getPlatform?.() === "ios" ? "ios" : "android";
   }
   return "web";
 }
@@ -234,7 +234,7 @@ export async function refreshToken(): Promise<PushTokenRecord | null> {
 
 export function isPushSupported(): boolean {
   if (typeof window === "undefined") return false;
-  if ((window as Record<string, unknown>).Capacitor?.isNativePlatform?.()) return true;
+  if ((window as unknown as Record<string, unknown>).Capacitor?.isNativePlatform?.()) return true;
   if (window.electron) return true;
   return "serviceWorker" in navigator && "PushManager" in window;
 }

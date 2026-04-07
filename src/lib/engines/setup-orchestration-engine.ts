@@ -82,7 +82,7 @@ export class SetupOrchestrationEngine {
     const w = window.innerWidth;
     return {
       hasCamera: !!(navigator.mediaDevices?.getUserMedia),
-      hasBiometric: !!(window as Record<string, unknown>).PublicKeyCredential,
+      hasBiometric: !!(window as unknown as Record<string, unknown>).PublicKeyCredential,
       hasGeolocation: !!navigator.geolocation,
       screenSize: w < 768 ? "small" : w < 1200 ? "medium" : "large",
       connectionType: navigator.onLine ? "fast" : "offline",

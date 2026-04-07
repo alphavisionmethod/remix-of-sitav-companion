@@ -77,7 +77,7 @@ export const SystemUpdateService = {
       platform: navigator.platform,
       language: navigator.language,
       cores: navigator.hardwareConcurrency || 0,
-      memory: (navigator as Record<string, unknown>).deviceMemory || 0,
+      memory: (navigator as unknown as Record<string, unknown>).deviceMemory || 0,
     };
 
     const { data } = await fromTable('system_update_devices').upsert({

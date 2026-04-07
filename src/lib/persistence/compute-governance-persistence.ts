@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface ComputeBudgetSnapshotRow {
   id: string;
@@ -34,7 +34,7 @@ export async function createComputeSnapshot(
 ): Promise<ComputeBudgetSnapshotRow | null> {
   const userId = await uid();
   if (!userId) return null;
-  const { data, error } = await fromTable(TABLE)
+  const { data, error } = await fromDynamicTable(TABLE)
     .insert({ ...snapshot, user_id: userId })
     .select().single();
   if (error) { console.error("[compute-gov] snapshot insert failed:", error); return null; }
@@ -60,7 +60,7 @@ export async function fetchComputeSnapshots(opts?: {
 export async function getLatestSnapshot(domain: string = "platform"): Promise<ComputeBudgetSnapshotRow | null> {
   const userId = await uid();
   if (!userId) return null;
-  const { data, error } = await fromTable(TABLE)
+  const { data, error } = await fromDynamicTable(TABLE)
     .select("*").eq("user_id", userId).eq("domain", domain)
     .order("snapshot_at", { ascending: false }).limit(1).maybeSingle();
   if (error) { console.error("[compute-gov] latest fetch failed:", error); return null; }

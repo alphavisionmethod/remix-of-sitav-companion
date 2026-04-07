@@ -43,7 +43,7 @@ export function detectSurfaceType(): ExtendedSurfaceType {
   // PWA standalone
   if (
     window.matchMedia?.("(display-mode: standalone)")?.matches ||
-    (navigator as Record<string, unknown>).standalone === true
+    (navigator as unknown as Record<string, unknown>).standalone === true
   ) {
     return "pwa";
   }

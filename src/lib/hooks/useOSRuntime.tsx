@@ -219,7 +219,7 @@ export function OSRuntimeProvider({
         }, 30_000);
 
         // Store cleanup ref
-        (window as Record<string, unknown>).__sitaEngineSaveInterval = saveInterval;
+        (window as unknown as Record<string, unknown>).__sitaEngineSaveInterval = saveInterval;
       },
     ).catch(console.error);
 
@@ -244,7 +244,7 @@ export function OSRuntimeProvider({
     return () => {
       cancelled = true;
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      const saveInterval = (window as Record<string, unknown>).__sitaEngineSaveInterval;
+      const saveInterval = (window as unknown as Record<string, unknown>).__sitaEngineSaveInterval;
       if (saveInterval) clearInterval(saveInterval);
     };
   }, [userId, runtime]);
