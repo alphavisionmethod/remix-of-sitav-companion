@@ -5404,12 +5404,17 @@ export type Database = {
       communications: {
         Row: {
           body: string | null
+          channel: string | null
+          contact_name: string | null
           created_at: string
           customer_id: string | null
+          direction: string | null
+          domain: string | null
           id: string
           invoice_id: string | null
           lead_id: string | null
           opportunity_id: string | null
+          preview: string | null
           proof_of_send: string | null
           requires_approval: boolean | null
           sent_at: string | null
@@ -5421,12 +5426,17 @@ export type Database = {
         }
         Insert: {
           body?: string | null
+          channel?: string | null
+          contact_name?: string | null
           created_at?: string
           customer_id?: string | null
+          direction?: string | null
+          domain?: string | null
           id?: string
           invoice_id?: string | null
           lead_id?: string | null
           opportunity_id?: string | null
+          preview?: string | null
           proof_of_send?: string | null
           requires_approval?: boolean | null
           sent_at?: string | null
@@ -5438,12 +5448,17 @@ export type Database = {
         }
         Update: {
           body?: string | null
+          channel?: string | null
+          contact_name?: string | null
           created_at?: string
           customer_id?: string | null
+          direction?: string | null
+          domain?: string | null
           id?: string
           invoice_id?: string | null
           lead_id?: string | null
           opportunity_id?: string | null
+          preview?: string | null
           proof_of_send?: string | null
           requires_approval?: boolean | null
           sent_at?: string | null
@@ -20659,6 +20674,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      scenarios: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          parameters: Json | null
+          results: Json | null
+          status: string | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          parameters?: Json | null
+          results?: Json | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          parameters?: Json | null
+          results?: Json | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       scheduled_jobs: {
         Row: {

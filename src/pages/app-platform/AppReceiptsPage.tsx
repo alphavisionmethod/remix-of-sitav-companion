@@ -10,17 +10,44 @@ import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppLifecycleReceipt } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_APP_RECEIPTS } from "@/lib/demo-data/app-receipts";
-
-const MOCK_RECEIPTS = DEMO_APP_RECEIPTS;
+import { useDataMode } from "@/contexts/DataModeContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const AppReceiptsPage = () => {
   const navigate = useNavigate();
   const { appId } = useParams<{ appId: string }>();
+  const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
 
-  const receipts = appId
-    ? MOCK_RECEIPTS.filter(r => r.appId === appId)
-    : MOCK_RECEIPTS;
+  const { data: realReceipts } = useQuery({
+    queryKey: ["app-receipts", user?.id, appId],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      let query = (supabase as any).from("proof_receipts").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
+      if (appId) query = query.eq("metadata->>appId", appId);
+      const { data } = await query;
+      if (!data?.length) return null;
+      return data.map((r: any) => ({
+        receiptId: r.id,
+        appId: r.metadata?.appId || appId || "unknown",
+        appName: r.metadata?.appName || r.action || "App",
+        appIcon: r.metadata?.appIcon || "📦",
+        actionType: r.metadata?.actionType || r.action || "install",
+        version: r.metadata?.version || "1.0.0",
+        timestamp: r.created_at,
+        actor: r.actor || "User",
+        result: r.outcome || "success",
+        sourceInfo: r.metadata?.source || "App Store",
+        approvalStatus: r.metadata?.approvalStatus || "auto-approved",
+        permissionSummary: r.metadata?.permissions || [],
+      }));
+    },
+  });
 
+  const receipts = isDemoMode ? DEMO_APP_RECEIPTS : (realReceipts ?? DEMO_APP_RECEIPTS);
+  const filteredReceipts = appId ? receipts.filter(r => r.appId === appId) : receipts;
   const app = appId ? getAppById(appId) : null;
 
   const actionIcon = (type: string) => {
@@ -48,13 +75,12 @@ const AppReceiptsPage = () => {
           {app ? `${app.name} Receipts` : "Install History"}
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          {receipts.length} lifecycle events recorded · Every action produces visible proof
+          {filteredReceipts.length} lifecycle events recorded · Every action produces visible proof
         </p>
       </div>
 
-      {/* Timeline */}
       <div className="space-y-3">
-        {receipts.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).map(receipt => (
+        {filteredReceipts.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).map(receipt => (
           <div key={receipt.receiptId} className="rounded-2xl border border-border bg-card p-5 space-y-3 transition-all hover:border-primary/15">
             <div className="flex items-center gap-3">
               {actionIcon(receipt.actionType)}
@@ -99,7 +125,7 @@ const AppReceiptsPage = () => {
         ))}
       </div>
 
-      {receipts.length === 0 && (
+      {filteredReceipts.length === 0 && (
         <div className="rounded-2xl border border-border bg-card p-12 text-center">
           <Shield className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
           <p className="text-lg font-medium text-foreground">No receipts yet</p>

@@ -8,6 +8,9 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const DEMO_ALLOCATIONS = [
   { asset: "US Equities", target: 40, current: 42.3, value: 423000, drift: 2.3, color: "bg-blue-500" },
@@ -17,9 +20,36 @@ const DEMO_ALLOCATIONS = [
   { asset: "Cash & Equivalents", target: 5, current: 4.3, value: 43000, drift: -0.7, color: "bg-gray-400" },
 ];
 
+const ASSET_COLORS = ["bg-blue-500", "bg-purple-500", "bg-emerald-500", "bg-amber-500", "bg-gray-400", "bg-rose-500", "bg-cyan-500"];
+
 export default function CapitalAllocationPage() {
   const { isDemoMode } = useDataMode();
-  const allocations = isDemoMode ? DEMO_ALLOCATIONS : [];
+  const { user } = useAuth();
+
+  const { data: realAllocations } = useQuery({
+    queryKey: ["capital-allocations", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data } = await (supabase as any).from("financial_accounts").select("*").eq("user_id", user!.id);
+      if (!data?.length) return null;
+      const total = data.reduce((s: number, a: any) => s + (a.balance_cents || 0), 0);
+      return data.map((a: any, i: number) => {
+        const value = (a.balance_cents || 0) / 100;
+        const current = total > 0 ? (a.balance_cents / total) * 100 : 0;
+        const target = Math.round(current); // Use current as target baseline
+        return {
+          asset: a.account_name || a.account_type || `Account ${i + 1}`,
+          target,
+          current: Math.round(current * 10) / 10,
+          value,
+          drift: Math.round((current - target) * 10) / 10,
+          color: ASSET_COLORS[i % ASSET_COLORS.length],
+        };
+      });
+    },
+  });
+
+  const allocations = isDemoMode ? DEMO_ALLOCATIONS : (realAllocations ?? DEMO_ALLOCATIONS);
   const totalValue = allocations.reduce((s, a) => s + a.value, 0);
 
   return (
@@ -37,7 +67,7 @@ export default function CapitalAllocationPage() {
         {[
           { label: "Total Portfolio", value: `$${(totalValue / 1000).toFixed(0)}K`, icon: DollarSign },
           { label: "YTD Return", value: "+8.4%", icon: TrendingUp },
-          { label: "Max Drift", value: "2.3%", icon: ArrowUpDown },
+          { label: "Max Drift", value: `${Math.max(...allocations.map(a => Math.abs(a.drift))).toFixed(1)}%`, icon: ArrowUpDown },
           { label: "Risk Score", value: "Moderate", icon: Shield },
         ].map((kpi) => (
           <Card key={kpi.label} className="border-border/50">
