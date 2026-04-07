@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Activity, AlertTriangle, Zap, Clock, Target, Server, BarChart3, Bell, CheckCircle, ArrowRight, RefreshCw, Play } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -43,7 +44,7 @@ const OperationsCommandCenter = () => {
   const { data: incidentCount } = useQuery({
     queryKey: ["ops-incidents"],
     queryFn: async () => {
-      const { count } = await supabase.from("incidents").select("*", { count: "exact", head: true }).in("status", ["open", "investigating"]);
+      const { count } = await fromTable("incidents").select("*", { count: "exact", head: true }).in("status", ["open", "investigating"]);
       return count || 0;
     },
   });

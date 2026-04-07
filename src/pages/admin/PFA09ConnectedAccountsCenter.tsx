@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { User, Shield, Link2, CheckCircle, XCircle, AlertTriangle, ArrowUpCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -14,22 +15,22 @@ export default function PFA09ConnectedAccountsCenter() {
   const { isDemoMode } = useDataMode();
   const { data: identities = [] } = useQuery({
     queryKey: ["identity-links"],
-    queryFn: async () => { const { data } = await supabase.from("identity_provider_links").select("*, provider_families(name, provider_key)").order("created_at"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("identity_provider_links").select("*, provider_families(name, provider_key)").order("created_at"); return data || []; },
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ["service-links"],
-    queryFn: async () => { const { data } = await supabase.from("connected_service_links").select("*, provider_families(name, provider_key), provider_capabilities(display_name, capability_key, category)").order("created_at"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connected_service_links").select("*, provider_families(name, provider_key), provider_capabilities(display_name, capability_key, category)").order("created_at"); return data || []; },
   });
 
   const { data: families = [] } = useQuery({
     queryKey: ["provider-families"],
-    queryFn: async () => { const { data } = await supabase.from("provider_families").select("*").eq("active", true).order("name"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("provider_families").select("*").eq("active", true).order("name"); return data || []; },
   });
 
   const { data: levels = [] } = useQuery({
     queryKey: ["permission-levels"],
-    queryFn: async () => { const { data } = await supabase.from("permission_levels").select("*, provider_capabilities(display_name)"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("permission_levels").select("*, provider_capabilities(display_name)"); return data || []; },
   });
 
   return (

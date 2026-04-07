@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Key, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -18,7 +19,7 @@ export default function PFA03OAuthClientRegistry() {
   const { isDemoMode } = useDataMode();
   const { data: clients = [] } = useQuery({
     queryKey: ["oauth-clients"],
-    queryFn: async () => { const { data } = await supabase.from("oauth_client_registry").select("*, provider_families(name)").order("created_at"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("oauth_client_registry").select("*, provider_families(name)").order("created_at"); return data || []; },
   });
 
   return (

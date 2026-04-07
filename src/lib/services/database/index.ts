@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export type QueryStatus = "idle" | "loading" | "success" | "error";
 
@@ -44,7 +45,7 @@ export class DatabaseService {
   async checkHealth(): Promise<ConnectionHealth> {
     const start = Date.now();
     try {
-      const { error } = await supabase.from("profiles").select("id").limit(1);
+      const { error } = await fromTable("profiles").select("id").limit(1);
       return {
         isConnected: !error,
         latencyMs: Date.now() - start,

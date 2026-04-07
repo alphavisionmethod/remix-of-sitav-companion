@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { ActionRecord, ActionState, ActionStateTransition } from "@/packages/contracts/domain-types/os-unified";
 
 // ── Types ───────────────────────────────────────────────────────
@@ -58,7 +59,7 @@ export async function persistActionRecord(
   const userId = await uid();
   if (!userId) return null;
 
-  const { data, error } = await supabase.from("os_action_lineage")
+  const { data, error } = await fromTable("os_action_lineage")
     .insert({
       id: record.id,
       user_id: userId,
@@ -98,7 +99,7 @@ export async function persistActionTransition(
   }
 ): Promise<boolean> {
   // Fetch current to append to state_history
-  const { data: current } = await supabase.from("os_action_lineage")
+  const { data: current } = await fromTable("os_action_lineage")
     .select("state_history")
     .eq("id", actionId)
     .maybeSingle();
@@ -117,7 +118,7 @@ export async function persistActionTransition(
   if (opts?.blockingReasons) updatePayload.blocking_reasons = opts.blockingReasons;
   if (opts?.stuckSince !== undefined) updatePayload.stuck_since = opts.stuckSince;
 
-  const { error } = await supabase.from("os_action_lineage")
+  const { error } = await fromTable("os_action_lineage")
     .update(updatePayload)
     .eq("id", actionId);
 
@@ -128,14 +129,14 @@ export async function persistActionTransition(
 // ── Link references ─────────────────────────────────────────────
 
 export async function linkEventToAction(actionId: string, eventId: string): Promise<boolean> {
-  const { data } = await supabase.from("os_action_lineage")
+  const { data } = await fromTable("os_action_lineage")
     .select("linked_event_ids")
     .eq("id", actionId)
     .maybeSingle();
   if (!data) return false;
 
   const ids = [...new Set([...(data.linked_event_ids ?? []), eventId])];
-  const { error } = await supabase.from("os_action_lineage")
+  const { error } = await fromTable("os_action_lineage")
     .update({ linked_event_ids: ids })
     .eq("id", actionId);
 
@@ -143,14 +144,14 @@ export async function linkEventToAction(actionId: string, eventId: string): Prom
 }
 
 export async function linkMemoryToAction(actionId: string, memoryId: string): Promise<boolean> {
-  const { data } = await supabase.from("os_action_lineage")
+  const { data } = await fromTable("os_action_lineage")
     .select("linked_memory_ids")
     .eq("id", actionId)
     .maybeSingle();
   if (!data) return false;
 
   const ids = [...new Set([...(data.linked_memory_ids ?? []), memoryId])];
-  const { error } = await supabase.from("os_action_lineage")
+  const { error } = await fromTable("os_action_lineage")
     .update({ linked_memory_ids: ids })
     .eq("id", actionId);
 
@@ -158,14 +159,14 @@ export async function linkMemoryToAction(actionId: string, memoryId: string): Pr
 }
 
 export async function linkPolicyToAction(actionId: string, policyEvalId: string): Promise<boolean> {
-  const { data } = await supabase.from("os_action_lineage")
+  const { data } = await fromTable("os_action_lineage")
     .select("linked_policy_ids")
     .eq("id", actionId)
     .maybeSingle();
   if (!data) return false;
 
   const ids = [...new Set([...(data.linked_policy_ids ?? []), policyEvalId])];
-  const { error } = await supabase.from("os_action_lineage")
+  const { error } = await fromTable("os_action_lineage")
     .update({ linked_policy_ids: ids })
     .eq("id", actionId);
 
@@ -173,14 +174,14 @@ export async function linkPolicyToAction(actionId: string, policyEvalId: string)
 }
 
 export async function linkReceiptToAction(actionId: string, receiptId: string): Promise<boolean> {
-  const { data } = await supabase.from("os_action_lineage")
+  const { data } = await fromTable("os_action_lineage")
     .select("linked_receipt_ids")
     .eq("id", actionId)
     .maybeSingle();
   if (!data) return false;
 
   const ids = [...new Set([...(data.linked_receipt_ids ?? []), receiptId])];
-  const { error } = await supabase.from("os_action_lineage")
+  const { error } = await fromTable("os_action_lineage")
     .update({ linked_receipt_ids: ids })
     .eq("id", actionId);
 
@@ -188,14 +189,14 @@ export async function linkReceiptToAction(actionId: string, receiptId: string): 
 }
 
 export async function addProofToAction(actionId: string, proofId: string): Promise<boolean> {
-  const { data } = await supabase.from("os_action_lineage")
+  const { data } = await fromTable("os_action_lineage")
     .select("proof_ids")
     .eq("id", actionId)
     .maybeSingle();
   if (!data) return false;
 
   const ids = [...new Set([...(data.proof_ids ?? []), proofId])];
-  const { error } = await supabase.from("os_action_lineage")
+  const { error } = await fromTable("os_action_lineage")
     .update({ proof_ids: ids })
     .eq("id", actionId);
 
@@ -214,7 +215,7 @@ export async function fetchActionLineage(filters?: {
   const userId = await uid();
   if (!userId) return [];
 
-  let query = supabase.from("os_action_lineage")
+  let query = fromTable("os_action_lineage")
     .select("*")
     .eq("user_id", userId)
     .order("updated_at", { ascending: false });
@@ -238,7 +239,7 @@ export async function getActionExplanation(actionId: string): Promise<{
   policies: any[];
   receipts: any[];
 }> {
-  const { data: action } = await supabase.from("os_action_lineage")
+  const { data: action } = await fromTable("os_action_lineage")
     .select("*")
     .eq("id", actionId)
     .maybeSingle();
@@ -248,13 +249,13 @@ export async function getActionExplanation(actionId: string): Promise<{
   // Fetch linked entities in parallel
   const [events, policies, receipts] = await Promise.all([
     action.linked_event_ids?.length > 0
-      ? supabase.from("os_event_log").select("*").in("id", action.linked_event_ids).then((r: any) => r.data ?? [])
+      ? fromTable("os_event_log").select("*").in("id", action.linked_event_ids).then((r: any) => r.data ?? [])
       : Promise.resolve([]),
     action.linked_policy_ids?.length > 0
-      ? supabase.from("os_policy_evaluations").select("*").in("id", action.linked_policy_ids).then((r: any) => r.data ?? [])
+      ? fromTable("os_policy_evaluations").select("*").in("id", action.linked_policy_ids).then((r: any) => r.data ?? [])
       : Promise.resolve([]),
     action.linked_receipt_ids?.length > 0
-      ? supabase.from("sita_receipts").select("*").in("id", action.linked_receipt_ids).then((r: any) => r.data ?? [])
+      ? fromTable("sita_receipts").select("*").in("id", action.linked_receipt_ids).then((r: any) => r.data ?? [])
       : Promise.resolve([]),
   ]);
 

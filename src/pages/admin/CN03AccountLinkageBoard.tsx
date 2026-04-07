@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Unplug } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -23,7 +24,7 @@ export default function CN03AccountLinkageBoard() {
 
   const { data: accounts = [] } = useQuery({
     queryKey: ["connector-accounts"],
-    queryFn: async () => { const { data } = await supabase.from("connector_accounts").select("*").order("created_at", { ascending: false }); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connector_accounts").select("*").order("created_at", { ascending: false }); return data || []; },
   });
 
   const disconnectMutation = useMutation({

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 
 function useUserId() {
@@ -13,7 +14,7 @@ export function usePipelineStages() {
     queryKey: ["pipeline-stages", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("pipeline_stages").select("*").eq("user_id", uid!).order("position");
+      const { data } = await fromTable("pipeline_stages").select("*").eq("user_id", uid!).order("position");
       return data ?? [];
     },
   });
@@ -25,7 +26,7 @@ export function useDeals() {
     queryKey: ["deals", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("deals").select("*").eq("user_id", uid!);
+      const { data } = await fromTable("deals").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -37,7 +38,7 @@ export function useCampaigns() {
     queryKey: ["campaigns", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("campaigns").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      const { data } = await fromTable("campaigns").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
       return data ?? [];
     },
   });
@@ -49,7 +50,7 @@ export function useBookings() {
     queryKey: ["bookings", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("bookings").select("*").eq("user_id", uid!).order("booking_date", { ascending: false });
+      const { data } = await fromTable("bookings").select("*").eq("user_id", uid!).order("booking_date", { ascending: false });
       return data ?? [];
     },
   });
@@ -61,7 +62,7 @@ export function useForms() {
     queryKey: ["forms", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("forms").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      const { data } = await fromTable("forms").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
       return data ?? [];
     },
   });
@@ -73,7 +74,7 @@ export function useFunnels() {
     queryKey: ["funnels", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("funnels").select("*").eq("user_id", uid!);
+      const { data } = await fromTable("funnels").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -85,7 +86,7 @@ export function useOffers() {
     queryKey: ["offers", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("offers").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      const { data } = await fromTable("offers").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
       return data ?? [];
     },
   });
@@ -97,7 +98,7 @@ export function useMemberships() {
     queryKey: ["memberships", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("memberships").select("*").eq("user_id", uid!);
+      const { data } = await fromTable("memberships").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -109,7 +110,7 @@ export function useReputationReviews() {
     queryKey: ["reputation-reviews", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("reputation_reviews").select("*").eq("user_id", uid!).order("review_date", { ascending: false });
+      const { data } = await fromTable("reputation_reviews").select("*").eq("user_id", uid!).order("review_date", { ascending: false });
       return data ?? [];
     },
   });
@@ -121,7 +122,7 @@ export function useRetentionAlerts() {
     queryKey: ["retention-alerts", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("retention_alerts").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      const { data } = await fromTable("retention_alerts").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
       return data ?? [];
     },
   });
@@ -133,7 +134,7 @@ export function useCallingContacts() {
     queryKey: ["calling-contacts", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("calling_contacts").select("*").eq("user_id", uid!);
+      const { data } = await fromTable("calling_contacts").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -145,7 +146,7 @@ export function useCustomers() {
     queryKey: ["customers", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("customers").select("*").eq("user_id", uid!);
+      const { data } = await fromTable("customers").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -157,7 +158,7 @@ export function useRevenueLeakItems() {
     queryKey: ["revenue-leak-items", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("revenue_leak_items").select("*").eq("user_id", uid!);
+      const { data } = await fromTable("revenue_leak_items").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -169,7 +170,7 @@ export function useAutomationRules() {
     queryKey: ["automation-rules", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("automation_rules").select("*").eq("user_id", uid!);
+      const { data } = await fromTable("automation_rules").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -181,7 +182,7 @@ export function useCommunicationLog() {
     queryKey: ["communication-log", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("communication_log").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      const { data } = await fromTable("communication_log").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
       return data ?? [];
     },
   });

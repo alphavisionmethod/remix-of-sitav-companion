@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Bell, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -14,17 +15,17 @@ export default function UAO04NotificationRouter() {
   const { isDemoMode } = useDataMode();
   const { data: routes = [] } = useQuery({
     queryKey: ["notification-routes"],
-    queryFn: async () => { const { data } = await supabase.from("ambient_notification_routes").select("*").order("priority"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("ambient_notification_routes").select("*").order("priority"); return data || []; },
   });
 
   const { data: fatigue = [] } = useQuery({
     queryKey: ["fatigue-profiles"],
-    queryFn: async () => { const { data } = await supabase.from("notification_fatigue_profiles").select("*"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("notification_fatigue_profiles").select("*"); return data || []; },
   });
 
   const { data: interruption = [] } = useQuery({
     queryKey: ["interruption-policies"],
-    queryFn: async () => { const { data } = await supabase.from("interruption_policies").select("*").order("priority"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("interruption_policies").select("*").order("priority"); return data || []; },
   });
 
   const fp = fatigue[0];

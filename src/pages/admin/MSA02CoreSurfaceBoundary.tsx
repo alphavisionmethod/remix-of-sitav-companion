@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AlertTriangle, CheckCircle, RefreshCw, Layers } from "lucide-react";
 import { toast } from "sonner";
@@ -27,7 +28,7 @@ export default function MSA02CoreSurfaceBoundary() {
 
   const { data: boundaries = [] } = useQuery({
     queryKey: ["architecture-boundaries"],
-    queryFn: async () => { const { data } = await supabase.from("architecture_boundary_records").select("*").order("migration_priority"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("architecture_boundary_records").select("*").order("migration_priority"); return data || []; },
   });
 
   const auditMutation = useMutation({

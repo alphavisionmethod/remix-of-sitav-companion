@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { RefreshCw, Globe, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -21,7 +22,7 @@ export default function PFA01ProviderFamilyRegistry() {
 
   const { data: families = [] } = useQuery({
     queryKey: ["provider-families"],
-    queryFn: async () => { const { data } = await supabase.from("provider_families").select("*").order("name"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("provider_families").select("*").order("name"); return data || []; },
   });
 
   const seedMutation = useMutation({

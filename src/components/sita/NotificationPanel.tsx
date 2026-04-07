@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Bell, DollarSign, Briefcase, Home, AlertTriangle, CheckCircle, Clock, ArrowRight, BellOff, Trash2, Filter, Search, Shield, Bot, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -97,7 +98,7 @@ export const NotificationPanel = ({ isOpen, onClose }: NotificationPanelProps) =
   const markRead = async (id: string) => {
     setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
     if (user && !isDemo) {
-      await supabase.from("notifications").update({ read: true }).eq("id", id).eq("user_id", user.id);
+      await fromTable("notifications").update({ read: true }).eq("id", id).eq("user_id", user.id);
     }
   };
 

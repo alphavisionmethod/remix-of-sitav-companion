@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import {
   CheckCircle, XCircle, Clock, Shield, AlertTriangle, Eye, ArrowRight,
@@ -59,7 +60,7 @@ const DEMO_DOMAINS = ["architecture", "runtime-truth", "connectors", "ai-governa
 
 // ── Data fetching ──
 async function fetchQueue(filters: Record<string, string>) {
-  let query = supabase.from("ai_workforce_approval_queue").select("*").order("created_at", { ascending: false }).limit(200);
+  let query = fromTable("ai_workforce_approval_queue").select("*").order("created_at", { ascending: false }).limit(200);
   if (filters.status && filters.status !== "all") query = query.eq("status", filters.status);
   if (filters.risk_tier && filters.risk_tier !== "all") query = query.eq("risk_tier", filters.risk_tier);
   if (filters.role_key && filters.role_key !== "all") query = query.eq("role_key", filters.role_key);
@@ -214,7 +215,7 @@ function HQ02QueueDetail() {
         updates.resolved_at = new Date().toISOString();
       }
       if (notes) updates.reviewer_notes = notes;
-      const { error } = await supabase.from("ai_workforce_approval_queue").update(updates).eq("id", id);
+      const { error } = await fromTable("ai_workforce_approval_queue").update(updates).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["hq-queue"] }); qc.invalidateQueries({ queryKey: ["hq-all-items"] }); toast.success("Queue item updated"); },

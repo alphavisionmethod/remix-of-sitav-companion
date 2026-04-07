@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -23,12 +24,12 @@ export default function CN04SyncTruthCenter() {
 
   const { data: syncRuns = [] } = useQuery({
     queryKey: ["connector-sync-runs"],
-    queryFn: async () => { const { data } = await supabase.from("connector_sync_runs").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connector_sync_runs").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
   });
 
   const { data: accounts = [] } = useQuery({
     queryKey: ["connector-accounts"],
-    queryFn: async () => { const { data } = await supabase.from("connector_accounts").select("id, display_name, connector_type"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connector_accounts").select("id, display_name, connector_type"); return data || []; },
   });
 
   const syncMutation = useMutation({

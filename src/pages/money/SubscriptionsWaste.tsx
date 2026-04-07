@@ -6,6 +6,7 @@ import { SubscriptionTrendsChart, SubscriptionCategoryChart } from "@/components
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { CreditCard, AlertTriangle, TrendingDown, CheckCircle, XCircle, Eye, Sparkles, Calendar, DollarSign, Plus, Trash2, Pencil, Pause, Play } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
@@ -54,7 +55,7 @@ const SubscriptionsWaste = () => {
   const subsQuery = useQuery({
     queryKey: ["subscriptions"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("subscriptions").select("*").order("service_name", { ascending: true });
+      const { data, error } = await fromTable("subscriptions").select("*").order("service_name", { ascending: true });
       if (error) throw error;
       return data;
     },
@@ -65,7 +66,7 @@ const SubscriptionsWaste = () => {
 
   const createMutation = useMutation({
     mutationFn: async (sub: SubForm) => {
-      const { error } = await supabase.from("subscriptions").insert({
+      const { error } = await fromTable("subscriptions").insert({
         service_name: sub.service_name,
         amount: parseFloat(sub.amount),
         billing_cycle: sub.billing_cycle,
@@ -85,7 +86,7 @@ const SubscriptionsWaste = () => {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, sub }: { id: string; sub: SubForm }) => {
-      const { error } = await supabase.from("subscriptions").update({
+      const { error } = await fromTable("subscriptions").update({
         service_name: sub.service_name,
         amount: parseFloat(sub.amount),
         billing_cycle: sub.billing_cycle,
@@ -104,7 +105,7 @@ const SubscriptionsWaste = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("subscriptions").delete().eq("id", id);
+      const { error } = await fromTable("subscriptions").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["subscriptions"] }); setSelectedId(null); toast.success("Subscription deleted"); },
@@ -113,7 +114,7 @@ const SubscriptionsWaste = () => {
 
   const statusMutation = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await supabase.from("subscriptions").update({ status }).eq("id", id);
+      const { error } = await fromTable("subscriptions").update({ status }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["subscriptions"] }); toast.success("Status updated"); },

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Route, MousePointer, Eye } from "lucide-react";
@@ -10,7 +11,7 @@ const LT06RouteInteractionTruth = () => {
   const { data: routeRecords } = useQuery({
     queryKey: ["route-truth-all"],
     queryFn: async () => {
-      const { data } = await supabase.from("route_truth_records").select("*").order("verified_at", { ascending: false }).limit(200);
+      const { data } = await fromTable("route_truth_records").select("*").order("verified_at", { ascending: false }).limit(200);
       return data ?? [];
     },
   });

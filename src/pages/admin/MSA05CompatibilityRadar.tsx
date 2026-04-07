@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Radar, RefreshCw, AlertTriangle, CheckCircle, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
@@ -28,22 +29,22 @@ export default function MSA05CompatibilityRadar() {
 
   const { data: consistency = [] } = useQuery({
     queryKey: ["cross-surface-consistency"],
-    queryFn: async () => { const { data } = await supabase.from("cross_surface_consistency_records").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("cross_surface_consistency_records").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
   });
 
   const { data: boundaries = [] } = useQuery({
     queryKey: ["architecture-boundaries"],
-    queryFn: async () => { const { data } = await supabase.from("architecture_boundary_records").select("*").eq("is_boundary_violation", true); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("architecture_boundary_records").select("*").eq("is_boundary_violation", true); return data || []; },
   });
 
   const { data: surfaces = [] } = useQuery({
     queryKey: ["surface-types"],
-    queryFn: async () => { const { data } = await supabase.from("surface_types").select("*").order("created_at"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("surface_types").select("*").order("created_at"); return data || []; },
   });
 
   const { data: bindings = [] } = useQuery({
     queryKey: ["capability-bindings"],
-    queryFn: async () => { const { data } = await supabase.from("capability_surface_bindings").select("*, capability_definitions(domain, capability_key)"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("capability_surface_bindings").select("*, capability_definitions(domain, capability_key)"); return data || []; },
   });
 
   const checkMutation = useMutation({

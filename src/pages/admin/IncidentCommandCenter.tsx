@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useIncidentManagement, useEntityScoped } from "@/contexts/SitaKernelContext";
@@ -51,7 +52,7 @@ export default function IncidentCommandCenter() {
   const { data: dbIncidents } = useQuery({
     queryKey: ["admin-incidents-all"],
     queryFn: async () => {
-      const { data } = await supabase.from("incidents").select("*").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("incidents").select("*").order("created_at", { ascending: false }).limit(50);
       return data || [];
     },
   });

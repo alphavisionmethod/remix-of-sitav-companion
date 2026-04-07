@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, BookOpen, Users, Layers } from "lucide-react";
@@ -13,7 +14,7 @@ export default function DRS03ScenarioLibrary() {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      const { data } = await supabase.from("demo_scenarios").select("*").eq("user_id", user.id).order("updated_at", { ascending: false });
+      const { data } = await fromTable("demo_scenarios").select("*").eq("user_id", user.id).order("updated_at", { ascending: false });
       return data ?? [];
     },
   });

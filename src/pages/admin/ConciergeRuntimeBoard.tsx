@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Activity, CheckCircle, AlertTriangle, Clock, Users, Plane, Home, RefreshCw, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -47,7 +48,7 @@ const ConciergeRuntimeBoard = () => {
   const { data: householdTasks } = useQuery({
     queryKey: ["concierge-household-tasks"],
     queryFn: async () => {
-      const { data } = await supabase.from("household_tasks").select("*").limit(5);
+      const { data } = await fromTable("household_tasks").select("*").limit(5);
       return data || [];
     },
   });

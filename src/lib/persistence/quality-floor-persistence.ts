@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export interface QualityFloorConfigRow {
   id: string;
@@ -30,7 +31,7 @@ async function uid(): Promise<string | null> {
 export async function fetchQualityFloors(): Promise<QualityFloorConfigRow[]> {
   const userId = await uid();
   if (!userId) return [];
-  const { data, error } = await supabase.from(TABLE)
+  const { data, error } = await fromTable(TABLE)
     .select("*").eq("user_id", userId).order("task_class");
   if (error) { console.error("[quality-floor] fetch failed:", error); return []; }
   return data ?? [];
@@ -41,7 +42,7 @@ export async function upsertQualityFloor(
 ): Promise<QualityFloorConfigRow | null> {
   const userId = await uid();
   if (!userId) return null;
-  const { data, error } = await supabase.from(TABLE)
+  const { data, error } = await fromTable(TABLE)
     .upsert(
       { ...config, user_id: userId },
       { onConflict: "user_id,task_class,domain" },
@@ -54,7 +55,7 @@ export async function upsertQualityFloor(
 export async function deleteQualityFloor(id: string): Promise<boolean> {
   const userId = await uid();
   if (!userId) return false;
-  const { error } = await supabase.from(TABLE).delete().eq("id", id).eq("user_id", userId);
+  const { error } = await fromTable(TABLE).delete().eq("id", id).eq("user_id", userId);
   if (error) { console.error("[quality-floor] delete failed:", error); return false; }
   return true;
 }

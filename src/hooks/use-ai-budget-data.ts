@@ -5,6 +5,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import {
   getBudgetPolicies,
   getActiveBudgetPolicies,
@@ -82,7 +83,7 @@ export function useCreateBudgetPolicy() {
     }) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
-      const { error } = await supabase.from("ai_budget_policies").insert({
+      const { error } = await fromTable("ai_budget_policies").insert({
         ...policy,
         user_id: user.id,
         scope_type: policy.scope_type || "global",
@@ -102,7 +103,7 @@ export function useUpdateBudgetPolicy() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...updates }: { id: string; is_active?: boolean; daily_budget_usd?: number; monthly_budget_usd?: number }) => {
-      const { error } = await supabase.from("ai_budget_policies").update(updates).eq("id", id);
+      const { error } = await fromTable("ai_budget_policies").update(updates).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -118,7 +119,7 @@ export function useDeleteBudgetPolicy() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("ai_budget_policies").delete().eq("id", id);
+      const { error } = await fromTable("ai_budget_policies").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

@@ -13,6 +13,7 @@ import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { useCommunications } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -96,13 +97,13 @@ const CommunicationsCenter = () => {
     if (!form.subject.trim()) { toast.error("Subject is required"); return; }
     if (!user) return;
     if (editingId) {
-      await supabase.from("communications").update({
+      await fromTable("communications").update({
         channel: form.type, subject: form.subject, body: form.body,
         status: form.status, contact_name: form.customer_name,
       }).eq("id", editingId);
       toast.success("Communication updated");
     } else {
-      await supabase.from("communications").insert({
+      await fromTable("communications").insert({
         user_id: user.id, type: form.type, channel: form.type,
         subject: form.subject, body: form.body, status: form.status,
         contact_name: form.customer_name, direction: "outbound",
@@ -114,13 +115,13 @@ const CommunicationsCenter = () => {
   };
 
   const handleSend = async (id: string) => {
-    await supabase.from("communications").update({ status: "sent", sent_at: new Date().toISOString() }).eq("id", id);
+    await fromTable("communications").update({ status: "sent", sent_at: new Date().toISOString() }).eq("id", id);
     queryClient.invalidateQueries({ queryKey: ["communications"] });
     toast.success("Communication sent!");
   };
 
   const handleDelete = async (id: string) => {
-    await supabase.from("communications").delete().eq("id", id);
+    await fromTable("communications").delete().eq("id", id);
     queryClient.invalidateQueries({ queryKey: ["communications"] });
     setSelectedId(null);
     toast.success("Communication deleted");

@@ -16,6 +16,7 @@ import { computeTruthIndices } from "@/lib/services/truth-indices/truth-index-ag
 import { Activity, DollarSign, Lightbulb, CheckCircle, Shield, TrendingDown, TrendingUp, Filter, AlertTriangle, XCircle, Clock, Zap, ArrowRight } from "lucide-react";
 import { formatFreshness } from "@/lib/ai/ai-surface-grammar";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -247,7 +248,7 @@ export function AIT06Recommendations() {
 
   const updateStatus = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await supabase.from("ai_workforce_recommendations").update({ status }).eq("id", id);
+      const { error } = await fromTable("ai_workforce_recommendations").update({ status }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["ai-workforce-recommendations"] }); toast.success("Recommendation updated"); },
@@ -279,7 +280,7 @@ export function AIT06Recommendations() {
               });
               if (data?.recommendations) {
                 for (const rec of data.recommendations) {
-                  await supabase.from("ai_workforce_recommendations").insert({
+                  await fromTable("ai_workforce_recommendations").insert({
                     user_id: (await supabase.auth.getUser()).data.user?.id,
                     title: rec.title,
                     description: rec.description,
@@ -369,7 +370,7 @@ export function AIT07ApprovalQueue() {
 
   const updateApproval = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await supabase.from("ai_workforce_approval_queue").update({ status, reviewed_at: new Date().toISOString() }).eq("id", id);
+      const { error } = await fromTable("ai_workforce_approval_queue").update({ status, reviewed_at: new Date().toISOString() }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["ai-workforce-approval-queue"] }); toast.success("Approval updated"); },
@@ -490,7 +491,7 @@ export function AIT08LaunchTruth() {
             if (data?.recommendations) {
               const userId = (await supabase.auth.getUser()).data.user?.id;
               for (const rec of data.recommendations) {
-                await supabase.from("ai_workforce_recommendations").insert({
+                await fromTable("ai_workforce_recommendations").insert({
                   user_id: userId,
                   title: rec.title,
                   description: rec.description,

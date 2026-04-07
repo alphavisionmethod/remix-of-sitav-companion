@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Bell, CheckCircle, XCircle, AlertTriangle, Shield, Smartphone, Apple, Globe } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -35,7 +36,7 @@ export default function NOT01NotificationRuntimeVerification() {
   const { data: subscriptions = [] } = useQuery({
     queryKey: ["admin-push-subscriptions"],
     queryFn: async () => {
-      const { data } = await supabase.from("device_push_tokens").select("*");
+      const { data } = await fromTable("device_push_tokens").select("*");
       return data || [];
     },
   });
@@ -43,7 +44,7 @@ export default function NOT01NotificationRuntimeVerification() {
   const { data: receipts = [] } = useQuery({
     queryKey: ["admin-delivery-receipts"],
     queryFn: async () => {
-      const { data } = await supabase.from("notification_delivery_receipts").select("*").order("created_at", { ascending: false }).limit(100);
+      const { data } = await fromTable("notification_delivery_receipts").select("*").order("created_at", { ascending: false }).limit(100);
       return data || [];
     },
   });
@@ -51,7 +52,7 @@ export default function NOT01NotificationRuntimeVerification() {
   const { data: preferences = [] } = useQuery({
     queryKey: ["admin-notification-prefs"],
     queryFn: async () => {
-      const { data } = await supabase.from("notification_preferences").select("*");
+      const { data } = await fromTable("notification_preferences").select("*");
       return data || [];
     },
   });
@@ -59,7 +60,7 @@ export default function NOT01NotificationRuntimeVerification() {
   const { data: queueItems = [] } = useQuery({
     queryKey: ["admin-notifications-queue-recent"],
     queryFn: async () => {
-      const { data } = await supabase.from("notifications_queue").select("*").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("notifications_queue").select("*").order("created_at", { ascending: false }).limit(50);
       return data || [];
     },
   });

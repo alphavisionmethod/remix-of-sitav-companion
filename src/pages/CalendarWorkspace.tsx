@@ -4,6 +4,7 @@ import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents"
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { format, addDays, startOfWeek, startOfMonth, endOfMonth, isSameDay, isToday, isBefore, parseISO, eachDayOfInterval } from "date-fns";
 import { Calendar, Clock, AlertTriangle, Users, Briefcase, Home, ChevronLeft, ChevronRight, Plus, MapPin, Video, Phone, Zap, Trash2, Pencil } from "lucide-react";
@@ -67,7 +68,7 @@ const CalendarWorkspace = () => {
       if (mode !== "real") return null;
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
-      const { data, error } = await supabase.from("calendar_events").select("*")
+      const { data, error } = await fromTable("calendar_events").select("*")
         .eq("user_id", user.id).order("event_date", { ascending: true });
       if (error || !data?.length) return null;
       return data.map((e: any): CalEvent => ({

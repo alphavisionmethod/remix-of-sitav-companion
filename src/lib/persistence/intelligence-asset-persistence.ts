@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export interface IntelligenceAssetRow {
   id: string;
@@ -40,7 +41,7 @@ export async function createIntelligenceAsset(
 ): Promise<IntelligenceAssetRow | null> {
   const userId = await uid();
   if (!userId) return null;
-  const { data, error } = await supabase.from(TABLE)
+  const { data, error } = await fromTable(TABLE)
     .insert({ ...asset, user_id: userId })
     .select()
     .single();
@@ -56,7 +57,7 @@ export async function fetchIntelligenceAssets(filters?: {
 }): Promise<IntelligenceAssetRow[]> {
   const userId = await uid();
   if (!userId) return [];
-  let q = supabase.from(TABLE).select("*").eq("user_id", userId).order("reuse_count", { ascending: false });
+  let q = fromTable(TABLE).select("*").eq("user_id", userId).order("reuse_count", { ascending: false });
   if (filters?.domain) q = q.eq("domain", filters.domain);
   if (filters?.asset_type) q = q.eq("asset_type", filters.asset_type);
   if (filters?.invalidated !== undefined) q = q.eq("invalidated", filters.invalidated);
@@ -75,7 +76,7 @@ export async function incrementAssetReuse(
   if (!userId) return false;
 
   // Fetch current values
-  const { data: current } = await supabase.from(TABLE)
+  const { data: current } = await fromTable(TABLE)
     .select("reuse_count, adapted_reuse_count, cost_avoided_cents")
     .eq("id", assetId).eq("user_id", userId).single();
   if (!current) return false;
@@ -86,7 +87,7 @@ export async function incrementAssetReuse(
   };
   if (adapted) update.adapted_reuse_count = (current.adapted_reuse_count || 0) + 1;
 
-  const { error } = await supabase.from(TABLE).update(update).eq("id", assetId).eq("user_id", userId);
+  const { error } = await fromTable(TABLE).update(update).eq("id", assetId).eq("user_id", userId);
   if (error) { console.error("[intel-asset] reuse increment failed:", error); return false; }
   return true;
 }
@@ -94,7 +95,7 @@ export async function incrementAssetReuse(
 export async function invalidateAsset(assetId: string, reason: string): Promise<boolean> {
   const userId = await uid();
   if (!userId) return false;
-  const { error } = await supabase.from(TABLE)
+  const { error } = await fromTable(TABLE)
     .update({ invalidated: true, invalidation_reason: reason })
     .eq("id", assetId).eq("user_id", userId);
   if (error) { console.error("[intel-asset] invalidate failed:", error); return false; }
@@ -104,7 +105,7 @@ export async function invalidateAsset(assetId: string, reason: string): Promise<
 export async function updateFreshness(assetId: string, freshnessScore: number): Promise<boolean> {
   const userId = await uid();
   if (!userId) return false;
-  const { error } = await supabase.from(TABLE)
+  const { error } = await fromTable(TABLE)
     .update({ freshness_score: freshnessScore })
     .eq("id", assetId).eq("user_id", userId);
   if (error) { console.error("[intel-asset] freshness update failed:", error); return false; }
@@ -121,7 +122,7 @@ export async function getAssetStats(): Promise<{
   const userId = await uid();
   if (!userId) return { total: 0, totalReuses: 0, totalCostAvoided: 0, invalidatedCount: 0, avgFreshness: 0 };
 
-  const { data, error } = await supabase.from(TABLE).select("reuse_count, cost_avoided_cents, invalidated, freshness_score").eq("user_id", userId);
+  const { data, error } = await fromTable(TABLE).select("reuse_count, cost_avoided_cents, invalidated, freshness_score").eq("user_id", userId);
   if (error || !data) return { total: 0, totalReuses: 0, totalCostAvoided: 0, invalidatedCount: 0, avgFreshness: 0 };
 
   const total = data.length;

@@ -11,6 +11,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 const DEMO_ALLOCATIONS = [
   { asset: "US Equities", target: 40, current: 42.3, value: 423000, drift: 2.3, color: "bg-blue-500" },
@@ -30,7 +31,7 @@ export default function CapitalAllocationPage() {
     queryKey: ["capital-allocations", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await supabase.from("financial_accounts").select("*").eq("user_id", user!.id);
+      const { data } = await fromTable("financial_accounts").select("*").eq("user_id", user!.id);
       if (!data?.length) return null;
       const total = data.reduce((s: number, a: any) => s + (a.balance_cents || 0), 0);
       return data.map((a: any, i: number) => {

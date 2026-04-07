@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -50,7 +51,7 @@ const MissionControlHome = () => {
   const { data: incidentCount } = useQuery({
     queryKey: ["mission-incidents-count"],
     queryFn: async () => {
-      const { count } = await supabase.from("incidents").select("*", { count: "exact", head: true }).in("status", ["open", "investigating"]);
+      const { count } = await fromTable("incidents").select("*", { count: "exact", head: true }).in("status", ["open", "investigating"]);
       return count || 0;
     },
   });
@@ -58,7 +59,7 @@ const MissionControlHome = () => {
   const { data: approvalCount } = useQuery({
     queryKey: ["mission-approvals-count"],
     queryFn: async () => {
-      const { count } = await supabase.from("approval_queue").select("*", { count: "exact", head: true }).eq("status", "pending");
+      const { count } = await fromTable("approval_queue").select("*", { count: "exact", head: true }).eq("status", "pending");
       return count || 0;
     },
   });

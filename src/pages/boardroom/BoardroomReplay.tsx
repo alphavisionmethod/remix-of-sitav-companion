@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
@@ -264,7 +265,7 @@ export default function BoardroomReplay() {
   const handleSaveSession = async () => {
     if (!user || sessionSaved) return;
     try {
-      await supabase.from("boardroom_sessions").insert({
+      await fromTable("boardroom_sessions").insert({
         user_id: user.id,
         session_type: "weekly",
         title: "Weekly Executive Review",

@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
@@ -25,7 +26,7 @@ export default function DRS06DemoPolicySafety() {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      const { data } = await supabase.from("demo_policy_profiles").select("*").eq("user_id", user.id);
+      const { data } = await fromTable("demo_policy_profiles").select("*").eq("user_id", user.id);
       return data ?? [];
     },
   });

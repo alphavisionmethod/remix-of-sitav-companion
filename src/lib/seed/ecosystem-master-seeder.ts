@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 async function getUserId(): Promise<string | null> {
   const { data: { user } } = await supabase.auth.getUser();
@@ -13,7 +14,7 @@ async function getUserId(): Promise<string | null> {
 
 async function upsertRows(table: string, rows: Record<string, unknown>[], conflictCol?: string): Promise<number> {
   const opts = conflictCol ? { onConflict: conflictCol } : {};
-  const { error } = await supabase.from(table).upsert(rows, opts);
+  const { error } = await fromTable(table).upsert(rows, opts);
   if (error) {
     console.warn(`[seeder] ${table} upsert warning:`, error.message);
     return 0;

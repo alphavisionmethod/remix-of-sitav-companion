@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
 import { Zap, AlertTriangle, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,7 +23,7 @@ const ChangeImpactAnalyzer = () => {
   const { data: records } = useQuery({
     queryKey: ["change-impact-records"],
     queryFn: async () => {
-      const { data } = await supabase.from("change_impact_records").select("*").order("created_at", { ascending: false }).limit(20);
+      const { data } = await fromTable("change_impact_records").select("*").order("created_at", { ascending: false }).limit(20);
       return data ?? [];
     },
   });
@@ -42,7 +43,7 @@ const ChangeImpactAnalyzer = () => {
       if (!analysis) return;
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
-      const { error } = await supabase.from("change_impact_records").insert({
+      const { error } = await fromTable("change_impact_records").insert({
         user_id: user.id, change_title: analysis.changeTitle, change_type: form.changeType,
         affected_routes: analysis.affectedRoutes as any, affected_contracts: analysis.affectedContracts as any,
         affected_probes: analysis.affectedProbes as any, affected_journeys: analysis.affectedJourneys as any,

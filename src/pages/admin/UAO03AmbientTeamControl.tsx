@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Users, RefreshCw, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -19,12 +20,12 @@ export default function UAO03AmbientTeamControl() {
 
   const { data: roles = [] } = useQuery({
     queryKey: ["assistant-roles"],
-    queryFn: async () => { const { data } = await supabase.from("assistant_role_presences").select("*").order("role_name"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("assistant_role_presences").select("*").order("role_name"); return data || []; },
   });
 
   const { data: interventions = [] } = useQuery({
     queryKey: ["proactive-interventions"],
-    queryFn: async () => { const { data } = await supabase.from("proactive_interventions").select("*").order("created_at", { ascending: false }).limit(20); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("proactive_interventions").select("*").order("created_at", { ascending: false }).limit(20); return data || []; },
   });
 
   const seedRoles = useMutation({

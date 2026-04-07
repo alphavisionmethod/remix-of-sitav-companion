@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
@@ -73,7 +74,7 @@ const MemoryCenter = () => {
   // Delete mutation
   const forgetMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("user_memory").delete().eq("id", id);
+      const { error } = await fromTable("user_memory").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["user_memory"] }); toast.success("Memory forgotten"); },
@@ -83,7 +84,7 @@ const MemoryCenter = () => {
   // Update mutation
   const updateMutation = useMutation({
     mutationFn: async ({ id, value }: { id: string; value: string }) => {
-      const { error } = await supabase.from("user_memory").update({ value: JSON.parse(`"${value}"`) }).eq("id", id);
+      const { error } = await fromTable("user_memory").update({ value: JSON.parse(`"${value}"`) }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["user_memory"] }); toast.success("Memory updated"); setEditingId(null); },

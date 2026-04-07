@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { PolicyEvaluationResult, PolicyContext } from "@/lib/core-services/policy-engine";
 
 // ── Types ───────────────────────────────────────────────────────
@@ -71,7 +72,7 @@ export async function persistPolicyEvaluation(
   const userId = await uid();
   if (!userId) return null;
 
-  const { data, error } = await supabase.from("os_policy_evaluations")
+  const { data, error } = await fromTable("os_policy_evaluations")
     .insert({
       user_id: userId,
       rule_id: result.matchedRule?.id ?? "none",
@@ -114,7 +115,7 @@ export async function fetchPolicyEvaluations(filters?: {
   const userId = await uid();
   if (!userId) return [];
 
-  let query = supabase.from("os_policy_evaluations")
+  let query = fromTable("os_policy_evaluations")
     .select("*")
     .eq("user_id", userId)
     .order("created_at", { ascending: false });

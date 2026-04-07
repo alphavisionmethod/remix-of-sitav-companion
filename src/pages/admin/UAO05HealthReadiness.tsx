@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Heart, RefreshCw, CheckCircle, XCircle, Shield } from "lucide-react";
 import { toast } from "sonner";
@@ -16,22 +17,22 @@ export default function UAO05HealthReadiness() {
 
   const { data: consents = [] } = useQuery({
     queryKey: ["health-consents"],
-    queryFn: async () => { const { data } = await supabase.from("health_signal_consents").select("*, wearable_providers(name)").order("signal_category"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("health_signal_consents").select("*, wearable_providers(name)").order("signal_category"); return data || []; },
   });
 
   const { data: privacy = [] } = useQuery({
     queryKey: ["health-privacy"],
-    queryFn: async () => { const { data } = await supabase.from("health_signal_privacy").select("*").order("signal_category"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("health_signal_privacy").select("*").order("signal_category"); return data || []; },
   });
 
   const { data: signals = [] } = useQuery({
     queryKey: ["wearable-signals"],
-    queryFn: async () => { const { data } = await supabase.from("wearable_signals").select("*, wearable_providers(name)").order("recorded_at", { ascending: false }).limit(30); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("wearable_signals").select("*, wearable_providers(name)").order("recorded_at", { ascending: false }).limit(30); return data || []; },
   });
 
   const { data: readiness = [] } = useQuery({
     queryKey: ["readiness-states"],
-    queryFn: async () => { const { data } = await supabase.from("readiness_states").select("*").order("updated_at", { ascending: false }).limit(5); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("readiness_states").select("*").order("updated_at", { ascending: false }).limit(5); return data || []; },
   });
 
   const checkReadiness = useMutation({

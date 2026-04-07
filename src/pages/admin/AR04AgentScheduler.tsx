@@ -4,6 +4,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -16,7 +17,7 @@ export default function AR04AgentScheduler() {
   const { data: agentJobs = [] } = useQuery({
     queryKey: ["agent-scheduled-jobs"],
     queryFn: async () => {
-      const { data } = await supabase.from("scheduled_jobs").select("*")
+      const { data } = await fromTable("scheduled_jobs").select("*")
         .in("job_class", ["agent_execution", "agent_heartbeat"])
         .order("created_at", { ascending: false });
       return data || [];
@@ -28,7 +29,7 @@ export default function AR04AgentScheduler() {
     queryFn: async () => {
       const jobIds = agentJobs.map((j: any) => j.id);
       if (jobIds.length === 0) return [];
-      const { data } = await supabase.from("job_executions").select("*").in("job_id", jobIds).order("started_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("job_executions").select("*").in("job_id", jobIds).order("started_at", { ascending: false }).limit(50);
       return data || [];
     },
     enabled: agentJobs.length > 0,

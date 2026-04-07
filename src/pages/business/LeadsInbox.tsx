@@ -6,6 +6,7 @@ import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import {
@@ -88,7 +89,7 @@ const LeadsInbox = () => {
   const leadsQuery = useQuery({
     queryKey: ["leads"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("leads").select("*").order("created_at", { ascending: false });
+      const { data, error } = await fromTable("leads").select("*").order("created_at", { ascending: false });
       if (error) throw error;
       return data as Lead[];
     },
@@ -99,7 +100,7 @@ const LeadsInbox = () => {
 
   const addMutation = useMutation({
     mutationFn: async (lead: { name: string; email?: string; phone?: string; company?: string; source?: string; likely_value?: number }) => {
-      const { error } = await supabase.from("leads").insert({ ...lead, user_id: user!.id });
+      const { error } = await fromTable("leads").insert({ ...lead, user_id: user!.id });
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["leads"] }); toast.success("Lead added"); resetForm(); },
@@ -108,7 +109,7 @@ const LeadsInbox = () => {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, ...updates }: Partial<Lead> & { id: string }) => {
-      const { error } = await supabase.from("leads").update(updates).eq("id", id);
+      const { error } = await fromTable("leads").update(updates).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["leads"] }); toast.success("Lead updated"); resetForm(); },
@@ -117,7 +118,7 @@ const LeadsInbox = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("leads").delete().eq("id", id);
+      const { error } = await fromTable("leads").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["leads"] }); setSelectedId(null); toast.success("Lead deleted"); },

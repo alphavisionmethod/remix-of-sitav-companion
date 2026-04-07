@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle, XCircle, AlertTriangle, Shield } from "lucide-react";
@@ -12,7 +13,7 @@ const LT05LaunchGateBoard = () => {
   const { data: gates } = useQuery({
     queryKey: ["launch-gates"],
     queryFn: async () => {
-      const { data } = await supabase.from("launch_gates").select("*").order("created_at", { ascending: false }).limit(10);
+      const { data } = await fromTable("launch_gates").select("*").order("created_at", { ascending: false }).limit(10);
       return data ?? [];
     },
   });
@@ -20,7 +21,7 @@ const LT05LaunchGateBoard = () => {
   const { data: criteria } = useQuery({
     queryKey: ["launch-gate-criteria"],
     queryFn: async () => {
-      const { data } = await supabase.from("launch_gate_criteria").select("*").order("category").limit(100);
+      const { data } = await fromTable("launch_gate_criteria").select("*").order("category").limit(100);
       return data ?? [];
     },
   });
@@ -28,7 +29,7 @@ const LT05LaunchGateBoard = () => {
   const { data: blockers } = useQuery({
     queryKey: ["launch-blockers"],
     queryFn: async () => {
-      const { data } = await supabase.from("launch_blockers").select("*").eq("resolved", false).order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("launch_blockers").select("*").eq("resolved", false).order("created_at", { ascending: false }).limit(50);
       return data ?? [];
     },
   });

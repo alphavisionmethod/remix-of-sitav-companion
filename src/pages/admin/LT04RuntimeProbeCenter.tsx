@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Radar, Clock, Shield, Zap } from "lucide-react";
@@ -10,7 +11,7 @@ const LT04RuntimeProbeCenter = () => {
   const { data: probes } = useQuery({
     queryKey: ["runtime-probes"],
     queryFn: async () => {
-      const { data } = await supabase.from("runtime_probes").select("*").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("runtime_probes").select("*").order("created_at", { ascending: false }).limit(50);
       return data ?? [];
     },
   });
@@ -18,7 +19,7 @@ const LT04RuntimeProbeCenter = () => {
   const { data: probeRuns } = useQuery({
     queryKey: ["runtime-probe-runs"],
     queryFn: async () => {
-      const { data } = await supabase.from("runtime_probe_runs").select("*").order("created_at", { ascending: false }).limit(100);
+      const { data } = await fromTable("runtime_probe_runs").select("*").order("created_at", { ascending: false }).limit(100);
       return data ?? [];
     },
   });

@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export interface ComputeBudgetSnapshotRow {
   id: string;
@@ -33,7 +34,7 @@ export async function createComputeSnapshot(
 ): Promise<ComputeBudgetSnapshotRow | null> {
   const userId = await uid();
   if (!userId) return null;
-  const { data, error } = await supabase.from(TABLE)
+  const { data, error } = await fromTable(TABLE)
     .insert({ ...snapshot, user_id: userId })
     .select().single();
   if (error) { console.error("[compute-gov] snapshot insert failed:", error); return null; }
@@ -47,7 +48,7 @@ export async function fetchComputeSnapshots(opts?: {
 }): Promise<ComputeBudgetSnapshotRow[]> {
   const userId = await uid();
   if (!userId) return [];
-  let q = supabase.from(TABLE).select("*").eq("user_id", userId).order("snapshot_at", { ascending: false });
+  let q = fromTable(TABLE).select("*").eq("user_id", userId).order("snapshot_at", { ascending: false });
   if (opts?.period) q = q.eq("period", opts.period);
   if (opts?.domain) q = q.eq("domain", opts.domain);
   if (opts?.limit) q = q.limit(opts.limit);
@@ -59,7 +60,7 @@ export async function fetchComputeSnapshots(opts?: {
 export async function getLatestSnapshot(domain: string = "platform"): Promise<ComputeBudgetSnapshotRow | null> {
   const userId = await uid();
   if (!userId) return null;
-  const { data, error } = await supabase.from(TABLE)
+  const { data, error } = await fromTable(TABLE)
     .select("*").eq("user_id", userId).eq("domain", domain)
     .order("snapshot_at", { ascending: false }).limit(1).maybeSingle();
   if (error) { console.error("[compute-gov] latest fetch failed:", error); return null; }

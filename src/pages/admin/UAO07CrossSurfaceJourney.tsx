@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Route, ArrowRight, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -15,17 +16,17 @@ export default function UAO07CrossSurfaceJourney() {
   const { isDemoMode } = useDataMode();
   const { data: handoffs = [] } = useQuery({
     queryKey: ["handoff-sessions-journey"],
-    queryFn: async () => { const { data } = await supabase.from("handoff_sessions").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("handoff_sessions").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
   });
 
   const { data: continuity = [] } = useQuery({
     queryKey: ["continuity-records"],
-    queryFn: async () => { const { data } = await supabase.from("context_continuity_records").select("*").order("updated_at", { ascending: false }).limit(20); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("context_continuity_records").select("*").order("updated_at", { ascending: false }).limit(20); return data || []; },
   });
 
   const { data: surfaceStates = [] } = useQuery({
     queryKey: ["surface-context-states"],
-    queryFn: async () => { const { data } = await supabase.from("surface_context_states").select("*").order("last_active_at", { ascending: false }).limit(20); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("surface_context_states").select("*").order("last_active_at", { ascending: false }).limit(20); return data || []; },
   });
 
   const completed = handoffs.filter((h: any) => h.handoff_status === "completed");

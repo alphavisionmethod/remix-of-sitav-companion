@@ -11,6 +11,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 const CHANNEL_ICONS: Record<ChannelType, typeof Mail> = { email: Mail, sms: MessageSquare, call: Phone, chat: Send };
 const STATUS_STYLES: Record<MessageStatus, { color: string; icon: typeof CheckCircle2 }> = {
@@ -30,7 +31,7 @@ export default function CommunicationsPage() {
     queryKey: ["communications", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await supabase.from("communications").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("communications").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
       if (!data?.length) return null;
       return data.map((c: any) => ({
         id: c.id,

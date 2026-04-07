@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ShieldAlert, CheckCircle, XCircle, AlertTriangle, Shield, Plug, Eye, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -28,7 +29,7 @@ export default function ISA07AuthConnectorTruthBoard() {
   const { data: families = [] } = useQuery({
     queryKey: ["isa07-families"],
     queryFn: async () => {
-      const { data } = await supabase.from("provider_families").select("*").eq("active", true);
+      const { data } = await fromTable("provider_families").select("*").eq("active", true);
       return data || [];
     },
   });
@@ -36,7 +37,7 @@ export default function ISA07AuthConnectorTruthBoard() {
   const { data: oauthClients = [] } = useQuery({
     queryKey: ["isa07-clients"],
     queryFn: async () => {
-      const { data } = await supabase.from("oauth_client_registry").select("*, provider_families(name, provider_key)");
+      const { data } = await fromTable("oauth_client_registry").select("*, provider_families(name, provider_key)");
       return data || [];
     },
   });
@@ -44,7 +45,7 @@ export default function ISA07AuthConnectorTruthBoard() {
   const { data: identityLinks = [] } = useQuery({
     queryKey: ["isa07-identity"],
     queryFn: async () => {
-      const { data } = await supabase.from("identity_provider_links").select("*, provider_families(provider_key)");
+      const { data } = await fromTable("identity_provider_links").select("*, provider_families(provider_key)");
       return data || [];
     },
   });
@@ -52,7 +53,7 @@ export default function ISA07AuthConnectorTruthBoard() {
   const { data: connectorLinks = [] } = useQuery({
     queryKey: ["isa07-connectors"],
     queryFn: async () => {
-      const { data } = await supabase.from("connected_service_links").select("*, provider_families(provider_key)");
+      const { data } = await fromTable("connected_service_links").select("*, provider_families(provider_key)");
       return data || [];
     },
   });
@@ -60,7 +61,7 @@ export default function ISA07AuthConnectorTruthBoard() {
   const { data: scopes = [] } = useQuery({
     queryKey: ["isa07-scopes"],
     queryFn: async () => {
-      const { data } = await supabase.from("scope_policy_matrix").select("*");
+      const { data } = await fromTable("scope_policy_matrix").select("*");
       return data || [];
     },
   });

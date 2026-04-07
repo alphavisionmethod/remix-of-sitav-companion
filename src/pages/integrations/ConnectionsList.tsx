@@ -13,6 +13,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
 
@@ -28,7 +29,7 @@ export default function ConnectionsList() {
     queryKey: ["connector_configs", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data, error } = await supabase.from("connector_configs").select("*").order("created_at", { ascending: false });
+      const { data, error } = await fromTable("connector_configs").select("*").order("created_at", { ascending: false });
       if (error) return [];
       return data ?? [];
     },

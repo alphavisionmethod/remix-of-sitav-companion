@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { MemoryEntry, MemoryForgetRecord, MemoryQuery } from "@/lib/core-services/memory-service";
 
 // ── Types ───────────────────────────────────────────────────────
@@ -59,7 +60,7 @@ export async function persistMemoryEntry(
   const userId = await uid();
   if (!userId) return null;
 
-  const { data, error } = await supabase.from("os_memory_scoped")
+  const { data, error } = await fromTable("os_memory_scoped")
     .insert({
       id: entry.id,
       user_id: userId,
@@ -94,7 +95,7 @@ export async function supersedeMemoryEntry(
   const newId = await persistMemoryEntry(newEntry, opts);
   if (!newId) return null;
 
-  await supabase.from("os_memory_scoped")
+  await fromTable("os_memory_scoped")
     .update({ superseded_by: newId })
     .eq("id", oldEntryId);
 
@@ -117,7 +118,7 @@ export async function fetchScopedMemory(filters?: {
   const userId = await uid();
   if (!userId) return [];
 
-  let query = supabase.from("os_memory_scoped")
+  let query = fromTable("os_memory_scoped")
     .select("*")
     .eq("user_id", userId)
     .order("updated_at", { ascending: false });
@@ -148,7 +149,7 @@ export async function forgetScopedMemory(
   if (!userId) return false;
 
   // Fetch entry for audit
-  const { data: entry } = await supabase.from("os_memory_scoped")
+  const { data: entry } = await fromTable("os_memory_scoped")
     .select("key, privacy_tier")
     .eq("id", entryId)
     .maybeSingle();
@@ -156,7 +157,7 @@ export async function forgetScopedMemory(
   if (!entry) return false;
 
   // Log to the existing forget log
-  await supabase.from("sita_memory_forget_log").insert({
+  await fromTable("sita_memory_forget_log").insert({
     user_id: userId,
     entry_id: entryId,
     key: entry.key,
@@ -166,7 +167,7 @@ export async function forgetScopedMemory(
   });
 
   // Delete entry
-  const { error } = await supabase.from("os_memory_scoped")
+  const { error } = await fromTable("os_memory_scoped")
     .delete().eq("id", entryId);
 
   if (error) { console.error("[memory-persistence] delete failed:", error); return false; }
@@ -179,7 +180,7 @@ export async function updateMemoryConfidence(
   entryId: string,
   newConfidence: number
 ): Promise<boolean> {
-  const { error } = await supabase.from("os_memory_scoped")
+  const { error } = await fromTable("os_memory_scoped")
     .update({ confidence: Math.max(0.1, Math.min(1, newConfidence)) })
     .eq("id", entryId);
 

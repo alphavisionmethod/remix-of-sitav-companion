@@ -26,6 +26,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 // ── Maturity color mapping ──────────────────────────────────
 const MATURITY_COLORS: Record<string, string> = {
@@ -251,7 +252,7 @@ const AdvisorRegistry = () => {
   const { data: dbAdvisors = [] } = useQuery({
     queryKey: ["advisor-registry-db"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("advisor_registry").select("*").order("display_name");
+      const { data, error } = await fromTable("advisor_registry").select("*").order("display_name");
       if (error) throw error;
       return data || [];
     },

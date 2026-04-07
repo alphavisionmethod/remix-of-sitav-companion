@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
 import { Rocket, CheckCircle2, AlertCircle, Clock, XCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +13,7 @@ const DeliveryReadinessBoard = () => {
   const { data: blueprints } = useQuery({
     queryKey: ["readiness-blueprints"],
     queryFn: async () => {
-      const { data } = await supabase.from("feature_blueprints").select("*").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("feature_blueprints").select("*").order("created_at", { ascending: false }).limit(50);
       return data ?? [];
     },
   });
@@ -20,7 +21,7 @@ const DeliveryReadinessBoard = () => {
   const { data: deps } = useQuery({
     queryKey: ["readiness-deps"],
     queryFn: async () => {
-      const { data } = await supabase.from("dependency_maps").select("*").limit(100);
+      const { data } = await fromTable("dependency_maps").select("*").limit(100);
       return data ?? [];
     },
   });
@@ -28,7 +29,7 @@ const DeliveryReadinessBoard = () => {
   const { data: remediations } = useQuery({
     queryKey: ["readiness-remediations"],
     queryFn: async () => {
-      const { data } = await supabase.from("remediation_suggestions").select("*").eq("status", "open").limit(50);
+      const { data } = await fromTable("remediation_suggestions").select("*").eq("status", "open").limit(50);
       return data ?? [];
     },
   });

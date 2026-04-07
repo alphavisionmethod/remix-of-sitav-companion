@@ -4,6 +4,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, AlertTriangle, Shield, Rocket } from "lucide-react";
@@ -22,7 +23,7 @@ export default function AR09AutomationLaunchGate() {
   const { data: jobs = [] } = useQuery({
     queryKey: ["scheduled-jobs"],
     queryFn: async () => {
-      const { data } = await supabase.from("scheduled_jobs").select("*");
+      const { data } = await fromTable("scheduled_jobs").select("*");
       return data || [];
     },
   });
@@ -30,7 +31,7 @@ export default function AR09AutomationLaunchGate() {
   const { data: executions = [] } = useQuery({
     queryKey: ["all-executions-gate"],
     queryFn: async () => {
-      const { data } = await supabase.from("job_executions").select("*").limit(500);
+      const { data } = await fromTable("job_executions").select("*").limit(500);
       return data || [];
     },
   });
@@ -38,7 +39,7 @@ export default function AR09AutomationLaunchGate() {
   const { data: killSwitches = [] } = useQuery({
     queryKey: ["kill-switches"],
     queryFn: async () => {
-      const { data } = await supabase.from("automation_kill_switches").select("*");
+      const { data } = await fromTable("automation_kill_switches").select("*");
       return data || [];
     },
   });

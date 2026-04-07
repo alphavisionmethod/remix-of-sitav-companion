@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
 import { Network, CheckCircle2, XCircle, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +13,7 @@ const DependencyMapViewer = () => {
   const { data: maps } = useQuery({
     queryKey: ["dependency-maps"],
     queryFn: async () => {
-      const { data } = await supabase.from("dependency_maps").select("*, feature_blueprints(title, domain)").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("dependency_maps").select("*, feature_blueprints(title, domain)").order("created_at", { ascending: false }).limit(50);
       return data ?? [];
     },
   });

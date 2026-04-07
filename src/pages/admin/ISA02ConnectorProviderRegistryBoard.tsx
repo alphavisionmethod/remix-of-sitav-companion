@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plug, CheckCircle, XCircle, AlertTriangle, RefreshCw, HardDrive, Mail, Calendar } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -48,7 +49,7 @@ export default function ISA02ConnectorProviderRegistryBoard() {
   const { data: permissions = [] } = useQuery({
     queryKey: ["isa02-permissions"],
     queryFn: async () => {
-      const { data } = await supabase.from("permission_levels").select("*");
+      const { data } = await fromTable("permission_levels").select("*");
       return data || [];
     },
   });

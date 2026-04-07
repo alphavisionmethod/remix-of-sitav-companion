@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Fingerprint, ShieldCheck, ShieldAlert, KeyRound } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -13,9 +14,9 @@ export default function DWE05DeviceTrustApprovalsCenter() {
   const [receipts, setReceipts] = useState<any[]>([]);
 
   useEffect(() => {
-    supabase.from("device_trust_records").select("*").order("created_at", { ascending: false }).then(({ data }: any) => setTrustRecords(data || []));
-    supabase.from("micro_approval_policies").select("*").then(({ data }: any) => setPolicies(data || []));
-    supabase.from("device_approval_receipts").select("*").order("created_at", { ascending: false }).limit(20).then(({ data }: any) => setReceipts(data || []));
+    fromTable("device_trust_records").select("*").order("created_at", { ascending: false }).then(({ data }: any) => setTrustRecords(data || []));
+    fromTable("micro_approval_policies").select("*").then(({ data }: any) => setPolicies(data || []));
+    fromTable("device_approval_receipts").select("*").order("created_at", { ascending: false }).limit(20).then(({ data }: any) => setReceipts(data || []));
   }, []);
 
   const trustIcon = (level: string) => {

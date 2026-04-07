@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShieldCheck, AlertTriangle, XCircle, Activity, Route, Brain, FileCheck } from "lucide-react";
@@ -11,7 +12,7 @@ const LT01BehavioralTruthOverview = () => {
   const { data: routeTruth } = useQuery({
     queryKey: ["route-truth-summary"],
     queryFn: async () => {
-      const { data } = await supabase.from("route_truth_records").select("status, route").order("created_at", { ascending: false }).limit(100);
+      const { data } = await fromTable("route_truth_records").select("status, route").order("created_at", { ascending: false }).limit(100);
       const passing = data?.filter(r => r.status === "pass").length ?? 0;
       const failing = data?.filter(r => r.status === "fail").length ?? 0;
       const total = data?.length ?? 0;
@@ -22,7 +23,7 @@ const LT01BehavioralTruthOverview = () => {
   const { data: regressions } = useQuery({
     queryKey: ["behavioral-regressions-active"],
     queryFn: async () => {
-      const { data } = await supabase.from("behavioral_regressions").select("*").eq("resolved", false).order("last_seen_at", { ascending: false }).limit(20);
+      const { data } = await fromTable("behavioral_regressions").select("*").eq("resolved", false).order("last_seen_at", { ascending: false }).limit(20);
       return data ?? [];
     },
   });
@@ -30,7 +31,7 @@ const LT01BehavioralTruthOverview = () => {
   const { data: e2eJourneys } = useQuery({
     queryKey: ["e2e-journey-summary"],
     queryFn: async () => {
-      const { data } = await supabase.from("e2e_journeys").select("*").eq("enabled", true).limit(50);
+      const { data } = await fromTable("e2e_journeys").select("*").eq("enabled", true).limit(50);
       return data ?? [];
     },
   });
@@ -38,7 +39,7 @@ const LT01BehavioralTruthOverview = () => {
   const { data: e2eRuns } = useQuery({
     queryKey: ["e2e-runs-recent"],
     queryFn: async () => {
-      const { data } = await supabase.from("e2e_runs").select("status, journey_id").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("e2e_runs").select("status, journey_id").order("created_at", { ascending: false }).limit(50);
       return data ?? [];
     },
   });
