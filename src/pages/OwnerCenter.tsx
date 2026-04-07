@@ -255,11 +255,17 @@ const OwnerCenter = () => {
   const [expandedAgent, setExpandedAgent] = useState<string | null>(null);
   const [workforceView, setWorkforceView] = useState<"councils" | "rights" | "watchdog" | "readiness">("councils");
 
-  const incidents = incidentData?.incidents || [];
-  const policies = policyData?.policies || [];
-  const auditLogs = auditData?.logs || [];
-  const devices = fleetData?.devices || [];
-  const decisions = councilData?.decisions || [];
+  const incD = incidentData as { incidents?: any[]; summary?: any } | undefined;
+  const polD = policyData as { policies?: any[]; summary?: any } | undefined;
+  const audD = auditData as { logs?: any[]; total?: number } | undefined;
+  const fltD = fleetData as { devices?: any[]; kpis?: any; summary?: string; status?: string } | undefined;
+  const cncD = councilData as { decisions?: any[]; summary?: any } | undefined;
+
+  const incidents = incD?.incidents || [];
+  const policies = polD?.policies || [];
+  const auditLogs = audD?.logs || [];
+  const devices = fltD?.devices || [];
+  const decisions = cncD?.decisions || [];
 
   const openIncidents = incidents.filter((i: any) => i.status === "open").length;
 
