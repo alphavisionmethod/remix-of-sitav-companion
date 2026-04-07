@@ -164,13 +164,29 @@ const SettingsPage = () => {
     },
   });
 
-  // Fetch connectors
+  // Fetch connectors from connector_registry + connector_accounts
   const { data: connectors = [] } = useQuery({
     queryKey: ["settings_connectors", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await (db as any).from("connector_configs").select("*").order("updated_at", { ascending: false });
-      return data || [];
+      const { data: accounts } = await (db as any).from("connector_accounts").select("*").eq("user_id", user!.id);
+      const { data: registry } = await (db as any).from("connector_registry").select("*").eq("user_id", user!.id);
+      const { data: configs } = await (db as any).from("connector_configs").select("*").order("updated_at", { ascending: false });
+      
+      // Merge accounts with registry display names
+      const merged = (accounts || []).map((acc: any) => {
+        const reg = (registry || []).find((r: any) => r.connector_type === acc.connector_type);
+        return {
+          service: reg?.display_name || acc.connector_type,
+          status: acc.status || "inactive",
+          last_sync_at: acc.last_sync_at,
+        };
+      });
+      // Add any configs not in accounts
+      if (merged.length === 0 && configs && configs.length > 0) {
+        return configs.map((c: any) => ({ service: c.service || c.connector_type, status: c.status || "inactive", last_sync_at: c.last_sync_at }));
+      }
+      return merged.length > 0 ? merged : [];
     },
   });
 

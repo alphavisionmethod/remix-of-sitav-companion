@@ -176,7 +176,7 @@ export default function ConnectorGovernanceCenter() {
         <div className="mt-4">
           <TabsContent value="connectors">
             <div className="space-y-3">
-              {CONNECTORS.map((conn, idx) => {
+              {activeConnectors.map((conn, idx) => {
                 const sCfg = STATUS_CONFIG[conn.status];
                 return (
                   <motion.div key={conn.id} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04 }}>
@@ -245,7 +245,7 @@ export default function ConnectorGovernanceCenter() {
 
           <TabsContent value="credentials">
             <div className="space-y-3">
-              {CONNECTORS.map(conn => (
+              {activeConnectors.map(conn => (
                 <Card key={conn.id} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
