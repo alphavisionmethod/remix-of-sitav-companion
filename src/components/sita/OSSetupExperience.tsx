@@ -750,7 +750,14 @@ export function OSSetupExperience() {
                     onPathChange={path => setState(s => ({ ...s, accountPath: path }))} onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {phase === "setup-style" && (
+                {phase === "restore-preview" && (
+                  <RestorePreviewStep key="restore-preview"
+                    displayName={state.displayName}
+                    onRestore={() => goNext()}
+                    onStartFresh={goNext} />
+                )}
+
+
                   <SetupStyleChooser key="setup-style" selected={state.setupStyle}
                     onSelect={s => setState(prev => ({ ...prev, setupStyle: s }))}
                     onNext={goNext} onPrev={goPrev} />
