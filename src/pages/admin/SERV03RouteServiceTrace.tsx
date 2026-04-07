@@ -70,7 +70,7 @@ export default function SERV03RouteServiceTrace() {
   });
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-6" data-testid="serv03-board">
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">

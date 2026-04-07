@@ -15,7 +15,7 @@ export default function SERV05CanonicalActions() {
   const nonCanonicalActions = allActions.filter((a) => !a.isCanonical);
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-6" data-testid="serv05-board">
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
