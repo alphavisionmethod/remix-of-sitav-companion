@@ -126,7 +126,7 @@ export default function ReputationEngine() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {REVIEWS.map(r => (
+                  {DEMO_REVIEWS.map(r => (
                     <div key={r.id} className={cn("p-3 rounded-lg border border-border/30", r.sentiment === "negative" ? "bg-red-500/5" : "bg-muted/10")}>
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">

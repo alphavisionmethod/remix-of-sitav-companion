@@ -70,7 +70,7 @@ export default function FunnelBuilder() {
       </motion.div>
 
       <div className="space-y-6">
-        {FUNNELS.map((funnel, fi) => (
+        {DEMO_FUNNELS.map((funnel, fi) => (
           <motion.div key={funnel.name} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: fi * 0.1 }}>
             <Card className="bg-card/50 border-border/50">
               <CardHeader className="pb-3">

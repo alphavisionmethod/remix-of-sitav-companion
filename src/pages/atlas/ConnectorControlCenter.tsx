@@ -205,7 +205,7 @@ export default function ConnectorControlCenter() {
             {DEMO_connectors.filter(c => c.status === "error" || c.failureCount > 0).length === 0 && (
               <div className="p-6 text-center bg-green-500/5 border border-green-500/20 rounded-lg">
                 <CheckCircle className="w-6 h-6 text-green-400 mx-auto mb-2" />
-                <p className="text-sm text-green-400">All connectors healthy — no recovery needed</p>
+                <p className="text-sm text-green-400">All DEMO_connectors healthy — no recovery needed</p>
               </div>
             )}
           </TabsContent>

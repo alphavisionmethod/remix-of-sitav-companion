@@ -40,10 +40,10 @@ const SAMPLE_FIELDS = [
 ];
 
 const STATS = [
-  { label: "Total Forms", value: FORMS.length },
+  { label: "Total Forms", value: DEMO_FORMS.length },
   { label: "Total Submissions", value: "721" },
   { label: "Avg. Conversion", value: "42%" },
-  { label: "Active Forms", value: FORMS.filter(f => f.status === "live").length },
+  { label: "Active Forms", value: DEMO_FORMS.filter(f => f.status === "live").length },
 ];
 
 export default function FormsBuilder() {
@@ -89,7 +89,7 @@ export default function FormsBuilder() {
         <div className="mt-4">
           <TabsContent value="forms">
             <div className="space-y-3">
-              {FORMS.map(form => (
+              {DEMO_FORMS.map(form => (
                 <Card key={form.id} className="bg-card/50 border-border/50 hover:border-primary/30 transition-colors cursor-pointer" onClick={() => { setSelectedForm(form.id); setTab("builder"); }}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
