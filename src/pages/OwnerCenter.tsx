@@ -1900,7 +1900,7 @@ const OwnerCenter = () => {
             <SitaSectionHeader title="Verification Status" />
             <SitaCard hover={false} className="p-4">
               <div className="grid gap-2 sm:grid-cols-2">
-                {Object.entries((trustData as Record<string, unknown>)?.verificationStatus || {}).map(([k, v]) => (
+                {Object.entries(trustData?.verificationStatus || {}).map(([k, v]) => (
                   <div key={k} className="flex items-center gap-2">
                     <CheckCircle className="h-3.5 w-3.5 text-trust-safe" />
                     <span className="text-xs text-foreground">{k.replace(/([A-Z])/g, " $1").trim()}: <span className="font-semibold">{String(v)}</span></span>
