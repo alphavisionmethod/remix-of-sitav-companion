@@ -85,12 +85,12 @@ export async function recordReceipt(receiptType: string, sourceService: string, 
 export async function updateSurfaceContext(surfaceKey: string, contextState: Record<string, unknown>): Promise<void> {
   const userId = await getBridgeUserId();
   if (!userId) return;
-  await fromTable("surface_context_states").upsert({
+  await fromDynamicTable("surface_context_states").upsert({
     user_id: userId,
     surface_key: surfaceKey,
     context_state: contextState,
     updated_at: new Date().toISOString(),
-  }, { onConflict: "user_id,surface_key" });
+  } as never, { onConflict: "user_id,surface_key" });
 }
 
 // ── Bridge: Presence State ──────────────────────────────────
