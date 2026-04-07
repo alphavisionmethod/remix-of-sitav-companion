@@ -20,6 +20,9 @@ import { ErrorBoundary } from "./ErrorBoundary";
 import { DevicePresenceIndicator } from "./DevicePresenceIndicator";
 import { SuccessCelebration } from "./SuccessCelebration";
 import { ModeResolutionBanner } from "@/components/reality/ModeResolutionBanner";
+import { DemoStateBanner } from "@/components/reality/DemoStateBanner";
+import { RealityStateBadge } from "@/components/reality/RealityStateBadge";
+import { AIGate } from "./AIGate";
 import { DesktopEntryCeremony } from "./DesktopEntryCeremony";
 import { PWAInstallPrompt } from "./PWAInstallPrompt";
 import { ContinuityBanner } from "./ContinuityBanner";
@@ -112,6 +115,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         {/* Ambient background — subtle, always present */}
         <ShellAmbientBackground intensity="subtle" className="fixed" />
 
+        <DemoStateBanner />
         <NetworkStatusBar />
         <UpdateBanner />
         <ContinuityBanner />

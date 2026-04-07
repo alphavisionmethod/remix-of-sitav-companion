@@ -8,6 +8,7 @@ import { useShellState } from "@/components/sita/shell/useShellState";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { EnterpriseFlow } from "@/components/sita/EnterpriseFlow";
+import { RestoreFlow } from "@/components/sita/RestoreFlow";
 import { useState } from "react";
 
 export default function DesktopPage() {

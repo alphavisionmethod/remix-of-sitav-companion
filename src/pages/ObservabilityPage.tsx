@@ -29,6 +29,11 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DegradedStatePanel } from "@/components/reality/DegradedStatePanel";
 import { DiagnosticsContextBar } from "@/components/admin-os/DiagnosticsContextBar";
+import { LaunchHonestyBadge } from "@/components/reality/LaunchHonestyBadge";
+import { RealityStateBadge } from "@/components/reality/RealityStateBadge";
+import { LaunchTruthIndicator } from "@/components/admin-os/LaunchTruthIndicator";
+import { RealityModeIndicator } from "@/components/admin-os/RealityModeIndicator";
+import { SystemStatusBar } from "@/components/admin-os/SystemStatusBar";
 
 /* Count-up KPI tile for observability */
 const ObsKPITile = ({ label, value, ok, icon: Icon }: { label: string; value: string; ok: boolean; icon: React.ElementType }) => {

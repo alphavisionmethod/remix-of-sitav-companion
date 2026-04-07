@@ -68,6 +68,7 @@ import { DesktopPreviewStep } from "@/components/sita/onboarding/DesktopPreviewS
 import { FirstSimulationStep } from "@/components/sita/onboarding/FirstSimulationStep";
 import { FirstActionsStep } from "@/components/sita/onboarding/FirstActionsStep";
 import { RecoverFirstStep } from "@/components/sita/onboarding/RecoverFirstStep";
+import { PreviewExampleModal } from "@/components/sita/onboarding/PreviewExampleModal";
 import { CinematicIntro } from "@/components/sita/onboarding/CinematicIntro";
 import { RestorePreviewStep } from "@/components/sita/onboarding/RestorePreviewStep";
 import { ContextualWelcomeTour } from "@/components/sita/onboarding/ContextualWelcomeTour";
