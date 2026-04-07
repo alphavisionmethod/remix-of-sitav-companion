@@ -748,7 +748,7 @@ export function OSSetupExperience() {
                 )}
 
                 {phase === "account-environment" && (
-                  <AccountEnvironmentStep key="account-environment" selectedPath={state.accountPath as unknown}
+                  <AccountEnvironmentStep key="account-environment" selectedPath={state.accountPath as AccountPath}
                     onPathChange={path => setState(s => ({ ...s, accountPath: path }))} onNext={goNext} onPrev={goPrev} />
                 )}
 

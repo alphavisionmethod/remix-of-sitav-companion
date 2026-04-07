@@ -132,7 +132,7 @@ const CURRENCIES = [
 // Generate timezone list from Intl API
 function getAllTimezones(): string[] {
   try {
-    return (Intl as Record<string, unknown>).supportedValuesOf("timeZone");
+    return Intl.supportedValuesOf("timeZone");
   } catch {
     // Fallback for older browsers
     return COUNTRIES.map(c => c.tz).filter((v, i, a) => a.indexOf(v) === i).sort();
