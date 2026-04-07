@@ -697,6 +697,7 @@ const App = () => (
             <Route path="*" element={
               <ProtectedRoute>
                 <ShellLayout>
+                  <RouteErrorBoundary>
                   <Suspense fallback={<PageLoader />}>
                   <Routes>
                     <Route path="/" element={<DesktopPage />} />
