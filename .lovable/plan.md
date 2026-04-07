@@ -1,54 +1,52 @@
 
 
-# Wire 40 Pages with isDemoMode Gates
+# Rename All Non-DEMO_ Uppercase Arrays + Add isDemoMode Gates
 
-## Scope
+## Summary
 
-40 files currently lack `useDataMode`/`isDemoMode`. They break into two groups:
+A Python automation script will scan every `.tsx` file under `src/pages/admin/` and `src/pages/investment-office/`, find all top-level `const UPPERCASE_NAME = [...]` arrays that don't already have the `DEMO_` prefix, rename them to `DEMO_UPPERCASE_NAME`, update all references in the same file, and ensure `useDataMode` + `isDemoMode` are present. Build verification + UI spot-check follow.
 
-### Group A: 15 Investment Office pages (data-heavy, need full wiring)
-These pages import mock data constants (INSTRUMENTS, PORTFOLIO, etc.) directly and have Supabase hooks imported but unused for gating. Each needs:
-1. Add `import { useDataMode } from "@/contexts/DataModeContext"`
-2. Add `const { isDemoMode } = useDataMode()` inside the component
-3. Gate data: use mock constants when `isDemoMode`, use live hook data when not
+## What's Already Done vs What's Left
 
-**Files:**
-- AdvancedMode, AdvisorBoard, EventMarketsWorkspace, ExecutionDesk, InstrumentDetail
-- IntelligenceDossier, InvestmentBoardroom, InvestmentGate, MarketExplorer, PortfolioOffice
-- ResearchLibrary, RiskOffice, StrategyStudio, ThesisJournal, WatchlistsSignals
+**Already DEMO_ prefixed (~52 files):** Most investment-office pages and many admin pages were renamed in prior sprints. These are correct.
 
-**Pattern per file:**
-```tsx
-import { useDataMode } from "@/contexts/DataModeContext";
+**Still need DEMO_ prefix (~18+ files, ~50+ arrays):** These files have `const SOME_NAME = [...]` without `DEMO_` prefix:
 
-export default function PortfolioOffice() {
-  const { isDemoMode } = useDataMode();
-  const { data: livePositions, isLoading } = usePortfolioPositions();
-  
-  // Gate: demo uses mock constants, live uses Supabase data
-  const positions = isDemoMode ? PORTFOLIO.holdings : (livePositions ?? []);
-  // ... rest of component
-}
-```
+| File | Arrays to rename |
+|------|-----------------|
+| `admin/AIHumanBoundaryControls.tsx` | `AGENT_BOUNDARIES`, `MISSION_BOUNDARIES`, `CHANGE_TYPE_BOUNDARIES` |
+| `admin/AIT03TaskInvocation.tsx` | `TASK_TYPES`, `BUDGET_POSTURES`, `SCOPE_DOMAINS` |
+| `admin/HRS03ReadinessExplanation.tsx` | `PIPELINE_STAGES`, `COMBINE_STRATEGIES` |
+| `admin/AND01AndroidEcosystemCenter.tsx` | `PROVIDER_CAPS` + others |
+| `admin/APL01AppleEcosystemCenter.tsx` | similar config arrays |
+| `admin/SystemManagement.tsx` | `COMMANDS` (inline) |
+| `admin/MockReplacementProgram.tsx` | `MOCK_TYPES`, `STATUSES`, `PRIORITIES` |
+| `admin/MemoryContinuityCenter.tsx` | `SCOPES` |
+| `admin/sag/SAGMultiStageExplorer.tsx` | `EXAMPLE_STAGES` |
+| `admin/sag/SAGBuilderConsole.tsx` | `BUILDER_STEPS` |
+| ~40+ more admin subdirectory files | Various uppercase arrays |
 
-### Group B: 24 Revenue Office onboarding screens + LearnLaterPage (no data)
-These are pure UI/form screens with zero external data fetches. They collect user input during onboarding — no mock data to gate.
+## Implementation
 
-**Action:** Add a minimal `useDataMode` import and `isDemoMode` const for consistency (future-proofing), but no data gating needed since there's no data to gate. Alternatively, skip these since they are purely presentational.
+1. **Python script** scans all `.tsx` files in `src/pages/admin/` and `src/pages/investment-office/`
+2. For each file, regex-finds `const [A-Z][A-Z0-9_]+ = [` patterns
+3. Skips arrays already prefixed with `DEMO_`
+4. Renames the declaration and all references in that file to `DEMO_` prefix
+5. If `useDataMode` import is missing, injects it
+6. If `isDemoMode` destructure is missing, injects it after the component function declaration
+7. Writes all modified files
 
-### Group C: 1 utility page
-- **LearnLaterPage** — wrapper component, no data. Add minimal isDemoMode for consistency.
+**Safety rules:**
+- Does NOT rename type aliases, interfaces, enums, or Record/object constants (only arrays `= [`)
+- Does NOT rename imported constants from other modules (only file-local declarations)
+- Preserves all existing `DEMO_` prefixed arrays unchanged
 
-## Implementation approach
+## Verification
 
-A Python automation script will:
-1. For each of the 15 investment pages: inject `useDataMode` import + `isDemoMode` const after the component function declaration
-2. For the 24 onboarding screens + LearnLaterPage: inject minimal `useDataMode` import + gate for consistency
-3. Verify with `npx tsc --noEmit` — 0 errors
+1. `npx tsc --noEmit` — 0 errors
+2. UI spot-check: navigate to AIHumanBoundaryControls, AIT03TaskInvocation, and 2 investment-office pages to confirm rendering
 
-## Files changed
-- 15 Investment Office pages (full data gating)
-- 24 onboarding screens + 1 primitives file + FormationShell (minimal gate)
-- 1 LearnLaterPage (minimal gate)
-- **Total: 41 files**
+## Files Changed
+
+~18-40 files across `src/pages/admin/` (including subdirectories) and any remaining `src/pages/investment-office/` files. No changes to files already correctly prefixed.
 
