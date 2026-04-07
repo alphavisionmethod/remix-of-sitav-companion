@@ -1,1312 +1,1573 @@
 {
   "version": "2.1.0",
-  "generatedAt": "2026-04-04T19:57:39.338Z",
+  "generatedAt": "2026-04-07T00:00:00.000Z",
   "totalRoutes": 261,
   "routes": [
     {
       "path": "/reset-password",
       "component": "ResetPassword",
-      "domain": "reset-password"
+      "domain": "reset-password",
+      "owner": "identity"
     },
     {
       "path": "/onboarding",
       "component": "Onboarding",
-      "domain": "onboarding"
+      "domain": "onboarding",
+      "owner": "identity"
     },
     {
       "path": "/auth/callback",
       "component": "EmailVerificationHandler",
-      "domain": "auth"
+      "domain": "auth",
+      "owner": "identity"
     },
     {
       "path": "/",
       "component": "DailyPulse",
-      "domain": "root"
+      "domain": "root",
+      "owner": "brain-core"
     },
     {
       "path": "/life",
       "component": "LifeDashboard",
-      "domain": "life"
+      "domain": "life",
+      "owner": "brain-core"
     },
     {
       "path": "/business",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/overview",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/leads",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/customers",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/opportunities",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/quotes",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/invoices",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/collections",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/revenue-autopilot",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/autopilot-hub",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/revenue-impact",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/playbook-builder",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/revenue-forecast",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/communications",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/boardroom",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/proof",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/files",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/settings",
       "component": "BusinessCenter",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/customers/:id",
       "component": "CustomerDetail",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/business/customer-health",
       "component": "CustomerHealthPage",
-      "domain": "business"
+      "domain": "business",
+      "owner": "business-os"
     },
     {
       "path": "/money",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/overview",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/bills",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/subscriptions",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/reserves",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/cash-timing",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/receivables",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/investment-office",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/family-office",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/approvals",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/proof",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/files",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/documents",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/boardroom",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/money/settings",
       "component": "MoneyCenter",
-      "domain": "money"
+      "domain": "money",
+      "owner": "finance-os"
     },
     {
       "path": "/concierge",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/overview",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/calendar",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/tasks",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/school",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/grocery",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/appointments",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/travel",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/providers",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/events",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/workflows",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/proof",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/files",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/boardroom",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/concierge/settings",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/inbox",
       "component": "InboxCapture",
-      "domain": "inbox"
+      "domain": "inbox",
+      "owner": "brain-core"
     },
     {
       "path": "/inbox/capture",
       "component": "InboxCapture",
-      "domain": "inbox"
+      "domain": "inbox",
+      "owner": "brain-core"
     },
     {
       "path": "/inbox/processed",
       "component": "InboxCapture",
-      "domain": "inbox"
+      "domain": "inbox",
+      "owner": "brain-core"
     },
     {
       "path": "/inbox/review",
       "component": "InboxCapture",
-      "domain": "inbox"
+      "domain": "inbox",
+      "owner": "brain-core"
     },
     {
       "path": "/activity",
       "component": "ActivityStream",
-      "domain": "activity"
+      "domain": "activity",
+      "owner": "brain-core"
     },
     {
       "path": "/opportunities",
       "component": "OpportunityEngine",
-      "domain": "opportunities"
+      "domain": "opportunities",
+      "owner": "business-os"
     },
     {
       "path": "/outcomes",
       "component": "OutcomeEnginePage",
-      "domain": "outcomes"
+      "domain": "outcomes",
+      "owner": "brain-core"
     },
     {
       "path": "/spillovers",
       "component": "SpilloverDashboard",
-      "domain": "spillovers"
+      "domain": "spillovers",
+      "owner": "brain-core"
     },
     {
       "path": "/ai-workforce",
       "component": "AIWorkforcePage",
-      "domain": "ai-workforce"
+      "domain": "ai-workforce",
+      "owner": "brain-core"
     },
     {
       "path": "/capital-allocation",
       "component": "CapitalAllocationPage",
-      "domain": "capital-allocation"
+      "domain": "capital-allocation",
+      "owner": "brain-core"
     },
     {
       "path": "/sovereign-export",
       "component": "SovereignExportPage",
-      "domain": "sovereign-export"
+      "domain": "sovereign-export",
+      "owner": "brain-core"
     },
     {
       "path": "/communications",
       "component": "CommunicationsPage",
-      "domain": "communications"
+      "domain": "communications",
+      "owner": "brain-core"
     },
     {
       "path": "/notifications/settings",
       "component": "NotificationSettingsPage",
-      "domain": "notifications"
+      "domain": "notifications",
+      "owner": "brain-core"
     },
     {
       "path": "/approvals",
       "component": "ApprovalsCenter",
-      "domain": "approvals"
+      "domain": "approvals",
+      "owner": "brain-core"
     },
     {
       "path": "/approvals/pending",
       "component": "ApprovalsCenter",
-      "domain": "approvals"
+      "domain": "approvals",
+      "owner": "brain-core"
     },
     {
       "path": "/approvals/simulated",
       "component": "ApprovalsCenter",
-      "domain": "approvals"
+      "domain": "approvals",
+      "owner": "brain-core"
     },
     {
       "path": "/approvals/history",
       "component": "ApprovalsCenter",
-      "domain": "approvals"
+      "domain": "approvals",
+      "owner": "brain-core"
     },
     {
       "path": "/approval-chamber",
       "component": "ApprovalChamber",
-      "domain": "approval-chamber"
+      "domain": "approval-chamber",
+      "owner": "brain-core"
     },
     {
       "path": "/advisors",
       "component": "AdvisorWorkspace",
-      "domain": "advisors"
+      "domain": "advisors",
+      "owner": "brain-core"
     },
     {
       "path": "/advisors/council-dashboard",
       "component": "AdvisorCouncilDashboard",
-      "domain": "advisors"
+      "domain": "advisors",
+      "owner": "brain-core"
     },
     {
       "path": "/advisors/overview",
       "component": "AdvisorWorkspace",
-      "domain": "advisors"
+      "domain": "advisors",
+      "owner": "brain-core"
     },
     {
       "path": "/advisors/compare",
       "component": "AdvisorWorkspace",
-      "domain": "advisors"
+      "domain": "advisors",
+      "owner": "brain-core"
     },
     {
       "path": "/advisors/simulations",
       "component": "AdvisorWorkspace",
-      "domain": "advisors"
+      "domain": "advisors",
+      "owner": "brain-core"
     },
     {
       "path": "/advisors/approvals",
       "component": "AdvisorWorkspace",
-      "domain": "advisors"
+      "domain": "advisors",
+      "owner": "brain-core"
     },
     {
       "path": "/advisors/proof",
       "component": "AdvisorWorkspace",
-      "domain": "advisors"
+      "domain": "advisors",
+      "owner": "brain-core"
     },
     {
       "path": "/advisors/memory",
       "component": "AdvisorWorkspace",
-      "domain": "advisors"
+      "domain": "advisors",
+      "owner": "brain-core"
     },
     {
       "path": "/advisors/:advisorId",
       "component": "AdvisorWorkspace",
-      "domain": "advisors"
+      "domain": "advisors",
+      "owner": "brain-core"
     },
     {
       "path": "/productivity",
       "component": "ProductivityHub",
-      "domain": "productivity"
+      "domain": "productivity",
+      "owner": "brain-core"
     },
     {
       "path": "/productivity/docs",
       "component": "ProductivityHub",
-      "domain": "productivity"
+      "domain": "productivity",
+      "owner": "brain-core"
     },
     {
       "path": "/productivity/sheets",
       "component": "ProductivityHub",
-      "domain": "productivity"
+      "domain": "productivity",
+      "owner": "brain-core"
     },
     {
       "path": "/productivity/slides",
       "component": "ProductivityHub",
-      "domain": "productivity"
+      "domain": "productivity",
+      "owner": "brain-core"
     },
     {
       "path": "/docs",
       "component": "DocsWorkspace",
-      "domain": "docs"
+      "domain": "docs",
+      "owner": "brain-core"
     },
     {
       "path": "/sheets",
       "component": "SheetsWorkspace",
-      "domain": "sheets"
+      "domain": "sheets",
+      "owner": "brain-core"
     },
     {
       "path": "/slides",
       "component": "SlidesWorkspace",
-      "domain": "slides"
+      "domain": "slides",
+      "owner": "brain-core"
     },
     {
       "path": "/store",
       "component": "PackStorePage",
-      "domain": "store"
+      "domain": "store",
+      "owner": "brain-core"
     },
     {
       "path": "/store/featured",
       "component": "PackStorePage",
-      "domain": "store"
+      "domain": "store",
+      "owner": "brain-core"
     },
     {
       "path": "/store/installed",
       "component": "PackInstalledPage",
-      "domain": "store"
+      "domain": "store",
+      "owner": "brain-core"
     },
     {
       "path": "/store/analytics",
       "component": "StoreAnalyticsPage",
-      "domain": "store"
+      "domain": "store",
+      "owner": "brain-core"
     },
     {
       "path": "/store/packs/:packId",
       "component": "PackDetailPage",
-      "domain": "store"
+      "domain": "store",
+      "owner": "brain-core"
     },
     {
       "path": "/store/apps/:appId",
       "component": "AppDetailPage",
-      "domain": "store"
+      "domain": "store",
+      "owner": "brain-core"
     },
     {
       "path": "/store/founders",
       "component": "StoreCategoryPage",
-      "domain": "store"
+      "domain": "store",
+      "owner": "brain-core"
     },
     {
       "path": "/store/families",
       "component": "StoreCategoryPage",
-      "domain": "store"
+      "domain": "store",
+      "owner": "brain-core"
     },
     {
       "path": "/store/finance",
       "component": "StoreCategoryPage",
-      "domain": "store"
+      "domain": "store",
+      "owner": "brain-core"
     },
     {
       "path": "/store/connectors",
       "component": "StoreCategoryPage",
-      "domain": "store"
+      "domain": "store",
+      "owner": "brain-core"
     },
     {
       "path": "/store/surfaces",
       "component": "StoreCategoryPage",
-      "domain": "store"
+      "domain": "store",
+      "owner": "brain-core"
     },
     {
       "path": "/store/:segment",
       "component": "StoreCategoryPage",
-      "domain": "store"
+      "domain": "store",
+      "owner": "brain-core"
     },
     {
       "path": "/proof",
       "component": "ProofCenter",
-      "domain": "proof"
+      "domain": "proof",
+      "owner": "verification-engine"
     },
     {
       "path": "/proof/receipts",
       "component": "ProofCenter",
-      "domain": "proof"
+      "domain": "proof",
+      "owner": "verification-engine"
     },
     {
       "path": "/proof/executions",
       "component": "ProofCenter",
-      "domain": "proof"
+      "domain": "proof",
+      "owner": "verification-engine"
     },
     {
       "path": "/proof/verifications",
       "component": "ProofCenter",
-      "domain": "proof"
+      "domain": "proof",
+      "owner": "verification-engine"
     },
     {
       "path": "/proof/rollbacks",
       "component": "ProofCenter",
-      "domain": "proof"
+      "domain": "proof",
+      "owner": "verification-engine"
     },
     {
       "path": "/boardroom",
       "component": "Boardroom",
-      "domain": "boardroom"
+      "domain": "boardroom",
+      "owner": "boardroom"
     },
     {
       "path": "/boardroom/business",
       "component": "Boardroom",
-      "domain": "boardroom"
+      "domain": "boardroom",
+      "owner": "boardroom"
     },
     {
       "path": "/boardroom/finance",
       "component": "Boardroom",
-      "domain": "boardroom"
+      "domain": "boardroom",
+      "owner": "boardroom"
     },
     {
       "path": "/boardroom/family",
       "component": "Boardroom",
-      "domain": "boardroom"
+      "domain": "boardroom",
+      "owner": "boardroom"
     },
     {
       "path": "/boardroom/opportunity",
       "component": "Boardroom",
-      "domain": "boardroom"
+      "domain": "boardroom",
+      "owner": "boardroom"
     },
     {
       "path": "/boardroom/morning",
       "component": "Boardroom",
-      "domain": "boardroom"
+      "domain": "boardroom",
+      "owner": "boardroom"
     },
     {
       "path": "/boardroom/weekly",
       "component": "Boardroom",
-      "domain": "boardroom"
+      "domain": "boardroom",
+      "owner": "boardroom"
     },
     {
       "path": "/boardroom/incidents",
       "component": "Boardroom",
-      "domain": "boardroom"
+      "domain": "boardroom",
+      "owner": "boardroom"
     },
     {
       "path": "/boardroom/replay",
       "component": "BoardroomReplay",
-      "domain": "boardroom"
+      "domain": "boardroom",
+      "owner": "boardroom"
     },
     {
       "path": "/workflows",
       "component": "WorkflowsCenter",
-      "domain": "workflows"
+      "domain": "workflows",
+      "owner": "brain-core"
     },
     {
       "path": "/workflows/active",
       "component": "WorkflowsCenter",
-      "domain": "workflows"
+      "domain": "workflows",
+      "owner": "brain-core"
     },
     {
       "path": "/workflows/history",
       "component": "WorkflowsCenter",
-      "domain": "workflows"
+      "domain": "workflows",
+      "owner": "brain-core"
     },
     {
       "path": "/workflows/templates",
       "component": "WorkflowsCenter",
-      "domain": "workflows"
+      "domain": "workflows",
+      "owner": "brain-core"
     },
     {
       "path": "/files",
       "component": "FilesCenter",
-      "domain": "files"
+      "domain": "files",
+      "owner": "brain-core"
     },
     {
       "path": "/files/overview",
       "component": "FilesCenter",
-      "domain": "files"
+      "domain": "files",
+      "owner": "brain-core"
     },
     {
       "path": "/files/all",
       "component": "FilesCenter",
-      "domain": "files"
+      "domain": "files",
+      "owner": "brain-core"
     },
     {
       "path": "/files/processing",
       "component": "FilesCenter",
-      "domain": "files"
+      "domain": "files",
+      "owner": "brain-core"
     },
     {
       "path": "/files/review",
       "component": "FilesCenter",
-      "domain": "files"
+      "domain": "files",
+      "owner": "brain-core"
     },
     {
       "path": "/files/search",
       "component": "FilesCenter",
-      "domain": "files"
+      "domain": "files",
+      "owner": "brain-core"
     },
     {
       "path": "/files/memory",
       "component": "FilesCenter",
-      "domain": "files"
+      "domain": "files",
+      "owner": "brain-core"
     },
     {
       "path": "/files/memory-review",
       "component": "FilesCenter",
-      "domain": "files"
+      "domain": "files",
+      "owner": "brain-core"
     },
     {
       "path": "/files/sensitive",
       "component": "FilesCenter",
-      "domain": "files"
+      "domain": "files",
+      "owner": "brain-core"
     },
     {
       "path": "/files/settings",
       "component": "FilesCenter",
-      "domain": "files"
+      "domain": "files",
+      "owner": "brain-core"
     },
     {
       "path": "/personalization",
       "component": "PersonalizationStudio",
-      "domain": "personalization"
+      "domain": "personalization",
+      "owner": "brain-core"
     },
     {
       "path": "/personalization/profile",
       "component": "PersonalizationStudio",
-      "domain": "personalization"
+      "domain": "personalization",
+      "owner": "brain-core"
     },
     {
       "path": "/personalization/preferences",
       "component": "PersonalizationStudio",
-      "domain": "personalization"
+      "domain": "personalization",
+      "owner": "brain-core"
     },
     {
       "path": "/personalization/memory",
       "component": "PersonalizationStudio",
-      "domain": "personalization"
+      "domain": "personalization",
+      "owner": "brain-core"
     },
     {
       "path": "/personalization/automation",
       "component": "PersonalizationStudio",
-      "domain": "personalization"
+      "domain": "personalization",
+      "owner": "brain-core"
     },
     {
       "path": "/personalization/boardroom",
       "component": "PersonalizationStudio",
-      "domain": "personalization"
+      "domain": "personalization",
+      "owner": "brain-core"
     },
     {
       "path": "/memory",
       "component": "MemoryCenter",
-      "domain": "memory"
+      "domain": "memory",
+      "owner": "brain-core"
     },
     {
       "path": "/memory/profile",
       "component": "MemoryCenter",
-      "domain": "memory"
+      "domain": "memory",
+      "owner": "brain-core"
     },
     {
       "path": "/memory/business",
       "component": "MemoryCenter",
-      "domain": "memory"
+      "domain": "memory",
+      "owner": "brain-core"
     },
     {
       "path": "/memory/money",
       "component": "MemoryCenter",
-      "domain": "memory"
+      "domain": "memory",
+      "owner": "brain-core"
     },
     {
       "path": "/memory/household",
       "component": "MemoryCenter",
-      "domain": "memory"
+      "domain": "memory",
+      "owner": "brain-core"
     },
     {
       "path": "/memory/workflows",
       "component": "MemoryCenter",
-      "domain": "memory"
+      "domain": "memory",
+      "owner": "brain-core"
     },
     {
       "path": "/memory/preferences",
       "component": "MemoryCenter",
-      "domain": "memory"
+      "domain": "memory",
+      "owner": "brain-core"
     },
     {
       "path": "/automation",
       "component": "AutomationCenter",
-      "domain": "automation"
+      "domain": "automation",
+      "owner": "brain-core"
     },
     {
       "path": "/automation/rules",
       "component": "AutomationCenter",
-      "domain": "automation"
+      "domain": "automation",
+      "owner": "brain-core"
     },
     {
       "path": "/automation/trust",
       "component": "AutomationCenter",
-      "domain": "automation"
+      "domain": "automation",
+      "owner": "brain-core"
     },
     {
       "path": "/automation/delegations",
       "component": "AutomationCenter",
-      "domain": "automation"
+      "domain": "automation",
+      "owner": "brain-core"
     },
     {
       "path": "/system",
       "component": "SystemStatus",
-      "domain": "system"
+      "domain": "system",
+      "owner": "brain-core"
     },
     {
       "path": "/system/trust",
       "component": "SystemStatus",
-      "domain": "system"
+      "domain": "system",
+      "owner": "brain-core"
     },
     {
       "path": "/system/health",
       "component": "SystemStatus",
-      "domain": "system"
+      "domain": "system",
+      "owner": "brain-core"
     },
     {
       "path": "/system/connectors",
       "component": "SystemStatus",
-      "domain": "system"
+      "domain": "system",
+      "owner": "brain-core"
     },
     {
       "path": "/system/history",
       "component": "SystemStatus",
-      "domain": "system"
+      "domain": "system",
+      "owner": "brain-core"
     },
     {
       "path": "/system/slos",
       "component": "SystemStatus",
-      "domain": "system"
+      "domain": "system",
+      "owner": "brain-core"
     },
     {
       "path": "/system/self-healing",
       "component": "SystemStatus",
-      "domain": "system"
+      "domain": "system",
+      "owner": "brain-core"
     },
     {
       "path": "/system/incidents",
       "component": "SystemStatus",
-      "domain": "system"
+      "domain": "system",
+      "owner": "brain-core"
     },
     {
       "path": "/system/fleet",
       "component": "SystemStatus",
-      "domain": "system"
+      "domain": "system",
+      "owner": "brain-core"
     },
     {
       "path": "/agent-activity",
       "component": "AgentActivityDashboard",
-      "domain": "agent-activity"
+      "domain": "agent-activity",
+      "owner": "brain-core"
     },
     {
       "path": "/revenue-calling",
       "component": "RevenueCallingPage",
-      "domain": "revenue-calling"
+      "domain": "revenue-calling",
+      "owner": "brain-core"
     },
     {
       "path": "/integration-concierge",
       "component": "IntegrationConcierge",
-      "domain": "integration-concierge"
+      "domain": "integration-concierge",
+      "owner": "brain-core"
     },
     {
       "path": "/integrations",
       "component": "IntegrationConcierge",
-      "domain": "integrations"
+      "domain": "integrations",
+      "owner": "brain-core"
     },
     {
       "path": "/digital-twins",
       "component": "DigitalTwinsPage",
-      "domain": "digital-twins"
+      "domain": "digital-twins",
+      "owner": "brain-core"
     },
     {
       "path": "/digital-twins/business",
       "component": "DigitalTwinsPage",
-      "domain": "digital-twins"
+      "domain": "digital-twins",
+      "owner": "brain-core"
     },
     {
       "path": "/digital-twins/money",
       "component": "DigitalTwinsPage",
-      "domain": "digital-twins"
+      "domain": "digital-twins",
+      "owner": "brain-core"
     },
     {
       "path": "/digital-twins/household",
       "component": "DigitalTwinsPage",
-      "domain": "digital-twins"
+      "domain": "digital-twins",
+      "owner": "brain-core"
     },
     {
       "path": "/scenario-lab",
       "component": "ScenarioLabPage",
-      "domain": "scenario-lab"
+      "domain": "scenario-lab",
+      "owner": "brain-core"
     },
     {
       "path": "/ai-economics",
       "component": "AIEconomicsPage",
-      "domain": "ai-economics"
+      "domain": "ai-economics",
+      "owner": "brain-core"
     },
     {
       "path": "/recovered-value",
       "component": "RecoveredValuePage",
-      "domain": "recovered-value"
+      "domain": "recovered-value",
+      "owner": "brain-core"
     },
     {
       "path": "/settings",
       "component": "SettingsPage",
-      "domain": "settings"
+      "domain": "settings",
+      "owner": "identity"
     },
     {
       "path": "/settings/trust",
       "component": "SettingsPage",
-      "domain": "settings"
+      "domain": "settings",
+      "owner": "identity"
     },
     {
       "path": "/settings/profile",
       "component": "SettingsPage",
-      "domain": "settings"
+      "domain": "settings",
+      "owner": "identity"
     },
     {
       "path": "/settings/connectors",
       "component": "SettingsPage",
-      "domain": "settings"
+      "domain": "settings",
+      "owner": "identity"
     },
     {
       "path": "/settings/permissions",
       "component": "SettingsPage",
-      "domain": "settings"
+      "domain": "settings",
+      "owner": "identity"
     },
     {
       "path": "/settings/billing",
       "component": "SettingsPage",
-      "domain": "settings"
+      "domain": "settings",
+      "owner": "identity"
     },
     {
       "path": "/settings/notifications",
       "component": "SettingsPage",
-      "domain": "settings"
+      "domain": "settings",
+      "owner": "identity"
     },
     {
       "path": "/settings/privacy",
       "component": "SettingsPage",
-      "domain": "settings"
+      "domain": "settings",
+      "owner": "identity"
     },
     {
       "path": "/settings/appearance",
       "component": "SettingsPage",
-      "domain": "settings"
+      "domain": "settings",
+      "owner": "identity"
     },
     {
       "path": "/mission-control",
       "component": "MissionControl",
-      "domain": "mission-control"
+      "domain": "mission-control",
+      "owner": "brain-core"
     },
     {
       "path": "/mission-control/agents",
       "component": "MissionControl",
-      "domain": "mission-control"
+      "domain": "mission-control",
+      "owner": "brain-core"
     },
     {
       "path": "/mission-control/incidents",
       "component": "MissionControl",
-      "domain": "mission-control"
+      "domain": "mission-control",
+      "owner": "brain-core"
     },
     {
       "path": "/mission-control/connectors",
       "component": "MissionControl",
-      "domain": "mission-control"
+      "domain": "mission-control",
+      "owner": "brain-core"
     },
     {
       "path": "/mission-control/workflows",
       "component": "MissionControl",
-      "domain": "mission-control"
+      "domain": "mission-control",
+      "owner": "brain-core"
     },
     {
       "path": "/mission-control/costs",
       "component": "MissionControl",
-      "domain": "mission-control"
+      "domain": "mission-control",
+      "owner": "brain-core"
     },
     {
       "path": "/mission-control/policies",
       "component": "MissionControl",
-      "domain": "mission-control"
+      "domain": "mission-control",
+      "owner": "brain-core"
     },
     {
       "path": "/mission-control/releases",
       "component": "MissionControl",
-      "domain": "mission-control"
+      "domain": "mission-control",
+      "owner": "brain-core"
     },
     {
       "path": "/mission-control/safe-mode",
       "component": "MissionControl",
-      "domain": "mission-control"
+      "domain": "mission-control",
+      "owner": "brain-core"
     },
     {
       "path": "/mission-control/permissions",
       "component": "MissionControl",
-      "domain": "mission-control"
+      "domain": "mission-control",
+      "owner": "brain-core"
     },
     {
       "path": "/mission/overview",
       "component": "MissionOverview",
-      "domain": "mission"
+      "domain": "mission",
+      "owner": "brain-core"
     },
     {
       "path": "/mission/connectors/:connectorId",
       "component": "ConnectorDetail",
-      "domain": "mission"
+      "domain": "mission",
+      "owner": "brain-core"
     },
     {
       "path": "/mission/connectors/:connectorId/health",
       "component": "ConnectorDetail",
-      "domain": "mission"
+      "domain": "mission",
+      "owner": "brain-core"
     },
     {
       "path": "/mission/connectors/:connectorId/logs",
       "component": "ConnectorDetail",
-      "domain": "mission"
+      "domain": "mission",
+      "owner": "brain-core"
     },
     {
       "path": "/mission/incidents/:incidentId",
       "component": "IncidentDetail",
-      "domain": "mission"
+      "domain": "mission",
+      "owner": "brain-core"
     },
     {
       "path": "/mission/policies/simulate",
       "component": "PolicySimulator",
-      "domain": "mission"
+      "domain": "mission",
+      "owner": "brain-core"
     },
     {
       "path": "/mission/registry",
       "component": "MissionRegistryPage",
-      "domain": "mission"
+      "domain": "mission",
+      "owner": "brain-core"
     },
     {
       "path": "/mission/releases/:releaseId",
       "component": "MissionReleaseDetailPage",
-      "domain": "mission"
+      "domain": "mission",
+      "owner": "brain-core"
     },
     {
       "path": "/mission/workflows/:workflowId/replay",
       "component": "MissionWorkflowReplayPage",
-      "domain": "mission"
+      "domain": "mission",
+      "owner": "brain-core"
     },
     {
       "path": "/mission/error",
       "component": "MissionError",
-      "domain": "mission"
+      "domain": "mission",
+      "owner": "brain-core"
     },
     {
       "path": "/incidents",
       "component": "Navigate",
-      "domain": "incidents"
+      "domain": "incidents",
+      "owner": "brain-core"
     },
     {
       "path": "/owner",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/home",
       "component": "Navigate",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/health",
       "component": "Navigate",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/pulse",
       "component": "OwnerPulsePage",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/trust",
       "component": "Navigate",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/approvals",
       "component": "OwnerApprovalsPage",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/ai-team",
       "component": "Navigate",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/ai-team/updates",
       "component": "OwnerAiTeamUpdatesPage",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/incidents",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/intelligence",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/policies",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/fleet",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/council",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/audit",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/connector-health",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/connectors",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/costs",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/internal-agents",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/workflow-control",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/trust-center",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/autopilot",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/billing",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/releases",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/model-routing",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/system-map",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/knowledge",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/support",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/change-review",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/rollback-center",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/governance",
       "component": "OwnerCenter",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/pricing",
       "component": "PricingEditor",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/packs",
       "component": "PackEditorPage",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/advisors",
       "component": "AdvisorConfigPage",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/leases",
       "component": "LeaseDashboard",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner/constitution",
       "component": "ConstitutionEditor",
-      "domain": "owner"
+      "domain": "owner",
+      "owner": "brain-core"
     },
     {
       "path": "/owner-mode",
       "component": "Navigate",
-      "domain": "owner-mode"
+      "domain": "owner-mode",
+      "owner": "brain-core"
     },
     {
       "path": "/owner-mode/home",
       "component": "Navigate",
-      "domain": "owner-mode"
+      "domain": "owner-mode",
+      "owner": "brain-core"
     },
     {
       "path": "/workspace/principal",
       "component": "PrincipalWorkspace",
-      "domain": "workspace"
+      "domain": "workspace",
+      "owner": "brain-core"
     },
     {
       "path": "/workspace/operator",
       "component": "OperatorWorkspace",
-      "domain": "workspace"
+      "domain": "workspace",
+      "owner": "brain-core"
     },
     {
       "path": "/governance",
       "component": "GovernanceDashboard",
-      "domain": "governance"
+      "domain": "governance",
+      "owner": "brain-core"
     },
     {
       "path": "/governance/trust-debt",
       "component": "GovernanceDashboard",
-      "domain": "governance"
+      "domain": "governance",
+      "owner": "brain-core"
     },
     {
       "path": "/governance/execution-debt",
       "component": "GovernanceDashboard",
-      "domain": "governance"
+      "domain": "governance",
+      "owner": "brain-core"
     },
     {
       "path": "/governance/drag",
       "component": "GovernanceDashboard",
-      "domain": "governance"
+      "domain": "governance",
+      "owner": "brain-core"
     },
     {
       "path": "/governance/readiness",
       "component": "GovernanceDashboard",
-      "domain": "governance"
+      "domain": "governance",
+      "owner": "brain-core"
     },
     {
       "path": "/governance/delegation",
       "component": "GovernanceDashboard",
-      "domain": "governance"
+      "domain": "governance",
+      "owner": "brain-core"
     },
     {
       "path": "/workflow-replay",
       "component": "Navigate",
-      "domain": "workflow-replay"
+      "domain": "workflow-replay",
+      "owner": "brain-core"
     },
     {
       "path": "/observability",
       "component": "ObservabilityPage",
-      "domain": "observability"
+      "domain": "observability",
+      "owner": "brain-core"
     },
     {
       "path": "/users",
       "component": "UsersAdminPage",
-      "domain": "users"
+      "domain": "users",
+      "owner": "brain-core"
     },
     {
       "path": "/policy-simulator",
       "component": "Navigate",
-      "domain": "policy-simulator"
+      "domain": "policy-simulator",
+      "owner": "brain-core"
     },
     {
       "path": "/system-status",
       "component": "Navigate",
-      "domain": "system-status"
+      "domain": "system-status",
+      "owner": "brain-core"
     },
     {
       "path": "/service-architecture",
       "component": "Navigate",
-      "domain": "service-architecture"
+      "domain": "service-architecture",
+      "owner": "brain-core"
     },
     {
       "path": "/policies/simulator",
       "component": "Navigate",
-      "domain": "policies"
+      "domain": "policies",
+      "owner": "brain-core"
     },
     {
       "path": "/enterprise",
       "component": "EnterpriseControlPlane",
-      "domain": "enterprise"
+      "domain": "enterprise",
+      "owner": "brain-core"
     },
     {
       "path": "/enterprise/roles",
       "component": "EnterpriseControlPlane",
-      "domain": "enterprise"
+      "domain": "enterprise",
+      "owner": "brain-core"
     },
     {
       "path": "/enterprise/compliance",
       "component": "EnterpriseControlPlane",
-      "domain": "enterprise"
+      "domain": "enterprise",
+      "owner": "brain-core"
     },
     {
       "path": "/enterprise/sla",
       "component": "EnterpriseControlPlane",
-      "domain": "enterprise"
+      "domain": "enterprise",
+      "owner": "brain-core"
     },
     {
       "path": "/enterprise/fleet",
       "component": "EnterpriseControlPlane",
-      "domain": "enterprise"
+      "domain": "enterprise",
+      "owner": "brain-core"
     },
     {
       "path": "/enterprise/maturity",
       "component": "EnterpriseMaturityDashboard",
-      "domain": "enterprise"
+      "domain": "enterprise",
+      "owner": "brain-core"
     },
     {
       "path": "/enterprise-maturity",
       "component": "EnterpriseMaturityDashboard",
-      "domain": "enterprise-maturity"
+      "domain": "enterprise-maturity",
+      "owner": "brain-core"
     },
     {
       "path": "/policies",
       "component": "PolicyEditor",
-      "domain": "policies"
+      "domain": "policies",
+      "owner": "brain-core"
     },
     {
       "path": "/connectors",
       "component": "ConnectorHub",
-      "domain": "connectors"
+      "domain": "connectors",
+      "owner": "connector-control-plane"
     },
     {
       "path": "/advisors/registry",
       "component": "AdvisorRegistry",
-      "domain": "advisors"
+      "domain": "advisors",
+      "owner": "brain-core"
     },
     {
       "path": "/concierge/household",
       "component": "ConciergeCenter",
-      "domain": "concierge"
+      "domain": "concierge",
+      "owner": "concierge-os"
     },
     {
       "path": "/search",
       "component": "SearchPage",
-      "domain": "search"
+      "domain": "search",
+      "owner": "brain-core"
     },
     {
       "path": "*",
       "component": "NotFound",
-      "domain": "root"
+      "domain": "root",
+      "owner": "brain-core"
     }
   ]
 }

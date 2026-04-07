@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-04-04T19:58:28.395Z",
-  "totalContracts": 902,
+  "generatedAt": "2026-04-07T00:00:00.000Z",
+  "totalContracts": 885,
   "totalPackages": 12,
   "packageSummary": [
     {
@@ -1573,12 +1573,6 @@
       "file": "src/packages/contracts/domain-types/concierge-engine.ts"
     },
     {
-      "name": "BookingOption",
-      "kind": "interface",
-      "package": "contracts",
-      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
-    },
-    {
       "name": "CalendarEvent",
       "kind": "interface",
       "package": "contracts",
@@ -1586,12 +1580,6 @@
     },
     {
       "name": "ItineraryDay",
-      "kind": "interface",
-      "package": "contracts",
-      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
-    },
-    {
-      "name": "ItineraryItem",
       "kind": "interface",
       "package": "contracts",
       "file": "src/packages/contracts/domain-types/concierge-engine.ts"
@@ -1892,12 +1880,6 @@
     },
     {
       "name": "EntityType",
-      "kind": "type",
-      "package": "contracts",
-      "file": "src/packages/contracts/domain-types/entity-graph.ts"
-    },
-    {
-      "name": "HouseholdRole",
       "kind": "type",
       "package": "contracts",
       "file": "src/packages/contracts/domain-types/entity-graph.ts"
@@ -2552,12 +2534,6 @@
     },
     {
       "name": "ProofChain",
-      "kind": "interface",
-      "package": "contracts",
-      "file": "src/packages/contracts/domain-types/os-unified.ts"
-    },
-    {
-      "name": "TrustState",
       "kind": "interface",
       "package": "contracts",
       "file": "src/packages/contracts/domain-types/os-unified.ts"
@@ -3241,12 +3217,6 @@
       "file": "src/packages/contracts/graph/session-resume-token.ts"
     },
     {
-      "name": "EntityScope",
-      "kind": "interface",
-      "package": "contracts",
-      "file": "src/packages/contracts/index.ts"
-    },
-    {
       "name": "MemoryGovernanceRule",
       "kind": "interface",
       "package": "contracts",
@@ -3254,18 +3224,6 @@
     },
     {
       "name": "MemoryCorrectionRecord",
-      "kind": "interface",
-      "package": "contracts",
-      "file": "src/packages/contracts/memory/memory-governance.ts"
-    },
-    {
-      "name": "MemoryForgetRequest",
-      "kind": "interface",
-      "package": "contracts",
-      "file": "src/packages/contracts/memory/memory-governance.ts"
-    },
-    {
-      "name": "MemoryGovernanceConfig",
       "kind": "interface",
       "package": "contracts",
       "file": "src/packages/contracts/memory/memory-governance.ts"
@@ -3441,12 +3399,6 @@
     {
       "name": "ProofMetadata",
       "kind": "interface",
-      "package": "contracts",
-      "file": "src/packages/contracts/proof/proof-types.ts"
-    },
-    {
-      "name": "ProofType",
-      "kind": "type",
       "package": "contracts",
       "file": "src/packages/contracts/proof/proof-types.ts"
     },
@@ -3641,12 +3593,6 @@
       "kind": "type",
       "package": "contracts",
       "file": "src/packages/contracts/runtime/integration-concierge-runtime.ts"
-    },
-    {
-      "name": "OpportunityNode",
-      "kind": "interface",
-      "package": "contracts",
-      "file": "src/packages/contracts/runtime/opportunity-graph-runtime.ts"
     },
     {
       "name": "OpportunityEdge",
@@ -4621,12 +4567,6 @@
       "file": "src/packages/finance-contracts/investment-office/types.ts"
     },
     {
-      "name": "ScenarioResult",
-      "kind": "interface",
-      "package": "finance-contracts",
-      "file": "src/packages/finance-contracts/investment-office/types.ts"
-    },
-    {
       "name": "MonteCarloResult",
       "kind": "interface",
       "package": "finance-contracts",
@@ -5005,25 +4945,7 @@
       "file": "src/packages/policy-contracts/approvals/types.ts"
     },
     {
-      "name": "TruthBoundaryRule",
-      "kind": "interface",
-      "package": "policy-contracts",
-      "file": "src/packages/policy-contracts/index.ts"
-    },
-    {
       "name": "Contradiction",
-      "kind": "interface",
-      "package": "policy-contracts",
-      "file": "src/packages/policy-contracts/index.ts"
-    },
-    {
-      "name": "ContradictionReport",
-      "kind": "interface",
-      "package": "policy-contracts",
-      "file": "src/packages/policy-contracts/index.ts"
-    },
-    {
-      "name": "RefusalState",
       "kind": "interface",
       "package": "policy-contracts",
       "file": "src/packages/policy-contracts/index.ts"
@@ -5055,18 +4977,6 @@
     {
       "name": "RedactionRules",
       "kind": "interface",
-      "package": "policy-contracts",
-      "file": "src/packages/policy-contracts/index.ts"
-    },
-    {
-      "name": "RequiredSourceType",
-      "kind": "type",
-      "package": "policy-contracts",
-      "file": "src/packages/policy-contracts/index.ts"
-    },
-    {
-      "name": "DowngradeLevel",
-      "kind": "type",
       "package": "policy-contracts",
       "file": "src/packages/policy-contracts/index.ts"
     },
@@ -5147,12 +5057,6 @@
       "kind": "interface",
       "package": "proof-model",
       "file": "src/packages/proof-model/agentic-and-investment-proof/types.ts"
-    },
-    {
-      "name": "ProofPack",
-      "kind": "interface",
-      "package": "proof-model",
-      "file": "src/packages/proof-model/index.ts"
     },
     {
       "name": "ActionReceipt",
@@ -5339,12 +5243,6 @@
       "kind": "interface",
       "package": "reality-contracts",
       "file": "src/packages/reality-contracts/src/nightly-reconciliation-summary.ts"
-    },
-    {
-      "name": "Postcondition",
-      "kind": "interface",
-      "package": "reality-contracts",
-      "file": "src/packages/reality-contracts/src/postcondition.ts"
     },
     {
       "name": "RealityContractMeta",
