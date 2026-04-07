@@ -1,149 +1,76 @@
 
 
-# Get Kernel Adoption to 100% — Plan
+# Fix ~75 Page-Level Type Errors — Upstream Typing Strategy
 
-## The Problem
+## Root Causes (5 patterns, not 75 individual fixes)
 
-The canonical execution chain exists and works:
-- `SitaKernel.executeAction()` — full 12-stage pipeline (surface → api-gateway → brain-core → domain-os → policy → approval → capability-router → executor → receipt → verification → event-bus → projections)
-- `useCanonicalAction()` — React hook exposing `execute(domain, capabilityId, payload)`
-- Only **1 page** (`ReplayRecoveryConsole`) actually uses it out of ~200+ pages/components
-- **513 direct database calls** (`fromTable()`) scattered across pages, hooks, and components bypass the kernel completely
+### 1. `callAdminAPI()` returns `unknown` — affects OwnerCenter (20 errors)
+The `callAdminAPI` function has no return type annotation. All 8 owner center hooks (`useTrustCenter`, `useReleases`, etc.) return `unknown` data. The mock data objects ARE typed, but the union with `callAdminAPI()` degrades to `unknown`.
 
-## Why It's Only 0.15%
+**Fix**: Add generic return type to `callAdminAPI<T>()` and type each hook's `queryFn` with explicit return types matching the mock data shapes. Define interfaces for each data shape (TrustCenterData, ReleasesData, etc.) in `use-admin-data.ts`.
 
-Every page does its own `fromTable("table").select(...)` or `.insert(...)` or `.update(...)` directly. This means:
-- No policy checks on reads or writes
-- No receipts generated
-- No trust verification
-- No event bus notifications
-- No proof chain entries
-- The entire kernel is decorative
+### 2. Supabase join results typed as `unknown` — affects ISA01-07, AR06-08, RecoveryCenter, ConnectorGovernanceCenter (~25 errors)
+When using `.select("*, provider_families(name, provider_key)")`, the joined table resolves to `unknown` if the FK isn't in generated types or uses dynamic tables.
 
-## The Fix — Two-Layer Strategy
-
-### Layer 1: Kernel-Routed Mutations (Priority — all writes go through kernel)
-
-Every `.insert()`, `.update()`, `.upsert()`, `.delete()` call must be replaced with `useCanonicalAction().execute(domain, capabilityId, payload)`.
-
-**Create a `useKernelMutation` hook** that wraps `useCanonicalAction` with React Query mutation patterns:
-
-```typescript
-// src/hooks/use-kernel-mutation.ts
-export function useKernelMutation(domain: string, capabilityId: string) {
-  const { execute } = useCanonicalAction();
-  return useMutation({
-    mutationFn: (payload: Record<string, unknown>) =>
-      execute(domain, capabilityId, payload),
-  });
-}
+**Fix**: For each affected query, define a typed result interface and cast the query result once at the data boundary. Example:
+```ts
+type ExecWithJob = Database['public']['Tables']['execution_log']['Row'] & {
+  scheduled_jobs: { name: string; domain: string; job_class: string; target_function: string } | null;
+};
+const data = (rawData ?? []) as ExecWithJob[];
 ```
 
-Then replace every direct write. Example — `AR08KillSwitchCenter.tsx`:
-```diff
-- await fromTable("automation_kill_switches").insert({ user_id, scope, enabled: true });
-+ await execute("system", "kill-switch.toggle", { scope, enabled: true });
-```
+### 3. `never[]` from explicit `as never[]` casts — affects FL01, RecoveryCenter, OwnerCenter support/change sections (~12 errors)
+Several files have `(data as never[])` which makes all property access fail.
 
-**Scope**: ~180 write calls across ~80 files.
+**Fix**: Replace `as never[]` with proper typed arrays. For FL01 `verificationRuns`, type as the verification run row shape. For RecoveryCenter `failedRuns`, type as workflow_runs row + workflows join.
 
-### Layer 2: Kernel-Routed Reads (all queries go through projections)
+### 4. Missing columns on DB types — affects PermissionsCenter, PersistenceStatus, ConnectorGovernanceCenter (~6 errors)
+`trust_score`, `is_primary` don't exist on `trusted_devices`. `receipt_type` doesn't exist on `sita_receipts`. `last_sync_at` doesn't exist on `connected_accounts`.
 
-Create a `useKernelQuery` hook that routes reads through the kernel's projection service, generating read-receipts and respecting policy:
+**Fix**: Read these from `metadata` JSON column with safe narrowing, or remove references if they're not real fields. For `receipt_type`, use the correct column name from the actual schema (likely `type` or `domain`).
 
-```typescript
-// src/hooks/use-kernel-query.ts
-export function useKernelQuery<T>(domain: string, projection: string, filters?: Record<string, unknown>) {
-  const kernel = useSitaKernel();
-  return useQuery({
-    queryKey: [domain, projection, filters],
-    queryFn: () => kernel.projections.query(domain, projection, filters),
-  });
-}
-```
+### 5. `unknown` from dynamic table / view queries — affects CJ01, CJ08 (~8 errors)
+`fromDynamicTable()` returns untyped results. When used as index types or with `.split()`, TS rejects.
 
-The `ProjectionService` internally calls `fromTable()` but wraps it with:
-- Read-receipt generation
-- Policy-based row filtering
-- Trust-level access checks
-- Event emission for audit
+**Fix**: Define interfaces for view results and cast once at the hook level. For CJ08, narrow `route_key` and numeric fields with `String()` / `Number()` before use.
 
-**Scope**: ~330 read calls across ~150 files.
+### 6. TeamManagement `unknown` from Record cast — 3 errors
+`(perf as Record<string, unknown>)?.total_calls` yields `unknown`. Rendered directly in JSX.
 
-### Layer 3: Kernel Capability Registration
+**Fix**: Define a `PerfData` interface and cast `perf` once: `const perf = perfMap.get(id) as PerfData | undefined`.
 
-Each domain needs its capabilities registered so the `CapabilityRouter` can route them:
+### 7. WorkflowsCenter insert type mismatch — 1 error
+Passing `Record<string, unknown>` where typed insert is expected.
 
-```typescript
-kernel.capabilityRouter.register("finance", "invoice.create", async (payload) => {
-  const { data } = await fromTable("invoices").insert(payload);
-  return data;
-});
-```
+**Fix**: Remove the `as Record<string, unknown>` cast from the insert object. Use the proper typed fields directly.
 
-Create capability handlers for each domain:
-- `src/lib/capabilities/finance-capabilities.ts`
-- `src/lib/capabilities/business-capabilities.ts`
-- `src/lib/capabilities/concierge-capabilities.ts`
-- `src/lib/capabilities/system-capabilities.ts`
-- `src/lib/capabilities/admin-capabilities.ts`
+### 8. ComputeGovernanceBoard `downgradeReason` — 1 error
+Accessing `downgradeReason` via `Record<string, unknown>` cast, rendering unknown.
 
-## Implementation Batches
+**Fix**: `String((r as Record<string, unknown>).downgradeReason ?? "")`
 
-### Batch 1: Foundation (3 files)
-1. **`src/hooks/use-kernel-mutation.ts`** — Mutation hook wrapping `useCanonicalAction`
-2. **`src/hooks/use-kernel-query.ts`** — Query hook wrapping `ProjectionService`
-3. **`src/lib/core-services/projection-service.ts`** — Add `query(domain, projection, filters)` method that does the actual `fromTable()` call internally
+## Files Modified
 
-### Batch 2: Capability Handlers (5 files)
-Register actual database operations as capabilities so the executor has real handlers:
-- `src/lib/capabilities/finance-capabilities.ts` — invoices, bills, payments, cashflow
-- `src/lib/capabilities/business-capabilities.ts` — contacts, leads, opportunities, CRM
-- `src/lib/capabilities/concierge-capabilities.ts` — tasks, bookings, household
-- `src/lib/capabilities/system-capabilities.ts` — devices, notifications, preferences, kill-switches
-- `src/lib/capabilities/admin-capabilities.ts` — policies, operator actions, audit logs
+- **`src/hooks/use-admin-data.ts`** — Add return types to `callAdminAPI<T>()` and all 8 owner center hooks; define data shape interfaces
+- **`src/pages/OwnerCenter.tsx`** — Remove inline `as Record<string, unknown>` casts; use typed data from hooks
+- **`src/pages/RecoveryCenter.tsx`** — Type `failedRuns` with join shape; remove `as never[]`
+- **`src/pages/PermissionsCenter.tsx`** — Read `trust_score`/`is_primary` from metadata
+- **`src/pages/WorkflowsCenter.tsx`** — Fix insert to use typed object
+- **`src/pages/admin/TeamManagement.tsx`** — Type `perf` with PerfData interface; cast `totalCalls` to number
+- **`src/pages/admin/AR06ExecutionTraceExplorer.tsx`** — Type joined `scheduled_jobs`
+- **`src/pages/admin/AR07RetryFailureCenter.tsx`** — Same join typing
+- **`src/pages/admin/AR08KillSwitchCenter.tsx`** — Type `existing` kill switch record
+- **`src/pages/admin/ComputeGovernanceBoard.tsx`** — Stringify `downgradeReason`
+- **`src/pages/admin/ConnectorGovernanceCenter.tsx`** — Use `connected_at` instead of `last_sync_at` or read from metadata
+- **`src/pages/admin/FL01FlagshipLoopsExecutive.tsx`** — Type verification runs; remove `as never[]`
+- **`src/pages/admin/PersistenceStatus.tsx`** — Use correct column name instead of `receipt_type`
+- **`src/pages/admin/ISA01-05,07*.tsx`** (6 files) — Type joined `provider_families`/`provider_capabilities`
+- **`src/pages/admin/customer-journey/CJ01ExecutiveReport.tsx`** — Type view data with interface; narrow before indexing
+- **`src/pages/admin/customer-journey/CJ08RouteActionCoverage.tsx`** — Narrow `route_key` and numeric fields
 
-### Batch 3: Migrate Writes (~80 files)
-Replace all `fromTable().insert/update/upsert/delete` in pages/hooks/components with `useKernelMutation()`. Each call becomes:
-```typescript
-const { mutate } = useKernelMutation("finance", "invoice.create");
-// ...
-mutate({ customer_id, amount, due_date });
-```
+**~20 files modified, 0 new files**
 
-### Batch 4: Migrate Reads (~150 files)
-Replace all `fromTable().select` in pages/hooks/components with `useKernelQuery()`. Each call becomes:
-```typescript
-const { data } = useKernelQuery("finance", "invoices", { user_id, status: "overdue" });
-```
-
-### Batch 5: Kill Direct Access
-- Remove `fromTable` export from `supabase-helpers.ts` (keep only as internal for projection-service and capability handlers)
-- Add ESLint rule: `no-restricted-imports` for `fromTable` outside `src/lib/`
-- Verify 100% kernel routing with grep
-
-## What This Achieves
-
-| Metric | Before | After |
-|--------|--------|-------|
-| Kernel adoption | 0.15% (1 page) | 100% (all pages) |
-| Receipted writes | 0 | ~180 |
-| Policy-checked reads | 0 | ~330 |
-| Proof chain coverage | decorative | full |
-| Kill switch effectiveness | none | total |
-
-## Files Changed
-
-- **3 new**: `use-kernel-mutation.ts`, `use-kernel-query.ts`, capability registration index
-- **5 new**: Domain capability handler files
-- **1 modified**: `projection-service.ts` — add query method
-- **~230 modified**: Pages, hooks, components — replace direct DB calls with kernel hooks
-- **1 modified**: `supabase-helpers.ts` — restrict `fromTable` exports
-
-## Risk Mitigation
-
-- All `useKernelQuery` calls fall back to direct `fromTable` if kernel is unavailable
-- Capability handlers are thin wrappers — same Supabase calls, just routed through the chain
-- React Query caching is preserved — `useKernelQuery` returns standard `useQuery` results
-- No schema changes needed — same tables, same data, different access path
+## Approach
+Fix each at the data boundary (query result or state declaration), not at each JSX usage point. This eliminates all downstream errors from each upstream fix.
 
