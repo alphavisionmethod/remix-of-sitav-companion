@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useMissionControlLive } from "@/hooks/use-mission-control-data";
 import { useControlMode, useWhatMattersNow, useMissionControlSummary, useSystemActivity } from "@/hooks/use-mission-control-views";
 import { useAdminIncidents, useFleetHealth, useTrustCenter } from "@/hooks/use-admin-data";
+import { useMissionGoals } from "@/hooks/use-mission-data";
 import { AdminSpendChart } from "@/components/sita/AdminSpendChart";
 import { AnimatedProgressRing } from "@/components/sita/AnimatedProgressRing";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
@@ -1188,6 +1189,7 @@ export default function MissionControlPage() {
   const { data: adminIncidents } = useAdminIncidents();
   const { data: fleetHealth } = useFleetHealth();
   const { data: trustCenter } = useTrustCenter();
+  const { data: missionGoals } = useMissionGoals();
   const openIncidents = adminIncidents?.summary?.open ?? mockIncidents.filter(i => i.status !== "resolved").length;
 
   const ownerTabs = [

@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
 import { useLeads, useInvoices, useBills, useCashFlow, useApprovals, useHouseholdTasks, useFamilyEvents, useTravel, useSubscriptions } from "@/hooks/use-sita-data";
+import { useCalendarEvents } from "@/hooks/use-calendar-data";
+import { useFinanceProjection } from "@/hooks/use-domain-projections";
 import { useAIInsight, useCashflowAnalysis, useCRMSync } from "@/hooks/use-backend-actions";
 import { evaluateCrossDomainIntelligence } from "@/lib/cross-domain";
 import { assessBusinessHealth } from "@/lib/domain-engines/business-os";
@@ -138,6 +140,11 @@ const DailyPulse = () => {
   const aiInsight = useAIInsight();
   const hour = new Date().getHours();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+
+  // Domain projection hooks (wired from use-domain-projections + use-calendar-data)
+  const financeProjection = useFinanceProjection();
+  const now = new Date();
+  const calendarEvents = useCalendarEvents(now.getFullYear(), now.getMonth());
 
   const modeConfig = MISSION_MODE_CONFIG[missionMode.id] || MISSION_MODE_CONFIG["normal"];
   const showSection = (s: string) => !modeConfig.hideSections.includes(s);

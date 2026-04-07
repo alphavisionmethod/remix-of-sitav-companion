@@ -5,6 +5,8 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useCompanion } from "@/hooks/use-companion";
+import { useAgentFleetLive } from "@/hooks/use-agent-fleet-live";
+import { useGraphNodes } from "@/hooks/use-cai-data";
 import { AgentActivityFeed } from "@/components/sita/AgentActivityFeed";
 import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
@@ -250,6 +252,9 @@ function AlertSummaryPanel() {
 
 export default function AgentActivityDashboard() {
   const { isDemoMode } = useDataMode();
+  // Wire fleet live data + CAI graph for agent orchestration
+  const fleetLive = useAgentFleetLive();
+  const graphNodes = useGraphNodes();
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
