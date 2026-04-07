@@ -1,122 +1,117 @@
 
+# Phase 2: Live AI Runtime Verification and Brain-Core Activation
 
-# Phase 1: Behavioral Proof Activation — Implementation Plan
+## The Real Problem
 
-## What This Solves
+SITA has a structurally impressive AI layer — three edge functions (`brain-core`, `chat-advisor`, `ai-gateway`), 8-section admin verification board, receipt/ledger tables, budget enforcement — but **zero proven runtime invocations exist**. The system is architecture-first, not proof-first.
 
-SITA has 36 Playwright specs, strong journey architecture, DB tables for proof storage, CI workflows, and admin boards — but zero proven test passes exist. All proof is inferred. This phase makes the truth executable and visible.
+Two critical bugs block live AI truth:
+
+1. **`use-streaming-chat.ts` sends anon key instead of user session token** (line 41) — every streaming chat call hits 401 because `chat-advisor` requires auth. This means no user has ever gotten a real AI chat response.
+2. **No live invocation has ever been triggered from the admin verification board** — the "Run Verification" button calls `ai-health` but that also requires auth and has never been tested with a logged-in user from the frontend.
 
 ## Implementation Steps
 
-### Step 1 — Add data-testid Attributes (4 files, 1 line each)
+### Step 1 — Fix streaming chat auth (critical bug)
 
-- `src/components/sita/DemoModeBadge.tsx` — add `data-testid="demo-mode-badge"` to both the compact span (line 26) and the Badge (line 33)
-- `src/components/sita/ErrorBoundary.tsx` — add `data-testid="error-state"` to the error container div (line 39)
-- `src/components/sita/AppSidebar.tsx` — add `data-testid="sidebar-nav"` to the Sidebar component (line 191)
-- Find and add `data-testid="sign-out-btn"` to the sign-out button in AppSidebar (already referenced in auth helper tests)
+**File: `src/hooks/use-streaming-chat.ts`**
 
-### Step 2 — Create Proof Classifier
+Replace the hardcoded anon key with the user's actual session token. The hook must get the session from Supabase auth and pass `Bearer <access_token>` plus the `apikey` header.
 
-New file: `tests/e2e/helpers/proof-classifier.ts`
-
-Maps every spec file to its flagship loop and provides failure classification:
-
-```text
-Loop 1 (Auth + Dashboard + Pulse):
-  auth.spec.ts, auth-journeys.spec.ts, sign-in-primary, sign-out-primary, dashboard-load-primary
-
-Loop 2 (Files + AI Assist):
-  files-journey.spec.ts, files-upload-primary, assistant-chat-primary
-
-Loop 3 (Boardroom + Summary + Decision):
-  boardroom-journey.spec.ts, boardroom-summary-view-primary, boardroom-demo-vs-real
-
-Loop 4 (Connected Services + Sync):
-  connectors-journey.spec.ts, connected-services-open-primary, connected-services-demo-vs-real
-
-Loop 5 (Admin Truth + Recommendation + Approval):
-  admin-boards.spec.ts, verification-boards.spec.ts, approvals-journey.spec.ts,
-  ai-team-open-primary, runtime-truth-open-primary, launch-truth-open-primary,
-  customer-journey-report-open-primary
+```
+Authorization: Bearer ${session.access_token}
+apikey: ${VITE_SUPABASE_PUBLISHABLE_KEY}
 ```
 
-Classification categories: `pass_verified`, `fail_behavioral`, `fail_setup`, `fail_env`, `fail_selector`, `fail_auth`, `skipped_not_configured`
+This single fix unblocks all advisor chat, making Loop 2 (Files + AI Assist) and the advisor journey provable.
 
-Launch impact: `launch_blocker`, `pilot_blocker`, `claim_risk`, `non_blocking`
+### Step 2 — Verify brain-core and chat-advisor edge functions deploy and respond
 
-### Step 3 — Enhanced Journey Reporter
+Use curl to test both functions with a valid auth token after the fix. Confirm:
+- `brain-core` returns structured `AdvisorResult` with correlation ID, source, confidence
+- `chat-advisor` returns SSE stream with `data:` chunks
+- Both write to `ai_token_usage` / `ai_usage_ledger` / `ai_inference_receipts`
 
-Update `tests/e2e/reporters/journey-reporter.ts` to:
-- Use the proof classifier to categorize each failure
-- Map tests to flagship loops
-- Output `flagship-loop-proof-summary.json` alongside journey results
-- Generate markdown summary for CI step summary
+### Step 3 — Consolidate AI architecture clarity
 
-### Step 4 — Fix CI e2e-p0 Environment Variables
+The three AI edge functions currently have overlapping roles:
+- `ai-gateway`: generic AI invocation (used by `ai-capability-client.ts`)
+- `brain-core`: structured advisor with rules engine + LLM escalation  
+- `chat-advisor`: streaming chat with personality prompts + memory
 
-Update `.github/workflows/ci.yml` e2e-p0 job:
-- Pass `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` from secrets during build
-- Add `TEST_USER_EMAIL`/`TEST_USER_PASSWORD` to test run step
-- Add journey report artifacts to upload
+**No code duplication removal needed** — their roles are distinct. But add a clear comment header to each and ensure the frontend hooks call the right one:
+- `useStreamingChat` → `chat-advisor` (streaming conversations)
+- `useBrainCore` → `brain-core` (structured intent-based queries)
+- `useAICapability` → `ai-gateway` (generic AI capability invocation)
 
-### Step 5 — Create Playwright Proof PR Workflow
+### Step 4 — Wire invocation normalization to brain-core
 
-New file: `.github/workflows/playwright-proof-pr.yml`
-- Triggers on PR to main + push to main/develop
-- Builds with real Supabase env vars
-- Runs full 36-spec suite
-- Captures HTML report, screenshots, traces, videos on failure
-- Generates flagship loop proof summary
-- Posts proof summary to PR as step summary
-- Fails on P0 launch-critical regressions only
+Update `brain-core` edge function to include in every response:
+- `invocation_id` (use the existing correlation_id)
+- `routing_source` (rules/ai/fallback/error)
+- `budget_class` checked
+- `fallback_used` flag
+- `receipt_written` confirmation
 
-### Step 6 — Create Playwright Proof Nightly Workflow
+The response already has most of this — just ensure `receipt_written: true` is included after the proof_records insert succeeds.
 
-New file: `.github/workflows/playwright-proof-nightly.yml`
-- Runs twice daily (6am/6pm UTC)
-- Full suite with richer artifact capture
-- Ingests results to DB via `ingest-journey-results.ts`
-- Generates trend-aware summary
+### Step 5 — Improve degraded-state behavior in AdvisorChat
 
-### Step 7 — Wire FL01 Flagship Loops Board to Real Proof Data
+**File: `src/components/sita/AdvisorChat.tsx`**
 
-Update `src/pages/admin/FL01FlagshipLoopsExecutive.tsx`:
-- Query `journey_verification_runs` for latest proof state per loop
-- Show real pass/fail/skip counts from CI evidence
-- Display "last proven" timestamp and commit SHA
-- Show proof confidence as `verified_e2e` vs `inferred`
+When the streaming chat returns an error (401, 429, 402, 503), display a premium degraded state instead of just the error string:
+- 503/provider missing → "AI advisor is warming up. Your request will be processed when available."
+- 429/rate limit → "You're asking great questions. Give me a moment to catch up."
+- 402/credits → "AI credits need attention. Visit Settings to continue."
+- Generic error → "Something unexpected happened. Try again in a moment."
 
-### Step 8 — Wire V06 Evidence Explorer + V07 Launch Blockers
+Add `data-testid="advisor-degraded-banner"` for E2E testability.
 
-- V06: List all verification runs from `journey_verification_runs` with step-level results, failure classification badges, flagship loop grouping
-- V07: Pull from `customer_journey_status` where broken, map to flagship loops, show fix recommendations
+### Step 6 — Wire AIG09 admin board to real invocation data
 
-## Files Summary
+**File: `src/pages/admin/AIG09RuntimeVerification.tsx`**
 
-| File | Action |
+The board already queries `ai_usage_ledger`, `ai_provider_registry`, `ai_model_registry`, and `ai_inference_receipts`. The data will start flowing once Steps 1-2 are complete. However, improve:
+
+- **AIR02 Provider Health**: After querying `ai_provider_registry`, also check the latest `ai_inference_receipts` for actual success/failure per provider
+- **AIR06 Receipt Truth**: Add "last receipt" timestamp and link to latest receipt row
+
+### Step 7 — Update customer journey classifications
+
+After proving at least one live AI response, update the relevant journey status entries:
+- `assistant.chat` → from `inferred` to `partial` (proven once live AI responds)
+- Update `customer_journey_status` for advisor chat journey with evidence
+
+### Step 8 — Add Playwright testability for AI responses
+
+**File: `src/components/sita/AdvisorChat.tsx`**
+
+Add `data-testid` attributes:
+- `data-testid="advisor-chat-input"` on the text input
+- `data-testid="advisor-chat-send"` on the send button
+- `data-testid="advisor-message-assistant"` on assistant message bubbles
+- `data-testid="advisor-streaming-indicator"` on the streaming dots
+
+This makes the existing E2E spec `assistant-chat-primary.spec.ts` able to detect real responses.
+
+## Files Modified
+
+| File | Change |
 |------|--------|
-| `src/components/sita/DemoModeBadge.tsx` | Add data-testid |
-| `src/components/sita/ErrorBoundary.tsx` | Add data-testid |
-| `src/components/sita/AppSidebar.tsx` | Add data-testid (sidebar + sign-out) |
-| `tests/e2e/helpers/proof-classifier.ts` | Create |
-| `tests/e2e/reporters/journey-reporter.ts` | Enhance with classification + loop summary |
-| `.github/workflows/ci.yml` | Fix e2e-p0 env vars |
-| `.github/workflows/playwright-proof-pr.yml` | Create |
-| `.github/workflows/playwright-proof-nightly.yml` | Create |
-| `src/pages/admin/FL01FlagshipLoopsExecutive.tsx` | Wire real proof data |
-| `src/pages/admin/verification/V06EvidenceExplorer.tsx` | Wire real run data |
-| `src/pages/admin/verification/V07LaunchBlockers.tsx` | Wire proof-based blockers |
+| `src/hooks/use-streaming-chat.ts` | Fix auth: use session token instead of anon key |
+| `src/components/sita/AdvisorChat.tsx` | Premium degraded states + data-testid attributes |
+| `supabase/functions/brain-core/index.ts` | Add `receipt_written` flag to response |
+| `src/pages/admin/AIG09RuntimeVerification.tsx` | Improve AIR02/AIR06 with latest receipt data |
 
 ## No Database Changes Required
 
-All tables exist: `customer_journey_registry`, `journey_verification_runs`, `journey_step_results`, `customer_journey_status`, `launch_blocker_scores`.
+All tables exist: `ai_usage_ledger`, `ai_inference_receipts`, `ai_receipt_records`, `ai_token_usage`, `advisor_requests`, `advisor_responses`, `proof_records`.
 
 ## Success Criteria
 
-1. 36 Playwright specs execute in CI (not just exist)
-2. Auth-free tests (5 in auth.spec.ts) pass in CI
-3. Artifacts uploaded: HTML report + screenshots + traces
-4. Flagship loop proof summary generated per CI run
-5. FL01 admin board shows real proof state from DB
-6. Failures classified by type and launch impact
-7. Launch blockers derived from actual test outcomes
+1. Streaming chat returns real AI responses (not 401)
+2. At least one `ai_usage_ledger` row with `status = 'success'` exists
+3. At least one `ai_inference_receipts` row exists with real tokens/cost
+4. Admin AIG09 board shows live verification data
+5. Degraded states render gracefully in advisor chat
+6. E2E selectors are stable for Playwright proof
