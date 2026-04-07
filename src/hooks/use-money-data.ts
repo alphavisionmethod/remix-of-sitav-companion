@@ -73,7 +73,7 @@ export function useSavingsGoals() {
     queryKey: ["savings-goals", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("savings_goals").select("*").eq("user_id", uid!);
+      const { data } = await supabase.from("savings_goals" as any).select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -85,7 +85,7 @@ export function useMoneyAccounts() {
     queryKey: ["money-accounts", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("money_accounts").select("*").eq("user_id", uid!);
+      const { data } = await supabase.from("money_accounts" as any).select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });

@@ -133,7 +133,7 @@ export function useCallingContacts() {
     queryKey: ["calling-contacts", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("calling_contacts").select("*").eq("user_id", uid!);
+      const { data } = await supabase.from("calling_contacts" as any).select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -157,7 +157,7 @@ export function useRevenueLeakItems() {
     queryKey: ["revenue-leak-items", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("revenue_leak_items").select("*").eq("user_id", uid!);
+      const { data } = await supabase.from("revenue_leak_items" as any).select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -169,7 +169,7 @@ export function useAutomationRules() {
     queryKey: ["automation-rules", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("automation_rules").select("*").eq("user_id", uid!);
+      const { data } = await supabase.from("automation_rules" as any).select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -181,7 +181,7 @@ export function useCommunicationLog() {
     queryKey: ["communication-log", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("communication_log").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      const { data } = await supabase.from("communication_log" as any).select("*").eq("user_id", uid!).order("created_at", { ascending: false });
       return data ?? [];
     },
   });
