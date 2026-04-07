@@ -1,35 +1,41 @@
 
 
-# Fix Remaining `db.from()` References (26 files, 84 calls)
+# Fix Section 8: Expand 3 Stub/Minimal Pages
 
-## Problem
+## Investigation Results
 
-The old `src/integrations/supabase/db.ts` was deleted, but **26 files** still reference `db.from()` — 84 total calls. These will crash at runtime since `db` is undefined. The `ConstitutionEditor.tsx` is one of them (lines 292, 381, 395).
+After scanning ALL 657 pages, only the 3 reported files have ≤15 lines. No additional stubs exist (next smallest is 23 lines — a test file).
 
-## Affected Files
+**Root cause analysis:**
+- `CustomerHealthPage.tsx` (15 lines) — wraps `CustomerHealthDashboard` which has **zero DB wiring** (463 lines of hardcoded demo data, no `fromTable`, no `isDemoMode` switching). This is the real problem.
+- `OnboardingWrapper.tsx` (7 lines) — wraps `OSSetupExperience` (992 lines, already has Supabase integration). Unused `useDataMode` import. Legitimate thin wrapper — just needs cleanup.
+- `BusinessOnboarding.tsx` (8 lines) — wraps `FormationShell` (175 lines, no DB wiring but has 20 screen components). Unused `isDemoMode`. Legitimate thin wrapper — just needs cleanup.
 
-| Category | Files | Calls |
-|----------|-------|-------|
-| **Pages** (12) | `AutomationCenter`, `ConnectorHub`, `InboxCapture`, `OpportunityEngine`, `PeopleWorkspace`, `PermissionsCenter`, `PolicyEditor`, `RecoveryCenter`, `TrustCenter`, `WorkflowsCenter`, `NOT02/04/05`, `AdvisorWorkspace`, `MonthGridCalendar`, `ConstitutionEditor` | ~35 |
-| **Hooks** (7) | `use-admin-durable-state`, `use-boardroom-data`, `use-domain-projections`, `use-household`, `use-mission-control-data`, `use-proof-chain`, `use-sita-data` | ~40 |
-| **Lib/Components** (3) | `NotificationInbox`, `offline-db`, `connector-health-service`, `offline-sync` | ~9 |
+## Plan
 
-## Fix Strategy
+### 1. CustomerHealthPage.tsx — Expand with DB-backed data switching
 
-For all 26 files:
-1. Replace `db.from("table")` → `fromTable("table")`
-2. Add `import { fromTable } from "@/lib/supabase-helpers"` if not already present
-3. Remove any leftover `import { db } from ...` or `const db = ...` lines
+This is the only real stub. The page and its dashboard need isDemoMode switching with live data from the `customers` and `digital_twins` tables.
 
-This is the same mechanical transformation already applied to 100+ other files. Single pattern, no logic changes.
+**Changes:**
+- Add `useDataMode` + `isDemoMode` gate to `CustomerHealthDashboard.tsx`
+- In live mode: query `customers` table (has `health_score`, `status`, `lifetime_revenue`) and `digital_twins` table (has `churn_probability`, `health_score`, `trend`, `segment`)
+- In demo mode: keep existing hardcoded demo data
+- Expand page file to pass isDemoMode down and add proper page-level metadata
 
-## Steps
+### 2. OnboardingWrapper.tsx — Clean up dead import
 
-1. Run automated sed replacement across all 26 files: `db.from(` → `fromTable(`
-2. Fix imports in each file (add `fromTable`, remove `db`)
-3. Special: `ConstitutionEditor.tsx` — also verify all 3 mutations (insert/update/delete) persist to DB correctly (they already do via `fromTable` for insert, just need `db` → `fromTable` for update/delete/select)
-4. Verify: `npx tsc --noEmit` — 0 errors
+- Remove unused `useDataMode` import (the wrapped `OSSetupExperience` already handles its own persistence)
+- Add a brief comment explaining this is an intentional route-entry wrapper
+
+### 3. BusinessOnboarding.tsx — Clean up unused isDemoMode
+
+- Remove unused `isDemoMode` destructure (or wire it into `FormationShell` as a prop if FormationShell can use it)
+- Remove unused `useDataMode` import if not needed
 
 ## Files Changed
-- ~26 files modified (replace `db.from` → `fromTable`, fix imports)
+- `src/components/business/CustomerHealthDashboard.tsx` — Add `fromTable` queries for `customers` + `digital_twins`, isDemoMode switching
+- `src/pages/CustomerHealthPage.tsx` — Pass data mode context to dashboard
+- `src/pages/OnboardingWrapper.tsx` — Remove dead import
+- `src/pages/revenue-office/BusinessOnboarding.tsx` — Remove dead import/variable
 
