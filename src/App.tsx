@@ -676,6 +676,7 @@ const App = () => (
           <SitaKernelProvider>
           <OSRuntimeProvider>
           <InspectorProvider>
+          <PlatformInit />
           <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
