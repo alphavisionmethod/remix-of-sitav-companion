@@ -16,7 +16,8 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
-import { FraudSentinelService, type FraudSummary } from "@/lib/core-services/fraud-sentinel";
+import { useFraudSentinel } from "@/contexts/SitaKernelContext";
+import type { FraudSummary } from "@/lib/core-services/fraud-sentinel";
 import { BudgetAutomationPanel } from "@/components/sita/BudgetAutomationPanel";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
