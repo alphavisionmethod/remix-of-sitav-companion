@@ -1436,6 +1436,7 @@ const App = () => (
 
                      {/* Architecture */}
                      <Route path="/admin/architecture/god-tier-integration" element={<GodTierIntegrationBoard />} />
+                     <Route path="/admin/architecture/god-tier-runtime" element={<GodTierRuntimeBoard />} />
 
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
