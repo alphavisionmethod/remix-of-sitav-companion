@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export interface HonestySeedEntry {
   target: string;
@@ -122,7 +123,7 @@ export async function seedConnectorNotificationHonesty(): Promise<{ seeded: numb
   let seeded = 0;
 
   for (const entry of CONNECTOR_NOTIFICATION_HONESTY_SEEDS) {
-    const { error } = await supabase.from("ecosystem_launch_readiness").upsert(
+    const { error } = await fromTable("ecosystem_launch_readiness").upsert(
       {
         target: entry.target,
         target_name: entry.target.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),

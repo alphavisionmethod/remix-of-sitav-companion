@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
 import { Factory, FileCode, Network, ListChecks } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,7 +16,7 @@ const FeatureFactoryConsole = () => {
   const { data: blueprints } = useQuery({
     queryKey: ["factory-blueprints"],
     queryFn: async () => {
-      const { data } = await supabase.from("feature_blueprints").select("*").eq("status", "draft").order("created_at", { ascending: false }).limit(20);
+      const { data } = await fromTable("feature_blueprints").select("*").eq("status", "draft").order("created_at", { ascending: false }).limit(20);
       return data ?? [];
     },
   });

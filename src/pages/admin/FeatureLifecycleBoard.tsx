@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
 import { GitBranch, ArrowRight, CheckCircle2, Clock, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,7 +22,7 @@ const FeatureLifecycleBoard = () => {
   const { data: blueprints } = useQuery({
     queryKey: ["feature-blueprints-lifecycle"],
     queryFn: async () => {
-      const { data } = await supabase.from("feature_blueprints").select("*").order("created_at", { ascending: false }).limit(100);
+      const { data } = await fromTable("feature_blueprints").select("*").order("created_at", { ascending: false }).limit(100);
       return data ?? [];
     },
   });
@@ -29,7 +30,7 @@ const FeatureLifecycleBoard = () => {
   const { data: stages } = useQuery({
     queryKey: ["feature-lifecycle-stages"],
     queryFn: async () => {
-      const { data } = await supabase.from("feature_lifecycle_stages").select("*").order("entered_at", { ascending: false }).limit(500);
+      const { data } = await fromTable("feature_lifecycle_stages").select("*").order("entered_at", { ascending: false }).limit(500);
       return data ?? [];
     },
   });

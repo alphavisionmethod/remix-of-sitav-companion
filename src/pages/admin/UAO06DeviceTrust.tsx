@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ShieldCheck, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -14,17 +15,17 @@ export default function UAO06DeviceTrust() {
   const { isDemoMode } = useDataMode();
   const { data: trust = [] } = useQuery({
     queryKey: ["device-trust"],
-    queryFn: async () => { const { data } = await supabase.from("device_trust_records").select("*, connected_devices(device_name, platform)").order("created_at"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("device_trust_records").select("*, connected_devices(device_name, platform)").order("created_at"); return data || []; },
   });
 
   const { data: policies = [] } = useQuery({
     queryKey: ["micro-approval-policies"],
-    queryFn: async () => { const { data } = await supabase.from("micro_approval_policies").select("*").order("device_family_key"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("micro_approval_policies").select("*").order("device_family_key"); return data || []; },
   });
 
   const { data: receipts = [] } = useQuery({
     queryKey: ["device-approval-receipts"],
-    queryFn: async () => { const { data } = await supabase.from("device_approval_receipts").select("*, connected_devices(device_name)").order("decided_at", { ascending: false }).limit(30); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("device_approval_receipts").select("*, connected_devices(device_name)").order("decided_at", { ascending: false }).limit(30); return data || []; },
   });
 
   return (

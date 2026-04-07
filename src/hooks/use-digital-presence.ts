@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 
 function useUserId() {
@@ -13,7 +14,7 @@ export function useSites() {
     queryKey: ["sites", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("sites").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      const { data } = await fromTable("sites").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
       return data ?? [];
     },
   });
@@ -25,7 +26,7 @@ export function useSitePages(siteId?: string) {
     queryKey: ["site-pages", uid, siteId],
     enabled: !!uid && !!siteId,
     queryFn: async () => {
-      const { data } = await supabase.from("site_pages").select("*").eq("user_id", uid!).eq("site_id", siteId!).order("position");
+      const { data } = await fromTable("site_pages").select("*").eq("user_id", uid!).eq("site_id", siteId!).order("position");
       return data ?? [];
     },
   });
@@ -37,7 +38,7 @@ export function useBrandAssets() {
     queryKey: ["brand-assets", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("brand_assets").select("*").eq("user_id", uid!);
+      const { data } = await fromTable("brand_assets").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -49,7 +50,7 @@ export function useSeoReports() {
     queryKey: ["seo-reports", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("seo_reports").select("*").eq("user_id", uid!).order("checked_at", { ascending: false });
+      const { data } = await fromTable("seo_reports").select("*").eq("user_id", uid!).order("checked_at", { ascending: false });
       return data ?? [];
     },
   });
@@ -61,7 +62,7 @@ export function usePromotions() {
     queryKey: ["promotions", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("promotions").select("*").eq("user_id", uid!);
+      const { data } = await fromTable("promotions").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -73,7 +74,7 @@ export function useEcommerceProducts() {
     queryKey: ["ecommerce-products", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("ecommerce_products").select("*").eq("user_id", uid!);
+      const { data } = await fromTable("ecommerce_products").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });

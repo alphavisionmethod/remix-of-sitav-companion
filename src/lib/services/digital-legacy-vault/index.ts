@@ -1,3 +1,4 @@
+import { fromTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Digital Will & Legacy Vault
 // Encrypted storage for passwords, documents, instructions
@@ -99,7 +100,7 @@ class DigitalLegacyVaultService {
       lastUpdated: new Date(),
     };
 
-    await supabase.from('encrypted_secrets').insert({
+    await fromTable('encrypted_secrets').insert({
       user_id: userId,
       name: `vault_${full.type}_${full.id}`,
       encrypted_value: full.encryptedContent,
@@ -138,7 +139,7 @@ class DigitalLegacyVaultService {
   }
 
   async checkin(userId: string): Promise<void> {
-    await supabase.from('user_memory').upsert({
+    await fromTable('user_memory').upsert({
       user_id: userId,
       key: 'vault_last_checkin',
       value: JSON.stringify({ checkedInAt: new Date().toISOString() }) as any,

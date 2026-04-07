@@ -15,6 +15,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useAIInsight } from "@/hooks/use-backend-actions";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
@@ -41,7 +42,7 @@ const FilesOverview = () => {
     queryKey: ["file-kpis", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, count } = await supabase.from("file_metadata").select("*", { count: "exact" }).eq("user_id", user!.id);
+      const { data, count } = await fromTable("file_metadata").select("*", { count: "exact" }).eq("user_id", user!.id);
       const files = data || [];
       const obligations = files.filter((f: any) => f.classification === "contract" || f.classification === "invoice").length;
       const linked = files.filter((f: any) => f.status === "linked" || f.status === "processed").length;

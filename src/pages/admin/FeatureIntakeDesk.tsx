@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
 import { Package, ArrowRight, Sparkles, FileText, Layers, Target, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,7 +34,7 @@ const FeatureIntakeDesk = () => {
   const { data: blueprints } = useQuery({
     queryKey: ["feature-blueprints"],
     queryFn: async () => {
-      const { data } = await supabase.from("feature_blueprints").select("*").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("feature_blueprints").select("*").order("created_at", { ascending: false }).limit(50);
       return data ?? [];
     },
   });
@@ -44,7 +45,7 @@ const FeatureIntakeDesk = () => {
       const featureId = form.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
-      const { error } = await supabase.from("feature_blueprints").insert({
+      const { error } = await fromTable("feature_blueprints").insert({
         user_id: user.id, feature_id: featureId, title: form.title, domain,
         archetype_key: form.archetypeKey, description: form.description,
         user_intent: form.userIntent, persistence_class: form.persistenceClass,

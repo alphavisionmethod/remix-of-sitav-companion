@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -13,12 +14,12 @@ export default function CN02ConnectorRegistryConsole() {
   const { isDemoMode } = useDataMode();
   const { data: registry = [] } = useQuery({
     queryKey: ["connector-registry"],
-    queryFn: async () => { const { data } = await supabase.from("connector_registry").select("*").order("connector_class"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connector_registry").select("*").order("connector_class"); return data || []; },
   });
 
   const { data: policies = [] } = useQuery({
     queryKey: ["connector-policies"],
-    queryFn: async () => { const { data } = await supabase.from("connector_policies").select("*"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connector_policies").select("*"); return data || []; },
   });
 
   return (

@@ -1,5 +1,6 @@
 // SITA OS — Activity / Inbox Data Service (Mode-Aware)
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
 
@@ -26,7 +27,7 @@ export async function fetchInboxItems(mode: RealityModeKey = "real"): Promise<Mo
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_INBOX, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: DEMO_INBOX, emptyDefault: [] });
-  const { data, error } = await supabase.from("notifications_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(30);
+  const { data, error } = await fromTable("notifications_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(30);
   const mapped = (!error && data && data.length > 0) ? data.map((n: any): InboxItem => ({
     id: n.id, type: n.category || "notification", title: n.title, preview: n.body || "",
     domain: n.category || "general", timestamp: n.created_at, read: n.status === "read",
@@ -39,7 +40,7 @@ export async function fetchActivityTimeline(mode: RealityModeKey = "real"): Prom
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_ACTIVITY, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: DEMO_ACTIVITY, emptyDefault: [] });
-  const { data, error } = await supabase.from("audit_logs").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
+  const { data, error } = await fromTable("audit_logs").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
   const mapped = (!error && data && data.length > 0) ? data.map((l: any): ActivityItem => ({
     id: l.id, action: l.action, domain: l.category || "system", timestamp: l.created_at, actor: l.actor || "System",
   })) : null;

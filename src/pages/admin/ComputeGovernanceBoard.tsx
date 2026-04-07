@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import {
   COST_CLASS_SPECS, PLANS, UPSELL_ADDONS, FAIR_USE_POLICY, DEFAULT_MODELS, CLASS_COMPRESSION,
   createEnvelope, forecastSpend, evaluateFairUse, getApplicableAddons,
@@ -95,7 +96,7 @@ const ComputeGovernanceBoard = () => {
   const { data: tokenUsage } = useQuery({
     queryKey: ["compute-token-usage"],
     queryFn: async () => {
-      const { data } = await supabase.from("ai_token_usage").select("*").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("ai_token_usage").select("*").order("created_at", { ascending: false }).limit(50);
       return data || [];
     },
   });

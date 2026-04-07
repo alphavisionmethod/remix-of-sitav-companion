@@ -1,3 +1,4 @@
+import { fromTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Life Score Dashboard Service
 // Single composite score across health, wealth, relationships, career
@@ -71,12 +72,12 @@ class LifeScoreService {
   }
 
   private async getFinancialScore(userId: string): Promise<Omit<LifeDimension, 'id' | 'label' | 'weight'>> {
-    const { data: budgets } = await supabase.from('budgets').select('allocated, spent').eq('user_id', userId);
+    const { data: budgets } = await fromTable('budgets').select('allocated, spent').eq('user_id', userId);
     const totalBudget = (budgets || []).reduce((s, b) => s + Number(b.allocated), 0);
     const totalSpent = (budgets || []).reduce((s, b) => s + Number(b.spent), 0);
     const budgetAdherence = totalBudget > 0 ? Math.max(0, 100 - ((totalSpent / totalBudget) * 100 - 100)) : 50;
 
-    const { count: overdueCount } = await supabase.from('invoices').select('id', { count: 'exact', head: true })
+    const { count: overdueCount } = await fromTable('invoices').select('id', { count: 'exact', head: true })
       .eq('user_id', userId).eq('status', 'overdue');
 
     const score = Math.round(Math.min(100, budgetAdherence - (overdueCount || 0) * 5));
@@ -92,11 +93,11 @@ class LifeScoreService {
   }
 
   private async getBusinessScore(userId: string): Promise<Omit<LifeDimension, 'id' | 'label' | 'weight'>> {
-    const { count: activeLeads } = await supabase.from('leads').select('id', { count: 'exact', head: true })
+    const { count: activeLeads } = await fromTable('leads').select('id', { count: 'exact', head: true })
       .eq('user_id', userId).in('status', ['new', 'contacted', 'qualified']);
-    const { count: wonDeals } = await supabase.from('deals').select('id', { count: 'exact', head: true })
+    const { count: wonDeals } = await fromTable('deals').select('id', { count: 'exact', head: true })
       .eq('user_id', userId).eq('stage', 'won');
-    const { count: totalDeals } = await supabase.from('deals').select('id', { count: 'exact', head: true })
+    const { count: totalDeals } = await fromTable('deals').select('id', { count: 'exact', head: true })
       .eq('user_id', userId);
 
     const winRate = totalDeals && totalDeals > 0 ? ((wonDeals || 0) / totalDeals) * 100 : 50;
@@ -115,9 +116,9 @@ class LifeScoreService {
   }
 
   private async getHouseholdScore(userId: string): Promise<Omit<LifeDimension, 'id' | 'label' | 'weight'>> {
-    const { count: totalTasks } = await supabase.from('household_tasks').select('id', { count: 'exact', head: true })
+    const { count: totalTasks } = await fromTable('household_tasks').select('id', { count: 'exact', head: true })
       .eq('user_id', userId);
-    const { count: doneTasks } = await supabase.from('household_tasks').select('id', { count: 'exact', head: true })
+    const { count: doneTasks } = await fromTable('household_tasks').select('id', { count: 'exact', head: true })
       .eq('user_id', userId).eq('status', 'completed');
 
     const completionRate = totalTasks && totalTasks > 0 ? ((doneTasks || 0) / totalTasks) * 100 : 50;
@@ -133,7 +134,7 @@ class LifeScoreService {
   }
 
   private async getGoalScore(userId: string): Promise<Omit<LifeDimension, 'id' | 'label' | 'weight'>> {
-    const { data: goals } = await supabase.from('goals').select('current_value, target_value, status')
+    const { data: goals } = await fromTable('goals').select('current_value, target_value, status')
       .eq('user_id', userId).eq('status', 'active');
 
     if (!goals || goals.length === 0) return { score: 50, trend: 'stable', trendDelta: 0, subMetrics: [] };

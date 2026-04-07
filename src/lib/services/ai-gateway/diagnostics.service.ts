@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export interface DegradedDiagnostic {
   id: string;
@@ -27,12 +28,12 @@ export async function getDegradedDiagnostics(): Promise<DegradedDiagnostic[]> {
     { data: receipts },
     { data: routing },
   ] = await Promise.all([
-    supabase.from("ai_provider_registry").select("*"),
-    supabase.from("ai_provider_health").select("*"),
-    supabase.from("ai_fallback_events").select("*").order("created_at", { ascending: false }).limit(50),
-    supabase.from("ai_budget_alerts").select("*").in("alert_state", ["warning", "critical"]).order("created_at", { ascending: false }).limit(20),
-    supabase.from("ai_receipt_records").select("*").order("created_at", { ascending: false }).limit(100),
-    supabase.from("ai_capability_routing").select("*").eq("is_active", true),
+    fromTable("ai_provider_registry").select("*"),
+    fromTable("ai_provider_health").select("*"),
+    fromTable("ai_fallback_events").select("*").order("created_at", { ascending: false }).limit(50),
+    fromTable("ai_budget_alerts").select("*").in("alert_state", ["warning", "critical"]).order("created_at", { ascending: false }).limit(20),
+    fromTable("ai_receipt_records").select("*").order("created_at", { ascending: false }).limit(100),
+    fromTable("ai_capability_routing").select("*").eq("is_active", true),
   ]);
 
   // Missing keys — providers with secret_env_name but no health record or inactive

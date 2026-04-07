@@ -1,5 +1,6 @@
 // SITA OS — Money Data Service (Mode-Aware, Fully Advanced)
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
 
@@ -134,7 +135,7 @@ export async function fetchReservesSavings(mode: RealityModeKey = "real"): Promi
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_RESERVES, emptyDefault: [] });
   const userId = await getUserId();
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_RESERVES, emptyDefault: [] });
-  const { data, error } = await supabase.from("capital_allocations").select("*").eq("user_id", userId).order("created_at", { ascending: false });
+  const { data, error } = await fromTable("capital_allocations").select("*").eq("user_id", userId).order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? data.map((r: any): ReserveSaving => ({
     id: r.id, name: r.category, current_amount: Number(r.amount), target_amount: Number(r.amount) * 1.5,
     category: r.category, contribution_amount: 0, notes: r.notes || "", auto_contribute: false, priority: 0,
@@ -146,7 +147,7 @@ export async function fetchFinancialAccounts(mode: RealityModeKey = "real"): Pro
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_ACCOUNTS, emptyDefault: [] });
   const userId = await getUserId();
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_ACCOUNTS, emptyDefault: [] });
-  const { data, error } = await supabase.from("financial_accounts").select("*").eq("user_id", userId).order("created_at", { ascending: false });
+  const { data, error } = await fromTable("financial_accounts").select("*").eq("user_id", userId).order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? (data as any[]).map((a): FinancialAccount => ({
     id: a.id, name: a.name, institution: a.institution || "", account_type: a.account_type,
     balance: Number(a.balance), currency: a.currency, trend: Number(a.trend || 0), last_synced_at: a.last_synced_at,
@@ -158,7 +159,7 @@ export async function fetchMoneyPolicies(mode: RealityModeKey = "real"): Promise
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_POLICIES, emptyDefault: [] });
   const userId = await getUserId();
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_POLICIES, emptyDefault: [] });
-  const { data, error } = await supabase.from("money_policies").select("*").eq("user_id", userId).order("created_at", { ascending: false });
+  const { data, error } = await fromTable("money_policies").select("*").eq("user_id", userId).order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? (data as any[]).map((p): MoneyPolicy => ({
     id: p.id, title: p.title, description: p.description || "", category: p.category,
     enabled: p.enabled, threshold: p.threshold ? Number(p.threshold) : null, icon_key: p.icon_key,
@@ -170,7 +171,7 @@ export async function fetchMoneyApprovals(mode: RealityModeKey = "real"): Promis
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_APPROVALS, emptyDefault: [] });
   const userId = await getUserId();
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_APPROVALS, emptyDefault: [] });
-  const { data, error } = await supabase.from("approval_queue").select("*").eq("user_id", userId).like("action_type", "money%").order("created_at", { ascending: false });
+  const { data, error } = await fromTable("approval_queue").select("*").eq("user_id", userId).like("action_type", "money%").order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? data.map((a: any): MoneyApprovalItem => ({
     id: a.id, action_type: a.action_type, action_summary: a.action_summary || "", status: a.status,
     proposed_action: a.proposed_action, reviewed_by: a.reviewed_by, created_at: a.created_at,
@@ -182,7 +183,7 @@ export async function fetchMoneyProof(mode: RealityModeKey = "real"): Promise<Mo
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_PROOF, emptyDefault: [] });
   const userId = await getUserId();
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_PROOF, emptyDefault: [] });
-  const { data, error } = await supabase.from("audit_logs").select("*").eq("user_id", userId).eq("category", "money").order("created_at", { ascending: false }).limit(50);
+  const { data, error } = await fromTable("audit_logs").select("*").eq("user_id", userId).eq("category", "money").order("created_at", { ascending: false }).limit(50);
   const mapped = (!error && data && data.length > 0) ? data.map((l: any): MoneyProofItem => ({
     id: l.id, action: l.action, category: l.category, actor: l.actor,
     details: l.details || {}, created_at: l.created_at,
@@ -195,7 +196,7 @@ export async function fetchFinancialDocuments(mode: RealityModeKey = "real"): Pr
   const userId = await getUserId();
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_DOCUMENTS, emptyDefault: [] });
   // Use files table filtered to finance category
-  const { data, error } = await supabase.from("documents").select("*").eq("user_id", userId).eq("category", "finance").order("created_at", { ascending: false });
+  const { data, error } = await fromTable("documents").select("*").eq("user_id", userId).eq("category", "finance").order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? (data as any[]).map((f): FinancialDocument => ({
     id: f.id, name: f.file_name || f.name, doc_type: f.subcategory || "document", classification: f.subcategory || "Document",
     sensitivity: f.sensitivity_label || "normal", linked_to: null, extracted_data: f.ai_extracted_data || {},
@@ -214,9 +215,9 @@ export async function fetchCashTimingWindows(mode: RealityModeKey = "real"): Pro
   const in15 = new Date(now.getTime() + 15 * 86400000);
 
   const [billsRes, invoicesRes, accountsRes] = await Promise.all([
-    supabase.from("bills").select("*").eq("user_id", userId).gte("due_date", now.toISOString().split("T")[0]).lte("due_date", in15.toISOString().split("T")[0]),
-    supabase.from("invoices").select("*").eq("user_id", userId).gte("due_date", now.toISOString().split("T")[0]).lte("due_date", in15.toISOString().split("T")[0]),
-    supabase.from("financial_accounts").select("balance").eq("user_id", userId),
+    fromTable("bills").select("*").eq("user_id", userId).gte("due_date", now.toISOString().split("T")[0]).lte("due_date", in15.toISOString().split("T")[0]),
+    fromTable("invoices").select("*").eq("user_id", userId).gte("due_date", now.toISOString().split("T")[0]).lte("due_date", in15.toISOString().split("T")[0]),
+    fromTable("financial_accounts").select("balance").eq("user_id", userId),
   ]);
 
   const bills = billsRes.data || [];
@@ -265,11 +266,11 @@ export async function fetchMoneyKPIs(mode: RealityModeKey = "real"): Promise<Mod
   const in7 = new Date(now.getTime() + 7 * 86400000);
 
   const [accountsRes, billsRes, subsRes, invoicesRes, reservesRes] = await Promise.all([
-    supabase.from("financial_accounts").select("balance").eq("user_id", userId),
-    supabase.from("bills").select("amount").eq("user_id", userId).gte("due_date", now.toISOString().split("T")[0]).lte("due_date", in7.toISOString().split("T")[0]),
-    supabase.from("subscriptions").select("cost, is_waste").eq("user_id", userId),
-    supabase.from("invoices").select("amount, status").eq("user_id", userId).neq("status", "paid"),
-    supabase.from("capital_allocations").select("amount, notes").eq("user_id", userId),
+    fromTable("financial_accounts").select("balance").eq("user_id", userId),
+    fromTable("bills").select("amount").eq("user_id", userId).gte("due_date", now.toISOString().split("T")[0]).lte("due_date", in7.toISOString().split("T")[0]),
+    fromTable("subscriptions").select("cost, is_waste").eq("user_id", userId),
+    fromTable("invoices").select("amount, status").eq("user_id", userId).neq("status", "paid"),
+    fromTable("capital_allocations").select("amount, notes").eq("user_id", userId),
   ]);
 
   const totalBalance = (accountsRes.data || []).reduce((s: number, a: any) => s + Number(a.balance || 0), 0);
@@ -302,38 +303,38 @@ export async function fetchMoneyKPIs(mode: RealityModeKey = "real"): Promise<Mod
 export async function createFinancialAccount(account: Omit<FinancialAccount, "id" | "last_synced_at">) {
   const userId = await getUserId();
   if (!userId) throw new Error("Not authenticated");
-  const { data, error } = await supabase.from("financial_accounts").insert({ ...account, user_id: userId }).select().single();
+  const { data, error } = await fromTable("financial_accounts").insert({ ...account, user_id: userId }).select().single();
   if (error) throw error;
   return data;
 }
 
 export async function updateFinancialAccount(id: string, updates: Partial<FinancialAccount>) {
-  const { data, error } = await supabase.from("financial_accounts").update(updates).eq("id", id).select().single();
+  const { data, error } = await fromTable("financial_accounts").update(updates).eq("id", id).select().single();
   if (error) throw error;
   return data;
 }
 
 export async function deleteFinancialAccount(id: string) {
-  const { error } = await supabase.from("financial_accounts").delete().eq("id", id);
+  const { error } = await fromTable("financial_accounts").delete().eq("id", id);
   if (error) throw error;
 }
 
 export async function createMoneyPolicy(policy: Omit<MoneyPolicy, "id">) {
   const userId = await getUserId();
   if (!userId) throw new Error("Not authenticated");
-  const { data, error } = await supabase.from("money_policies").insert({ ...policy, user_id: userId }).select().single();
+  const { data, error } = await fromTable("money_policies").insert({ ...policy, user_id: userId }).select().single();
   if (error) throw error;
   return data;
 }
 
 export async function updateMoneyPolicy(id: string, updates: Partial<MoneyPolicy>) {
-  const { data, error } = await supabase.from("money_policies").update(updates).eq("id", id).select().single();
+  const { data, error } = await fromTable("money_policies").update(updates).eq("id", id).select().single();
   if (error) throw error;
   return data;
 }
 
 export async function deleteMoneyPolicy(id: string) {
-  const { error } = await supabase.from("money_policies").delete().eq("id", id);
+  const { error } = await fromTable("money_policies").delete().eq("id", id);
   if (error) throw error;
 }
 
@@ -343,14 +344,14 @@ export async function toggleMoneyPolicy(id: string, enabled: boolean) {
 
 export async function approveMoneyAction(id: string) {
   const userId = await getUserId();
-  const { data, error } = await supabase.from("approval_queue").update({ status: "approved", reviewed_by: userId }).eq("id", id).select().single();
+  const { data, error } = await fromTable("approval_queue").update({ status: "approved", reviewed_by: userId }).eq("id", id).select().single();
   if (error) throw error;
   return data;
 }
 
 export async function rejectMoneyAction(id: string) {
   const userId = await getUserId();
-  const { data, error } = await supabase.from("approval_queue").update({ status: "rejected", reviewed_by: userId }).eq("id", id).select().single();
+  const { data, error } = await fromTable("approval_queue").update({ status: "rejected", reviewed_by: userId }).eq("id", id).select().single();
   if (error) throw error;
   return data;
 }
@@ -359,26 +360,26 @@ export async function rejectMoneyAction(id: string) {
 
 export async function listFinancialDocuments(limit = 100) {
   const userId = await getUserId();
-  const { data, error } = await supabase.from("financial_documents").select("*").eq("user_id", userId).order("created_at", { ascending: false }).limit(limit);
+  const { data, error } = await fromTable("financial_documents").select("*").eq("user_id", userId).order("created_at", { ascending: false }).limit(limit);
   if (error) { console.error("[money] financial_documents fetch:", error); return []; }
   return data ?? [];
 }
 
 export async function createFinancialDocument(row: Record<string, unknown>) {
   const userId = await getUserId();
-  const { data, error } = await supabase.from("financial_documents").insert({ ...row, user_id: userId }).select().single();
+  const { data, error } = await fromTable("financial_documents").insert({ ...row, user_id: userId }).select().single();
   if (error) { console.error("[money] financial_documents insert:", error); return null; }
   return data;
 }
 
 export async function updateFinancialDocument(id: string, updates: Record<string, unknown>) {
-  const { error } = await supabase.from("financial_documents").update(updates).eq("id", id);
+  const { error } = await fromTable("financial_documents").update(updates).eq("id", id);
   if (error) { console.error("[money] financial_documents update:", error); return false; }
   return true;
 }
 
 export async function deleteFinancialDocument(id: string) {
-  const { error } = await supabase.from("financial_documents").delete().eq("id", id);
+  const { error } = await fromTable("financial_documents").delete().eq("id", id);
   if (error) { console.error("[money] financial_documents delete:", error); return false; }
   return true;
 }

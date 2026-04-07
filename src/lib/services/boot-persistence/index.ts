@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { BootPhaseRecord } from "@/packages/contracts/runtime/trusted-boot-runtime";
 
 export interface BootPersistenceConfig {
@@ -32,7 +33,7 @@ export class BootPersistenceService {
     this.flushed.add(key);
 
     try {
-      await supabase.from("boot_phase_logs").insert({
+      await fromTable("boot_phase_logs").insert({
         user_id: this.config.userId,
         device_id: this.config.deviceId,
         session_id: this.config.sessionId,

@@ -24,6 +24,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 // ── Demo Fallback Data ──────────────────────────────────────────
 const DEMO_TEAM_MEMBERS = [
@@ -74,7 +75,7 @@ const EnterpriseControlPlane = () => {
     queryKey: ["enterprise-team", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await supabase.from("profiles").select("*, user_roles(role)").limit(50);
+      const { data } = await fromTable("profiles").select("*, user_roles(role)").limit(50);
       return (data ?? []).map((p: any) => ({
         id: p.id || p.user_id,
         name: p.display_name || p.email || "Unknown",
@@ -91,7 +92,7 @@ const EnterpriseControlPlane = () => {
     queryKey: ["enterprise-deployments", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await supabase.from("audit_logs").select("*").eq("category", "deployment").order("created_at", { ascending: false }).limit(10);
+      const { data } = await fromTable("audit_logs").select("*").eq("category", "deployment").order("created_at", { ascending: false }).limit(10);
       return (data ?? []).map((a: any) => ({
         id: a.id,
         env: a.details?.environment || "production",

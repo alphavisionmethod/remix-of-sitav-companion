@@ -5,6 +5,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export interface SearchResult {
   id: string;
@@ -50,39 +51,39 @@ export function useGlobalSearch() {
       // Run all domain searches in parallel
       const [leads, customers, tasks, invoices, bills, workflows, approvals, incidents, files] = await Promise.all([
         // Leads
-        supabase.from("leads").select("id, name, company, status, email, source, updated_at")
+        fromTable("leads").select("id, name, company, status, email, source, updated_at")
           .or(`name.ilike.${q},company.ilike.${q},email.ilike.${q}`)
           .limit(8),
         // Customers
-        supabase.from("customers").select("id, name, company, email, status, updated_at")
+        fromTable("customers").select("id, name, company, email, status, updated_at")
           .or(`name.ilike.${q},company.ilike.${q},email.ilike.${q}`)
           .limit(8),
         // Tasks
-        supabase.from("tasks").select("id, title, status, priority, category, updated_at")
+        fromTable("tasks").select("id, title, status, priority, category, updated_at")
           .ilike("title", q)
           .limit(8),
         // Invoices
-        supabase.from("invoices").select("id, invoice_number, amount, status, due_date, updated_at")
+        fromTable("invoices").select("id, invoice_number, amount, status, due_date, updated_at")
           .or(`invoice_number.ilike.${q},status.ilike.${q}`)
           .limit(8),
         // Bills
-        supabase.from("bills").select("id, payee, amount, status, due_date, updated_at")
+        fromTable("bills").select("id, payee, amount, status, due_date, updated_at")
           .ilike("payee", q)
           .limit(8),
         // Workflows
-        supabase.from("workflows").select("id, name, description, active, updated_at")
+        fromTable("workflows").select("id, name, description, active, updated_at")
           .or(`name.ilike.${q},description.ilike.${q}`)
           .limit(8),
         // Approvals
-        supabase.from("approval_queue").select("id, action_summary, status, action_type, updated_at")
+        fromTable("approval_queue").select("id, action_summary, status, action_type, updated_at")
           .ilike("action_summary", q)
           .limit(8),
         // Incidents
-        supabase.from("incidents").select("id, title, severity, status, source, updated_at")
+        fromTable("incidents").select("id, title, severity, status, source, updated_at")
           .ilike("title", q)
           .limit(8),
         // Files
-        supabase.from("file_metadata").select("id, filename, classification, status, updated_at")
+        fromTable("file_metadata").select("id, filename, classification, status, updated_at")
           .ilike("filename", q)
           .limit(8),
       ]);

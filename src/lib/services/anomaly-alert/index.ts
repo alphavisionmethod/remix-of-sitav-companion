@@ -1,3 +1,4 @@
+import { fromTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Anomaly Alert System
 // Detects unusual patterns in login, spending, schedule
@@ -56,7 +57,7 @@ class AnomalyAlertSystem {
 
     // Create notifications for critical anomalies
     for (const anomaly of anomalies.filter((a) => a.severity === 'critical')) {
-      await supabase.from('notifications').insert({
+      await fromTable('notifications').insert({
         user_id: userId,
         title: `⚠️ ${anomaly.title}`,
         body: anomaly.description,

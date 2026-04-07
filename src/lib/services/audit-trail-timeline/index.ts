@@ -1,3 +1,4 @@
+import { fromTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Audit Trail Timeline
 // Visual timeline of every SITA action with undo capability
@@ -119,7 +120,7 @@ class AuditTrailTimelineService {
     }
 
     // Log the undo attempt
-    await supabase.from('audit_logs').insert({
+    await fromTable('audit_logs').insert({
       user_id: userId,
       action: `UNDO_${event.action}`,
       category: 'undo',

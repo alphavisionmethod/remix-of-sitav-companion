@@ -5,6 +5,7 @@
 
 import { registerCapability } from "./capability-registry";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { CapabilityResult } from "@/packages/contracts/msa/capability-contract";
 
 registerCapability("money.accounts.list", async (_params, context): Promise<CapabilityResult> => {
@@ -27,7 +28,7 @@ registerCapability("money.transfer.initiate", async (params, context): Promise<C
   }
 
   // This capability requires approval — create approval request
-  const { data, error } = await supabase.from("approval_queue").insert({
+  const { data, error } = await fromTable("approval_queue").insert({
     user_id: context.userId,
     action_type: "money.transfer",
     action_summary: `Transfer ${currency || "USD"} ${amount} between accounts`,
@@ -49,7 +50,7 @@ registerCapability("investment.watchlist.add", async (params, context): Promise<
   if (!assetId && !symbol) return { success: false, error: "Asset ID or symbol required" };
 
   // For now store as audit log action until watchlist table exists
-  const { data, error } = await supabase.from("audit_logs").insert({
+  const { data, error } = await fromTable("audit_logs").insert({
     user_id: context.userId,
     action: "watchlist.add",
     category: "investment",

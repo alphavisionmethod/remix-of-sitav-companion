@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GitBranch, Clock, CheckCircle, XCircle, TrendingUp } from "lucide-react";
@@ -10,7 +11,7 @@ const LT02CIPipelineCenter = () => {
   const { data: ciRuns } = useQuery({
     queryKey: ["ci-runs"],
     queryFn: async () => {
-      const { data } = await supabase.from("ci_runs").select("*").order("created_at", { ascending: false }).limit(20);
+      const { data } = await fromTable("ci_runs").select("*").order("created_at", { ascending: false }).limit(20);
       return data ?? [];
     },
   });
@@ -18,7 +19,7 @@ const LT02CIPipelineCenter = () => {
   const { data: ciJobs } = useQuery({
     queryKey: ["ci-jobs-recent"],
     queryFn: async () => {
-      const { data } = await supabase.from("ci_jobs").select("*").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("ci_jobs").select("*").order("created_at", { ascending: false }).limit(50);
       return data ?? [];
     },
   });

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Activity, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -24,7 +25,7 @@ export default function CN05ConnectorHealthBoard() {
 
   const { data: healthRecords = [] } = useQuery({
     queryKey: ["connector-health-all"],
-    queryFn: async () => { const { data } = await supabase.from("connector_health_records").select("*").order("checked_at", { ascending: false }).limit(50); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connector_health_records").select("*").order("checked_at", { ascending: false }).limit(50); return data || []; },
   });
 
   const healthCheckMutation = useMutation({

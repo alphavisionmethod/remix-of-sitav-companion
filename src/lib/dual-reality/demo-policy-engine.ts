@@ -7,6 +7,7 @@
 import type { RealityModeKey } from "./reality-mode-registry";
 import { getModeDefinition } from "./reality-mode-registry";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export interface DemoPolicyDecision {
   allowed: boolean;
@@ -81,7 +82,7 @@ export async function setKillSwitch(
       : key === "demoAILiveCalls" ? "demo_ai_live_calls"
       : "demo_simulated_writes";
 
-    await supabase.from("demo_kill_switches").upsert(
+    await fromTable("demo_kill_switches").upsert(
       { user_id: user.id, key: dbKey, enabled: value, reason: reason ?? null },
       { onConflict: "user_id,key" }
     );
@@ -95,7 +96,7 @@ export async function disableScenario(scenarioId: string, reason?: string): Prom
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    await supabase.from("demo_kill_switches").upsert(
+    await fromTable("demo_kill_switches").upsert(
       { user_id: user.id, key: `scenario:${scenarioId}`, enabled: true, reason: reason ?? null },
       { onConflict: "user_id,key" }
     );
@@ -107,7 +108,7 @@ export async function enableScenario(scenarioId: string): Promise<void> {
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    await supabase.from("demo_kill_switches").upsert(
+    await fromTable("demo_kill_switches").upsert(
       { user_id: user.id, key: `scenario:${scenarioId}`, enabled: false },
       { onConflict: "user_id,key" }
     );
@@ -135,7 +136,7 @@ async function logDemoReceipt(decision: DemoPolicyDecision, sideEffect: SideEffe
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    await supabase.from("demo_receipts").insert({
+    await fromTable("demo_receipts").insert({
       user_id: user.id,
       receipt_type: decision.receiptType,
       summary: `${sideEffect}: ${decision.reason}`,

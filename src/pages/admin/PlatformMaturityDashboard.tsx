@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
 import { Award, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,7 +21,7 @@ const PlatformMaturityDashboard = () => {
   const { data: scores } = useQuery({
     queryKey: ["platform-maturity-scores"],
     queryFn: async () => {
-      const { data } = await supabase.from("platform_maturity_scores").select("*").order("measured_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("platform_maturity_scores").select("*").order("measured_at", { ascending: false }).limit(50);
       return data ?? [];
     },
   });

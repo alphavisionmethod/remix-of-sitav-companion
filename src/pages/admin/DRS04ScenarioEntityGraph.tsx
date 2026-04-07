@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Network, User, Building2, FileText, Briefcase } from "lucide-react";
@@ -19,9 +20,9 @@ export default function DRS04ScenarioEntityGraph() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return { entities: [], relationships: [], scenarios: [] };
       const [e, r, s] = await Promise.all([
-        supabase.from("demo_scenario_entities").select("*, demo_scenarios(name)").eq("user_id", user.id).limit(200),
-        supabase.from("demo_scenario_relationships").select("*").eq("user_id", user.id).limit(200),
-        supabase.from("demo_scenarios").select("id, name").eq("user_id", user.id),
+        fromTable("demo_scenario_entities").select("*, demo_scenarios(name)").eq("user_id", user.id).limit(200),
+        fromTable("demo_scenario_relationships").select("*").eq("user_id", user.id).limit(200),
+        fromTable("demo_scenarios").select("id, name").eq("user_id", user.id),
       ]);
       return { entities: e.data ?? [], relationships: r.data ?? [], scenarios: s.data ?? [] };
     },

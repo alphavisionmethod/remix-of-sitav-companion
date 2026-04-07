@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -106,8 +107,8 @@ export default function ConnectorGovernanceCenter() {
     queryKey: ["governance-connectors", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data: registry } = await supabase.from("connector_registry").select("*").eq("user_id", user!.id);
-      const { data: accounts } = await supabase.from("connector_accounts").select("*").eq("user_id", user!.id);
+      const { data: registry } = await fromTable("connector_registry").select("*").eq("user_id", user!.id);
+      const { data: accounts } = await fromTable("connector_accounts").select("*").eq("user_id", user!.id);
       if ((!registry || registry.length === 0) && (!accounts || accounts.length === 0)) return null;
       return { registry: registry || [], accounts: accounts || [] };
     },

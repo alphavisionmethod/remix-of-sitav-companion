@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CheckCircle, XCircle, Minus, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -23,17 +24,17 @@ export default function MSA03CapabilityPortability() {
   const { isDemoMode } = useDataMode();
   const { data: capabilities = [] } = useQuery({
     queryKey: ["capability-definitions"],
-    queryFn: async () => { const { data } = await supabase.from("capability_definitions").select("*").order("domain"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("capability_definitions").select("*").order("domain"); return data || []; },
   });
 
   const { data: bindings = [] } = useQuery({
     queryKey: ["capability-surface-bindings"],
-    queryFn: async () => { const { data } = await supabase.from("capability_surface_bindings").select("*"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("capability_surface_bindings").select("*"); return data || []; },
   });
 
   const { data: surfaces = [] } = useQuery({
     queryKey: ["surface-types"],
-    queryFn: async () => { const { data } = await supabase.from("surface_types").select("id, surface_key, display_name").order("created_at"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("surface_types").select("id, surface_key, display_name").order("created_at"); return data || []; },
   });
 
   const getBinding = (capId: string, surfaceId: string) => bindings.find((b: any) => b.capability_id === capId && b.surface_id === surfaceId);

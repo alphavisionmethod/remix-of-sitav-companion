@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Flag, CheckCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -21,7 +22,7 @@ export default function PFA10IntegrationLaunchHonesty() {
   const { isDemoMode } = useDataMode();
   const { data: honesty = [] } = useQuery({
     queryKey: ["integration-launch-honesty"],
-    queryFn: async () => { const { data } = await supabase.from("integration_launch_honesty").select("*, provider_families(name, provider_key), provider_capabilities(display_name, capability_key)").order("created_at"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("integration_launch_honesty").select("*, provider_families(name, provider_key), provider_capabilities(display_name, capability_key)").order("created_at"); return data || []; },
   });
 
   const launchReady = honesty.filter((h: any) => h.launch_label === "launch_ready").length;

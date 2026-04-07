@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Plug, Shield, Activity, TestTube, Presentation, RefreshCw, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -55,7 +56,7 @@ export default function CN01ConnectorRealityOverview() {
   const { data: registry = [] } = useQuery({
     queryKey: ["connector-registry"],
     queryFn: async () => {
-      const { data } = await supabase.from("connector_registry").select("*").order("connector_class");
+      const { data } = await fromTable("connector_registry").select("*").order("connector_class");
       return data || [];
     },
   });
@@ -63,7 +64,7 @@ export default function CN01ConnectorRealityOverview() {
   const { data: accounts = [] } = useQuery({
     queryKey: ["connector-accounts"],
     queryFn: async () => {
-      const { data } = await supabase.from("connector_accounts").select("*");
+      const { data } = await fromTable("connector_accounts").select("*");
       return data || [];
     },
   });
@@ -71,7 +72,7 @@ export default function CN01ConnectorRealityOverview() {
   const { data: tokens = [] } = useQuery({
     queryKey: ["connector-oauth-tokens"],
     queryFn: async () => {
-      const { data } = await supabase.from("connector_oauth_tokens").select("*");
+      const { data } = await fromTable("connector_oauth_tokens").select("*");
       return data || [];
     },
   });
@@ -79,7 +80,7 @@ export default function CN01ConnectorRealityOverview() {
   const { data: receipts = [] } = useQuery({
     queryKey: ["connector-receipts-verify"],
     queryFn: async () => {
-      const { data } = await supabase.from("connector_receipts").select("*").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("connector_receipts").select("*").order("created_at", { ascending: false }).limit(50);
       return data || [];
     },
   });
@@ -95,7 +96,7 @@ export default function CN01ConnectorRealityOverview() {
   const { data: healthRecords = [] } = useQuery({
     queryKey: ["connector-health-latest"],
     queryFn: async () => {
-      const { data } = await supabase.from("connector_health_records").select("*").order("checked_at", { ascending: false }).limit(20);
+      const { data } = await fromTable("connector_health_records").select("*").order("checked_at", { ascending: false }).limit(20);
       return data || [];
     },
   });
@@ -103,7 +104,7 @@ export default function CN01ConnectorRealityOverview() {
   const { data: readiness = [] } = useQuery({
     queryKey: ["connector-launch-readiness"],
     queryFn: async () => {
-      const { data } = await supabase.from("connector_launch_readiness").select("*");
+      const { data } = await fromTable("connector_launch_readiness").select("*");
       return data || [];
     },
   });

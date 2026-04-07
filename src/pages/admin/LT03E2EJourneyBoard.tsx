@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TestTube, Play, Camera, Filter } from "lucide-react";
@@ -10,7 +11,7 @@ const LT03E2EJourneyBoard = () => {
   const { data: journeys } = useQuery({
     queryKey: ["e2e-journeys-all"],
     queryFn: async () => {
-      const { data } = await supabase.from("e2e_journeys").select("*").order("criticality").limit(100);
+      const { data } = await fromTable("e2e_journeys").select("*").order("criticality").limit(100);
       return data ?? [];
     },
   });
@@ -18,7 +19,7 @@ const LT03E2EJourneyBoard = () => {
   const { data: runs } = useQuery({
     queryKey: ["e2e-runs-all"],
     queryFn: async () => {
-      const { data } = await supabase.from("e2e_runs").select("*").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("e2e_runs").select("*").order("created_at", { ascending: false }).limit(50);
       return data ?? [];
     },
   });

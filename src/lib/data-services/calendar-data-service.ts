@@ -1,5 +1,6 @@
 // SITA OS — Calendar Data Service (Mode-Aware)
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
 
@@ -29,7 +30,7 @@ export async function fetchCalendarEvents(year: number, month: number, mode: Rea
   if (!user) return resolveByMode({ mode, realData: null, demoData: demoEvents, emptyDefault: [] });
   const startDate = new Date(year, month, 1).toISOString();
   const endDate = new Date(year, month + 1, 0).toISOString();
-  const { data, error } = await supabase.from("events").select("*").eq("user_id", user.id)
+  const { data, error } = await fromTable("events").select("*").eq("user_id", user.id)
     .gte("start_time", startDate).lte("start_time", endDate).order("start_time", { ascending: true });
   const mapped = (!error && data && data.length > 0) ? data.map((e: any): CalendarEventItem => ({
     id: e.id, title: e.title, date: e.start_time ? new Date(e.start_time).toISOString().slice(0, 10) : "",

@@ -4,6 +4,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,7 +28,7 @@ export default function AR08KillSwitchCenter() {
   const { data: switches = [] } = useQuery({
     queryKey: ["kill-switches"],
     queryFn: async () => {
-      const { data } = await supabase.from("automation_kill_switches").select("*");
+      const { data } = await fromTable("automation_kill_switches").select("*");
       return data || [];
     },
   });
@@ -48,7 +49,7 @@ export default function AR08KillSwitchCenter() {
       if (!user) throw new Error("Not authenticated");
 
       if (existing) {
-        await supabase.from("automation_kill_switches")
+        await fromTable("automation_kill_switches")
           .update({
             enabled: enable,
             activated_at: enable ? new Date().toISOString() : (existing as any).activated_at,
@@ -57,7 +58,7 @@ export default function AR08KillSwitchCenter() {
           })
           .eq("id", (existing as any).id);
       } else {
-        await supabase.from("automation_kill_switches").insert({
+        await fromTable("automation_kill_switches").insert({
           user_id: user.id,
           scope,
           scope_id: scopeId || null,

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Cpu, RefreshCw, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -18,17 +19,17 @@ export default function UAO02ConnectedDevices() {
 
   const { data: families = [] } = useQuery({
     queryKey: ["device-families"],
-    queryFn: async () => { const { data } = await supabase.from("device_families").select("*").order("name"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("device_families").select("*").order("name"); return data || []; },
   });
 
   const { data: devices = [] } = useQuery({
     queryKey: ["connected-devices"],
-    queryFn: async () => { const { data } = await supabase.from("connected_devices").select("*, device_families(name, family_key)").order("created_at"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connected_devices").select("*, device_families(name, family_key)").order("created_at"); return data || []; },
   });
 
   const { data: wearables = [] } = useQuery({
     queryKey: ["wearable-providers"],
-    queryFn: async () => { const { data } = await supabase.from("wearable_providers").select("*").order("name"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("wearable_providers").select("*").order("name"); return data || []; },
   });
 
   const seedMutation = useMutation({

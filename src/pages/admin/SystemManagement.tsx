@@ -15,6 +15,7 @@ import {
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { format } from "date-fns";
@@ -31,7 +32,7 @@ const SystemManagement = () => {
   const { data: devices = [], isLoading: devicesLoading } = useQuery({
     queryKey: ["admin-devices"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("device_statuses").select("*").order("last_seen", { ascending: false });
+      const { data, error } = await fromTable("device_statuses").select("*").order("last_seen", { ascending: false });
       if (error) throw error;
       return data || [];
     },
@@ -41,7 +42,7 @@ const SystemManagement = () => {
   const { data: signals = [] } = useQuery({
     queryKey: ["admin-signals"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("agent_signals")
+      const { data, error } = await fromTable("agent_signals")
         .select("*")
         .like("signal_type", "os_command:%")
         .order("created_at", { ascending: false })

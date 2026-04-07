@@ -4,6 +4,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 interface Receipt {
   id: string;
@@ -37,7 +38,7 @@ export default function InvestmentReceipts() {
     queryKey: ["investment-receipts", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await supabase.from("proof_records").select("*").eq("user_id", user!.id).eq("domain", "investment").order("created_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("proof_records").select("*").eq("user_id", user!.id).eq("domain", "investment").order("created_at", { ascending: false }).limit(50);
       if (!data?.length) return null;
       return data.map((r: any) => ({
         id: r.id,

@@ -4,6 +4,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { SitaPageHeader, SitaCard } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -30,7 +31,7 @@ export default function AR02ScheduledJobRegistry() {
   const { data: jobs = [] } = useQuery({
     queryKey: ["scheduled-jobs"],
     queryFn: async () => {
-      const { data } = await supabase.from("scheduled_jobs").select("*").order("created_at", { ascending: false });
+      const { data } = await fromTable("scheduled_jobs").select("*").order("created_at", { ascending: false });
       return data || [];
     },
   });

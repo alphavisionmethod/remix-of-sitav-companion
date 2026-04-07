@@ -5,6 +5,7 @@ import { MemberAvatar, HouseholdAdvisor } from "@/components/sita/HouseholdCompo
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
@@ -63,7 +64,7 @@ const HouseholdTasks = () => {
   const addTask = useMutation({
     mutationFn: async () => {
       if (!user || !newTask.title.trim()) throw new Error("Title required");
-      const { error } = await supabase.from("tasks").insert({
+      const { error } = await fromTable("tasks").insert({
         user_id: user.id,
         title: newTask.title.trim(),
         category: newTask.category || "General",
@@ -86,7 +87,7 @@ const HouseholdTasks = () => {
 
   const updateStatus = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await supabase.from("tasks").update({ status }).eq("id", id);
+      const { error } = await fromTable("tasks").update({ status }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -97,7 +98,7 @@ const HouseholdTasks = () => {
 
   const deleteTask = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("tasks").delete().eq("id", id);
+      const { error } = await fromTable("tasks").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

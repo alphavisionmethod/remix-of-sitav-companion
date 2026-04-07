@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Globe, Smartphone, Monitor, Glasses, Mic, RefreshCw, CheckCircle, XCircle, Layers, AlertTriangle, Shield } from "lucide-react";
@@ -29,32 +30,32 @@ export default function MSA01MultiSurfaceOverview() {
 
   const { data: surfaces = [] } = useQuery({
     queryKey: ["surface-types"],
-    queryFn: async () => { const { data } = await supabase.from("surface_types").select("*").order("created_at"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("surface_types").select("*").order("created_at"); return data || []; },
   });
 
   const { data: shells = [] } = useQuery({
     queryKey: ["shell-implementations"],
-    queryFn: async () => { const { data } = await supabase.from("shell_implementations").select("*"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("shell_implementations").select("*"); return data || []; },
   });
 
   const { data: readiness = [] } = useQuery({
     queryKey: ["surface-readiness"],
-    queryFn: async () => { const { data } = await supabase.from("surface_readiness_records").select("*"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("surface_readiness_records").select("*"); return data || []; },
   });
 
   const { data: capabilities = [] } = useQuery({
     queryKey: ["capability-definitions"],
-    queryFn: async () => { const { data } = await supabase.from("capability_definitions").select("*"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("capability_definitions").select("*"); return data || []; },
   });
 
   const { data: bindings = [] } = useQuery({
     queryKey: ["capability-bindings"],
-    queryFn: async () => { const { data } = await supabase.from("capability_surface_bindings").select("*"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("capability_surface_bindings").select("*"); return data || []; },
   });
 
   const { data: launchProfiles = [] } = useQuery({
     queryKey: ["surface-launch-profiles"],
-    queryFn: async () => { const { data } = await supabase.from("surface_launch_profiles").select("*"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("surface_launch_profiles").select("*"); return data || []; },
   });
 
   const seedMutation = useMutation({

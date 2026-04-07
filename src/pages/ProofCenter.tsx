@@ -16,6 +16,7 @@ import { useKernelStatus } from "@/contexts/SitaKernelContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 const db: any = supabase;
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
@@ -174,7 +175,7 @@ const ProofCenter = () => {
     queryKey: ["proof_approvals", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await supabase.from("approval_queue").select("*").eq("status", "approved").order("created_at", { ascending: false }).limit(20);
+      const { data } = await fromTable("approval_queue").select("*").eq("status", "approved").order("created_at", { ascending: false }).limit(20);
       return data || [];
     },
   });

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 
 function useUserId() {
@@ -13,7 +14,7 @@ export function useTravelPlans() {
     queryKey: ["travel-plans", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("travel_plans").select("*").eq("user_id", uid!).order("start_date");
+      const { data } = await fromTable("travel_plans").select("*").eq("user_id", uid!).order("start_date");
       return data ?? [];
     },
   });
@@ -25,7 +26,7 @@ export function useGroceryLists() {
     queryKey: ["grocery-lists", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("grocery_lists").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      const { data } = await fromTable("grocery_lists").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
       return data ?? [];
     },
   });
@@ -37,7 +38,7 @@ export function useGroceryItems(listId?: string) {
     queryKey: ["grocery-items", uid, listId],
     enabled: !!uid && !!listId,
     queryFn: async () => {
-      const { data } = await supabase.from("grocery_items").select("*").eq("user_id", uid!).eq("list_id", listId!);
+      const { data } = await fromTable("grocery_items").select("*").eq("user_id", uid!).eq("list_id", listId!);
       return data ?? [];
     },
   });
@@ -49,7 +50,7 @@ export function useServiceProvidersList() {
     queryKey: ["service-providers-list", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("service_providers_list").select("*").eq("user_id", uid!);
+      const { data } = await fromTable("service_providers_list").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -61,7 +62,7 @@ export function useSchoolActivities() {
     queryKey: ["school-activities", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("school_activities").select("*").eq("user_id", uid!);
+      const { data } = await fromTable("school_activities").select("*").eq("user_id", uid!);
       return data ?? [];
     },
   });
@@ -73,7 +74,7 @@ export function useGiftTracker() {
     queryKey: ["gift-tracker", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("gift_tracker").select("*").eq("user_id", uid!).order("target_date");
+      const { data } = await fromTable("gift_tracker").select("*").eq("user_id", uid!).order("target_date");
       return data ?? [];
     },
   });
@@ -85,7 +86,7 @@ export function useAppointments() {
     queryKey: ["appointments", uid],
     enabled: !!uid,
     queryFn: async () => {
-      const { data } = await supabase.from("appointments").select("*").eq("user_id", uid!).order("appointment_date");
+      const { data } = await fromTable("appointments").select("*").eq("user_id", uid!).order("appointment_date");
       return data ?? [];
     },
   });

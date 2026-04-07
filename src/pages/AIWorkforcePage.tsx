@@ -11,6 +11,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
 
@@ -33,7 +34,7 @@ export default function AIWorkforcePage() {
     queryKey: ["ai_workforce_agents", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await supabase.from("advisor_registry").select("*").eq("active", true);
+      const { data } = await fromTable("advisor_registry").select("*").eq("active", true);
       return (data ?? []).map((a: any) => ({
         id: a.id, name: a.display_name, role: a.advisor_type,
         status: "active" as const, tasksCompleted: 0, trustScore: Math.round(a.trust_threshold * 100), costToday: 0,

@@ -4,6 +4,7 @@ import { StateBadge } from "@/components/sita/StateBadge";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
@@ -38,7 +39,7 @@ const QuotesWorkspace = () => {
     queryKey: ["quotes", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data, error } = await supabase.from("quotes").select("*, customers(name)").eq("user_id", user.id).order("created_at", { ascending: false });
+      const { data, error } = await fromTable("quotes").select("*, customers(name)").eq("user_id", user.id).order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -48,7 +49,7 @@ const QuotesWorkspace = () => {
   const addQuote = useMutation({
     mutationFn: async () => {
       if (!user || !form.title.trim()) throw new Error("Title required");
-      const { error } = await supabase.from("quotes").insert({
+      const { error } = await fromTable("quotes").insert({
         user_id: user.id, title: form.title.trim(), total: form.total ? parseFloat(form.total) : null,
         expiry_date: form.expiry_date || null, notes: form.notes || null, status: "draft",
       });
@@ -60,14 +61,14 @@ const QuotesWorkspace = () => {
 
   const updateStatus = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await supabase.from("quotes").update({ status }).eq("id", id);
+      const { error } = await fromTable("quotes").update({ status }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["quotes"] }); toast.success("Status updated"); },
   });
 
   const deleteQuote = useMutation({
-    mutationFn: async (id: string) => { const { error } = await supabase.from("quotes").delete().eq("id", id); if (error) throw error; },
+    mutationFn: async (id: string) => { const { error } = await fromTable("quotes").delete().eq("id", id); if (error) throw error; },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["quotes"] }); setSelectedId(null); toast.success("Deleted"); },
   });
 

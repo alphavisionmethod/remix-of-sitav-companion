@@ -7,6 +7,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 const DEMO_TARGETS = [
   { target: "iPhone Shell", key: "apl_iphone", stage: "alpha", readiness: 35, demo: true, pilot: false, launch: false, blockers: ["Core navigation shell", "Push integration"], deps: ["apple_identity"], critical: true },
@@ -23,7 +24,7 @@ const APL06AppleLaunchReadiness = () => {
   const { data: dbTargets } = useQuery({
     queryKey: ["apl-launch-readiness"],
     queryFn: async () => {
-      const { data } = await supabase.from("ambient_launch_readiness").select("*").like("target_key", "apple_%");
+      const { data } = await fromTable("ambient_launch_readiness").select("*").like("target_key", "apple_%");
       return data || [];
     },
   });

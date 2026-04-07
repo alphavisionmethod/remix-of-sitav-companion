@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Plus, Briefcase, DollarSign, Target, FileText, CheckCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -49,7 +50,7 @@ export const QuickAddWizard = ({ type, onClose }: QuickAddWizardProps) => {
 
     try {
       if (type === "lead") {
-        const { error } = await supabase.from("leads").insert({
+        const { error } = await fromTable("leads").insert({
           user_id: user.id,
           name: values.name || "New Lead",
           email: values.email || null,
@@ -59,7 +60,7 @@ export const QuickAddWizard = ({ type, onClose }: QuickAddWizardProps) => {
         if (error) throw error;
         qc.invalidateQueries({ queryKey: ["leads"] });
       } else if (type === "invoice") {
-        const { error } = await supabase.from("invoices").insert({
+        const { error } = await fromTable("invoices").insert({
           user_id: user.id,
           invoice_number: values.invoice_number || `INV-${Date.now()}`,
           amount: parseFloat(values.amount) || 0,
@@ -68,7 +69,7 @@ export const QuickAddWizard = ({ type, onClose }: QuickAddWizardProps) => {
         if (error) throw error;
         qc.invalidateQueries({ queryKey: ["invoices"] });
       } else if (type === "budget") {
-        const { error } = await supabase.from("budgets").insert({
+        const { error } = await fromTable("budgets").insert({
           user_id: user.id,
           category: values.category || "General",
           allocated: parseFloat(values.allocated) || 0,

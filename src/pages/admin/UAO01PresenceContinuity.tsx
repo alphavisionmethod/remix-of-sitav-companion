@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Radio, RefreshCw, Monitor, Smartphone, Watch, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -18,22 +19,22 @@ export default function UAO01PresenceContinuity() {
 
   const { data: presence = [] } = useQuery({
     queryKey: ["presence-states"],
-    queryFn: async () => { const { data } = await supabase.from("presence_states").select("*, connected_devices(device_name)").order("updated_at", { ascending: false }).limit(10); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("presence_states").select("*, connected_devices(device_name)").order("updated_at", { ascending: false }).limit(10); return data || []; },
   });
 
   const { data: continuity = [] } = useQuery({
     queryKey: ["context-continuity"],
-    queryFn: async () => { const { data } = await supabase.from("context_continuity_records").select("*").order("updated_at", { ascending: false }).limit(10); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("context_continuity_records").select("*").order("updated_at", { ascending: false }).limit(10); return data || []; },
   });
 
   const { data: handoffs = [] } = useQuery({
     queryKey: ["handoff-sessions"],
-    queryFn: async () => { const { data } = await supabase.from("handoff_sessions").select("*").order("created_at", { ascending: false }).limit(20); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("handoff_sessions").select("*").order("created_at", { ascending: false }).limit(20); return data || []; },
   });
 
   const { data: devices = [] } = useQuery({
     queryKey: ["connected-devices-presence"],
-    queryFn: async () => { const { data } = await supabase.from("connected_devices").select("*, device_families(name, family_key)").order("last_seen_at", { ascending: false }); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connected_devices").select("*, device_families(name, family_key)").order("last_seen_at", { ascending: false }); return data || []; },
   });
 
   const updatePresence = useMutation({

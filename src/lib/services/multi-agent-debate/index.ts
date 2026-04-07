@@ -1,3 +1,4 @@
+import { fromTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Multi-Agent Debate Engine
 // Lets 2+ advisors argue opposing strategies; user picks winner
@@ -67,7 +68,7 @@ class MultiAgentDebateEngine {
       createdAt: new Date(),
     };
 
-    await supabase.from('council_decisions').insert({
+    await fromTable('council_decisions').insert({
       user_id: userId,
       question,
       domain,

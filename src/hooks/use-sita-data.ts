@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 const db: any = supabase;
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -103,7 +104,7 @@ export function useReserves() {
     queryFn: async () => {
       if (isDemoMode) return mockReserves;
       if (!user) return [];
-      const { data, error } = await supabase.from("capital_allocations").select("*").order("created_at", { ascending: false });
+      const { data, error } = await fromTable("capital_allocations").select("*").order("created_at", { ascending: false });
       if (error) return [];
       return data || [];
     },
@@ -299,7 +300,7 @@ export function useSystemConnectors() {
     queryFn: async () => {
       if (isDemoMode) return mockConnectors;
       if (!user) return [];
-      const { data } = await supabase.from("connector_configs").select("*").limit(20);
+      const { data } = await fromTable("connector_configs").select("*").limit(20);
       return data?.length ? data : [];
     },
     staleTime: isDemoMode ? Infinity : 30000,

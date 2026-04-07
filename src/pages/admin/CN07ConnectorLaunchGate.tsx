@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { CheckCircle, XCircle, AlertTriangle, Shield } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -21,12 +22,12 @@ export default function CN07ConnectorLaunchGate() {
   const { isDemoMode } = useDataMode();
   const { data: readiness = [] } = useQuery({
     queryKey: ["connector-launch-readiness"],
-    queryFn: async () => { const { data } = await supabase.from("connector_launch_readiness").select("*"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connector_launch_readiness").select("*"); return data || []; },
   });
 
   const { data: receipts = [] } = useQuery({
     queryKey: ["connector-receipts-recent"],
-    queryFn: async () => { const { data } = await supabase.from("connector_receipts").select("*").order("created_at", { ascending: false }).limit(20); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connector_receipts").select("*").order("created_at", { ascending: false }).limit(20); return data || []; },
   });
 
   const getScore = (r: any) => {

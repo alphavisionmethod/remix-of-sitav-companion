@@ -17,6 +17,7 @@ import {
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useConfirmation } from "@/hooks/use-confirmation";
@@ -72,7 +73,7 @@ export default function TeamManagement() {
   const { data: advisors = [] } = useQuery({
     queryKey: ["admin-advisor-registry"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("advisor_registry").select("*").order("display_name");
+      const { data, error } = await fromTable("advisor_registry").select("*").order("display_name");
       if (error) throw error;
       return data || [];
     },
@@ -82,7 +83,7 @@ export default function TeamManagement() {
   const { data: perfData = [] } = useQuery({
     queryKey: ["admin-advisor-performance"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("advisor_performance").select("*").order("total_calls", { ascending: false });
+      const { data, error } = await fromTable("advisor_performance").select("*").order("total_calls", { ascending: false });
       if (error) throw error;
       return data || [];
     },
@@ -107,7 +108,7 @@ export default function TeamManagement() {
     mutationFn: async (form: AdvisorFormData) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
-      const { error } = await supabase.from("advisor_registry").insert({
+      const { error } = await fromTable("advisor_registry").insert({
         user_id: user.id,
         display_name: form.display_name,
         domain: form.domain,
@@ -129,7 +130,7 @@ export default function TeamManagement() {
 
   const updateAdvisor = useMutation({
     mutationFn: async ({ id, ...form }: AdvisorFormData & { id: string }) => {
-      const { error } = await supabase.from("advisor_registry").update({
+      const { error } = await fromTable("advisor_registry").update({
         display_name: form.display_name,
         domain: form.domain,
         advisor_type: form.advisor_type,
@@ -150,7 +151,7 @@ export default function TeamManagement() {
 
   const toggleActive = useMutation({
     mutationFn: async ({ id, active }: { id: string; active: boolean }) => {
-      const { error } = await supabase.from("advisor_registry").update({ active }).eq("id", id);
+      const { error } = await fromTable("advisor_registry").update({ active }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -161,7 +162,7 @@ export default function TeamManagement() {
 
   const deleteAdvisor = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("advisor_registry").delete().eq("id", id);
+      const { error } = await fromTable("advisor_registry").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

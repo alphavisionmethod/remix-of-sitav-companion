@@ -6,6 +6,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import {
   createPersonalizationEngine,
   createBehavioralLearningEngine,
@@ -125,7 +126,7 @@ export function useAdaptivePersonalization() {
       }));
 
       if (rows.length > 0) {
-        await supabase.from("user_memory").upsert(rows, {
+        await fromTable("user_memory").upsert(rows, {
           onConflict: "user_id,key",
           ignoreDuplicates: false,
         });
@@ -134,7 +135,7 @@ export function useAdaptivePersonalization() {
       // Also save behavioral patterns
       const patternData = learner.getPatterns(userId);
       if (patternData.length > 0) {
-        await supabase.from("user_memory").upsert(
+        await fromTable("user_memory").upsert(
           [{
             user_id: userId,
             key: "_behavioral_patterns",

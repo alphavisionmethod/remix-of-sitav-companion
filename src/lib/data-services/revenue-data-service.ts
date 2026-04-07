@@ -1,5 +1,6 @@
 // SITA OS — Revenue Data Service (Mode-Aware)
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
 
@@ -25,7 +26,7 @@ export async function fetchRevenueLeakage(mode: RealityModeKey = "real"): Promis
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_BUNDLE, emptyDefault: emptyBundle });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: DEMO_BUNDLE, emptyDefault: emptyBundle });
-  const { data: invoices } = await supabase.from("invoices").select("*").eq("user_id", user.id);
+  const { data: invoices } = await fromTable("invoices").select("*").eq("user_id", user.id);
   if (!invoices || invoices.length === 0) return resolveByMode({ mode, realData: null, demoData: DEMO_BUNDLE, emptyDefault: emptyBundle });
   const overdue = invoices.filter((i: any) => i.status === "overdue");
   const leakage = overdue.map((i: any): LeakageItem => ({

@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 // ── Debounce map for auto-save ──────────────────────────────────
 const saveTimers = new Map<string, ReturnType<typeof setTimeout>>();
@@ -31,7 +32,7 @@ export async function persistEngineState(
   const userId = await getUserId();
   if (!userId) return false;
 
-  const { error } = await supabase.from("engine_state")
+  const { error } = await fromTable("engine_state")
     .upsert(
       { user_id: userId, engine_name: engineName, state_data: stateData },
       { onConflict: "user_id,engine_name" }
@@ -69,7 +70,7 @@ export async function loadEngineState<T = Record<string, unknown>>(
   const userId = await getUserId();
   if (!userId) return null;
 
-  const { data, error } = await supabase.from("engine_state")
+  const { data, error } = await fromTable("engine_state")
     .select("state_data, version")
     .eq("user_id", userId)
     .eq("engine_name", engineName)
@@ -89,7 +90,7 @@ export async function loadAllEngineStates(): Promise<
   const userId = await getUserId();
   if (!userId) return {};
 
-  const { data, error } = await supabase.from("engine_state")
+  const { data, error } = await fromTable("engine_state")
     .select("engine_name, state_data")
     .eq("user_id", userId);
 
@@ -114,7 +115,7 @@ export async function appendEngineEvent(
   const userId = await getUserId();
   if (!userId) return false;
 
-  const { error } = await supabase.from("engine_events")
+  const { error } = await fromTable("engine_events")
     .insert({
       user_id: userId,
       engine_name: engineName,
@@ -137,7 +138,7 @@ export async function fetchEngineEvents(
   const userId = await getUserId();
   if (!userId) return [];
 
-  let query = supabase.from("engine_events")
+  let query = fromTable("engine_events")
     .select("id, event_type, event_data, created_at")
     .eq("user_id", userId)
     .eq("engine_name", engineName)
@@ -159,7 +160,7 @@ export async function clearEngineState(engineName: string): Promise<boolean> {
   const userId = await getUserId();
   if (!userId) return false;
 
-  const { error } = await supabase.from("engine_state")
+  const { error } = await fromTable("engine_state")
     .delete()
     .eq("user_id", userId)
     .eq("engine_name", engineName);

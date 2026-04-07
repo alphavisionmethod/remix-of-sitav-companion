@@ -1,3 +1,4 @@
+import { fromTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Offline Mode with Sync Engine
 // Full IndexedDB cache + background sync when reconnected
@@ -147,13 +148,13 @@ class OfflineSyncEngine {
           let error;
           switch (item.operation) {
             case 'insert':
-              ({ error } = await supabase.from(item.table as any).insert(item.data as any));
+              ({ error } = await fromTable(item.table as any).insert(item.data as any));
               break;
             case 'update':
-              ({ error } = await supabase.from(item.table as any).update(item.data as any).eq('id', item.data.id));
+              ({ error } = await fromTable(item.table as any).update(item.data as any).eq('id', item.data.id));
               break;
             case 'delete':
-              ({ error } = await supabase.from(item.table as any).delete().eq('id', item.data.id));
+              ({ error } = await fromTable(item.table as any).delete().eq('id', item.data.id));
               break;
           }
 

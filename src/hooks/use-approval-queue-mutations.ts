@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 
 export function useApprovalQueue(status?: string) {
@@ -8,7 +9,7 @@ export function useApprovalQueue(status?: string) {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      let q = supabase.from("approval_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50);
+      let q = fromTable("approval_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50);
       if (status && status !== "all") q = q.eq("status", status);
       const { data, error } = await q;
       if (error) throw error;

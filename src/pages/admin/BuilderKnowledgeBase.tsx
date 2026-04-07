@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
 import { BookMarked, Code, Layers, FileText, Cpu, Shield, Network } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,7 +27,7 @@ const BuilderKnowledgeBase = () => {
   const { data: archetypes } = useQuery({
     queryKey: ["kb-archetypes"],
     queryFn: async () => {
-      const { data } = await supabase.from("feature_archetypes").select("*").order("display_name");
+      const { data } = await fromTable("feature_archetypes").select("*").order("display_name");
       return data ?? [];
     },
   });

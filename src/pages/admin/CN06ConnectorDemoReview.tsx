@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Presentation, Play } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -16,7 +17,7 @@ export default function CN06ConnectorDemoReview() {
 
   const { data: demoBindings = [] } = useQuery({
     queryKey: ["connector-demo-bindings"],
-    queryFn: async () => { const { data } = await supabase.from("connector_demo_bindings").select("*"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connector_demo_bindings").select("*"); return data || []; },
   });
 
   const activateMutation = useMutation({

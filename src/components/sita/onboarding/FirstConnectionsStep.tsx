@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
@@ -154,7 +155,7 @@ export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onConnect
     setConnecting(connector.id);
 
     try {
-      const { error } = await supabase.from("connector_configs").upsert({
+      const { error } = await fromTable("connector_configs").upsert({
         user_id: user.id,
         connector_id: connector.id,
         provider: connector.provider,
@@ -170,7 +171,7 @@ export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onConnect
 
       await new Promise(r => setTimeout(r, 1200));
 
-      await supabase.from("connector_configs")
+      await fromTable("connector_configs")
         .update({ status: "connected" })
         .eq("user_id", user.id)
         .eq("connector_id", connector.id);

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ArrowUpCircle, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -12,17 +13,17 @@ export default function PFA06PermissionUpgradeCenter() {
   const { isDemoMode } = useDataMode();
   const { data: levels = [] } = useQuery({
     queryKey: ["permission-levels"],
-    queryFn: async () => { const { data } = await supabase.from("permission_levels").select("*, provider_capabilities(capability_key, display_name)").order("created_at"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("permission_levels").select("*, provider_capabilities(capability_key, display_name)").order("created_at"); return data || []; },
   });
 
   const { data: upgrades = [] } = useQuery({
     queryKey: ["consent-upgrades"],
-    queryFn: async () => { const { data } = await supabase.from("consent_upgrades").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("consent_upgrades").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
   });
 
   const { data: policies = [] } = useQuery({
     queryKey: ["scope-policies-upgrade"],
-    queryFn: async () => { const { data } = await supabase.from("scope_policy_matrix").select("*, provider_capabilities(capability_key, display_name)").eq("upgrade_path_available", true); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("scope_policy_matrix").select("*, provider_capabilities(capability_key, display_name)").eq("upgrade_path_available", true); return data || []; },
   });
 
   return (

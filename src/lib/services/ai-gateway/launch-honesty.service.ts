@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { LaunchHonestyLevel, AILaunchHonesty } from "./types";
 
 
@@ -37,9 +38,9 @@ export async function getLaunchHonestyRecords(): Promise<AILaunchHonesty[]> {
  */
 export async function getAILaunchHonestyBoard(): Promise<AICapabilityLaunchStatus[]> {
   const [{ data: honesty }, { data: policies }, { data: requests }] = await Promise.all([
-    supabase.from("ai_launch_honesty").select("*").order("capability_key"),
-    supabase.from("ai_routing_policies").select("capability_id, enabled, default_provider, default_model, domain, task_class").order("capability_id"),
-    supabase.from("ai_task_requests").select("capability_id, created_at, status, provider_chosen, model_chosen").order("created_at", { ascending: false }).limit(500),
+    fromTable("ai_launch_honesty").select("*").order("capability_key"),
+    fromTable("ai_routing_policies").select("capability_id, enabled, default_provider, default_model, domain, task_class").order("capability_id"),
+    fromTable("ai_task_requests").select("capability_id, created_at, status, provider_chosen, model_chosen").order("created_at", { ascending: false }).limit(500),
   ]);
 
   const honestyMap = new Map((honesty ?? []).map(h => [h.capability_key, h]));

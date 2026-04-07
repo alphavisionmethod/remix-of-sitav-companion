@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
 import { Layers, Calendar, Target, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,7 +20,7 @@ const DeliveryWavePlanner = () => {
   const { data: waves } = useQuery({
     queryKey: ["delivery-waves"],
     queryFn: async () => {
-      const { data } = await supabase.from("delivery_waves").select("*").order("wave_number", { ascending: true }).limit(20);
+      const { data } = await fromTable("delivery_waves").select("*").order("wave_number", { ascending: true }).limit(20);
       return data ?? [];
     },
   });

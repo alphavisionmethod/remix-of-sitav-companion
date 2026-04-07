@@ -8,6 +8,7 @@ import { useState, useMemo } from "react";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
@@ -84,7 +85,7 @@ const CustomersPage = () => {
 
   const createCustomer = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("customers").insert({
+      const { error } = await fromTable("customers").insert({
         user_id: user!.id, name: formName, email: formEmail || null,
         company: formCompany || null, phone: formPhone || null,
         status: "active", tier: "standard", lifetime_value: 0,
@@ -101,7 +102,7 @@ const CustomersPage = () => {
 
   const deleteCustomer = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("customers").delete().eq("id", id);
+      const { error } = await fromTable("customers").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Flag, RefreshCw, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
@@ -18,7 +19,7 @@ export default function UAO08AmbientLaunchReadiness() {
 
   const { data: readiness = [] } = useQuery({
     queryKey: ["ambient-launch-readiness"],
-    queryFn: async () => { const { data } = await supabase.from("ambient_launch_readiness").select("*").order("target_type, target_name"); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("ambient_launch_readiness").select("*").order("target_type, target_name"); return data || []; },
   });
 
   const seedReadiness = useMutation({

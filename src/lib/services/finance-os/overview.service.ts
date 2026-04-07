@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { InvestmentSummary, AssetAllocation } from "@/packages/finance-contracts";
 
 /**
@@ -13,8 +14,8 @@ import type { InvestmentSummary, AssetAllocation } from "@/packages/finance-cont
 export async function buildInvestmentOverview(): Promise<InvestmentSummary> {
   try {
     const [accountsRes, allocationsRes] = await Promise.all([
-      supabase.from("financial_accounts").select("*").limit(50),
-      supabase.from("capital_allocations").select("*").limit(50),
+      fromTable("financial_accounts").select("*").limit(50),
+      fromTable("capital_allocations").select("*").limit(50),
     ]);
 
     const accounts = accountsRes.data || [];

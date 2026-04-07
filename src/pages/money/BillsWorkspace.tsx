@@ -5,6 +5,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useBills as useMoneyBills } from "@/hooks/use-money-data";
 import { useAuth } from "@/contexts/AuthContext";
 import { DollarSign, Clock, AlertTriangle, CheckCircle, Calendar, Receipt, Bell, FileText, CreditCard, Plus, Trash2, Zap } from "lucide-react";
@@ -66,7 +67,7 @@ const BillsWorkspace = () => {
   const billsQuery = useQuery({
     queryKey: ["bills"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("bills").select("*").order("due_date", { ascending: true });
+      const { data, error } = await fromTable("bills").select("*").order("due_date", { ascending: true });
       if (error) throw error;
       return data;
     },
@@ -79,7 +80,7 @@ const BillsWorkspace = () => {
 
   const createMutation = useMutation({
     mutationFn: async (bill: BillForm) => {
-      const { error } = await supabase.from("bills").insert({
+      const { error } = await fromTable("bills").insert({
         payee: bill.payee,
         amount: parseFloat(bill.amount),
         due_date: bill.due_date,
@@ -98,7 +99,7 @@ const BillsWorkspace = () => {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, bill }: { id: string; bill: BillForm }) => {
-      const { error } = await supabase.from("bills").update({
+      const { error } = await fromTable("bills").update({
         payee: bill.payee,
         amount: parseFloat(bill.amount),
         due_date: bill.due_date,
@@ -116,7 +117,7 @@ const BillsWorkspace = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("bills").delete().eq("id", id);
+      const { error } = await fromTable("bills").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["bills"] }); setSelectedId(null); toast.success("Bill deleted"); },
@@ -136,7 +137,7 @@ const BillsWorkspace = () => {
           category: bill.category || "bills",
         }).catch(() => { /* non-blocking — bill still marked paid locally */ });
       }
-      const { error } = await supabase.from("bills").update({ status: "paid" }).eq("id", id);
+      const { error } = await fromTable("bills").update({ status: "paid" }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["bills"] }); toast.success("Marked as paid"); },

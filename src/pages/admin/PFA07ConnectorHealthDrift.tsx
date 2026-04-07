@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Activity, RefreshCw, AlertTriangle, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -19,12 +20,12 @@ export default function PFA07ConnectorHealthDrift() {
 
   const { data: drifts = [] } = useQuery({
     queryKey: ["permission-drifts"],
-    queryFn: async () => { const { data } = await supabase.from("permission_drift_records").select("*, provider_capabilities(display_name, capability_key)").order("detected_at", { ascending: false }).limit(50); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("permission_drift_records").select("*, provider_capabilities(display_name, capability_key)").order("detected_at", { ascending: false }).limit(50); return data || []; },
   });
 
   const { data: health = [] } = useQuery({
     queryKey: ["connector-health-pfa"],
-    queryFn: async () => { const { data } = await supabase.from("connector_health_records").select("*").order("updated_at", { ascending: false }).limit(50); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("connector_health_records").select("*").order("updated_at", { ascending: false }).limit(50); return data || []; },
   });
 
   const checkDrift = useMutation({

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Radar, TrendingDown, AlertTriangle, Repeat } from "lucide-react";
@@ -10,7 +11,7 @@ const LT07TruthRegressionRadar = () => {
   const { data: regressions } = useQuery({
     queryKey: ["regressions-all"],
     queryFn: async () => {
-      const { data } = await supabase.from("behavioral_regressions").select("*").order("last_seen_at", { ascending: false }).limit(100);
+      const { data } = await fromTable("behavioral_regressions").select("*").order("last_seen_at", { ascending: false }).limit(100);
       return data ?? [];
     },
   });

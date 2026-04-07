@@ -1,3 +1,4 @@
+import { fromTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Habit Streak Tracker
 // Gamified daily habits with streaks, rewards, family challenges
@@ -111,7 +112,7 @@ class HabitStreakService {
   }
 
   async createHabit(userId: string, habit: { title: string; category: string; frequency: 'daily' | 'weekday' | 'weekly'; color?: string; icon?: string }): Promise<void> {
-    await supabase.from('user_memory').insert({
+    await fromTable('user_memory').insert({
       user_id: userId,
       key: `habit_${Date.now()}`,
       value: JSON.stringify({
@@ -131,7 +132,7 @@ class HabitStreakService {
   }
 
   async completeHabit(userId: string, habitId: string): Promise<void> {
-    const { data } = await supabase.from('user_memory').select('*').eq('id', habitId).single();
+    const { data } = await fromTable('user_memory').select('*').eq('id', habitId).single();
     if (!data) return;
 
     const val = typeof data.value === 'string' ? JSON.parse(data.value) : data.value as any;
@@ -149,11 +150,11 @@ class HabitStreakService {
     val.lastCompletedDate = today;
     val.lastCompletedAt = new Date().toISOString();
 
-    await supabase.from('user_memory').update({ value: JSON.stringify(val) as any }).eq('id', habitId);
+    await fromTable('user_memory').update({ value: JSON.stringify(val) as any }).eq('id', habitId);
   }
 
   async deleteHabit(userId: string, habitId: string): Promise<void> {
-    await supabase.from('user_memory').delete().eq('user_id', userId).eq('id', habitId);
+    await fromTable('user_memory').delete().eq('user_id', userId).eq('id', habitId);
   }
 }
 

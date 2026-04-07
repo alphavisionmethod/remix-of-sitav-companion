@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export type ProviderCategory =
   | "identity"
@@ -169,7 +170,7 @@ export async function persistProviderActivation(providerId: string, state: Activ
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 
-  await supabase.from("audit_logs").insert({
+  await fromTable("audit_logs").insert({
     user_id: user.id,
     action: "provider_activation_change",
     category: "provider",

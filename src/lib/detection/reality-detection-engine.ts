@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 // ── Detection Types ──
 
@@ -253,7 +254,7 @@ export function detectPersistenceGaps(): PersistenceGapDetection[] {
 
 export async function detectContractGaps(): Promise<ContractGapDetection[]> {
   try {
-    const { data, error } = await supabase.from("reality_classifications").select("*");
+    const { data, error } = await fromTable("reality_classifications").select("*");
     if (error || !data) return [];
     const now = new Date().toISOString();
     return data
@@ -275,7 +276,7 @@ export async function detectContractGaps(): Promise<ContractGapDetection[]> {
 
 export async function detectRuntimeEvidenceGaps(): Promise<RuntimeEvidenceGap[]> {
   try {
-    const { data, error } = await supabase.from("mock_replacements").select("*");
+    const { data, error } = await fromTable("mock_replacements").select("*");
     if (error || !data) return [];
     const now = new Date().toISOString();
     return data

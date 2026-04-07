@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import {
   Brain, Shield, Zap, Globe, Eye, Lock, Sparkles, Check, ChevronRight,
@@ -520,11 +521,11 @@ export function OSSetupExperience() {
         { user_id: user.id, key: "recover_first", value: JSON.stringify(state.recoverFirst), category: "preference" },
       ].filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
 
-      await supabase.from("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
-      await supabase.from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
+      await fromTable("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
+      await fromTable("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
 
       const snapshot = engine.toSnapshot();
-      await supabase.from("setup_sessions").upsert({
+      await fromTable("setup_sessions").upsert({
         id: snapshot.id,
         user_id: snapshot.userId,
         device_id: snapshot.deviceId,
@@ -564,7 +565,7 @@ export function OSSetupExperience() {
           queuedActions: 0,
         });
 
-        await supabase.from("device_statuses").upsert({
+        await fromTable("device_statuses").upsert({
           device_id: deviceId,
           user_id: user.id,
           device_name: deviceName,

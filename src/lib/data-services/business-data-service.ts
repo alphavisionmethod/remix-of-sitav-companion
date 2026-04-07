@@ -1,5 +1,6 @@
 // SITA OS — Business Data Service (Mode-Aware)
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
 
@@ -25,7 +26,7 @@ export async function fetchCustomers(mode: RealityModeKey = "real"): Promise<Mod
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_CUSTOMERS, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: DEMO_CUSTOMERS, emptyDefault: [] });
-  const { data, error } = await supabase.from("customers").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
+  const { data, error } = await fromTable("customers").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? data.map((c: any): MockCustomer => ({
     id: c.id, name: c.name, company: c.company, email: c.email, phone: c.phone,
     status: c.status, relationship_type: c.relationship_type, health_score: c.health_score,

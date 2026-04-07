@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export interface OperatorTasteRow {
   id: string;
@@ -28,7 +29,7 @@ async function uid(): Promise<string | null> {
 export async function fetchTasteProfiles(): Promise<OperatorTasteRow[]> {
   const userId = await uid();
   if (!userId) return [];
-  const { data, error } = await supabase.from(TABLE)
+  const { data, error } = await fromTable(TABLE)
     .select("*").eq("user_id", userId).order("times_applied", { ascending: false });
   if (error) { console.error("[taste] fetch failed:", error); return []; }
   return data ?? [];
@@ -42,7 +43,7 @@ export async function upsertTasteProfile(
 ): Promise<OperatorTasteRow | null> {
   const userId = await uid();
   if (!userId) return null;
-  const { data, error } = await supabase.from(TABLE)
+  const { data, error } = await fromTable(TABLE)
     .upsert(
       {
         user_id: userId,
@@ -62,11 +63,11 @@ export async function recordTasteApplication(key: string): Promise<boolean> {
   const userId = await uid();
   if (!userId) return false;
 
-  const { data: current } = await supabase.from(TABLE)
+  const { data: current } = await fromTable(TABLE)
     .select("times_applied").eq("user_id", userId).eq("preference_key", key).maybeSingle();
   if (!current) return false;
 
-  const { error } = await supabase.from(TABLE)
+  const { error } = await fromTable(TABLE)
     .update({
       times_applied: (current.times_applied || 0) + 1,
       last_applied_at: new Date().toISOString(),
@@ -79,7 +80,7 @@ export async function recordTasteApplication(key: string): Promise<boolean> {
 export async function deleteTasteProfile(key: string): Promise<boolean> {
   const userId = await uid();
   if (!userId) return false;
-  const { error } = await supabase.from(TABLE)
+  const { error } = await fromTable(TABLE)
     .delete().eq("user_id", userId).eq("preference_key", key);
   if (error) { console.error("[taste] delete failed:", error); return false; }
   return true;

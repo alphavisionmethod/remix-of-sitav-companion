@@ -19,6 +19,7 @@ import { createOSUnificationService } from "@/lib/services/os-unification";
 import { buildActiveSurface } from "@/lib/services/surface-detection";
 import { getOfflineQueueService } from "@/lib/services/offline-queue";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export interface OSRuntime {
   context: OSRuntimeContext;
@@ -121,7 +122,7 @@ export function OSRuntimeProvider({
     const offlineQueue = getOfflineQueueService();
     offlineQueue.setReplayHandler(async (mutation) => {
       try {
-        const table = supabase.from(mutation.table);
+        const table = fromTable(mutation.table);
         let result;
         switch (mutation.operation) {
           case "insert":

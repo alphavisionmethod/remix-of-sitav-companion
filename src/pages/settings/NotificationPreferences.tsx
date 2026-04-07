@@ -7,6 +7,7 @@ import { Bell, BellOff, Globe, Smartphone, AlertTriangle } from "lucide-react";
 import { usePushNotifications } from "@/hooks/use-push-notifications";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -30,7 +31,7 @@ export default function NotificationPreferences() {
     queryKey: ["notification-preferences", user?.id],
     queryFn: async () => {
       if (!user?.id) return [];
-      const { data } = await supabase.from("notification_preferences").select("*").eq("user_id", user.id);
+      const { data } = await fromTable("notification_preferences").select("*").eq("user_id", user.id);
       return data || [];
     },
     enabled: !!user?.id,
@@ -39,7 +40,7 @@ export default function NotificationPreferences() {
   const upsertPref = useMutation({
     mutationFn: async (pref: { category: string; channel_push: boolean; channel_in_app: boolean; urgency_minimum: string }) => {
       if (!user?.id) return;
-      const { error } = await supabase.from("notification_preferences").upsert({
+      const { error } = await fromTable("notification_preferences").upsert({
         user_id: user.id,
         category: pref.category,
         channel_push: pref.channel_push,

@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export interface LoadedScenario {
   id: string;
@@ -82,10 +83,10 @@ export async function loadScenario(scenarioKey: string): Promise<LoadedScenario 
 
   // Load entities, relationships, artifacts, launch profile in parallel
   const [entitiesRes, relsRes, artifactsRes, launchRes] = await Promise.all([
-    supabase.from("demo_scenario_entities").select("*").eq("scenario_id", scenario.id),
-    supabase.from("demo_scenario_relationships").select("*").eq("scenario_id", scenario.id),
-    supabase.from("demo_scenario_artifacts").select("*").eq("scenario_id", scenario.id),
-    supabase.from("scenario_launch_profiles").select("*").eq("scenario_id", scenario.id).maybeSingle(),
+    fromTable("demo_scenario_entities").select("*").eq("scenario_id", scenario.id),
+    fromTable("demo_scenario_relationships").select("*").eq("scenario_id", scenario.id),
+    fromTable("demo_scenario_artifacts").select("*").eq("scenario_id", scenario.id),
+    fromTable("scenario_launch_profiles").select("*").eq("scenario_id", scenario.id).maybeSingle(),
   ]);
 
   const loaded: LoadedScenario = {

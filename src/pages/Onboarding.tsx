@@ -5,6 +5,7 @@ import { SitaButton, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard"
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import logo from "@/assets/logo.jpeg";
 import {
@@ -98,12 +99,12 @@ const Onboarding = () => {
         { user_id: user.id, key: "first_win", value: JSON.stringify(state.firstWin), category: "preference" },
       ].filter(m => m.value && m.value !== '""' && m.value !== "[]");
 
-      const { error } = await supabase.from("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
+      const { error } = await fromTable("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
       if (error) {
         console.error("Failed to persist onboarding data:", error);
       } else {
         // Mark onboarding as completed in profile
-        await supabase.from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
+        await fromTable("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
         toast.success("Your preferences have been saved!");
       }
     } catch (e) {

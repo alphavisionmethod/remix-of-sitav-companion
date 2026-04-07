@@ -6,6 +6,7 @@
 
 import type { RealityModeKey } from "./reality-mode-registry";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 export type ResolutionSource =
   | "tenant"
@@ -122,7 +123,7 @@ export async function persistResolution(resolution: ModeResolution): Promise<voi
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 
-  await supabase.from("reality_mode_resolutions").insert({
+  await fromTable("reality_mode_resolutions").insert({
     user_id: user.id,
     resolved_mode: resolution.mode,
     resolution_source: resolution.source,

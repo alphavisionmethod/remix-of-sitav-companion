@@ -4,6 +4,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -16,7 +17,7 @@ export default function AR03SelfHealingBoard() {
   const { data: rules = [] } = useQuery({
     queryKey: ["self-healing-rules"],
     queryFn: async () => {
-      const { data } = await supabase.from("ai_self_healing_rules").select("*").order("created_at", { ascending: false });
+      const { data } = await fromTable("ai_self_healing_rules").select("*").order("created_at", { ascending: false });
       return data || [];
     },
   });
@@ -24,7 +25,7 @@ export default function AR03SelfHealingBoard() {
   const { data: healingJobs = [] } = useQuery({
     queryKey: ["self-healing-jobs"],
     queryFn: async () => {
-      const { data } = await supabase.from("scheduled_jobs").select("*").eq("job_class", "self_heal").order("created_at", { ascending: false });
+      const { data } = await fromTable("scheduled_jobs").select("*").eq("job_class", "self_heal").order("created_at", { ascending: false });
       return data || [];
     },
   });
@@ -34,7 +35,7 @@ export default function AR03SelfHealingBoard() {
     queryFn: async () => {
       const jobIds = healingJobs.map((j: any) => j.id);
       if (jobIds.length === 0) return [];
-      const { data } = await supabase.from("job_executions").select("*").in("job_id", jobIds).order("started_at", { ascending: false }).limit(50);
+      const { data } = await fromTable("job_executions").select("*").in("job_id", jobIds).order("started_at", { ascending: false }).limit(50);
       return data || [];
     },
     enabled: healingJobs.length > 0,

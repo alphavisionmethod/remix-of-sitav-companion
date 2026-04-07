@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -42,13 +43,13 @@ export function useShellIndicators(): ShellIndicators {
 
     const fetchIndicators = async () => {
       const [approvals, incidents, notifications, workflows] = await Promise.all([
-        supabase.from("approval_queue").select("id", { count: "exact", head: true })
+        fromTable("approval_queue").select("id", { count: "exact", head: true })
           .eq("user_id", user.id).eq("status", "pending"),
-        supabase.from("incidents").select("id", { count: "exact", head: true })
+        fromTable("incidents").select("id", { count: "exact", head: true })
           .eq("user_id", user.id).in("status", ["open", "acknowledged"]),
-        supabase.from("notifications").select("id", { count: "exact", head: true })
+        fromTable("notifications").select("id", { count: "exact", head: true })
           .eq("user_id", user.id).eq("read", false),
-        supabase.from("workflow_runs").select("id", { count: "exact", head: true })
+        fromTable("workflow_runs").select("id", { count: "exact", head: true })
           .eq("user_id", user.id).eq("status", "running"),
       ]);
 

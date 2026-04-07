@@ -21,6 +21,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 // ── Types ────────────────────────────────────────────────────────
 
@@ -132,7 +133,7 @@ const RevenueImpactDashboard = () => {
     queryKey: ["revenue-impact", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data: invoices } = await supabase.from("invoices").select("id, total_cents, status, paid_at, created_at").eq("user_id", user!.id);
+      const { data: invoices } = await fromTable("invoices").select("id, total_cents, status, paid_at, created_at").eq("user_id", user!.id);
       if (!invoices?.length) return null;
       const paid = invoices.filter((i: any) => i.status === "paid");
       const recovered = paid.reduce((s: number, i: any) => s + (i.total_cents || 0), 0) / 100;

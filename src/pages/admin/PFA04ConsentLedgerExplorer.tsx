@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BookOpen } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -12,17 +13,17 @@ export default function PFA04ConsentLedgerExplorer() {
   const { isDemoMode } = useDataMode();
   const { data: consents = [] } = useQuery({
     queryKey: ["consent-ledger"],
-    queryFn: async () => { const { data } = await supabase.from("consent_ledger").select("*, provider_families(name), provider_capabilities(display_name)").order("created_at", { ascending: false }).limit(100); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("consent_ledger").select("*, provider_families(name), provider_capabilities(display_name)").order("created_at", { ascending: false }).limit(100); return data || []; },
   });
 
   const { data: upgrades = [] } = useQuery({
     queryKey: ["consent-upgrades"],
-    queryFn: async () => { const { data } = await supabase.from("consent_upgrades").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("consent_upgrades").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
   });
 
   const { data: revocations = [] } = useQuery({
     queryKey: ["consent-revocations"],
-    queryFn: async () => { const { data } = await supabase.from("consent_revocations").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
+    queryFn: async () => { const { data } = await fromTable("consent_revocations").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
   });
 
   const statusColors: Record<string, string> = { active: "bg-green-500/20 text-green-400", revoked: "bg-red-500/20 text-red-400", expired: "bg-yellow-500/20 text-yellow-400" };

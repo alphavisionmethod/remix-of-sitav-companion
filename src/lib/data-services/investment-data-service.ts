@@ -1,5 +1,6 @@
 // SITA OS — Investment Data Service (Mode-Aware)
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { Position, CapitalBucket, Thesis } from "@/lib/domain-engines/investment-office";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
@@ -27,7 +28,7 @@ export async function fetchCapitalBuckets(mode: RealityModeKey = "real"): Promis
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_CAPITAL_BUCKETS, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: DEMO_CAPITAL_BUCKETS, emptyDefault: [] });
-  const { data, error } = await supabase.from("capital_purpose_buckets").select("*").eq("user_id", user.id);
+  const { data, error } = await fromTable("capital_purpose_buckets").select("*").eq("user_id", user.id);
   const mapped = (!error && data && data.length > 0) ? data.map((b: any): CapitalBucket => ({
     id: b.id, name: b.label, type: "personal-cash", balance: b.current_allocation_pct ?? 0,
     targetBalance: b.target_allocation_pct ?? undefined, currency: "USD", entityOwner: "Personal", ringfenced: false,
@@ -39,7 +40,7 @@ export async function fetchPositions(mode: RealityModeKey = "real"): Promise<Mod
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_POSITIONS, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: DEMO_POSITIONS, emptyDefault: [] });
-  const { data, error } = await supabase.from("asset_master").select("*, asset_market_snapshots(price, daily_change)").limit(20);
+  const { data, error } = await fromTable("asset_master").select("*, asset_market_snapshots(price, daily_change)").limit(20);
   const mapped = (!error && data && data.length > 0) ? data.map((a: any): Position => ({
     id: a.id, symbol: a.symbol, name: a.display_name, assetClass: a.asset_class as any, quantity: 0,
     avgCostBasis: 0, currentPrice: a.asset_market_snapshots?.[0]?.price ?? 0,

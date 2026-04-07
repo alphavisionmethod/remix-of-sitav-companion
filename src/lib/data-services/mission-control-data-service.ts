@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import {
   mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory,
   type AdvisorSummary, type AdvisorRecommendation, type MultiAdvisorSynthesis,
@@ -11,7 +12,7 @@ export async function fetchAdvisorProfiles(): Promise<AdvisorSummary[]> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return mockAdvisors;
 
-  const { data, error } = await supabase.from("advisor_registry").select("*").eq("user_id", user.id).eq("active", true);
+  const { data, error } = await fromTable("advisor_registry").select("*").eq("user_id", user.id).eq("active", true);
   if (error || !data || data.length === 0) return mockAdvisors;
 
   return data.map((a: any) => ({
@@ -27,7 +28,7 @@ export async function fetchRecommendations(): Promise<AdvisorRecommendation[]> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return mockRecommendations;
 
-  const { data, error } = await supabase.from("advisor_responses").select("*, advisor_requests(intent, context)").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
+  const { data, error } = await fromTable("advisor_responses").select("*, advisor_requests(intent, context)").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
   if (error || !data || data.length === 0) return mockRecommendations;
 
   return data.map((r: any) => ({
@@ -45,7 +46,7 @@ export async function fetchSynthesis(): Promise<MultiAdvisorSynthesis[]> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return mockSynthesis;
 
-  const { data, error } = await supabase.from("chief_synthesis_records").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(10);
+  const { data, error } = await fromTable("chief_synthesis_records").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(10);
   if (error || !data || data.length === 0) return mockSynthesis;
 
   return data.map((s: any): MultiAdvisorSynthesis => ({
@@ -61,7 +62,7 @@ export async function fetchApprovals(): Promise<ApprovalRequest[]> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return mockApprovals;
 
-  const { data, error } = await supabase.from("approval_queue").select("*").eq("user_id", user.id).eq("status", "pending").order("created_at", { ascending: false });
+  const { data, error } = await fromTable("approval_queue").select("*").eq("user_id", user.id).eq("status", "pending").order("created_at", { ascending: false });
   if (error || !data || data.length === 0) return mockApprovals;
 
   return data.map((a: any) => ({
@@ -77,7 +78,7 @@ export async function fetchProofHistory(): Promise<ProofHistoryItem[]> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return mockProofHistory;
 
-  const { data, error } = await supabase.from("platform_proof_chains").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
+  const { data, error } = await fromTable("platform_proof_chains").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
   if (error || !data || data.length === 0) return mockProofHistory;
 
   return data.map((p: any) => ({

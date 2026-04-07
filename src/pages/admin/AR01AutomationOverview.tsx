@@ -4,6 +4,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Activity, Zap, AlertTriangle, Shield, Clock, CheckCircle, XCircle, Pause } from "lucide-react";
@@ -15,7 +16,7 @@ function useScheduledJobs() {
   return useQuery({
     queryKey: ["scheduled-jobs"],
     queryFn: async () => {
-      const { data } = await supabase.from("scheduled_jobs").select("*").order("created_at", { ascending: false });
+      const { data } = await fromTable("scheduled_jobs").select("*").order("created_at", { ascending: false });
       return data || [];
     },
   });
@@ -25,7 +26,7 @@ function useRecentExecutions() {
   return useQuery({
     queryKey: ["recent-executions"],
     queryFn: async () => {
-      const { data } = await supabase.from("job_executions").select("*").order("started_at", { ascending: false }).limit(100);
+      const { data } = await fromTable("job_executions").select("*").order("started_at", { ascending: false }).limit(100);
       return data || [];
     },
   });
@@ -35,7 +36,7 @@ function useKillSwitches() {
   return useQuery({
     queryKey: ["kill-switches"],
     queryFn: async () => {
-      const { data } = await supabase.from("automation_kill_switches").select("*");
+      const { data } = await fromTable("automation_kill_switches").select("*");
       return data || [];
     },
   });

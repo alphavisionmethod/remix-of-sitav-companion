@@ -14,6 +14,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 const AppReceiptsPage = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const AppReceiptsPage = () => {
     queryKey: ["app-receipts", user?.id, appId],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      let query = supabase.from("proof_records").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
+      let query = fromTable("proof_records").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
       if (appId) query = query.eq("metadata->>appId", appId);
       const { data } = await query;
       if (!data?.length) return null;
