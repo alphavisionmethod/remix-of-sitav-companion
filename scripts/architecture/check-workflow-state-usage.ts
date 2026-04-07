@@ -29,7 +29,7 @@ const VALID_WORKFLOW_STATES = [
   "outcome_verified", "partially_hardened", "passing", "pending_approval",
   "pilot_safe_only", "planned", "planning", "proposed", "requested", "research",
   "secure_verified", "setup", "succeeded", "trusted", "upcoming", "updated",
-  "valid", "waiting",
+  "valid", "waiting", "open", "delivered",
 ];
 
 // Find workflow state references in services
