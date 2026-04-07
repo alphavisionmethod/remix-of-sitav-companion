@@ -2,6 +2,15 @@
 # Multi-stage build: Node build → Nginx serve
 FROM node:20-alpine AS builder
 WORKDIR /app
+
+# Build-time args for Vite env vars (defaults for CI)
+ARG VITE_SUPABASE_URL=http://localhost:8000
+ARG VITE_SUPABASE_PUBLISHABLE_KEY=dummy-key
+ARG VITE_SUPABASE_PROJECT_ID=ci-project
+ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+ENV VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY
+ENV VITE_SUPABASE_PROJECT_ID=$VITE_SUPABASE_PROJECT_ID
+
 COPY package.json bun.lock* package-lock.json* ./
 RUN npm ci --ignore-scripts 2>/dev/null || npm install
 COPY . .

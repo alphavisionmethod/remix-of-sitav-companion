@@ -266,7 +266,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker image
-        run: docker build -t sita-os:ci .
+        run: |
+          docker build \
+            --build-arg VITE_SUPABASE_URL=http://localhost:8000 \
+            --build-arg VITE_SUPABASE_PUBLISHABLE_KEY=dummy-key-for-ci \
+            --build-arg VITE_SUPABASE_PROJECT_ID=ci-project \
+            -t sita-os:ci .
       - name: Validate health endpoint
         run: |
           docker run --rm sita-os:ci cat /usr/share/nginx/html/health.json | python3 -c "

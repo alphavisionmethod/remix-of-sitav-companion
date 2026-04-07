@@ -15,7 +15,7 @@ function healthJsonPlugin() {
       try { gitHash = execSync("git rev-parse --short HEAD").toString().trim(); } catch {}
       const health = {
         service: "sita-os",
-        status: "ok",
+        status: "healthy",
         version: gitHash,
         buildTime: new Date().toISOString(),
       };
