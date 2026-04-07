@@ -11,7 +11,7 @@ import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const PERMISSION_DOMAINS = [
+const DEMO_PERMISSION_DOMAINS = [
   { id: "files", label: "Files & Folders", icon: FolderOpen, description: "Access to read/write files" },
   { id: "camera", label: "Camera", icon: Camera, description: "Access to camera hardware" },
   { id: "microphone", label: "Microphone", icon: Mic, description: "Access to microphone" },

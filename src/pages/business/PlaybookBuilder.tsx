@@ -105,7 +105,7 @@ const DEMO_CONDITION_FIELDS = [
 
 import { OPERATORS, DELAY_OPTIONS } from "@/lib/constants/ui-config";
 
-const CATEGORIES: { value: PlaybookDraft["category"]; label: string; color: string }[] = [
+const DEMO_CATEGORIES: { value: PlaybookDraft["category"]; label: string; color: string }[] = [
   { value: "recovery", label: "Recovery", color: "bg-trust-safe/10 text-trust-safe" },
   { value: "growth", label: "Growth", color: "bg-accent/10 text-accent" },
   { value: "retention", label: "Retention", color: "bg-primary/10 text-primary" },

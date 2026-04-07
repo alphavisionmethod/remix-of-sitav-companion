@@ -47,7 +47,7 @@ const COUNCIL_ICONS: Record<string, typeof Brain> = {
   "governance": Shield,
 };
 
-const AUTONOMY_LEVELS = ["L0-observe", "L1-diagnose", "L2-recommend", "L3-draft", "L4-simulate", "L5-approval-ready", "L6-constrained-action"];
+const DEMO_AUTONOMY_LEVELS = ["L0-observe", "L1-diagnose", "L2-recommend", "L3-draft", "L4-simulate", "L5-approval-ready", "L6-constrained-action"];
 
 function autonomyPct(level: string): number {
   const idx = AUTONOMY_LEVELS.indexOf(level);

@@ -20,7 +20,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Category Config ────────────────────────────────────────────
-const CATEGORIES = [
+const DEMO_CATEGORIES = [
   { id: "all", label: "All", icon: Sparkles },
   { id: "revenue", label: "Revenue", icon: DollarSign },
   { id: "money", label: "Money", icon: BarChart3 },

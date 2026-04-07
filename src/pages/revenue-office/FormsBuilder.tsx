@@ -17,7 +17,7 @@ const DEMO_FORMS = [
   { id: "f5", name: "Partnership Application", status: "draft", submissions: 0, convRate: "—", lastSubmission: "—", fields: 15, tags: ["partnership", "b2b"] },
 ];
 
-const FIELD_TYPES = [
+const DEMO_FIELD_TYPES = [
   { type: "text", label: "Short Text", icon: Type },
   { type: "email", label: "Email", icon: Mail },
   { type: "phone", label: "Phone", icon: Phone },

@@ -12,7 +12,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const CATEGORIES = [
+const DEMO_CATEGORIES = [
   { key: "incident", label: "Incidents & Alerts", description: "Critical system issues and security alerts" },
   { key: "approval", label: "Approvals", description: "Pending approval requests and decisions" },
   { key: "ai_activity", label: "AI Activity", description: "Agent completions, learning events, and recommendations" },

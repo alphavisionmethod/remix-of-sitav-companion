@@ -13,7 +13,7 @@ import { Shield, Plus, Edit, Trash2, ToggleLeft, ToggleRight, ChevronRight, Play
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const CATEGORIES = ["general", "financial", "business", "household", "advisor", "device"];
+const DEMO_CATEGORIES = ["general", "financial", "business", "household", "advisor", "device"];
 
 const PolicyEditor = () => {
   const { isDemoMode } = useDataMode();

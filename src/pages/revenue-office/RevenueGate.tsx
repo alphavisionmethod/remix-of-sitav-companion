@@ -24,7 +24,7 @@ const DEMO_WHAT_CHANGED = [
   { text: "Invoice #1042 overdue by 7 days", time: "1d ago", type: "alert" },
 ];
 
-const QUICK_ACTIONS = [
+const DEMO_QUICK_ACTIONS = [
   { label: "Growth Boardroom", path: "/revenue-office/boardroom", icon: BarChart3 },
   { label: "Pipeline", path: "/revenue-office/pipeline", icon: Target },
   { label: "Campaigns", path: "/revenue-office/campaigns", icon: Zap },

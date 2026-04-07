@@ -89,11 +89,7 @@ function generateTrend(granularity: Granularity): TrendPoint[] {
 
 const RECOVERED_COLOR = "hsl(var(--trust-safe))";
 const GENERATED_COLOR = "hsl(var(--accent))";
-const PIE_COLORS = [
-  "hsl(var(--trust-safe))", "hsl(var(--accent))",
-  "hsl(var(--primary))", "hsl(var(--destructive))",
-  "hsl(var(--urgency-high))", "hsl(var(--muted-foreground))",
-];
+import { PIE_COLORS } from "@/lib/constants/ui-config";
 
 const categoryColors: Record<string, string> = {
   recovery: "bg-trust-safe/10 text-trust-safe",

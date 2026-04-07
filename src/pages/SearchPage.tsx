@@ -101,12 +101,7 @@ const RESULT_ACTIONS: Record<string, { label: string; icon: React.ElementType; a
   ],
 };
 
-const DATE_RANGES = [
-  { key: "all", label: "All time" },
-  { key: "today", label: "Today" },
-  { key: "week", label: "This week" },
-  { key: "month", label: "This month" },
-];
+import { DATE_RANGES } from "@/lib/constants/ui-config";
 
 const SearchPage = () => {
   const { isDemoMode } = useDataMode();
