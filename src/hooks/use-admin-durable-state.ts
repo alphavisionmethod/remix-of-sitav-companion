@@ -145,7 +145,7 @@ export function usePolicyVersioning() {
   const updatePolicyWithVersion = useMutation({
     mutationFn: async ({ policyId, changes, versionNumber }: { policyId: string; changes: Record<string, unknown>; versionNumber: number }) => {
       // Update the policy
-      const { error } = await fromTable("policies").update(changes).eq("id", policyId);
+      const { error } = await fromTable("policies").update(changes as import("@/integrations/supabase/types").Database["public"]["Tables"]["policies"]["Update"]).eq("id", policyId);
       if (error) throw error;
 
       // Create version record
