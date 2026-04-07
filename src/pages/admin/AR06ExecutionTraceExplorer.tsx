@@ -69,9 +69,11 @@ export default function AR06ExecutionTraceExplorer() {
         </div>
 
         <div className="md:col-span-2">
-          {selected ? (
+          {selected ? (() => {
+            const selJob = getRelation(selected, "scheduled_jobs", parseScheduledJobRef);
+            return (
             <SitaCard>
-              <SitaCardTitle>Execution Trace — {((selected as any).scheduled_jobs as any)?.name || selected.job_id.slice(0, 8)}</SitaCardTitle>
+              <SitaCardTitle>Execution Trace — {selJob.name || String(selected.job_id ?? "").slice(0, 8)}</SitaCardTitle>
               <div className="mt-4 space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   {[
@@ -84,9 +86,9 @@ export default function AR06ExecutionTraceExplorer() {
                     { label: "Verification", value: selected.verification_result || "—" },
                     { label: "Retryable", value: selected.retryable ? "Yes" : "No" },
                     { label: "Escalated", value: selected.escalated ? "Yes" : "No" },
-                    { label: "Domain", value: ((selected as any).scheduled_jobs as any)?.domain || "—" },
-                    { label: "Job Class", value: ((selected as any).scheduled_jobs as any)?.job_class || "—" },
-                    { label: "Target", value: ((selected as any).scheduled_jobs as any)?.target_function || "—" },
+                    { label: "Domain", value: selJob.domain || "—" },
+                    { label: "Job Class", value: selJob.job_class || "—" },
+                    { label: "Target", value: selJob.target_function || "—" },
                   ].map((f) => (
                     <div key={f.label} className="rounded-lg bg-secondary/10 px-3 py-2">
                       <p className="text-[9px] text-muted-foreground">{f.label}</p>
