@@ -87,7 +87,7 @@ export function useKernelQuery<T = Record<string, unknown>>(
         return [];
       }
 
-      const raw = (data || []) as Record<string, unknown>[];
+      const raw = (data || []) as unknown as Record<string, unknown>[];
 
       // Emit read-receipt for audit
       kernel.eventBus.publish("kernel.read.v1", {
