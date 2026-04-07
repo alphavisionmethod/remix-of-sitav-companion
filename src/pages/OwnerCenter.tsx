@@ -340,7 +340,7 @@ const OwnerCenter = () => {
         <KPITile label="Open Incidents" value={openIncidents} icon={AlertTriangle} sub={openIncidents > 0 ? `${incidents.filter((i: any) => i.severity === "SEV-1").length} critical` : "All clear"} />
         <KPITile label="Fleet Devices" value={`${fltD?.kpis?.online || 0}/${fltD?.kpis?.total || 0}`} sub="Online" icon={Server} />
         <KPITile label="Active Policies" value={polD?.summary?.active || 0} icon={Shield} />
-        <KPITile label="Anomalies" value={(intelligenceData as any)?.anomalies?.total_anomalies || 0} icon={Zap} sub={`${(intelligenceData as any)?.anomalies?.severity_summary?.critical || 0} critical`} />
+        <KPITile label="Anomalies" value={intelligenceData?.anomalies?.total_anomalies || 0} icon={Zap} sub={`${intelligenceData?.anomalies?.severity_summary?.critical || 0} critical`} />
       </div>
 
       {/* Tabs */}
