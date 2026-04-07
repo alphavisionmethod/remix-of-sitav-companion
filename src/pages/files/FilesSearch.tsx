@@ -83,6 +83,25 @@ const FilesSearch = () => {
           />
         </div>
         <SitaButton variant="primary" onClick={() => handleSearch()}><Search className="h-4 w-4" /> Search</SitaButton>
+        <SitaButton variant="ghost" onClick={async () => {
+          if (!query.trim()) return;
+          setAiSearching(true);
+          try {
+            const result = await aiInsight.mutateAsync({
+              intent: "file_search",
+              domain: "general",
+              context: { query, filter },
+            });
+            setAiSearchResult(result?.recommendation || result?.response || "No AI results found.");
+            toast.success("AI search complete");
+          } catch {
+            toast.error("AI search unavailable");
+          } finally {
+            setAiSearching(false);
+          }
+        }}>
+          {aiSearching ? <span className="animate-pulse">Searching…</span> : <><Brain className="h-4 w-4" /> AI Search</>}
+        </SitaButton>
       </div>
 
       <SitaTabs
