@@ -32,6 +32,8 @@ import { CapabilityRouter } from "./core-services/capability-router";
 import { ApprovalService } from "./core-services/approval-service";
 import { RolePermissionEngine } from "./core-services/role-permission-engine";
 import { FraudSentinelService } from "./core-services/fraud-sentinel";
+import { GovernanceSimulatorService } from "./core-services/governance-simulator";
+import { SearchFabricService } from "./core-services/search-fabric";
 import { SupportDiagnosticsService } from "./core-services/support-diagnostics";
 import { AnalyticsService } from "./core-services/analytics-service";
 import { ReceiptVerificationService } from "./services/verification-engine/receipt-verification.service";
