@@ -83,7 +83,7 @@ const DEMO_TOP_INTERVENTIONS = [
 
 // ── Spillover graph (simplified visual) ──────────────────────
 
-const DOMAINS = [
+const DEMO_DOMAINS = [
   { id: "business", label: "Business", color: "hsl(var(--primary))", x: 50, y: 15 },
   { id: "money", label: "Money", color: "hsl(var(--sita-gold))", x: 85, y: 55 },
   { id: "concierge", label: "Concierge", color: "hsl(var(--trust-safe))", x: 15, y: 55 },
@@ -95,8 +95,8 @@ const SpilloverGraph = () => (
     <svg viewBox="0 0 100 100" className="w-full h-full">
       {/* Connection lines */}
       {DEMO_ACTIVE_SPILLOVERS.map((s, i) => {
-        const from = DOMAINS.find(d => d.id === s.from);
-        const to = DOMAINS.find(d => d.id === s.to);
+        const from = DEMO_DOMAINS.find(d => d.id === s.from);
+        const to = DEMO_DOMAINS.find(d => d.id === s.to);
         if (!from || !to) return null;
         const opacity = s.impact === "high" ? 0.6 : s.impact === "medium" ? 0.35 : 0.15;
         const width = s.impact === "high" ? 1.5 : s.impact === "medium" ? 1 : 0.5;
@@ -113,7 +113,7 @@ const SpilloverGraph = () => (
       })}
     </svg>
     {/* Domain nodes */}
-    {DOMAINS.map(d => (
+    {DEMO_DOMAINS.map(d => (
       <div
         key={d.id}
         className="absolute flex flex-col items-center gap-1"
