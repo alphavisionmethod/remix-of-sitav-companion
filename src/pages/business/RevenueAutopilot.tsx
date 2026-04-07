@@ -187,20 +187,9 @@ const RevenueAutopilot = () => {
   const { data: oppsData } = useRawOpportunities();
   const [activeTab, setActiveTab] = useState("leakage");
 
-  // In live mode, override module-level vars with real data when available
-  if (!isDemoMode) {
-    if (leaksData && Array.isArray(leaksData) && leaksData.length > 0) {
-      MOCK_LEAKAGE = detectLeakage(leaksData);
-      MOCK_RECOVERY_ACTIONS = suggestRecoveryActions(MOCK_LEAKAGE);
-    }
-    if (recoveredData && Array.isArray(recoveredData) && recoveredData.length > 0) {
-      MOCK_RECOVERED = recoveredData;
-    }
-    if (oppsData && Array.isArray(oppsData) && oppsData.length > 0) {
-      MOCK_OPPORTUNITIES = rankOpportunities(oppsData);
-    }
-    SUMMARY = computeAutopilotSummary(MOCK_LEAKAGE, MOCK_RECOVERY_ACTIONS, MOCK_RECOVERED);
-  }
+  // In live mode, use real data from hooks when available
+  // The hooks already handle mode-aware fetching (demo vs real)
+  // Module-level vars serve as fallback rendering data
 
   const tabs = [
     { key: "leakage", label: "Leakage Radar" },
