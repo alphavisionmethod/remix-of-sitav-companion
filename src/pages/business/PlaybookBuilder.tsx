@@ -103,13 +103,7 @@ const CONDITION_FIELDS = [
   { value: "customer.last_contact_days", label: "Days Since Contact" },
 ];
 
-const OPERATORS = [
-  { value: "gt", label: ">" }, { value: "lt", label: "<" },
-  { value: "eq", label: "=" }, { value: "not_eq", label: "≠" },
-  { value: "contains", label: "contains" }, { value: "exists", label: "exists" },
-];
-
-const DELAY_OPTIONS = ["1 hour", "4 hours", "1 day", "2 days", "3 days", "1 week", "2 weeks"];
+import { OPERATORS, DELAY_OPTIONS } from "@/lib/constants/ui-config";
 
 const CATEGORIES: { value: PlaybookDraft["category"]; label: string; color: string }[] = [
   { value: "recovery", label: "Recovery", color: "bg-trust-safe/10 text-trust-safe" },
