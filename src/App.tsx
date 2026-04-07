@@ -1424,6 +1424,11 @@ const App = () => (
                      <Route path="/admin/security/sensitive-assets" element={<SEC03SensitiveAssets />} />
                      <Route path="/admin/security/edge-functions" element={<SEC04EdgeFunctionAudit />} />
                      <Route path="/admin/security/claim-safety" element={<SEC05ClaimSafety />} />
+                     <Route path="/admin/security/incident-recovery" element={<SEC06IncidentRecovery />} />
+
+                     {/* Frontend Quality */}
+                     <Route path="/admin/frontend/quality-matrix" element={<FE01QualityMatrix />} />
+                     <Route path="/admin/frontend/design-governance" element={<FE02DesignGovernance />} />
 
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
