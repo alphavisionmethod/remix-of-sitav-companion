@@ -1,65 +1,28 @@
 
 
-# Fix Section 3: Rename 21 Non-DEMO Uppercase Arrays in 16 Page Files
+# Fix Section 11: Wire 2 Remaining Orphaned Database Tables
 
-## Investigation Summary
+## Investigation Results
 
-- **151 total files** have `const UPPERCASE = [...]` arrays in `src/pages/`
-- **140 files** (93%) already use the `DEMO_` prefix correctly
-- **21 array declarations** across **16 files** lack the `DEMO_` prefix
+Of the 24 reported orphaned tables, **22 are already wired** — they use `queryTable("table_name")` or `const TABLE = "table_name"` patterns where the table name is passed as a variable to `.from(table)`. The original audit grep missed these because it searched for literal `.from("table_name")` strings.
 
-## Key Distinction
+### Already wired (22 tables):
+- **Via data services** (20): `action_escalations`, `adaptive_interface_profiles`, `boundary_policies`, `cai_continuity_sessions`, `command_orchestrations`, `coordinated_assistant_sessions`, `digest_compilations`, `experience_signature_rules`, `handoff_contexts`, `human_obligations`, `intent_resolutions`, `memory_corrections`, `memory_governance_records`, `operating_modes`, `opportunity_signals`, `personal_operating_graph_edges`, `personal_operating_graph_nodes`, `priority_stacks`, `relationship_contexts`, `timing_intelligence_decisions`
+- **Via persistence file** (1): `intelligence_assets_library` — has full CRUD in `src/lib/persistence/intelligence-asset-persistence.ts`
+- **Via persistence adapters** (1): `ai_agent_tasks` — has full CRUD in `src/lib/services/database/persistence-adapters.ts`
 
-These 21 arrays are NOT mock entity data (fake users, fake invoices). They are **UI configuration constants** — colors, toolbar items, category lists, calendar names, navigation links. They would exist identically in production.
-
-However, for consistency with the SITA OS convention and to pass the inline-mock detector cleanly, the fix is to either:
-1. **Prefix with `DEMO_`** if the array contains data that would come from a DB/API in production
-2. **Move to a shared constants file** if truly static UI config
-
-## Classification & Action
-
-### Group A — True UI constants (no rename needed, move to shared file)
-These never change between demo/live mode. Move to `src/lib/constants/ui-config.ts`:
-
-| Array | File | Reason |
-|-------|------|--------|
-| `MONTH_NAMES`, `DAY_NAMES` | MonthGridCalendar.tsx | Calendar constants |
-| `ASSET_COLORS` | CapitalAllocationPage.tsx | Chart colors |
-| `PIE_COLORS` | RevenueImpactDashboard.tsx | Chart colors |
-| `SEVERITY_COLORS` | LifeSimulator.tsx | Status colors |
-| `TOOLBAR_GROUPS` | DocumentEditor.tsx | Editor UI |
-| `TOOLBAR_ACTIONS` | DocsWorkspace.tsx | Editor UI |
-| `OPERATORS` | PlaybookBuilder.tsx | Comparison operators |
-| `DELAY_OPTIONS` | PlaybookBuilder.tsx | Time options |
-| `DATE_RANGES` | SearchPage.tsx | Filter options |
-
-### Group B — Config arrays that represent system data (prefix with `DEMO_`)
-These represent data that in production would come from the database or a registry:
-
-| Array | File | Action |
-|-------|------|--------|
-| `CATEGORIES` | NotificationPreferences.tsx | → `DEMO_CATEGORIES` |
-| `CATEGORIES` | IntegrationConcierge.tsx | → `DEMO_CATEGORIES` |
-| `CATEGORIES` | PolicyEditor.tsx | → `DEMO_CATEGORIES` |
-| `QUICK_ACTIONS` | RevenueGate.tsx | → `DEMO_QUICK_ACTIONS` |
-| `DEFAULT_APP_SLOTS` | AppAssociationsPage.tsx | → `DEMO_APP_SLOTS` |
-| `FILE_TYPES` | AppAssociationsPage.tsx | → `DEMO_FILE_TYPES` |
-| `PERMISSION_DOMAINS` | AppPermissionsCenterPage.tsx | → `DEMO_PERMISSION_DOMAINS` |
-| `AUTONOMY_LEVELS` | AdvisorRegistry.tsx | → `DEMO_AUTONOMY_LEVELS` |
-| `TRIGGER_EVENTS` | PlaybookBuilder.tsx | → `DEMO_TRIGGER_EVENTS` |
-| `CONDITION_FIELDS` | PlaybookBuilder.tsx | → `DEMO_CONDITION_FIELDS` |
-| `FIELD_TYPES` | FormsBuilder.tsx | → `DEMO_FIELD_TYPES` |
+### Truly orphaned (2 tables):
+| Table | Domain | Where to wire |
+|-------|--------|---------------|
+| `financial_documents` | finance | `money-data-service.ts` |
+| `scenarios` | platform | `platform-ops-data-service.ts` |
 
 ## Implementation Steps
 
-1. **Create `src/lib/constants/ui-config.ts`** — move 9 pure UI constant arrays here (colors, toolbar items, month names, operators, delays, date ranges)
-2. **Rename 12 arrays** across 8 files to add `DEMO_` prefix, update all references within those files
-3. **Update imports** in the 5 files that moved constants to use the new shared file
-4. **Verify**: `npx tsc --noEmit` — 0 errors
-5. **Verify**: re-run grep — 0 non-DEMO uppercase arrays remain in pages
+1. Add `financialDocuments` CRUD export to `src/lib/data-services/money-data-service.ts`
+2. Add `scenarios` CRUD export to `src/lib/data-services/platform-ops-data-service.ts`
+3. Verify with grep that all 24 tables now have `.from()` or `queryTable()` references — 0 orphans remaining
 
 ## Files Changed
-- 1 new file: `src/lib/constants/ui-config.ts`
-- 13 page files modified (rename arrays + update imports)
-- Total: ~14 files
+- 2 existing files modified (add 1 CRUD export each)
 
