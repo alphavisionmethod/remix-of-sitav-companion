@@ -564,16 +564,14 @@ export function OSSetupExperience() {
         });
 
         await fromTable("device_statuses").upsert({
-          device_id: deviceId,
           user_id: user.id,
           device_name: deviceName,
           device_type: surfaceType === "mobile" || surfaceType === "capacitor" ? "mobile" : "desktop",
-          health: "healthy",
-          connectivity: "online",
-          last_heartbeat: new Date().toISOString(),
-          os_version: navigator.userAgent.slice(0, 60),
+          status: "active",
+          last_seen: new Date().toISOString(),
+          os: navigator.userAgent.slice(0, 60),
           metadata: { enrolled_via: "setup", surface: surfaceType },
-        }, { onConflict: "device_id" });
+        }, { onConflict: "user_id,device_name" });
       } catch (enrollErr) {
         console.warn("[OSSetup] Device enrollment skipped:", enrollErr);
       }
