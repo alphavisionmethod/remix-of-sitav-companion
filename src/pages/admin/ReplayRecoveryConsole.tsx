@@ -12,11 +12,14 @@ import { fetchPersistedEvents, getEventLineage, markEventReplayed, fetchActionLi
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useWorkflowRecovery, useCanonicalAction } from "@/contexts/SitaKernelContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
 export default function ReplayRecoveryConsole() {
   const { isDemoMode } = useDataMode();
+  const { createCheckpoint, recoverFromCheckpoint, deadLetterQueue, getCheckpoints } = useWorkflowRecovery();
+  const { execute: executeCanonicalAction, isExecuting: isCanonicalExecuting } = useCanonicalAction();
   const [replayScope, setReplayScope] = useState<string>("topic");
   const [scopeValue, setScopeValue] = useState("");
   const [dryRun, setDryRun] = useState(true);

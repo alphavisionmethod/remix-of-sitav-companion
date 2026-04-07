@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useWorkflowReplay, useTransitionValidator } from "@/contexts/SitaKernelContext";
 
 interface WorkflowRun {
   id: string;
@@ -92,6 +93,8 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function WorkflowReplayAudit() {
   const { isDemoMode } = useDataMode();
+  const { replay, replayEngine } = useWorkflowReplay();
+  const { guards, validate: validateTransition } = useTransitionValidator();
   const [tab, setTab] = useState("runs");
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState<string | null>("WF-RUN-001");

@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import { useSLOs } from "@/hooks/use-admin-data";
+import { useCloudControlPlane } from "@/contexts/SitaKernelContext";
 // Engine-backed connector data (replaces @/lib/mocks import)
 const DEMO_ENGINE_CONNECTORS = [
   { id: "slack", name: "Slack", status: "connected" as const, lastSync: "2 min ago", category: "communication" },
@@ -157,6 +158,7 @@ const DEMO_FALLBACK_APPROVALS = [
 
 const SystemStatus = () => {
   const { isDemoMode } = useDataMode();
+  const { listRegions, getTopology, getDemoTopology } = useCloudControlPlane();
   const location = useLocation();
   const navigate = useNavigate();
   const { data: slos } = useSLOs();

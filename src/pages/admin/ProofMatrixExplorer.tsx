@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useReceiptVerification, useSharedMemory } from "@/contexts/SitaKernelContext";
 
 interface ProofRecord {
   id: string;
@@ -63,6 +64,8 @@ function timeAgo(d: string) {
 
 export default function ProofMatrixExplorer() {
   const { isDemoMode } = useDataMode();
+  const { verifyIntegrity, validateChain, detectTamper } = useReceiptVerification();
+  const { entries: sharedMemoryEntries } = useSharedMemory("proof-context");
   const [tab, setTab] = useState("proofs");
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
