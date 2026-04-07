@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Lightbulb, TrendingUp, UserPlus, Star, RefreshCw, DollarSign, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const opportunities = [
+const DEMO_opportunities = [
   { title: "12 warm leads not yet contacted", impact: "$18,400", confidence: 87, effort: "Low", category: "Conversion", advisor: "CRM Advisor", icon: UserPlus, why: "These leads visited pricing page 3+ times but no follow-up scheduled" },
   { title: "Upsell Premium tier to 34 Professional members", impact: "$6,800/mo", confidence: 72, effort: "Medium", category: "Upsell", advisor: "Retention Advisor", icon: TrendingUp, why: "Usage patterns match Premium member behavior" },
   { title: "23 happy clients ready for review request", impact: "Trust boost", confidence: 91, effort: "Low", category: "Reputation", advisor: "Reputation Advisor", icon: Star, why: "NPS 9-10 scores, no review submitted yet" },
