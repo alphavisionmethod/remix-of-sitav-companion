@@ -120,7 +120,7 @@ export default function OperationsCommandCenter() {
             ))}
           </TabsContent>
 
-          <TabsContent value="DEMO_slos">
+          <TabsContent value="slos">
             {DEMO_slos.map(slo => (
               <Card key={slo.name} className="bg-card/50 border-border/50 mb-2">
                 <CardContent className="p-3">
