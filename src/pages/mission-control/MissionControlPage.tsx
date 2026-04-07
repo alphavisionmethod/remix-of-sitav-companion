@@ -29,8 +29,7 @@ import { mockAdvisors, mockRecommendations, mockInternalAgents, mockIncidents, m
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
-import { FraudSentinelService } from "@/lib/core-services/fraud-sentinel";
-import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
+import { useFraudSentinel, useGovernanceSimulator } from "@/contexts/SitaKernelContext";
 import type { TrustState, ExecutionEnvelope, WorkflowState, DiagnosticBundle } from "@/packages/contracts";
 import type { ConnectorFreshnessPolicy } from "@/packages/policy-contracts";
 import type { ReceiptRow, SyncLogRow, TenantFirewallLogRow, CapabilityRow } from "@/packages/database-schemas";
