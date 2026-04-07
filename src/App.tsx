@@ -32,6 +32,7 @@ const WorkflowsCenter = lazy(() => import("./pages/WorkflowsCenter"));
 const ProofCenter = lazy(() => import("./pages/ProofCenter"));
 const Boardroom = lazy(() => import("./pages/Boardroom"));
 const BoardroomReplay = lazy(() => import("./pages/boardroom/BoardroomReplay"));
+const BoardroomHistory = lazy(() => import("./pages/boardroom/BoardroomHistory"));
 const FilesCenter = lazy(() => import("./pages/FilesCenter"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const MissionControl = lazy(() => import("./pages/mission-control/MissionControlPage"));
