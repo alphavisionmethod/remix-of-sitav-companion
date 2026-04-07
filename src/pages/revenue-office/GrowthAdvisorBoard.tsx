@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const ADVISORS = [
+const DEMO_ADVISORS = [
   {
     name: "Growth Advisor",
     icon: TrendingUp,
@@ -93,7 +93,7 @@ export default function GrowthAdvisorBoard() {
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {ADVISORS.map((a, i) => (
+        {DEMO_ADVISORS.map((a, i) => (
           <motion.div key={a.name} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}>
             <Card className={`border-border/50 ${a.type === "alert" ? "bg-red-500/5 border-red-500/20" : a.type === "warning" ? "bg-yellow-500/5 border-yellow-500/20" : "bg-card/50"}`}>
               <CardContent className="p-4 space-y-3">

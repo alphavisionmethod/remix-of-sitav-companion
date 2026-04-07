@@ -12,16 +12,16 @@ import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const quoteStats = [
+const DEMO_quoteStats = [
   { label: "Active Quotes", value: "18", delta: "+4 this week", icon: FileText, color: "text-blue-400" },
-  { label: "Pipeline Value", value: "$124,800", delta: "across 18 quotes", icon: DollarSign, color: "text-emerald-400" },
+  { label: "Pipeline Value", value: "$124,800", delta: "across 18 DEMO_quotes", icon: DollarSign, color: "text-emerald-400" },
   { label: "Acceptance Rate", value: "68%", delta: "+5% vs last month", icon: CheckCircle, color: "text-emerald-400" },
   { label: "Avg Time to Accept", value: "4.2 days", delta: "-0.8 days improvement", icon: Clock, color: "text-amber-400" },
   { label: "Revenue from Quotes", value: "$84,200", delta: "this month closed", icon: TrendingUp, color: "text-emerald-400" },
   { label: "At-Risk Quotes", value: "4", delta: "$32,400 at risk", icon: AlertTriangle, color: "text-red-400" },
 ];
 
-const quotes = [
+const DEMO_quotes = [
   { client: "Apex Coaching Co.", service: "Growth Strategy Package", amount: 12500, status: "viewed", sentAt: "2 days ago", viewedAt: "1 day ago", viewCount: 3, expiresIn: "5 days", followUp: "Auto reminder at day 5", discount: null, priority: "high", objections: "Comparing with competitor", aiInsight: "Client viewed pricing section 3x — likely price-sensitive. Consider adding ROI projections." },
   { client: "Studio Bloom", service: "Marketing Retainer (6mo)", amount: 4800, status: "sent", sentAt: "1 day ago", viewedAt: null, viewCount: 0, expiresIn: "13 days", followUp: "Reminder at day 3", discount: null, priority: "medium", objections: null, aiInsight: "Similar clients in creative industry convert 40% higher with case study inclusion." },
   { client: "NextLevel Fitness", service: "Website + Funnel Bundle", amount: 8900, status: "accepted", sentAt: "5 days ago", viewedAt: "4 days ago", viewCount: 2, expiresIn: null, followUp: "Invoice generated → onboarding triggered", discount: "5%", priority: "closed", objections: null, aiInsight: "Accepted after case study send. Pattern: fitness clients respond to visual portfolio." },
@@ -39,14 +39,14 @@ const statusColors: Record<string, string> = {
   expired: "bg-red-500/10 text-red-400",
 };
 
-const upsellSuggestions = [
+const DEMO_upsellSuggestions = [
   { client: "Apex Coaching Co.", suggestion: "Add Monthly Analytics Report (+$800/mo)", confidence: 78, reason: "They asked about reporting in discovery call", impact: "$9,600/yr" },
   { client: "Studio Bloom", suggestion: "Bundle Social Media Management (+$1,200/mo)", confidence: 65, reason: "Competitor analysis shows content gap", impact: "$14,400/yr" },
   { client: "Harmony Health", suggestion: "Add Email Newsletter Setup (+$500 one-time)", confidence: 82, reason: "They mentioned email list growth in intake form", impact: "$500" },
   { client: "Urban Eats Co.", suggestion: "Photography Package (+$600/mo)", confidence: 71, reason: "Food businesses see 3x engagement with pro photos", impact: "$7,200/yr" },
 ];
 
-const pricingInsights = [
+const DEMO_pricingInsights = [
   { insight: "Your average quote value ($7,143) is 12% below market for your service category", type: "pricing", action: "Review pricing strategy" },
   { insight: "Quotes with case studies have 45% higher acceptance rate than those without", type: "content", action: "Add case studies" },
   { insight: "Quotes viewed 3+ times without response have 80% close rate with a personal call", type: "behavior", action: "Generate call list" },
@@ -72,7 +72,7 @@ export default function QuoteStudio() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {quoteStats.map((s) => (
+        {DEMO_quoteStats.map((s) => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1"><s.icon className={`h-3.5 w-3.5 ${s.color}`} /><p className="text-[10px] text-muted-foreground">{s.label}</p></div>
@@ -85,14 +85,14 @@ export default function QuoteStudio() {
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-card/50">
-          <TabsTrigger value="pipeline">Pipeline ({quotes.length})</TabsTrigger>
-          <TabsTrigger value="upsells">Upsell Suggestions ({upsellSuggestions.length})</TabsTrigger>
-          <TabsTrigger value="insights">Pricing Insights ({pricingInsights.length})</TabsTrigger>
+          <TabsTrigger value="pipeline">Pipeline ({DEMO_quotes.length})</TabsTrigger>
+          <TabsTrigger value="upsells">Upsell Suggestions ({DEMO_upsellSuggestions.length})</TabsTrigger>
+          <TabsTrigger value="insights">Pricing Insights ({DEMO_pricingInsights.length})</TabsTrigger>
           <TabsTrigger value="features">Capabilities</TabsTrigger>
         </TabsList>
 
         <TabsContent value="pipeline" className="space-y-3">
-          {quotes.map((q) => (
+          {DEMO_quotes.map((q) => (
             <Card key={q.client} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors cursor-pointer">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -122,7 +122,7 @@ export default function QuoteStudio() {
         </TabsContent>
 
         <TabsContent value="upsells" className="space-y-3">
-          {upsellSuggestions.map((u, i) => (
+          {DEMO_upsellSuggestions.map((u, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex-1">
@@ -142,7 +142,7 @@ export default function QuoteStudio() {
         </TabsContent>
 
         <TabsContent value="insights" className="space-y-3">
-          {pricingInsights.map((p, i) => (
+          {DEMO_pricingInsights.map((p, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex items-start gap-2 flex-1">
@@ -160,7 +160,7 @@ export default function QuoteStudio() {
 
         <TabsContent value="features" className="grid md:grid-cols-3 gap-4">
           {[
-            { title: "AI Quote Generation", desc: "Create quotes from CRM notes, call transcripts, intake forms, or booking context. AI selects services, pricing, and terms.", icon: Brain },
+            { title: "AI Quote Generation", desc: "Create DEMO_quotes from CRM notes, call transcripts, intake forms, or booking context. AI selects services, pricing, and terms.", icon: Brain },
             { title: "PDF & Digital Delivery", desc: "Professional branded PDF output with one-click send, email tracking, and view notifications.", icon: Send },
             { title: "Follow-up Automation", desc: "Auto-reminders at day 3/5/7, expiry alerts, viewed-but-no-response recovery, and escalation to personal call.", icon: Clock },
             { title: "Pricing Rules Engine", desc: "Volume discounts, bundle pricing, seasonal adjustments, loyalty tiers, and custom pricing approval workflows.", icon: DollarSign },

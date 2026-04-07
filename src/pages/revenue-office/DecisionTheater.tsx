@@ -5,7 +5,7 @@ import { Theater, AlertTriangle, CheckCircle, Users, TrendingUp, Shield, Zap, Ar
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const pendingDecisions = [
+const DEMO_pendingDecisions = [
   {
     title: "Launch 'Summer Accelerator' Campaign",
     type: "Campaign Launch",
@@ -43,7 +43,7 @@ export default function DecisionTheater() {
         <p className="text-muted-foreground">Cinematic pre-launch review — impact, risk, advisor commentary, and authorization</p>
       </div>
 
-      {pendingDecisions.map((d, i) => (
+      {DEMO_pendingDecisions.map((d, i) => (
         <Card key={i} className="bg-card/50 border-border/50">
           <CardHeader>
             <div className="flex items-center justify-between">

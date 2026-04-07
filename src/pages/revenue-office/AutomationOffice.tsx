@@ -13,7 +13,7 @@ import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const automationStats = [
+const DEMO_automationStats = [
   { label: "Active Automations", value: "24", delta: "+3 this week", icon: Play, color: "text-emerald-400" },
   { label: "Paused / Under Review", value: "5", delta: "2 need attention", icon: Pause, color: "text-amber-400" },
   { label: "Actions This Week", value: "1,247", delta: "+18% vs last week", icon: Zap, color: "text-blue-400" },
@@ -22,7 +22,7 @@ const automationStats = [
   { label: "Automation Health", value: "94%", delta: "2 issues detected", icon: Activity, color: "text-blue-400" },
 ];
 
-const activeAutomations = [
+const DEMO_activeAutomations = [
   { name: "Stale Lead Recovery (48hr)", status: "active", triggers: 42, success: 78, contacts: 156, revenue: "$12,400", category: "Lead Recovery", level: "Auto-run (L3)", icon: Users, trend: "improving" },
   { name: "No-Show Rescue + Rebook", status: "active", triggers: 18, success: 61, contacts: 48, revenue: "$4,200", category: "Booking", level: "Draft for review (L2)", icon: Phone, trend: "stable" },
   { name: "Post-Service Review Request", status: "active", triggers: 35, success: 84, contacts: 220, revenue: "—", category: "Reputation", level: "Auto-run (L3)", icon: Star, trend: "improving" },
@@ -35,7 +35,7 @@ const activeAutomations = [
   { name: "Reactivation Campaign (90-day)", status: "active", triggers: 34, success: 38, contacts: 78, revenue: "$2,800", category: "Growth", level: "Draft for review (L2)", icon: RefreshCw, trend: "stable" },
 ];
 
-const atRiskAutomations = [
+const DEMO_atRiskAutomations = [
   { name: "Quote Follow-up (3/5/7 day)", issue: "Conversion rate dropped from 78% to 67% this week — possible message fatigue", severity: "medium", action: "Review messaging and timing" },
   { name: "Churn Prevention Check-in", issue: "Only 50% success — many clients not engaging with check-in emails", severity: "high", action: "Advisor suggests switching to SMS + personal call" },
   { name: "Lead Assignment Engine", issue: "5 leads unassigned due to rule mismatch — sales team missing warm leads", severity: "high", action: "Fix assignment rules for 'enterprise' segment" },
@@ -43,7 +43,7 @@ const atRiskAutomations = [
   { name: "Upsell After Delivery", issue: "Low engagement — 8% open rate vs 24% benchmark", severity: "low", action: "Test new subject lines and timing" },
 ];
 
-const advisorRecommendations = [
+const DEMO_advisorRecommendations = [
   { advisor: "CRM Advisor", recommendation: "12 warm leads have no next step scheduled — create a follow-up automation to prevent drop-off", impact: "$8,200 at risk", confidence: 87, urgency: "high", autoType: "Lead Recovery" },
   { advisor: "Booking Advisor", recommendation: "No-show rate at 18% — add SMS reminder 1hr before appointments to improve show rate by ~22%", impact: "+22% show rate", confidence: 82, urgency: "medium", autoType: "Booking" },
   { advisor: "Retention Advisor", recommendation: "34 clients inactive 60+ days — launch reactivation sequence before they churn permanently", impact: "$12,400 at risk", confidence: 65, urgency: "high", autoType: "Retention" },
@@ -54,7 +54,7 @@ const advisorRecommendations = [
   { advisor: "Chief Revenue Strategist", recommendation: "Your biggest automation gap is post-call follow-up — only 40% of discovery calls get a same-day follow-up. Automating this could recover $15K/mo", impact: "$15,000/mo", confidence: 78, urgency: "critical", autoType: "Sales" },
 ];
 
-const leakRepairOpportunities = [
+const DEMO_leakRepairOpportunities = [
   { leak: "Post-call follow-up gap", estimatedLoss: "$15,000/mo", contacts: 24, status: "no automation", fixDifficulty: "easy" },
   { leak: "Quote viewed but no response (>5 days)", estimatedLoss: "$8,400/mo", contacts: 18, status: "partial automation", fixDifficulty: "easy" },
   { leak: "Onboarding incomplete after 3 days", estimatedLoss: "$4,200/mo", contacts: 8, status: "no automation", fixDifficulty: "medium" },
@@ -63,7 +63,7 @@ const leakRepairOpportunities = [
   { leak: "Failed payment retry", estimatedLoss: "$2,100/mo", contacts: 6, status: "no automation", fixDifficulty: "easy" },
 ];
 
-const businessStageAutomations = [
+const DEMO_businessStageAutomations = [
   { stage: "Awareness", automations: 4, coverage: 72, gaps: ["Abandoned form recovery", "Social engagement follow-up"] },
   { stage: "Consideration", automations: 6, coverage: 85, gaps: ["Competitor comparison sends"] },
   { stage: "Conversion", automations: 5, coverage: 68, gaps: ["Post-call follow-up", "Quote objection handling"] },
@@ -119,7 +119,7 @@ export default function AutomationOffice() {
 
       {/* Stats Band */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {automationStats.map((s) => (
+        {DEMO_automationStats.map((s) => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3">
               <div className="flex items-center gap-2 mb-1">
@@ -136,10 +136,10 @@ export default function AutomationOffice() {
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
         <TabsList className="bg-card/50">
           <TabsTrigger value="overview">Boardroom</TabsTrigger>
-          <TabsTrigger value="active">Active ({activeAutomations.length})</TabsTrigger>
-          <TabsTrigger value="atRisk">At Risk ({atRiskAutomations.length})</TabsTrigger>
-          <TabsTrigger value="advisors">Advisor Recs ({advisorRecommendations.length})</TabsTrigger>
-          <TabsTrigger value="leaks">Leak Repair ({leakRepairOpportunities.length})</TabsTrigger>
+          <TabsTrigger value="active">Active ({DEMO_activeAutomations.length})</TabsTrigger>
+          <TabsTrigger value="atRisk">At Risk ({DEMO_atRiskAutomations.length})</TabsTrigger>
+          <TabsTrigger value="advisors">Advisor Recs ({DEMO_advisorRecommendations.length})</TabsTrigger>
+          <TabsTrigger value="leaks">Leak Repair ({DEMO_leakRepairOpportunities.length})</TabsTrigger>
           <TabsTrigger value="stages">By Stage</TabsTrigger>
         </TabsList>
 
@@ -226,7 +226,7 @@ export default function AutomationOffice() {
 
         {/* ACTIVE AUTOMATIONS TAB */}
         <TabsContent value="active" className="space-y-3">
-          {activeAutomations.map((a) => (
+          {DEMO_activeAutomations.map((a) => (
             <Card key={a.name} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors cursor-pointer">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -259,7 +259,7 @@ export default function AutomationOffice() {
 
         {/* AT RISK TAB */}
         <TabsContent value="atRisk" className="space-y-3">
-          {atRiskAutomations.map((a) => (
+          {DEMO_atRiskAutomations.map((a) => (
             <Card key={a.name} className="bg-card/50 border-border/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -281,7 +281,7 @@ export default function AutomationOffice() {
 
         {/* ADVISOR RECOMMENDATIONS TAB */}
         <TabsContent value="advisors" className="space-y-3">
-          {advisorRecommendations.map((r, i) => (
+          {DEMO_advisorRecommendations.map((r, i) => (
             <Card key={i} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -311,10 +311,10 @@ export default function AutomationOffice() {
             <CardContent className="p-4">
               <p className="text-sm font-semibold text-foreground mb-1">Total Estimated Revenue Leakage</p>
               <p className="text-2xl font-bold text-red-400">$42,100/mo</p>
-              <p className="text-xs text-muted-foreground">from {leakRepairOpportunities.length} automation gaps across the customer journey</p>
+              <p className="text-xs text-muted-foreground">from {DEMO_leakRepairOpportunities.length} automation gaps across the customer journey</p>
             </CardContent>
           </Card>
-          {leakRepairOpportunities.map((leak, i) => (
+          {DEMO_leakRepairOpportunities.map((leak, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex-1">
@@ -334,7 +334,7 @@ export default function AutomationOffice() {
 
         {/* BY STAGE TAB */}
         <TabsContent value="stages" className="space-y-3">
-          {businessStageAutomations.map((stage) => (
+          {DEMO_businessStageAutomations.map((stage) => (
             <Card key={stage.stage} className="bg-card/50 border-border/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">

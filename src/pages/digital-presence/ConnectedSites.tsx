@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const PLATFORMS = [
+const DEMO_PLATFORMS = [
   { name: "Shopify", icon: "🛒", connected: true, url: "mystore.myshopify.com", health: 94, lastSync: "2 min ago", products: 48, issues: 1 },
   { name: "WordPress", icon: "📝", connected: true, url: "blog.mybusiness.com", health: 78, lastSync: "1 hr ago", products: 0, issues: 3 },
   { name: "Webflow", icon: "🎨", connected: false, url: null, health: 0, lastSync: null, products: 0, issues: 0 },
@@ -15,7 +15,7 @@ const PLATFORMS = [
   { name: "Custom Site", icon: "🔧", connected: true, url: "mybusiness.com", health: 85, lastSync: "30 min ago", products: 0, issues: 2 },
 ];
 
-const AUDIT_FINDINGS = [
+const DEMO_AUDIT_FINDINGS = [
   { site: "WordPress", finding: "3 plugins need security updates", severity: "high", category: "Security" },
   { site: "WordPress", finding: "SSL certificate expiring in 14 days", severity: "medium", category: "Technical" },
   { site: "WordPress", finding: "7 images not optimized for web", severity: "low", category: "Performance" },
@@ -24,7 +24,7 @@ const AUDIT_FINDINGS = [
   { site: "Custom Site", finding: "Meta description missing on 4 pages", severity: "medium", category: "SEO" },
 ];
 
-const AI_RECOMMENDATIONS = [
+const DEMO_AI_RECOMMENDATIONS = [
   { action: "Update WordPress plugins", risk: "low", impact: "Fixes 3 known vulnerabilities", autoFixable: true },
   { action: "Add product descriptions to 5 Shopify items", risk: "low", impact: "Improves SEO and conversion", autoFixable: false },
   { action: "Fix mobile 404 on contact page", risk: "low", impact: "Restores lead capture path", autoFixable: true },
@@ -43,7 +43,7 @@ export default function ConnectedSites() {
 
       {/* Connected Platforms */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {PLATFORMS.map(p => (
+        {DEMO_PLATFORMS.map(p => (
           <Card key={p.name} className={`bg-card/50 border-border/50 ${p.connected ? "hover:border-primary/30" : "opacity-60"} transition-all`}>
             <CardContent className="p-5">
               <div className="flex items-center justify-between mb-3">
@@ -82,7 +82,7 @@ export default function ConnectedSites() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-amber-400" /> Audit Findings</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {AUDIT_FINDINGS.map((f, i) => (
+            {DEMO_AUDIT_FINDINGS.map((f, i) => (
               <div key={i} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
@@ -101,7 +101,7 @@ export default function ConnectedSites() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" /> AI Recommendations</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {AI_RECOMMENDATIONS.map((r, i) => (
+            {DEMO_AI_RECOMMENDATIONS.map((r, i) => (
               <div key={i} className="p-3 bg-muted/30 rounded-lg flex items-center justify-between">
                 <div>
                   <p className="text-xs font-medium text-foreground">{r.action}</p>

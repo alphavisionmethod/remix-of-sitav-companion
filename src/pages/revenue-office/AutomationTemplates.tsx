@@ -11,7 +11,7 @@ import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const templates = [
+const DEMO_templates = [
   { name: "Stale Lead Recovery (48hr)", desc: "Detect leads with no next step for 48hrs. Enrich with CRM data, send personalized email, assign callback task, follow up via SMS if no response, escalate high-value leads.", category: "Lead Recovery", popularity: 94, icon: Users, steps: 8, trustLevel: "L3", impact: "$8,200/mo recovered", difficulty: "Easy", timeToSetup: "5 min", advisorNote: "CRM Advisor: Most impactful first automation for service businesses" },
   { name: "Warm Lead Follow-up", desc: "When lead shows high engagement (multiple page views, form started), immediately send value-driven email, create priority call task, fast-track to sales pipeline.", category: "Lead Recovery", popularity: 88, icon: Target, steps: 6, trustLevel: "L3", impact: "+24% conversion", difficulty: "Easy", timeToSetup: "4 min", advisorNote: "Funnel Advisor: Catches hot leads before they cool" },
   { name: "No-Show Rescue + Rebook", desc: "Detect no-show within 15 min of appointment time. Send caring SMS with easy rebook link, follow up with email if no response in 2hrs, track recovery rate.", category: "Booking", popularity: 91, icon: Phone, steps: 6, trustLevel: "L3", impact: "+22% rebook rate", difficulty: "Easy", timeToSetup: "4 min", advisorNote: "Booking Advisor: SMS at 15 min works better than 1hr — sense of immediacy" },
@@ -29,12 +29,12 @@ const templates = [
   { name: "Failed Payment Retry", desc: "On payment failure, send immediate notification, retry at 24hrs and 72hrs, offer alternative payment method, escalate to human if still failing.", category: "Revenue", popularity: 84, icon: DollarSign, steps: 5, trustLevel: "L3", impact: "$2,100/mo recovered", difficulty: "Easy", timeToSetup: "3 min", advisorNote: "Revenue Ops Advisor: 72% of failed payments recover with a simple retry + notification" },
 ];
 
-const categories = ["All", "Lead Recovery", "Sales", "Booking", "Reputation", "Onboarding", "Nurture", "Retention", "Growth", "Operations", "Revenue"];
+const DEMO_categories = ["All", "Lead Recovery", "Sales", "Booking", "Reputation", "Onboarding", "Nurture", "Retention", "Growth", "Operations", "Revenue"];
 
 export default function AutomationTemplates() {
   const { isDemoMode } = useDataMode();
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const filtered = selectedCategory === "All" ? templates : templates.filter(t => t.category === selectedCategory);
+  const filtered = selectedCategory === "All" ? DEMO_templates : DEMO_templates.filter(t => t.category === selectedCategory);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
@@ -47,8 +47,8 @@ export default function AutomationTemplates() {
       </div>
 
       <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{templates.length}</p><p className="text-[10px] text-muted-foreground">Templates</p></CardContent></Card>
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-400">{categories.length - 1}</p><p className="text-[10px] text-muted-foreground">Categories</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{DEMO_templates.length}</p><p className="text-[10px] text-muted-foreground">Templates</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-400">{DEMO_categories.length - 1}</p><p className="text-[10px] text-muted-foreground">Categories</p></CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-blue-400">6.1</p><p className="text-[10px] text-muted-foreground">Avg Steps</p></CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-purple-400">4.8 min</p><p className="text-[10px] text-muted-foreground">Avg Setup</p></CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-amber-400">$82K</p><p className="text-[10px] text-muted-foreground">Total Impact/mo</p></CardContent></Card>
@@ -56,7 +56,7 @@ export default function AutomationTemplates() {
 
       {/* Category Filter */}
       <div className="flex flex-wrap gap-1.5">
-        {categories.map((cat) => (
+        {DEMO_categories.map((cat) => (
           <button key={cat} onClick={() => setSelectedCategory(cat)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${selectedCategory === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-primary/10"}`}>{cat}</button>
         ))}
       </div>

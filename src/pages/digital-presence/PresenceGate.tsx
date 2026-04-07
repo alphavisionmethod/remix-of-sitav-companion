@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const WORKSPACES = [
+const DEMO_WORKSPACES = [
   { label: "Presence Boardroom", desc: "Health, traffic, conversions, advisors", icon: BarChart3, path: "/digital-presence/boardroom", color: "text-blue-400" },
   { label: "Website Twin", desc: "Live model of pages, paths & performance", icon: Monitor, path: "/digital-presence/website-twin", color: "text-cyan-400" },
   { label: "Site Builder", desc: "Create pages, sites, microsites", icon: Layout, path: "/digital-presence/builder", color: "text-indigo-400" },
@@ -27,7 +27,7 @@ const WORKSPACES = [
   { label: "Domain & Publish", desc: "Domains, staging, rollback, release management", icon: Server, path: "/digital-presence/domains", color: "text-slate-400" },
 ];
 
-const HEALTH_STATS = [
+const DEMO_HEALTH_STATS = [
   { label: "Site Health", value: "87%", status: "good" },
   { label: "Pages Active", value: "24", status: "neutral" },
   { label: "Conversion Rate", value: "3.2%", status: "good" },
@@ -51,7 +51,7 @@ export default function PresenceGate() {
 
       {/* Health band */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {HEALTH_STATS.map((s, i) => (
+        {DEMO_HEALTH_STATS.map((s, i) => (
           <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
             <Card className="bg-card/50 border-border/50">
               <CardContent className="p-4 text-center">
@@ -68,7 +68,7 @@ export default function PresenceGate() {
 
       {/* Workspace grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {WORKSPACES.map((w, i) => (
+        {DEMO_WORKSPACES.map((w, i) => (
           <motion.div key={w.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.03 }}>
             <Card
               className="bg-card/50 border-border/50 hover:border-primary/30 cursor-pointer transition-all group"

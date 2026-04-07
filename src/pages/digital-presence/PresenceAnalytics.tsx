@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const OVERVIEW_METRICS = [
+const DEMO_OVERVIEW_METRICS = [
   { label: "Total Visitors", value: "12,847", change: "+14.2%", up: true, icon: Eye },
   { label: "Unique Visitors", value: "9,203", change: "+11.8%", up: true, icon: Users },
   { label: "Conversion Rate", value: "3.2%", change: "+0.4%", up: true, icon: Target },
@@ -15,7 +15,7 @@ const OVERVIEW_METRICS = [
   { label: "Revenue from Web", value: "$8,420", change: "+22%", up: true, icon: ShoppingCart },
 ];
 
-const SOURCE_PERFORMANCE = [
+const DEMO_SOURCE_PERFORMANCE = [
   { source: "Organic Search", visitors: 4201, conversion: "4.1%", revenue: "$3,200", quality: 92, trend: "up" },
   { source: "Direct", visitors: 2890, conversion: "3.8%", revenue: "$2,100", quality: 85, trend: "stable" },
   { source: "Social Media", visitors: 2103, conversion: "2.1%", revenue: "$1,400", quality: 68, trend: "up" },
@@ -24,7 +24,7 @@ const SOURCE_PERFORMANCE = [
   { source: "Email", visitors: 602, conversion: "8.4%", revenue: "$800", quality: 95, trend: "stable" },
 ];
 
-const PAGE_IMPACT = [
+const DEMO_PAGE_IMPACT = [
   { page: "/", name: "Homepage", visits: 4201, conversion: "4.1%", bounceRate: "38%", avgTime: "2m 12s", revenue: "$2,400", impact: "high" },
   { page: "/book", name: "Booking", visits: 1847, conversion: "12.4%", bounceRate: "22%", avgTime: "4m 30s", revenue: "$3,200", impact: "high" },
   { page: "/services", name: "Services", visits: 2103, conversion: "2.8%", bounceRate: "45%", avgTime: "1m 48s", revenue: "$890", impact: "medium" },
@@ -34,13 +34,13 @@ const PAGE_IMPACT = [
   { page: "/contact", name: "Contact", visits: 445, conversion: "18.2%", bounceRate: "28%", avgTime: "1m 55s", revenue: "$0", impact: "medium" },
 ];
 
-const PROMO_PERFORMANCE = [
+const DEMO_PROMO_PERFORMANCE = [
   { name: "Summer Sale Banner", placement: "Homepage Hero", impressions: 4201, clicks: 342, ctr: "8.1%", conversions: 48, revenue: "$2,160", status: "active" },
   { name: "Free Shipping Bar", placement: "Cart Page", impressions: 1200, clicks: 89, ctr: "7.4%", conversions: 34, revenue: "$1,530", status: "active" },
   { name: "New Collection CTA", placement: "Shop Page", impressions: 3102, clicks: 156, ctr: "5.0%", conversions: 21, revenue: "$945", status: "active" },
 ];
 
-const AGENT_CONFIDENCE = [
+const DEMO_AGENT_CONFIDENCE = [
   { agent: "CRO Advisor", confidence: 88, trend: "improving", topInsight: "Pricing page bounce rate decreasing after CTA changes" },
   { agent: "Content Strategist", confidence: 72, trend: "stable", topInsight: "Blog engagement flat — needs content refresh strategy" },
   { agent: "SEO Advisor", confidence: 81, trend: "improving", topInsight: "Organic traffic up 14% after meta description fixes" },
@@ -59,7 +59,7 @@ export default function PresenceAnalytics() {
 
       {/* Overview */}
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        {OVERVIEW_METRICS.map((m, i) => (
+        {DEMO_OVERVIEW_METRICS.map((m, i) => (
           <motion.div key={m.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
             <Card className="bg-card/50 border-border/50">
               <CardContent className="p-4">
@@ -82,7 +82,7 @@ export default function PresenceAnalytics() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Globe className="w-4 h-4 text-blue-400" /> Source-to-Conversion Performance</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {SOURCE_PERFORMANCE.map(s => (
+          {DEMO_SOURCE_PERFORMANCE.map(s => (
             <div key={s.source} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div className="flex items-center gap-3 flex-1">
                 <span className="text-sm font-medium text-foreground w-32">{s.source}</span>
@@ -120,7 +120,7 @@ export default function PresenceAnalytics() {
                 </tr>
               </thead>
               <tbody>
-                {PAGE_IMPACT.map(p => (
+                {DEMO_PAGE_IMPACT.map(p => (
                   <tr key={p.page} className="border-b border-border/10 hover:bg-muted/20">
                     <td className="p-2">
                       <span className="text-foreground font-medium">{p.name}</span>
@@ -145,7 +145,7 @@ export default function PresenceAnalytics() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><TrendingUp className="w-4 h-4 text-orange-400" /> Promo Performance</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {PROMO_PERFORMANCE.map(p => (
+            {DEMO_PROMO_PERFORMANCE.map(p => (
               <div key={p.name} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-medium text-foreground">{p.name}</span>
@@ -166,7 +166,7 @@ export default function PresenceAnalytics() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Sparkles className="w-4 h-4 text-violet-400" /> Agent Confidence Trends</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {AGENT_CONFIDENCE.map(a => (
+            {DEMO_AGENT_CONFIDENCE.map(a => (
               <div key={a.agent} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-medium text-foreground">{a.agent}</span>

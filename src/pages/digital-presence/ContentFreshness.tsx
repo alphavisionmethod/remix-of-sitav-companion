@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const STALE_PAGES = [
+const DEMO_STALE_PAGES = [
   { page: "/blog/2023-trends", lastUpdated: "14 months ago", views: 120, category: "Blog", staleness: 95 },
   { page: "/blog/old-guide", lastUpdated: "11 months ago", views: 45, category: "Blog", staleness: 85 },
   { page: "/services/legacy", lastUpdated: "9 months ago", views: 230, category: "Service", staleness: 75 },
@@ -14,20 +14,20 @@ const STALE_PAGES = [
   { page: "/team", lastUpdated: "5 months ago", views: 180, category: "About", staleness: 45 },
 ];
 
-const EXPIRED_OFFERS = [
+const DEMO_EXPIRED_OFFERS = [
   { offer: "Summer Sale 2024", page: "/summer-sale", expiredDays: 14, stillLive: true },
   { offer: "Holiday Bundle", page: "/holiday-bundle", expiredDays: 45, stillLive: true },
   { offer: "Early Bird Pricing", page: "/pricing", expiredDays: 0, stillLive: false },
 ];
 
-const STALE_INFO = [
+const DEMO_STALE_INFO = [
   { type: "Business Hours", page: "/contact", issue: "Shows Mon-Fri 9-5, but you're now open Saturdays", icon: Clock },
   { type: "Phone Number", page: "/contact", issue: "Old number still displayed — new number not updated", icon: Phone },
   { type: "Location", page: "/about", issue: "Address shows old office location", icon: MapPin },
   { type: "Product Description", page: "/products/item-3", issue: "Describes old version — updated product not reflected", icon: Tag },
 ];
 
-const INCONSISTENCIES = [
+const DEMO_INCONSISTENCIES = [
   { pages: ["/homepage", "/about"], issue: "Different taglines used — 'We help you grow' vs 'Growth made simple'" },
   { pages: ["/pricing", "/services"], issue: "Pricing on services page doesn't match pricing page" },
   { pages: ["/footer", "/contact"], issue: "Email address differs between footer and contact page" },
@@ -46,10 +46,10 @@ export default function ContentFreshness() {
       {/* Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Stale Pages", value: STALE_PAGES.length, color: "text-amber-400" },
-          { label: "Expired Offers Live", value: EXPIRED_OFFERS.filter(o => o.stillLive).length, color: "text-red-400" },
-          { label: "Stale Info", value: STALE_INFO.length, color: "text-orange-400" },
-          { label: "Inconsistencies", value: INCONSISTENCIES.length, color: "text-purple-400" },
+          { label: "Stale Pages", value: DEMO_STALE_PAGES.length, color: "text-amber-400" },
+          { label: "Expired Offers Live", value: DEMO_EXPIRED_OFFERS.filter(o => o.stillLive).length, color: "text-red-400" },
+          { label: "Stale Info", value: DEMO_STALE_INFO.length, color: "text-orange-400" },
+          { label: "Inconsistencies", value: DEMO_INCONSISTENCIES.length, color: "text-purple-400" },
         ].map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-4 text-center">
@@ -65,7 +65,7 @@ export default function ContentFreshness() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Clock className="w-4 h-4 text-amber-400" /> Stale Pages</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {STALE_PAGES.map(p => (
+            {DEMO_STALE_PAGES.map(p => (
               <div key={p.page} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div>
                   <span className="text-xs font-mono text-muted-foreground">{p.page}</span>
@@ -85,7 +85,7 @@ export default function ContentFreshness() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Tag className="w-4 h-4 text-red-400" /> Expired Offers</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {EXPIRED_OFFERS.map(o => (
+            {DEMO_EXPIRED_OFFERS.map(o => (
               <div key={o.offer} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div>
                   <span className="text-xs font-medium text-foreground">{o.offer}</span>
@@ -105,7 +105,7 @@ export default function ContentFreshness() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-orange-400" /> Outdated Information</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {STALE_INFO.map(s => (
+            {DEMO_STALE_INFO.map(s => (
               <div key={s.type} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center gap-2 mb-1">
                   <s.icon className="w-3 h-3 text-muted-foreground" />
@@ -122,7 +122,7 @@ export default function ContentFreshness() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Sparkles className="w-4 h-4 text-purple-400" /> Messaging Inconsistencies</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {INCONSISTENCIES.map((c, i) => (
+            {DEMO_INCONSISTENCIES.map((c, i) => (
               <div key={i} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center gap-1 mb-1">
                   {c.pages.map(p => <Badge key={p} variant="secondary" className="text-[10px]">{p}</Badge>)}

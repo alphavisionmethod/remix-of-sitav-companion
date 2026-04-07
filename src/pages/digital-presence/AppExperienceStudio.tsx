@@ -8,7 +8,7 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const EXPERIENCE_TYPES = [
+const DEMO_EXPERIENCE_TYPES = [
   { type: "App Landing Page", desc: "Mobile-first marketing page for your app", icon: Smartphone, color: "text-blue-400" },
   { type: "Progressive Web App", desc: "Installable web app with offline support", icon: Globe, color: "text-green-400" },
   { type: "Client Portal", desc: "Secure dashboard for your customers", icon: Users, color: "text-purple-400" },
@@ -17,13 +17,13 @@ const EXPERIENCE_TYPES = [
   { type: "Mobile-First Variant", desc: "Alternative mobile experience for existing pages", icon: Layout, color: "text-rose-400" },
 ];
 
-const EXISTING_EXPERIENCES = [
+const DEMO_EXISTING_EXPERIENCES = [
   { name: "Client Dashboard", type: "Client Portal", status: "live", users: 142, lastUpdate: "2 days ago", mobile: 88 },
   { name: "Booking Mini-App", type: "Progressive Web App", status: "live", users: 89, lastUpdate: "1 week ago", mobile: 95 },
   { name: "Course Portal", type: "Member Dashboard", status: "draft", users: 0, lastUpdate: "3 hours ago", mobile: 72 },
 ];
 
-const PWA_SETTINGS = [
+const DEMO_PWA_SETTINGS = [
   { setting: "App Name", value: "MyBusiness", editable: true },
   { setting: "Short Name", value: "MyBiz", editable: true },
   { setting: "Theme Color", value: "#3B82F6", editable: true },
@@ -34,7 +34,7 @@ const PWA_SETTINGS = [
   { setting: "Install Prompt", value: "After 2nd visit", editable: true },
 ];
 
-const PORTAL_FEATURES = [
+const DEMO_PORTAL_FEATURES = [
   { feature: "Authentication", status: "active", desc: "Email + Google SSO" },
   { feature: "Dashboard Overview", status: "active", desc: "KPIs, activity, upcoming" },
   { feature: "Document Access", status: "active", desc: "Shared files & invoices" },
@@ -60,7 +60,7 @@ export default function AppExperienceStudio() {
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Layers className="w-4 h-4 text-primary" /> Create New Experience</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
-            {EXPERIENCE_TYPES.map(e => (
+            {DEMO_EXPERIENCE_TYPES.map(e => (
               <button key={e.type} className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors text-left group">
                 <e.icon className={`w-5 h-5 ${e.color} mb-2`} />
                 <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{e.type}</h3>
@@ -79,7 +79,7 @@ export default function AppExperienceStudio() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm">Your Experiences</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {EXISTING_EXPERIENCES.map(e => (
+          {DEMO_EXISTING_EXPERIENCES.map(e => (
             <div key={e.name} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/40 cursor-pointer transition-colors">
               <div>
                 <span className="text-sm font-medium text-foreground">{e.name}</span>
@@ -104,7 +104,7 @@ export default function AppExperienceStudio() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Globe className="w-4 h-4 text-green-400" /> PWA Configuration</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {PWA_SETTINGS.map(s => (
+            {DEMO_PWA_SETTINGS.map(s => (
               <div key={s.setting} className="flex items-center justify-between p-2">
                 <span className="text-xs text-muted-foreground">{s.setting}</span>
                 <div className="flex items-center gap-2">
@@ -127,7 +127,7 @@ export default function AppExperienceStudio() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Users className="w-4 h-4 text-purple-400" /> Portal Features</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {PORTAL_FEATURES.map(f => (
+            {DEMO_PORTAL_FEATURES.map(f => (
               <div key={f.feature} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div>
                   <span className="text-xs font-medium text-foreground">{f.feature}</span>

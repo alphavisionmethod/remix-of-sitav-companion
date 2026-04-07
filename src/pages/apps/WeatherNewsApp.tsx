@@ -9,7 +9,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
 
-const forecast = [
+const DEMO_forecast = [
   { day: "Today", icon: Sun, temp: 24, high: 26, low: 18, condition: "Sunny", rain: 0 },
   { day: "Tue", icon: Cloud, temp: 22, high: 23, low: 17, condition: "Cloudy", rain: 10 },
   { day: "Wed", icon: CloudRain, temp: 19, high: 20, low: 15, condition: "Rain", rain: 70 },
@@ -19,7 +19,7 @@ const forecast = [
   { day: "Sun", icon: Sun, temp: 27, high: 29, low: 20, condition: "Clear", rain: 0 },
 ];
 
-const newsArticles = [
+const DEMO_newsArticles = [
   { title: "AI Agents Are Reshaping How Businesses Operate", source: "TechCrunch", time: "2h ago", category: "Technology", preview: "A new wave of autonomous AI agents is transforming enterprise workflows, from customer support to financial planning." },
   { title: "Fed Signals Rate Cut Likely in September", source: "Bloomberg", time: "4h ago", category: "Finance", preview: "Federal Reserve officials indicated that a rate reduction could come as early as September, citing cooling inflation." },
   { title: "Remote Work Productivity Study Reveals Surprising Results", source: "HBR", time: "6h ago", category: "Business", preview: "A comprehensive 3-year study of 10,000 remote workers shows nuanced productivity patterns." },
@@ -38,7 +38,7 @@ const categoryColors: Record<string, string> = {
 
 export default function WeatherNewsApp() {
   const { isDemoMode } = useDataMode();
-  const current = forecast[0];
+  const current = DEMO_forecast[0];
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">
@@ -99,8 +99,8 @@ export default function WeatherNewsApp() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {forecast.map((day, i) => (
-                  <div key={day.day} className={`flex items-center justify-between py-2 ${i < forecast.length - 1 ? "border-b border-border" : ""}`}>
+                {DEMO_forecast.map((day, i) => (
+                  <div key={day.day} className={`flex items-center justify-between py-2 ${i < DEMO_forecast.length - 1 ? "border-b border-border" : ""}`}>
                     <span className={`text-sm w-12 ${i === 0 ? "font-semibold text-foreground" : "text-foreground"}`}>{day.day}</span>
                     <day.icon className="h-5 w-5 text-muted-foreground" />
                     <div className="flex items-center gap-1 w-16">
@@ -120,7 +120,7 @@ export default function WeatherNewsApp() {
 
         <TabsContent value="news" className="mt-4 space-y-3">
           <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-3">
-            {newsArticles.map((article, i) => (
+            {DEMO_newsArticles.map((article, i) => (
               <motion.div key={i} variants={fadeUp}>
                 <Card className="hover:shadow-sm transition-shadow cursor-pointer group">
                   <CardContent className="p-4">

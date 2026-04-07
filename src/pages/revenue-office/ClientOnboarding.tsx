@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const JOURNEYS = [
+const DEMO_JOURNEYS = [
   {
     id: "j1", name: "Coaching Client Onboarding", status: "active", activeClients: 8, completionRate: "78%", avgDays: 5,
     steps: [
@@ -44,7 +44,7 @@ const JOURNEYS = [
   },
 ];
 
-const ACTIVE_CLIENTS = [
+const DEMO_ACTIVE_CLIENTS = [
   { name: "Sarah Mitchell", journey: "Coaching Client Onboarding", step: 4, totalSteps: 6, startedAt: "3 days ago", status: "on-track" },
   { name: "James Chen", journey: "Coaching Client Onboarding", step: 3, totalSteps: 6, startedAt: "5 days ago", status: "on-track" },
   { name: "Emily Rodriguez", journey: "VIP Day Preparation", step: 3, totalSteps: 5, startedAt: "4 days ago", status: "on-track" },
@@ -73,10 +73,10 @@ export default function ClientOnboarding() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: "Active Journeys", value: JOURNEYS.filter(j => j.status === "active").length },
-          { label: "Clients Onboarding", value: ACTIVE_CLIENTS.filter(c => c.status !== "completed").length },
+          { label: "Active Journeys", value: DEMO_JOURNEYS.filter(j => j.status === "active").length },
+          { label: "Clients Onboarding", value: DEMO_ACTIVE_CLIENTS.filter(c => c.status !== "completed").length },
           { label: "Avg. Completion", value: "82%" },
-          { label: "Delayed", value: ACTIVE_CLIENTS.filter(c => c.status === "delayed").length, color: "text-amber-400" },
+          { label: "Delayed", value: DEMO_ACTIVE_CLIENTS.filter(c => c.status === "delayed").length, color: "text-amber-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -100,7 +100,7 @@ export default function ClientOnboarding() {
         <div className="mt-4">
           <TabsContent value="journeys">
             <div className="space-y-4">
-              {JOURNEYS.map(journey => (
+              {DEMO_JOURNEYS.map(journey => (
                 <Card key={journey.id} className="bg-card/50 border-border/50">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
@@ -148,7 +148,7 @@ export default function ClientOnboarding() {
 
           <TabsContent value="active">
             <div className="space-y-3">
-              {ACTIVE_CLIENTS.map((client, i) => (
+              {DEMO_ACTIVE_CLIENTS.map((client, i) => (
                 <Card key={i} className={cn("bg-card/50 border-border/50", client.status === "delayed" && "border-amber-500/30")}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-3">

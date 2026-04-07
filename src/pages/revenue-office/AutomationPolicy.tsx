@@ -10,7 +10,7 @@ import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const policies = [
+const DEMO_policies = [
   { category: "Email & SMS Sending", icon: Mail, rules: [
     { rule: "Max 3 emails per contact per week", status: "active", violations: 0 },
     { rule: "Max 2 SMS per contact per week", status: "active", violations: 0 },
@@ -63,14 +63,14 @@ const policies = [
   ]},
 ];
 
-const trustLevels = [
+const DEMO_trustLevels = [
   { level: "L1 — Suggest Only", automations: 6, pct: 25, desc: "SITA observes and recommends — no automated actions taken. User decides everything.", icon: Eye, color: "border-purple-500/30" },
   { level: "L2 — Draft & Prepare", automations: 8, pct: 33, desc: "SITA drafts messages, prepares workflows, generates quotes. User reviews and approves before anything executes.", icon: FileText, color: "border-blue-500/30" },
   { level: "L3 — Act Under Rules", automations: 7, pct: 29, desc: "SITA executes within approved policy boundaries automatically. All actions logged with receipts.", icon: CheckCircle, color: "border-emerald-500/30" },
   { level: "L4 — Semi-Autonomous", automations: 3, pct: 13, desc: "Bounded commercial operations with mandatory receipts, weekly summaries, and human escalation for high-impact decisions.", icon: Zap, color: "border-amber-500/30" },
 ];
 
-const humanVsAI = [
+const DEMO_humanVsAI = [
   { domain: "Lead outreach (cold)", recommendation: "Human only", reason: "Cold outreach should always be personal and carefully considered" },
   { domain: "Lead follow-up (warm)", recommendation: "AI drafts, human reviews", reason: "Speed matters but personalization quality must be high" },
   { domain: "Appointment reminders", recommendation: "Full automation", reason: "Standard messages, low risk, high value" },
@@ -92,14 +92,14 @@ export default function AutomationPolicy() {
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ShieldCheck className="h-6 w-6 text-emerald-400" />Automation Policy Center</h1>
-        <p className="text-muted-foreground">Trust boundaries, safety rules, human-AI controls, escalation policies, and compliance governance</p>
+        <p className="text-muted-foreground">Trust boundaries, safety rules, human-AI controls, escalation DEMO_policies, and compliance governance</p>
       </div>
 
       {/* Trust Level Overview */}
       <Card className="bg-card/50 border-border/50">
         <CardHeader><CardTitle className="flex items-center gap-2 text-sm"><Shield className="h-4 w-4 text-emerald-400" />Trust Level Distribution</CardTitle></CardHeader>
         <CardContent className="grid md:grid-cols-4 gap-3">
-          {trustLevels.map((t) => (
+          {DEMO_trustLevels.map((t) => (
             <div key={t.level} className={`p-3 rounded-lg bg-background/50 border ${t.color}`}>
               <div className="flex items-center gap-2 mb-1">
                 <t.icon className="h-4 w-4 text-muted-foreground" />
@@ -120,7 +120,7 @@ export default function AutomationPolicy() {
       <Card className="bg-card/50 border-primary/20 border">
         <CardHeader><CardTitle className="flex items-center gap-2 text-sm"><Brain className="h-4 w-4 text-primary" />Human vs AI Boundary Recommendations</CardTitle></CardHeader>
         <CardContent className="space-y-1.5">
-          {humanVsAI.map((item) => (
+          {DEMO_humanVsAI.map((item) => (
             <div key={item.domain} className="p-2 rounded bg-background/50 border border-border/30 flex items-center justify-between">
               <div className="flex-1">
                 <span className="text-xs text-foreground font-medium">{item.domain}</span>
@@ -138,7 +138,7 @@ export default function AutomationPolicy() {
       </Card>
 
       {/* Policy Rules by Category */}
-      {policies.map((p) => (
+      {DEMO_policies.map((p) => (
         <Card key={p.category} className="bg-card/50 border-border/50">
           <CardHeader><CardTitle className="text-sm flex items-center gap-2"><p.icon className="h-4 w-4 text-blue-400" />{p.category}</CardTitle></CardHeader>
           <CardContent className="space-y-1.5">
