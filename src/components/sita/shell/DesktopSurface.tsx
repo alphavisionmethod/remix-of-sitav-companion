@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useCashflowAnalysis, useCRMSync } from "@/hooks/use-backend-actions";
 import {
   Brain, Sparkles, Bell, Calendar, ArrowRight, CheckCircle,
   Clock, BarChart3, Target, Shield, TrendingUp, Users,
