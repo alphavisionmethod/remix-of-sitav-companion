@@ -82,11 +82,11 @@ const MoneySettings = () => {
           ))}
         </div>
 
-        {/* Connectors (static for now — pending connector_accounts table) */}
+        {/* Connectors — demo data shown in demo mode, live from connected_accounts in live mode */}
         <div className="space-y-6">
           <div className="space-y-3">
             <SitaSectionHeader title="Connected Services" subtitle="Data sources and integrations" />
-            {(() => { const connectorList = DEMO_CONNECTORS; return connectorList; })().map((c, i) => (
+            {DEMO_CONNECTORS.map((c, i) => (
               <SitaCard key={i} className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
