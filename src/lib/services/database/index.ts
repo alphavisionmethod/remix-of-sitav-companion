@@ -74,7 +74,7 @@ export class DatabaseService {
   }): Promise<QueryResult<T[]>> {
     const start = Date.now();
     try {
-      let q = (supabase.from as any)(table).select(options?.select ?? "*");
+      let q = fromTable(table).select(options?.select ?? "*");
 
       if (options?.filters) {
         for (const [key, value] of Object.entries(options.filters)) {
@@ -109,7 +109,7 @@ export class DatabaseService {
   async insert<T = unknown>(table: string, records: Record<string, unknown> | Record<string, unknown>[]): Promise<QueryResult<T[]>> {
     const start = Date.now();
     try {
-      const { data, error } = await (supabase.from as any)(table).insert(records).select();
+      const { data, error } = await fromTable(table).insert(records).select();
       const durationMs = Date.now() - start;
       this.logQuery(table, "insert", durationMs, !error);
       return { data: data as T[] ?? null, error: error?.message ?? null, status: error ? "error" : "success", rowCount: data?.length ?? 0, durationMs };
@@ -125,7 +125,7 @@ export class DatabaseService {
     try {
       const opts: any = {};
       if (onConflict) opts.onConflict = onConflict;
-      const { data, error } = await (supabase.from as any)(table).upsert(records, opts).select();
+      const { data, error } = await fromTable(table).upsert(records, opts).select();
       const durationMs = Date.now() - start;
       this.logQuery(table, "upsert", durationMs, !error);
       return { data: data as T[] ?? null, error: error?.message ?? null, status: error ? "error" : "success", rowCount: data?.length ?? 0, durationMs };

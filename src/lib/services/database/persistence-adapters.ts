@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 // ── Helpers ────────────────────────────────────────────────────
 
@@ -42,7 +43,7 @@ export const trustStateEventsAdapter = {
     const userId = await getUserId();
     if (!userId) return null;
     return safeQuery(() =>
-      (supabase.from as any)("trust_state_events")
+      fromTable("trust_state_events")
         .insert({ ...event, user_id: userId })
         .select()
         .single()
@@ -53,7 +54,7 @@ export const trustStateEventsAdapter = {
     const userId = await getUserId();
     if (!userId) return [];
     const data = await safeQuery<TrustStateEventRow[]>(() =>
-      (supabase.from as any)("trust_state_events")
+      fromTable("trust_state_events")
         .select("*")
         .eq("user_id", userId)
         .eq("entity_id", entityId)
@@ -67,7 +68,7 @@ export const trustStateEventsAdapter = {
     const userId = await getUserId();
     if (!userId) return [];
     const data = await safeQuery<TrustStateEventRow[]>(() =>
-      (supabase.from as any)("trust_state_events")
+      fromTable("trust_state_events")
         .select("*")
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
@@ -97,7 +98,7 @@ export const encryptedSecretsAdapter = {
     const userId = await getUserId();
     if (!userId) return null;
     return safeQuery(() =>
-      (supabase.from as any)("encrypted_secrets")
+      fromTable("encrypted_secrets")
         .upsert({
           user_id: userId,
           key_name: keyName,
@@ -117,7 +118,7 @@ export const encryptedSecretsAdapter = {
     const userId = await getUserId();
     if (!userId) return null;
     return safeQuery(() =>
-      (supabase.from as any)("encrypted_secrets")
+      fromTable("encrypted_secrets")
         .select("*")
         .eq("user_id", userId)
         .eq("key_name", keyName)
@@ -129,7 +130,7 @@ export const encryptedSecretsAdapter = {
     const userId = await getUserId();
     if (!userId) return [];
     const data = await safeQuery<EncryptedSecretRow[]>(() =>
-      (supabase.from as any)("encrypted_secrets")
+      fromTable("encrypted_secrets")
         .select("*")
         .eq("user_id", userId)
         .order("key_name")
@@ -140,7 +141,7 @@ export const encryptedSecretsAdapter = {
   async remove(keyName: string): Promise<boolean> {
     const userId = await getUserId();
     if (!userId) return false;
-    const { error } = await (supabase.from as any)("encrypted_secrets")
+    const { error } = await fromTable("encrypted_secrets")
       .delete()
       .eq("user_id", userId)
       .eq("key_name", keyName);
@@ -172,7 +173,7 @@ export const notificationsAdapter = {
     const userId = await getUserId();
     if (!userId) return null;
     return safeQuery(() =>
-      (supabase.from as any)("notifications_queue")
+      fromTable("notifications_queue")
         .insert({ ...notification, user_id: userId, status: "pending" })
         .select()
         .single()
@@ -180,7 +181,7 @@ export const notificationsAdapter = {
   },
 
   async markRead(id: string): Promise<boolean> {
-    const { error } = await (supabase.from as any)("notifications_queue")
+    const { error } = await fromTable("notifications_queue")
       .update({ status: "read", read_at: new Date().toISOString() })
       .eq("id", id);
     return !error;
@@ -190,7 +191,7 @@ export const notificationsAdapter = {
     const userId = await getUserId();
     if (!userId) return [];
     const data = await safeQuery<NotificationRow[]>(() =>
-      (supabase.from as any)("notifications_queue")
+      fromTable("notifications_queue")
         .select("*")
         .eq("user_id", userId)
         .in("status", ["pending", "sent", "delivered"])
@@ -204,7 +205,7 @@ export const notificationsAdapter = {
     const userId = await getUserId();
     if (!userId) return [];
     const data = await safeQuery<NotificationRow[]>(() =>
-      (supabase.from as any)("notifications_queue")
+      fromTable("notifications_queue")
         .select("*")
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
@@ -238,7 +239,7 @@ export const aiAgentTasksAdapter = {
     const userId = await getUserId();
     if (!userId) return null;
     return safeQuery(() =>
-      (supabase.from as any)("ai_agent_tasks")
+      fromTable("ai_agent_tasks")
         .insert({ ...task, user_id: userId, status: "pending" })
         .select()
         .single()
@@ -251,7 +252,7 @@ export const aiAgentTasksAdapter = {
     if (error) update.error_message = error;
     if (status === "running") update.started_at = new Date().toISOString();
     if (["completed", "failed"].includes(status)) update.completed_at = new Date().toISOString();
-    const { error: err } = await (supabase.from as any)("ai_agent_tasks").update(update).eq("id", id);
+    const { error: err } = await fromTable("ai_agent_tasks").update(update).eq("id", id);
     return !err;
   },
 
@@ -259,7 +260,7 @@ export const aiAgentTasksAdapter = {
     const userId = await getUserId();
     if (!userId) return [];
     const data = await safeQuery<AIAgentTaskRow[]>(() =>
-      (supabase.from as any)("ai_agent_tasks")
+      fromTable("ai_agent_tasks")
         .select("*")
         .eq("user_id", userId)
         .eq("agent_id", agentId)
@@ -273,7 +274,7 @@ export const aiAgentTasksAdapter = {
     const userId = await getUserId();
     if (!userId) return [];
     const data = await safeQuery<AIAgentTaskRow[]>(() =>
-      (supabase.from as any)("ai_agent_tasks")
+      fromTable("ai_agent_tasks")
         .select("*")
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
@@ -305,7 +306,7 @@ export const aiCostLedgerAdapter = {
     const userId = await getUserId();
     if (!userId) return null;
     return safeQuery(() =>
-      (supabase.from as any)("ai_cost_ledger")
+      fromTable("ai_cost_ledger")
         .insert({ ...entry, user_id: userId })
         .select()
         .single()
@@ -316,7 +317,7 @@ export const aiCostLedgerAdapter = {
     const userId = await getUserId();
     if (!userId) return { totalCents: 0, totalTokens: 0, entries: [] };
     const data = await safeQuery<AICostLedgerRow[]>(() =>
-      (supabase.from as any)("ai_cost_ledger")
+      fromTable("ai_cost_ledger")
         .select("*")
         .eq("user_id", userId)
         .gte("created_at", since)
@@ -334,7 +335,7 @@ export const aiCostLedgerAdapter = {
     const userId = await getUserId();
     if (!userId) return [];
     const data = await safeQuery<AICostLedgerRow[]>(() =>
-      (supabase.from as any)("ai_cost_ledger")
+      fromTable("ai_cost_ledger")
         .select("*")
         .eq("user_id", userId)
     );
@@ -376,7 +377,7 @@ export const capitalAllocationsAdapter = {
     const userId = await getUserId();
     if (!userId) return null;
     return safeQuery(() =>
-      (supabase.from as any)("capital_allocations")
+      fromTable("capital_allocations")
         .insert({ ...allocation, user_id: userId })
         .select()
         .single()
@@ -385,7 +386,7 @@ export const capitalAllocationsAdapter = {
 
   async updateUtilization(id: string, utilizationPct: number): Promise<boolean> {
     const status = utilizationPct >= 100 ? "depleted" : "active";
-    const { error } = await (supabase.from as any)("capital_allocations")
+    const { error } = await fromTable("capital_allocations")
       .update({ utilization_pct: utilizationPct, status, updated_at: new Date().toISOString() })
       .eq("id", id);
     return !error;
@@ -395,7 +396,7 @@ export const capitalAllocationsAdapter = {
     const userId = await getUserId();
     if (!userId) return [];
     const data = await safeQuery<CapitalAllocationRow[]>(() =>
-      (supabase.from as any)("capital_allocations")
+      fromTable("capital_allocations")
         .select("*")
         .eq("user_id", userId)
         .in("status", ["active", "pending"])
@@ -408,7 +409,7 @@ export const capitalAllocationsAdapter = {
     const userId = await getUserId();
     if (!userId) return [];
     const data = await safeQuery<CapitalAllocationRow[]>(() =>
-      (supabase.from as any)("capital_allocations")
+      fromTable("capital_allocations")
         .select("*")
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
@@ -443,7 +444,7 @@ export const communicationLogAdapter = {
     const userId = await getUserId();
     if (!userId) return null;
     return safeQuery(() =>
-      (supabase.from as any)("communication_log")
+      fromTable("communication_log")
         .insert({ ...entry, user_id: userId })
         .select()
         .single()
@@ -454,14 +455,14 @@ export const communicationLogAdapter = {
     const update: Record<string, unknown> = { status };
     if (status === "delivered") update.delivered_at = new Date().toISOString();
     if (status === "read") update.read_at = new Date().toISOString();
-    const { error } = await (supabase.from as any)("communication_log").update(update).eq("id", id);
+    const { error } = await fromTable("communication_log").update(update).eq("id", id);
     return !error;
   },
 
   async listByChannel(channel?: string, limit = 100): Promise<CommunicationLogRow[]> {
     const userId = await getUserId();
     if (!userId) return [];
-    let q = (supabase.from as any)("communication_log")
+    let q = fromTable("communication_log")
       .select("*")
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
@@ -475,7 +476,7 @@ export const communicationLogAdapter = {
     const userId = await getUserId();
     if (!userId) return { total: 0, byChannel: {}, byStatus: {} };
     const data = await safeQuery<CommunicationLogRow[]>(() =>
-      (supabase.from as any)("communication_log")
+      fromTable("communication_log")
         .select("channel,status")
         .eq("user_id", userId)
     );
@@ -514,7 +515,7 @@ export const sovereignExportsAdapter = {
     const userId = await getUserId();
     if (!userId) return null;
     return safeQuery(() =>
-      (supabase.from as any)("sovereign_exports")
+      fromTable("sovereign_exports")
         .insert({
           user_id: userId,
           export_type: exportType,
@@ -535,7 +536,7 @@ export const sovereignExportsAdapter = {
     if (opts?.fileSizeBytes) update.file_size_bytes = opts.fileSizeBytes;
     if (opts?.recordCount) update.record_count = opts.recordCount;
     if (status === "completed") update.completed_at = new Date().toISOString();
-    const { error } = await (supabase.from as any)("sovereign_exports").update(update).eq("id", id);
+    const { error } = await fromTable("sovereign_exports").update(update).eq("id", id);
     return !error;
   },
 
@@ -543,7 +544,7 @@ export const sovereignExportsAdapter = {
     const userId = await getUserId();
     if (!userId) return [];
     const data = await safeQuery<SovereignExportRow[]>(() =>
-      (supabase.from as any)("sovereign_exports")
+      fromTable("sovereign_exports")
         .select("*")
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
@@ -554,7 +555,7 @@ export const sovereignExportsAdapter = {
 
   async getExport(id: string): Promise<SovereignExportRow | null> {
     return safeQuery(() =>
-      (supabase.from as any)("sovereign_exports")
+      fromTable("sovereign_exports")
         .select("*")
         .eq("id", id)
         .single()

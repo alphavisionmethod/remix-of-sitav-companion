@@ -7,6 +7,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
@@ -244,7 +245,7 @@ const RevenueForecast = () => {
   const { data: liveTwins } = useQuery({
     queryKey: ["digital-twins"],
     queryFn: async () => {
-      const { data, error } = await (supabase.from as any)("digital_twins").select("*");
+      const { data, error } = await fromTable("digital_twins").select("*");
       if (error) throw error;
       return data?.length ? data.map((t: any) => ({
         id: t.id,
@@ -264,7 +265,7 @@ const RevenueForecast = () => {
   const { data: livePlaybooks } = useQuery({
     queryKey: ["playbook-metrics"],
     queryFn: async () => {
-      const { data, error } = await (supabase.from as any)("playbook_metrics").select("*");
+      const { data, error } = await fromTable("playbook_metrics").select("*");
       if (error) throw error;
       return data?.length ? data.map((p: any) => ({
         id: p.playbook_id,
