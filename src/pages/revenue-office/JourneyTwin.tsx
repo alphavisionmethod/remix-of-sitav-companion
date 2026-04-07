@@ -3,8 +3,9 @@ import { Route, Eye, MousePointer, Mail, Phone, CreditCard, Star, ArrowRight, Cl
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const JOURNEY_STAGES = [
+const DEMO_JOURNEY_STAGES = [
   {
     stage: "Awareness",
     touchpoints: [
