@@ -202,9 +202,9 @@ class TelemetryCollector {
     try {
       const inpObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          const duration = (entry as unknown as Record<string, unknown>).duration ?? entry.startTime;
+          const duration = ((entry as unknown as Record<string, unknown>).duration as number) ?? entry.startTime;
           if (duration > 0) {
-            this.record("inp", duration, "ms", { type: "web-vital", name: entry.name });
+            this.record("inp", duration as number, "ms", { type: "web-vital", name: entry.name });
           }
         }
       });
