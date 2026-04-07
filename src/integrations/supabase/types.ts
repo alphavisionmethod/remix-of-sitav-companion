@@ -4169,6 +4169,95 @@ export type Database = {
         }
         Relationships: []
       }
+      boardroom_decisions: {
+        Row: {
+          advisor: string | null
+          created_at: string | null
+          decided_at: string | null
+          decision_text: string
+          domain: string | null
+          id: string
+          session_id: string
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          advisor?: string | null
+          created_at?: string | null
+          decided_at?: string | null
+          decision_text: string
+          domain?: string | null
+          id?: string
+          session_id: string
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          advisor?: string | null
+          created_at?: string | null
+          decided_at?: string | null
+          decision_text?: string
+          domain?: string | null
+          id?: string
+          session_id?: string
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boardroom_decisions_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      boardroom_sessions: {
+        Row: {
+          completed_at: string | null
+          confidence_score: number | null
+          created_at: string | null
+          id: string
+          session_type: string | null
+          slides_data: Json | null
+          started_at: string | null
+          status: string | null
+          summary_text: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          session_type?: string | null
+          slides_data?: Json | null
+          started_at?: string | null
+          status?: string | null
+          summary_text?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          session_type?: string | null
+          slides_data?: Json | null
+          started_at?: string | null
+          status?: string | null
+          summary_text?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           created_at: string
