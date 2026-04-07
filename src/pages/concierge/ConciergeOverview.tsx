@@ -132,6 +132,60 @@ const ConciergeOverview = () => {
   const { data: tasks = [] } = useHouseholdTasks();
   const { data: events = [] } = useFamilyEvents();
 
+  const kpiSummary = useMemo(() => deriveKPIs(tasks, events), [tasks, events]);
+  const todaysPriorities = useMemo(() => derivePriorities(tasks, events), [tasks, events]);
+  const upcomingSchedule = useMemo(() => deriveUpcomingSchedule(events), [events]);
+
+  // Derive drifting items from overdue tasks
+  const driftingItems = useMemo(() => {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    return tasks
+      .filter((t: any) => t.status !== "done" && t.due_date && t.due_date < todayStr)
+      .slice(0, 4)
+      .map((t: any) => ({
+        item: `${t.title} — ${Math.ceil((Date.now() - new Date(t.due_date).getTime()) / 86400000)} days overdue`,
+        severity: (t.priority === "high" ? "high" : t.priority === "medium" ? "medium" : "low") as "high" | "medium" | "low",
+      }));
+  }, [tasks]);
+
+  // Derive school alerts from tasks with school category
+  const schoolAlerts = useMemo(() => {
+    return tasks
+      .filter((t: any) => (t.category || "").toLowerCase().includes("school") && t.status !== "done")
+      .slice(0, 4)
+      .map((t: any) => ({
+        title: t.title,
+        child: t.assigned_to || "Child",
+        urgency: t.priority === "high" ? "high" : "medium",
+      }));
+  }, [tasks]);
+
+  // Derive grocery alerts from shopping/grocery tasks
+  const groceryAlerts = useMemo(() => {
+    return tasks
+      .filter((t: any) => ((t.category || "").toLowerCase().includes("grocer") || (t.category || "").toLowerCase().includes("shopping")) && t.status !== "done")
+      .slice(0, 3)
+      .map((t: any) => ({
+        item: t.title,
+        lastPurchased: t.due_date || "Unknown",
+        cycle: "As needed",
+        status: (t.priority === "high" ? "out" : t.priority === "medium" ? "low" : "ok") as "out" | "low" | "ok",
+      }));
+  }, [tasks]);
+
+  // Derive recent proof from completed tasks
+  const recentProof = useMemo(() => {
+    return tasks
+      .filter((t: any) => t.status === "done")
+      .sort((a: any, b: any) => (b.updated_at || "").localeCompare(a.updated_at || ""))
+      .slice(0, 4)
+      .map((t: any) => ({
+        action: t.title,
+        time: t.updated_at ? new Date(t.updated_at).toLocaleDateString() : "Recently",
+        verified: true,
+      }));
+  }, [tasks]);
+
   const hasLiveData = isDemoMode || tasks.length > 0 || events.length > 0;
 
   if (!hasLiveData) {
