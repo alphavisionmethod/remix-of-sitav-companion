@@ -24,6 +24,8 @@ import { Suspense, lazy } from "react";
 // CODE-SPLIT: Lazy-load all page components
 // ═══════════════════════════════════════════════════
 const DailyPulse = lazy(() => import("./pages/DailyPulse"));
+const LandingPage = lazy(() => import("./pages/LandingPage"));
+const UserProfilePage = lazy(() => import("./pages/UserProfilePage"));
 const BusinessCenter = lazy(() => import("./pages/BusinessCenter"));
 const CustomerDetail = lazy(() => import("./pages/CustomerDetail"));
 const MoneyCenter = lazy(() => import("./pages/MoneyCenter"));
