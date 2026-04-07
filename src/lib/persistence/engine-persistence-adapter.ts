@@ -78,7 +78,7 @@ export async function loadEngineState<T = Record<string, unknown>>(
     console.error(`[persistence] engine_state load failed for ${engineName}:`, error);
     return null;
   }
-  return data?.state_data ?? null;
+  return (data?.state_data ?? null) as T | null;
 }
 
 // ── Load all engine states for current user ─────────────────────
