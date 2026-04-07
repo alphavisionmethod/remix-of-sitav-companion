@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { DollarSign, Clock, AlertTriangle, CheckCircle, Send, Phone, Receipt, Plus, X, Trash2, FileText, Loader2 } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useInvoiceGenerate } from "@/hooks/use-backend-actions";
+import { useInvoiceGenerate, useInvoiceSend } from "@/hooks/use-backend-actions";
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
