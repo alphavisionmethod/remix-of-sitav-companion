@@ -358,7 +358,40 @@ const CalendarWorkspace = () => {
         </div>
       </div>
 
-      {/* Create Event Dialog */}
+      {/* Bookings Section */}
+      <div className="mt-6">
+        <SitaCard className="p-4">
+          <div className="flex items-center justify-between mb-3">
+            <SitaCardTitle>Travel & Bookings</SitaCardTitle>
+            <Button size="sm" variant="outline" className="gap-1.5 text-xs" onClick={() => {
+              createBooking.mutate({
+                title: "New Booking",
+                booking_type: "travel",
+                start_date: format(selectedDate, "yyyy-MM-dd"),
+              });
+            }} disabled={createBooking.isPending}>
+              <Plus className="w-3 h-3" /> Add Booking
+            </Button>
+          </div>
+          {(bookings as any[]).length === 0 ? (
+            <p className="text-xs text-muted-foreground text-center py-4">No bookings yet. Add your first travel or appointment booking.</p>
+          ) : (
+            <div className="space-y-2">
+              {(bookings as any[]).map((b: any) => (
+                <div key={b.id} className="flex items-center justify-between p-3 rounded-lg border border-border/30 bg-secondary/10">
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{b.title}</p>
+                    <p className="text-xs text-muted-foreground">{b.booking_type} · {b.start_date}{b.end_date ? ` – ${b.end_date}` : ""}</p>
+                  </div>
+                  <Button size="sm" variant="ghost" className="text-xs text-muted-foreground hover:text-destructive" onClick={() => cancelBooking.mutate({ booking_id: b.id })}>
+                    <Trash2 className="w-3 h-3" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </SitaCard>
+      </div>
       <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
         <DialogContent>
           <DialogHeader><DialogTitle>New Event</DialogTitle></DialogHeader>
