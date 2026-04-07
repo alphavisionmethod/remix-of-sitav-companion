@@ -802,7 +802,46 @@ export function OSSetupExperience() {
                     onUpdate={ps => setState(s => ({ ...s, planningStyle: ps }))} onNext={goNext} onPrev={goPrev} />
                 )}
 
-                {phase === "primary-use-mode" && (
+                {phase === "explanation-style" && (
+                  <ExplanationStyleStep key="explanation-style"
+                    selected={state.explanationStyle}
+                    onSelect={v => setState(s => ({ ...s, explanationStyle: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "presence-style" && (
+                  <PresenceStyleStep key="presence-style"
+                    selected={state.presenceStyle}
+                    onSelect={v => setState(s => ({ ...s, presenceStyle: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "interruption-style" && (
+                  <InterruptionStyleStep key="interruption-style"
+                    selected={state.interruptionStyle}
+                    onSelect={v => setState(s => ({ ...s, interruptionStyle: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "rituals" && (
+                  <RitualsStep key="rituals"
+                    selected={state.rituals}
+                    onToggle={key => setState(s => ({ ...s, rituals: s.rituals.includes(key) ? s.rituals.filter(r => r !== key) : [...s.rituals, key] }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "home-composition" && (
+                  <HomeCompositionStep key="home-composition"
+                    selected={state.homeComposition}
+                    onSelect={v => setState(s => ({ ...s, homeComposition: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "desktop-preview" && (
+                  <DesktopPreviewStep key="desktop-preview" onNext={goNext} onPrev={goPrev} />
+                )}
+
+
                   <PrimaryUseModeStep key="primary-use-mode"
                     selected={state.primaryUseMode}
                     onSelect={mode => setState(s => ({ ...s, primaryUseMode: mode }))}
