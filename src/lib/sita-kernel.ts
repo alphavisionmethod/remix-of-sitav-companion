@@ -74,6 +74,8 @@ export class SitaKernel {
 
   // ── Isolated: Trust & Safety ──────────────────────────────
   readonly fraudSentinel: FraudSentinelService;
+  readonly governanceSimulator: GovernanceSimulatorService;
+  readonly searchFabric: SearchFabricService;
 
   // ── Tier 2: Subdomains ────────────────────────────────────
   readonly agents: AgentOrchestrator;
