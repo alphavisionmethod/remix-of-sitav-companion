@@ -22,6 +22,8 @@ import { usePackInstalls } from "@/hooks/use-live-data";
 
 const PackStorePage = () => {
   const navigate = useNavigate();
+  const { isDemoMode } = useDataMode();
+  const { data: liveInstalls } = usePackInstalls();
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
   const featured = getFeaturedPacks();
