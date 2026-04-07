@@ -290,7 +290,7 @@ const OwnerCenter = () => {
     { key: "policies", label: "Policies" },
     { key: "autopilot", label: "Autopilot" },
     { key: "fleet", label: "Fleet" },
-    { key: "council", label: "Council", count: (councilData?.summary?.pending || 0) },
+    { key: "council", label: "Council", count: (cncD?.summary?.pending || 0) },
     { key: "audit", label: "Audit" },
     { key: "workforce", label: "Workforce", count: workforceData?.summary?.totalAgents },
     { key: "connectors", label: "Connectors" },
