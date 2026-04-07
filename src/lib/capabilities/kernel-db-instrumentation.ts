@@ -22,28 +22,30 @@ export function emitKernelDbEvent(
     const kernel = getSitaKernel();
     if (!kernel?.eventBus) return;
 
-    kernel.eventBus.emit({
-      type: `db.${operation}`,
-      domain: inferDomain(table),
-      source: `supabase:${table}`,
-      payload: {
-        table,
-        operation,
-        timestamp: Date.now(),
-        ...(operation !== "select" ? { mutationPayload: summarize(payload) } : {}),
-      },
+    kernel.eventBus.publish(`db.${operation}`, {
+      table,
+      operation,
       timestamp: Date.now(),
+      ...(operation !== "select" ? { mutationPayload: summarize(payload) } : {}),
+    }, {
+      source: `supabase:${table}`,
+      domain: inferDomain(table),
     });
 
     // For mutations, also record a receipt
     if (operation !== "select" && kernel.receipts) {
-      kernel.receipts.issue({
-        domain: inferDomain(table),
-        action: `${table}.${operation}`,
-        surface: "database",
-        result: "completed",
-        metadata: { table, operation },
-      });
+      kernel.receipts.createReceipt(
+        `db-${table}-${Date.now()}`,
+        "execution-summary",
+        {
+          domain: inferDomain(table),
+          action: `${table}.${operation}`,
+          surface: "database",
+          result: "completed",
+          table,
+          operation,
+        },
+      );
     }
   } catch {
     // Never block DB operations if kernel instrumentation fails
