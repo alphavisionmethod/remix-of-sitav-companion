@@ -250,12 +250,33 @@ const SlideInsight = ({ title, text, confidence, isRisk }: { title: string; text
 
 export default function BoardroomReplay() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [slides] = useState(generateWeeklySlides);
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const INTERVAL = 15; // seconds per slide
+  const [sessionSaved, setSessionSaved] = useState(false);
+  const INTERVAL = 15;
   const [elapsed, setElapsed] = useState(0);
+
+  const handleSaveSession = async () => {
+    if (!user || sessionSaved) return;
+    try {
+      await (supabase as any).from("boardroom_sessions").insert({
+        user_id: user.id,
+        session_type: "weekly",
+        title: "Weekly Executive Review",
+        slides_data: slides.map(s => ({ id: s.id, title: s.title, domain: s.domain })),
+        confidence_score: 87,
+        status: "completed",
+        completed_at: new Date().toISOString(),
+      });
+      setSessionSaved(true);
+      toast.success("Session saved to history");
+    } catch {
+      toast.error("Failed to save session");
+    }
+  };
 
   useEffect(() => {
     if (!isPlaying) return;
