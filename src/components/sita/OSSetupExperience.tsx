@@ -777,7 +777,7 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-
+                {phase === "privacy-transparency" && (
                   <PrivacyTransparencyStep key="privacy-transparency"
                     permissionChoices={state.permissionChoices}
                     onUpdate={choices => setState(s => ({ ...s, permissionChoices: choices }))}
