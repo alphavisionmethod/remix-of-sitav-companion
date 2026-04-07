@@ -449,6 +449,16 @@ export function OSSetupExperience() {
     stressMap: { heavierThanShould: [], affectedFirst: [] },
     commsContext: { communicationStress: "", supportNeeds: [] },
     planningStyle: { viewPreference: "", focusPreference: "" },
+    wantLessOf: [],
+    protectMost: [],
+    explanationStyle: "",
+    presenceStyle: "",
+    interruptionStyle: "",
+    rituals: [],
+    householdGraph: [],
+    memoryConsent: "",
+    homeComposition: "",
+    recoverFirst: "",
   });
 
   // Sync setup state to engine for branch evaluation
