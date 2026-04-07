@@ -1,69 +1,54 @@
 
 
-# SITA OS — Final Audit: Remaining Gaps to 100%
+# SITA OS — Final Audit Results
 
-## What's Already Solid (No Changes Needed)
-- Landing page: Beautiful hero, value props, CTAs, mobile responsive
-- Login page: Split-panel, Google OAuth, Demo mode, lock screen for returning users
-- Signup page: Full flow with email verification confirmation
-- Forgot password: Complete with reset link flow
+## What's 100% Done (Confirmed)
+- Landing, Login, Signup, Forgot Password pages: Beautiful, functional, zero errors
 - 50 edge functions: All substantive with Zod, CORS, auth, rate limiting
-- 100+ migrations, RLS on all tables
-- CI/CD: 12-job pipeline + manual deploy workflow
-- Push notifications: VAPID hardened, 3 edge functions, Deno + E2E tests
-- PWA: manifest, icons, service worker with offline + push
+- 443 tables, all with RLS enabled
+- CI/CD: 12-job pipeline + manual deploy
+- PWA: manifest, icons, SW with offline + push (icon paths correct)
 - Error handling: GlobalErrorBoundary + RouteErrorBoundary + query error toasts
-- CSP meta tag, OG/Twitter meta tags, robots.txt, sitemap.xml
-- Accessibility: Loading spinners have role="status" + aria-label
+- CSP, OG meta, Twitter cards, robots.txt, sitemap.xml, canonical
+- Accessibility: All loading spinners have role="status" + aria-label
 - Health.json generated at build time
-- Desktop shell, Daily Pulse, Settings — all wired to Supabase
+- Avatar bucket: Created, RLS correct, upload paths fixed
 - Zero console errors, zero network errors
+- TypeScript compiles clean
 
----
+## One Remaining Gap: RLS Policies Target `public` Instead of `authenticated`
 
-## Gap 1: CRITICAL — Avatar Upload Path Mismatches RLS Policy
+**Severity: HIGH (Security Hardening)**
 
-**Bug:** Both `UserProfilePage.tsx` (line 90) and `SettingsPage.tsx` (line 246) upload to path `avatars/${user.id}.${ext}` within the `avatars` bucket. But the RLS policy checks `storage.foldername(name)[1] = auth.uid()`, which expects the path to be `${user.id}/filename.ext` (user ID as a folder).
+The security scan found that **431 of 615 RLS policies** apply to the `{public}` role instead of `{authenticated}`. While `auth.uid() = user_id` prevents actual data leakage (returns NULL for anon), this is defense-in-depth: the `authenticated` role ensures Supabase rejects unauthenticated API calls before RLS evaluation even runs.
 
-Current path: `avatars/abc123.png` → foldername = `['avatars']` → **RLS denies upload**
-Correct path: `abc123/avatar.png` → foldername = `['abc123']` → **RLS allows**
+This means tables like `customers`, `leads`, `connector_oauth_tokens`, `financial_accounts`, `encrypted_secrets`, and hundreds more are technically queryable by unauthenticated clients (though the WHERE clause blocks actual rows).
 
-**Fix:** Change both pages' upload path from `avatars/${user.id}.${ext}` to `${user.id}/avatar.${ext}`.
+**Fix:** A single migration that:
+1. Drops all 431 `public`-role policies
+2. Recreates them identically but targeting `authenticated` role
 
----
+This is a bulk SQL operation. The policies themselves (qual + with_check) remain unchanged -- only the role changes from `public` to `authenticated`.
 
-## Gap 2: PublicRoute Returns `null` During Loading
+### Technical approach
 
-**Issue:** `PublicRoute` (App.tsx line 644) returns `null` during auth loading — a blank flash. All other guards (`ProtectedRoute`, `OnboardingGuard`, `HomeRoute`) correctly show accessible loading spinners.
+Generate the migration SQL by querying `pg_policies` for all policies where `'public' = ANY(roles)` in the `public` schema, then for each:
+```sql
+DROP POLICY "policy_name" ON public.table_name;
+CREATE POLICY "policy_name" ON public.table_name
+  FOR cmd TO authenticated
+  USING (original_qual) WITH CHECK (original_with_check);
+```
 
-**Fix:** Replace `return null` with the same accessible spinner pattern used by `ProtectedRoute`.
+This will be a large migration (~1200 lines) but is purely mechanical and safe -- no data changes, no schema changes, just role reassignment.
 
----
+### Dashboard-only item (no code fix)
+- **Leaked password protection**: Enable via Supabase Dashboard -> Auth -> Settings -> Password Security
 
-## Gap 3: SW Push Icon Paths Reference Non-Existent Files
+### Files
+| Action | File |
+|---|---|
+| Create | New migration: bulk RLS role change from `public` to `authenticated` |
 
-**Issue:** `sw.js` lines 88-89 reference `/pwa-192x192.png` and `/pwa-64x64.png` for notification icons/badges. These files don't exist — the actual icons are at `/icons/icon-192.png` and `/icons/icon-512.png`.
-
-**Fix:** Update icon paths to `/icons/icon-192.png` and badge to `/icons/icon-192.png` (or create a 64px badge icon).
-
----
-
-## Gap 4: ForgotPassword Imports Missing Logo File
-
-**Issue:** `ForgotPassword.tsx` line 6 imports `@/assets/logo.jpeg`. If this file doesn't exist, the page will fail to render. The Login and Signup pages use inline SVG/icon components instead.
-
-**Fix:** Verify `src/assets/logo.jpeg` exists. If not, replace with the inline Brain icon pattern used by Login/Signup pages.
-
----
-
-## Implementation Plan
-
-| # | Task | Files | Severity |
-|---|---|---|---|
-| 1 | Fix avatar upload path to match RLS | `UserProfilePage.tsx`, `SettingsPage.tsx` | CRITICAL |
-| 2 | Fix PublicRoute loading state | `App.tsx` (1 line) | HIGH |
-| 3 | Fix SW notification icon paths | `public/sw.js` (2 lines) | MEDIUM |
-| 4 | Verify/fix ForgotPassword logo import | `src/pages/auth/ForgotPassword.tsx` | MEDIUM |
-
-Total: 4 gaps, 5 files, all fixable in one pass.
+After this single migration, the security scan will be clean and the project is truly 100% deployment-ready.
 
