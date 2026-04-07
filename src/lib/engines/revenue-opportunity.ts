@@ -190,8 +190,8 @@ export class RevenueOpportunityEngine {
 
   hydrate(state: Record<string, unknown>): void {
     if (state.signals) this.signals = new Map(state.signals as Iterable<[string, never]>) as typeof this.signals;
-    if (state.recoveries) this.recoveries = state.recoveries as never;
-    if (state.outcomes) this.outcomes = state.outcomes as never;
-    if (state.config) this.config = { ...this.config, ...(state.config as never) };
+    if (state.recoveries) this.recoveries = state.recoveries as typeof this.recoveries;
+    if (state.outcomes) this.outcomes = state.outcomes as typeof this.outcomes;
+    if (state.config) this.config = { ...this.config, ...(state.config as Record<string, unknown>) };
   }
 }

@@ -100,7 +100,7 @@ export class EntityRoleGraph {
     // 2. Check delegations
     const delegations = this.getActiveDelegations(query.actorId);
     for (const d of delegations) {
-      if (d.toEntityId === query.actorId && d.scope.actions.includes(query.action as never)) {
+      if (d.toEntityId === query.actorId && d.scope.actions.includes(query.action as string)) {
         if (d.maxAmount && query.amount && query.amount > d.maxAmount) continue;
         if (d.maxUsages && d.usageCount >= d.maxUsages) continue;
         delegationChain.push(`delegation:${d.id} from ${d.fromEntityId}`);
