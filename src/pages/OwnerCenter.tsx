@@ -1936,7 +1936,7 @@ const OwnerCenter = () => {
             <SitaSectionHeader title="Release Gates" />
             <SitaCard hover={false} className="p-4">
               <div className="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
-                {((releasesData as Record<string, unknown>)?.gates || []).map((g: any) => (
+                {(releasesData?.gates || []).map((g: any) => (
                   <div key={g.name} className="flex items-center gap-2 text-xs">
                     {g.passed ? <CheckCircle className="h-3.5 w-3.5 text-trust-safe" /> : <XCircle className="h-3.5 w-3.5 text-destructive" />}
                     <span className="text-foreground">{g.name}</span>
