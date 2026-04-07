@@ -137,7 +137,7 @@ export const useCreateExecutionPath = () => {
     mutationFn: async (path: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_execution_paths').insert({ ...path, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_execution_paths').insert({ ...path, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
