@@ -439,6 +439,13 @@ const LAUNCH04BlockerCommand = lazy(() => import("./pages/admin/launch/LAUNCH04B
 const LAUNCH06NarrativeGuide = lazy(() => import("./pages/admin/launch/LAUNCH06NarrativeGuide"));
 const LAUNCH07GoNoGo = lazy(() => import("./pages/admin/launch/LAUNCH07GoNoGo"));
 
+// Security Command Center
+const SEC01PostureExecutive = lazy(() => import("./pages/admin/security/SEC01PostureExecutive"));
+const SEC02PrivilegedActions = lazy(() => import("./pages/admin/security/SEC02PrivilegedActions"));
+const SEC03SensitiveAssets = lazy(() => import("./pages/admin/security/SEC03SensitiveAssets"));
+const SEC04EdgeFunctionAudit = lazy(() => import("./pages/admin/security/SEC04EdgeFunctionAudit"));
+const SEC05ClaimSafety = lazy(() => import("./pages/admin/security/SEC05ClaimSafety"));
+
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
@@ -1405,6 +1412,14 @@ const App = () => (
                      <Route path="/admin/launch/blockers" element={<LAUNCH04BlockerCommand />} />
                      <Route path="/admin/launch/narrative" element={<LAUNCH06NarrativeGuide />} />
                      <Route path="/admin/launch/go-no-go" element={<LAUNCH07GoNoGo />} />
+
+                     {/* Security Command Center */}
+                     <Route path="/admin/security/posture" element={<SEC01PostureExecutive />} />
+                     <Route path="/admin/security/privileged-actions" element={<SEC02PrivilegedActions />} />
+                     <Route path="/admin/security/sensitive-assets" element={<SEC03SensitiveAssets />} />
+                     <Route path="/admin/security/edge-functions" element={<SEC04EdgeFunctionAudit />} />
+                     <Route path="/admin/security/claim-safety" element={<SEC05ClaimSafety />} />
+
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
