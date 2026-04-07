@@ -194,10 +194,10 @@ export function useToggleHealthConsent() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, enabled }: { id: string; enabled: boolean }) => {
-      const updates: Record<string, any> = { read_permission: enabled };
-      if (!enabled) updates.revoked_at = new Date().toISOString();
-      else updates.revoked_at = null;
-      const { error } = await supabase.from("ecosystem_health_consents").update(updates).eq("id", id);
+      const { error } = await supabase.from("ecosystem_health_consents").update({
+        read_permission: enabled,
+        revoked_at: enabled ? null : new Date().toISOString(),
+      }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
