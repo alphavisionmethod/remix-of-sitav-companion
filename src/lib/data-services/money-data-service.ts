@@ -148,7 +148,7 @@ export async function fetchFinancialAccounts(mode: RealityModeKey = "real"): Pro
   const userId = await getUserId();
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_ACCOUNTS, emptyDefault: [] });
   const { data, error } = await fromTable("financial_accounts").select("*").eq("user_id", userId).order("created_at", { ascending: false });
-  const mapped = (!error && data && data.length > 0) ? (data as never[]).map((a): FinancialAccount => ({
+  const mapped = (!error && data && data.length > 0) ? ((data as unknown as Record<string, unknown>[])).map((a): FinancialAccount => ({
     id: a.id, name: a.name, institution: a.institution || "", account_type: a.account_type,
     balance: Number(a.balance), currency: a.currency, trend: Number(a.trend || 0), last_synced_at: a.last_synced_at,
   })) : null;
@@ -160,7 +160,7 @@ export async function fetchMoneyPolicies(mode: RealityModeKey = "real"): Promise
   const userId = await getUserId();
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_POLICIES, emptyDefault: [] });
   const { data, error } = await fromTable("money_policies").select("*").eq("user_id", userId).order("created_at", { ascending: false });
-  const mapped = (!error && data && data.length > 0) ? (data as never[]).map((p): MoneyPolicy => ({
+  const mapped = (!error && data && data.length > 0) ? ((data as unknown as Record<string, unknown>[])).map((p): MoneyPolicy => ({
     id: p.id, title: p.title, description: p.description || "", category: p.category,
     enabled: p.enabled, threshold: p.threshold ? Number(p.threshold) : null, icon_key: p.icon_key,
   })) : null;
@@ -197,7 +197,7 @@ export async function fetchFinancialDocuments(mode: RealityModeKey = "real"): Pr
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_DOCUMENTS, emptyDefault: [] });
   // Use files table filtered to finance category
   const { data, error } = await fromTable("documents").select("*").eq("user_id", userId).eq("category", "finance").order("created_at", { ascending: false });
-  const mapped = (!error && data && data.length > 0) ? (data as never[]).map((f): FinancialDocument => ({
+  const mapped = (!error && data && data.length > 0) ? ((data as unknown as Record<string, unknown>[])).map((f): FinancialDocument => ({
     id: f.id, name: f.file_name || f.name, doc_type: f.subcategory || "document", classification: f.subcategory || "Document",
     sensitivity: f.sensitivity_label || "normal", linked_to: null, extracted_data: f.ai_extracted_data || {},
     boardroom_relevant: false, proof_relevant: false, status: f.processing_status || "processed", created_at: f.created_at,
