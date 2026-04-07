@@ -2,7 +2,7 @@ import { Home, Briefcase, DollarSign, Headphones, Workflow, Receipt, BarChart3, 
   Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw, Target, GitBranch, MessageSquare, Bell, Mail, Lock, Image, Cloud, LayoutDashboard, TrendingUp, Landmark } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useUserPreferences, showBusinessNav, showConciergeNav } from "@/hooks/use-user-preferences";
@@ -176,6 +176,7 @@ export function AppSidebar() {
   const { preferences } = useUserPreferences();
   const role = preferences.role;
   const location = useLocation();
+  const navigate = useNavigate();
   const isOwnerArea = location.pathname.startsWith("/owner");
 
   const displayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
@@ -244,14 +245,16 @@ export function AppSidebar() {
           </SidebarGroup>
         )}
         {user && (
-          <div className="mt-2 px-1">
+          <div className="mt-2 px-1 flex items-center gap-1">
             <button
-              onClick={signOut}
-              data-testid="sign-out-btn"
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium text-muted-foreground transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
+              onClick={() => navigate("/profile")}
+              className="flex flex-1 items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium text-muted-foreground transition-all duration-200 hover:bg-secondary/60 hover:text-foreground min-w-0"
+              title="My Profile"
             >
               {collapsed ? (
-                <LogOut className="h-[18px] w-[18px] shrink-0" strokeWidth={1.8} />
+                <div className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-primary/10 text-[8px] font-bold text-primary shrink-0">
+                  {initials}
+                </div>
               ) : (
                 <>
                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary shrink-0">
@@ -261,9 +264,16 @@ export function AppSidebar() {
                     <p className="text-xs font-medium text-foreground truncate">{displayName}</p>
                     <p className="text-[10px] text-muted-foreground truncate">{user.email}</p>
                   </div>
-                  <LogOut className="h-4 w-4 shrink-0" strokeWidth={1.8} />
                 </>
               )}
+            </button>
+            <button
+              onClick={signOut}
+              data-testid="sign-out-btn"
+              className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors shrink-0"
+              title="Sign out"
+            >
+              <LogOut className="h-4 w-4" strokeWidth={1.8} />
             </button>
           </div>
         )}

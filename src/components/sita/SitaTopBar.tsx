@@ -231,6 +231,18 @@ export const SitaTopBar = ({
           )}
         </button>
 
+        {/* Profile avatar */}
+        {user && (
+          <button
+            onClick={() => navigate("/profile")}
+            className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary hover:bg-primary/20 transition-colors"
+            title="My Profile"
+            aria-label="My Profile"
+          >
+            {(user.user_metadata?.display_name || user.email || "U").charAt(0).toUpperCase()}
+          </button>
+        )}
+
         {/* Clock — desktop only */}
         <span className="text-[11px] font-medium text-muted-foreground tabular-nums ml-1 hidden lg:inline">{clock}</span>
       </div>

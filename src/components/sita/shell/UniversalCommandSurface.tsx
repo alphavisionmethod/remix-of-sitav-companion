@@ -74,6 +74,7 @@ const COMMAND_INDEX: CommandItem[] = [
   { id: "nav-comms", label: "Communications", sublabel: "Messages & channels", icon: MessageSquare, path: "/communications", category: "navigate", keywords: ["communications", "messages"] },
   { id: "nav-approvals", label: "Approvals", sublabel: "Decision queue", icon: CheckCircle, path: "/approvals", category: "navigate", keywords: ["approvals", "queue"] },
   { id: "nav-life", label: "Life Dashboard", sublabel: "Personal overview", icon: Activity, path: "/life", category: "navigate", keywords: ["life", "personal", "dashboard"] },
+  { id: "nav-profile", label: "My Profile", sublabel: "View and edit your profile", icon: Users, path: "/profile", category: "navigate", keywords: ["profile", "account", "avatar", "settings", "user"] },
   { id: "nav-twins", label: "Digital Twins", sublabel: "Predictive models", icon: Users, path: "/digital-twins", category: "navigate", keywords: ["twins", "predictive"] },
   // Advisors
   { id: "adv-business", label: "Business Advisor", sublabel: "Pipeline & revenue", icon: Briefcase, path: "/advisors/business-advisor", category: "advisor", domain: "business", keywords: ["business", "advisor"] },
