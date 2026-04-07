@@ -24,6 +24,8 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function OpportunityBoard() {
+  const { isDemoMode } = useDataMode();
+  const opportunities = isDemoMode ? DEMO_opportunities : DEMO_opportunities;
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />

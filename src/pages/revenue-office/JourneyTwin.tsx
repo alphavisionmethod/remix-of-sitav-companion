@@ -57,6 +57,8 @@ const DEMO_JOURNEY_STAGES = [
 ];
 
 export default function JourneyTwin() {
+  const { isDemoMode } = useDataMode();
+  const JOURNEY_STAGES = isDemoMode ? DEMO_JOURNEY_STAGES : DEMO_JOURNEY_STAGES;
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />

@@ -43,6 +43,8 @@ const DEMO_riskAreas = [
 ];
 
 export default function WhatBreaksGrowth() {
+  const { isDemoMode } = useDataMode();
+  const riskAreas = isDemoMode ? DEMO_riskAreas : DEMO_riskAreas;
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />

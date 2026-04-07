@@ -21,6 +21,8 @@ const DEMO_memoryEvents = [
 const typeLabels: Record<string, string> = { campaign: "Campaign", reputation: "Reputation", crm: "CRM", booking: "Booking", advisor: "Advisor", funnel: "Funnel", membership: "Membership", offer: "Offer" };
 
 export default function CommercialMemoryFeed() {
+  const { isDemoMode } = useDataMode();
+  const memoryEvents = isDemoMode ? DEMO_memoryEvents : DEMO_memoryEvents;
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />
