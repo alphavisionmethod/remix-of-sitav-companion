@@ -466,17 +466,14 @@ export function useSearchFabric() {
 // ── Self-Healing Services Hook ──────────────────────────────────
 
 export function useSelfHealingServices() {
-  return useMemo(() => {
-    const { createSelfHealingService, createImmuneController, createFleetHealthService, HEALING_CAPABILITY_MAP, ESCALATION_RULES, DEGRADED_MODES } = require("@/lib/core-services/self-healing");
-    return {
-      selfHealing: createSelfHealingService(),
-      immune: createImmuneController(),
-      fleet: createFleetHealthService(),
-      capabilities: HEALING_CAPABILITY_MAP,
-      escalation: ESCALATION_RULES,
-      degradedModes: DEGRADED_MODES,
-    };
-  }, []);
+  return useMemo(() => ({
+    selfHealing: createSelfHealingService(),
+    immune: createImmuneController(),
+    fleet: createFleetHealthService(),
+    capabilities: HEALING_CAPABILITY_MAP,
+    escalation: ESCALATION_RULES,
+    degradedModes: DEGRADED_MODES,
+  }), []);
 }
 
 // ── Life Simulator Hook ─────────────────────────────────────────
