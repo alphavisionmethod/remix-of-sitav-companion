@@ -255,11 +255,17 @@ const OwnerCenter = () => {
   const [expandedAgent, setExpandedAgent] = useState<string | null>(null);
   const [workforceView, setWorkforceView] = useState<"councils" | "rights" | "watchdog" | "readiness">("councils");
 
-  const incidents = incidentData?.incidents || [];
-  const policies = policyData?.policies || [];
-  const auditLogs = auditData?.logs || [];
-  const devices = fleetData?.devices || [];
-  const decisions = councilData?.decisions || [];
+  const incD = incidentData as { incidents?: any[]; summary?: any } | undefined;
+  const polD = policyData as { policies?: any[]; summary?: any } | undefined;
+  const audD = auditData as { logs?: any[]; total?: number } | undefined;
+  const fltD = fleetData as { devices?: any[]; kpis?: any; summary?: string; status?: string } | undefined;
+  const cncD = councilData as { decisions?: any[]; summary?: any } | undefined;
+
+  const incidents = incD?.incidents || [];
+  const policies = polD?.policies || [];
+  const auditLogs = audD?.logs || [];
+  const devices = fltD?.devices || [];
+  const decisions = cncD?.decisions || [];
 
   const openIncidents = incidents.filter((i: any) => i.status === "open").length;
 
@@ -284,7 +290,7 @@ const OwnerCenter = () => {
     { key: "policies", label: "Policies" },
     { key: "autopilot", label: "Autopilot" },
     { key: "fleet", label: "Fleet" },
-    { key: "council", label: "Council", count: (councilData?.summary?.pending || 0) },
+    { key: "council", label: "Council", count: (cncD?.summary?.pending || 0) },
     { key: "audit", label: "Audit" },
     { key: "workforce", label: "Workforce", count: workforceData?.summary?.totalAgents },
     { key: "connectors", label: "Connectors" },
@@ -332,9 +338,9 @@ const OwnerCenter = () => {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="System Health" value={openIncidents === 0 ? "100%" : openIncidents <= 2 ? "94%" : "82%"} trend={openIncidents === 0 ? "up" : "down"} icon={Shield} className="gradient-sita-subtle" />
         <KPITile label="Open Incidents" value={openIncidents} icon={AlertTriangle} sub={openIncidents > 0 ? `${incidents.filter((i: any) => i.severity === "SEV-1").length} critical` : "All clear"} />
-        <KPITile label="Fleet Devices" value={`${fleetData?.kpis?.online || 0}/${fleetData?.kpis?.total || 0}`} sub="Online" icon={Server} />
-        <KPITile label="Active Policies" value={policyData?.summary?.active || 0} icon={Shield} />
-        <KPITile label="Anomalies" value={intelligenceData?.anomalies?.total_anomalies || 0} icon={Zap} sub={`${intelligenceData?.anomalies?.severity_summary?.critical || 0} critical`} />
+        <KPITile label="Fleet Devices" value={`${fltD?.kpis?.online || 0}/${fltD?.kpis?.total || 0}`} sub="Online" icon={Server} />
+        <KPITile label="Active Policies" value={polD?.summary?.active || 0} icon={Shield} />
+        <KPITile label="Anomalies" value={(intelligenceData as any)?.anomalies?.total_anomalies || 0} icon={Zap} sub={`${(intelligenceData as any)?.anomalies?.severity_summary?.critical || 0} critical`} />
       </div>
 
       {/* Tabs */}
@@ -982,10 +988,10 @@ const OwnerCenter = () => {
         {activePage === "fleet" && (
           <motion.div key="fleet" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-4">
-              <KPITile label="Total" value={fleetData?.kpis?.total || 0} icon={Server} />
-              <KPITile label="Online" value={fleetData?.kpis?.online || 0} icon={Wifi} trend="up" />
-              <KPITile label="Degraded" value={fleetData?.kpis?.degraded || 0} icon={AlertTriangle} />
-              <KPITile label="Offline" value={fleetData?.kpis?.offline || 0} icon={XCircle} />
+              <KPITile label="Total" value={fltD?.kpis?.total || 0} icon={Server} />
+              <KPITile label="Online" value={fltD?.kpis?.online || 0} icon={Wifi} trend="up" />
+              <KPITile label="Degraded" value={fltD?.kpis?.degraded || 0} icon={AlertTriangle} />
+              <KPITile label="Offline" value={fltD?.kpis?.offline || 0} icon={XCircle} />
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -1059,9 +1065,9 @@ const OwnerCenter = () => {
         {activePage === "council" && (
           <motion.div key="council" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-3 mb-2">
-              <KPITile label="Pending" value={councilData?.summary?.pending || 0} icon={Clock} />
-              <KPITile label="Approved" value={councilData?.summary?.approved || 0} icon={CheckCircle} trend="up" />
-              <KPITile label="Rejected" value={councilData?.summary?.rejected || 0} icon={XCircle} />
+              <KPITile label="Pending" value={cncD?.summary?.pending || 0} icon={Clock} />
+              <KPITile label="Approved" value={cncD?.summary?.approved || 0} icon={CheckCircle} trend="up" />
+              <KPITile label="Rejected" value={cncD?.summary?.rejected || 0} icon={XCircle} />
             </div>
 
             {decisions.map((d: any) => (
@@ -1873,14 +1879,14 @@ const OwnerCenter = () => {
                   <Shield className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <div>
-                  <p className="font-display text-3xl font-bold text-foreground">{(trustData as Record<string, unknown>)?.overallScore || 94}%</p>
-                  <p className="text-sm text-muted-foreground">Overall Trust Score · {(trustData as Record<string, unknown>)?.trend || "stable"}</p>
+                  <p className="font-display text-3xl font-bold text-foreground">{trustData?.overallScore || 94}%</p>
+                  <p className="text-sm text-muted-foreground">Overall Trust Score · {trustData?.trend || "stable"}</p>
                 </div>
               </div>
             </SitaCard>
             <SitaSectionHeader title="Domain Trust Scores" />
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {((trustData as Record<string, unknown>)?.domains || []).map((d: any) => (
+              {(trustData?.domains || []).map((d: any) => (
                 <SitaCard key={d.domain} hover={false} className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-semibold text-foreground">{d.domain}</p>
@@ -1894,7 +1900,7 @@ const OwnerCenter = () => {
             <SitaSectionHeader title="Verification Status" />
             <SitaCard hover={false} className="p-4">
               <div className="grid gap-2 sm:grid-cols-2">
-                {Object.entries((trustData as Record<string, unknown>)?.verificationStatus || {}).map(([k, v]) => (
+                {Object.entries(trustData?.verificationStatus || {}).map(([k, v]) => (
                   <div key={k} className="flex items-center gap-2">
                     <CheckCircle className="h-3.5 w-3.5 text-trust-safe" />
                     <span className="text-xs text-foreground">{k.replace(/([A-Z])/g, " $1").trim()}: <span className="font-semibold">{String(v)}</span></span>
@@ -1911,12 +1917,12 @@ const OwnerCenter = () => {
         {activePage === "releases" && (
           <motion.div key="releases" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <div className="flex items-center gap-3">
-              <KPITile label="Current Version" value={(releasesData as Record<string, unknown>)?.currentVersion || "—"} icon={Rocket} className="gradient-sita-subtle" />
-              <KPITile label="Frozen" value={(releasesData as Record<string, unknown>)?.frozen ? "Yes" : "No"} icon={Shield} />
+              <KPITile label="Current Version" value={releasesData?.currentVersion || "—"} icon={Rocket} className="gradient-sita-subtle" />
+              <KPITile label="Frozen" value={releasesData?.frozen ? "Yes" : "No"} icon={Shield} />
             </div>
             <SitaSectionHeader title="Release Rings" />
             <div className="grid gap-3 sm:grid-cols-3">
-              {((releasesData as Record<string, unknown>)?.rings || []).map((r: any) => (
+              {(releasesData?.rings || []).map((r: any) => (
                 <SitaCard key={r.ring} hover={false} className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-semibold text-foreground">Ring {r.ring}: {r.name}</p>
@@ -1930,7 +1936,7 @@ const OwnerCenter = () => {
             <SitaSectionHeader title="Release Gates" />
             <SitaCard hover={false} className="p-4">
               <div className="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
-                {((releasesData as Record<string, unknown>)?.gates || []).map((g: any) => (
+                {(releasesData?.gates || []).map((g: any) => (
                   <div key={g.name} className="flex items-center gap-2 text-xs">
                     {g.passed ? <CheckCircle className="h-3.5 w-3.5 text-trust-safe" /> : <XCircle className="h-3.5 w-3.5 text-destructive" />}
                     <span className="text-foreground">{g.name}</span>
@@ -1947,9 +1953,9 @@ const OwnerCenter = () => {
         {activePage === "model-routing" && (
           <motion.div key="model-routing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-3">
-              <KPITile label="Total Cost" value={`$${(modelData as Record<string, unknown>)?.totalCost || 0}`} icon={DollarSign} className="gradient-sita-subtle" />
-              <KPITile label="Total Tokens" value={((modelData as Record<string, unknown>)?.totalTokens || 0).toLocaleString()} icon={Zap} />
-              <KPITile label="Routing" value={(modelData as Record<string, unknown>)?.routingPolicy || "—"} icon={Brain} />
+              <KPITile label="Total Cost" value={`$${modelData?.totalCost || 0}`} icon={DollarSign} className="gradient-sita-subtle" />
+              <KPITile label="Total Tokens" value={(modelData?.totalTokens || 0).toLocaleString()} icon={Zap} />
+              <KPITile label="Routing" value={modelData?.routingPolicy || "—"} icon={Brain} />
             </div>
             <SitaSectionHeader title="Model Performance" />
             <SitaCard hover={false} className="p-0 overflow-hidden">
@@ -1966,7 +1972,7 @@ const OwnerCenter = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {((modelData as Record<string, unknown>)?.models || []).map((m: any) => (
+                    {(modelData?.models || []).map((m: any) => (
                       <tr key={m.id} className="border-b border-border/50 hover:bg-secondary/20">
                         <td className="px-4 py-3 text-xs font-medium text-foreground">{m.name}</td>
                         <td className="px-4 py-3 text-xs text-muted-foreground">${m.costPer1kTokens}</td>
@@ -1989,13 +1995,13 @@ const OwnerCenter = () => {
         {activePage === "knowledge" && (
           <motion.div key="knowledge" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-4">
-              <KPITile label="Total Docs" value={(knowledgeData as Record<string, unknown>)?.totalDocs || 0} icon={BookOpen} className="gradient-sita-subtle" />
-              <KPITile label="Fresh" value={(knowledgeData as Record<string, unknown>)?.freshDocs || 0} icon={CheckCircle} trend="up" />
-              <KPITile label="Stale" value={(knowledgeData as Record<string, unknown>)?.staleDocs || 0} icon={AlertTriangle} />
-              <KPITile label="Registry Sync" value={`${(knowledgeData as Record<string, unknown>)?.registryInSync || 0}/${(knowledgeData as Record<string, unknown>)?.registryFiles || 0}`} icon={Database} />
+              <KPITile label="Total Docs" value={knowledgeData?.totalDocs || 0} icon={BookOpen} className="gradient-sita-subtle" />
+              <KPITile label="Fresh" value={knowledgeData?.freshDocs || 0} icon={CheckCircle} trend="up" />
+              <KPITile label="Stale" value={knowledgeData?.staleDocs || 0} icon={AlertTriangle} />
+              <KPITile label="Registry Sync" value={`${knowledgeData?.registryInSync || 0}/${knowledgeData?.registryFiles || 0}`} icon={Database} />
             </div>
             <SitaSectionHeader title="Stale Documents" />
-            {((knowledgeData as Record<string, unknown>)?.staleDcosList || []).map((d: any) => (
+            {(knowledgeData?.staleDcosList || []).map((d: any) => (
               <SitaCard key={d.name} hover={false} className="p-3" lane="action">
                 <div className="flex items-center justify-between">
                   <div>
@@ -2007,7 +2013,7 @@ const OwnerCenter = () => {
               </SitaCard>
             ))}
             <SitaSectionHeader title="Registry Drift Detection" />
-            {((knowledgeData as Record<string, unknown>)?.driftDetections || []).map((d: any) => (
+            {(knowledgeData?.driftDetections || []).map((d: any) => (
               <SitaCard key={d.file} hover={false} className="p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -2028,7 +2034,7 @@ const OwnerCenter = () => {
         {activePage === "support" && (
           <motion.div key="support" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <SitaSectionHeader title="Support Cases" subtitle="Diagnostic bundles and investigation tools" />
-            {((supportData as never) || []).map((c: any) => (
+            {(supportData || []).map((c: any) => (
               <SitaCard key={c.id} hover={false} className="p-4" lane={c.status === "open" ? "action" : undefined}>
                 <div className="flex items-center justify-between">
                   <div>
@@ -2052,7 +2058,7 @@ const OwnerCenter = () => {
         {activePage === "change-review" && (
           <motion.div key="change-review" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <SitaSectionHeader title="Architecture Decision Records" subtitle="ADR tracking and compliance" />
-            {((changeData as never) || []).map((adr: any) => (
+            {(changeData || []).map((adr: any) => (
               <SitaCard key={adr.id} hover={false} className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -2077,18 +2083,18 @@ const OwnerCenter = () => {
           <motion.div key="rollback-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <SitaCard hover={false} glow className="p-4">
               <div className="flex items-center gap-3">
-                <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${(rollbackData as Record<string, unknown>)?.globalRollbackReady ? "bg-trust-safe/10" : "bg-destructive/10"}`}>
-                  <RotateCcw className={`h-5 w-5 ${(rollbackData as Record<string, unknown>)?.globalRollbackReady ? "text-trust-safe" : "text-destructive"}`} />
+              <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${rollbackData?.globalRollbackReady ? "bg-trust-safe/10" : "bg-destructive/10"}`}>
+                  <RotateCcw className={`h-5 w-5 ${rollbackData?.globalRollbackReady ? "text-trust-safe" : "text-destructive"}`} />
                 </div>
                 <div>
                   <p className="font-display text-base font-bold text-foreground">Global Rollback</p>
-                  <p className="text-xs text-muted-foreground">{(rollbackData as Record<string, unknown>)?.globalRollbackReady ? "All services ready for rollback" : "Some services not rollback-ready"}</p>
+                  <p className="text-xs text-muted-foreground">{rollbackData?.globalRollbackReady ? "All services ready for rollback" : "Some services not rollback-ready"}</p>
                 </div>
               </div>
             </SitaCard>
             <SitaSectionHeader title="Per-Service Rollback Readiness" />
             <div className="grid gap-3 sm:grid-cols-2">
-              {((rollbackData as Record<string, unknown>)?.services || []).map((s: any) => (
+              {(rollbackData?.services || []).map((s: any) => (
                 <SitaCard key={s.name} hover={false} className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
@@ -2116,13 +2122,13 @@ const OwnerCenter = () => {
         {activePage === "system-map" && (
           <motion.div key="system-map" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-3">
-              <KPITile label="Total Services" value={(serviceMapData as Record<string, unknown>)?.totalServices || 0} icon={Server} className="gradient-sita-subtle" />
-              <KPITile label="Healthy" value={(serviceMapData as Record<string, unknown>)?.totalHealthy || 0} icon={CheckCircle} trend="up" />
-              <KPITile label="Layers" value={((serviceMapData as Record<string, unknown>)?.layers || []).length} icon={Layers} />
+              <KPITile label="Total Services" value={serviceMapData?.totalServices || 0} icon={Server} className="gradient-sita-subtle" />
+              <KPITile label="Healthy" value={serviceMapData?.totalHealthy || 0} icon={CheckCircle} trend="up" />
+              <KPITile label="Layers" value={(serviceMapData?.layers || []).length} icon={Layers} />
             </div>
             <SitaSectionHeader title="Platform Topology" subtitle="All 9 architectural layers" />
             <div className="space-y-2">
-              {((serviceMapData as Record<string, unknown>)?.layers || []).map((layer: any) => (
+              {(serviceMapData?.layers || []).map((layer: any) => (
                 <SitaCard key={layer.id} hover={false} className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-semibold text-foreground">{layer.name}</p>
@@ -2384,7 +2390,7 @@ const OwnerCenter = () => {
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold text-foreground">Result:</span>
                   {(() => {
-                    const r = simResult?.simulation || simulatePolicy.data?.simulation;
+                    const r = simResult?.simulation || (simulatePolicy.data as any)?.simulation;
                     if (!r) return null;
                     return (
                       <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${r.final_effect === "allow" ? "bg-trust-safe/10 text-trust-safe" : r.final_effect === "deny" ? "bg-destructive/10 text-destructive" : "bg-accent/10 text-accent"}`}>
@@ -2394,7 +2400,7 @@ const OwnerCenter = () => {
                   })()}
                 </div>
                 {(() => {
-                  const r = simResult?.simulation || simulatePolicy.data?.simulation;
+                  const r = simResult?.simulation || (simulatePolicy.data as any)?.simulation;
                   if (!r) return null;
                   return (
                     <div className="space-y-2">

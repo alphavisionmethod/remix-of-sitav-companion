@@ -15,7 +15,7 @@ import { ALL_DETAILED_AGENTS, COUNCILS, SUPERVISORS } from "@/lib/internal-agent
 import { toast } from "sonner";
 
 // ── Generic admin API caller ──
-async function callAdminAPI(endpoint: string, options?: { method?: string; body?: Record<string, unknown>; params?: Record<string, string> }) {
+async function callAdminAPI<T = unknown>(endpoint: string, options?: { method?: string; body?: Record<string, unknown>; params?: Record<string, string> }): Promise<T> {
   const { method = "GET", body, params } = options || {};
   const queryStr = params ? "?" + new URLSearchParams(params).toString() : "";
 
@@ -26,8 +26,18 @@ async function callAdminAPI(endpoint: string, options?: { method?: string; body?
   });
 
   if (error) throw error;
-  return data;
+  return data as T;
 }
+
+// ── Upstream data shape types for Owner Center hooks ──
+export type TrustCenterData = typeof import("@/lib/mock-data/admin-ops").mockTrustCenter;
+export type ReleasesData = typeof import("@/lib/mock-data/admin-ops").mockReleases;
+export type ModelRoutingData = typeof import("@/lib/mock-data/admin-ops").mockModelRouting;
+export type KnowledgeHealthData = typeof import("@/lib/mock-data/admin-ops").mockKnowledgeHealth;
+export type SupportCase = (typeof import("@/lib/mock-data/admin-ops").mockSupportCases)[number];
+export type ChangeReview = (typeof import("@/lib/mock-data/admin-ops").mockChangeReviews)[number];
+export type RollbackCenterData = typeof import("@/lib/mock-data/admin-ops").mockRollbackCenter;
+export type ServiceMapData = typeof import("@/lib/mock-data/admin-ops").mockServiceMap;
 
 // ══════════════════════════════════════════════
 // INCIDENTS
@@ -489,9 +499,9 @@ export function useTrustCenter() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["trust-center", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<TrustCenterData> => {
       if (isDemoMode) return mockTrustCenter;
-      return callAdminAPI("trust-center");
+      return callAdminAPI<TrustCenterData>("trust-center");
     },
     staleTime: isDemoMode ? Infinity : 30000,
   });
@@ -501,9 +511,9 @@ export function useReleases() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["releases", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<ReleasesData> => {
       if (isDemoMode) return mockReleases;
-      return callAdminAPI("releases");
+      return callAdminAPI<ReleasesData>("releases");
     },
     staleTime: isDemoMode ? Infinity : 30000,
   });
@@ -513,9 +523,9 @@ export function useModelRouting() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["model-routing", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<ModelRoutingData> => {
       if (isDemoMode) return mockModelRouting;
-      return callAdminAPI("model-routing");
+      return callAdminAPI<ModelRoutingData>("model-routing");
     },
     staleTime: isDemoMode ? Infinity : 30000,
   });
@@ -525,9 +535,9 @@ export function useKnowledgeHealth() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["knowledge-health", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<KnowledgeHealthData> => {
       if (isDemoMode) return mockKnowledgeHealth;
-      return callAdminAPI("knowledge-health");
+      return callAdminAPI<KnowledgeHealthData>("knowledge-health");
     },
     staleTime: isDemoMode ? Infinity : 60000,
   });
@@ -537,9 +547,9 @@ export function useSupportCases() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["support-cases", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<SupportCase[]> => {
       if (isDemoMode) return mockSupportCases;
-      return callAdminAPI("support-cases");
+      return callAdminAPI<SupportCase[]>("support-cases");
     },
     staleTime: isDemoMode ? Infinity : 30000,
   });
@@ -549,9 +559,9 @@ export function useChangeReview() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["change-review", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<ChangeReview[]> => {
       if (isDemoMode) return mockChangeReviews;
-      return callAdminAPI("change-review");
+      return callAdminAPI<ChangeReview[]>("change-review");
     },
     staleTime: isDemoMode ? Infinity : 60000,
   });
@@ -561,9 +571,9 @@ export function useRollbackCenter() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["rollback-center", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<RollbackCenterData> => {
       if (isDemoMode) return mockRollbackCenter;
-      return callAdminAPI("rollback-center");
+      return callAdminAPI<RollbackCenterData>("rollback-center");
     },
     staleTime: isDemoMode ? Infinity : 30000,
   });
@@ -573,9 +583,9 @@ export function useServiceMap() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["service-map", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<ServiceMapData> => {
       if (isDemoMode) return mockServiceMap;
-      return callAdminAPI("service-map");
+      return callAdminAPI<ServiceMapData>("service-map");
     },
     staleTime: isDemoMode ? Infinity : 60000,
   });
