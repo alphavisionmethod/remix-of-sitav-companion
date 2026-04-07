@@ -55,7 +55,7 @@ export function initPerformanceMonitor() {
     let clsValue = 0;
     new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
-        if (!(entry as unknown as Record<string, unknown>).hadRecentInput) clsValue += (entry as unknown as Record<string, unknown>).value;
+        if (!(entry as unknown as Record<string, unknown>).hadRecentInput) clsValue += Number((entry as unknown as Record<string, number>).value);
       }
       log({ name: 'CLS', value: clsValue * 1000, rating: rate('CLS', clsValue) });
     }).observe({ type: 'layout-shift', buffered: true });
