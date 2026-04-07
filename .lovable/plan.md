@@ -1,62 +1,72 @@
 
 
-# Fix: Landing Page, User Profile Page, and Onboarding Routing
+# Wire 18 Unwired Onboarding Components to the Setup Flow
 
-## Problems Identified
+## Analysis
 
-1. **No landing page** — Unauthenticated users hitting `/` are redirected straight to `/login`. There's no public-facing landing/marketing page that introduces SITA OS.
-2. **No user profile page** — `/settings/profile` just renders the generic `SettingsPage`. No dedicated `/profile` route exists for users to view/edit their profile.
-3. **Onboarding not routed correctly** — `/onboarding` sits outside `ProtectedRoute`, meaning unauthenticated users can reach it but the component calls `useAuth().user` and breaks. It should be wrapped in `ProtectedRoute` with an exception to skip the onboarding-redirect loop.
+42 components exist in `src/components/sita/onboarding/`. Of those, **24 are already wired** into `OSSetupExperience.tsx`. The remaining **18 are built but disconnected**:
 
-## Implementation
+| # | Component | Phase ID to add | Insert after |
+|---|---|---|---|
+| 1 | `WantLessOfStep` | `want-less-of` | `quick-identity` |
+| 2 | `ProtectMostStep` | `protect-most` | `want-less-of` |
+| 3 | `ExplanationStyleStep` | `explanation-style` | `planning-style` |
+| 4 | `PresenceStyleStep` | `presence-style` | `explanation-style` |
+| 5 | `InterruptionStyleStep` | `interruption-style` | `presence-style` |
+| 6 | `RitualsStep` | `rituals` | `interruption-style` |
+| 7 | `HouseholdGraphStep` | `household-graph` | `deep-world-modeling` |
+| 8 | `MemoryConsentStep` | `memory-consent` | `privacy-transparency` |
+| 9 | `HomeCompositionStep` | `home-composition` | `rituals` |
+| 10 | `DesktopPreviewStep` | `desktop-preview` | `home-composition` |
+| 11 | `FirstSimulationStep` | `first-simulation` | `first-win-setup` |
+| 12 | `FirstActionsStep` | `first-actions` | `first-simulation` |
+| 13 | `RecoverFirstStep` | `recover-first` | `access-protection` |
+| 14 | `CinematicIntro` | Replace/augment `boot` phase | Before `boot` |
+| 15 | `RestorePreviewStep` | `restore-preview` | `account-environment` |
+| 16 | `ContextualWelcomeTour` | Post-setup overlay | After `trust-certificate` |
+| 17 | `LearnLaterHub` | Post-setup overlay | Accessible from desktop |
+| 18 | `PreviewExampleModal` | Utility modal | Used within other steps |
 
-### Step 1 — Create Public Landing Page
+**Notes:** `ContextualWelcomeTour`, `LearnLaterHub`, and `PreviewExampleModal` are not linear phases — they're overlays/modals. They'll be wired as post-setup and inline utilities respectively.
 
-**Create:** `src/pages/LandingPage.tsx`
+## Implementation (4 files)
 
-A premium dark-themed public page with:
-- Hero section: SITA OS tagline, "Your sovereign AI operating system", animated ambient background
-- 3 value proposition cards (Business OS, Finance OS, Concierge OS)
-- Trust indicators (receipt-first, policy-governed, privacy-safe)
-- CTA buttons: "Get Started" → `/signup`, "Try Demo" → calls `signInAsDemo`, "Sign In" → `/login`
-- SITA brand colors (purple/gold), Space Grotesk headings, Inter body
-- Fully responsive, no auth required
+### Step 1 — Expand `SetupPhaseId` type (setup-orchestration.ts)
 
-### Step 2 — Create User Profile Page
+Add 14 new phase IDs to the union type:
+`"want-less-of"`, `"protect-most"`, `"explanation-style"`, `"presence-style"`, `"interruption-style"`, `"rituals"`, `"household-graph"`, `"memory-consent"`, `"home-composition"`, `"desktop-preview"`, `"first-simulation"`, `"first-actions"`, `"recover-first"`, `"restore-preview"`
 
-**Create:** `src/pages/UserProfilePage.tsx`
+### Step 2 — Add phase definitions (setup-phase-definitions.ts)
 
-A dedicated profile page at `/profile` with:
-- Profile header: avatar (with upload), display name, email, member since
-- Editable fields: full name, timezone, locale, bio
-- Account stats: days active, actions executed, receipts generated (from live queries)
-- Connected services summary (count from `connected_services`)
-- Trust score display
-- Quick links to `/settings/trust`, `/settings/privacy`
-- Wired to `profiles` table via Supabase
+Add 14 new `SetupPhaseDefinition` entries with correct dependency chains, order numbers, and branch conditions (most are `guided`/`advanced` only). Re-number existing orders to accommodate insertions.
 
-### Step 3 — Fix Onboarding Routing
+### Step 3 — Wire components in OSSetupExperience.tsx
 
-**Modify:** `src/App.tsx`
+- Add 14 new imports for the unwired step components
+- Add state fields: `wantLessOf: string[]`, `protectMost: string[]`, `explanationStyle: string`, `presenceStyle: string`, `interruptionStyle: string`, `rituals: string[]`, `householdGraph: HouseholdNode[]`, `memoryConsent: string`, `homeComposition: string`, `recoverFirst: string`
+- Add 14 new `{phase === "..." && <Component />}` render blocks inside the `AnimatePresence`
+- Wire `CinematicIntro` as a pre-boot fullscreen phase
+- Wire `RestorePreviewStep` after `account-environment` (when restore path is chosen)
+- Wire `ContextualWelcomeTour` as a post-completion overlay triggered after `finishSetup`
+- Add `canAdvance` cases for new required phases
+- Persist new state fields in `finishSetup` memory items
 
-1. Change `/onboarding` route from bare `<Onboarding />` to wrapped in a lightweight auth gate that redirects to `/login` if no user, but does NOT redirect back to `/onboarding` (avoiding infinite loop)
-2. Update `ProtectedRoute` to also allow `/profile` route normally
-3. Add `/` as a public route rendering `LandingPage` when not authenticated, `DailyPulse` when authenticated
-4. Add `/profile` route inside `ProtectedRoute`
-5. Add lazy import for `LandingPage` and `UserProfilePage`
+### Step 4 — Wire post-setup utilities
 
-**Routing logic change:**
-```text
-/ → Unauthenticated: LandingPage | Authenticated: DailyPulse (inside ShellLayout)
-/onboarding → Requires auth (redirect to /login if not), skips onboarding-completion check
-/profile → ProtectedRoute → UserProfilePage
-```
+- `LearnLaterHub`: Import and render as an accessible panel from the desktop (add to `DesktopSurface.tsx` or as a route `/learn-later`)
+- `PreviewExampleModal`: Import inside steps that reference it (e.g., `FirstSimulationStep`, `DesktopPreviewStep`) as an on-demand modal
 
-### Files
+## Files Modified
 
-| Action | File |
+| File | Change |
 |---|---|
-| Create | `src/pages/LandingPage.tsx` |
-| Create | `src/pages/UserProfilePage.tsx` |
-| Modify | `src/App.tsx` — new routes, fix onboarding guard, landing page logic |
+| `src/packages/contracts/specialized/setup-orchestration.ts` | Add 14 phase IDs to `SetupPhaseId` union |
+| `src/lib/engines/setup-phase-definitions.ts` | Add 14 phase definitions, re-order existing |
+| `src/components/sita/OSSetupExperience.tsx` | Import 18 components, add state fields, render blocks, validation, persistence |
+| `src/App.tsx` | Add `/learn-later` route for LearnLaterHub |
+
+## What Won't Change
+- Individual component files (all 18 are already complete)
+- Setup orchestration engine logic (it already handles dynamic phase lists)
+- Existing 24 phases (they keep working, just get new neighbors)
 
