@@ -217,7 +217,26 @@ export class SitaKernel {
     return this._activeEntity?.id ?? "personal";
   }
 
-  // ── Canonical Execution (with path tracking) ────────────────
+  // ── Kill Switch ──────────────────────────────────────────────
+  private _killSwitchActive = false;
+  private _killSwitchMode: "block" | "downgrade" = "downgrade";
+
+  /** Activate global kill switch — forces EMULATED mode or blocks execution */
+  setKillSwitch(active: boolean, mode: "block" | "downgrade" = "downgrade"): void {
+    this._killSwitchActive = active;
+    this._killSwitchMode = mode;
+    this.eventBus.publish("kernel.kill-switch.v1", { active, mode }, { source: "sita-kernel" });
+  }
+
+  get killSwitchActive(): boolean { return this._killSwitchActive; }
+
+  private checkKillSwitch(): { blocked: boolean; reason?: string; forcedMode?: "EMULATED" } {
+    if (!this._killSwitchActive) return { blocked: false };
+    if (this._killSwitchMode === "block") return { blocked: true, reason: "Kill switch active — all execution blocked" };
+    return { blocked: false, forcedMode: "EMULATED" };
+  }
+
+  // ── Canonical Execution via ActionEnvelope (with path tracking) ──
 
   async executeAction(input: {
     intent: string;
@@ -229,6 +248,15 @@ export class SitaKernel {
     leaseId?: string;
     advisorId?: string;
   }) {
+    // ── Kill Switch Gate ───────────────────────────────────
+    const killCheck = this.checkKillSwitch();
+    if (killCheck.blocked) {
+      return { correlationId: crypto.randomUUID(), blocked: true, blockReason: killCheck.reason };
+    }
+
+    // Force EMULATED mode if kill switch is in downgrade mode
+    const effectiveSimulation = killCheck.forcedMode === "EMULATED" ? true : input.isSimulation;
+
     // ── Build execution path record ────────────────────────
     let path = createExecutionPath(crypto.randomUUID());
 
@@ -272,7 +300,7 @@ export class SitaKernel {
         }, { source: "canonical-chain" });
         return { correlationId: path.correlationId, blocked: true, blockReason: `Lease validation failed: ${violationSummary}`, leaseViolations: validation.violations, remainingBudget: validation.remainingBudget, remainingTime: validation.remainingTime };
       }
-      if (validation.lease?.requireSimulation && !input.isSimulation) {
+      if (validation.lease?.requireSimulation && !effectiveSimulation) {
         return { correlationId: path.correlationId, blocked: true, blockReason: "Lease requires simulation before execution", requiresSimulation: true };
       }
     }
@@ -301,6 +329,7 @@ export class SitaKernel {
     // ── Execute via canonical chain (stages 5-12) ──────────
     const result = await this.chain.execute({
       ...input,
+      isSimulation: effectiveSimulation,
       payload: {
         ...input.payload,
         _entityId: this.tenantId,
@@ -308,6 +337,7 @@ export class SitaKernel {
         _leaseId: input.leaseId,
         _constitutionEffect: constitutionResult.overallEffect,
         _pathCorrelationId: path.correlationId,
+        _killSwitchDowngraded: !!killCheck.forcedMode,
       },
     });
 
@@ -341,6 +371,7 @@ export class SitaKernel {
       leaseId: input.leaseId,
       constitutionEffect: constitutionResult.overallEffect,
       pathViolations: path.violations.length,
+      killSwitchDowngraded: !!killCheck.forcedMode,
       timestamp: Date.now(),
     }, { source: "canonical-chain", tags: [input.domain, input.capabilityId] });
 
@@ -353,6 +384,66 @@ export class SitaKernel {
     }
 
     return { ...result, executionPath: path };
+  }
+
+  // ── Replay ──────────────────────────────────────────────────
+
+  async replayAction(receiptId: string): Promise<{
+    replayCorrelationId: string;
+    originalReceiptId: string;
+    result: unknown;
+    mode: "EMULATED";
+  }> {
+    const receipts = this.receipts.getReceipts();
+    const original = receipts.find(r => r.id === receiptId);
+    if (!original) throw new Error(`Receipt ${receiptId} not found for replay`);
+
+    const replayResult = await this.executeAction({
+      intent: `replay:${original.correlationId}`,
+      domain: (original.data?.domain as string) ?? "system",
+      capabilityId: original.capabilityId ?? (original.data?.capabilityId as string) ?? "unknown",
+      payload: { _replayOf: receiptId, ...(original.data ?? {}) },
+      isSimulation: true, // Replay always runs in EMULATED mode
+    });
+
+    return {
+      replayCorrelationId: replayResult.correlationId,
+      originalReceiptId: receiptId,
+      result: replayResult,
+      mode: "EMULATED",
+    };
+  }
+
+  // ── Resume from Approval ────────────────────────────────────
+
+  async resumeAction(approvalId: string): Promise<unknown> {
+    // Look up the approval to find the original correlation/envelope
+    const pendingApprovals = this.approvals.getPendingApprovals?.() ?? [];
+    const approval = pendingApprovals.find((a: any) => a.id === approvalId);
+
+    if (!approval) {
+      return { blocked: true, blockReason: `Approval ${approvalId} not found` };
+    }
+
+    // Re-execute with the original payload, bypassing approval gate
+    const result = await this.chain.execute({
+      intent: `resume:${approvalId}`,
+      domain: (approval as any).domain ?? "system",
+      capabilityId: (approval as any).capabilityId ?? "unknown",
+      payload: {
+        ...((approval as any).payload ?? {}),
+        _resumedFromApproval: approvalId,
+      },
+    });
+
+    // Create approval receipt
+    await this.receipts.createReceipt(result.correlationId, "approval-record", {
+      approvalId,
+      effect: "approved",
+      resumedAt: new Date().toISOString(),
+    });
+
+    return result;
   }
 
   // ── Scoped Operations ───────────────────────────────────────
