@@ -1,52 +1,27 @@
 
 
-# Rename All Non-DEMO_ Uppercase Arrays + Add isDemoMode Gates
+# Rename 5 Remaining Non-DEMO_ Arrays in 4 Files
 
-## Summary
+## Status
 
-A Python automation script will scan every `.tsx` file under `src/pages/admin/` and `src/pages/investment-office/`, find all top-level `const UPPERCASE_NAME = [...]` arrays that don't already have the `DEMO_` prefix, rename them to `DEMO_UPPERCASE_NAME`, update all references in the same file, and ensure `useDataMode` + `isDemoMode` are present. Build verification + UI spot-check follow.
+The bulk of the 29-file "Other Modules" list is already fixed — 22 of 26 files have all arrays correctly `DEMO_`-prefixed with `useDataMode` gates. Only **5 arrays in 4 files** remain:
 
-## What's Already Done vs What's Left
+| File | Array | Action |
+|------|-------|--------|
+| `MyActivity.tsx` | `DAY_LABELS` | → `DEMO_DAY_LABELS`, update references |
+| `SpilloverDashboard.tsx` | `DOMAINS` | → `DEMO_DOMAINS`, update references |
+| `app-platform/DevToolsCatalogPage.tsx` | `DEV_CATEGORIES` | → `DEMO_DEV_CATEGORIES`, update references |
+| `enterprise/EnterpriseControlPlane.tsx` | `CAPABILITIES` | → `DEMO_CAPABILITIES`, update references |
+| `enterprise/EnterpriseControlPlane.tsx` | `ROLES` | → `DEMO_ROLES`, update references |
 
-**Already DEMO_ prefixed (~52 files):** Most investment-office pages and many admin pages were renamed in prior sprints. These are correct.
-
-**Still need DEMO_ prefix (~18+ files, ~50+ arrays):** These files have `const SOME_NAME = [...]` without `DEMO_` prefix:
-
-| File | Arrays to rename |
-|------|-----------------|
-| `admin/AIHumanBoundaryControls.tsx` | `AGENT_BOUNDARIES`, `MISSION_BOUNDARIES`, `CHANGE_TYPE_BOUNDARIES` |
-| `admin/AIT03TaskInvocation.tsx` | `TASK_TYPES`, `BUDGET_POSTURES`, `SCOPE_DOMAINS` |
-| `admin/HRS03ReadinessExplanation.tsx` | `PIPELINE_STAGES`, `COMBINE_STRATEGIES` |
-| `admin/AND01AndroidEcosystemCenter.tsx` | `PROVIDER_CAPS` + others |
-| `admin/APL01AppleEcosystemCenter.tsx` | similar config arrays |
-| `admin/SystemManagement.tsx` | `COMMANDS` (inline) |
-| `admin/MockReplacementProgram.tsx` | `MOCK_TYPES`, `STATUSES`, `PRIORITIES` |
-| `admin/MemoryContinuityCenter.tsx` | `SCOPES` |
-| `admin/sag/SAGMultiStageExplorer.tsx` | `EXAMPLE_STAGES` |
-| `admin/sag/SAGBuilderConsole.tsx` | `BUILDER_STEPS` |
-| ~40+ more admin subdirectory files | Various uppercase arrays |
+All 4 files already have `useDataMode` imported and `isDemoMode` destructured — only the array rename + reference updates are needed.
 
 ## Implementation
 
-1. **Python script** scans all `.tsx` files in `src/pages/admin/` and `src/pages/investment-office/`
-2. For each file, regex-finds `const [A-Z][A-Z0-9_]+ = [` patterns
-3. Skips arrays already prefixed with `DEMO_`
-4. Renames the declaration and all references in that file to `DEMO_` prefix
-5. If `useDataMode` import is missing, injects it
-6. If `isDemoMode` destructure is missing, injects it after the component function declaration
-7. Writes all modified files
+For each file:
+1. Rename the `const` declaration to add `DEMO_` prefix
+2. Find-and-replace all usages of the old name with the new name in the same file
+3. Run `npx tsc --noEmit` to verify zero errors
 
-**Safety rules:**
-- Does NOT rename type aliases, interfaces, enums, or Record/object constants (only arrays `= [`)
-- Does NOT rename imported constants from other modules (only file-local declarations)
-- Preserves all existing `DEMO_` prefixed arrays unchanged
-
-## Verification
-
-1. `npx tsc --noEmit` — 0 errors
-2. UI spot-check: navigate to AIHumanBoundaryControls, AIT03TaskInvocation, and 2 investment-office pages to confirm rendering
-
-## Files Changed
-
-~18-40 files across `src/pages/admin/` (including subdirectories) and any remaining `src/pages/investment-office/` files. No changes to files already correctly prefixed.
+## Files changed: 4
 
