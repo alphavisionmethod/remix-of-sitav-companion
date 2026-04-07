@@ -73,10 +73,10 @@ const AutomationCenter = () => {
   const rules = isDemoMode ? MOCK_AUTOMATION_RULES : liveWorkflows.map(w => ({
     id: w.id,
     name: w.name,
-    trigger_event: w.trigger_event,
-    steps: w.steps as Array<{ action?: string }>,
+    trigger_event: w.trigger_type || "unknown",
+    steps: (w.steps ?? []) as Array<{ action?: string }>,
     active: w.active,
-    domain: w.trigger_event.split(".")[0] || "System",
+    domain: (w.trigger_type || "system").split(".")[0] || "System",
   }));
 
   const totalRuns = runs.length;
