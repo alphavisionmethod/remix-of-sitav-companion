@@ -87,11 +87,11 @@ export default function WatchlistsSignals() {
       {/* Active Watchlist */}
       <div className="rounded-2xl border border-border bg-card overflow-hidden">
         <div className="px-5 py-3 border-b border-border flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-foreground">{current.name}</h3>
-          <span className="text-[10px] text-muted-foreground">{current.instruments.length} instruments</span>
+          <h3 className="text-sm font-semibold text-foreground">{displayTitle}</h3>
+          <span className="text-[10px] text-muted-foreground">{displayInstruments.length} instruments</span>
         </div>
         <div className="divide-y divide-border/50">
-          {current.instruments.map(inst => (
+          {displayInstruments.map(inst => (
             <button key={inst.id} onClick={() => navigate(`/investments/instrument/${inst.id}`)}
               className="w-full flex items-center gap-4 px-5 py-3.5 hover:bg-secondary/30 transition-colors text-left">
               <span className="text-xl">{inst.logoIcon}</span>
