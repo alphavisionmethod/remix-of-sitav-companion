@@ -174,7 +174,7 @@ export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onConnect
       await fromTable("connector_configs")
         .update({ status: "connected" })
         .eq("user_id", user.id)
-        .eq("connector_id", connector.id);
+        .eq("service", connector.id);
 
       setConnected(prev => {
         const next = new Set([...prev, connector.id]);

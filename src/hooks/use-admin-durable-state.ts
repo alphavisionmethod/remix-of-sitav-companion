@@ -153,7 +153,7 @@ export function usePolicyVersioning() {
         user_id: user!.id,
         policy_id: policyId,
         version_number: versionNumber,
-        diff_json: changes,
+        diff_json: changes as import("@/integrations/supabase/types").Json,
         changed_by: user!.id,
       });
 
