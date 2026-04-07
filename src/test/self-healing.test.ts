@@ -79,7 +79,7 @@ describe("SelfHealingService", () => {
 
     // Also ensure no circuit breaker blocks with cooldown
     const cbKey = `svc-a:${inc.id}`;
-    (svc as Record<string, unknown>).circuitBreakers.set(cbKey, {
+    (svc as any).circuitBreakers.set(cbKey, {
       serviceId: "svc-a", incidentId: inc.id, attempts: 3, maxAttempts: 3,
       lastAttemptAt: 0, cooldownMs: 30000, windowResetMs: 1800000, state: "closed",
     });
