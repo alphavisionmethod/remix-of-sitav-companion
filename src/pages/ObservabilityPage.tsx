@@ -76,6 +76,8 @@ export default function ObservabilityPage() {
 
   return (
     <div className="max-w-[1400px] mx-auto space-y-5">
+      {/* Diagnostics context bar — route/mode metadata */}
+      <DiagnosticsContextBar />
       <AdminPageHeader icon={Eye} title="System Observability" subtitle="Telemetry, reliability, latency, anomalies, and event throughput">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 w-full mt-5">
           {[
