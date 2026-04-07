@@ -54,7 +54,7 @@ export const AdvisorChat = ({ isOpen, onClose }: AdvisorChatProps) => {
   const [input, setInput] = useState("");
   const { isDemoMode } = useDataMode();
   const { ask, isLoading } = useBrainCore({ advisor: activeAdvisor });
-  const { messages: streamMsgs, isStreaming, send: streamSend, stop: streamStop, clear: streamClear } = useStreamingChat();
+  const { messages: streamMsgs, isStreaming, error: streamError, send: streamSend, stop: streamStop, clear: streamClear } = useStreamingChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 

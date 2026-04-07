@@ -725,9 +725,13 @@ serve(async (req) => {
     return new Response(JSON.stringify({
       request_id: requestId,
       correlation_id: correlationId,
+      invocation_id: correlationId,
       advisor: domain,
       ...finalResponse,
       latency_ms: latencyMs,
+      routing_source: finalResponse.source,
+      budget_checked: true,
+      receipt_written: !!requestId,
     }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
