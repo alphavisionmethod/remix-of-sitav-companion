@@ -221,7 +221,8 @@ export default function ConnectorGovernanceCenter() {
           </TabsContent>
 
           <TabsContent value="history">
-            <div className="overflow-x-auto">
+            <ConnectorSyncDashboard compact />
+            <div className="overflow-x-auto mt-4">
               <table className="w-full text-xs">
                 <thead><tr className="text-muted-foreground border-b border-border/30">
                   <th className="text-left py-2 px-2">Connector</th>
@@ -231,9 +232,9 @@ export default function ConnectorGovernanceCenter() {
                   <th className="text-right py-2">Duration</th>
                 </tr></thead>
                 <tbody>
-                  {SYNC_HISTORY.map((s, i) => (
+                  {syncHistory.map((s: any, i: number) => (
                     <tr key={i} className="border-t border-border/20">
-                      <td className="py-2 px-2 font-medium text-foreground">{s.connector}</td>
+                      <td className="py-2 px-2 font-medium text-foreground capitalize">{s.connector}</td>
                       <td className="py-2 text-muted-foreground">{s.time}</td>
                       <td className="py-2">
                         <Badge variant={s.status === "success" ? "default" : s.status === "partial" ? "secondary" : "destructive"} className="text-[9px]">{s.status}</Badge>
