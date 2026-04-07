@@ -233,7 +233,7 @@ const PermissionsCenter = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    {dev.is_primary && <span className="text-[10px] bg-primary/10 text-primary rounded-md px-1.5 py-0.5">Primary</span>}
+                    {(dev.metadata && typeof dev.metadata === 'object' && 'is_primary' in dev.metadata && (dev.metadata as any).is_primary) && <span className="text-[10px] bg-primary/10 text-primary rounded-md px-1.5 py-0.5">Primary</span>}
                     <TrustBadge level={dev.status === "online" ? "verified" : "low-confidence"} label={dev.status} size="sm" />
                   </div>
                 </div>

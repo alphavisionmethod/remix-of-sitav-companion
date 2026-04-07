@@ -80,9 +80,9 @@ export default function AR06ExecutionTraceExplorer() {
                     { label: "Verification", value: selected.verification_result || "—" },
                     { label: "Retryable", value: selected.retryable ? "Yes" : "No" },
                     { label: "Escalated", value: selected.escalated ? "Yes" : "No" },
-                    { label: "Domain", value: (selected as Record<string, unknown>).scheduled_jobs?.domain || "—" },
-                    { label: "Job Class", value: (selected as Record<string, unknown>).scheduled_jobs?.job_class || "—" },
-                    { label: "Target", value: (selected as Record<string, unknown>).scheduled_jobs?.target_function || "—" },
+                    { label: "Domain", value: ((selected as any).scheduled_jobs as any)?.domain || "—" },
+                    { label: "Job Class", value: ((selected as any).scheduled_jobs as any)?.job_class || "—" },
+                    { label: "Target", value: ((selected as any).scheduled_jobs as any)?.target_function || "—" },
                   ].map((f) => (
                     <div key={f.label} className="rounded-lg bg-secondary/10 px-3 py-2">
                       <p className="text-[9px] text-muted-foreground">{f.label}</p>

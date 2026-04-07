@@ -108,8 +108,8 @@ export default function ISA07AuthConnectorTruthBoard() {
   });
 
   // Check 2: Identity link implies connector access? (should NOT)
-  const identityFamilies = new Set(identityLinks.map((l: any) => (l as Record<string, unknown>).provider_families?.provider_key));
-  const connectorFamilies = new Set(connectorLinks.map((l: any) => (l as Record<string, unknown>).provider_families?.provider_key));
+  const identityFamilies = new Set(identityLinks.map((l: any) => ((l as any).provider_families as any)?.provider_key));
+  const connectorFamilies = new Set(connectorLinks.map((l: any) => ((l as any).provider_families as any)?.provider_key));
   identityFamilies.forEach((fam: any) => {
     if (fam && connectorFamilies.has(fam)) {
       findings.push({

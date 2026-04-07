@@ -135,7 +135,7 @@ export default function ISA03OAuthClientRegistryConsole() {
                     return (
                       <TableRow key={c.id}>
                         <TableCell className="font-medium">{c.client_name}</TableCell>
-                        <TableCell>{(c as Record<string, unknown>).provider_families?.name || "—"}</TableCell>
+                        <TableCell>{((c as any).provider_families as any)?.name || "—"}</TableCell>
                         <TableCell>
                           <Badge className={`${purpose.color} flex items-center gap-1 w-fit`}>
                             {purpose.icon} {purpose.label}

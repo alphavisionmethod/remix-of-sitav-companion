@@ -177,7 +177,7 @@ export default function ISA02ConnectorProviderRegistryBoard() {
                       </Badge>
                     </div>
                     <div className="space-y-1 text-xs text-muted-foreground">
-                      <p>Family: {(svc as Record<string, unknown>).provider_families?.name || "—"}</p>
+                      <p>Family: {((svc as any).provider_families as any)?.name || "—"}</p>
                       <p>Mode: <Badge variant="outline" className="text-xs ml-1">{svc.mode || "real"}</Badge></p>
                       <p>Access: <Badge variant="outline" className="text-xs ml-1">{svc.read_write_mode || "read_only"}</Badge></p>
                       {svc.last_sync_at && <p>Last sync: {new Date(svc.last_sync_at).toLocaleDateString()}</p>}

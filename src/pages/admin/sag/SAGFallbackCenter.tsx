@@ -58,7 +58,7 @@ const SAGFallbackCenter = () => {
           <div className="grid grid-cols-3 gap-3">
             {PROVIDERS.filter(p => p.id !== 'local' && p.id !== 'specialist').map(provider => {
               const h = health.find((r: any) => r.provider === provider.id);
-              const isHealthy = !h || (h as Record<string, unknown>).availability >= 0.95;
+              const isHealthy = !h || Number((h as any).availability) >= 0.95;
               return (
                 <div key={provider.id} className={`p-3 border rounded-lg ${isHealthy ? 'border-green-500/30' : 'border-destructive/30'}`}>
                   <div className="flex items-center gap-2">

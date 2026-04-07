@@ -336,7 +336,7 @@ const ComputeGovernanceBoard = () => {
                       <TableCell className="space-x-1">
                         {r.downgraded && <Badge variant="destructive" className="text-[9px]">downgraded</Badge>}
                         {r.cached && <Badge variant="secondary" className="text-[9px]">cached</Badge>}
-                        {"downgradeReason" in r && <span className="text-[9px] text-muted-foreground">{(r as Record<string, unknown>).downgradeReason}</span>}
+                        {"downgradeReason" in r && <span className="text-[9px] text-muted-foreground">{String((r as any).downgradeReason ?? "")}</span>}
                       </TableCell>
                       <TableCell className="text-[10px] text-muted-foreground">{r.time}</TableCell>
                     </TableRow>
