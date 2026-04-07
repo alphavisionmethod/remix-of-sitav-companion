@@ -93,7 +93,7 @@ const AutomationCenter = () => {
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KPITile label="Active Rules" value={rules.filter(r => r.active).length} icon={Zap} />
+        <KPITile label="Active Rules" value={rules.filter(r => 'active' in r ? r.active : ('enabled' in r ? r.enabled : false)).length} icon={Zap} />
         <KPITile label="Total Runs" value={isDemoMode ? 124 : totalRuns} trend="up" icon={CheckCircle} />
         <KPITile label="Success Rate" value={isDemoMode ? "97.2%" : `${successRate}%`} trend="up" icon={Shield} />
         <KPITile label="Rules" value={rules.length} icon={Settings} />
