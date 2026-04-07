@@ -377,8 +377,7 @@ export default function ConstitutionEditor() {
     if (!isDemo && user?.id) {
       const rule = compiler.getAllRules().find((r: ConstitutionRule) => r.id === id);
       if (rule) {
-        await db
-          .from("constitution_rules")
+        await fromTable("constitution_rules")
           .update({ is_active: active })
           .eq("user_id", user.id)
           .eq("natural_text", rule.naturalLanguage);
