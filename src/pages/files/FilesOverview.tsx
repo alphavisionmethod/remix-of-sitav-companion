@@ -105,10 +105,10 @@ const FilesOverview = () => {
       <UniversalIntakeBox />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KPITile label="Files This Week" value={classifiedFiles.length} trend="up" icon={FolderOpen} />
+        <KPITile label="Files This Week" value={realKpis?.total || classifiedFiles.length} trend="up" icon={FolderOpen} />
         <KPITile label="Sensitive Files" value={sensitiveCount} icon={Shield} sub="Confidential + Restricted" />
-        <KPITile label="Obligations Found" value={7} icon={Calendar} sub="From uploaded docs" />
-        <KPITile label="Linked to Workflows" value={18} icon={Link2} />
+        <KPITile label="Obligations Found" value={realKpis?.obligations || 7} icon={Calendar} sub="From uploaded docs" />
+        <KPITile label="Linked to Workflows" value={realKpis?.linked || 18} icon={Link2} />
       </div>
 
       {/* Classification breakdown */}
