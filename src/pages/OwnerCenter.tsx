@@ -2083,12 +2083,12 @@ const OwnerCenter = () => {
           <motion.div key="rollback-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <SitaCard hover={false} glow className="p-4">
               <div className="flex items-center gap-3">
-                <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${(rollbackData as Record<string, unknown>)?.globalRollbackReady ? "bg-trust-safe/10" : "bg-destructive/10"}`}>
-                  <RotateCcw className={`h-5 w-5 ${(rollbackData as Record<string, unknown>)?.globalRollbackReady ? "text-trust-safe" : "text-destructive"}`} />
+              <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${rollbackData?.globalRollbackReady ? "bg-trust-safe/10" : "bg-destructive/10"}`}>
+                  <RotateCcw className={`h-5 w-5 ${rollbackData?.globalRollbackReady ? "text-trust-safe" : "text-destructive"}`} />
                 </div>
                 <div>
                   <p className="font-display text-base font-bold text-foreground">Global Rollback</p>
-                  <p className="text-xs text-muted-foreground">{(rollbackData as Record<string, unknown>)?.globalRollbackReady ? "All services ready for rollback" : "Some services not rollback-ready"}</p>
+                  <p className="text-xs text-muted-foreground">{rollbackData?.globalRollbackReady ? "All services ready for rollback" : "Some services not rollback-ready"}</p>
                 </div>
               </div>
             </SitaCard>
