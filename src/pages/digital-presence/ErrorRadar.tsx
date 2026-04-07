@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const ERRORS = [
+const DEMO_ERRORS = [
   { type: "Broken Link", icon: Link2, page: "/blog/old-post", detail: "Links to /resources/guide → 404", severity: "high", autoFixable: true },
   { type: "Missing Image", icon: Image, page: "/products/item-5", detail: "Product image returns 404", severity: "high", autoFixable: false },
   { type: "Stale Content", icon: Clock, page: "/blog/2023-trends", detail: "Published 14 months ago, never updated", severity: "medium", autoFixable: false },
@@ -18,7 +18,7 @@ const ERRORS = [
   { type: "Missing Meta", icon: FileText, page: "/about", detail: "No meta description — hurts SEO", severity: "low", autoFixable: true },
 ];
 
-const OPPORTUNITIES = [
+const DEMO_OPPORTUNITIES = [
   { title: "Add testimonials to services page", impact: "high", effort: "low", category: "Trust" },
   { title: "Feature best-seller on homepage", impact: "high", effort: "low", category: "Merchandising" },
   { title: "Create FAQ page from support queries", impact: "medium", effort: "medium", category: "Content" },
@@ -57,7 +57,7 @@ export default function ErrorRadar() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-red-400" /> Detected Issues</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {ERRORS.map((e, i) => (
+          {DEMO_ERRORS.map((e, i) => (
             <div key={i} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div className="flex items-center gap-3 flex-1">
                 <e.icon className="w-4 h-4 text-muted-foreground shrink-0" />
@@ -82,7 +82,7 @@ export default function ErrorRadar() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Sparkles className="w-4 h-4 text-green-400" /> Growth Opportunities</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {OPPORTUNITIES.map(o => (
+          {DEMO_OPPORTUNITIES.map(o => (
             <div key={o.title} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div>
                 <p className="text-xs font-medium text-foreground">{o.title}</p>

@@ -35,7 +35,7 @@ const INITIAL_PATCHES: Patch[] = [
   { id: "p6", issue: "Contact form 404 on mobile", page: "/contact", fixPlan: "Fix mobile route handler for form submission", confidence: 82, severity: "critical", autoFixEligible: false, status: "pending", beforeSnippet: "POST /api/contact → 404", afterSnippet: "POST /api/contact → 200", detectedBy: "Technical QA", verifiedAfterApply: false, affectedPages: ["/contact"] },
 ];
 
-const STATS = [
+const DEMO_STATS = [
   { label: "Pending Patches", value: 4, color: "text-amber-400" },
   { label: "Auto-Fix Eligible", value: 3, color: "text-green-400" },
   { label: "Applied This Week", value: 5, color: "text-blue-400" },
@@ -66,7 +66,7 @@ export default function SelfHealingQueue() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {STATS.map(s => (
+        {DEMO_STATS.map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-4 text-center">
               <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>

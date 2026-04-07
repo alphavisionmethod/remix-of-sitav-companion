@@ -30,7 +30,7 @@ const initialItems: GroceryItem[] = [
   { id: "14", name: "Cereal — kids mix", category: "Pantry", quantity: "2 boxes", estimated: "$7.98", checked: false, recurring: true, store: "Target" },
 ];
 
-const recurringSupplies = [
+const DEMO_recurringSupplies = [
   { item: "Laundry detergent", lastPurchased: "3 weeks ago", cycle: "Monthly", status: "out" as const },
   { item: "Olive oil", lastPurchased: "5 weeks ago", cycle: "6 weeks", status: "low" as const },
   { item: "Paper towels", lastPurchased: "2 weeks ago", cycle: "3 weeks", status: "low" as const },
@@ -39,8 +39,8 @@ const recurringSupplies = [
   { item: "Kids' vitamins", lastPurchased: "2 weeks ago", cycle: "Monthly", status: "ok" as const },
 ];
 
-const categories = [...new Set(initialItems.map(i => i.category))];
-const stores = [...new Set(initialItems.map(i => i.store).filter(Boolean))];
+const DEMO_categories = [...new Set(initialItems.map(i => i.category))];
+const DEMO_stores = [...new Set(initialItems.map(i => i.store).filter(Boolean))];
 
 type GroceryView = "shopping" | "recurring" | "by-store" | "urgency" | "event-prep";
 
@@ -56,7 +56,7 @@ const GroceryPlanning = () => {
   const remainingEstimate = items.filter(i => !i.checked).reduce((sum, i) => sum + parseFloat(i.estimated.replace("$", "")), 0);
   const urgentCount = items.filter(i => i.urgent).length;
 
-  const groupedByStore = stores.reduce((acc, store) => {
+  const groupedByStore = DEMO_stores.reduce((acc, store) => {
     acc[store!] = items.filter(i => i.store === store && !i.checked);
     return acc;
   }, {} as Record<string, GroceryItem[]>);
@@ -91,7 +91,7 @@ const GroceryPlanning = () => {
           {view === "recurring" && (
             <div className="space-y-3">
               <SitaSectionHeader title="Recurring Supply Status" subtitle="Automatic tracking of household consumables" />
-              {recurringSupplies.map((s, i) => (
+              {DEMO_recurringSupplies.map((s, i) => (
                 <GroceryContinuityCard key={i} item={s.item} lastPurchased={s.lastPurchased} cycle={s.cycle} status={s.status} />
               ))}
             </div>
@@ -99,7 +99,7 @@ const GroceryPlanning = () => {
 
           {view === "by-store" && (
             <div className="space-y-5">
-              {stores.map((store) => {
+              {DEMO_stores.map((store) => {
                 const storeItems = groupedByStore[store!] || [];
                 if (storeItems.length === 0) return null;
                 return (
@@ -161,7 +161,7 @@ const GroceryPlanning = () => {
             </div>
           )}
 
-          {(view === "shopping" || view === "urgency") && categories.map((cat) => {
+          {(view === "shopping" || view === "urgency") && DEMO_categories.map((cat) => {
             let catItems = items.filter(i => i.category === cat);
             if (view === "urgency") catItems = catItems.filter(i => i.urgent || i.note?.toLowerCase().includes("low") || i.note?.toLowerCase().includes("out"));
             if (catItems.length === 0) return null;
@@ -228,7 +228,7 @@ const GroceryPlanning = () => {
           <SitaCard className="p-4">
             <SitaCardTitle className="mb-3">Optimized Store Route</SitaCardTitle>
             <div className="space-y-2">
-              {stores.map((store, i) => {
+              {DEMO_stores.map((store, i) => {
                 const count = items.filter(it => it.store === store && !it.checked).length;
                 if (count === 0) return null;
                 return (

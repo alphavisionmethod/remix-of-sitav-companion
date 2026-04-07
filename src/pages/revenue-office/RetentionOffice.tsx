@@ -14,7 +14,7 @@ const HEALTH_SEGMENTS = [
   { label: "At Risk", count: 5, pct: 7, color: "bg-red-400" },
 ];
 
-const AT_RISK = [
+const DEMO_AT_RISK = [
   { name: "Michael Park", company: "Summit Group", ltv: "$8,200", lastActive: "3 weeks ago", signals: ["No login 21d", "Support ticket unresolved", "Engagement ↓ 60%"] },
   { name: "Rachel Kim", company: "Bright Ideas", ltv: "$4,600", lastActive: "2 weeks ago", signals: ["Usage ↓ 40%", "Skipped last session", "No email opens 14d"] },
 ];
@@ -76,7 +76,7 @@ export default function RetentionOffice() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-red-400" /> At-Risk Clients</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {AT_RISK.map(c => (
+            {DEMO_AT_RISK.map(c => (
               <div key={c.name} className="p-3 rounded-lg bg-red-500/5 border border-red-500/20">
                 <div className="flex items-center justify-between mb-2">
                   <div>

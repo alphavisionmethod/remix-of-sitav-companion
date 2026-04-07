@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const FUNNELS = [
+const DEMO_FUNNELS = [
   {
     name: "Launch Pro Funnel",
     status: "live",
@@ -70,7 +70,7 @@ export default function FunnelBuilder() {
       </motion.div>
 
       <div className="space-y-6">
-        {FUNNELS.map((funnel, fi) => (
+        {DEMO_FUNNELS.map((funnel, fi) => (
           <motion.div key={funnel.name} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: fi * 0.1 }}>
             <Card className="bg-card/50 border-border/50">
               <CardHeader className="pb-3">

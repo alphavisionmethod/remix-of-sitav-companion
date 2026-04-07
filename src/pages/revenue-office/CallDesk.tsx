@@ -12,7 +12,7 @@ import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const callStats = [
+const DEMO_callStats = [
   { label: "Calls Today", value: "8", delta: "3 completed, 5 remaining", icon: Phone, color: "text-blue-400" },
   { label: "Conversion Rate", value: "42%", delta: "+8% vs last month", icon: TrendingUp, color: "text-emerald-400" },
   { label: "Avg Call Duration", value: "18 min", delta: "optimal range", icon: Clock, color: "text-amber-400" },
@@ -21,7 +21,7 @@ const callStats = [
   { label: "No-Show Rate", value: "14%", delta: "-4% vs last month", icon: AlertTriangle, color: "text-amber-400" },
 ];
 
-const callQueue = [
+const DEMO_callQueue = [
   { name: "Sarah Chen", company: "Apex Coaching Co.", priority: "critical", reason: "Quote follow-up — viewed 3x, no response in 5 days", value: "$12,500", lastContact: "5 days ago", warmth: 72, prepNotes: "Interested in Growth Strategy Package. Asked about ROI and timeline. Viewed pricing section 3x — likely price-sensitive.", objections: ["Comparing with competitor", "Wants ROI data"], suggestedTalkingPoints: ["Share case study from similar coaching business", "Offer payment plan option", "Reference their specific growth goals from intake"], postCallActions: ["Generate updated quote if needed", "Send case study", "Create follow-up task for 48hrs"] },
   { name: "Marcus Johnson", company: "Peak Performance", priority: "high", reason: "Discovery call — booked via funnel, high-value lead", value: "$18,000", lastContact: "New lead", warmth: 85, prepNotes: "Coaching program inquiry. 6-month commitment. Budget confirmed in form. Fitness industry. Source: Google Ads.", objections: [], suggestedTalkingPoints: ["Discuss 6-month program structure", "Share fitness client success stories", "Clarify onboarding process"], postCallActions: ["Generate quote", "Send program overview PDF", "Schedule follow-up if not closed"] },
   { name: "Emily Rodriguez", company: "Studio Bloom", priority: "high", reason: "Proposal review — sent marketing retainer, needs decision push", value: "$4,800", lastContact: "3 days ago", warmth: 58, prepNotes: "Comparing with competitor. Price-sensitive but values quality. Creative industry. Mentioned tight timeline.", objections: ["Price comparison", "Timeline concerns"], suggestedTalkingPoints: ["Emphasize speed of results", "Offer 3-month trial instead of 6", "Show portfolio of creative clients"], postCallActions: ["Adjust quote if needed", "Send portfolio examples", "Set decision deadline"] },
@@ -30,7 +30,7 @@ const callQueue = [
   { name: "Rachel Green", company: "Harmony Health", priority: "medium", reason: "Quote viewed 5x — very interested but hesitant", value: "$3,200", lastContact: "2 days ago", warmth: 68, prepNotes: "Content marketing package. Health/wellness industry. Wants to see more examples. 5 views = strong interest.", objections: ["Wants examples"], suggestedTalkingPoints: ["Share health industry content examples", "Offer sample content piece", "Discuss measurement framework"], postCallActions: ["Send content samples", "Update quote with sample deliverable", "Set 48hr follow-up"] },
 ];
 
-const recentCalls = [
+const DEMO_recentCalls = [
   { name: "Tom Harris", company: "Harris Legal", outcome: "Qualified — sending proposal", duration: "22 min", time: "2 hrs ago", nextStep: "Generate quote ($7,500)", sentiment: "positive", quoteTriggered: true, followUpSent: true },
   { name: "Anna Park", company: "Park Designs", outcome: "Booked follow-up for Thursday", duration: "15 min", time: "3 hrs ago", nextStep: "Send case studies before Thursday", sentiment: "warm", quoteTriggered: false, followUpSent: true },
   { name: "James Lee", company: "Lee Ventures", outcome: "Not interested — closed lost", duration: "8 min", time: "Yesterday", nextStep: "Add to reactivation (6 months)", sentiment: "neutral", quoteTriggered: false, followUpSent: false },
@@ -38,7 +38,7 @@ const recentCalls = [
   { name: "Mike Chen", company: "Chen Properties", outcome: "Needs internal approval — follow up Monday", duration: "35 min", time: "2 days ago", nextStep: "Send executive summary for their board", sentiment: "positive", quoteTriggered: true, followUpSent: true },
 ];
 
-const callAnalytics = [
+const DEMO_callAnalytics = [
   { metric: "Calls to Close", value: "3.2 avg", trend: "improving", benchmark: "4.5 industry avg" },
   { metric: "Best Day for Calls", value: "Tuesday", trend: "stable", benchmark: "Based on 90-day data" },
   { metric: "Best Time for Calls", value: "10am-12pm", trend: "stable", benchmark: "42% higher connect rate" },
@@ -62,7 +62,7 @@ export default function CallDesk() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {callStats.map((s) => (
+        {DEMO_callStats.map((s) => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1"><s.icon className={`h-3.5 w-3.5 ${s.color}`} /><p className="text-[10px] text-muted-foreground">{s.label}</p></div>
@@ -75,13 +75,13 @@ export default function CallDesk() {
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-card/50">
-          <TabsTrigger value="queue">Call Queue ({callQueue.length})</TabsTrigger>
-          <TabsTrigger value="recent">Recent Calls ({recentCalls.length})</TabsTrigger>
+          <TabsTrigger value="queue">Call Queue ({DEMO_callQueue.length})</TabsTrigger>
+          <TabsTrigger value="recent">Recent Calls ({DEMO_recentCalls.length})</TabsTrigger>
           <TabsTrigger value="analytics">Call Analytics</TabsTrigger>
         </TabsList>
 
         <TabsContent value="queue" className="space-y-3">
-          {callQueue.map((c) => (
+          {DEMO_callQueue.map((c) => (
             <Card key={c.name} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -140,7 +140,7 @@ export default function CallDesk() {
         </TabsContent>
 
         <TabsContent value="recent" className="space-y-2">
-          {recentCalls.map((c, i) => (
+          {DEMO_recentCalls.map((c, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex-1">
@@ -167,7 +167,7 @@ export default function CallDesk() {
         </TabsContent>
 
         <TabsContent value="analytics" className="grid md:grid-cols-2 gap-3">
-          {callAnalytics.map((a) => (
+          {DEMO_callAnalytics.map((a) => (
             <Card key={a.metric} className="bg-card/50 border-border/50">
               <CardContent className="p-4">
                 <p className="text-xs text-muted-foreground">{a.metric}</p>

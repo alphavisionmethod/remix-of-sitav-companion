@@ -14,21 +14,21 @@ import { useDataMode } from "@/contexts/DataModeContext";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
-const ALERTS = [
+const DEMO_ALERTS = [
   { id: "a1", title: "Connector Slack sync lag >15m", severity: "high" as const, source: "connector-monitor", time: "2m ago", runbook: "connector-resync", status: "active" },
   { id: "a2", title: "Workflow engine p99 latency >200ms", severity: "medium" as const, source: "apm-agent", time: "8m ago", runbook: "workflow-perf", status: "active" },
   { id: "a3", title: "Event bus consumer group rebalance", severity: "low" as const, source: "kafka-monitor", time: "12m ago", status: "suppressed" },
   { id: "a4", title: "Memory pressure on projection-worker", severity: "medium" as const, source: "infra-monitor", time: "22m ago", runbook: "scale-projection", status: "active" },
 ];
 
-const SLOS = [
+const DEMO_SLOS = [
   { name: "API Availability", target: 99.95, current: 99.98, burnRate: 0.8 },
   { name: "API Latency p99", target: 500, current: 320, burnRate: 0.3, unit: "ms" },
   { name: "Incident Response", target: 15, current: 8, burnRate: 0.5, unit: "min" },
   { name: "Deployment Success", target: 99.0, current: 100, burnRate: 0.0 },
 ];
 
-const RUNBOOKS = [
+const DEMO_RUNBOOKS = [
   { id: "rb1", name: "Connector Resync", steps: 4, avgTime: "3m", lastUsed: "1d ago" },
   { id: "rb2", name: "Workflow Perf Triage", steps: 6, avgTime: "8m", lastUsed: "3d ago" },
   { id: "rb3", name: "Scale Projection Worker", steps: 3, avgTime: "2m", lastUsed: "5d ago" },
@@ -65,10 +65,10 @@ const OperationsCommandCenter = () => {
         {/* Top metrics */}
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: "Active Alerts", value: String(ALERTS.filter(a => a.status === "active").length), icon: Bell, color: "text-amber-500" },
+            { label: "Active Alerts", value: String(DEMO_ALERTS.filter(a => a.status === "active").length), icon: Bell, color: "text-amber-500" },
             { label: "Open Incidents", value: String(incidentCount ?? 0), icon: AlertTriangle, color: "text-red-500" },
-            { label: "SLO Budget OK", value: `${SLOS.filter(s => s.burnRate < 1).length}/${SLOS.length}`, icon: Target, color: "text-emerald-500" },
-            { label: "Runbooks Available", value: String(RUNBOOKS.length), icon: Play, color: "text-primary" },
+            { label: "SLO Budget OK", value: `${DEMO_SLOS.filter(s => s.burnRate < 1).length}/${DEMO_SLOS.length}`, icon: Target, color: "text-emerald-500" },
+            { label: "Runbooks Available", value: String(DEMO_RUNBOOKS.length), icon: Play, color: "text-primary" },
           ].map(m => (
             <Card key={m.label} className="hover:-translate-y-0.5 transition-transform">
               <CardContent className="p-3.5">
@@ -87,7 +87,7 @@ const OperationsCommandCenter = () => {
           </TabsList>
 
           <TabsContent value="alerts" className="mt-4 space-y-2">
-            {ALERTS.map(a => (
+            {DEMO_ALERTS.map(a => (
               <motion.div key={a.id} variants={fadeUp}>
                 <Card className="hover:bg-muted/30 transition-colors">
                   <CardContent className="p-4 flex items-center justify-between">
@@ -109,7 +109,7 @@ const OperationsCommandCenter = () => {
           </TabsContent>
 
           <TabsContent value="slos" className="mt-4 space-y-2">
-            {SLOS.map(slo => (
+            {DEMO_SLOS.map(slo => (
               <motion.div key={slo.name} variants={fadeUp}>
                 <Card>
                   <CardContent className="p-4">
@@ -131,7 +131,7 @@ const OperationsCommandCenter = () => {
           </TabsContent>
 
           <TabsContent value="runbooks" className="mt-4 space-y-2">
-            {RUNBOOKS.map(rb => (
+            {DEMO_RUNBOOKS.map(rb => (
               <motion.div key={rb.id} variants={fadeUp}>
                 <Card className="hover:bg-muted/30 transition-colors">
                   <CardContent className="p-4 flex items-center justify-between">

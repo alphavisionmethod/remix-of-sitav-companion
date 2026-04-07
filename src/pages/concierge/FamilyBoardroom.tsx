@@ -17,20 +17,20 @@ const weeklyStats = {
   proofRecorded: 14, approvalsHandled: 3,
 };
 
-const priorities = [
+const DEMO_priorities = [
   { item: "Kids' passport renewal — expires in 60 days", urgency: "high" as const, category: "Admin", action: "Start renewal process", why: "6–8 week processing time" },
   { item: "Birthday party venue — decision needed by Apr 10", urgency: "medium" as const, category: "Events", action: "Compare 3 venues", why: "Venue holds expire in 48h" },
   { item: "Oil change — 2 weeks overdue", urgency: "medium" as const, category: "Vehicle", action: "Schedule with Elite Auto", why: "Risk of engine damage" },
   { item: "Travel insurance — Cancún trip", urgency: "low" as const, category: "Travel", action: "Review and purchase", why: "Trip in 18 days" },
 ];
 
-const carryover = [
+const DEMO_carryover = [
   { item: "Annual home insurance review", weeks: 3 },
   { item: "Schedule HVAC maintenance", weeks: 2 },
   { item: "Update emergency contacts at school", weeks: 1 },
 ];
 
-const nextMoves = [
+const DEMO_nextMoves = [
   { move: "Begin passport renewal — both kids", why: "60-day expiration window, 6–8 week processing", confidence: "high" as const },
   { move: "Confirm birthday venue by Friday", why: "Venue holds for 48 hours only", confidence: "high" as const },
   { move: "Schedule oil change — Elite Auto", why: "2 weeks overdue, next available: Thursday", confidence: "medium" as const },
@@ -39,12 +39,12 @@ const nextMoves = [
   { move: "Book pet sitter for spring break", why: "Preferred sitter has limited slots", confidence: "high" as const },
 ];
 
-const scheduleConflicts = [
+const DEMO_scheduleConflicts = [
   { conflict: "Emma's soccer match overlaps with family dinner — Saturday", resolution: "Move dinner to 7 PM" },
   { conflict: "Parent-teacher conference conflicts with your 10 AM client meeting — Tuesday", resolution: "Reschedule client meeting to 11 AM" },
 ];
 
-const proofSummary = [
+const DEMO_proofSummary = [
   { action: "12 tasks completed with proof", icon: CheckSquare },
   { action: "3 provider interactions logged", icon: Wrench },
   { action: "1 grocery run tracked — $87.42", icon: ShoppingCart },
@@ -66,7 +66,7 @@ const FamilyBoardroom = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <DemoModeBadge />
-      <SitaPageHeader title="Family Boardroom" subtitle="Weekly review — priorities, performance, and recommended next moves" />
+      <SitaPageHeader title="Family Boardroom" subtitle="Weekly review — DEMO_priorities, performance, and recommended next moves" />
 
       <SitaTabs
         tabs={[
@@ -100,7 +100,7 @@ const FamilyBoardroom = () => {
         <div className="lg:col-span-2 space-y-6">
           {/* This Week's Priorities */}
           <BoardroomSection title="This Week's Priorities" icon={Target}>
-            {priorities.map((p, i) => (
+            {DEMO_priorities.map((p, i) => (
               <SitaCard key={i} className="p-4">
                 <div className="flex items-start gap-3">
                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary shrink-0">{i + 1}</div>
@@ -120,7 +120,7 @@ const FamilyBoardroom = () => {
 
           {/* Schedule Conflicts */}
           <BoardroomSection title="Schedule Conflicts" icon={AlertCircle}>
-            {scheduleConflicts.map((c, i) => (
+            {DEMO_scheduleConflicts.map((c, i) => (
               <SitaCard key={i} lane="action" className="p-4">
                 <p className="text-sm font-medium text-foreground">{c.conflict}</p>
                 <div className="mt-2 rounded-lg bg-accent/5 border border-accent/10 px-3 py-2">
@@ -132,7 +132,7 @@ const FamilyBoardroom = () => {
 
           {/* Recommended Next Moves */}
           <BoardroomSection title="Recommended Next Moves" icon={ArrowRight}>
-            {nextMoves.map((m, i) => (
+            {DEMO_nextMoves.map((m, i) => (
               <SitaCard key={i} className="p-4">
                 <div className="flex items-start gap-3">
                   <ArrowRight className="h-4 w-4 text-primary mt-0.5 shrink-0" />
@@ -148,7 +148,7 @@ const FamilyBoardroom = () => {
 
           {/* Carryover */}
           <BoardroomSection title="Carryover Items" icon={Clock}>
-            {carryover.map((item, i) => (
+            {DEMO_carryover.map((item, i) => (
               <SitaCard key={i} className="p-3.5 border-amber-500/15">
                 <div className="flex items-center gap-3">
                   <Clock className="h-3.5 w-3.5 text-amber-500 shrink-0" />
@@ -169,7 +169,7 @@ const FamilyBoardroom = () => {
               <SitaCardTitle>Proof Summary</SitaCardTitle>
             </div>
             <div className="space-y-2">
-              {proofSummary.map((p, i) => (
+              {DEMO_proofSummary.map((p, i) => (
                 <div key={i} className="flex items-center gap-2">
                   <p.icon className="h-3 w-3 text-muted-foreground" />
                   <span className="text-xs text-foreground">{p.action}</span>

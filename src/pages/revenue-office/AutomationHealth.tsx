@@ -11,7 +11,7 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const healthMetrics = [
+const DEMO_healthMetrics = [
   { label: "Overall Health", value: 94, target: 95, color: "text-emerald-400", icon: Activity },
   { label: "Success Rate", value: 91, target: 90, color: "text-emerald-400", icon: CheckCircle },
   { label: "Delivery Rate", value: 97, target: 98, color: "text-emerald-400", icon: Mail },
@@ -20,7 +20,7 @@ const healthMetrics = [
   { label: "Fatigue Score", value: 12, target: 10, color: "text-amber-400", icon: AlertTriangle },
 ];
 
-const automations = [
+const DEMO_automations = [
   { name: "Welcome Onboarding (7-step)", status: "healthy", successRate: 98, triggers: 28, failures: 0, lastRun: "2hrs ago", contacts: 112, revenue: "—", trend: [95, 96, 97, 98], category: "Onboarding" },
   { name: "Stale Lead Recovery (48hr)", status: "healthy", successRate: 94, triggers: 42, failures: 3, lastRun: "1hr ago", contacts: 156, revenue: "$12,400", trend: [88, 90, 92, 94], category: "Lead Recovery" },
   { name: "Post-Service Review Request", status: "healthy", successRate: 96, triggers: 35, failures: 1, lastRun: "4hrs ago", contacts: 220, revenue: "—", trend: [92, 94, 95, 96], category: "Reputation" },
@@ -35,13 +35,13 @@ const automations = [
   { name: "No-Show Rescue + Rebook", status: "healthy", successRate: 92, triggers: 18, failures: 1, lastRun: "5hrs ago", contacts: 48, revenue: "$4,200", trend: [88, 89, 91, 92], category: "Booking" },
 ];
 
-const fatigueAlerts = [
-  { contact: "Sarah Chen", automations: 4, messagesThisWeek: 7, risk: "high", action: "Pause non-critical sequences for 7 days" },
-  { contact: "Marcus Johnson", automations: 3, messagesThisWeek: 5, risk: "medium", action: "Reduce to 1 message per 3 days" },
-  { contact: "Emily Rodriguez", automations: 2, messagesThisWeek: 6, risk: "high", action: "Remove from nurture, keep only appointment reminders" },
+const DEMO_fatigueAlerts = [
+  { contact: "Sarah Chen", DEMO_automations: 4, messagesThisWeek: 7, risk: "high", action: "Pause non-critical sequences for 7 days" },
+  { contact: "Marcus Johnson", DEMO_automations: 3, messagesThisWeek: 5, risk: "medium", action: "Reduce to 1 message per 3 days" },
+  { contact: "Emily Rodriguez", DEMO_automations: 2, messagesThisWeek: 6, risk: "high", action: "Remove from nurture, keep only appointment reminders" },
 ];
 
-const advisorInsights = [
+const DEMO_advisorInsights = [
   { advisor: "Campaign Advisor", insight: "Nurture Sequence engagement drops 40% at email 4. Test shorter 3-email variant or change topic at email 4.", action: "Create A/B test" },
   { advisor: "Revenue Ops Advisor", insight: "Lead Assignment Engine failing due to missing 'enterprise' segment rule. 5 leads unassigned since yesterday.", action: "Fix rule now" },
   { advisor: "Retention Advisor", insight: "Churn Prevention check-ins have only 50% open rate. Switch to SMS for initial touch — similar businesses see 78% read rate.", action: "Generate SMS variant" },
@@ -60,11 +60,11 @@ export default function AutomationHealth() {
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Activity className="h-6 w-6 text-blue-400" />Automation Health Monitor</h1>
-        <p className="text-muted-foreground">Track success, failures, delays, fatigue, engagement, and conversion across all automations</p>
+        <p className="text-muted-foreground">Track success, failures, delays, fatigue, engagement, and conversion across all DEMO_automations</p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {healthMetrics.map((m) => (
+        {DEMO_healthMetrics.map((m) => (
           <Card key={m.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1">
@@ -83,7 +83,7 @@ export default function AutomationHealth() {
       <Card className="bg-card/50 border-primary/20 border">
         <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Brain className="h-4 w-4 text-primary" />Advisor Health Insights</CardTitle></CardHeader>
         <CardContent className="grid md:grid-cols-2 gap-3">
-          {advisorInsights.map((a, i) => (
+          {DEMO_advisorInsights.map((a, i) => (
             <div key={i} className="p-3 rounded-lg bg-background/50 border border-border/30">
               <Badge variant="secondary" className="text-[10px] mb-1">{a.advisor}</Badge>
               <p className="text-xs text-foreground mb-2">{a.insight}</p>
@@ -96,14 +96,14 @@ export default function AutomationHealth() {
       {/* Automation List */}
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-card/50">
-          <TabsTrigger value="all">All ({automations.length})</TabsTrigger>
-          <TabsTrigger value="healthy">Healthy ({automations.filter(a => a.status === "healthy").length})</TabsTrigger>
-          <TabsTrigger value="issues">Issues ({automations.filter(a => a.status !== "healthy").length})</TabsTrigger>
-          <TabsTrigger value="fatigue">Fatigue Alerts ({fatigueAlerts.length})</TabsTrigger>
+          <TabsTrigger value="all">All ({DEMO_automations.length})</TabsTrigger>
+          <TabsTrigger value="healthy">Healthy ({DEMO_automations.filter(a => a.status === "healthy").length})</TabsTrigger>
+          <TabsTrigger value="issues">Issues ({DEMO_automations.filter(a => a.status !== "healthy").length})</TabsTrigger>
+          <TabsTrigger value="fatigue">Fatigue Alerts ({DEMO_fatigueAlerts.length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-2">
-          {automations.map((a) => {
+          {DEMO_automations.map((a) => {
             const Icon = statusIcon[a.status as keyof typeof statusIcon];
             const color = statusColor[a.status as keyof typeof statusColor];
             return (
@@ -140,7 +140,7 @@ export default function AutomationHealth() {
         </TabsContent>
 
         <TabsContent value="healthy" className="space-y-2">
-          {automations.filter(a => a.status === "healthy").map((a) => (
+          {DEMO_automations.filter(a => a.status === "healthy").map((a) => (
             <Card key={a.name} className="bg-card/50 border-border/50"><CardContent className="p-3 flex items-center justify-between">
               <div className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-400" /><span className="text-sm text-foreground">{a.name}</span></div>
               <span className="text-sm font-bold text-emerald-400">{a.successRate}%</span>
@@ -149,7 +149,7 @@ export default function AutomationHealth() {
         </TabsContent>
 
         <TabsContent value="issues" className="space-y-2">
-          {automations.filter(a => a.status !== "healthy").map((a) => {
+          {DEMO_automations.filter(a => a.status !== "healthy").map((a) => {
             const Icon = statusIcon[a.status as keyof typeof statusIcon];
             const color = statusColor[a.status as keyof typeof statusColor];
             return (
@@ -165,9 +165,9 @@ export default function AutomationHealth() {
         </TabsContent>
 
         <TabsContent value="fatigue" className="space-y-2">
-          {fatigueAlerts.map((f, i) => (
+          {DEMO_fatigueAlerts.map((f, i) => (
             <Card key={i} className="bg-card/50 border-border/50"><CardContent className="p-3 flex items-center justify-between">
-              <div><p className="text-sm text-foreground">{f.contact}</p><p className="text-[10px] text-muted-foreground">{f.automations} active automations · {f.messagesThisWeek} messages this week</p></div>
+              <div><p className="text-sm text-foreground">{f.contact}</p><p className="text-[10px] text-muted-foreground">{f.DEMO_automations} active DEMO_automations · {f.messagesThisWeek} messages this week</p></div>
               <div className="flex items-center gap-2">
                 <Badge variant={f.risk === "high" ? "destructive" : "secondary"} className="text-[10px]">{f.risk}</Badge>
                 <span className="text-[10px] text-foreground">{f.action}</span>

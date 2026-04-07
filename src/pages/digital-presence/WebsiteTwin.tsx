@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const PAGE_TREE = [
+const DEMO_PAGE_TREE = [
   { path: "/", label: "Homepage", health: 92, views: 4201, mobile: 88, children: [
     { path: "/services", label: "Services", health: 85, views: 2103, mobile: 72 },
     { path: "/pricing", label: "Pricing", health: 78, views: 1204, mobile: 80 },
@@ -21,20 +21,20 @@ const PAGE_TREE = [
   { path: "/blog", label: "Blog", health: 60, views: 2800, mobile: 82, children: [] },
 ];
 
-const CONVERSION_PATHS = [
+const DEMO_CONVERSION_PATHS = [
   { name: "Homepage → Services → Book", rate: "12.4%", volume: 342, trend: "up" },
   { name: "Homepage → Shop → Cart → Checkout", rate: "3.8%", volume: 198, trend: "down" },
   { name: "Blog → Services → Contact", rate: "2.1%", volume: 87, trend: "stable" },
   { name: "Landing Page → Book", rate: "18.2%", volume: 156, trend: "up" },
 ];
 
-const WEAK_NODES = [
+const DEMO_WEAK_NODES = [
   { page: "/shop/checkout", issue: "68% drop-off at payment step", severity: "critical" },
   { page: "/contact", issue: "Mobile form barely usable — 65% mobile score", severity: "high" },
   { page: "/blog", issue: "14 posts older than 6 months, no updates", severity: "medium" },
 ];
 
-function PageNode({ page, depth = 0 }: { page: typeof PAGE_TREE[0]; depth?: number }) {
+function PageNode({ page, depth = 0 }: { page: typeof DEMO_PAGE_TREE[0]; depth?: number }) {
   const healthColor = page.health >= 85 ? "text-green-400" : page.health >= 70 ? "text-amber-400" : "text-red-400";
   return (
     <div style={{ marginLeft: depth * 24 }}>
@@ -70,7 +70,7 @@ export default function WebsiteTwin() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Monitor className="w-4 h-4 text-cyan-400" /> Page Hierarchy</CardTitle></CardHeader>
         <CardContent>
-          {PAGE_TREE.map(p => <PageNode key={p.path} page={p} />)}
+          {DEMO_PAGE_TREE.map(p => <PageNode key={p.path} page={p} />)}
         </CardContent>
       </Card>
 
@@ -79,7 +79,7 @@ export default function WebsiteTwin() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><TrendingUp className="w-4 h-4 text-green-400" /> Conversion Paths</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {CONVERSION_PATHS.map(cp => (
+            {DEMO_CONVERSION_PATHS.map(cp => (
               <div key={cp.name} className="p-3 bg-muted/30 rounded-lg flex items-center justify-between">
                 <div>
                   <p className="text-xs font-medium text-foreground">{cp.name}</p>
@@ -98,7 +98,7 @@ export default function WebsiteTwin() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-red-400" /> Weak Nodes</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {WEAK_NODES.map(w => (
+            {DEMO_WEAK_NODES.map(w => (
               <div key={w.page} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-mono text-muted-foreground">{w.page}</span>

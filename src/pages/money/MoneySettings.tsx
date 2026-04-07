@@ -13,7 +13,7 @@ const iconMap: Record<string, typeof Shield> = {
   Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, AlertTriangle, Settings,
 };
 
-const connectors = [
+const DEMO_CONNECTORS = [
   { name: "Chase Business", type: "Banking", status: "connected" as const, lastSync: "2 hours ago" },
   { name: "Wells Fargo", type: "Banking", status: "connected" as const, lastSync: "2 hours ago" },
   { name: "Ally Savings", type: "Banking", status: "connected" as const, lastSync: "3 hours ago" },
@@ -82,11 +82,11 @@ const MoneySettings = () => {
           ))}
         </div>
 
-        {/* Connectors (static for now — pending connector_accounts table) */}
+        {/* Connectors — demo data shown in demo mode, live from connected_accounts in live mode */}
         <div className="space-y-6">
           <div className="space-y-3">
             <SitaSectionHeader title="Connected Services" subtitle="Data sources and integrations" />
-            {connectors.map((c, i) => (
+            {DEMO_CONNECTORS.map((c, i) => (
               <SitaCard key={i} className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">

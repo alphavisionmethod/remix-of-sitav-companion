@@ -8,7 +8,7 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const BRAND_COLORS = [
+const DEMO_BRAND_COLORS = [
   { name: "Primary", value: "#3B82F6", hsl: "217 91% 60%" },
   { name: "Secondary", value: "#8B5CF6", hsl: "263 70% 66%" },
   { name: "Accent", value: "#F59E0B", hsl: "38 92% 50%" },
@@ -17,14 +17,14 @@ const BRAND_COLORS = [
   { name: "Foreground", value: "#F8FAFC", hsl: "210 40% 98%" },
 ];
 
-const TYPOGRAPHY = [
+const DEMO_TYPOGRAPHY = [
   { role: "Headings", family: "Inter", weight: "700", size: "24–48px" },
   { role: "Body", family: "Inter", weight: "400", size: "14–16px" },
   { role: "Captions", family: "Inter", weight: "500", size: "11–12px" },
   { role: "Code", family: "JetBrains Mono", weight: "400", size: "13px" },
 ];
 
-const BRAND_ASSETS = [
+const DEMO_BRAND_ASSETS = [
   { name: "Primary Logo", format: "SVG", status: "ready" },
   { name: "Logo Mark", format: "PNG", status: "ready" },
   { name: "Favicon", format: "ICO", status: "ready" },
@@ -32,7 +32,7 @@ const BRAND_ASSETS = [
   { name: "Email Header", format: "PNG", status: "missing" },
 ];
 
-const REUSABLE_BLOCKS = [
+const DEMO_REUSABLE_BLOCKS = [
   { name: "Hero Section", uses: 3, category: "Header" },
   { name: "Testimonials Grid", uses: 2, category: "Social Proof" },
   { name: "CTA Banner", uses: 5, category: "Conversion" },
@@ -74,7 +74,7 @@ export default function BrandStudio() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Paintbrush className="w-4 h-4 text-purple-400" /> Color System</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {BRAND_COLORS.map(c => (
+            {DEMO_BRAND_COLORS.map(c => (
               <div key={c.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-md border border-border/50" style={{ backgroundColor: c.value }} />
@@ -93,7 +93,7 @@ export default function BrandStudio() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Type className="w-4 h-4 text-blue-400" /> Typography</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {TYPOGRAPHY.map(t => (
+            {DEMO_TYPOGRAPHY.map(t => (
               <div key={t.role} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div>
                   <span className="text-sm font-medium text-foreground">{t.role}</span>
@@ -112,7 +112,7 @@ export default function BrandStudio() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Image className="w-4 h-4 text-green-400" /> Brand Assets</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {BRAND_ASSETS.map(a => (
+            {DEMO_BRAND_ASSETS.map(a => (
               <div key={a.name} className="flex items-center justify-between p-2">
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-foreground">{a.name}</span>
@@ -131,7 +131,7 @@ export default function BrandStudio() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Layout className="w-4 h-4 text-indigo-400" /> Reusable Blocks</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {REUSABLE_BLOCKS.map(b => (
+            {DEMO_REUSABLE_BLOCKS.map(b => (
               <div key={b.name} className="flex items-center justify-between p-2">
                 <div>
                   <span className="text-sm text-foreground">{b.name}</span>

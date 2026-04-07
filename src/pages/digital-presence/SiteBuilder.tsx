@@ -8,7 +8,7 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const PAGE_TYPES = [
+const DEMO_PAGE_TYPES = [
   { type: "Landing Page", desc: "High-converting campaign or product page", icon: Rocket, color: "text-blue-400" },
   { type: "Service Page", desc: "Describe and sell a service offering", icon: FileText, color: "text-green-400" },
   { type: "Booking Page", desc: "Let customers schedule appointments", icon: Calendar, color: "text-purple-400" },
@@ -19,7 +19,7 @@ const PAGE_TYPES = [
   { type: "Full Website", desc: "Complete multi-page website", icon: Layout, color: "text-indigo-400" },
 ];
 
-const EXISTING_PAGES = [
+const DEMO_EXISTING_PAGES = [
   { name: "Homepage", type: "Landing Page", status: "published", lastEdit: "2 days ago", views: 4201 },
   { name: "Summer Sale", type: "Campaign Microsite", status: "draft", lastEdit: "1 hour ago", views: 0 },
   { name: "Book a Call", type: "Booking Page", status: "published", lastEdit: "1 week ago", views: 1847 },
@@ -44,7 +44,7 @@ export default function SiteBuilder() {
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Plus className="w-4 h-4 text-primary" /> Create New</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {PAGE_TYPES.map(pt => (
+            {DEMO_PAGE_TYPES.map(pt => (
               <button key={pt.type} className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors text-left group">
                 <pt.icon className={`w-5 h-5 ${pt.color} mb-2`} />
                 <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{pt.type}</h3>
@@ -81,7 +81,7 @@ export default function SiteBuilder() {
           </div>
         </CardHeader>
         <CardContent className="space-y-2">
-          {EXISTING_PAGES.filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase())).map(p => (
+          {DEMO_EXISTING_PAGES.filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase())).map(p => (
             <div key={p.name} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/40 cursor-pointer transition-colors">
               <div>
                 <span className="text-sm font-medium text-foreground">{p.name}</span>

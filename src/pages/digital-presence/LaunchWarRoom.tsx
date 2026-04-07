@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const READINESS_CHECKS = [
+const DEMO_READINESS_CHECKS = [
   { area: "Landing Page", status: "ready", score: 95, details: "Page live, CTA strong, mobile optimized" },
   { area: "Copy & Content", status: "ready", score: 90, details: "Headlines tested, descriptions complete" },
   { area: "Visual Design", status: "ready", score: 88, details: "Brand-aligned, responsive, images optimized" },
@@ -17,7 +17,7 @@ const READINESS_CHECKS = [
   { area: "Rollback Plan", status: "ready", score: 100, details: "Previous version saved, instant rollback" },
 ];
 
-const LAUNCH_TIMELINE = [
+const DEMO_LAUNCH_TIMELINE = [
   { time: "T-48h", task: "Final copy review", status: "done" },
   { time: "T-24h", task: "Visual QA pass", status: "done" },
   { time: "T-12h", task: "Checkout test orders", status: "done" },
@@ -29,7 +29,7 @@ const LAUNCH_TIMELINE = [
   { time: "T+24h", task: "Performance review", status: "pending" },
 ];
 
-const overallScore = Math.round(READINESS_CHECKS.reduce((sum, c) => sum + c.score, 0) / READINESS_CHECKS.length);
+const overallScore = Math.round(DEMO_READINESS_CHECKS.reduce((sum, c) => sum + c.score, 0) / DEMO_READINESS_CHECKS.length);
 
 export default function LaunchWarRoom() {
   const { isDemoMode } = useDataMode();
@@ -58,7 +58,7 @@ export default function LaunchWarRoom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Rocket className="w-4 h-4 text-pink-400" /> Readiness Checks</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {READINESS_CHECKS.map(c => (
+            {DEMO_READINESS_CHECKS.map(c => (
               <div key={c.area} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center gap-3">
                   {c.status === "ready" ? <CheckCircle className="w-4 h-4 text-green-400" /> : <AlertTriangle className="w-4 h-4 text-amber-400" />}
@@ -80,7 +80,7 @@ export default function LaunchWarRoom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Clock className="w-4 h-4 text-blue-400" /> Launch Timeline</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {LAUNCH_TIMELINE.map(t => (
+            {DEMO_LAUNCH_TIMELINE.map(t => (
               <div key={t.time} className="flex items-center gap-3 p-2">
                 <span className="text-xs font-mono text-muted-foreground w-12">{t.time}</span>
                 <div className="flex-1 flex items-center justify-between">

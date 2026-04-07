@@ -11,7 +11,7 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const receipts = [
+const DEMO_receipts = [
   { time: "14 min ago", automation: "Stale Lead Recovery", action: "Sent recovery email to 24 leads", contacts: 24, approvedBy: "Auto-run (L3)", outcome: "22 delivered, 2 bounced, 8 opened so far", rollback: true, category: "Lead Recovery", impact: "$8,200 at risk", details: { emailVariants: 3, segmentsUsed: ["warm", "hot"], exclusions: 3, fatigueDelays: 5 } },
   { time: "45 min ago", automation: "Post-Call Follow-up", action: "Generated 3 follow-up emails from call notes, created 3 callback tasks", contacts: 3, approvedBy: "Draft reviewed → User approved", outcome: "3 emails sent, 2 opened, 1 replied", rollback: true, category: "Sales", impact: "$7,500 pipeline", details: { aiGenerated: true, callsProcessed: 3, quotesTriggered: 1 } },
   { time: "1 hr ago", automation: "No-Show Rescue", action: "Sent SMS to 3 no-show contacts with rebook link", contacts: 3, approvedBy: "Auto-run (L3)", outcome: "3 delivered, 1 rebooked within 20min", rollback: true, category: "Booking", impact: "$2,400 recovered", details: { channelUsed: "SMS", rebookRate: "33%" } },
@@ -34,9 +34,9 @@ const categoryIcons: Record<string, typeof Mail> = {
 export default function AutomationReceipts() {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
-  const categories = ["all", ...Array.from(new Set(receipts.map(r => r.category)))];
+  const categories = ["all", ...Array.from(new Set(DEMO_receipts.map(r => r.category)))];
 
-  const filtered = tab === "all" ? receipts : receipts.filter(r => r.category === tab);
+  const filtered = tab === "all" ? DEMO_receipts : DEMO_receipts.filter(r => r.category === tab);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
@@ -47,10 +47,10 @@ export default function AutomationReceipts() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{receipts.length}</p><p className="text-[10px] text-muted-foreground">Actions (48hrs)</p></CardContent></Card>
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-400">{receipts.reduce((a, r) => a + r.contacts, 0)}</p><p className="text-[10px] text-muted-foreground">Contacts Affected</p></CardContent></Card>
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-blue-400">{receipts.filter(r => r.rollback).length}</p><p className="text-[10px] text-muted-foreground">Rollback Available</p></CardContent></Card>
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-amber-400">{receipts.filter(r => r.approvedBy.includes("Awaiting")).length}</p><p className="text-[10px] text-muted-foreground">Pending Approval</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{DEMO_receipts.length}</p><p className="text-[10px] text-muted-foreground">Actions (48hrs)</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-400">{DEMO_receipts.reduce((a, r) => a + r.contacts, 0)}</p><p className="text-[10px] text-muted-foreground">Contacts Affected</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-blue-400">{DEMO_receipts.filter(r => r.rollback).length}</p><p className="text-[10px] text-muted-foreground">Rollback Available</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-amber-400">{DEMO_receipts.filter(r => r.approvedBy.includes("Awaiting")).length}</p><p className="text-[10px] text-muted-foreground">Pending Approval</p></CardContent></Card>
       </div>
 
       {/* Category Tabs */}

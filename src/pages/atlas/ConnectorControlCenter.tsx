@@ -20,7 +20,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
 
-const connectors = [
+const DEMO_connectors = [
   { id: "google-ads", name: "Google Ads", status: "active", health: 98, lastSync: h(0.5), syncStatus: "success", lifecycleState: "active", capabilities: ["read-campaigns", "read-metrics", "write-campaigns"], approvalRequired: true, auditEntries: 45, failureCount: 0, enterprise: true },
   { id: "meta-ads", name: "Meta Ads", status: "error", health: 0, lastSync: h(48), syncStatus: "auth-expired", lifecycleState: "error", capabilities: ["read-campaigns", "read-metrics"], approvalRequired: true, auditEntries: 23, failureCount: 3, enterprise: true },
   { id: "quickbooks", name: "QuickBooks", status: "active", health: 95, lastSync: h(1), syncStatus: "success", lifecycleState: "active", capabilities: ["read-invoices", "read-payments", "write-invoices"], approvalRequired: true, auditEntries: 67, failureCount: 1, enterprise: true },
@@ -30,7 +30,7 @@ const connectors = [
 
 const lifecycleStates = ["registered", "configured", "active", "paused", "error", "disabled", "decommissioned"];
 
-const auditTimeline = [
+const DEMO_auditTimeline = [
   { connector: "google-ads", action: "sync-completed", time: h(0.5), actor: "system", receiptId: "rcpt-ga-1" },
   { connector: "meta-ads", action: "auth-token-expired", time: h(24), actor: "system", receiptId: "rcpt-ma-1" },
   { connector: "meta-ads", action: "reconnection-attempted", time: h(12), actor: "user", receiptId: "rcpt-ma-2" },
@@ -42,24 +42,24 @@ const auditTimeline = [
 export default function ConnectorControlCenter() {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
-  const healthy = connectors.filter(c => c.status === "active").length;
+  const healthy = DEMO_connectors.filter(c => c.status === "active").length;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
       <DemoModeBadge />
       <SitaPageHeader title="Connector Control Center" subtitle="Connector lifecycle, health matrix, capability registry, audit lineage, and failure recovery" />
 
-      {connectors.some(c => c.status === "error") && (
-        <DegradedStateBanner severity="warning" reason={`${connectors.filter(c => c.status === "error").length} connector(s) in error state`} impact="Data sync affected for failed connectors" affectedCapabilities={connectors.filter(c => c.status === "error").flatMap(c => c.capabilities)} dismissible />
+      {DEMO_connectors.some(c => c.status === "error") && (
+        <DegradedStateBanner severity="warning" reason={`${DEMO_connectors.filter(c => c.status === "error").length} connector(s) in error state`} impact="Data sync affected for failed connectors" affectedCapabilities={DEMO_connectors.filter(c => c.status === "error").flatMap(c => c.capabilities)} dismissible />
       )}
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
           { label: "Active", value: healthy, color: "text-green-400" },
-          { label: "Error", value: connectors.filter(c => c.status === "error").length, color: connectors.some(c => c.status === "error") ? "text-red-400" : "text-green-400" },
-          { label: "Paused", value: connectors.filter(c => c.status === "paused").length, color: "text-amber-400" },
-          { label: "Avg Health", value: `${Math.round(connectors.reduce((s, c) => s + c.health, 0) / connectors.length)}%`, color: "text-blue-400" },
-          { label: "Total Capabilities", value: connectors.reduce((s, c) => s + c.capabilities.length, 0), color: "text-foreground" },
+          { label: "Error", value: DEMO_connectors.filter(c => c.status === "error").length, color: DEMO_connectors.some(c => c.status === "error") ? "text-red-400" : "text-green-400" },
+          { label: "Paused", value: DEMO_connectors.filter(c => c.status === "paused").length, color: "text-amber-400" },
+          { label: "Avg Health", value: `${Math.round(DEMO_connectors.reduce((s, c) => s + c.health, 0) / connectors.length)}%`, color: "text-blue-400" },
+          { label: "Total Capabilities", value: DEMO_connectors.reduce((s, c) => s + c.capabilities.length, 0), color: "text-foreground" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -86,7 +86,7 @@ export default function ConnectorControlCenter() {
 
         <div className="mt-4 space-y-3">
           <TabsContent value="overview">
-            {connectors.map(c => (
+            {DEMO_connectors.map(c => (
               <div key={c.id} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
                 <div className="flex items-center gap-3">
                   <div className={cn("w-2.5 h-2.5 rounded-full", c.status === "active" ? "bg-green-400" : c.status === "error" ? "bg-red-400" : "bg-amber-400")} />
@@ -106,7 +106,7 @@ export default function ConnectorControlCenter() {
           </TabsContent>
 
           <TabsContent value="lifecycle">
-            {connectors.map(c => (
+            {DEMO_connectors.map(c => (
               <Card key={c.id} className="bg-card/50 border-border/50 mb-2">
                 <CardContent className="p-3">
                   <p className="text-xs font-medium text-foreground mb-2">{c.name}</p>
@@ -128,7 +128,7 @@ export default function ConnectorControlCenter() {
           </TabsContent>
 
           <TabsContent value="health">
-            {connectors.map(c => (
+            {DEMO_connectors.map(c => (
               <div key={c.id} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
                 <div className="flex items-center gap-3">
                   <Activity className={cn("w-3.5 h-3.5", c.health > 90 ? "text-green-400" : c.health > 50 ? "text-amber-400" : "text-red-400")} />
@@ -146,7 +146,7 @@ export default function ConnectorControlCenter() {
           </TabsContent>
 
           <TabsContent value="capabilities">
-            {connectors.map(c => (
+            {DEMO_connectors.map(c => (
               <Card key={c.id} className="bg-card/50 border-border/50 mb-2">
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between mb-2">
@@ -165,7 +165,7 @@ export default function ConnectorControlCenter() {
 
           <TabsContent value="audit">
             <div className="relative pl-4 border-l border-border/40 space-y-2">
-              {auditTimeline.map((e, i) => (
+              {DEMO_auditTimeline.map((e, i) => (
                 <div key={i} className="relative">
                   <div className="absolute -left-[21px] w-2.5 h-2.5 rounded-full border-2 bg-primary border-primary/50" />
                   <div className="p-2.5 bg-muted/20 rounded-lg flex items-center justify-between">
@@ -184,7 +184,7 @@ export default function ConnectorControlCenter() {
           </TabsContent>
 
           <TabsContent value="recovery">
-            {connectors.filter(c => c.status === "error" || c.failureCount > 0).map(c => (
+            {DEMO_connectors.filter(c => c.status === "error" || c.failureCount > 0).map(c => (
               <Card key={c.id} className={cn("border-border/50 mb-2", c.status === "error" ? "bg-red-500/5 border-red-500/20" : "bg-card/50")}>
                 <CardContent className="p-3 space-y-2">
                   <div className="flex items-center justify-between">
@@ -202,10 +202,10 @@ export default function ConnectorControlCenter() {
                 </CardContent>
               </Card>
             ))}
-            {connectors.filter(c => c.status === "error" || c.failureCount > 0).length === 0 && (
+            {DEMO_connectors.filter(c => c.status === "error" || c.failureCount > 0).length === 0 && (
               <div className="p-6 text-center bg-green-500/5 border border-green-500/20 rounded-lg">
                 <CheckCircle className="w-6 h-6 text-green-400 mx-auto mb-2" />
-                <p className="text-sm text-green-400">All connectors healthy — no recovery needed</p>
+                <p className="text-sm text-green-400">All DEMO_connectors healthy — no recovery needed</p>
               </div>
             )}
           </TabsContent>

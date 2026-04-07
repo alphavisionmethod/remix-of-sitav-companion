@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const PRODUCTS = [
+const DEMO_PRODUCTS = [
   { name: "Growth Strategy Blueprint", type: "digital", price: "$297", sales: 142, revenue: "$42,174", status: "active", category: "Course" },
   { name: "1:1 Coaching — Monthly", type: "service", price: "$500/mo", sales: 18, revenue: "$9,000", status: "active", category: "Membership" },
   { name: "VIP Day Experience", type: "service", price: "$2,000", sales: 8, revenue: "$16,000", status: "active", category: "Service" },
@@ -22,7 +22,7 @@ const BUNDLES = [
 
 export default function OffersWorkspace() {
   const { isDemoMode } = useDataMode();
-  const totalRevenue = PRODUCTS.reduce((s, p) => s + parseInt(p.revenue.replace(/[^0-9]/g, "")), 0);
+  const totalRevenue = DEMO_PRODUCTS.reduce((s, p) => s + parseInt(p.revenue.replace(/[^0-9]/g, "")), 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -44,17 +44,17 @@ export default function OffersWorkspace() {
         </CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-4">
           <p className="text-xs text-muted-foreground">Active Products</p>
-          <p className="text-2xl font-bold text-foreground">{PRODUCTS.filter(p => p.status === "active").length}</p>
+          <p className="text-2xl font-bold text-foreground">{DEMO_PRODUCTS.filter(p => p.status === "active").length}</p>
         </CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-4">
           <p className="text-xs text-muted-foreground">Total Sales</p>
-          <p className="text-2xl font-bold text-foreground">{PRODUCTS.reduce((s, p) => s + p.sales, 0)}</p>
+          <p className="text-2xl font-bold text-foreground">{DEMO_PRODUCTS.reduce((s, p) => s + p.sales, 0)}</p>
         </CardContent></Card>
       </div>
 
       {/* Products */}
       <div className="space-y-3">
-        {PRODUCTS.map((p, i) => (
+        {DEMO_PRODUCTS.map((p, i) => (
           <motion.div key={p.name} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}>
             <Card className="bg-card/50 border-border/50 hover:border-primary/30 transition-colors cursor-pointer">
               <CardContent className="p-4 flex items-center justify-between">

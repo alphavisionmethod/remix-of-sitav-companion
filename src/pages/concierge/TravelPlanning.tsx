@@ -23,13 +23,13 @@ const trips: Trip[] = [
   { id: "3", destination: "NYC — Business + Family Extension", dates: "May 5–8, 2026", status: "planning", travelers: "2 travelers", budget: "$2,800", spent: "$0", tasks: 6, completedTasks: 0, documents: 0, daysUntil: 43, type: "mixed" },
 ];
 
-const itinerary = [
+const DEMO_itinerary = [
   { day: "Day 1 — Apr 10", items: ["Flight DEN → CUN 8:30 AM (United 1442)", "Airport transfer — pre-booked", "Hotel check-in: Hyatt Ziva 3 PM", "Dinner at La Habichuela"] },
   { day: "Day 2 — Apr 11", items: ["Breakfast at hotel", "Snorkeling excursion 10 AM — 4 tickets", "Lunch at Tacos Rigo", "Pool afternoon", "Sunset dinner cruise 6 PM"] },
   { day: "Day 3 — Apr 12", items: ["Chichén Itzá day trip (depart 7 AM)", "Packed lunch from hotel", "Return by 5 PM", "Casual dinner at hotel"] },
 ];
 
-const preTripChecklist = [
+const DEMO_preTripChecklist = [
   { title: "Flights & Transport", items: ["Book flights — ✅ Done", "Airport transfer — ✅ Booked", "Car rental (days 3–5) — Pending"], dueIn: "8 days" },
   { title: "Accommodation", items: ["Hotel confirmed — ✅ Hyatt Ziva", "Room upgrade request — Pending", "Late checkout request — Not yet"], dueIn: "10 days" },
   { title: "Documents", items: ["Passports — ⚠ Kids need renewal!", "Travel insurance — Compare quotes", "Hotel confirmation printout"], dueIn: "ASAP" },
@@ -37,7 +37,7 @@ const preTripChecklist = [
   { title: "Packing", items: ["Kids' swimwear & sun gear", "Snorkeling gear or rental", "Medications & first aid", "Entertainment for flight"], dueIn: "5 days" },
 ];
 
-const householdSpillover = [
+const DEMO_householdSpillover = [
   { item: "Pet sitter needed — Sarah M. has limited availability", urgency: "high", cost: "$280" },
   { item: "Mail hold — set up with USPS", urgency: "medium" },
   { item: "Grocery — no weekly order needed Apr 10–17", urgency: "low" },
@@ -45,7 +45,7 @@ const householdSpillover = [
   { item: "HVAC maintenance — reschedule if conflicts", urgency: "low" },
 ];
 
-const postTripTasks = [
+const DEMO_postTripTasks = [
   "Unpack and laundry",
   "Restock groceries",
   "Review and file receipts",
@@ -69,7 +69,7 @@ const TravelPlanning = () => {
         <KPITile label="Active Trips" value={String(trips.filter(t => t.status !== "completed").length)} icon={Plane} />
         <KPITile label="Next Trip" value={`${trips[0].daysUntil}d`} icon={Calendar} sub="Lake Tahoe" />
         <KPITile label="Total Budget" value="$13.5K" icon={DollarSign} sub="Across 3 trips" />
-        <KPITile label="Open Prep" value={String(preTripChecklist.reduce((s, c) => s + c.items.filter(i => !i.includes("✅")).length, 0))} icon={CheckCircle} />
+        <KPITile label="Open Prep" value={String(DEMO_preTripChecklist.reduce((s, c) => s + c.items.filter(i => !i.includes("✅")).length, 0))} icon={CheckCircle} />
         <KPITile label="Documents" value={String(trips.reduce((s, t) => s + t.documents, 0))} icon={FileText} sub="Attached" />
       </div>
 
@@ -102,7 +102,7 @@ const TravelPlanning = () => {
           {view === "prep" && (
             <div className="space-y-3">
               <SitaSectionHeader title={`Pre-Trip Prep — ${selectedTrip.destination}`} subtitle="Everything needed before departure" />
-              {preTripChecklist.map((section, i) => (
+              {DEMO_preTripChecklist.map((section, i) => (
                 <PrepCard key={i} title={section.title} items={section.items} dueIn={section.dueIn} />
               ))}
             </div>
@@ -111,7 +111,7 @@ const TravelPlanning = () => {
           {view === "itinerary" && (
             <div className="space-y-4">
               <SitaSectionHeader title={`Itinerary — ${selectedTrip.destination}`} subtitle="Day-by-day plan" />
-              {itinerary.map((day, i) => (
+              {DEMO_itinerary.map((day, i) => (
                 <SitaCard key={i} className="p-4">
                   <p className="text-sm font-semibold text-foreground mb-2">{day.day}</p>
                   <div className="space-y-1.5">
@@ -130,7 +130,7 @@ const TravelPlanning = () => {
           {view === "logistics" && (
             <div className="space-y-3">
               <SitaSectionHeader title="Household Spillover" subtitle="Home obligations affected by this trip" />
-              {householdSpillover.map((item, i) => (
+              {DEMO_householdSpillover.map((item, i) => (
                 <SitaCard key={i} lane={item.urgency === "high" ? "action" : undefined} className="p-4">
                   <div className="flex items-center gap-3">
                     <Home className="h-4 w-4 text-primary shrink-0" />
@@ -148,7 +148,7 @@ const TravelPlanning = () => {
           {view === "post-trip" && (
             <div className="space-y-3">
               <SitaSectionHeader title="Post-Trip Recovery" subtitle="Tasks to handle after returning home" />
-              {postTripTasks.map((task, i) => (
+              {DEMO_postTripTasks.map((task, i) => (
                 <SitaCard key={i} className="p-3">
                   <div className="flex items-center gap-3">
                     <div className="h-4 w-4 rounded border border-muted-foreground/30 shrink-0" />

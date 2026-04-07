@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const FORMS = [
+const DEMO_FORMS = [
   { id: "f1", name: "Free Consultation Application", status: "live", submissions: 186, convRate: "24%", lastSubmission: "2h ago", fields: 8, linkedFunnel: "Free Consultation Funnel", tags: ["lead-gen", "discovery"] },
   { id: "f2", name: "VIP Day Inquiry", status: "live", submissions: 34, convRate: "67%", lastSubmission: "1d ago", fields: 12, linkedFunnel: "VIP Funnel", tags: ["high-value", "qualification"] },
   { id: "f3", name: "Webinar Registration", status: "live", submissions: 412, convRate: "38%", lastSubmission: "45m ago", fields: 4, linkedFunnel: "Webinar Registration", tags: ["event", "lead-gen"] },
@@ -40,10 +40,10 @@ const SAMPLE_FIELDS = [
 ];
 
 const STATS = [
-  { label: "Total Forms", value: FORMS.length },
+  { label: "Total Forms", value: DEMO_FORMS.length },
   { label: "Total Submissions", value: "721" },
   { label: "Avg. Conversion", value: "42%" },
-  { label: "Active Forms", value: FORMS.filter(f => f.status === "live").length },
+  { label: "Active Forms", value: DEMO_FORMS.filter(f => f.status === "live").length },
 ];
 
 export default function FormsBuilder() {
@@ -89,7 +89,7 @@ export default function FormsBuilder() {
         <div className="mt-4">
           <TabsContent value="forms">
             <div className="space-y-3">
-              {FORMS.map(form => (
+              {DEMO_FORMS.map(form => (
                 <Card key={form.id} className="bg-card/50 border-border/50 hover:border-primary/30 transition-colors cursor-pointer" onClick={() => { setSelectedForm(form.id); setTab("builder"); }}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">

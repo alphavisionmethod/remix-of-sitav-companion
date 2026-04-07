@@ -8,20 +8,20 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const DOMAINS = [
+const DEMO_DOMAINS = [
   { domain: "mybusiness.com", type: "primary", ssl: true, status: "active", dnsOk: true, lastPublished: "2 hours ago" },
   { domain: "www.mybusiness.com", type: "redirect", ssl: true, status: "active", dnsOk: true, lastPublished: "2 hours ago" },
   { domain: "shop.mybusiness.com", type: "subdomain", ssl: true, status: "active", dnsOk: true, lastPublished: "1 day ago" },
   { domain: "staging.mybusiness.com", type: "staging", ssl: true, status: "ready", dnsOk: true, lastPublished: "30 min ago" },
 ];
 
-const ENVIRONMENTS = [
+const DEMO_ENVIRONMENTS = [
   { env: "Production", url: "mybusiness.com", status: "live", version: "v2.4.1", lastDeploy: "2 hours ago", deployer: "Auto (approved)" },
   { env: "Staging", url: "staging.mybusiness.com", status: "ready", version: "v2.5.0-beta", lastDeploy: "30 min ago", deployer: "Design Director" },
   { env: "Preview", url: "preview-abc123.sita.app", status: "active", version: "v2.5.0-beta.2", lastDeploy: "5 min ago", deployer: "AI Web Team" },
 ];
 
-const PUBLISH_HISTORY = [
+const DEMO_PUBLISH_HISTORY = [
   { version: "v2.4.1", date: "Apr 3, 2:14 PM", changes: "Homepage hero redesign, checkout trust badges", approvedBy: "Owner", status: "live" },
   { version: "v2.4.0", date: "Apr 1, 10:30 AM", changes: "Summer sale banner, product page updates", approvedBy: "Owner", status: "archived" },
   { version: "v2.3.2", date: "Mar 28, 4:45 PM", changes: "Blog content refresh, SEO meta fixes", approvedBy: "Auto", status: "archived" },
@@ -29,7 +29,7 @@ const PUBLISH_HISTORY = [
   { version: "v2.3.0", date: "Mar 20, 9:15 AM", changes: "Mobile nav redesign, pricing table", approvedBy: "Owner", status: "archived" },
 ];
 
-const PUBLISH_RULES = [
+const DEMO_PUBLISH_RULES = [
   { rule: "Require owner approval for homepage changes", active: true },
   { rule: "Auto-publish low-risk SEO fixes", active: true },
   { rule: "Require preview before any checkout changes", active: true },
@@ -62,7 +62,7 @@ export default function DomainPublishManager() {
           </div>
         </CardHeader>
         <CardContent className="space-y-2">
-          {DOMAINS.map(d => (
+          {DEMO_DOMAINS.map(d => (
             <div key={d.domain} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div className="flex items-center gap-3">
                 {d.ssl ? <Lock className="w-3 h-3 text-green-400" /> : <AlertTriangle className="w-3 h-3 text-red-400" />}
@@ -89,7 +89,7 @@ export default function DomainPublishManager() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Server className="w-4 h-4 text-purple-400" /> Environments</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {ENVIRONMENTS.map(e => (
+          {DEMO_ENVIRONMENTS.map(e => (
             <div key={e.env} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div>
                 <div className="flex items-center gap-2">
@@ -120,7 +120,7 @@ export default function DomainPublishManager() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><FileText className="w-4 h-4 text-green-400" /> Publish History</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {PUBLISH_HISTORY.map(p => (
+            {DEMO_PUBLISH_HISTORY.map(p => (
               <div key={p.version} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div>
                   <div className="flex items-center gap-2 mb-0.5">
@@ -142,7 +142,7 @@ export default function DomainPublishManager() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Shield className="w-4 h-4 text-amber-400" /> Publishing Rules</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {PUBLISH_RULES.map(r => (
+            {DEMO_PUBLISH_RULES.map(r => (
               <div key={r.rule} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <span className="text-xs text-foreground">{r.rule}</span>
                 <Badge variant={r.active ? "default" : "secondary"} className="text-[10px]">{r.active ? "Active" : "Off"}</Badge>

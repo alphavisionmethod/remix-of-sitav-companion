@@ -7,7 +7,7 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const TIMELINE_EVENTS = [
+const DEMO_TIMELINE_EVENTS = [
   { date: "Apr 3", event: "Homepage hero redesign", type: "design", impact: "+18% CTR", positive: true, details: "New value prop + hero image. CRO Advisor recommended duplicating CTA." },
   { date: "Apr 1", event: "Added checkout trust badges", type: "trust", impact: "-8% abandonment", positive: true, details: "SSL + payment badges added near CTA. Advisor-generated recommendation." },
   { date: "Mar 28", event: "Summer sale banner deployed", type: "promotion", impact: "+12% revenue", positive: true, details: "Homepage hero banner for 20% off sale. Auto-cleanup scheduled for Apr 11." },
@@ -21,7 +21,7 @@ const TIMELINE_EVENTS = [
 export default function PresenceTimeMachine() {
   const { isDemoMode } = useDataMode();
   const [selectedIdx, setSelectedIdx] = useState(0);
-  const selected = TIMELINE_EVENTS[selectedIdx];
+  const selected = DEMO_TIMELINE_EVENTS[selectedIdx];
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -38,12 +38,12 @@ export default function PresenceTimeMachine() {
             <CardTitle className="text-sm flex items-center gap-2"><Clock className="w-4 h-4 text-sky-400" /> Change Timeline</CardTitle>
             <div className="flex gap-1">
               <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={() => setSelectedIdx(Math.max(0, selectedIdx - 1))} disabled={selectedIdx === 0}><ArrowLeft className="w-3 h-3" /></Button>
-              <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={() => setSelectedIdx(Math.min(TIMELINE_EVENTS.length - 1, selectedIdx + 1))} disabled={selectedIdx === TIMELINE_EVENTS.length - 1}><ArrowRight className="w-3 h-3" /></Button>
+              <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={() => setSelectedIdx(Math.min(DEMO_TIMELINE_EVENTS.length - 1, selectedIdx + 1))} disabled={selectedIdx === DEMO_TIMELINE_EVENTS.length - 1}><ArrowRight className="w-3 h-3" /></Button>
             </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-1">
-          {TIMELINE_EVENTS.map((e, i) => (
+          {DEMO_TIMELINE_EVENTS.map((e, i) => (
             <button
               key={i}
               onClick={() => setSelectedIdx(i)}

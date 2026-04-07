@@ -11,14 +11,14 @@ import { useDataMode } from "@/contexts/DataModeContext";
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const today = 2;
 
-const familyMembers = [
-  { name: "You", events: 5, color: "bg-primary" },
-  { name: "Partner", events: 3, color: "bg-accent" },
-  { name: "Emma", events: 4, color: "bg-chart-2" },
-  { name: "Liam", events: 3, color: "bg-amber-500" },
+const DEMO_familyMembers = [
+  { name: "You", DEMO_events: 5, color: "bg-primary" },
+  { name: "Partner", DEMO_events: 3, color: "bg-accent" },
+  { name: "Emma", DEMO_events: 4, color: "bg-chart-2" },
+  { name: "Liam", DEMO_events: 3, color: "bg-amber-500" },
 ];
 
-const events = [
+const DEMO_events = [
   { id: "1", title: "Soccer practice", time: "Today 4:00 PM", who: "Emma", location: "Riverside Park", category: "Sports", owner: "Partner", transportTime: "15 min", prep: ["Shin guards", "Water bottle"] },
   { id: "2", title: "Carpool duty — morning route", time: "Tomorrow 7:30 AM", who: "You", category: "Transport", owner: "You" },
   { id: "3", title: "Piano lesson", time: "Tomorrow 3:30 PM", who: "Liam", location: "Music Academy", category: "Education", owner: "Partner", transportTime: "20 min", prep: ["Music book"] },
@@ -31,9 +31,9 @@ const events = [
   { id: "10", title: "Annual physical", time: "Apr 10, 8:30 AM", who: "You", location: "West Health Clinic", category: "Health", owner: "You", transportTime: "15 min", prep: ["Fast after 10 PM", "List of meds", "ID + Insurance card"] },
 ];
 
-const conflicts = [
+const DEMO_conflicts = [
   {
-    events: [
+    DEMO_events: [
       { title: "Soccer match (Emma)", time: "Saturday 2:00 PM", who: "Emma" },
       { title: "Family dinner", time: "Saturday 6:00 PM", who: "Everyone" },
     ],
@@ -41,13 +41,13 @@ const conflicts = [
   },
 ];
 
-const prepItems = [
+const DEMO_prepItems = [
   { title: "Dentist prep — kids checkup", linkedEvent: "Next Thursday 10 AM", items: ["Brush teeth morning of", "Bring insurance cards", "Request x-ray copies"], owner: "You", dueIn: "5 days" },
   { title: "Annual physical prep", linkedEvent: "Apr 10, 8:30 AM", items: ["Fast after 10 PM night before", "List current medications", "Bring ID + insurance card"], owner: "You", dueIn: "8 days" },
   { title: "HVAC maintenance prep", linkedEvent: "Apr 8, 2–4 PM", items: ["Clear area around furnace", "Have service contract accessible", "Someone must be home"], owner: "Partner", dueIn: "6 days" },
 ];
 
-const transportDuties = [
+const DEMO_transportDuties = [
   { event: "Soccer practice", time: "Today 4 PM", driver: "Partner", route: "Home → Riverside Park → Home", duration: "45 min total" },
   { event: "Carpool duty", time: "Tomorrow 7:30 AM", driver: "You", route: "3-kid route → Lincoln Elementary", duration: "25 min" },
   { event: "Piano lesson", time: "Tomorrow 3:30 PM", driver: "Partner", route: "School → Music Academy → Home", duration: "40 min" },
@@ -64,11 +64,11 @@ const FamilyCalendar = () => {
       <SitaPageHeader title="Family Calendar" subtitle="Reconciled schedules — conflict-aware, prep-ready, ownership-clear" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        <KPITile label="Events This Week" value={String(events.length)} icon={Calendar} />
+        <KPITile label="Events This Week" value={String(DEMO_events.length)} icon={Calendar} />
         <KPITile label="Family Members" value="4" icon={Users} />
-        <KPITile label="Conflicts" value={String(conflicts.length)} icon={AlertCircle} sub="Needs resolution" />
-        <KPITile label="Prep Items" value={String(prepItems.length)} icon={Clock} sub="Before events" />
-        <KPITile label="Transport Duties" value={String(transportDuties.length)} icon={Car} sub="This week" />
+        <KPITile label="Conflicts" value={String(DEMO_conflicts.length)} icon={AlertCircle} sub="Needs resolution" />
+        <KPITile label="Prep Items" value={String(DEMO_prepItems.length)} icon={Clock} sub="Before DEMO_events" />
+        <KPITile label="Transport Duties" value={String(DEMO_transportDuties.length)} icon={Car} sub="This week" />
       </div>
 
       <SitaTabs
@@ -91,7 +91,7 @@ const FamilyCalendar = () => {
             <SitaCardTitle className="mb-3">This Week</SitaCardTitle>
             <div className="grid grid-cols-7 gap-1">
               {weekDays.map((day, i) => {
-                const dayEvents = events.filter((_, ei) => ei % 7 === i).length;
+                const dayEvents = DEMO_events.filter((_, ei) => ei % 7 === i).length;
                 return (
                   <div key={day} className={`rounded-xl p-3 text-center transition-colors cursor-pointer hover:bg-secondary/60 ${i === today ? "bg-primary/10 ring-1 ring-primary/30" : "bg-secondary/30"}`}>
                     <p className={`text-[10px] font-medium ${i === today ? "text-primary" : "text-muted-foreground"}`}>{day}</p>
@@ -108,11 +108,11 @@ const FamilyCalendar = () => {
           </SitaCard>
 
           {/* Conflicts */}
-          {(view === "week" || view === "conflicts") && conflicts.length > 0 && (
+          {(view === "week" || view === "conflicts") && DEMO_conflicts.length > 0 && (
             <div className="space-y-3">
               <SitaSectionHeader title="Schedule Conflicts" subtitle="Overlapping or impossible schedules detected" />
-              {conflicts.map((c, i) => (
-                <ConflictCard key={i} events={c.events} resolution={c.resolution} />
+              {DEMO_conflicts.map((c, i) => (
+                <ConflictCard key={i} events={c.DEMO_events} resolution={c.resolution} />
               ))}
             </div>
           )}
@@ -120,8 +120,8 @@ const FamilyCalendar = () => {
           {/* Events or Prep or Transport */}
           {(view === "week" || view === "day" || view === "family") && (
             <div className="space-y-3">
-              <SitaSectionHeader title="Upcoming Events" subtitle={`${events.length} scheduled — with prep and ownership`} />
-              {events.map((e) => (
+              <SitaSectionHeader title="Upcoming Events" subtitle={`${DEMO_events.length} scheduled — with prep and ownership`} />
+              {DEMO_events.map((e) => (
                 <CalendarEventCard
                   key={e.id} title={e.title} time={e.time} who={e.who} location={e.location}
                   category={e.category} conflict={e.conflict} owner={e.owner} transportTime={e.transportTime}
@@ -134,7 +134,7 @@ const FamilyCalendar = () => {
           {view === "prep" && (
             <div className="space-y-3">
               <SitaSectionHeader title="Preparation Checklists" subtitle="What needs to be done before each event" />
-              {prepItems.map((p, i) => (
+              {DEMO_prepItems.map((p, i) => (
                 <PrepCard key={i} title={p.title} linkedEvent={p.linkedEvent} items={p.items} owner={p.owner} dueIn={p.dueIn} />
               ))}
             </div>
@@ -143,7 +143,7 @@ const FamilyCalendar = () => {
           {view === "transport" && (
             <div className="space-y-3">
               <SitaSectionHeader title="Transport & Carpool Duties" subtitle="Who drives where and when" />
-              {transportDuties.map((t, i) => (
+              {DEMO_transportDuties.map((t, i) => (
                 <SitaCard key={i} className="p-4">
                   <div className="flex items-start gap-3">
                     <div className="rounded-xl bg-primary/8 p-2 shrink-0"><Car className="h-4 w-4 text-primary" /></div>
@@ -165,13 +165,13 @@ const FamilyCalendar = () => {
           {/* Family Grid */}
           <SitaCard className="p-4">
             <SitaCardTitle className="mb-3">Family Members</SitaCardTitle>
-            {familyMembers.map((m) => (
+            {DEMO_familyMembers.map((m) => (
               <div key={m.name} className="flex items-center gap-3 py-2.5 border-b border-border/30 last:border-0">
                 <MemberAvatar name={m.name} size="sm" />
                 <span className="text-sm text-foreground flex-1">{m.name}</span>
                 <div className="flex items-center gap-1.5">
                   <div className={`h-2 w-2 rounded-full ${m.color}`} />
-                  <span className="text-[10px] text-muted-foreground">{m.events} events</span>
+                  <span className="text-[10px] text-muted-foreground">{m.DEMO_events} DEMO_events</span>
                 </div>
               </div>
             ))}

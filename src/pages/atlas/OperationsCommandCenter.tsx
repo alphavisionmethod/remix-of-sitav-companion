@@ -19,7 +19,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
 
-const services = [
+const DEMO_services = [
   { name: "Supabase Database", status: "healthy", latency: 12, uptime: 99.98, lastCheck: h(0.02) },
   { name: "Supabase Auth", status: "healthy", latency: 45, uptime: 99.95, lastCheck: h(0.02) },
   { name: "Edge Functions", status: "healthy", latency: 120, uptime: 99.9, lastCheck: h(0.05) },
@@ -28,7 +28,7 @@ const services = [
   { name: "Connector Gateway", status: "healthy", latency: 200, uptime: 99.8, lastCheck: h(0.1) },
 ];
 
-const slos = [
+const DEMO_slos = [
   { name: "API Availability", target: 99.9, current: 99.95, burnRate: 0.3, budget: 95, window: "30d" },
   { name: "Auth Latency P95", target: 200, current: 145, burnRate: 0.1, budget: 98, window: "30d", unit: "ms" },
   { name: "Edge Function P95", target: 500, current: 380, burnRate: 0.2, budget: 92, window: "7d", unit: "ms" },
@@ -36,13 +36,13 @@ const slos = [
   { name: "Error Rate", target: 0.1, current: 0.02, burnRate: 0.15, budget: 97, window: "7d", unit: "%" },
 ];
 
-const alerts = [
+const DEMO_alerts = [
   { id: "a1", severity: "warning" as const, title: "Realtime latency elevated", source: "Supabase Realtime", time: h(0.5), acknowledged: false, runbookId: "rb-realtime-latency" },
   { id: "a2", severity: "info" as const, title: "Edge function cold starts increased", source: "Edge Functions", time: h(2), acknowledged: true, runbookId: "rb-cold-start" },
   { id: "a3", severity: "info" as const, title: "Storage usage approaching 80%", source: "Storage", time: h(6), acknowledged: true, runbookId: "rb-storage-pressure" },
 ];
 
-const runbooks = [
+const DEMO_runbooks = [
   { id: "rb-realtime-latency", name: "Realtime Latency Spike", steps: 5, lastUsed: h(168), status: "available" },
   { id: "rb-cold-start", name: "Edge Function Cold Starts", steps: 4, lastUsed: h(72), status: "available" },
   { id: "rb-storage-pressure", name: "Storage Pressure Response", steps: 3, lastUsed: null, status: "available" },
@@ -53,7 +53,7 @@ const runbooks = [
   { id: "rb-api-latency", name: "API Latency Spike", steps: 5, lastUsed: h(168), status: "available" },
 ];
 
-const incidents = [
+const DEMO_incidents = [
   { id: "inc-1", title: "Realtime websocket connection drops", severity: "medium", status: "investigating", started: h(0.5), assignee: "system", relatedAlert: "a1" },
 ];
 
@@ -66,17 +66,17 @@ export default function OperationsCommandCenter() {
       <DemoModeBadge />
       <SitaPageHeader title="Operations Command Center" subtitle="Service health, SLO burn rates, alert triage, incident drilldown, and runbook management" />
 
-      {alerts.filter(a => !a.acknowledged).length > 0 && (
-        <DegradedStateBanner severity="warning" reason={`${alerts.filter(a => !a.acknowledged).length} unacknowledged alert(s)`} impact="Operator attention required" dismissible />
+      {DEMO_alerts.filter(a => !a.acknowledged).length > 0 && (
+        <DegradedStateBanner severity="warning" reason={`${DEMO_alerts.filter(a => !a.acknowledged).length} unacknowledged alert(s)`} impact="Operator attention required" dismissible />
       )}
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
-          { label: "Services Healthy", value: `${services.filter(s => s.status === "healthy").length}/${services.length}`, color: services.every(s => s.status === "healthy") ? "text-green-400" : "text-amber-400" },
-          { label: "SLO Budget Avg", value: `${Math.round(slos.reduce((s, l) => s + l.budget, 0) / slos.length)}%`, color: "text-green-400" },
-          { label: "Active Alerts", value: alerts.filter(a => !a.acknowledged).length, color: alerts.some(a => !a.acknowledged) ? "text-amber-400" : "text-green-400" },
-          { label: "Active Incidents", value: incidents.filter(i => i.status !== "resolved").length, color: incidents.some(i => i.status !== "resolved") ? "text-amber-400" : "text-green-400" },
-          { label: "Runbooks", value: runbooks.length, color: "text-blue-400" },
+          { label: "Services Healthy", value: `${DEMO_services.filter(s => s.status === "healthy").length}/${services.length}`, color: DEMO_services.every(s => s.status === "healthy") ? "text-green-400" : "text-amber-400" },
+          { label: "SLO Budget Avg", value: `${Math.round(DEMO_slos.reduce((s, l) => s + l.budget, 0) / slos.length)}%`, color: "text-green-400" },
+          { label: "Active Alerts", value: DEMO_alerts.filter(a => !a.acknowledged).length, color: DEMO_alerts.some(a => !a.acknowledged) ? "text-amber-400" : "text-green-400" },
+          { label: "Active Incidents", value: DEMO_incidents.filter(i => i.status !== "resolved").length, color: DEMO_incidents.some(i => i.status !== "resolved") ? "text-amber-400" : "text-green-400" },
+          { label: "Runbooks", value: DEMO_runbooks.length, color: "text-blue-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -103,7 +103,7 @@ export default function OperationsCommandCenter() {
 
         <div className="mt-4 space-y-3">
           <TabsContent value="health">
-            {services.map(svc => (
+            {DEMO_services.map(svc => (
               <div key={svc.name} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
                 <div className="flex items-center gap-3">
                   <div className={cn("w-2 h-2 rounded-full", svc.status === "healthy" ? "bg-green-400" : "bg-amber-400")} />
@@ -121,7 +121,7 @@ export default function OperationsCommandCenter() {
           </TabsContent>
 
           <TabsContent value="slos">
-            {slos.map(slo => (
+            {DEMO_slos.map(slo => (
               <Card key={slo.name} className="bg-card/50 border-border/50 mb-2">
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between mb-2">
@@ -145,7 +145,7 @@ export default function OperationsCommandCenter() {
           </TabsContent>
 
           <TabsContent value="alerts">
-            {alerts.map(alert => (
+            {DEMO_alerts.map(alert => (
               <div key={alert.id} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
                 <div className="flex items-center gap-3">
                   <AlertTriangle className={cn("w-4 h-4", alert.severity === "warning" ? "text-amber-400" : "text-blue-400")} />
@@ -164,7 +164,7 @@ export default function OperationsCommandCenter() {
           </TabsContent>
 
           <TabsContent value="incidents">
-            {incidents.map(inc => (
+            {DEMO_incidents.map(inc => (
               <Card key={inc.id} className="bg-card/50 border-border/50 mb-2">
                 <CardContent className="p-3 space-y-2">
                   <div className="flex items-center justify-between">
@@ -212,7 +212,7 @@ export default function OperationsCommandCenter() {
 
           <TabsContent value="runbooks">
             <div className="grid gap-2 sm:grid-cols-2">
-              {runbooks.map(rb => (
+              {DEMO_runbooks.map(rb => (
                 <div key={rb.id} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
                   <div className="flex items-center gap-3">
                     <BookOpen className="w-3.5 h-3.5 text-primary" />

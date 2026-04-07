@@ -82,7 +82,7 @@ function derivePriorities(tasks: any[], events: any[]) {
       });
     });
 
-  return items.length > 0 ? items : fallbackPriorities;
+  return items.length > 0 ? items : DEMO_fallbackPriorities;
 }
 
 function deriveUpcomingSchedule(events: any[]) {
@@ -105,7 +105,7 @@ const categoryIcon: Record<string, typeof Home> = {
   Vehicle: Car, General: Home,
 };
 
-const fallbackPriorities = [
+const DEMO_fallbackPriorities = [
   { title: "No tasks yet — add your first household task", due: "Today", category: "General", who: "You", icon: CheckSquare, urgency: "low" as const },
 ];
 
@@ -117,7 +117,7 @@ const pendingApproval = {
   policyRule: "Spending over $200 requires approval",
 };
 
-const changedSinceYesterday = [
+const DEMO_changedSinceYesterday = [
   "HVAC maintenance confirmed for Apr 8",
   "New grocery alerts: laundry detergent (out), olive oil (low)",
   "Bus pass renewal moved to overdue status",
@@ -347,7 +347,7 @@ const ConciergeOverview = () => {
           <SitaCard hover={false}>
             <SitaCardTitle sub="Updates since yesterday">What Changed</SitaCardTitle>
             <div className="mt-3 space-y-2">
-              {changedSinceYesterday.map((c, i) => (
+              {DEMO_changedSinceYesterday.map((c, i) => (
                 <div key={i} className="flex items-start gap-2">
                   <div className="h-1.5 w-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
                   <p className="text-xs text-foreground">{c}</p>

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const SEGMENTS = [
+const DEMO_SEGMENTS = [
   { id: "s1", name: "High-Value Clients", type: "dynamic", contacts: 34, revenue: "$284,000", criteria: ["LTV > $5,000", "Active in last 30d"], color: "border-l-emerald-400", growth: "+3 this month" },
   { id: "s2", name: "Warm Leads (Engaged)", type: "dynamic", contacts: 67, revenue: "$0", criteria: ["Opened 3+ emails", "Visited pricing page", "Not yet converted"], color: "border-l-blue-400", growth: "+8 this week" },
   { id: "s3", name: "At-Risk Clients", type: "dynamic", contacts: 12, revenue: "$48,000", criteria: ["No activity 60+ days", "Previously active", "LTV > $1,000"], color: "border-l-red-400", growth: "+2 this month" },
@@ -21,7 +21,7 @@ const SEGMENTS = [
   { id: "s8", name: "Repeat Buyers", type: "smart", contacts: 42, revenue: "$210,000", criteria: ["2+ purchases", "Active"], color: "border-l-green-400", growth: "+5 this month" },
 ];
 
-const SCORING_RULES = [
+const DEMO_SCORING_RULES = [
   { signal: "Visited pricing page", points: 15, category: "Engagement" },
   { signal: "Opened 3+ emails in 7 days", points: 10, category: "Email" },
   { signal: "Booked a call", points: 25, category: "Intent" },
@@ -34,7 +34,7 @@ const SCORING_RULES = [
   { signal: "Unsubscribed from list", points: -15, category: "Decay" },
 ];
 
-const TOP_LEADS = [
+const DEMO_TOP_LEADS = [
   { name: "Rachel Green", score: 87, company: "GreenCo", signals: ["Pricing page 5x", "Form submitted", "Email reply"], stage: "Qualified" },
   { name: "Tom Hayes", score: 78, company: "Hayes Group", signals: ["VIP inquiry", "Booked call"], stage: "Proposal" },
   { name: "Mia Zhang", score: 72, company: "Studio Co", signals: ["Webinar attended", "3 emails opened"], stage: "Warm" },
@@ -61,9 +61,9 @@ export default function SegmentationEngine() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: "Segments", value: SEGMENTS.length, color: "text-foreground" },
+          { label: "Segments", value: DEMO_SEGMENTS.length, color: "text-foreground" },
           { label: "Total Contacts", value: "442", color: "text-primary" },
-          { label: "Scored Leads", value: TOP_LEADS.length, color: "text-blue-400" },
+          { label: "Scored Leads", value: DEMO_TOP_LEADS.length, color: "text-blue-400" },
           { label: "At Risk", value: "12", color: "text-red-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
@@ -89,7 +89,7 @@ export default function SegmentationEngine() {
         <div className="mt-4">
           <TabsContent value="segments">
             <div className="space-y-3">
-              {SEGMENTS.map(seg => (
+              {DEMO_SEGMENTS.map(seg => (
                 <Card key={seg.id} className={cn("bg-card/50 border-l-2 hover:border-primary/30 transition-colors cursor-pointer", seg.color)}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -114,9 +114,9 @@ export default function SegmentationEngine() {
           </TabsContent>
 
           <TabsContent value="scoring">
-            <h3 className="text-sm font-semibold mb-4">Lead Scoring Rules ({SCORING_RULES.length} signals)</h3>
+            <h3 className="text-sm font-semibold mb-4">Lead Scoring Rules ({DEMO_SCORING_RULES.length} signals)</h3>
             <div className="space-y-2">
-              {SCORING_RULES.map((rule, i) => (
+              {DEMO_SCORING_RULES.map((rule, i) => (
                 <div key={i} className="flex items-center justify-between p-3 bg-muted/10 rounded-lg border border-border/30">
                   <div className="flex items-center gap-3">
                     {rule.points > 0 ? <TrendingUp className="w-4 h-4 text-emerald-400" /> : <AlertTriangle className="w-4 h-4 text-red-400" />}
@@ -136,7 +136,7 @@ export default function SegmentationEngine() {
           <TabsContent value="top-leads">
             <h3 className="text-sm font-semibold mb-4">Highest-Scored Leads</h3>
             <div className="space-y-3">
-              {TOP_LEADS.map((lead, i) => (
+              {DEMO_TOP_LEADS.map((lead, i) => (
                 <Card key={i} className="bg-card/50 border-border/50 hover:border-primary/30 transition-colors cursor-pointer">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
