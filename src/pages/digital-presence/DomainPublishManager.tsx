@@ -41,6 +41,7 @@ const DEMO_PUBLISH_RULES = [
 
 export default function DomainPublishManager() {
   const { isDemoMode } = useDataMode();
+  const { pages: managedPages, domains: managedDomains, getStats: getWebsiteStats } = useWebsiteManager();
   const [newDomain, setNewDomain] = useState("");
 
   return (

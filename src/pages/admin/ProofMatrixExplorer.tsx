@@ -64,6 +64,8 @@ function timeAgo(d: string) {
 
 export default function ProofMatrixExplorer() {
   const { isDemoMode } = useDataMode();
+  const { verifyIntegrity, validateChain, detectTamper } = useReceiptVerification();
+  const { entries: sharedMemoryEntries } = useSharedMemory("proof-context");
   const [tab, setTab] = useState("proofs");
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");

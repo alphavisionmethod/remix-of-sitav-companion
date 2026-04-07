@@ -158,6 +158,7 @@ const DEMO_FALLBACK_APPROVALS = [
 
 const SystemStatus = () => {
   const { isDemoMode } = useDataMode();
+  const { listRegions, getTopology, getDemoTopology } = useCloudControlPlane();
   const location = useLocation();
   const navigate = useNavigate();
   const { data: slos } = useSLOs();

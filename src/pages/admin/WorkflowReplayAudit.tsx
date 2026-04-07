@@ -93,6 +93,8 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function WorkflowReplayAudit() {
   const { isDemoMode } = useDataMode();
+  const { replay, replayEngine } = useWorkflowReplay();
+  const { guards, validate: validateTransition } = useTransitionValidator();
   const [tab, setTab] = useState("runs");
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState<string | null>("WF-RUN-001");

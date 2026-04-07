@@ -18,6 +18,8 @@ const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
 export default function ReplayRecoveryConsole() {
   const { isDemoMode } = useDataMode();
+  const { createCheckpoint, recoverFromCheckpoint, deadLetterQueue, getCheckpoints } = useWorkflowRecovery();
+  const { execute: executeCanonicalAction, isExecuting: isCanonicalExecuting } = useCanonicalAction();
   const [replayScope, setReplayScope] = useState<string>("topic");
   const [scopeValue, setScopeValue] = useState("");
   const [dryRun, setDryRun] = useState(true);

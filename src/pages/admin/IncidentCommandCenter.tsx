@@ -42,6 +42,8 @@ function timeAgo(d: string) {
 
 export default function IncidentCommandCenter() {
   const { isDemoMode } = useDataMode();
+  const { getActiveIncidents: getKernelIncidents, getIncidentMetrics, getDemoIncidents } = useIncidentManagement();
+  const { entityId, entityType, tenantId } = useEntityScoped();
   const [tab, setTab] = useState("active");
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState<string | null>(null);
