@@ -289,7 +289,17 @@ const ConnectorHub = () => {
                 )}
 
                 <div className="flex gap-2">
-                  <SitaButton variant="primary" className="flex-1"><RefreshCw className="h-3.5 w-3.5" /> Sync Now</SitaButton>
+                  <SitaButton variant="primary" className="flex-1" onClick={async () => {
+                    try {
+                      await supabase.functions.invoke("connector-batch", {
+                        body: { action: "submit", connector_type: selected.service, operations: [{ type: "sync", payload: {} }] },
+                      });
+                      toast.success(`Sync triggered for ${selected.service}`);
+                      queryClient.invalidateQueries({ queryKey: ["sync_logs"] });
+                      queryClient.invalidateQueries({ queryKey: ["connector_configs"] });
+                      queryClient.invalidateQueries({ queryKey: ["real-connector-accounts"] });
+                    } catch { toast.error("Sync failed"); }
+                  }}><RefreshCw className="h-3.5 w-3.5" /> Sync Now</SitaButton>
                   <SitaButton variant="danger"><WifiOff className="h-3.5 w-3.5" /> Disconnect</SitaButton>
                 </div>
               </>
