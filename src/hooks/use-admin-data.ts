@@ -499,9 +499,9 @@ export function useTrustCenter() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["trust-center", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<TrustCenterData> => {
       if (isDemoMode) return mockTrustCenter;
-      return callAdminAPI("trust-center");
+      return callAdminAPI<TrustCenterData>("trust-center");
     },
     staleTime: isDemoMode ? Infinity : 30000,
   });
