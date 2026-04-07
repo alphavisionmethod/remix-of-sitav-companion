@@ -124,6 +124,9 @@ export default function ConnectorGovernanceCenter() {
         body: { action: "submit", connector_type: connectorId, operations: [{ type: "sync", payload: {} }] },
       });
       toast.success(`Sync triggered for ${connectorId}`);
+      queryClient.invalidateQueries({ queryKey: ["connector-sync-history"] });
+      queryClient.invalidateQueries({ queryKey: ["governance-connectors"] });
+      queryClient.invalidateQueries({ queryKey: ["connector-sync-dashboard"] });
     } catch {
       toast.error("Sync failed");
     }
