@@ -2034,7 +2034,7 @@ const OwnerCenter = () => {
         {activePage === "support" && (
           <motion.div key="support" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <SitaSectionHeader title="Support Cases" subtitle="Diagnostic bundles and investigation tools" />
-            {((supportData as never) || []).map((c: any) => (
+            {(supportData || []).map((c: any) => (
               <SitaCard key={c.id} hover={false} className="p-4" lane={c.status === "open" ? "action" : undefined}>
                 <div className="flex items-center justify-between">
                   <div>
