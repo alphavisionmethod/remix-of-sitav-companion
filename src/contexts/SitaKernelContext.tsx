@@ -10,6 +10,11 @@ import type { CanonicalChainResult } from "@/lib/core-services/index";
 import type { Receipt } from "@/lib/core-services/receipt-service";
 import type { MemoryEntry } from "@/lib/core-services/memory-service";
 import type { CoreTrustState } from "@/lib/core-services/trust-state-service";
+import {
+  createSelfHealingService, createImmuneController, createFleetHealthService,
+  HEALING_CAPABILITY_MAP, ESCALATION_RULES, DEGRADED_MODES,
+} from "@/lib/core-services/self-healing";
+import { LifeShockSimulator } from "@/lib/services/life-simulation";
 
 // ── Context ─────────────────────────────────────────────────────
 
