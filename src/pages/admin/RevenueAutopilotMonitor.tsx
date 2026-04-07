@@ -8,7 +8,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = {
-  const { isDemoMode } = useDataMode(); hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
+  hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 const DEMO_AUTOPILOT_ACTIONS = [
@@ -27,6 +27,7 @@ const DEMO_WINBACKS = [
 const statusColor = { completed: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", pending: "bg-amber-500/10 text-amber-500 border-amber-500/20", active: "bg-blue-500/10 text-blue-500 border-blue-500/20" };
 
 const RevenueAutopilotMonitor = () => {
+  const { isDemoMode } = useDataMode();
   const totalRecovered = 6700;
   const totalSaved = 3200;
 

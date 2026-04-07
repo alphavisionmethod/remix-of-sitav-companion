@@ -67,7 +67,7 @@ const DEMO_MISSIONS = [
 
 // Self-Healing Lane
 const HEAL_STATS = {
-  const { isDemoMode } = useDataMode(); attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };
+  attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };
 const DEMO_RECENT_HEALS = [
   { action: "Restarted unhealthy projection worker", time: "12m ago", verified: true },
   { action: "Reverted bad feature flag: revenue-sidebar-v2", time: "1h ago", verified: true },
@@ -125,6 +125,7 @@ const attentionColor = (severity: string) =>
   "border-border/40 bg-card";
 
 const AIEngineeringBoard = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
 
   const chiefSynthesis = useMemo(() => generateChiefSynthesis({
