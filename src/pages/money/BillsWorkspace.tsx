@@ -3,11 +3,12 @@ import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton"
 import { KPITile, SitaTabs, EmptyState, ContextDrawer } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useBills as useMoneyBills } from "@/hooks/use-money-data";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAction } from "@/lib/hooks/useAction";
 import { DollarSign, Clock, AlertTriangle, CheckCircle, Calendar, Receipt, Bell, FileText, CreditCard, Plus, Trash2, Zap } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { toast } from "sonner";
@@ -78,70 +79,27 @@ const BillsWorkspace = () => {
   const isLoading = billsQuery.isLoading;
   const freshness = useQueryFreshness(billsQuery);
 
-  const createMutation = useMutation({
-    mutationFn: async (bill: BillForm) => {
-      const { error } = await fromTable("bills").insert({
-        payee: bill.payee,
-        amount: parseFloat(bill.amount),
-        due_date: bill.due_date,
-        category: bill.category || null,
-        recurring: bill.recurring,
-        frequency: bill.recurring ? bill.frequency : null,
-        auto_pay: bill.auto_pay,
-        notes: bill.notes || null,
-        user_id: user!.id,
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["bills"] }); setShowForm(false); setForm(emptyForm); toast.success("Bill created"); },
-    onError: (e: any) => toast.error(e.message),
+  const createMutation = useAction("finance", "bill.create", {
+    successMessage: "Bill created",
+    invalidateKeys: [["bills"]],
+    onSuccess: () => { setShowForm(false); setForm(emptyForm); },
   });
 
-  const updateMutation = useMutation({
-    mutationFn: async ({ id, bill }: { id: string; bill: BillForm }) => {
-      const { error } = await fromTable("bills").update({
-        payee: bill.payee,
-        amount: parseFloat(bill.amount),
-        due_date: bill.due_date,
-        category: bill.category || null,
-        recurring: bill.recurring,
-        frequency: bill.recurring ? bill.frequency : null,
-        auto_pay: bill.auto_pay,
-        notes: bill.notes || null,
-      }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["bills"] }); setShowForm(false); setEditId(null); setForm(emptyForm); toast.success("Bill updated"); },
-    onError: (e: any) => toast.error(e.message),
+  const updateMutation = useAction("finance", "bill.update", {
+    successMessage: "Bill updated",
+    invalidateKeys: [["bills"]],
+    onSuccess: () => { setShowForm(false); setEditId(null); setForm(emptyForm); },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("bills").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["bills"] }); setSelectedId(null); toast.success("Bill deleted"); },
-    onError: (e: any) => toast.error(e.message),
+  const deleteMutation = useAction("finance", "bill.delete", {
+    successMessage: "Bill deleted",
+    invalidateKeys: [["bills"]],
+    onSuccess: () => { setSelectedId(null); },
   });
 
-  const markPaidMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const bill = enriched.find(b => b.id === id);
-      if (bill && user) {
-        // Fire payment-process edge function for audit trail & approval
-        await initiatePayment({
-          amount_cents: Math.round(Number(bill.amount || 0) * 100),
-          account_id: (bill as any).account_id || user.id,
-          description: `Bill payment: ${bill.payee || "Unknown"}`,
-          recipient: bill.payee,
-          category: bill.category || "bills",
-        }).catch(() => { /* non-blocking — bill still marked paid locally */ });
-      }
-      const { error } = await fromTable("bills").update({ status: "paid" }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["bills"] }); toast.success("Marked as paid"); },
-    onError: (e: any) => toast.error(e.message),
+  const markPaidMutation = useAction("finance", "bill.pay", {
+    successMessage: "Marked as paid",
+    invalidateKeys: [["bills"]],
   });
 
   const enriched = bills.map(b => ({
@@ -167,8 +125,8 @@ const BillsWorkspace = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (editId) updateMutation.mutate({ id: editId, bill: form });
-    else createMutation.mutate(form);
+    if (editId) updateMutation.mutate({ id: editId, bill: form } as unknown as Record<string, unknown>);
+    else createMutation.mutate(form as unknown as Record<string, unknown>);
   };
 
   return (
@@ -274,7 +232,7 @@ const BillsWorkspace = () => {
                   </div>
                 </SitaCard>
                 <div className="flex gap-2 flex-wrap">
-                  {selected.computedStatus !== "paid" && <SitaButton variant="primary" size="sm" className="flex-1" onClick={() => markPaidMutation.mutate(selected.id)}><CheckCircle className="h-3.5 w-3.5" /> Mark Paid</SitaButton>}
+                  {selected.computedStatus !== "paid" && <SitaButton variant="primary" size="sm" className="flex-1" onClick={() => markPaidMutation.mutate({ id: selected.id })}><CheckCircle className="h-3.5 w-3.5" /> Mark Paid</SitaButton>}
                   {selected.computedStatus !== "paid" && (
                     <SitaButton variant="secondary" size="sm" onClick={() => {
                       const sim = simulatePayment(
@@ -287,7 +245,7 @@ const BillsWorkspace = () => {
                     }}><Zap className="h-3.5 w-3.5" /> Simulate</SitaButton>
                   )}
                   <SitaButton variant="secondary" size="sm" onClick={() => openEdit(selected)}>Edit</SitaButton>
-                  <SitaButton variant="danger" size="sm" onClick={async () => { if (await confirm({ title: "Delete this bill?", description: "This bill will be permanently removed.", variant: "destructive" })) deleteMutation.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /></SitaButton>
+                  <SitaButton variant="danger" size="sm" onClick={async () => { if (await confirm({ title: "Delete this bill?", description: "This bill will be permanently removed.", variant: "destructive" })) deleteMutation.mutate({ id: selected.id }); }}><Trash2 className="h-3.5 w-3.5" /></SitaButton>
                 </div>
               </>
             ) : (

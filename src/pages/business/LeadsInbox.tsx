@@ -4,10 +4,11 @@ import { KPITile, CustomerRow, EmptyState, SitaTabs, AdvisorCard, TimelineItem, 
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAction } from "@/lib/hooks/useAction";
 import { toast } from "sonner";
 import {
   Search, Plus, Phone, Mail, Clock, User, Filter, Sparkles, CheckCircle, FileText, Calendar,
@@ -98,31 +99,22 @@ const LeadsInbox = () => {
   const isLoading = leadsQuery.isLoading;
   const freshness = useQueryFreshness(leadsQuery);
 
-  const addMutation = useMutation({
-    mutationFn: async (lead: { name: string; email?: string; phone?: string; company?: string; source?: string; likely_value?: number }) => {
-      const { error } = await fromTable("leads").insert({ ...lead, user_id: user!.id });
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["leads"] }); toast.success("Lead added"); resetForm(); },
-    onError: (e: any) => toast.error(e.message),
+  const addMutation = useAction("business", "lead.create", {
+    successMessage: "Lead added",
+    invalidateKeys: [["leads"]],
+    onSuccess: () => { resetForm(); },
   });
 
-  const updateMutation = useMutation({
-    mutationFn: async ({ id, ...updates }: Partial<Lead> & { id: string }) => {
-      const { error } = await fromTable("leads").update(updates).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["leads"] }); toast.success("Lead updated"); resetForm(); },
-    onError: (e: any) => toast.error(e.message),
+  const updateMutation = useAction("business", "lead.update", {
+    successMessage: "Lead updated",
+    invalidateKeys: [["leads"]],
+    onSuccess: () => { resetForm(); },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("leads").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["leads"] }); setSelectedId(null); toast.success("Lead deleted"); },
-    onError: (e: any) => toast.error(e.message),
+  const deleteMutation = useAction("business", "lead.delete", {
+    successMessage: "Lead deleted",
+    invalidateKeys: [["leads"]],
+    onSuccess: () => { setSelectedId(null); },
   });
 
   const resetForm = () => {
@@ -393,7 +385,7 @@ const LeadsInbox = () => {
 
               <div className="flex gap-2 flex-wrap">
                 <SitaButton variant="secondary" size="sm" onClick={() => openEdit(selected)}><FileText className="h-3.5 w-3.5" /> Edit Lead</SitaButton>
-                <SitaButton variant="ghost" size="sm" onClick={async () => { if (await confirm({ title: "Delete this lead?", description: "This lead will be permanently removed.", variant: "destructive" })) deleteMutation.mutate(selected.id); }}>
+                <SitaButton variant="ghost" size="sm" onClick={async () => { if (await confirm({ title: "Delete this lead?", description: "This lead will be permanently removed.", variant: "destructive" })) deleteMutation.mutate({ id: selected.id }); }}>
                   <Trash2 className="h-3.5 w-3.5" /> Delete
                 </SitaButton>
               </div>

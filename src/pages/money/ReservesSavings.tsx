@@ -6,11 +6,12 @@ import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton"
 import { PiggyBank, Target, Shield, TrendingUp, Plus, Sparkles, Trash2 } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { motion } from "framer-motion";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useAction } from "@/lib/hooks/useAction";
 import { toast } from "sonner";
 import { useReservesSavings } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -47,35 +48,15 @@ const ReservesSavings = () => {
   const freshness = useQueryFreshness(reservesQuery);
 
   // Create reserve mutation
-  const createReserve = useMutation({
-    mutationFn: async (reserve: { name: string; target_amount: number; category: string; contribution_amount: number }) => {
-      if (!user) throw new Error("Not authenticated");
-      const { data, error } = await fromTable("reserves").insert({
-        ...reserve, user_id: user.id, current_amount: 0, priority: reserves.length + 1,
-      }).select().single();
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["reserves"] });
-      queryClient.invalidateQueries({ queryKey: ["reserves-savings"] });
-      toast.success("Reserve goal created");
-    },
-    onError: (e: any) => toast.error(e.message),
+  const createReserve = useAction("finance", "reserve.create", {
+    successMessage: "Reserve goal created",
+    invalidateKeys: [["reserves"], ["reserves-savings"]],
   });
 
   // Delete reserve mutation
-  const deleteReserve = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("reserves").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["reserves"] });
-      queryClient.invalidateQueries({ queryKey: ["reserves-savings"] });
-      toast.success("Reserve goal deleted");
-    },
-    onError: (e: any) => toast.error(e.message),
+  const deleteReserve = useAction("finance", "reserve.delete", {
+    successMessage: "Reserve goal deleted",
+    invalidateKeys: [["reserves"], ["reserves-savings"]],
   });
 
   const totalCurrent = reserves.reduce((s: number, r: any) => s + (r.current_amount || 0), 0);

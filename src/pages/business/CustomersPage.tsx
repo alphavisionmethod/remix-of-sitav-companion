@@ -6,10 +6,11 @@ import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { useState, useMemo } from "react";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAction } from "@/lib/hooks/useAction";
 import { useNavigate } from "react-router-dom";
 import {
   Users, Search, DollarSign, Heart, AlertTriangle, TrendingUp, Star, Phone, Mail,
@@ -83,34 +84,16 @@ const CustomersPage = () => {
   const [formPhone, setFormPhone] = useState("");
   const { data: customers = [], isLoading } = useCustomers();
 
-  const createCustomer = useMutation({
-    mutationFn: async () => {
-      const { error } = await fromTable("customers").insert([{
-        user_id: user!.id, name: formName, email: formEmail || null,
-        company: formCompany || null, phone: formPhone || null,
-        status: "active",
-      }]);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["customers"] });
-      toast.success("Customer created");
-      setShowAdd(false); setFormName(""); setFormEmail(""); setFormCompany(""); setFormPhone("");
-    },
-    onError: (e: Error) => toast.error(e.message),
+  const createCustomer = useAction("business", "customer.create", {
+    successMessage: "Customer created",
+    invalidateKeys: [["customers"]],
+    onSuccess: () => { setShowAdd(false); setFormName(""); setFormEmail(""); setFormCompany(""); setFormPhone(""); },
   });
 
-  const deleteCustomer = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("customers").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["customers"] });
-      toast.success("Customer deleted");
-      setSelectedId(null);
-    },
-    onError: (e: Error) => toast.error(e.message),
+  const deleteCustomer = useAction("business", "customer.delete", {
+    successMessage: "Customer deleted",
+    invalidateKeys: [["customers"]],
+    onSuccess: () => { setSelectedId(null); },
   });
 
   const inspectCustomer = (c: Customer) => {
@@ -183,7 +166,7 @@ const CustomersPage = () => {
             <input value={formCompany} onChange={e => setFormCompany(e.target.value)} placeholder="Company" className="rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm" />
             <input value={formPhone} onChange={e => setFormPhone(e.target.value)} placeholder="Phone" className="rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm" />
           </div>
-          <SitaButton variant="primary" size="sm" className="mt-3" onClick={() => createCustomer.mutate()} disabled={!formName.trim()}>Create Customer</SitaButton>
+          <SitaButton variant="primary" size="sm" className="mt-3" onClick={() => createCustomer.mutate({ name: formName, email: formEmail || null, company: formCompany || null, phone: formPhone || null, status: "active" })} disabled={!formName.trim()}>Create Customer</SitaButton>
         </SitaCard>
       )}
 

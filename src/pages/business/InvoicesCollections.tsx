@@ -2,10 +2,11 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/component
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAction } from "@/lib/hooks/useAction";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { DollarSign, Clock, AlertTriangle, CheckCircle, Send, Phone, Receipt, Plus, X, Trash2, FileText, Loader2 } from "lucide-react";
@@ -56,30 +57,21 @@ const InvoicesCollections = () => {
     enabled: !!user,
   });
 
-  const addInvoice = useMutation({
-    mutationFn: async () => {
-      if (!user || !form.invoice_number.trim() || !form.amount || !form.due_date) throw new Error("Number, amount, and due date required");
-      const { error } = await fromTable("invoices").insert({
-        user_id: user.id, invoice_number: form.invoice_number.trim(), amount: parseFloat(form.amount),
-        due_date: form.due_date, notes: form.notes || null, status: "draft",
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["invoices"] }); setShowAdd(false); setForm({ invoice_number: "", amount: "", due_date: "", notes: "" }); toast.success("Invoice created"); },
-    onError: (e: Error) => toast.error(e.message),
+  const addInvoice = useAction("finance", "invoice.create", {
+    successMessage: "Invoice created",
+    invalidateKeys: [["invoices"]],
+    onSuccess: () => { setShowAdd(false); setForm({ invoice_number: "", amount: "", due_date: "", notes: "" }); },
   });
 
-  const updateStatus = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await fromTable("invoices").update({ status }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["invoices"] }); toast.success("Status updated"); },
+  const updateStatus = useAction("finance", "invoice.status", {
+    successMessage: "Status updated",
+    invalidateKeys: [["invoices"]],
   });
 
-  const deleteInvoice = useMutation({
-    mutationFn: async (id: string) => { const { error } = await fromTable("invoices").delete().eq("id", id); if (error) throw error; },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["invoices"] }); setSelectedId(null); toast.success("Deleted"); },
+  const deleteInvoice = useAction("finance", "invoice.delete", {
+    successMessage: "Deleted",
+    invalidateKeys: [["invoices"]],
+    onSuccess: () => { setSelectedId(null); },
   });
 
   const selected = invoices.find((i: any) => i.id === selectedId);
@@ -112,7 +104,7 @@ const InvoicesCollections = () => {
                 <input value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} placeholder="Notes" className="rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
               </div>
               <div className="flex justify-end mt-4">
-                <button onClick={() => addInvoice.mutate()} disabled={addInvoice.isPending || !form.invoice_number.trim() || !form.amount || !form.due_date} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">{addInvoice.isPending ? "Creating..." : "Create Invoice"}</button>
+                <button onClick={() => addInvoice.mutate({ invoice_number: form.invoice_number.trim(), amount: parseFloat(form.amount), due_date: form.due_date, notes: form.notes || null, status: "draft" })} disabled={addInvoice.isPending || !form.invoice_number.trim() || !form.amount || !form.due_date} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">{addInvoice.isPending ? "Creating..." : "Create Invoice"}</button>
               </div>
             </SitaCard>
           </motion.div>

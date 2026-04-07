@@ -4,11 +4,8 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Mail, ArrowLeft } from "lucide-react";
 import sitaLogo from "@/assets/logo.jpeg";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const ForgotPassword = () => {
-  const { isDemoMode } = useDataMode();
   const { resetPassword } = useAuth();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,7 +23,6 @@ const ForgotPassword = () => {
   if (sent) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <DemoModeBadge />
         <div className="w-full max-w-sm text-center space-y-4">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
             <Mail className="h-8 w-8 text-primary" />

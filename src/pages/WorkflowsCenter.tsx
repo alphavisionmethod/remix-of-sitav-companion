@@ -4,11 +4,12 @@ import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents"
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAction } from "@/lib/hooks/useAction";
 import { Workflow, CheckCircle2, Clock, AlertTriangle, ChevronRight, Eye, RotateCcw, Shield, Plus, Trash2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -62,25 +63,16 @@ const WorkflowsCenter = () => {
     },
   });
 
-  const createWorkflow = useMutation({
-    mutationFn: async () => {
-      const { data: wf, error: wfErr } = await fromTable("workflows").insert([{ name: newName, trigger_type: newTrigger, active: true, steps: [] as unknown as any, user_id: user!.id }]).select().single();
-      if (wfErr) throw wfErr;
-      // Create initial run
-      const { error: runErr } = await fromTable("workflow_runs").insert({ user_id: user!.id, workflow_id: wf.id, status: "pending", current_step: 0 });
-      if (runErr) throw runErr;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["workflow_runs"] }); toast.success("Workflow created"); setShowCreate(false); setNewName(""); },
-    onError: (e: Error) => toast.error(e.message),
+  const createWorkflow = useAction("system", "workflow.create", {
+    successMessage: "Workflow created",
+    invalidateKeys: [["workflow_runs"]],
+    onSuccess: () => { setShowCreate(false); setNewName(""); },
   });
 
-  const deleteRun = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("workflow_runs").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["workflow_runs"] }); setSelectedId(null); toast.success("Run deleted"); },
-    onError: (e: Error) => toast.error(e.message),
+  const deleteRun = useAction("system", "workflow-run.delete", {
+    successMessage: "Run deleted",
+    invalidateKeys: [["workflow_runs"]],
+    onSuccess: () => { setSelectedId(null); },
   });
 
   const filtered = filter === "all" ? runs : runs.filter(r => r.status === filter);
@@ -123,7 +115,7 @@ const WorkflowsCenter = () => {
               <option value="webhook">Webhook</option>
             </select>
             <div className="flex gap-2">
-              <SitaButton variant="primary" onClick={() => createWorkflow.mutate()} disabled={!newName.trim()}>Create</SitaButton>
+              <SitaButton variant="primary" onClick={() => createWorkflow.mutate({ name: newName, trigger_type: newTrigger })} disabled={!newName.trim()}>Create</SitaButton>
               <SitaButton variant="secondary" onClick={() => setShowCreate(false)}>Cancel</SitaButton>
             </div>
           </div>
@@ -222,7 +214,7 @@ const WorkflowsCenter = () => {
 
                 <div className="flex gap-2">
                   <SitaButton variant="primary" className="flex-1"><Eye className="h-3.5 w-3.5" /> Inspect</SitaButton>
-                  <SitaButton variant="danger" onClick={async () => { if (await confirm({ title: "Delete this run?", description: "This workflow run record will be permanently removed.", variant: "destructive" })) deleteRun.mutate(selected.id); }}><Trash2 className="h-3.5 w-3.5" /> Delete</SitaButton>
+                  <SitaButton variant="danger" onClick={async () => { if (await confirm({ title: "Delete this run?", description: "This workflow run record will be permanently removed.", variant: "destructive" })) deleteRun.mutate({ id: selected.id }); }}><Trash2 className="h-3.5 w-3.5" /> Delete</SitaButton>
                 </div>
               </>
             ) : (
