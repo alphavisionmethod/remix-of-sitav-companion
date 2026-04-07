@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Activity, TrendingUp, TrendingDown, Users, Star, Zap, Calendar, Package, AlertTriangle, CheckCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const memoryEvents = [
+const DEMO_memoryEvents = [
   { time: "2 hours ago", title: "Campaign 'Spring Growth' conversion rate dropped 3%", type: "campaign", severity: "medium", icon: TrendingDown, color: "text-amber-400" },
   { time: "5 hours ago", title: "New review: 5★ from Apex Coaching Co.", type: "reputation", severity: "low", icon: Star, color: "text-emerald-400" },
   { time: "8 hours ago", title: "Lead stage drift: 8 leads stuck in 'Proposal Sent' >14 days", type: "crm", severity: "high", icon: AlertTriangle, color: "text-red-400" },
