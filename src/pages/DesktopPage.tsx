@@ -8,11 +8,22 @@ import { useShellState } from "@/components/sita/shell/useShellState";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { EnterpriseFlow } from "@/components/sita/EnterpriseFlow";
+import { useState } from "react";
 
 export default function DesktopPage() {
   const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const { state, openCommand } = useShellState();
+  const [showEnterprise, setShowEnterprise] = useState(false);
+
+  if (showEnterprise) {
+    return (
+      <EnterpriseFlow
+        onBack={() => setShowEnterprise(false)}
+        onComplete={() => setShowEnterprise(false)}
+      />
+    );
+  }
 
   return (
     <DesktopSurface

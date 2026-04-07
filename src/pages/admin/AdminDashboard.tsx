@@ -170,6 +170,7 @@ export default function AdminDashboard() {
           <p className="text-sm text-muted-foreground">System overview · {now.toLocaleDateString()} {now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
         </div>
         <div className="flex items-center gap-2">
+          <NotificationInbox />
           <Badge variant="outline" className="gap-1.5 text-emerald-500 border-emerald-500/30">
             <StatusDot status={(openIncidents || 0) > 0 ? "warning" : "healthy"} />
             {(openIncidents || 0) > 0 ? `${openIncidents} Open Incidents` : "All Systems Operational"}
