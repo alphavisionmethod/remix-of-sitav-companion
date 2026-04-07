@@ -246,3 +246,6 @@ export function getEventBus(): EventBus {
 export function createEventBus(): EventBus {
   return new EventBus();
 }
+
+// ── Re-export modular layer (lib/services/event-bus) ──────────
+export * from "@/lib/services/event-bus";

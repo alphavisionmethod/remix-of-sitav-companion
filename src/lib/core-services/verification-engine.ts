@@ -226,3 +226,6 @@ export class VerificationEngine {
 export function createVerificationEngine(additionalRules?: VerificationRule[]): VerificationEngine {
   return new VerificationEngine(additionalRules);
 }
+
+// ── Re-export modular layer (lib/services/verification-engine) ─
+export * from "@/lib/services/verification-engine";

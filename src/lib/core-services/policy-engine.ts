@@ -247,3 +247,6 @@ export function getConstitutionalRules(): PolicyRule[] {
 export function getRuleById(ruleId: string): PolicyRule | undefined {
   return CONSTITUTIONAL_RULES.find((r) => r.id === ruleId);
 }
+
+// ── Re-export modular layer (lib/services/policy-engine) ──────
+export * from "@/lib/services/policy-engine";

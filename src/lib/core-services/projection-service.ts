@@ -231,3 +231,6 @@ export class ProjectionService {
 export function createProjectionService(cacheSize?: number): ProjectionService {
   return new ProjectionService(cacheSize);
 }
+
+// ── Re-export modular layer (lib/services/projection-service) ──
+export * from "@/lib/services/projection-service";
