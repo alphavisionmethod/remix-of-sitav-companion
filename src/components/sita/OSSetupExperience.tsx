@@ -973,7 +973,7 @@ export function OSSetupExperience() {
                     displayName={state.displayName}
                     trustLevel={state.trustLevel}
                     enabledDomains={state.enabledDomains}
-                    rituals={[]}
+                    rituals={state.rituals}
                     onFinish={finishSetup} />
                 )}
               </AnimatePresence>
