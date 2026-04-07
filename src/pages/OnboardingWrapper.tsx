@@ -1,7 +1,13 @@
-// Onboarding wrapper that renders the premium OS Setup Experience
+// Route-entry wrapper for the OS Setup Experience.
+// OSSetupExperience handles its own DB persistence and data mode internally.
 import { OSSetupExperience } from "@/components/sita/OSSetupExperience";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
-const OnboardingWrapper = () => (<><DemoModeBadge /><OSSetupExperience /></>);
+const OnboardingWrapper = () => (
+  <>
+    <DemoModeBadge />
+    <OSSetupExperience />
+  </>
+);
+
 export default OnboardingWrapper;
