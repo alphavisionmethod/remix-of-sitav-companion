@@ -1,7 +1,7 @@
 import { SitaPageHeader, SitaSectionHeader, SitaButton, SitaCard } from "@/components/sita/SitaCard";
 import { SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { useState, useMemo } from "react";
-import { Search, FileText } from "lucide-react";
+import { Search, FileText, Brain, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { SearchFabricService, type SearchResponse } from "@/lib/core-services/search-fabric";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { useFilesSearchIndex } from "@/hooks/use-domain-data";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useAIInsight } from "@/hooks/use-backend-actions";
+import { toast } from "sonner";
 
 type FilterType = "all" | "business" | "finance" | "concierge" | "obligations" | "deadlines";
 
