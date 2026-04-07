@@ -45,8 +45,10 @@ export default function AR06ExecutionTraceExplorer() {
               {executions.length === 0 ? (
                 <p className="text-xs text-muted-foreground">No executions to explore</p>
               ) : (
-                executions.map((e: any) => (
-                  <button key={e.id} onClick={() => setSelectedExecId(e.id)}
+                executions.map((e: Record<string, unknown>) => {
+                  const job = getRelation(e, "scheduled_jobs", parseScheduledJobRef);
+                  return (
+                  <button key={String(e.id)} onClick={() => setSelectedExecId(String(e.id))}
                     className={`w-full flex items-center gap-2 rounded-lg px-3 py-2 text-left transition-colors ${
                       selectedExecId === e.id ? "bg-primary/10 border border-primary/20" : "bg-secondary/10 hover:bg-secondary/20"
                     }`}>
@@ -54,12 +56,13 @@ export default function AR06ExecutionTraceExplorer() {
                      e.status === "failure" ? <XCircle className="h-3 w-3 text-destructive shrink-0" /> :
                      <Clock className="h-3 w-3 text-accent shrink-0" />}
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] font-medium truncate">{((e as any).scheduled_jobs as any)?.name || e.job_id.slice(0, 8)}</p>
-                      <p className="text-[9px] text-muted-foreground">{new Date(e.started_at).toLocaleString()}</p>
+                      <p className="text-[10px] font-medium truncate">{job.name || String(e.job_id ?? "").slice(0, 8)}</p>
+                      <p className="text-[9px] text-muted-foreground">{new Date(String(e.started_at)).toLocaleString()}</p>
                     </div>
                     <ChevronRight className="h-3 w-3 text-muted-foreground shrink-0" />
                   </button>
-                ))
+                  );
+                })
               )}
             </div>
           </SitaCard>
