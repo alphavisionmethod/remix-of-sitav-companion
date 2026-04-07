@@ -4,10 +4,11 @@ import { KPITile, SitaTabs, EmptyState, ContextDrawer, OpportunityCard } from "@
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { SubscriptionTrendsChart, SubscriptionCategoryChart } from "@/components/sita/SitaCharts";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAction } from "@/lib/hooks/useAction";
 import { CreditCard, AlertTriangle, TrendingDown, CheckCircle, XCircle, Eye, Sparkles, Calendar, DollarSign, Plus, Trash2, Pencil, Pause, Play } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { toast } from "sonner";
