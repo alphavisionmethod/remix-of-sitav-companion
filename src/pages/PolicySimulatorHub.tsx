@@ -48,7 +48,6 @@ export default function PolicySimulatorHub() {
 
   const runPreset = (preset: PresetScenario) => {
     const result = gov.runComplianceAudit([{
-    const result = gov.runComplianceAudit([{
       domain: preset.domain, capabilityId: preset.capabilityId,
       riskTier: preset.riskTier, amount: preset.amount,
     }]);
