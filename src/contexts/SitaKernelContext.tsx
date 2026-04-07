@@ -436,3 +436,49 @@ export function useIncidentManagement() {
     service: kernel.incidentManagement,
   };
 }
+
+// ── Fraud Sentinel Hook ─────────────────────────────────────────
+
+export function useFraudSentinel() {
+  const kernel = useSitaKernel();
+  return kernel.fraudSentinel;
+}
+
+// ── Governance Simulator Hook ───────────────────────────────────
+
+export function useGovernanceSimulator() {
+  const kernel = useSitaKernel();
+  return kernel.governanceSimulator;
+}
+
+// ── Search Fabric Hook ──────────────────────────────────────────
+
+export function useSearchFabric() {
+  const kernel = useSitaKernel();
+  return kernel.searchFabric;
+}
+
+// ── Self-Healing Services Hook ──────────────────────────────────
+
+export function useSelfHealingServices() {
+  return useMemo(() => {
+    const { createSelfHealingService, createImmuneController, createFleetHealthService, HEALING_CAPABILITY_MAP, ESCALATION_RULES, DEGRADED_MODES } = require("@/lib/core-services/self-healing");
+    return {
+      selfHealing: createSelfHealingService(),
+      immune: createImmuneController(),
+      fleet: createFleetHealthService(),
+      capabilities: HEALING_CAPABILITY_MAP,
+      escalation: ESCALATION_RULES,
+      degradedModes: DEGRADED_MODES,
+    };
+  }, []);
+}
+
+// ── Life Simulator Hook ─────────────────────────────────────────
+
+export function useLifeSimulator(scenarioCount = 500) {
+  return useMemo(() => {
+    const { LifeShockSimulator } = require("@/lib/services/life-simulation");
+    return new LifeShockSimulator(scenarioCount);
+  }, [scenarioCount]);
+}

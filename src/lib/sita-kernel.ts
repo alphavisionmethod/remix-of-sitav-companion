@@ -187,7 +187,7 @@ export class SitaKernel {
         "entityGraph", "identityGraph", "projections", "verification",
         "executor", "chain", "apiGateway", "capabilityRouter",
         "approvals", "permissions", "analytics", "diagnostics",
-        "fraudSentinel", "agents", "leases", "constitution",
+        "fraudSentinel", "governanceSimulator", "searchFabric", "agents", "leases", "constitution",
         "workflowRecovery", "workflowReplay", "workflowTimeouts",
         "transitionValidator", "verificationHooks",
         "receiptVerification", "replayVerification", "websiteManager",
