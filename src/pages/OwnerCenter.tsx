@@ -1953,9 +1953,9 @@ const OwnerCenter = () => {
         {activePage === "model-routing" && (
           <motion.div key="model-routing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-3">
-              <KPITile label="Total Cost" value={`$${(modelData as Record<string, unknown>)?.totalCost || 0}`} icon={DollarSign} className="gradient-sita-subtle" />
-              <KPITile label="Total Tokens" value={((modelData as Record<string, unknown>)?.totalTokens || 0).toLocaleString()} icon={Zap} />
-              <KPITile label="Routing" value={(modelData as Record<string, unknown>)?.routingPolicy || "—"} icon={Brain} />
+              <KPITile label="Total Cost" value={`$${modelData?.totalCost || 0}`} icon={DollarSign} className="gradient-sita-subtle" />
+              <KPITile label="Total Tokens" value={(modelData?.totalTokens || 0).toLocaleString()} icon={Zap} />
+              <KPITile label="Routing" value={modelData?.routingPolicy || "—"} icon={Brain} />
             </div>
             <SitaSectionHeader title="Model Performance" />
             <SitaCard hover={false} className="p-0 overflow-hidden">
