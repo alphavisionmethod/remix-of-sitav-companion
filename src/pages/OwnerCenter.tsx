@@ -1917,8 +1917,8 @@ const OwnerCenter = () => {
         {activePage === "releases" && (
           <motion.div key="releases" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <div className="flex items-center gap-3">
-              <KPITile label="Current Version" value={(releasesData as Record<string, unknown>)?.currentVersion || "—"} icon={Rocket} className="gradient-sita-subtle" />
-              <KPITile label="Frozen" value={(releasesData as Record<string, unknown>)?.frozen ? "Yes" : "No"} icon={Shield} />
+              <KPITile label="Current Version" value={releasesData?.currentVersion || "—"} icon={Rocket} className="gradient-sita-subtle" />
+              <KPITile label="Frozen" value={releasesData?.frozen ? "Yes" : "No"} icon={Shield} />
             </div>
             <SitaSectionHeader title="Release Rings" />
             <div className="grid gap-3 sm:grid-cols-3">
