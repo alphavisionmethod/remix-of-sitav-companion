@@ -127,7 +127,7 @@ export default function FormsBuilder() {
               <Card className="bg-card/50 border-border/50">
                 <CardHeader className="pb-2"><CardTitle className="text-xs">Field Types</CardTitle></CardHeader>
                 <CardContent className="space-y-1">
-                  {FIELD_TYPES.map(ft => (
+                  {DEMO_FIELD_TYPES.map(ft => (
                     <div key={ft.type} className="flex items-center gap-2 p-2 rounded-lg bg-muted/10 border border-border/20 cursor-grab hover:bg-muted/20 transition-colors">
                       <ft.icon className="w-3.5 h-3.5 text-primary" />
                       <span className="text-xs text-foreground">{ft.label}</span>

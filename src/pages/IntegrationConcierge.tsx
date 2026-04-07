@@ -368,7 +368,7 @@ export default function IntegrationConcierge() {
         <TabsContent value="use-cases" className="mt-5">
           {/* Category Filter */}
           <div className="flex gap-1.5 mb-5 flex-wrap">
-            {CATEGORIES.map(cat => (
+            {DEMO_CATEGORIES.map(cat => (
               <button
                 key={cat.id}
                 onClick={() => setCategory(cat.id)}
