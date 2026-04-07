@@ -289,8 +289,7 @@ export default function ConstitutionEditor() {
     if (dbLoaded || isDemo || !user?.id) return;
 
     const loadRules = async () => {
-      const { data, error } = await db
-        .from("constitution_rules")
+      const { data, error } = await fromTable("constitution_rules")
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: true });
