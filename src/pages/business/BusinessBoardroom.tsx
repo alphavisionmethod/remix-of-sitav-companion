@@ -3,14 +3,83 @@ import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton, SitaPageHeader 
 import { KPITile, OpportunityCard, RiskCard, ProofCard, SitaTabs } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { BarChart3, CheckCircle, AlertTriangle, Sparkles, Clock, DollarSign, Users, TrendingUp, ArrowRight, Calendar, FileText, Target } from "lucide-react";
 import { motion } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useLeads, useCustomers, useInvoices, useOpportunities } from "@/hooks/use-sita-data";
 
 const BusinessBoardroom = () => {
   const [mode, setMode] = useState("weekly");
+  const { data: leads = [] } = useLeads();
+  const { data: customers = [] } = useCustomers();
+  const { data: invoices = [] } = useInvoices();
+  const { data: opportunities = [] } = useOpportunities();
+
+  // Derive KPIs from live data
+  const kpis = useMemo(() => {
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7 * 86400000);
+    const weekStr = weekAgo.toISOString();
+
+    const recentInvoices = invoices.filter((i: any) => i.created_at >= weekStr);
+    const paidThisWeek = recentInvoices.filter((i: any) => i.status === "paid");
+    const revenue = paidThisWeek.reduce((sum: number, i: any) => sum + (i.amount || 0), 0);
+    const newLeads = leads.filter((l: any) => l.created_at >= weekStr).length;
+    const overdue = invoices.filter((i: any) => i.status === "overdue");
+    const atRisk = overdue.reduce((sum: number, i: any) => sum + (i.amount || 0), 0);
+
+    return { revenue, newLeads, atRisk, overdueInvoices: overdue };
+  }, [leads, invoices]);
+
+  // Derive priorities from live data
+  const priorities = useMemo(() => {
+    const items: Array<{ text: string; urgency: string }> = [];
+
+    // Overdue invoices are critical
+    kpis.overdueInvoices.slice(0, 2).forEach((inv: any) => {
+      items.push({ text: `Collect overdue Invoice — ${inv.customer_name || "Customer"} ($${(inv.amount || 0).toLocaleString()})`, urgency: "critical" });
+    });
+
+    // Hot leads
+    leads.filter((l: any) => l.status === "new" || l.status === "contacted").slice(0, 2).forEach((l: any) => {
+      items.push({ text: `Follow up with ${l.name || l.company || "Lead"} — ${l.source || "Inbound"}`, urgency: "high" });
+    });
+
+    // Open opportunities
+    opportunities.filter((o: any) => o.stage === "proposal" || o.stage === "negotiation").slice(0, 2).forEach((o: any) => {
+      items.push({ text: `Close deal: ${o.title || o.customer_name || "Opportunity"} — $${(o.value || 0).toLocaleString()}`, urgency: "medium" });
+    });
+
+    return items.length > 0 ? items.slice(0, 5) : [
+      { text: "No active priorities — add leads or invoices to get started", urgency: "low" },
+    ];
+  }, [leads, opportunities, kpis.overdueInvoices]);
+
+  // Derive risks
+  const risks = useMemo(() => {
+    const items: Array<{ title: string; description: string; severity: "high" | "medium" | "low" }> = [];
+
+    kpis.overdueInvoices.forEach((inv: any) => {
+      const days = Math.ceil((Date.now() - new Date(inv.due_date || inv.created_at).getTime()) / 86400000);
+      items.push({
+        title: `Invoice overdue — ${inv.customer_name || "Customer"}`,
+        description: `$${(inv.amount || 0).toLocaleString()} — ${days} days overdue`,
+        severity: days > 30 ? "high" : "medium",
+      });
+    });
+
+    leads.filter((l: any) => l.status === "cold" || l.status === "stale").slice(0, 2).forEach((l: any) => {
+      items.push({
+        title: `Lead going cold: ${l.name || l.company || "Lead"}`,
+        description: `${l.source || "Unknown source"} — needs re-engagement`,
+        severity: "medium",
+      });
+    });
+
+    return items.slice(0, 3);
+  }, [leads, kpis.overdueInvoices]);
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -37,30 +106,24 @@ const BusinessBoardroom = () => {
         <div className="flex items-center gap-3 mb-5">
           <div className="rounded-xl gradient-sita p-2.5"><BarChart3 className="h-5 w-5 text-primary-foreground" /></div>
           <div>
-            <h2 className="font-display text-lg font-bold text-foreground">Week of March 25 — Business Review</h2>
-            <p className="text-xs text-muted-foreground">Generated today at 9:00 AM · Based on all business activity</p>
+            <h2 className="font-display text-lg font-bold text-foreground">Business Review — {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</h2>
+            <p className="text-xs text-muted-foreground">Generated now · Based on all business activity</p>
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div><p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Revenue This Week</p><p className="mt-1 font-display text-2xl font-bold text-trust-verified">$8,420 ↑</p></div>
-          <div><p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">New Leads</p><p className="mt-1 font-display text-2xl font-bold text-foreground">5</p></div>
-          <div><p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">At Risk Revenue</p><p className="mt-1 font-display text-2xl font-bold text-urgency-high">$5,400</p></div>
-          <div><p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Actions Completed</p><p className="mt-1 font-display text-2xl font-bold text-foreground">12</p></div>
+          <div><p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Revenue This Week</p><p className="mt-1 font-display text-2xl font-bold text-trust-verified">${kpis.revenue.toLocaleString()}</p></div>
+          <div><p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">New Leads</p><p className="mt-1 font-display text-2xl font-bold text-foreground">{kpis.newLeads}</p></div>
+          <div><p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">At Risk Revenue</p><p className="mt-1 font-display text-2xl font-bold text-urgency-high">${kpis.atRisk.toLocaleString()}</p></div>
+          <div><p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Active Opportunities</p><p className="mt-1 font-display text-2xl font-bold text-foreground">{opportunities.length}</p></div>
         </div>
       </SitaCard>
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Priorities */}
         <SitaCard hover={false}>
-          <SitaCardTitle sub="Top 5 items for this week">Priorities</SitaCardTitle>
+          <SitaCardTitle sub="Top items for this week">Priorities</SitaCardTitle>
           <div className="mt-4 space-y-2.5">
-            {[
-              { text: "Follow up on Quote #1039 — Apex Corp ($12K) expiring tomorrow", urgency: "critical" },
-              { text: "Collect overdue Invoice #1035 — David Kim ($1,800, 12 days)", urgency: "high" },
-              { text: "Call Sarah Chen — new lead with high conversion potential", urgency: "high" },
-              { text: "Close retainer deal with Marcus Johnson ($4,800/mo)", urgency: "medium" },
-              { text: "Re-engage Emily Watson before lead goes fully cold", urgency: "medium" },
-            ].map((p, i) => (
+            {priorities.map((p, i) => (
               <div key={i} className="flex items-center gap-3 rounded-xl bg-secondary/30 p-3.5">
                 <span className="flex h-7 w-7 items-center justify-center rounded-full gradient-sita font-display text-xs font-bold text-primary-foreground shrink-0">{i + 1}</span>
                 <p className="text-sm text-foreground flex-1">{p.text}</p>
@@ -73,75 +136,52 @@ const BusinessBoardroom = () => {
         {/* Risks */}
         <div className="space-y-4">
           <SitaSectionHeader title="Risks & Unresolved" />
-          <RiskCard title="Invoice #1032 severely overdue" description="Green Valley LLC — $2,400, 33 days overdue. 4 reminders sent. Consider escalation." severity="high" />
-          <RiskCard title="Quote #1039 expiring" description="Apex Corp — $12,000 deal at risk. No response to proposal." severity="high" />
-          <RiskCard title="2 stale leads going cold" description="Emily Watson and David Torres — combined $3,900 potential" severity="medium" />
+          {risks.length > 0 ? risks.map((r, i) => (
+            <RiskCard key={i} title={r.title} description={r.description} severity={r.severity} />
+          )) : (
+            <SitaCard hover={false} className="p-4 text-center">
+              <CheckCircle className="h-6 w-6 text-trust-verified mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground">No active risks</p>
+            </SitaCard>
+          )}
         </div>
 
         {/* Opportunities */}
         <div className="space-y-4">
           <SitaSectionHeader title="Opportunities" />
-          <OpportunityCard title="Marcus Johnson retainer upsell" description="Strong payment history + expanding scope = ideal retainer candidate. $4,800/mo potential." action="Create Proposal" />
-          <OpportunityCard title="Rachel Kim brand project" description="High-value lead ($8,400) — discovery complete, ready for proposal. 78% confidence." action="Draft Proposal" />
-          <OpportunityCard title="Referral program launch" description="3 satisfied customers eligible for referral ask — potential 2-3 warm leads" action="Start Outreach" />
+          {opportunities.slice(0, 3).map((opp: any, i: number) => (
+            <OpportunityCard key={i} title={opp.title || opp.customer_name || "Opportunity"} description={`$${(opp.value || 0).toLocaleString()} — Stage: ${opp.stage || "Discovery"}`} action="View Details" />
+          ))}
+          {opportunities.length === 0 && (
+            <SitaCard hover={false} className="p-4 text-center">
+              <Target className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground">No active opportunities</p>
+            </SitaCard>
+          )}
         </div>
 
         {/* Proof Summary */}
         <div className="space-y-4">
           <SitaSectionHeader title="Proof & Execution Summary" />
           <div className="grid gap-3 sm:grid-cols-2">
-            <KPITile label="Actions Completed" value="12" icon={CheckCircle} sub="This week" className="text-sm" />
-            <KPITile label="Proofs Generated" value="8" icon={FileText} sub="Verified" className="text-sm" />
-            <KPITile label="Approvals Processed" value="3" icon={Target} sub="All resolved" className="text-sm" />
-            <KPITile label="Workflows Active" value="5" icon={TrendingUp} sub="On track" className="text-sm" />
+            <KPITile label="Active Leads" value={leads.length} icon={Users} sub="All sources" className="text-sm" />
+            <KPITile label="Customers" value={customers.length} icon={CheckCircle} sub="Total" className="text-sm" />
+            <KPITile label="Invoices" value={invoices.length} icon={FileText} sub="All statuses" className="text-sm" />
+            <KPITile label="Pipeline Value" value={`$${opportunities.reduce((s: number, o: any) => s + (o.value || 0), 0).toLocaleString()}`} icon={TrendingUp} sub="Total" className="text-sm" />
           </div>
-          <ProofCard title="12 actions completed this week" artifact="All proof artifacts verified — receipts available" time="Summary" trust="verified" state="verified" />
         </div>
       </div>
 
-      {/* Recommended Next Moves */}
-      <SitaCard hover={false}>
-        <SitaCardTitle sub="AI-generated action plan based on this week's data">Recommended Next Moves</SitaCardTitle>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            { text: "Call Apex Corp about Quote #1039 before expiry", confidence: "High", icon: "🔴" },
-            { text: "Send collections escalation to Green Valley LLC", confidence: "High", icon: "🟠" },
-            { text: "Schedule callback with Sarah Chen", confidence: "High", icon: "🟡" },
-            { text: "Draft retainer proposal for Marcus Johnson", confidence: "Medium", icon: "🟢" },
-            { text: "Send re-engagement email to Emily Watson", confidence: "Medium", icon: "🔵" },
-            { text: "Launch referral ask to top 3 customers", confidence: "Medium", icon: "🟣" },
-          ].map((r, i) => (
-            <div key={i} className="flex items-start gap-2 rounded-xl bg-secondary/30 p-3.5">
-              <span className="text-sm">{r.icon}</span>
-              <div>
-                <p className="text-sm text-foreground">{r.text}</p>
-                <p className="mt-0.5 text-[10px] text-muted-foreground">Confidence: {r.confidence}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </SitaCard>
-
-      {/* Carryover */}
-      <SitaCard hover={false}>
-        <SitaCardTitle>Carryover from Last Week</SitaCardTitle>
-        <div className="mt-3 space-y-2">
-          {["Follow up on David Kim payment — still unresolved", "Emily Watson re-engagement — attempted once, no response"].map((item, i) => (
-            <div key={i} className="flex items-center gap-2 rounded-lg bg-urgency-high/5 border border-urgency-high/10 p-3">
-              <AlertTriangle className="h-3.5 w-3.5 text-urgency-high shrink-0" />
-              <p className="text-sm text-foreground">{item}</p>
-            </div>
-          ))}
-        </div>
-      </SitaCard>
       <LiveAdvisorCard
         advisor="business"
         intent="executive_briefing"
         demoName="Executive Advisor"
         demoRole="Strategic Intelligence"
         demoConfidence="High"
-        demoRecommendation="This week's top priority: close the $12K Apex Corp deal before quote expiry. Revenue is up 8% but at-risk revenue ($5,400) needs immediate attention."
-        demoReasoning="Based on weekly pipeline analysis, revenue trends, and risk scoring across all business operations."
+        demoRecommendation={kpis.atRisk > 0
+          ? `Priority: address $${kpis.atRisk.toLocaleString()} in at-risk revenue from ${kpis.overdueInvoices.length} overdue invoice(s). ${kpis.newLeads > 0 ? `${kpis.newLeads} new leads need follow-up.` : ""}`
+          : `Business is healthy. ${kpis.newLeads} new leads this week, $${kpis.revenue.toLocaleString()} collected.`}
+        demoReasoning="Based on live pipeline, invoice, and lead data from your business operations."
       />
     </motion.div>
   );
