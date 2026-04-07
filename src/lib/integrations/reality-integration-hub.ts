@@ -57,10 +57,10 @@ export async function computeLaunchHonesty(): Promise<LaunchHonestyRecord[]> {
 
   const domainMap = new Map<string, LaunchHonestyRecord>();
 
-  for (const c of classifications as never[]) {
-    const d = domainMap.get(c.domain) ?? {
+  for (const c of classifications as Array<Record<string, unknown>>) {
+    const d = domainMap.get(c.domain as string) ?? {
       id: `lh-${c.domain}`,
-      domain: c.domain,
+      domain: c.domain as string,
       totalFeatures: 0,
       provenCount: 0,
       simulatedCount: 0,
