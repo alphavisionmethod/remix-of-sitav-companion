@@ -1,114 +1,110 @@
 
 
-# SITA OS — Full Wiring & Polish: User Dashboard, Finance/CRM, Settings, Admin AI/Budget & Operations
+# SITA OS — Master Document Refresh Plan
 
-## Audit Results
+## What Exists Now (to be DELETED)
 
-### What's ALREADY wired to live data (good)
-- **Money**: BillsWorkspace, SubscriptionsWaste, MoneyApprovals, CashTiming, ReceivablesObligations, MoneyBoardroom, MoneyOverview, ReservesSavings, TaxEstimator — all query Supabase or edge functions
-- **Business/CRM**: All 15 pages (LeadsInbox, CustomersPage, OpportunitiesCenter, InvoicesCollections, QuotesWorkspace, etc.) — fully wired with isDemoMode gates
-- **Revenue Office**: 7 pages wired (PipelineStudio, BookingCenter, CampaignOrchestrator, LeakDetector, RevenueGate, GrowthBoardroom, RelationshipCenter)
-- **Admin Dashboard**: Queries ai_token_usage, approval_queue, incidents, audit_logs, advisor_performance — fully live
-- **Admin AI Budget (AIG04)**: Queries via ai-gateway service functions — fully live
-- **UserProfilePage**: Queries profiles table, trust_weighted_actions — fully live with avatar upload
-- **MissionControlPage**: Uses useAdminIncidents, useFleetHealth, useTrustCenter hooks
-- **OwnerCenter**: Uses 12+ hooks from use-admin-data.ts
+17 files in `/mnt/documents/`, all outdated with stale metrics (e.g., "440 tables" when we now have 480, "611 pages" when we now have 629, missing isDemoMode wiring status):
 
-### What's STILL hardcoded (needs fixing)
+- `ARCHITECTURE_STATUS_SITA_OS.md` / `_v5.md`
+- `FINAL_ARQ_REPORT_SITA_OS_v3.md` / `_v4.md` / `_v5.md`
+- `SITA_OS_ARCHITECTURE_AUDIT.xlsx` / `_v2.xlsx`
+- `SITA_OS_Architecture_Audit_v3.docx`
+- `SITA_OS_Gap_Analysis_100.pdf`
+- `SITA_OS_MASTER_AUDIT_REPORT_v6.md` / `_v7.md`
+- `SITA_OS_Master_Audit_v2.pdf` / `Master_Report.pdf` / `Master_Report_v2.pdf`
+- `SITA_OS_Screen_Inventory.mmd` / `_Spec.md`
+- `SITA_Reality_Conversion_Architecture.mmd`
 
-| Area | Page | Static Data | Fix |
-|------|------|-------------|-----|
-| **MoneySettings** | connectors array (L16-24) | 7 hardcoded connectors | Wire to `connected_accounts` table via isDemoMode gate |
-| **OperationsCommandCenter** | ALERTS, SLOS, RUNBOOKS (L17-36) | 3 hardcoded arrays | Wire ALERTS to incidents table, keep SLOs/Runbooks as demo fallback |
-| **Digital Presence** (19 pages) | ConnectedSites, BrandStudio, SiteBuilder, etc. | All have inline arrays (PLATFORMS, AUDIT_FINDINGS, etc.) | Wire to `sites`, `brand_assets`, `seo_reports` tables via use-digital-presence hook |
-| **Concierge** (13 pages) | TravelPlanning, GroceryPlanning, SchoolActivities, etc. | All have inline arrays (trips, itinerary, etc.) | Wire to `travel_plans`, `grocery_lists`, `appointments` tables via use-concierge-data hook |
-| **Apps** (6 pages) | HealthApp, VaultApp, GalleryApp, etc. | sleepData, mockEntries, etc. | Wire to `health_logs`, `vault_items` tables via use-apps-data hook |
-| **Revenue Office** (32 remaining pages) | FormsBuilder, FunnelBuilder, OffersWorkspace, etc. | FORMS, FUNNELS, OFFERS arrays | Wire to `forms`, `funnels`, `offers` tables via use-revenue-office hook |
-| **Atlas** pages | OperationsCommandCenter, ConnectorControlCenter | connectors, alerts arrays | Wire to incidents/connected_accounts |
+## Updated Metrics (from live codebase scan)
 
-### Hooks exist but aren't imported by pages
-- `use-digital-presence.ts` — 0 pages import it
-- `use-concierge-data.ts` — 0 pages import it  
-- `use-apps-data.ts` — 0 pages import it
-- `use-admin-data.ts` — only 3 pages import it (SystemStatus, OwnerCenter, MissionControlPage)
-- `use-revenue-office.ts` — 7 of 39 pages import it
+| Metric | Old (v7) | Current |
+|--------|----------|---------|
+| Pages | 611 | **629** |
+| Routes | 674 | **704** |
+| Tables | 440 | **480** |
+| Views | — | **26** |
+| Edge Functions | 46 | **50** |
+| Migrations | ~102 | **110** |
+| Components | ~332 | **344** |
+| Hooks | ~40 | **57** |
+| Data Services | — | **16** |
+| Test Files | — | **169** |
+| E2E Specs | 36 | **41** |
+| isDemoMode-wired Pages | 0 | **412** (66%) |
+| Admin Pages (root) | — | **215** |
+| Admin Pages (subdirs) | — | **82** |
 
-## Implementation Plan
+## New Documents to Generate
 
-### Phase 1: MoneySettings Connector Wiring
-- Replace hardcoded `connectors` array with `connected_accounts` query
-- Add isDemoMode gate: show hardcoded connectors in demo, query table in live
-- Add connect/disconnect buttons that write to `connected_accounts`
+### 1. `SITA_OS_Master_Audit_v8.md` — Definitive Status Report
+Complete rewrite of the master audit with current numbers. Sections:
+- Executive Summary with updated Truth Score
+- Architecture metrics (480 tables, 704 routes, 629 pages, 50 edge functions, 26 views)
+- Data wiring status (412/629 pages wired to isDemoMode)
+- Module-by-module breakdown (Revenue Office, Digital Presence, Concierge, Apps, Money, Business, Admin)
+- Hook coverage (57 hooks, 16 data services)
+- Test coverage (169 unit tests, 41 E2E specs)
+- Security posture (RLS policies, audit logging)
+- Remaining gaps and next actions
 
-### Phase 2: Admin Operations Wiring (OperationsCommandCenter × 2)
-- Wire `admin/OperationsCommandCenter.tsx` ALERTS to `useAdminIncidents()` from use-admin-data
-- Wire `atlas/OperationsCommandCenter.tsx` alerts similarly
-- Keep SLOs and Runbooks as demo data (no tables for these yet — they're infra metrics)
+### 2. `SITA_OS_Architecture_Audit_v4.xlsx` — Spreadsheet Audit
+Multi-sheet workbook:
+- **Dashboard** — Key metrics, scores, sparklines
+- **Pages Inventory** — All 629 pages with module, wiring status, hook used
+- **Tables** — All 480 tables by domain
+- **Edge Functions** — All 50 functions with purpose
+- **Hooks & Services** — All 57 hooks + 16 data services
+- **Test Coverage** — 169 test files mapped to source
+- **Wiring Status** — 412 wired vs 217 remaining, by module
 
-### Phase 3: Revenue Office Remaining 32 Pages
-Wire each page's inline arrays behind isDemoMode gate using existing hooks from `use-revenue-office.ts`:
-- FormsBuilder → `useForms()`
-- FunnelBuilder → `useFunnels()`
-- OffersWorkspace → `useOffers()`
-- MembershipCourseOffice → `useMemberships()`
-- ReputationEngine → `useReputationReviews()`
-- RetentionOffice → `useRetentionAlerts()`
-- AutomationBuilder/Office/Policy/Health/Receipts/SimLab/Templates → `useAutomationRules()`
-- Remaining pages (CallDesk, ConversionLab, DecisionTheater, etc.) → use closest available hook or keep demo with isDemoMode badge
+### 3. `SITA_OS_Module_Status.md` — Module-by-Module Completion
+Detailed per-module status:
+- Revenue Office (40 pages, hooks, wiring %)
+- Digital Presence (19 pages)
+- Concierge (16 pages)
+- Money (13 pages)
+- Business (15 pages)
+- Apps (6 pages)
+- Admin (297 pages: 215 root + 82 subdirs across 10 categories)
+- Atlas (11 pages)
+- Mobile (9 pages)
+- Files (8 pages)
+- Owner (8 pages)
+- Mission (8 pages)
+- App Platform (16 pages)
+- Workspace (5 pages)
+- Store (6 pages)
+- Auth (4 pages)
+- Settings (2 pages)
+- Boardroom (2 pages)
 
-### Phase 4: Digital Presence 19 Pages
-Wire each to `use-digital-presence.ts` hooks:
-- ConnectedSites → `useSites()`
-- BrandStudio → `useBrandAssets()`
-- PresenceAnalytics/SiteBuilder → `useSeoReports()`
-- EcommerceOffice → `useEcommerceProducts()`
-- PromotionsOffice → `usePromotions()`
-- Remaining pages → isDemoMode gate with existing inline data as demo fallback
+### 4. `SITA_OS_Screen_Inventory_v2.md` — Updated Screen Inventory
+Full inventory of all 629 screens with current component status.
 
-### Phase 5: Concierge 13 Pages
-Wire each to `use-concierge-data.ts` hooks:
-- TravelPlanning → `useTravelPlans()`
-- GroceryPlanning → `useGroceryLists()` + `useGroceryItems()`
-- SchoolActivities → `useSchoolActivities()`
-- ServiceProviders → `useServiceProviders()`
-- EventsGifts → `useGiftTracker()`
-- AppointmentsPrep → `useAppointments()`
-- Remaining concierge pages → isDemoMode gate
+### 5. `SITA_OS_Data_Wiring_Report.md` — Live Data Integration Status
+Detailed report on the isDemoMode wiring pass:
+- Which pages use which hooks
+- Demo-only vs fully-wired breakdown
+- Hook → table mapping
+- Remaining static pages
 
-### Phase 6: Apps 6 Pages  
-Wire each to `use-apps-data.ts` hooks:
-- HealthApp → `useHealthLogs()`
-- VaultApp → `useVaultItems()`
-- Remaining apps → isDemoMode gate with demo fallback
+## Technical Approach
 
-### Phase 7: Atlas Pages
-Wire ConnectorControlCenter and other atlas pages with hardcoded arrays to use admin hooks.
+1. Delete all 17 files from `/mnt/documents/`
+2. Run Python scripts that scan the actual codebase to generate accurate data
+3. Generate the MD reports with real numbers
+4. Generate the XLSX workbook with openpyxl (formatted, multi-sheet)
+5. QA all outputs by converting to images and inspecting
 
-## Pattern for Every Page
+## Files Changed
 
-```typescript
-// Before (hardcoded):
-const ITEMS = [{ id: "1", name: "Demo" }];
-
-// After (isDemoMode gate):
-const DEMO_ITEMS = [{ id: "1", name: "Demo" }];
-
-const MyPage = () => {
-  const { isDemoMode } = useDataMode();
-  const { data: liveItems, isLoading } = useMyHook();
-  const items = isDemoMode ? DEMO_ITEMS : (liveItems ?? []);
-  
-  if (isLoading && !isDemoMode) return <SectionSkeleton cards={3} />;
-  if (!isDemoMode && items.length === 0) return <EmptyState ... />;
-  // ... render
-};
-```
-
-## Scope
-- **~75 page files updated** with live data wiring
-- **0 new files** (all hooks already exist)
-- **0 new tables** (all tables already created)
-- **0 new migrations**
-
-Implementation will proceed in phases, starting with the highest-impact fixes (MoneySettings, Operations) and working through the remaining unwired pages.
+| Action | File |
+|--------|------|
+| Delete | All 17 existing files in `/mnt/documents/` |
+| Create | `SITA_OS_Master_Audit_v8.md` |
+| Create | `SITA_OS_Architecture_Audit_v4.xlsx` |
+| Create | `SITA_OS_Module_Status.md` |
+| Create | `SITA_OS_Screen_Inventory_v2.md` |
+| Create | `SITA_OS_Data_Wiring_Report.md` |
 
