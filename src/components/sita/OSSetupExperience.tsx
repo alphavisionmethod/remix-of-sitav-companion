@@ -819,6 +819,13 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
+                {phase === "household-graph" && (
+                  <HouseholdGraphStep key="household-graph"
+                    nodes={state.householdGraph}
+                    onUpdate={nodes => setState(s => ({ ...s, householdGraph: nodes }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
                 {phase === "life-rhythm" && (
                   <LifeRhythmStep key="life-rhythm" data={state.lifeRhythm}
                     onUpdate={lr => setState(s => ({ ...s, lifeRhythm: lr }))} onNext={goNext} onPrev={goPrev} />
