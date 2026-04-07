@@ -117,9 +117,9 @@ const SubscriptionsWaste = () => {
 
   const active = subscriptions.filter(s => s.status === "active");
   const totalMonthly = active.reduce((s, sub) => s + Number(sub.amount), 0);
-  const wasteSubs = subscriptions.filter(s => s.waste_flag && s.status === "active");
+  const wasteSubs = subscriptions.filter(s => (s as any).waste_flag && s.status === "active");
   const wasteMonthly = wasteSubs.reduce((s, sub) => s + Number(sub.amount), 0);
-  const duplicates = subscriptions.filter(s => s.duplicate_of);
+  const duplicates = subscriptions.filter(s => (s as any).duplicate_of);
 
   const filtered = tab === "all" ? subscriptions
     : tab === "waste" ? wasteSubs
