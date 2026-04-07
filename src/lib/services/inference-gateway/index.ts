@@ -177,8 +177,8 @@ export class InferenceGatewayService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.providers) this.providers = new Map(state.providers as [string, unknown][]);
-    if (state.cache) this.cache = new Map(state.cache as [string, unknown][]);
+    if (state.providers) this.providers = new Map(state.providers as Iterable<[string, never]>) as typeof this.providers;
+    if (state.cache) this.cache = new Map(state.cache as Iterable<[string, never]>) as typeof this.cache;
     if (state.history) this.history = state.history as never;
   }
 

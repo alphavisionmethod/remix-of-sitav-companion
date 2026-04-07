@@ -108,7 +108,7 @@ export class OSUnificationService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.surfaces) this.surfaces = new Map(state.surfaces as [string, unknown][]);
+    if (state.surfaces) this.surfaces = new Map(state.surfaces as Iterable<[string, never]>) as typeof this.surfaces;
     if (state.unresolvedQueues) this.unresolvedQueues = state.unresolvedQueues as never;
   }
 

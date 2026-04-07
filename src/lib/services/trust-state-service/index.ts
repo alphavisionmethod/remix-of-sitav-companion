@@ -30,7 +30,7 @@ export class TrustStateService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.states) this.states = new Map(state.states as [string, unknown][]);
+    if (state.states) this.states = new Map(state.states as Iterable<[string, never]>) as typeof this.states;
   }
 
   async loadPersistedState(): Promise<void> {

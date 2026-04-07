@@ -57,10 +57,10 @@ export async function computeLaunchHonesty(): Promise<LaunchHonestyRecord[]> {
 
   const domainMap = new Map<string, LaunchHonestyRecord>();
 
-  for (const c of classifications as never[]) {
-    const d = domainMap.get(c.domain) ?? {
+  for (const c of classifications as Array<Record<string, unknown>>) {
+    const d = domainMap.get(c.domain as string) ?? {
       id: `lh-${c.domain}`,
-      domain: c.domain,
+      domain: c.domain as string,
       totalFeatures: 0,
       provenCount: 0,
       simulatedCount: 0,
@@ -74,13 +74,13 @@ export async function computeLaunchHonesty(): Promise<LaunchHonestyRecord[]> {
     d.totalFeatures++;
     if (c.classification === "proven") d.provenCount++;
     if (c.classification === "simulated") d.simulatedCount++;
-    if (c.launch_impact === "blocking" && c.classification !== "proven") d.blockers.push(c.feature_name);
-    domainMap.set(c.domain, d);
+    if (c.launch_impact === "blocking" && c.classification !== "proven") d.blockers.push(c.feature_name as string);
+    domainMap.set(c.domain as string, d);
   }
 
   // Count critical mocks remaining per domain
-  for (const m of (mockReplacements ?? []) as never[]) {
-    const domain = m.page_path?.split("/")[1] || "root";
+  for (const m of (mockReplacements ?? []) as Array<Record<string, unknown>>) {
+    const domain = (m.page_path as string)?.split("/")[1] || "root";
     const d = domainMap.get(domain);
     if (d && m.migration_priority === "critical" && m.migration_status !== "validated" && m.migration_status !== "completed") {
       d.criticalMocksRemaining++;

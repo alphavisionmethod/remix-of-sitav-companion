@@ -150,7 +150,7 @@ export class OutcomeEngineService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.outcomes) this.outcomes = new Map(state.outcomes as [string, unknown][]);
+    if (state.outcomes) this.outcomes = new Map(state.outcomes as Iterable<[string, never]>) as typeof this.outcomes;
     if (state.impacts) this.impacts = state.impacts as never;
   }
 

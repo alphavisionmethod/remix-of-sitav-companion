@@ -23,7 +23,7 @@ export class DocumentEngineService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.docs) this.docs = new Map(state.docs as [string, unknown][]);
+    if (state.docs) this.docs = new Map(state.docs as Iterable<[string, never]>) as typeof this.docs;
   }
 
   async loadPersistedState(): Promise<void> {

@@ -47,7 +47,7 @@ export class DigitalTwinsService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.twins) this.twins = new Map(state.twins as [string, unknown][]);
+    if (state.twins) this.twins = new Map(state.twins as Iterable<[string, never]>) as typeof this.twins;
   }
 
   async loadPersistedState(): Promise<void> {

@@ -59,8 +59,7 @@ export async function persistActionRecord(
   const userId = await uid();
   if (!userId) return null;
 
-  const { data, error } = await fromDynamicTable("os_action_lineage")
-    .insert({
+  const payload: Record<string, unknown> = {
       id: record.id,
       user_id: userId,
       workflow_id: record.workflowId,
@@ -77,7 +76,10 @@ export async function persistActionRecord(
       confidence_score: record.confidenceScore,
       proof_ids: record.proofIds,
       initiating_surface: opts?.initiatingSurface ?? null,
-    })
+  };
+
+  const { data, error } = await fromDynamicTable("os_action_lineage")
+    .insert(payload)
     .select("id")
     .single();
 
@@ -106,7 +108,7 @@ export async function persistActionTransition(
 
   if (!current) return false;
 
-  const history = [...(current.state_history ?? []), transition];
+  const history = [...((current.state_history as unknown[]) ?? []), transition];
 
   const updatePayload: Record<string, unknown> = {
     current_state: newState,
@@ -119,7 +121,7 @@ export async function persistActionTransition(
   if (opts?.stuckSince !== undefined) updatePayload.stuck_since = opts.stuckSince;
 
   const { error } = await fromDynamicTable("os_action_lineage")
-    .update(updatePayload)
+    .update(updatePayload as never)
     .eq("id", actionId);
 
   if (error) { console.error("[action-persistence] transition update failed:", error); return false; }
@@ -228,7 +230,7 @@ export async function fetchActionLineage(filters?: {
 
   const { data, error } = await query;
   if (error) { console.error("[action-persistence] fetch failed:", error); return []; }
-  return data ?? [];
+  return (data ?? []) as unknown as PersistedActionLineage[];
 }
 
 // ── Get full action explanation ──────────────────────────────────
@@ -259,7 +261,7 @@ export async function getActionExplanation(actionId: string): Promise<{
       : Promise.resolve([]),
   ]);
 
-  return { action, events, policies, receipts };
+  return { action: action as unknown as PersistedActionLineage, events, policies, receipts };
 }
 
 // ── Detect stuck actions ────────────────────────────────────────

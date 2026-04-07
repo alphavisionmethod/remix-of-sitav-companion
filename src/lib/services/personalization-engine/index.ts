@@ -275,8 +275,8 @@ export class PersonalizationEngineService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.explicit) this.explicit = new Map(state.explicit as [string, unknown][]);
-    if (state.inferred) this.inferred = new Map(state.inferred as [string, unknown][]);
+    if (state.explicit) this.explicit = new Map(state.explicit as Iterable<[string, never]>) as typeof this.explicit;
+    if (state.inferred) this.inferred = new Map(state.inferred as Iterable<[string, never]>) as typeof this.inferred;
   }
 
   async loadPersistedState(): Promise<void> {

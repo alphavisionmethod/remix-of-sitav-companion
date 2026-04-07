@@ -185,7 +185,7 @@ export class TrustGovernorService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.profiles) this.profiles = new Map(state.profiles as [string, unknown][]);
+    if (state.profiles) this.profiles = new Map(state.profiles as Iterable<[string, never]>) as typeof this.profiles;
     if (state.events) this.events = state.events as never;
   }
 

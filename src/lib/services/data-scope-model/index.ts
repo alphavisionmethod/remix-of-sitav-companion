@@ -136,7 +136,7 @@ export class DataScopeModelService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.scopes) this.scopes = new Map(state.scopes as [string, unknown][]);
+    if (state.scopes) this.scopes = new Map(state.scopes as Iterable<[string, never]>) as typeof this.scopes;
   }
 
   async loadPersistedState(): Promise<void> {

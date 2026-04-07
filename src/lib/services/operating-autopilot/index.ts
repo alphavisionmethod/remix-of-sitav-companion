@@ -22,7 +22,7 @@ export class OperatingAutopilotService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.rules) this.rules = new Map(state.rules as [string, unknown][]);
+    if (state.rules) this.rules = new Map(state.rules as Iterable<[string, never]>) as typeof this.rules;
   }
 
   async loadPersistedState(): Promise<void> {

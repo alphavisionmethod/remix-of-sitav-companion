@@ -32,11 +32,9 @@ export async function persistEngineState(
   const userId = await getUserId();
   if (!userId) return false;
 
+  const row: Record<string, unknown> = { user_id: userId, engine_name: engineName, state_data: stateData };
   const { error } = await fromDynamicTable("engine_state")
-    .upsert(
-      { user_id: userId, engine_name: engineName, state_data: stateData },
-      { onConflict: "user_id,engine_name" }
-    );
+    .upsert(row as never, { onConflict: "user_id,engine_name" });
 
   if (error) {
     console.error(`[persistence] engine_state upsert failed for ${engineName}:`, error);
@@ -80,7 +78,7 @@ export async function loadEngineState<T = Record<string, unknown>>(
     console.error(`[persistence] engine_state load failed for ${engineName}:`, error);
     return null;
   }
-  return data?.state_data ?? null;
+  return (data?.state_data ?? null) as T | null;
 }
 
 // ── Load all engine states for current user ─────────────────────
@@ -101,7 +99,7 @@ export async function loadAllEngineStates(): Promise<
 
   const result: Record<string, Record<string, unknown>> = {};
   for (const row of data ?? []) {
-    result[row.engine_name] = row.state_data;
+    result[row.engine_name] = row.state_data as Record<string, unknown>;
   }
   return result;
 }
@@ -115,13 +113,13 @@ export async function appendEngineEvent(
   const userId = await getUserId();
   if (!userId) return false;
 
-  const { error } = await fromDynamicTable("engine_events")
-    .insert({
+  const row: Record<string, unknown> = {
       user_id: userId,
       engine_name: engineName,
       event_type: eventType,
       event_data: eventData,
-    });
+  };
+  const { error } = await fromDynamicTable("engine_events").insert(row as never);
 
   if (error) {
     console.error(`[persistence] engine_event insert failed for ${engineName}:`, error);

@@ -177,9 +177,9 @@ export class FamilyConstitutionEngine {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.values) this.values = new Map(state.values as [string, unknown][]);
-    if (state.articles) this.articles = new Map(state.articles as [string, unknown][]);
-    if (state.amendments) this.amendments = new Map(state.amendments as [string, unknown][]);
+    if (state.values) this.values = new Map(state.values as Iterable<[string, never]>) as typeof this.values;
+    if (state.articles) this.articles = new Map(state.articles as Iterable<[string, never]>) as typeof this.articles;
+    if (state.amendments) this.amendments = new Map(state.amendments as Iterable<[string, never]>) as typeof this.amendments;
   }
 
   async loadPersistedState(): Promise<void> {

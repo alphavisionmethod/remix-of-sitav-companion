@@ -328,7 +328,7 @@ export class InvestmentOfficeRuntimeService {
 
   hydrateState(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.connectors) this.connectors = new Map(state.connectors as [string, unknown][]);
+    if (state.connectors) this.connectors = new Map(state.connectors as Iterable<[string, never]>) as typeof this.connectors;
   }
 
   async loadPersistedState(): Promise<void> {

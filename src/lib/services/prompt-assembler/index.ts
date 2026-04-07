@@ -27,7 +27,7 @@ export class PromptAssemblerService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.templates) this.templates = new Map(state.templates as [string, unknown][]);
+    if (state.templates) this.templates = new Map(state.templates as Iterable<[string, never]>) as typeof this.templates;
   }
 
   async loadPersistedState(): Promise<void> {

@@ -48,7 +48,7 @@ export class APIGatewayService {
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
     if (state.routes) this.routes = state.routes as never;
-    if (state.rateLimits) this.rateLimits = new Map(state.rateLimits as [string, unknown][]);
+    if (state.rateLimits) this.rateLimits = new Map(state.rateLimits as Iterable<[string, never]>) as typeof this.rateLimits;
   }
 
   async loadPersistedState(): Promise<void> {

@@ -23,7 +23,7 @@ export class MnemosyneService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.memories) this.memories = new Map(state.memories as [string, unknown][]);
+    if (state.memories) this.memories = new Map(state.memories as Iterable<[string, never]>) as typeof this.memories;
   }
 
   async loadPersistedState(): Promise<void> {

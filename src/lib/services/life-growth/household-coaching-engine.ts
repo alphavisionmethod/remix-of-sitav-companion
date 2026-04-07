@@ -181,7 +181,7 @@ export class HouseholdCoachingEngine {
 
   hydrateState(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.pairs) this.pairs = new Map(state.pairs as [string, unknown][]);
+    if (state.pairs) this.pairs = new Map(state.pairs as Iterable<[string, never]>) as typeof this.pairs;
   }
 
   async loadPersistedState(): Promise<void> {

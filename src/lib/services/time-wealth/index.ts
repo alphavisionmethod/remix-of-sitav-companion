@@ -165,7 +165,7 @@ export class TimeWealthEngine {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.activities) this.activities = new Map(state.activities as [string, unknown][]);
+    if (state.activities) this.activities = new Map(state.activities as Iterable<[string, never]>) as typeof this.activities;
     if (state.debts) this.debts = state.debts as never;
   }
 

@@ -177,9 +177,9 @@ export class RealtimeGatewayService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.channels) this.channels = new Map(state.channels as [string, unknown][]);
-    if (state.presence) this.presence = new Map(state.presence as [string, unknown][]);
-    if (state.subscriptions) this.subscriptions = new Map(state.subscriptions as [string, unknown][]);
+    if (state.channels) this.channels = new Map(state.channels as Iterable<[string, never]>) as typeof this.channels;
+    if (state.presence) this.presence = new Map(state.presence as Iterable<[string, never]>) as typeof this.presence;
+    if (state.subscriptions) this.subscriptions = new Map(state.subscriptions as Iterable<[string, never]>) as typeof this.subscriptions;
     if (state.eventLog) this.eventLog = state.eventLog as never;
   }
 

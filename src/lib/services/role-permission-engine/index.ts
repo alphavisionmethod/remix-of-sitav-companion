@@ -25,8 +25,8 @@ export class RolePermissionEngineService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.roles) this.roles = new Map(state.roles as [string, unknown][]);
-    if (state.userRoles) this.userRoles = new Map(state.userRoles as [string, unknown][]);
+    if (state.roles) this.roles = new Map(state.roles as Iterable<[string, never]>) as typeof this.roles;
+    if (state.userRoles) this.userRoles = new Map(state.userRoles as Iterable<[string, never]>) as typeof this.userRoles;
   }
 
   async loadPersistedState(): Promise<void> {
