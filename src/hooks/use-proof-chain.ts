@@ -30,8 +30,7 @@ export function useProofChain(correlationId: string | null) {
     enabled: !!user && !!correlationId,
     queryFn: async () => {
       if (!user || !correlationId) return [];
-      const { data, error } = await db
-        .from("proof_records")
+      const { data, error } = await fromTable("proof_records")
         .select("id, action_summary, category, domain, verification, result, correlation_id, parent_proof_id, created_at, hash, artifact")
         .eq("correlation_id", correlationId)
         .order("created_at", { ascending: true });
@@ -47,8 +46,7 @@ export function useProofBundle() {
   return useMutation({
     mutationFn: async (correlationId: string) => {
       if (!user) throw new Error("Not authenticated");
-      const { data, error } = await db
-        .from("proof_records")
+      const { data, error } = await fromTable("proof_records")
         .select("*")
         .eq("correlation_id", correlationId)
         .order("created_at", { ascending: true });

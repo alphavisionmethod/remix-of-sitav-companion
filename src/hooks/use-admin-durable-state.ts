@@ -179,8 +179,7 @@ export function useConnectorSyncHistory(connectorId?: string) {
     queryKey: ["connector-sync-history", connectorId, user?.id],
     enabled: !!user && !!connectorId,
     queryFn: async () => {
-      const { data, error } = await db
-        .from("connector_sync_history")
+      const { data, error } = await fromTable("connector_sync_history")
         .select("*")
         .eq("connector_id", connectorId)
         .order("created_at", { ascending: false })
@@ -223,8 +222,7 @@ export function useOperatorActions(limit = 50) {
     queryKey: ["operator-actions", user?.id, limit],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db
-        .from("operator_actions")
+      const { data, error } = await fromTable("operator_actions")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(limit);

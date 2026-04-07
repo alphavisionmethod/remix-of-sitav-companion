@@ -9,8 +9,7 @@ export function useHouseholds() {
     queryKey: ["households", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db
-        .from("households")
+      const { data, error } = await fromTable("households")
         .select("*")
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -24,8 +23,7 @@ export function useHouseholdMembers(householdId: string | null) {
     queryKey: ["household_members", householdId],
     enabled: !!householdId,
     queryFn: async () => {
-      const { data, error } = await db
-        .from("household_members")
+      const { data, error } = await fromTable("household_members")
         .select("*")
         .eq("household_id", householdId!)
         .order("created_at");
@@ -40,8 +38,7 @@ export function useHouseholdSharedItems(householdId: string | null) {
     queryKey: ["household_shared_items", householdId],
     enabled: !!householdId,
     queryFn: async () => {
-      const { data, error } = await db
-        .from("household_shared_items")
+      const { data, error } = await fromTable("household_shared_items")
         .select("*")
         .eq("household_id", householdId!)
         .order("created_at", { ascending: false });

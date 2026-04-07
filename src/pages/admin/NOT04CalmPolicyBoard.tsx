@@ -26,8 +26,7 @@ export default function NOT04CalmPolicyBoard() {
   const { data: deliveryReceipts = [] } = useQuery({
     queryKey: ["not04-suppressed"],
     queryFn: async () => {
-      const { data } = await db
-        .from("notification_delivery_receipts")
+      const { data } = await fromTable("notification_delivery_receipts")
         .select("*")
         .in("status", ["suppressed", "deferred", "quiet_hours"])
         .order("created_at", { ascending: false })
