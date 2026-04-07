@@ -583,9 +583,9 @@ export function useServiceMap() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["service-map", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<ServiceMapData> => {
       if (isDemoMode) return mockServiceMap;
-      return callAdminAPI("service-map");
+      return callAdminAPI<ServiceMapData>("service-map");
     },
     staleTime: isDemoMode ? Infinity : 60000,
   });
