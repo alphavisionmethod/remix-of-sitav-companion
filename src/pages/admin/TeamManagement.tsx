@@ -186,7 +186,7 @@ export default function TeamManagement() {
   const agents = advisors.map(a => {
     const perf = perfMap.get(a.advisor_type) || perfMap.get(a.id);
     const tokens = tokenMap.get(a.advisor_type) || tokenMap.get(a.id) || { tokens: 0, cost: 0 };
-    const perfRec = perf as any;
+    const perfRec = perf as Record<string, unknown> | undefined;
     const status: AgentStatus = !a.active ? "paused" : (perfRec && Number(perfRec.avg_satisfaction) < 70) ? "degraded" : (tokens.tokens > 0 ? "active" : "idle");
     return {
       id: a.id,

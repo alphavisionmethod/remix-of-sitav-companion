@@ -37,8 +37,6 @@ const MoneyOverview = () => {
   // Wire to cashflow-calculate edge function
   const { data: cfAnalysis } = useCashflowAnalysis();
   const { data: burnRateData } = useBurnRate();
-  const cf = cfAnalysis as any;
-  const br = burnRateData as any;
 
   const hasLiveData = isDemoMode || bills.length > 0 || subscriptions.length > 0 || invoices.length > 0 || accounts.length > 0;
 
@@ -85,10 +83,10 @@ const MoneyOverview = () => {
   // Overlay edge function data when available
   const k = {
     ...kBase,
-    totalBalance: cf?.total_liquid_cents ? Math.round(cf.total_liquid_cents / 100) : kBase.totalBalance,
-    receivables: cf?.total_receivable_cents ? Math.round(cf.total_receivable_cents / 100) : kBase.receivables,
-    monthlyBurn: br?.monthly_burn_cents ? Math.round(br.monthly_burn_cents / 100) : kBase.monthlyBurn,
-    safeToSpend: cf?.net_position_cents ? Math.round(cf.net_position_cents / 100) : kBase.safeToSpend,
+    totalBalance: cfAnalysis?.total_liquid_cents ? Math.round(cfAnalysis.total_liquid_cents / 100) : kBase.totalBalance,
+    receivables: cfAnalysis?.total_receivable_cents ? Math.round(cfAnalysis.total_receivable_cents / 100) : kBase.receivables,
+    monthlyBurn: burnRateData?.monthly_burn_cents ? Math.round(burnRateData.monthly_burn_cents / 100) : kBase.monthlyBurn,
+    safeToSpend: cfAnalysis?.net_position_cents ? Math.round(cfAnalysis.net_position_cents / 100) : kBase.safeToSpend,
   };
 
   if (!hasLiveData) {

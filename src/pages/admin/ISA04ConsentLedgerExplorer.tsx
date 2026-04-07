@@ -8,6 +8,7 @@ import { ScrollText, Shield, Plug, ArrowUpCircle, XCircle, CheckCircle } from "l
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { getRelation, parseProviderFamilyRef, parseProviderCapabilityRef } from "@/lib/types/relation-parsers";
 
 const typeColors: Record<string, string> = {
   identity_link: "bg-blue-500/20 text-blue-400",
@@ -169,8 +170,8 @@ export default function ISA04ConsentLedgerExplorer() {
                             {c.consent_type === "identity_link" ? <><Shield className="h-3 w-3 mr-1" />Identity</> : <><Plug className="h-3 w-3 mr-1" />Connector</>}
                           </Badge>
                         </TableCell>
-                        <TableCell>{((c as any).provider_families as any)?.name || "—"}</TableCell>
-                        <TableCell>{((c as any).provider_capabilities as any)?.display_name || "—"}</TableCell>
+                        <TableCell>{getRelation(c, "provider_families", parseProviderFamilyRef).name || "—"}</TableCell>
+                        <TableCell>{getRelation(c, "provider_capabilities", parseProviderCapabilityRef).display_name || "—"}</TableCell>
                         <TableCell>
                           <div className="flex flex-wrap gap-1">
                             {(c.scopes_granted || []).slice(0, 3).map((s: string) => <Badge key={s} variant="outline" className="text-xs">{s}</Badge>)}

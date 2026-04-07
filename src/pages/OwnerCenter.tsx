@@ -340,7 +340,7 @@ const OwnerCenter = () => {
         <KPITile label="Open Incidents" value={openIncidents} icon={AlertTriangle} sub={openIncidents > 0 ? `${incidents.filter((i: any) => i.severity === "SEV-1").length} critical` : "All clear"} />
         <KPITile label="Fleet Devices" value={`${fltD?.kpis?.online || 0}/${fltD?.kpis?.total || 0}`} sub="Online" icon={Server} />
         <KPITile label="Active Policies" value={polD?.summary?.active || 0} icon={Shield} />
-        <KPITile label="Anomalies" value={(intelligenceData as any)?.anomalies?.total_anomalies || 0} icon={Zap} sub={`${(intelligenceData as any)?.anomalies?.severity_summary?.critical || 0} critical`} />
+        <KPITile label="Anomalies" value={intelligenceData?.anomalies?.total_anomalies || 0} icon={Zap} sub={`${intelligenceData?.anomalies?.severity_summary?.critical || 0} critical`} />
       </div>
 
       {/* Tabs */}
@@ -2390,7 +2390,7 @@ const OwnerCenter = () => {
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold text-foreground">Result:</span>
                   {(() => {
-                    const r = simResult?.simulation || (simulatePolicy.data as any)?.simulation;
+                    const r = simResult?.simulation || (simulatePolicy.data && typeof simulatePolicy.data === "object" && "simulation" in simulatePolicy.data ? (simulatePolicy.data as Record<string, unknown>).simulation : undefined) as Record<string, unknown> | undefined;
                     if (!r) return null;
                     return (
                       <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${r.final_effect === "allow" ? "bg-trust-safe/10 text-trust-safe" : r.final_effect === "deny" ? "bg-destructive/10 text-destructive" : "bg-accent/10 text-accent"}`}>
@@ -2400,7 +2400,7 @@ const OwnerCenter = () => {
                   })()}
                 </div>
                 {(() => {
-                  const r = simResult?.simulation || (simulatePolicy.data as any)?.simulation;
+                  const r = simResult?.simulation || (simulatePolicy.data && typeof simulatePolicy.data === "object" && "simulation" in simulatePolicy.data ? (simulatePolicy.data as Record<string, unknown>).simulation : undefined) as Record<string, unknown> | undefined;
                   if (!r) return null;
                   return (
                     <div className="space-y-2">

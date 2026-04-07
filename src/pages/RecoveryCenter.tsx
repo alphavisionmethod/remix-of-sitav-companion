@@ -1,3 +1,4 @@
+import { getString } from "@/lib/types/guards";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
@@ -154,16 +155,16 @@ const RecoveryCenter = () => {
             {selected ? (
               <>
                 <SitaCard hover={false} glow className="p-5">
-                  <SitaCardTitle sub={String((selected as any).severity || (selected as any).status || "")}>
-                    {String((selected as any).title || (selected as any).workflows?.name || "Details")}
+                  <SitaCardTitle sub={String(getString(selected, "severity") || getString(selected, "status") || "")}>
+                    {String(getString(selected, "title") || getString(selected, "workflows") || "Details")}
                   </SitaCardTitle>
                   <div className="mt-4 space-y-3">
-                    {(selected as any).description && (
-                      <p className="text-xs text-muted-foreground">{String((selected as any).description)}</p>
+                    {getString(selected, "description") && (
+                      <p className="text-xs text-muted-foreground">{String(getString(selected, "description"))}</p>
                     )}
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><span className="text-foreground">{String((selected as any).status)}</span></div>
-                    {(selected as any).affected_service && (
-                      <div className="flex justify-between text-sm"><span className="text-muted-foreground">Affected</span><span className="text-foreground">{String((selected as any).affected_service)}</span></div>
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><span className="text-foreground">{String(getString(selected, "status"))}</span></div>
+                    {getString(selected, "affected_service") && (
+                      <div className="flex justify-between text-sm"><span className="text-muted-foreground">Affected</span><span className="text-foreground">{String(getString(selected, "affected_service"))}</span></div>
                     )}
                   </div>
                 </SitaCard>

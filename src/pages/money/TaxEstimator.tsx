@@ -14,8 +14,8 @@ const TaxEstimator = () => {
   const { data: taxData, isLoading: taxLoading, error: taxError } = useTaxEstimate(period);
   const { data: deductions, isLoading: dedLoading } = useTaxDeductions();
 
-  const t = taxData as any;
-  const d = deductions as any;
+  const t = taxData;
+  const d = deductions;
 
   const fmt = (cents: number) => `$${(cents / 100).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
   const fmtPct = (v: number) => `${v.toFixed(1)}%`;
@@ -39,7 +39,7 @@ const TaxEstimator = () => {
         { category: "Home Office", amount_cents: 3200_00, type: "itemized" },
         { category: "Health Insurance", amount_cents: 4800_00, type: "itemized" },
       ]
-    : (d?.deductions ?? []);
+    : (d?.deductions ?? d?.items ?? []);
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>

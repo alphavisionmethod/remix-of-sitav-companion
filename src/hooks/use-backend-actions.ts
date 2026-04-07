@@ -95,21 +95,37 @@ export function useCashflowForecast(horizonDays = 90) {
   });
 }
 
+export interface SafeToSpendResult {
+  safe_to_spend_cents: number;
+  liquid_balance_cents: number;
+  reserved_cents: number;
+  upcoming_bills_cents: number;
+  calculation: string;
+}
+
 export function useSafeToSpend(reserveTargetCents = 0) {
   const { user } = useAuth();
-  return useQuery({
+  return useQuery<SafeToSpendResult>({
     queryKey: ["safe-to-spend", user?.id, reserveTargetCents],
-    queryFn: () => invokeEdge("cashflow-calculate", { action: "safe-to-spend", reserve_target_cents: reserveTargetCents }),
+    queryFn: () => invokeEdge<SafeToSpendResult>("cashflow-calculate", { action: "safe-to-spend", reserve_target_cents: reserveTargetCents }),
     enabled: !!user,
     staleTime: 30000,
   });
 }
 
+export interface BurnRateResult {
+  monthly_burn_cents: number;
+  runway_months: number;
+  avg_daily_spend_cents: number;
+  trend: string;
+  calculation: string;
+}
+
 export function useBurnRate() {
   const { user } = useAuth();
-  return useQuery({
+  return useQuery<BurnRateResult>({
     queryKey: ["burn-rate", user?.id],
-    queryFn: () => invokeEdge("cashflow-calculate", { action: "burn-rate" }),
+    queryFn: () => invokeEdge<BurnRateResult>("cashflow-calculate", { action: "burn-rate" }),
     enabled: !!user,
     staleTime: 60000,
   });
@@ -142,11 +158,34 @@ export function useInvoiceSend() {
 
 // ── Tax Estimate ────────────────────────────────────────────────
 
+export interface TaxEstimateResult {
+  federal_tax_cents: number;
+  se_tax_cents: number;
+  total_tax_cents: number;
+  effective_rate: number;
+  marginal_rate?: number;
+  quarterly_payment_cents: number;
+  quarterly_estimates?: number[];
+  gross_income_cents?: number;
+  next_deadline: string;
+  period: string;
+  calculation: string;
+  [key: string]: unknown; // allow additional fields from edge function
+}
+
+export interface TaxDeductionsResult {
+  total_deductions_cents: number;
+  items: Array<{ category: string; amount_cents: number; description?: string; type?: string }>;
+  deductions?: Array<{ category: string; amount_cents: number; type?: string }>;
+  calculation: string;
+  [key: string]: unknown;
+}
+
 export function useTaxEstimate(period: "quarterly" | "annual" = "quarterly") {
   const { user } = useAuth();
-  return useQuery({
+  return useQuery<TaxEstimateResult>({
     queryKey: ["tax-estimate", user?.id, period],
-    queryFn: () => invokeEdge("tax-estimate", { action: "estimate", period }),
+    queryFn: () => invokeEdge<TaxEstimateResult>("tax-estimate", { action: "estimate", period }),
     enabled: !!user,
     staleTime: 120000,
     retry: 1,
@@ -155,9 +194,9 @@ export function useTaxEstimate(period: "quarterly" | "annual" = "quarterly") {
 
 export function useTaxDeductions() {
   const { user } = useAuth();
-  return useQuery({
+  return useQuery<TaxDeductionsResult>({
     queryKey: ["tax-deductions", user?.id],
-    queryFn: () => invokeEdge("tax-estimate", { action: "deductions" }),
+    queryFn: () => invokeEdge<TaxDeductionsResult>("tax-estimate", { action: "deductions" }),
     enabled: !!user,
     staleTime: 120000,
   });

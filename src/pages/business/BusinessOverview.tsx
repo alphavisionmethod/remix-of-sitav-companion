@@ -60,7 +60,9 @@ const BusinessLeakagePanel = () => {
       <DemoModeBadge />
       <SitaSectionHeader title="Revenue Leakage Signals" subtitle="From Revenue Intelligence Engine" action={<button onClick={() => navigate("/recovered-value")} className="text-xs text-primary hover:underline">Full ledger →</button>} />
       {leakageData.rankings.map(r => {
-        const autoDecision = engines.revenue.shouldAutoRecover(Array.from((engines.revenue as any).signals?.values?.() || []).find((s: any) => s.id === r.opportunityId) as any);
+        const signalMap = "signals" in engines.revenue ? (engines.revenue as unknown as { signals: Map<string, unknown> }).signals : new Map<string, unknown>();
+        const matchedSignal = Array.from(signalMap.values()).find((s: unknown) => typeof s === "object" && s !== null && "id" in s && (s as Record<string, unknown>).id === r.opportunityId);
+        const autoDecision = engines.revenue.shouldAutoRecover(matchedSignal as Parameters<typeof engines.revenue.shouldAutoRecover>[0]);
         return (
           <SitaCard key={r.opportunityId} lane="action" className="p-3">
             <div className="flex items-center gap-3">
@@ -86,7 +88,7 @@ const BusinessOverview = () => {
   const navigate = useNavigate();
   const { isDemoMode } = useDataMode();
   const crmSync = useCRMSync();
-  const crmHealth = crmSync.healthCheck.data as any;
+  const crmHealth = crmSync.healthCheck.data as Record<string, unknown> | undefined;
   const { data: leads = [], isLoading: leadsLoading } = useLeads();
   const { data: customers = [], isLoading: custLoading } = useCustomers();
   const { data: invoices = [], isLoading: invLoading } = useInvoices();
@@ -133,7 +135,7 @@ const BusinessOverview = () => {
           <div className="flex items-center gap-3">
             {crmHealth && (
               <span className="text-[10px] text-muted-foreground">
-                CRM: {crmHealth.leads?.count ?? 0} leads · {crmHealth.customers?.count ?? 0} customers · {crmHealth.opportunities?.count ?? 0} opps
+                CRM: {String((crmHealth as Record<string, Record<string, unknown>>)?.leads?.count ?? 0)} leads · {String((crmHealth as Record<string, Record<string, unknown>>)?.customers?.count ?? 0)} customers · {String((crmHealth as Record<string, Record<string, unknown>>)?.opportunities?.count ?? 0)} opps
               </span>
             )}
             <SitaButton variant="primary" onClick={() => navigate("/business/leads")}><UserPlus className="h-4 w-4" /> New Lead</SitaButton>

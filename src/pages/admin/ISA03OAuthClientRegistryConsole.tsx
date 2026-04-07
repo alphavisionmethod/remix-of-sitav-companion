@@ -8,6 +8,7 @@ import { Key, CheckCircle, XCircle, Filter, Shield, Plug } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { getRelation, parseProviderFamilyRef } from "@/lib/types/relation-parsers";
 
 const purposeLabels: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
   identity_web: { label: "Identity Web", color: "bg-blue-500/20 text-blue-400", icon: <Shield className="h-3 w-3" /> },
@@ -45,7 +46,7 @@ export default function ISA03OAuthClientRegistryConsole() {
 
   // Check for violations: same client used for both identity and connector
   const familyClientPurposes = clients.reduce((acc: Record<string, Set<string>>, c: any) => {
-    const fam = ((c as any).provider_families as any)?.provider_key || "unknown";
+    const fam = getRelation(c, "provider_families", parseProviderFamilyRef).provider_key || "unknown";
     if (!acc[fam]) acc[fam] = new Set();
     acc[fam].add(c.client_purpose?.startsWith("identity") ? "identity" : "connector");
     return acc;
@@ -135,7 +136,7 @@ export default function ISA03OAuthClientRegistryConsole() {
                     return (
                       <TableRow key={c.id}>
                         <TableCell className="font-medium">{c.client_name}</TableCell>
-                        <TableCell>{((c as any).provider_families as any)?.name || "—"}</TableCell>
+                        <TableCell>{getRelation(c, "provider_families", parseProviderFamilyRef).name || "—"}</TableCell>
                         <TableCell>
                           <Badge className={`${purpose.color} flex items-center gap-1 w-fit`}>
                             {purpose.icon} {purpose.label}

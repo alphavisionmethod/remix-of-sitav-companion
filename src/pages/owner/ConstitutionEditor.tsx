@@ -329,7 +329,7 @@ export default function ConstitutionEditor() {
               priority: (added.compiledPolicy?.parameters?.priority ?? 50) as number,
               enforcement_mode: added.enforcementMode,
               is_active: true,
-              compiled_json: added.compiledPolicy as any,
+              compiled_json: (added.compiledPolicy ?? null) as unknown as import("@/integrations/supabase/types").Json,
             }]);
           }
         }
@@ -366,7 +366,7 @@ export default function ConstitutionEditor() {
           priority: (added.compiledPolicy?.parameters?.priority ?? 50) as number,
           enforcement_mode: added.enforcementMode,
           is_active: true,
-          compiled_json: added.compiledPolicy as any,
+          compiled_json: (added.compiledPolicy ?? null) as unknown as import("@/integrations/supabase/types").Json,
         }]);
       }
     }

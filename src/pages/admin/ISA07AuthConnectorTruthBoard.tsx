@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ShieldAlert, CheckCircle, XCircle, AlertTriangle, Shield, Plug, Eye, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { getRelation, parseProviderFamilyRef } from "@/lib/types/relation-parsers";
 
 const severityColors: Record<string, string> = {
   info: "bg-blue-500/20 text-blue-400",
@@ -77,7 +78,7 @@ export default function ISA07AuthConnectorTruthBoard() {
 
   // Check 1: Any family with both identity and connector using SAME OAuth client?
   const clientsByFamily = oauthClients.reduce((acc: Record<string, any[]>, c: any) => {
-    const fk = ((c as any).provider_families as any)?.provider_key || "unknown";
+    const fk = getRelation(c, "provider_families", parseProviderFamilyRef).provider_key || "unknown";
     if (!acc[fk]) acc[fk] = [];
     acc[fk].push(c);
     return acc;
@@ -108,8 +109,8 @@ export default function ISA07AuthConnectorTruthBoard() {
   });
 
   // Check 2: Identity link implies connector access? (should NOT)
-  const identityFamilies = new Set(identityLinks.map((l: any) => ((l as any).provider_families as any)?.provider_key));
-  const connectorFamilies = new Set(connectorLinks.map((l: any) => ((l as any).provider_families as any)?.provider_key));
+  const identityFamilies = new Set(identityLinks.map((l: any) => getRelation(l, "provider_families", parseProviderFamilyRef).provider_key));
+  const connectorFamilies = new Set(connectorLinks.map((l: any) => getRelation(l, "provider_families", parseProviderFamilyRef).provider_key));
   identityFamilies.forEach((fam: any) => {
     if (fam && connectorFamilies.has(fam)) {
       findings.push({
