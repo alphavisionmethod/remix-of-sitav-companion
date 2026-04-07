@@ -184,7 +184,7 @@ export function useJourneyStats() {
 
   const total = journeys?.length ?? 0;
   const statuses = (journeys ?? []).reduce<Record<string, number>>((acc, j) => {
-    const s = (j as Record<string, unknown>).current_status || "unverified";
+    const s = String((j as Record<string, unknown>).current_status || "unverified");
     acc[s] = (acc[s] || 0) + 1;
     return acc;
   }, {});

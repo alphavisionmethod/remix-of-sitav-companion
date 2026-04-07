@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface CostRecord {
   model: string;
@@ -34,7 +34,7 @@ export async function recordAICost(record: CostRecord): Promise<boolean> {
   const userId = await uid();
   if (!userId) return false;
 
-  const { error } = await fromTable("ai_cost_ledger").insert({
+  const { error } = await fromDynamicTable("ai_cost_ledger").insert({
     user_id: userId,
     model: record.model,
     provider: record.provider,
@@ -54,7 +54,7 @@ export async function getCostSummary(sinceDays = 30): Promise<CostSummary> {
   if (!userId) return { totalCostCents: 0, totalInputTokens: 0, totalOutputTokens: 0, byModel: {}, byPurpose: {}, recordCount: 0 };
 
   const since = new Date(Date.now() - sinceDays * 86400000).toISOString();
-  const { data, error } = await fromTable("ai_cost_ledger")
+  const { data, error } = await fromDynamicTable("ai_cost_ledger")
     .select("*")
     .eq("user_id", userId)
     .gte("created_at", since)
@@ -83,7 +83,7 @@ export async function checkBudget(estimatedCostCents: number): Promise<{ allowed
   const userId = await uid();
   if (!userId) return { allowed: false, reason: "not_authenticated" };
 
-  const { data } = await (supabase as Record<string, unknown>).rpc("update_ai_budget_usage", {
+  const { data } = await (supabase as unknown as Record<string, unknown>).rpc("update_ai_budget_usage", {
     p_user_id: userId,
     p_tokens: 0,
     p_cost: estimatedCostCents,

@@ -6,22 +6,6 @@
 import { useState, useEffect, useCallback } from "react";
 import type { SystemInfo, DeepLinkPayload, UpdateStatus } from "@/packages/contracts/native/electron-ipc";
 
-interface ElectronBridge {
-  getSystemInfo?: () => Promise<SystemInfo>;
-  onDeepLink?: (cb: (payload: DeepLinkPayload) => void) => (() => void) | undefined;
-  onUpdateStatus?: (cb: (status: UpdateState) => void) => (() => void) | undefined;
-  sendNotification?: (title: string, body: string) => void;
-  checkForUpdates?: () => Promise<UpdateStatus>;
-  downloadUpdate?: () => Promise<{ success: boolean; reason?: string }>;
-  installUpdate?: () => void;
-  windowControl?: (action: string) => void;
-  getCrashReports?: () => Promise<unknown[]>;
-  clearCrashReports?: () => Promise<void>;
-  reportRendererError?: (error: { message: string; stack?: string; url?: string }) => void;
-  getAppVersion?: () => Promise<string>;
-  platform?: string;
-}
-
 interface UpdateState {
   checking: boolean;
   available: boolean;
@@ -32,14 +16,14 @@ interface UpdateState {
   currentVersion: string;
 }
 
-declare global {
-  interface Window {
-    electron?: ElectronBridge;
-  }
+function getElectronBridge() {
+  if (typeof window === "undefined") return null;
+  const el = (window as unknown as Record<string, unknown>).electron;
+  return el && typeof el === "object" ? (el as Record<string, unknown>) : null;
 }
 
 function isElectron(): boolean {
-  return typeof window !== "undefined" && !!window.electron;
+  return !!getElectronBridge();
 }
 
 export function useElectronBridge() {
@@ -50,12 +34,15 @@ export function useElectronBridge() {
 
   useEffect(() => {
     if (!electron) return;
+    const bridge = getElectronBridge()!;
 
-    const bridge = window.electron!;
+    const getSystemInfo = bridge.getSystemInfo as (() => Promise<SystemInfo>) | undefined;
+    const onDeepLink = bridge.onDeepLink as ((cb: (p: DeepLinkPayload) => void) => (() => void) | undefined) | undefined;
+    const onUpdateStatus = bridge.onUpdateStatus as ((cb: (s: UpdateState) => void) => (() => void) | undefined) | undefined;
 
-    bridge.getSystemInfo?.().then(setSystemInfo).catch(() => {});
-    const cleanupDeepLink = bridge.onDeepLink?.((payload) => setDeepLink(payload));
-    const cleanupUpdate = bridge.onUpdateStatus?.((status: UpdateState) => setUpdateState(status));
+    getSystemInfo?.().then(setSystemInfo).catch(() => {});
+    const cleanupDeepLink = onDeepLink?.((payload) => setDeepLink(payload));
+    const cleanupUpdate = onUpdateStatus?.((status) => setUpdateState(status));
 
     return () => {
       cleanupDeepLink?.();
@@ -65,42 +52,51 @@ export function useElectronBridge() {
 
   const sendNotification = useCallback((title: string, body: string) => {
     if (!electron) return;
-    window.electron!.sendNotification?.(title, body);
+    const fn = getElectronBridge()?.sendNotification as ((t: string, b: string) => void) | undefined;
+    fn?.(title, body);
   }, [electron]);
 
   const checkForUpdates = useCallback(async (): Promise<UpdateStatus | null> => {
     if (!electron) return null;
-    return window.electron!.checkForUpdates?.() ?? null;
+    const fn = getElectronBridge()?.checkForUpdates as (() => Promise<UpdateStatus>) | undefined;
+    return fn?.() ?? null;
   }, [electron]);
 
   const downloadUpdate = useCallback(async (): Promise<{ success: boolean; reason?: string } | null> => {
     if (!electron) return null;
-    return window.electron!.downloadUpdate?.() ?? null;
+    const fn = getElectronBridge()?.downloadUpdate as (() => Promise<{ success: boolean; reason?: string }>) | undefined;
+    return fn?.() ?? null;
   }, [electron]);
 
   const installUpdate = useCallback((): void => {
     if (!electron) return;
-    window.electron!.installUpdate?.();
+    const fn = getElectronBridge()?.installUpdate as (() => void) | undefined;
+    fn?.();
   }, [electron]);
 
   const windowControl = useCallback((action: "minimize" | "maximize" | "close" | "fullscreen" | "restore") => {
     if (!electron) return;
-    window.electron!.windowControl?.(action);
+    const fn = getElectronBridge()?.windowControl as ((a: string) => void) | undefined;
+    fn?.(action);
   }, [electron]);
 
   const getCrashReports = useCallback(async () => {
     if (!electron) return null;
-    return window.electron!.getCrashReports?.() ?? null;
+    const fn = getElectronBridge()?.getCrashReports as (() => Promise<unknown[]>) | undefined;
+    return fn?.() ?? null;
   }, [electron]);
 
   const clearCrashReports = useCallback(async () => {
     if (!electron) return null;
-    return window.electron!.clearCrashReports?.() ?? null;
+    const fn = getElectronBridge()?.clearCrashReports as (() => Promise<void>) | undefined;
+    await fn?.();
+    return null;
   }, [electron]);
 
   const reportError = useCallback((error: { message: string; stack?: string; url?: string }) => {
     if (!electron) return;
-    window.electron!.reportRendererError?.(error);
+    const fn = getElectronBridge()?.reportRendererError as ((e: { message: string; stack?: string; url?: string }) => void) | undefined;
+    fn?.(error);
   }, [electron]);
 
   return {
@@ -116,6 +112,6 @@ export function useElectronBridge() {
     getCrashReports,
     clearCrashReports,
     reportError,
-    platform: electron ? window.electron?.platform ?? null : null,
+    platform: electron ? (getElectronBridge()?.platform as string) ?? null : null,
   };
 }

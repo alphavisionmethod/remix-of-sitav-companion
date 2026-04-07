@@ -197,8 +197,8 @@ export class PolicyDepthEngine {
         case "gte": return typeof fieldValue === "number" && fieldValue >= (c.value as number);
         case "lt": return typeof fieldValue === "number" && fieldValue < (c.value as number);
         case "lte": return typeof fieldValue === "number" && fieldValue <= (c.value as number);
-        case "in": return Array.isArray(c.value) && (c.value as never[]).includes(fieldValue);
-        case "not_in": return Array.isArray(c.value) && !(c.value as never[]).includes(fieldValue);
+        case "in": return Array.isArray(c.value) && (c.value as unknown[]).includes(fieldValue);
+        case "not_in": return Array.isArray(c.value) && !(c.value as unknown[]).includes(fieldValue);
         case "contains": return typeof fieldValue === "string" && fieldValue.includes(c.value as string);
         default: return true;
       }
@@ -259,9 +259,9 @@ export class PolicyDepthEngine {
   }
 
   hydrate(state: Record<string, unknown>): void {
-    if (state.policies) this.policies = new Map(state.policies as [string, unknown][]);
-    if (state.consents) this.consents = new Map(state.consents as [string, unknown][]);
-    if (state.auditLog) this.auditLog = state.auditLog as never;
-    if (state.freezes) this.freezes = state.freezes as never;
+    if (state.policies) this.policies = new Map(state.policies as Iterable<[string, never]>) as typeof this.policies;
+    if (state.consents) this.consents = new Map(state.consents as Iterable<[string, never]>) as typeof this.consents;
+    if (state.auditLog) this.auditLog = state.auditLog as typeof this.auditLog;
+    if (state.freezes) this.freezes = state.freezes as typeof this.freezes;
   }
 }

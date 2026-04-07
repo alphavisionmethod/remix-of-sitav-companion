@@ -116,8 +116,8 @@ export class EnterpriseControlPlaneEngine {
     return { orgs: Array.from(this.orgs.entries()), delegations: this.delegations };
   }
   hydrate(state: Record<string, unknown>): void {
-    if (state.orgs) this.orgs = new Map(state.orgs as [string, unknown][]);
-    if (state.delegations) this.delegations = state.delegations as never;
+    if (state.orgs) this.orgs = new Map(state.orgs as Iterable<[string, never]>) as typeof this.orgs;
+    if (state.delegations) this.delegations = state.delegations as typeof this.delegations;
   }
 }
 // ────────────────────────────────────────────────────────────────
@@ -300,9 +300,9 @@ export class SupportDiagnosticsEngine {
     return { cases: Array.from(this.cases.entries()), bundles: Array.from(this.bundles.entries()), knownIssues: this.knownIssues };
   }
   hydrate(state: Record<string, unknown>): void {
-    if (state.cases) this.cases = new Map(state.cases as [string, unknown][]);
-    if (state.bundles) this.bundles = new Map(state.bundles as [string, unknown][]);
-    if (state.knownIssues) this.knownIssues = state.knownIssues as never;
+    if (state.cases) this.cases = new Map(state.cases as Iterable<[string, never]>) as typeof this.cases;
+    if (state.bundles) this.bundles = new Map(state.bundles as Iterable<[string, never]>) as typeof this.bundles;
+    if (state.knownIssues) this.knownIssues = state.knownIssues as typeof this.knownIssues;
   }
 }
 // SECTION 3 — Observability Maturity
@@ -419,8 +419,8 @@ export class ObservabilityEngine {
     return { traces: this.traces.slice(-500), anomalies: this.anomalies };
   }
   hydrate(state: Record<string, unknown>): void {
-    if (state.traces) this.traces = state.traces as never;
-    if (state.anomalies) this.anomalies = state.anomalies as never;
+    if (state.traces) this.traces = state.traces as typeof this.traces;
+    if (state.anomalies) this.anomalies = state.anomalies as typeof this.anomalies;
   }
 }
 // ────────────────────────────────────────────────────────────────
@@ -772,12 +772,12 @@ export class ReleaseSafetyEngine {
     return { releases: Array.from(this.releases.entries()), killSwitches: this.killSwitches, environments: this.environments, ringGates: this.ringGates, ringTimelines: this.ringTimelines, deepFreezeHistory: this.deepFreezeHistory };
   }
   hydrate(state: Record<string, unknown>): void {
-    if (state.releases) this.releases = new Map(state.releases as [string, unknown][]);
-    if (state.killSwitches) this.killSwitches = state.killSwitches as never;
-    if (state.environments) this.environments = state.environments as never;
-    if (state.ringGates) this.ringGates = state.ringGates as never;
-    if (state.ringTimelines) this.ringTimelines = state.ringTimelines as never;
-    if (state.deepFreezeHistory) this.deepFreezeHistory = state.deepFreezeHistory as never;
+    if (state.releases) this.releases = new Map(state.releases as Iterable<[string, never]>) as typeof this.releases;
+    if (state.killSwitches) this.killSwitches = state.killSwitches as typeof this.killSwitches;
+    if (state.environments) this.environments = state.environments as typeof this.environments;
+    if (state.ringGates) this.ringGates = state.ringGates as typeof this.ringGates;
+    if (state.ringTimelines) this.ringTimelines = state.ringTimelines as typeof this.ringTimelines;
+    if (state.deepFreezeHistory) this.deepFreezeHistory = state.deepFreezeHistory as typeof this.deepFreezeHistory;
   }
 }
 // ────────────────────────────────────────────────────────────────
@@ -906,8 +906,8 @@ export class TrustDeviceEngine {
     return { devices: Array.from(this.devices.entries()), signings: this.signings.slice(-500) };
   }
   hydrate(state: Record<string, unknown>): void {
-    if (state.devices) this.devices = new Map(state.devices as [string, unknown][]);
-    if (state.signings) this.signings = state.signings as never;
+    if (state.devices) this.devices = new Map(state.devices as Iterable<[string, never]>) as typeof this.devices;
+    if (state.signings) this.signings = state.signings as typeof this.signings;
   }
 }
 // ────────────────────────────────────────────────────────────────
@@ -1048,7 +1048,7 @@ export class ComplianceAuditEngine {
     return { proofPackets: this.proofPackets, auditTimeline: this.auditTimeline.slice(-500) };
   }
   hydrate(state: Record<string, unknown>): void {
-    if (state.proofPackets) this.proofPackets = state.proofPackets as never;
-    if (state.auditTimeline) this.auditTimeline = state.auditTimeline as never;
+    if (state.proofPackets) this.proofPackets = state.proofPackets as typeof this.proofPackets;
+    if (state.auditTimeline) this.auditTimeline = state.auditTimeline as typeof this.auditTimeline;
   }
 }

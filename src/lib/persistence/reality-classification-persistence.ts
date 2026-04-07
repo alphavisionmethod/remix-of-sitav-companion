@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export const SCOPE_LEVELS = ["route", "page", "feature", "component_group", "service", "domain", "workspace", "office"] as const;
 export type ScopeLevel = typeof SCOPE_LEVELS[number];
@@ -73,6 +73,6 @@ export async function upsertRealityClassification(
 }
 
 export async function deleteRealityClassification(id: string): Promise<void> {
-  const { error } = await fromTable("reality_classifications").delete().eq("id", id);
+  const { error } = await fromDynamicTable("reality_classifications").delete().eq("id", id);
   if (error) throw error;
 }

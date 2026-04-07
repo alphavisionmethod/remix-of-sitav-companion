@@ -6,7 +6,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { seedJourneyRegistry } from "./journey-registry-seeder";
 import { computeBlockerScore, type BlockerInput } from "./blocker-scoring-engine";
 
@@ -16,7 +16,7 @@ export function useJourneySummaryView() {
   return useQuery({
     queryKey: ["v-customer-journey-summary"],
     queryFn: async () => {
-      const { data, error } = await fromTable("v_customer_journey_summary")
+      const { data, error } = await fromDynamicTable("v_customer_journey_summary")
         .select("*");
       if (error) throw error;
       return data ?? [];
@@ -30,7 +30,7 @@ export function useBlockersView() {
   return useQuery({
     queryKey: ["v-customer-journey-blockers"],
     queryFn: async () => {
-      const { data, error } = await fromTable("v_customer_journey_blockers")
+      const { data, error } = await fromDynamicTable("v_customer_journey_blockers")
         .select("*");
       if (error) throw error;
       return data ?? [];
@@ -44,7 +44,7 @@ export function useModeDeltas() {
   return useQuery({
     queryKey: ["v-customer-journey-mode-deltas"],
     queryFn: async () => {
-      const { data, error } = await fromTable("v_customer_journey_mode_deltas")
+      const { data, error } = await fromDynamicTable("v_customer_journey_mode_deltas")
         .select("*");
       if (error) throw error;
       return data ?? [];
@@ -58,7 +58,7 @@ export function useRouteCoverageSummary() {
   return useQuery({
     queryKey: ["v-route-verification-summary"],
     queryFn: async () => {
-      const { data, error } = await fromTable("v_route_verification_summary")
+      const { data, error } = await fromDynamicTable("v_route_verification_summary")
         .select("*");
       if (error) throw error;
       return data ?? [];
@@ -72,7 +72,7 @@ export function useRecentFailures() {
   return useQuery({
     queryKey: ["v-customer-journey-recent-failures"],
     queryFn: async () => {
-      const { data, error } = await fromTable("v_customer_journey_recent_failures")
+      const { data, error } = await fromDynamicTable("v_customer_journey_recent_failures")
         .select("*");
       if (error) throw error;
       return data ?? [];

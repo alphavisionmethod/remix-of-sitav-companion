@@ -100,7 +100,7 @@ export class EntityRoleGraph {
     // 2. Check delegations
     const delegations = this.getActiveDelegations(query.actorId);
     for (const d of delegations) {
-      if (d.toEntityId === query.actorId && d.scope.actions.includes(query.action as never)) {
+      if (d.toEntityId === query.actorId && d.scope.actions.includes(query.action as string)) {
         if (d.maxAmount && query.amount && query.amount > d.maxAmount) continue;
         if (d.maxUsages && d.usageCount >= d.maxUsages) continue;
         delegationChain.push(`delegation:${d.id} from ${d.fromEntityId}`);
@@ -210,10 +210,10 @@ export class EntityRoleGraph {
   }
 
   hydrate(state: Record<string, unknown>): void {
-    if (state.entities) this.entities = new Map(state.entities as [string, unknown][]);
-    if (state.relationships) this.relationships = state.relationships as never;
-    if (state.roles) this.roles = state.roles as never;
-    if (state.delegations) this.delegations = state.delegations as never;
-    if (state.visibilityRules) this.visibilityRules = state.visibilityRules as never;
+    if (state.entities) this.entities = new Map(state.entities as Iterable<[string, never]>) as typeof this.entities;
+    if (state.relationships) this.relationships = state.relationships as typeof this.relationships;
+    if (state.roles) this.roles = state.roles as typeof this.roles;
+    if (state.delegations) this.delegations = state.delegations as typeof this.delegations;
+    if (state.visibilityRules) this.visibilityRules = state.visibilityRules as typeof this.visibilityRules;
   }
 }

@@ -278,11 +278,11 @@ export class MemoryGovernanceEngine {
   }
 
   hydrate(state: Record<string, unknown>): void {
-    if (state.memories) this.memories = new Map(state.memories as [string, unknown][]);
-    if (state.contradictions) this.contradictions = state.contradictions as never;
-    if (state.corrections) this.corrections = state.corrections as never;
-    if (state.forgetRequests) this.forgetRequests = state.forgetRequests as never;
-    if (state.auditTrail) this.auditTrail = state.auditTrail as never;
-    if (state.config) this.config = { ...this.config, ...(state.config as never) };
+    if (state.memories) this.memories = new Map(state.memories as Iterable<[string, never]>) as typeof this.memories;
+    if (state.contradictions) this.contradictions = state.contradictions as typeof this.contradictions;
+    if (state.corrections) this.corrections = state.corrections as typeof this.corrections;
+    if (state.forgetRequests) this.forgetRequests = state.forgetRequests as typeof this.forgetRequests;
+    if (state.auditTrail) this.auditTrail = state.auditTrail as typeof this.auditTrail;
+    if (state.config) this.config = { ...this.config, ...(state.config as Record<string, unknown>) };
   }
 }
