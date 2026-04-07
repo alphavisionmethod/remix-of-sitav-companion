@@ -14,7 +14,7 @@ const getUser = async () => {
 const makeHook = (table: string, key: string) => () => useQuery({
   queryKey: ['sag', key],
   queryFn: async () => {
-    const { data, error } = await supabase.from(table).select('*').order('created_at', { ascending: false });
+    const { data, error } = await (supabase as any).from(table).select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data as any[];
   }
