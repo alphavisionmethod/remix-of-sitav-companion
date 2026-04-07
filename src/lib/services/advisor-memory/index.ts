@@ -33,12 +33,12 @@ export class AdvisorMemoryService {
     const isDuplicate = existing.some(m => m.content.toLowerCase() === fact.toLowerCase());
     if (isDuplicate) return;
 
-    await fromTable("advisor_memories").insert({
+    await fromDynamicTable("advisor_memories").insert({
       advisor_id: advisorId,
       user_id: userId,
       memory_type: "fact",
       content: fact,
-      metadata: metadata ?? {} as never,
+      metadata: metadata ?? {},
     });
   }
 

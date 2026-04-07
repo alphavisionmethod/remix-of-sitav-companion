@@ -97,12 +97,12 @@ export async function updateSurfaceContext(surfaceKey: string, contextState: Rec
 export async function updatePresenceState(surface: string, status: string): Promise<void> {
   const userId = await getBridgeUserId();
   if (!userId) return;
-  await fromTable("presence_states").upsert({
+  await fromDynamicTable("presence_states").upsert({
     user_id: userId,
     surface,
     status,
     last_seen_at: new Date().toISOString(),
-  }, { onConflict: "user_id,surface" });
+  } as never, { onConflict: "user_id,surface" });
 }
 
 // ── Master: Initialize all ambient flows ────────────────────

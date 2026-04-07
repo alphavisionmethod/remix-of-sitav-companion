@@ -33,7 +33,7 @@ export class BootPersistenceService {
     this.flushed.add(key);
 
     try {
-      await fromTable("boot_phase_logs").insert({
+      await fromDynamicTable("boot_phase_logs").insert({
         user_id: this.config.userId,
         device_id: this.config.deviceId,
         session_id: this.config.sessionId,
