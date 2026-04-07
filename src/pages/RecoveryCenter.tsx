@@ -40,7 +40,7 @@ const RecoveryCenter = () => {
     queryKey: ["recovery_failed_runs", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await (db as any)
+      const { data, error } = await supabase
         .from("workflow_runs")
         .select("*, workflows(name, trigger_event)")
         .in("status", ["failed", "running"])

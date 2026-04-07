@@ -23,7 +23,7 @@ export function useCreateCalendarEvent() {
     mutationFn: async (event: CalendarEventInput) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
-      const { error } = await (supabase as any).from("calendar_events").insert({
+      const { error } = await supabase.from("calendar_events").insert({
         ...event,
         user_id: user.id,
       });
@@ -41,7 +41,7 @@ export function useUpdateCalendarEvent() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...updates }: { id: string } & Partial<CalendarEventInput>) => {
-      const { error } = await (supabase as any).from("calendar_events").update(updates).eq("id", id);
+      const { error } = await supabase.from("calendar_events").update(updates).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -56,7 +56,7 @@ export function useDeleteCalendarEvent() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (supabase as any).from("calendar_events").delete().eq("id", id);
+      const { error } = await supabase.from("calendar_events").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

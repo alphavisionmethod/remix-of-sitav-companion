@@ -49,7 +49,7 @@ export const QuickAddWizard = ({ type, onClose }: QuickAddWizardProps) => {
 
     try {
       if (type === "lead") {
-        const { error } = await (supabase as any).from("leads").insert({
+        const { error } = await supabase.from("leads").insert({
           user_id: user.id,
           name: values.name || "New Lead",
           email: values.email || null,
@@ -59,7 +59,7 @@ export const QuickAddWizard = ({ type, onClose }: QuickAddWizardProps) => {
         if (error) throw error;
         qc.invalidateQueries({ queryKey: ["leads"] });
       } else if (type === "invoice") {
-        const { error } = await (supabase as any).from("invoices").insert({
+        const { error } = await supabase.from("invoices").insert({
           user_id: user.id,
           invoice_number: values.invoice_number || `INV-${Date.now()}`,
           amount: parseFloat(values.amount) || 0,
@@ -68,7 +68,7 @@ export const QuickAddWizard = ({ type, onClose }: QuickAddWizardProps) => {
         if (error) throw error;
         qc.invalidateQueries({ queryKey: ["invoices"] });
       } else if (type === "budget") {
-        const { error } = await (supabase as any).from("budgets").insert({
+        const { error } = await supabase.from("budgets").insert({
           user_id: user.id,
           category: values.category || "General",
           allocated: parseFloat(values.allocated) || 0,

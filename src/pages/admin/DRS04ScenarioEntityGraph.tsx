@@ -19,9 +19,9 @@ export default function DRS04ScenarioEntityGraph() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return { entities: [], relationships: [], scenarios: [] };
       const [e, r, s] = await Promise.all([
-        (supabase as any).from("demo_scenario_entities").select("*, demo_scenarios(name)").eq("user_id", user.id).limit(200),
-        (supabase as any).from("demo_scenario_relationships").select("*").eq("user_id", user.id).limit(200),
-        (supabase as any).from("demo_scenarios").select("id, name").eq("user_id", user.id),
+        supabase.from("demo_scenario_entities").select("*, demo_scenarios(name)").eq("user_id", user.id).limit(200),
+        supabase.from("demo_scenario_relationships").select("*").eq("user_id", user.id).limit(200),
+        supabase.from("demo_scenarios").select("id, name").eq("user_id", user.id),
       ]);
       return { entities: e.data ?? [], relationships: r.data ?? [], scenarios: s.data ?? [] };
     },

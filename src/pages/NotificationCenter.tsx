@@ -147,7 +147,7 @@ const NotificationCenter = () => {
     queryKey: ["notification_center", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data, error } = await (db as any)
+      const { data, error } = await supabase
         .from("notifications_queue")
         .select("*")
         .order("created_at", { ascending: false })
@@ -162,7 +162,7 @@ const NotificationCenter = () => {
     queryKey: ["notifications_legacy", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await (db as any)
+      const { data } = await supabase
         .from("notifications")
         .select("*")
         .order("created_at", { ascending: false })

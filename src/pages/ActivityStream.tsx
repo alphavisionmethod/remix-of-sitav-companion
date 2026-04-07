@@ -274,7 +274,7 @@ const ActivityStream = () => {
     queryKey: ["timeline_feed", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data, error } = await (db as any)
+      const { data, error } = await supabase
         .from("events")
         .select("*")
         .order("created_at", { ascending: false })
@@ -289,7 +289,7 @@ const ActivityStream = () => {
     queryKey: ["timeline_approvals", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await (db as any)
+      const { data } = await supabase
         .from("approval_queue")
         .select("*")
         .order("created_at", { ascending: false })
@@ -309,7 +309,7 @@ const ActivityStream = () => {
     queryKey: ["timeline_proof", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await (db as any)
+      const { data } = await supabase
         .from("proof_records")
         .select("*")
         .order("created_at", { ascending: false })

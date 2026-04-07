@@ -25,10 +25,10 @@ export default function ConnectionsList() {
 
   // Real mode: fetch from connector_instances table
   const { data: realConnections = [] } = useQuery({
-    queryKey: ["connector_instances", user?.id],
+    queryKey: ["connector_configs", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data, error } = await (supabase as any).from("connector_instances").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("connector_configs").select("*").order("created_at", { ascending: false });
       if (error) return [];
       return data ?? [];
     },

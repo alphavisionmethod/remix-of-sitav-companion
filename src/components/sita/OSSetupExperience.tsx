@@ -520,11 +520,11 @@ export function OSSetupExperience() {
         { user_id: user.id, key: "recover_first", value: JSON.stringify(state.recoverFirst), category: "preference" },
       ].filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
 
-      await (supabase as any).from("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
-      await (supabase as any).from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
+      await supabase.from("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
+      await supabase.from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
 
       const snapshot = engine.toSnapshot();
-      await (supabase as any).from("setup_sessions").upsert({
+      await supabase.from("setup_sessions").upsert({
         id: snapshot.id,
         user_id: snapshot.userId,
         device_id: snapshot.deviceId,
@@ -564,7 +564,7 @@ export function OSSetupExperience() {
           queuedActions: 0,
         });
 
-        await (supabase as any).from("device_statuses").upsert({
+        await supabase.from("device_statuses").upsert({
           device_id: deviceId,
           user_id: user.id,
           device_name: deviceName,

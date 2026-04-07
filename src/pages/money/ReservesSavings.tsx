@@ -7,7 +7,6 @@ import { PiggyBank, Target, Shield, TrendingUp, Plus, Sparkles, Trash2 } from "l
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { motion } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { db } from "@/integrations/supabase/db";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -33,7 +32,7 @@ const ReservesSavings = () => {
     queryFn: async () => {
       if (isDemoMode) return reservesData;
       if (!user) return [];
-      const { data, error } = await (db as any)
+      const { data, error } = await supabase
         .from("reserves")
         .select("*")
         .order("priority", { ascending: true });
@@ -50,7 +49,7 @@ const ReservesSavings = () => {
   const createReserve = useMutation({
     mutationFn: async (reserve: { name: string; target_amount: number; category: string; contribution_amount: number }) => {
       if (!user) throw new Error("Not authenticated");
-      const { data, error } = await (db as any).from("reserves").insert({
+      const { data, error } = await supabase.from("reserves").insert({
         ...reserve, user_id: user.id, current_amount: 0, priority: reserves.length + 1,
       }).select().single();
       if (error) throw error;
@@ -67,7 +66,7 @@ const ReservesSavings = () => {
   // Delete reserve mutation
   const deleteReserve = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (db as any).from("reserves").delete().eq("id", id);
+      const { error } = await supabase.from("reserves").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

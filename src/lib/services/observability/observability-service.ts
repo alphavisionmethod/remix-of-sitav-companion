@@ -79,7 +79,7 @@ export async function executeAndRecordProbes(): Promise<ProbeResult[]> {
       checked_at: r.checkedAt,
     }));
 
-    await (supabase as any).from("runtime_probe_runs").insert(runs);
+    await supabase.from("runtime_probe_runs").insert(runs);
 
     // Update health snapshots
     const snapshots = results.map(r => ({
@@ -93,7 +93,7 @@ export async function executeAndRecordProbes(): Promise<ProbeResult[]> {
       check_duration_ms: r.latencyMs,
     }));
 
-    await (supabase as any).from("platform_health_snapshots").insert(snapshots);
+    await supabase.from("platform_health_snapshots").insert(snapshots);
   } catch {
     // Non-blocking recording
   }
@@ -172,9 +172,9 @@ export async function computeObservabilityIndex(): Promise<number> {
 /** Compute device readiness index */
 export async function computeDeviceReadinessIndex(): Promise<number> {
   const [families, devices, readiness] = await Promise.all([
-    (supabase as any).from("device_families").select("*").then((r: any) => r.data ?? []),
-    (supabase as any).from("connected_devices").select("*").then((r: any) => r.data ?? []),
-    (supabase as any).from("surface_readiness_records").select("*").then((r: any) => r.data ?? []),
+    supabase.from("device_families").select("*").then((r: any) => r.data ?? []),
+    supabase.from("connected_devices").select("*").then((r: any) => r.data ?? []),
+    supabase.from("surface_readiness_records").select("*").then((r: any) => r.data ?? []),
   ]);
 
   // Fallback to canonical families if DB is empty

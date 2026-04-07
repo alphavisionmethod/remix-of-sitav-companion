@@ -46,7 +46,7 @@ const OpportunitiesCenter = () => {
     queryKey: ["opportunities", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data, error } = await (supabase as any).from("opportunities").select("*, customers(name)").eq("user_id", user.id).order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("opportunities").select("*, customers(name)").eq("user_id", user.id).order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -56,7 +56,7 @@ const OpportunitiesCenter = () => {
   const addOpp = useMutation({
     mutationFn: async () => {
       if (!user || !form.title.trim()) throw new Error("Title required");
-      const { error } = await (supabase as any).from("opportunities").insert({
+      const { error } = await supabase.from("opportunities").insert({
         user_id: user.id, title: form.title.trim(), value: form.value ? parseFloat(form.value) : null,
         confidence: form.confidence, stage: form.stage, next_action: form.next_action || null,
       });
@@ -68,14 +68,14 @@ const OpportunitiesCenter = () => {
 
   const updateStage = useMutation({
     mutationFn: async ({ id, stage }: { id: string; stage: string }) => {
-      const { error } = await (supabase as any).from("opportunities").update({ stage, last_movement_at: new Date().toISOString() }).eq("id", id);
+      const { error } = await supabase.from("opportunities").update({ stage, last_movement_at: new Date().toISOString() }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["opportunities"] }); toast.success("Stage updated"); },
   });
 
   const deleteOpp = useMutation({
-    mutationFn: async (id: string) => { const { error } = await (supabase as any).from("opportunities").delete().eq("id", id); if (error) throw error; },
+    mutationFn: async (id: string) => { const { error } = await supabase.from("opportunities").delete().eq("id", id); if (error) throw error; },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["opportunities"] }); setSelectedId(null); toast.success("Deleted"); },
   });
 

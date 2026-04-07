@@ -37,7 +37,7 @@ export default function InvestmentReceipts() {
     queryKey: ["investment-receipts", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await (supabase as any).from("proof_receipts").select("*").eq("user_id", user!.id).eq("domain", "investment").order("created_at", { ascending: false }).limit(50);
+      const { data } = await supabase.from("proof_records").select("*").eq("user_id", user!.id).eq("domain", "investment").order("created_at", { ascending: false }).limit(50);
       if (!data?.length) return null;
       return data.map((r: any) => ({
         id: r.id,

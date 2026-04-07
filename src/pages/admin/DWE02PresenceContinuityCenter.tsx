@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Smartphone, MonitorSmartphone, ArrowRightLeft, Eye, Radio } from "lucide-react";
-import { db } from "@/integrations/supabase/db";
+import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -13,9 +13,9 @@ export default function DWE02PresenceContinuityCenter() {
   const [contextRecords, setContextRecords] = useState<any[]>([]);
 
   useEffect(() => {
-    db.from("presence_states").select("*").order("updated_at", { ascending: false }).limit(20).then(({ data }: any) => setPresence(data || []));
-    db.from("handoff_sessions").select("*").order("started_at", { ascending: false }).limit(20).then(({ data }: any) => setHandoffs(data || []));
-    db.from("context_continuity_records").select("*").order("updated_at", { ascending: false }).limit(10).then(({ data }: any) => setContextRecords(data || []));
+    supabase.from("presence_states").select("*").order("updated_at", { ascending: false }).limit(20).then(({ data }: any) => setPresence(data || []));
+    supabase.from("handoff_sessions").select("*").order("started_at", { ascending: false }).limit(20).then(({ data }: any) => setHandoffs(data || []));
+    supabase.from("context_continuity_records").select("*").order("updated_at", { ascending: false }).limit(10).then(({ data }: any) => setContextRecords(data || []));
   }, []);
 
   const focusColors: Record<string, string> = { available: "text-green-500", focused: "text-blue-500", dnd: "text-red-500", meeting: "text-yellow-500", away: "text-muted-foreground", offline: "text-muted-foreground" };

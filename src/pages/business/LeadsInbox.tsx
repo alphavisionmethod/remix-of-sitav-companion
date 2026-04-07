@@ -88,7 +88,7 @@ const LeadsInbox = () => {
   const leadsQuery = useQuery({
     queryKey: ["leads"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any).from("leads").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("leads").select("*").order("created_at", { ascending: false });
       if (error) throw error;
       return data as Lead[];
     },
@@ -99,7 +99,7 @@ const LeadsInbox = () => {
 
   const addMutation = useMutation({
     mutationFn: async (lead: { name: string; email?: string; phone?: string; company?: string; source?: string; likely_value?: number }) => {
-      const { error } = await (supabase as any).from("leads").insert({ ...lead, user_id: user!.id });
+      const { error } = await supabase.from("leads").insert({ ...lead, user_id: user!.id });
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["leads"] }); toast.success("Lead added"); resetForm(); },
@@ -108,7 +108,7 @@ const LeadsInbox = () => {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, ...updates }: Partial<Lead> & { id: string }) => {
-      const { error } = await (supabase as any).from("leads").update(updates).eq("id", id);
+      const { error } = await supabase.from("leads").update(updates).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["leads"] }); toast.success("Lead updated"); resetForm(); },
@@ -117,7 +117,7 @@ const LeadsInbox = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (supabase as any).from("leads").delete().eq("id", id);
+      const { error } = await supabase.from("leads").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["leads"] }); setSelectedId(null); toast.success("Lead deleted"); },

@@ -14,8 +14,8 @@ export default function DRS08AnalyticsSegregation() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return { demoEvents: 0, recentEvents: [] };
       const [countRes, recentRes] = await Promise.all([
-        (supabase as any).from("demo_analytics").select("id", { count: "exact", head: true }).eq("user_id", user.id),
-        (supabase as any).from("demo_analytics").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(15),
+        supabase.from("demo_analytics").select("id", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("demo_analytics").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(15),
       ]);
       return { demoEvents: countRes.count ?? 0, recentEvents: recentRes.data ?? [] };
     },

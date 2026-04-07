@@ -67,11 +67,11 @@ function useSubstrateStats() {
       if (!user) return null;
 
       const [events, memory, policies, receipts, actions] = await Promise.all([
-        (supabase as any).from("os_event_log").select("id", { count: "exact", head: true }).eq("user_id", user.id),
-        (supabase as any).from("os_memory_scoped").select("id", { count: "exact", head: true }).eq("user_id", user.id),
-        (supabase as any).from("os_policy_evaluations").select("id", { count: "exact", head: true }).eq("user_id", user.id),
-        (supabase as any).from("sita_receipts").select("id", { count: "exact", head: true }).eq("user_id", user.id),
-        (supabase as any).from("os_action_lineage").select("id", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("os_event_log").select("id", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("os_memory_scoped").select("id", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("os_policy_evaluations").select("id", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("sita_receipts").select("id", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("os_action_lineage").select("id", { count: "exact", head: true }).eq("user_id", user.id),
       ]);
 
       return {
@@ -95,11 +95,11 @@ function useRecentWrites() {
       if (!user) return [];
 
       const [eventsRes, memoryRes, policiesRes, receiptsRes, actionsRes] = await Promise.all([
-        (supabase as any).from("os_event_log").select("id, topic, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
-        (supabase as any).from("os_memory_scoped").select("id, key, updated_at").eq("user_id", user.id).order("updated_at", { ascending: false }).limit(3),
-        (supabase as any).from("os_policy_evaluations").select("id, rule_name, effect, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
-        (supabase as any).from("sita_receipts").select("id, receipt_type, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
-        (supabase as any).from("os_action_lineage").select("id, domain, current_state, updated_at").eq("user_id", user.id).order("updated_at", { ascending: false }).limit(3),
+        supabase.from("os_event_log").select("id, topic, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
+        supabase.from("os_memory_scoped").select("id, key, updated_at").eq("user_id", user.id).order("updated_at", { ascending: false }).limit(3),
+        supabase.from("os_policy_evaluations").select("id, rule_name, effect, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
+        supabase.from("sita_receipts").select("id, receipt_type, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
+        supabase.from("os_action_lineage").select("id, domain, current_state, updated_at").eq("user_id", user.id).order("updated_at", { ascending: false }).limit(3),
       ]);
 
       const writes: Array<{ service: string; detail: string; time: string }> = [];

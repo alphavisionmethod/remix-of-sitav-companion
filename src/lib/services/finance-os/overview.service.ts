@@ -13,8 +13,8 @@ import type { InvestmentSummary, AssetAllocation } from "@/packages/finance-cont
 export async function buildInvestmentOverview(): Promise<InvestmentSummary> {
   try {
     const [accountsRes, allocationsRes] = await Promise.all([
-      (supabase as any).from("financial_accounts").select("*").limit(50),
-      (supabase as any).from("capital_allocations").select("*").limit(50),
+      supabase.from("financial_accounts").select("*").limit(50),
+      supabase.from("capital_allocations").select("*").limit(50),
     ]);
 
     const accounts = accountsRes.data || [];

@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Smartphone, Watch, Laptop, Monitor, Wifi, WifiOff, Shield, Activity } from "lucide-react";
-import { db } from "@/integrations/supabase/db";
+import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -23,8 +23,8 @@ export default function DWE01ConnectedDevicesCenter() {
   const [families, setFamilies] = useState<any[]>([]);
 
   useEffect(() => {
-    db.from("connected_devices").select("*").order("last_seen_at", { ascending: false }).then(({ data }: any) => setDevices(data || []));
-    db.from("device_families").select("*").order("name").then(({ data }: any) => setFamilies(data || []));
+    supabase.from("connected_devices").select("*").order("last_seen_at", { ascending: false }).then(({ data }: any) => setDevices(data || []));
+    supabase.from("device_families").select("*").order("name").then(({ data }: any) => setFamilies(data || []));
   }, []);
 
   return (

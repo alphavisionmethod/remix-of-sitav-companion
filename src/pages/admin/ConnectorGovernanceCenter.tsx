@@ -106,8 +106,8 @@ export default function ConnectorGovernanceCenter() {
     queryKey: ["governance-connectors", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data: registry } = await (supabase as any).from("connector_registry").select("*").eq("user_id", user!.id);
-      const { data: accounts } = await (supabase as any).from("connector_accounts").select("*").eq("user_id", user!.id);
+      const { data: registry } = await supabase.from("connector_registry").select("*").eq("user_id", user!.id);
+      const { data: accounts } = await supabase.from("connector_accounts").select("*").eq("user_id", user!.id);
       if ((!registry || registry.length === 0) && (!accounts || accounts.length === 0)) return null;
       return { registry: registry || [], accounts: accounts || [] };
     },

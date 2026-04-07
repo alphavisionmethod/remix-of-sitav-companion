@@ -125,7 +125,7 @@ export function useAdaptivePersonalization() {
       }));
 
       if (rows.length > 0) {
-        await (supabase as any).from("user_memory").upsert(rows, {
+        await supabase.from("user_memory").upsert(rows, {
           onConflict: "user_id,key",
           ignoreDuplicates: false,
         });
@@ -134,7 +134,7 @@ export function useAdaptivePersonalization() {
       // Also save behavioral patterns
       const patternData = learner.getPatterns(userId);
       if (patternData.length > 0) {
-        await (supabase as any).from("user_memory").upsert(
+        await supabase.from("user_memory").upsert(
           [{
             user_id: userId,
             key: "_behavioral_patterns",

@@ -67,7 +67,7 @@ const CalendarWorkspace = () => {
       if (mode !== "real") return null;
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
-      const { data, error } = await (supabase as any).from("calendar_events").select("*")
+      const { data, error } = await supabase.from("calendar_events").select("*")
         .eq("user_id", user.id).order("event_date", { ascending: true });
       if (error || !data?.length) return null;
       return data.map((e: any): CalEvent => ({

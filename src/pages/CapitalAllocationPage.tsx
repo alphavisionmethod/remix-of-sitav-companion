@@ -30,7 +30,7 @@ export default function CapitalAllocationPage() {
     queryKey: ["capital-allocations", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await (supabase as any).from("financial_accounts").select("*").eq("user_id", user!.id);
+      const { data } = await supabase.from("financial_accounts").select("*").eq("user_id", user!.id);
       if (!data?.length) return null;
       const total = data.reduce((s: number, a: any) => s + (a.balance_cents || 0), 0);
       return data.map((a: any, i: number) => {

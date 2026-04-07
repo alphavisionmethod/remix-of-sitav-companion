@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
 
@@ -17,7 +18,7 @@ export async function fetchDocs(mode: RealityModeKey = "real"): Promise<ModeAwar
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: MOCK_DOCS, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: MOCK_DOCS, emptyDefault: [] });
-  const { data, error } = await (supabase as any).from("documents").select("*")
+  const { data, error } = await supabase.from("documents").select("*")
     .eq("user_id", user.id).in("document_type", DOC_TYPES)
     .order("updated_at", { ascending: false });
   const mapped = (!error && data?.length) ? data.map((d: any): MockDoc => ({
@@ -34,7 +35,7 @@ export async function fetchSheets(mode: RealityModeKey = "real"): Promise<ModeAw
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: MOCK_SHEETS, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: MOCK_SHEETS, emptyDefault: [] });
-  const { data, error } = await (supabase as any).from("documents").select("*")
+  const { data, error } = await supabase.from("documents").select("*")
     .eq("user_id", user.id).eq("document_type", "sheet")
     .order("updated_at", { ascending: false });
   const mapped = (!error && data?.length) ? data.map((d: any): MockSheet => ({
@@ -51,7 +52,7 @@ export async function fetchDecks(mode: RealityModeKey = "real"): Promise<ModeAwa
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: MOCK_DECKS, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: MOCK_DECKS, emptyDefault: [] });
-  const { data, error } = await (supabase as any).from("documents").select("*")
+  const { data, error } = await supabase.from("documents").select("*")
     .eq("user_id", user.id).eq("document_type", "deck")
     .order("updated_at", { ascending: false });
   const mapped = (!error && data?.length) ? data.map((d: any): MockDeck => ({

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bot, Brain, Zap, Shield, HeartHandshake } from "lucide-react";
-import { db } from "@/integrations/supabase/db";
+import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -12,8 +12,8 @@ export default function DWE06AmbientAssistantCenter() {
   const [interventions, setInterventions] = useState<any[]>([]);
 
   useEffect(() => {
-    db.from("assistant_role_presences").select("*").order("role_name").then(({ data }: any) => setRoles(data || []));
-    db.from("proactive_interventions").select("*").order("created_at", { ascending: false }).limit(20).then(({ data }: any) => setInterventions(data || []));
+    supabase.from("assistant_role_presences").select("*").order("role_name").then(({ data }: any) => setRoles(data || []));
+    supabase.from("proactive_interventions").select("*").order("created_at", { ascending: false }).limit(20).then(({ data }: any) => setInterventions(data || []));
   }, []);
 
   const roleIcons: Record<string, React.ReactNode> = {

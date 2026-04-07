@@ -121,7 +121,7 @@ export function OSRuntimeProvider({
     const offlineQueue = getOfflineQueueService();
     offlineQueue.setReplayHandler(async (mutation) => {
       try {
-        const table = (supabase as any).from(mutation.table);
+        const table = supabase.from(mutation.table);
         let result;
         switch (mutation.operation) {
           case "insert":

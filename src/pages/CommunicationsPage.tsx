@@ -30,7 +30,7 @@ export default function CommunicationsPage() {
     queryKey: ["communications", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await (supabase as any).from("communications").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
+      const { data } = await supabase.from("communications").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
       if (!data?.length) return null;
       return data.map((c: any) => ({
         id: c.id,

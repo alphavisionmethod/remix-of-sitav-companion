@@ -45,7 +45,7 @@ export async function flushMetricsToDatabase(
   // Batch insert in chunks of 50
   for (let i = 0; i < rows.length; i += 50) {
     const chunk = rows.slice(i, i + 50);
-    const { error } = await (supabase as any).from("metrics_snapshots").insert(chunk);
+    const { error } = await supabase.from("metrics_snapshots").insert(chunk);
     if (error) {
       console.error("[ObservabilityPersistence] Flush error:", error);
       errors += chunk.length;

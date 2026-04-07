@@ -13,7 +13,7 @@ async function getUserId(): Promise<string | null> {
 
 async function upsertRows(table: string, rows: Record<string, unknown>[], conflictCol?: string): Promise<number> {
   const opts = conflictCol ? { onConflict: conflictCol } : {};
-  const { error } = await (supabase as any).from(table).upsert(rows, opts);
+  const { error } = await supabase.from(table).upsert(rows, opts);
   if (error) {
     console.warn(`[seeder] ${table} upsert warning:`, error.message);
     return 0;
@@ -177,7 +177,7 @@ function runtimeProbeRows(userId: string) {
     { probe_id: "realtime", name: "Realtime", target_system: "supabase_realtime", owner: "platform", success_criteria: "channel subscribable", failure_criteria: "connection timeout" },
     { probe_id: "ai_gateway", name: "AI Gateway", target_system: "ai_provider_registry", owner: "ai", success_criteria: "active providers exist", failure_criteria: "no active providers" },
     { probe_id: "connectors", name: "Connector Health", target_system: "connector_registry", owner: "platform", success_criteria: "active connectors exist", failure_criteria: "no active connectors" },
-    { probe_id: "workflows", name: "Workflow Engine", target_system: "workflow_definitions", owner: "platform", success_criteria: "table accessible", failure_criteria: "query error" },
+    { probe_id: "workflows", name: "Workflow Engine", target_system: "workflows", owner: "platform", success_criteria: "table accessible", failure_criteria: "query error" },
     { probe_id: "notifications", name: "Notification Queue", target_system: "notifications_queue", owner: "platform", success_criteria: "table accessible", failure_criteria: "query error" },
     { probe_id: "telemetry", name: "Telemetry", target_system: "os_event_log", owner: "platform", success_criteria: "table accessible", failure_criteria: "query error" },
   ];

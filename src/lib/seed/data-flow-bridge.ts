@@ -21,7 +21,7 @@ supabase.auth.onAuthStateChange(() => { bridgeUserId = null; });
 async function bridgeInsert(table: string, row: Record<string, unknown>): Promise<boolean> {
   const userId = await getBridgeUserId();
   if (!userId) return false;
-  const { error } = await (supabase as any).from(table).insert({ ...row, user_id: userId });
+  const { error } = await supabase.from(table).insert({ ...row, user_id: userId });
   if (error) {
     console.warn(`[data-flow-bridge] ${table} insert failed:`, error.message);
     return false;
@@ -84,7 +84,7 @@ export async function recordReceipt(receiptType: string, sourceService: string, 
 export async function updateSurfaceContext(surfaceKey: string, contextState: Record<string, unknown>): Promise<void> {
   const userId = await getBridgeUserId();
   if (!userId) return;
-  await (supabase as any).from("surface_context_states").upsert({
+  await supabase.from("surface_context_states").upsert({
     user_id: userId,
     surface_key: surfaceKey,
     context_state: contextState,
@@ -96,7 +96,7 @@ export async function updateSurfaceContext(surfaceKey: string, contextState: Rec
 export async function updatePresenceState(surface: string, status: string): Promise<void> {
   const userId = await getBridgeUserId();
   if (!userId) return;
-  await (supabase as any).from("presence_states").upsert({
+  await supabase.from("presence_states").upsert({
     user_id: userId,
     surface,
     status,

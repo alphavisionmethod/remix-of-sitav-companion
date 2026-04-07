@@ -63,7 +63,7 @@ const HouseholdTasks = () => {
   const addTask = useMutation({
     mutationFn: async () => {
       if (!user || !newTask.title.trim()) throw new Error("Title required");
-      const { error } = await (supabase as any).from("tasks").insert({
+      const { error } = await supabase.from("tasks").insert({
         user_id: user.id,
         title: newTask.title.trim(),
         category: newTask.category || "General",
@@ -86,7 +86,7 @@ const HouseholdTasks = () => {
 
   const updateStatus = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await (supabase as any).from("tasks").update({ status }).eq("id", id);
+      const { error } = await supabase.from("tasks").update({ status }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -97,7 +97,7 @@ const HouseholdTasks = () => {
 
   const deleteTask = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (supabase as any).from("tasks").delete().eq("id", id);
+      const { error } = await supabase.from("tasks").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
