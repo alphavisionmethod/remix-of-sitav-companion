@@ -147,10 +147,10 @@ export default function ConnectorGovernanceCenter() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: "Total Connectors", value: CONNECTORS.length },
+          { label: "Total Connectors", value: activeConnectors.length },
           { label: "Healthy", value: healthy, color: "text-emerald-400" },
           { label: "Issues", value: issues, color: issues > 0 ? "text-amber-400" : "text-emerald-400" },
-          { label: "Syncs (24h)", value: CONNECTORS.reduce((s, c) => s + c.syncCount24h, 0) },
+          { label: "Syncs (24h)", value: activeConnectors.reduce((s, c) => s + c.syncCount24h, 0) },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
