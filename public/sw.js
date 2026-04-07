@@ -1,11 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Service Worker for Asset Caching & Offline Support
+// SITA OS — Unified Service Worker
+// Asset Caching, Offline Support, and Push Notification Handling
 // ═══════════════════════════════════════════════════════════════
-const CACHE_NAME = 'sita-os-v1';
+const CACHE_NAME = 'sita-os-v2';
 const STATIC_ASSETS = ['/'];
 const API_CACHE = 'sita-api-v1';
 
-// Cache-first for static assets
+// ── Install & Activate ───────────────────────────────────────
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
@@ -22,11 +24,12 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// ── Fetch (Cache Strategies) ─────────────────────────────────
+
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip non-GET
   if (request.method !== 'GET') return;
 
   // Static assets: cache-first
@@ -63,5 +66,85 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(request).catch(() => caches.match('/'))
     );
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// PUSH NOTIFICATION HANDLERS
+// ═══════════════════════════════════════════════════════════════
+
+self.addEventListener('push', (event) => {
+  if (!event.data) return;
+
+  let payload;
+  try {
+    payload = event.data.json();
+  } catch {
+    payload = { title: 'SITA OS', body: event.data.text() };
+  }
+
+  const options = {
+    body: payload.body || '',
+    icon: payload.icon || '/pwa-192x192.png',
+    badge: payload.badge || '/pwa-64x64.png',
+    tag: payload.tag || 'sita-os-notification',
+    renotify: true,
+    data: payload.data || {},
+    actions: payload.data?.action_url
+      ? [{ action: 'open', title: 'View' }]
+      : [],
+    vibrate: [200, 100, 200],
+    requireInteraction: payload.data?.urgency === 'critical',
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(payload.title || 'SITA OS', options)
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  const actionUrl = event.notification.data?.action_url;
+  const notificationId = event.notification.data?.notification_id;
+  const targetUrl = actionUrl || '/';
+
+  // Track click via push-track edge function
+  if (notificationId) {
+    const trackUrl = (self.location.origin.includes('localhost')
+      ? 'https://icrkipwlnuopqbsabngy.supabase.co'
+      : self.location.origin.replace(/^https?:\/\/[^.]+/, 'https://icrkipwlnuopqbsabngy.supabase.co')
+    ) + '/functions/v1/push-track';
+
+    fetch(trackUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ notification_id: notificationId, action: 'clicked' }),
+    }).catch(() => {});
+  }
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      for (const client of windowClients) {
+        if (client.url.includes(self.location.origin)) {
+          client.focus();
+          client.navigate(targetUrl);
+          return;
+        }
+      }
+      return clients.openWindow(targetUrl);
+    })
+  );
+});
+
+self.addEventListener('notificationclose', (event) => {
+  const notificationId = event.notification.data?.notification_id;
+  if (notificationId) {
+    const trackUrl = 'https://icrkipwlnuopqbsabngy.supabase.co/functions/v1/push-track';
+    fetch(trackUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ notification_id: notificationId, action: 'dismissed' }),
+    }).catch(() => {});
   }
 });
