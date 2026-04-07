@@ -305,6 +305,24 @@ const SettingsPage = () => {
                   <RefreshCw className="h-3.5 w-3.5 mr-1" /> Seed Data
                 </SitaButton>
               </div>
+              {/* Account Stats */}
+              <div className="py-3">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Account Statistics</p>
+                <div className="grid gap-2 sm:grid-cols-3">
+                  <div className="rounded-xl border border-border bg-secondary/20 p-3 text-center">
+                    <p className="font-display text-lg font-bold text-foreground">{profile?.created_at ? new Date(profile.created_at).toLocaleDateString("en", { month: "short", year: "numeric" }) : "—"}</p>
+                    <p className="text-[10px] text-muted-foreground">Member since</p>
+                  </div>
+                  <div className="rounded-xl border border-border bg-secondary/20 p-3 text-center">
+                    <p className="font-display text-lg font-bold text-foreground">{user?.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString() : "—"}</p>
+                    <p className="text-[10px] text-muted-foreground">Last login</p>
+                  </div>
+                  <div className="rounded-xl border border-border bg-secondary/20 p-3 text-center">
+                    <p className="font-display text-lg font-bold text-primary">{devices.length}</p>
+                    <p className="text-[10px] text-muted-foreground">Devices</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </SitaCard>
         );
