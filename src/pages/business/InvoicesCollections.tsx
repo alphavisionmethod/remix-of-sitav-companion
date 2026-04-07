@@ -207,6 +207,7 @@ const InvoicesCollections = () => {
                     Send Invoice
                   </button>
                 )}
+                {selected.status !== "paid" && <button onClick={() => updateStatus.mutate({ id: selected.id, status: "paid" })} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><Receipt className="h-3.5 w-3.5" /> Mark Paid</button>}
                 <button
                   onClick={() => generatePdf.mutate({ action: "generate", invoice_id: selected.id, format: "pdf" })}
                   disabled={generatePdf.isPending}
