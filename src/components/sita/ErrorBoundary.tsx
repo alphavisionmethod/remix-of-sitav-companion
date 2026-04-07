@@ -36,7 +36,7 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-1 items-center justify-center p-8">
+        <div className="flex flex-1 items-center justify-center p-8" data-testid="error-state">
           <div className="empty-state-premium max-w-md w-full space-y-6">
             <div className="flex justify-center">
               <div className="rounded-full bg-destructive/10 p-4">

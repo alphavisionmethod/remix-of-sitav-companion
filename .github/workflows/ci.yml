@@ -220,11 +220,19 @@ jobs:
           for i in $(seq 1 30); do
             curl -sf http://localhost:8080 > /dev/null && break || sleep 1
           done
-          PLAYWRIGHT_BASE_URL=http://localhost:8080 npx playwright test --reporter=html || E2E_EXIT=$?
+          PLAYWRIGHT_BASE_URL=http://localhost:8080 npx playwright test --reporter=html,./tests/e2e/reporters/journey-reporter.ts || E2E_EXIT=$?
           kill $SERVER_PID 2>/dev/null || true
+          # Append proof summary to GitHub step summary
+          if [ -f test-results/journey-reports/proof-summary.md ]; then
+            cat test-results/journey-reports/proof-summary.md >> $GITHUB_STEP_SUMMARY
+          fi
           exit ${E2E_EXIT:-0}
         env:
           CI: true
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -237,6 +245,12 @@ jobs:
           name: playwright-screenshots
           path: test-results/
           retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: journey-proof-reports
+          path: test-results/journey-reports/
+          retention-days: 30
 
   # ── Docker Build Validation (advisory) ────────────────────
   docker-build:

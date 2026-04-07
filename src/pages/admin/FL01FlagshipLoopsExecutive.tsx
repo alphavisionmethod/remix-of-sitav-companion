@@ -8,6 +8,7 @@ import {
   getStatusBadge,
 } from "@/lib/services/flagship-loops/flagship-loop-service";
 import { getDomainsByFlagshipLoop } from "@/lib/services/service-registry/service-ownership-registry";
+import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -83,6 +84,20 @@ export default function FL01FlagshipLoopsExecutive() {
     staleTime: 30_000,
   });
 
+  // Fetch latest verification runs for proof overlay
+  const { data: verificationRuns } = useQuery({
+    queryKey: ["fl01-verification-runs"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("journey_verification_runs")
+        .select("*")
+        .order("completed_at", { ascending: false })
+        .limit(50);
+      return data || [];
+    },
+    staleTime: 60_000,
+  });
+
   const seedMutation = useMutation({
     mutationFn: seedFlagshipLoops,
     onSuccess: (results) => {
@@ -100,6 +115,34 @@ export default function FL01FlagshipLoopsExecutive() {
   const criticalCount = loopList.filter((l: any) => l.launch_importance === "launch_critical").length;
   const activeCount = loopList.filter((l: any) => l.status === "active").length;
   const blockerCount = loopList.reduce((s: number, l: any) => s + (Array.isArray(l.launch_blockers) ? l.launch_blockers.length : 0), 0);
+
+  // Map verification runs to loop keys for proof overlay
+  const loopProofMap = new Map<string, { passed: number; failed: number; lastRun: string; confidence: string; commitSha: string }>();
+  const LOOP_KEY_TO_JOURNEY_PATTERNS: Record<string, string[]> = {
+    "loop1_auth_dashboard": ["auth", "dashboard", "sign-in", "sign-out"],
+    "loop2_files_ai": ["files", "ai-assist", "upload"],
+    "loop3_boardroom": ["boardroom", "summary", "decision"],
+    "loop4_connectors_sync": ["connector", "sync", "connected"],
+    "loop5_admin_truth": ["admin", "verification", "approval", "truth"],
+  };
+
+  for (const run of (verificationRuns || []) as any[]) {
+    for (const [loopKey, patterns] of Object.entries(LOOP_KEY_TO_JOURNEY_PATTERNS)) {
+      const summary = (run.summary || "").toLowerCase();
+      if (patterns.some(p => summary.includes(p))) {
+        const existing = loopProofMap.get(loopKey);
+        if (!existing || new Date(run.completed_at) > new Date(existing.lastRun)) {
+          loopProofMap.set(loopKey, {
+            passed: run.steps_passed || 0,
+            failed: run.steps_failed || 0,
+            lastRun: run.completed_at,
+            confidence: run.proof_confidence || "inferred",
+            commitSha: run.commit_sha || "",
+          });
+        }
+      }
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -181,7 +224,7 @@ export default function FL01FlagshipLoopsExecutive() {
 
           {/* Loop Cards */}
           <div className="space-y-4">
-            {loopList.map((loop: any) => {
+          {loopList.map((loop: any) => {
               const domains = getDomainsByFlagshipLoop(loop.loop_key);
               const blockers = Array.isArray(loop.launch_blockers) ? loop.launch_blockers : [];
               const routes = Array.isArray(loop.routes) ? loop.routes : [];
@@ -190,6 +233,7 @@ export default function FL01FlagshipLoopsExecutive() {
               const importance = getImportanceBadge(loop.launch_importance || "");
               const status = getStatusBadge(loop.status || "");
               const truthPct = loop.truth_pct || 0;
+              const proof = loopProofMap.get(loop.loop_key);
 
               return (
                 <Card
@@ -232,6 +276,22 @@ export default function FL01FlagshipLoopsExecutive() {
                           <DimensionBar label="Proof" score={loop.proof_score || 0} icon={<Eye className="h-3 w-3" />} />
                           <DimensionBar label="UX" score={loop.ux_score || 0} icon={<Palette className="h-3 w-3" />} />
                         </div>
+
+                        {/* E2E Proof Overlay */}
+                        {proof && (
+                          <div className="flex items-center gap-3 p-2 rounded bg-muted/30 border border-border">
+                            <ShieldCheck className="h-4 w-4 text-primary shrink-0" />
+                            <span className="text-xs text-muted-foreground">
+                              E2E: <span className="text-emerald-400 font-semibold">{proof.passed}✅</span>
+                              {proof.failed > 0 && <span className="text-destructive font-semibold ml-1">{proof.failed}❌</span>}
+                              {" · "}
+                              <Badge variant="outline" className="text-[10px] ml-1">{proof.confidence}</Badge>
+                              {proof.commitSha && <span className="font-mono ml-1">{proof.commitSha.slice(0, 7)}</span>}
+                              {" · "}
+                              <span>{new Date(proof.lastRun).toLocaleDateString()}</span>
+                            </span>
+                          </div>
+                        )}
 
                         {/* Blockers + Next Actions */}
                         <div className="flex flex-col md:flex-row gap-4">
