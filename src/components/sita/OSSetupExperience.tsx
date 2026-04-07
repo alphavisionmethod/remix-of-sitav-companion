@@ -789,7 +789,7 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
-
+                {phase === "deep-world-modeling" && (
                   <DeepWorldModelingStep key="deep-world-modeling"
                     data={state.worldModel}
                     onUpdate={wm => setState(s => ({ ...s, worldModel: wm }))}
