@@ -102,7 +102,7 @@ export const useCreateOwnerDecision = () => {
     mutationFn: async (dec: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_owner_decisions').insert({ ...dec, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_owner_decisions').insert({ ...dec, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
