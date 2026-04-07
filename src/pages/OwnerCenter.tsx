@@ -1972,7 +1972,7 @@ const OwnerCenter = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {((modelData as Record<string, unknown>)?.models || []).map((m: any) => (
+                    {(modelData?.models || []).map((m: any) => (
                       <tr key={m.id} className="border-b border-border/50 hover:bg-secondary/20">
                         <td className="px-4 py-3 text-xs font-medium text-foreground">{m.name}</td>
                         <td className="px-4 py-3 text-xs text-muted-foreground">${m.costPer1kTokens}</td>
