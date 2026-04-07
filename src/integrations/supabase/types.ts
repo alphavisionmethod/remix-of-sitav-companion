@@ -4533,6 +4533,116 @@ export type Database = {
         }
         Relationships: []
       }
+      call_logs: {
+        Row: {
+          contact_id: string | null
+          contact_name: string | null
+          created_at: string
+          duration_seconds: number | null
+          id: string
+          notes: string | null
+          outcome: string | null
+          recorded_at: string | null
+          revenue_impact: number | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          contact_id?: string | null
+          contact_name?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          notes?: string | null
+          outcome?: string | null
+          recorded_at?: string | null
+          revenue_impact?: number | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          contact_id?: string | null
+          contact_name?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          notes?: string | null
+          outcome?: string | null
+          recorded_at?: string | null
+          revenue_impact?: number | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "call_logs_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "calling_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      calling_contacts: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string | null
+          id: string
+          last_called_at: string | null
+          metadata: Json | null
+          name: string
+          next_call_at: string | null
+          notes: string | null
+          phone: string | null
+          priority: string | null
+          stage: string | null
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+          value: number | null
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          last_called_at?: string | null
+          metadata?: Json | null
+          name: string
+          next_call_at?: string | null
+          notes?: string | null
+          phone?: string | null
+          priority?: string | null
+          stage?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+          value?: number | null
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          last_called_at?: string | null
+          metadata?: Json | null
+          name?: string
+          next_call_at?: string | null
+          notes?: string | null
+          phone?: string | null
+          priority?: string | null
+          stage?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+          value?: number | null
+        }
+        Relationships: []
+      }
       capabilities: {
         Row: {
           description: string | null
@@ -12001,6 +12111,66 @@ export type Database = {
           },
         ]
       }
+      import_export_jobs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          file_name: string | null
+          file_size: number | null
+          format: string | null
+          id: string
+          job_type: string
+          metadata: Json | null
+          progress: number | null
+          records_processed: number | null
+          records_total: number | null
+          result_url: string | null
+          started_at: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          file_name?: string | null
+          file_size?: number | null
+          format?: string | null
+          id?: string
+          job_type?: string
+          metadata?: Json | null
+          progress?: number | null
+          records_processed?: number | null
+          records_total?: number | null
+          result_url?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          file_name?: string | null
+          file_size?: number | null
+          format?: string | null
+          id?: string
+          job_type?: string
+          metadata?: Json | null
+          progress?: number | null
+          records_processed?: number | null
+          records_total?: number | null
+          result_url?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       incidents: {
         Row: {
           acknowledged_at: string | null
@@ -14583,6 +14753,54 @@ export type Database = {
         }
         Relationships: []
       }
+      media_items: {
+        Row: {
+          created_at: string
+          file_type: string
+          folder: string | null
+          id: string
+          metadata: Json | null
+          mime_type: string | null
+          name: string
+          size_bytes: number | null
+          storage_path: string | null
+          tags: string[] | null
+          updated_at: string
+          url: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          file_type?: string
+          folder?: string | null
+          id?: string
+          metadata?: Json | null
+          mime_type?: string | null
+          name: string
+          size_bytes?: number | null
+          storage_path?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          url?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          file_type?: string
+          folder?: string | null
+          id?: string
+          metadata?: Json | null
+          mime_type?: string | null
+          name?: string
+          size_bytes?: number | null
+          storage_path?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          url?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       memory_corrections: {
         Row: {
           actor_id: string
@@ -14979,6 +15197,48 @@ export type Database = {
           icon_key?: string | null
           id?: string
           threshold?: number | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notes: {
+        Row: {
+          color: string | null
+          content: string | null
+          created_at: string
+          folder: string | null
+          id: string
+          pinned: boolean | null
+          starred: boolean | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          color?: string | null
+          content?: string | null
+          created_at?: string
+          folder?: string | null
+          id?: string
+          pinned?: boolean | null
+          starred?: boolean | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          color?: string | null
+          content?: string | null
+          created_at?: string
+          folder?: string | null
+          id?: string
+          pinned?: boolean | null
+          starred?: boolean | null
+          tags?: string[] | null
           title?: string
           updated_at?: string
           user_id?: string
@@ -15857,6 +16117,63 @@ export type Database = {
         }
         Relationships: []
       }
+      outcome_tracking: {
+        Row: {
+          category: string | null
+          created_at: string
+          current_value: number | null
+          description: string | null
+          id: string
+          interventions: Json | null
+          metric: string
+          spillovers: Json | null
+          started_at: string | null
+          status: string
+          target_date: string | null
+          target_value: number | null
+          title: string
+          unit: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          current_value?: number | null
+          description?: string | null
+          id?: string
+          interventions?: Json | null
+          metric?: string
+          spillovers?: Json | null
+          started_at?: string | null
+          status?: string
+          target_date?: string | null
+          target_value?: number | null
+          title: string
+          unit?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          current_value?: number | null
+          description?: string | null
+          id?: string
+          interventions?: Json | null
+          metric?: string
+          spillovers?: Json | null
+          started_at?: string | null
+          status?: string
+          target_date?: string | null
+          target_value?: number | null
+          title?: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       outcome_verifications: {
         Row: {
           actual_improvement: string | null
@@ -15926,6 +16243,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      pack_installs: {
+        Row: {
+          config: Json | null
+          created_at: string
+          id: string
+          installed_at: string | null
+          pack_id: string
+          pack_name: string | null
+          status: string
+          updated_at: string
+          user_id: string
+          version: string | null
+        }
+        Insert: {
+          config?: Json | null
+          created_at?: string
+          id?: string
+          installed_at?: string | null
+          pack_id: string
+          pack_name?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          version?: string | null
+        }
+        Update: {
+          config?: Json | null
+          created_at?: string
+          id?: string
+          installed_at?: string | null
+          pack_id?: string
+          pack_name?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          version?: string | null
+        }
+        Relationships: []
       }
       packet_compilation_records: {
         Row: {
