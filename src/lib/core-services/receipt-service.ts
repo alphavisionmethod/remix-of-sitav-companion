@@ -273,3 +273,13 @@ export class ReceiptService {
 export function createReceiptService(): ReceiptService {
   return new ReceiptService();
 }
+
+// ── Re-export modular layer (lib/services/receipt-service) ────
+// ProofPack conflicts with local type — re-export selectively
+export {
+  createActionReceipt, createSystemReceipt, getChain, verifyChainIntegrity,
+  createRefusalReceipt, getReceiptById, createFirstBootReceipt,
+} from "@/lib/services/receipt-service/receipts.service";
+export { generateApprovalReceipt, generateSingleApprovalReceipt } from "@/lib/services/receipt-service/approval-receipts.service";
+export { generateExecutionReceipt, generateBatchExecutionReceipts } from "@/lib/services/receipt-service/execution-receipts.service";
+export { assembleProofBundle, validateBundle, mergeBundles } from "@/lib/services/receipt-service/proof-bundles.service";

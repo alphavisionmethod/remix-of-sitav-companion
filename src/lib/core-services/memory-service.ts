@@ -352,3 +352,6 @@ export class MemoryService {
 export function createMemoryService(): MemoryService {
   return new MemoryService();
 }
+
+// ── Re-export modular layer (lib/services/memory-service) ─────
+export * from "@/lib/services/memory-service";

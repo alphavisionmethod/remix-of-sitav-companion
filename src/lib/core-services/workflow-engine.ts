@@ -738,3 +738,12 @@ export function getStateTransitionMap(): Record<ServiceWorkflowState, ServiceWor
 export function isTerminalState(state: ServiceWorkflowState): boolean {
   return state === "verified" || (VALID_TRANSITIONS[state]?.length === 0);
 }
+
+// ── Re-export modular layer (lib/services/workflow-engine) ────
+// WorkflowEngineService conflicts with local WorkflowEngine class
+// Re-export as aliased to avoid clash
+export {
+  type WorkflowDefinition, type WorkflowStepDef, type WorkflowTrigger,
+  type WorkflowGuard, type RetryPolicy, type WorkflowRun, type WorkflowStepRun,
+  WorkflowEngineService, createWorkflowEngine as createModularWorkflowEngine,
+} from "@/lib/services/workflow-engine";

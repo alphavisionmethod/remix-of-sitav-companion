@@ -369,3 +369,12 @@ export function createEnvelope(
     createdAt: Date.now(),
   };
 }
+
+// ── Re-export modular layer (lib/services/executor-service) ───
+// ExecutionEnvelope conflicts with local interface — re-export selectively
+export {
+  type ActionExecutionMode, type ExecutionStatus,
+  executeAction, getEnvelope, markFailed, markRolledBack, listExecutions,
+} from "@/lib/services/executor-service/execute-action.service";
+export * from "@/lib/services/executor-service/execute-workflow-step.service";
+export * from "@/lib/services/executor-service/execute-connector-action.service";
