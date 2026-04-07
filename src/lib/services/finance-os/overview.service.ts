@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import type { InvestmentSummary, AssetAllocation } from "@/packages/finance-contracts";
 
 /**
@@ -14,8 +14,8 @@ import type { InvestmentSummary, AssetAllocation } from "@/packages/finance-cont
 export async function buildInvestmentOverview(): Promise<InvestmentSummary> {
   try {
     const [accountsRes, allocationsRes] = await Promise.all([
-      fromTable("financial_accounts").select("*").limit(50),
-      fromTable("capital_allocations").select("*").limit(50),
+      fromDynamicTable("financial_accounts").select("*").limit(50),
+      fromDynamicTable("capital_allocations").select("*").limit(50),
     ]);
 
     const accounts = accountsRes.data || [];
@@ -76,3 +76,4 @@ export function computeAllocationDrift(allocations: AssetAllocation[]): { totalD
   const sorted = [...allocations].sort((a, b) => Math.abs(b.drift) - Math.abs(a.drift));
   return { totalDrift, maxDriftClass: sorted[0]?.assetClass || "none", rebalanceNeeded: totalDrift > 10 };
 }
+

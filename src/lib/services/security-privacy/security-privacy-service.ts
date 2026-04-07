@@ -124,3 +124,4 @@ export async function computeSecurityPrivacyIndex(): Promise<{
     detail: `${passedCount}/${checks.length} security checks passed: RLS, audit, GDPR, consent, role functions`,
   };
 }
+

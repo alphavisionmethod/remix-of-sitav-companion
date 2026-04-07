@@ -72,3 +72,4 @@ describe("Domain Runtime Service", () => {
     expect(list[0]).toHaveProperty("name");
   });
 });
+

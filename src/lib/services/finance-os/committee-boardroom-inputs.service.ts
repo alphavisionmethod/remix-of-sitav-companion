@@ -39,3 +39,4 @@ export function buildCommitteeBriefing(): CommitteeBriefing {
     generatedAt: new Date().toISOString(),
   };
 }
+

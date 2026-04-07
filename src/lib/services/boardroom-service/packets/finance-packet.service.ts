@@ -18,3 +18,4 @@ export function generateFinancePacket(): ServiceBoardroomPacket {
     ],
   };
 }
+

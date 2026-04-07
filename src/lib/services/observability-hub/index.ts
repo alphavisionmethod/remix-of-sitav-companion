@@ -29,3 +29,4 @@ export class ObservabilityHubService {
   }
 }
 export const createObservabilityHub = () => new ObservabilityHubService();
+

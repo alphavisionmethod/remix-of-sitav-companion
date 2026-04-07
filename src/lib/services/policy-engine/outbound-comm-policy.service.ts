@@ -96,3 +96,4 @@ export function getRemainingQuota(type: OutboundCommunicationPolicy["type"], sen
   if (!policy) return 0;
   return Math.max(0, policy.maxPerDay - sentToday);
 }
+

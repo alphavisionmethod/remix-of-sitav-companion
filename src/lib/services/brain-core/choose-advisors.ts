@@ -77,3 +77,4 @@ export function scoreAdvisor(advisor: AdvisorCandidate, intent: ParsedIntent): n
   if (intent.urgency === "critical" && advisor.avgLatencyMs > 300) score -= 10;
   return Math.min(100, Math.max(0, score));
 }
+

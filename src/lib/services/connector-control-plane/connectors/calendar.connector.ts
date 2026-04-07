@@ -15,3 +15,4 @@ export function createCalendarConnector(): CalendarCapabilities {
     deleteEvent: (p) => ({ success: true, data: { eventId: p.eventId, deleted: true } }),
   };
 }
+

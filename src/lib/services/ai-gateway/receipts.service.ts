@@ -106,3 +106,4 @@ export async function getReceiptStats(): Promise<{
     byProvider,
   };
 }
+

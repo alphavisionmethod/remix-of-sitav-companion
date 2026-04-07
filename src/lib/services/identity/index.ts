@@ -37,3 +37,4 @@ export class IdentityService {
 }
 
 export const createIdentityService = () => new IdentityService();
+

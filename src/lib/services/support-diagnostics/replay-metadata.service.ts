@@ -13,3 +13,4 @@ export function captureReplayMetadata(sessionId: string, userId: string): Replay
 export function redactReplayForSupport(metadata: ReplayMetadata): ReplayMetadata {
   return { ...metadata, userId: `user-${metadata.userId.substring(0, 4)}***` };
 }
+

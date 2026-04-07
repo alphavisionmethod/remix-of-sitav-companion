@@ -151,3 +151,4 @@ export class TrustedDeviceService {
 export function createTrustedDeviceService(): TrustedDeviceService {
   return new TrustedDeviceService();
 }
+

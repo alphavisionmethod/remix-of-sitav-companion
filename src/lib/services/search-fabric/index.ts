@@ -34,3 +34,4 @@ export class SearchFabricService {
   }
 }
 export const createSearchFabric = () => new SearchFabricService();
+

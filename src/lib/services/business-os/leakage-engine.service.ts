@@ -37,3 +37,4 @@ export function detectLeakageComprehensive(invoices: Invoice[]): RevenueLeakReco
 
   return leaks;
 }
+

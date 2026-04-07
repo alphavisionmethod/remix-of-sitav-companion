@@ -156,12 +156,12 @@ class RevenueTickerService {
         table: 'invoices',
         filter: `user_id=eq.${userId}`,
       }, (payload) => {
-        if (payload.new && (payload.new as never).status === 'paid' && (payload.old as never)?.status !== 'paid') {
+        if (payload.new && (payload.new as Record<string, unknown>).status === 'paid' && (payload.old as Record<string, unknown>)?.status !== 'paid') {
           this.addEvent({
-            id: (payload.new as never).id,
+            id: (payload.new as Record<string, unknown>).id,
             type: 'invoice_paid',
-            amount: Number((payload.new as never).amount),
-            customerName: (payload.new as never).invoice_number,
+            amount: Number((payload.new as Record<string, unknown>).amount),
+            customerName: (payload.new as Record<string, unknown>).invoice_number,
             timestamp: new Date(),
             domain: 'business',
           });
@@ -181,3 +181,4 @@ class RevenueTickerService {
 }
 
 export const revenueTickerService = new RevenueTickerService();
+

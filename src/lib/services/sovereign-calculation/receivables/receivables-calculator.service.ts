@@ -19,3 +19,4 @@ export function calculateReceivablesAging(invoices: { amountCents: number; daysP
   const avgDays = invoices.length > 0 ? invoices.reduce((a, i) => a + i.daysPastDue, 0) / invoices.length : 0;
   return { buckets, totalOutstandingCents: total, weightedCollectibleCents: Math.round(weighted), avgDaysOutstanding: Math.round(avgDays) };
 }
+

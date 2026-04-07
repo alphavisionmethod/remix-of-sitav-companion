@@ -75,7 +75,7 @@ class BiometricAuthBridge {
         },
       };
     } catch (error: any) {
-      return { success: false, error: error.message || 'Registration failed' };
+      return { success: false, error: (error as Error)?.message ?? String(error) || 'Registration failed' };
     }
   }
 
@@ -107,7 +107,7 @@ class BiometricAuthBridge {
         },
       };
     } catch (error: any) {
-      return { success: false, error: error.message || 'Authentication failed' };
+      return { success: false, error: (error as Error)?.message ?? String(error) || 'Authentication failed' };
     }
   }
 
@@ -123,3 +123,4 @@ class BiometricAuthBridge {
 }
 
 export const biometricAuthBridge = new BiometricAuthBridge();
+

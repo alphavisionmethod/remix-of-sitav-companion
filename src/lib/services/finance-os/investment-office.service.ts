@@ -538,3 +538,4 @@ export function getAvailableTrustModes(): { mode: InvestmentTrustMode; label: st
     { mode: "paper-sandbox", label: "Paper / Sandbox", description: "Simulated execution with no real-world effect" },
   ];
 }
+

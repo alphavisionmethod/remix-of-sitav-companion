@@ -38,3 +38,4 @@ export function prioritizeCallbacks(entries: CallbackEntry[]): CallbackEntry[] {
   const priorityOrder = { urgent: 0, high: 1, normal: 2, low: 3 };
   return entries.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
 }
+

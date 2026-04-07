@@ -52,3 +52,4 @@ export function assessTripReadiness(trip: TripSummary, checklist: TripPrepCheckl
 
   return { readinessScore, blockers, recommendations };
 }
+

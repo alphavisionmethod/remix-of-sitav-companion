@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { getTaskContract } from "@/lib/contracts/global-contracts-registry";
 
 // ── Context Types ──────────────────────────────────────────────
@@ -107,7 +107,7 @@ export class ContextAssembler {
 
     try {
       // Best-effort file retrieval — table may not exist in all deployments
-      const { data: files } = await fromTable("documents")
+      const { data: files } = await fromDynamicTable("documents")
         .select("id, title, content, updated_at")
         .in("id", fileIds)
         .eq("user_id", userId);
@@ -305,3 +305,4 @@ export class ContextAssembler {
 }
 
 export const contextAssembler = new ContextAssembler();
+

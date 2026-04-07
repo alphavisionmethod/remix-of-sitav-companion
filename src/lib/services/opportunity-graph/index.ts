@@ -124,3 +124,4 @@ export class OpportunityGraphService {
 export function createOpportunityGraphService(): OpportunityGraphService {
   return new OpportunityGraphService();
 }
+

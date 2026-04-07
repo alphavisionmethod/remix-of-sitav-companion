@@ -16,3 +16,4 @@ export function buildTripDashboard(trips: TripSummary[]): TripDashboard {
     totalSpentCents: trips.reduce((s, t) => s + t.totalSpentCents, 0),
   };
 }
+

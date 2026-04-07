@@ -44,3 +44,4 @@ export function buildWasteReport(subscriptions: SubscriptionRecord[]): WasteRepo
     generatedAt: new Date().toISOString(),
   };
 }
+

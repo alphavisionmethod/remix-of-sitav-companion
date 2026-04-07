@@ -161,3 +161,4 @@ export const DEMO_AUDIT_LOG: DemoAuditEntry[] = [
   { id: "al-8", eventType: "connection.created", summary: "Connected Google Ads — Acme Marketing", actor: "You", connectionName: "Google Ads", timestamp: h(480) },
   { id: "al-9", eventType: "connection.created", summary: "Connected Stripe — Acme Payments", actor: "You", connectionName: "Stripe", timestamp: h(500) },
 ];
+

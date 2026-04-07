@@ -245,3 +245,4 @@ describe("Google Provider Family — OAuth Client Templates", () => {
     expect(GOOGLE_OAUTH_CLIENT_TEMPLATES.mobile_android.applicationType).toBe("Android");
   });
 });
+

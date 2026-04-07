@@ -24,3 +24,4 @@ export function buildFinanceBoardroomPacket(): FinanceBoardroomPacket {
     generatedAt: new Date().toISOString(),
   };
 }
+

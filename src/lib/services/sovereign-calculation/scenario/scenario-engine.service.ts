@@ -30,3 +30,4 @@ function gaussianRandom(): number {
 export function runMultipleScenarios(baseParams: { initialValueCents: number; months: number }, scenarios: { name: string; growthRate: number; volatility: number }[]): ScenarioResult[] {
   return scenarios.map((s) => ({ ...runMonteCarloScenario({ ...baseParams, monthlyGrowthRate: s.growthRate, volatility: s.volatility }), name: s.name }));
 }
+

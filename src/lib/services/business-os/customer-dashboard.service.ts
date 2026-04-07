@@ -38,3 +38,4 @@ export function computeCustomerHealth(account: CRMAccount): CustomerHealthResult
 export function buildDashboard(account: CRMAccount, contacts: CRMContact[]): CustomerDashboard {
   return { account, contacts, health: computeCustomerHealth(account) };
 }
+

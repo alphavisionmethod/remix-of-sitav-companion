@@ -91,3 +91,4 @@ function buildAgenda(intent: ParsedIntent, decisions: CouncilDecision[]): Agenda
 
   return items.sort((a, b) => a.priority.localeCompare(b.priority));
 }
+

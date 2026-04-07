@@ -37,7 +37,7 @@ export async function callBrainCore(
   const { data, error } = await supabase.functions.invoke("brain-core", {
     body: { intent, advisor, context: context || {} },
   });
-  if (error) throw new Error(error.message || "Brain Core error");
+  if (error) throw new Error((error as Error)?.message ?? String(error) || "Brain Core error");
   return data as BrainCoreResponse;
 }
 
@@ -56,6 +56,7 @@ export async function callAIGateway(
       temperature: options?.temperature,
     },
   });
-  if (error) throw new Error(error.message || "AI Gateway error");
+  if (error) throw new Error((error as Error)?.message ?? String(error) || "AI Gateway error");
   return data as AIGatewayResponse;
 }
+

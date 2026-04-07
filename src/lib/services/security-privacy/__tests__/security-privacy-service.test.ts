@@ -45,3 +45,4 @@ describe("Security & Privacy Service", () => {
     expect(result.score).toBeLessThanOrEqual(100);
   });
 });
+

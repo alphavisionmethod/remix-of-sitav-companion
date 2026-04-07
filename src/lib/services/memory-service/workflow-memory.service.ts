@@ -49,3 +49,4 @@ export function pruneOldCheckpoints(maxAgeMs: number = 86400000 * 7): number {
   });
   return count;
 }
+

@@ -55,3 +55,4 @@ export function generateHomePulse(): HomePulse {
     quickActions,
   };
 }
+

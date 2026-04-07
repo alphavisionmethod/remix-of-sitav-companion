@@ -271,3 +271,4 @@ export class EdgeDeviceRuntimeService {
 export function createEdgeDeviceRuntime(): EdgeDeviceRuntimeService {
   return new EdgeDeviceRuntimeService();
 }
+

@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface KnowledgeArticle {
   id: string;
@@ -99,11 +99,11 @@ export class AdvisorKnowledgeService {
   }
 
   async promoteKnowledge(id: string): Promise<void> {
-    await fromTable("advisor_knowledge").update({ confidence: 1.0 }).eq("id", id);
+    await fromDynamicTable("advisor_knowledge").update({ confidence: 1.0 }).eq("id", id);
   }
 
   async deprecateKnowledge(id: string): Promise<void> {
-    await fromTable("advisor_knowledge").update({ status: "deprecated" }).eq("id", id);
+    await fromDynamicTable("advisor_knowledge").update({ status: "deprecated" }).eq("id", id);
   }
 
   async seedFromCapabilities(advisorId: string, userId: string, capabilities: string[], description: string): Promise<void> {
@@ -121,3 +121,4 @@ export class AdvisorKnowledgeService {
 }
 
 export const advisorKnowledgeService = new AdvisorKnowledgeService();
+

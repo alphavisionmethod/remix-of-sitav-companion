@@ -47,3 +47,4 @@ export function registerRoute(route: ShellRoute): void {
   if (existing >= 0) ROUTE_MAP[existing] = route;
   else ROUTE_MAP.push(route);
 }
+

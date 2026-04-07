@@ -108,3 +108,4 @@ export function canRetry(state: WorkflowState): boolean {
   const retryCount = state.stepResults.filter((r) => r.result === "failure").length;
   return retryCount <= state.definition.retryPolicy.maxRetries;
 }
+

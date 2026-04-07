@@ -110,3 +110,4 @@ export async function loadPersistedState(): Promise<void> {
 export function persistState(): void {
   debouncedSaveServiceState(_serviceId, _serializeState());
 }
+

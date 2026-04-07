@@ -28,3 +28,4 @@ export function generateBusinessProjection(): BusinessProjection {
     pendingFollowUps: 8,
   };
 }
+

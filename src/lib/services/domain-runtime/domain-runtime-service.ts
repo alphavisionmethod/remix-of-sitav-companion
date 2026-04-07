@@ -299,3 +299,4 @@ export function getRuntimeTruthIndex(records: DomainRuntimeRecord[]): number {
 export function getDomainList() {
   return SITA_DOMAINS;
 }
+

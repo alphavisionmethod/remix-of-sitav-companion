@@ -38,3 +38,4 @@ export function assessThesisHealth(thesis: ThesisRecord): { healthy: boolean; st
     "On track — next review on schedule";
   return { healthy, staleDays, recommendation };
 }
+

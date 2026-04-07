@@ -192,3 +192,4 @@ export class RealtimeGatewayService {
 export function createRealtimeGateway(): RealtimeGatewayService {
   return new RealtimeGatewayService();
 }
+

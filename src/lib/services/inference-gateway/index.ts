@@ -191,3 +191,4 @@ export class InferenceGatewayService {
 export function createInferenceGateway(): InferenceGatewayService {
   return new InferenceGatewayService();
 }
+

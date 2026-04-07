@@ -50,3 +50,4 @@ export function computeSafeToSpendForecast(
 
   return { current, sevenDay, thirtyDay, trend, recommendations };
 }
+

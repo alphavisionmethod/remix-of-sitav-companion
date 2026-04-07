@@ -105,3 +105,4 @@ export function getSessionResumeService(): SessionResumeService {
   if (!_instance) _instance = new SessionResumeService();
   return _instance;
 }
+

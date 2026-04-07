@@ -47,3 +47,4 @@ export function buildRenewalRiskReport(subscriptions: SubscriptionRecord[]): Ren
     generatedAt: new Date().toISOString(),
   };
 }
+

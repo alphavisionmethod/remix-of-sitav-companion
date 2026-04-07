@@ -35,3 +35,4 @@ export function trackLeadSource(leads: Lead[]): Record<string, number> {
     return acc;
   }, {} as Record<string, number>);
 }
+

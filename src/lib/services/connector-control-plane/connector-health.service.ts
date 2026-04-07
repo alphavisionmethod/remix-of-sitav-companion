@@ -64,3 +64,4 @@ export function recordSync(connectorId: string): void {
 export function getFreshnessPolicy(connectorId: string): ConnectorFreshnessPolicy | undefined {
   return CONNECTOR_FRESHNESS_POLICIES.find((p) => p.connectorId === connectorId);
 }
+

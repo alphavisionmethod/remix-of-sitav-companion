@@ -23,3 +23,4 @@ export function suggestRebalance(reports: LoadReport[]): { from: string; to: str
   if (most.hours - least.hours < 2) return [];
   return [{ from: most.name, to: least.name, reason: `${most.name} has ${most.hours}h vs ${least.name}'s ${least.hours}h` }];
 }
+

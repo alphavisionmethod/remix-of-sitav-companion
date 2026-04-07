@@ -50,3 +50,4 @@ export function exportPreferences(): Record<string, unknown> {
   preferences.forEach((p) => { result[p.key] = p.value; });
   return result;
 }
+

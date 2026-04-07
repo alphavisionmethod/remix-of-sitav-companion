@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
@@ -180,7 +180,7 @@ export class SelfLearningService {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      await fromTable("events").insert({
+      await fromDynamicTable("events").insert({
         user_id: user.id,
         type: "learning_signal",
         source: "self-learning",
@@ -220,3 +220,4 @@ export class SelfLearningService {
 
 export const selfLearningService = new SelfLearningService();
 export const createSelfLearning = () => new SelfLearningService();
+

@@ -148,13 +148,13 @@ class OfflineSyncEngine {
           let error;
           switch (item.operation) {
             case 'insert':
-              ({ error } = await fromDynamicTable(item.table as never).insert(item.data as never));
+              ({ error } = await fromDynamicTable(item.table as Record<string, unknown>).insert(item.data as never));
               break;
             case 'update':
-              ({ error } = await fromDynamicTable(item.table as never).update(item.data as never).eq('id', item.data.id));
+              ({ error } = await fromDynamicTable(item.table as Record<string, unknown>).update(item.data as Record<string, unknown>).eq('id', item.data.id));
               break;
             case 'delete':
-              ({ error } = await fromDynamicTable(item.table as never).delete().eq('id', item.data.id));
+              ({ error } = await fromDynamicTable(item.table as Record<string, unknown>).delete().eq('id', item.data.id));
               break;
           }
 
@@ -234,3 +234,4 @@ class OfflineSyncEngine {
 }
 
 export const offlineSyncEngine = new OfflineSyncEngine();
+

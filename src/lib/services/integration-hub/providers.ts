@@ -248,3 +248,4 @@ export const PROVIDER_CATEGORIES = [
   { id: "social", label: "Social", icon: "📱" },
   { id: "other", label: "Other", icon: "⚡" },
 ] as const;
+

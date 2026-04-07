@@ -20,3 +20,4 @@ export function assignResponsibilities(tasks: HouseholdTask[], memberMap: Record
     tasks: ts, totalMinutes: ts.reduce((s, t) => s + (t.estimatedMinutes || 30), 0),
   }));
 }
+

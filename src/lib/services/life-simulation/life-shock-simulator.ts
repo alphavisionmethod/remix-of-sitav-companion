@@ -201,3 +201,4 @@ export class LifeShockSimulator {
 }
 
 export const createLifeShockSimulator = (scenarioCount?: number) => new LifeShockSimulator(scenarioCount);
+

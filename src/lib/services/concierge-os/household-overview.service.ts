@@ -26,3 +26,4 @@ export function buildHouseholdOverview(members: HouseholdMember[], tasks: Househ
     generatedAt: new Date().toISOString(),
   };
 }
+

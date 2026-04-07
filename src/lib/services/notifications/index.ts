@@ -149,3 +149,4 @@ export class NotificationsService {
 export function createNotifications(): NotificationsService {
   return new NotificationsService();
 }
+

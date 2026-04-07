@@ -203,3 +203,4 @@ export { LegacyPlanningEngine, createLegacyPlanning } from "./legacy-planning";
 export { OpportunityRadarEngine, createOpportunityRadar } from "./opportunity-radar";
 export { DecisionIntelligenceEngine, createDecisionIntelligence } from "./decision-intelligence";
 export { AmbientIntelligenceService, createAmbientIntelligence } from "./os-awareness";
+

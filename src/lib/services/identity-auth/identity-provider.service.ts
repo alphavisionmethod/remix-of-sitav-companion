@@ -79,3 +79,4 @@ export async function getSessionAuditLog(limit = 50): Promise<IdentitySessionAud
   if (error) throw error;
   return data ?? [];
 }
+

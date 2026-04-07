@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import type { LaunchHonestyLevel, AILaunchHonesty } from "./types";
 
 
@@ -38,9 +38,9 @@ export async function getLaunchHonestyRecords(): Promise<AILaunchHonesty[]> {
  */
 export async function getAILaunchHonestyBoard(): Promise<AICapabilityLaunchStatus[]> {
   const [{ data: honesty }, { data: policies }, { data: requests }] = await Promise.all([
-    fromTable("ai_launch_honesty").select("*").order("capability_key"),
-    fromTable("ai_routing_policies").select("capability_id, enabled, default_provider, default_model, domain, task_class").order("capability_id"),
-    fromTable("ai_task_requests").select("capability_id, created_at, status, provider_chosen, model_chosen").order("created_at", { ascending: false }).limit(500),
+    fromDynamicTable("ai_launch_honesty").select("*").order("capability_key"),
+    fromDynamicTable("ai_routing_policies").select("capability_id, enabled, default_provider, default_model, domain, task_class").order("capability_id"),
+    fromDynamicTable("ai_task_requests").select("capability_id, created_at, status, provider_chosen, model_chosen").order("created_at", { ascending: false }).limit(500),
   ]);
 
   const honestyMap = new Map<string, any>((honesty ?? []).map((h: any) => [h.capability_key, h]));
@@ -91,3 +91,4 @@ export async function getAILaunchHonestyBoard(): Promise<AICapabilityLaunchStatu
 
   return results.sort((a, b) => a.capabilityId.localeCompare(b.capabilityId));
 }
+

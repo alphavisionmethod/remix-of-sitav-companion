@@ -51,3 +51,4 @@ export function assessRenewalRisks(subscriptions: SubscriptionRecord[]): Renewal
 export function computeTotalWaste(opportunities: WasteOpportunity[]): number {
   return opportunities.reduce((sum, o) => sum + o.annualSavingsCents, 0);
 }
+

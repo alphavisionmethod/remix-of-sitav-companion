@@ -6,7 +6,7 @@
 import type { Message, NotificationPreferences, CommunicationTemplate, DeliveryReport, ChannelType, DeliveryStatus, MessageCategory, MessagePriority } from "@/packages/contracts/domain-types/communication";
 import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // @persistence: os_service_state — state survives refresh via universal adapter
 
 export type { Message, NotificationPreferences, CommunicationTemplate, DeliveryReport, ChannelType, DeliveryStatus, MessageCategory, MessagePriority };
@@ -100,7 +100,7 @@ export class CommunicationService {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
-          await fromTable("notifications_queue").insert({
+          await fromDynamicTable("notifications_queue").insert({
             user_id: user.id,
             category: request.category,
             channel: "push",
@@ -198,3 +198,4 @@ export class CommunicationService {
 export function createCommunicationService(): CommunicationService {
   return new CommunicationService();
 }
+

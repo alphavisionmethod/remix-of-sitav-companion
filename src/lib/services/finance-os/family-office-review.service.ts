@@ -36,3 +36,4 @@ export function computeReviewScore(review: FamilyOfficeReviewPacket): { score: n
   const grade = score > 85 ? "A" : score > 70 ? "B" : score > 55 ? "C" : "D";
   return { score, grade };
 }
+

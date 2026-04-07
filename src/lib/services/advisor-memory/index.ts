@@ -18,7 +18,7 @@ export interface AdvisorMemory {
 
 export class AdvisorMemoryService {
   async saveConversationSummary(advisorId: string, userId: string, summary: string, metadata?: Record<string, unknown>): Promise<void> {
-    await fromTable("advisor_memories").insert({
+    await fromDynamicTable("advisor_memories").insert({
       advisor_id: advisorId,
       user_id: userId,
       memory_type: "summary",
@@ -43,7 +43,7 @@ export class AdvisorMemoryService {
   }
 
   async saveUserPreference(advisorId: string, userId: string, preference: string): Promise<void> {
-    await fromTable("advisor_memories").insert({
+    await fromDynamicTable("advisor_memories").insert({
       advisor_id: advisorId,
       user_id: userId,
       memory_type: "preference",
@@ -106,12 +106,13 @@ export class AdvisorMemoryService {
 
   async getMemoryCount(advisorId: string, userId: string): Promise<{ summaries: number; facts: number; preferences: number }> {
     const [s, f, p] = await Promise.all([
-      fromTable("advisor_memories").select("id", { count: "exact", head: true }).eq("advisor_id", advisorId).eq("user_id", userId).eq("memory_type", "summary"),
-      fromTable("advisor_memories").select("id", { count: "exact", head: true }).eq("advisor_id", advisorId).eq("user_id", userId).eq("memory_type", "fact"),
-      fromTable("advisor_memories").select("id", { count: "exact", head: true }).eq("advisor_id", advisorId).eq("user_id", userId).eq("memory_type", "preference"),
+      fromDynamicTable("advisor_memories").select("id", { count: "exact", head: true }).eq("advisor_id", advisorId).eq("user_id", userId).eq("memory_type", "summary"),
+      fromDynamicTable("advisor_memories").select("id", { count: "exact", head: true }).eq("advisor_id", advisorId).eq("user_id", userId).eq("memory_type", "fact"),
+      fromDynamicTable("advisor_memories").select("id", { count: "exact", head: true }).eq("advisor_id", advisorId).eq("user_id", userId).eq("memory_type", "preference"),
     ]);
     return { summaries: s.count ?? 0, facts: f.count ?? 0, preferences: p.count ?? 0 };
   }
 }
 
 export const advisorMemoryService = new AdvisorMemoryService();
+

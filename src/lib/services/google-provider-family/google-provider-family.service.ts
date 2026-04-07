@@ -251,3 +251,4 @@ export function isScopeUpgradeSafe(
     needsApproval: policy.approvalRequired,
   };
 }
+

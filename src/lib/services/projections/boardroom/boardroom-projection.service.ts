@@ -38,3 +38,4 @@ export function generateBoardroomProjection(): BoardroomProjection {
     lastSessionSummary: { date: new Date(Date.now() - 86400000 * 7).toISOString(), decisions: 5, carryovers: 2 },
   };
 }
+

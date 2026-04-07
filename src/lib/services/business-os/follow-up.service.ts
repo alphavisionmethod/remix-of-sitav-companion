@@ -27,3 +27,4 @@ export function shouldEscalateFollowUp(quote: Quote, attemptCount: number): bool
   const daysUntilExpiry = (new Date(quote.validUntil).getTime() - Date.now()) / 86400000;
   return daysUntilExpiry < 3 && attemptCount >= 3 && quote.status === "sent";
 }
+

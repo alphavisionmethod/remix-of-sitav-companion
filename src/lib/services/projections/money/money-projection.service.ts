@@ -33,3 +33,4 @@ export function generateMoneyProjection(): MoneyProjection {
     runwayMonths: Math.floor((checking + savings) / recurringMonthly),
   };
 }
+

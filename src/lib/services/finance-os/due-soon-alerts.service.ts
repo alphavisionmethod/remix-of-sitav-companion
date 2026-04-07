@@ -51,3 +51,4 @@ export function generateDueSoonAlerts(obligations: ObligationRecord[], lookahead
 export function countUpcomingTotal(alerts: DueSoonAlert[]): number {
   return alerts.reduce((s, a) => s + a.amountCents, 0);
 }
+

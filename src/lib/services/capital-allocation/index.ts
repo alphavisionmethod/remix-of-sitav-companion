@@ -155,3 +155,4 @@ export class CapitalAllocationService {
 export function createCapitalAllocation(): CapitalAllocationService {
   return new CapitalAllocationService();
 }
+

@@ -9,3 +9,4 @@ export function classifyRegime(params: { sma50: number; sma200: number; currentP
   if (currentPrice > sma200 && sma50 > sma200) return { regime: "bull", confidence: 0.85, signals: ["Price above 200 SMA", "Golden cross"], transitionProbabilities: { bull: 0.55, bear: 0.1, sideways: 0.25, crisis: 0.1 } };
   return { regime: "sideways", confidence: 0.7, signals: ["Mixed signals", "Narrow range"], transitionProbabilities: { bull: 0.3, bear: 0.2, sideways: 0.4, crisis: 0.1 } };
 }
+

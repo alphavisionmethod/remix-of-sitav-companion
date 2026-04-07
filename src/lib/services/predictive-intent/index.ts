@@ -1,4 +1,4 @@
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Predictive Intent Engine
 // Anticipates user needs before they ask using behavioral patterns
@@ -57,7 +57,7 @@ class PredictiveIntentEngine {
     this.patterns.set(userId, userPatterns);
 
     // Persist to user_memory
-    await fromTable('user_memory').upsert({
+    await fromDynamicTable('user_memory').upsert({
       user_id: userId,
       key: `intent_pattern_${action}_${pattern.hour}_${pattern.dayOfWeek}`,
       value: JSON.stringify(pattern) as never,
@@ -130,3 +130,4 @@ class PredictiveIntentEngine {
 }
 
 export const predictiveIntentEngine = new PredictiveIntentEngine();
+

@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 const VALID_TRANSITIONS: Record<string, string[]> = {
   new: ["triaged", "under_review", "rejected", "deferred", "closed_no_action"],
@@ -21,7 +21,7 @@ const VALID_TRANSITIONS: Record<string, string[]> = {
 };
 
 export async function advanceRecommendationLifecycle(id: string, newStatus: string) {
-  const { data: rec, error: fetchErr } = await fromTable("ai_workforce_recommendations")
+  const { data: rec, error: fetchErr } = await fromDynamicTable("ai_workforce_recommendations")
     .select("status")
     .eq("id", id)
     .maybeSingle();
@@ -34,14 +34,14 @@ export async function advanceRecommendationLifecycle(id: string, newStatus: stri
     throw new Error(`Invalid transition: ${currentStatus} → ${newStatus}. Allowed: ${allowed.join(", ")}`);
   }
 
-  const { error } = await fromTable("ai_workforce_recommendations")
+  const { error } = await fromDynamicTable("ai_workforce_recommendations")
     .update({ status: newStatus, updated_at: new Date().toISOString() })
     .eq("id", id);
   if (error) throw error;
 }
 
 export async function bindToExecution(recommendationId: string, executionRef: string) {
-  const { error } = await fromTable("ai_workforce_recommendations")
+  const { error } = await fromDynamicTable("ai_workforce_recommendations")
     .update({
       execution_binding_status: "bound",
       status: "bound_to_execution",
@@ -52,7 +52,7 @@ export async function bindToExecution(recommendationId: string, executionRef: st
 }
 
 export async function bindToRemediationProgram(recommendationId: string, programId: string) {
-  const { error } = await fromTable("ai_workforce_recommendations")
+  const { error } = await fromDynamicTable("ai_workforce_recommendations")
     .update({
       linked_remediation_program_id: programId,
       updated_at: new Date().toISOString(),
@@ -76,7 +76,7 @@ export async function verifyOutcome(
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await fromTable("outcome_verifications")
+  const { data, error } = await fromDynamicTable("outcome_verifications")
     .insert({
       user_id: user.id,
       recommendation_id: recommendationId,
@@ -89,7 +89,7 @@ export async function verifyOutcome(
   if (error) throw error;
 
   // Link back to recommendation
-  await fromTable("ai_workforce_recommendations")
+  await fromDynamicTable("ai_workforce_recommendations")
     .update({
       outcome_verification_id: data.id,
       status: "outcome_verified",
@@ -115,14 +115,14 @@ export async function createExecutionBinding(binding: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await fromTable("recommendation_execution_bindings")
+  const { data, error } = await fromDynamicTable("recommendation_execution_bindings")
     .insert({ ...binding, user_id: user.id })
     .select()
     .single();
   if (error) throw error;
 
   // Update recommendation lifecycle
-  await fromTable("ai_workforce_recommendations")
+  await fromDynamicTable("ai_workforce_recommendations")
     .update({
       lifecycle_status: "bound_to_execution",
       execution_binding_status: "bound",
@@ -135,7 +135,7 @@ export async function createExecutionBinding(binding: {
 }
 
 export async function fetchExecutionBindings(recommendationId?: string) {
-  let query = fromTable("recommendation_execution_bindings")
+  let query = fromDynamicTable("recommendation_execution_bindings")
     .select("*")
     .order("created_at", { ascending: false });
   if (recommendationId) query = query.eq("recommendation_id", recommendationId);
@@ -153,13 +153,13 @@ export async function logExecutionEvent(event: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { error } = await fromTable("recommendation_execution_events")
+  const { error } = await fromDynamicTable("recommendation_execution_events")
     .insert({ ...event, user_id: user.id, created_by_user_id: user.id });
   if (error) throw error;
 }
 
 export async function fetchExecutionEvents(bindingId: string) {
-  const { data, error } = await fromTable("recommendation_execution_events")
+  const { data, error } = await fromDynamicTable("recommendation_execution_events")
     .select("*")
     .eq("binding_id", bindingId)
     .order("created_at", { ascending: true });
@@ -179,13 +179,13 @@ export async function recordLearningSignal(signal: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { error } = await fromTable("recommendation_learning_signals")
+  const { error } = await fromDynamicTable("recommendation_learning_signals")
     .insert({ ...signal, user_id: user.id });
   if (error) throw error;
 }
 
 export async function fetchLearningSignals(recommendationId: string) {
-  const { data, error } = await fromTable("recommendation_learning_signals")
+  const { data, error } = await fromDynamicTable("recommendation_learning_signals")
     .select("*")
     .eq("recommendation_id", recommendationId)
     .order("created_at", { ascending: false });
@@ -208,14 +208,14 @@ export async function createOutcomeVerification(verification: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await fromTable("recommendation_outcome_verifications")
+  const { data, error } = await fromDynamicTable("recommendation_outcome_verifications")
     .insert({ ...verification, user_id: user.id })
     .select()
     .single();
   if (error) throw error;
 
   // Update lifecycle
-  await fromTable("ai_workforce_recommendations")
+  await fromDynamicTable("ai_workforce_recommendations")
     .update({
       lifecycle_status: "outcome_verified",
       outcome_verification_required: false,
@@ -227,7 +227,7 @@ export async function createOutcomeVerification(verification: {
 }
 
 export async function fetchOutcomeVerificationsNew(recommendationId?: string) {
-  let query = fromTable("recommendation_outcome_verifications")
+  let query = fromDynamicTable("recommendation_outcome_verifications")
     .select("*")
     .order("created_at", { ascending: false });
   if (recommendationId) query = query.eq("recommendation_id", recommendationId);
@@ -252,7 +252,7 @@ export async function createRemediationTask(task: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await fromTable("remediation_tasks")
+  const { data, error } = await fromDynamicTable("remediation_tasks")
     .insert({ ...task, user_id: user.id })
     .select()
     .single();
@@ -261,7 +261,7 @@ export async function createRemediationTask(task: {
 }
 
 export async function fetchRemediationTasks(programId?: string) {
-  let query = fromTable("remediation_tasks")
+  let query = fromDynamicTable("remediation_tasks")
     .select("*")
     .order("created_at", { ascending: false });
   if (programId) query = query.eq("program_id", programId);
@@ -273,7 +273,7 @@ export async function fetchRemediationTasks(programId?: string) {
 // ── Existing functions (kept) ──
 
 export async function fetchRemediationPrograms() {
-  const { data, error } = await fromTable("remediation_programs")
+  const { data, error } = await fromDynamicTable("remediation_programs")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -293,7 +293,7 @@ export async function createRemediationProgram(program: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await fromTable("remediation_programs")
+  const { data, error } = await fromDynamicTable("remediation_programs")
     .insert({ ...program, user_id: user.id })
     .select()
     .single();
@@ -302,7 +302,7 @@ export async function createRemediationProgram(program: {
 }
 
 export async function fetchOutcomeVerifications() {
-  const { data, error } = await fromTable("outcome_verifications")
+  const { data, error } = await fromDynamicTable("outcome_verifications")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -316,15 +316,16 @@ export function getValidTransitions(currentStatus: string): string[] {
 // ── Pipeline Summary ──
 
 export async function fetchClosureSummary() {
-  const { data, error } = await fromTable("v_recommendation_closure_summary")
+  const { data, error } = await fromDynamicTable("v_recommendation_closure_summary")
     .select("*");
   if (error) throw error;
   return data || [];
 }
 
 export async function fetchExecutionPipeline() {
-  const { data, error } = await fromTable("v_recommendation_execution_pipeline")
+  const { data, error } = await fromDynamicTable("v_recommendation_execution_pipeline")
     .select("*");
   if (error) throw error;
   return data || [];
 }
+

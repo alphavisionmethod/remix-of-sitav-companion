@@ -70,3 +70,4 @@ export function getNextDelegate(rule: ApproverRule, currentDepth: number): strin
   if (!canDelegate(rule, currentDepth)) return null;
   return rule.delegationChain[currentDepth] || null;
 }
+

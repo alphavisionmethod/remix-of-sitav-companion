@@ -15,3 +15,4 @@ export function createForexBrokerConnector(): ForexBrokerCapabilities {
     getOrderHistory: () => ({ success: true, data: { orders: [{ id: "o-1", pair: "EUR/USD", side: "buy", amount: 10000, fillPrice: 1.082, status: "filled", filledAt: new Date().toISOString() }] } }),
   };
 }
+

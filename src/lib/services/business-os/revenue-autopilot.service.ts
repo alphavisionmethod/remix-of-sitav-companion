@@ -50,3 +50,4 @@ export function computeKpiSummary(leaks: RevenueLeakRecord[], period: string): R
     generatedAt: new Date().toISOString(),
   };
 }
+

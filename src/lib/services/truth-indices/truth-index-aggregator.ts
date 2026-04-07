@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { getDomainRuntimeStatuses, getRuntimeTruthIndex } from "../domain-runtime/domain-runtime-service";
 import { getLaunchGates, getLaunchHonestyIndex } from "../launch-gate/launch-gate-service";
 import { getOAuthFlows, getSyncJobs, getConnectorTruthIndex } from "../connector-truth/connector-truth-service";
@@ -113,12 +113,12 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
 async function computeAITruthScore(): Promise<number> {
   // Check real DB state for AI infrastructure
   const [providers, models, routing, budgets, receipts, prompts] = await Promise.all([
-    fromTable("ai_provider_registry").select("id", { count: "exact", head: true }),
-    fromTable("ai_model_registry").select("id", { count: "exact", head: true }),
-    fromTable("ai_capability_routing").select("id", { count: "exact", head: true }),
-    fromTable("ai_budget_policies").select("id", { count: "exact", head: true }),
-    fromTable("ai_inference_receipts").select("id", { count: "exact", head: true }),
-    fromTable("ai_prompt_families").select("id", { count: "exact", head: true }),
+    fromDynamicTable("ai_provider_registry").select("id", { count: "exact", head: true }),
+    fromDynamicTable("ai_model_registry").select("id", { count: "exact", head: true }),
+    fromDynamicTable("ai_capability_routing").select("id", { count: "exact", head: true }),
+    fromDynamicTable("ai_budget_policies").select("id", { count: "exact", head: true }),
+    fromDynamicTable("ai_inference_receipts").select("id", { count: "exact", head: true }),
+    fromDynamicTable("ai_prompt_families").select("id", { count: "exact", head: true }),
   ]);
 
   const providerCount = providers.count ?? 0;
@@ -161,3 +161,4 @@ async function computeAITruthScore(): Promise<number> {
 
   return Math.round(infraScore * 0.4 + runtimeScore * 0.6);
 }
+

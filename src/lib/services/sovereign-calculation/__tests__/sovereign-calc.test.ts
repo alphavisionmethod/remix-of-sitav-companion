@@ -8,3 +8,4 @@ describe("SovereignCalculation", () => {
     expect(Object.keys(mod).length).toBeGreaterThan(0);
   });
 });
+

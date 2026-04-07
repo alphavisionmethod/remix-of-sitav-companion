@@ -45,7 +45,7 @@ export class DatabaseService {
   async checkHealth(): Promise<ConnectionHealth> {
     const start = Date.now();
     try {
-      const { error } = await fromTable("profiles").select("id").limit(1);
+      const { error } = await fromDynamicTable("profiles").select("id").limit(1);
       return {
         isConnected: !error,
         latencyMs: Date.now() - start,
@@ -188,3 +188,4 @@ export type {
   CommunicationLogRow,
   SovereignExportRow,
 } from "./persistence-adapters";
+

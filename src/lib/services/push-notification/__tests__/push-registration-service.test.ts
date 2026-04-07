@@ -51,3 +51,4 @@ describe("Push Registration Service", () => {
     });
   });
 });
+

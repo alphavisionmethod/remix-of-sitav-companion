@@ -68,3 +68,4 @@ export function summarizeChecks(checks: PostconditionCheck[]): { total: number; 
   const pending = checks.filter((c) => c.result === "pending").length;
   return { total: checks.length, passed, failed, pending, allPassed: failed === 0 && pending === 0 };
 }
+

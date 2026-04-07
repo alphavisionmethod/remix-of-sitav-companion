@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import type { ObservabilityService } from "./index";
 
 export async function flushMetricsToDatabase(
@@ -46,7 +46,7 @@ export async function flushMetricsToDatabase(
   // Batch insert in chunks of 50
   for (let i = 0; i < rows.length; i += 50) {
     const chunk = rows.slice(i, i + 50);
-    const { error } = await fromTable("metrics_snapshots").insert(chunk);
+    const { error } = await fromDynamicTable("metrics_snapshots").insert(chunk);
     if (error) {
       console.error("[ObservabilityPersistence] Flush error:", error);
       errors += chunk.length;
@@ -87,3 +87,4 @@ export function stopPeriodicFlush(): void {
     flushInterval = null;
   }
 }
+

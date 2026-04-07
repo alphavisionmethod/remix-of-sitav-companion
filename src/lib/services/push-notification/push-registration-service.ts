@@ -244,3 +244,4 @@ export function getPermissionState(): NotificationPermission | "unsupported" {
   if (!("Notification" in window)) return "unsupported";
   return Notification.permission;
 }
+

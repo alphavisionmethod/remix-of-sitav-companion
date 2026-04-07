@@ -198,3 +198,4 @@ export class TrustGovernorService {
 export function createTrustGovernor(): TrustGovernorService {
   return new TrustGovernorService();
 }
+

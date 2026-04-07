@@ -15,3 +15,4 @@ export function createSignatureConnector(): SignatureCapabilities {
     voidEnvelope: (id, reason) => ({ success: true, data: { envelopeId: id, voided: true, reason } }),
   };
 }
+

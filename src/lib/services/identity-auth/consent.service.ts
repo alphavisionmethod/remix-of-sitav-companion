@@ -49,3 +49,4 @@ export async function getConsentHistoryView(): Promise<ConsentHistoryView[]> {
   if (error) throw error;
   return (data ?? []) as never as ConsentHistoryView[];
 }
+

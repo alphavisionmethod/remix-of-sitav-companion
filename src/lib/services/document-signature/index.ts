@@ -172,3 +172,4 @@ export class DocumentSignatureService {
 export function createDocumentSignature(): DocumentSignatureService {
   return new DocumentSignatureService();
 }
+

@@ -47,3 +47,4 @@ export function summarizeEngagement(events: TimelineEvent[]): {
     topActivityType: topType,
   };
 }
+

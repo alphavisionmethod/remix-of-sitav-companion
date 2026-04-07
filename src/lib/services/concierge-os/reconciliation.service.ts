@@ -18,3 +18,4 @@ export function reconcileCalendars(events: CalendarEvent[]): ReconciliationResul
   }
   return { totalEvents: events.length, conflicts, gaps: [] };
 }
+

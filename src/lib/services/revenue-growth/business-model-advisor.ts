@@ -165,3 +165,4 @@ export class BusinessModelAdvisor {
 export function createBusinessModelAdvisor(): BusinessModelAdvisor {
   return new BusinessModelAdvisor();
 }
+

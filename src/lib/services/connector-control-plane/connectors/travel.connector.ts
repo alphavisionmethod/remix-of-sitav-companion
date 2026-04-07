@@ -15,3 +15,4 @@ export function createTravelConnector(): TravelCapabilities {
     cancelBooking: (id) => ({ success: true, data: { bookingId: id, cancelled: true, refundCents: 45000 } }),
   };
 }
+

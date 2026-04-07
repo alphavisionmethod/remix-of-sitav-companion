@@ -29,3 +29,4 @@ export function generateConciergeProjection(): ConciergeProjection {
     recurringSuppliesDue: 3,
   };
 }
+

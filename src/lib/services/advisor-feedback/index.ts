@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface FeedbackRecord {
   id: string;
@@ -28,7 +28,7 @@ export class AdvisorFeedbackService {
     correction: string,
     category: string = "general"
   ): Promise<void> {
-    await fromTable("advisor_feedback").insert({
+    await fromDynamicTable("advisor_feedback").insert({
       advisor_id: advisorId,
       user_id: userId,
       feedback_type: "correction",
@@ -45,7 +45,7 @@ export class AdvisorFeedbackService {
     rating: number,
     comment?: string
   ): Promise<void> {
-    await fromTable("advisor_feedback").insert({
+    await fromDynamicTable("advisor_feedback").insert({
       advisor_id: advisorId,
       user_id: userId,
       message_id: messageId,
@@ -115,3 +115,4 @@ export class AdvisorFeedbackService {
 }
 
 export const advisorFeedbackService = new AdvisorFeedbackService();
+

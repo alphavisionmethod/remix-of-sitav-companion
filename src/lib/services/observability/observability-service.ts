@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { runAllProbes, type ProbeResult } from "@/lib/observability/health-probes";
 
 export interface RuntimeProbe {
@@ -45,7 +45,7 @@ export interface HealthSnapshot {
 
 /** Fetch all registered probes */
 export async function getRegisteredProbes(): Promise<RuntimeProbe[]> {
-  const { data } = await fromTable("runtime_probes")
+  const { data } = await fromDynamicTable("runtime_probes")
     .select("*")
     .order("probe_id");
   return (data ?? []) as RuntimeProbe[];
@@ -53,7 +53,7 @@ export async function getRegisteredProbes(): Promise<RuntimeProbe[]> {
 
 /** Fetch latest health snapshots */
 export async function getHealthSnapshots(): Promise<HealthSnapshot[]> {
-  const { data } = await fromTable("platform_health_snapshots")
+  const { data } = await fromDynamicTable("platform_health_snapshots")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(50);
@@ -78,7 +78,7 @@ export async function executeAndRecordProbes(): Promise<ProbeResult[]> {
       checked_at: r.checkedAt,
     }));
 
-    await fromTable("runtime_probe_runs").insert(runs);
+    await fromDynamicTable("runtime_probe_runs").insert(runs);
 
     // Update health snapshots
     const snapshots = results.map(r => ({
@@ -92,7 +92,7 @@ export async function executeAndRecordProbes(): Promise<ProbeResult[]> {
       check_duration_ms: r.latencyMs,
     }));
 
-    await fromTable("platform_health_snapshots").insert(snapshots);
+    await fromDynamicTable("platform_health_snapshots").insert(snapshots);
   } catch {
     // Non-blocking recording
   }
@@ -171,9 +171,9 @@ export async function computeObservabilityIndex(): Promise<number> {
 /** Compute device readiness index */
 export async function computeDeviceReadinessIndex(): Promise<number> {
   const [families, devices, readiness] = await Promise.all([
-    fromTable("device_families").select("*").then((r: any) => r.data ?? []),
-    fromTable("connected_devices").select("*").then((r: any) => r.data ?? []),
-    fromTable("surface_readiness_records").select("*").then((r: any) => r.data ?? []),
+    fromDynamicTable("device_families").select("*").then((r: any) => r.data ?? []),
+    fromDynamicTable("connected_devices").select("*").then((r: any) => r.data ?? []),
+    fromDynamicTable("surface_readiness_records").select("*").then((r: any) => r.data ?? []),
   ]);
 
   // Fallback to canonical families if DB is empty
@@ -208,3 +208,4 @@ export async function computeDeviceReadinessIndex(): Promise<number> {
 
   return Math.min(100, score);
 }
+

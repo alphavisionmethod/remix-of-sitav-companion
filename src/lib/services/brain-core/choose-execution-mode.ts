@@ -64,3 +64,4 @@ export function canBypassApproval(intent: ParsedIntent, trustLevel: number): boo
   if (intent.type === "query" || intent.type === "diagnostic") return true;
   return trustLevel >= 90 && intent.urgency === "low";
 }
+

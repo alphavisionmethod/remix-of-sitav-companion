@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import type { CRMContact } from "@/packages/business-contracts";
 
 export interface ContactTimelineEntry {
@@ -22,7 +22,7 @@ export interface ContactTimelineEntry {
  */
 export async function buildContactTimeline(contactId: string): Promise<ContactTimelineEntry[]> {
   try {
-    const { data, error } = await fromTable("events")
+    const { data, error } = await fromDynamicTable("events")
       .select("id, event_type, title, description, created_at, metadata")
       .or(`metadata->>contact_id.eq.${contactId},metadata->>entity_id.eq.${contactId}`)
       .order("created_at", { ascending: false })
@@ -63,3 +63,4 @@ export function enrichContact(contact: CRMContact): CRMContact & { enriched: boo
 export function mergeContacts(primary: CRMContact, duplicate: CRMContact): CRMContact {
   return { ...primary, email: primary.email || duplicate.email };
 }
+

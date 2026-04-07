@@ -47,3 +47,4 @@ export function rankOpportunities(opportunities: Opportunity[]): Opportunity[] {
     return bScore - aScore;
   });
 }
+

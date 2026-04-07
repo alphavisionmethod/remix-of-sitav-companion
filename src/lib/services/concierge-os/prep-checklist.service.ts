@@ -15,3 +15,4 @@ export function generateTripChecklist(trip: TripSummary): TripPrepChecklist {
   ];
   return { tripId: trip.id, items, completionPercent: 0 };
 }
+

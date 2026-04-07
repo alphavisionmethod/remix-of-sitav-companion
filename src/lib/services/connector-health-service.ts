@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface ConnectorHealthStatus {
   connectorId: string;
@@ -48,7 +48,7 @@ export async function fetchConnectorHealth(): Promise<ConnectorHealthResult> {
     cacheExpiry = now + CACHE_TTL_MS;
     return cachedResult;
   } catch (e) {
-    const { data: configs } = await fromTable("connector_configs").select("id, service, status, last_sync_at");
+    const { data: configs } = await fromDynamicTable("connector_configs").select("id, service, status, last_sync_at");
 
     const connectors: ConnectorHealthStatus[] = (configs || []).map((c: any) => ({
       connectorId: c.id,
@@ -71,3 +71,4 @@ export function clearConnectorHealthCache() {
   cachedResult = null;
   cacheExpiry = 0;
 }
+

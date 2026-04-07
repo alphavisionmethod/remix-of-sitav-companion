@@ -166,3 +166,4 @@ export class TimelineCalendarService {
 export function createTimelineCalendar(): TimelineCalendarService {
   return new TimelineCalendarService();
 }
+

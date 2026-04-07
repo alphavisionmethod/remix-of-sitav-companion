@@ -48,3 +48,4 @@ export function getFakeResponse(connectorId: string, action: string): { success:
 export function getFakeModeConfig(): FakeModeConfig {
   return { ...fakeConfig };
 }
+

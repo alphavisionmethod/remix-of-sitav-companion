@@ -33,3 +33,4 @@ export function assessCryptoRisk(exposure: CryptoExposureSummary, totalPortfolio
     recommendations,
   };
 }
+

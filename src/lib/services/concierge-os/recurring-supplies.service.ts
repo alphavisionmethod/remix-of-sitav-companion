@@ -12,3 +12,4 @@ export function detectResupplyNeeded(supplies: RecurringSupplyItem[]): Recurring
 export function estimateMonthlySupplyCost(supplies: RecurringSupplyItem[]): number {
   return supplies.reduce((s, item) => s + Math.round(item.avgPriceCents * (30 / item.frequencyDays)), 0);
 }
+

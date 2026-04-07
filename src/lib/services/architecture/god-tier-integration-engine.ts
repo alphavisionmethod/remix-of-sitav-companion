@@ -826,3 +826,4 @@ export function computeIntegrationScore(): {
 
   return { totalModules: decisions.length, readyNow, needsWork, deferred, rejected, netSprawlDelta, overallReadiness };
 }
+

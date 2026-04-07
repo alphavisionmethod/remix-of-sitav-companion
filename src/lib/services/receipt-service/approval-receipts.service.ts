@@ -64,3 +64,4 @@ export function generateSingleApprovalReceipt(params: {
     expiresAt: params.expiresAt,
   };
 }
+

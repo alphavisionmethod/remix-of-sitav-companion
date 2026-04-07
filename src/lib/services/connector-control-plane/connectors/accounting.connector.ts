@@ -15,3 +15,4 @@ export function createAccountingConnector(): AccountingCapabilities {
     reconcile: (accountId) => ({ success: true, data: { accountId, reconciled: true, discrepancies: 0 } }),
   };
 }
+

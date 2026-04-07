@@ -24,3 +24,4 @@ export function buildHouseholdBoardroomPacket(): HouseholdBoardroomPacket {
     generatedAt: new Date().toISOString(),
   };
 }
+

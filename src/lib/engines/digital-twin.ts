@@ -233,3 +233,4 @@ export class ScenarioIntelligenceEngine {
     if (state.simulations) this.simulations = state.simulations as typeof this.simulations;
   }
 }
+

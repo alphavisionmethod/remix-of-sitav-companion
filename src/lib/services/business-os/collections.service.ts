@@ -39,3 +39,4 @@ export function buildCollectionsStatuses(invoices: Invoice[]): CollectionsStatus
     };
   });
 }
+

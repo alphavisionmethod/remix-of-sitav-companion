@@ -152,3 +152,4 @@ export function getOfflineQueueService(): OfflineQueueService {
   if (!_instance) _instance = new OfflineQueueService();
   return _instance;
 }
+

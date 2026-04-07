@@ -233,3 +233,4 @@ function buildRoutingReasoning(
   }
   return parts.join(" → ");
 }
+

@@ -189,3 +189,4 @@ export class BookingSchedulingService {
 export function createBookingScheduling(): BookingSchedulingService {
   return new BookingSchedulingService();
 }
+

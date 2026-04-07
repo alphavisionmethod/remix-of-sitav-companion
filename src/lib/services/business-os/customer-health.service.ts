@@ -47,3 +47,4 @@ export function computeHealthScore(account: CRMAccount, daysSinceLastContact: nu
 export function identifyChurnRisk(accounts: CRMAccount[]): CRMAccount[] {
   return accounts.filter(a => a.healthScore < 40).sort((a, b) => a.healthScore - b.healthScore);
 }
+

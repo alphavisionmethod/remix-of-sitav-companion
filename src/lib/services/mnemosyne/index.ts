@@ -36,3 +36,4 @@ export const createMnemosyne = () => new MnemosyneService();
 // ── Context Assembler (God-Tier Mnemosyne expansion) ──────────
 export { ContextAssembler, contextAssembler } from "./context-assembler";
 export type { AssembledContext, ContextSource, ScopingDecision } from "./context-assembler";
+

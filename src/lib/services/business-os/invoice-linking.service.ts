@@ -35,3 +35,4 @@ export function detectUnlinkedInvoices(invoices: Invoice[], linkedIds: Set<strin
 export function computeQuoteToInvoiceRate(totalQuotes: number, totalInvoices: number): number {
   return totalQuotes > 0 ? Math.round((totalInvoices / totalQuotes) * 100) : 0;
 }
+

@@ -57,3 +57,4 @@ export function buildSyncHealthReport(accounts: FinancialAccount[]): SyncHealthR
     generatedAt: new Date().toISOString(),
   };
 }
+

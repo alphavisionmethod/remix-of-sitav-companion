@@ -57,3 +57,4 @@ export class DigitalTwinsService {
 }
 
 export const createDigitalTwins = () => new DigitalTwinsService();
+

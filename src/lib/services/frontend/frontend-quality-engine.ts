@@ -318,3 +318,4 @@ export function computeFrontendQualityScore() {
     governanceTotal: DESIGN_GOVERNANCE_RULES.length,
   };
 }
+

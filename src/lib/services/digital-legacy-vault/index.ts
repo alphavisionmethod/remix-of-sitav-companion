@@ -1,4 +1,4 @@
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Digital Will & Legacy Vault
 // Encrypted storage for passwords, documents, instructions
@@ -100,7 +100,7 @@ class DigitalLegacyVaultService {
       lastUpdated: new Date(),
     };
 
-    await fromTable('encrypted_secrets').insert({
+    await fromDynamicTable('encrypted_secrets').insert({
       user_id: userId,
       name: `vault_${full.type}_${full.id}`,
       encrypted_value: full.encryptedContent,
@@ -120,11 +120,11 @@ class DigitalLegacyVaultService {
 
     return (data || []).map((d) => ({
       id: d.id,
-      type: ((d.metadata as never)?.type || 'note') as VaultItemType,
-      title: (d.metadata as never)?.title || d.name,
+      type: ((d.metadata as Record<string, unknown>)?.type || 'note') as VaultItemType,
+      title: (d.metadata as Record<string, unknown>)?.title as string || d.name,
       encryptedContent: d.encrypted_value,
-      tags: (d.metadata as never)?.tags || [],
-      beneficiaries: (d.metadata as never)?.beneficiaries || [],
+      tags: ((d.metadata as Record<string, unknown>)?.tags || []) as string[],
+      beneficiaries: ((d.metadata as Record<string, unknown>)?.beneficiaries || []) as string[],
       lastUpdated: new Date(d.updated_at || d.created_at || ''),
     }));
   }
@@ -139,7 +139,7 @@ class DigitalLegacyVaultService {
   }
 
   async checkin(userId: string): Promise<void> {
-    await fromTable('user_memory').upsert({
+    await fromDynamicTable('user_memory').upsert({
       user_id: userId,
       key: 'vault_last_checkin',
       value: JSON.stringify({ checkedInAt: new Date().toISOString() }) as never,
@@ -164,3 +164,4 @@ class DigitalLegacyVaultService {
 }
 
 export const digitalLegacyVaultService = new DigitalLegacyVaultService();
+

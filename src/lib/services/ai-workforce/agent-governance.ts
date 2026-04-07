@@ -250,3 +250,4 @@ export function createAgentGovernance(
 ): AgentGovernanceService {
   return new AgentGovernanceService(workforce, config);
 }
+

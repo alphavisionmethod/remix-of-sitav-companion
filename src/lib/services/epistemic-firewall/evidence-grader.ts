@@ -176,3 +176,4 @@ export function getDomainEvidencePolicy(domain: DomainId): DomainEvidencePolicy 
 export function isHighTrustDomain(domain: DomainId): boolean {
   return HIGH_TRUST_DOMAINS.includes(domain);
 }
+

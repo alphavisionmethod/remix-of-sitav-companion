@@ -15,3 +15,4 @@ export function createCryptoExchangeConnector(): CryptoExchangeCapabilities {
     getTradeHistory: () => ({ success: true, data: { trades: [{ id: "t-1", symbol: "BTC", side: "buy", quantity: 0.1, price: 42500, timestamp: new Date().toISOString() }] } }),
   };
 }
+
