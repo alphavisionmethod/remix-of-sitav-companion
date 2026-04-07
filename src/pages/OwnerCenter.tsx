@@ -1922,7 +1922,7 @@ const OwnerCenter = () => {
             </div>
             <SitaSectionHeader title="Release Rings" />
             <div className="grid gap-3 sm:grid-cols-3">
-              {((releasesData as Record<string, unknown>)?.rings || []).map((r: any) => (
+              {(releasesData?.rings || []).map((r: any) => (
                 <SitaCard key={r.ring} hover={false} className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-semibold text-foreground">Ring {r.ring}: {r.name}</p>
