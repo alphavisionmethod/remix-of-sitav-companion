@@ -163,16 +163,22 @@ export interface TaxEstimateResult {
   se_tax_cents: number;
   total_tax_cents: number;
   effective_rate: number;
+  marginal_rate?: number;
   quarterly_payment_cents: number;
+  quarterly_estimates?: number[];
+  gross_income_cents?: number;
   next_deadline: string;
   period: string;
   calculation: string;
+  [key: string]: unknown; // allow additional fields from edge function
 }
 
 export interface TaxDeductionsResult {
   total_deductions_cents: number;
-  items: Array<{ category: string; amount_cents: number; description: string }>;
+  items: Array<{ category: string; amount_cents: number; description?: string; type?: string }>;
+  deductions?: Array<{ category: string; amount_cents: number; type?: string }>;
   calculation: string;
+  [key: string]: unknown;
 }
 
 export function useTaxEstimate(period: "quarterly" | "annual" = "quarterly") {
