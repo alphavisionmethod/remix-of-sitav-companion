@@ -57,23 +57,29 @@ export default function WatchlistsSignals() {
       {/* Watchlist tabs */}
       <div className="flex gap-2 flex-wrap">
         {WATCHLISTS.map(w => (
-          <button key={w.id} onClick={() => setActiveList(w.id)}
+          <button key={w.id} onClick={() => handleSelectWatchlist(w.id)}
             className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors flex items-center gap-1.5 ${
-              activeList === w.id ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
+              specialView === "none" && activeList === w.id ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
             }`}>
             <Star className="h-3 w-3" /> {w.name}
           </button>
         ))}
-        <button onClick={() => {}}
-          className="rounded-lg px-3 py-2 text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
+        <button onClick={() => handleSpecialView("advisor")}
+          className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors flex items-center gap-1.5 ${
+            specialView === "advisor" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
+          }`}>
           <Brain className="h-3 w-3" /> Advisor Picks
         </button>
-        <button onClick={() => {}}
-          className="rounded-lg px-3 py-2 text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
+        <button onClick={() => handleSpecialView("risk")}
+          className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors flex items-center gap-1.5 ${
+            specialView === "risk" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
+          }`}>
           <Shield className="h-3 w-3" /> Risk Watch
         </button>
-        <button onClick={() => {}}
-          className="rounded-lg px-3 py-2 text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
+        <button onClick={() => handleSpecialView("catalyst")}
+          className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors flex items-center gap-1.5 ${
+            specialView === "catalyst" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
+          }`}>
           <Zap className="h-3 w-3" /> Catalyst Watch
         </button>
       </div>
