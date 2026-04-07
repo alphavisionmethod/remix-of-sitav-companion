@@ -74,8 +74,8 @@ export async function computeLaunchHonesty(): Promise<LaunchHonestyRecord[]> {
     d.totalFeatures++;
     if (c.classification === "proven") d.provenCount++;
     if (c.classification === "simulated") d.simulatedCount++;
-    if (c.launch_impact === "blocking" && c.classification !== "proven") d.blockers.push(c.feature_name);
-    domainMap.set(c.domain, d);
+    if (c.launch_impact === "blocking" && c.classification !== "proven") d.blockers.push(c.feature_name as string);
+    domainMap.set(c.domain as string, d);
   }
 
   // Count critical mocks remaining per domain
