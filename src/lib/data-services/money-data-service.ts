@@ -195,7 +195,7 @@ export async function fetchFinancialDocuments(mode: RealityModeKey = "real"): Pr
   const userId = await getUserId();
   if (!userId) return resolveByMode({ mode, realData: null, demoData: DEMO_DOCUMENTS, emptyDefault: [] });
   // Use files table filtered to finance category
-  const { data, error } = await (supabase as any).from("files").select("*").eq("user_id", userId).eq("category", "finance").order("created_at", { ascending: false });
+  const { data, error } = await supabase.from("files").select("*").eq("user_id", userId).eq("category", "finance").order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? (data as any[]).map((f): FinancialDocument => ({
     id: f.id, name: f.file_name || f.name, doc_type: f.subcategory || "document", classification: f.subcategory || "Document",
     sensitivity: f.sensitivity_label || "normal", linked_to: null, extracted_data: f.ai_extracted_data || {},

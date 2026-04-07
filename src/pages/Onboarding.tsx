@@ -98,12 +98,12 @@ const Onboarding = () => {
         { user_id: user.id, key: "first_win", value: JSON.stringify(state.firstWin), category: "preference" },
       ].filter(m => m.value && m.value !== '""' && m.value !== "[]");
 
-      const { error } = await (supabase as any).from("user_memory" as any).upsert(memoryItems, { onConflict: "user_id,key" });
+      const { error } = await supabase.from("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
       if (error) {
         console.error("Failed to persist onboarding data:", error);
       } else {
         // Mark onboarding as completed in profile
-        await (supabase as any).from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
+        await supabase.from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
         toast.success("Your preferences have been saved!");
       }
     } catch (e) {

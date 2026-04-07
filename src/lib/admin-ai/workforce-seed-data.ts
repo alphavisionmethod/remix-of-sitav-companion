@@ -73,7 +73,7 @@ export async function seedWorkforceData(): Promise<{ roles: number; tasks: numbe
     total_invocations: 0,
     total_cost_cents: 0,
   }));
-  const { error: rolesErr } = await supabase.from("ai_workforce_roles").insert(rolesPayload as any);
+  const { error: rolesErr } = await supabase.from("ai_workforce_roles").insert(rolesPayload);
   if (rolesErr) throw new Error(`Roles seed failed: ${rolesErr.message}`);
 
   // Seed tasks
@@ -89,12 +89,12 @@ export async function seedWorkforceData(): Promise<{ roles: number; tasks: numbe
     launch_stage: "internal",
     output_schema: {},
   }));
-  const { error: tasksErr } = await supabase.from("ai_workforce_task_types").insert(tasksPayload as any);
+  const { error: tasksErr } = await supabase.from("ai_workforce_task_types").insert(tasksPayload);
   if (tasksErr) throw new Error(`Tasks seed failed: ${tasksErr.message}`);
 
   // Seed budget classes
   const budgetPayload = SEED_BUDGET_CLASSES.map(b => ({ user_id: user.id, ...b }));
-  const { error: budgetErr } = await supabase.from("ai_workforce_budget_classes").insert(budgetPayload as any);
+  const { error: budgetErr } = await supabase.from("ai_workforce_budget_classes").insert(budgetPayload);
   if (budgetErr) throw new Error(`Budget classes seed failed: ${budgetErr.message}`);
 
   // Fetch inserted IDs for permissions
@@ -132,7 +132,7 @@ export async function seedWorkforceData(): Promise<{ roles: number; tasks: numbe
     health_state: "healthy",
     health_reason: "Initial healthy state",
   }));
-  const { error: healthErr } = await supabase.from("ai_workforce_role_health").insert(healthPayload as any);
+  const { error: healthErr } = await supabase.from("ai_workforce_role_health").insert(healthPayload);
   if (healthErr) console.warn("Health seed warning:", healthErr.message);
 
   return { roles: SEED_ROLES.length, tasks: SEED_TASKS.length, budgetClasses: SEED_BUDGET_CLASSES.length, permissions: perms.length };

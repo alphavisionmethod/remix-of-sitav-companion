@@ -15,7 +15,7 @@ const getUser = async () => {
 export const useFeatureIntakes = () => useQuery({
   queryKey: ['fip', 'intakes'],
   queryFn: async () => {
-    const { data, error } = await supabase.from('feature_intake_records' as any).select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('feature_intake_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data as any[];
   }
@@ -27,7 +27,7 @@ export const useCreateIntake = () => {
     mutationFn: async (intake: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_intake_records' as any).insert({ ...intake, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_intake_records').insert({ ...intake, user_id: user.id }).select().single();
       if (error) throw error;
       return data;
     },
@@ -40,7 +40,7 @@ export const useCreateIntake = () => {
 export const useCapabilities = () => useQuery({
   queryKey: ['fip', 'capabilities'],
   queryFn: async () => {
-    const { data, error } = await supabase.from('capability_registry' as any).select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('capability_registry').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data as any[];
   }
@@ -52,7 +52,7 @@ export const useCreateCapability = () => {
     mutationFn: async (cap: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('capability_registry' as any).insert({ ...cap, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('capability_registry').insert({ ...cap, user_id: user.id }).select().single();
       if (error) throw error;
       return data;
     },
@@ -65,7 +65,7 @@ export const useCreateCapability = () => {
 export const useFeatureSpecs = () => useQuery({
   queryKey: ['fip', 'specs'],
   queryFn: async () => {
-    const { data, error } = await supabase.from('feature_spec_records' as any).select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('feature_spec_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data as any[];
   }
@@ -77,7 +77,7 @@ export const useCreateSpec = () => {
     mutationFn: async (spec: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_spec_records' as any).insert({ ...spec, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_spec_records').insert({ ...spec, user_id: user.id }).select().single();
       if (error) throw error;
       return data;
     },
@@ -90,7 +90,7 @@ export const useCreateSpec = () => {
 export const useOwnerDecisions = () => useQuery({
   queryKey: ['fip', 'owners'],
   queryFn: async () => {
-    const { data, error } = await supabase.from('feature_owner_decisions' as any).select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('feature_owner_decisions').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data as any[];
   }
@@ -102,7 +102,7 @@ export const useCreateOwnerDecision = () => {
     mutationFn: async (dec: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_owner_decisions' as any).insert({ ...dec, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_owner_decisions').insert({ ...dec, user_id: user.id }).select().single();
       if (error) throw error;
       return data;
     },
@@ -115,7 +115,7 @@ export const useCreateOwnerDecision = () => {
 export const useComplianceRecords = () => useQuery({
   queryKey: ['fip', 'compliance'],
   queryFn: async () => {
-    const { data, error } = await supabase.from('feature_compliance_records' as any).select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('feature_compliance_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data as any[];
   }
@@ -125,7 +125,7 @@ export const useComplianceRecords = () => useQuery({
 export const useExecutionPaths = () => useQuery({
   queryKey: ['fip', 'execution-paths'],
   queryFn: async () => {
-    const { data, error } = await supabase.from('feature_execution_paths' as any).select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('feature_execution_paths').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data as any[];
   }
@@ -137,7 +137,7 @@ export const useCreateExecutionPath = () => {
     mutationFn: async (path: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_execution_paths' as any).insert({ ...path, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_execution_paths').insert({ ...path, user_id: user.id }).select().single();
       if (error) throw error;
       return data;
     },
@@ -150,7 +150,7 @@ export const useCreateExecutionPath = () => {
 export const useRolloutRecords = () => useQuery({
   queryKey: ['fip', 'rollouts'],
   queryFn: async () => {
-    const { data, error } = await supabase.from('feature_rollout_records' as any).select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('feature_rollout_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data as any[];
   }
@@ -162,7 +162,7 @@ export const useCreateRollout = () => {
     mutationFn: async (rollout: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_rollout_records' as any).insert({ ...rollout, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_rollout_records').insert({ ...rollout, user_id: user.id }).select().single();
       if (error) throw error;
       return data;
     },
@@ -175,7 +175,7 @@ export const useCreateRollout = () => {
 export const useDeprecationRecords = () => useQuery({
   queryKey: ['fip', 'deprecations'],
   queryFn: async () => {
-    const { data, error } = await supabase.from('feature_deprecation_records' as any).select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('feature_deprecation_records').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data as any[];
   }
@@ -187,7 +187,7 @@ export const useCreateDeprecation = () => {
     mutationFn: async (dep: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_deprecation_records' as any).insert({ ...dep, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_deprecation_records').insert({ ...dep, user_id: user.id }).select().single();
       if (error) throw error;
       return data;
     },
@@ -200,7 +200,7 @@ export const useCreateDeprecation = () => {
 export const useReadinessGates = () => useQuery({
   queryKey: ['fip', 'readiness'],
   queryFn: async () => {
-    const { data, error } = await supabase.from('feature_readiness_gates' as any).select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('feature_readiness_gates').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data as any[];
   }
@@ -210,7 +210,7 @@ export const useReadinessGates = () => useQuery({
 export const useGeneratedTruthImpacts = () => useQuery({
   queryKey: ['fip', 'truth-impacts'],
   queryFn: async () => {
-    const { data, error } = await supabase.from('feature_generated_truth_impacts' as any).select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('feature_generated_truth_impacts').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data as any[];
   }
