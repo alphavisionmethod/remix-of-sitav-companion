@@ -1,50 +1,66 @@
 
 
-# Wire 9 Unused + 3 Underutilized SitaKernel Context Hooks
+# Fix Section 7: Pages With Forms But No Mutation
 
-## Problem
+## Current Status
 
-9 hooks exported from `SitaKernelContext.tsx` have zero imports. 3 more (`useCanonicalAction`, `useSharedMemory`, `useEntityScoped`) only appear in test mocks — never in real pages.
+| File | Status | Details |
+|------|--------|---------|
+| `auth/Login.tsx` | ✅ Already fixed | Calls `signIn()` → `supabase.auth.signInWithPassword()` |
+| `auth/Signup.tsx` | ✅ Already fixed | Calls `signUp()` → `supabase.auth.signUp()` |
+| `auth/ForgotPassword.tsx` | ✅ Already fixed | Calls `resetPassword()` → `supabase.auth.resetPasswordForEmail()` |
+| `auth/ResetPassword.tsx` | ✅ Already fixed | Calls `updatePassword()` → `supabase.auth.updateUser()` |
+| `admin/fip/FIPIntakeDesk.tsx` | ✅ Already fixed | Uses `useCreateIntake()` mutation hook |
+| `owner/ConstitutionEditor.tsx` | ❌ Needs fix | Uses in-memory kernel compiler only — rules lost on refresh |
 
-## Mapping: Hook → Target Page
+**5 of 6 files are already fully functional.** Only ConstitutionEditor needs work.
 
-| Hook | Target Page | Rationale |
-|------|------------|-----------|
-| `useWorkflowRecovery` | `admin/ReplayRecoveryConsole.tsx` | Recovery console — use `deadLetterQueue` + `getCheckpoints` |
-| `useWorkflowReplay` | `admin/WorkflowReplayAudit.tsx` | Replay audit — use `replay()` engine |
-| `useTransitionValidator` | `admin/WorkflowReplayAudit.tsx` | Validate transitions alongside replay |
-| `useReceiptVerification` | `admin/ProofMatrixExplorer.tsx` | Proof explorer — use `verifyIntegrity` + `validateChain` |
-| `useWebsiteManager` | `digital-presence/DomainPublishManager.tsx` | Domain/publish manager — use `pages`, `domains`, `getStats` |
-| `useCloudControlPlane` | `SystemStatus.tsx` | System status — use `listRegions`, `getTopology` |
-| `useEdgeDeviceRuntime` | `admin/FleetHealthPage.tsx` | Fleet health — use `listRuntimes`, `getFleetSummary` |
-| `useFleetOTA` | `admin/FleetHealthPage.tsx` | Fleet health — use `listReleases`, `getRolloutProgress` |
-| `useIncidentManagement` | `admin/IncidentCommandCenter.tsx` | Incident center — use `getActiveIncidents`, `getIncidentMetrics` |
-| `useCanonicalAction` | `admin/ReplayRecoveryConsole.tsx` | Dispatch canonical actions during replay |
-| `useSharedMemory` | `admin/ProofMatrixExplorer.tsx` | Access shared memory for proof context |
-| `useEntityScoped` | `admin/IncidentCommandCenter.tsx` | Scope incident queries to current entity |
+## Fix: ConstitutionEditor DB Persistence
 
-## Implementation per file
+### Step 1: Create `constitution_rules` table (migration)
 
-For each target page:
-1. Add import of the hook(s) from `@/contexts/SitaKernelContext`
-2. Call the hook inside the component function body
-3. Use at least one returned value (e.g., assign to a variable, pass as prop, or use in conditional rendering)
+```sql
+CREATE TABLE public.constitution_rules (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  natural_text TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'general',
+  priority INTEGER NOT NULL DEFAULT 50,
+  enforcement_mode TEXT NOT NULL DEFAULT 'advisory',
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  compiled_json JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 
-No existing logic will be replaced — hooks are additive alongside current demo data patterns.
+ALTER TABLE public.constitution_rules ENABLE ROW LEVEL SECURITY;
 
-## Verification
+CREATE POLICY "Users manage own rules"
+  ON public.constitution_rules FOR ALL
+  TO authenticated
+  USING (user_id = auth.uid())
+  WITH CHECK (user_id = auth.uid());
 
-- `grep` confirms all 9+3 hooks have ≥1 import outside `SitaKernelContext.tsx` and `test-utils.tsx`
+CREATE TRIGGER update_constitution_rules_updated_at
+  BEFORE UPDATE ON public.constitution_rules
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+```
+
+### Step 2: Update ConstitutionEditor.tsx
+
+- On mount: query `constitution_rules` for the current user and hydrate the in-memory compiler
+- On `compileRule`: insert new rule into DB, then compile in-memory
+- On `toggleRule`: update `is_active` in DB
+- On `deleteRule`: delete from DB
+- Remove the hardcoded seed defaults (replace with DB-loaded rules)
+- Use `useAuth` to get `user.id` for queries
+
+### Step 3: Verify
+
 - `npx tsc --noEmit` — 0 errors
-- Build succeeds
+- Rules persist across page refreshes
 
-## Files changed: 8
-
-- `src/pages/admin/ReplayRecoveryConsole.tsx` — add `useWorkflowRecovery` + `useCanonicalAction`
-- `src/pages/admin/WorkflowReplayAudit.tsx` — add `useWorkflowReplay` + `useTransitionValidator`
-- `src/pages/admin/ProofMatrixExplorer.tsx` — add `useReceiptVerification` + `useSharedMemory`
-- `src/pages/digital-presence/DomainPublishManager.tsx` — add `useWebsiteManager`
-- `src/pages/SystemStatus.tsx` — add `useCloudControlPlane`
-- `src/pages/admin/FleetHealthPage.tsx` — add `useEdgeDeviceRuntime` + `useFleetOTA`
-- `src/pages/admin/IncidentCommandCenter.tsx` — add `useIncidentManagement` + `useEntityScoped`
+## Files changed
+- 1 migration (new `constitution_rules` table)
+- 1 TypeScript file (`src/pages/owner/ConstitutionEditor.tsx`)
 
