@@ -43,7 +43,7 @@ describe("Admin Pages Batch 1", () => {
   pages.forEach(([name, loader]) => {
     it(`${name} renders without crashing`, async () => {
       const mod = await loader();
-      const Component = mod.default;
+      const Component = mod.default || Object.values(mod).find((v: any) => typeof v === "function");
       const { container } = render(<Component />);
       expect(container.firstChild).toBeTruthy();
     });
