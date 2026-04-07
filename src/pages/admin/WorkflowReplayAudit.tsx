@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useWorkflowReplay, useTransitionValidator } from "@/contexts/SitaKernelContext";
 
 interface WorkflowRun {
   id: string;
