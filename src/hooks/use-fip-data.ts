@@ -52,7 +52,7 @@ export const useCreateCapability = () => {
     mutationFn: async (cap: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('capability_registry').insert({ ...cap, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('capability_registry').insert({ ...cap, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
