@@ -162,7 +162,7 @@ export const useCreateRollout = () => {
     mutationFn: async (rollout: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_rollout_records').insert({ ...rollout, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_rollout_records').insert({ ...rollout, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
