@@ -55,7 +55,7 @@ const SubscriptionsWaste = () => {
   const subsQuery = useQuery({
     queryKey: ["subscriptions"],
     queryFn: async () => {
-      const { data, error } = await fromTable("subscriptions").select("*").order("service_name", { ascending: true });
+      const { data, error } = await fromTable("subscriptions").select("*").order("name", { ascending: true });
       if (error) throw error;
       return data;
     },
