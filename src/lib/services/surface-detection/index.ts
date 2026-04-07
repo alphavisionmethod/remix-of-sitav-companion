@@ -11,7 +11,6 @@ import type { SurfaceType, ActiveSurface } from "@/packages/contracts/runtime/os
 // ── Surface detection ───────────────────────────────────────────
 
 // Window augmentation removed — using vite-env.d.ts global declarations
-}
 
 export type ExtendedSurfaceType = SurfaceType | "pwa" | "electron" | "capacitor";
 
