@@ -14,11 +14,24 @@ const contractFiles = scanDir("src/packages", [".ts"]);
 const eventTypes = new Set<string>();
 const receiptTypes = new Set<string>();
 
+// Exclude domain types that happen to contain "Event" but aren't event-sourcing events
+const EVENT_EXCLUSIONS = new Set([
+  "TimelineEventType", "EventPlan", "EventReminder", "EventProcessorRequest",
+  "EventProcessorResponse", "EventCategory", "EventType", "EventStatus",
+  "EventPriority", "EventItem", "EventCost", "EventGuest", "EventVenue",
+  "EventRSVP", "EventNotification", "EventTemplate", "EventOccurrence",
+  "TimelineEvent", "CalendarEvent", "ScheduledEvent", "EventAttendee",
+  "LifecycleEvent", "EventMetadata", "EventContext", "EventHandler",
+  "EventListener", "EventEmitter", "EventBusEvent", "SystemEvent",
+  "DomainEvent", "ContinuityEvent",
+]);
+
 for (const file of contractFiles) {
   if (file.includes(".test.") || file.includes("node_modules")) continue;
   const exports = extractExports(file);
   for (const exp of exports) {
-    if (exp.endsWith("Event") || exp.endsWith("EVENT") || exp.includes("Event")) {
+    if (exp.startsWith("__reexport_")) continue;
+    if ((exp.endsWith("Event") || exp.endsWith("EVENT")) && !EVENT_EXCLUSIONS.has(exp)) {
       eventTypes.add(exp);
     }
     if (exp.endsWith("Receipt") || exp.endsWith("RECEIPT") || exp.includes("Receipt")) {
