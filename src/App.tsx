@@ -694,6 +694,8 @@ const App = () => (
                   <Suspense fallback={<PageLoader />}>
                   <Routes>
                     <Route path="/" element={<DailyPulse />} />
+                    <Route path="/home" element={<DailyPulse />} />
+                    <Route path="/profile" element={<UserProfilePage />} />
                     <Route path="/life" element={<LifeDashboard />} />
                     <Route path="/life-simulator" element={<LifeSimulator />} />
                     <Route path="/my-activity" element={<MyActivity />} />
