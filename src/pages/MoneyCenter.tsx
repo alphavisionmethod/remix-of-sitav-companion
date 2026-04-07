@@ -18,7 +18,7 @@ import InvestmentOffice from "./money/InvestmentOffice";
 import TaxEstimator from "./money/TaxEstimator";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
-type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "approvals" | "boardroom" | "proof" | "files" | "settings";
+type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings";
 
 const subpageFromPath = (path: string): SubPage => {
   if (path.includes("/investment-office")) return "investment-office";
