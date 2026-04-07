@@ -235,14 +235,14 @@ const SubscriptionsWaste = () => {
             {selected ? (
               <>
                 <SitaCard hover={false} glow className="p-5">
-                  <SitaCardTitle sub={selected.category || "Uncategorized"}>{selected.service_name}</SitaCardTitle>
-                  <p className="mt-2 font-display text-2xl font-bold gradient-sita-text">${Number(selected.amount).toFixed(2)}/{selected.billing_cycle === "annually" ? "yr" : "mo"}</p>
-                  <p className="text-xs text-muted-foreground">${annualized(Number(selected.amount), selected.billing_cycle).toFixed(0)}/year</p>
+                  <SitaCardTitle sub={selected.category || "Uncategorized"}>{selected.name}</SitaCardTitle>
+                  <p className="mt-2 font-display text-2xl font-bold gradient-sita-text">${Number(selected.amount).toFixed(2)}/{selected.frequency === "annually" ? "yr" : "mo"}</p>
+                  <p className="text-xs text-muted-foreground">${annualized(Number(selected.amount), selected.frequency).toFixed(0)}/year</p>
                   <div className="mt-4 space-y-2">
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Usage</span><span className={`font-medium ${(usageLabelMap[selected.usage_level || "unknown"] || usageLabelMap.unknown).color}`}>{(usageLabelMap[selected.usage_level || "unknown"] || usageLabelMap.unknown).label}</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Billing Cycle</span><span className="text-foreground capitalize">{selected.billing_cycle || "Monthly"}</span></div>
-                    {selected.renewal_date && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Renewal</span><span className="text-foreground">{format(parseISO(selected.renewal_date), "MMM d, yyyy")}</span></div>}
-                    {selected.duplicate_of && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Overlaps With</span><span className="text-trust-review">{selected.duplicate_of}</span></div>}
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Usage</span><span className={`font-medium ${(usageLabelMap[String(selected.usage_score ?? "unknown")] || usageLabelMap.unknown).color}`}>{(usageLabelMap[String(selected.usage_score ?? "unknown")] || usageLabelMap.unknown).label}</span></div>
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Billing Cycle</span><span className="text-foreground capitalize">{selected.frequency || "Monthly"}</span></div>
+                    {selected.next_billing_date && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Renewal</span><span className="text-foreground">{format(parseISO(selected.next_billing_date), "MMM d, yyyy")}</span></div>}
+                    {(selected as any).duplicate_of && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Overlaps With</span><span className="text-trust-review">{(selected as any).duplicate_of}</span></div>}
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><span className="text-foreground capitalize">{selected.status}</span></div>
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">Waste Risk</span>{selected.waste_flag ? <TrustBadge level="degraded" label="High" size="sm" /> : <TrustBadge level="verified" label="Low" size="sm" />}</div>
                     {selected.notes && <div className="pt-2 border-t border-border"><p className="text-xs text-muted-foreground">{selected.notes}</p></div>}
