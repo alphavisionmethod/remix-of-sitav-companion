@@ -1,72 +1,49 @@
 
 
-# Wire 18 Unwired Onboarding Components to the Setup Flow
+# Fix: User Profile Page Discovery & Navigation
 
-## Analysis
+## Problem
 
-42 components exist in `src/components/sita/onboarding/`. Of those, **24 are already wired** into `OSSetupExperience.tsx`. The remaining **18 are built but disconnected**:
+`UserProfilePage.tsx` exists at `/profile` with full edit/save/avatar functionality, but **zero navigation links** point to it anywhere in the UI. Users cannot find or reach their profile page.
 
-| # | Component | Phase ID to add | Insert after |
-|---|---|---|---|
-| 1 | `WantLessOfStep` | `want-less-of` | `quick-identity` |
-| 2 | `ProtectMostStep` | `protect-most` | `want-less-of` |
-| 3 | `ExplanationStyleStep` | `explanation-style` | `planning-style` |
-| 4 | `PresenceStyleStep` | `presence-style` | `explanation-style` |
-| 5 | `InterruptionStyleStep` | `interruption-style` | `presence-style` |
-| 6 | `RitualsStep` | `rituals` | `interruption-style` |
-| 7 | `HouseholdGraphStep` | `household-graph` | `deep-world-modeling` |
-| 8 | `MemoryConsentStep` | `memory-consent` | `privacy-transparency` |
-| 9 | `HomeCompositionStep` | `home-composition` | `rituals` |
-| 10 | `DesktopPreviewStep` | `desktop-preview` | `home-composition` |
-| 11 | `FirstSimulationStep` | `first-simulation` | `first-win-setup` |
-| 12 | `FirstActionsStep` | `first-actions` | `first-simulation` |
-| 13 | `RecoverFirstStep` | `recover-first` | `access-protection` |
-| 14 | `CinematicIntro` | Replace/augment `boot` phase | Before `boot` |
-| 15 | `RestorePreviewStep` | `restore-preview` | `account-environment` |
-| 16 | `ContextualWelcomeTour` | Post-setup overlay | After `trust-certificate` |
-| 17 | `LearnLaterHub` | Post-setup overlay | Accessible from desktop |
-| 18 | `PreviewExampleModal` | Utility modal | Used within other steps |
+## Root Cause
 
-**Notes:** `ContextualWelcomeTour`, `LearnLaterHub`, and `PreviewExampleModal` are not linear phases — they're overlays/modals. They'll be wired as post-setup and inline utilities respectively.
+The user avatar/name block in the sidebar footer only has a sign-out action. There's no clickable path to `/profile` from the sidebar, top bar, or any menu.
 
-## Implementation (4 files)
+## Implementation
 
-### Step 1 — Expand `SetupPhaseId` type (setup-orchestration.ts)
+### 1. Make sidebar user block link to profile
 
-Add 14 new phase IDs to the union type:
-`"want-less-of"`, `"protect-most"`, `"explanation-style"`, `"presence-style"`, `"interruption-style"`, `"rituals"`, `"household-graph"`, `"memory-consent"`, `"home-composition"`, `"desktop-preview"`, `"first-simulation"`, `"first-actions"`, `"recover-first"`, `"restore-preview"`
+**Modify:** `src/components/sita/AppSidebar.tsx`
 
-### Step 2 — Add phase definitions (setup-phase-definitions.ts)
+Change the user block at the bottom of the sidebar (lines 246-268) from a sign-out-only button to a two-part layout:
+- Clickable avatar/name area that navigates to `/profile` via `useNavigate`
+- Separate sign-out button (LogOut icon only)
 
-Add 14 new `SetupPhaseDefinition` entries with correct dependency chains, order numbers, and branch conditions (most are `guided`/`advanced` only). Re-number existing orders to accommodate insertions.
+This gives users an obvious, always-visible path to their profile.
 
-### Step 3 — Wire components in OSSetupExperience.tsx
+### 2. Add profile link to SitaTopBar
 
-- Add 14 new imports for the unwired step components
-- Add state fields: `wantLessOf: string[]`, `protectMost: string[]`, `explanationStyle: string`, `presenceStyle: string`, `interruptionStyle: string`, `rituals: string[]`, `householdGraph: HouseholdNode[]`, `memoryConsent: string`, `homeComposition: string`, `recoverFirst: string`
-- Add 14 new `{phase === "..." && <Component />}` render blocks inside the `AnimatePresence`
-- Wire `CinematicIntro` as a pre-boot fullscreen phase
-- Wire `RestorePreviewStep` after `account-environment` (when restore path is chosen)
-- Wire `ContextualWelcomeTour` as a post-completion overlay triggered after `finishSetup`
-- Add `canAdvance` cases for new required phases
-- Persist new state fields in `finishSetup` memory items
+**Modify:** `src/components/sita/SitaTopBar.tsx`
 
-### Step 4 — Wire post-setup utilities
+Add a small avatar button in the top bar that links to `/profile`. Clicking it navigates to the profile page. Uses the user's initials or avatar.
 
-- `LearnLaterHub`: Import and render as an accessible panel from the desktop (add to `DesktopSurface.tsx` or as a route `/learn-later`)
-- `PreviewExampleModal`: Import inside steps that reference it (e.g., `FirstSimulationStep`, `DesktopPreviewStep`) as an on-demand modal
+### 3. Add profile to command palette
 
-## Files Modified
+**Modify:** `src/components/sita/shell/UniversalCommandSurface.tsx`
+
+Add a navigation command entry: `{ id: "nav-profile", label: "My Profile", sublabel: "View and edit your profile", icon: User, path: "/profile", category: "navigate", keywords: ["profile", "account", "avatar", "settings"] }`
+
+## Files
 
 | File | Change |
 |---|---|
-| `src/packages/contracts/specialized/setup-orchestration.ts` | Add 14 phase IDs to `SetupPhaseId` union |
-| `src/lib/engines/setup-phase-definitions.ts` | Add 14 phase definitions, re-order existing |
-| `src/components/sita/OSSetupExperience.tsx` | Import 18 components, add state fields, render blocks, validation, persistence |
-| `src/App.tsx` | Add `/learn-later` route for LearnLaterHub |
+| `src/components/sita/AppSidebar.tsx` | User block becomes clickable link to `/profile` + separate sign-out |
+| `src/components/sita/SitaTopBar.tsx` | Add avatar/profile button |
+| `src/components/sita/shell/UniversalCommandSurface.tsx` | Add profile command entry |
 
 ## What Won't Change
-- Individual component files (all 18 are already complete)
-- Setup orchestration engine logic (it already handles dynamic phase lists)
-- Existing 24 phases (they keep working, just get new neighbors)
+- `UserProfilePage.tsx` — already complete with avatar upload, edit fields, save, stats
+- `App.tsx` routing — `/profile` route already registered
+- Database schema — profiles table already has all needed columns
 
