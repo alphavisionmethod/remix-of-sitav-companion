@@ -1,49 +1,56 @@
 
 
-# Fix: User Profile Page Discovery & Navigation
+# Fix: Add Desktop Shell Route & Verify Edge Functions
 
-## Problem
+## Edge Functions Status: All 100% Substantive
 
-`UserProfilePage.tsx` exists at `/profile` with full edit/save/avatar functionality, but **zero navigation links** point to it anywhere in the UI. Users cannot find or reach their profile page.
+After auditing all 50 edge functions by line count and code review, **every single one is fully implemented** with:
+- Zod input validation
+- CORS handling
+- Auth (JWT or admin role checks)
+- Rate limiting
+- Real database operations (no stubs, no TODOs)
 
-## Root Cause
+No edge function changes needed.
 
-The user avatar/name block in the sidebar footer only has a sign-out action. There's no clickable path to `/profile` from the sidebar, top bar, or any menu.
+## Desktop Shell Gap
+
+`DesktopSurface` (411 lines, fully built) is **never routed**. It lives at `src/components/sita/shell/DesktopSurface.tsx` with live data wiring (cashflow, CRM), boardroom preview, today's focus, quick actions, continuity tracking, and trust posture display — but no user can reach it.
+
+Currently, authenticated `/` and `/home` both render `DailyPulse`. The DesktopSurface is the richer, OS-native "home screen" that should be the primary landing experience.
 
 ## Implementation
 
-### 1. Make sidebar user block link to profile
+### 1. Create `src/pages/DesktopPage.tsx`
 
-**Modify:** `src/components/sita/AppSidebar.tsx`
+A thin wrapper page that:
+- Imports `DesktopSurface` from `@/components/sita/shell`
+- Imports `useShellState` to feed live trust posture, notifications, and continuity data
+- Passes the universal command surface opener via callback
+- Renders DesktopSurface with all props wired
 
-Change the user block at the bottom of the sidebar (lines 246-268) from a sign-out-only button to a two-part layout:
-- Clickable avatar/name area that navigates to `/profile` via `useNavigate`
-- Separate sign-out button (LogOut icon only)
+### 2. Add `/desktop` route to `App.tsx`
 
-This gives users an obvious, always-visible path to their profile.
+- Add lazy import for `DesktopPage`
+- Add route `<Route path="/desktop" element={<DesktopPage />} />` inside the ShellLayout block
+- Change `<Route path="/" element={<DailyPulse />} />` to `<Route path="/" element={<DesktopPage />} />` so the desktop is the default authenticated home
+- Keep `/home` pointing to `DailyPulse` as an alternative view
 
-### 2. Add profile link to SitaTopBar
+### 3. Add Desktop to sidebar navigation (`AppSidebar.tsx`)
 
-**Modify:** `src/components/sita/SitaTopBar.tsx`
+- Add a "Desktop" entry at the top of the primary nav items (icon: `Layout` or `Monitor`, path: `/desktop`)
+- Ensures discoverability
 
-Add a small avatar button in the top bar that links to `/profile`. Clicking it navigates to the profile page. Uses the user's initials or avatar.
+### 4. Add Desktop to command palette (`UniversalCommandSurface.tsx`)
 
-### 3. Add profile to command palette
-
-**Modify:** `src/components/sita/shell/UniversalCommandSurface.tsx`
-
-Add a navigation command entry: `{ id: "nav-profile", label: "My Profile", sublabel: "View and edit your profile", icon: User, path: "/profile", category: "navigate", keywords: ["profile", "account", "avatar", "settings"] }`
+- Add navigation command: `{ id: "nav-desktop", label: "Desktop", sublabel: "OS home screen", path: "/desktop", category: "navigate" }`
 
 ## Files
 
-| File | Change |
+| Action | File |
 |---|---|
-| `src/components/sita/AppSidebar.tsx` | User block becomes clickable link to `/profile` + separate sign-out |
-| `src/components/sita/SitaTopBar.tsx` | Add avatar/profile button |
-| `src/components/sita/shell/UniversalCommandSurface.tsx` | Add profile command entry |
-
-## What Won't Change
-- `UserProfilePage.tsx` — already complete with avatar upload, edit fields, save, stats
-- `App.tsx` routing — `/profile` route already registered
-- Database schema — profiles table already has all needed columns
+| Create | `src/pages/DesktopPage.tsx` |
+| Modify | `src/App.tsx` — add lazy import + `/desktop` route, change `/` default |
+| Modify | `src/components/sita/AppSidebar.tsx` — add Desktop nav item |
+| Modify | `src/components/sita/shell/UniversalCommandSurface.tsx` — add Desktop command |
 
