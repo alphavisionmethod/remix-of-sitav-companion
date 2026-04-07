@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { Receipt } from "./receipt-service";
 import type { ExecutionEnvelope } from "./executor-service";
 import type { Projection } from "./projection-service";
@@ -16,7 +17,7 @@ export async function persistChainReceipt(
   domain?: string
 ): Promise<void> {
   try {
-    await supabase.from("receipts").insert({
+    await fromTable("receipts").insert({
       user_id: userId,
       type: receipt.receiptType,
       hash: receipt.hash,
@@ -58,7 +59,7 @@ export async function persistChainProof(
       hash = Math.abs(h).toString(16).padStart(16, "0");
     }
 
-    await supabase.from("proof_records").insert({
+    await fromTable("proof_records").insert({
       user_id: userId,
       action,
       actor: "canonical-chain",
@@ -81,7 +82,7 @@ export async function persistChainEnvelope(
   correlationId: string
 ): Promise<void> {
   try {
-    await supabase.from("execution_envelopes").insert({
+    await fromTable("execution_envelopes").insert({
       user_id: userId,
       capability_id: envelope.capabilityId,
       status: envelope.status,
@@ -119,12 +120,12 @@ export async function persistChainProjection(
       .maybeSingle();
 
     if (existing) {
-      await supabase.from("projections").update({
+      await fromTable("projections").update({
         data: { state: projection.state, eventCount: projection.eventCount, lastEventId: projection.lastEventId, snapshotAt: projection.snapshotAt },
         generated_at: new Date().toISOString(),
       }).eq("id", existing.id);
     } else {
-      await supabase.from("projections").insert({
+      await fromTable("projections").insert({
         user_id: userId,
         type: projection.type,
         domain,
@@ -148,7 +149,7 @@ export async function persistChainApproval(
   domain?: string
 ): Promise<void> {
   try {
-    await supabase.from("approval_queue").insert({
+    await fromTable("approval_queue").insert({
       user_id: userId,
       action_summary: actionSummary,
       proposed_action: proposedAction,
@@ -172,7 +173,7 @@ export async function persistChainEvent(
   domain?: string
 ): Promise<void> {
   try {
-    await supabase.from("events").insert({
+    await fromTable("events").insert({
       user_id: userId,
       event_type: eventType,
       payload,

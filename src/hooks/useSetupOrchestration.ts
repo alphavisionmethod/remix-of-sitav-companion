@@ -13,6 +13,7 @@ import { RESOLVED_STATUSES } from "@/packages/contracts/specialized/setup-orches
 import { useAuth } from "@/contexts/AuthContext";
 import { onNetworkChange, onVisibilityChange } from "@/components/sita/boot/bootStatePersistence";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 function getDeviceId(): string {
   let id = localStorage.getItem("sita-device-id");
@@ -81,7 +82,7 @@ export function useSetupOrchestration(): SetupOrchestrationHook {
     const dbInterval = setInterval(async () => {
       try {
         const snapshot = engine.toSnapshot();
-        await supabase.from("setup_sessions").upsert({
+        await fromTable("setup_sessions").upsert({
           id: snapshot.id,
           user_id: snapshot.userId,
           device_id: snapshot.deviceId,

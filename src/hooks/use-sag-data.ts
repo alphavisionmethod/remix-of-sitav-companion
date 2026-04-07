@@ -4,6 +4,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 
 const getUser = async () => {
@@ -14,7 +15,7 @@ const getUser = async () => {
 const makeHook = (table: string, key: string) => () => useQuery({
   queryKey: ['sag', key],
   queryFn: async () => {
-    const { data, error } = await supabase.from(table).select('*').order('created_at', { ascending: false });
+    const { data, error } = await fromTable(table).select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data as any[];
   }
@@ -26,7 +27,7 @@ const makeMutation = (table: string, key: string, successMsg: string) => () => {
     mutationFn: async (record: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from(table).insert({ ...record, user_id: user.id }).select().single();
+      const { data, error } = await fromTable(table).insert({ ...record, user_id: user.id }).select().single();
       if (error) throw error;
       return data;
     },
@@ -65,11 +66,11 @@ export const useGatewayStats = () => useQuery({
   queryKey: ['sag', 'stats'],
   queryFn: async () => {
     const [tasks, receipts, health, portfolio, violations] = await Promise.all([
-      supabase.from('ai_task_requests').select('*').order('created_at', { ascending: false }).limit(500),
-      supabase.from('ai_inference_receipts').select('*').order('created_at', { ascending: false }).limit(500),
-      supabase.from('ai_provider_health').select('*'),
-      supabase.from('ai_portfolio_allocations').select('*'),
-      supabase.from('ai_compliance_violations').select('*').eq('resolved', false),
+      fromTable('ai_task_requests').select('*').order('created_at', { ascending: false }).limit(500),
+      fromTable('ai_inference_receipts').select('*').order('created_at', { ascending: false }).limit(500),
+      fromTable('ai_provider_health').select('*'),
+      fromTable('ai_portfolio_allocations').select('*'),
+      fromTable('ai_compliance_violations').select('*').eq('resolved', false),
     ]);
     const t = (tasks.data || []) as any[];
     const r = (receipts.data || []) as any[];

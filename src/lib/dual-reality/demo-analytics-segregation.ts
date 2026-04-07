@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "./reality-mode-registry";
 
 export interface DemoAnalyticsEvent {
@@ -28,7 +29,7 @@ export async function trackModeAwareEvent(event: DemoAnalyticsEvent): Promise<vo
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 
-  await supabase.from("demo_analytics").insert({
+  await fromTable("demo_analytics").insert({
     user_id: user.id,
     scenario_id: event.scenarioId,
     event_name: event.eventName,
@@ -53,7 +54,7 @@ export async function recordDemoAction(action: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 
-  await supabase.from("demo_actions").insert({
+  await fromTable("demo_actions").insert({
     user_id: user.id,
     scenario_id: action.scenarioId,
     feature_id: action.featureId,
@@ -78,7 +79,7 @@ export async function createDemoReceipt(receipt: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data, error } = await supabase.from("demo_receipts").insert({
+  const { data, error } = await fromTable("demo_receipts").insert({
     user_id: user.id,
     scenario_id: receipt.scenarioId,
     feature_id: receipt.featureId,
