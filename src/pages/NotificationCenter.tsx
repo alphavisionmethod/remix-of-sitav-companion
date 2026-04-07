@@ -210,7 +210,7 @@ const NotificationCenter = () => {
   };
 
   return (
-    <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+    <motion.div className="mx-auto max-w-5xl space-y-6" data-testid="notification-center" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <DomainHeader
         title="Notification Center"
         subtitle="Structured attention management — what needs awareness, what needs action"

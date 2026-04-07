@@ -62,7 +62,7 @@ export default function NotificationPreferences() {
   const permissionColor = permissionState === "granted" ? "bg-emerald-500/15 text-emerald-400" : permissionState === "denied" ? "bg-destructive/15 text-destructive" : "bg-muted text-muted-foreground";
 
   return (
-    <div className="p-6 max-w-3xl mx-auto space-y-6">
+    <div className="p-6 max-w-3xl mx-auto space-y-6" data-testid="notification-preferences-page">
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Bell className="h-6 w-6 text-primary" /></div>
         <div>

@@ -87,6 +87,7 @@ const MobileSettings = () => {
           }
           controlled={isRegistered}
           onToggle={handlePushToggle}
+          data-testid="mobile-push-toggle"
         />
         <ToggleRow icon={Bell} label="Quiet Hours" description="Mute non-critical alerts 10 PM — 7 AM" />
       </div>
