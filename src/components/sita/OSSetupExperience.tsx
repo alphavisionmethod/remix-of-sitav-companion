@@ -933,6 +933,17 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
+                {phase === "first-simulation" && (
+                  <FirstSimulationStep key="first-simulation" onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "first-actions" && (
+                  <FirstActionsStep key="first-actions"
+                    enabledDomains={state.enabledDomains}
+                    protectionPriorities={state.protectMost}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
                 {phase === "arrival-prep" && (
                   <ArrivalPrepStep key="arrival-prep"
                     displayName={state.displayName}
