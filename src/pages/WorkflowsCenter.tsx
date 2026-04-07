@@ -176,7 +176,7 @@ const WorkflowsCenter = () => {
                         {String((run as Record<string, unknown>).workflows && typeof (run as Record<string, unknown>).workflows === "object" ? ((run as Record<string, unknown>).workflows as Record<string, unknown>)?.name : null) || `Workflow ${run.workflow_id.slice(0, 8)}`}
                       </p>
                       <p className="mt-0.5 text-xs text-muted-foreground">
-                        Step {run.current_step} · {timeInState(run)} · {(run as Record<string, unknown>).workflows?.trigger_event || "unknown trigger"}
+                        Step {run.current_step} · {timeInState(run)} · {String((run as Record<string, unknown>).workflows && typeof (run as Record<string, unknown>).workflows === "object" ? ((run as Record<string, unknown>).workflows as Record<string, unknown>)?.trigger_event : null) || "unknown trigger"}
                       </p>
                     </div>
                     <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0 mt-2" />
