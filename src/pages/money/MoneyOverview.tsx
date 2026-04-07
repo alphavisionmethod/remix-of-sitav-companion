@@ -36,8 +36,8 @@ const MoneyOverview = () => {
   // Wire to cashflow-calculate edge function
   const { data: cfAnalysis } = useCashflowAnalysis();
   const { data: burnRateData } = useBurnRate();
-  const cf = cfAnalysis as never;
-  const br = burnRateData as never;
+  const cf = cfAnalysis as any;
+  const br = burnRateData as any;
 
   const hasLiveData = isDemoMode || bills.length > 0 || subscriptions.length > 0 || invoices.length > 0 || accounts.length > 0;
 

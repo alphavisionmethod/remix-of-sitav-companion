@@ -321,15 +321,15 @@ export default function ConstitutionEditor() {
           const rules = compiler.getAllRules();
           const added = rules.find((r: ConstitutionRule) => r.naturalLanguage === d);
           if (added) {
-            await fromTable("constitution_rules").insert({
+            await fromTable("constitution_rules").insert([{
               user_id: user.id,
               natural_text: d,
               category: added.category,
-              priority: added.compiledPolicy?.parameters?.priority ?? 50,
+              priority: (added.compiledPolicy?.parameters?.priority ?? 50) as number,
               enforcement_mode: added.enforcementMode,
               is_active: true,
-              compiled_json: added.compiledPolicy,
-            });
+              compiled_json: added.compiledPolicy as any,
+            }]);
           }
         }
       }
@@ -358,15 +358,15 @@ export default function ConstitutionEditor() {
       const rules = compiler.getAllRules();
       const added = rules.find((r: ConstitutionRule) => r.naturalLanguage === text);
       if (added) {
-        await fromTable("constitution_rules").insert({
+        await fromTable("constitution_rules").insert([{
           user_id: user.id,
           natural_text: text,
           category: added.category,
-          priority: added.compiledPolicy?.parameters?.priority ?? 50,
+          priority: (added.compiledPolicy?.parameters?.priority ?? 50) as number,
           enforcement_mode: added.enforcementMode,
           is_active: true,
-          compiled_json: added.compiledPolicy,
-        });
+          compiled_json: added.compiledPolicy as any,
+        }]);
       }
     }
   }, [compileRule, isDemo, user?.id, compiler]);

@@ -99,7 +99,7 @@ function useRecentWrites() {
         fromTable("os_event_log").select("id, topic, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
         fromTable("os_memory_scoped").select("id, key, updated_at").eq("user_id", user.id).order("updated_at", { ascending: false }).limit(3),
         fromTable("os_policy_evaluations").select("id, rule_name, effect, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
-        fromTable("sita_receipts").select("id, receipt_type, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
+        fromTable("sita_receipts").select("id, type, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3),
         fromTable("os_action_lineage").select("id, domain, current_state, updated_at").eq("user_id", user.id).order("updated_at", { ascending: false }).limit(3),
       ]);
 
@@ -115,7 +115,7 @@ function useRecentWrites() {
         writes.push({ service: "Policy", detail: `${p.rule_name} → ${p.effect}`, time: p.created_at });
       }
       for (const r of receiptsRes.data ?? []) {
-        writes.push({ service: "Receipt", detail: r.receipt_type, time: r.created_at });
+        writes.push({ service: "Receipt", detail: (r as any).type, time: (r as any).created_at });
       }
       for (const a of actionsRes.data ?? []) {
         writes.push({ service: "Action", detail: `${a.domain} → ${a.current_state}`, time: a.updated_at });

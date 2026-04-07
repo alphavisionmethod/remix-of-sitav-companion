@@ -41,15 +41,16 @@ const FilesSettings = () => {
 
   useEffect(() => {
     if (savedSettings) {
+      const s = savedSettings as any;
       setSettings({
-        auto_classify: (savedSettings as Record<string, unknown>).auto_classify ?? true,
-        auto_extract: (savedSettings as Record<string, unknown>).auto_extract ?? true,
-        generate_suggestions: (savedSettings as Record<string, unknown>).generate_suggestions ?? true,
-        auto_link: (savedSettings as Record<string, unknown>).auto_link ?? false,
-        boardroom_attach: (savedSettings as Record<string, unknown>).boardroom_attach ?? true,
-        default_sensitivity: (savedSettings as Record<string, unknown>).default_sensitivity ?? "internal",
-        default_retention: (savedSettings as Record<string, unknown>).default_retention ?? "7 years",
-        memory_write_permission: (savedSettings as Record<string, unknown>).memory_write_permission ?? "allowed_with_review",
+        auto_classify: s.auto_classify ?? true,
+        auto_extract: s.auto_extract ?? true,
+        generate_suggestions: s.generate_suggestions ?? true,
+        auto_link: s.auto_link ?? false,
+        boardroom_attach: s.boardroom_attach ?? true,
+        default_sensitivity: s.default_sensitivity ?? "internal",
+        default_retention: s.default_retention ?? "7 years",
+        memory_write_permission: s.memory_write_permission ?? "allowed_with_review",
       });
     }
   }, [savedSettings]);

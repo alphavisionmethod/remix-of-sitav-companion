@@ -61,13 +61,14 @@ export default function CJ08RouteActionCoverage() {
   const domainHeatmap = useMemo(() => {
     const map: Record<string, { total: number; verified: number; p0: number; p0Verified: number }> = {};
     for (const r of (coverage ?? [])) {
-      const routeKey = (r as Record<string, unknown>).route_key || "";
+      const rr = r as any;
+      const routeKey = String(rr.route_key || "");
       const domain = routeKey.split("/")[1] || routeKey.split(".")[0] || "unknown";
       if (!map[domain]) map[domain] = { total: 0, verified: 0, p0: 0, p0Verified: 0 };
-      map[domain].total += (r as Record<string, unknown>).total_actions || 0;
-      map[domain].verified += (r as Record<string, unknown>).verified_actions || 0;
-      map[domain].p0 += (r as Record<string, unknown>).p0_actions || 0;
-      map[domain].p0Verified += (r as Record<string, unknown>).p0_verified_actions || 0;
+      map[domain].total += Number(rr.total_actions) || 0;
+      map[domain].verified += Number(rr.verified_actions) || 0;
+      map[domain].p0 += Number(rr.p0_actions) || 0;
+      map[domain].p0Verified += Number(rr.p0_verified_actions) || 0;
     }
     return Object.entries(map).map(([domain, stats]) => ({
       domain,

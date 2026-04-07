@@ -131,7 +131,7 @@ const BillsWorkspace = () => {
         // Fire payment-process edge function for audit trail & approval
         await initiatePayment({
           amount_cents: Math.round(Number(bill.amount || 0) * 100),
-          account_id: bill.account_id || user.id,
+          account_id: (bill as any).account_id || user.id,
           description: `Bill payment: ${bill.payee || "Unknown"}`,
           recipient: bill.payee,
           category: bill.category || "bills",

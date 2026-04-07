@@ -70,8 +70,8 @@ export default function AR07RetryFailureCenter() {
             <TableBody>
               {failures.slice(0, 50).map((f: any) => (
                 <TableRow key={f.id}>
-                  <TableCell className="text-xs font-medium">{(f as Record<string, unknown>).scheduled_jobs?.name || f.job_id.slice(0, 8)}</TableCell>
-                  <TableCell><Badge variant="secondary" className="text-[9px]">{(f as Record<string, unknown>).scheduled_jobs?.domain || "—"}</Badge></TableCell>
+                  <TableCell className="text-xs font-medium">{((f as any).scheduled_jobs as any)?.name || f.job_id.slice(0, 8)}</TableCell>
+                  <TableCell><Badge variant="secondary" className="text-[9px]">{((f as any).scheduled_jobs as any)?.domain || "—"}</Badge></TableCell>
                   <TableCell className="text-[10px] text-destructive max-w-[200px] truncate">{f.error_message || "Unknown"}</TableCell>
                   <TableCell className="text-[10px]">#{f.attempt_number}</TableCell>
                   <TableCell>{f.retryable ? <RotateCcw className="h-3 w-3 text-accent" /> : <XCircle className="h-3 w-3 text-muted-foreground" />}</TableCell>

@@ -77,7 +77,7 @@ export default function ISA07AuthConnectorTruthBoard() {
 
   // Check 1: Any family with both identity and connector using SAME OAuth client?
   const clientsByFamily = oauthClients.reduce((acc: Record<string, any[]>, c: any) => {
-    const fk = (c as Record<string, unknown>).provider_families?.provider_key || "unknown";
+    const fk = ((c as any).provider_families as any)?.provider_key || "unknown";
     if (!acc[fk]) acc[fk] = [];
     acc[fk].push(c);
     return acc;
@@ -108,8 +108,8 @@ export default function ISA07AuthConnectorTruthBoard() {
   });
 
   // Check 2: Identity link implies connector access? (should NOT)
-  const identityFamilies = new Set(identityLinks.map((l: any) => (l as Record<string, unknown>).provider_families?.provider_key));
-  const connectorFamilies = new Set(connectorLinks.map((l: any) => (l as Record<string, unknown>).provider_families?.provider_key));
+  const identityFamilies = new Set(identityLinks.map((l: any) => ((l as any).provider_families as any)?.provider_key));
+  const connectorFamilies = new Set(connectorLinks.map((l: any) => ((l as any).provider_families as any)?.provider_key));
   identityFamilies.forEach((fam: any) => {
     if (fam && connectorFamilies.has(fam)) {
       findings.push({

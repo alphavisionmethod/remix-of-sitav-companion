@@ -85,11 +85,11 @@ const CustomersPage = () => {
 
   const createCustomer = useMutation({
     mutationFn: async () => {
-      const { error } = await fromTable("customers").insert({
+      const { error } = await fromTable("customers").insert([{
         user_id: user!.id, name: formName, email: formEmail || null,
         company: formCompany || null, phone: formPhone || null,
-        status: "active", tier: "standard", lifetime_value: 0,
-      });
+        status: "active",
+      }]);
       if (error) throw error;
     },
     onSuccess: () => {

@@ -154,16 +154,16 @@ const RecoveryCenter = () => {
             {selected ? (
               <>
                 <SitaCard hover={false} glow className="p-5">
-                  <SitaCardTitle sub={(selected as Record<string, unknown>).severity || (selected as Record<string, unknown>).status}>
-                    {(selected as Record<string, unknown>).title || (selected as Record<string, unknown>).workflows?.name || "Details"}
+                  <SitaCardTitle sub={String((selected as any).severity || (selected as any).status || "")}>
+                    {String((selected as any).title || (selected as any).workflows?.name || "Details")}
                   </SitaCardTitle>
                   <div className="mt-4 space-y-3">
-                    {(selected as Record<string, unknown>).description && (
-                      <p className="text-xs text-muted-foreground">{(selected as Record<string, unknown>).description}</p>
+                    {(selected as any).description && (
+                      <p className="text-xs text-muted-foreground">{String((selected as any).description)}</p>
                     )}
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><span className="text-foreground">{(selected as Record<string, unknown>).status}</span></div>
-                    {(selected as Record<string, unknown>).affected_service && (
-                      <div className="flex justify-between text-sm"><span className="text-muted-foreground">Affected</span><span className="text-foreground">{(selected as Record<string, unknown>).affected_service}</span></div>
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><span className="text-foreground">{String((selected as any).status)}</span></div>
+                    {(selected as any).affected_service && (
+                      <div className="flex justify-between text-sm"><span className="text-muted-foreground">Affected</span><span className="text-foreground">{String((selected as any).affected_service)}</span></div>
                     )}
                   </div>
                 </SitaCard>

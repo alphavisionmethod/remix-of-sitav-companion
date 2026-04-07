@@ -117,7 +117,7 @@ export default function ConnectorGovernanceCenter() {
 
   const activeConnectors = dbConnectors ? DEMO_CONNECTORS.map(c => {
     const acc = dbConnectors.accounts.find((a: any) => a.connector_type === c.id);
-    return acc ? { ...c, status: acc.status === "active" ? "healthy" as const : c.status, lastSyncAt: acc.last_sync_at ? new Date(acc.last_sync_at).toLocaleTimeString() : c.lastSyncAt } : c;
+    return acc ? { ...c, status: acc.status === "active" ? "healthy" as const : c.status, lastSyncAt: acc.connected_at ? new Date(acc.connected_at).toLocaleTimeString() : c.lastSyncAt } : c;
   }) : DEMO_CONNECTORS;
 
   const healthy = activeConnectors.filter(c => c.status === "healthy").length;

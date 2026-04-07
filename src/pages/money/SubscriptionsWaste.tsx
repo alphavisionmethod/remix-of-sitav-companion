@@ -55,7 +55,7 @@ const SubscriptionsWaste = () => {
   const subsQuery = useQuery({
     queryKey: ["subscriptions"],
     queryFn: async () => {
-      const { data, error } = await fromTable("subscriptions").select("*").order("service_name", { ascending: true });
+      const { data, error } = await fromTable("subscriptions").select("*").order("name", { ascending: true });
       if (error) throw error;
       return data;
     },
@@ -66,18 +66,15 @@ const SubscriptionsWaste = () => {
 
   const createMutation = useMutation({
     mutationFn: async (sub: SubForm) => {
-      const { error } = await fromTable("subscriptions").insert({
-        service_name: sub.service_name,
+      const { error } = await fromTable("subscriptions").insert([{
+        name: sub.service_name,
         amount: parseFloat(sub.amount),
-        billing_cycle: sub.billing_cycle,
+        frequency: sub.billing_cycle,
         category: sub.category || null,
-        renewal_date: sub.renewal_date || null,
-        usage_level: sub.usage_level,
-        waste_flag: sub.waste_flag,
-        duplicate_of: sub.duplicate_of || null,
+        next_billing_date: sub.renewal_date || null,
         notes: sub.notes || null,
         user_id: user!.id,
-      });
+      }]);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["subscriptions"] }); setShowForm(false); setForm(emptyForm); toast.success("Subscription added"); },
@@ -87,14 +84,11 @@ const SubscriptionsWaste = () => {
   const updateMutation = useMutation({
     mutationFn: async ({ id, sub }: { id: string; sub: SubForm }) => {
       const { error } = await fromTable("subscriptions").update({
-        service_name: sub.service_name,
+        name: sub.service_name,
         amount: parseFloat(sub.amount),
-        billing_cycle: sub.billing_cycle,
+        frequency: sub.billing_cycle,
         category: sub.category || null,
-        renewal_date: sub.renewal_date || null,
-        usage_level: sub.usage_level,
-        waste_flag: sub.waste_flag,
-        duplicate_of: sub.duplicate_of || null,
+        next_billing_date: sub.renewal_date || null,
         notes: sub.notes || null,
       }).eq("id", id);
       if (error) throw error;
@@ -123,9 +117,9 @@ const SubscriptionsWaste = () => {
 
   const active = subscriptions.filter(s => s.status === "active");
   const totalMonthly = active.reduce((s, sub) => s + Number(sub.amount), 0);
-  const wasteSubs = subscriptions.filter(s => s.waste_flag && s.status === "active");
+  const wasteSubs = subscriptions.filter(s => (s as any).waste_flag && s.status === "active");
   const wasteMonthly = wasteSubs.reduce((s, sub) => s + Number(sub.amount), 0);
-  const duplicates = subscriptions.filter(s => s.duplicate_of);
+  const duplicates = subscriptions.filter(s => (s as any).duplicate_of);
 
   const filtered = tab === "all" ? subscriptions
     : tab === "waste" ? wasteSubs
@@ -136,14 +130,14 @@ const SubscriptionsWaste = () => {
 
   const openEdit = (s: typeof subscriptions[0]) => {
     setForm({
-      service_name: s.service_name,
+      service_name: s.name,
       amount: String(s.amount),
-      billing_cycle: s.billing_cycle || "monthly",
+      billing_cycle: s.frequency || "monthly",
       category: s.category || "",
-      renewal_date: s.renewal_date || "",
-      usage_level: s.usage_level || "unknown",
-      waste_flag: s.waste_flag || false,
-      duplicate_of: s.duplicate_of || "",
+      renewal_date: s.next_billing_date || "",
+      usage_level: String(s.usage_score ?? "unknown"),
+      waste_flag: (s as any).waste_flag || false,
+      duplicate_of: (s as any).duplicate_of || "",
       notes: s.notes || "",
     });
     setEditId(s.id);
@@ -211,24 +205,24 @@ const SubscriptionsWaste = () => {
         <div className="grid gap-6 lg:grid-cols-5">
           <div className="lg:col-span-3 space-y-2">
             {filtered.map((sub) => {
-              const usage = usageLabelMap[sub.usage_level || "unknown"] || usageLabelMap.unknown;
-              return (
+               const usage = usageLabelMap[String((sub as any).usage_level || sub.usage_score || "unknown")] || usageLabelMap.unknown;
+               return (
                 <SitaCard key={sub.id} onClick={() => setSelectedId(sub.id)} selected={selectedId === sub.id}
-                  lane={sub.waste_flag ? "action" : undefined} className="p-4">
+                  lane={(sub as any).waste_flag ? "action" : undefined} className="p-4">
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <p className="text-sm font-medium text-foreground">{sub.service_name}</p>
+                        <p className="text-sm font-medium text-foreground">{sub.name}</p>
                         {sub.status === "paused" && <span className="text-[10px] text-muted-foreground bg-muted rounded px-1.5 py-px">Paused</span>}
                         {sub.status === "cancelled" && <span className="text-[10px] text-muted-foreground bg-muted rounded px-1.5 py-px line-through">Cancelled</span>}
-                        {sub.waste_flag && <span className="inline-flex items-center gap-1 rounded-md bg-urgency-high/10 border border-urgency-high/20 px-1.5 py-px text-[10px] font-medium text-urgency-high"><AlertTriangle className="h-2.5 w-2.5" /> Waste</span>}
-                        {sub.duplicate_of && <span className="text-[10px] text-trust-review bg-trust-review/10 rounded px-1.5 py-px">Duplicate</span>}
+                        {(sub as any).waste_flag && <span className="inline-flex items-center gap-1 rounded-md bg-urgency-high/10 border border-urgency-high/20 px-1.5 py-px text-[10px] font-medium text-urgency-high"><AlertTriangle className="h-2.5 w-2.5" /> Waste</span>}
+                        {(sub as any).duplicate_of && <span className="text-[10px] text-trust-review bg-trust-review/10 rounded px-1.5 py-px">Duplicate</span>}
                       </div>
                       <p className="text-xs text-muted-foreground">{sub.category || "Uncategorized"} · Usage: {usage.label}</p>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="font-display text-sm font-bold text-foreground">${Number(sub.amount).toFixed(2)}/{sub.billing_cycle === "annually" ? "yr" : "mo"}</p>
-                      <p className="text-[10px] text-muted-foreground">${annualized(Number(sub.amount), sub.billing_cycle).toFixed(0)}/yr</p>
+                      <p className="font-display text-sm font-bold text-foreground">${Number(sub.amount).toFixed(2)}/{sub.frequency === "annually" ? "yr" : "mo"}</p>
+                      <p className="text-[10px] text-muted-foreground">${annualized(Number(sub.amount), sub.frequency).toFixed(0)}/yr</p>
                     </div>
                   </div>
                 </SitaCard>
@@ -241,30 +235,30 @@ const SubscriptionsWaste = () => {
             {selected ? (
               <>
                 <SitaCard hover={false} glow className="p-5">
-                  <SitaCardTitle sub={selected.category || "Uncategorized"}>{selected.service_name}</SitaCardTitle>
-                  <p className="mt-2 font-display text-2xl font-bold gradient-sita-text">${Number(selected.amount).toFixed(2)}/{selected.billing_cycle === "annually" ? "yr" : "mo"}</p>
-                  <p className="text-xs text-muted-foreground">${annualized(Number(selected.amount), selected.billing_cycle).toFixed(0)}/year</p>
+                  <SitaCardTitle sub={selected.category || "Uncategorized"}>{selected.name}</SitaCardTitle>
+                  <p className="mt-2 font-display text-2xl font-bold gradient-sita-text">${Number(selected.amount).toFixed(2)}/{selected.frequency === "annually" ? "yr" : "mo"}</p>
+                  <p className="text-xs text-muted-foreground">${annualized(Number(selected.amount), selected.frequency).toFixed(0)}/year</p>
                   <div className="mt-4 space-y-2">
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Usage</span><span className={`font-medium ${(usageLabelMap[selected.usage_level || "unknown"] || usageLabelMap.unknown).color}`}>{(usageLabelMap[selected.usage_level || "unknown"] || usageLabelMap.unknown).label}</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Billing Cycle</span><span className="text-foreground capitalize">{selected.billing_cycle || "Monthly"}</span></div>
-                    {selected.renewal_date && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Renewal</span><span className="text-foreground">{format(parseISO(selected.renewal_date), "MMM d, yyyy")}</span></div>}
-                    {selected.duplicate_of && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Overlaps With</span><span className="text-trust-review">{selected.duplicate_of}</span></div>}
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Usage</span><span className={`font-medium ${(usageLabelMap[String(selected.usage_score ?? "unknown")] || usageLabelMap.unknown).color}`}>{(usageLabelMap[String(selected.usage_score ?? "unknown")] || usageLabelMap.unknown).label}</span></div>
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Billing Cycle</span><span className="text-foreground capitalize">{selected.frequency || "Monthly"}</span></div>
+                    {selected.next_billing_date && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Renewal</span><span className="text-foreground">{format(parseISO(selected.next_billing_date), "MMM d, yyyy")}</span></div>}
+                    {(selected as any).duplicate_of && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Overlaps With</span><span className="text-trust-review">{(selected as any).duplicate_of}</span></div>}
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><span className="text-foreground capitalize">{selected.status}</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Waste Risk</span>{selected.waste_flag ? <TrustBadge level="degraded" label="High" size="sm" /> : <TrustBadge level="verified" label="Low" size="sm" />}</div>
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Waste Risk</span>{(selected as any).waste_flag ? <TrustBadge level="degraded" label="High" size="sm" /> : <TrustBadge level="verified" label="Low" size="sm" />}</div>
                     {selected.notes && <div className="pt-2 border-t border-border"><p className="text-xs text-muted-foreground">{selected.notes}</p></div>}
                   </div>
                 </SitaCard>
 
-                {selected.waste_flag && (
+                {(selected as any).waste_flag && (
                   <SitaCard hover={false}>
                     <SitaCardTitle>Recommended Action</SitaCardTitle>
                     <div className="mt-3 rounded-xl bg-accent/5 border border-accent/10 p-4">
                       <div className="flex items-start gap-2">
                         <Sparkles className="h-4 w-4 text-accent mt-0.5 shrink-0" />
                         <div>
-                          <p className="text-sm font-medium text-foreground">Cancel {selected.service_name}</p>
+                          <p className="text-sm font-medium text-foreground">Cancel {selected.name}</p>
                           <p className="mt-1 text-xs text-muted-foreground">
-                            Save ${annualized(Number(selected.amount), selected.billing_cycle).toFixed(0)}/year. {selected.duplicate_of ? `Use ${selected.duplicate_of} instead.` : "Usage doesn't justify the cost."}
+                            Save ${annualized(Number(selected.amount), selected.frequency).toFixed(0)}/year. {(selected as any).duplicate_of ? `Use ${(selected as any).duplicate_of} instead.` : "Usage doesn't justify the cost."}
                           </p>
                         </div>
                       </div>

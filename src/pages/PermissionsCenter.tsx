@@ -228,12 +228,12 @@ const PermissionsCenter = () => {
                     <div>
                       <p className="text-sm font-medium text-foreground">{dev.device_name}</p>
                       <p className="text-xs text-muted-foreground">
-                        {dev.device_type} · {dev.os || "Unknown OS"} · Trust: {Math.round(Number(dev.trust_score || 0) * 100)}%
+                        {dev.device_type} · {dev.os || "Unknown OS"} · Trust: {Math.round(Number((dev.metadata && typeof dev.metadata === 'object' && 'trust_score' in dev.metadata ? (dev.metadata as any).trust_score : 0) || 0) * 100)}%
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    {dev.is_primary && <span className="text-[10px] bg-primary/10 text-primary rounded-md px-1.5 py-0.5">Primary</span>}
+                    {(dev.metadata && typeof dev.metadata === 'object' && 'is_primary' in dev.metadata && (dev.metadata as any).is_primary) && <span className="text-[10px] bg-primary/10 text-primary rounded-md px-1.5 py-0.5">Primary</span>}
                     <TrustBadge level={dev.status === "online" ? "verified" : "low-confidence"} label={dev.status} size="sm" />
                   </div>
                 </div>

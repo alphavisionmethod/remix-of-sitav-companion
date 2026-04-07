@@ -587,7 +587,7 @@ function MCCosts() {
   }, [tokenEngine, tokenUsages]);
 
   const modelRoutes = useMemo(() => {
-    return (tokenEngine as Record<string, unknown>).routes as Array<{ id: string; name: string; tier: string; model: string; costPer1kTokens: number; latencyMs: number; active: boolean }>;
+    return (tokenEngine as unknown as Record<string, unknown>).routes as Array<{ id: string; name: string; tier: string; model: string; costPer1kTokens: number; latencyMs: number; active: boolean }> || [];
   }, [tokenEngine]);
 
   const dailyBudget = 5.00;
@@ -1190,7 +1190,7 @@ export default function MissionControlPage() {
   const { data: fleetHealth } = useFleetHealth();
   const { data: trustCenter } = useTrustCenter();
   const { data: missionGoals } = useMissionGoals();
-  const openIncidents = adminIncidents?.summary?.open ?? mockIncidents.filter(i => i.status !== "resolved").length;
+  const openIncidents = (adminIncidents as any)?.summary?.open ?? mockIncidents.filter(i => i.status !== "resolved").length;
 
   const ownerTabs = [
     { value: "home", label: "Home", icon: Cpu },

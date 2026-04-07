@@ -64,7 +64,7 @@ const WorkflowsCenter = () => {
 
   const createWorkflow = useMutation({
     mutationFn: async () => {
-      const { data: wf, error: wfErr } = await fromTable("workflows").insert({ name: newName, trigger_type: newTrigger, active: true, steps: [] as unknown[] } as Record<string, unknown>).select().single();
+      const { data: wf, error: wfErr } = await fromTable("workflows").insert([{ name: newName, trigger_type: newTrigger, active: true, steps: [] as unknown as any, user_id: user!.id }]).select().single();
       if (wfErr) throw wfErr;
       // Create initial run
       const { error: runErr } = await fromTable("workflow_runs").insert({ user_id: user!.id, workflow_id: wf.id, status: "pending", current_step: 0 });
