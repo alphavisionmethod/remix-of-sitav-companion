@@ -148,6 +148,26 @@ const ConnectorHub = () => {
       <DemoModeBadge />
       <SitaPageHeader title="Connector Hub" subtitle="Manage integrations, health status, and sync history" />
 
+      {/* Sync Health Dashboard */}
+      <ConnectorSyncDashboard />
+
+      {/* Discover New Connectors */}
+      <SitaCard hover={false} className="p-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-foreground">Discover Available Connectors</p>
+            <p className="text-xs text-muted-foreground">Scan for new integration endpoints</p>
+          </div>
+          <SitaButton variant="primary" onClick={async () => {
+            try {
+              await supabase.functions.invoke("connector-discover", { body: { action: "scan" } });
+              toast.success("Discovery scan started");
+              queryClient.invalidateQueries({ queryKey: ["connector-registry-hub"] });
+            } catch { toast.error("Discovery failed"); }
+          }}><Search className="h-3.5 w-3.5" /> Discover</SitaButton>
+        </div>
+      </SitaCard>
+
       {/* Real Connector Connect Section */}
       <SitaCard hover={false} className="p-5">
         <SitaCardTitle sub="Google OAuth connectors">Real Connectors</SitaCardTitle>
