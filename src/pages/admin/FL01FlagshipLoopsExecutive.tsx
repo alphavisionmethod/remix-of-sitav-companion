@@ -277,6 +277,22 @@ export default function FL01FlagshipLoopsExecutive() {
                           <DimensionBar label="UX" score={loop.ux_score || 0} icon={<Palette className="h-3 w-3" />} />
                         </div>
 
+                        {/* E2E Proof Overlay */}
+                        {proof && (
+                          <div className="flex items-center gap-3 p-2 rounded bg-muted/30 border border-border">
+                            <ShieldCheck className="h-4 w-4 text-primary shrink-0" />
+                            <span className="text-xs text-muted-foreground">
+                              E2E: <span className="text-emerald-400 font-semibold">{proof.passed}✅</span>
+                              {proof.failed > 0 && <span className="text-destructive font-semibold ml-1">{proof.failed}❌</span>}
+                              {" · "}
+                              <Badge variant="outline" className="text-[10px] ml-1">{proof.confidence}</Badge>
+                              {proof.commitSha && <span className="font-mono ml-1">{proof.commitSha.slice(0, 7)}</span>}
+                              {" · "}
+                              <span>{new Date(proof.lastRun).toLocaleDateString()}</span>
+                            </span>
+                          </div>
+                        )}
+
                         {/* Blockers + Next Actions */}
                         <div className="flex flex-col md:flex-row gap-4">
                           {blockers.length > 0 && (
