@@ -23,8 +23,8 @@ async function logOperatorAction(
     action_type: actionType,
     target_table: targetTable,
     target_id: targetId,
-    payload,
-    result,
+    payload: payload as import("@/integrations/supabase/types").Json,
+    result: result as import("@/integrations/supabase/types").Json,
   });
 }
 
