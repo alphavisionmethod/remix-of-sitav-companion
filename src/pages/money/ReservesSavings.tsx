@@ -6,11 +6,12 @@ import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton"
 import { PiggyBank, Target, Shield, TrendingUp, Plus, Sparkles, Trash2 } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { motion } from "framer-motion";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useAction } from "@/lib/hooks/useAction";
 import { toast } from "sonner";
 import { useReservesSavings } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
