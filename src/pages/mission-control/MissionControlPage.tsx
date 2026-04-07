@@ -29,8 +29,7 @@ import { mockAdvisors, mockRecommendations, mockInternalAgents, mockIncidents, m
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
-import { FraudSentinelService } from "@/lib/core-services/fraud-sentinel";
-import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
+import { useFraudSentinel, useGovernanceSimulator } from "@/contexts/SitaKernelContext";
 import type { TrustState, ExecutionEnvelope, WorkflowState, DiagnosticBundle } from "@/packages/contracts";
 import type { ConnectorFreshnessPolicy } from "@/packages/policy-contracts";
 import type { ReceiptRow, SyncLogRow, TenantFirewallLogRow, CapabilityRow } from "@/packages/database-schemas";
@@ -80,11 +79,12 @@ function SystemPulseHero() {
   const stuckWorkflows = mockStuckWorkflows.length;
   const totalTokens = mockInternalAgents.reduce((s, a) => s + a.costTokens24h, 0);
 
+  const sentinel = useFraudSentinel();
+
   const fraudSentinel = useMemo(() => {
-    const s = new FraudSentinelService();
-    s.evaluate({ userId: "demo", timestamp: Date.now(), amount: 28000, isNewRecipient: true, method: "wire", recentTransactionCount: 5, recentTotalAmount: 35000 });
-    return s.getSummary();
-  }, []);
+    sentinel.evaluate({ userId: "demo", timestamp: Date.now(), amount: 28000, isNewRecipient: true, method: "wire", recentTransactionCount: 5, recentTotalAmount: 35000 });
+    return sentinel.getSummary();
+  }, [sentinel]);
 
   const systemScore = Math.round(
     ((healthyAgents / totalAgents) * 40) +
@@ -717,7 +717,8 @@ function MCCosts() {
 
 function MCTrust() {
   const { trustCenter } = useMCAdmin();
-  const [simResult, setSimResult] = useState<SimulationResult | null>(null);
+  const gov = useGovernanceSimulator();
+  const [simResult, setSimResult] = useState<ReturnType<typeof gov.runComplianceAudit> | null>(null);
 
   const tc = trustCenter;
   const posture = tc?.posture ?? "verified";
@@ -726,7 +727,6 @@ function MCTrust() {
   const lastAudit = tc?.lastAudit ? new Date(tc.lastAudit).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "1h ago";
 
   const runSim = () => {
-    const gov = new GovernanceSimulatorService();
     const result = gov.runComplianceAudit([
       { domain: "finance", capabilityId: "finance.transfer", riskTier: "high", amount: 8000 },
       { domain: "finance", capabilityId: "finance.budget.update", riskTier: "medium", amount: 500 },

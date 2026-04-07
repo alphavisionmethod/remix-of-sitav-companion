@@ -3,7 +3,8 @@ import { SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { useState, useMemo } from "react";
 import { Search, FileText, Brain, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import { SearchFabricService, type SearchResponse } from "@/lib/core-services/search-fabric";
+import { useSearchFabric } from "@/contexts/SitaKernelContext";
+import type { SearchResponse } from "@/lib/core-services/search-fabric";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useFilesSearchIndex } from "@/hooks/use-domain-data";
@@ -35,11 +36,11 @@ const FilesSearch = () => {
   const [aiSearching, setAiSearching] = useState(false);
   const aiInsight = useAIInsight();
 
+  const kernelSearchFabric = useSearchFabric();
   const searchService = useMemo(() => {
-    const svc = new SearchFabricService();
-    svc.addBatch(searchData);
-    return svc;
-  }, [searchData]);
+    kernelSearchFabric.addBatch(searchData);
+    return kernelSearchFabric;
+  }, [searchData, kernelSearchFabric]);
 
   const handleSearch = (q?: string) => {
     const searchQuery = q ?? query;

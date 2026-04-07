@@ -32,6 +32,8 @@ import { CapabilityRouter } from "./core-services/capability-router";
 import { ApprovalService } from "./core-services/approval-service";
 import { RolePermissionEngine } from "./core-services/role-permission-engine";
 import { FraudSentinelService } from "./core-services/fraud-sentinel";
+import { GovernanceSimulatorService } from "./core-services/governance-simulator";
+import { SearchFabricService } from "./core-services/search-fabric";
 import { SupportDiagnosticsService } from "./core-services/support-diagnostics";
 import { AnalyticsService } from "./core-services/analytics-service";
 import { ReceiptVerificationService } from "./services/verification-engine/receipt-verification.service";
@@ -72,6 +74,8 @@ export class SitaKernel {
 
   // ── Isolated: Trust & Safety ──────────────────────────────
   readonly fraudSentinel: FraudSentinelService;
+  readonly governanceSimulator: GovernanceSimulatorService;
+  readonly searchFabric: SearchFabricService;
 
   // ── Tier 2: Subdomains ────────────────────────────────────
   readonly agents: AgentOrchestrator;
@@ -120,6 +124,8 @@ export class SitaKernel {
 
     // ── Isolated services ──────────────────────────────────
     this.fraudSentinel = new FraudSentinelService();
+    this.governanceSimulator = new GovernanceSimulatorService();
+    this.searchFabric = new SearchFabricService();
 
     // ── Wire the canonical chain to shared services ─────────
     this.chain = new CanonicalChainOrchestrator(
@@ -181,7 +187,7 @@ export class SitaKernel {
         "entityGraph", "identityGraph", "projections", "verification",
         "executor", "chain", "apiGateway", "capabilityRouter",
         "approvals", "permissions", "analytics", "diagnostics",
-        "fraudSentinel", "agents", "leases", "constitution",
+        "fraudSentinel", "governanceSimulator", "searchFabric", "agents", "leases", "constitution",
         "workflowRecovery", "workflowReplay", "workflowTimeouts",
         "transitionValidator", "verificationHooks",
         "receiptVerification", "replayVerification", "websiteManager",

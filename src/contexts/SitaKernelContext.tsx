@@ -10,6 +10,11 @@ import type { CanonicalChainResult } from "@/lib/core-services/index";
 import type { Receipt } from "@/lib/core-services/receipt-service";
 import type { MemoryEntry } from "@/lib/core-services/memory-service";
 import type { CoreTrustState } from "@/lib/core-services/trust-state-service";
+import {
+  createSelfHealingService, createImmuneController, createFleetHealthService,
+  HEALING_CAPABILITY_MAP, ESCALATION_RULES, DEGRADED_MODES,
+} from "@/lib/core-services/self-healing";
+import { LifeShockSimulator } from "@/lib/services/life-simulation";
 
 // ── Context ─────────────────────────────────────────────────────
 
@@ -435,4 +440,44 @@ export function useIncidentManagement() {
     getDemoIncidents: kernel.incidentManagement.getDemoIncidents.bind(kernel.incidentManagement),
     service: kernel.incidentManagement,
   };
+}
+
+// ── Fraud Sentinel Hook ─────────────────────────────────────────
+
+export function useFraudSentinel() {
+  const kernel = useSitaKernel();
+  return kernel.fraudSentinel;
+}
+
+// ── Governance Simulator Hook ───────────────────────────────────
+
+export function useGovernanceSimulator() {
+  const kernel = useSitaKernel();
+  return kernel.governanceSimulator;
+}
+
+// ── Search Fabric Hook ──────────────────────────────────────────
+
+export function useSearchFabric() {
+  const kernel = useSitaKernel();
+  return kernel.searchFabric;
+}
+
+// ── Self-Healing Services Hook ──────────────────────────────────
+
+export function useSelfHealingServices() {
+  return useMemo(() => ({
+    selfHealing: createSelfHealingService(),
+    immune: createImmuneController(),
+    fleet: createFleetHealthService(),
+    capabilities: HEALING_CAPABILITY_MAP,
+    escalation: ESCALATION_RULES,
+    degradedModes: DEGRADED_MODES,
+  }), []);
+}
+
+// ── Life Simulator Hook ─────────────────────────────────────────
+
+export function useLifeSimulator(scenarioCount = 500) {
+  return useMemo(() => new LifeShockSimulator(scenarioCount), [scenarioCount]);
 }

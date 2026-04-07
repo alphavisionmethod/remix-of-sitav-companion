@@ -5,7 +5,8 @@
 
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
+import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
+import type { SimulationResult } from "@/lib/core-services/governance-simulator";
 import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
@@ -35,7 +36,7 @@ const defaultScenarios: ScenarioInput[] = [
 ];
 
 export default function PolicySimulatorPage() {
-  const { isDemoMode } = useDataMode();
+  const gov = useGovernanceSimulator();
   const navigate = useNavigate();
   const [scenarios, setScenarios] = useState<ScenarioInput[]>(defaultScenarios);
   const [result, setResult] = useState<SimulationResult | null>(null);
@@ -53,7 +54,6 @@ export default function PolicySimulatorPage() {
   };
 
   const runSimulation = () => {
-    const gov = new GovernanceSimulatorService();
     const sim = gov.runComplianceAudit(scenarios.map(s => ({
       domain: s.domain, capabilityId: s.capabilityId, riskTier: s.riskTier,
       amount: s.amount, isSimulation: s.isSimulation,

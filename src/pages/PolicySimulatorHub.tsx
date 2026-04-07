@@ -10,7 +10,8 @@ import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/Si
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/admin";
-import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
+import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
+import type { SimulationResult } from "@/lib/core-services/governance-simulator";
 import {
   Shield, Play, AlertTriangle, CheckCircle, ChevronRight,
   DollarSign, Wifi, Users, Zap, Lock, Eye, RotateCcw, Package,
@@ -41,12 +42,11 @@ const presets: PresetScenario[] = [
 ];
 
 export default function PolicySimulatorHub() {
-  const { isDemoMode } = useDataMode();
+  const gov = useGovernanceSimulator();
   const navigate = useNavigate();
   const [results, setResults] = useState<Map<string, SimulationResult>>(new Map());
 
   const runPreset = (preset: PresetScenario) => {
-    const gov = new GovernanceSimulatorService();
     const result = gov.runComplianceAudit([{
       domain: preset.domain, capabilityId: preset.capabilityId,
       riskTier: preset.riskTier, amount: preset.amount,

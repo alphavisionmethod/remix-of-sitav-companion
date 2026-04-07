@@ -25,7 +25,8 @@ import { useDemoMode } from "@/hooks/use-brain-core";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { GovernanceSimulatorService, type SimulationResult } from "@/lib/core-services/governance-simulator";
+import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
+import type { SimulationResult } from "@/lib/core-services/governance-simulator";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
@@ -89,6 +90,7 @@ const ChoiceGroup = ({ label, options, value, onChange }: {
 );
 
 const SettingsPage = () => {
+  const gov = useGovernanceSimulator();
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
   const { isLoading, toggleDemoMode } = useDemoMode();
@@ -199,7 +201,6 @@ const SettingsPage = () => {
   };
 
   const runAudit = () => {
-    const gov = new GovernanceSimulatorService();
     const result = gov.runComplianceAudit([
       { domain: "finance", capabilityId: "finance.transfer", riskTier: "high", amount: 8000 },
       { domain: "finance", capabilityId: "finance.budget.update", riskTier: "medium", amount: 500 },

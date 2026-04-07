@@ -7,7 +7,8 @@ import {
   HeartCrack, Baby, Briefcase, MapPin, Gift, Accessibility,
   TrendingDown, BarChart3, ChevronRight
 } from "lucide-react";
-import { LifeShockSimulator, type ShockType, type ShockImpactReport } from "@/lib/services/life-simulation";
+import { useLifeSimulator } from "@/contexts/SitaKernelContext";
+import type { ShockType, ShockImpactReport } from "@/lib/services/life-simulation";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -24,7 +25,7 @@ const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transi
 
 const LifeSimulator = () => {
   const { isDemoMode } = useDataMode();
-  const simulator = useMemo(() => new LifeShockSimulator(500), []);
+  const simulator = useLifeSimulator(500);
   const shockTypes = useMemo(() => simulator.getShockTypes(), [simulator]);
 
   const [selectedShock, setSelectedShock] = useState<ShockType | null>(null);
