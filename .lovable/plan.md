@@ -1,46 +1,65 @@
 
+# SITA OS — Phase 3: Real Google OAuth Connector Completion
 
-# SITA OS — Epistemic Firewall, Cortex Loop & Executable Governance: Verification Report
+## Current State Assessment
 
-## Status: 100% Implemented — Ready for Deployment
+**What Already Exists (Strong Foundation):**
+- `connector-oauth` edge function: 366 lines — full initiate/callback/disconnect with Zod validation, state tokens, token exchange, consent ledger, receipts ✅
+- `connector-proxy` edge function: 162 lines — gateway proxy for Slack/Resend/Twilio ✅
+- `ConnectorHub.tsx`: 337 lines — queries connector_accounts, connector_registry, OAuth config check, connect/disconnect mutations wired ✅
+- 10+ connector DB tables: connector_accounts, connector_oauth_flows, connector_oauth_tokens, connector_credentials, consent_scope_records, consent_ledger, connector_receipts, connector_disconnection_events, connector_health_records, connector_launch_readiness ✅
+- Auth/connector separation types: `src/lib/types/auth-connector-separation.types.ts` ✅
+- Multiple admin connector pages: CN01-CN07, ISA02, ISA07, PFA07, PFA09 ✅
 
-All modules from this prompt are **fully built, integrated, and passing TypeScript compilation with 0 errors**.
+**What's Missing (Blockers):**
+1. **GOOGLE_CONNECTOR_CLIENT_ID and GOOGLE_CONNECTOR_CLIENT_SECRET secrets** — not set (only 9 secrets exist, neither is present)
+2. **connector-proxy doesn't support Google Drive** — only maps Slack/Resend/Twilio
+3. **No reauth mutation** in ConnectorHub UI
+4. **ConnectorHub UX** doesn't show premium connection states (reauth_required, limited_scope, etc.)
+5. **No OAuth callback return page** — after Google redirects back, user needs a landing page
+6. **Admin connector boards** (CN01-CN07) need real data wiring
 
-### What Was Implemented (Verified Complete)
+## Implementation Plan (8 Steps)
 
-| Module | File | Lines | Status |
-|---|---|---|---|
-| Evidence Grader (Truth Triangle Gate 1) | `src/lib/services/epistemic-firewall/evidence-grader.ts` | 178 | Complete — A/B/C/D/F grade hierarchy, domain policies, grading engine |
-| Cite-Checker (Truth Triangle Gate 2) | `src/lib/services/epistemic-firewall/cite-checker.ts` | 182 | Complete — claim extraction, adversarial verification, domain-sensitive blocking |
-| Assumption Registry (Truth Triangle Gate 3) | `src/lib/services/epistemic-firewall/assumption-registry.ts` | 260 | Complete — create/invalidate/confirm/query, 4 templates, stats |
-| Negative Receipts | `src/lib/services/epistemic-firewall/negative-receipt.ts` | 227 | Complete — 14 refusal reasons, 4 convenience builders, ledger + stats |
-| Canonical Tool Grounding | `src/lib/services/epistemic-firewall/tool-grounding.ts` | 138 | Complete — 10 grounding rules, pattern detection, violation logging |
-| Sentinel Engine (12 Invariants) | `src/lib/services/epistemic-firewall/sentinel-engine.ts` | 251 | Complete — runtime enforcement, report generation, history + stats |
-| Cortex Loop Runtime | `src/lib/services/epistemic-firewall/cortex-loop.ts` | 187 | Complete — 7-stage cycle, 4 loop configs, verified-outcome learning |
-| Barrel File | `src/lib/services/epistemic-firewall/index.ts` | 130 | Complete — all exports unified |
-| Admin Board | `src/pages/admin/architecture/EpistemicFirewallBoard.tsx` | 131 | Complete — tabbed UI with data-testid |
-| App.tsx Route | `src/App.tsx` line 1441 | — | Complete — `/admin/architecture/epistemic-firewall` |
+### Step 1: Add Google Connector OAuth Secrets
+- Request `GOOGLE_CONNECTOR_CLIENT_ID` and `GOOGLE_CONNECTOR_CLIENT_SECRET` via secrets tool
+- These are separate from Google Auth login credentials
 
-### Architecture Compliance Verified
+### Step 2: Create OAuth Callback Landing Page
+- New page at `/connectors/callback` that handles the redirect from Google
+- Extracts `code` and `state` from URL params
+- Calls `connector-oauth` with `action: "callback"`
+- Shows success/error state and returns user to ConnectorHub
 
-- Epistemic Firewall integrates into existing ConscienceGate/CritiqueLoop — not a parallel stack
-- Uses existing `DomainId`, `RiskTier` from `_contract-scaffold.ts`
-- No new duplicate AI gateways created
-- No Kafka/NATS introduced
-- Tool grounding rules reference existing sovereign-calculation patterns
-- Cortex Loop configs target only justified domains (finance, boardroom, recommendations, connectors)
-- All modules are application-level TypeScript — no external infrastructure dependencies
+### Step 3: Add Google Drive to connector-proxy
+- Add `google_drive` to CONNECTOR_KEYS mapping
+- Add Google Drive API actions (list files, get file metadata)
+- Use stored OAuth tokens from connector_oauth_tokens table
 
-### What Was Deferred (By Design)
+### Step 4: Upgrade ConnectorHub UX to Premium States
+- Add reauth mutation
+- Show all connector states: connected, reauth_required, limited_scope, disconnected, planned
+- Premium Google Drive card with scope summary
+- Proper connect/reconnect/disconnect affordances
 
-- Full always-on autonomous Cortex Loop across entire OS
-- Knowledge graph infrastructure
-- Kafka/NATS distributed event bus
-- Autonomous self-learning without operator review
-- Broad multimodal orchestration
-- Advanced LoRA infrastructure
+### Step 5: Add Reauth Flow
+- Add `action: "reauth"` handler to connector-oauth edge function
+- Detect expired/revoked tokens and surface reauth_required state
+- Add token refresh logic using refresh_token
 
-### TypeScript Compilation: 0 Errors
+### Step 6: Wire Admin Connector Boards with Real Data
+- CN01 (Connector Reality Overview): real connector_accounts + oauth_flows data
+- PFA09 (Connected Accounts Center): live account status, token health
+- ISA07 (Auth Connector Truth Board): separation audit data
 
-**No implementation work is needed. Everything from this prompt is 100% complete and deployment-ready.**
+### Step 7: Add Connector Journey Evidence
+- Seed customer journey entries for connector flows
+- Update journey truth based on runtime proof
 
+### Step 8: Deploy and Verify
+- Deploy updated edge functions
+- Test OAuth config check endpoint
+- Verify UI states render correctly
+
+## Estimated Effort: ~4-6 hours
+## Files Changed: ~8-12 files
