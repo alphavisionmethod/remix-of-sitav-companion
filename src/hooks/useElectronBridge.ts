@@ -6,7 +6,7 @@
 import { useState, useEffect, useCallback } from "react";
 import type { SystemInfo, DeepLinkPayload, UpdateStatus } from "@/packages/contracts/native/electron-ipc";
 
-interface ElectronBridge {
+interface SitaElectronBridge {
   getSystemInfo?: () => Promise<SystemInfo>;
   onDeepLink?: (cb: (payload: DeepLinkPayload) => void) => (() => void) | undefined;
   onUpdateStatus?: (cb: (status: UpdateState) => void) => (() => void) | undefined;
@@ -34,7 +34,7 @@ interface UpdateState {
 
 declare global {
   interface Window {
-    electron?: ElectronBridge;
+    electron?: SitaElectronBridge;
   }
 }
 

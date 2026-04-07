@@ -72,7 +72,7 @@ export function useRecentFailures() {
   return useQuery({
     queryKey: ["v-customer-journey-recent-failures"],
     queryFn: async () => {
-      const { data, error } = await fromTable("v_customer_journey_recent_failures")
+      const { data, error } = await fromDynamicTable("v_customer_journey_recent_failures")
         .select("*");
       if (error) throw error;
       return data ?? [];

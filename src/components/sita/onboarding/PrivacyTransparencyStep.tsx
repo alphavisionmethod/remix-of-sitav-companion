@@ -179,7 +179,7 @@ export function PrivacyTransparencyStep({ permissionChoices, onUpdate, onNext, o
                               <span className="text-xs font-semibold text-foreground">{sec.label}</span>
                             </div>
                             <ul className="space-y-1">
-                              {((perm as Record<string, string[]>)[sec.key] ?? []).map((item: string, j: number) => (
+                              {((perm as unknown as Record<string, string[]>)[sec.key] ?? []).map((item: string, j: number) => (
                                 <li key={j} className="text-xs text-muted-foreground flex items-start gap-2">
                                   <span className="mt-1 h-1 w-1 rounded-full bg-muted-foreground/40 shrink-0" />
                                   {item}

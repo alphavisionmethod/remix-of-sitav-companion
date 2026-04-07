@@ -76,7 +76,7 @@ export function DeepWorldModelingStep({ data, onUpdate, onNext, onPrev }: Props)
 
   const toggleChip = (path: string, value: string) => {
     const [section, field] = path.split(".");
-    const sectionData = (data as Record<string, Record<string, string[]>>)[section];
+    const sectionData = (data as unknown as Record<string, Record<string, string[]>>)[section];
     const current = sectionData[field] as string[];
     const updated = current.includes(value) ? current.filter(v => v !== value) : [...current, value];
     onUpdate({ ...data, [section]: { ...sectionData, [field]: updated } });
@@ -84,7 +84,7 @@ export function DeepWorldModelingStep({ data, onUpdate, onNext, onPrev }: Props)
 
   const setField = (path: string, value: unknown) => {
     const [section, field] = path.split(".");
-    const sectionData = (data as Record<string, Record<string, unknown>>)[section];
+    const sectionData = (data as unknown as Record<string, Record<string, unknown>>)[section];
     onUpdate({ ...data, [section]: { ...sectionData, [field]: value } });
   };
 

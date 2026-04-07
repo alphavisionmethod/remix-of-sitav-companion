@@ -13,7 +13,7 @@ import { RESOLVED_STATUSES } from "@/packages/contracts/specialized/setup-orches
 import { useAuth } from "@/contexts/AuthContext";
 import { onNetworkChange, onVisibilityChange } from "@/components/sita/boot/bootStatePersistence";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 function getDeviceId(): string {
   let id = localStorage.getItem("sita-device-id");
