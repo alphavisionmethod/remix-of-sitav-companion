@@ -24,9 +24,9 @@ export default function AR07RetryFailureCenter() {
     },
   });
 
-  const retryable = failures.filter((f: any) => f.retryable);
-  const escalated = failures.filter((f: any) => f.escalated);
-  const deadLetter = failures.filter((f: any) => !f.retryable && !f.escalated);
+  const retryable = failures.filter((f: Record<string, unknown>) => f.retryable);
+  const escalated = failures.filter((f: Record<string, unknown>) => f.escalated);
+  const deadLetter = failures.filter((f: Record<string, unknown>) => !f.retryable && !f.escalated);
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
