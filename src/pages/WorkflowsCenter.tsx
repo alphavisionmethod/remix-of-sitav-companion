@@ -191,7 +191,7 @@ const WorkflowsCenter = () => {
               <>
                 <SitaCard hover={false} glow className="p-5">
                   <SitaCardTitle sub={`Status: ${selected.status}`}>
-                    {(selected as Record<string, unknown>).workflows?.name || "Workflow Run"}
+                    {String((selected as Record<string, unknown>).workflows && typeof (selected as Record<string, unknown>).workflows === "object" ? ((selected as Record<string, unknown>).workflows as Record<string, unknown>)?.name : null) || "Workflow Run"}
                   </SitaCardTitle>
                   <div className="mt-4 space-y-3">
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">State</span><StateBadge state={statusToState(selected.status)} /></div>

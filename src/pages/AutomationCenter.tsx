@@ -131,7 +131,7 @@ const AutomationCenter = () => {
                       </p>
                       {rule.steps?.[0] && (
                         <p className="text-xs text-muted-foreground">
-                          <span className="text-muted-foreground/70">Action:</span> {(rule.steps[0] as never).action || JSON.stringify(rule.steps[0]).slice(0, 60)}
+                          <span className="text-muted-foreground/70">Action:</span> {rule.steps[0].action || JSON.stringify(rule.steps[0]).slice(0, 60)}
                         </p>
                       )}
                     </div>
