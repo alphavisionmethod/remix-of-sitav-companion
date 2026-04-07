@@ -70,7 +70,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex bg-background">
-      <DemoModeBadge />
+      
       {/* Left: Brand panel */}
       <div className="hidden lg:flex lg:w-[45%] relative overflow-hidden">
         {/* Background layers */}
