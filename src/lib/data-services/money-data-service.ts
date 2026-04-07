@@ -198,9 +198,9 @@ export async function fetchFinancialDocuments(mode: RealityModeKey = "real"): Pr
   // Use files table filtered to finance category
   const { data, error } = await fromDynamicTable("documents").select("*").eq("user_id", userId).eq("category", "finance").order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? ((data as unknown as Record<string, unknown>[])).map((f): FinancialDocument => ({
-    id: f.id, name: f.file_name || f.name, doc_type: f.subcategory || "document", classification: f.subcategory || "Document",
-    sensitivity: f.sensitivity_label || "normal", linked_to: null, extracted_data: f.ai_extracted_data || {},
-    boardroom_relevant: false, proof_relevant: false, status: f.processing_status || "processed", created_at: f.created_at,
+    id: String(f.id), name: String(f.file_name || f.name), doc_type: String(f.subcategory || "document"), classification: String(f.subcategory || "Document"),
+    sensitivity: String(f.sensitivity_label || "normal"), linked_to: null, extracted_data: (f.ai_extracted_data || {}) as Record<string, unknown>,
+    boardroom_relevant: false, proof_relevant: false, status: String(f.processing_status || "processed"), created_at: String(f.created_at),
   })) : null;
   return resolveByMode({ mode, realData: mapped, demoData: DEMO_DOCUMENTS, emptyDefault: [] });
 }

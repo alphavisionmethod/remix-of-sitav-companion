@@ -13,7 +13,6 @@ async function needsSeeding(userId: string): Promise<boolean> {
   if (sessionStorage.getItem(SEED_KEY) === "true") return false;
   const { count } = await fromDynamicTable("demo_scenarios")
     .select("id", { count: "exact", head: true })
-    .select("id", { count: "exact", head: true })
     .eq("user_id", userId);
   return (count ?? 0) === 0;
 }
