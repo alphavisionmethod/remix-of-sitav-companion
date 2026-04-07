@@ -27,7 +27,7 @@ export const useCreateIntake = () => {
     mutationFn: async (intake: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_intake_records').insert({ ...intake, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_intake_records').insert({ ...intake, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
@@ -52,7 +52,7 @@ export const useCreateCapability = () => {
     mutationFn: async (cap: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('capability_registry').insert({ ...cap, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('capability_registry').insert({ ...cap, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
@@ -77,7 +77,7 @@ export const useCreateSpec = () => {
     mutationFn: async (spec: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_spec_records').insert({ ...spec, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_spec_records').insert({ ...spec, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
@@ -102,7 +102,7 @@ export const useCreateOwnerDecision = () => {
     mutationFn: async (dec: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_owner_decisions').insert({ ...dec, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_owner_decisions').insert({ ...dec, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
@@ -137,7 +137,7 @@ export const useCreateExecutionPath = () => {
     mutationFn: async (path: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_execution_paths').insert({ ...path, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_execution_paths').insert({ ...path, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
@@ -162,7 +162,7 @@ export const useCreateRollout = () => {
     mutationFn: async (rollout: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_rollout_records').insert({ ...rollout, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_rollout_records').insert({ ...rollout, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
@@ -187,7 +187,7 @@ export const useCreateDeprecation = () => {
     mutationFn: async (dep: Record<string, any>) => {
       const user = await getUser();
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase.from('feature_deprecation_records').insert({ ...dep, user_id: user.id }).select().single();
+      const { data, error } = await supabase.from('feature_deprecation_records').insert({ ...dep, user_id: user.id } as any).select().single();
       if (error) throw error;
       return data;
     },
