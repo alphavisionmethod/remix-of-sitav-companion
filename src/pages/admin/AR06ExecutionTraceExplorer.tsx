@@ -27,7 +27,7 @@ export default function AR06ExecutionTraceExplorer() {
     },
   });
 
-  const selected = executions.find((e: any) => e.id === selectedExecId);
+  const selected = executions.find((e: Record<string, unknown>) => e.id === selectedExecId);
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
