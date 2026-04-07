@@ -44,6 +44,7 @@ const pages: Record<SubPage, React.ComponentType> = {
   "cash-timing": CashTiming,
   receivables: ReceivablesObligations,
   "investment-office": InvestmentOffice,
+  tax: TaxEstimator,
   approvals: MoneyApprovals,
   proof: MoneyProof,
   files: MoneyDocuments,
