@@ -21,6 +21,22 @@ import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
+
+// Enriched subscription with computed waste fields
+interface EnrichedSub {
+  waste_flag: boolean;
+  duplicate_of: string;
+  usage_level: string;
+  [key: string]: unknown;
+}
+function enrichSub(s: Record<string, unknown>): EnrichedSub {
+  return {
+    ...s,
+    waste_flag: typeof s.waste_flag === "boolean" ? s.waste_flag : (typeof s.usage_score === "number" && s.usage_score <= 20 && s.status === "active"),
+    duplicate_of: typeof s.duplicate_of === "string" ? s.duplicate_of : "",
+    usage_level: typeof s.usage_level === "string" ? s.usage_level : String(s.usage_score ?? "unknown"),
+  };
+}
 interface SubForm {
   service_name: string;
   amount: string;
@@ -90,9 +106,9 @@ const SubscriptionsWaste = () => {
 
   const active = subscriptions.filter(s => s.status === "active");
   const totalMonthly = active.reduce((s, sub) => s + Number(sub.amount), 0);
-  const wasteSubs = subscriptions.filter(s => (s as any).waste_flag && s.status === "active");
+  const wasteSubs = subscriptions.filter(s => enrichSub(s as Record<string, unknown>).waste_flag && s.status === "active");
   const wasteMonthly = wasteSubs.reduce((s, sub) => s + Number(sub.amount), 0);
-  const duplicates = subscriptions.filter(s => (s as any).duplicate_of);
+  const duplicates = subscriptions.filter(s => enrichSub(s as Record<string, unknown>).duplicate_of);
 
   const filtered = tab === "all" ? subscriptions
     : tab === "waste" ? wasteSubs
@@ -109,8 +125,8 @@ const SubscriptionsWaste = () => {
       category: s.category || "",
       renewal_date: s.next_billing_date || "",
       usage_level: String(s.usage_score ?? "unknown"),
-      waste_flag: (s as any).waste_flag || false,
-      duplicate_of: (s as any).duplicate_of || "",
+      waste_flag: enrichSub(s as Record<string, unknown>).waste_flag || false,
+      duplicate_of: enrichSub(s as Record<string, unknown>).duplicate_of || "",
       notes: s.notes || "",
     });
     setEditId(s.id);
@@ -178,18 +194,18 @@ const SubscriptionsWaste = () => {
         <div className="grid gap-6 lg:grid-cols-5">
           <div className="lg:col-span-3 space-y-2">
             {filtered.map((sub) => {
-               const usage = usageLabelMap[String((sub as any).usage_level || sub.usage_score || "unknown")] || usageLabelMap.unknown;
+               const usage = usageLabelMap[String(enrichSub(sub as Record<string, unknown>).usage_level || sub.usage_score || "unknown")] || usageLabelMap.unknown;
                return (
                 <SitaCard key={sub.id} onClick={() => setSelectedId(sub.id)} selected={selectedId === sub.id}
-                  lane={(sub as any).waste_flag ? "action" : undefined} className="p-4">
+                  lane={enrichSub(sub as Record<string, unknown>).waste_flag ? "action" : undefined} className="p-4">
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <p className="text-sm font-medium text-foreground">{sub.name}</p>
                         {sub.status === "paused" && <span className="text-[10px] text-muted-foreground bg-muted rounded px-1.5 py-px">Paused</span>}
                         {sub.status === "cancelled" && <span className="text-[10px] text-muted-foreground bg-muted rounded px-1.5 py-px line-through">Cancelled</span>}
-                        {(sub as any).waste_flag && <span className="inline-flex items-center gap-1 rounded-md bg-urgency-high/10 border border-urgency-high/20 px-1.5 py-px text-[10px] font-medium text-urgency-high"><AlertTriangle className="h-2.5 w-2.5" /> Waste</span>}
-                        {(sub as any).duplicate_of && <span className="text-[10px] text-trust-review bg-trust-review/10 rounded px-1.5 py-px">Duplicate</span>}
+                        {enrichSub(sub as Record<string, unknown>).waste_flag && <span className="inline-flex items-center gap-1 rounded-md bg-urgency-high/10 border border-urgency-high/20 px-1.5 py-px text-[10px] font-medium text-urgency-high"><AlertTriangle className="h-2.5 w-2.5" /> Waste</span>}
+                        {enrichSub(sub as Record<string, unknown>).duplicate_of && <span className="text-[10px] text-trust-review bg-trust-review/10 rounded px-1.5 py-px">Duplicate</span>}
                       </div>
                       <p className="text-xs text-muted-foreground">{sub.category || "Uncategorized"} · Usage: {usage.label}</p>
                     </div>
@@ -215,14 +231,14 @@ const SubscriptionsWaste = () => {
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">Usage</span><span className={`font-medium ${(usageLabelMap[String(selected.usage_score ?? "unknown")] || usageLabelMap.unknown).color}`}>{(usageLabelMap[String(selected.usage_score ?? "unknown")] || usageLabelMap.unknown).label}</span></div>
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">Billing Cycle</span><span className="text-foreground capitalize">{selected.frequency || "Monthly"}</span></div>
                     {selected.next_billing_date && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Renewal</span><span className="text-foreground">{format(parseISO(selected.next_billing_date), "MMM d, yyyy")}</span></div>}
-                    {(selected as any).duplicate_of && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Overlaps With</span><span className="text-trust-review">{(selected as any).duplicate_of}</span></div>}
+                    {enrichSub(selected as Record<string, unknown>).duplicate_of && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Overlaps With</span><span className="text-trust-review">{enrichSub(selected as Record<string, unknown>).duplicate_of}</span></div>}
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><span className="text-foreground capitalize">{selected.status}</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Waste Risk</span>{(selected as any).waste_flag ? <TrustBadge level="degraded" label="High" size="sm" /> : <TrustBadge level="verified" label="Low" size="sm" />}</div>
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Waste Risk</span>{enrichSub(selected as Record<string, unknown>).waste_flag ? <TrustBadge level="degraded" label="High" size="sm" /> : <TrustBadge level="verified" label="Low" size="sm" />}</div>
                     {selected.notes && <div className="pt-2 border-t border-border"><p className="text-xs text-muted-foreground">{selected.notes}</p></div>}
                   </div>
                 </SitaCard>
 
-                {(selected as any).waste_flag && (
+                {enrichSub(selected as Record<string, unknown>).waste_flag && (
                   <SitaCard hover={false}>
                     <SitaCardTitle>Recommended Action</SitaCardTitle>
                     <div className="mt-3 rounded-xl bg-accent/5 border border-accent/10 p-4">
@@ -231,7 +247,7 @@ const SubscriptionsWaste = () => {
                         <div>
                           <p className="text-sm font-medium text-foreground">Cancel {selected.name}</p>
                           <p className="mt-1 text-xs text-muted-foreground">
-                            Save ${annualized(Number(selected.amount), selected.frequency).toFixed(0)}/year. {(selected as any).duplicate_of ? `Use ${(selected as any).duplicate_of} instead.` : "Usage doesn't justify the cost."}
+                            Save ${annualized(Number(selected.amount), selected.frequency).toFixed(0)}/year. {enrichSub(selected as Record<string, unknown>).duplicate_of ? `Use ${enrichSub(selected as Record<string, unknown>).duplicate_of} instead.` : "Usage doesn't justify the cost."}
                           </p>
                         </div>
                       </div>
