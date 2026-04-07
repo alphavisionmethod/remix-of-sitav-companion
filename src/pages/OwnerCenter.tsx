@@ -1065,9 +1065,9 @@ const OwnerCenter = () => {
         {activePage === "council" && (
           <motion.div key="council" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-3 mb-2">
-              <KPITile label="Pending" value={councilData?.summary?.pending || 0} icon={Clock} />
-              <KPITile label="Approved" value={councilData?.summary?.approved || 0} icon={CheckCircle} trend="up" />
-              <KPITile label="Rejected" value={councilData?.summary?.rejected || 0} icon={XCircle} />
+              <KPITile label="Pending" value={cncD?.summary?.pending || 0} icon={Clock} />
+              <KPITile label="Approved" value={cncD?.summary?.approved || 0} icon={CheckCircle} trend="up" />
+              <KPITile label="Rejected" value={cncD?.summary?.rejected || 0} icon={XCircle} />
             </div>
 
             {decisions.map((d: any) => (
