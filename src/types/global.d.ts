@@ -3,12 +3,16 @@
 // Declare ambient types for Electron, Capacitor, and Chrome-only APIs
 // ═══════════════════════════════════════════════════════════════
 
+export {};
+
 interface CapacitorGlobal {
   isNativePlatform?: () => boolean;
   getPlatform?: () => string;
 }
 
-interface Window {
-  electron?: unknown;
-  Capacitor?: CapacitorGlobal;
+declare global {
+  interface Window {
+    electron?: unknown;
+    Capacitor?: CapacitorGlobal;
+  }
 }
