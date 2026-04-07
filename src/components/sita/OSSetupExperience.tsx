@@ -841,7 +841,7 @@ export function OSSetupExperience() {
                   <DesktopPreviewStep key="desktop-preview" onNext={goNext} onPrev={goPrev} />
                 )}
 
-
+                {phase === "primary-use-mode" && (
                   <PrimaryUseModeStep key="primary-use-mode"
                     selected={state.primaryUseMode}
                     onSelect={mode => setState(s => ({ ...s, primaryUseMode: mode }))}
