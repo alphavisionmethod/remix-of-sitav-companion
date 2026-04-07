@@ -2122,9 +2122,9 @@ const OwnerCenter = () => {
         {activePage === "system-map" && (
           <motion.div key="system-map" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-3">
-              <KPITile label="Total Services" value={(serviceMapData as Record<string, unknown>)?.totalServices || 0} icon={Server} className="gradient-sita-subtle" />
-              <KPITile label="Healthy" value={(serviceMapData as Record<string, unknown>)?.totalHealthy || 0} icon={CheckCircle} trend="up" />
-              <KPITile label="Layers" value={((serviceMapData as Record<string, unknown>)?.layers || []).length} icon={Layers} />
+              <KPITile label="Total Services" value={serviceMapData?.totalServices || 0} icon={Server} className="gradient-sita-subtle" />
+              <KPITile label="Healthy" value={serviceMapData?.totalHealthy || 0} icon={CheckCircle} trend="up" />
+              <KPITile label="Layers" value={(serviceMapData?.layers || []).length} icon={Layers} />
             </div>
             <SitaSectionHeader title="Platform Topology" subtitle="All 9 architectural layers" />
             <div className="space-y-2">
