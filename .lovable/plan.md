@@ -1,117 +1,66 @@
 
 
-# Fix All 56 `as any` Supabase Casts Across 14 Files
+# Fix Section 5: Wire or Remove 11 Unused Hooks
 
-## Problem
+## Current State
 
-56 `.from("table" as any)` calls across 14 files. Two root causes:
+The original audit listed 16 unused hooks. After investigation:
+- **5 are already wired** (use-apps-data, use-concierge-data, use-digital-presence, use-investment-office, use-mobile) — imported by pages, no action needed
+- **11 are truly unused** (0 imports anywhere in the codebase)
 
-1. **4 tables don't exist in the database** — `savings_goals`, `money_accounts`, `investment_thesis_entries`, `automation_rules`
-2. **30+ tables/views DO exist in types.ts** but code still uses unnecessary `as any` casts
+## The 11 Unused Hooks — Action Plan
 
-## Step 1: Create 4 Missing Tables (Migration)
+### Group A: Wire into existing pages (2 hooks)
 
-```sql
--- savings_goals
-CREATE TABLE public.savings_goals (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  name text NOT NULL,
-  target_amount numeric DEFAULT 0,
-  current_amount numeric DEFAULT 0,
-  target_date date,
-  status text DEFAULT 'active',
-  created_at timestamptz DEFAULT now(),
-  updated_at timestamptz DEFAULT now()
-);
-ALTER TABLE public.savings_goals ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users manage own savings_goals" ON public.savings_goals FOR ALL TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+| Hook | Target pages | Action |
+|------|-------------|--------|
+| `use-money-data.ts` | `money/BillsWorkspace.tsx` and 5 other money pages that have inline `(supabase as any).from("bills")` queries | Replace inline queries with hook imports. BillsWorkspace already has inline CRUD — refactor to use `useBills()` for reads |
+| `use-mission-data.ts` | `mission-control/MissionControlPage.tsx` | Wire `useMissionGoals()` into the mission overview section |
 
--- money_accounts
-CREATE TABLE public.money_accounts (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  name text NOT NULL,
-  account_type text DEFAULT 'checking',
-  balance numeric DEFAULT 0,
-  currency text DEFAULT 'USD',
-  institution text,
-  is_active boolean DEFAULT true,
-  created_at timestamptz DEFAULT now(),
-  updated_at timestamptz DEFAULT now()
-);
-ALTER TABLE public.money_accounts ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users manage own money_accounts" ON public.money_accounts FOR ALL TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+### Group B: Wire via barrel re-export (2 hooks)
 
--- investment_thesis_entries
-CREATE TABLE public.investment_thesis_entries (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  title text NOT NULL,
-  thesis text,
-  conviction_level text DEFAULT 'medium',
-  status text DEFAULT 'active',
-  asset_class text,
-  time_horizon text,
-  created_at timestamptz DEFAULT now(),
-  updated_at timestamptz DEFAULT now()
-);
-ALTER TABLE public.investment_thesis_entries ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users manage own investment_thesis_entries" ON public.investment_thesis_entries FOR ALL TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+| Hook | Action |
+|------|--------|
+| `use-calendar-data.ts` | Import in `DailyPulse.tsx` calendar section — it has `useCalendarEvents` ready for the calendar widget |
+| `use-cai-data.ts` | Ready-to-use hooks for 23 CAI tables. No CAI pages exist yet — create a barrel `src/hooks/cai.ts` re-export and add a single import in `AgentActivityDashboard.tsx` for `useCaiAgentSnapshots` |
 
--- automation_rules
-CREATE TABLE public.automation_rules (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  name text NOT NULL,
-  trigger_type text,
-  action_type text,
-  conditions jsonb DEFAULT '{}',
-  is_active boolean DEFAULT true,
-  last_triggered_at timestamptz,
-  created_at timestamptz DEFAULT now(),
-  updated_at timestamptz DEFAULT now()
-);
-ALTER TABLE public.automation_rules ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users manage own automation_rules" ON public.automation_rules FOR ALL TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
-```
+### Group C: Infrastructure hooks — keep, add single integration point (4 hooks)
 
-After migration, types.ts will auto-regenerate with these 4 new tables.
+These are platform-level hooks for future capabilities. They should NOT be deleted — they're part of the sovereign OS architecture.
 
-## Step 2: Remove All `as any` Casts (14 files, ~56 edits)
+| Hook | Action |
+|------|--------|
+| `use-agent-fleet-live.ts` (179 lines) | Wire into `AgentActivityDashboard.tsx` — replace mock data with `useAgentFleetLive()` |
+| `use-domain-projections.ts` (264 lines) | Wire into `DailyPulse.tsx` — its `useFinanceProjection` and `useBusinessProjection` hooks power the daily overview |
+| `useElectronBridge.ts` (105 lines) | Add import in `src/App.tsx` or a layout — call `useElectronBridge()` with graceful no-op when not in Electron |
+| `useOfflineStore.ts` (129 lines) | Add import in `src/App.tsx` layout — initialize offline sync manager on mount |
 
-For every `.from("table_name" as any)`, change to `.from("table_name")`. For `(supabase as any).from(...)`, change to `supabase.from(...)`.
+### Group D: Delete dead re-export stubs (3 hooks)
 
-### Files and changes:
+These add zero value — they're thin wrappers or re-exports of things that are already imported directly elsewhere.
 
-| File | Casts to remove |
-|------|----------------|
-| `hooks/use-fip-data.ts` | 17 casts across feature_intake_records, capability_registry, feature_spec_records, feature_owner_decisions, feature_compliance_records, feature_execution_paths, feature_rollout_records, feature_deprecation_records, feature_readiness_gates, feature_generated_truth_impacts |
-| `hooks/use-investment-office.ts` | 4 casts: investment_watchlists, investment_strategy_records, capital_purpose_buckets, investment_thesis_entries |
-| `hooks/use-money-data.ts` | 2 casts: savings_goals, money_accounts |
-| `hooks/use-revenue-office.ts` | 4 casts: calling_contacts, revenue_leak_items, automation_rules, communication_log |
-| `hooks/use-sag-data.ts` | 7 casts: generic table param + ai_task_requests, ai_inference_receipts, ai_provider_health, ai_portfolio_allocations, ai_compliance_violations |
-| `lib/admin-ai/workforce-seed-data.ts` | 4 casts on insert payloads |
-| `lib/capabilities/money-capability.ts` | 1 cast: financial_accounts |
-| `lib/data-services/files-data-service.ts` | 2 casts: file_settings |
-| `lib/data-services/money-data-service.ts` | 11 casts: financial_accounts, money_policies, files |
-| `lib/services/advisor-memory/index.ts` | 2 casts: advisor_memories |
-| `lib/services/identity-auth/account-graph.service.ts` | 1 cast: v_account_graph_summary |
-| `lib/services/identity-auth/connector-access.service.ts` | 1 cast: v_connected_accounts_center |
-| `lib/services/identity-auth/consent.service.ts` | 1 cast: v_consent_history |
-| `lib/services/identity-auth/identity-provider.service.ts` | 1 cast: v_identity_methods |
-| `pages/Onboarding.tsx` | 2 casts: user_memory, profiles |
+| Hook | Lines | Why delete |
+|------|-------|-----------|
+| `use-workspace-data.ts` | 6 | Just re-exports 3 functions from `use-domain-data` — consumers already import from `use-domain-data` directly |
+| `useDomainMockData.ts` | 20 | Re-exports mock data types/constants — consumers import from `@/lib/mock-data/*` directly |
+| `useFileSystemBridge.ts` | 86 | Requires Electron IPC that doesn't exist in web — `useElectronBridge` already covers file ops via its `writeFile`/`readFile` methods |
 
-**Special case**: `use-sag-data.ts` has a generic `table` parameter passed to `.from(table as any)` — this will use a type assertion to the Database tables union.
+## Implementation Steps
 
-**Special case**: `workforce-seed-data.ts` casts the insert payload (`as any`), not the table name — remove those payload casts too.
+1. **Delete 3 stub files** (use-workspace-data, useDomainMockData, useFileSystemBridge)
+2. **Wire use-money-data** into BillsWorkspace, CashTiming, SubscriptionsWaste, TaxEstimator, ReservesSavings, InvestmentOffice — replace inline `(supabase as any)` queries with hook imports
+3. **Wire use-mission-data** into MissionControlPage
+4. **Wire use-calendar-data** into DailyPulse
+5. **Wire use-cai-data** into AgentActivityDashboard
+6. **Wire use-agent-fleet-live** into AgentActivityDashboard
+7. **Wire use-domain-projections** into DailyPulse
+8. **Add useElectronBridge + useOfflineStore** initialization in App.tsx layout
+9. **Verify**: `npx tsc --noEmit` — 0 errors, build clean
 
-## Step 3: Verify
+## Files Changed
 
-- `npx tsc --noEmit` — 0 errors
-- Build succeeds
-
-## Files changed
-- 1 migration (4 new tables)
-- 14 TypeScript files (remove `as any` casts)
+- 3 files deleted
+- ~10 page files updated with new hook imports
+- 1 App.tsx updated with infrastructure hook initialization
+- Total: ~14 files
 
