@@ -53,7 +53,7 @@ const DEMO_transportDuties = [
   { event: "Piano lesson", time: "Tomorrow 3:30 PM", driver: "Partner", route: "School → Music Academy → Home", duration: "40 min" },
 ];
 
-type CalendarView = "week" | "day" | "family" | "DEMO_conflicts" | "prep" | "transport";
+type CalendarView = "week" | "day" | "family" | "conflicts" | "prep" | "transport";
 
 const FamilyCalendar = () => {
   const [view, setView] = useState<CalendarView>("week");
@@ -76,7 +76,7 @@ const FamilyCalendar = () => {
           { key: "week", label: "Week" },
           { key: "day", label: "Day" },
           { key: "family", label: "Family Grid" },
-          { key: "DEMO_conflicts", label: "Conflicts" },
+          { key: "conflicts", label: "Conflicts" },
           { key: "prep", label: "Prep View" },
           { key: "transport", label: "Transport" },
         ]}
@@ -108,7 +108,7 @@ const FamilyCalendar = () => {
           </SitaCard>
 
           {/* Conflicts */}
-          {(view === "week" || view === "DEMO_conflicts") && DEMO_conflicts.length > 0 && (
+          {(view === "week" || view === "conflicts") && DEMO_conflicts.length > 0 && (
             <div className="space-y-3">
               <SitaSectionHeader title="Schedule Conflicts" subtitle="Overlapping or impossible schedules detected" />
               {DEMO_conflicts.map((c, i) => (

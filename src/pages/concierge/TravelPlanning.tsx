@@ -54,7 +54,7 @@ const DEMO_postTripTasks = [
   "Pet pickup from sitter",
 ];
 
-type TravelView = "trips" | "active" | "prep" | "DEMO_itinerary" | "logistics" | "post-trip";
+type TravelView = "trips" | "active" | "prep" | "itinerary" | "logistics" | "post-trip";
 
 const TravelPlanning = () => {
   const [view, setView] = useState<TravelView>("trips");
@@ -77,7 +77,7 @@ const TravelPlanning = () => {
         tabs={[
           { key: "trips", label: "All Trips" },
           { key: "prep", label: "Prep View" },
-          { key: "DEMO_itinerary", label: "Itinerary" },
+          { key: "itinerary", label: "Itinerary" },
           { key: "logistics", label: "Home Logistics" },
           { key: "post-trip", label: "Post-Trip" },
         ]}
@@ -108,7 +108,7 @@ const TravelPlanning = () => {
             </div>
           )}
 
-          {view === "DEMO_itinerary" && (
+          {view === "itinerary" && (
             <div className="space-y-4">
               <SitaSectionHeader title={`Itinerary — ${selectedTrip.destination}`} subtitle="Day-by-day plan" />
               {DEMO_itinerary.map((day, i) => (
