@@ -161,7 +161,7 @@ const AdminDurabilityBoardPage = lazy(() => import("./pages/admin/AdminMutationA
 const AdminProjectionControl = lazy(() => import("./pages/admin/AdminProjectionModels"));
 const AdminOperationsCommand = lazy(() => import("./pages/admin/AdminOperationsHub"));
 const SecurityPostureBoard = lazy(() => import("./pages/admin/SecurityPostureBoard"));
-const AdminTruthRegistry = lazy(() => import("./pages/admin/PlatformTruthRegistry"));
+const AdminTruthRegistry = lazy(() => import("./pages/admin/AdminTruthClaims"));
 const ConciergeRuntimeBoard = lazy(() => import("./pages/admin/ConciergeRuntimeBoard"));
 const AlertTriageBoard = lazy(() => import("./pages/admin/AlertTriageBoard"));
 const AdminPolicySimulator = lazy(() => import("./pages/admin/PolicySimulator"));
