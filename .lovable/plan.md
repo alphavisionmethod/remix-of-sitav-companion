@@ -1,111 +1,152 @@
 
 
-# SITA OS — Live Data Wiring for All User-Facing Pages
+# SITA OS — 100% Test Coverage Implementation Plan
 
-## Problem
-36 pages hardcode MOCK/DEMO data directly instead of querying Supabase. The tables already exist (documents, communications, calendar_events, approval_queue, etc.) but pages bypass them.
+## Current State
 
-## Pages Already Working (have real Supabase queries)
-CommunicationsPage, CalendarWorkspace, AutomationCenter, MediaWorkspace, ApprovalChamber (partial), IncidentCommandCenter, AppReceiptsPage, FilesProcessing — these already have `useQuery` + `isDemoMode` gating.
+| Layer | Source Files | Test Files | Coverage |
+|-------|------------|-----------|----------|
+| **Pages** | 629 | 9 | ~1.4% |
+| **Components** | 332 | 8 | ~2.4% |
+| **Hooks** | 64 | 7 | ~11% |
+| **Lib/Services** | 797 | 51 | ~6.4% |
+| **E2E (Playwright)** | — | 37 specs | Partial |
+| **Edge Functions** | 51 functions | 16 tests | ~31% |
+| **Unit tests (src/test/)** | — | 50 files | Misc coverage |
 
-## Pages Needing Live Data Wiring
+**Total: ~184 test files covering ~1,822 source files. Estimated line coverage: <15%.**
 
-### Tier 1: Core User Pages (HIGH priority — 7 pages)
-
-| Page | Current State | Supabase Table | Fix |
-|------|--------------|----------------|-----|
-| **NotesWorkspace** | 100% DEMO_NOTES hardcoded | `documents` (type='note') | Add useQuery for documents, isDemoMode gate |
-| **OutcomeEnginePage** | 100% DEMO hardcoded | `outcome_verifications` + `outcome_economics_records` | Add useQuery, isDemoMode gate |
-| **ImportExportCenter** | 100% MOCK hardcoded | `documents` + `sovereign_exports` | Add useQuery for uploads/exports |
-| **RevenueCallingPage** | MOCK_CONTACTS/LOGS/SCRIPTS hardcoded | `customers` + `communication_log` | Wire to customers table + comm log |
-| **InvestmentOffice** | 22 MOCK refs, module-level mutables | `capital_purpose_buckets` + `investment_watchlists` + `investment_strategy_records` | Replace module-level MOCK with hook data |
-| **RevenueAutopilot** | 15 MOCK refs | `revenue_leak_items` + `deals` | Wire to revenue tables |
-| **CollectionsCommandCenter** | Uses hook but type imports from mock | Already wired via `useCollectionsAccounts` | Clean up mock type imports |
-
-### Tier 2: Workspace Pages (MEDIUM — 3 pages)
-These already have data services (`workspace-data-service.ts`) querying Supabase but the hooks pass `mode="real"` as default — they work. Only need to verify the mode gate is correct in the component.
-
-| Page | Status |
-|------|--------|
-| **DocsWorkspace** | Already wired via `useDocs()` → `fetchDocs()` → Supabase |
-| **SheetsWorkspace** | Already wired via `useSheets()` → `fetchSheets()` → Supabase |
-| **SlidesWorkspace** | Already wired via `useDecks()` → `fetchDecks()` → Supabase |
-
-### Tier 3: Admin/System Pages (LOW — 13 pages)
-These are admin-only config/diagnostic pages. They use demo data for display purposes. They should still get isDemoMode gates but are lower priority.
-
-| Pages | Fix |
-|-------|-----|
-| HRS01-05, NRC01-04, NSS01/03, AdminDurabilityBoard, RealityClassificationMatrix, MockReplacementProgram | Add isDemoMode gate + empty state for live mode |
-
-### Tier 4: Store Page (LOW — 1 page)
-| Page | Fix |
-|------|-----|
-| **PackStorePage** | Pack catalog is config-driven, not user data. Add `installed_packs` table query for install states. |
+Missing dependency: `@vitest/coverage-v8` is not installed, so coverage reporting doesn't work.
 
 ---
 
-## Implementation Pattern (applied to each page)
+## Strategy: Tiered Test Pyramid
 
-```typescript
-// Before (broken):
-const data = MOCK_CONTACTS;
-
-// After (live):
-const { isDemoMode } = useDataMode();
-const { user } = useAuth();
-const { data: realData } = useQuery({
-  queryKey: ["contacts", user?.id],
-  enabled: !!user && !isDemoMode,
-  queryFn: async () => {
-    const { data } = await supabase.from("customers")
-      .select("*").eq("user_id", user!.id);
-    return data?.length ? data.map(mapToContact) : null;
-  },
-});
-const contacts = isDemoMode ? DEMO_CONTACTS : (realData ?? []);
+```text
+         ╱  E2E (Playwright)  ╲     ← 37 specs (good)
+        ╱  Integration Tests    ╲    ← ~50 unit/integration (ok)
+       ╱  Component Tests (RTL)  ╲   ← 8 tests (CRITICAL GAP)
+      ╱  Hook Tests               ╲  ← 7 tests (GAP)
+     ╱  Service/Lib Unit Tests     ╲ ← 51 tests (GAP)
+    ╱  Contract/Type Tests          ╲← some exist (ok)
+   ╱  Edge Function Tests (Deno)    ╲← 16/51 (GAP)
 ```
-
-For pages with no matching table, we create the table via migration.
-
----
-
-## Database Migrations Needed
-
-### New tables required:
-1. **`notes`** — user notes (title, content, folder, tags, pinned, starred)
-2. **`media_items`** — user media files (name, type, size, url, folder, tags)
-3. **`outcome_tracking`** — outcome goals with progress, interventions, spillovers
-4. **`import_export_jobs`** — upload/export history with status tracking
-5. **`calling_contacts`** — revenue calling contacts (name, company, value, priority, stage)
-6. **`call_logs`** — call history (contact_id, duration, status, notes, revenue)
-7. **`pack_installs`** — installed packs per user (pack_id, status, installed_at)
-
-### Existing tables to use:
-- `documents` — DocsWorkspace, SheetsWorkspace, SlidesWorkspace (already working)
-- `customers` — can serve as calling contacts base
-- `calendar_events` — CalendarWorkspace (already working)
-- `communications` — CommunicationsPage (already working)
-- `approval_queue` — ApprovalChamber (already partially working)
-- `revenue_leak_items` — RevenueAutopilot
-- `capital_purpose_buckets` — InvestmentOffice
-- `incidents` — IncidentCommandCenter (already working)
 
 ---
 
 ## Implementation Plan
 
-| # | Task | Files | Priority |
-|---|------|-------|----------|
-| 1 | Create 7 new tables (notes, media_items, outcome_tracking, import_export_jobs, calling_contacts, call_logs, pack_installs) | Migration SQL | HIGH |
-| 2 | Wire NotesWorkspace to `notes` table | NotesWorkspace.tsx | HIGH |
-| 3 | Wire OutcomeEnginePage to `outcome_tracking` table | OutcomeEnginePage.tsx | HIGH |
-| 4 | Wire ImportExportCenter to `import_export_jobs` table | ImportExportCenter.tsx | HIGH |
-| 5 | Wire RevenueCallingPage to `calling_contacts` + `call_logs` | RevenueCallingPage.tsx | HIGH |
-| 6 | Wire InvestmentOffice to use hook data instead of module-level MOCK | InvestmentOffice.tsx | HIGH |
-| 7 | Wire RevenueAutopilot to `revenue_leak_items` + `deals` | RevenueAutopilot.tsx | HIGH |
-| 8 | Add isDemoMode gates to 13 admin pages | admin/*.tsx | MEDIUM |
-| 9 | Wire PackStorePage `pack_installs` for install state | PackStorePage.tsx | LOW |
+### Phase 1: Infrastructure (Must Do First)
 
-**Total: ~25 files changed, 1 migration, all pages live-data-ready.**
+| # | Task | Details |
+|---|------|---------|
+| 1 | Install `@vitest/coverage-v8` | Add to devDependencies so `npm run test -- --coverage` works |
+| 2 | Add coverage scripts to `package.json` | `"test:coverage": "vitest run --coverage"` |
+| 3 | Create test utilities file | `src/test/test-utils.tsx` — custom render with providers (QueryClient, Auth, Theme, DataMode, Router) so every component test gets proper context |
+| 4 | Create mock factories | `src/test/factories/` — reusable builders for User, Document, Note, Receipt, etc. |
+
+### Phase 2: Critical Path — Page Smoke Tests (629 pages → ~50 test files)
+
+**Approach:** Group pages by domain and create batch smoke-test files that verify each page renders without crashing. This is the fastest path to high coverage.
+
+| # | Test File | Pages Covered | Tests |
+|---|-----------|---------------|-------|
+| 1 | `src/pages/__tests__/auth-pages.test.tsx` | Login, Signup, ForgotPassword, ResetPassword, AuthCallback | 5 |
+| 2 | `src/pages/__tests__/money-pages.test.tsx` | MoneyCenter, BillsWorkspace, TaxCenter, InvoiceGenerator, etc. | ~15 |
+| 3 | `src/pages/__tests__/business-pages.test.tsx` | BusinessCenter, RevenueAutopilot, CRM, Pipeline, etc. | ~20 |
+| 4 | `src/pages/__tests__/concierge-pages.test.tsx` | ConciergeCenter, CalendarWorkspace, Communications, etc. | ~15 |
+| 5 | `src/pages/__tests__/workspace-pages.test.tsx` | DocsWorkspace, SheetsWorkspace, SlidesWorkspace, Notes, Media | ~10 |
+| 6 | `src/pages/__tests__/admin-pages.test.tsx` | All admin/system pages | ~30 |
+| 7 | `src/pages/__tests__/intelligence-pages.test.tsx` | PersonalBrain, Boardroom, AdvisorCouncil, etc. | ~15 |
+| 8 | `src/pages/__tests__/investment-pages.test.tsx` | InvestmentOffice, CapitalAllocation, etc. | ~10 |
+
+**Pattern per page:**
+```typescript
+import { render, screen } from "@/test/test-utils";
+import MoneyCenter from "@/pages/MoneyCenter";
+
+describe("MoneyCenter", () => {
+  it("renders without crashing", () => {
+    render(<MoneyCenter />);
+    expect(document.querySelector("[data-testid], h1, h2, main")).toBeTruthy();
+  });
+});
+```
+
+### Phase 3: Component Tests (332 components → ~30 test files)
+
+Group by component directory. Test rendering + key interactions.
+
+| # | Test File | Components |
+|---|-----------|-----------|
+| 1 | `src/components/sita/__tests__/primitives.test.tsx` | All 6 SITA primitives |
+| 2 | `src/components/auth/__tests__/auth-forms.test.tsx` | LoginForm, SignupForm, PasswordReset |
+| 3 | `src/components/layout/__tests__/layout.test.tsx` | Sidebar, AppLayout, MobileNav |
+| 4 | `src/components/advisor/__tests__/advisor.test.tsx` | AdvisorChat, AdvisorCard |
+| 5 | `src/components/money/__tests__/money-widgets.test.tsx` | BillCard, InvoicePreview, etc. |
+| 6-30 | Domain-grouped test files | Remaining components |
+
+### Phase 4: Hook Tests (64 hooks → ~15 test files)
+
+Test each hook with `renderHook` from RTL. Mock Supabase client.
+
+| # | Test File | Hooks |
+|---|-----------|-------|
+| 1 | `src/hooks/__tests__/use-live-data.test.ts` | All 7 live-data hooks |
+| 2 | `src/hooks/__tests__/use-auth-hooks.test.ts` | useAuth, useSession |
+| 3 | `src/hooks/__tests__/use-navigation.test.ts` | useNavigation, useBreadcrumbs |
+| 4-15 | Domain hooks | Remaining hooks |
+
+### Phase 5: Lib/Service Unit Tests (797 files → ~40 test files)
+
+Focus on business logic, engines, and services.
+
+| # | Test File | Coverage |
+|---|-----------|----------|
+| 1 | `src/lib/__tests__/kernel-contracts.test.ts` | All kernel contracts (envelope, receipt, evidence, replay, reasoning) |
+| 2 | `src/lib/__tests__/domain-engines.test.ts` | Business-OS, Finance-OS, Concierge-OS engines |
+| 3 | `src/lib/__tests__/security-services.test.ts` | Security posture, fraud sentinel, kill switch |
+| 4 | `src/lib/__tests__/capability-registry.test.ts` | Full capability CRUD + routing |
+| 5-40 | Remaining services | Workflow, event bus, approval, memory, etc. |
+
+### Phase 6: Edge Function Tests (35 missing → 35 test files)
+
+Create Deno test files for all untested edge functions.
+
+| # | Functions | Pattern |
+|---|-----------|---------|
+| 1-35 | All 35 untested functions | `Deno.test()` with fetch to function URL, assert status + response shape |
+
+### Phase 7: Coverage Thresholds
+
+Update `vitest.config.ts` thresholds progressively:
+
+| Milestone | Lines | Branches | Functions | Statements |
+|-----------|-------|----------|-----------|------------|
+| Current | 40% | 30% | 35% | 40% |
+| After Phase 2 | 60% | 45% | 50% | 60% |
+| After Phase 3-4 | 75% | 60% | 70% | 75% |
+| After Phase 5 | 85% | 75% | 80% | 85% |
+| Final | 90% | 80% | 85% | 90% |
+
+> Note: 100% line coverage is impractical (error boundaries, platform-specific code, etc.). Industry standard for production apps is 80-90%. We target 90%.
+
+---
+
+## Files Created/Modified
+
+| Action | File |
+|--------|------|
+| Install | `@vitest/coverage-v8` devDependency |
+| Create | `src/test/test-utils.tsx` (custom render) |
+| Create | `src/test/factories/index.ts` (mock builders) |
+| Create | ~50 page test files in `src/pages/__tests__/` |
+| Create | ~30 component test files |
+| Create | ~15 hook test files |
+| Create | ~40 lib/service test files |
+| Create | ~35 edge function test files |
+| Update | `vitest.config.ts` (thresholds) |
+| Update | `package.json` (scripts + coverage dep) |
+
+**Total: ~170 new test files. Due to the volume, implementation will proceed in phases, starting with infrastructure + page smoke tests (highest coverage gain per file).**
 
