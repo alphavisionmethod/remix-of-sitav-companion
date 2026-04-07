@@ -5,6 +5,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, PORTFOLIO, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
+import type { CompetitiveGapAnalysis, TrustPostureReport } from "@/packages/moat-contracts";
 
 export default function WatchlistsSignals() {
   const { isDemoMode } = useDataMode();

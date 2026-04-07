@@ -24,6 +24,7 @@ import {
   Server, CheckCircle,
 } from "lucide-react";
 import type { ServiceReliabilityView } from "@/packages/contracts";
+import type { DriftDetection, VerificationOutcome } from "@/packages/reality-contracts";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 

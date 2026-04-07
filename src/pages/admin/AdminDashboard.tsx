@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import type { AuditEntry, ComplianceReport } from "@/packages/audit-contracts";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";

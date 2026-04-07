@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useComplianceViolations, useGatewayStats } from "@/hooks/use-sag-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import type { ComplianceGate, TenantFirewallRule, SecurityIncident } from "@/packages/enterprise-contracts";
 
 const DEMO_VIOLATION_TYPES = [
   { type: 'direct_provider_call', label: 'Direct Provider Call', severity: 'critical', icon: Ban },
