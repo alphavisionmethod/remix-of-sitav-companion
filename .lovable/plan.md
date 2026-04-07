@@ -1,145 +1,122 @@
 
 
-# SITA OS — God-Tier Kernel Implantation Program
+# SITA OS — End-to-End Data Wiring & User-Facing Page Completion
 
-## Current State Assessment
+## Current State
 
-The codebase **already has most kernel primitives** built and wired:
+**Hooks exist but are NOT consumed by any page:**
+- `useCashflowAnalysis()`, `useCashflowForecast()`, `useSafeToSpend()`, `useBurnRate()` — defined in `use-backend-actions.ts`, never imported by any page
+- `useTaxEstimate()`, `useTaxDeductions()` — defined in `use-backend-actions.ts`, never imported by any page
+- `useCRMSync()` (syncLeads, syncCustomers, syncOpportunities, healthCheck) — defined in `use-backend-actions.ts`, never imported by any page
 
-| Primitive | Current State | Gap |
-|---|---|---|
-| Canonical Chain Orchestrator | Full: Intent → Policy → Workflow → Execution → Verification → Receipt → Projection | No `ActionEnvelope` wrapper — raw params enter chain |
-| Policy Engine | 249 lines, declarative rules, risk classification, durable persistence | Missing versioning, no kill-switch gate at kernel level |
-| Receipt Service | Hash-chained, SHA-256, append-only, persisted to `sita_receipts` | No placeholder→finalize lifecycle |
-| Executor Service | Mode-aware (real/shadow/simulation/draft), circuit breakers, idempotency | Missing `EMULATED`/`REAL_MOCK`/`REAL` tri-mode |
-| Capability Router | Registration, routing, policy pre-check | No manifest enforcement or self-auth prevention |
-| Approval Service | Full lifecycle: dual-approval, expiry, escalation, delegation | Not wired as resumable workflow suspension |
-| Workflow Engine | State machine with transitions | No formal suspension/resume for approval |
-| SitaKernel | 428 lines, boots 33 services, canonical execution path tracking | `executeAction` takes raw params, not ActionEnvelope |
-| Kill Switch / Safe Mode | Exists in mock-data and demo-policy-engine | Not wired to kernel execution gate |
-| Constitution Compiler | Evaluates before execution in kernel | Already integrated |
-| Feature Governance | Owner boundary, intake, spec, capability registration validation | Already gating chain execution |
-| Memory Service | Store with source/tags/confidence/entityId | No ingestion corridor or trust lens |
+**Pages use mock/demo data or direct Supabase queries instead:**
+- `CashTiming.tsx` — uses `useCashTimingWindows()` from mock data service, NOT the `cashflow-calculate` edge function
+- `MoneyOverview.tsx` — uses `useMoneyKPIs()` from mock data, hardcoded fraud sentinel demo data
+- `BusinessOverview.tsx` — hardcoded callbacks, proof items, activity changes
+- `LeadsInbox.tsx` — already wired to Supabase `leads` table (✅) but no CRM sync button
+- `CustomersPage.tsx` — already wired to Supabase `customers` table (✅) but no CRM sync
+- `OpportunitiesCenter.tsx` — already wired to Supabase `opportunities` table (✅) but no sync
+- No tax page exists at all
 
-**Key finding:** The architecture is 85% built. What's missing is the **ActionEnvelope contract** as the universal entry point, the **receipt placeholder lifecycle**, the **tri-mode execution**, the **kernel kill switch**, and **boundary enforcement rules**.
+**Desktop/Profile:**
+- `DesktopSurface.tsx` exists with mock data for boardroom summaries, today items
+- `DailyPulse.tsx` (home `/`) uses demo data adapters, not live edge functions
+- Settings page has profile section wired to `profiles` table (✅)
 
-## Implementation Plan (6 Steps)
+## Implementation Plan (7 Steps)
 
-### Step 1 — ActionEnvelope Contract (Sacred Entry Point)
+### Step 1 — Wire CashTiming to `cashflow-calculate` edge function
 
-Create `src/packages/contracts/kernel/action-envelope.ts`:
+**File:** `src/pages/money/CashTiming.tsx`
 
-```text
-ActionEnvelope {
-  id, schemaVersion, actionType,
-  tenantId, workspaceId, actorId, actorType,
-  source (ui | advisor | system | workflow | connector),
-  causationId, correlationId, traceId,
-  intent { action, domain, description, parameters },
-  risk { tier, costEstimate, sideEffectClass },
-  approval { required, tier },
-  execution { mode (EMULATED | REAL_MOCK | REAL), isReplay },
-  evidence { references[], confidence },
-  metadata (sandboxed Record),
-  createdAt, expiresAt
-}
-```
+Replace `useCashTimingWindows()` and `useMoneyKPIs()` with:
+- `useSafeToSpend()` from `use-backend-actions` for the safe-to-spend KPI
+- `useCashflowForecast()` for the timeline data
+- `useCashflowAnalysis()` for liquid/receivable/overdue KPIs
+- Keep existing UI layout, just swap data source
+- Fallback to demo data when edge function returns empty (no accounts)
 
-Also create: `ActionPlan`, `ActionSpec`, `ReplayPacket`, `NegativeReceipt`, `EvidencePack`, `ReasoningTrace` — all as pure contracts with zero runtime deps.
+### Step 2 — Wire MoneyOverview to `cashflow-calculate` edge function
 
-Create barrel at `src/packages/contracts/kernel/index.ts`.
+**File:** `src/pages/money/MoneyOverview.tsx`
 
-### Step 2 — Receipt Placeholder Lifecycle
+- Import `useCashflowAnalysis()` and `useBurnRate()` from `use-backend-actions`
+- Use edge function data for KPIs (total balance, safe-to-spend, burn rate) when available
+- Keep existing fraud sentinel demo as-is (it's a feature demo)
+- Merge edge function results with existing local bill/invoice/subscription data
 
-Upgrade `ReceiptService` to enforce:
-1. `createPlaceholder(correlationId, capabilityId)` → status `"pending"`
-2. `execute(...)` → status `"executing"`
-3. `finalize(receiptId, result)` → status `"valid"`, hash computed
-4. No execution path can skip placeholder creation
+### Step 3 — Create Tax Estimator page + wire to `tax-estimate` edge function
 
-Wire into `CanonicalChainOrchestrator.execute()` so the receipt is created *before* executor runs.
+**Create:** `src/pages/money/TaxEstimator.tsx`
 
-### Step 3 — Tri-Mode Execution + Kill Switch
+- Full tax estimation page with form: gross income, filing status, SE income, deduction choice
+- Calls `tax-estimate` edge function's `summary` action
+- Displays: federal tax breakdown, SE tax, quarterly estimates, effective/marginal rates
+- Premium SITA styling with KPI tiles, breakdown table, quarterly payment cards
+- Add advisor card for tax guidance
 
-**Execution Modes:** Add `EMULATED | REAL_MOCK | REAL` to `ActionEnvelope`. Map to existing executor modes:
-- `EMULATED` → `draft` (no side effects, synthetic output)
-- `REAL_MOCK` → `simulation` (real logic, mock adapters)  
-- `REAL` → `real` (live execution)
+**Modify:** `src/pages/MoneyCenter.tsx` — add "Tax" tab routing to TaxEstimator
 
-**Invariant:** Output schema must be identical across all three modes. Add a runtime assertion in executor that validates output shape is mode-independent.
+**Modify:** `src/App.tsx` — add route `/money/tax`
 
-**Kill Switch:** Add `checkKillSwitch()` to `SitaKernel.executeAction()` before chain entry. Reads from DB/config. If active → force `EMULATED` mode or block entirely.
+### Step 4 — Add CRM Sync buttons to Business pages
 
-### Step 4 — Wrap SitaKernel with ActionEnvelope
+**Files:** `LeadsInbox.tsx`, `CustomersPage.tsx`, `OpportunitiesCenter.tsx`, `BusinessOverview.tsx`
 
-Refactor `SitaKernel.executeAction()`:
-- Accept `ActionEnvelope` instead of raw params
-- Add `createActionEnvelope()` factory for UI/advisor/system callers
-- Internal: convert envelope to chain input
-- Reject any call that bypasses envelope (type enforcement)
+- Import `useCRMSync()` from `use-backend-actions`
+- Add "Sync" button to LeadsInbox header that calls `syncLeads.mutate(leads)`
+- Add "Sync" button to CustomersPage header that calls `syncCustomers.mutate(customers)`
+- Add CRM health indicator to BusinessOverview using `healthCheck` query
+- Show sync status/last sync timestamp from health check data
 
-Add `SitaKernel.replayAction(receiptId)` that loads receipt + original envelope and re-executes in `EMULATED` mode.
+### Step 5 — Wire DailyPulse desktop to live edge function data
 
-### Step 5 — Approval Suspension/Resume
+**File:** `src/pages/DailyPulse.tsx`
 
-Wire `ApprovalService` into canonical chain as true suspension:
-1. When policy returns `require-approval` → create `ApprovalRequest` with `linkedEnvelopeId`
-2. Store serialized `ActionEnvelope` in approval context
-3. On approval decision → `SitaKernel.resumeAction(approvalId)` deserializes envelope and re-enters chain past policy gate
-4. On rejection → create `NegativeReceipt` with reason
+- Import `useCashflowAnalysis()` from `use-backend-actions`
+- Use live cashflow data for finance KPIs when available (fallback to existing adapters)
+- Import `useCRMSync().healthCheck` for CRM health indicator in the business section
+- Keep existing cross-domain intelligence and domain engine calls
 
-### Step 6 — Boundary Enforcement + Memory Trust Lens
+### Step 6 — Complete Profile shell in Settings
 
-**Boundary rules** (ESLint + architecture scripts):
-- `packages/contracts/` → zero runtime imports
-- `packages/kernel/` → imports only from contracts
-- No direct model/LLM calls outside `ai-gateway`
-- No raw execution params outside ActionEnvelope (grep-based CI check)
+**File:** `src/pages/SettingsPage.tsx`
 
-**Memory trust lens** — upgrade `MemoryService.store()`:
-- Add `trustLevel: "verified" | "inferred" | "external" | "user-provided"`
-- Add `ingestedAt`, `sourceType`, `sanitized` flag
-- Add `sanitize()` step that strips HTML/script tags before storage
-- Retrieval includes trust metadata so consumers can degrade confidence
+- The identity section already loads/saves profile data — verify it handles: display name, avatar URL, timezone, locale
+- Add profile photo upload using Supabase storage `documents` bucket
+- Add account stats section (member since, last login, data counts from live queries)
+- Ensure all settings persist to `profiles.preferences` JSONB column
 
-## What Will NOT Change
+### Step 7 — Wire DesktopSurface to live data
 
-- No new services or packages beyond contracts
-- No physical monorepo restructure — logical boundaries enforced via lint/scripts
-- No Temporal or heavy workflow infrastructure
-- No knowledge graph or vector DB
-- No changes to existing edge functions
-- No UI changes in this phase
-- All 33 existing kernel services remain as-is
+**File:** `src/components/sita/shell/DesktopSurface.tsx`
 
-## Files Created/Modified
+- Replace hardcoded `boardroomSummaries` with data from `useCashflowAnalysis()` and `useCRMSync().healthCheck`
+- Replace hardcoded `todayItems` with data from pending approvals and upcoming bills queries
+- Keep quick actions as-is (they're navigation links)
 
-| Action | File |
+## Files Created
+| File | Purpose |
 |---|---|
-| Create | `src/packages/contracts/kernel/action-envelope.ts` |
-| Create | `src/packages/contracts/kernel/action-plan.ts` |
-| Create | `src/packages/contracts/kernel/replay-packet.ts` |
-| Create | `src/packages/contracts/kernel/evidence-pack.ts` |
-| Create | `src/packages/contracts/kernel/negative-receipt.ts` |
-| Create | `src/packages/contracts/kernel/reasoning-trace.ts` |
-| Create | `src/packages/contracts/kernel/index.ts` |
-| Modify | `src/packages/contracts/index.ts` — add kernel barrel |
-| Modify | `src/lib/core-services/receipt-service.ts` — placeholder lifecycle |
-| Modify | `src/lib/core-services/executor-service.ts` — tri-mode + schema invariant |
-| Modify | `src/lib/core-services/canonical-chain-orchestrator.ts` — envelope input + placeholder receipt |
-| Modify | `src/lib/sita-kernel.ts` — ActionEnvelope entry, kill switch, replay, resume |
-| Modify | `src/lib/core-services/memory-service.ts` — trust lens + sanitization |
-| Create | `scripts/architecture/check-action-envelope-boundary.ts` — CI boundary check |
-| Create | `src/lib/__tests__/action-envelope.test.ts` — contract + replay tests |
+| `src/pages/money/TaxEstimator.tsx` | Full tax estimation page wired to `tax-estimate` edge function |
 
-## Success Criteria
+## Files Modified
+| File | Change |
+|---|---|
+| `src/pages/money/CashTiming.tsx` | Swap mock data hooks → `useCashflowAnalysis/Forecast/SafeToSpend` |
+| `src/pages/money/MoneyOverview.tsx` | Add `useCashflowAnalysis()` + `useBurnRate()` for live KPIs |
+| `src/pages/business/LeadsInbox.tsx` | Add CRM sync button using `useCRMSync().syncLeads` |
+| `src/pages/business/CustomersPage.tsx` | Add CRM sync button using `useCRMSync().syncCustomers` |
+| `src/pages/business/BusinessOverview.tsx` | Add CRM health indicator |
+| `src/pages/DailyPulse.tsx` | Wire finance KPIs to `cashflow-calculate` edge function |
+| `src/components/sita/shell/DesktopSurface.tsx` | Replace hardcoded summaries with live data |
+| `src/pages/SettingsPage.tsx` | Add profile photo upload + account stats |
+| `src/pages/MoneyCenter.tsx` | Add Tax tab |
+| `src/App.tsx` | Add `/money/tax` route |
 
-- No execution path accepts raw params — everything is ActionEnvelope
-- Every execution creates placeholder receipt before running
-- Tri-mode execution produces identical output schemas
-- Kill switch blocks or downgrades execution globally
-- Approvals suspend and resume deterministically
-- Memory stores trust metadata on every entry
-- Architecture script catches boundary violations
-- Replay works via receipt + envelope lineage
+## What Won't Change
+- Edge functions themselves (already complete and deployed)
+- `use-backend-actions.ts` hooks (already complete)
+- Database schema (tables already exist)
+- Existing CRUD on leads/customers/opportunities pages (already wired)
 
