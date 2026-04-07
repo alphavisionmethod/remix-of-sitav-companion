@@ -45,7 +45,7 @@ export default function ISA03OAuthClientRegistryConsole() {
 
   // Check for violations: same client used for both identity and connector
   const familyClientPurposes = clients.reduce((acc: Record<string, Set<string>>, c: any) => {
-    const fam = (c as Record<string, unknown>).provider_families?.provider_key || "unknown";
+    const fam = ((c as any).provider_families as any)?.provider_key || "unknown";
     if (!acc[fam]) acc[fam] = new Set();
     acc[fam].add(c.client_purpose?.startsWith("identity") ? "identity" : "connector");
     return acc;
