@@ -1,62 +1,71 @@
 
 
-# Enhanced GitHub Actions: CI/CD with TSC + Vitest + Deploy Gate
+# Fix: Notification Delivery Edge Functions + VAPID + E2E Tests
 
 ## Current State
 
-The existing `ci.yml` is already production-grade (418 lines, 12 jobs). However, it lacks:
-1. **Coverage thresholds** — Vitest runs without `--coverage` or fail-on-threshold
-2. **Bundle size tracking** — no check for regressions
-3. **PR comment summary** — results only in artifacts, not visible on the PR
-4. **Manual deploy workflow** — no `workflow_dispatch` deploy trigger (since auto-deploy is not possible)
-5. **Vitest coverage config** — `vitest.config.ts` has no coverage settings
+**Edge functions (push-dispatch, push-track, vapid-public-key):** All three are fully implemented (476, 58, 9 lines respectively) with VAPID signing, FCM, APNs, calm routing, preference checks, and delivery receipts. Code is solid.
 
-## Plan
+**VAPID keys:** All three secrets (`VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`) are configured. Client-side `VITE_VAPID_PUBLIC_KEY` is in `.env`. Service worker `sw-push.js` handles push/click/dismiss events.
 
-### 1. Add coverage to `vitest.config.ts`
+**What's missing:**
+1. **No Deno tests** for any of the 3 push edge functions (push-dispatch, push-track, vapid-public-key)
+2. **No E2E test** covering the push notification delivery flow (the existing `tests/integration/push-notification-flow.test.ts` is a unit-level mock test, not a real end-to-end test)
+3. **vapid-public-key function** is too bare — no input validation, no rate limiting, no auth check (any caller gets the key, which is fine for public keys but should at least match the pattern of other functions)
 
-Add `coverage` block with `v8` provider, thresholds (lines: 40, branches: 30, functions: 35 — realistic for current codebase), and `reporter: ['text', 'json-summary', 'lcov']`.
+## Implementation
 
-### 2. Enhance `ci.yml` — unit-tests job
+### 1. Create Deno tests for all 3 push edge functions
 
-- Add `--coverage` flag to vitest run
-- Upload `coverage/coverage-summary.json` as artifact
+**Create:** `supabase/functions/vapid-public-key/index_test.ts`
+- Test CORS preflight returns 200
+- Test GET returns `{ vapid_public_key: string }` with non-empty value
+- Verify response has correct Content-Type and security headers
 
-### 3. Add bundle size check job to `ci.yml`
+**Create:** `supabase/functions/push-track/index_test.ts`
+- Test CORS preflight
+- Test POST with valid `{ notification_id, action: "clicked" }` — expect success or DB error (acceptable in test env)
+- Test missing fields returns 400
+- Test invalid action returns 400
+- Test GET returns 405
 
-New job `bundle-size` after `build`:
-- Download the `dist` artifact
-- Calculate total JS/CSS size
-- Fail if total JS exceeds 5MB (configurable)
-- Write size report to `$GITHUB_STEP_SUMMARY`
+**Create:** `supabase/functions/push-dispatch/index_test.ts`
+- Test CORS preflight
+- Test POST with missing `user_id` returns 400
+- Test POST with missing `title` returns 400
+- Test POST with valid payload but no tokens returns `{ sent: 0, reason: "no_active_tokens" }`
 
-### 4. Add PR comment job to `ci.yml`
+### 2. Create real E2E push notification test
 
-New job `pr-summary` (runs on PRs only, after launch-gate):
-- Collects all job results
-- Posts a formatted GitHub Step Summary with: typecheck status, test count, coverage %, bundle size, architecture score, launch gate status
-- Uses `$GITHUB_STEP_SUMMARY` (no token needed)
+**Create:** `tests/e2e/push-notification-e2e.spec.ts`
 
-### 5. Create `deploy.yml` — Manual Deploy Workflow
+Playwright E2E test that:
+- Navigates to login, authenticates
+- Goes to `/settings` or `/profile` and enables push notifications (mocking the browser Permission API to auto-grant)
+- Verifies the push toggle state persists
+- Calls the `vapid-public-key` edge function and asserts a valid key is returned
+- Calls `push-track` with a mock notification_id and verifies the response
 
-New workflow file `.github/workflows/deploy.yml`:
-- Trigger: `workflow_dispatch` with environment input (`staging` / `production`)
-- Requires all CI checks to have passed on the selected branch
-- Jobs:
-  1. **verify-ci** — checks that the latest CI run on the branch passed
-  2. **build-deploy-artifact** — builds, generates health.json, packages dist + Docker image
-  3. **deploy-staging** — (if staging) builds Docker, tags `sita-os:staging-{sha}`, pushes to registry
-  4. **deploy-production** — (if production) requires manual approval via `environment: production`, builds Docker, tags `sita-os:prod-{sha}`
-  5. **post-deploy-smoke** — hits health endpoint, runs quick sanity check
-  6. **notify** — posts deploy summary to Step Summary
+### 3. Harden vapid-public-key edge function
 
-Since Lovable handles frontend publishing, the deploy workflow focuses on **Docker image builds and push to container registry** for self-hosted/VMware deployments. The `environment: production` gate ensures no accidental production deploys.
+**Modify:** `supabase/functions/vapid-public-key/index.ts`
+- Add method check (only GET/OPTIONS)
+- Add response caching header (`Cache-Control: public, max-age=3600`)
+- Return 500 if VAPID_PUBLIC_KEY env var is empty (instead of silently returning empty string)
 
-### Files
+### 4. Update health checker script
+
+**Modify:** `scripts/check-edge-function-health.ts`
+- Add `push-dispatch`, `push-track`, `vapid-public-key` to the required functions list so they're tracked in CI
+
+## Files
 
 | Action | File |
 |---|---|
-| Modify | `vitest.config.ts` — add coverage config |
-| Modify | `.github/workflows/ci.yml` — coverage flag, bundle-size job, PR summary |
-| Create | `.github/workflows/deploy.yml` — manual deploy with approval gates |
+| Create | `supabase/functions/vapid-public-key/index_test.ts` |
+| Create | `supabase/functions/push-track/index_test.ts` |
+| Create | `supabase/functions/push-dispatch/index_test.ts` |
+| Create | `tests/e2e/push-notification-e2e.spec.ts` |
+| Modify | `supabase/functions/vapid-public-key/index.ts` — harden with method check, cache headers, empty-key guard |
+| Modify | `scripts/check-edge-function-health.ts` — add 3 push functions to required list |
 
