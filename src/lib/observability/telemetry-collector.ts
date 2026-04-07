@@ -190,7 +190,7 @@ class TelemetryCollector {
       const clsObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           if (!(entry as unknown as Record<string, unknown>).hadRecentInput) {
-            clsValue += (entry as unknown as Record<string, unknown>).value;
+            clsValue += (entry as unknown as Record<string, unknown>).value as number;
           }
         }
         this.record("cls", clsValue, "score", { type: "web-vital" });
