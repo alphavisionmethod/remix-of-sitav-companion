@@ -126,3 +126,6 @@ export function createCapabilityRouter(): CapabilityRouter {
   defaults.forEach(d => router.register(d));
   return router;
 }
+
+// ── Re-export modular layer (lib/services/capability-router) ──
+export * from "@/lib/services/capability-router";
