@@ -346,7 +346,7 @@ const RevenueCallingPage = () => {
       <DemoModeBadge />
       <SitaPageHeader title="Revenue Calling" subtitle="Power dialer, call scripts, and logging — powered by Twilio" />
 
-      <CallStats />
+      <CallStats contacts={contacts} callLogs={callLogs} />
 
       {/* View Tabs */}
       <div className="flex gap-1">
