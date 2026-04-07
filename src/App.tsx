@@ -1134,6 +1134,8 @@ const App = () => (
                     <Route path="/mission/releases/:releaseId" element={<MissionReleaseDetailPage />} />
                     <Route path="/mission/workflows/:workflowId/replay" element={<MissionWorkflowReplayPage />} />
                     <Route path="/mission/error" element={<MissionError />} />
+                    <Route path="/mission/policy-simulator" element={<PolicySimulatorHub />} />
+                    <Route path="/mission/workflow-replay" element={<WorkflowReplayHub />} />
 
                     {/* ATLAS Gap Closure — Operator Command Surfaces */}
                     <Route path="/atlas" element={<AtlasHub />} />
