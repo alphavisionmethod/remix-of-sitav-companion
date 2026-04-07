@@ -7,6 +7,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { ChangePlan } from "./change-plan-layer";
+import { RegressionComparisonEngine, createRegressionComparisonEngine } from "@/lib/core-services/regression-comparison-engine";
+import type { RegressionVerdict } from "@/packages/contracts/runtime/regression-comparison-runtime";
 
 export type VerificationGateType =
   | "unit-tests"
@@ -55,7 +57,24 @@ export interface VerificationReport {
   verifiedAt: string;
 }
 
+const VERDICT_TO_GATE: Record<RegressionVerdict, GateResult> = {
+  clean: "pass",
+  warning: "warning",
+  regressed: "fail",
+};
+
 export class VerificationLayer {
+  private regressionEngine: RegressionComparisonEngine;
+
+  constructor(opts?: { regressionEngine?: RegressionComparisonEngine }) {
+    this.regressionEngine = opts?.regressionEngine ?? createRegressionComparisonEngine();
+  }
+
+  /** Expose engine for baseline capture by callers */
+  getRegressionEngine(): RegressionComparisonEngine {
+    return this.regressionEngine;
+  }
+
   async verify(plan: ChangePlan): Promise<VerificationReport> {
     const gates = await this.runGates(plan);
     const requiredGates = gates.filter(g => g.required);
@@ -179,12 +198,23 @@ export class VerificationLayer {
       });
     }
 
-    // 12. Regression Comparison
-    gates.push({
-      type: "regression-comparison", result: "pass",
-      detail: "No regressions detected vs. baseline",
-      required: false, durationMs: 4500, timestamp: now, confidenceImpact: 5,
-    });
+    // 12. Regression Comparison (real engine)
+    {
+      const rStart = Date.now();
+      const regressionReport = this.regressionEngine.compareAll();
+      const rDuration = Date.now() - rStart;
+      const rResult = VERDICT_TO_GATE[regressionReport.overallVerdict];
+      const rImpact = rResult === "pass" ? 5 : rResult === "warning" ? -3 : -10;
+      gates.push({
+        type: "regression-comparison",
+        result: rResult,
+        detail: regressionReport.summary,
+        required: false,
+        durationMs: rDuration,
+        timestamp: now,
+        confidenceImpact: rImpact,
+      });
+    }
 
     // 13. Environment Fit
     gates.push({

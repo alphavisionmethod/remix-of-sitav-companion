@@ -68,6 +68,7 @@ export * from "./cloud-sync-manager";
 
 // Tier 3 infrastructure
 export * from "./search-fabric";
+export * from "./regression-comparison-engine";
 export * from "./document-system";
 
 // Isolated trust & safety cluster

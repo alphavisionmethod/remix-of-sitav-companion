@@ -16,3 +16,4 @@ export * from "./lifecycle-authority";
 export * from "./host-supervision";
 export * from "./lifecycle-receipts";
 export * from "./install-recovery";
+export * from "./regression-comparison-runtime";
