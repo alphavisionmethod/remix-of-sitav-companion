@@ -15,7 +15,7 @@ import { ALL_DETAILED_AGENTS, COUNCILS, SUPERVISORS } from "@/lib/internal-agent
 import { toast } from "sonner";
 
 // ── Generic admin API caller ──
-async function callAdminAPI(endpoint: string, options?: { method?: string; body?: Record<string, unknown>; params?: Record<string, string> }) {
+async function callAdminAPI<T = unknown>(endpoint: string, options?: { method?: string; body?: Record<string, unknown>; params?: Record<string, string> }): Promise<T> {
   const { method = "GET", body, params } = options || {};
   const queryStr = params ? "?" + new URLSearchParams(params).toString() : "";
 
@@ -26,8 +26,18 @@ async function callAdminAPI(endpoint: string, options?: { method?: string; body?
   });
 
   if (error) throw error;
-  return data;
+  return data as T;
 }
+
+// ── Upstream data shape types for Owner Center hooks ──
+export type TrustCenterData = typeof import("@/lib/mock-data/admin-ops").mockTrustCenter;
+export type ReleasesData = typeof import("@/lib/mock-data/admin-ops").mockReleases;
+export type ModelRoutingData = typeof import("@/lib/mock-data/admin-ops").mockModelRouting;
+export type KnowledgeHealthData = typeof import("@/lib/mock-data/admin-ops").mockKnowledgeHealth;
+export type SupportCase = (typeof import("@/lib/mock-data/admin-ops").mockSupportCases)[number];
+export type ChangeReview = (typeof import("@/lib/mock-data/admin-ops").mockChangeReviews)[number];
+export type RollbackCenterData = typeof import("@/lib/mock-data/admin-ops").mockRollbackCenter;
+export type ServiceMapData = typeof import("@/lib/mock-data/admin-ops").mockServiceMap;
 
 // ══════════════════════════════════════════════
 // INCIDENTS
