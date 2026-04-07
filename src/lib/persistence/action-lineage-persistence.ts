@@ -121,7 +121,7 @@ export async function persistActionTransition(
   if (opts?.stuckSince !== undefined) updatePayload.stuck_since = opts.stuckSince;
 
   const { error } = await fromDynamicTable("os_action_lineage")
-    .update(updatePayload)
+    .update(updatePayload as never)
     .eq("id", actionId);
 
   if (error) { console.error("[action-persistence] transition update failed:", error); return false; }
