@@ -507,6 +507,16 @@ export function OSSetupExperience() {
         { user_id: user.id, key: "stress_map", value: JSON.stringify(state.stressMap), category: "preference" },
         { user_id: user.id, key: "comms_context", value: JSON.stringify(state.commsContext), category: "preference" },
         { user_id: user.id, key: "planning_style", value: JSON.stringify(state.planningStyle), category: "preference" },
+        { user_id: user.id, key: "want_less_of", value: JSON.stringify(state.wantLessOf), category: "preference" },
+        { user_id: user.id, key: "protect_most", value: JSON.stringify(state.protectMost), category: "preference" },
+        { user_id: user.id, key: "explanation_style", value: JSON.stringify(state.explanationStyle), category: "preference" },
+        { user_id: user.id, key: "presence_style", value: JSON.stringify(state.presenceStyle), category: "preference" },
+        { user_id: user.id, key: "interruption_style", value: JSON.stringify(state.interruptionStyle), category: "preference" },
+        { user_id: user.id, key: "rituals", value: JSON.stringify(state.rituals), category: "preference" },
+        { user_id: user.id, key: "household_graph", value: JSON.stringify(state.householdGraph), category: "preference" },
+        { user_id: user.id, key: "memory_consent", value: JSON.stringify(state.memoryConsent), category: "privacy" },
+        { user_id: user.id, key: "home_composition", value: JSON.stringify(state.homeComposition), category: "preference" },
+        { user_id: user.id, key: "recover_first", value: JSON.stringify(state.recoverFirst), category: "preference" },
       ].filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
 
       await (supabase as any).from("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
