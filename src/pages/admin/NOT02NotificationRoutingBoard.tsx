@@ -94,7 +94,7 @@ export default function NOT02NotificationRoutingBoard() {
           <p className="text-xs text-muted-foreground">Delivered</p>
         </CardContent></Card>
         <Card><CardContent className="p-4 text-center">
-          <p className="text-2xl font-bold text-foreground">{receipts.filter((r: any) => r.delivery_status === "failed" || r.delivery_status === "suppressed").length}</p>
+          <p className="text-2xl font-bold text-foreground">{receipts.filter((r: any) => r.status === "failed" || r.status === "suppressed").length}</p>
           <p className="text-xs text-muted-foreground">Failed / Suppressed</p>
         </CardContent></Card>
       </div>

@@ -136,7 +136,7 @@ export default function NOT04CalmPolicyBoard() {
                     <TableCell className="text-xs font-medium max-w-48 truncate">{r.notification_id?.slice(0, 8)}</TableCell>
                     <TableCell className="text-xs">{r.channel || "—"}</TableCell>
                     <TableCell className="text-xs">{r.failure_reason || r.status || "—"}</TableCell>
-                    <TableCell><Badge variant="outline" className="text-[10px] text-muted-foreground">{r.delivery_status}</Badge></TableCell>
+                    <TableCell><Badge variant="outline" className="text-[10px] text-muted-foreground">{r.status}</Badge></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
