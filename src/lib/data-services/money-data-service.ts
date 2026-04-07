@@ -354,3 +354,31 @@ export async function rejectMoneyAction(id: string) {
   if (error) throw error;
   return data;
 }
+
+// ── Financial Documents CRUD ──
+
+export async function listFinancialDocuments(limit = 100) {
+  const userId = await getUserId();
+  const { data, error } = await (supabase as any).from("financial_documents").select("*").eq("user_id", userId).order("created_at", { ascending: false }).limit(limit);
+  if (error) { console.error("[money] financial_documents fetch:", error); return []; }
+  return data ?? [];
+}
+
+export async function createFinancialDocument(row: Record<string, unknown>) {
+  const userId = await getUserId();
+  const { data, error } = await (supabase as any).from("financial_documents").insert({ ...row, user_id: userId }).select().single();
+  if (error) { console.error("[money] financial_documents insert:", error); return null; }
+  return data;
+}
+
+export async function updateFinancialDocument(id: string, updates: Record<string, unknown>) {
+  const { error } = await (supabase as any).from("financial_documents").update(updates).eq("id", id);
+  if (error) { console.error("[money] financial_documents update:", error); return false; }
+  return true;
+}
+
+export async function deleteFinancialDocument(id: string) {
+  const { error } = await (supabase as any).from("financial_documents").delete().eq("id", id);
+  if (error) { console.error("[money] financial_documents delete:", error); return false; }
+  return true;
+}
