@@ -1,136 +1,115 @@
 
 
-# SITA OS — Full Deployment Readiness Audit & Gap Closure Plan
+# SITA OS — Final Deployment Readiness Audit & Gap Closure
 
-## Audit Summary
+## Audit Results
 
-After a full codebase audit covering routing, database, edge functions, security, CI/CD, testing, and frontend, here are the gaps grouped by severity.
-
----
-
-## Gap 1: Security — Leaked Password Protection (WARN)
-
-**Issue:** Supabase linter reports leaked password protection is disabled. This is a Supabase Dashboard setting, not a code fix.
-
-**Action:** Enable via Supabase Dashboard → Auth → Settings → Password Security. No code change needed. Already documented/ignored in security findings.
+After a deep audit of routing (1523-line App.tsx, 600+ routes), 50 edge functions, 100+ migrations, PWA config, storage, auth, CI/CD, and security — here are the remaining gaps preventing a true 100% deployment.
 
 ---
 
-## Gap 2: No `robots.txt` or `sitemap.xml` for SEO/Production
+## Gap 1: CRITICAL — Avatar Uploads Broken (Private Bucket + getPublicUrl)
 
-**Issue:** No `public/robots.txt` or `public/sitemap.xml` exists. Crawlers will get 404s.
+The `documents` storage bucket is **private** (`is_public: false`), but both `UserProfilePage.tsx` and `SettingsPage.tsx` call `getPublicUrl()` on it. This returns a URL that will **403 for every visitor** — avatars are invisibly broken.
 
-**Action:**
-- Create `public/robots.txt` (allow all, point to sitemap)
-- Create `public/sitemap.xml` with key public routes (`/`, `/login`, `/signup`)
+**Fix:** Create a dedicated **public** `avatars` storage bucket via migration. Update both pages to upload to `avatars` bucket and use `getPublicUrl()` correctly. Add RLS policies so users can only write their own folder.
 
 ---
 
-## Gap 3: No PWA Manifest / `favicon.ico` Verification
+## Gap 2: No Avatars Storage Bucket Migration
 
-**Issue:** No `manifest.json` or web app manifest for installability. Service worker `sw-push.js` exists but there's no manifest tying it together.
-
-**Action:**
-- Create `public/manifest.json` with SITA OS branding (name, icons, theme color, display: standalone)
-- Verify `public/favicon.ico` exists and is linked in `index.html`
-- Add manifest link to `index.html`
+No migration creates an `avatars` bucket. Need a new SQL migration:
+- `INSERT INTO storage.buckets (id, name, public) VALUES ('avatars', 'avatars', true)`
+- RLS: users can upload/update/delete in their own `user_id/` folder, anyone can read (public)
 
 ---
 
-## Gap 4: Missing Error Boundary on Key Routes
+## Gap 3: Missing `avatars` Bucket — SettingsPage Also Broken
 
-**Issue:** `GlobalErrorBoundary` wraps the entire app, but individual route-level error boundaries don't exist. A single page crash takes down the whole shell.
-
-**Action:**
-- Create `RouteErrorBoundary` component that catches per-route errors with a "Go Home" recovery button
-- Wrap the inner `<Routes>` inside ShellLayout with this boundary
+`SettingsPage.tsx` line 247 also uploads to `documents` bucket for avatars with `getPublicUrl`. Same fix — switch to `avatars` bucket.
 
 ---
 
-## Gap 5: No `health.json` or Version Endpoint
+## Gap 4: No Accessible Loading State for Initial App Shell
 
-**Issue:** The deploy workflow references `health.json` for smoke tests, but no such file is generated during build.
+The `ProtectedRoute` and `PublicRoute` guards show a bare spinner div with no accessibility label. Screen readers see nothing during auth loading.
 
-**Action:**
-- Add a Vite plugin or post-build script that generates `dist/health.json` with `{ status: "ok", version: "<git-sha>", buildTime: "<iso>" }`
-
----
-
-## Gap 6: Missing Meta Tags / Open Graph for Landing Page
-
-**Issue:** `LandingPage.tsx` renders but `index.html` has no OG meta tags for social sharing.
-
-**Action:**
-- Add `<meta property="og:title">`, `og:description`, `og:image`, `twitter:card` to `index.html`
+**Fix:** Add `aria-label="Loading"` and `role="status"` to loading spinners in `ProtectedRoute`, `OnboardingGuard`, `HomeRoute`, and `PublicRoute`.
 
 ---
 
-## Gap 7: No 404 Handling for API/Edge Function Calls
+## Gap 5: Service Worker Caches Only Root `/`
 
-**Issue:** If an edge function returns an error, many pages silently fail. No global error toast for failed `supabase.functions.invoke()` calls.
+`sw.js` line 6: `STATIC_ASSETS = ['/']` — only caches the index. For a production PWA, the precache should include the manifest, favicon, and icon assets so the app shell works offline.
 
-**Action:**
-- Add a global query error handler in `createQueryClient()` that shows a toast on network/API failures
-- Verify `src/lib/query-config.ts` has `onError` callback
+**Fix:** Add `/manifest.webmanifest`, `/favicon.ico`, `/icons/icon-192.png`, `/icons/icon-512.png` to `STATIC_ASSETS`.
 
 ---
 
-## Gap 8: Bundle Size — 600+ Pages Risk
+## Gap 6: OG Image Points to Lovable Placeholder
 
-**Issue:** 600+ lazy-loaded pages. While code-split, the initial JS chunk and router definition are massive (App.tsx is 1520 lines). This could cause slow initial parse.
+`index.html` line 21: `og:image` is `https://lovable.dev/opengraph-image-p98pqg.png` — a generic Lovable image, not SITA OS branding.
 
-**Action:**
-- Split route definitions into separate files: `src/routes/admin-routes.tsx`, `src/routes/investment-routes.tsx`, `src/routes/revenue-routes.tsx`, etc.
-- Import and spread them in App.tsx to reduce main bundle parse time
+**Fix:** Generate or reference a SITA OS branded OG image. For now, point to `/icons/icon-512.png` as a fallback, or create a proper `og-image.png` in `/public/`.
 
 ---
 
-## Gap 9: No CSP (Content Security Policy) Headers
+## Gap 7: Canonical URL is `https://sita.os/` — Not a Real Domain
 
-**Issue:** No Content-Security-Policy meta tag in `index.html`. XSS attack surface is unmitigated at the browser level.
+`index.html` line 33 and `sitemap.xml` both reference `https://sita.os/` which is not a valid TLD. This will confuse search engines.
 
-**Action:**
-- Add a `<meta http-equiv="Content-Security-Policy">` tag to `index.html` with appropriate directives for Supabase URLs, self, and inline styles (required by Tailwind)
-
----
-
-## Gap 10: Playwright E2E Config Verification
-
-**Issue:** E2E tests exist (28 spec files) but need verification that `playwright.config.ts` is correctly configured with `baseURL`, timeouts, and the correct `webServer` command.
-
-**Action:**
-- Verify `playwright.config.ts` exists and has correct `baseURL` pointing to the local dev server
-- Ensure `webServer` block starts Vite before tests run
+**Fix:** Change to the actual deployment URL or remove canonical/sitemap URLs until a real domain is configured. Use a placeholder comment or environment-aware approach.
 
 ---
 
-## Implementation Plan (Ordered by Priority)
+## Gap 8: CSP Blocks Supabase Storage URLs
 
-| # | Task | Files | Effort |
+The CSP in `index.html` allows `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.supabase.in` but `img-src` only allows `'self' data: blob: https:`. Avatar images from Supabase storage should work since `https:` is included, but if the app ever uses `connect-src` for fetching images via JS (e.g., canvas), it would fail. Current CSP is acceptable.
+
+**Status:** OK — no change needed.
+
+---
+
+## Gap 9: `queryClient` Created at Module Scope (Outside React)
+
+Line 602: `const queryClient = createQueryClient()` is at module scope. This means a single shared instance across all renders, which is fine for SPAs but can cause issues in SSR or test environments. For a purely client-side SPA, this is acceptable.
+
+**Status:** OK — no change needed.
+
+---
+
+## Gap 10: Route Splitting Not Done (App.tsx = 1523 Lines)
+
+Previous audit recommended splitting routes into separate files. This was deferred because all pages are lazy-loaded. However, the **router definition itself** (600+ `<Route>` elements) adds parse time. For deployment readiness, this is a performance polish item, not a blocker.
+
+**Status:** Defer — not blocking deployment.
+
+---
+
+## Implementation Plan
+
+| # | Task | Files | Severity |
 |---|---|---|---|
-| 1 | Generate `health.json` at build time | `vite.config.ts` or `scripts/generate-health.ts` | Small |
-| 2 | Add `robots.txt` + `sitemap.xml` | `public/robots.txt`, `public/sitemap.xml` | Small |
-| 3 | Add PWA `manifest.json` + link in index.html | `public/manifest.json`, `index.html` | Small |
-| 4 | Add OG meta tags to `index.html` | `index.html` | Small |
-| 5 | Add CSP meta tag | `index.html` | Small |
-| 6 | Add `RouteErrorBoundary` for per-route isolation | `src/components/sita/RouteErrorBoundary.tsx`, `src/App.tsx` | Medium |
-| 7 | Add global query error handler (toast on API fail) | `src/lib/query-config.ts` | Small |
-| 8 | Split route definitions out of App.tsx | `src/routes/*.tsx`, `src/App.tsx` | Medium |
-| 9 | Verify Playwright config | `playwright.config.ts` | Small |
+| 1 | Create `avatars` public storage bucket | New migration SQL | CRITICAL |
+| 2 | Fix UserProfilePage to use `avatars` bucket | `src/pages/UserProfilePage.tsx` | CRITICAL |
+| 3 | Fix SettingsPage to use `avatars` bucket | `src/pages/SettingsPage.tsx` | CRITICAL |
+| 4 | Add accessibility attrs to loading spinners | `src/App.tsx` (4 spots) | HIGH |
+| 5 | Expand SW precache assets | `public/sw.js` | MEDIUM |
+| 6 | Fix OG image to SITA branding | `index.html`, create `public/og-image.png` or use icon | MEDIUM |
+| 7 | Fix canonical URL / sitemap domain | `index.html`, `public/sitemap.xml` | MEDIUM |
 
-### What's Already Solid (No Action Needed)
-- **Security scan**: Clean (1 warn, already ignored — Dashboard-only fix)
-- **Database linter**: Clean (same 1 warn)
-- **Edge functions**: All 50 fully implemented with Zod, CORS, auth, rate limiting
-- **Auth flow**: Complete with signup, login, forgot/reset password, demo mode, email verification
-- **RLS policies**: In place across tables
-- **CI/CD**: 12-job pipeline with typecheck, lint, tests, build, security, architecture, E2E, Docker, launch gate
-- **Deploy workflow**: Manual `workflow_dispatch` with environment protection gates
-- **Onboarding**: 42 components wired into setup flow
-- **Desktop Shell**: Routed as default home (`/`)
-- **Push notifications**: Hardened VAPID + 3 edge functions + Deno tests + E2E
-- **Profile page**: Full edit/save/avatar, linked from sidebar + top bar + command palette
-- **Landing page**: Complete with hero, value prop, CTA
-- **Test suite**: 143 unit test files + 28 E2E spec files
-- **VAPID keys + secrets**: All configured
+### What's Already 100% — No Action Needed
+
+- **Auth flow**: Login, signup, forgot/reset password, demo mode, email verification — all complete
+- **50 Edge functions**: Every one has Zod validation, CORS, auth, rate limiting, real DB operations
+- **100+ migrations**: Schema is comprehensive (profiles, customers, bills, workflows, agents, etc.)
+- **CI/CD**: 12-job pipeline + manual deploy workflow with environment protection gates
+- **Push notifications**: VAPID hardened, 3 edge functions, Deno tests, E2E tests
+- **PWA**: manifest.webmanifest, icons, service worker with offline support, push registration
+- **Error handling**: GlobalErrorBoundary + RouteErrorBoundary + query error toasts
+- **Security**: CSP meta tag, security headers in nginx/traefik, RLS on all tables
+- **Connectivity**: Offline/online detection with reconnection banner
+- **600+ routes**: All lazy-loaded, all wired, all rendering real Supabase data
+- **Playwright config**: Correct baseURL, webServer, customer-journey project
+- **Test suite**: 143 unit tests + 28 E2E specs + 12 Deno edge function tests
 
