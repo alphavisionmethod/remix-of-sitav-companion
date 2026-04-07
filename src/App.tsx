@@ -445,6 +445,11 @@ const SEC02PrivilegedActions = lazy(() => import("./pages/admin/security/SEC02Pr
 const SEC03SensitiveAssets = lazy(() => import("./pages/admin/security/SEC03SensitiveAssets"));
 const SEC04EdgeFunctionAudit = lazy(() => import("./pages/admin/security/SEC04EdgeFunctionAudit"));
 const SEC05ClaimSafety = lazy(() => import("./pages/admin/security/SEC05ClaimSafety"));
+const SEC06IncidentRecovery = lazy(() => import("./pages/admin/security/SEC06IncidentRecovery"));
+
+// Frontend Quality
+const FE01QualityMatrix = lazy(() => import("./pages/admin/frontend/FE01QualityMatrix"));
+const FE02DesignGovernance = lazy(() => import("./pages/admin/frontend/FE02DesignGovernance"));
 
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
