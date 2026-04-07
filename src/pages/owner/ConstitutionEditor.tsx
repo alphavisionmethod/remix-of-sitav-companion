@@ -289,8 +289,7 @@ export default function ConstitutionEditor() {
     if (dbLoaded || isDemo || !user?.id) return;
 
     const loadRules = async () => {
-      const { data, error } = await db
-        .from("constitution_rules")
+      const { data, error } = await fromTable("constitution_rules")
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: true });
@@ -378,8 +377,7 @@ export default function ConstitutionEditor() {
     if (!isDemo && user?.id) {
       const rule = compiler.getAllRules().find((r: ConstitutionRule) => r.id === id);
       if (rule) {
-        await db
-          .from("constitution_rules")
+        await fromTable("constitution_rules")
           .update({ is_active: active })
           .eq("user_id", user.id)
           .eq("natural_text", rule.naturalLanguage);
@@ -392,8 +390,7 @@ export default function ConstitutionEditor() {
     const rule = compiler.getAllRules().find((r: ConstitutionRule) => r.id === id);
     deleteRule(id);
     if (!isDemo && user?.id && rule) {
-      await db
-        .from("constitution_rules")
+      await fromTable("constitution_rules")
         .delete()
         .eq("user_id", user.id)
         .eq("natural_text", rule.naturalLanguage);

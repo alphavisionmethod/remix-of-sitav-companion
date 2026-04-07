@@ -83,7 +83,7 @@ export default function ISA07AuthConnectorTruthBoard() {
     return acc;
   }, {});
 
-  Object.entries(clientsByFamily).forEach(([fam, clients]) => {
+  Object.entries(clientsByFamily).forEach(([fam, clients]: [string, any[]]) => {
     const purposes = clients.map((c: any) => c.client_purpose);
     const hasIdentity = purposes.some((p: string) => p?.startsWith("identity"));
     const hasConnector = purposes.some((p: string) => p?.startsWith("connector"));
@@ -96,7 +96,7 @@ export default function ISA07AuthConnectorTruthBoard() {
         resolved: false,
       });
     }
-    if (hasIdentity && hasConnector && clients.length >= 2) {
+    if (hasIdentity && hasConnector && (clients as any[]).length >= 2) {
       findings.push({
         type: "over_scope",
         severity: "info",
@@ -110,12 +110,12 @@ export default function ISA07AuthConnectorTruthBoard() {
   // Check 2: Identity link implies connector access? (should NOT)
   const identityFamilies = new Set(identityLinks.map((l: any) => (l as any).provider_families?.provider_key));
   const connectorFamilies = new Set(connectorLinks.map((l: any) => (l as any).provider_families?.provider_key));
-  identityFamilies.forEach((fam) => {
+  identityFamilies.forEach((fam: any) => {
     if (fam && connectorFamilies.has(fam)) {
       findings.push({
         type: "ux_confusion",
         severity: "info",
-        family: fam,
+        family: fam as string,
         description: `${fam}: User has both identity link and connector access. Verify UX doesn't conflate them.`,
         resolved: true,
       });

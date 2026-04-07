@@ -18,8 +18,7 @@ export default function NOT02NotificationRoutingBoard() {
   const { data: queue = [] } = useQuery({
     queryKey: ["not02-queue"],
     queryFn: async () => {
-      const { data } = await db
-        .from("notifications_queue")
+      const { data } = await fromTable("notifications_queue")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(50);
@@ -30,8 +29,7 @@ export default function NOT02NotificationRoutingBoard() {
   const { data: receipts = [] } = useQuery({
     queryKey: ["not02-receipts"],
     queryFn: async () => {
-      const { data } = await db
-        .from("notification_delivery_receipts")
+      const { data } = await fromTable("notification_delivery_receipts")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(50);

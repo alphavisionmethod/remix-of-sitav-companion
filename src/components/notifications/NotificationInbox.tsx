@@ -38,8 +38,7 @@ export function NotificationInbox() {
     enabled: !!user,
     refetchInterval: 30000,
     queryFn: async () => {
-      const { data } = await db
-        .from("notifications_queue")
+      const { data } = await fromTable("notifications_queue")
         .select("id, title, body, category, urgency, action_url, created_at, read_at, status")
         .order("created_at", { ascending: false })
         .limit(20);
