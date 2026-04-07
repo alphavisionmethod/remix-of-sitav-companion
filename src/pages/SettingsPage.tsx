@@ -119,6 +119,7 @@ const SettingsPage = () => {
     queryFn: async () => {
       const { data } = await (db as any).from("profiles").select("*").eq("user_id", user!.id).single();
       if (data?.display_name) setDisplayName(data.display_name);
+      if (data?.avatar_url) setAvatarUrl(data.avatar_url);
       if (data?.preferences) loadPrefs(data.preferences);
       return data;
     },
