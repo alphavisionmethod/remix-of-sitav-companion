@@ -24,6 +24,8 @@ import { Suspense, lazy } from "react";
 // CODE-SPLIT: Lazy-load all page components
 // ═══════════════════════════════════════════════════
 const DailyPulse = lazy(() => import("./pages/DailyPulse"));
+const LandingPage = lazy(() => import("./pages/LandingPage"));
+const UserProfilePage = lazy(() => import("./pages/UserProfilePage"));
 const BusinessCenter = lazy(() => import("./pages/BusinessCenter"));
 const CustomerDetail = lazy(() => import("./pages/CustomerDetail"));
 const MoneyCenter = lazy(() => import("./pages/MoneyCenter"));
@@ -613,6 +615,14 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+// Auth gate for onboarding — requires auth but skips onboarding-completion redirect
+const OnboardingGuard = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
+  if (!user) return <Navigate to="/login" replace />;
+  return <>{children}</>;
+};
+
 // Handle email verification — detect ?type=signup in hash and redirect to onboarding
 const EmailVerificationHandler = () => {
   const { user } = useAuth();
@@ -629,6 +639,14 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   if (loading) return null;
   if (user) return <Navigate to="/" replace />;
   return <>{children}</>;
+};
+
+// Conditional home: landing page for unauthenticated, DailyPulse for authenticated
+const HomeRoute = () => {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
+  if (!user) return <LandingPage />;
+  return <Navigate to="/home" replace />;
 };
 
 const App = () => (
@@ -655,9 +673,10 @@ const App = () => (
             <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
             <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/onboarding" element={<OnboardingGuard><Onboarding /></OnboardingGuard>} />
             <Route path="/auth/callback" element={<EmailVerificationHandler />} />
             <Route path="/first-win" element={<ProtectedRoute><FirstWinActivation /></ProtectedRoute>} />
+            <Route path="/" element={<HomeRoute />} />
 
             <Route path="/mobile" element={<ProtectedRoute><MobileHome /></ProtectedRoute>} />
             <Route path="/mobile/approvals" element={<ProtectedRoute><MobileApprovals /></ProtectedRoute>} />
@@ -675,6 +694,8 @@ const App = () => (
                   <Suspense fallback={<PageLoader />}>
                   <Routes>
                     <Route path="/" element={<DailyPulse />} />
+                    <Route path="/home" element={<DailyPulse />} />
+                    <Route path="/profile" element={<UserProfilePage />} />
                     <Route path="/life" element={<LifeDashboard />} />
                     <Route path="/life-simulator" element={<LifeSimulator />} />
                     <Route path="/my-activity" element={<MyActivity />} />
