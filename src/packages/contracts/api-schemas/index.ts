@@ -435,6 +435,283 @@ export interface SystemUpdatesResponse {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// NEW: 17 Missing Edge Function Contracts
+// ═══════════════════════════════════════════════════════════════
+
+// ── Admin AI Workforce Run ───────────────────────────────────
+
+export interface AdminAiWorkforceRunRequest {
+  role_key: string;
+  task_key: string;
+  scope_type?: string;
+  scope_ref?: string;
+  scope_payload?: Record<string, unknown>;
+  budget_posture?: string;
+  mode?: string;
+}
+
+export interface AdminAiWorkforceRunResponse {
+  success: boolean;
+  run_id?: string;
+  summary?: string;
+  findings?: unknown[];
+  recommendations?: unknown[];
+  error?: string;
+}
+
+// ── AI Gateway ───────────────────────────────────────────────
+
+export interface AiGatewayRequest {
+  capability_key: string;
+  messages: ChatMessage[];
+  task_class?: "premium_synthesis" | "balanced_assistant" | "cheap_utility";
+  max_tokens?: number;
+  temperature?: number;
+  structured_output?: boolean;
+  tools?: unknown[];
+}
+
+export interface AiGatewayResponse {
+  content: string;
+  model: string;
+  provider: string;
+  tokens_used: number;
+  cost_usd: number;
+  latency_ms: number;
+  receipt_id?: string;
+  fallback_used?: boolean;
+}
+
+// ── Booking Manage ───────────────────────────────────────────
+
+export type BookingManageRequest =
+  | { action: "create"; booking_type: string; title: string; provider?: string; scheduled_at: string; duration_minutes?: number; notes?: string; metadata?: Record<string, unknown> }
+  | { action: "update"; booking_id: string; title?: string; provider?: string; scheduled_at?: string; duration_minutes?: number; notes?: string }
+  | { action: "cancel"; booking_id: string; reason?: string }
+  | { action: "confirm"; booking_id: string }
+  | { action: "list"; status?: string; booking_type?: string; from_date?: string; to_date?: string; limit?: number };
+
+export interface BookingManageResponse {
+  booking?: Record<string, unknown>;
+  bookings?: Record<string, unknown>[];
+  success?: boolean;
+  error?: string;
+}
+
+// ── Cashflow Calculate ───────────────────────────────────────
+
+export type CashflowCalculateRequest =
+  | { action: "analyze" }
+  | { action: "forecast"; horizon_days?: number }
+  | { action: "safe-to-spend"; reserve_target_cents?: number }
+  | { action: "burn-rate" };
+
+export interface CashflowCalculateResponse {
+  total_liquid_cents?: number;
+  total_receivable_cents?: number;
+  overdue_cents?: number;
+  inflows_30d_cents?: number;
+  forecast?: unknown[];
+  safe_to_spend_cents?: number;
+  burn_rate_cents_per_day?: number;
+  runway_days?: number;
+  error?: string;
+}
+
+// ── Connector Batch ──────────────────────────────────────────
+
+export type ConnectorBatchRequest =
+  | { action: "submit"; operations: Array<{ connector_id: string; action: string; payload?: Record<string, unknown> }>; label?: string }
+  | { action: "status"; batch_id: string }
+  | { action: "cancel"; batch_id: string }
+  | { action: "list"; limit?: number }
+  | { action: "retry-failed"; batch_id: string };
+
+export interface ConnectorBatchResponse {
+  batch_id?: string;
+  batch?: Record<string, unknown>;
+  batches?: Record<string, unknown>[];
+  success?: boolean;
+  error?: string;
+}
+
+// ── Connector Discover ───────────────────────────────────────
+
+export interface ConnectorDiscoverRequest {
+  action: "scan" | "match" | "recommend" | "catalog";
+  domain?: string;
+  tags?: string[];
+  limit?: number;
+}
+
+export interface ConnectorDiscoverResponse {
+  connectors?: Array<{ id: string; name: string; domain: string; status: string }>;
+  recommendations?: Array<{ connector_type: string; reason: string }>;
+  error?: string;
+}
+
+// ── Connector OAuth ──────────────────────────────────────────
+
+export type ConnectorOAuthRequest =
+  | { action: "initiate"; connector_id: string; scopes?: string[]; redirect_uri?: string }
+  | { action: "callback"; code: string; state: string }
+  | { action: "disconnect"; account_id: string };
+
+export interface ConnectorOAuthResponse {
+  auth_url?: string;
+  connected?: boolean;
+  account_id?: string;
+  success?: boolean;
+  error?: string;
+}
+
+// ── Connector Transform ──────────────────────────────────────
+
+export interface ConnectorTransformRequest {
+  action: "normalize" | "map-fields" | "convert" | "validate-schema";
+  source_connector?: string;
+  target_table?: string;
+  data?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+export interface ConnectorTransformResponse {
+  transformed?: unknown;
+  valid?: boolean;
+  errors?: string[];
+  field_map?: Record<string, string>;
+}
+
+// ── CRM Sync ─────────────────────────────────────────────────
+
+export type CrmSyncRequest =
+  | { action: "sync-leads"; leads: Array<{ name: string; email?: string; phone?: string; source?: string; status?: string; metadata?: Record<string, unknown> }> }
+  | { action: "sync-customers"; customers: Array<{ name: string; email: string; phone?: string; company?: string; metadata?: Record<string, unknown> }> }
+  | { action: "sync-opportunities"; opportunities: Array<{ title: string; customer_id: string; value_cents?: number; stage?: string; probability?: number; expected_close?: string }> }
+  | { action: "health-check" };
+
+export interface CrmSyncResponse {
+  synced?: number;
+  errors?: Array<{ index: number; error: string }>;
+  health?: { leads: number; customers: number; opportunities: number };
+  error?: string;
+}
+
+// ── Ecosystem Operations ─────────────────────────────────────
+
+export interface EcosystemOperationsRequest {
+  action: "seed_ecosystem" | "register_device" | "update_trust" | "grant_health_consent" | "revoke_health_consent" | "configure_push_route" | "configure_wearable" | "update_launch_readiness" | "ecosystem_audit";
+  ecosystem?: "apple" | "android";
+  payload?: Record<string, unknown>;
+}
+
+export interface EcosystemOperationsResponse {
+  success?: boolean;
+  data?: unknown;
+  error?: string;
+}
+
+// ── Invoice Generate ─────────────────────────────────────────
+
+export type InvoiceGenerateRequest =
+  | { action: "generate"; customer_id: string; line_items: Array<{ description: string; quantity: number; unit_price_cents: number }>; due_date: string; notes?: string; currency?: string }
+  | { action: "send"; invoice_id: string; channel?: "email" | "sms" | "portal" }
+  | { action: "mark-paid"; invoice_id: string; payment_method?: string; payment_ref?: string }
+  | { action: "void"; invoice_id: string; reason: string }
+  | { action: "list"; status?: string; customer_id?: string; limit?: number };
+
+export interface InvoiceGenerateResponse {
+  invoice?: Record<string, unknown>;
+  invoices?: Record<string, unknown>[];
+  success?: boolean;
+  error?: string;
+}
+
+// ── Payment Process ──────────────────────────────────────────
+
+export type PaymentProcessRequest =
+  | { action: "initiate"; amount_cents: number; currency?: string; account_id: string; description: string; recipient?: string; category?: string }
+  | { action: "verify"; approval_id: string }
+  | { action: "list-pending"; limit?: number }
+  | { action: "cancel"; approval_id: string; reason?: string };
+
+export interface PaymentProcessResponse {
+  approval?: Record<string, unknown>;
+  balance_warning?: boolean;
+  pending?: Record<string, unknown>[];
+  status?: string;
+  receipt?: Record<string, unknown>;
+  hash?: string;
+  error?: string;
+}
+
+// ── Push Dispatch ────────────────────────────────────────────
+
+export interface PushDispatchRequest {
+  notification_id: string;
+  user_id: string;
+  title: string;
+  body?: string;
+  urgency?: string;
+  action_url?: string;
+  category?: string;
+}
+
+export interface PushDispatchResponse {
+  dispatched: number;
+  results?: Array<{ device_id: string; status: string; error?: string }>;
+}
+
+// ── Push Track ───────────────────────────────────────────────
+
+export interface PushTrackRequest {
+  notification_id: string;
+  action: "clicked" | "dismissed";
+}
+
+export interface PushTrackResponse {
+  tracked: boolean;
+}
+
+// ── Tax Estimate ─────────────────────────────────────────────
+
+export type TaxEstimateRequest =
+  | { action: "estimate"; gross_income_cents: number; filing_status?: "single" | "married_joint" | "head_of_household"; deductions_cents?: number; state?: string }
+  | { action: "quarterly"; annual_income_cents: number; filing_status?: string }
+  | { action: "bracket-info"; filing_status?: string };
+
+export interface TaxEstimateResponse {
+  federal_tax_cents?: number;
+  effective_rate?: number;
+  marginal_rate?: number;
+  brackets?: unknown[];
+  quarterly_payment_cents?: number;
+  error?: string;
+}
+
+// ── VAPID Public Key ─────────────────────────────────────────
+
+export type VapidPublicKeyRequest = Record<string, never>;
+
+export interface VapidPublicKeyResponse {
+  vapid_public_key: string;
+}
+
+// ── Verification Recorder ────────────────────────────────────
+
+export interface VerificationRecorderRequest {
+  action_type: string;
+  target_type: string;
+  target_id: string;
+  outcome: "pass" | "fail" | "skip";
+  evidence?: Record<string, unknown>;
+}
+
+export interface VerificationRecorderResponse {
+  recorded: boolean;
+  verification_id?: string;
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Master Function Map — maps function name → request/response
 // ═══════════════════════════════════════════════════════════════
 
@@ -472,6 +749,24 @@ export interface EdgeFunctionMap {
   "self-healing": { request: SelfHealingRequest; response: SelfHealingResponse };
   "system-updates": { request: SystemUpdatesRequest; response: SystemUpdatesResponse };
   "main": { request: Record<string, unknown>; response: Record<string, unknown> };
+  // ── 17 newly typed functions ───────────────────────────────
+  "admin-ai-workforce-run": { request: AdminAiWorkforceRunRequest; response: AdminAiWorkforceRunResponse };
+  "ai-gateway": { request: AiGatewayRequest; response: AiGatewayResponse };
+  "booking-manage": { request: BookingManageRequest; response: BookingManageResponse };
+  "cashflow-calculate": { request: CashflowCalculateRequest; response: CashflowCalculateResponse };
+  "connector-batch": { request: ConnectorBatchRequest; response: ConnectorBatchResponse };
+  "connector-discover": { request: ConnectorDiscoverRequest; response: ConnectorDiscoverResponse };
+  "connector-oauth": { request: ConnectorOAuthRequest; response: ConnectorOAuthResponse };
+  "connector-transform": { request: ConnectorTransformRequest; response: ConnectorTransformResponse };
+  "crm-sync": { request: CrmSyncRequest; response: CrmSyncResponse };
+  "ecosystem-operations": { request: EcosystemOperationsRequest; response: EcosystemOperationsResponse };
+  "invoice-generate": { request: InvoiceGenerateRequest; response: InvoiceGenerateResponse };
+  "payment-process": { request: PaymentProcessRequest; response: PaymentProcessResponse };
+  "push-dispatch": { request: PushDispatchRequest; response: PushDispatchResponse };
+  "push-track": { request: PushTrackRequest; response: PushTrackResponse };
+  "tax-estimate": { request: TaxEstimateRequest; response: TaxEstimateResponse };
+  "vapid-public-key": { request: VapidPublicKeyRequest; response: VapidPublicKeyResponse };
+  "verification-recorder": { request: VerificationRecorderRequest; response: VerificationRecorderResponse };
 }
 
 export type EdgeFunctionName = keyof EdgeFunctionMap;

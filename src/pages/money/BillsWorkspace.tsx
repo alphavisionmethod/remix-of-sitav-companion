@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { format, differenceInDays, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { simulatePayment, type PaymentSimulation } from "@/lib/core-services/payment-execution";
+import { initiatePayment } from "@/lib/api/payment-api";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
@@ -118,6 +119,17 @@ const BillsWorkspace = () => {
 
   const markPaidMutation = useMutation({
     mutationFn: async (id: string) => {
+      const bill = enriched.find(b => b.id === id);
+      if (bill && user) {
+        // Fire payment-process edge function for audit trail & approval
+        await initiatePayment({
+          amount_cents: Math.round(Number(bill.amount || 0) * 100),
+          account_id: bill.account_id || user.id,
+          description: `Bill payment: ${bill.payee || "Unknown"}`,
+          recipient: bill.payee,
+          category: bill.category || "bills",
+        }).catch(() => { /* non-blocking — bill still marked paid locally */ });
+      }
       const { error } = await (supabase as any).from("bills").update({ status: "paid" }).eq("id", id);
       if (error) throw error;
     },
