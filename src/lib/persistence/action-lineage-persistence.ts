@@ -230,7 +230,7 @@ export async function fetchActionLineage(filters?: {
 
   const { data, error } = await query;
   if (error) { console.error("[action-persistence] fetch failed:", error); return []; }
-  return data ?? [];
+  return (data ?? []) as unknown as PersistedActionLineage[];
 }
 
 // ── Get full action explanation ──────────────────────────────────
