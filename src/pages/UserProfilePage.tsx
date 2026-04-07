@@ -25,8 +25,6 @@ const UserProfilePage = () => {
     bio: "",
   });
   const [stats, setStats] = useState({
-    connectedServices: 0,
-    receiptsCount: 0,
     actionsCount: 0,
     daysSinceJoin: 0,
   });
@@ -35,10 +33,9 @@ const UserProfilePage = () => {
     if (!user) return;
     const load = async () => {
       setLoading(true);
-      // Load profile
       const { data: p } = await supabase
         .from("profiles")
-        .select("display_name, avatar_url, timezone, locale, preferences")
+        .select("display_name, avatar_url, preferences")
         .eq("user_id", user.id)
         .maybeSingle();
 
@@ -47,26 +44,21 @@ const UserProfilePage = () => {
         setProfile({
           display_name: p.display_name || "",
           avatar_url: p.avatar_url || "",
-          timezone: p.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
-          locale: p.locale || navigator.language,
+          timezone: prefs.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
+          locale: prefs.locale || navigator.language,
           bio: prefs.bio || "",
         });
       }
 
-      // Stats
-      const [svcs, receipts, actions] = await Promise.all([
-        supabase.from("connected_services").select("id", { count: "exact", head: true }).eq("user_id", user.id),
-        supabase.from("execution_receipts").select("id", { count: "exact", head: true }).eq("user_id", user.id),
-        supabase.from("trust_weighted_actions").select("id", { count: "exact", head: true }).eq("user_id", user.id),
-      ]);
+      const { count } = await supabase
+        .from("trust_weighted_actions")
+        .select("id", { count: "exact", head: true });
 
       const created = new Date(user.created_at);
       const days = Math.max(1, Math.floor((Date.now() - created.getTime()) / 86400000));
 
       setStats({
-        connectedServices: svcs.count ?? 0,
-        receiptsCount: receipts.count ?? 0,
-        actionsCount: actions.count ?? 0,
+        actionsCount: count ?? 0,
         daysSinceJoin: days,
       });
       setLoading(false);
@@ -82,10 +74,8 @@ const UserProfilePage = () => {
       .update({
         display_name: profile.display_name,
         avatar_url: profile.avatar_url,
-        timezone: profile.timezone,
-        locale: profile.locale,
-        preferences: { bio: profile.bio },
-      } as any)
+        preferences: { bio: profile.bio, timezone: profile.timezone, locale: profile.locale },
+      })
       .eq("user_id", user.id);
     setSaving(false);
     if (error) toast.error("Failed to save profile");
@@ -152,12 +142,10 @@ const UserProfilePage = () => {
       </Card>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {[
           { icon: Calendar, label: "Days Active", value: stats.daysSinceJoin },
           { icon: Activity, label: "Actions", value: stats.actionsCount },
-          { icon: Receipt, label: "Receipts", value: stats.receiptsCount },
-          { icon: LinkIcon, label: "Connected", value: stats.connectedServices },
         ].map(({ icon: Icon, label, value }) => (
           <Card key={label}>
             <CardContent className="p-4 flex flex-col items-center gap-1 text-center">
