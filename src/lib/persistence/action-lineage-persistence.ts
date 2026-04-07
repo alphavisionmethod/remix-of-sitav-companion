@@ -59,8 +59,7 @@ export async function persistActionRecord(
   const userId = await uid();
   if (!userId) return null;
 
-  const { data, error } = await fromDynamicTable("os_action_lineage")
-    .insert({
+  const payload: Record<string, unknown> = {
       id: record.id,
       user_id: userId,
       workflow_id: record.workflowId,
