@@ -17,6 +17,9 @@ import {
 /** @deprecated Use CanonicalPrivacyTier from contracts */
 export type ServicePrivacyTier = CanonicalPrivacyTier;
 
+/** Trust level for memory entries (epistemic transparency) */
+export type MemoryTrustLevel = "verified" | "inferred" | "external" | "user-provided" | "unverified";
+
 export interface MemoryEntry {
   id: string;
   key: string;
@@ -32,6 +35,12 @@ export interface MemoryEntry {
   entityId?: string;
   entityType?: string;
   accessLog: { role: string; timestamp: number }[];
+  // Trust lens fields
+  trustLevel: MemoryTrustLevel;
+  ingestedAt: number;
+  sourceType: string;
+  sanitized: boolean;
+  evidenceIds?: string[];
 }
 
 export interface MemoryForgetRecord {
