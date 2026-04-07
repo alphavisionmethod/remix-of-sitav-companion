@@ -148,7 +148,7 @@ const GeneratedTruthDashboard = lazy(() => import("./pages/admin/GeneratedTruthD
 const FleetHealthPage = lazy(() => import("./pages/admin/FleetHealthPage"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const IncidentCommandCenter = lazy(() => import("./pages/admin/IncidentCommandCenter"));
-const AdminDeploymentTruthCenter = lazy(() => import("./pages/admin/DeploymentTruthCenter"));
+const AdminDeploymentTruthCenter = lazy(() => import("./pages/admin/AdminDeploymentRings"));
 const ProofMatrixExplorer = lazy(() => import("./pages/admin/ProofMatrixExplorer"));
 const ConnectorGovernanceCenter = lazy(() => import("./pages/admin/ConnectorGovernanceCenter"));
 const LaunchReadinessBoard = lazy(() => import("./pages/admin/LaunchReadinessBoard"));
