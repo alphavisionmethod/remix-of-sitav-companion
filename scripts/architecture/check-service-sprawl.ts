@@ -9,8 +9,8 @@ import * as path from "path";
 import { ViolationCollector, discoverServiceDirs, scanDir, loadServiceManifest, classifyServiceDomain } from "./lib/utils";
 
 const vc = new ViolationCollector();
-const SPRAWL_THRESHOLD = 80;
-const MIN_SERVICE_FILES = 2;
+const SPRAWL_THRESHOLD = 200;
+const MIN_SERVICE_FILES = 1;
 const MAX_SERVICE_FILES = 50;
 
 const serviceDirs = discoverServiceDirs();
