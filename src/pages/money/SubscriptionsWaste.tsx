@@ -244,7 +244,7 @@ const SubscriptionsWaste = () => {
                     {selected.next_billing_date && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Renewal</span><span className="text-foreground">{format(parseISO(selected.next_billing_date), "MMM d, yyyy")}</span></div>}
                     {(selected as any).duplicate_of && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Overlaps With</span><span className="text-trust-review">{(selected as any).duplicate_of}</span></div>}
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><span className="text-foreground capitalize">{selected.status}</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Waste Risk</span>{selected.waste_flag ? <TrustBadge level="degraded" label="High" size="sm" /> : <TrustBadge level="verified" label="Low" size="sm" />}</div>
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Waste Risk</span>{(selected as any).waste_flag ? <TrustBadge level="degraded" label="High" size="sm" /> : <TrustBadge level="verified" label="Low" size="sm" />}</div>
                     {selected.notes && <div className="pt-2 border-t border-border"><p className="text-xs text-muted-foreground">{selected.notes}</p></div>}
                   </div>
                 </SitaCard>
