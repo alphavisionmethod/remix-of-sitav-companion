@@ -11,6 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { AlertTriangle, XCircle, RotateCcw, ArrowUpRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { getRelation, parseScheduledJobRef } from "@/lib/types/relation-parsers";
 
 export default function AR07RetryFailureCenter() {
   const { isDemoMode } = useDataMode();
