@@ -1,68 +1,107 @@
 
 
-# Phase 2: Live AI Runtime Verification and Brain-Core Activation
+# Phase 5 Verification: Service-Layer Unification — Implementation Status
 
-## The Real Problem
+## What Already Exists (Substantially Complete)
 
-SITA has three production AI edge functions (`brain-core`, `chat-advisor`, `ai-gateway`), an 8-section admin verification board, receipt/ledger tables, and budget enforcement — but **zero proven runtime invocations exist**. One critical bug blocks everything:
+The Phase 5 infrastructure is **~85% implemented**. Here's what's in place:
 
-**`use-streaming-chat.ts` line 41 sends the anon key instead of the user's session token.** Every streaming chat call gets 401 because `chat-advisor` requires auth via `requireAuth()`. This means no user has ever gotten a real AI response through the advisor chat.
+### Data Layer (Complete)
+- **`service-ownership-registry.ts`** (191 lines): 12 domains mapped with `primaryService`, `dependentServices`, `routes`, `capabilities`, `launchCriticality`, `flagshipLoop`, `duplicateRisk`, `shadowServiceRisk`, and `notes`
+- **`route-to-service-inventory.ts`** (488 lines): 20 flagship routes mapped with full action-level traceability — handler locations, primary/secondary services, provider deps, DB deps, customer journey keys, canonical confidence, shadow risk
+- **Helper functions**: `getRoutesByFlagshipLoop()`, `getRoutesWithShadowRisk()`, `getRoutesWithLowConfidence()`, `getAllActions()`, `getDuplicateActionPatterns()`, `getDomainByKey()`, `getDomainsByFlagshipLoop()`, `getHighRiskDomains()`
 
-## Implementation Steps
+### Admin Boards (All 6 SERV boards exist and are routed)
+| Board | Route | Status |
+|-------|-------|--------|
+| SERV01 — Domain Service Ownership | `/admin/services/ownership` | Live, wired to registry |
+| SERV02 — Domain Ownership Detail | `/admin/services/domains` | Live, route/action counts |
+| SERV03 — Route-to-Service Trace | `/admin/services/route-trace` | Live, filterable, expandable |
+| SERV04 — Service Duplication/Shadow | `/admin/services/duplication` | Live, 6 shadow patterns, risk assessment |
+| SERV05 — Canonical Action Entry Points | `/admin/services/canonical-actions` | Live, canonical vs non-canonical split |
+| SERV06 — Flagship Loop Traceability | `/admin/services/flagship-trace` | Live, per-loop trace scores |
 
-### Step 1 — Fix streaming chat auth (critical, unblocks everything)
+### Shadow Cluster Identification (Complete)
+SERV04 identifies 6 shadow patterns: summary card duplication, advisor/assistant overlap, admin board proliferation, connector/provider overlap, direct Supabase calls from pages, recommendation score aggregation. Each has severity, domain, description, and recommendation.
 
-**File: `src/hooks/use-streaming-chat.ts`**
+### Thin Re-export Services (Already Rationalized)
+- `immune-controller/index.ts` → re-exports from `core-services/self-healing/immune-controller`
+- `self-healing/index.ts` → re-exports from `core-services/self-healing/service`
+- `observability-hub/index.ts` → thin wrapper (31 lines)
 
-- Import `supabase` from `@/integrations/supabase/client`
-- Before fetching, call `supabase.auth.getSession()` to get the access token
-- Replace the Authorization header from `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}` to `Bearer ${session.access_token}`
-- Add `apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY` as a separate header (required by Supabase edge function routing)
-- If no session exists, set error "Not authenticated" and return early
-- Map error status codes to premium messages: 429 rate limit, 402 credits, 503 warming up, 401 session expired
+### Architecture Validation Scripts (Exist)
+- `check-module-count.ts`, `check-service-sprawl.ts` — budget enforcement, sprawl detection
+- PowerShell equivalents for CI
 
-### Step 2 — Add data-testid attributes and degraded state to AdvisorChat
+## Gaps Remaining (~15%)
 
-**File: `src/components/sita/AdvisorChat.tsx`**
+### 1. Anti-Sprawl Guardrails Document
+No codified rules file exists at `src/lib/services/service-registry/` for governance conventions (e.g., "no new gateway without justification", "pages must not own domain logic"). The shadow patterns in SERV04 are hardcoded but there's no formal governance ruleset.
 
-- Add `data-testid="advisor-chat-input"` to the text input (line 338)
-- Add `data-testid="advisor-chat-send"` to the send button (line 355)
-- Add `data-testid="advisor-message-assistant"` to streaming assistant message divs (line 296)
-- Add `data-testid="advisor-streaming-indicator"` to the bounce dots container (line 318)
-- When `error` from `useStreamingChat` is set, render a degraded banner with `data-testid="advisor-degraded-banner"` showing the premium error message with an AlertTriangle icon
+**Fix**: Create `src/lib/services/service-registry/anti-sprawl-rules.ts` with typed rules, severity, and enforcement status. Wire into SERV04 or a new section.
 
-### Step 3 — Add receipt_written confirmation to brain-core response
+### 2. Duplicate Cluster Rationalization Map
+The shadow patterns describe problems but don't define the **canonical resolution** for each cluster (which service wins, which becomes adapter, which is deprecated).
 
-**File: `supabase/functions/brain-core/index.ts`**
+**Fix**: Add a `DUPLICATE_CLUSTER_RESOLUTIONS` registry to `service-ownership-registry.ts` mapping each cluster to canonical/adapter/deprecated classification.
 
-In the main response block (around line 725), after the `proof_records` insert succeeds, add `receipt_written: true` to the JSON response. On insert failure, set `receipt_written: false`. Also add `routing_source` (rules/ai/fallback/error) and `budget_checked: true` to the response envelope.
+### 3. Route Inventory Coverage
+20 routes are mapped but 678 total routes exist. The flagship loops are covered but some critical non-flagship routes (e.g., `/notification-settings`, `/connector-hub/callback`) are unmapped.
 
-### Step 4 — Improve AIG09 admin board with latest receipt evidence
+**Fix**: Add ~10 more critical route entries covering notification settings, connector callbacks, mobile surfaces, and key admin boards.
 
-**File: `src/pages/admin/AIG09RuntimeVerification.tsx`**
+### 4. Service Directory Count vs Budget
+162 service directories exist against a budget of ~45 canonical services. The registry maps 12 domains but doesn't explicitly classify which of the 162 directories are canonical vs speculative vs deprecated.
 
-- **AIR02 Provider Health** (line 96): After querying `ai_provider_registry`, also fetch the latest `ai_inference_receipts` row per provider to show last success/failure timestamp and latency
-- **AIR06 Receipt Truth** (line 296): Add a "Latest Receipt" card showing the most recent `ai_receipt_records` row with timestamp, capability, decision class, and cost
+**Fix**: Add a `SERVICE_DIRECTORY_CLASSIFICATION` map classifying top service directories into canonical/supporting/speculative/deprecated.
 
-## Files Modified
+### 5. Architecture Guardrails as Runtime Check
+The anti-sprawl scripts exist in `scripts/architecture/` but aren't surfaced in Admin OS. SERV boards show static data but don't run or display architecture check results.
+
+**Fix**: Add a summary card to SERV01 showing architecture check status (service count vs budget, sprawl threshold).
+
+## Implementation Plan
+
+### Step 1 — Add duplicate cluster resolution map
+Add `DUPLICATE_CLUSTER_RESOLUTIONS` to `service-ownership-registry.ts` — 6 clusters (AI gateway, notifications, observability, finance, self-healing, connectors) with canonical/adapter/deprecated classifications.
+
+### Step 2 — Add anti-sprawl governance rules
+Create typed `ANTI_SPRAWL_RULES` in `service-ownership-registry.ts` — 6 rules covering gateway creation, page logic, service ownership, provider calls, naming conventions, and flagship alignment.
+
+### Step 3 — Add service directory classification
+Add `SERVICE_DIRECTORY_CLASSIFICATION` mapping the 162 directories into categories: canonical (~30), supporting (~25), speculative (~50), re-export (~10), deprecated-candidate (~47).
+
+### Step 4 — Expand route inventory
+Add ~10 more entries to `route-to-service-inventory.ts` for notification settings, connector callbacks, mobile settings, key finance routes, and recommendation execution routes.
+
+### Step 5 — Upgrade SERV01 with budget/sprawl summary
+Add service count vs budget display, directory classification breakdown, and governance rule compliance summary.
+
+### Step 6 — Upgrade SERV04 with resolution map
+Show duplicate cluster resolutions alongside shadow patterns — what's canonical, what's adapter, what's deprecated.
+
+### Step 7 — Add data-testid attributes to all SERV boards
+For Playwright proof stability.
+
+## Files Modified/Created
 
 | File | Change |
 |------|--------|
-| `src/hooks/use-streaming-chat.ts` | Fix auth: session token instead of anon key, premium error messages |
-| `src/components/sita/AdvisorChat.tsx` | data-testid attributes + degraded banner with error display |
-| `supabase/functions/brain-core/index.ts` | Add receipt_written, routing_source, budget_checked to response |
-| `src/pages/admin/AIG09RuntimeVerification.tsx` | AIR02 latest receipt per provider, AIR06 latest receipt card |
+| `src/lib/services/service-registry/service-ownership-registry.ts` | Add cluster resolutions, anti-sprawl rules, directory classification |
+| `src/lib/services/service-registry/route-to-service-inventory.ts` | Add ~10 more critical route entries |
+| `src/pages/admin/SERV01ServiceOwnership.tsx` | Budget/sprawl summary cards, governance compliance |
+| `src/pages/admin/SERV04ServiceDuplication.tsx` | Resolution map display |
+| All 6 SERV board files | Add `data-testid` attributes |
 
 ## No Database Changes Required
 
-All tables already exist: `ai_usage_ledger`, `ai_inference_receipts`, `ai_receipt_records`, `ai_token_usage`, `advisor_requests`, `advisor_responses`, `proof_records`.
+All data is static registry data in TypeScript files.
 
 ## Success Criteria
-
-1. Streaming chat returns real AI responses (not 401)
-2. At least one `ai_usage_ledger` row with `status = 'success'`
-3. At least one `ai_inference_receipts` row with real tokens/cost
-4. Admin AIG09 board shows live verification data
-5. Degraded states render gracefully with premium messaging
-6. E2E selectors stable for Playwright proof
+1. All 6 major duplicate clusters have explicit canonical/deprecated classification
+2. 6 anti-sprawl governance rules are codified and visible
+3. 162 service directories are classified by category
+4. 30+ flagship routes are traced with service mapping
+5. SERV01 shows budget compliance (162/90 — over budget, visible)
+6. All SERV boards have `data-testid` attributes for Playwright
 
