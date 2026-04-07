@@ -91,7 +91,7 @@ export default function InvestmentReceipts() {
                 {Object.entries(receipt.metadata).map(([k, v]) => (
                   <div key={k}>
                     <p className="text-[9px] text-muted-foreground uppercase tracking-wider">{k}</p>
-                    <p className="text-[11px] font-medium text-foreground">{v}</p>
+                    <p className="text-[11px] font-medium text-foreground">{String(v)}</p>
                   </div>
                 ))}
               </div>
