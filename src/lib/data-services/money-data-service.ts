@@ -1,6 +1,6 @@
 // SITA OS — Money Data Service (Mode-Aware, Fully Advanced)
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
 
