@@ -30,7 +30,7 @@ export function DemoModeBadge({ forceShow, label, compact }: DemoModeBadgeProps)
   }
 
   return (
-    <Badge role="status" aria-label={label ?? "Demo Mode"} variant="outline" className="border-amber-500/40 text-amber-400 bg-amber-500/10 text-xs gap-1">
+    <Badge role="status" aria-label={label ?? "Demo Mode"} data-testid="demo-mode-badge" variant="outline" className="border-amber-500/40 text-amber-400 bg-amber-500/10 text-xs gap-1">
       <FlaskConical className="w-3 h-3" />
       {label ?? "Demo Mode"}
     </Badge>

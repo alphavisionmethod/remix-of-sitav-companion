@@ -247,6 +247,7 @@ export function AppSidebar() {
           <div className="mt-2 px-1">
             <button
               onClick={signOut}
+              data-testid="sign-out-btn"
               className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium text-muted-foreground transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
             >
               {collapsed ? (
