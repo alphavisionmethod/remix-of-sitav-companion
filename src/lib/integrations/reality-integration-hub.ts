@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { runFullDetection, type DetectionReport } from "@/lib/detection/reality-detection-engine";
 import type {
   LaunchHonestyRecord,
@@ -24,8 +25,8 @@ export interface IntegrationStatus {
 // ── Route Inventory Integration ──
 
 export async function fetchRouteInventory(): Promise<RouteRealityRecord[]> {
-  const { data: classifications } = await supabase.from("reality_classifications").select("*");
-  const { data: mockReplacements } = await supabase.from("mock_replacements").select("*");
+  const { data: classifications } = await fromTable("reality_classifications").select("*");
+  const { data: mockReplacements } = await fromTable("mock_replacements").select("*");
 
   if (!classifications) return [];
 
@@ -49,8 +50,8 @@ export async function fetchRouteInventory(): Promise<RouteRealityRecord[]> {
 // ── Launch Honesty Integration ──
 
 export async function computeLaunchHonesty(): Promise<LaunchHonestyRecord[]> {
-  const { data: classifications } = await supabase.from("reality_classifications").select("*");
-  const { data: mockReplacements } = await supabase.from("mock_replacements").select("*");
+  const { data: classifications } = await fromTable("reality_classifications").select("*");
+  const { data: mockReplacements } = await fromTable("mock_replacements").select("*");
 
   if (!classifications) return [];
 
@@ -115,10 +116,10 @@ export async function getIntegrationStatuses(): Promise<IntegrationStatus[]> {
   const now = new Date().toISOString();
 
   const [classifications, mockReplacements, auditLogs, incidents] = await Promise.all([
-    supabase.from("reality_classifications").select("id", { count: "exact", head: true }),
-    supabase.from("mock_replacements").select("id", { count: "exact", head: true }),
-    supabase.from("audit_logs").select("id", { count: "exact", head: true }),
-    supabase.from("incidents").select("id", { count: "exact", head: true }),
+    fromTable("reality_classifications").select("id", { count: "exact", head: true }),
+    fromTable("mock_replacements").select("id", { count: "exact", head: true }),
+    fromTable("audit_logs").select("id", { count: "exact", head: true }),
+    fromTable("incidents").select("id", { count: "exact", head: true }),
   ]);
 
   return [

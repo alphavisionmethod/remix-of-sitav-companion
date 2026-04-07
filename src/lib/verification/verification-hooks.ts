@@ -4,6 +4,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import { SURFACE_REGISTRY, type SurfaceEntry } from "./surface-registry";
 
@@ -153,7 +154,7 @@ export function useRecordVerificationRun() {
     }) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
-      const { error } = await supabase.from("verification_runs").insert({
+      const { error } = await fromTable("verification_runs").insert({
         user_id: user.id,
         ...input,
       });

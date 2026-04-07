@@ -5,13 +5,14 @@
 
 import { registerCapability } from "./capability-registry";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { CapabilityResult } from "@/packages/contracts/msa/capability-contract";
 
 registerCapability("advisor.chat", async (params, context): Promise<CapabilityResult> => {
   const { message, advisorId } = params as { message: string; advisorId?: string };
   if (!message) return { success: false, error: "No message provided" };
 
-  const { data, error } = await supabase.from("advisor_requests").insert({
+  const { data, error } = await fromTable("advisor_requests").insert({
     user_id: context.userId,
     intent: message,
     advisor_config_id: advisorId || null,
@@ -31,7 +32,7 @@ registerCapability("advisor.chat", async (params, context): Promise<CapabilityRe
 registerCapability("advisor.synthesize", async (params, context): Promise<CapabilityResult> => {
   const { domain, scope } = params as { domain?: string; scope?: string };
 
-  const { data, error } = await supabase.from("advisor_requests").insert({
+  const { data, error } = await fromTable("advisor_requests").insert({
     user_id: context.userId,
     intent: `synthesize:${domain || "cross-domain"}:${scope || "summary"}`,
     context: { surface: context.surface, mode: context.mode, domain, scope },

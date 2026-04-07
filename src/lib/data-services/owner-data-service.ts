@@ -1,5 +1,6 @@
 // SITA OS — Owner Data Service (Mode-Aware)
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { resolveByMode, type ModeAwareResult } from "@/lib/hooks/useRealityProvider";
 
@@ -22,7 +23,7 @@ export async function fetchLeases(mode: RealityModeKey = "real"): Promise<ModeAw
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_LEASES, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: DEMO_LEASES, emptyDefault: [] });
-  const { data, error } = await supabase.from("deals").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
+  const { data, error } = await fromTable("deals").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? data.map((d: any): LeaseItem => ({
     id: d.id, tenant: d.title || "Unknown", unit: d.stage || "N/A",
     rent: Number(d.value || 0), start_date: d.created_at,
@@ -35,7 +36,7 @@ export async function fetchOwnerApprovals(mode: RealityModeKey = "real"): Promis
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: MOCK_OWNER_APPROVALS, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: MOCK_OWNER_APPROVALS, emptyDefault: [] });
-  const { data, error } = await supabase.from("approval_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
+  const { data, error } = await fromTable("approval_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? data.map((a: any): OwnerApprovalItem => ({
     id: a.id, title: a.action_summary, domain: a.action_type || "general",
     requestedBy: a.requested_by || "System", riskTier: (a.risk_tier || "medium") as OwnerApprovalItem["riskTier"],

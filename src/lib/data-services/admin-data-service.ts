@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { MOCK_AUTOMATION_RULES, MOCK_DELEGATIONS } from "@/lib/mock-data/automation";
 import { MOCK_REPLAYABLE_WORKFLOWS } from "@/lib/mock-data/workflows";
 import { MOCK_ADMIN_USERS } from "@/lib/mock-data/admin";
@@ -8,7 +9,7 @@ export async function fetchAutomationRules() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return MOCK_AUTOMATION_RULES;
 
-  const { data, error } = await supabase.from("ai_self_healing_rules").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
+  const { data, error } = await fromTable("ai_self_healing_rules").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
   if (error || !data || data.length === 0) return MOCK_AUTOMATION_RULES;
 
   return data.map((r: any) => ({
@@ -26,7 +27,7 @@ export async function fetchReplayableWorkflows() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return MOCK_REPLAYABLE_WORKFLOWS;
 
-  const { data, error } = await supabase.from("platform_replay_verifications").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
+  const { data, error } = await fromTable("platform_replay_verifications").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
   if (error || !data || data.length === 0) return MOCK_REPLAYABLE_WORKFLOWS;
 
   return data.map((w: any) => ({
@@ -43,7 +44,7 @@ export async function fetchTokenUsages() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
-  const { data, error } = await supabase.from("ai_token_usage").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50);
+  const { data, error } = await fromTable("ai_token_usage").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50);
   if (error || !data) return [];
 
   return data.map((t: any) => ({
@@ -57,7 +58,7 @@ export async function fetchAdminIncidents() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return mockAdminIncidents;
 
-  const { data, error } = await supabase.from("incidents").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
+  const { data, error } = await fromTable("incidents").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
   if (error || !data || data.length === 0) return mockAdminIncidents;
 
   return data.map((i: any) => ({

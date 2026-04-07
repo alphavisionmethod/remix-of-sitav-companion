@@ -5,6 +5,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { CUSTOMER_JOURNEY_REGISTRY } from "./journey-registry";
 
 // ── Queries ──
@@ -153,7 +154,7 @@ export function useRecordJourneyRun() {
         (run.launch_impact === "launch_blocker" || run.launch_impact === "pilot_blocker") &&
         (run.status === "broken" || run.status === "partial")
       ) {
-        await supabase.from("customer_journey_blockers").insert({
+        await fromTable("customer_journey_blockers").insert({
           user_id: user.id,
           journey_key: run.journey_key,
           run_id: data.id,

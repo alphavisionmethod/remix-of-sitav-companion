@@ -18,7 +18,7 @@ export async function fetchDocs(mode: RealityModeKey = "real"): Promise<ModeAwar
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: MOCK_DOCS, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: MOCK_DOCS, emptyDefault: [] });
-  const { data, error } = await supabase.from("documents").select("*")
+  const { data, error } = await fromTable("documents").select("*")
     .eq("user_id", user.id).in("document_type", DOC_TYPES)
     .order("updated_at", { ascending: false });
   const mapped = (!error && data?.length) ? data.map((d: any): MockDoc => ({
@@ -35,7 +35,7 @@ export async function fetchSheets(mode: RealityModeKey = "real"): Promise<ModeAw
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: MOCK_SHEETS, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: MOCK_SHEETS, emptyDefault: [] });
-  const { data, error } = await supabase.from("documents").select("*")
+  const { data, error } = await fromTable("documents").select("*")
     .eq("user_id", user.id).eq("document_type", "sheet")
     .order("updated_at", { ascending: false });
   const mapped = (!error && data?.length) ? data.map((d: any): MockSheet => ({
@@ -52,7 +52,7 @@ export async function fetchDecks(mode: RealityModeKey = "real"): Promise<ModeAwa
   if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: MOCK_DECKS, emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return resolveByMode({ mode, realData: null, demoData: MOCK_DECKS, emptyDefault: [] });
-  const { data, error } = await supabase.from("documents").select("*")
+  const { data, error } = await fromTable("documents").select("*")
     .eq("user_id", user.id).eq("document_type", "deck")
     .order("updated_at", { ascending: false });
   const mapped = (!error && data?.length) ? data.map((d: any): MockDeck => ({

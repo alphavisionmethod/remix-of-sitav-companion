@@ -1,11 +1,12 @@
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { MOCK_MOBILE_ALERTS, MOCK_MOBILE_APPROVALS, MOCK_MOBILE_PROOFS, MOCK_MOBILE_WORKFLOW_STEPS } from "@/lib/mock-data/mobile";
 
 export async function fetchMobileAlerts() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return MOCK_MOBILE_ALERTS;
 
-  const { data, error } = await supabase.from("notifications_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
+  const { data, error } = await fromTable("notifications_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
   if (error || !data || data.length === 0) return MOCK_MOBILE_ALERTS;
 
   return data.map((n: any) => ({
@@ -19,7 +20,7 @@ export async function fetchMobileApprovals() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return MOCK_MOBILE_APPROVALS;
 
-  const { data, error } = await supabase.from("approval_queue").select("*").eq("user_id", user.id).eq("status", "pending").order("created_at", { ascending: false });
+  const { data, error } = await fromTable("approval_queue").select("*").eq("user_id", user.id).eq("status", "pending").order("created_at", { ascending: false });
   if (error || !data || data.length === 0) return MOCK_MOBILE_APPROVALS;
 
   return data.map((a: any) => ({
@@ -33,7 +34,7 @@ export async function fetchMobileProofs() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return MOCK_MOBILE_PROOFS;
 
-  const { data, error } = await supabase.from("platform_proof_chains").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
+  const { data, error } = await fromTable("platform_proof_chains").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
   if (error || !data || data.length === 0) return MOCK_MOBILE_PROOFS;
 
   return data.map((p: any) => ({

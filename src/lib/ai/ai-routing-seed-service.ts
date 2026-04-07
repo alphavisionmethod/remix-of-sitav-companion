@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 
 const PROVIDER_SEEDS = [
   {
@@ -238,7 +239,7 @@ export async function seedAIRoutingActivation(userId: string): Promise<SeedResul
 
   // Phase 1: Providers
   for (const provider of PROVIDER_SEEDS) {
-    const { error } = await supabase.from("ai_provider_registry").upsert(
+    const { error } = await fromTable("ai_provider_registry").upsert(
       { ...provider, user_id: userId, is_active: true, metadata: {} },
       { onConflict: "provider_key" }
     );
@@ -251,7 +252,7 @@ export async function seedAIRoutingActivation(userId: string): Promise<SeedResul
 
   // Phase 2: Models
   for (const model of MODEL_SEEDS) {
-    const { error } = await supabase.from("ai_model_registry").upsert(
+    const { error } = await fromTable("ai_model_registry").upsert(
       { ...model, user_id: userId },
       { onConflict: "model_id" }
     );
@@ -264,7 +265,7 @@ export async function seedAIRoutingActivation(userId: string): Promise<SeedResul
 
   // Phase 3: Capability routing
   for (const route of CAPABILITY_ROUTING_SEEDS) {
-    const { error } = await supabase.from("ai_capability_routing").upsert(
+    const { error } = await fromTable("ai_capability_routing").upsert(
       { ...route, user_id: userId, metadata: {} },
       { onConflict: "capability_key" }
     );
@@ -277,7 +278,7 @@ export async function seedAIRoutingActivation(userId: string): Promise<SeedResul
 
   // Phase 4: Launch honesty defaults
   for (const honesty of LAUNCH_HONESTY_SEEDS) {
-    const { error } = await supabase.from("ai_launch_honesty").upsert(
+    const { error } = await fromTable("ai_launch_honesty").upsert(
       { ...honesty, user_id: userId },
       { onConflict: "capability_key" }
     );

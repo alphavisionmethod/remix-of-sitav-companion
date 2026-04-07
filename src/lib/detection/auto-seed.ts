@@ -4,13 +4,14 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import { ROUTE_CLASSIFICATION_SEEDS, MOCK_REPLACEMENT_SEEDS } from "@/lib/detection/reality-detection-engine";
 
 export async function autoSeedClassifications(): Promise<{ seeded: number; skipped: number }> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { seeded: 0, skipped: 0 };
 
-  const { data: existing } = await supabase.from("reality_classifications").select("route_path").eq("user_id", user.id);
+  const { data: existing } = await fromTable("reality_classifications").select("route_path").eq("user_id", user.id);
   const existingPaths = new Set((existing ?? []).map((e: any) => e.route_path));
 
   let seeded = 0;
@@ -19,7 +20,7 @@ export async function autoSeedClassifications(): Promise<{ seeded: number; skipp
   for (const seed of ROUTE_CLASSIFICATION_SEEDS) {
     if (existingPaths.has(seed.routePath)) { skipped++; continue; }
 
-    const { error } = await supabase.from("reality_classifications").insert({
+    const { error } = await fromTable("reality_classifications").insert({
       user_id: user.id,
       route_path: seed.routePath,
       feature_name: seed.featureName,
@@ -51,7 +52,7 @@ export async function autoSeedMockReplacements(): Promise<{ seeded: number; skip
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { seeded: 0, skipped: 0 };
 
-  const { data: existing } = await supabase.from("mock_replacements").select("feature_name, page_path").eq("user_id", user.id);
+  const { data: existing } = await fromTable("mock_replacements").select("feature_name, page_path").eq("user_id", user.id);
   const existingKeys = new Set((existing ?? []).map((e: any) => `${e.feature_name}::${e.page_path}`));
 
   let seeded = 0;
@@ -61,7 +62,7 @@ export async function autoSeedMockReplacements(): Promise<{ seeded: number; skip
     const key = `${seed.featureName}::${seed.pagePath}`;
     if (existingKeys.has(key)) { skipped++; continue; }
 
-    const { error } = await supabase.from("mock_replacements").insert({
+    const { error } = await fromTable("mock_replacements").insert({
       user_id: user.id,
       feature_name: seed.featureName,
       page_path: seed.pagePath,

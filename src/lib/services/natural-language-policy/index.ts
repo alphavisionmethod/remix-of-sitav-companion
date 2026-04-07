@@ -1,3 +1,4 @@
+import { fromTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Natural Language Policy Builder
 // Converts plain English rules into executable policy objects
@@ -123,7 +124,7 @@ class NaturalLanguagePolicyBuilder {
   }
 
   async savePolicy(userId: string, policy: ParsedPolicy): Promise<boolean> {
-    const { error } = await supabase.from('policies').insert({
+    const { error } = await fromTable('policies').insert({
       user_id: userId,
       name: policy.name,
       category: policy.category,
@@ -136,7 +137,7 @@ class NaturalLanguagePolicyBuilder {
   }
 
   async listPolicies(userId: string): Promise<ParsedPolicy[]> {
-    const { data } = await supabase.from('policies').select('*').eq('user_id', userId);
+    const { data } = await fromTable('policies').select('*').eq('user_id', userId);
     return (data || []).map((p: any) => ({
       id: p.id,
       naturalLanguage: '',

@@ -5,6 +5,7 @@
 // ============================================================
 
 import { supabase } from "@/integrations/supabase/client";
+import { fromTable } from "@/lib/supabase-helpers";
 import * as legacyMocks from "@/lib/mock-data/legacy-display-mocks";
 
 export interface BoardroomDataBundle {
@@ -26,7 +27,7 @@ function formatCurrency(cents: number): string {
 }
 
 async function fetchLeads() {
-  const { data } = await supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(20);
+  const { data } = await fromTable("leads").select("*").order("created_at", { ascending: false }).limit(20);
   if (!data || data.length === 0) return null;
   return data.map(l => ({
     id: l.id.substring(0, 8),
@@ -42,7 +43,7 @@ async function fetchLeads() {
 }
 
 async function fetchInvoices() {
-  const { data } = await supabase.from("invoices").select("*").order("due_date", { ascending: true }).limit(20);
+  const { data } = await fromTable("invoices").select("*").order("due_date", { ascending: true }).limit(20);
   if (!data || data.length === 0) return null;
   return data.map(i => ({
     id: i.invoice_number ?? `INV-${i.id.substring(0, 3).toUpperCase()}`,
@@ -55,7 +56,7 @@ async function fetchInvoices() {
 }
 
 async function fetchBills() {
-  const { data } = await supabase.from("bills").select("*").order("due_date", { ascending: true }).limit(20);
+  const { data } = await fromTable("bills").select("*").order("due_date", { ascending: true }).limit(20);
   if (!data || data.length === 0) return null;
   return data.map(b => ({
     id: `B-${b.id.substring(0, 3).toUpperCase()}`,
@@ -69,7 +70,7 @@ async function fetchBills() {
 }
 
 async function fetchIncidents() {
-  const { data } = await supabase.from("incidents").select("*").order("created_at", { ascending: false }).limit(10);
+  const { data } = await fromTable("incidents").select("*").order("created_at", { ascending: false }).limit(10);
   if (!data || data.length === 0) return null;
   return data.map(i => ({
     id: `INC-${i.id.substring(0, 3).toUpperCase()}`,
