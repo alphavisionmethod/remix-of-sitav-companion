@@ -29,7 +29,7 @@ export default function NOT04CalmPolicyBoard() {
       const { data } = await db
         .from("notification_delivery_receipts")
         .select("*")
-        .in("delivery_status", ["suppressed", "deferred", "quiet_hours"])
+        .in("status", ["suppressed", "deferred", "quiet_hours"])
         .order("created_at", { ascending: false })
         .limit(50);
       return data || [];
