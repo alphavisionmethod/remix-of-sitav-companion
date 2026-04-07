@@ -431,6 +431,14 @@ const SERV04ServiceDuplication = lazy(() => import("./pages/admin/SERV04ServiceD
 const SERV05CanonicalActions = lazy(() => import("./pages/admin/SERV05CanonicalActions"));
 const SERV06FlagshipTraceability = lazy(() => import("./pages/admin/SERV06FlagshipTraceability"));
 
+// ── LAUNCH: Launch Readiness Command Center ──
+const LAUNCH01ReadinessExecutive = lazy(() => import("./pages/admin/launch/LAUNCH01ReadinessExecutive"));
+const LAUNCH02FlagshipReadiness = lazy(() => import("./pages/admin/launch/LAUNCH02FlagshipReadiness"));
+const LAUNCH03ClaimSafetyMatrix = lazy(() => import("./pages/admin/launch/LAUNCH03ClaimSafetyMatrix"));
+const LAUNCH04BlockerCommand = lazy(() => import("./pages/admin/launch/LAUNCH04BlockerCommand"));
+const LAUNCH06NarrativeGuide = lazy(() => import("./pages/admin/launch/LAUNCH06NarrativeGuide"));
+const LAUNCH07GoNoGo = lazy(() => import("./pages/admin/launch/LAUNCH07GoNoGo"));
+
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
@@ -1390,6 +1398,13 @@ const App = () => (
                      <Route path="/admin/services/duplication" element={<SERV04ServiceDuplication />} />
                      <Route path="/admin/services/canonical-actions" element={<SERV05CanonicalActions />} />
                      <Route path="/admin/services/flagship-trace" element={<SERV06FlagshipTraceability />} />
+                     {/* LAUNCH — Launch Readiness Command Center */}
+                     <Route path="/admin/launch/readiness" element={<LAUNCH01ReadinessExecutive />} />
+                     <Route path="/admin/launch/flagship-loops" element={<LAUNCH02FlagshipReadiness />} />
+                     <Route path="/admin/launch/claim-safety" element={<LAUNCH03ClaimSafetyMatrix />} />
+                     <Route path="/admin/launch/blockers" element={<LAUNCH04BlockerCommand />} />
+                     <Route path="/admin/launch/narrative" element={<LAUNCH06NarrativeGuide />} />
+                     <Route path="/admin/launch/go-no-go" element={<LAUNCH07GoNoGo />} />
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}

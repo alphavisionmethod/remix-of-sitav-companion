@@ -120,25 +120,43 @@ async function computeAITruthScore(): Promise<number> {
     supabase.from("ai_prompt_families").select("id", { count: "exact", head: true }),
   ]);
 
-  const checks = {
+  const providerCount = providers.count ?? 0;
+  const modelCount = models.count ?? 0;
+  const routingCount = routing.count ?? 0;
+  const budgetCount = budgets.count ?? 0;
+  const receiptCount = receipts.count ?? 0;
+  const promptCount = prompts.count ?? 0;
+
+  // Infrastructure checks (40% weight) — these exist structurally
+  const infraChecks = {
     hasGatewayEdgeFunction: true,       // ai-gateway deployed
-    hasProviderRegistry: (providers.count ?? 0) > 0 || true, // table exists with schema
-    hasModelRegistry: (models.count ?? 0) > 0 || true,
-    hasRoutingMatrix: (routing.count ?? 0) > 0 || true,
-    hasBudgetPolicies: (budgets.count ?? 0) > 0 || true,
-    hasUsageLedger: true,               // ai_usage_ledger table exists
-    hasReceiptsTable: true,             // ai_inference_receipts exists
+    hasProviderRegistry: providerCount > 0,
+    hasModelRegistry: modelCount > 0,
+    hasRoutingMatrix: routingCount > 0,
+    hasBudgetPolicies: budgetCount > 0,
+    hasUsageLedger: true,               // table exists
+    hasReceiptsTable: true,             // table exists
     hasFrontendClient: true,            // supabase client wired
     hasStateTypes: true,                // TypeScript types generated
-    hasResponseNormalizer: true,        // capability-resolution-engine
-    hasWorkforceOrchestrator: true,     // ai_workforce_roles + edge fn
-    runtimeActivated: true,             // edge functions deployed
-    hasPromptFamilies: true,            // ai_prompt_families table
-    hasFallbackChain: true,             // ai_fallback_events table
-    hasHealthMonitoring: true,          // ai_provider_health table
+    hasPromptFamilies: promptCount > 0,
   };
 
-  const total = Object.keys(checks).length;
-  const passed = Object.values(checks).filter(Boolean).length;
-  return Math.round((passed / total) * 100);
+  // Runtime proof checks (60% weight) — require actual data
+  const runtimeChecks = {
+    hasRealReceipts: receiptCount > 0,
+    hasMultipleProviders: providerCount >= 2,
+    hasMultipleModels: modelCount >= 2,
+    hasBudgetEnforcement: budgetCount > 0,
+    hasPromptVersioning: promptCount >= 3,
+  };
+
+  const infraTotal = Object.keys(infraChecks).length;
+  const infraPassed = Object.values(infraChecks).filter(Boolean).length;
+  const infraScore = (infraPassed / infraTotal) * 100;
+
+  const runtimeTotal = Object.keys(runtimeChecks).length;
+  const runtimePassed = Object.values(runtimeChecks).filter(Boolean).length;
+  const runtimeScore = (runtimePassed / runtimeTotal) * 100;
+
+  return Math.round(infraScore * 0.4 + runtimeScore * 0.6);
 }
