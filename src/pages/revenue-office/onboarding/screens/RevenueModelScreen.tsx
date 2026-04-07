@@ -5,6 +5,7 @@ import { getRevenueEngineBranch } from "../branching";
 import type { ScreenProps } from "../types";
 import { useCallback, useMemo } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const sources = [
   { id: "appointments", label: "Booked calls / appointments", icon: Phone },
@@ -20,6 +21,7 @@ const sources = [
 ];
 
 export default function RevenueModelScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const toggle = useCallback((v: string) => {
     setState(p => ({ ...p, revenueSources: p.revenueSources.includes(v) ? p.revenueSources.filter(x => x !== v) : [...p.revenueSources, v] }));
   }, [setState]);

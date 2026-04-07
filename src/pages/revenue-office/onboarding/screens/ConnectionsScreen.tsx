@@ -3,6 +3,7 @@ import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const systems = [
   { id: "hubspot", label: "HubSpot", icon: Globe, cat: "CRM" },
@@ -25,6 +26,7 @@ const systems = [
 ];
 
 export default function ConnectionsScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const toggle = useCallback((v: string) => {
     setState(p => ({ ...p, connectedSystems: p.connectedSystems.includes(v) ? p.connectedSystems.filter(x => x !== v) : [...p.connectedSystems, v] }));
   }, [setState]);

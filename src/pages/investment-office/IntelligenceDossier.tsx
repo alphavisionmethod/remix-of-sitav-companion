@@ -4,8 +4,10 @@ import { FileSearch, Brain, TrendingUp, TrendingDown, AlertTriangle, Check, Cale
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function IntelligenceDossier() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentThesisEntries();
   const [selectedId, setSelectedId] = useState("nvda");
   const inst = INSTRUMENTS.find(i => i.id === selectedId)!;

@@ -7,6 +7,7 @@ import { ChapterBanner } from "../primitives";
 import { getRecommendedAdvisors, type RecommendedAdvisor } from "../branching";
 import type { ScreenProps } from "../types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const iconMap: Record<string, any> = {
   chief_revenue: TrendingUp, funnel: Target, crm: Users, campaign: Megaphone,
@@ -20,6 +21,7 @@ const intensityColors = {
 };
 
 export default function AdvisorActivationScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const advisors = useMemo(() => getRecommendedAdvisors(state), [state]);
 
   const activeIds = useMemo(() => {

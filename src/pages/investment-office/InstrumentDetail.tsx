@@ -6,6 +6,7 @@ import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_THESES, getInstrument } from "@/hooks/useInvestmentOfficeData";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 const fmt = (n: number) => n >= 1e12 ? `$${(n / 1e12).toFixed(2)}T` : n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : `$${n.toLocaleString()}`;
@@ -13,6 +14,7 @@ const fmt = (n: number) => n >= 1e12 ? `$${(n / 1e12).toFixed(2)}T` : n >= 1e9 ?
 const RISK_COLORS = { "very-low": "text-[hsl(var(--trust-safe))]", "low": "text-[hsl(var(--trust-safe))]", "moderate": "text-primary", "high": "text-[hsl(var(--trust-warn))]", "very-high": "text-destructive" };
 
 export default function InstrumentDetail() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = usePortfolioPositions();
   const { instrumentId } = useParams();
   const navigate = useNavigate();

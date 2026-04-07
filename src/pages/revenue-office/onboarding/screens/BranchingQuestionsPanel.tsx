@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Brain, Check } from "lucide-react";
 import type { BranchQuestion } from "../branching";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Props {
   questions: BranchQuestion[];
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function BranchingQuestionsPanel({ questions, answers, onAnswer }: Props) {
+  const { isDemoMode } = useDataMode();
   if (questions.length === 0) return null;
 
   return (

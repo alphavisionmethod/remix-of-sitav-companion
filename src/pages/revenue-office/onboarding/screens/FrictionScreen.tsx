@@ -6,6 +6,7 @@ import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
 import { getBottleneckBranch } from "../branching";
 import type { ScreenProps } from "../types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const bottlenecks = [
   { id: "lead_flow", label: "Not enough leads coming in", desc: "Pipeline feels empty or unpredictable", icon: Users },
@@ -24,6 +25,7 @@ const bottlenecks = [
 ];
 
 export default function FrictionScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const toggle = useCallback((v: string) => {
     setState(p => ({ ...p, growthBottlenecks: p.growthBottlenecks.includes(v) ? p.growthBottlenecks.filter(x => x !== v) : [...p.growthBottlenecks, v] }));
   }, [setState]);

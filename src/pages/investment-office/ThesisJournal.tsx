@@ -3,8 +3,10 @@ import { Brain, Target, AlertTriangle, TrendingUp, TrendingDown, Plus, ChevronRi
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SAMPLE_THESES, getInstrument } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ThesisJournal() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentThesisEntries();
   const navigate = useNavigate();
 

@@ -3,6 +3,7 @@ import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const preBuyOptions = [
   { id: "discover_online", label: "Discover me online", icon: Globe },
@@ -30,6 +31,7 @@ const closeOptions = [
 ];
 
 export default function ConversionScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const toggleBuy = useCallback((v: string) => {
     setState(p => ({ ...p, preBuyBehavior: p.preBuyBehavior.includes(v) ? p.preBuyBehavior.filter(x => x !== v) : [...p.preBuyBehavior, v] }));
   }, [setState]);

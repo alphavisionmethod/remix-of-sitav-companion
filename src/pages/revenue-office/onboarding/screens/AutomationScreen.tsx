@@ -3,6 +3,7 @@ import { Toggle, SectionTitle, ChapterBanner } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const levels = [
   { id: "suggest", label: "Suggestions only", desc: "SITA observes and recommends — you decide everything", icon: Eye, trust: 1 },
@@ -23,6 +24,7 @@ const humanOnly = [
 ];
 
 export default function AutomationScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const toggleHuman = useCallback((v: string) => {
     setState(p => ({ ...p, humanOnlyTasks: p.humanOnlyTasks.includes(v) ? p.humanOnlyTasks.filter(x => x !== v) : [...p.humanOnlyTasks, v] }));
   }, [setState]);

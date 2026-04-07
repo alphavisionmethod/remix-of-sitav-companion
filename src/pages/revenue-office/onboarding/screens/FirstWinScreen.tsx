@@ -4,8 +4,10 @@ import { Rocket, Users, Target, FileText, Phone, Star, Search, Upload, RefreshCw
 import { ChapterBanner } from "../primitives";
 import type { ScreenProps } from "../types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function FirstWinScreen({ state, setState }: ScreenProps) {
+  const { isDemoMode } = useDataMode();
   const wins = useMemo(() => [
     { id: "stale_leads", label: "Recover stale leads", desc: "Find and re-engage leads that went quiet", icon: Users, impact: "$8,200 at risk", relevant: state.growthBottlenecks.includes("lead_followup") || state.leadSources.length > 0 },
     { id: "journey_twin", label: "Build Customer Journey Twin", desc: "Live model of how customers move through your business", icon: Target, impact: "Strategic clarity", relevant: !!state.journeyTemplate },

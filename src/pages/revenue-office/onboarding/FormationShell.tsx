@@ -27,6 +27,7 @@ import AdvisorActivationScreen from "./screens/AdvisorActivationScreen";
 import FirstWinScreen from "./screens/FirstWinScreen";
 import RevealScreen from "./screens/RevealScreen";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const screenMap: Record<StageId, React.ComponentType<any>> = {
   ceremony: CeremonyScreen,
@@ -52,6 +53,7 @@ const screenMap: Record<StageId, React.ComponentType<any>> = {
 };
 
 export default function FormationShell() {
+  const { isDemoMode } = useDataMode();
   const [stage, setStage] = useState(0);
   const [state, setState] = useState<OnboardingState>(defaultOnboardingState);
   const [showChapterTransition, setShowChapterTransition] = useState(false);

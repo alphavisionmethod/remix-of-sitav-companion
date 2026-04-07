@@ -4,10 +4,12 @@ import { Brain, TrendingUp, TrendingDown, BarChart3, Target, AlertTriangle, Chev
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PORTFOLIO, SAMPLE_SCENARIOS, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;
 
 export default function StrategyStudio() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const navigate = useNavigate();
   const [activeScenario, setActiveScenario] = useState(SAMPLE_SCENARIOS[0].id);

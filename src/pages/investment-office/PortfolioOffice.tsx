@@ -3,11 +3,13 @@ import { DollarSign, TrendingUp, TrendingDown, PieChart, Shield, RefreshCw, Exte
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PLATFORM_CONNECTIONS, PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 
 export default function PortfolioOffice() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = usePortfolioPositions();
   const navigate = useNavigate();
   const p = PORTFOLIO;

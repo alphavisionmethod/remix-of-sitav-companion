@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export function Toggle({ label, desc, icon: Icon, selected, onToggle, badge }: {
   label: string; desc?: string; icon: any; selected: boolean; onToggle: () => void; badge?: string;
@@ -30,6 +31,7 @@ export function Toggle({ label, desc, icon: Icon, selected, onToggle, badge }: {
 }
 
 export function SectionTitle({ children, hint }: { children: React.ReactNode; hint?: string }) {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="mb-3">
       <p className="text-sm font-semibold text-foreground">{children}</p>
