@@ -12,7 +12,7 @@ import type { SurfaceType, ActiveSurface } from "@/packages/contracts/runtime/os
 
 declare global {
   interface Window {
-    Capacitor?: {
+    Capacitor?: CapacitorGlobal | {
       platform?: string;
       isNativePlatform?: () => boolean;
       [key: string]: unknown;
