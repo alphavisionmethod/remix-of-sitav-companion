@@ -42,7 +42,7 @@ export interface UseActionOptions {
  * createBill.mutate({ payee: "Electric Co", amount: 150 });
  * ```
  */
-export function useAction(
+export function useAction<TPayload = Record<string, unknown>>(
   domain: string,
   capabilityId: string,
   options: UseActionOptions = {},
@@ -50,9 +50,9 @@ export function useAction(
   const { execute } = useCanonicalAction();
   const qc = useQueryClient();
 
-  return useMutation({
-    mutationFn: async (payload: Record<string, unknown>) => {
-      const result = await execute(domain, capabilityId, payload, {
+  return useMutation<Record<string, unknown> | null, Error, TPayload>({
+    mutationFn: async (payload: TPayload) => {
+      const result = await execute(domain, capabilityId, payload as unknown as Record<string, unknown>, {
         amount: options.amount,
         isSimulation: options.isSimulation,
         intent: capabilityId,
