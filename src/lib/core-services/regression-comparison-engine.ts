@@ -81,13 +81,11 @@ export class RegressionComparisonEngine {
     };
     this.baselines.set(domain, baseline);
 
-    this.eventBus.publish({
-      id: uid(),
-      topic: "regression.baseline.captured",
-      payload: { domain, metricCount: metrics.length, tag },
-      timestamp: Date.now(),
-      source: "RegressionComparisonEngine",
-    });
+    this.eventBus.publish(
+      "regression.baseline.captured",
+      { domain, metricCount: metrics.length, tag },
+      { source: "RegressionComparisonEngine" },
+    );
 
     return baseline;
   }
