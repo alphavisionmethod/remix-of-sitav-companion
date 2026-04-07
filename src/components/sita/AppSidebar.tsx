@@ -176,6 +176,7 @@ export function AppSidebar() {
   const { preferences } = useUserPreferences();
   const role = preferences.role;
   const location = useLocation();
+  const navigate = useNavigate();
   const isOwnerArea = location.pathname.startsWith("/owner");
 
   const displayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
