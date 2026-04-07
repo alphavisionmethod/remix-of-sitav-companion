@@ -2400,7 +2400,7 @@ const OwnerCenter = () => {
                   })()}
                 </div>
                 {(() => {
-                  const r = simResult?.simulation || simulatePolicy.data?.simulation;
+                  const r = simResult?.simulation || (simulatePolicy.data as any)?.simulation;
                   if (!r) return null;
                   return (
                     <div className="space-y-2">
