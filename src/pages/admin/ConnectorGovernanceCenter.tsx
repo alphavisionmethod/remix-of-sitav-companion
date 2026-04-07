@@ -73,6 +73,31 @@ const POLICIES = [
 export default function ConnectorGovernanceCenter() {
   const [tab, setTab] = useState("connectors");
   const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  // Fetch real sync history from audit_logs
+  const { data: syncHistory = FALLBACK_SYNC_HISTORY } = useQuery({
+    queryKey: ["connector-sync-history", user?.id],
+    enabled: !!user,
+    refetchInterval: tab === "history" ? 5000 : false,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("audit_logs")
+        .select("*")
+        .or("category.eq.connector,action.ilike.sync%")
+        .order("created_at", { ascending: false })
+        .limit(30);
+      if (error || !data || data.length === 0) return FALLBACK_SYNC_HISTORY;
+      return data.map((log: any) => ({
+        connector: log.details?.connector_type || log.target_type || "Unknown",
+        time: new Date(log.created_at).toLocaleString(),
+        status: log.details?.status || (log.action?.includes("fail") ? "failed" : "success"),
+        records: log.details?.records_synced ?? log.details?.record_count ?? 0,
+        duration: log.details?.duration_ms ? `${(log.details.duration_ms / 1000).toFixed(1)}s` : "—",
+      }));
+    },
+    staleTime: 5000,
+  });
 
   // Fetch real connectors from DB, fallback to hardcoded
   const { data: dbConnectors } = useQuery({
