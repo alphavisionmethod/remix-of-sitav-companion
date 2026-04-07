@@ -75,7 +75,7 @@ const GovernanceDashboard = lazy(() => import("./pages/GovernanceDashboard"));
 const PackStorePage = lazy(() => import("./pages/store/PackStorePage"));
 const PackDetailPage = lazy(() => import("./pages/store/PackDetailPage"));
 const PackInstalledPage = lazy(() => import("./pages/store/PackInstalledPage"));
-const OldAppDetailPage = lazy(() => import("./pages/store/AppDetailPage"));
+const OldAppDetailPage = lazy(() => import("./pages/store/StoreAppDetailPage"));
 const StoreCategoryPage = lazy(() => import("./pages/store/StoreCategoryPage"));
 const StoreAnalyticsPage = lazy(() => import("./pages/store/StoreAnalyticsPage"));
 const AppStorePage = lazy(() => import("./pages/app-platform/AppStorePage"));
