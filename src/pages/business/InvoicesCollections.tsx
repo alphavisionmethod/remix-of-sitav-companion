@@ -34,6 +34,7 @@ const InvoicesCollections = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ invoice_number: "", amount: "", due_date: "", notes: "" });
   const generatePdf = useInvoiceGenerate();
+  const sendInvoice = useInvoiceSend();
 
   const { data: invoices = [], isLoading } = useQuery({
     queryKey: ["invoices", user?.id],
