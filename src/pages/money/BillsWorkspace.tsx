@@ -119,6 +119,17 @@ const BillsWorkspace = () => {
 
   const markPaidMutation = useMutation({
     mutationFn: async (id: string) => {
+      const bill = enriched.find(b => b.id === id);
+      if (bill && user) {
+        // Fire payment-process edge function for audit trail & approval
+        await initiatePayment({
+          amount_cents: Math.round(Number(bill.amount || 0) * 100),
+          account_id: bill.account_id || user.id,
+          description: `Bill payment: ${bill.payee || "Unknown"}`,
+          recipient: bill.payee,
+          category: bill.category || "bills",
+        }).catch(() => { /* non-blocking — bill still marked paid locally */ });
+      }
       const { error } = await (supabase as any).from("bills").update({ status: "paid" }).eq("id", id);
       if (error) throw error;
     },
