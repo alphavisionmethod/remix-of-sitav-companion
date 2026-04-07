@@ -571,9 +571,9 @@ export function useRollbackCenter() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["rollback-center", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<RollbackCenterData> => {
       if (isDemoMode) return mockRollbackCenter;
-      return callAdminAPI("rollback-center");
+      return callAdminAPI<RollbackCenterData>("rollback-center");
     },
     staleTime: isDemoMode ? Infinity : 30000,
   });
