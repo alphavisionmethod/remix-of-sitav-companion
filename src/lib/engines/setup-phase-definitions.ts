@@ -284,21 +284,21 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     id: "trust-calibration", title: "Trust Calibration", description: "Choose how SITA should help — autonomy spectrum and controls",
     dependencies: ["primary-use-mode"], blocking: true, required: true,
     backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 17, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 26, excludedFromSteps: true,
     statusUX: defaultStatusUX("Trust Calibration"),
   },
   {
     id: "advisor-activation", title: "Advisor Activation", description: "Meet and activate your advisory team",
     dependencies: ["trust-calibration"], blocking: true, required: true,
     backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 18, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 27, excludedFromSteps: true,
     statusUX: defaultStatusUX("Advisor Activation"),
   },
   {
     id: "environment-summary", title: "Environment Summary", description: "Review your shaped environment before arrival",
     dependencies: ["advisor-activation"], blocking: true, required: true,
     backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 19, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 28, excludedFromSteps: true,
     statusUX: defaultStatusUX("Environment Summary"),
   },
 
@@ -309,7 +309,7 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     backgroundTaskIds: ["connector-readiness-check"],
     branchConditions: [setupStyleCondition(["guided", "advanced"])],
     requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 20, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 29, excludedFromSteps: true,
     statusUX: defaultStatusUX("First Connections"),
   },
   {
@@ -317,8 +317,24 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     dependencies: ["environment-summary"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 21, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 30, excludedFromSteps: true,
     statusUX: defaultStatusUX("First Win Setup"),
+  },
+  {
+    id: "first-simulation", title: "First Simulation", description: "See SITA handle a real scenario end-to-end",
+    dependencies: ["first-win-setup"], blocking: false, required: false,
+    backgroundTaskIds: [],
+    branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 31, excludedFromSteps: true,
+    statusUX: defaultStatusUX("First Simulation"),
+  },
+  {
+    id: "first-actions", title: "First Actions", description: "Review your first 3 SITA actions",
+    dependencies: ["first-simulation"], blocking: false, required: false,
+    backgroundTaskIds: [],
+    branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 32, excludedFromSteps: true,
+    statusUX: defaultStatusUX("First Actions"),
   },
 
   // ── Phase 5: Arrival ──
@@ -327,7 +343,7 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     dependencies: ["first-win-setup"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 22, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 33, excludedFromSteps: true,
     statusUX: defaultStatusUX("Arrival Preparation"),
   },
   {
@@ -335,7 +351,7 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     dependencies: ["arrival-prep"], blocking: true, required: true,
     backgroundTaskIds: [],
     branchConditions: [], requiredHardware: [],
-    timeout: DEFAULT_TIMEOUT, order: 23, excludedFromSteps: true,
+    timeout: DEFAULT_TIMEOUT, order: 34, excludedFromSteps: true,
     statusUX: defaultStatusUX("Desktop Transition"),
   },
   {
