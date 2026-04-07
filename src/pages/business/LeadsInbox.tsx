@@ -19,6 +19,8 @@ import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
+import { useCRMSync } from "@/hooks/use-backend-actions";
+import { RefreshCw } from "lucide-react";
 
 interface Lead {
   id: string; name: string; company?: string | null; source: string | null; status: string;
@@ -64,6 +66,7 @@ type Tab = "all" | "urgent" | "new" | "warm" | "stale" | "qualified";
 const LeadsInbox = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const crmSync = useCRMSync();
   const { confirmation, confirm } = useConfirmation();
   const [tab, setTab] = useState<Tab>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -186,7 +189,7 @@ const LeadsInbox = () => {
       <SitaPageHeader
         title="Leads Inbox"
         subtitle="Capture, qualify, and convert"
-        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton></div>}
+        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="secondary" size="sm" onClick={() => { if (leads.length > 0) crmSync.syncLeads.mutate(leads.map(l => ({ name: l.name, email: l.email || undefined, phone: l.phone || undefined, source: l.source || undefined, status: l.status }))); }} disabled={crmSync.syncLeads.isPending || leads.length === 0}><RefreshCw className={`h-3.5 w-3.5 ${crmSync.syncLeads.isPending ? "animate-spin" : ""}`} /> Sync</SitaButton><SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton></div>}
       />
 
       {/* Add/Edit Modal */}

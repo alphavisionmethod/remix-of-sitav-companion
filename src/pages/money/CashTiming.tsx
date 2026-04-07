@@ -8,13 +8,23 @@ import { motion } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useCashTimingWindows, useMoneyKPIs } from "@/hooks/use-domain-data";
+import { useCashflowAnalysis, useCashflowForecast, useSafeToSpend } from "@/hooks/use-backend-actions";
 
 const CashTiming = () => {
   const { data: windows = [], isLoading } = useCashTimingWindows();
   const { data: kpis } = useMoneyKPIs();
+
+  // Wire to cashflow-calculate edge function
+  const { data: cfAnalysis } = useCashflowAnalysis();
+  const { data: cfForecast } = useCashflowForecast(90);
+  const { data: safeToSpendData } = useSafeToSpend();
+
   const k = kpis || { safeToSpend: 0 };
 
-  const safeToSpend = k.safeToSpend;
+  // Prefer edge function data when available, fallback to demo
+  const safeToSpend = (safeToSpendData as any)?.safe_to_spend_cents
+    ? Math.round((safeToSpendData as any).safe_to_spend_cents / 100)
+    : k.safeToSpend;
   const minBalance = windows.length > 0 ? Math.min(...windows.map((w: any) => w.balance)) : 0;
   const stressWindows = windows.filter((w: any) => w.stress);
 

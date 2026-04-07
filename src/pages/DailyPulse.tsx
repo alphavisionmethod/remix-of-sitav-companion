@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
 import { useLeads, useInvoices, useBills, useCashFlow, useApprovals, useHouseholdTasks, useFamilyEvents, useTravel, useSubscriptions } from "@/hooks/use-sita-data";
-import { useAIInsight } from "@/hooks/use-backend-actions";
+import { useAIInsight, useCashflowAnalysis, useCRMSync } from "@/hooks/use-backend-actions";
 import { evaluateCrossDomainIntelligence } from "@/lib/cross-domain";
 import { assessBusinessHealth } from "@/lib/domain-engines/business-os";
 import { analyzeCashflow, assessBudgetHealth, assessReserves, analyzeInvoiceAging, assessFinancialHealth, analyzeBillCalendar } from "@/lib/domain-engines/finance-os";
@@ -151,6 +151,12 @@ const DailyPulse = () => {
   const { data: familyEvents = [] } = useFamilyEvents();
   const { data: travel = [] } = useTravel();
   const { data: subscriptions = [] } = useSubscriptions();
+
+  // Wire to edge functions for live finance + CRM data
+  const { data: liveCashflow } = useCashflowAnalysis();
+  const crmSync = useCRMSync();
+  const liveCf = liveCashflow as any;
+  const crmHealth = crmSync.healthCheck.data as any;
 
   const hasAnyData = isDemoMode || leads.length > 0 || invoices.length > 0 || bills.length > 0 || householdTasks.length > 0;
 

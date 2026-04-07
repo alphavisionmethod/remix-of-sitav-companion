@@ -17,6 +17,7 @@ import {
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useCRMSync } from "@/hooks/use-backend-actions";
 
 const todayCallbacks = [
   { name: "Sarah Chen", time: "10:30 AM", reason: "Quote follow-up — $2,500 website redesign", stale: false },
@@ -84,6 +85,8 @@ const BusinessLeakagePanel = () => {
 const BusinessOverview = () => {
   const navigate = useNavigate();
   const { isDemoMode } = useDataMode();
+  const crmSync = useCRMSync();
+  const crmHealth = crmSync.healthCheck.data as any;
   const { data: leads = [], isLoading: leadsLoading } = useLeads();
   const { data: customers = [], isLoading: custLoading } = useCustomers();
   const { data: invoices = [], isLoading: invLoading } = useInvoices();
@@ -126,7 +129,16 @@ const BusinessOverview = () => {
       <SitaPageHeader
         title="Business Center"
         subtitle="Your operating overview — leads, revenue, and execution"
-        actions={<SitaButton variant="primary" onClick={() => navigate("/business/leads")}><UserPlus className="h-4 w-4" /> New Lead</SitaButton>}
+        actions={
+          <div className="flex items-center gap-3">
+            {crmHealth && (
+              <span className="text-[10px] text-muted-foreground">
+                CRM: {crmHealth.leads?.count ?? 0} leads · {crmHealth.customers?.count ?? 0} customers · {crmHealth.opportunities?.count ?? 0} opps
+              </span>
+            )}
+            <SitaButton variant="primary" onClick={() => navigate("/business/leads")}><UserPlus className="h-4 w-4" /> New Lead</SitaButton>
+          </div>
+        }
       />
 
       {/* KPI Strip */}

@@ -108,6 +108,8 @@ const SettingsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [auditResult, setAuditResult] = useState<SimulationResult | null>(null);
   const [displayName, setDisplayName] = useState(user?.user_metadata?.full_name || "");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   // Fetch profile
@@ -117,6 +119,7 @@ const SettingsPage = () => {
     queryFn: async () => {
       const { data } = await (db as any).from("profiles").select("*").eq("user_id", user!.id).single();
       if (data?.display_name) setDisplayName(data.display_name);
+      if (data?.avatar_url) setAvatarUrl(data.avatar_url);
       if (data?.preferences) loadPrefs(data.preferences);
       return data;
     },
@@ -223,9 +226,35 @@ const SettingsPage = () => {
             </SitaCardTitle>
             <div className="mt-4 space-y-3">
               <div className="flex items-center gap-4 p-4 rounded-xl bg-secondary/30">
-                <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center">
-                  <User className="h-6 w-6 text-primary" />
-                </div>
+                <label className="cursor-pointer relative group">
+                  <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
+                    {avatarUrl ? (
+                      <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+                    ) : (
+                      <User className="h-6 w-6 text-primary" />
+                    )}
+                  </div>
+                  <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                    <span className="text-[9px] text-white font-medium">{uploadingAvatar ? "..." : "Edit"}</span>
+                  </div>
+                  <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file || !user) return;
+                    setUploadingAvatar(true);
+                    try {
+                      const ext = file.name.split(".").pop();
+                      const path = `avatars/${user.id}.${ext}`;
+                      const { error: uploadError } = await supabase.storage.from("documents").upload(path, file, { upsert: true });
+                      if (uploadError) throw uploadError;
+                      const { data: urlData } = supabase.storage.from("documents").getPublicUrl(path);
+                      const url = urlData.publicUrl;
+                      setAvatarUrl(url);
+                      await (db as any).from("profiles").update({ avatar_url: url }).eq("user_id", user.id);
+                      toast.success("Photo updated");
+                    } catch (err: any) { toast.error(err.message || "Upload failed"); }
+                    finally { setUploadingAvatar(false); }
+                  }} />
+                </label>
                 <div className="flex-1">
                   <input
                     value={displayName}
@@ -275,6 +304,24 @@ const SettingsPage = () => {
                 }}>
                   <RefreshCw className="h-3.5 w-3.5 mr-1" /> Seed Data
                 </SitaButton>
+              </div>
+              {/* Account Stats */}
+              <div className="py-3">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Account Statistics</p>
+                <div className="grid gap-2 sm:grid-cols-3">
+                  <div className="rounded-xl border border-border bg-secondary/20 p-3 text-center">
+                    <p className="font-display text-lg font-bold text-foreground">{profile?.created_at ? new Date(profile.created_at).toLocaleDateString("en", { month: "short", year: "numeric" }) : "—"}</p>
+                    <p className="text-[10px] text-muted-foreground">Member since</p>
+                  </div>
+                  <div className="rounded-xl border border-border bg-secondary/20 p-3 text-center">
+                    <p className="font-display text-lg font-bold text-foreground">{user?.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString() : "—"}</p>
+                    <p className="text-[10px] text-muted-foreground">Last login</p>
+                  </div>
+                  <div className="rounded-xl border border-border bg-secondary/20 p-3 text-center">
+                    <p className="font-display text-lg font-bold text-primary">{devices.length}</p>
+                    <p className="text-[10px] text-muted-foreground">Devices</p>
+                  </div>
+                </div>
               </div>
             </div>
           </SitaCard>

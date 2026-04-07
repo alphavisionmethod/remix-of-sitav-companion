@@ -15,11 +15,13 @@ import MoneyProof from "./money/MoneyProof";
 import MoneyDocuments from "./money/MoneyDocuments";
 import MoneySettings from "./money/MoneySettings";
 import InvestmentOffice from "./money/InvestmentOffice";
+import TaxEstimator from "./money/TaxEstimator";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
-type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "approvals" | "boardroom" | "proof" | "files" | "settings";
+type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/tax")) return "tax";
   if (path.includes("/investment-office")) return "investment-office";
   if (path.includes("/bills")) return "bills";
   if (path.includes("/subscriptions")) return "subscriptions";
@@ -42,6 +44,7 @@ const pages: Record<SubPage, React.ComponentType> = {
   "cash-timing": CashTiming,
   receivables: ReceivablesObligations,
   "investment-office": InvestmentOffice,
+  tax: TaxEstimator,
   approvals: MoneyApprovals,
   proof: MoneyProof,
   files: MoneyDocuments,
@@ -79,6 +82,7 @@ const MoneyCenter = () => {
             { key: "cash-timing", label: "Cash Timing" },
             { key: "receivables", label: "Receivables" },
             { key: "investment-office", label: "Investment Office" },
+            { key: "tax", label: "Tax" },
             { key: "approvals", label: "Approvals" },
             { key: "proof", label: "Proof" },
             { key: "files", label: "Documents" },
