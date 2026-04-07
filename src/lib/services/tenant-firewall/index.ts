@@ -149,7 +149,7 @@ export class TenantFirewallService {
     if (!state) return;
     if (state.rules) this.rules = new Map(state.rules as [string, unknown][]);
     if (state.auditLog) this.auditLog = state.auditLog as never;
-    if (state.activeTenants) this.activeTenants = new Set(state.activeTenants as unknown);
+    if (state.activeTenants) this.activeTenants = new Set(state.activeTenants as never);
   }
 
   async loadPersistedState(): Promise<void> {

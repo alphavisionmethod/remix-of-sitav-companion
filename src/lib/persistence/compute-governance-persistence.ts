@@ -48,7 +48,7 @@ export async function fetchComputeSnapshots(opts?: {
 }): Promise<ComputeBudgetSnapshotRow[]> {
   const userId = await uid();
   if (!userId) return [];
-  let q = fromTable(TABLE).select("*").eq("user_id", userId).order("snapshot_at", { ascending: false });
+  let q = fromDynamicTable(TABLE).select("*").eq("user_id", userId).order("snapshot_at", { ascending: false });
   if (opts?.period) q = q.eq("period", opts.period);
   if (opts?.domain) q = q.eq("domain", opts.domain);
   if (opts?.limit) q = q.limit(opts.limit);

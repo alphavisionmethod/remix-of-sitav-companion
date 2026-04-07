@@ -82,7 +82,7 @@ class WidgetMarketplaceService {
       .single();
 
     if (data?.value) {
-      return typeof data.value === 'string' ? JSON.parse(data.value) : data.value as unknown;
+      return typeof data.value === 'string' ? JSON.parse(data.value) : data.value as never;
     }
     return this.getDefaultLayout();
   }

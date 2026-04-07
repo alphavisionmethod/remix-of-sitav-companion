@@ -81,7 +81,7 @@ export async function executeWorkforceTask(
     .limit(200);
 
   const history = buildInvocationHistory(
-    (recentInvs ?? []) as unknown[],
+    (recentInvs ?? []) as never[],
     roleKey,
     taskType,
   );
@@ -159,7 +159,7 @@ export async function executeWorkforceTask(
     ],
     taskClass: execParams.taskClass,
     surface: "web.admin",
-    intent: intent as unknown,
+    intent: intent as never,
     maxTokens: execParams.maxTokens,
     temperature: execParams.temperature,
   });
@@ -176,7 +176,7 @@ export async function executeWorkforceTask(
         .update({
           status: response.status.startsWith("success_") ? "completed" : "failed",
           output_summary: response.content?.slice(0, 2000) ?? null,
-          output_data: (response.structuredOutput as unknown) ?? null,
+          output_data: (response.structuredOutput as never) ?? null,
           cost_cents: costCents,
           tokens_used: tokensUsed,
           latency_ms: latencyMs,

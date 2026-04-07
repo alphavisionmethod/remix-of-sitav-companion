@@ -82,7 +82,7 @@ export default function AIG06LaunchTruth() {
                   <TableRow key={c.capabilityId}>
                     <TableCell className="font-medium text-xs">{c.capabilityName}</TableCell>
                     <TableCell>
-                      <Badge variant={LEVEL_COLORS[c.launchLevel] as unknown} className="text-xs">
+                      <Badge variant={LEVEL_COLORS[c.launchLevel] as never} className="text-xs">
                         {LEVEL_ICONS[c.launchLevel]}
                         {c.launchLevel.replace("_", " ")}
                       </Badge>
@@ -122,7 +122,7 @@ export default function AIG06LaunchTruth() {
                 {rawRecords.map((r) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-mono text-xs">{r.capability_key}</TableCell>
-                    <TableCell><Badge variant={LEVEL_COLORS[r.launch_honesty_class as LaunchHonestyLevel] as unknown ?? "outline"} className="text-xs">{r.launch_honesty_class}</Badge></TableCell>
+                    <TableCell><Badge variant={LEVEL_COLORS[r.launch_honesty_class as LaunchHonestyLevel] as never ?? "outline"} className="text-xs">{r.launch_honesty_class}</Badge></TableCell>
                     <TableCell>{r.public_claim_allowed ? "✓" : "✗"}</TableCell>
                     <TableCell>{r.qualifier_required ? "Required" : "No"}</TableCell>
                     <TableCell className="text-xs max-w-[200px] truncate">{r.notes ?? "—"}</TableCell>

@@ -388,13 +388,13 @@ describe("Feature Design Intake Protocol", () => {
 
     it("catches missing outcome section", () => {
       const intake = { ...makeFullIntake() };
-      const partial = { ...intake, outcome: undefined } as unknown;
+      const partial = { ...intake, outcome: undefined } as never;
       const errors = validateIntake(partial);
       expect(errors.some(e => e.includes("outcome"))).toBe(true);
     });
 
     it("catches missing governance section", () => {
-      const partial = { ...makeFullIntake(), governance: undefined } as unknown;
+      const partial = { ...makeFullIntake(), governance: undefined } as never;
       const errors = validateIntake(partial);
       expect(errors.some(e => e.includes("governance"))).toBe(true);
     });
@@ -613,7 +613,7 @@ describe("Capability Protocol", () => {
 
     it("rejects invalid capability class", () => {
       const errors = validateCapabilityRegistration(makeValidCapability({
-        capabilityClass: "invalid-class" as unknown,
+        capabilityClass: "invalid-class" as never,
       }));
       expect(errors.some(e => e.includes("Invalid capabilityClass"))).toBe(true);
     });

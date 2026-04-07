@@ -152,15 +152,15 @@ const PolicyEditor = () => {
                   <div className="mt-4 space-y-3">
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><TrustBadge level={selected.active ? "verified" : "low-confidence"} label={selected.active ? "Active" : "Inactive"} size="sm" /></div>
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">Approval</span><span className="text-foreground">{selected.approval_required ? "Required" : "Auto-approve"}</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Conditions</span><span className="text-foreground">{(selected.conditions as unknown[]).length} rules</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Actions</span><span className="text-foreground">{(selected.actions as unknown[]).length} actions</span></div>
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Conditions</span><span className="text-foreground">{(selected.conditions as never[]).length} rules</span></div>
+                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Actions</span><span className="text-foreground">{(selected.actions as never[]).length} actions</span></div>
                   </div>
                 </SitaCard>
 
                 <SitaCard hover={false}>
                   <SitaCardTitle>Conditions</SitaCardTitle>
                   <div className="mt-2">
-                    {(selected.conditions as unknown[]).length > 0 ? (
+                    {(selected.conditions as never[]).length > 0 ? (
                       <div className="space-y-1">
                         {(selected.conditions as Array<Record<string, unknown>>).map((c, i) => (
                           <div key={i} className="rounded-lg bg-secondary/40 p-2 text-xs text-foreground">{JSON.stringify(c)}</div>

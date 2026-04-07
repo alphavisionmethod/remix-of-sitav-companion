@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 let bridgeUserId: string | null = null;
 
@@ -22,7 +22,7 @@ supabase.auth.onAuthStateChange(() => { bridgeUserId = null; });
 async function bridgeInsert(table: string, row: Record<string, unknown>): Promise<boolean> {
   const userId = await getBridgeUserId();
   if (!userId) return false;
-  const { error } = await fromTable(table).insert({ ...row, user_id: userId });
+  const { error } = await fromDynamicTable(table).insert({ ...row, user_id: userId });
   if (error) {
     console.warn(`[data-flow-bridge] ${table} insert failed:`, error.message);
     return false;

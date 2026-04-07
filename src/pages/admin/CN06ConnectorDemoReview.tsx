@@ -63,7 +63,7 @@ export default function CN06ConnectorDemoReview() {
                   <div>
                     <p className="text-sm font-medium mb-2">Synthetic Files ({db.synthetic_files.length})</p>
                     <div className="space-y-1">
-                      {(db.synthetic_files as unknown[]).map((f: any, i: number) => (
+                      {(db.synthetic_files as never[]).map((f: any, i: number) => (
                         <div key={i} className="flex items-center justify-between p-2 rounded bg-muted/20 text-sm">
                           <span>{f.name}</span>
                           <span className="text-xs text-muted-foreground">{f.type === "folder" ? `${f.items} items` : `${(f.size / 1024 / 1024).toFixed(1)}MB`}</span>
@@ -76,7 +76,7 @@ export default function CN06ConnectorDemoReview() {
                   <div>
                     <p className="text-sm font-medium mb-2">Synthetic Messages ({db.synthetic_messages.length})</p>
                     <div className="space-y-1">
-                      {(db.synthetic_messages as unknown[]).map((m: any, i: number) => (
+                      {(db.synthetic_messages as never[]).map((m: any, i: number) => (
                         <div key={i} className="flex items-center justify-between p-2 rounded bg-muted/20 text-sm">
                           <div>
                             <p className="font-medium">{m.subject}</p>
@@ -92,7 +92,7 @@ export default function CN06ConnectorDemoReview() {
                   <div>
                     <p className="text-sm font-medium mb-2">Synthetic Sync History</p>
                     <div className="space-y-1">
-                      {(db.synthetic_sync_history as unknown[]).map((s: any, i: number) => (
+                      {(db.synthetic_sync_history as never[]).map((s: any, i: number) => (
                         <div key={i} className="flex items-center gap-3 p-2 rounded bg-muted/20 text-xs">
                           <Badge className="bg-green-500/20 text-green-400">{s.status}</Badge>
                           <span>{s.records_fetched} fetched → {s.records_imported} imported</span>

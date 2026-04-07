@@ -71,7 +71,7 @@ export async function setKillSwitch(
   value: boolean,
   reason?: string
 ): Promise<void> {
-  (killSwitchCache as unknown)[key] = value;
+  (killSwitchCache as never)[key] = value;
 
   try {
     const { data: { user } } = await supabase.auth.getUser();

@@ -55,7 +55,7 @@ export async function upsertQualityFloor(
 export async function deleteQualityFloor(id: string): Promise<boolean> {
   const userId = await uid();
   if (!userId) return false;
-  const { error } = await fromTable(TABLE).delete().eq("id", id).eq("user_id", userId);
+  const { error } = await fromDynamicTable(TABLE).delete().eq("id", id).eq("user_id", userId);
   if (error) { console.error("[quality-floor] delete failed:", error); return false; }
   return true;
 }

@@ -132,9 +132,9 @@ async function fetchGoogleConnectors(
   return capabilities.map((cap: any): GoogleConnectorState => ({
     capabilityKey: cap.capability_key as GoogleCapabilityKey,
     displayName: cap.display_name,
-    connectionStatus: (svc => svc?.connection_status ?? "disconnected")(services?.find((s: any) => s.provider_capability_id === cap.id)) as unknown,
-    healthStatus: (svc => svc?.health_status ?? "unknown")(services?.find((s: any) => s.provider_capability_id === cap.id)) as unknown,
-    permissionLevel: (svc => svc?.permission_level ?? "minimal")(services?.find((s: any) => s.provider_capability_id === cap.id)) as unknown,
+    connectionStatus: (svc => svc?.connection_status ?? "disconnected")(services?.find((s: any) => s.provider_capability_id === cap.id)) as never,
+    healthStatus: (svc => svc?.health_status ?? "unknown")(services?.find((s: any) => s.provider_capability_id === cap.id)) as never,
+    permissionLevel: (svc => svc?.permission_level ?? "minimal")(services?.find((s: any) => s.provider_capability_id === cap.id)) as never,
     grantedScopes: services?.find((s: any) => s.provider_capability_id === cap.id)?.granted_scopes ?? [],
     reauthNeeded: services?.find((s: any) => s.provider_capability_id === cap.id)?.reauth_needed ?? false,
     lastSyncAt: services?.find((s: any) => s.provider_capability_id === cap.id)?.last_sync_at ?? null,

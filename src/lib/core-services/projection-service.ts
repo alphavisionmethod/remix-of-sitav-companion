@@ -76,13 +76,13 @@ const defaultReducers: Record<ProjectionType, ProjectionReducer> = {
       return { ...state, customers: [...customers, event.payload], lastUpdate: event.timestamp };
     }
     if (event.topic.includes("deal") || event.topic.includes("invoice")) {
-      return { ...state, financialEvents: [...((state.financialEvents as unknown[]) || []), event.payload] };
+      return { ...state, financialEvents: [...((state.financialEvents as never[]) || []), event.payload] };
     }
     return state;
   },
   "finance-dashboard": (state, event) => {
     if (event.topic.includes("execution.completed") && event.payload.domain === "finance") {
-      const transactions = (state.transactions as unknown[]) || [];
+      const transactions = (state.transactions as never[]) || [];
       return { ...state, transactions: [...transactions, event.payload], lastUpdate: event.timestamp };
     }
     if (event.topic.includes("approval")) {
@@ -91,7 +91,7 @@ const defaultReducers: Record<ProjectionType, ProjectionReducer> = {
     return state;
   },
   "daily-pulse": (state, event) => {
-    const events = (state.events as unknown[]) || [];
+    const events = (state.events as never[]) || [];
     return {
       ...state,
       events: [...events, { topic: event.topic, timestamp: event.timestamp, source: event.source }],
@@ -101,14 +101,14 @@ const defaultReducers: Record<ProjectionType, ProjectionReducer> = {
   },
   "travel-dashboard": (state, event) => {
     if (event.topic.includes("booking")) {
-      const bookings = (state.bookings as unknown[]) || [];
+      const bookings = (state.bookings as never[]) || [];
       return { ...state, bookings: [...bookings, event.payload], lastUpdate: event.timestamp };
     }
     return state;
   },
   "household-dashboard": (state, event) => {
     if (event.topic.includes("task") || event.topic.includes("household")) {
-      const tasks = (state.tasks as unknown[]) || [];
+      const tasks = (state.tasks as never[]) || [];
       return { ...state, tasks: [...tasks, event.payload], lastUpdate: event.timestamp };
     }
     return state;

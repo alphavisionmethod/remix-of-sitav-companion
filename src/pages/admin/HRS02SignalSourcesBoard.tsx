@@ -12,8 +12,8 @@ const HRS02SignalSourcesBoard = () => {
   const { data: providers, isLoading } = useWearableProviders();
 
   // Use DB data if available, map to display shape; else use demo
-  const displayProviders = providers && providers.length > 0 && 'provider_key' in (providers[0] as unknown)
-    ? (providers as unknown[]).map((p: any) => ({
+  const displayProviders = providers && providers.length > 0 && 'provider_key' in (providers[0] as never)
+    ? (providers as never[]).map((p: any) => ({
         key: p.provider_key || p.key,
         name: p.display_name || p.name,
         api: p.api_type || p.api || "REST API",

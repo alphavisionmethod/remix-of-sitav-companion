@@ -139,7 +139,7 @@ function critiqueHallucinationRisk(rec: RecommendationV2, spec: AdvisorSpecializ
       severity: "block",
       finding: `${riskyUngrounded.length} claim(s) match "never claim without evidence" rules but lack grounding`,
       affectedClaims: riskyUngrounded.map(c => c.id),
-      suggestedRevision: "Remove or explicitly mark as unknown",
+      suggestedRevision: "Remove or explicitly mark as never",
     };
   }
 

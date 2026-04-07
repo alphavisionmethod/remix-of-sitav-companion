@@ -57,7 +57,7 @@ export async function fetchIntelligenceAssets(filters?: {
 }): Promise<IntelligenceAssetRow[]> {
   const userId = await uid();
   if (!userId) return [];
-  let q = fromTable(TABLE).select("*").eq("user_id", userId).order("reuse_count", { ascending: false });
+  let q = fromDynamicTable(TABLE).select("*").eq("user_id", userId).order("reuse_count", { ascending: false });
   if (filters?.domain) q = q.eq("domain", filters.domain);
   if (filters?.asset_type) q = q.eq("asset_type", filters.asset_type);
   if (filters?.invalidated !== undefined) q = q.eq("invalidated", filters.invalidated);
@@ -87,7 +87,7 @@ export async function incrementAssetReuse(
   };
   if (adapted) update.adapted_reuse_count = (current.adapted_reuse_count || 0) + 1;
 
-  const { error } = await fromTable(TABLE).update(update).eq("id", assetId).eq("user_id", userId);
+  const { error } = await fromDynamicTable(TABLE).update(update).eq("id", assetId).eq("user_id", userId);
   if (error) { console.error("[intel-asset] reuse increment failed:", error); return false; }
   return true;
 }
@@ -122,7 +122,7 @@ export async function getAssetStats(): Promise<{
   const userId = await uid();
   if (!userId) return { total: 0, totalReuses: 0, totalCostAvoided: 0, invalidatedCount: 0, avgFreshness: 0 };
 
-  const { data, error } = await fromTable(TABLE).select("reuse_count, cost_avoided_cents, invalidated, freshness_score").eq("user_id", userId);
+  const { data, error } = await fromDynamicTable(TABLE).select("reuse_count, cost_avoided_cents, invalidated, freshness_score").eq("user_id", userId);
   if (error || !data) return { total: 0, totalReuses: 0, totalCostAvoided: 0, invalidatedCount: 0, avgFreshness: 0 };
 
   const total = data.length;

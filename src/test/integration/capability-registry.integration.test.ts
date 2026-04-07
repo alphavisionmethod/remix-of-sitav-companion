@@ -54,7 +54,7 @@ describe("Capability Registry — Integration", () => {
       capabilityKey: "",
       userId: "",
       surface: "",
-      mode: "" as unknown,
+      mode: "" as never,
       params: {},
     });
 

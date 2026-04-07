@@ -22,10 +22,10 @@ export async function fetchDocs(mode: RealityModeKey = "real"): Promise<ModeAwar
     .eq("user_id", user.id).in("document_type", DOC_TYPES)
     .order("updated_at", { ascending: false });
   const mapped = (!error && data?.length) ? data.map((d: any): MockDoc => ({
-    id: d.id, title: d.title, type: d.document_type as unknown,
+    id: d.id, title: d.title, type: d.document_type as never,
     status: d.status as never, lastModified: d.updated_at, author: d.author || "You",
     linkedEntity: d.linked_entity, linkedWorkflow: d.linked_workflow,
-    version: d.version || 1, privacy: d.privacy as unknown, content: d.content || "",
+    version: d.version || 1, privacy: d.privacy as never, content: d.content || "",
     governed: d.governed || false, tags: d.tags || [],
   })) : null;
   return resolveByMode({ mode, realData: mapped, demoData: MOCK_DOCS, emptyDefault: [] });
@@ -59,7 +59,7 @@ export async function fetchDecks(mode: RealityModeKey = "real"): Promise<ModeAwa
     id: d.id, title: d.title, type: (d.linked_domain || "custom") as never,
     slides: Array.isArray(d.slides) ? d.slides : [],
     status: d.status as never, lastModified: d.updated_at,
-    linkedBoardroom: d.linked_entity, privacy: d.privacy as unknown,
+    linkedBoardroom: d.linked_entity, privacy: d.privacy as never,
   })) : null;
   return resolveByMode({ mode, realData: mapped, demoData: MOCK_DECKS, emptyDefault: [] });
 }

@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export type QueryStatus = "idle" | "loading" | "success" | "error";
 
@@ -74,7 +74,7 @@ export class DatabaseService {
   }): Promise<QueryResult<T[]>> {
     const start = Date.now();
     try {
-      let q = fromTable(table).select(options?.select ?? "*");
+      let q = fromDynamicTable(table).select(options?.select ?? "*");
 
       if (options?.filters) {
         for (const [key, value] of Object.entries(options.filters)) {
@@ -109,7 +109,7 @@ export class DatabaseService {
   async insert<T = unknown>(table: string, records: Record<string, unknown> | Record<string, unknown>[]): Promise<QueryResult<T[]>> {
     const start = Date.now();
     try {
-      const { data, error } = await fromTable(table).insert(records).select();
+      const { data, error } = await fromDynamicTable(table).insert(records).select();
       const durationMs = Date.now() - start;
       this.logQuery(table, "insert", durationMs, !error);
       return { data: data as T[] ?? null, error: error?.message ?? null, status: error ? "error" : "success", rowCount: data?.length ?? 0, durationMs };
@@ -125,7 +125,7 @@ export class DatabaseService {
     try {
       const opts: any = {};
       if (onConflict) opts.onConflict = onConflict;
-      const { data, error } = await fromTable(table).upsert(records, opts).select();
+      const { data, error } = await fromDynamicTable(table).upsert(records, opts).select();
       const durationMs = Date.now() - start;
       this.logQuery(table, "upsert", durationMs, !error);
       return { data: data as T[] ?? null, error: error?.message ?? null, status: error ? "error" : "success", rowCount: data?.length ?? 0, durationMs };

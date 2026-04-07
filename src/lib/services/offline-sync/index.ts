@@ -1,4 +1,4 @@
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Offline Mode with Sync Engine
 // Full IndexedDB cache + background sync when reconnected
@@ -148,13 +148,13 @@ class OfflineSyncEngine {
           let error;
           switch (item.operation) {
             case 'insert':
-              ({ error } = await fromTable(item.table as unknown).insert(item.data as unknown));
+              ({ error } = await fromDynamicTable(item.table as never).insert(item.data as never));
               break;
             case 'update':
-              ({ error } = await fromTable(item.table as unknown).update(item.data as unknown).eq('id', item.data.id));
+              ({ error } = await fromDynamicTable(item.table as never).update(item.data as never).eq('id', item.data.id));
               break;
             case 'delete':
-              ({ error } = await fromTable(item.table as unknown).delete().eq('id', item.data.id));
+              ({ error } = await fromDynamicTable(item.table as never).delete().eq('id', item.data.id));
               break;
           }
 

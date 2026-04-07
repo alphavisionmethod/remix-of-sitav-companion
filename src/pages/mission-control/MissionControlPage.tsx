@@ -581,7 +581,7 @@ function MCCosts() {
   // Seed demo usage so the dashboard has data
   const dashboard = useMemo(() => {
     for (const u of tokenUsages) {
-      try { tokenEngine.recordUsage(u as unknown); } catch {}
+      try { tokenEngine.recordUsage(u as never); } catch {}
     }
     return tokenEngine.getDashboard("today");
   }, [tokenEngine, tokenUsages]);

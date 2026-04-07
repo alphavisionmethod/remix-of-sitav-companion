@@ -192,6 +192,6 @@ export class RevenueOpportunityEngine {
     if (state.signals) this.signals = new Map(state.signals as [string, unknown][]);
     if (state.recoveries) this.recoveries = state.recoveries as never;
     if (state.outcomes) this.outcomes = state.outcomes as never;
-    if (state.config) this.config = { ...this.config, ...(state.config as unknown) };
+    if (state.config) this.config = { ...this.config, ...(state.config as never) };
   }
 }

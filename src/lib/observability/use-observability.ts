@@ -134,7 +134,7 @@ export function useObservability(): UseObservabilityReturn {
   }, [refresh]);
 
   const recordMetric = useCallback((metric: string, value: number) => {
-    telemetry.record(metric as unknown, value);
+    telemetry.record(metric as never, value);
   }, []);
 
   return { healthIndex, recentEvents, sloStatuses, isLoading, refresh, recordMetric };

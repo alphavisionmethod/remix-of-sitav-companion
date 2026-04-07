@@ -128,8 +128,8 @@ class NaturalLanguagePolicyBuilder {
       user_id: userId,
       name: policy.name,
       category: policy.category,
-      conditions: policy.conditions as unknown,
-      actions: policy.actions as unknown,
+      conditions: policy.conditions as never,
+      actions: policy.actions as never,
       approval_required: policy.approvalRequired,
       active: policy.active,
     });

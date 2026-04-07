@@ -29,7 +29,7 @@ export default function EventStreamExplorer() {
     queryKey: ["event-stream", topicFilter, statusFilter],
     queryFn: () => fetchPersistedEvents({
       topic: topicFilter || undefined,
-      status: statusFilter !== "all" ? statusFilter as unknown : undefined,
+      status: statusFilter !== "all" ? statusFilter as never : undefined,
       limit: 200,
     }),
     staleTime: 15000,

@@ -19,7 +19,7 @@ import { createOSUnificationService } from "@/lib/services/os-unification";
 import { buildActiveSurface } from "@/lib/services/surface-detection";
 import { getOfflineQueueService } from "@/lib/services/offline-queue";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface OSRuntime {
   context: OSRuntimeContext;
@@ -122,17 +122,17 @@ export function OSRuntimeProvider({
     const offlineQueue = getOfflineQueueService();
     offlineQueue.setReplayHandler(async (mutation) => {
       try {
-        const table = fromTable(mutation.table);
+        const table = fromDynamicTable(mutation.table);
         let result;
         switch (mutation.operation) {
           case "insert":
             result = await table.insert(mutation.payload);
             break;
           case "update":
-            result = await table.update(mutation.payload).eq("id", (mutation.payload as unknown).id);
+            result = await table.update(mutation.payload).eq("id", (mutation.payload as never).id);
             break;
           case "delete":
-            result = await table.delete().eq("id", (mutation.payload as unknown).id);
+            result = await table.delete().eq("id", (mutation.payload as never).id);
             break;
         }
         return !result?.error;

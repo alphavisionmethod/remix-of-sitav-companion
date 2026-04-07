@@ -122,7 +122,7 @@ function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; in
             </div>
             <div>
               <Label>Classification</Label>
-              <Select value={form.classification} onValueChange={v => setForm(f => ({ ...f, classification: v as unknown }))}>
+              <Select value={form.classification} onValueChange={v => setForm(f => ({ ...f, classification: v as never }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>{Object.entries(CLASSIFICATION_CONFIG).map(([k, v]) => <SelectItem key={k} value={k}>{v.label}</SelectItem>)}</SelectContent>
               </Select>
@@ -179,7 +179,7 @@ function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; in
           <div className="grid grid-cols-3 gap-3">
             <div>
               <Label>Contract Status</Label>
-              <Select value={form.contract_status} onValueChange={v => setForm(f => ({ ...f, contract_status: v as unknown }))}>
+              <Select value={form.contract_status} onValueChange={v => setForm(f => ({ ...f, contract_status: v as never }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>{DEMO_CONTRACT_STATUSES.map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}</SelectContent>
               </Select>

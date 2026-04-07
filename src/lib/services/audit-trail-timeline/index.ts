@@ -114,7 +114,7 @@ class AuditTrailTimelineService {
       return { success: false, reason: 'This action cannot be undone' };
     }
 
-    const details = event.details as unknown;
+    const details = event.details as never;
     if (!details?.old || !details?.table) {
       return { success: false, reason: 'Insufficient undo data' };
     }

@@ -92,7 +92,7 @@ class HabitStreakService {
       .eq('category', 'habit');
 
     return (data || []).map((d) => {
-      const val = typeof d.value === 'string' ? JSON.parse(d.value) : d.value as unknown;
+      const val = typeof d.value === 'string' ? JSON.parse(d.value) : d.value as never;
       return {
         id: d.id,
         title: val.title || d.key,
@@ -135,7 +135,7 @@ class HabitStreakService {
     const { data } = await fromTable('user_memory').select('*').eq('id', habitId).single();
     if (!data) return;
 
-    const val = typeof data.value === 'string' ? JSON.parse(data.value) : data.value as unknown;
+    const val = typeof data.value === 'string' ? JSON.parse(data.value) : data.value as never;
     const today = new Date().toISOString().split('T')[0];
 
     if (val.lastCompletedDate === today) return; // Already completed

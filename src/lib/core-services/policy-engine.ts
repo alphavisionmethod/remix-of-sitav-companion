@@ -163,7 +163,7 @@ function evaluateCondition(condition: PolicyCondition, context: PolicyContext): 
     case "gte": return typeof contextValue === "number" && contextValue >= (condition.value as number);
     case "lt": return typeof contextValue === "number" && contextValue < (condition.value as number);
     case "lte": return typeof contextValue === "number" && contextValue <= (condition.value as number);
-    case "in": return Array.isArray(condition.value) && (condition.value as unknown[]).includes(contextValue);
+    case "in": return Array.isArray(condition.value) && (condition.value as never[]).includes(contextValue);
     case "contains":
       return typeof contextValue === "string" && contextValue.includes(condition.value as string);
     default: return false;
