@@ -4,11 +4,12 @@ import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents"
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAction } from "@/lib/hooks/useAction";
 import { Workflow, CheckCircle2, Clock, AlertTriangle, ChevronRight, Eye, RotateCcw, Shield, Plus, Trash2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
