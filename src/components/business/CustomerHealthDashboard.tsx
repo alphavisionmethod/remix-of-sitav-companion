@@ -1,5 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { fromTable } from "@/lib/supabase-helpers";
+import { supabase } from "@/integrations/supabase/client";
+import { Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -304,15 +308,116 @@ function CustomerCard({ record, selected, onClick }: { record: CustomerLifecycle
   );
 }
 
+// ── Live data loader ────────────────────────────────────────
+function useLiveCustomerHealth(): { data: CustomerLifecycleRecord[] | null; loading: boolean } {
+  const [data, setData] = useState<CustomerLifecycleRecord[] | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        const [custResult, twinResult] = await Promise.all([
+          fromTable("customers").select("id, name, status, health_score, lifetime_revenue, last_contact_at, created_at, relationship_type"),
+          fromTable("digital_twins").select("id, entity_type, entity_id, twin_data, health_score, churn_probability, trend, segment"),
+        ]);
+
+        const customers = (custResult.data ?? []) as any[];
+        const twins = (twinResult.data ?? []) as any[];
+        const twinsByEntity = new Map<string, any>();
+        twins.forEach((t: any) => { if (t.entity_type === "customer") twinsByEntity.set(t.entity_id, t); });
+
+        const now = new Date();
+        const ago = (days: number) => new Date(now.getTime() - days * 86400000).toISOString();
+        const ahead = (days: number) => new Date(now.getTime() + days * 86400000).toISOString();
+
+        const records: CustomerLifecycleRecord[] = customers.map((c: any) => {
+          const twin = twinsByEntity.get(c.id);
+          const healthNum = twin?.health_score ?? c.health_score ?? 50;
+          const churnProb = twin?.churn_probability ?? 0;
+          const trend = twin?.trend ?? "stable";
+
+          // Map customer status to lifecycle stage
+          const stageMap: Record<string, CustomerLifecycleStage> = {
+            active: "active", "at-risk": "at-risk", churned: "churned", prospect: "prospect",
+            lead: "lead", onboarding: "onboarding", expansion: "expansion",
+          };
+          const currentStage: CustomerLifecycleStage = stageMap[c.status] ?? "active";
+
+          const dims: CustomerHealthDimension[] = [
+            { name: "Engagement", score: Math.min(100, healthNum + 5), weight: 0.3, signals: [], trend },
+            { name: "Revenue", score: Math.min(100, Math.round((c.lifetime_revenue ?? 0) / 10000)), weight: 0.25, signals: [], trend: "stable" },
+            { name: "Communication", score: c.last_contact_at ? Math.max(10, 100 - Math.round((Date.now() - new Date(c.last_contact_at).getTime()) / 86400000 * 5)) : 30, weight: 0.2, signals: [], trend },
+            { name: "Satisfaction", score: healthNum, weight: 0.15, signals: [], trend },
+            { name: "Support", score: Math.min(100, healthNum + 10), weight: 0.1, signals: [], trend: "stable" },
+          ];
+
+          const overallScore = computeOverallHealth(dims);
+          const healthScore: CustomerHealthScore = {
+            customerId: c.id, overallScore, grade: computeHealthGrade(overallScore),
+            dimensions: dims, computedAt: now.toISOString(), nextReviewAt: ahead(7),
+          };
+
+          const churnPrediction: ChurnPrediction | undefined = churnProb > 0.2 ? {
+            customerId: c.id, churnProbability: churnProb, predictedAt: now.toISOString(), modelVersion: "v2.1",
+            riskFactors: [
+              { factor: "health-score-low", impact: churnProb * 0.5, description: `Health score is ${healthNum}` },
+              { factor: "engagement-trend", impact: churnProb * 0.3, description: `Trend: ${trend}` },
+            ],
+            suggestedActions: churnProb > 0.6 ? ["Schedule executive check-in", "Prepare retention offer"] : ["Monitor closely"],
+          } : undefined;
+
+          const daysSinceCreated = Math.round((Date.now() - new Date(c.created_at).getTime()) / 86400000);
+
+          return {
+            customerId: c.id, currentStage, stageEnteredAt: ago(Math.min(daysSinceCreated, 30)),
+            stageHistory: [], healthScore, churnPrediction,
+            assignedAdvisor: "business-advisor", nextCheckIn: ahead(7),
+            lifetimeValueCents: (c.lifetime_revenue ?? 0) * 100, tags: [twin?.segment ?? c.relationship_type ?? "customer"].filter(Boolean),
+          };
+        });
+
+        if (!cancelled) { setData(records); setLoading(false); }
+      } catch (err) {
+        console.error("[CustomerHealth] Failed to load live data:", err);
+        if (!cancelled) { setData(null); setLoading(false); }
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
+
+  return { data, loading };
+}
+
 // ── Main Dashboard ──────────────────────────────────────────
 export function CustomerHealthDashboard() {
-  const customers = useMemo(() => createDemoCustomers(), []);
-  const [selectedId, setSelectedId] = useState<string | null>(customers[0]?.customerId ?? null);
+  const { isDemoMode } = useDataMode();
+  const demoCustomers = useMemo(() => createDemoCustomers(), []);
+  const { data: liveCustomers, loading } = useLiveCustomerHealth();
+
+  // Use demo data in demo mode, or if live load fails fall back to demo
+  const customers = isDemoMode ? demoCustomers : (liveCustomers ?? demoCustomers);
+
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  useEffect(() => {
+    if (customers.length > 0 && !selectedId) setSelectedId(customers[0].customerId);
+  }, [customers, selectedId]);
+
   const selected = customers.find(c => c.customerId === selectedId) ?? null;
 
-  const avgHealth = Math.round(customers.reduce((s, c) => s + c.healthScore.overallScore, 0) / customers.length);
+  const avgHealth = customers.length > 0 ? Math.round(customers.reduce((s, c) => s + c.healthScore.overallScore, 0) / customers.length) : 0;
   const atRiskCount = customers.filter(c => ["at-risk", "churning", "churned"].includes(c.currentStage)).length;
   const expandCount = customers.filter(c => c.currentStage === "expansion").length;
+
+  if (!isDemoMode && loading) {
+    return (
+      <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground">
+        <Loader2 className="h-5 w-5 animate-spin" />
+        <span className="text-sm">Loading customer health data…</span>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
