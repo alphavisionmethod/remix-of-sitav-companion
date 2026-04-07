@@ -317,10 +317,21 @@ export const AdvisorChat = ({ isOpen, onClose }: AdvisorChatProps) => {
               </div>
             ))}
 
-            {(isLoading || isStreaming) && streamMsgs.filter(m => m.role === "assistant").length === 0 && (
+            {/* Degraded state banner */}
+            {streamError && (
+              <div data-testid="advisor-degraded-banner" className="flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3">
+                <AlertTriangle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs font-medium text-destructive">Advisor Unavailable</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{streamError}</p>
+                </div>
+              </div>
+            )}
+
+            {(isLoading || isStreaming) && streamMsgs.filter(m => m.role === "assistant").length === 0 && !streamError && (
               <div className="flex justify-start">
                 <div className="bg-secondary/60 border border-border rounded-2xl rounded-bl-md px-4 py-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2" data-testid="advisor-streaming-indicator">
                     <div className="flex gap-1">
                       <div className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: "0ms" }} />
                       <div className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: "150ms" }} />
