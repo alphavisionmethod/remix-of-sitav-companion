@@ -5,7 +5,6 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import { fromDynamicTable } from "@/lib/supabase-helpers";
 import type { Database } from "@/integrations/supabase/types";
 import type { PostgrestQueryBuilder } from "@supabase/postgrest-js";
 

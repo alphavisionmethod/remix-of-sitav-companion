@@ -24,6 +24,15 @@
 
 export * from "@/lib/services";
 
+// ── 7 OS services merged into core-services barrel ──
+export * from "@/lib/services/brain-core";
+export { ModelRouterService, createModelRouter } from "@/lib/services/model-router";
+export * from "@/lib/services/conscience-gate";
+export * from "@/lib/services/inference-gateway";
+export * from "@/lib/services/mnemosyne";
+export * from "@/lib/services/trust-governor";
+export * from "@/lib/services/approval-engine";
+
 // ── Local orchestration & infrastructure (owned by core-services) ──
 
 // Tier 1 platform organs that live here (not yet in services/)
