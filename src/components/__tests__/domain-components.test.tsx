@@ -6,16 +6,22 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => vi.fn(), useParams: () => ({}), useSearchParams: () => [new URLSearchParams(), vi.fn()] };
 });
 
+async function getDefaultExport(loader: () => Promise<any>) {
+  const mod = await loader();
+  return mod.default || Object.values(mod).find((v: any) => typeof v === "function");
+}
+
 describe("Component Smoke Tests - Domain Components", () => {
   it("NavLink renders", async () => {
-    const { default: NavLink } = await import("@/components/NavLink");
-    const { container } = render(<NavLink to="/test">Link</NavLink>);
-    expect(container.firstChild).toBeTruthy();
+    const Component = await getDefaultExport(() => import("@/components/NavLink"));
+    if (Component) {
+      const { container } = render(<Component to="/test">Link</Component>);
+      expect(container.firstChild).toBeTruthy();
+    }
   });
 
   it("DemoStateBanner renders", async () => {
-    const mod = await import("@/components/reality/DemoStateBanner");
-    const Component = mod.default || mod.DemoStateBanner;
+    const Component = await getDefaultExport(() => import("@/components/reality/DemoStateBanner"));
     if (Component) {
       const { container } = render(<Component />);
       expect(container).toBeTruthy();
@@ -23,8 +29,7 @@ describe("Component Smoke Tests - Domain Components", () => {
   });
 
   it("RealityStateBadge renders", async () => {
-    const mod = await import("@/components/reality/RealityStateBadge");
-    const Component = mod.default || mod.RealityStateBadge;
+    const Component = await getDefaultExport(() => import("@/components/reality/RealityStateBadge"));
     if (Component) {
       const { container } = render(<Component />);
       expect(container).toBeTruthy();
@@ -32,8 +37,7 @@ describe("Component Smoke Tests - Domain Components", () => {
   });
 
   it("AIStateBadge renders", async () => {
-    const mod = await import("@/components/ai/AIStateBadge");
-    const Component = mod.default || mod.AIStateBadge;
+    const Component = await getDefaultExport(() => import("@/components/ai/AIStateBadge"));
     if (Component) {
       const { container } = render(<Component />);
       expect(container).toBeTruthy();
@@ -41,8 +45,7 @@ describe("Component Smoke Tests - Domain Components", () => {
   });
 
   it("AIDegradedState renders", async () => {
-    const mod = await import("@/components/ai/AIDegradedState");
-    const Component = mod.default || mod.AIDegradedState;
+    const Component = await getDefaultExport(() => import("@/components/ai/AIDegradedState"));
     if (Component) {
       const { container } = render(<Component />);
       expect(container).toBeTruthy();

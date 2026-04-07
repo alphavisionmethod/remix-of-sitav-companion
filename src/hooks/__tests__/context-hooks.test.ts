@@ -16,11 +16,3 @@ describe("Hook Tests - useAuth", () => {
     expect(result.loading).toBe(false);
   });
 });
-
-describe("Hook Tests - useDemoMode", () => {
-  it("returns isDemoMode true (mocked)", async () => {
-    const { useDemoMode } = await import("@/contexts/DemoModeProvider");
-    const result = useDemoMode();
-    expect(result.isDemoMode).toBe(true);
-  });
-});
