@@ -81,7 +81,7 @@ const STEP_TYPES: { type: BuilderStep["type"]; label: string; icon: typeof Zap; 
   { type: "gate", label: "Approval Gate", icon: Shield, description: "Require human approval" },
 ];
 
-const TRIGGER_EVENTS = [
+const DEMO_TRIGGER_EVENTS = [
   { value: "invoice-overdue", label: "Invoice becomes overdue" },
   { value: "lead-cold", label: "Lead goes cold (no activity 30d)" },
   { value: "customer-churn-risk", label: "Customer churn risk detected" },
@@ -92,7 +92,7 @@ const TRIGGER_EVENTS = [
   { value: "deal-stage-change", label: "Deal stage changes" },
 ];
 
-const CONDITION_FIELDS = [
+const DEMO_CONDITION_FIELDS = [
   { value: "customer.ltv", label: "Customer LTV" },
   { value: "customer.health_score", label: "Health Score" },
   { value: "invoice.amount", label: "Invoice Amount" },
