@@ -48,6 +48,7 @@ const AdvisorCouncilDashboard = lazy(() => import("./pages/advisors/AdvisorCounc
 const Onboarding = lazy(() => import("./pages/OnboardingWrapper"));
 const LearnLaterPage = lazy(() => import("./pages/LearnLaterPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const DesktopPage = lazy(() => import("./pages/DesktopPage"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const Signup = lazy(() => import("./pages/auth/Signup"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
