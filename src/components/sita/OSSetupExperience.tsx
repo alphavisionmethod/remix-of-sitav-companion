@@ -754,7 +754,9 @@ export function OSSetupExperience() {
                   <RestorePreviewStep key="restore-preview"
                     displayName={state.displayName}
                     onRestore={() => goNext()}
-                    onStartFresh={goNext} />
+                    onRestoreLater={goNext}
+                    onStartFresh={goNext}
+                    onPrev={goPrev} />
                 )}
 
                 {phase === "setup-style" && (
