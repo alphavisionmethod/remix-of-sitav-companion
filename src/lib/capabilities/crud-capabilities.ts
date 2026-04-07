@@ -32,16 +32,15 @@ export async function executeCrud(
   const [table, operation] = capabilityId.split(".");
   if (!table || !operation) throw new Error(`Invalid capability: ${capabilityId}`);
 
-  const userId = payload.userId as string ?? await getUserId();
+  const userId = (payload.userId ?? payload.user_id) as string ?? await getUserId();
   const data = (payload.data ?? payload) as Record<string, unknown>;
-  const id = payload.id as string | undefined;
+  const id = (payload.id ?? data.id) as string | undefined;
 
   // Ensure user_id is always set for inserts/upserts
-  const withUser = { ...data, user_id: userId };
+  const withUser: Record<string, unknown> = { ...data, user_id: userId };
   // Remove meta fields from the actual DB payload
   delete withUser.userId;
-  delete withUser.table;
-  delete withUser.id;
+  delete withUser._capabilityId;
 
   switch (operation) {
     case "insert": {
