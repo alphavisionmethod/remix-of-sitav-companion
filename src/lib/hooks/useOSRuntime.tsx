@@ -129,10 +129,10 @@ export function OSRuntimeProvider({
             result = await table.insert(mutation.payload);
             break;
           case "update":
-            result = await table.update(mutation.payload).eq("id", (mutation.payload as never).id);
+            result = await table.update(mutation.payload).eq("id", (mutation.payload as Record<string, unknown>).id as string);
             break;
           case "delete":
-            result = await table.delete().eq("id", (mutation.payload as never).id);
+            result = await table.delete().eq("id", (mutation.payload as Record<string, unknown>).id as string);
             break;
         }
         return !result?.error;
