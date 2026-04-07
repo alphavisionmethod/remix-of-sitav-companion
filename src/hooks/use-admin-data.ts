@@ -535,9 +535,9 @@ export function useKnowledgeHealth() {
   const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["knowledge-health", isDemoMode],
-    queryFn: async () => {
+    queryFn: async (): Promise<KnowledgeHealthData> => {
       if (isDemoMode) return mockKnowledgeHealth;
-      return callAdminAPI("knowledge-health");
+      return callAdminAPI<KnowledgeHealthData>("knowledge-health");
     },
     staleTime: isDemoMode ? Infinity : 60000,
   });
