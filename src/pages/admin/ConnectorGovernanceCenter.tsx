@@ -199,7 +199,7 @@ export default function ConnectorGovernanceCenter() {
                             <div className="text-center"><p className="font-bold text-foreground">{conn.syncCount24h}</p><p className="text-[9px] text-muted-foreground">Syncs/24h</p></div>
                             <div className="text-center"><p className={cn("font-bold", conn.errorRate > 1 ? "text-amber-400" : "text-emerald-400")}>{conn.errorRate}%</p><p className="text-[9px] text-muted-foreground">Error Rate</p></div>
                             <div className="text-center"><p className="font-bold text-foreground">{conn.latencyMs}ms</p><p className="text-[9px] text-muted-foreground">Latency</p></div>
-                            <Button variant="outline" size="sm" className="text-[10px] h-7"><RefreshCw className="w-3 h-3 mr-1" />Sync</Button>
+                            <Button variant="outline" size="sm" className="text-[10px] h-7" onClick={() => handleSyncOne(conn.id)}><RefreshCw className="w-3 h-3 mr-1" />Sync</Button>
                           </div>
                         </div>
                         <div className="flex gap-1 mt-2">{conn.affectedDomains.map(d => <Badge key={d} variant="outline" className="text-[8px]">{d}</Badge>)}</div>
