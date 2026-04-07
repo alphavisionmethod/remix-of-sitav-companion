@@ -979,6 +979,7 @@ const App = () => (
                     <Route path="/boardroom/weekly" element={<Boardroom />} />
                     <Route path="/boardroom/incidents" element={<Boardroom />} />
                     <Route path="/boardroom/replay" element={<BoardroomReplay />} />
+                    <Route path="/boardroom/history" element={<BoardroomHistory />} />
 
                     {/* Workflows */}
                     <Route path="/workflows" element={<WorkflowsCenter />} />
