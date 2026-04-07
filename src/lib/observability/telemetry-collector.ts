@@ -224,7 +224,7 @@ class TelemetryCollector {
 
     // Memory (Chrome only)
     setInterval(() => {
-      const mem = (performance as unknown as Record<string, unknown>).memory;
+      const mem = (performance as unknown as Record<string, unknown>).memory as Record<string, number> | undefined;
       if (mem) {
         this.record("js_heap", mem.usedJSHeapSize, "bytes", { type: "runtime" });
       }

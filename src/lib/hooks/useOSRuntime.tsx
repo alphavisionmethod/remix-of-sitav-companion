@@ -245,7 +245,7 @@ export function OSRuntimeProvider({
       cancelled = true;
       window.removeEventListener("beforeunload", handleBeforeUnload);
       const saveInterval = (window as unknown as Record<string, unknown>).__sitaEngineSaveInterval;
-      if (saveInterval) clearInterval(saveInterval);
+      if (saveInterval) clearInterval(saveInterval as number);
     };
   }, [userId, runtime]);
 

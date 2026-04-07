@@ -94,7 +94,7 @@ export async function probeAiGateway(): Promise<ProbeResult> {
 /** 7. Connector Health probe */
 export async function probeConnectors(): Promise<ProbeResult> {
   return probe("connectors", async () => {
-    const { data, error } = await fromDynamicTable("connector_registry").select("id").eq("is_active", true).limit(1);
+    const { data, error } = await fromDynamicTable("connector_registry").select("id").eq("active", true).limit(1);
     if (error) throw new Error(error.message);
     if (!data || data.length === 0) throw new Error("No active connectors");
   });

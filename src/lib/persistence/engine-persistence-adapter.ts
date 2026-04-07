@@ -113,13 +113,13 @@ export async function appendEngineEvent(
   const userId = await getUserId();
   if (!userId) return false;
 
-  const { error } = await fromDynamicTable("engine_events")
-    .insert({
+  const row: Record<string, unknown> = {
       user_id: userId,
       engine_name: engineName,
       event_type: eventType,
       event_data: eventData,
-    });
+  };
+  const { error } = await fromDynamicTable("engine_events").insert(row as never);
 
   if (error) {
     console.error(`[persistence] engine_event insert failed for ${engineName}:`, error);

@@ -83,11 +83,11 @@ export async function checkBudget(estimatedCostCents: number): Promise<{ allowed
   const userId = await uid();
   if (!userId) return { allowed: false, reason: "not_authenticated" };
 
-  const { data } = await (supabase as unknown as Record<string, unknown>).rpc("update_ai_budget_usage", {
+  const { data } = await supabase.rpc("update_ai_budget_usage" as never, {
     p_user_id: userId,
     p_tokens: 0,
     p_cost: estimatedCostCents,
-  });
+  } as never);
 
   if (!data) return { allowed: true, reason: "no_budget_set" };
   return { allowed: data.allowed, reason: data.reason };

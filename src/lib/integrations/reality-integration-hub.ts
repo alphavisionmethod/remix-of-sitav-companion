@@ -79,8 +79,8 @@ export async function computeLaunchHonesty(): Promise<LaunchHonestyRecord[]> {
   }
 
   // Count critical mocks remaining per domain
-  for (const m of (mockReplacements ?? []) as never[]) {
-    const domain = m.page_path?.split("/")[1] || "root";
+  for (const m of (mockReplacements ?? []) as Array<Record<string, unknown>>) {
+    const domain = (m.page_path as string)?.split("/")[1] || "root";
     const d = domainMap.get(domain);
     if (d && m.migration_priority === "critical" && m.migration_status !== "validated" && m.migration_status !== "completed") {
       d.criticalMocksRemaining++;

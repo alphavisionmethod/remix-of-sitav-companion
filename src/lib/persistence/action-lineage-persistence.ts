@@ -261,7 +261,7 @@ export async function getActionExplanation(actionId: string): Promise<{
       : Promise.resolve([]),
   ]);
 
-  return { action, events, policies, receipts };
+  return { action: action as unknown as PersistedActionLineage, events, policies, receipts };
 }
 
 // ── Detect stuck actions ────────────────────────────────────────
