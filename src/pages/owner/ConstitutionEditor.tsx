@@ -23,6 +23,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/integrations/supabase/db";
+import { PlainEnglishPolicyEditor } from "@/components/sita/PlainEnglishPolicyEditor";
 
 // ── Category Config ─────────────────────────────────────────────
 

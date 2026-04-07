@@ -7,6 +7,7 @@ import { DesktopSurface } from "@/components/sita/shell/DesktopSurface";
 import { useShellState } from "@/components/sita/shell/useShellState";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { EnterpriseFlow } from "@/components/sita/EnterpriseFlow";
 
 export default function DesktopPage() {
   const { isDemoMode } = useDataMode();
