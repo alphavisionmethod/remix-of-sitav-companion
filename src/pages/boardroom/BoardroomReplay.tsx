@@ -339,6 +339,12 @@ export default function BoardroomReplay() {
           </div>
         </div>
         <div className="flex items-center gap-1.5">
+          <button onClick={() => navigate("/boardroom/history")} className="rounded-lg px-2 py-1.5 text-[10px] text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors">
+            History
+          </button>
+          <button onClick={handleSaveSession} disabled={sessionSaved} className={cn("rounded-lg px-2 py-1.5 text-[10px] transition-colors", sessionSaved ? "text-trust-safe" : "text-muted-foreground hover:bg-secondary hover:text-foreground")}>
+            {sessionSaved ? "✓ Saved" : "Save Session"}
+          </button>
           <button onClick={() => { setIsPlaying(!isPlaying); setElapsed(0); }} className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors">
             {isPlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
           </button>
