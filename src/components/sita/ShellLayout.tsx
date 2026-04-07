@@ -123,12 +123,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
           onNotifOpen={() => setNotifOpen(true)}
           onTimelineOpen={() => setTimelineOpen(true)}
           onCommandOpen={() => setCommandOpen(true)}
-        >
-          <RealityStateBadge />
-        </SitaTopBar>
-          onNotifOpen={() => setNotifOpen(true)}
-          onTimelineOpen={() => setTimelineOpen(true)}
-          onCommandOpen={() => setCommandOpen(true)}
         />
 
         <div className="relative z-10 flex flex-1 min-w-0">
