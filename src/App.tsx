@@ -660,6 +660,25 @@ const HomeRoute = () => {
   return <Navigate to="/home" replace />;
 };
 
+const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (
+  <DataModeProvider>
+  <DemoModeProvider>
+  <DisplayModeProvider>
+  <EntityContextProvider>
+  <SitaKernelProvider>
+  <OSRuntimeProvider>
+  <InspectorProvider>
+  <PlatformInit />
+  {children}
+  </InspectorProvider>
+  </OSRuntimeProvider>
+  </SitaKernelProvider>
+  </EntityContextProvider>
+  </DisplayModeProvider>
+  </DemoModeProvider>
+  </DataModeProvider>
+);
+
 const App = () => (
   <GlobalErrorBoundary>
   <QueryClientProvider client={queryClient}>
@@ -671,25 +690,24 @@ const App = () => (
           <ConnectivityProvider>
           <ThemeProvider>
           <RealityModeProvider>
-          <DataModeProvider>
-          <DemoModeProvider>
-          <DisplayModeProvider>
-          <EntityContextProvider>
-          <SitaKernelProvider>
-          <OSRuntimeProvider>
-          <InspectorProvider>
-          <PlatformInit />
           <Suspense fallback={<PageLoader />}>
           <Routes>
-            <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-            <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
-            <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+            {/* Public routes — no kernel, no OS runtime */}
+            <Route path="/login" element={<PublicLayout><PublicRoute><Login /></PublicRoute></PublicLayout>} />
+            <Route path="/signup" element={<PublicLayout><PublicRoute><Signup /></PublicRoute></PublicLayout>} />
+            <Route path="/forgot-password" element={<PublicLayout><PublicRoute><ForgotPassword /></PublicRoute></PublicLayout>} />
+            <Route path="/reset-password" element={<PublicLayout><ResetPassword /></PublicLayout>} />
+            <Route path="/" element={<HomeRoute />} />
+
+            {/* Authenticated routes — full OS provider tree */}
+            <Route path="/*" element={
+              <AuthenticatedProviders>
+              <Suspense fallback={<PageLoader />}>
+              <Routes>
             <Route path="/onboarding" element={<OnboardingGuard><Onboarding /></OnboardingGuard>} />
             <Route path="/auth/callback" element={<EmailVerificationHandler />} />
             <Route path="/first-win" element={<ProtectedRoute><FirstWinActivation /></ProtectedRoute>} />
             <Route path="/learn-later" element={<ProtectedRoute><LearnLaterPage /></ProtectedRoute>} />
-            <Route path="/" element={<HomeRoute />} />
 
             <Route path="/mobile" element={<ProtectedRoute><MobileHome /></ProtectedRoute>} />
             <Route path="/mobile/approvals" element={<ProtectedRoute><MobileApprovals /></ProtectedRoute>} />
