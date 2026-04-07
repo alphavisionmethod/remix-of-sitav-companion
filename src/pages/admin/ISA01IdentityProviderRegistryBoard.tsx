@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Shield, CheckCircle, XCircle, Fingerprint, Key, Smartphone, Globe, Monitor } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { getRelation, parseProviderFamilyRef } from "@/lib/types/relation-parsers";
 
 const platformIcons: Record<string, React.ReactNode> = {
   web: <Globe className="h-4 w-4" />,
@@ -202,7 +203,7 @@ export default function ISA01IdentityProviderRegistryBoard() {
                 {oauthClients.map((c: any) => (
                   <TableRow key={c.id}>
                     <TableCell className="font-medium">{c.client_name}</TableCell>
-                    <TableCell>{((c as any).provider_families as any)?.name || "—"}</TableCell>
+                    <TableCell>{getRelation(c, "provider_families", parseProviderFamilyRef).name || "—"}</TableCell>
                     <TableCell><Badge className="bg-blue-500/20 text-blue-400">{c.client_purpose}</Badge></TableCell>
                     <TableCell>{c.environment_bindings || "production"}</TableCell>
                     <TableCell>
@@ -230,7 +231,7 @@ export default function ISA01IdentityProviderRegistryBoard() {
                 <Card key={link.id} className="bg-muted/30 border-border">
                   <CardContent className="pt-4 flex items-center justify-between">
                     <div>
-                      <p className="font-medium text-sm">{((link as any).provider_families as any)?.name || link.provider_key}</p>
+                      <p className="font-medium text-sm">{getRelation(link, "provider_families", parseProviderFamilyRef).name || link.provider_key}</p>
                       <p className="text-xs text-muted-foreground">{link.email || link.external_id || "—"}</p>
                       <p className="text-xs text-muted-foreground mt-1">
                         Linked: {new Date(link.linked_at || link.created_at).toLocaleDateString()}
