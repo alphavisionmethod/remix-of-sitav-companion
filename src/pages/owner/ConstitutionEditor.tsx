@@ -362,10 +362,10 @@ export default function ConstitutionEditor() {
           user_id: user.id,
           natural_text: text,
           category: added.category,
-          priority: added.compiledPolicy?.parameters?.priority ?? 50,
+          priority: (added.compiledPolicy?.parameters?.priority ?? 50) as number,
           enforcement_mode: added.enforcementMode,
           is_active: true,
-          compiled_json: added.compiledPolicy,
+          compiled_json: added.compiledPolicy as any,
         }]);
       }
     }
