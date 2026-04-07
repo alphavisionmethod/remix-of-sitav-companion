@@ -272,7 +272,7 @@ export class LifeGoalTracker {
 
   hydrateState(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.goals) this.goals = new Map(state.goals as [string, unknown][]);
+    if (state.goals) this.goals = new Map(state.goals as Iterable<[string, never]>) as typeof this.goals;
   }
 
   async loadPersistedState(): Promise<void> {

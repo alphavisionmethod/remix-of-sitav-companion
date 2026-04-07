@@ -24,7 +24,7 @@ export class FleetService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.nodes) this.nodes = new Map(state.nodes as [string, unknown][]);
+    if (state.nodes) this.nodes = new Map(state.nodes as Iterable<[string, never]>) as typeof this.nodes;
   }
 
   async loadPersistedState(): Promise<void> {

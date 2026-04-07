@@ -231,8 +231,8 @@ export class AIEconomicsService {
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
     if (state.entries) this.entries = state.entries as never;
-    if (state.budgets) this.budgets = new Map(state.budgets as [string, unknown][]);
-    if (state.modelCosts) this.modelCosts = new Map(state.modelCosts as [string, unknown][]);
+    if (state.budgets) this.budgets = new Map(state.budgets as Iterable<[string, never]>) as typeof this.budgets;
+    if (state.modelCosts) this.modelCosts = new Map(state.modelCosts as Iterable<[string, never]>) as typeof this.modelCosts;
     if (state.alerts) this.alerts = state.alerts as never;
   }
 

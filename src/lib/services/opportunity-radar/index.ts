@@ -181,7 +181,7 @@ export class OpportunityRadarEngine {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.opportunities) this.opportunities = new Map(state.opportunities as [string, unknown][]);
+    if (state.opportunities) this.opportunities = new Map(state.opportunities as Iterable<[string, never]>) as typeof this.opportunities;
   }
 
   async loadPersistedState(): Promise<void> {

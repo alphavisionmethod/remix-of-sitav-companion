@@ -20,7 +20,7 @@ export class PreferencesService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.store) this.store = new Map(state.store as [string, unknown][]);
+    if (state.store) this.store = new Map(state.store as Iterable<[string, never]>) as typeof this.store;
   }
 
   async loadPersistedState(): Promise<void> {

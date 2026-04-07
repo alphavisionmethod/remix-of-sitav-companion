@@ -166,9 +166,9 @@ export class DuressDetectionService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.baselines) this.baselines = new Map(state.baselines as [string, unknown][]);
+    if (state.baselines) this.baselines = new Map(state.baselines as Iterable<[string, never]>) as typeof this.baselines;
     if (state.evaluations) this.evaluations = state.evaluations as never;
-    if (state.recentActions) this.recentActions = new Map(state.recentActions as [string, unknown][]);
+    if (state.recentActions) this.recentActions = new Map(state.recentActions as Iterable<[string, never]>) as typeof this.recentActions;
   }
 
   async loadPersistedState(): Promise<void> {

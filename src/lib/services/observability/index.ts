@@ -166,9 +166,9 @@ export class ObservabilityService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.metrics) this.metrics = new Map(state.metrics as [string, unknown][]);
-    if (state.slos) this.slos = new Map(state.slos as [string, unknown][]);
-    if (state.alerts) this.alerts = new Map(state.alerts as [string, unknown][]);
+    if (state.metrics) this.metrics = new Map(state.metrics as Iterable<[string, never]>) as typeof this.metrics;
+    if (state.slos) this.slos = new Map(state.slos as Iterable<[string, never]>) as typeof this.slos;
+    if (state.alerts) this.alerts = new Map(state.alerts as Iterable<[string, never]>) as typeof this.alerts;
     if (state.triggeredAlerts) this.triggeredAlerts = state.triggeredAlerts as never;
   }
 

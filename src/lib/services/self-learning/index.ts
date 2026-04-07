@@ -208,7 +208,7 @@ export class SelfLearningService {
 
   hydrateState(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.signals) this.signals = new Map(state.signals as [string, unknown][]);
+    if (state.signals) this.signals = new Map(state.signals as Iterable<[string, never]>) as typeof this.signals;
     // patternScores are computed, not persisted
   }
 

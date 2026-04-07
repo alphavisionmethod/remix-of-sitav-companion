@@ -282,8 +282,8 @@ export class IncidentManagementService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.incidents) this.incidents = new Map(state.incidents as [string, unknown][]);
-    if (state.postmortems) this.postmortems = new Map(state.postmortems as [string, unknown][]);
+    if (state.incidents) this.incidents = new Map(state.incidents as Iterable<[string, never]>) as typeof this.incidents;
+    if (state.postmortems) this.postmortems = new Map(state.postmortems as Iterable<[string, never]>) as typeof this.postmortems;
   }
 
   async loadPersistedState(): Promise<void> {

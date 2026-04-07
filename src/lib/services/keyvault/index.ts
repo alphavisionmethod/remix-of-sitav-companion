@@ -208,9 +208,9 @@ export class KeyvaultService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.entries) this.entries = new Map(state.entries as [string, unknown][]);
+    if (state.entries) this.entries = new Map(state.entries as Iterable<[string, never]>) as typeof this.entries;
     if (state.accessLog) this.accessLog = state.accessLog as never;
-    if (state.rotationPolicies) this.rotationPolicies = new Map(state.rotationPolicies as [string, unknown][]);
+    if (state.rotationPolicies) this.rotationPolicies = new Map(state.rotationPolicies as Iterable<[string, never]>) as typeof this.rotationPolicies;
   }
 
   async loadPersistedState(): Promise<void> {

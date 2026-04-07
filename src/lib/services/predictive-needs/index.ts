@@ -185,7 +185,7 @@ export class PredictiveNeedsEngine {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.predictions) this.predictions = new Map(state.predictions as [string, unknown][]);
+    if (state.predictions) this.predictions = new Map(state.predictions as Iterable<[string, never]>) as typeof this.predictions;
     if (state.patterns) this.patterns = state.patterns as never;
     if (state.outcomes) this.outcomes = state.outcomes as never;
   }

@@ -142,8 +142,8 @@ export class CapitalAllocationService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.portfolios) this.portfolios = new Map(state.portfolios as [string, unknown][]);
-    if (state.rebalanceOrders) this.rebalanceOrders = new Map(state.rebalanceOrders as [string, unknown][]);
+    if (state.portfolios) this.portfolios = new Map(state.portfolios as Iterable<[string, never]>) as typeof this.portfolios;
+    if (state.rebalanceOrders) this.rebalanceOrders = new Map(state.rebalanceOrders as Iterable<[string, never]>) as typeof this.rebalanceOrders;
   }
 
   async loadPersistedState(): Promise<void> {

@@ -153,7 +153,7 @@ export class TimelineCalendarService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.events) this.events = new Map(state.events as [string, unknown][]);
+    if (state.events) this.events = new Map(state.events as Iterable<[string, never]>) as typeof this.events;
     if (state.correlations) this.correlations = state.correlations as never;
   }
 

@@ -135,7 +135,7 @@ export class ServiceRegistryService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.services) this.services = new Map(state.services as [string, unknown][]);
+    if (state.services) this.services = new Map(state.services as Iterable<[string, never]>) as typeof this.services;
   }
 
   async loadPersistedState(): Promise<void> {

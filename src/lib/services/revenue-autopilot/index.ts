@@ -124,10 +124,10 @@ export class RevenueAutopilotService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.stages) this.stages = new Map(state.stages as [string, unknown][]);
-    if (state.playbooks) this.playbooks = new Map(state.playbooks as [string, unknown][]);
-    if (state.recoveryLoops) this.recoveryLoops = new Map(state.recoveryLoops as [string, unknown][]);
-    if (state.leadScores) this.leadScores = new Map(state.leadScores as [string, unknown][]);
+    if (state.stages) this.stages = new Map(state.stages as Iterable<[string, never]>) as typeof this.stages;
+    if (state.playbooks) this.playbooks = new Map(state.playbooks as Iterable<[string, never]>) as typeof this.playbooks;
+    if (state.recoveryLoops) this.recoveryLoops = new Map(state.recoveryLoops as Iterable<[string, never]>) as typeof this.recoveryLoops;
+    if (state.leadScores) this.leadScores = new Map(state.leadScores as Iterable<[string, never]>) as typeof this.leadScores;
   }
 
   async loadPersistedState(): Promise<void> {

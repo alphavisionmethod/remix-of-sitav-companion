@@ -41,7 +41,7 @@ export class EntityGraphService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.entities) this.entities = new Map(state.entities as [string, unknown][]);
+    if (state.entities) this.entities = new Map(state.entities as Iterable<[string, never]>) as typeof this.entities;
     if (state.relations) this.relations = state.relations as never;
   }
 

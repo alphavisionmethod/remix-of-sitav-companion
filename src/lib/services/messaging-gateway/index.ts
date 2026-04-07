@@ -151,7 +151,7 @@ export class MessagingGatewayService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.channels) this.channels = new Map(state.channels as [string, unknown][]);
+    if (state.channels) this.channels = new Map(state.channels as Iterable<[string, never]>) as typeof this.channels;
     if (state.outbound) this.outbound = state.outbound as never;
     if (state.inbound) this.inbound = state.inbound as never;
   }

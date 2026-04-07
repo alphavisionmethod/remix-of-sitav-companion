@@ -265,10 +265,10 @@ export class CloudControlPlaneService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.regions) this.regions = new Map(state.regions as [string, unknown][]);
-    if (state.providers) this.providers = new Map(state.providers as [string, unknown][]);
+    if (state.regions) this.regions = new Map(state.regions as Iterable<[string, never]>) as typeof this.regions;
+    if (state.providers) this.providers = new Map(state.providers as Iterable<[string, never]>) as typeof this.providers;
     if (state.failoverHistory) this.failoverHistory = state.failoverHistory as never;
-    if (state.routingCache) this.routingCache = new Map(state.routingCache as [string, unknown][]);
+    if (state.routingCache) this.routingCache = new Map(state.routingCache as Iterable<[string, never]>) as typeof this.routingCache;
   }
 
   async loadPersistedState(): Promise<void> {

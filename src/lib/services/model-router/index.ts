@@ -195,7 +195,7 @@ export class ModelRouterService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.endpoints) this.endpoints = new Map(state.endpoints as [string, unknown][]);
+    if (state.endpoints) this.endpoints = new Map(state.endpoints as Iterable<[string, never]>) as typeof this.endpoints;
     if (state.routingHistory) this.routingHistory = state.routingHistory as never;
   }
 

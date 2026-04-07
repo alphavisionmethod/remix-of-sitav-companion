@@ -257,8 +257,8 @@ export class EdgeDeviceRuntimeService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.runtimes) this.runtimes = new Map(state.runtimes as [string, unknown][]);
-    if (state.syncStates) this.syncStates = new Map(state.syncStates as [string, unknown][]);
+    if (state.runtimes) this.runtimes = new Map(state.runtimes as Iterable<[string, never]>) as typeof this.runtimes;
+    if (state.syncStates) this.syncStates = new Map(state.syncStates as Iterable<[string, never]>) as typeof this.syncStates;
     if (state.taskResults) this.taskResults = state.taskResults as never;
   }
 

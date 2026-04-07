@@ -24,7 +24,7 @@ export class PersonalOperatingModelService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.models) this.models = new Map(state.models as [string, unknown][]);
+    if (state.models) this.models = new Map(state.models as Iterable<[string, never]>) as typeof this.models;
   }
 
   async loadPersistedState(): Promise<void> {

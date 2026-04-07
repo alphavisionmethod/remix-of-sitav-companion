@@ -24,7 +24,7 @@ export class ProofOrchestratorService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.chains) this.chains = new Map(state.chains as [string, unknown][]);
+    if (state.chains) this.chains = new Map(state.chains as Iterable<[string, never]>) as typeof this.chains;
   }
 
   async loadPersistedState(): Promise<void> {

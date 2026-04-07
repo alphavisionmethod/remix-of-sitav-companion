@@ -159,7 +159,7 @@ export class DocumentSignatureService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.requests) this.requests = new Map(state.requests as [string, unknown][]);
+    if (state.requests) this.requests = new Map(state.requests as Iterable<[string, never]>) as typeof this.requests;
     if (state.auditLog) this.auditLog = state.auditLog as never;
   }
 

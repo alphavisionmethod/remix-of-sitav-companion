@@ -52,7 +52,7 @@ export class BillingService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.plans) this.plans = new Map(state.plans as [string, unknown][]);
+    if (state.plans) this.plans = new Map(state.plans as Iterable<[string, never]>) as typeof this.plans;
     if (state.usage) this.usage = state.usage as never;
     if (state.invoices) this.invoices = state.invoices as never;
   }

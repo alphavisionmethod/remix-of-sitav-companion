@@ -183,9 +183,9 @@ export class CommunicationService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.messages) this.messages = new Map(state.messages as [string, unknown][]);
-    if (state.templates) this.templates = new Map(state.templates as [string, unknown][]);
-    if (state.preferences) this.preferences = new Map(state.preferences as [string, unknown][]);
+    if (state.messages) this.messages = new Map(state.messages as Iterable<[string, never]>) as typeof this.messages;
+    if (state.templates) this.templates = new Map(state.templates as Iterable<[string, never]>) as typeof this.templates;
+    if (state.preferences) this.preferences = new Map(state.preferences as Iterable<[string, never]>) as typeof this.preferences;
     if (state.deliveryReports) this.deliveryReports = state.deliveryReports as never;
   }
 

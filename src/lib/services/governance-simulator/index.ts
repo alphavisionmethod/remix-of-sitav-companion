@@ -24,7 +24,7 @@ export class GovernanceSimulatorService {
 
   hydrate(state: Record<string, unknown>): void {
     if (!state) return;
-    if (state.scenarios) this.scenarios = new Map(state.scenarios as [string, unknown][]);
+    if (state.scenarios) this.scenarios = new Map(state.scenarios as Iterable<[string, never]>) as typeof this.scenarios;
     if (state.results) this.results = state.results as never;
   }
 
