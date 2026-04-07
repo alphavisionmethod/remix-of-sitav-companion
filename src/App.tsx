@@ -439,6 +439,13 @@ const LAUNCH04BlockerCommand = lazy(() => import("./pages/admin/launch/LAUNCH04B
 const LAUNCH06NarrativeGuide = lazy(() => import("./pages/admin/launch/LAUNCH06NarrativeGuide"));
 const LAUNCH07GoNoGo = lazy(() => import("./pages/admin/launch/LAUNCH07GoNoGo"));
 
+// Security Command Center
+const SEC01PostureExecutive = lazy(() => import("./pages/admin/security/SEC01PostureExecutive"));
+const SEC02PrivilegedActions = lazy(() => import("./pages/admin/security/SEC02PrivilegedActions"));
+const SEC03SensitiveAssets = lazy(() => import("./pages/admin/security/SEC03SensitiveAssets"));
+const SEC04EdgeFunctionAudit = lazy(() => import("./pages/admin/security/SEC04EdgeFunctionAudit"));
+const SEC05ClaimSafety = lazy(() => import("./pages/admin/security/SEC05ClaimSafety"));
+
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
 const VaultApp = lazy(() => import("./pages/apps/VaultApp"));
