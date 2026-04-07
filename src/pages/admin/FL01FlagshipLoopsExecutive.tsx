@@ -224,7 +224,7 @@ export default function FL01FlagshipLoopsExecutive() {
 
           {/* Loop Cards */}
           <div className="space-y-4">
-            {loopList.map((loop: any) => {
+          {loopList.map((loop: any) => {
               const domains = getDomainsByFlagshipLoop(loop.loop_key);
               const blockers = Array.isArray(loop.launch_blockers) ? loop.launch_blockers : [];
               const routes = Array.isArray(loop.routes) ? loop.routes : [];
@@ -233,6 +233,7 @@ export default function FL01FlagshipLoopsExecutive() {
               const importance = getImportanceBadge(loop.launch_importance || "");
               const status = getStatusBadge(loop.status || "");
               const truthPct = loop.truth_pct || 0;
+              const proof = loopProofMap.get(loop.loop_key);
 
               return (
                 <Card
