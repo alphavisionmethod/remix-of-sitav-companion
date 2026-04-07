@@ -170,7 +170,7 @@ export default function NotificationSettingsPage() {
   }, [user, categories, quietHoursEnabled, quietStart, quietEnd, digestFrequency]);
 
   return (
-    <div className="space-y-6 p-6 max-w-3xl">
+    <div className="space-y-6 p-6 max-w-3xl" data-testid="notification-settings-page">
       <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
