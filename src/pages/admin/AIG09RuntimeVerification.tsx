@@ -106,9 +106,26 @@ function AIR02ProviderHealth() {
         .select("provider, health_state, last_success_at, last_failure_at, avg_latency_ms, error_rate")
         .order("updated_at", { ascending: false })
         .limit(20);
+      // Latest receipt per provider from ai_inference_receipts
+      const { data: receipts } = await supabase
+        .from("ai_inference_receipts")
+        .select("provider, latency_ms, cost_actual_cents, created_at")
+        .order("created_at", { ascending: false })
+        .limit(50);
       return (data ?? []).map(p => {
         const h = health?.find(h => h.provider === p.provider_key);
-        return { ...p, health_state: h?.health_state ?? "unknown", last_success_at: h?.last_success_at, last_failure_at: h?.last_failure_at, avg_latency_ms: h?.avg_latency_ms, error_rate: h?.error_rate };
+        const latestReceipt = receipts?.find(r => r.provider === p.provider_key);
+        return {
+          ...p,
+          health_state: h?.health_state ?? "unknown",
+          last_success_at: h?.last_success_at,
+          last_failure_at: h?.last_failure_at,
+          avg_latency_ms: h?.avg_latency_ms,
+          error_rate: h?.error_rate,
+          last_receipt_at: latestReceipt?.created_at,
+          last_receipt_latency: latestReceipt?.latency_ms,
+          last_receipt_cost: latestReceipt?.cost_actual_cents,
+        };
       });
     },
     staleTime: 30_000,
@@ -126,6 +143,7 @@ function AIR02ProviderHealth() {
           <TableHead>Latency</TableHead>
           <TableHead>Error Rate</TableHead>
           <TableHead>Last Success</TableHead>
+          <TableHead>Last Receipt</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -143,6 +161,13 @@ function AIR02ProviderHealth() {
             <TableCell className="text-xs">{p.avg_latency_ms ? `${Math.round(p.avg_latency_ms)}ms` : "—"}</TableCell>
             <TableCell className="text-xs">{p.error_rate != null ? `${(p.error_rate * 100).toFixed(1)}%` : "—"}</TableCell>
             <TableCell className="text-xs">{p.last_success_at ? formatDistanceToNow(new Date(p.last_success_at), { addSuffix: true }) : "—"}</TableCell>
+            <TableCell className="text-xs">
+              {p.last_receipt_at ? (
+                <span title={`Latency: ${p.last_receipt_latency ?? "—"}ms | Cost: ${p.last_receipt_cost != null ? `${p.last_receipt_cost}¢` : "—"}`}>
+                  {formatDistanceToNow(new Date(p.last_receipt_at), { addSuffix: true })}
+                </span>
+              ) : "—"}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
