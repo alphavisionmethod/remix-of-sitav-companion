@@ -244,9 +244,9 @@ const SettingsPage = () => {
                     try {
                       const ext = file.name.split(".").pop();
                       const path = `avatars/${user.id}.${ext}`;
-                      const { error: uploadError } = await supabase.storage.from("documents").upload(path, file, { upsert: true });
+                      const { error: uploadError } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
                       if (uploadError) throw uploadError;
-                      const { data: urlData } = supabase.storage.from("documents").getPublicUrl(path);
+                      const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);
                       const url = urlData.publicUrl;
                       setAvatarUrl(url);
                       await (db as any).from("profiles").update({ avatar_url: url }).eq("user_id", user.id);

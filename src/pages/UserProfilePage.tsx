@@ -88,13 +88,13 @@ const UserProfilePage = () => {
     setUploading(true);
     const ext = file.name.split(".").pop();
     const path = `avatars/${user.id}.${ext}`;
-    const { error } = await supabase.storage.from("documents").upload(path, file, { upsert: true });
+    const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
     if (error) {
       toast.error("Upload failed");
       setUploading(false);
       return;
     }
-    const { data: urlData } = supabase.storage.from("documents").getPublicUrl(path);
+    const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);
     setProfile((p) => ({ ...p, avatar_url: urlData.publicUrl }));
     setUploading(false);
     toast.success("Avatar uploaded — save to apply");

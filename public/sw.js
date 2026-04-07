@@ -3,7 +3,7 @@
 // Asset Caching, Offline Support, and Push Notification Handling
 // ═══════════════════════════════════════════════════════════════
 const CACHE_NAME = 'sita-os-v2';
-const STATIC_ASSETS = ['/'];
+const STATIC_ASSETS = ['/', '/manifest.webmanifest', '/favicon.ico', '/icons/icon-192.png', '/icons/icon-512.png'];
 const API_CACHE = 'sita-api-v1';
 
 // ── Install & Activate ───────────────────────────────────────
