@@ -29,6 +29,41 @@ const sensitivityColor: Record<SensitivityLevel, string> = {
 
 const FilesOverview = () => {
   const { data: filesData = [] } = useFilesOverview();
+  const { user } = useAuth();
+  const aiInsight = useAIInsight();
+  const [aiResult, setAiResult] = useState<string | null>(null);
+  const [analyzingFile, setAnalyzingFile] = useState<string | null>(null);
+
+  // Real KPIs from file_metadata
+  const { data: realKpis } = useQuery({
+    queryKey: ["file-kpis", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, count } = await supabase.from("file_metadata").select("*", { count: "exact" }).eq("user_id", user!.id);
+      const files = data || [];
+      const obligations = files.filter((f: any) => f.classification === "contract" || f.classification === "invoice").length;
+      const linked = files.filter((f: any) => f.status === "linked" || f.status === "processed").length;
+      return { total: count || 0, obligations, linked };
+    },
+    staleTime: 30000,
+  });
+
+  const handleAnalyze = async (fileName: string, text: string) => {
+    setAnalyzingFile(fileName);
+    try {
+      const result = await aiInsight.mutateAsync({
+        intent: "file_analysis",
+        domain: "general",
+        context: { filename: fileName, text_preview: text?.slice(0, 500) || "" },
+      });
+      setAiResult(result?.recommendation || result?.response || "Analysis complete — no actionable insights found.");
+      toast.success("AI analysis complete");
+    } catch {
+      toast.error("AI analysis unavailable");
+    } finally {
+      setAnalyzingFile(null);
+    }
+  };
 
   const [view, setView] = useState<ViewVariant>("founder");
 
