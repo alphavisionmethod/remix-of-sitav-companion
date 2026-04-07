@@ -677,6 +677,7 @@ const App = () => (
             <Route path="/onboarding" element={<OnboardingGuard><Onboarding /></OnboardingGuard>} />
             <Route path="/auth/callback" element={<EmailVerificationHandler />} />
             <Route path="/first-win" element={<ProtectedRoute><FirstWinActivation /></ProtectedRoute>} />
+            <Route path="/learn-later" element={<ProtectedRoute><LearnLaterPage /></ProtectedRoute>} />
             <Route path="/" element={<HomeRoute />} />
 
             <Route path="/mobile" element={<ProtectedRoute><MobileHome /></ProtectedRoute>} />
