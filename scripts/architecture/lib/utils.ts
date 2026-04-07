@@ -69,6 +69,21 @@ export function extractExports(filePath: string): string[] {
         }
       }
     }
+    // Count `export * from` and `export type { ... } from` re-exports as barrel indicators
+    const reExportPattern = /export\s+\*\s+from\s+["'][^"']+["']/g;
+    const reExportTypePattern = /export\s+type\s+\{\s*([^}]+)\s*\}\s+from/g;
+    let reMatch;
+    while ((reMatch = reExportPattern.exec(content)) !== null) {
+      exports.push(`__reexport_${exports.length}`);
+    }
+    while ((reMatch = reExportTypePattern.exec(content)) !== null) {
+      if (reMatch[1]) {
+        reMatch[1].split(",").forEach(e => {
+          const name = e.trim().split(/\s+as\s+/).pop()?.trim();
+          if (name) exports.push(name);
+        });
+      }
+    }
     return exports;
   } catch {
     return [];

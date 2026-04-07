@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-04-04T19:58:20.556Z",
+  "generatedAt": "2026-04-07T00:00:00.000Z",
   "total": 128,
   "matrix": [
     {
@@ -12,7 +12,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "BusinessEntityType",
@@ -23,7 +26,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CurrencyCode",
@@ -34,7 +40,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "financial-approval-policy"
+      ]
     },
     {
       "capabilityId": "MonetaryAmount",
@@ -45,7 +54,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "BusinessPriority",
@@ -56,7 +68,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "BusinessMetadata",
@@ -67,7 +82,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "BookingConfirmation",
@@ -78,7 +96,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "BookingStatus",
@@ -89,7 +110,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "Booking",
@@ -100,7 +124,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "RevenueSnapshot",
@@ -111,7 +138,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "BusinessBoardroomPacket",
@@ -122,7 +152,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "KPITrend",
@@ -133,7 +166,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "BusinessKPI",
@@ -144,7 +180,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CallbackOutcome",
@@ -155,7 +194,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "communication-policy"
+      ]
     },
     {
       "capabilityId": "CallbackTask",
@@ -166,7 +208,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "communication-policy"
+      ]
     },
     {
       "capabilityId": "CapacityMonetizationSignal",
@@ -177,7 +222,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CollectionSequenceStatus",
@@ -188,7 +236,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CollectionSequence",
@@ -199,7 +250,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CollectionStepType",
@@ -210,7 +264,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CollectionChannel",
@@ -221,7 +278,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CollectionStep",
@@ -232,7 +292,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CommunicationPreference",
@@ -243,7 +306,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "communication-policy"
+      ]
     },
     {
       "capabilityId": "ContactRecord",
@@ -254,7 +320,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CustomerDashboardView",
@@ -265,7 +334,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CustomerHealthScoreView",
@@ -276,7 +348,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CustomerRiskSummary",
@@ -287,7 +362,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "trust-governance-policy"
+      ]
     },
     {
       "capabilityId": "TimelineEventType",
@@ -298,7 +376,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CustomerTimelineItem",
@@ -309,7 +390,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "NBACategory",
@@ -320,7 +404,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "NextBestAction",
@@ -331,7 +418,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "OnboardingCustomerBootstrapPacket",
@@ -342,7 +432,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ContinuityStatus",
@@ -353,7 +446,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ServiceContinuityView",
@@ -364,7 +460,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CustomerLifecycleStage",
@@ -375,7 +474,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "LifecycleTransitionRule",
@@ -386,7 +488,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "LifecycleEvent",
@@ -397,7 +502,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CustomerHealthDimension",
@@ -408,7 +516,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CustomerHealthScore",
@@ -419,7 +530,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ChurnPredictionInput",
@@ -430,7 +544,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ChurnPrediction",
@@ -441,7 +558,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CustomerLifecycleRecord",
@@ -452,7 +572,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "StaleLeadState",
@@ -463,7 +586,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "OpportunityRankResult",
@@ -474,7 +600,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ReactivationCandidate",
@@ -485,7 +614,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CollectionsEscalationPacket",
@@ -496,7 +628,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "NoShowRecoveryPacket",
@@ -507,7 +642,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "RecoveredValueLedgerEntry",
@@ -518,7 +656,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "RevenueAutopilotKpiSummary",
@@ -529,7 +670,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "LeakCategory",
@@ -540,7 +684,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "RevenueLeakRecord",
@@ -551,7 +698,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "RevenueRecoveryStep",
@@ -562,7 +712,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "RevenueRecoveryPlan",
@@ -573,7 +726,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CapitalMap",
@@ -585,7 +741,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "EntityCapitalMap",
@@ -597,7 +756,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "LiquiditySummary",
@@ -609,7 +771,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "MarketRegime",
@@ -621,7 +786,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "MarketRegimeResult",
@@ -633,7 +801,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "PortfolioExposureSummary",
@@ -645,7 +816,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "RiskBudgetResult",
@@ -657,7 +831,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "financial-approval-policy"
+      ]
     },
     {
       "capabilityId": "ScenarioResult",
@@ -669,7 +846,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "MonteCarloResult",
@@ -681,7 +861,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "HistoricalReplayResult",
@@ -693,7 +876,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "AllocationSuggestion",
@@ -705,7 +891,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "RebalanceRecommendation",
@@ -717,7 +906,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ThesisRecord",
@@ -729,7 +921,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ThesisCandidate",
@@ -741,7 +936,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "InvestmentCommitteePacket",
@@ -753,7 +951,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "TradeReviewPacket",
@@ -765,7 +966,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ExecutionIntent",
@@ -779,7 +983,10 @@
         "RefusalState"
       ],
       "requiresApproval": true,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "TradeCostEstimate",
@@ -791,7 +998,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "SlippageFeeResult",
@@ -803,7 +1013,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "StopExitPolicyResult",
@@ -815,7 +1028,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "FactorRiskDecomposition",
@@ -827,7 +1043,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "trust-governance-policy"
+      ]
     },
     {
       "capabilityId": "MandateComplianceResult",
@@ -839,7 +1058,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "RobustOptimizationResult",
@@ -851,7 +1073,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "LeverageCapResult",
@@ -863,7 +1088,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CapitalCallPlan",
@@ -875,7 +1103,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "communication-policy"
+      ]
     },
     {
       "capabilityId": "CommitmentPacing",
@@ -887,7 +1118,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "TaxReserveResult",
@@ -899,7 +1133,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "financial-approval-policy"
+      ]
     },
     {
       "capabilityId": "LiquidityLadder",
@@ -911,7 +1148,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ReserveProtectionResult",
@@ -923,7 +1163,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ObligationCoverageResult",
@@ -935,7 +1178,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CorrelationMatrixResult",
@@ -947,7 +1193,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "FxExposureSummary",
@@ -959,7 +1208,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CryptoExposureSummary",
@@ -971,7 +1223,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "VenueRiskSummary",
@@ -983,7 +1238,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "trust-governance-policy"
+      ]
     },
     {
       "capabilityId": "WatchlistEntry",
@@ -995,7 +1253,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "WatchlistWithRegime",
@@ -1007,7 +1268,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ResearchContext",
@@ -1019,7 +1283,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "NetWorthResult",
@@ -1031,7 +1298,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "EntityCapitalSeparation",
@@ -1043,7 +1313,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "DeployableCapitalResult",
@@ -1055,7 +1328,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CashPosture",
@@ -1067,7 +1343,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ReservePosture",
@@ -1079,7 +1358,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "LiquidityPosture",
@@ -1091,7 +1373,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "OpportunityScore",
@@ -1103,7 +1388,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "BrokerageSyncResult",
@@ -1115,7 +1403,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CryptoExchangeSyncResult",
@@ -1127,7 +1418,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "MarketDataSnapshot",
@@ -1139,7 +1433,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "BankSyncResult",
@@ -1151,7 +1448,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "InvestmentDecisionProof",
@@ -1163,7 +1463,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "InvestmentTrustMode",
@@ -1175,7 +1478,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "trust-governance-policy"
+      ]
     },
     {
       "capabilityId": "SinkingFund",
@@ -1187,7 +1493,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ReserveHealth",
@@ -1199,7 +1508,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "RenewalRisk",
@@ -1211,7 +1523,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": true
+      "truthBoundaryEnforced": true,
+      "policies": [
+        "trust-governance-policy"
+      ]
     },
     {
       "capabilityId": "FamilyCalendarItem",
@@ -1221,7 +1536,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ReconciliationConflict",
@@ -1231,7 +1549,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "PrepItem",
@@ -1241,7 +1562,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "EventReminder",
@@ -1251,7 +1575,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "GiftOpportunity",
@@ -1261,7 +1588,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "GroceryItem",
@@ -1271,7 +1601,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "RecurringSupplyItem",
@@ -1281,7 +1614,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ContinuityAlert",
@@ -1291,7 +1627,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "HouseholdRole",
@@ -1301,7 +1640,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "HouseholdMember",
@@ -1311,7 +1653,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "HouseholdKpiSummary",
@@ -1321,7 +1666,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ProviderFollowUp",
@@ -1331,7 +1679,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "SchoolActivityItem",
@@ -1341,7 +1692,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "SchoolFeeItem",
@@ -1351,7 +1705,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ReservationRecord",
@@ -1361,7 +1718,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "ApprovalThreshold",
@@ -1371,7 +1731,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "approval-governance-policy"
+      ]
     },
     {
       "capabilityId": "MultiStepApproval",
@@ -1381,7 +1744,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "approval-governance-policy"
+      ]
     },
     {
       "capabilityId": "MultiStepApprovalStep",
@@ -1391,7 +1757,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "approval-governance-policy"
+      ]
     },
     {
       "capabilityId": "NarrativeVsDeterministicBoundary",
@@ -1401,7 +1770,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "CallAutomationPolicy",
@@ -1411,7 +1783,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "communication-policy"
+      ]
     },
     {
       "capabilityId": "SensitivityTier",
@@ -1421,7 +1796,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "default-execution-policy"
+      ]
     },
     {
       "capabilityId": "RetentionPolicy",
@@ -1431,7 +1809,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "privacy-governance-policy"
+      ]
     },
     {
       "capabilityId": "RedactionPolicy",
@@ -1441,7 +1822,10 @@
         "RefusalState"
       ],
       "requiresApproval": false,
-      "truthBoundaryEnforced": false
+      "truthBoundaryEnforced": false,
+      "policies": [
+        "privacy-governance-policy"
+      ]
     }
   ]
 }

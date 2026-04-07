@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "generatedAt": "2026-04-04T19:57:36.041Z",
+  "generatedAt": "2026-04-07T00:00:00.000Z",
   "services": [
     {
       "name": "agent-governance",
@@ -12,7 +12,8 @@
         "GovernanceConfig",
         "AgentGovernanceService",
         "createAgentGovernance"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "approval-history",
@@ -23,7 +24,8 @@
         "recordApproval",
         "getApprovalHistory",
         "computeMetrics"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "approval-requests",
@@ -36,7 +38,8 @@
         "listPending",
         "updateStatus",
         "expireStale"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "approval-routing",
@@ -48,7 +51,8 @@
         "routeApproval",
         "canDelegate",
         "getNextDelegate"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "escalation-rules",
@@ -61,7 +65,8 @@
         "getNextEscalationTarget",
         "createMultiStepApproval",
         "advanceMultiStep"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "advisor-track-composer",
@@ -71,7 +76,8 @@
         "ComposedAdvisorView",
         "composeAdvisorTracks",
         "getAdvisorName"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "carryover",
@@ -83,7 +89,8 @@
         "resolveCarryoverItem",
         "getOpenCarryovers",
         "getAllCarryovers"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "decision-memory",
@@ -95,7 +102,8 @@
         "listSessionDecisions",
         "searchDecisions",
         "getRecentDecisions"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "build-approval-package",
@@ -106,7 +114,8 @@
         "ApprovalEvidence",
         "RiskAssessment",
         "buildApprovalPackage"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "build-boardroom-request",
@@ -116,7 +125,8 @@
         "BoardroomRequest",
         "AgendaItem",
         "buildBoardroomRequest"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "build-explanation",
@@ -126,7 +136,8 @@
         "ExplanationPackage",
         "buildExplanationPackage",
         "formatDuration"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "build-simulation-request",
@@ -137,7 +148,8 @@
         "SimulationParameter",
         "SimulationScenario",
         "buildSimulationRequest"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "choose-advisors",
@@ -148,7 +160,8 @@
         "AdvisorSelectionResult",
         "chooseAdvisors",
         "scoreAdvisor"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "choose-execution-mode",
@@ -158,7 +171,8 @@
         "ExecutionModeDecision",
         "selectExecutionMode",
         "canBypassApproval"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "councils",
@@ -171,7 +185,8 @@
         "runFinanceCouncil",
         "runConciergeCouncil",
         "runMetaCouncil"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "model-router",
@@ -188,7 +203,8 @@
         "getModelBudgetStatus",
         "setModelBudget",
         "resetDailySpend"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "orchestrate-intent",
@@ -205,7 +221,8 @@
         "chooseExecutionMode",
         "buildOrchestrationPlan",
         "buildExplanation"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "accounts",
@@ -215,7 +232,8 @@
         "AccountHealthRollup",
         "rollupAccountHealth",
         "segmentAccounts"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "business-boardroom-inputs",
@@ -224,7 +242,8 @@
       "exports": [
         "BusinessBoardroomPacket",
         "buildBusinessBoardroomPacket"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "callback-queue",
@@ -234,7 +253,8 @@
         "CallbackEntry",
         "buildCallbackQueue",
         "prioritizeCallbacks"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "collections-command",
@@ -243,7 +263,8 @@
       "exports": [
         "buildEscalationQueue",
         "computeCollectionsKpis"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "collections",
@@ -253,7 +274,8 @@
         "CollectionsStatus",
         "categorizeByAging",
         "buildCollectionsStatuses"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "contacts",
@@ -264,7 +286,8 @@
         "buildContactTimeline",
         "enrichContact",
         "mergeContacts"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "customer-dashboard",
@@ -275,7 +298,8 @@
         "CustomerDashboard",
         "computeCustomerHealth",
         "buildDashboard"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "customer-health",
@@ -286,7 +310,8 @@
         "HealthFactor",
         "computeHealthScore",
         "identifyChurnRisk"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "customer-timeline",
@@ -297,7 +322,8 @@
         "aggregateTimeline",
         "detectEngagementGaps",
         "summarizeEngagement"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "follow-up",
@@ -307,7 +333,8 @@
         "FollowUpAction",
         "generateFollowUpSequence",
         "shouldEscalateFollowUp"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "invoice-linking",
@@ -318,7 +345,8 @@
         "linkInvoiceToQuote",
         "detectUnlinkedInvoices",
         "computeQuoteToInvoiceRate"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "lead-intake",
@@ -329,7 +357,8 @@
         "createLead",
         "deduplicateLeads",
         "trackLeadSource"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "lead-scoring",
@@ -340,7 +369,8 @@
         "scoreLead",
         "detectStaleLead",
         "buildCallbackQueue"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "leakage-engine",
@@ -348,7 +378,8 @@
       "path": "src/lib/services/business-os/leakage-engine.service.ts",
       "exports": [
         "detectLeakageComprehensive"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "no-show-recovery",
@@ -360,7 +391,8 @@
         "detectNoShows",
         "buildNoShowRecoveryActions",
         "computeNoShowRate"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "opportunity-engine",
@@ -371,7 +403,8 @@
         "OpportunityScore",
         "scoreOpportunity",
         "rankOpportunities"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "opportunity-ranking",
@@ -381,7 +414,8 @@
         "RankingConfig",
         "RankedOpportunity",
         "rankOpportunitiesWeighted"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "proposals",
@@ -392,7 +426,8 @@
         "ProposalLineItem",
         "createProposal",
         "computeWinRate"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "quotes",
@@ -403,7 +438,8 @@
         "createQuote",
         "isQuoteExpired",
         "reviseQuote"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "reactivation",
@@ -412,7 +448,8 @@
       "exports": [
         "ReactivationCandidate",
         "identifyReactivationCandidates"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "recovered-value-ledger",
@@ -422,7 +459,8 @@
         "RecoveredValueEntry",
         "RecoveryLedgerSummary",
         "summarizeLedger"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "recovery-engine",
@@ -433,7 +471,8 @@
         "RecoveryStep",
         "createRecoveryPlan",
         "advanceRecoveryStep"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "revenue-autopilot",
@@ -443,7 +482,8 @@
         "detectLeaks",
         "buildCollectionsEscalation",
         "computeKpiSummary"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "stale-lead-detector",
@@ -453,7 +493,8 @@
         "StaleLeadReport",
         "detectStaleLeads",
         "buildStaleLeadReport"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "website-management",
@@ -470,7 +511,8 @@
         "WebsiteStats",
         "WebsiteManager",
         "createWebsiteManager"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "capability-registry",
@@ -485,7 +527,8 @@
         "findCapabilities",
         "getAllCapabilities",
         "getRegistryHealth"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "pack-enablement",
@@ -498,7 +541,8 @@
         "listEnabledCapabilities",
         "getPackDefinition",
         "listPacks"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "shell-space-routing",
@@ -511,7 +555,8 @@
         "listRoutesForSection",
         "getDeepLinkableRoutes",
         "registerRoute"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "activity-prep",
@@ -521,7 +566,8 @@
         "ActivityChecklist",
         "buildActivityChecklist",
         "getMockActivityChecklists"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "conflict-detector",
@@ -531,7 +577,8 @@
         "ConflictResolution",
         "detectConflicts",
         "suggestResolutions"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "event-continuity",
@@ -541,7 +588,8 @@
         "EventPlan",
         "buildEventPlan",
         "getMockEventPlans"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "gift-reminders",
@@ -551,7 +599,8 @@
         "GiftReminder",
         "getUpcomingGiftReminders",
         "filterUrgent"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "grocery-continuity",
@@ -561,7 +610,8 @@
         "detectContinuityAlerts",
         "generateShoppingList",
         "computeMonthlyGroceryBudget"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "home-admin",
@@ -570,7 +620,8 @@
       "exports": [
         "getExpiringItems",
         "computeAdminLoad"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "household-boardroom-inputs",
@@ -579,7 +630,8 @@
       "exports": [
         "HouseholdBoardroomPacket",
         "buildHouseholdBoardroomPacket"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "household-ops",
@@ -588,7 +640,8 @@
       "exports": [
         "computeHouseholdKpis",
         "balanceLoad"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "household-overview",
@@ -597,7 +650,8 @@
       "exports": [
         "HouseholdOverview",
         "buildHouseholdOverview"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "load-balance",
@@ -607,7 +661,8 @@
         "LoadReport",
         "analyzeLoad",
         "suggestRebalance"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "prep-checklist",
@@ -615,7 +670,8 @@
       "path": "src/lib/services/concierge-os/prep-checklist.service.ts",
       "exports": [
         "generateTripChecklist"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "prep-derivation",
@@ -623,7 +679,8 @@
       "path": "src/lib/services/concierge-os/prep-derivation.service.ts",
       "exports": [
         "derivePrepTasks"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "provider-memory",
@@ -633,7 +690,8 @@
         "findProvider",
         "getFavorites",
         "suggestProvider"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "reconciliation",
@@ -644,7 +702,8 @@
         "ReconciliationResult",
         "CalendarConflict",
         "reconcileCalendars"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "recurring-supplies",
@@ -653,7 +712,8 @@
       "exports": [
         "detectResupplyNeeded",
         "estimateMonthlySupplyCost"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "reservation-ingest",
@@ -661,7 +721,8 @@
       "path": "src/lib/services/concierge-os/reservation-ingest.service.ts",
       "exports": [
         "ingestReservationFromEmail"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "responsibilities",
@@ -670,7 +731,8 @@
       "exports": [
         "ResponsibilityAssignment",
         "assignResponsibilities"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "school-items",
@@ -680,7 +742,8 @@
         "SchoolItem",
         "getUpcomingSchoolItems",
         "groupByChild"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "travel-continuity",
@@ -690,7 +753,8 @@
         "buildPrepChecklist",
         "ingestReservation",
         "assessTripReadiness"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "trip-overview",
@@ -699,7 +763,8 @@
       "exports": [
         "TripDashboard",
         "buildTripDashboard"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "connector-auth",
@@ -711,7 +776,8 @@
         "getAllAuthStates",
         "refreshToken",
         "revokeAuth"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "connector-fake-mode",
@@ -724,7 +790,8 @@
         "isFakeModeEnabled",
         "getFakeResponse",
         "getFakeModeConfig"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "connector-health",
@@ -736,7 +803,8 @@
         "checkAllConnectorHealth",
         "recordSync",
         "getFreshnessPolicy"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "council-automation",
@@ -748,7 +816,8 @@
         "EscalationResult",
         "CouncilAutomationService",
         "createCouncilAutomation"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "persistence-adapters",
@@ -771,7 +840,8 @@
         "communicationLogAdapter",
         "SovereignExportRow",
         "sovereignExportsAdapter"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "event-envelope",
@@ -783,7 +853,8 @@
         "markDelivered",
         "markDeadLettered",
         "incrementRetry"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "publish-event",
@@ -794,7 +865,8 @@
         "publishBatch",
         "getEventLog",
         "getDeadLetterQueue"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "subscribe-event",
@@ -806,7 +878,8 @@
         "listSubscriptions",
         "clearSubscriptions",
         "subscribeOnce"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "execute-action",
@@ -821,7 +894,8 @@
         "markFailed",
         "markRolledBack",
         "listExecutions"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "execute-connector-action",
@@ -836,7 +910,8 @@
         "getConnectorHealth",
         "getAllConnectorHealth",
         "setConnectorHealth"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "execute-workflow-step",
@@ -849,7 +924,8 @@
         "initWorkflowState",
         "executeStep",
         "canRetry"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "account-summary",
@@ -860,7 +936,8 @@
         "buildAccountSummary",
         "groupAccountsByType",
         "detectStaleAccounts"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "balance-sync",
@@ -871,7 +948,8 @@
         "SyncHealthReport",
         "reconcileBalance",
         "buildSyncHealthReport"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "bill-calendar",
@@ -882,7 +960,8 @@
         "BillCalendarMonth",
         "buildBillCalendar",
         "getNextDueBills"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "capital-map",
@@ -892,7 +971,8 @@
         "buildCapitalMap",
         "getMockCapitalMap",
         "computeEntityConcentration"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "committee-boardroom-inputs",
@@ -901,7 +981,8 @@
       "exports": [
         "CommitteeBriefing",
         "buildCommitteeBriefing"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "crypto-exposure",
@@ -910,7 +991,8 @@
       "exports": [
         "CryptoRiskAssessment",
         "assessCryptoRisk"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "due-soon-alerts",
@@ -920,7 +1002,8 @@
         "DueSoonAlert",
         "generateDueSoonAlerts",
         "countUpcomingTotal"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "entity-capital",
@@ -930,7 +1013,8 @@
         "EntityCapitalReport",
         "analyzeEntityCapital",
         "computeInterEntityTransfers"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "execution-review",
@@ -939,7 +1023,8 @@
       "exports": [
         "ExecutionQualityReport",
         "buildExecutionReview"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "family-office-review",
@@ -948,7 +1033,8 @@
       "exports": [
         "buildFamilyOfficeReview",
         "computeReviewScore"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "finance-boardroom-inputs",
@@ -956,7 +1042,8 @@
       "path": "src/lib/services/finance-os/finance-boardroom-inputs.service.ts",
       "exports": [
         "buildFinanceBoardroomPacket"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "fx-watchlist",
@@ -965,7 +1052,8 @@
       "exports": [
         "FxAlert",
         "monitorFxExposure"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "investment-office",
@@ -1004,7 +1092,8 @@
         "getSlippageAdjustedReturn",
         "getInvestmentTrustMode",
         "getAvailableTrustModes"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "liquidity",
@@ -1013,7 +1102,8 @@
       "exports": [
         "computeLiquidity",
         "runLiquidityStressTest"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "overview",
@@ -1022,7 +1112,8 @@
       "exports": [
         "buildInvestmentOverview",
         "computeAllocationDrift"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "portfolio-risk",
@@ -1031,7 +1122,8 @@
       "exports": [
         "PortfolioRiskReport",
         "buildPortfolioRiskReport"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "receivables",
@@ -1041,7 +1133,8 @@
         "ReceivableAgingReport",
         "buildAgingReport",
         "flagOverdueReceivables"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "recurring-obligation",
@@ -1050,7 +1143,8 @@
       "exports": [
         "RecurringObligationSummary",
         "summarizeRecurringObligations"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "regime-engine",
@@ -1060,7 +1154,8 @@
         "RegimeHistory",
         "buildRegimeHistory",
         "shouldAdjustPosture"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "renewal-risk",
@@ -1069,7 +1164,8 @@
       "exports": [
         "RenewalRiskReport",
         "buildRenewalRiskReport"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "reserve-engine",
@@ -1078,7 +1174,8 @@
       "exports": [
         "computeSafeToSpend",
         "assessReserveHealth"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "safe-to-spend",
@@ -1087,7 +1184,8 @@
       "exports": [
         "SafeToSpendForecast",
         "computeSafeToSpendForecast"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "sinking-fund",
@@ -1097,7 +1195,8 @@
         "createSinkingFund",
         "assessFundProgress",
         "recommendContributionAdjustment"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "subscription-detector",
@@ -1106,7 +1205,8 @@
       "exports": [
         "DetectedSubscription",
         "detectSubscriptions"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "subscription-waste",
@@ -1116,7 +1216,8 @@
         "detectWaste",
         "assessRenewalRisks",
         "computeTotalWaste"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "thesis-vault",
@@ -1125,7 +1226,8 @@
       "exports": [
         "getMockTheses",
         "assessThesisHealth"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "transaction-categorizer",
@@ -1135,7 +1237,8 @@
         "CategorizationRule",
         "categorizeTransaction",
         "aggregateSpend"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "waste-detector",
@@ -1144,7 +1247,8 @@
       "exports": [
         "WasteReport",
         "buildWasteReport"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "boardroom-memory",
@@ -1158,7 +1262,8 @@
         "ageCarryovers",
         "resolveCarryover",
         "listCarryovers"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "correction",
@@ -1170,7 +1275,8 @@
         "recordCorrection",
         "getCorrections",
         "computeCorrectionStats"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "preference-memory",
@@ -1183,7 +1289,8 @@
         "listPreferences",
         "resetToDefaults",
         "exportPreferences"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "profile-memory",
@@ -1195,7 +1302,8 @@
         "listProfileMemories",
         "deleteProfileMemory",
         "clearExpired"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "trust-memory",
@@ -1211,7 +1319,8 @@
         "getTrustState",
         "addTrustFlag",
         "resolveFlag"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "workflow-memory",
@@ -1225,7 +1334,8 @@
         "listWorkflowCheckpoints",
         "deleteWorkflowCheckpoint",
         "pruneOldCheckpoints"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "collector",
@@ -1234,7 +1344,8 @@
       "exports": [
         "MetaGovernanceCollectorService",
         "getMetaGovernanceCollector"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "persistence",
@@ -1243,7 +1354,8 @@
       "exports": [
         "startPeriodicFlush",
         "stopPeriodicFlush"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "approval-requirements",
@@ -1253,7 +1365,8 @@
         "ApprovalResolution",
         "resolveApprovalRequirements",
         "getThresholdsForDomain"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "outbound-comm-policy",
@@ -1265,7 +1378,8 @@
         "validateOutboundCommunication",
         "getPolicyForType",
         "getRemainingQuota"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "sensitive-doc-policy",
@@ -1276,7 +1390,8 @@
         "classifyDocument",
         "getRedactionRules",
         "bulkClassify"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "truth-boundaries",
@@ -1290,7 +1405,8 @@
         "getBoundaryRule",
         "listProtectedFields",
         "isFieldProtected"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "approval-receipts",
@@ -1299,7 +1415,8 @@
       "exports": [
         "generateApprovalReceipt",
         "generateSingleApprovalReceipt"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "execution-receipts",
@@ -1308,7 +1425,8 @@
       "exports": [
         "generateExecutionReceipt",
         "generateBatchExecutionReceipts"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "proof-bundles",
@@ -1318,7 +1436,8 @@
         "assembleProofBundle",
         "validateBundle",
         "mergeBundles"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "receipts",
@@ -1331,7 +1450,8 @@
         "verifyChainIntegrity",
         "createRefusalReceipt",
         "getReceiptById"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "boardroom-packets",
@@ -1344,7 +1464,8 @@
         "generateFamilyPacket",
         "generateOpportunityPacket",
         "generateCommitteePacket"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "support-diagnostics",
@@ -1357,7 +1478,8 @@
         "ErrorEntry",
         "generateDiagnosticBundle",
         "classifyIncident"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "diagnostic-bundle",
@@ -1366,7 +1488,8 @@
       "exports": [
         "generateDiagnosticBundle",
         "generateExtendedDiagnostic"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "incident-classification",
@@ -1375,7 +1498,8 @@
       "exports": [
         "IncidentClassification",
         "classifyIncident"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "replay-metadata",
@@ -1385,7 +1509,8 @@
         "ReplayMetadata",
         "captureReplayMetadata",
         "redactReplayForSupport"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "support-summary",
@@ -1394,7 +1519,8 @@
       "exports": [
         "SupportSummary",
         "generateSupportSummary"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "postcondition-checks",
@@ -1406,7 +1532,8 @@
         "createPostconditionCheck",
         "runPostconditionChecks",
         "summarizeChecks"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "receipt-verification",
@@ -1418,7 +1545,8 @@
         "ReceiptIntegrityResult",
         "ReceiptVerificationService",
         "createReceiptVerificationService"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "replay-verification",
@@ -1433,7 +1561,8 @@
         "ReplayExecutor",
         "ReplayVerificationService",
         "createReplayVerificationService"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "rollback-signals",
@@ -1443,7 +1572,8 @@
         "RollbackSignal",
         "detectRollbackCondition",
         "generateRollbackProof"
-      ]
+      ],
+      "status": "alpha"
     },
     {
       "name": "verification",
@@ -1453,7 +1583,8 @@
         "verify",
         "getVerificationHistory",
         "getVerificationStats"
-      ]
+      ],
+      "status": "alpha"
     }
   ]
 }

@@ -13,6 +13,23 @@ const VALID_WORKFLOW_STATES = [
   "success", "warning", "degraded", "blocked", "skipped",
   "resumed", "completed", "failed", "error", "cancelled",
   "pending", "processing", "awaiting_approval", "approved", "rejected",
+  // Extended operational states used by runtime services
+  "queued", "running", "paused", "stopped", "suspended", "retrying",
+  "healthy", "unhealthy", "starting", "stopping", "restarting",
+  "connected", "disconnected", "reconnecting", "synced", "stale",
+  "deprecated", "archived", "draft", "published", "scheduled",
+  "escalated", "delegated", "overridden", "resolved", "acknowledged",
+  "initialized", "provisioning", "ready", "terminating", "terminated",
+  "enabled", "disabled", "locked", "unlocked", "verified", "unverified",
+  "accepted", "bound", "bound_to_execution", "breached", "canary",
+  "claimable_with_qualifier", "concluded", "confirmed", "connecting", "convened",
+  "critical", "declared", "deliberating", "detected", "done", "executed",
+  "expected", "filled", "generated", "internal_only", "investigating", "met",
+  "needs_polish", "needs_proof", "new", "not_claimable", "online",
+  "outcome_verified", "partially_hardened", "passing", "pending_approval",
+  "pilot_safe_only", "planned", "planning", "proposed", "requested", "research",
+  "secure_verified", "setup", "succeeded", "trusted", "upcoming", "updated",
+  "valid", "waiting", "open", "delivered", "expired", "partial", "read", "sent",
 ];
 
 // Find workflow state references in services
