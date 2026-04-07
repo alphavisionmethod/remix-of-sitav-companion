@@ -30,7 +30,7 @@ export async function saveServiceState(
   const userId = await getUserId();
   if (!userId) return false;
 
-  const { error } = await fromTable("os_service_state")
+  const { error } = await fromDynamicTable("os_service_state")
     .upsert(
       {
         user_id: userId,
@@ -72,7 +72,7 @@ export async function loadServiceState<T = Record<string, unknown>>(
   const userId = await getUserId();
   if (!userId) return null;
 
-  const { data, error } = await fromTable("os_service_state")
+  const { data, error } = await fromDynamicTable("os_service_state")
     .select("state_snapshot, version")
     .eq("user_id", userId)
     .eq("service_id", serviceId)
@@ -92,7 +92,7 @@ export async function loadAllServiceStates(): Promise<
   const userId = await getUserId();
   if (!userId) return {};
 
-  const { data, error } = await fromTable("os_service_state")
+  const { data, error } = await fromDynamicTable("os_service_state")
     .select("service_id, state_snapshot")
     .eq("user_id", userId);
 
@@ -113,7 +113,7 @@ export async function clearServiceState(serviceId: string): Promise<boolean> {
   const userId = await getUserId();
   if (!userId) return false;
 
-  const { error } = await fromTable("os_service_state")
+  const { error } = await fromDynamicTable("os_service_state")
     .delete()
     .eq("user_id", userId)
     .eq("service_id", serviceId);

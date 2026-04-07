@@ -33,7 +33,7 @@ async function probe(name: string, check: () => Promise<void>): Promise<ProbeRes
 /** 1. Supabase connectivity probe */
 export async function probeSupabase(): Promise<ProbeResult> {
   return probe("supabase", async () => {
-    const { error } = await fromTable("profiles").select("id").limit(1);
+    const { error } = await fromDynamicTable("profiles").select("id").limit(1);
     if (error) throw new Error(error.message);
   });
 }
@@ -85,7 +85,7 @@ export async function probeRealtime(): Promise<ProbeResult> {
 /** 6. AI Gateway probe — verify AI provider registry has active providers */
 export async function probeAiGateway(): Promise<ProbeResult> {
   return probe("ai_gateway", async () => {
-    const { data, error } = await fromTable("ai_provider_registry").select("id").eq("is_active", true).limit(1);
+    const { data, error } = await fromDynamicTable("ai_provider_registry").select("id").eq("is_active", true).limit(1);
     if (error) throw new Error(error.message);
     if (!data || data.length === 0) throw new Error("No active AI providers");
   });
@@ -94,7 +94,7 @@ export async function probeAiGateway(): Promise<ProbeResult> {
 /** 7. Connector Health probe */
 export async function probeConnectors(): Promise<ProbeResult> {
   return probe("connectors", async () => {
-    const { data, error } = await fromTable("connector_registry").select("id").eq("is_active", true).limit(1);
+    const { data, error } = await fromDynamicTable("connector_registry").select("id").eq("is_active", true).limit(1);
     if (error) throw new Error(error.message);
     if (!data || data.length === 0) throw new Error("No active connectors");
   });
@@ -103,7 +103,7 @@ export async function probeConnectors(): Promise<ProbeResult> {
 /** 8. Workflow Engine probe */
 export async function probeWorkflows(): Promise<ProbeResult> {
   return probe("workflows", async () => {
-    const { error } = await fromTable("workflows").select("id").limit(1);
+    const { error } = await fromDynamicTable("workflows").select("id").limit(1);
     if (error) throw new Error(error.message);
   });
 }
@@ -111,7 +111,7 @@ export async function probeWorkflows(): Promise<ProbeResult> {
 /** 9. Notification Queue probe */
 export async function probeNotifications(): Promise<ProbeResult> {
   return probe("notifications", async () => {
-    const { error } = await fromTable("notifications_queue").select("id").limit(1);
+    const { error } = await fromDynamicTable("notifications_queue").select("id").limit(1);
     if (error) throw new Error(error.message);
   });
 }
@@ -119,7 +119,7 @@ export async function probeNotifications(): Promise<ProbeResult> {
 /** 10. Telemetry / OS Event Log probe */
 export async function probeTelemetry(): Promise<ProbeResult> {
   return probe("telemetry", async () => {
-    const { error } = await fromTable("os_event_log").select("id").limit(1);
+    const { error } = await fromDynamicTable("os_event_log").select("id").limit(1);
     if (error) throw new Error(error.message);
   });
 }

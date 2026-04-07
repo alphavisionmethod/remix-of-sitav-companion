@@ -56,11 +56,11 @@ export async function updateMockReplacementStatus(
   const updates: any = { migration_status: status };
   if (status === "completed" || status === "validated") updates.done_at = new Date().toISOString();
   if (status === "validated") updates.runtime_validated = true;
-  const { error } = await fromTable("mock_replacements").update(updates).eq("id", id);
+  const { error } = await fromDynamicTable("mock_replacements").update(updates).eq("id", id);
   if (error) throw error;
 }
 
 export async function deleteMockReplacement(id: string): Promise<void> {
-  const { error } = await fromTable("mock_replacements").delete().eq("id", id);
+  const { error } = await fromDynamicTable("mock_replacements").delete().eq("id", id);
   if (error) throw error;
 }

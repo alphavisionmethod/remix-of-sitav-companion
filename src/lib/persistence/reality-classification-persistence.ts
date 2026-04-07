@@ -73,6 +73,6 @@ export async function upsertRealityClassification(
 }
 
 export async function deleteRealityClassification(id: string): Promise<void> {
-  const { error } = await fromTable("reality_classifications").delete().eq("id", id);
+  const { error } = await fromDynamicTable("reality_classifications").delete().eq("id", id);
   if (error) throw error;
 }
