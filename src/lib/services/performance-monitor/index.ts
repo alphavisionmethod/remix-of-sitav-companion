@@ -75,7 +75,7 @@ export function initPerformanceMonitor() {
   // Memory monitoring (Chrome only)
   if ('memory' in performance) {
     setInterval(() => {
-      const mem = (performance as unknown as Record<string, unknown>).memory;
+      const mem = (performance as unknown as Record<string, Record<string, number>>).memory;
       const usedMB = Math.round(mem.usedJSHeapSize / 1048576);
       const limitMB = Math.round(mem.jsHeapSizeLimit / 1048576);
       if (usedMB > limitMB * 0.8) {
