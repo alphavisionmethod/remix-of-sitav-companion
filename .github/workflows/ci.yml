@@ -62,13 +62,19 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci
-      - name: Run Unit Tests
-        run: npx vitest run --reporter=verbose
+      - name: Run Unit Tests with Coverage
+        run: npx vitest run --reporter=verbose --coverage
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: unit-test-results
           path: coverage/
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-summary
+          path: coverage/coverage-summary.json
           retention-days: 14
 
   # ── Integration Tests (blocks merge) ──────────────────────
@@ -388,6 +394,69 @@ jobs:
             generated/ci-launch-gate-report.json
             generated/launch-truth-audit.json
           retention-days: 30
+
+  # ── Bundle Size Check ──────────────────────────────────────
+  bundle-size:
+    name: Bundle Size Check
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download dist
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Check bundle size
+        run: |
+          JS_SIZE=$(find dist -name '*.js' -exec cat {} + | wc -c)
+          CSS_SIZE=$(find dist -name '*.css' -exec cat {} + | wc -c)
+          JS_MB=$(echo "scale=2; $JS_SIZE / 1048576" | bc)
+          CSS_KB=$(echo "scale=1; $CSS_SIZE / 1024" | bc)
+          TOTAL_SIZE=$((JS_SIZE + CSS_SIZE))
+
+          echo "## 📦 Bundle Size Report" >> $GITHUB_STEP_SUMMARY
+          echo "| Asset | Size |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|------|" >> $GITHUB_STEP_SUMMARY
+          echo "| JavaScript | ${JS_MB} MB |" >> $GITHUB_STEP_SUMMARY
+          echo "| CSS | ${CSS_KB} KB |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Total** | **$(echo "scale=2; $TOTAL_SIZE / 1048576" | bc) MB** |" >> $GITHUB_STEP_SUMMARY
+
+          MAX_JS_BYTES=5242880
+          if [ "$JS_SIZE" -gt "$MAX_JS_BYTES" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "❌ JS bundle exceeds 5 MB limit!" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "✅ Within size budget" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # ── PR Summary ───────────────────────────────────────────
+  pr-summary:
+    name: PR Summary
+    runs-on: ubuntu-latest
+    needs: [typecheck, lint, unit-tests, integration-tests, build, bundle-size, e2e-p0, docker-build, security-scan, architecture-validation, launch-gate]
+    if: always() && github.event_name == 'pull_request'
+    steps:
+      - name: Post PR summary
+        run: |
+          echo "# 🏗️ SITA OS — CI Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| TypeScript | ${{ needs.typecheck.result == 'success' && '✅' || '❌' }} ${{ needs.typecheck.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| ESLint | ${{ needs.lint.result == 'success' && '✅' || '⚠️' }} ${{ needs.lint.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Unit Tests | ${{ needs.unit-tests.result == 'success' && '✅' || '❌' }} ${{ needs.unit-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Integration Tests | ${{ needs.integration-tests.result == 'success' && '✅' || '❌' }} ${{ needs.integration-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build | ${{ needs.build.result == 'success' && '✅' || '❌' }} ${{ needs.build.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Bundle Size | ${{ needs.bundle-size.result == 'success' && '✅' || '⚠️' }} ${{ needs.bundle-size.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| E2E Tests | ${{ needs.e2e-p0.result == 'success' && '✅' || '⚠️' }} ${{ needs.e2e-p0.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docker | ${{ needs.docker-build.result == 'success' && '✅' || '⚠️' }} ${{ needs.docker-build.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security | ${{ needs.security-scan.result == 'success' && '✅' || '❌' }} ${{ needs.security-scan.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Architecture | ${{ needs.architecture-validation.result == 'success' && '✅' || '⚠️' }} ${{ needs.architecture-validation.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Launch Gate** | **${{ needs.launch-gate.result == 'success' && '🟢 CLEAR' || '🔴 BLOCKED' }}** |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Commit: \`${{ github.sha }}\` | Run: [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
 
   # ── Nightly Full Validation ───────────────────────────────
   nightly-full-validation:
