@@ -54,6 +54,9 @@ const CalendarWorkspace = () => {
   const createEvent = useCreateCalendarEvent();
   const updateEvent = useUpdateCalendarEvent();
   const deleteEvent = useDeleteCalendarEvent();
+  const { data: bookings = [] } = useBookingList();
+  const createBooking = useBookingCreate();
+  const cancelBooking = useBookingCancel();
 
   // DB query for real calendar events
   const { data: dbEvents } = useQuery({
