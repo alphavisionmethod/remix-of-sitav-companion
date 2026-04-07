@@ -526,12 +526,10 @@ export function OSSetupExperience() {
 
       const snapshot = engine.toSnapshot();
       await fromTable("setup_sessions").upsert({
-        id: snapshot.id,
         user_id: snapshot.userId,
-        device_id: snapshot.deviceId,
-        session_data: snapshot,
-        current_phase: "trust-certificate",
-        completion_pct: 100,
+        current_step: "trust-certificate",
+        completed_steps: ["boot", "setup-style", "quick-identity", "primary-use-mode", "trust-calibration", "advisor-activation", "trust-certificate"],
+        preferences: snapshot as never,
         completed_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       }, { onConflict: "id" });
