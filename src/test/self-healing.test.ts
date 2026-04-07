@@ -75,7 +75,7 @@ describe("SelfHealingService", () => {
 
     // Set healAttempts to max so next heal triggers escalation
     const current = svc.getIncident(inc.id)!;
-    (svc as Record<string, unknown>).incidents.set(inc.id, { ...current, healAttempts: 3 });
+    (svc as any).incidents.set(inc.id, { ...current, healAttempts: 3 });
 
     // Also ensure no circuit breaker blocks with cooldown
     const cbKey = `svc-a:${inc.id}`;
