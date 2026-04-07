@@ -9,7 +9,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
+import { toast } from "sonner";
 
 interface ConnectorStatus {
   id: string;
@@ -71,9 +74,59 @@ const POLICIES = [
 
 export default function ConnectorGovernanceCenter() {
   const [tab, setTab] = useState("connectors");
+  const { user } = useAuth();
 
-  const healthy = CONNECTORS.filter(c => c.status === "healthy").length;
-  const issues = CONNECTORS.filter(c => !["healthy"].includes(c.status)).length;
+  // Fetch real connectors from DB, fallback to hardcoded
+  const { data: dbConnectors } = useQuery({
+    queryKey: ["governance-connectors", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data: registry } = await (supabase as any).from("connector_registry").select("*").eq("user_id", user!.id);
+      const { data: accounts } = await (supabase as any).from("connector_accounts").select("*").eq("user_id", user!.id);
+      if ((!registry || registry.length === 0) && (!accounts || accounts.length === 0)) return null;
+      return { registry: registry || [], accounts: accounts || [] };
+    },
+    staleTime: 30000,
+  });
+
+  const activeConnectors = dbConnectors ? CONNECTORS.map(c => {
+    const acc = dbConnectors.accounts.find((a: any) => a.connector_type === c.id);
+    return acc ? { ...c, status: acc.status === "active" ? "healthy" as const : c.status, lastSyncAt: acc.last_sync_at ? new Date(acc.last_sync_at).toLocaleTimeString() : c.lastSyncAt } : c;
+  }) : CONNECTORS;
+
+  const healthy = activeConnectors.filter(c => c.status === "healthy").length;
+  const issues = activeConnectors.filter(c => !["healthy"].includes(c.status)).length;
+
+  const handleDiscover = async () => {
+    try {
+      await supabase.functions.invoke("connector-discover", { body: { action: "scan" } });
+      toast.success("Discovery scan started");
+    } catch {
+      toast.error("Discovery failed");
+    }
+  };
+
+  const handleSyncAll = async () => {
+    try {
+      await supabase.functions.invoke("connector-batch", {
+        body: { action: "submit", operations: activeConnectors.filter(c => c.status !== "disconnected").map(c => ({ type: "sync", connector_type: c.id })) },
+      });
+      toast.success("Sync All triggered");
+    } catch {
+      toast.error("Sync failed");
+    }
+  };
+
+  const handleSyncOne = async (connectorId: string) => {
+    try {
+      await supabase.functions.invoke("connector-batch", {
+        body: { action: "submit", connector_type: connectorId, operations: [{ type: "sync", payload: {} }] },
+      });
+      toast.success(`Sync triggered for ${connectorId}`);
+    } catch {
+      toast.error("Sync failed");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -85,7 +138,8 @@ export default function ConnectorGovernanceCenter() {
             <p className="text-sm text-muted-foreground">Health monitoring, credential governance, staleness policies, and sync history</p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="gap-1.5"><RefreshCw className="w-3.5 h-3.5" />Sync All</Button>
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={handleSyncAll}><RefreshCw className="w-3.5 h-3.5" />Sync All</Button>
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={handleDiscover}><Search className="w-3.5 h-3.5" />Discover</Button>
             <Button size="sm" className="gap-1.5"><Plug className="w-3.5 h-3.5" />Add Connector</Button>
           </div>
         </div>
@@ -93,10 +147,10 @@ export default function ConnectorGovernanceCenter() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: "Total Connectors", value: CONNECTORS.length },
+          { label: "Total Connectors", value: activeConnectors.length },
           { label: "Healthy", value: healthy, color: "text-emerald-400" },
           { label: "Issues", value: issues, color: issues > 0 ? "text-amber-400" : "text-emerald-400" },
-          { label: "Syncs (24h)", value: CONNECTORS.reduce((s, c) => s + c.syncCount24h, 0) },
+          { label: "Syncs (24h)", value: activeConnectors.reduce((s, c) => s + c.syncCount24h, 0) },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -122,7 +176,7 @@ export default function ConnectorGovernanceCenter() {
         <div className="mt-4">
           <TabsContent value="connectors">
             <div className="space-y-3">
-              {CONNECTORS.map((conn, idx) => {
+              {activeConnectors.map((conn, idx) => {
                 const sCfg = STATUS_CONFIG[conn.status];
                 return (
                   <motion.div key={conn.id} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04 }}>
@@ -145,7 +199,7 @@ export default function ConnectorGovernanceCenter() {
                             <div className="text-center"><p className="font-bold text-foreground">{conn.syncCount24h}</p><p className="text-[9px] text-muted-foreground">Syncs/24h</p></div>
                             <div className="text-center"><p className={cn("font-bold", conn.errorRate > 1 ? "text-amber-400" : "text-emerald-400")}>{conn.errorRate}%</p><p className="text-[9px] text-muted-foreground">Error Rate</p></div>
                             <div className="text-center"><p className="font-bold text-foreground">{conn.latencyMs}ms</p><p className="text-[9px] text-muted-foreground">Latency</p></div>
-                            <Button variant="outline" size="sm" className="text-[10px] h-7"><RefreshCw className="w-3 h-3 mr-1" />Sync</Button>
+                            <Button variant="outline" size="sm" className="text-[10px] h-7" onClick={() => handleSyncOne(conn.id)}><RefreshCw className="w-3 h-3 mr-1" />Sync</Button>
                           </div>
                         </div>
                         <div className="flex gap-1 mt-2">{conn.affectedDomains.map(d => <Badge key={d} variant="outline" className="text-[8px]">{d}</Badge>)}</div>
@@ -191,7 +245,7 @@ export default function ConnectorGovernanceCenter() {
 
           <TabsContent value="credentials">
             <div className="space-y-3">
-              {CONNECTORS.map(conn => (
+              {activeConnectors.map(conn => (
                 <Card key={conn.id} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">

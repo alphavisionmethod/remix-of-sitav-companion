@@ -11,6 +11,11 @@ import { classifyFile, detectSensitivity, type FileClassification, type Sensitiv
 import { FileUploader } from "@/components/sita/FileUploader";
 import { useFilesOverview } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useAIInsight } from "@/hooks/use-backend-actions";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 type ViewVariant = "founder" | "household" | "finance" | "premium";
 
@@ -24,6 +29,41 @@ const sensitivityColor: Record<SensitivityLevel, string> = {
 
 const FilesOverview = () => {
   const { data: filesData = [] } = useFilesOverview();
+  const { user } = useAuth();
+  const aiInsight = useAIInsight();
+  const [aiResult, setAiResult] = useState<string | null>(null);
+  const [analyzingFile, setAnalyzingFile] = useState<string | null>(null);
+
+  // Real KPIs from file_metadata
+  const { data: realKpis } = useQuery({
+    queryKey: ["file-kpis", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, count } = await supabase.from("file_metadata").select("*", { count: "exact" }).eq("user_id", user!.id);
+      const files = data || [];
+      const obligations = files.filter((f: any) => f.classification === "contract" || f.classification === "invoice").length;
+      const linked = files.filter((f: any) => f.status === "linked" || f.status === "processed").length;
+      return { total: count || 0, obligations, linked };
+    },
+    staleTime: 30000,
+  });
+
+  const handleAnalyze = async (fileName: string, text: string) => {
+    setAnalyzingFile(fileName);
+    try {
+      const result = await aiInsight.mutateAsync({
+        intent: "file_analysis",
+        domain: "general",
+        context: { filename: fileName, text_preview: text?.slice(0, 500) || "" },
+      });
+      setAiResult(result?.recommendation || result?.response || "Analysis complete — no actionable insights found.");
+      toast.success("AI analysis complete");
+    } catch {
+      toast.error("AI analysis unavailable");
+    } finally {
+      setAnalyzingFile(null);
+    }
+  };
 
   const [view, setView] = useState<ViewVariant>("founder");
 
@@ -65,10 +105,10 @@ const FilesOverview = () => {
       <UniversalIntakeBox />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KPITile label="Files This Week" value={classifiedFiles.length} trend="up" icon={FolderOpen} />
+        <KPITile label="Files This Week" value={realKpis?.total || classifiedFiles.length} trend="up" icon={FolderOpen} />
         <KPITile label="Sensitive Files" value={sensitiveCount} icon={Shield} sub="Confidential + Restricted" />
-        <KPITile label="Obligations Found" value={7} icon={Calendar} sub="From uploaded docs" />
-        <KPITile label="Linked to Workflows" value={18} icon={Link2} />
+        <KPITile label="Obligations Found" value={realKpis?.obligations || 7} icon={Calendar} sub="From uploaded docs" />
+        <KPITile label="Linked to Workflows" value={realKpis?.linked || 18} icon={Link2} />
       </div>
 
       {/* Classification breakdown */}
@@ -98,8 +138,27 @@ const FilesOverview = () => {
                     </div>
                   </div>
                 </div>
-                <TrustBadge level={f.sensitivity === "restricted" ? "degraded" : f.sensitivity === "confidential" ? "review" : "verified"} size="sm" />
+                <div className="flex items-center gap-2">
+                  <SitaButton
+                    variant="ghost"
+                    className="text-[10px] h-6 px-2"
+                    onClick={() => handleAnalyze(f.name, f.text)}
+                  >
+                    {analyzingFile === f.name ? (
+                      <span className="animate-pulse">Analyzing…</span>
+                    ) : (
+                      <><Brain className="h-3 w-3" /> Analyze</>
+                    )}
+                  </SitaButton>
+                  <TrustBadge level={f.sensitivity === "restricted" ? "degraded" : f.sensitivity === "confidential" ? "review" : "verified"} size="sm" />
+                </div>
               </div>
+              {aiResult && analyzingFile === null && f.name === filesData[0]?.name && (
+                <div className="mt-2 rounded-lg bg-primary/5 border border-primary/10 p-2">
+                  <p className="text-[10px] text-primary font-medium flex items-center gap-1"><Sparkles className="h-3 w-3" /> AI Insight</p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{aiResult}</p>
+                </div>
+              )}
             </SitaCard>
           ))}
 

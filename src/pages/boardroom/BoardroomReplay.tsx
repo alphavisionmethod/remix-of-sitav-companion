@@ -4,6 +4,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { BoardroomSlide } from "@/components/sita/primitives/BoardroomSlide";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
@@ -247,12 +250,33 @@ const SlideInsight = ({ title, text, confidence, isRisk }: { title: string; text
 
 export default function BoardroomReplay() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [slides] = useState(generateWeeklySlides);
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const INTERVAL = 15; // seconds per slide
+  const [sessionSaved, setSessionSaved] = useState(false);
+  const INTERVAL = 15;
   const [elapsed, setElapsed] = useState(0);
+
+  const handleSaveSession = async () => {
+    if (!user || sessionSaved) return;
+    try {
+      await (supabase as any).from("boardroom_sessions").insert({
+        user_id: user.id,
+        session_type: "weekly",
+        title: "Weekly Executive Review",
+        slides_data: slides.map(s => ({ id: s.id, title: s.title, domain: s.domain })),
+        confidence_score: 87,
+        status: "completed",
+        completed_at: new Date().toISOString(),
+      });
+      setSessionSaved(true);
+      toast.success("Session saved to history");
+    } catch {
+      toast.error("Failed to save session");
+    }
+  };
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -315,6 +339,12 @@ export default function BoardroomReplay() {
           </div>
         </div>
         <div className="flex items-center gap-1.5">
+          <button onClick={() => navigate("/boardroom/history")} className="rounded-lg px-2 py-1.5 text-[10px] text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors">
+            History
+          </button>
+          <button onClick={handleSaveSession} disabled={sessionSaved} className={cn("rounded-lg px-2 py-1.5 text-[10px] transition-colors", sessionSaved ? "text-trust-safe" : "text-muted-foreground hover:bg-secondary hover:text-foreground")}>
+            {sessionSaved ? "✓ Saved" : "Save Session"}
+          </button>
           <button onClick={() => { setIsPlaying(!isPlaying); setElapsed(0); }} className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors">
             {isPlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
           </button>

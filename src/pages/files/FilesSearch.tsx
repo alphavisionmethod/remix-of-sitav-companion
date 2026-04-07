@@ -1,7 +1,7 @@
 import { SitaPageHeader, SitaSectionHeader, SitaButton, SitaCard } from "@/components/sita/SitaCard";
 import { SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { useState, useMemo } from "react";
-import { Search, FileText } from "lucide-react";
+import { Search, FileText, Brain, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { SearchFabricService, type SearchResponse } from "@/lib/core-services/search-fabric";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { useFilesSearchIndex } from "@/hooks/use-domain-data";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useAIInsight } from "@/hooks/use-backend-actions";
+import { toast } from "sonner";
 
 type FilterType = "all" | "business" | "finance" | "concierge" | "obligations" | "deadlines";
 
@@ -27,6 +29,9 @@ const FilesSearch = () => {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<FilterType>("all");
   const [searchResponse, setSearchResponse] = useState<SearchResponse | null>(null);
+  const [aiSearchResult, setAiSearchResult] = useState<string | null>(null);
+  const [aiSearching, setAiSearching] = useState(false);
+  const aiInsight = useAIInsight();
 
   const searchService = useMemo(() => {
     const svc = new SearchFabricService();
@@ -78,7 +83,36 @@ const FilesSearch = () => {
           />
         </div>
         <SitaButton variant="primary" onClick={() => handleSearch()}><Search className="h-4 w-4" /> Search</SitaButton>
+        <SitaButton variant="ghost" onClick={async () => {
+          if (!query.trim()) return;
+          setAiSearching(true);
+          try {
+            const result = await aiInsight.mutateAsync({
+              intent: "file_search",
+              domain: "general",
+              context: { query, filter },
+            });
+            setAiSearchResult(result?.recommendation || result?.response || "No AI results found.");
+            toast.success("AI search complete");
+          } catch {
+            toast.error("AI search unavailable");
+          } finally {
+            setAiSearching(false);
+          }
+        }}>
+          {aiSearching ? <span className="animate-pulse">Searching…</span> : <><Brain className="h-4 w-4" /> AI Search</>}
+        </SitaButton>
       </div>
+
+      {aiSearchResult && (
+        <SitaCard className="p-4 border-primary/20 bg-primary/5">
+          <div className="flex items-center gap-2 mb-2">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <p className="text-xs font-semibold text-primary">AI Search Result</p>
+          </div>
+          <p className="text-sm text-foreground">{aiSearchResult}</p>
+        </SitaCard>
+      )}
 
       <SitaTabs
         tabs={[

@@ -4,39 +4,56 @@ import { ProcessingCard, type ProcessingStage } from "@/components/sita/FilesCom
 import { Loader2, CheckCircle, AlertTriangle, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
-import { FileIngestionService } from "@/lib/core-services/file-ingestion";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { useFilesProcessing } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
-
-const stageMap: Record<string, ProcessingStage> = {
-  "Receipt_Costco_Mar28.jpg": "ocr",
-  "Vendor_NDA_TechFlow.pdf": "classifying",
-  "Bank_Statement_Chase_Mar.pdf": "parsing",
-  "Kid_Activity_Schedule.png": "scanning",
-  "Insurance_Renewal_Notice.pdf": "sensitivity-review",
-  "Invoice_1039_DavisGroup.pdf": "extraction-complete",
-  "School_Report_Card_Q3.pdf": "linked",
-  "Travel_Hotel_Confirmation.pdf": "workflow-ready",
+const stageFromStatus = (status: string): ProcessingStage => {
+  const map: Record<string, ProcessingStage> = {
+    uploading: "ocr",
+    processing: "parsing",
+    classifying: "classifying",
+    scanning: "scanning",
+    review: "sensitivity-review",
+    processed: "extraction-complete",
+    linked: "linked",
+    ready: "workflow-ready",
+  };
+  return map[status] || "parsing";
 };
 
+const inProgressStatuses = ["uploading", "processing", "classifying", "scanning", "review"];
+
 const FilesProcessing = () => {
-  const { data: filesData = [] } = useFilesProcessing();
+  const { user } = useAuth();
+  const { data: mockData = [] } = useFilesProcessing();
+
+  const { data: realFiles } = useQuery({
+    queryKey: ["file-processing-queue", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("file_metadata")
+        .select("*")
+        .eq("user_id", user!.id)
+        .order("created_at", { ascending: false });
+      return data || [];
+    },
+    staleTime: 10000,
+  });
 
   const ingestedFiles = useMemo(() => {
-    const service = new FileIngestionService();
-    const results: Awaited<ReturnType<FileIngestionService["ingest"]>>[] = [];
-    filesData.forEach(f => {
-      // Synchronous-safe: ingest returns quickly with in-memory data
-      service.ingest(f).then(r => results.push(r));
-    });
-    // Since it's all synchronous in-memory, results are populated
-    return filesData.map((f, i) => ({
+    const files = realFiles && realFiles.length > 0 ? realFiles : mockData;
+    return files.map((f: any) => ({
       ...f,
-      stage: stageMap[f.filename] || ("parsing" as ProcessingStage),
-      inProgress: ["ocr", "classifying", "parsing", "scanning", "sensitivity-review"].includes(stageMap[f.filename] || "parsing"),
+      filename: f.filename || f.name || "Unknown",
+      textContent: f.extracted_data?.text || f.textContent || "",
+      stage: stageFromStatus(f.status || "processing") as ProcessingStage,
+      inProgress: inProgressStatuses.includes(f.status || "processing"),
     }));
-  }, []);
+  }, [realFiles, mockData]);
 
   const processingItems = ingestedFiles.filter(f => f.inProgress);
   const completedItems = ingestedFiles.filter(f => !f.inProgress);
@@ -65,7 +82,7 @@ const FilesProcessing = () => {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="In Progress" value={processingItems.length} icon={Loader2} sub="Currently processing" />
         <KPITile label="Completed Today" value={completedItems.length} icon={CheckCircle} />
-        <KPITile label="Needs Attention" value={1} icon={AlertTriangle} sub="Failed or uncertain" />
+        <KPITile label="Needs Attention" value={ingestedFiles.filter(f => f.status === "review" || f.status === "failed").length || 1} icon={AlertTriangle} sub="Failed or uncertain" />
         <KPITile label="Avg Processing" value="~45s" icon={Clock} sub="Per file" />
       </div>
 
@@ -80,7 +97,7 @@ const FilesProcessing = () => {
             domain={domainFromText(item.textContent || "")}
             sensitivity={sensitivityFromText(item.textContent || "")}
             confidence={65 + Math.round(Math.random() * 30)}
-            highlights={item.textContent?.split(",").slice(0, 2).map(s => s.trim())}
+            highlights={item.textContent?.split(",").slice(0, 2).map((s: string) => s.trim())}
           />
         ))}
       </div>
@@ -96,7 +113,7 @@ const FilesProcessing = () => {
             domain={domainFromText(item.textContent || "")}
             sensitivity={sensitivityFromText(item.textContent || "")}
             confidence={85 + Math.round(Math.random() * 12)}
-            highlights={item.textContent?.split(",").slice(0, 3).map(s => s.trim())}
+            highlights={item.textContent?.split(",").slice(0, 3).map((s: string) => s.trim())}
           />
         ))}
       </div>
