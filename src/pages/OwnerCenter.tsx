@@ -988,10 +988,10 @@ const OwnerCenter = () => {
         {activePage === "fleet" && (
           <motion.div key="fleet" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-4">
-              <KPITile label="Total" value={fleetData?.kpis?.total || 0} icon={Server} />
-              <KPITile label="Online" value={fleetData?.kpis?.online || 0} icon={Wifi} trend="up" />
-              <KPITile label="Degraded" value={fleetData?.kpis?.degraded || 0} icon={AlertTriangle} />
-              <KPITile label="Offline" value={fleetData?.kpis?.offline || 0} icon={XCircle} />
+              <KPITile label="Total" value={fltD?.kpis?.total || 0} icon={Server} />
+              <KPITile label="Online" value={fltD?.kpis?.online || 0} icon={Wifi} trend="up" />
+              <KPITile label="Degraded" value={fltD?.kpis?.degraded || 0} icon={AlertTriangle} />
+              <KPITile label="Offline" value={fltD?.kpis?.offline || 0} icon={XCircle} />
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
