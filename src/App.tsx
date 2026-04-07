@@ -1433,6 +1433,9 @@ const App = () => (
                      <Route path="/admin/frontend/quality-matrix" element={<FE01QualityMatrix />} />
                      <Route path="/admin/frontend/design-governance" element={<FE02DesignGovernance />} />
 
+                     {/* Architecture */}
+                     <Route path="/admin/architecture/god-tier-integration" element={<GodTierIntegrationBoard />} />
+
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* OS Apps */}
