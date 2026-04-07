@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
 import { useLeads, useInvoices, useBills, useCashFlow, useApprovals, useHouseholdTasks, useFamilyEvents, useTravel, useSubscriptions } from "@/hooks/use-sita-data";
+import { useCalendarEvents } from "@/hooks/use-calendar-data";
+import { useFinanceProjection } from "@/hooks/use-domain-projections";
 import { useAIInsight, useCashflowAnalysis, useCRMSync } from "@/hooks/use-backend-actions";
 import { evaluateCrossDomainIntelligence } from "@/lib/cross-domain";
 import { assessBusinessHealth } from "@/lib/domain-engines/business-os";

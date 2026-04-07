@@ -61,6 +61,8 @@ const BillsWorkspace = () => {
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<BillForm>(emptyForm);
 
+  // Use canonical hook for bill reads (wired from use-money-data)
+  const moneyBills = useMoneyBills();
   const billsQuery = useQuery({
     queryKey: ["bills"],
     queryFn: async () => {
@@ -68,6 +70,8 @@ const BillsWorkspace = () => {
       if (error) throw error;
       return data;
     },
+    // Fallback to moneyBills data if this query hasn't loaded yet
+    placeholderData: moneyBills.data as any,
   });
   const bills = billsQuery.data ?? [];
   const isLoading = billsQuery.isLoading;
