@@ -18,7 +18,7 @@ interface UpdateState {
 
 function getElectronBridge() {
   if (typeof window === "undefined") return null;
-  const el = (window as Record<string, unknown>).electron;
+  const el = (window as unknown as Record<string, unknown>).electron;
   return el && typeof el === "object" ? (el as Record<string, unknown>) : null;
 }
 
