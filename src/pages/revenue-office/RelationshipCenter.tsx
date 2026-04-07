@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useContacts } from "@/hooks/use-revenue-office";
+import { useCustomers } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 
