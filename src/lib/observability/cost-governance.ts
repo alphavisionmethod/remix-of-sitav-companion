@@ -90,5 +90,6 @@ export async function checkBudget(estimatedCostCents: number): Promise<{ allowed
   } as never);
 
   if (!data) return { allowed: true, reason: "no_budget_set" };
-  return { allowed: data.allowed, reason: data.reason };
+  const result = data as unknown as Record<string, unknown>;
+  return { allowed: !!result.allowed, reason: result.reason as string | undefined };
 }
