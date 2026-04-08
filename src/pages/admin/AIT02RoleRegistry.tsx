@@ -22,7 +22,7 @@ type SortKey = "cost" | "invocations" | "name" | "stage";
 
 export default function AIT02RoleRegistry() {
   const { isDemoMode } = useDataMode();
-  const [selectedRole, setSelectedRole] = useState<any>(null);
+  const [selectedRole, setSelectedRole] = useState<WorkforceRole | null>(null);
   const [sortBy, setSortBy] = useState<SortKey>("name");
   const [filterStatus, setFilterStatus] = useState<string>("all");
 
