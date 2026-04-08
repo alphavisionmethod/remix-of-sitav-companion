@@ -349,6 +349,15 @@ export class LeaseManager {
     return Array.from(this.leases.values());
   }
 
+  /** Force-expire a lease by ID (for demo/testing) */
+  expireLease(leaseId: string): boolean {
+    const lease = this.leases.get(leaseId);
+    if (!lease) return false;
+    lease.expiresAt = Date.now() - 1000;
+    lease.status = "expired";
+    return true;
+  }
+
   getLeaseStats() {
     const all = Array.from(this.leases.values());
     return {

@@ -79,13 +79,13 @@ const BillsWorkspace = () => {
   const isLoading = billsQuery.isLoading;
   const freshness = useQueryFreshness(billsQuery);
 
-  const createMutation = useAction("finance", "bill.create", {
+  const createMutation = useAction<BillForm>("finance", "bill.create", {
     successMessage: "Bill created",
     invalidateKeys: [["bills"]],
     onSuccess: () => { setShowForm(false); setForm(emptyForm); },
   });
 
-  const updateMutation = useAction("finance", "bill.update", {
+  const updateMutation = useAction<{ id: string; bill: BillForm }>("finance", "bill.update", {
     successMessage: "Bill updated",
     invalidateKeys: [["bills"]],
     onSuccess: () => { setShowForm(false); setEditId(null); setForm(emptyForm); },
@@ -125,8 +125,8 @@ const BillsWorkspace = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (editId) updateMutation.mutate({ id: editId, bill: form } as unknown as Record<string, unknown>);
-    else createMutation.mutate(form as unknown as Record<string, unknown>);
+    if (editId) updateMutation.mutate({ id: editId, bill: form });
+    else createMutation.mutate(form);
   };
 
   return (

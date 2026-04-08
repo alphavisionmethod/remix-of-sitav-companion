@@ -214,6 +214,11 @@ export class TokenGovernanceEngine {
     };
   }
 
+  /** Public read-only access to model routes */
+  getRoutes(): ModelRoute[] {
+    return [...this.routes];
+  }
+
   serialize(): Record<string, unknown> {
     return {
       routes: this.routes,

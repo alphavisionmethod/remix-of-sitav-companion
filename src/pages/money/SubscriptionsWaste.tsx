@@ -81,13 +81,13 @@ const SubscriptionsWaste = () => {
   const isLoading = subsQuery.isLoading;
   const freshness = useQueryFreshness(subsQuery);
 
-  const createMutation = useAction("finance", "subscription.create", {
+  const createMutation = useAction<SubForm>("finance", "subscription.create", {
     successMessage: "Subscription added",
     invalidateKeys: [["subscriptions"]],
     onSuccess: () => { setShowForm(false); setForm(emptyForm); },
   });
 
-  const updateMutation = useAction("finance", "subscription.update", {
+  const updateMutation = useAction<{ id: string; sub: SubForm }>("finance", "subscription.update", {
     successMessage: "Subscription updated",
     invalidateKeys: [["subscriptions"]],
     onSuccess: () => { setShowForm(false); setEditId(null); setForm(emptyForm); },
@@ -135,8 +135,8 @@ const SubscriptionsWaste = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (editId) updateMutation.mutate({ id: editId, sub: form } as unknown as Record<string, unknown>);
-    else createMutation.mutate(form as unknown as Record<string, unknown>);
+    if (editId) updateMutation.mutate({ id: editId, sub: form });
+    else createMutation.mutate(form);
   };
 
   const annualized = (amount: number, cycle: string | null) => {
