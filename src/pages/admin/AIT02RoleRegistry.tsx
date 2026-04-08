@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
+import type { WorkforceRole } from "@/lib/services/ai-workforce/workforce-orchestrator";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +22,7 @@ type SortKey = "cost" | "invocations" | "name" | "stage";
 
 export default function AIT02RoleRegistry() {
   const { isDemoMode } = useDataMode();
-  const [selectedRole, setSelectedRole] = useState<any>(null);
+  const [selectedRole, setSelectedRole] = useState<WorkforceRole | null>(null);
   const [sortBy, setSortBy] = useState<SortKey>("name");
   const [filterStatus, setFilterStatus] = useState<string>("all");
 

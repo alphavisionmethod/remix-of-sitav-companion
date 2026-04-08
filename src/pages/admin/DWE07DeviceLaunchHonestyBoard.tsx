@@ -1,20 +1,26 @@
-import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Rocket, CheckCircle, AlertTriangle, XCircle, Beaker } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { Rocket, CheckCircle, XCircle, Beaker } from "lucide-react";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEVICE_ROADMAP } from "@/packages/contracts/msa/device-family-contract";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
+import type { AmbientLaunchReadinessRow } from "@/lib/types/dwe-types";
 
 export default function DWE07DeviceLaunchHonestyBoard() {
   const { isDemoMode } = useDataMode();
-  const [readiness, setReadiness] = useState<any[]>([]);
+  const { user } = useAuth();
 
-  useEffect(() => {
-    fromTable("ambient_launch_readiness").select("*").order("target_type", { ascending: true }).then(({ data }: any) => setReadiness(data || []));
-  }, []);
+  const { data: readiness = [] } = useQuery<AmbientLaunchReadinessRow[]>({
+    queryKey: ["dwe07-readiness", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await fromTable("ambient_launch_readiness").select("*").order("target_type", { ascending: true });
+      return (data ?? []) as AmbientLaunchReadinessRow[];
+    },
+  });
 
   const statusIcon = (ready: boolean, pilot: boolean) => {
     if (ready) return <CheckCircle className="h-4 w-4 text-green-500" />;
@@ -22,12 +28,12 @@ export default function DWE07DeviceLaunchHonestyBoard() {
     return <XCircle className="h-4 w-4 text-muted-foreground" />;
   };
 
-  const byType = readiness.reduce((acc: any, r: any) => {
+  const byType = readiness.reduce<Record<string, AmbientLaunchReadinessRow[]>>((acc, r) => {
     const k = r.target_type || "other";
     if (!acc[k]) acc[k] = [];
     acc[k].push(r);
     return acc;
-  }, {} as Record<string, any[]>);
+  }, {});
 
   return (
     <div className="space-y-6 p-6">
@@ -39,9 +45,9 @@ export default function DWE07DeviceLaunchHonestyBoard() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Total Entries</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{readiness.length}</p></CardContent></Card>
-        <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Launch Ready</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold text-green-500">{readiness.filter((r: any) => r.launch_ready).length}</p></CardContent></Card>
-        <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Pilot Ready</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold text-yellow-500">{readiness.filter((r: any) => r.pilot_ready && !r.launch_ready).length}</p></CardContent></Card>
-        <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Not Ready</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold text-muted-foreground">{readiness.filter((r: any) => !r.launch_ready && !r.pilot_ready).length}</p></CardContent></Card>
+        <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Launch Ready</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold text-green-500">{readiness.filter((r) => r.launch_ready).length}</p></CardContent></Card>
+        <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Pilot Ready</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold text-yellow-500">{readiness.filter((r) => r.pilot_ready && !r.launch_ready).length}</p></CardContent></Card>
+        <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Not Ready</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold text-muted-foreground">{readiness.filter((r) => !r.launch_ready && !r.pilot_ready).length}</p></CardContent></Card>
       </div>
 
       <Card>
@@ -69,9 +75,9 @@ export default function DWE07DeviceLaunchHonestyBoard() {
           <CardHeader><CardTitle className="capitalize">{type.replace(/_/g, " ")} Readiness</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {(items as never[]).map((r: any) => (
+              {items.map((r) => (
                 <div key={r.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
-                  {statusIcon(r.launch_ready, r.pilot_ready)}
+                  {statusIcon(r.launch_ready ?? false, r.pilot_ready ?? false)}
                   <div className="flex-1">
                     <p className="text-sm font-medium">{r.target_name}</p>
                     <p className="text-xs text-muted-foreground">{r.launch_label || r.target_key}</p>

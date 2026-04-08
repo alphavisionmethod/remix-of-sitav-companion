@@ -193,7 +193,7 @@ const AdvisorScorecard = ({ advisor }: { advisor: typeof DEMO_ADVISOR_SCORECARDS
 // ── Live data hook ───────────────────────────────────────────
 
 function useAgentIntelligence(action: string) {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fetch = async () => {
@@ -237,7 +237,10 @@ export default function AdvisorCouncilDashboard() {
   const scorecards = DEMO_ADVISOR_SCORECARDS;
   const escalations = DEMO_ESCALATION_LOG;
   const handoffs = DEMO_HANDOFF_LOG;
-  const budget = budgetData.data?.budget || MODEL_BUDGET;
+  const budgetRaw = budgetData.data && typeof budgetData.data === "object" && "budget" in budgetData.data
+    ? budgetData.data.budget as typeof MODEL_BUDGET
+    : null;
+  const budget = budgetRaw || MODEL_BUDGET;
 
   const pendingEscalations = escalations.filter(e => e.status === "pending").length;
   const avgGrade = scorecards.reduce((s, a) => s + (a.grade === "A" ? 4 : a.grade === "B" ? 3 : 2), 0) / scorecards.length;
