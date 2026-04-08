@@ -79,13 +79,13 @@ const BillsWorkspace = () => {
   const isLoading = billsQuery.isLoading;
   const freshness = useQueryFreshness(billsQuery);
 
-  const createMutation = useAction("finance", "bill.create", {
+  const createMutation = useAction<BillForm>("finance", "bill.create", {
     successMessage: "Bill created",
     invalidateKeys: [["bills"]],
     onSuccess: () => { setShowForm(false); setForm(emptyForm); },
   });
 
-  const updateMutation = useAction("finance", "bill.update", {
+  const updateMutation = useAction<{ id: string; bill: BillForm }>("finance", "bill.update", {
     successMessage: "Bill updated",
     invalidateKeys: [["bills"]],
     onSuccess: () => { setShowForm(false); setEditId(null); setForm(emptyForm); },
