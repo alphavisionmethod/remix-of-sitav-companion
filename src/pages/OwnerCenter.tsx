@@ -2392,44 +2392,36 @@ const OwnerCenter = () => {
               if (isDemoMode) {
                 setSimResult(buildDemoSimResult(simInput));
               } else {
-                simulatePolicy.mutate(simInput, { onSuccess: (data) => setSimResult(data) });
+                simulatePolicy.mutate(simInput, { onSuccess: (data) => {
+                  if (data && typeof data === "object" && "simulation" in data) {
+                    setSimResult(data as SimResult);
+                  }
+                }});
               }
             }}>
               <Gauge className="h-4 w-4" /> Run Simulation
             </SitaButton>
 
-            {(simResult || simulatePolicy.data) && (
+            {simResult && (
               <div className="rounded-lg border border-border p-4 space-y-3">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold text-foreground">Result:</span>
-                  {(() => {
-                    const r = simResult?.simulation || (simulatePolicy.data && typeof simulatePolicy.data === "object" && "simulation" in simulatePolicy.data ? (simulatePolicy.data as Record<string, unknown>).simulation : undefined) as Record<string, unknown> | undefined;
-                    if (!r) return null;
-                    return (
-                      <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${r.final_effect === "allow" ? "bg-trust-safe/10 text-trust-safe" : r.final_effect === "deny" ? "bg-destructive/10 text-destructive" : "bg-accent/10 text-accent"}`}>
-                        {r.final_effect.toUpperCase()}
-                      </span>
-                    );
-                  })()}
+                  <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${simResult.simulation.final_effect === "allow" ? "bg-trust-safe/10 text-trust-safe" : simResult.simulation.final_effect === "deny" ? "bg-destructive/10 text-destructive" : "bg-accent/10 text-accent"}`}>
+                    {simResult.simulation.final_effect.toUpperCase()}
+                  </span>
                 </div>
-                {(() => {
-                  const r = simResult?.simulation || (simulatePolicy.data && typeof simulatePolicy.data === "object" && "simulation" in simulatePolicy.data ? (simulatePolicy.data as Record<string, unknown>).simulation : undefined) as Record<string, unknown> | undefined;
-                  if (!r) return null;
-                  return (
-                    <div className="space-y-2">
-                      <p className="text-xs text-muted-foreground">{r.evaluated_policies} policies evaluated</p>
-                      {r.results?.map((pr: any, i: number) => (
-                        <div key={i} className="rounded-lg bg-secondary/30 p-2.5">
-                          <p className="text-xs font-medium text-foreground">{pr.policy_name}</p>
-                          <p className={`text-[10px] font-bold ${pr.effect === "allow" ? "text-trust-safe" : pr.effect === "deny" ? "text-destructive" : "text-accent"}`}>{pr.effect}</p>
-                          {pr.reasons.map((reason: string, j: number) => (
-                            <p key={j} className="text-[11px] text-muted-foreground">{reason}</p>
-                          ))}
-                        </div>
+                <div className="space-y-2">
+                  <p className="text-xs text-muted-foreground">{simResult.simulation.evaluated_policies} policies evaluated</p>
+                  {simResult.simulation.results.map((pr, i: number) => (
+                    <div key={i} className="rounded-lg bg-secondary/30 p-2.5">
+                      <p className="text-xs font-medium text-foreground">{pr.policy_name}</p>
+                      <p className={`text-[10px] font-bold ${pr.effect === "allow" ? "text-trust-safe" : pr.effect === "deny" ? "text-destructive" : "text-accent"}`}>{pr.effect}</p>
+                      {pr.reasons.map((reason: string, j: number) => (
+                        <p key={j} className="text-[11px] text-muted-foreground">{reason}</p>
                       ))}
                     </div>
-                  );
-                })()}
+                  ))}
+                </div>
               </div>
             )}
           </div>
