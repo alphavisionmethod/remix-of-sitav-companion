@@ -1,116 +1,124 @@
 
 
-# Eliminate All `as any` and `as unknown as` Casts from Pages
+# SITA OS — Full Gap Audit: What's Missing for Production-Ready
 
-## Problem
+## Current State (What's Done)
+- 0 TypeScript errors (`tsc --noEmit` clean)
+- 0 `as any` in `src/pages/` (was 69)
+- 0 `as unknown as` in `src/pages/` (was 11)
+- Architecture boundary checks pass (0 violations)
+- 169 test files with substantial coverage
+- Auth flow working (login, signup, reset, demo mode)
+- 52 edge functions deployed
+- ~200+ admin pages, ~100+ user-facing pages
+- Type guards and relation parsers established
 
-69 `as any` casts and 8 `as unknown as` double-casts across ~20 page files. The build compiles (0 errors), but these hide real type gaps and will rot the codebase. The user's instructions 11–13 call for typed parser functions, per-page view-model mappers, and eliminating unsafe casts.
+---
 
-## Categorized Clusters
+## Remaining Gaps (Ordered by Severity)
 
-### Cluster A: Supabase relation payloads (28 casts, 7 files)
-Files: `AR06ExecutionTraceExplorer`, `AR07RetryFailureCenter`, `ISA01–ISA05`, `ISA07`
+### P0 — Type Safety Debt Still Hidden
 
-Pattern: `((row as any).scheduled_jobs as any)?.name` or `((row as any).provider_families as any)?.name`
-
-These are nested Supabase `select("*, scheduled_jobs(name, domain, ...)")` results where the relation object is inferred as `unknown`.
-
-**Fix**: Create shared parser types and helpers:
-- `parseRelation<T>(raw: unknown): T` in `src/lib/types/relation-parsers.ts`
-- `ScheduledJobRef { name, domain, job_class, target_function }`
-- `ProviderFamilyRef { name, provider_key }`
-- `ProviderCapabilityRef { display_name }`
-- Apply at the query boundary, not in JSX
-
-### Cluster B: Edge function / hook results used as `any` (15 casts, 7 files)
-Files: `MoneyOverview` (`cf`, `br`), `CashTiming` (`safeToSpendData`), `TaxEstimator` (`t`, `d`), `BusinessOverview` (`crmHealth`), `MissionControlPage` (`adminIncidents`, `tokenEngine.routes`), `OwnerCenter` (`intelligenceData`, `simulatePolicy.data`)
-
-**Fix**: Add proper generic types to `useQuery` calls in `use-backend-actions.ts`:
-- `SafeToSpendResult { safe_to_spend_cents: number }`
-- `BurnRateResult { monthly_burn_cents, runway_months, ... }`
-- `TaxEstimateResult { federal_tax_cents, se_tax_cents, total_tax_cents, ... }`
-- `TaxDeductionsResult { total_deductions_cents, items: ... }`
-- Then pages destructure typed data directly — no casts needed
-
-### Cluster C: Mixed union / joined items (10 casts, 3 files)
-Files: `RecoveryCenter` (workflow_runs + incidents union), `FL01FlagshipLoopsExecutive` (verification runs), `SubscriptionsWaste` (`waste_flag`, `duplicate_of`)
-
-**Fix**:
-- `RecoveryCenter`: Define `RecoveryItem` union type with discriminant (`_isIncident`). Normalize `selected` via a `toRecoveryDetail()` parser
-- `FL01`: Type `verificationRuns` with explicit generic on `useQuery<VerificationRun[]>`
-- `SubscriptionsWaste`: `waste_flag` and `duplicate_of` are metadata fields — parse from `metadata` column via `getString`/`getBoolean` guards, or if they're real columns, ensure the DB type includes them
-
-### Cluster D: JSON metadata access (8 casts, 4 files)
-Files: `PermissionsCenter` (device metadata), `PersistenceStatus` (receipt fields), `FilesSettings` (settings blob), `ComputeGovernanceBoard` (`downgradeReason`)
-
-**Fix**: Use existing `isRecord`/`getString`/`getNumber`/`getBoolean` guards from `src/lib/types/guards.ts` at the data boundary
-
-### Cluster E: In-memory engine hacks (8 casts, 3 files)
-Files: `BusinessOverview` (revenue engine signals), `LeaseDashboard` (mutating lease object), `AutomationSimLab` (static simulation object policy check)
-
-**Fix**:
-- `AutomationSimLab`: The `simulation.policyCheck` is a static const — just type it properly with an interface
-- `LeaseDashboard`: Use `leaseManager.expireLease(id)` method instead of direct property mutation; if method doesn't exist, add it
-- `BusinessOverview`: Type the revenue engine's `signals` and `shouldAutoRecover` properly
-
-### Cluster F: Remaining scattered casts (8 casts, 5 files)
-Files: `AR08KillSwitchCenter`, `TeamManagement`, `CJ01ExecutiveReport`, `CJ08RouteActionCoverage`, `SAGFallbackCenter`
-
-**Fix**: Apply `isRecord` + field extractors at data boundaries
-
-## Implementation Plan
-
-### Step 1: Create `src/lib/types/relation-parsers.ts`
-Shared parsers for Supabase relation objects:
+**1. 3,700+ `: any)` callback parameters across 237 page files**
+This is the single largest remaining type gap. Pattern:
+```ts
+data.map((row: any) => ...)
+.filter((r: any) => r.status === "pass")
+.then(({ data }: any) => ...)
 ```
-parseScheduledJobRef(raw) → { name, domain, job_class, target_function }
-parseProviderFamilyRef(raw) → { name, provider_key }
-parseProviderCapabilityRef(raw) → { display_name }
-```
+These hide the same class of bugs we just fixed (`as any`), just in a different syntax. ~237 files affected.
 
-### Step 2: Add typed generics to edge function hooks
-In `src/hooks/use-backend-actions.ts`:
-- Add `SafeToSpendResult`, `BurnRateResult`, `TaxEstimateResult`, `TaxDeductionsResult` interfaces
-- Apply as generics to `useQuery<T>` calls
+**Fix:** For each query result, type the callback parameter using DB row types or view-model interfaces. Bulk-fixable per-domain.
 
-### Step 3: Type the `AutomationSimLab` simulation object
-Define a `PolicyCheckEntry` interface so `Object.entries(simulation.policyCheck)` yields typed values
+**2. 66 `useState<any>` across 11 page files**
+Files: `DWE01–07`, `ReplayRecoveryConsole`, `AIT02RoleRegistry`, `AdvisorCouncilDashboard`, `OwnerCenter`.
+These produce `any`-typed state that infects all downstream usage.
 
-### Step 4: Fix RecoveryCenter union typing
-Define `RecoveryItem` type. Normalize `selected` before render.
+**Fix:** Replace with typed state: `useState<DeviceTrustRecord[]>([])`, etc.
 
-### Step 5: Fix SubscriptionsWaste metadata fields
-Parse `waste_flag` / `duplicate_of` from metadata or ensure DB types include them.
+**3. 7 admin DWE pages use raw `useEffect` + `fromTable().then()` instead of `useQuery`**
+Files: `DWE01` through `DWE07`. They use `useState<any[]>` + bare `useEffect` fetches with no error handling, no loading states, no cache invalidation.
 
-### Step 6: Apply relation parsers to ISA01–07, AR06, AR07
-Replace all `((row as any).provider_families as any)?.name` with `parseProviderFamilyRef(row.provider_families).name`
+**Fix:** Migrate to `useQuery` pattern matching the rest of the codebase.
 
-### Step 7: Fix remaining scattered casts
-- `AR08KillSwitchCenter`: Type `existing` from query result
-- `TeamManagement`: Type `perf` record
-- `CJ01/CJ08`: Type loop variables from query results
-- `SAGFallbackCenter`: Type health check record
-- `FilesSettings`: Type settings blob
-- `MoneyOverview/CashTiming`: Use typed hook results (from step 2)
-- `OwnerCenter`: Type `intelligenceData` and `simulatePolicy.data`
-- `MissionControlPage`: Type `adminIncidents` and `tokenEngine.routes`
-- `LeaseDashboard`: Use proper lease mutation method
-- `BusinessOverview`: Type revenue engine access
-- `ComputeGovernanceBoard`: Type routing record with `downgradeReason`
-- `PersistenceStatus`: Use guards for receipt fields
-- `PermissionsCenter`: Use metadata guards (already partially done)
+---
 
-### Step 8: Verify
-Run `npx tsc --noEmit` — must remain 0 errors. Grep for `as any` in pages — target: 0.
+### P1 — Security
 
-## Files Modified
-- 1 new: `src/lib/types/relation-parsers.ts`
-- 1 modified: `src/hooks/use-backend-actions.ts` (add result types)
-- ~20 page files modified (remove `as any`, apply parsers/types)
+**4. RLS policies on 30 tables use `{public}` role instead of `{authenticated}`**
+Security scan flagged: `vault_items`, `health_logs`, `tax_estimates`, `appointments`, `money_approvals`, `receivables`, `trade_orders`, etc. While `auth.uid() = user_id` prevents actual data leaks today, this violates least-privilege.
 
-## What This Does NOT Do
-- No `@ts-ignore` or `@ts-expect-error`
-- No `as unknown as SomeType` without validation
-- No rendering raw JSON in JSX
-- No `useState([])` without explicit generic
+**Fix:** Migration to change all 30 policies from `public` to `authenticated`.
+
+**5. Leaked password protection disabled**
+Flagged by security scanner (currently ignored with note "configured via dashboard"). Should be enabled in Supabase Dashboard → Auth → Settings.
+
+---
+
+### P2 — Architecture Compliance
+
+**6. 131 orphan service warnings in `service-manifest.json`**
+All entries resolve to `"undefined"` name/ID. The manifest generator (`sync-registry-manifests.ts`) is producing broken entries.
+
+**Fix:** Fix the manifest generator to correctly read service metadata, then regenerate.
+
+**7. Mock data still used as production fallback in ~89 pages**
+Pattern: `isDemoMode ? MOCK_DATA : liveData`. This is correct for demo mode, but some pages fall back to mock data when live queries return empty — masking real data issues.
+
+**Fix:** Audit each page to ensure mock data is ONLY used when `isDemoMode === true`, never as a silent fallback for empty live data.
+
+---
+
+### P3 — Sprint Plan Incomplete Items
+
+**8. Concierge depth (Sprint 2 remaining)**
+- Calendar reconciliation not implemented
+- Task delegation flow incomplete
+
+**9. Right contextual rail**
+Not built yet. Mentioned in sprint plan as NEXT.
+
+**10. Context switcher (household/org/entity)**
+`EntityContextProvider` exists but no UI switcher component.
+
+**11. Advisor workspace completion**
+Single advisor view exists but simulation studio integration is partial.
+
+---
+
+### P4 — Code Quality / Maintenance
+
+**12. 24 mock data files in `src/lib/mock-data/`**
+These should be consolidated into `src/lib/demo-data/` (some already migrated). Having both `mock-data/` and `demo-data/` directories creates confusion about which is canonical.
+
+**13. 3 remaining `as any` in platform bridges**
+In `push-registration-service.ts` — `(window as any)?.Capacitor` and `(window as any).electron`. These are acceptable for native platform detection but should use the typed declarations in `vite-env.d.ts`.
+
+**14. Test `as any` in test files**
+5 instances in test files (`self-healing.test.ts`, `capability-registry.integration.test.ts`). Low priority but technically violates the "no `as any`" standard.
+
+---
+
+## Recommended Implementation Order
+
+| Priority | Task | Files | Effort |
+|----------|------|-------|--------|
+| **P0-1** | Type all `: any)` callbacks in pages | ~237 files | Large (split by domain) |
+| **P0-2** | Fix 66 `useState<any>` | 11 files | Medium |
+| **P0-3** | Migrate DWE01–07 from useEffect to useQuery | 7 files | Medium |
+| **P1-1** | Fix 30 RLS policies: public → authenticated | 1 migration | Small |
+| **P2-1** | Fix service-manifest generator | 1-2 files | Small |
+| **P2-2** | Audit mock fallback paths | ~89 files | Medium |
+| **P3** | Sprint 2 remaining features | Multiple | Large |
+| **P4** | Consolidate mock-data → demo-data | ~24 files | Medium |
+
+### What's Actually Ready
+- Auth, routing, shell, sidebar, theming — production-ready
+- Type safety at page level (the layer we just fixed) — clean
+- Edge functions — deployed and functional
+- Architecture contracts and boundary enforcement — working
+- Test infrastructure — comprehensive
+
+### What Blocks "Fully Advanced"
+The **3,700+ `: any)` callbacks** are the elephant in the room. Every query result, every `.map()`, every `.filter()` in those 237 files is operating on untyped data. This is the same class of problem we solved for `as any` — just 50x more instances. Fixing it systematically (domain by domain, using DB row types) would make the codebase genuinely type-safe end-to-end.
 
