@@ -261,7 +261,7 @@ const OwnerCenter = () => {
   const [newPolicy, setNewPolicy] = useState({ name: "", category: "money", conditions: "{}", approval_required: false });
   const [simulatorDialog, setSimulatorDialog] = useState(false);
   const [simInput, setSimInput] = useState({ domain: "money", action: "pay_bill", amount: 100 });
-  const [simResult, setSimResult] = useState<Record<string, unknown> | null>(null);
+  const [simResult, setSimResult] = useState<SimResult | null>(null);
   const [searchFilter, setSearchFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedCouncil, setSelectedCouncil] = useState<InternalAgentCouncil | null>(null);
