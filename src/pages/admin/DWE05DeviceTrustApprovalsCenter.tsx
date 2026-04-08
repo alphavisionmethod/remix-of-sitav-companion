@@ -1,23 +1,43 @@
-import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Fingerprint, ShieldCheck, ShieldAlert, KeyRound } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
+import type { DeviceTrustRecordRow, MicroApprovalPolicyRow, DeviceApprovalReceiptRow } from "@/lib/types/dwe-types";
 
 export default function DWE05DeviceTrustApprovalsCenter() {
   const { isDemoMode } = useDataMode();
-  const [trustRecords, setTrustRecords] = useState<any[]>([]);
-  const [policies, setPolicies] = useState<any[]>([]);
-  const [receipts, setReceipts] = useState<any[]>([]);
+  const { user } = useAuth();
 
-  useEffect(() => {
-    fromTable("device_trust_records").select("*").order("created_at", { ascending: false }).then(({ data }: any) => setTrustRecords(data || []));
-    fromTable("micro_approval_policies").select("*").then(({ data }: any) => setPolicies(data || []));
-    fromTable("device_approval_receipts").select("*").order("created_at", { ascending: false }).limit(20).then(({ data }: any) => setReceipts(data || []));
-  }, []);
+  const { data: trustRecords = [] } = useQuery<DeviceTrustRecordRow[]>({
+    queryKey: ["dwe05-trust", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await fromTable("device_trust_records").select("*").order("created_at", { ascending: false });
+      return (data ?? []) as DeviceTrustRecordRow[];
+    },
+  });
+
+  const { data: policies = [] } = useQuery<MicroApprovalPolicyRow[]>({
+    queryKey: ["dwe05-policies", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await fromTable("micro_approval_policies").select("*");
+      return (data ?? []) as MicroApprovalPolicyRow[];
+    },
+  });
+
+  const { data: receipts = [] } = useQuery<DeviceApprovalReceiptRow[]>({
+    queryKey: ["dwe05-receipts", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await fromTable("device_approval_receipts").select("*").order("created_at", { ascending: false }).limit(20);
+      return (data ?? []) as DeviceApprovalReceiptRow[];
+    },
+  });
 
   const trustIcon = (level: string) => {
     if (level === "high_trust" || level === "approval_capable") return <ShieldCheck className="h-4 w-4 text-green-500" />;
@@ -44,9 +64,9 @@ export default function DWE05DeviceTrustApprovalsCenter() {
         <CardContent>
           {trustRecords.length === 0 ? <p className="text-sm text-muted-foreground">No device trust records yet.</p> : (
             <div className="space-y-2">
-              {trustRecords.map((t: any) => (
+              {trustRecords.map((t) => (
                 <div key={t.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
-                  {trustIcon(t.trust_class)}
+                  {trustIcon(t.trust_class ?? "")}
                   <div className="flex-1">
                     <p className="text-sm font-medium">Trust Class: {t.trust_class}</p>
                     <p className="text-xs text-muted-foreground">Allowed: {(t.approval_classes_allowed || []).join(", ") || "none"}</p>
@@ -67,7 +87,7 @@ export default function DWE05DeviceTrustApprovalsCenter() {
         <CardContent>
           {policies.length === 0 ? <p className="text-sm text-muted-foreground">No micro-approval policies configured.</p> : (
             <div className="space-y-2">
-              {policies.map((p: any) => (
+              {policies.map((p) => (
                 <div key={p.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
                   <div className="flex-1">
                     <p className="text-sm font-medium">{p.action_class}</p>

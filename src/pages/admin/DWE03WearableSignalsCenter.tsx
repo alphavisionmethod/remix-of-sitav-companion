@@ -1,25 +1,52 @@
-import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Activity, HeartPulse, Shield, Lock } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
+import type { WearableProviderRow, WearableSignalRow, HealthSignalConsentRow, ReadinessStateRow } from "@/lib/types/dwe-types";
 
 export default function DWE03WearableSignalsCenter() {
   const { isDemoMode } = useDataMode();
-  const [providers, setProviders] = useState<any[]>([]);
-  const [signals, setSignals] = useState<any[]>([]);
-  const [consents, setConsents] = useState<any[]>([]);
-  const [readiness, setReadiness] = useState<any[]>([]);
+  const { user } = useAuth();
 
-  useEffect(() => {
-    fromTable("wearable_providers").select("*").order("name").then(({ data }: any) => setProviders(data || []));
-    fromTable("wearable_signals").select("*").order("captured_at", { ascending: false }).limit(50).then(({ data }: any) => setSignals(data || []));
-    fromTable("health_signal_consents").select("*").then(({ data }: any) => setConsents(data || []));
-    fromTable("readiness_states").select("*").order("created_at", { ascending: false }).limit(10).then(({ data }: any) => setReadiness(data || []));
-  }, []);
+  const { data: providers = [] } = useQuery<WearableProviderRow[]>({
+    queryKey: ["dwe03-providers", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await fromTable("wearable_providers").select("*").order("name");
+      return (data ?? []) as WearableProviderRow[];
+    },
+  });
+
+  const { data: signals = [] } = useQuery<WearableSignalRow[]>({
+    queryKey: ["dwe03-signals", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await fromTable("wearable_signals").select("*").order("captured_at", { ascending: false }).limit(50);
+      return (data ?? []) as WearableSignalRow[];
+    },
+  });
+
+  const { data: consents = [] } = useQuery<HealthSignalConsentRow[]>({
+    queryKey: ["dwe03-consents", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await fromTable("health_signal_consents").select("*");
+      return (data ?? []) as HealthSignalConsentRow[];
+    },
+  });
+
+  const { data: readiness = [] } = useQuery<ReadinessStateRow[]>({
+    queryKey: ["dwe03-readiness", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await fromTable("readiness_states").select("*").order("created_at", { ascending: false }).limit(10);
+      return (data ?? []) as ReadinessStateRow[];
+    },
+  });
 
   return (
     <div className="space-y-6 p-6">
@@ -32,7 +59,7 @@ export default function DWE03WearableSignalsCenter() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Wearable Providers</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{providers.length}</p></CardContent></Card>
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Recent Signals</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{signals.length}</p></CardContent></Card>
-        <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Active Consents</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{consents.filter((c: any) => c.mode === "active").length}</p></CardContent></Card>
+        <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Active Consents</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{consents.filter((c) => c.mode === "active").length}</p></CardContent></Card>
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Readiness Records</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{readiness.length}</p></CardContent></Card>
       </div>
 
@@ -40,7 +67,7 @@ export default function DWE03WearableSignalsCenter() {
         <CardHeader><CardTitle className="flex items-center gap-2"><HeartPulse className="h-5 w-5" /> Wearable Providers</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {providers.map((p: any) => (
+            {providers.map((p) => (
               <div key={p.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
                 <Activity className="h-5 w-5 text-primary" />
                 <div className="flex-1">
@@ -59,7 +86,7 @@ export default function DWE03WearableSignalsCenter() {
         <CardContent>
           {consents.length === 0 ? <p className="text-sm text-muted-foreground">No consents configured. Users will grant consent when connecting wearables.</p> : (
             <div className="space-y-2">
-              {consents.map((c: any) => (
+              {consents.map((c) => (
                 <div key={c.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
                   <Shield className={`h-4 w-4 ${c.mode === "active" ? "text-green-500" : "text-muted-foreground"}`} />
                   <div className="flex-1">
@@ -79,7 +106,7 @@ export default function DWE03WearableSignalsCenter() {
         <CardContent>
           {readiness.length === 0 ? <p className="text-sm text-muted-foreground">No readiness records yet.</p> : (
             <div className="space-y-2">
-              {readiness.map((r: any) => (
+              {readiness.map((r) => (
                 <div key={r.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
                   <div className="flex-1">
                     <p className="text-sm font-medium">Readiness: {r.readiness_level}</p>

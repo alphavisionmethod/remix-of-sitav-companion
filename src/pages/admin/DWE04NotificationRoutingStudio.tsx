@@ -1,23 +1,43 @@
-import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bell, Route, Volume2, VolumeX, Smartphone, Watch, Laptop } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
+import type { AmbientNotificationRouteRow, NotificationFatigueProfileRow, InterruptionPolicyRow } from "@/lib/types/dwe-types";
 
 export default function DWE04NotificationRoutingStudio() {
   const { isDemoMode } = useDataMode();
-  const [routes, setRoutes] = useState<any[]>([]);
-  const [fatigue, setFatigue] = useState<any[]>([]);
-  const [interruption, setInterruption] = useState<any[]>([]);
+  const { user } = useAuth();
 
-  useEffect(() => {
-    fromTable("ambient_notification_routes").select("*").order("priority", { ascending: false }).then(({ data }: any) => setRoutes(data || []));
-    fromTable("notification_fatigue_profiles").select("*").then(({ data }: any) => setFatigue(data || []));
-    fromTable("interruption_policies").select("*").then(({ data }: any) => setInterruption(data || []));
-  }, []);
+  const { data: routes = [] } = useQuery<AmbientNotificationRouteRow[]>({
+    queryKey: ["dwe04-routes", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await fromTable("ambient_notification_routes").select("*").order("priority", { ascending: false });
+      return (data ?? []) as AmbientNotificationRouteRow[];
+    },
+  });
+
+  const { data: fatigue = [] } = useQuery<NotificationFatigueProfileRow[]>({
+    queryKey: ["dwe04-fatigue", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await fromTable("notification_fatigue_profiles").select("*");
+      return (data ?? []) as NotificationFatigueProfileRow[];
+    },
+  });
+
+  const { data: interruption = [] } = useQuery<InterruptionPolicyRow[]>({
+    queryKey: ["dwe04-interruption", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await fromTable("interruption_policies").select("*");
+      return (data ?? []) as InterruptionPolicyRow[];
+    },
+  });
 
   const surfaceIcon = (s: string) => {
     if (s.includes("watch")) return <Watch className="h-4 w-4" />;
@@ -44,9 +64,9 @@ export default function DWE04NotificationRoutingStudio() {
         <CardContent>
           {routes.length === 0 ? <p className="text-sm text-muted-foreground">No routing rules configured yet.</p> : (
             <div className="space-y-2">
-              {routes.map((r: any) => (
+              {routes.map((r) => (
                 <div key={r.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
-                  {surfaceIcon(r.target_surface)}
+                  {surfaceIcon(r.target_surface ?? "")}
                   <div className="flex-1">
                     <p className="text-sm font-medium">{r.route_name}</p>
                     <p className="text-xs text-muted-foreground">→ {r.target_surface} · {r.category || "general"}</p>
@@ -66,7 +86,7 @@ export default function DWE04NotificationRoutingStudio() {
         <CardContent>
           {interruption.length === 0 ? <p className="text-sm text-muted-foreground">No interruption policies set.</p> : (
             <div className="space-y-2">
-              {interruption.map((ip: any) => (
+              {interruption.map((ip) => (
                 <div key={ip.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
                   {ip.enforce_quiet_hours ? <VolumeX className="h-4 w-4 text-yellow-500" /> : <Volume2 className="h-4 w-4" />}
                   <div className="flex-1">
