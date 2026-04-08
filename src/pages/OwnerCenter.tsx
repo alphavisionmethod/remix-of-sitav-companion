@@ -18,7 +18,20 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 // Demo simulation helper (inline — no mock-data import)
-const buildDemoSimResult = (simInput: { amount: number; [key: string]: unknown }) => ({
+interface SimPolicyResult {
+  policy_name: string;
+  effect: string;
+  reasons: string[];
+}
+interface SimResult {
+  simulation: {
+    input: Record<string, unknown>;
+    final_effect: string;
+    evaluated_policies: number;
+    results: SimPolicyResult[];
+  };
+}
+const buildDemoSimResult = (simInput: { amount: number; [key: string]: unknown }): SimResult => ({
   simulation: {
     input: simInput,
     final_effect: simInput.amount > 500 ? "deny" : "allow",
