@@ -125,8 +125,8 @@ const BillsWorkspace = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (editId) updateMutation.mutate({ id: editId, bill: form } as unknown as Record<string, unknown>);
-    else createMutation.mutate(form as unknown as Record<string, unknown>);
+    if (editId) updateMutation.mutate({ id: editId, bill: form });
+    else createMutation.mutate(form);
   };
 
   return (

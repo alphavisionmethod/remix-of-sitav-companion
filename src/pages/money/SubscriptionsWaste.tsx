@@ -135,8 +135,8 @@ const SubscriptionsWaste = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (editId) updateMutation.mutate({ id: editId, sub: form } as unknown as Record<string, unknown>);
-    else createMutation.mutate(form as unknown as Record<string, unknown>);
+    if (editId) updateMutation.mutate({ id: editId, sub: form });
+    else createMutation.mutate(form);
   };
 
   const annualized = (amount: number, cycle: string | null) => {
