@@ -179,6 +179,11 @@ export class RevenueOpportunityEngine {
     };
   }
 
+  /** Public read-only access to signals map */
+  getSignals(): Map<string, LeakageSignal> {
+    return new Map(this.signals);
+  }
+
   serialize(): Record<string, unknown> {
     return {
       signals: Array.from(this.signals.entries()),
