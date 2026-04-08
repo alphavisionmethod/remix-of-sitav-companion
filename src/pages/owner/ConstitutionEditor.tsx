@@ -329,7 +329,7 @@ export default function ConstitutionEditor() {
               priority: (added.compiledPolicy?.parameters?.priority ?? 50) as number,
               enforcement_mode: added.enforcementMode,
               is_active: true,
-              compiled_json: (added.compiledPolicy ?? null) as import("@/integrations/supabase/types").Json,
+              compiled_json: JSON.parse(JSON.stringify(added.compiledPolicy ?? null)) as import("@/integrations/supabase/types").Json,
             }]);
           }
         }
