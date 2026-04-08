@@ -74,8 +74,8 @@ export default function DWE05DeviceTrustApprovalsCenter() {
                     </p>
                   </div>
                   {t.biometric_verified && <Fingerprint className="h-4 w-4 text-primary" />}
-                  <Badge variant={t.trust_score > 70 ? "default" : "secondary"} className="text-xs">
-                    Score: {t.trust_score}
+                  <Badge variant={t.trust_level === "high" ? "default" : "secondary"} className="text-xs">
+                    {t.trust_level || "unknown"}
                   </Badge>
                 </div>
               ))}
