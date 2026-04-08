@@ -39,9 +39,9 @@ export default function DWE05DeviceTrustApprovalsCenter() {
     },
   });
 
-  const trustIcon = (level: string) => {
-    if (level === "high_trust" || level === "approval_capable") return <ShieldCheck className="h-4 w-4 text-green-500" />;
-    if (level === "restricted") return <ShieldAlert className="h-4 w-4 text-red-500" />;
+  const trustIcon = (level: string | null) => {
+    if (level === "high" || level === "verified") return <ShieldCheck className="h-4 w-4 text-primary" />;
+    if (level === "restricted" || level === "revoked") return <ShieldAlert className="h-4 w-4 text-destructive" />;
     return <Shield className="h-4 w-4 text-muted-foreground" />;
   };
 
@@ -66,7 +66,7 @@ export default function DWE05DeviceTrustApprovalsCenter() {
             <div className="space-y-2">
               {trustRecords.map((t) => (
                 <div key={t.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
-                  {trustIcon(t.trust_class ?? "")}
+                  {trustIcon(t.trust_class)}
                   <div className="flex-1">
                     <p className="text-sm font-medium">Trust Class: {t.trust_class}</p>
                     <p className="text-xs text-muted-foreground">Allowed: {(t.approval_classes_allowed || []).join(", ") || "none"}</p>

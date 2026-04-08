@@ -59,7 +59,7 @@ export default function DWE03WearableSignalsCenter() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Wearable Providers</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{providers.length}</p></CardContent></Card>
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Recent Signals</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{signals.length}</p></CardContent></Card>
-        <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Active Consents</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{consents.filter((c) => c.mode === "active").length}</p></CardContent></Card>
+        <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Active Consents</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{consents.filter((c) => c.consented).length}</p></CardContent></Card>
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Readiness Records</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{readiness.length}</p></CardContent></Card>
       </div>
 
@@ -72,7 +72,7 @@ export default function DWE03WearableSignalsCenter() {
                 <Activity className="h-5 w-5 text-primary" />
                 <div className="flex-1">
                   <p className="font-medium text-sm">{p.name}</p>
-                  <p className="text-xs text-muted-foreground">{p.auth_method} · {(p.categories_supported || []).join(", ")}</p>
+                  <p className="text-xs text-muted-foreground">{p.auth_method} · {(p.categories || []).join(", ")}</p>
                 </div>
                 <Badge variant="outline" className="text-xs">{p.launch_stage}</Badge>
               </div>
@@ -88,12 +88,12 @@ export default function DWE03WearableSignalsCenter() {
             <div className="space-y-2">
               {consents.map((c) => (
                 <div key={c.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
-                  <Shield className={`h-4 w-4 ${c.mode === "active" ? "text-green-500" : "text-muted-foreground"}`} />
+                  <Shield className={`h-4 w-4 ${c.consented ? "text-primary" : "text-muted-foreground"}`} />
                   <div className="flex-1">
-                    <p className="text-sm font-medium">{c.provider_key}</p>
-                    <p className="text-xs text-muted-foreground">{(c.signal_types_allowed || []).join(", ")}</p>
+                    <p className="text-sm font-medium">{c.signal_type}</p>
+                    <p className="text-xs text-muted-foreground">{c.consent_reason || "No reason provided"}</p>
                   </div>
-                  <Badge variant={c.mode === "active" ? "default" : "secondary"} className="text-xs">{c.mode}</Badge>
+                  <Badge variant={c.consented ? "default" : "secondary"} className="text-xs">{c.consented ? "Consented" : "Revoked"}</Badge>
                 </div>
               ))}
             </div>
@@ -110,7 +110,7 @@ export default function DWE03WearableSignalsCenter() {
                 <div key={r.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
                   <div className="flex-1">
                     <p className="text-sm font-medium">Readiness: {r.readiness_level}</p>
-                    <p className="text-xs text-muted-foreground">Workload: {r.workload_tolerance} · Interruption: {r.interruption_sensitivity} · Confidence: {r.confidence}%</p>
+                    <p className="text-xs text-muted-foreground">Energy: {r.energy_estimate} · Activity: {r.activity_state} · Confidence: {r.confidence}%</p>
                   </div>
                   <span className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleString()}</span>
                 </div>

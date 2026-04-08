@@ -32,9 +32,9 @@ export default function DWE06AmbientAssistantCenter() {
 
   const roleIcons: Record<string, React.ReactNode> = {
     chief_of_staff: <Brain className="h-5 w-5 text-primary" />,
-    executive_assistant: <HeartHandshake className="h-5 w-5 text-blue-500" />,
-    strategist: <Zap className="h-5 w-5 text-yellow-500" />,
-    risk_watcher: <Shield className="h-5 w-5 text-red-500" />,
+    executive_assistant: <HeartHandshake className="h-5 w-5 text-accent-foreground" />,
+    strategist: <Zap className="h-5 w-5 text-warning" />,
+    risk_watcher: <Shield className="h-5 w-5 text-destructive" />,
   };
 
   return (
@@ -78,7 +78,7 @@ export default function DWE06AmbientAssistantCenter() {
             <div className="space-y-2">
               {interventions.map((i) => (
                 <div key={i.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
-                  <Zap className="h-4 w-4 text-yellow-500" />
+                  <Zap className="h-4 w-4 text-warning" />
                   <div className="flex-1">
                     <p className="text-sm font-medium">{i.intervention_type}</p>
                     <p className="text-xs text-muted-foreground">{i.description || "No description"}</p>

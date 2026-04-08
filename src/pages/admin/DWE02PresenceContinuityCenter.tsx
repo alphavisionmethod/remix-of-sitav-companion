@@ -25,7 +25,7 @@ export default function DWE02PresenceContinuityCenter() {
     queryKey: ["dwe02-handoffs", user?.id],
     enabled: !!user?.id,
     queryFn: async () => {
-      const { data } = await fromTable("handoff_sessions").select("*").order("started_at", { ascending: false }).limit(20);
+      const { data } = await fromTable("handoff_sessions").select("*").order("initiated_at", { ascending: false }).limit(20);
       return (data ?? []) as HandoffSessionRow[];
     },
   });
@@ -39,7 +39,7 @@ export default function DWE02PresenceContinuityCenter() {
     },
   });
 
-  const focusColors: Record<string, string> = { available: "text-green-500", focused: "text-blue-500", dnd: "text-red-500", meeting: "text-yellow-500", away: "text-muted-foreground", offline: "text-muted-foreground" };
+  const focusColors: Record<string, string> = { available: "text-primary", focused: "text-accent-foreground", dnd: "text-destructive", meeting: "text-warning", away: "text-muted-foreground", offline: "text-muted-foreground" };
 
   return (
     <div className="space-y-6 p-6">
@@ -53,7 +53,7 @@ export default function DWE02PresenceContinuityCenter() {
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Active Sessions</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{presence.length}</p></CardContent></Card>
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Handoffs</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{handoffs.length}</p></CardContent></Card>
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Continuity Records</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{contextRecords.length}</p></CardContent></Card>
-        <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Handoff Success</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{handoffs.length > 0 ? Math.round((handoffs.filter((h) => h.handoff_state === "completed").length / handoffs.length) * 100) : 0}%</p></CardContent></Card>
+        <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Handoff Success</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold">{handoffs.length > 0 ? Math.round((handoffs.filter((h) => h.handoff_status === "completed").length / handoffs.length) * 100) : 0}%</p></CardContent></Card>
       </div>
 
       <Card>
@@ -86,9 +86,9 @@ export default function DWE02PresenceContinuityCenter() {
                   <MonitorSmartphone className="h-4 w-4" />
                   <div className="flex-1">
                     <p className="text-sm font-medium">{h.source_surface} → {h.target_surface}</p>
-                    <p className="text-xs text-muted-foreground">{new Date(h.started_at).toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground">{new Date(h.initiated_at).toLocaleString()}</p>
                   </div>
-                  <Badge variant={h.handoff_state === "completed" ? "default" : "secondary"} className="text-xs">{h.handoff_state}</Badge>
+                  <Badge variant={h.handoff_status === "completed" ? "default" : "secondary"} className="text-xs">{h.handoff_status}</Badge>
                 </div>
               ))}
             </div>

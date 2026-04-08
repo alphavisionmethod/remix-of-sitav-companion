@@ -88,10 +88,10 @@ export default function DWE04NotificationRoutingStudio() {
             <div className="space-y-2">
               {interruption.map((ip) => (
                 <div key={ip.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
-                  {ip.enforce_quiet_hours ? <VolumeX className="h-4 w-4 text-yellow-500" /> : <Volume2 className="h-4 w-4" />}
+                  <Volume2 className="h-4 w-4" />
                   <div className="flex-1">
                     <p className="text-sm font-medium">{ip.policy_name}</p>
-                    <p className="text-xs text-muted-foreground">Focus: {ip.focus_state_trigger || "any"} · {ip.enforce_quiet_hours ? "Quiet hours enforced" : "No quiet hours"}</p>
+                    <p className="text-xs text-muted-foreground">Priority: {ip.priority} · Surfaces: {(ip.surfaces || []).join(", ") || "all"}</p>
                   </div>
                   <Badge variant={ip.enabled ? "default" : "secondary"} className="text-xs">{ip.enabled ? "Active" : "Off"}</Badge>
                 </div>
