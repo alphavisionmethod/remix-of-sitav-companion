@@ -193,7 +193,7 @@ const AdvisorScorecard = ({ advisor }: { advisor: typeof DEMO_ADVISOR_SCORECARDS
 // ── Live data hook ───────────────────────────────────────────
 
 function useAgentIntelligence(action: string) {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fetch = async () => {
