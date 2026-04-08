@@ -90,7 +90,7 @@ export default function DWE03WearableSignalsCenter() {
                 <div key={c.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
                   <Shield className={`h-4 w-4 ${c.consented ? "text-primary" : "text-muted-foreground"}`} />
                   <div className="flex-1">
-                    <p className="text-sm font-medium">{c.signal_type}</p>
+                    <p className="text-sm font-medium">{c.consent_reason || "Health Signal"}</p>
                     <p className="text-xs text-muted-foreground">{c.consent_reason || "No reason provided"}</p>
                   </div>
                   <Badge variant={c.consented ? "default" : "secondary"} className="text-xs">{c.consented ? "Consented" : "Revoked"}</Badge>

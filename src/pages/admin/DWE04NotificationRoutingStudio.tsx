@@ -91,7 +91,7 @@ export default function DWE04NotificationRoutingStudio() {
                   <Volume2 className="h-4 w-4" />
                   <div className="flex-1">
                     <p className="text-sm font-medium">{ip.policy_name}</p>
-                    <p className="text-xs text-muted-foreground">Priority: {ip.priority} · Surfaces: {(ip.surfaces || []).join(", ") || "all"}</p>
+                    <p className="text-xs text-muted-foreground">Priority: {ip.priority} · Families: {(ip.device_families || []).join(", ") || "all"}</p>
                   </div>
                   <Badge variant={ip.enabled ? "default" : "secondary"} className="text-xs">{ip.enabled ? "Active" : "Off"}</Badge>
                 </div>

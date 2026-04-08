@@ -81,9 +81,9 @@ export default function DWE06AmbientAssistantCenter() {
                   <Zap className="h-4 w-4 text-warning" />
                   <div className="flex-1">
                     <p className="text-sm font-medium">{i.intervention_type}</p>
-                    <p className="text-xs text-muted-foreground">{i.description || "No description"}</p>
+                    <p className="text-xs text-muted-foreground">{i.explanation || "No explanation"}</p>
                   </div>
-                  <Badge variant="outline" className="text-xs">{i.status || "pending"}</Badge>
+                  <Badge variant="outline" className="text-xs">{i.delivered ? "Delivered" : "Pending"}</Badge>
                   <span className="text-xs text-muted-foreground">{new Date(i.created_at).toLocaleString()}</span>
                 </div>
               ))}

@@ -63,9 +63,9 @@ export default function DWE01ConnectedDevicesCenter() {
                 {iconMap[f.family_key] || <Monitor className="h-5 w-5" />}
                 <div>
                   <p className="font-medium text-sm">{f.name}</p>
-                  <p className="text-xs text-muted-foreground">{f.interaction_type} · {f.sensor_support_level}</p>
+                  <p className="text-xs text-muted-foreground">{f.interaction_type} · {f.sensor_support ? "Sensor" : "No sensor"}</p>
                 </div>
-                <Badge variant="outline" className="ml-auto text-xs">{f.trust_tier}</Badge>
+                <Badge variant="outline" className="ml-auto text-xs">{f.launch_stage}</Badge>
               </div>
             ))}
           </div>

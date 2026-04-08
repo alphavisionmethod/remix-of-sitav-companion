@@ -66,14 +66,16 @@ export default function DWE05DeviceTrustApprovalsCenter() {
             <div className="space-y-2">
               {trustRecords.map((t) => (
                 <div key={t.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
-                  {trustIcon(t.trust_class)}
+                  {trustIcon(t.approval_tier)}
                   <div className="flex-1">
-                    <p className="text-sm font-medium">Trust Class: {t.trust_class}</p>
-                    <p className="text-xs text-muted-foreground">Allowed: {(t.approval_classes_allowed || []).join(", ") || "none"}</p>
+                    <p className="text-sm font-medium">Approval Tier: {t.approval_tier}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {t.financial_actions_allowed ? "Financial ✓" : "Financial ✗"} · {t.high_risk_actions_allowed ? "High risk ✓" : "High risk ✗"}
+                    </p>
                   </div>
-                  {t.biometric_capable && <Fingerprint className="h-4 w-4 text-primary" />}
-                  <Badge variant={t.device_bound_approval_enabled ? "default" : "secondary"} className="text-xs">
-                    {t.device_bound_approval_enabled ? "Approvals ON" : "Approvals OFF"}
+                  {t.biometric_verified && <Fingerprint className="h-4 w-4 text-primary" />}
+                  <Badge variant={t.trust_score > 70 ? "default" : "secondary"} className="text-xs">
+                    Score: {t.trust_score}
                   </Badge>
                 </div>
               ))}
@@ -90,8 +92,8 @@ export default function DWE05DeviceTrustApprovalsCenter() {
               {policies.map((p) => (
                 <div key={p.id} className="flex items-center gap-3 p-3 rounded-lg border border-border">
                   <div className="flex-1">
-                    <p className="text-sm font-medium">{p.action_class}</p>
-                    <p className="text-xs text-muted-foreground">Max risk: {p.max_risk_tier} · {p.requires_biometric ? "Biometric required" : "No biometric"}</p>
+                    <p className="text-sm font-medium">{p.approval_class}</p>
+                    <p className="text-xs text-muted-foreground">Max value: ${(p.max_value_cents / 100).toFixed(0)} · {p.requires_biometric ? "Biometric required" : "No biometric"}</p>
                   </div>
                   <Badge variant={p.allowed ? "default" : "destructive"} className="text-xs">{p.allowed ? "Allowed" : "Blocked"}</Badge>
                 </div>
