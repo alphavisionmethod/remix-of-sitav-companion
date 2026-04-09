@@ -283,7 +283,6 @@ export default function BoardroomReplay() {
       },
     });
     if (result) setSessionSaved(true);
-    }
   };
 
   useEffect(() => {
