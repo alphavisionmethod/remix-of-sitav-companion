@@ -394,6 +394,14 @@ const FULLSCREEN_PHASES: SetupPhaseId[] = ["boot", "secure-foundation", "languag
 
 // ── Main Setup Component ────────────────────────────────────
 
+// Derive desktop density from stress + context (Req #3/#8)
+function computeDesktopDensity(s: SetupData): string {
+  const stressCount = s.stressMap.heavierThanShould.length;
+  if (stressCount >= 4 || s.operatingContext === "regaining-control") return "calm";
+  if (stressCount >= 2 || s.operatingContext === "managing-complexity") return "balanced";
+  return "dense";
+}
+
 export function OSSetupExperience() {
   const { user } = useAuth();
   const navigate = useNavigate();
