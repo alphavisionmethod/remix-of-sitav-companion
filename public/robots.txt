@@ -12,5 +12,8 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /supabase/
+Disallow: /functions/
 
-Sitemap: https://sita.os/sitemap.xml
+Sitemap: https://app.sita.os/sitemap.xml
