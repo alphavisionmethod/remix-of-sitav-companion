@@ -6,9 +6,9 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_GROWTH_TRAITS, DEMO_PLAYS, DEMO_REV_ARCHETYPES as DEMO_ARCHETYPES } from "@/lib/demo-data/revenue-office";
 
 const statusColor = (s: string) => s === "strong" ? "text-[hsl(var(--trust-safe))]" : s === "moderate" ? "text-yellow-400" : s === "warning" ? "text-orange-400" : "text-destructive";
-import { DEMO_GROWTH_TRAITS, DEMO_PLAYS, DEMO_REV_ARCHETYPES as DEMO_ARCHETYPES } from "@/lib/demo-data/revenue-office";
 
 const GrowthDNA = () => {
   const [tab, setTab] = useState("traits");

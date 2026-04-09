@@ -9,10 +9,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_ENVIRONMENTS_ADMIN_DEPLOYMENT_RINGS as DEMO_ENVIRONMENTS, DEMO_PROMOTION_GATES, DEMO_RINGS } from "@/lib/demo-data/admin-platform";
 
 type GateStatus = "passed" | "failed" | "pending" | "skipped" | "blocked";
 type RingStatus = "deployed" | "canary" | "staging" | "blocked" | "pending";
-import { DEMO_ADMIN_ENVIRONMENTS_ADMIN_DEPLOYMENT_RINGS as DEMO_ENVIRONMENTS, DEMO_PROMOTION_GATES, DEMO_RINGS } from "@/lib/demo-data/admin-platform";
 
 interface DeploymentRing {
   name: string;

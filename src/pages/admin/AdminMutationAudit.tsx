@@ -8,11 +8,11 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Database, CheckCircle, AlertTriangle, XCircle, Clock, Shield, RefreshCw, ArrowRight, Eye, Undo2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_MUTATIONS, type DemoMutationRecord as MutationRecord, type DurabilityStatus } from "@/lib/demo-data/durability";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
-import { DEMO_MUTATIONS, type DemoMutationRecord as MutationRecord, type DurabilityStatus } from "@/lib/demo-data/durability";
 
 const statusConfig: Record<DurabilityStatus, { color: string; icon: typeof CheckCircle; label: string }> = {
   persisted: { color: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", icon: CheckCircle, label: "Persisted" },

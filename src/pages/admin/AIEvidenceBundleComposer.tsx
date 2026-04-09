@@ -9,9 +9,9 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_BUNDLE_ITEMS, DEMO_EXPORT_MODES } from "@/lib/demo-data/admin-platform";
 
 type ExportMode = "json" | "markdown" | "approval" | "pr-ready" | "investor";
-import { DEMO_BUNDLE_ITEMS, DEMO_EXPORT_MODES } from "@/lib/demo-data/admin-platform";
 
 const typeColors: Record<string, string> = {
   fix: "text-[hsl(var(--trust-safe))]",

@@ -62,6 +62,7 @@ import type { InternalAgentCouncil, InternalAgentDefinition } from "@/lib/intern
 
 
 import {
+import { DEMO_ENGINE_COSTS } from "@/lib/demo-data/core-pages";
   Shield, Activity, Wifi, CheckCircle, AlertTriangle, Clock, Eye, Lock, Cpu, Zap, BarChart3,
   Globe, Key, History, Users, RotateCcw, DollarSign, FileText, Server, Database, RefreshCw,
   Pause, Play, XCircle, Brain, Settings, AlertOctagon, Sparkles, ArrowRight, Search,
@@ -73,7 +74,6 @@ import {
   Rocket, GitBranch, BookMarked, Headphones, FileCheck, Map, ExternalLink,
   CreditCard, Package
 } from "lucide-react";
-import { DEMO_ENGINE_COSTS } from "@/lib/demo-data/core-pages";
 
 type OwnerPage = "overview" | "workforce" | "incidents" | "connectors" | "costs" | "policies" | "audit" | "fleet" | "intelligence" | "council"
   | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing" | "governance" | "approvals";
