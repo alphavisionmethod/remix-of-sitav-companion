@@ -94,9 +94,9 @@ export function LearningPanel({ state }: LearningPanelProps) {
     }
 
     // Communications
-    if (state.commsContext?.stressLevel) {
-      const commsLabels: Record<string, string> = { low: "Low comm stress", moderate: "Moderate comm load", high: "High comm pressure" };
-      items.push({ icon: Radio, label: "Comms Load", value: commsLabels[state.commsContext.stressLevel] || state.commsContext.stressLevel });
+    if (state.commsContext?.communicationStress) {
+      const commsLabels: Record<string, string> = { none: "Low comm stress", some: "Moderate comm load", often: "High comm pressure", overwhelming: "Very high comm pressure" };
+      items.push({ icon: Radio, label: "Comms Load", value: commsLabels[state.commsContext.communicationStress] || state.commsContext.communicationStress });
     }
 
     // Desktop shape
