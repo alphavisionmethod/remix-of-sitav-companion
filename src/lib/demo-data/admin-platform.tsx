@@ -179,38 +179,44 @@ interface VerificationCheck {
   }) => boolean;
 }
 
-interface BudgetEnvelope {
-  scopeType: "tenant" | "workspace" | "agent" | "mission" | "domain" | "environment";
-  scopeRef: string;
-  tenantId: string;
-  label: string;
-  budgetCents: number;
-  deepReasoningMinutesCap: number;
-  spentCents?: number;
-  remainingCents?: number;
-  deepReasoningMinutesUsed?: number;
-  proactiveInferenceSpentCents?: number;
-  retrySpentCents?: number;
-  retriesUsed?: number;
-  status?: string;
-}
+// Re-export BudgetEnvelope from compute-governance for type consistency
+import type { BudgetEnvelope, BudgetStatus } from "@/lib/compute-governance/budget-policy-engine";
+export type { BudgetEnvelope };
 
 const createEnvelope = (
-  scopeType: BudgetEnvelope["scopeType"],
-  scopeRef: string,
+  scope: "tenant" | "workspace" | "agent" | "mission" | "domain" | "environment",
+  scopeId: string,
   tenantId: string,
   label: string,
-  budgetCents: number,
-  deepReasoningMinutesCap: number,
+  allocatedCents: number,
+  deepReasoningMinutesAllocated: number,
 ): BudgetEnvelope => ({
-  scopeType,
-  scopeRef,
+  envelopeId: `env-${scopeId}`,
+  scope,
+  scopeId,
   tenantId,
   label,
-  budgetCents,
-  deepReasoningMinutesCap,
+  periodStart: new Date(Date.now() - 30 * 86400000).toISOString(),
+  periodEnd: new Date(Date.now() + 1 * 86400000).toISOString(),
+  allocatedCents,
+  spentCents: 0,
+  reservedCents: 0,
+  remainingCents: allocatedCents,
+  softLimitCents: Math.round(allocatedCents * 0.8),
+  hardLimitCents: allocatedCents,
+  deepReasoningMinutesAllocated,
+  deepReasoningMinutesUsed: 0,
+  premiumEscalationAllowanceCents: Math.round(allocatedCents * 0.1),
+  premiumEscalationUsedCents: 0,
+  proactiveInferenceBudgetCents: Math.round(allocatedCents * 0.25),
+  proactiveInferenceSpentCents: 0,
+  retryBudgetCents: Math.round(allocatedCents * 0.05),
+  retrySpentCents: 0,
+  maxRetries: 10,
+  retriesUsed: 0,
+  status: "healthy" as BudgetStatus,
+  lastUpdated: new Date().toISOString(),
 });
-
 interface ConciergeTask {
   id: string;
   title: string;
@@ -1489,14 +1495,13 @@ export const DEMO_ANOMALIES = [
 ];
 
 export const DEMO_BUDGETS: BudgetEnvelope[] = [
-  { ...createEnvelope("tenant", "t-1", "t-1", "Acme Corp — Monthly", 15000, 300), spentCents: 12400, remainingCents: 2600, deepReasoningMinutesUsed: 180, proactiveInferenceSpentCents: 3200, retrySpentCents: 420, retriesUsed: 6, status: "approaching" },
-  { ...createEnvelope("workspace", "ws-1", "t-1", "Finance Workspace", 5000, 120), spentCents: 3800, remainingCents: 1200, deepReasoningMinutesUsed: 90, status: "warning" },
-  { ...createEnvelope("agent", "a-1", "t-2", "Strategy Synthesizer", 2000, 60), spentCents: 960, remainingCents: 1040, deepReasoningMinutesUsed: 28, status: "healthy" },
-  { ...createEnvelope("mission", "m-1", "t-1", "Q2 Tax Optimization", 800, 30), spentCents: 620, remainingCents: 180, deepReasoningMinutesUsed: 22, status: "warning" },
-  { ...createEnvelope("domain", "d-1", "t-1", "Finance Domain", 8000, 200), spentCents: 5600, remainingCents: 2400, deepReasoningMinutesUsed: 120, status: "approaching" },
-  { ...createEnvelope("environment", "e-1", "t-1", "Production Env", 12000, 250), spentCents: 8900, remainingCents: 3100, deepReasoningMinutesUsed: 160, status: "healthy" },
+  { ...createEnvelope("tenant", "t-1", "t-1", "Acme Corp — Monthly", 15000, 300), spentCents: 12400, remainingCents: 2600, deepReasoningMinutesUsed: 180, proactiveInferenceSpentCents: 3200, retrySpentCents: 420, retriesUsed: 6, status: "approaching" as BudgetStatus },
+  { ...createEnvelope("workspace", "ws-1", "t-1", "Finance Workspace", 5000, 120), spentCents: 3800, remainingCents: 1200, deepReasoningMinutesUsed: 90, status: "warning" as BudgetStatus },
+  { ...createEnvelope("agent", "a-1", "t-2", "Strategy Synthesizer", 2000, 60), spentCents: 960, remainingCents: 1040, deepReasoningMinutesUsed: 28, status: "healthy" as BudgetStatus },
+  { ...createEnvelope("mission", "m-1", "t-1", "Q2 Tax Optimization", 800, 30), spentCents: 620, remainingCents: 180, deepReasoningMinutesUsed: 22, status: "warning" as BudgetStatus },
+  { ...createEnvelope("domain", "d-1", "t-1", "Finance Domain", 8000, 200), spentCents: 5600, remainingCents: 2400, deepReasoningMinutesUsed: 120, status: "approaching" as BudgetStatus },
+  { ...createEnvelope("environment", "e-1", "t-1", "Production Env", 12000, 250), spentCents: 8900, remainingCents: 3100, deepReasoningMinutesUsed: 160, status: "healthy" as BudgetStatus },
 ];
-
 export const DEMO_ROUTING_EVENTS = [
   { id: "r1", taskClass: "B" as CostClass, intent: "Portfolio rebalance advice", selectedModel: "gemini-2.5-flash", selectedTier: "standard" as ComputeModelTier, confidence: 0.89, cost: 3.2, downgraded: false, cached: false, time: "1min ago" },
   { id: "r2", taskClass: "A" as CostClass, intent: "Inbox triage", selectedModel: "gemini-3-flash", selectedTier: "utility" as ComputeModelTier, confidence: 0.95, cost: 0.4, downgraded: false, cached: true, time: "2min ago" },

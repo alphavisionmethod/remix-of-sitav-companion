@@ -1,7 +1,7 @@
 // SITA OS — Demo Data: Apps
 import { Sun, Cloud, CloudRain } from "lucide-react";
 
-interface Email { id: string; from: string; subject: string; preview: string; time: string; read: boolean; starred: boolean; category: string; hasAttachment: boolean; }
+interface Email { id: string; from: string; subject: string; preview: string; time: string; read: boolean; starred: boolean; category: "primary" | "social" | "promotions" | "updates"; hasAttachment: boolean; }
 interface Photo { id: string; url: string; title: string; date: string; album: string; tags: string[]; favorite: boolean; }
 interface Chat { id: string; name: string; avatar: string; lastMessage: string; time: string; unread: number; online: boolean; isAdvisor: boolean; }
 interface Message { id: string; sender: string; text: string; time: string; read: boolean; }
