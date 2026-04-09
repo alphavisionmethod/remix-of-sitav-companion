@@ -53,7 +53,7 @@ export default function UAO01PresenceContinuity() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Radio className="h-6 w-6" /> Presence & Continuity Center</h1>
           <p className="text-sm text-muted-foreground mt-1">Active device, surfaces, handoff, and context continuity</p>
         </div>
-        <Button onClick={() => updatePresence.mutate()} disabled={updatePresence.isPending} size="sm" variant="outline">
+        <Button onClick={() => updatePresence.mutate({})} disabled={updatePresence.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${updatePresence.isPending ? "animate-spin" : ""}`} /> Update Presence
         </Button>
       </div>

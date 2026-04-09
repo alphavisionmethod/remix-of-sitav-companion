@@ -88,7 +88,7 @@ const QuotesWorkspace = () => {
                 <textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} placeholder="Notes" rows={2} className="col-span-2 rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
               </div>
               <div className="flex justify-end mt-4">
-                <button onClick={() => addQuote.mutate()} disabled={addQuote.isPending || !form.title.trim()} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">{addQuote.isPending ? "Creating..." : "Create Quote"}</button>
+                <button onClick={() => addQuote.mutate({ title: form.title.trim(), total: form.total ? parseFloat(form.total) : null, expiry_date: form.expiry_date || null, notes: form.notes || null, status: "draft" })} disabled={addQuote.isPending || !form.title.trim()} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">{addQuote.isPending ? "Creating..." : "Create Quote"}</button>
               </div>
             </SitaCard>
           </motion.div>

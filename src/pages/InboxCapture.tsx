@@ -86,9 +86,9 @@ const InboxCapture = () => {
             placeholder="Type a note, paste a receipt, drop an idea..."
             value={quickInput}
             onChange={e => setQuickInput(e.target.value)}
-            onKeyDown={e => { if (e.key === "Enter" && quickInput.trim()) captureNote.mutate(quickInput); }}
+            onKeyDown={e => { if (e.key === "Enter" && quickInput.trim()) captureNote.mutate({ content: quickInput, type: "note" }); }}
           />
-          <SitaButton variant="primary" onClick={() => { if (quickInput.trim()) captureNote.mutate(quickInput); }}><Send className="h-4 w-4" /> Capture</SitaButton>
+          <SitaButton variant="primary" onClick={() => { if (quickInput.trim()) captureNote.mutate({ content: quickInput, type: "note" }); }}><Send className="h-4 w-4" /> Capture</SitaButton>
         </div>
         <div className="flex gap-2 mt-3">
           {[

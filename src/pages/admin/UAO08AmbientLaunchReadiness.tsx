@@ -40,7 +40,7 @@ export default function UAO08AmbientLaunchReadiness() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Flag className="h-6 w-6" /> Ambient Launch Readiness</h1>
           <p className="text-sm text-muted-foreground mt-1">Device & wearable launch honesty per family</p>
         </div>
-        <Button onClick={() => seedReadiness.mutate()} disabled={seedReadiness.isPending} size="sm" variant="outline">
+        <Button onClick={() => seedReadiness.mutate({})} disabled={seedReadiness.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${seedReadiness.isPending ? "animate-spin" : ""}`} />
           {readiness.length === 0 ? "Initialize" : "Re-Seed"}
         </Button>

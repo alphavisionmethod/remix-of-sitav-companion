@@ -474,7 +474,7 @@ function AIR08SeedActivation() {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-4">
-        <Button onClick={() => seedMutation.mutate()} disabled={seedMutation.isPending} className="gap-2">
+        <Button onClick={() => seedMutation.mutate({})} disabled={seedMutation.isPending} className="gap-2">
           {seedMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Database className="h-4 w-4" />}
           Seed AI Routing Activation
         </Button>

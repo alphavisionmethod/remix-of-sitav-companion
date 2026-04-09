@@ -151,7 +151,7 @@ export default function FL01FlagshipLoopsExecutive() {
           <p className="text-muted-foreground text-sm">5 flagship product loops — health, truth, proof, and launch readiness.</p>
         </div>
         <Button
-          onClick={() => seedMutation.mutate()}
+          onClick={() => seedMutation.mutate({})}
           disabled={seedMutation.isPending}
           size="sm"
           variant={loopList.length === 0 ? "default" : "outline"}

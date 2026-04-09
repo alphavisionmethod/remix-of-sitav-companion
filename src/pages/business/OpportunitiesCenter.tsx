@@ -105,7 +105,7 @@ const OpportunitiesCenter = () => {
                 <input value={form.next_action} onChange={e => setForm({ ...form, next_action: e.target.value })} placeholder="Next action" className="rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
               </div>
               <div className="flex justify-end mt-4">
-                <button onClick={() => addOpp.mutate()} disabled={addOpp.isPending || !form.title.trim()} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">{addOpp.isPending ? "Adding..." : "Add Opportunity"}</button>
+                <button onClick={() => addOpp.mutate({ title: form.title.trim(), value: form.value ? parseFloat(form.value) : null, confidence: form.confidence, stage: form.stage, next_action: form.next_action || null })} disabled={addOpp.isPending || !form.title.trim()} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">{addOpp.isPending ? "Adding..." : "Add Opportunity"}</button>
               </div>
             </SitaCard>
           </motion.div>

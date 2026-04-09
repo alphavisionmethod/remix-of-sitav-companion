@@ -44,7 +44,7 @@ export default function UAO03AmbientTeamControl() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="h-6 w-6" /> Ambient Team Control</h1>
           <p className="text-sm text-muted-foreground mt-1">Assistant roles, proactive modes, escalation behavior</p>
         </div>
-        <Button onClick={() => seedRoles.mutate()} disabled={seedRoles.isPending} size="sm" variant="outline">
+        <Button onClick={() => seedRoles.mutate({})} disabled={seedRoles.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${seedRoles.isPending ? "animate-spin" : ""}`} />
           {roles.length === 0 ? "Initialize Team" : "Re-Seed"}
         </Button>

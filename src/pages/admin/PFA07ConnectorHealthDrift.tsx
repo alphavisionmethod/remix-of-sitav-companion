@@ -43,7 +43,7 @@ export default function PFA07ConnectorHealthDrift() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Activity className="h-6 w-6" /> Connector Health & Drift</h1>
           <p className="text-sm text-muted-foreground mt-1">Expired tokens, reduced scopes, reauth needs, sync failures</p>
         </div>
-        <Button onClick={() => checkDrift.mutate()} disabled={checkDrift.isPending} size="sm" variant="outline">
+        <Button onClick={() => checkDrift.mutate({})} disabled={checkDrift.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${checkDrift.isPending ? "animate-spin" : ""}`} /> Check Drift
         </Button>
       </div>

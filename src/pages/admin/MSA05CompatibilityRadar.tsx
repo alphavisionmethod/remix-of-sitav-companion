@@ -85,7 +85,7 @@ export default function MSA05CompatibilityRadar() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Radar className="h-6 w-6" /> Future Surface Compatibility Radar</h1>
           <p className="text-sm text-muted-foreground mt-1">Detect web-trapped logic, cross-surface drift, and portability blockers</p>
         </div>
-        <Button onClick={() => checkMutation.mutate()} disabled={checkMutation.isPending} size="sm" variant="outline">
+        <Button onClick={() => checkMutation.mutate({})} disabled={checkMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${checkMutation.isPending ? "animate-spin" : ""}`} /> Run Consistency Check
         </Button>
       </div>

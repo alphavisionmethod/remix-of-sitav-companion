@@ -47,7 +47,7 @@ export default function MSA02CoreSurfaceBoundary() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Layers className="h-6 w-6" /> Core vs Surface Boundary</h1>
           <p className="text-sm text-muted-foreground mt-1">What lives in core runtime vs shell layer — violations and migration candidates</p>
         </div>
-        <Button onClick={() => auditMutation.mutate()} disabled={auditMutation.isPending} size="sm" variant="outline">
+        <Button onClick={() => auditMutation.mutate({})} disabled={auditMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${auditMutation.isPending ? "animate-spin" : ""}`} /> Run Audit
         </Button>
       </div>

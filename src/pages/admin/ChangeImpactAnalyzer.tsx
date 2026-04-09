@@ -89,7 +89,7 @@ const ChangeImpactAnalyzer = () => {
                 {analysis.migrationRisks.length > 0 && <div><div className="text-xs font-semibold mb-1">Migration Risks</div>{analysis.migrationRisks.map((r, i) => <div key={i} className="text-xs text-muted-foreground">⚠️ {r.risk}</div>)}</div>}
                 {analysis.trustRisks.length > 0 && <div><div className="text-xs font-semibold mb-1">Trust Risks</div>{analysis.trustRisks.map((r, i) => <div key={i} className="text-xs text-red-400">🛡️ {r.risk}</div>)}</div>}
                 {analysis.recommendations.length > 0 && <div><div className="text-xs font-semibold mb-1">Recommendations</div>{analysis.recommendations.map((r, i) => <div key={i} className="text-xs text-muted-foreground flex items-center gap-1"><ArrowRight className="h-3 w-3" /> {r}</div>)}</div>}
-                <Button onClick={() => saveMutation.mutate()} size="sm" variant="secondary" className="w-full">Save Analysis</Button>
+                <Button onClick={() => saveMutation.mutate({})} size="sm" variant="secondary" className="w-full">Save Analysis</Button>
               </CardContent>
             </Card>
           </motion.div>

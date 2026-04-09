@@ -38,7 +38,7 @@ export default function PFA01ProviderFamilyRegistry() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Globe className="h-6 w-6" /> Provider Family Registry</h1>
           <p className="text-sm text-muted-foreground mt-1">All external provider families, categories, and statuses</p>
         </div>
-        <Button onClick={() => seedMutation.mutate()} disabled={seedMutation.isPending} size="sm" variant="outline">
+        <Button onClick={() => seedMutation.mutate({})} disabled={seedMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${seedMutation.isPending ? "animate-spin" : ""}`} />
           {families.length === 0 ? "Initialize Providers" : "Re-Seed"}
         </Button>

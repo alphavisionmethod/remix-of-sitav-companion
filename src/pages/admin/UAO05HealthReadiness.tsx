@@ -51,7 +51,7 @@ export default function UAO05HealthReadiness() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Heart className="h-6 w-6" /> Health & Readiness Signals</h1>
           <p className="text-sm text-muted-foreground mt-1">Signal sources, consent, readiness, and privacy controls</p>
         </div>
-        <Button onClick={() => checkReadiness.mutate()} disabled={checkReadiness.isPending} size="sm" variant="outline">
+        <Button onClick={() => checkReadiness.mutate({})} disabled={checkReadiness.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${checkReadiness.isPending ? "animate-spin" : ""}`} /> Check Readiness
         </Button>
       </div>

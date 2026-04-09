@@ -44,7 +44,7 @@ export default function CN05ConnectorHealthBoard() {
     <div className="space-y-6 p-6"  >
       <DemoModeBadge />
       <div className="space-y-6">
-        <Button onClick={() => healthCheckMutation.mutate()} disabled={healthCheckMutation.isPending} size="sm" variant="outline">
+        <Button onClick={() => healthCheckMutation.mutate({})} disabled={healthCheckMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${healthCheckMutation.isPending ? "animate-spin" : ""}`} /> Run Health Check
         </Button>
 

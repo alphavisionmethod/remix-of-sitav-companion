@@ -86,7 +86,7 @@ const PolicyEditor = () => {
               Requires manual approval
             </label>
             <div className="flex gap-2">
-              <SitaButton variant="primary" onClick={() => createPolicy.mutate()}>Create</SitaButton>
+              <SitaButton variant="primary" onClick={() => createPolicy.mutate({ name: newName, category: newCategory, approval_required: newApproval, conditions: [], actions: [] })}>Create</SitaButton>
               <SitaButton variant="secondary" onClick={() => setShowCreate(false)}>Cancel</SitaButton>
             </div>
           </div>

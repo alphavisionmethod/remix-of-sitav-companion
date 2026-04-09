@@ -45,7 +45,7 @@ export default function UAO02ConnectedDevices() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Cpu className="h-6 w-6" /> Connected Devices Center</h1>
           <p className="text-sm text-muted-foreground mt-1">Phones, watches, wearables, trust levels, and sync</p>
         </div>
-        <Button onClick={() => seedMutation.mutate()} disabled={seedMutation.isPending} size="sm" variant="outline">
+        <Button onClick={() => seedMutation.mutate({})} disabled={seedMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${seedMutation.isPending ? "animate-spin" : ""}`} />
           {families.length === 0 ? "Initialize Devices" : "Re-Seed"}
         </Button>

@@ -109,7 +109,7 @@ export default function MSA01MultiSurfaceOverview() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Layers className="h-6 w-6" /> Multi-Surface Architecture</h1>
           <p className="text-sm text-muted-foreground mt-1">One sovereign runtime, many shells — web, mobile, desktop, spatial, voice</p>
         </div>
-        <Button onClick={() => seedMutation.mutate()} disabled={seedMutation.isPending} size="sm" variant="outline">
+        <Button onClick={() => seedMutation.mutate({})} disabled={seedMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${seedMutation.isPending ? "animate-spin" : ""}`} />
           {surfaces.length === 0 ? "Initialize MSA" : "Re-Seed All"}
         </Button>

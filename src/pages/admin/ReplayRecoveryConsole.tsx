@@ -74,7 +74,7 @@ export default function ReplayRecoveryConsole() {
                   <Switch checked={dryRun} onCheckedChange={setDryRun} />
                   <span className="text-xs text-muted-foreground">{dryRun ? "Dry Run" : "Live Replay"}</span>
                 </div>
-                <Button onClick={() => replayMutation.mutate()} disabled={replayMutation.isPending}>
+                <Button onClick={() => replayMutation.mutate({})} disabled={replayMutation.isPending}>
                   <Play className="h-4 w-4 mr-1" />{dryRun ? "Dry Run" : "Execute Replay"}
                 </Button>
               </div>

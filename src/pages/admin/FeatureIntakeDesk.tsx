@@ -132,7 +132,7 @@ const FeatureIntakeDesk = () => {
                 </Select>
               </div>
             </div>
-            <Button onClick={() => createBlueprint.mutate()} disabled={!form.title || createBlueprint.isPending} className="w-full">
+            <Button onClick={() => createBlueprint.mutate({})} disabled={!form.title || createBlueprint.isPending} className="w-full">
               <Sparkles className="h-4 w-4 mr-2" /> Create Blueprint & Enter Pipeline
             </Button>
           </CardContent>
