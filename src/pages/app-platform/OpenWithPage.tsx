@@ -12,11 +12,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface OpenWithPageRow {
-  icon?: unknown;
-  iconBg?: unknown;
-  id?: string;
-}
 
 const DEMO_FILES = [
   { name: "report.html", ext: ".html", candidates: ["chrome", "firefox", "vscode"] },
@@ -73,7 +68,7 @@ const OpenWithPage = () => {
 
       {/* App List */}
       <div className="space-y-2">
-        {candidateApps.map((app: OpenWithPageRow) => {
+        {candidateApps.map((app: any) => {
           const isRecommended = app.id === recommended?.id;
           const isSelected = selectedApp === app.id;
           return (

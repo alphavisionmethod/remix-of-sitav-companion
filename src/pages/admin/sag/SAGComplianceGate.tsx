@@ -8,13 +8,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import type { ComplianceGate, TenantFirewallRule, SecurityIncident } from "@/packages/enterprise-contracts";
 
 
-interface SAGComplianceGateRow {
-  blocks_launch?: unknown;
-  descr?: unknown;
-  id?: string;
-  resolved?: unknown;
-  violation_type?: unknown;
-}
 
 const DEMO_VIOLATION_TYPES = [
   { type: 'direct_provider_call', label: 'Direct Provider Call', severity: 'critical', icon: Ban },
@@ -40,9 +33,9 @@ const SAGComplianceGate = () => {
   const { data: stats } = useGatewayStats();
   const s = stats || { totalRequests: 0, violations: 0 };
 
-  const blockers = violations.filter((v: SAGComplianceGateRow) => v.blocks_launch);
-  const resolved = violations.filter((v: SAGComplianceGateRow) => v.resolved);
-  const typeCounts = DEMO_VIOLATION_TYPES.map(vt => ({ ...vt, count: violations.filter((v: SAGComplianceGateRow) => v.violation_type === vt.type && !v.resolved).length }));
+  const blockers = violations.filter((v: any) => v.blocks_launch);
+  const resolved = violations.filter((v: any) => v.resolved);
+  const typeCounts = DEMO_VIOLATION_TYPES.map(vt => ({ ...vt, count: violations.filter((v: any) => v.violation_type === vt.type && !v.resolved).length }));
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -86,14 +79,14 @@ const SAGComplianceGate = () => {
 
       <div className="space-y-3">
         {isLoading ? <p className="text-center py-8 text-muted-foreground">Loading violations...</p> :
-          violations.filter((v: SAGComplianceGateRow) => !v.resolved).length === 0 ? (
+          violations.filter((v: any) => !v.resolved).length === 0 ? (
             <Card className="border-green-500/30"><CardContent className="py-12 text-center">
               <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-4" />
               <p className="font-medium text-green-500">No active AI governance violations</p>
               <p className="text-sm text-muted-foreground mt-1">All AI features comply with sovereign gateway rules</p>
             </CardContent></Card>
           ) :
-          violations.filter((v: SAGComplianceGateRow) => !v.resolved).map((v: SAGComplianceGateRow) => (
+          violations.filter((v: any) => !v.resolved).map((v: any) => (
             <Card key={v.id} className={v.blocks_launch ? 'border-destructive/30' : ''}>
               <CardContent className="py-4">
                 <div className="flex items-center justify-between">

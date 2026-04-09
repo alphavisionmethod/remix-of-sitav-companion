@@ -11,9 +11,6 @@ import { ShieldCheck, CheckCircle2, XCircle, Clock } from "lucide-react";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface V03P0JourneyBoardRow {
-  route_key?: unknown;
-}
 
 const journeyFamilies = [
   { key: "auth", label: "Identity / Auth", routes: ["auth.login", "auth.login.submit", "auth.signup", "auth.signup.submit", "auth.signout"] },
@@ -32,7 +29,7 @@ export default function P0JourneyBoard() {
   const { data: runs } = useVerificationRuns();
   const p0s = getP0Surfaces();
 
-  const surfaceMap = new Map((dbSurfaces || []).map((s: V03P0JourneyBoardRow) => [s.route_key, s]));
+  const surfaceMap = new Map((dbSurfaces || []).map((s: any) => [s.route_key, s]));
 
   return (
     <div className="space-y-6 p-6" data-testid="verification-p0-journeys">

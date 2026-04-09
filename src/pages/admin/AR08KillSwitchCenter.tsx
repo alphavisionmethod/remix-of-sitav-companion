@@ -15,14 +15,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface AR08KillSwitchCenterRow {
-  activated_at?: unknown;
-  enabled?: unknown;
-  id?: string;
-  reason?: unknown;
-  scope?: unknown;
-  scope_id?: unknown;
-}
 
 const DEMO_SCOPES = [
   { scope: "global", label: "Global Kill Switch", description: "Stops ALL recurring automation", icon: Shield, color: "text-destructive" },
@@ -44,14 +36,14 @@ export default function AR08KillSwitchCenter() {
   });
 
   const isEnabled = (scope: string, scopeId?: string) => {
-    return switches.some((s: AR08KillSwitchCenterRow) =>
+    return switches.some((s: any) =>
       s.scope === scope && (scopeId ? s.scope_id === scopeId : !s.scope_id) && s.enabled
     );
   };
 
   const toggleMutation = useMutation({
     mutationFn: async ({ scope, scopeId, enable }: { scope: string; scopeId?: string; enable: boolean }) => {
-      const existing = switches.find((s: AR08KillSwitchCenterRow) =>
+      const existing = switches.find((s: any) =>
         s.scope === scope && (scopeId ? s.scope_id === scopeId : !s.scope_id)
       );
 
@@ -118,13 +110,13 @@ export default function AR08KillSwitchCenter() {
         })}
       </div>
 
-      {switches.filter((s: AR08KillSwitchCenterRow) => s.enabled).length > 0 && (
+      {switches.filter((s: any) => s.enabled).length > 0 && (
         <SitaCard className="border-destructive/30">
           <SitaCardTitle className="text-destructive flex items-center gap-2">
             <AlertTriangle className="h-4 w-4" /> Active Kill Switches
           </SitaCardTitle>
           <div className="space-y-1 mt-2">
-            {switches.filter((s: AR08KillSwitchCenterRow) => s.enabled).map((s: AR08KillSwitchCenterRow) => (
+            {switches.filter((s: any) => s.enabled).map((s: any) => (
               <div key={s.id} className="text-xs text-destructive">
                 {s.scope}{s.scope_id ? `:${s.scope_id}` : ""} — {s.reason || "No reason"}
                 <span className="text-muted-foreground ml-2">{s.activated_at ? new Date(s.activated_at).toLocaleString() : ""}</span>

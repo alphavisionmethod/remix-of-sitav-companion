@@ -8,13 +8,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useNssLaunchReadiness } from "@/hooks/use-native-shell-data";
 
 
-interface NSS04MobileLaunchHonestyRow {
-  critical?: unknown;
-  key?: unknown;
-  readiness?: unknown;
-  stage?: unknown;
-  target?: unknown;
-}
 
 const NSS04MobileLaunchHonesty = () => {
   const { data: targets, isLoading } = useNssLaunchReadiness();
@@ -39,10 +32,10 @@ const NSS04MobileLaunchHonesty = () => {
         <>
           <div className="grid grid-cols-3 md:grid-cols-4 gap-4">
             {[
-              { label: "Production", count: items.filter((t: NSS04MobileLaunchHonestyRow) => t.stage === "production").length },
-              { label: "Alpha", count: items.filter((t: NSS04MobileLaunchHonestyRow) => t.stage === "alpha").length },
-              { label: "Planned", count: items.filter((t: NSS04MobileLaunchHonestyRow) => t.stage === "planned").length },
-              { label: "Critical Path", count: items.filter((t: NSS04MobileLaunchHonestyRow) => t.critical).length },
+              { label: "Production", count: items.filter((t: any) => t.stage === "production").length },
+              { label: "Alpha", count: items.filter((t: any) => t.stage === "alpha").length },
+              { label: "Planned", count: items.filter((t: any) => t.stage === "planned").length },
+              { label: "Critical Path", count: items.filter((t: any) => t.critical).length },
             ].map((s) => (
               <Card key={s.label}><CardContent className="pt-4 pb-3"><div className="text-xs text-muted-foreground">{s.label}</div><div className="text-2xl font-bold">{s.count}</div></CardContent></Card>
             ))}
@@ -56,7 +49,7 @@ const NSS04MobileLaunchHonesty = () => {
 
             <TabsContent value="grid">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {items.map((item: NSS04MobileLaunchHonestyRow) => (
+                {items.map((item: any) => (
                   <Card key={item.target} className={item.critical ? "border-primary/50" : ""}>
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between">
@@ -84,17 +77,17 @@ const NSS04MobileLaunchHonesty = () => {
               <Card>
                 <CardContent className="pt-6 space-y-4">
                   {[
-                    { q: "Now", label: "Production", filter: (t: NSS04MobileLaunchHonestyRow) => t.stage === "production" },
-                    { q: "Q2 2026", label: "Alpha", filter: (t: NSS04MobileLaunchHonestyRow) => t.stage === "alpha" },
-                    { q: "Q3–Q4 2026", label: "Planned — Critical", filter: (t: NSS04MobileLaunchHonestyRow) => t.stage === "planned" && t.critical },
-                    { q: "Q1 2027", label: "Planned — Extension", filter: (t: NSS04MobileLaunchHonestyRow) => t.stage === "planned" && !t.critical },
+                    { q: "Now", label: "Production", filter: (t: any) => t.stage === "production" },
+                    { q: "Q2 2026", label: "Alpha", filter: (t: any) => t.stage === "alpha" },
+                    { q: "Q3–Q4 2026", label: "Planned — Critical", filter: (t: any) => t.stage === "planned" && t.critical },
+                    { q: "Q1 2027", label: "Planned — Extension", filter: (t: any) => t.stage === "planned" && !t.critical },
                   ].map((q) => {
                     const filtered = items.filter(q.filter);
                     if (!filtered.length) return null;
                     return (
                       <div key={q.q} className="p-4 rounded-lg border">
                         <div className="flex items-center justify-between mb-2"><span className="font-medium text-sm">{q.q} — {q.label}</span><Badge variant="outline"><Clock className="h-3 w-3 mr-1" />{filtered.length} items</Badge></div>
-                        <div className="flex flex-wrap gap-2">{filtered.map((i: NSS04MobileLaunchHonestyRow) => <Badge key={i.key} variant="secondary">{i.target} ({i.readiness}%)</Badge>)}</div>
+                        <div className="flex flex-wrap gap-2">{filtered.map((i: any) => <Badge key={i.key} variant="secondary">{i.target} ({i.readiness}%)</Badge>)}</div>
                       </div>
                     );
                   })}

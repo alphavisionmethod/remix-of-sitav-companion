@@ -15,12 +15,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface FIPIntakeDeskRow {
-  feature_name?: unknown;
-  id?: string;
-  intake_status?: unknown;
-  risk_tier?: unknown;
-}
 
 const statusColors: Record<string, string> = {
   draft: 'bg-muted text-muted-foreground',
@@ -65,9 +59,9 @@ const FIPIntakeDesk = () => {
 
   const stats = {
     total: intakes.length,
-    draft: intakes.filter((i: FIPIntakeDeskRow) => i.intake_status === 'draft').length,
-    submitted: intakes.filter((i: FIPIntakeDeskRow) => i.intake_status === 'submitted').length,
-    approved: intakes.filter((i: FIPIntakeDeskRow) => i.intake_status === 'approved').length,
+    draft: intakes.filter((i: any) => i.intake_status === 'draft').length,
+    submitted: intakes.filter((i: any) => i.intake_status === 'submitted').length,
+    approved: intakes.filter((i: any) => i.intake_status === 'approved').length,
   };
 
   return (
@@ -135,7 +129,7 @@ const FIPIntakeDesk = () => {
         <TabsContent value="all" className="space-y-3 mt-4">
           {isLoading ? <div className="text-center py-8 text-muted-foreground">Loading intakes...</div> :
             intakes.length === 0 ? <Card><CardContent className="py-12 text-center text-muted-foreground">No feature intakes yet. Click "New Intake" to begin.</CardContent></Card> :
-            intakes.map((intake: FIPIntakeDeskRow) => (
+            intakes.map((intake: any) => (
               <Card key={intake.id} className="hover:border-primary/30 transition-colors">
                 <CardContent className="py-4">
                   <div className="flex items-center justify-between">
@@ -160,7 +154,7 @@ const FIPIntakeDesk = () => {
         </TabsContent>
         {['draft', 'submitted', 'approved'].map(status => (
           <TabsContent key={status} value={status} className="space-y-3 mt-4">
-            {intakes.filter((i: FIPIntakeDeskRow) => i.intake_status === status).map((intake: FIPIntakeDeskRow) => (
+            {intakes.filter((i: any) => i.intake_status === status).map((intake: any) => (
               <Card key={intake.id}><CardContent className="py-4"><div className="flex items-center gap-3"><Target className="h-4 w-4 text-primary" /><span className="font-medium">{intake.feature_name}</span><Badge variant="outline">{intake.risk_tier}</Badge></div></CardContent></Card>
             ))}
           </TabsContent>

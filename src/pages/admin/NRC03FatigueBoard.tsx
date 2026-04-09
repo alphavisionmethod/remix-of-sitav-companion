@@ -8,15 +8,6 @@ import { useFatigueProfiles } from "@/hooks/use-notification-calm-data";
 import { DEMO_SUPPRESSION_ACTIONS, DEMO_OVERLOAD_TRIGGERS } from "@/lib/demo-data/notification-calm";
 
 
-interface NRC03FatigueBoardRow {
-  fatigue_score?: unknown;
-  id?: string;
-  metric_name?: unknown;
-  signal?: unknown;
-  source?: unknown;
-  threshold?: unknown;
-  weight?: unknown;
-}
 
 const NRC03FatigueBoard = () => {
   const { data: fatigueSignals, isLoading } = useFatigueProfiles();
@@ -49,7 +40,7 @@ const NRC03FatigueBoard = () => {
                 <table className="w-full text-xs">
                   <thead><tr className="border-b"><th className="text-left p-2">Signal</th><th className="p-2">Threshold</th><th className="p-2">Weight</th><th className="text-left p-2">Source</th></tr></thead>
                   <tbody>
-                    {(fatigueSignals ?? []).map((s: NRC03FatigueBoardRow) => (
+                    {(fatigueSignals ?? []).map((s: any) => (
                       <tr key={s.signal ?? s.id} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-medium">{s.signal ?? s.metric_name}</td>
                         <td className="p-2 text-center"><Badge variant="outline">{s.threshold ?? "—"}</Badge></td>

@@ -31,26 +31,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";
 
 
-interface RevenueCallingPageRow {
-  company?: unknown;
-  contact_id?: unknown;
-  contact_name?: unknown;
-  created_at?: string;
-  duration_seconds?: unknown;
-  email?: unknown;
-  id?: string;
-  last_called_at?: unknown;
-  name?: string;
-  notes?: string;
-  outcome?: unknown;
-  phone?: unknown;
-  priority?: string;
-  recorded_at?: unknown;
-  revenue_impact?: unknown;
-  stage?: unknown;
-  status?: string;
-  value?: number;
-}
 
 type DialerState = "idle" | "dialing" | "connected" | "wrapping-up";
 
@@ -283,7 +263,7 @@ const RevenueCallingPage = () => {
   const contacts: Contact[] = useMemo(() => {
     if (isDemoMode) return MOCK_CONTACTS;
     if (!liveContacts?.length) return [];
-    return liveContacts.map((c: RevenueCallingPageRow) => ({
+    return liveContacts.map((c: any) => ({
       id: c.id,
       name: c.name,
       company: c.company || "",
@@ -301,7 +281,7 @@ const RevenueCallingPage = () => {
   const callLogs: CallLog[] = useMemo(() => {
     if (isDemoMode) return MOCK_CALL_LOGS;
     if (!liveLogs?.length) return [];
-    return liveLogs.map((l: RevenueCallingPageRow): CallLog => ({
+    return liveLogs.map((l: any): CallLog => ({
       id: l.id,
       contactId: l.contact_id || "",
       contactName: l.contact_name || "",

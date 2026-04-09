@@ -10,17 +10,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { CILaunchGateWidget } from "@/components/sita/CILaunchGateWidget";
 
 
-interface LT05LaunchGateBoardRow {
-  category?: string;
-  description?: string;
-  id?: string;
-  name?: string;
-  required?: unknown;
-  severity?: string;
-  source?: unknown;
-  status?: string;
-  title?: string;
-}
 
 const LT05LaunchGateBoard = () => {
   const { data: gates } = useQuery({
@@ -48,7 +37,7 @@ const LT05LaunchGateBoard = () => {
   });
 
   const gate = gates?.[0];
-  const metCriteria = criteria?.filter((c: LT05LaunchGateBoardRow) => c.status === "met").length ?? 0;
+  const metCriteria = criteria?.filter((c: any) => c.status === "met").length ?? 0;
   const totalCriteria = criteria?.length ?? 0;
   const truthScore = totalCriteria > 0 ? Math.round((metCriteria / totalCriteria) * 100) : 0;
 
@@ -122,7 +111,7 @@ const LT05LaunchGateBoard = () => {
         <CardContent>
           {blockers && blockers.length > 0 ? (
             <div className="space-y-2">
-              {blockers.map((b: LT05LaunchGateBoardRow) => (
+              {blockers.map((b: any) => (
                 <div key={b.id} className="flex items-center justify-between p-3 rounded border border-destructive/20">
                   <div>
                     <p className="font-medium">{b.title}</p>
@@ -145,7 +134,7 @@ const LT05LaunchGateBoard = () => {
         <CardContent>
           {criteria && criteria.length > 0 ? (
             <div className="space-y-2">
-              {criteria.map((c: LT05LaunchGateBoardRow) => (
+              {criteria.map((c: any) => (
                 <div key={c.id} className="flex items-center justify-between p-2 rounded border">
                   <div>
                     <span className="font-medium">{c.name}</span>

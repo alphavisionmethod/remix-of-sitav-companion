@@ -8,16 +8,6 @@ import { useInterruptionPolicies } from "@/hooks/use-notification-calm-data";
 import { DEMO_DELIVERY_TYPES, DEMO_QUICK_ACTIONS } from "@/lib/demo-data/notification-calm";
 
 
-interface NRC04QueueInterruptMatrixRow {
-  category?: string;
-  defaultDelivery?: unknown;
-  default_delivery?: unknown;
-  escalation?: unknown;
-  escalation_rule?: unknown;
-  id?: string;
-  policy_name?: unknown;
-  priority?: string;
-}
 
 const NRC04QueueInterruptMatrix = () => {
   const { data: categoryRouting, isLoading } = useInterruptionPolicies();
@@ -94,7 +84,7 @@ const NRC04QueueInterruptMatrix = () => {
                 <table className="w-full text-xs">
                   <thead><tr className="border-b"><th className="text-left p-2">Category</th><th className="text-left p-2">Default Delivery</th><th className="text-left p-2">Escalation</th><th className="p-2">Priority</th></tr></thead>
                   <tbody>
-                    {(categoryRouting ?? []).map((c: NRC04QueueInterruptMatrixRow) => (
+                    {(categoryRouting ?? []).map((c: any) => (
                       <tr key={c.category ?? c.id} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-mono">{c.category ?? c.policy_name}</td>
                         <td className="p-2">{c.defaultDelivery ?? c.default_delivery}</td>

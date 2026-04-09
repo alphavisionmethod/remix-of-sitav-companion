@@ -7,26 +7,19 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface FIPPolicyTrustBoardRow {
-  feature_name?: unknown;
-  id?: string;
-  policy_defined?: unknown;
-  risk_tier?: unknown;
-  trust_bearing?: unknown;
-}
 
 const FIPPolicyTrustBoard = () => {
   const { data: intakes = [] } = useFeatureIntakes();
   const { data: compliance = [] } = useComplianceRecords();
 
-  const trustBearing = intakes.filter((i: FIPPolicyTrustBoardRow) => i.trust_bearing);
-  const policyDefined = compliance.filter((c: FIPPolicyTrustBoardRow) => c.policy_defined).length;
-  const policyMissing = compliance.filter((c: FIPPolicyTrustBoardRow) => !c.policy_defined).length;
+  const trustBearing = intakes.filter((i: any) => i.trust_bearing);
+  const policyDefined = compliance.filter((c: any) => c.policy_defined).length;
+  const policyMissing = compliance.filter((c: any) => !c.policy_defined).length;
 
   const riskMatrix = [
-    { tier: 'standard', count: intakes.filter((i: FIPPolicyTrustBoardRow) => i.risk_tier === 'standard').length, color: 'text-green-500' },
-    { tier: 'elevated', count: intakes.filter((i: FIPPolicyTrustBoardRow) => i.risk_tier === 'elevated').length, color: 'text-yellow-500' },
-    { tier: 'critical', count: intakes.filter((i: FIPPolicyTrustBoardRow) => i.risk_tier === 'critical').length, color: 'text-destructive' },
+    { tier: 'standard', count: intakes.filter((i: any) => i.risk_tier === 'standard').length, color: 'text-green-500' },
+    { tier: 'elevated', count: intakes.filter((i: any) => i.risk_tier === 'elevated').length, color: 'text-yellow-500' },
+    { tier: 'critical', count: intakes.filter((i: any) => i.risk_tier === 'critical').length, color: 'text-destructive' },
   ];
 
   return (
@@ -77,7 +70,7 @@ const FIPPolicyTrustBoard = () => {
       <div className="space-y-3">
         <h2 className="font-semibold">Trust-Bearing Features</h2>
         {trustBearing.length === 0 ? <Card><CardContent className="py-8 text-center text-muted-foreground">No trust-bearing features identified yet</CardContent></Card> :
-          trustBearing.map((f: FIPPolicyTrustBoardRow) => (
+          trustBearing.map((f: any) => (
             <Card key={f.id} className="border-destructive/30">
               <CardContent className="py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2"><Lock className="h-4 w-4 text-destructive" /><span className="font-medium">{f.feature_name}</span></div>

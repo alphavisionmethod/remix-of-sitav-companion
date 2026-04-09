@@ -10,14 +10,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface PFA06PermissionUpgradeCenterRow {
-  default_grant_profile?: unknown;
-  id?: string;
-  minimum_scopes?: unknown;
-  optional_scopes?: unknown;
-  provider_capabilities?: unknown;
-  upgrade_available?: unknown;
-}
 
 export default function PFA06PermissionUpgradeCenter() {
   const { isDemoMode } = useDataMode();
@@ -51,7 +43,7 @@ export default function PFA06PermissionUpgradeCenter() {
         </CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4">
           <p className="text-xs text-muted-foreground">Pending Upgrades</p>
-          <p className="text-2xl font-bold">{levels.filter((l: PFA06PermissionUpgradeCenterRow) => l.upgrade_available).length}</p>
+          <p className="text-2xl font-bold">{levels.filter((l: any) => l.upgrade_available).length}</p>
         </CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4">
           <p className="text-xs text-muted-foreground">Completed Upgrades</p>
@@ -75,7 +67,7 @@ export default function PFA06PermissionUpgradeCenter() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {policies.map((p: PFA06PermissionUpgradeCenterRow) => (
+                {policies.map((p: any) => (
                   <TableRow key={p.id}>
                     <TableCell className="font-mono text-xs">{p.provider_capabilities?.capability_key}</TableCell>
                     <TableCell><Badge variant="outline">{p.default_grant_profile}</Badge></TableCell>

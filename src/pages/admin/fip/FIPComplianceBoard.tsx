@@ -9,14 +9,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface FIPComplianceBoardRow {
-  completeness_score?: unknown;
-  feature_id?: unknown;
-  feature_name?: unknown;
-  id?: string;
-  readiness_stage?: string;
-  violation_count?: unknown;
-}
 
 const FIPComplianceBoard = () => {
   const { data: records = [], isLoading } = useComplianceRecords();
@@ -36,7 +28,7 @@ const FIPComplianceBoard = () => {
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{records.length}</p><p className="text-xs text-muted-foreground">Total Features</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{avgScore}%</p><p className="text-xs text-muted-foreground">Avg Compliance</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-destructive">{totalViolations}</p><p className="text-xs text-muted-foreground">Total Violations</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{records.filter((r: FIPComplianceBoardRow) => (r.completeness_score || 0) >= 90).length}</p><p className="text-xs text-muted-foreground">Fully Compliant</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{records.filter((r: any) => (r.completeness_score || 0) >= 90).length}</p><p className="text-xs text-muted-foreground">Fully Compliant</p></CardContent></Card>
       </div>
 
       <div className="space-y-3">
@@ -47,7 +39,7 @@ const FIPComplianceBoard = () => {
               <p className="text-muted-foreground">No compliance records yet. Records are created automatically when features pass through the protocol.</p>
             </CardContent></Card>
           ) :
-          records.map((r: FIPComplianceBoardRow) => (
+          records.map((r: any) => (
             <Card key={r.id}>
               <CardContent className="py-4">
                 <div className="flex items-center justify-between mb-3">

@@ -12,19 +12,6 @@ import { ShieldAlert, CheckCircle2, XCircle, AlertTriangle } from "lucide-react"
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface V07LaunchBlockerBoardRow {
-  commit_sha?: unknown;
-  customer_journey_registry?: unknown;
-  id?: string;
-  launch_impact?: unknown;
-  proof_confidence?: unknown;
-  recommended_fi?: unknown;
-  status?: string;
-  steps_failed?: unknown;
-  steps_passed?: unknown;
-  summary?: unknown;
-  verification_type?: unknown;
-}
 
 export default function LaunchBlockerBoard() {
   const { isDemoMode } = useDataMode();
@@ -55,14 +42,14 @@ export default function LaunchBlockerBoard() {
 
   // Compute blockers from failed runs with launch_blocker impact
   const launchBlockerRuns = (runs || []).filter(
-    (r: V07LaunchBlockerBoardRow) => r.launch_impact === "launch_blocker" && r.status !== "pass"
+    (r: any) => r.launch_impact === "launch_blocker" && r.status !== "pass"
   );
 
   const pilotBlockerRuns = (runs || []).filter(
-    (r: V07LaunchBlockerBoardRow) => r.launch_impact === "pilot_blocker" && r.status !== "pass"
+    (r: any) => r.launch_impact === "pilot_blocker" && r.status !== "pass"
   );
 
-  const launchReady = launchBlockerRuns.length === 0 && (brokenJourneys || []).filter((j: V07LaunchBlockerBoardRow) => j.launch_impact === "launch_blocker").length === 0;
+  const launchReady = launchBlockerRuns.length === 0 && (brokenJourneys || []).filter((j: any) => j.launch_impact === "launch_blocker").length === 0;
 
   return (
     <div className="space-y-6 p-6" data-testid="verification-launch-blockers">
@@ -104,7 +91,7 @@ export default function LaunchBlockerBoard() {
             <h3 className="font-semibold flex items-center gap-2">
               <XCircle className="h-4 w-4 text-destructive" /> Launch Blockers ({launchBlockerRuns.length})
             </h3>
-            {launchBlockerRuns.map((r: V07LaunchBlockerBoardRow) => (
+            {launchBlockerRuns.map((r: any) => (
               <div key={r.id} className="p-2 rounded border border-destructive/30 bg-destructive/5 flex justify-between items-center">
                 <div>
                   <span className="text-sm font-medium">{r.summary || r.verification_type}</span>
@@ -127,7 +114,7 @@ export default function LaunchBlockerBoard() {
             <h3 className="font-semibold flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-amber-400" /> Pilot Blockers ({pilotBlockerRuns.length})
             </h3>
-            {pilotBlockerRuns.map((r: V07LaunchBlockerBoardRow) => (
+            {pilotBlockerRuns.map((r: any) => (
               <div key={r.id} className="p-2 rounded border border-amber-500/30 bg-amber-500/5 flex justify-between items-center">
                 <div>
                   <span className="text-sm font-medium">{r.summary || r.verification_type}</span>
@@ -149,7 +136,7 @@ export default function LaunchBlockerBoard() {
             <h3 className="font-semibold flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-destructive" /> Broken Journeys ({(brokenJourneys || []).length})
             </h3>
-            {(brokenJourneys || []).map((j: V07LaunchBlockerBoardRow) => (
+            {(brokenJourneys || []).map((j: any) => (
               <div key={j.id} className="p-2 rounded border border-destructive/30 bg-destructive/5 flex justify-between items-center">
                 <div>
                   <span className="font-mono text-sm">{j.customer_journey_registry?.journey_key || "—"}</span>

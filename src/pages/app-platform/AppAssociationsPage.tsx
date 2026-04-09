@@ -12,12 +12,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface AppAssociationsPageRow {
-  icon?: unknown;
-  id?: string;
-  name?: string;
-  protocolAssociations?: unknown;
-}
 
 const DEMO_APP_SLOTS = [
   { id: "browser", label: "Default Browser", icon: Globe, currentApp: "chrome", candidates: ["chrome", "firefox"] },
@@ -110,7 +104,7 @@ const AppAssociationsPage = () => {
                   <p className="text-[10px] text-muted-foreground">{ft.ext}</p>
                 </div>
                 <div className="flex items-center gap-1">
-                  {apps.map((a: AppAssociationsPageRow) => (
+                  {apps.map((a: any) => (
                     <span key={a.id} className="text-sm" title={a.name}>{a.icon}</span>
                   ))}
                 </div>

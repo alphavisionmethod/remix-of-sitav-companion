@@ -15,9 +15,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface RealityConversionOverviewRow {
-  message?: string;
-}
 
 const STATE_COLORS = {
   presentational: { bg: "bg-muted", text: "text-muted-foreground", icon: Eye, label: "Presentational" },
@@ -44,7 +41,7 @@ export default function RealityConversionOverview() {
       toast.success(`Seeded ${result.classifications.seeded} classifications + ${result.replacements.seeded} mock replacements (${result.classifications.skipped + result.replacements.skipped} skipped)`);
       qc.invalidateQueries({ queryKey: ["reality-classifications"] });
       qc.invalidateQueries({ queryKey: ["mock-replacements"] });
-    } catch (e: RealityConversionOverviewRow) {
+    } catch (e: any) {
       toast.error(e.message || "Seed failed");
     } finally {
       setSeeding(false);

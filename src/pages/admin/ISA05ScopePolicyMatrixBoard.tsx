@@ -10,12 +10,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseProviderFamilyRef, parseProviderCapabilityRef } from "@/lib/types/relation-parsers";
 
 
-interface ISA05ScopePolicyMatrixBoardRow {
-  approval_needed?: unknown;
-  category?: string;
-  id?: string;
-  scope_key?: unknown;
-}
 
 const riskColors: Record<string, string> = {
   low: "bg-green-500/20 text-green-400",
@@ -46,12 +40,12 @@ export default function ISA05ScopePolicyMatrixBoard() {
     },
   });
 
-  const identityScopes = scopes.filter((s: ISA05ScopePolicyMatrixBoardRow) => s.category === "identity_minimal");
-  const readScopes = scopes.filter((s: ISA05ScopePolicyMatrixBoardRow) => s.category === "connector_read");
-  const writeScopes = scopes.filter((s: ISA05ScopePolicyMatrixBoardRow) => s.category === "connector_write");
-  const adminScopes = scopes.filter((s: ISA05ScopePolicyMatrixBoardRow) => s.category === "connector_admin");
-  const disallowedScopes = scopes.filter((s: ISA05ScopePolicyMatrixBoardRow) => s.category === "disallowed");
-  const approvalNeeded = scopes.filter((s: ISA05ScopePolicyMatrixBoardRow) => s.approval_needed);
+  const identityScopes = scopes.filter((s: any) => s.category === "identity_minimal");
+  const readScopes = scopes.filter((s: any) => s.category === "connector_read");
+  const writeScopes = scopes.filter((s: any) => s.category === "connector_write");
+  const adminScopes = scopes.filter((s: any) => s.category === "connector_admin");
+  const disallowedScopes = scopes.filter((s: any) => s.category === "disallowed");
+  const approvalNeeded = scopes.filter((s: any) => s.approval_needed);
 
   return (
     <div className="space-y-6 p-6">
@@ -124,7 +118,7 @@ export default function ISA05ScopePolicyMatrixBoard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {scopes.map((s: ISA05ScopePolicyMatrixBoardRow) => (
+              {scopes.map((s: any) => (
                 <TableRow key={s.id}>
                   <TableCell className="font-medium">{getRelation(s, "provider_families", parseProviderFamilyRef).name || "—"}</TableCell>
                   <TableCell className="text-sm">{getRelation(s, "provider_capabilities", parseProviderCapabilityRef).display_name || "—"}</TableCell>

@@ -33,16 +33,6 @@ import { useNavigate } from "react-router-dom";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface FL01FlagshipLoopsExecutiveRow {
-  lau?: unknown;
-  launch_blockers?: unknown;
-  launch_importance?: unknown;
-  loop_key?: unknown;
-  next_actions?: unknown;
-  primary_services?: unknown;
-  routes?: unknown;
-  status?: string;
-}
 
 function TruthRing({ pct, size = 80 }: { pct: number; size?: number }) {
   const radius = (size - 8) / 2;
@@ -126,8 +116,8 @@ export default function FL01FlagshipLoopsExecutive() {
   const loopList = loops || [];
   const overallTruth = getOverallTruthScore(loopList);
   const { grade: overallGrade, color: overallColor } = getLoopGrade(overallTruth);
-  const criticalCount = loopList.filter((l: FL01FlagshipLoopsExecutiveRow) => l.launch_importance === "launch_critical").length;
-  const activeCount = loopList.filter((l: FL01FlagshipLoopsExecutiveRow) => l.status === "active").length;
+  const criticalCount = loopList.filter((l: any) => l.launch_importance === "launch_critical").length;
+  const activeCount = loopList.filter((l: any) => l.status === "active").length;
   const blockerCount = loopList.reduce((s: number, l: any) => s + (Array.isArray(l.launch_blockers) ? l.launch_blockers.length : 0), 0);
 
   // Map verification runs to loop keys for proof overlay
@@ -238,7 +228,7 @@ export default function FL01FlagshipLoopsExecutive() {
 
           {/* Loop Cards */}
           <div className="space-y-4">
-          {loopList.map((loop: FL01FlagshipLoopsExecutiveRow) => {
+          {loopList.map((loop: any) => {
               const domains = getDomainsByFlagshipLoop(loop.loop_key);
               const blockers = Array.isArray(loop.launch_blockers) ? loop.launch_blockers : [];
               const routes = Array.isArray(loop.routes) ? loop.routes : [];

@@ -11,10 +11,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface FeatureLifecycleBoardRow {
-  feature_id?: unknown;
-  id?: string;
-}
 
 const stageColors: Record<string, string> = {
   proposed: "bg-muted", specified: "bg-blue-500/20", generated: "bg-cyan-500/20",
@@ -42,13 +38,13 @@ const FeatureLifecycleBoard = () => {
   });
 
   const getLatestStage = (featureId: string) => {
-    const featureStages = (stages ?? []).filter((s: FeatureLifecycleBoardRow) => s.feature_id === featureId);
+    const featureStages = (stages ?? []).filter((s: any) => s.feature_id === featureId);
     if (featureStages.length === 0) return "proposed";
     return featureStages.sort((a: any, b: any) => b.stage_order - a.stage_order)[0]?.stage ?? "proposed";
   };
 
   const stageCounts = LIFECYCLE_STAGES.reduce((acc, stage) => {
-    acc[stage] = (blueprints ?? []).filter((bp: FeatureLifecycleBoardRow) => getLatestStage(bp.feature_id) === stage).length;
+    acc[stage] = (blueprints ?? []).filter((bp: any) => getLatestStage(bp.feature_id) === stage).length;
     return acc;
   }, {} as Record<string, number>);
 
@@ -88,7 +84,7 @@ const FeatureLifecycleBoard = () => {
 
       {/* Feature cards by stage */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {(blueprints ?? []).map((bp: FeatureLifecycleBoardRow) => {
+        {(blueprints ?? []).map((bp: any) => {
           const currentStage = getLatestStage(bp.feature_id);
           const stageIdx = getStageIndex(currentStage as never);
           const progress = Math.round(((stageIdx + 1) / LIFECYCLE_STAGES.length) * 100);

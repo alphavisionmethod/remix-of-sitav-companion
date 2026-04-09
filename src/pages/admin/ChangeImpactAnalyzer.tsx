@@ -16,12 +16,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface ChangeImpactAnalyzerRow {
-  change_title?: unknown;
-  change_type?: unknown;
-  id?: string;
-  severity?: string;
-}
 
 const ChangeImpactAnalyzer = () => {
   const queryClient = useQueryClient();
@@ -119,7 +113,7 @@ const ChangeImpactAnalyzer = () => {
           <CardHeader><CardTitle>Recent Impact Analyses</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {(records ?? []).map((r: ChangeImpactAnalyzerRow) => (
+              {(records ?? []).map((r: any) => (
                 <div key={r.id} className="flex items-center justify-between p-2 rounded border">
                   <span className="text-sm">{r.change_title}</span>
                   <div className="flex gap-2">

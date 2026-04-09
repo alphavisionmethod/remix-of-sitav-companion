@@ -11,16 +11,6 @@ import { useFinancialDocuments } from "@/hooks/use-domain-data";
 import { formatDistanceToNow } from "date-fns";
 
 
-interface MoneyDocumentsRow {
-  boardroom_relevant?: unknown;
-  created_at?: string;
-  doc_type?: unknown;
-  id?: string;
-  name?: string;
-  proof_relevant?: unknown;
-  sensitivity?: unknown;
-  status?: string;
-}
 
 const typeIcons: Record<string, string> = {
   invoice: "text-primary", receipt: "text-trust-verified", bill: "text-urgency-high",
@@ -39,10 +29,10 @@ const MoneyDocuments = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { data: documents = [], isLoading } = useFinancialDocuments();
 
-  const selected = documents.find((d: MoneyDocumentsRow) => d.id === selectedId);
+  const selected = documents.find((d: any) => d.id === selectedId);
 
   const filtered = useMemo(() =>
-    documents.filter((d: MoneyDocumentsRow) => {
+    documents.filter((d: any) => {
       const matchesTab = tab === "all" || (tab === "boardroom" && d.boardroom_relevant) || (tab === "proof" && d.proof_relevant) || tab === d.doc_type;
       const matchesSearch = !search || d.name.toLowerCase().includes(search.toLowerCase());
       return matchesTab && matchesSearch;
@@ -58,9 +48,9 @@ const MoneyDocuments = () => {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Total Documents" value={String(documents.length)} icon={FileText} />
-        <KPITile label="Boardroom Relevant" value={String(documents.filter((d: MoneyDocumentsRow) => d.boardroom_relevant).length)} icon={Eye} sub="For review" />
-        <KPITile label="Extracting" value={String(documents.filter((d: MoneyDocumentsRow) => d.status === "extracting").length)} icon={Clock} sub="In progress" />
-        <KPITile label="Confidential" value={String(documents.filter((d: MoneyDocumentsRow) => d.sensitivity === "confidential").length)} icon={Shield} />
+        <KPITile label="Boardroom Relevant" value={String(documents.filter((d: any) => d.boardroom_relevant).length)} icon={Eye} sub="For review" />
+        <KPITile label="Extracting" value={String(documents.filter((d: any) => d.status === "extracting").length)} icon={Clock} sub="In progress" />
+        <KPITile label="Confidential" value={String(documents.filter((d: any) => d.sensitivity === "confidential").length)} icon={Shield} />
       </div>
 
       <div className="flex items-center gap-3">
@@ -77,9 +67,9 @@ const MoneyDocuments = () => {
       <SitaTabs
         tabs={[
           { key: "all", label: "All", count: documents.length },
-          { key: "boardroom", label: "Boardroom", count: documents.filter((d: MoneyDocumentsRow) => d.boardroom_relevant).length },
-          { key: "proof", label: "Proof-linked", count: documents.filter((d: MoneyDocumentsRow) => d.proof_relevant).length },
-          { key: "contract", label: "Contracts", count: documents.filter((d: MoneyDocumentsRow) => d.doc_type === "contract").length },
+          { key: "boardroom", label: "Boardroom", count: documents.filter((d: any) => d.boardroom_relevant).length },
+          { key: "proof", label: "Proof-linked", count: documents.filter((d: any) => d.proof_relevant).length },
+          { key: "contract", label: "Contracts", count: documents.filter((d: any) => d.doc_type === "contract").length },
         ]}
         active={tab}
         onChange={setTab}
@@ -87,7 +77,7 @@ const MoneyDocuments = () => {
 
       <div className="grid gap-6 lg:grid-cols-5">
         <div className="lg:col-span-3 space-y-2">
-          {filtered.map((doc: MoneyDocumentsRow) => {
+          {filtered.map((doc: any) => {
             const sens = sensitivityConfig[doc.sensitivity] || sensitivityConfig.normal;
             const ts = doc.created_at ? formatDistanceToNow(new Date(doc.created_at), { addSuffix: true }) : "";
             return (

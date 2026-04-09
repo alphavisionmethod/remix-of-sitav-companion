@@ -27,17 +27,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 
 
-interface EnterpriseControlPlaneRow {
-  actor?: unknown;
-  created_at?: string;
-  details?: unknown;
-  display_name?: string;
-  email?: unknown;
-  id?: string;
-  updated_at?: string;
-  user_id?: unknown;
-  user_roles?: unknown;
-}
 
 // ── Demo Fallback Data ──────────────────────────────────────────
 const DEMO_TEAM_MEMBERS = [
@@ -89,7 +78,7 @@ const EnterpriseControlPlane = () => {
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
       const { data } = await fromTable("profiles").select("*, user_roles(role)").limit(50);
-      return (data ?? []).map((p: EnterpriseControlPlaneRow) => ({
+      return (data ?? []).map((p: any) => ({
         id: p.id || p.user_id,
         name: p.display_name || p.email || "Unknown",
         email: p.email || "",
@@ -106,7 +95,7 @@ const EnterpriseControlPlane = () => {
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
       const { data } = await fromTable("audit_logs").select("*").eq("category", "deployment").order("created_at", { ascending: false }).limit(10);
-      return (data ?? []).map((a: EnterpriseControlPlaneRow) => ({
+      return (data ?? []).map((a: any) => ({
         id: a.id,
         env: a.details?.environment || "production",
         version: a.details?.version || "v2.x",

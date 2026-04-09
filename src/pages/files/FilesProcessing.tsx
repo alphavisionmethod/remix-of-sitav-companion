@@ -12,14 +12,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface FilesProcessingRow {
-  extracted_data?: unknown;
-  filename?: unknown;
-  inProgress?: unknown;
-  name?: string;
-  status?: string;
-  textContent?: unknown;
-}
 
 const stageFromStatus = (status: string): ProcessingStage => {
   const map: Record<string, ProcessingStage> = {
@@ -58,7 +50,7 @@ const FilesProcessing = () => {
 
   const ingestedFiles = useMemo(() => {
     const files = realFiles && realFiles.length > 0 ? realFiles : mockData;
-    return files.map((f: FilesProcessingRow) => ({
+    return files.map((f: any) => ({
       ...f,
       filename: f.filename || f.name || "Unknown",
       textContent: f.extracted_data?.text || f.textContent || "",

@@ -13,19 +13,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface FeatureFactoryConsoleRow {
-  archetype_key?: unknown;
-  contract_class?: unknown;
-  domain?: string;
-  feature_id?: unknown;
-  id?: string;
-  interaction_criticality?: unknown;
-  journey_criticality?: unknown;
-  persistence_class?: unknown;
-  title?: string;
-  trust_needs?: unknown;
-  user_intent?: unknown;
-}
 
 const FeatureFactoryConsole = () => {
   const { data: blueprints } = useQuery({
@@ -36,7 +23,7 @@ const FeatureFactoryConsole = () => {
     },
   });
 
-  const handleGenerate = (bp: FeatureFactoryConsoleRow) => {
+  const handleGenerate = (bp: any) => {
     const blueprint: FeatureBlueprint = {
       featureId: bp.feature_id, title: bp.title, domain: bp.domain,
       archetypeKey: bp.archetype_key ?? "dashboard", userIntent: bp.user_intent ?? "",
@@ -66,7 +53,7 @@ const FeatureFactoryConsole = () => {
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {(blueprints ?? []).map((bp: FeatureFactoryConsoleRow) => (
+        {(blueprints ?? []).map((bp: any) => (
           <motion.div key={bp.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Card>
               <CardHeader>

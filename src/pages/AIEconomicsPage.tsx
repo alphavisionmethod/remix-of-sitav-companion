@@ -19,15 +19,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface AIEconomicsPageRow {
-  advisorId?: unknown;
-  cost?: number;
-  domain?: string;
-  id?: string;
-  sev?: unknown;
-  severity?: string;
-  tokens?: unknown;
-}
 
 // ── Seed demo usage ────────────────────────────────────────────
 function useDemoEconomics() {
@@ -152,7 +143,7 @@ export default function AIEconomicsPage() {
             </h3>
             <div className="space-y-3">
               {dashboard.byModel.map((m: any, i: number) => {
-                const maxTokens = Math.max(...dashboard.byModel.map((x: AIEconomicsPageRow) => x.tokens));
+                const maxTokens = Math.max(...dashboard.byModel.map((x: any) => x.tokens));
                 return (
                   <motion.div key={m.model} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}
                     className="flex items-center gap-3"
@@ -174,7 +165,7 @@ export default function AIEconomicsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="rounded-xl border border-border/30 bg-card/60 p-5">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">By Domain</h3>
-              {dashboard.byDomain.map((d: AIEconomicsPageRow) => (
+              {dashboard.byDomain.map((d: any) => (
                 <div key={d.domain} className="flex items-center justify-between py-1.5 border-b border-border/10 last:border-0">
                   <span className="text-xs text-foreground capitalize">{d.domain}</span>
                   <div className="flex items-center gap-3">
@@ -187,7 +178,7 @@ export default function AIEconomicsPage() {
 
             <div className="rounded-xl border border-border/30 bg-card/60 p-5">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">By Advisor</h3>
-              {dashboard.byAdvisor.map((a: AIEconomicsPageRow) => (
+              {dashboard.byAdvisor.map((a: any) => (
                 <div key={a.advisorId} className="flex items-center justify-between py-1.5 border-b border-border/10 last:border-0">
                   <span className="text-xs text-foreground capitalize">{a.advisorId.replace(/-/g, " ")}</span>
                   <div className="flex items-center gap-3">
@@ -261,7 +252,7 @@ export default function AIEconomicsPage() {
               <p className="text-xs text-muted-foreground">Token usage is within normal bounds</p>
             </div>
           ) : (
-            dashboard.anomalies.map((a: AIEconomicsPageRow) => (
+            dashboard.anomalies.map((a: any) => (
               <div key={a.id} className={cn("rounded-xl border p-4",
                 a.severity === "critical" ? "border-destructive/20 bg-destructive/5" :
                 a.severity === "warning" ? "border-accent/20 bg-accent/5" :

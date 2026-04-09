@@ -11,15 +11,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseProviderFamilyRef, parseProviderCapabilityRef } from "@/lib/types/relation-parsers";
 
 
-interface ISA02ConnectorProviderRegistryBoardRow {
-  account_label?: unknown;
-  category?: string;
-  display_name?: string;
-  health_st?: unknown;
-  health_state?: unknown;
-  id?: string;
-  status?: string;
-}
 
 const categoryIcons: Record<string, React.ReactNode> = {
   storage: <HardDrive className="h-4 w-4" />,
@@ -66,9 +57,9 @@ export default function ISA02ConnectorProviderRegistryBoard() {
     },
   });
 
-  const connectedCount = services.filter((s: ISA02ConnectorProviderRegistryBoardRow) => s.status === "connected").length;
-  const errorCount = services.filter((s: ISA02ConnectorProviderRegistryBoardRow) => s.health_state === "error").length;
-  const categories = [...new Set(capabilities.map((c: ISA02ConnectorProviderRegistryBoardRow) => c.category))];
+  const connectedCount = services.filter((s: any) => s.status === "connected").length;
+  const errorCount = services.filter((s: any) => s.health_state === "error").length;
+  const categories = [...new Set(capabilities.map((c: any) => c.category))];
 
   return (
     <div className="space-y-6 p-6">
@@ -135,7 +126,7 @@ export default function ISA02ConnectorProviderRegistryBoard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {capabilities.map((cap: ISA02ConnectorProviderRegistryBoardRow) => (
+              {capabilities.map((cap: any) => (
                 <TableRow key={cap.id}>
                   <TableCell className="font-medium flex items-center gap-2">
                     {categoryIcons[cap.category] || <Plug className="h-4 w-4" />}
@@ -177,7 +168,7 @@ export default function ISA02ConnectorProviderRegistryBoard() {
         <CardContent>
           {services.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {services.map((svc: ISA02ConnectorProviderRegistryBoardRow) => (
+              {services.map((svc: any) => (
                 <Card key={svc.id} className="bg-muted/30 border-border">
                   <CardContent className="pt-4">
                     <div className="flex items-center justify-between mb-2">

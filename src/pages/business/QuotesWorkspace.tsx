@@ -14,12 +14,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface QuotesWorkspaceRow {
-  customers?: Record<string, unknown> | null;
-  id?: string;
-  status?: string;
-  total?: unknown;
-}
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
@@ -80,15 +74,15 @@ const QuotesWorkspace = () => {
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["quotes"] }); setSelectedId(null); toast.success("Deleted"); },
   });
 
-  const selected = quotes.find((q: QuotesWorkspaceRow) => q.id === selectedId);
+  const selected = quotes.find((q: any) => q.id === selectedId);
 
   const filtered = tab === "all" ? quotes
-    : tab === "active" ? quotes.filter((q: QuotesWorkspaceRow) => !["accepted", "declined", "expired"].includes(q.status))
-    : tab === "action" ? quotes.filter((q: QuotesWorkspaceRow) => q.status === "draft" || q.status === "sent")
-    : quotes.filter((q: QuotesWorkspaceRow) => ["accepted", "declined", "expired"].includes(q.status));
+    : tab === "active" ? quotes.filter((q: any) => !["accepted", "declined", "expired"].includes(q.status))
+    : tab === "action" ? quotes.filter((q: any) => q.status === "draft" || q.status === "sent")
+    : quotes.filter((q: any) => ["accepted", "declined", "expired"].includes(q.status));
 
   const totalValue = quotes.reduce((sum: number, q: any) => sum + (q.total || 0), 0);
-  const activeCount = quotes.filter((q: QuotesWorkspaceRow) => !["accepted", "declined", "expired"].includes(q.status)).length;
+  const activeCount = quotes.filter((q: any) => !["accepted", "declined", "expired"].includes(q.status)).length;
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -120,15 +114,15 @@ const QuotesWorkspace = () => {
         {[
           { label: "Active Quotes", value: String(activeCount), icon: FileText },
           { label: "Total Value", value: totalValue > 0 ? `$${(totalValue / 1000).toFixed(0)}K` : "$0", icon: DollarSign },
-          { label: "Drafts", value: String(quotes.filter((q: QuotesWorkspaceRow) => q.status === "draft").length), icon: Edit },
-          { label: "Accepted", value: String(quotes.filter((q: QuotesWorkspaceRow) => q.status === "accepted").length), icon: CheckCircle },
+          { label: "Drafts", value: String(quotes.filter((q: any) => q.status === "draft").length), icon: Edit },
+          { label: "Accepted", value: String(quotes.filter((q: any) => q.status === "accepted").length), icon: CheckCircle },
         ].map(kpi => <motion.div key={kpi.label} variants={fadeUp}><KPITile {...kpi} /></motion.div>)}
       </motion.div>
 
       <SitaTabs tabs={[
         { key: "all", label: "All", count: quotes.length },
         { key: "active", label: "Active", count: activeCount },
-        { key: "action", label: "Drafts & Sent", count: quotes.filter((q: QuotesWorkspaceRow) => ["draft", "sent"].includes(q.status)).length },
+        { key: "action", label: "Drafts & Sent", count: quotes.filter((q: any) => ["draft", "sent"].includes(q.status)).length },
         { key: "closed", label: "Closed" },
       ]} active={tab} onChange={setTab} />
 
@@ -138,7 +132,7 @@ const QuotesWorkspace = () => {
           : filtered.length === 0 ? <EmptyState icon={FileText} title="No quotes" description={quotes.length === 0 ? "Create your first quote to get started" : "Try a different filter"} />
           : (
             <motion.div className="space-y-2" variants={stagger} initial="hidden" animate="show">
-              {filtered.map((q: QuotesWorkspaceRow) => {
+              {filtered.map((q: any) => {
                 const st = statusLabels[q.status] || statusLabels.draft;
                 const customerName = q.customers?.name;
                 return (

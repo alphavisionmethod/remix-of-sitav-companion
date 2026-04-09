@@ -12,17 +12,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface MSA02CoreSurfaceBoundaryRow {
-  component_path?: unknown;
-  component_type?: unknown;
-  id?: string;
-  is_boundary_violation?: unknown;
-  layer?: unknown;
-  message?: string;
-  migration_pr?: unknown;
-  violation_type?: unknown;
-  violations?: unknown;
-}
 
 const layerColors: Record<string, string> = {
   core_runtime: "bg-green-500/20 text-green-400", contract: "bg-cyan-500/20 text-cyan-400",
@@ -50,12 +39,12 @@ export default function MSA02CoreSurfaceBoundary() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: MSA02CoreSurfaceBoundaryRow) => { toast.success(`Audit complete: ${data?.violations} violations found`); queryClient.invalidateQueries({ queryKey: ["architecture-boundaries"] }); },
-    onError: (e: MSA02CoreSurfaceBoundaryRow) => toast.error(`Audit failed: ${e.message}`),
+    onSuccess: (data: any) => { toast.success(`Audit complete: ${data?.violations} violations found`); queryClient.invalidateQueries({ queryKey: ["architecture-boundaries"] }); },
+    onError: (e: any) => toast.error(`Audit failed: ${e.message}`),
   });
 
-  const violations = boundaries.filter((b: MSA02CoreSurfaceBoundaryRow) => b.is_boundary_violation);
-  const clean = boundaries.filter((b: MSA02CoreSurfaceBoundaryRow) => !b.is_boundary_violation);
+  const violations = boundaries.filter((b: any) => b.is_boundary_violation);
+  const clean = boundaries.filter((b: any) => !b.is_boundary_violation);
 
   return (
     <div className="space-y-6 p-6">
@@ -101,7 +90,7 @@ export default function MSA02CoreSurfaceBoundary() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {violations.map((b: MSA02CoreSurfaceBoundaryRow) => (
+                {violations.map((b: any) => (
                   <TableRow key={b.id}>
                     <TableCell className="font-mono text-xs">{b.component_path}</TableCell>
                     <TableCell><Badge variant="outline">{b.component_type}</Badge></TableCell>
@@ -122,7 +111,7 @@ export default function MSA02CoreSurfaceBoundary() {
           <CardHeader><CardTitle className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-green-400" /> Properly Layered Components</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {clean.map((b: MSA02CoreSurfaceBoundaryRow) => (
+              {clean.map((b: any) => (
                 <div key={b.id} className="flex items-center justify-between p-2 rounded bg-muted/20">
                   <span className="font-mono text-xs">{b.component_path}</span>
                   <div className="flex gap-2">

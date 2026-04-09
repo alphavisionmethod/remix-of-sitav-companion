@@ -10,12 +10,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface PFA05ScopePolicyMatrixRow {
-  id?: string;
-  minimum_scopes?: unknown;
-  optional_scopes?: unknown;
-  provider_capabilities?: unknown;
-}
 
 export default function PFA05ScopePolicyMatrix() {
   const { isDemoMode } = useDataMode();
@@ -49,7 +43,7 @@ export default function PFA05ScopePolicyMatrix() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {policies.map((p: PFA05ScopePolicyMatrixRow) => (
+                {policies.map((p: any) => (
                   <TableRow key={p.id}>
                     <TableCell className="text-sm">{p.provider_capabilities?.provider_families?.name || "—"}</TableCell>
                     <TableCell className="font-mono text-xs">{p.provider_capabilities?.capability_key || "—"}</TableCell>

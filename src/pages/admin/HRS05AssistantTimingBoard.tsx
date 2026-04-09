@@ -8,10 +8,6 @@ import { useReadinessStates } from "@/hooks/use-health-signal-data";
 import { DEMO_TIMING_RULES, DEMO_BRIEFING_WINDOWS, DEMO_HOLD_VS_ACT } from "@/lib/demo-data/health-signals";
 
 
-interface HRS05AssistantTimingBoardRow {
-  id?: string;
-  readiness_level?: unknown;
-}
 
 const BRIEFING_WINDOWS = DEMO_BRIEFING_WINDOWS;
 const HOLD_VS_ACT = DEMO_HOLD_VS_ACT;
@@ -113,7 +109,7 @@ const HRS05AssistantTimingBoard = () => {
               <CardHeader><CardTitle className="text-sm">Current Readiness → Timing Decisions</CardTitle></CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {dbReadiness.map((r: HRS05AssistantTimingBoardRow) => {
+                  {dbReadiness.map((r: any) => {
                     const level = r.readiness_level || "unknown";
                     const timingDecision = level === "high" ? "Open — all briefings eligible" : level === "low" ? "Restricted — high+ urgency only" : level === "overload_risk" ? "Suppressed — emergency only" : "Standard routing";
                     return (

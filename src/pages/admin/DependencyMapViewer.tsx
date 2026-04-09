@@ -10,15 +10,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface DependencyMapViewerRow {
-  required_?: unknown;
-  required_contracts?: unknown;
-  required_policies?: unknown;
-  required_proofs?: unknown;
-  required_services?: unknown;
-  resolved_count?: unknown;
-  total_count?: unknown;
-}
 
 const DependencyMapViewer = () => {
   const { data: maps } = useQuery({
@@ -41,7 +32,7 @@ const DependencyMapViewer = () => {
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {(maps ?? []).map((m: DependencyMapViewerRow) => {
+        {(maps ?? []).map((m: any) => {
           const pct = m.total_count > 0 ? Math.round((m.resolved_count / m.total_count) * 100) : 0;
           const cats = [
             { label: "Contracts", items: m.required_contracts ?? [], icon: "📋" },

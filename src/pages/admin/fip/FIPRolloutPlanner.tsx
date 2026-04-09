@@ -7,13 +7,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface FIPRolloutPlannerRow {
-  cu?: unknown;
-  current_ring?: unknown;
-  feature_id?: unknown;
-  id?: string;
-  kill_switch_class?: unknown;
-}
 
 const DEMO_ROLLOUT_RINGS = ['dev', 'staging', 'internal-shadow', 'internal-real', 'limited-tenant', 'premium', 'ga'];
 const DEMO_KILL_CLASSES = ['ui-hide', 'side-effects-disabled', 'connector-writes-disabled', 'recurring-disabled', 'approval-paused', 'full-workflow-disabled'];
@@ -39,9 +32,9 @@ const FIPRolloutPlanner = () => {
 
       <div className="grid grid-cols-4 gap-4">
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{rollouts.length}</p><p className="text-xs text-muted-foreground">Rollout Plans</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{rollouts.filter((r: FIPRolloutPlannerRow) => r.current_ring === 'ga').length}</p><p className="text-xs text-muted-foreground">At GA</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{rollouts.filter((r: FIPRolloutPlannerRow) => r.current_ring === 'dev').length}</p><p className="text-xs text-muted-foreground">In Dev</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{rollouts.filter((r: FIPRolloutPlannerRow) => r.kill_switch_class === 'full-workflow-disabled').length}</p><p className="text-xs text-muted-foreground">Full Kill-Switch</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{rollouts.filter((r: any) => r.current_ring === 'ga').length}</p><p className="text-xs text-muted-foreground">At GA</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{rollouts.filter((r: any) => r.current_ring === 'dev').length}</p><p className="text-xs text-muted-foreground">In Dev</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{rollouts.filter((r: any) => r.kill_switch_class === 'full-workflow-disabled').length}</p><p className="text-xs text-muted-foreground">Full Kill-Switch</p></CardContent></Card>
       </div>
 
       <Card>
@@ -49,7 +42,7 @@ const FIPRolloutPlanner = () => {
         <CardContent>
           <div className="flex gap-2">
             {DEMO_ROLLOUT_RINGS.map(ring => {
-              const count = rollouts.filter((r: FIPRolloutPlannerRow) => r.current_ring === ring).length;
+              const count = rollouts.filter((r: any) => r.current_ring === ring).length;
               return (
                 <div key={ring} className={`flex-1 text-center p-3 rounded-lg border ${count > 0 ? 'border-primary/30' : ''}`}>
                   <p className="text-lg font-bold">{count}</p>
@@ -64,7 +57,7 @@ const FIPRolloutPlanner = () => {
       <div className="space-y-3">
         {isLoading ? <p className="text-center py-8 text-muted-foreground">Loading...</p> :
           rollouts.length === 0 ? <Card><CardContent className="py-12 text-center text-muted-foreground">No rollout plans yet. Plans are created during feature rollout design.</CardContent></Card> :
-          rollouts.map((r: FIPRolloutPlannerRow) => (
+          rollouts.map((r: any) => (
             <Card key={r.id}>
               <CardContent className="py-4">
                 <div className="flex items-center justify-between">

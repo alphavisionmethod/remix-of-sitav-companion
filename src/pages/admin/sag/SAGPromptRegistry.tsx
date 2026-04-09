@@ -12,14 +12,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface SAGPromptRegistryRow {
-  deprecated?: unknown;
-  id?: string;
-  name?: string;
-  output_schema?: unknown;
-  prompt_family_id?: unknown;
-  redaction_strategy?: unknown;
-}
 
 const SAGPromptRegistry = () => {
   const { data: prompts = [], isLoading } = usePromptFamilies();
@@ -49,9 +41,9 @@ const SAGPromptRegistry = () => {
 
       <div className="grid grid-cols-4 gap-4">
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{prompts.length}</p><p className="text-xs text-muted-foreground">Prompt Families</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{prompts.filter((p: SAGPromptRegistryRow) => p.output_schema).length}</p><p className="text-xs text-muted-foreground">With Schema</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{prompts.filter((p: SAGPromptRegistryRow) => p.redaction_strategy !== 'none').length}</p><p className="text-xs text-muted-foreground">With Redaction</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-destructive">{prompts.filter((p: SAGPromptRegistryRow) => p.deprecated).length}</p><p className="text-xs text-muted-foreground">Deprecated</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{prompts.filter((p: any) => p.output_schema).length}</p><p className="text-xs text-muted-foreground">With Schema</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{prompts.filter((p: any) => p.redaction_strategy !== 'none').length}</p><p className="text-xs text-muted-foreground">With Redaction</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-destructive">{prompts.filter((p: any) => p.deprecated).length}</p><p className="text-xs text-muted-foreground">Deprecated</p></CardContent></Card>
       </div>
 
       {showForm && (
@@ -78,7 +70,7 @@ const SAGPromptRegistry = () => {
       <div className="space-y-3">
         {isLoading ? <p className="text-center py-8 text-muted-foreground">Loading...</p> :
           prompts.length === 0 ? <Card><CardContent className="py-12 text-center text-muted-foreground">No prompt families registered. All AI tasks must reference canonical prompt families.</CardContent></Card> :
-          prompts.map((p: SAGPromptRegistryRow) => (
+          prompts.map((p: any) => (
             <Card key={p.id} className="hover:border-primary/30 transition-colors">
               <CardContent className="py-4">
                 <div className="flex items-center justify-between">

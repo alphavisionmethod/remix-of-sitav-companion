@@ -7,10 +7,6 @@ import { Rocket, CheckCircle2, XCircle, AlertTriangle, Bell, Smartphone, Monitor
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface NRC06NotificationLaunchHonestyRow {
-  channel?: unknown;
-  delivery_status?: unknown;
-}
 
 interface ChannelTruth {
   channel: string;
@@ -43,8 +39,8 @@ function useNotificationLaunchHonesty() {
 
       // Compute per-channel stats
       const channelStats = (channel: string) => {
-        const ch = allReceipts.filter((r: NRC06NotificationLaunchHonestyRow) => r.channel === channel);
-        const delivered = ch.filter((r: NRC06NotificationLaunchHonestyRow) => r.delivery_status === "delivered" || r.delivery_status === "sent");
+        const ch = allReceipts.filter((r: any) => r.channel === channel);
+        const delivered = ch.filter((r: any) => r.delivery_status === "delivered" || r.delivery_status === "sent");
         return {
           count: ch.length,
           successRate: ch.length > 0 ? Math.round((delivered.length / ch.length) * 100) : 0,

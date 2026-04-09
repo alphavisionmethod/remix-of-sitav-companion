@@ -13,9 +13,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
 
-interface SovereignExportPageRow {
-  message?: string;
-}
 
 const DEMO_EXPORTABLE_TABLES = [
   { name: "Profiles", rows: 1, size: "2 KB" },
@@ -78,7 +75,7 @@ export default function SovereignExportPage() {
       URL.revokeObjectURL(url);
 
       toast.success("Data exported successfully");
-    } catch (e: SovereignExportPageRow) {
+    } catch (e: any) {
       toast.error(e.message || "Export failed");
     } finally {
       setExporting(false);
@@ -104,7 +101,7 @@ export default function SovereignExportPage() {
       if (error) throw error;
       toast.success("Deletion request submitted. Processing within 30 days per GDPR.");
       setConfirmDelete(false);
-    } catch (e: SovereignExportPageRow) {
+    } catch (e: any) {
       toast.error(e.message || "Deletion request failed");
     } finally {
       setDeleting(false);

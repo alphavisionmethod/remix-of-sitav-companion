@@ -13,16 +13,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface AR03SelfHealingBoardRow {
-  action_type?: string;
-  enabled?: unknown;
-  id?: string;
-  risk_level?: unknown;
-  rule_name?: unknown;
-  started_at?: unknown;
-  status?: string;
-  trigger_condition?: unknown;
-}
 
 export default function AR03SelfHealingBoard() {
   const { isDemoMode } = useDataMode();
@@ -45,7 +35,7 @@ export default function AR03SelfHealingBoard() {
   const { data: executions = [] } = useQuery({
     queryKey: ["self-healing-executions"],
     queryFn: async () => {
-      const jobIds = healingJobs.map((j: AR03SelfHealingBoardRow) => j.id);
+      const jobIds = healingJobs.map((j: any) => j.id);
       if (jobIds.length === 0) return [];
       const { data } = await fromTable("job_executions").select("*").in("job_id", jobIds).order("started_at", { ascending: false }).limit(50);
       return data || [];
@@ -80,7 +70,7 @@ export default function AR03SelfHealingBoard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {rules.map((r: AR03SelfHealingBoardRow) => (
+              {rules.map((r: any) => (
                 <TableRow key={r.id}>
                   <TableCell className="text-xs font-medium">{r.rule_name}</TableCell>
                   <TableCell className="text-[10px] text-muted-foreground max-w-[200px] truncate">{r.trigger_condition}</TableCell>
@@ -102,7 +92,7 @@ export default function AR03SelfHealingBoard() {
           {executions.length === 0 ? (
             <p className="text-xs text-muted-foreground">No self-healing executions recorded</p>
           ) : (
-            executions.map((e: AR03SelfHealingBoardRow) => (
+            executions.map((e: any) => (
               <div key={e.id} className="flex items-center gap-2 rounded-lg bg-secondary/10 px-3 py-2">
                 {e.status === "success" ? <CheckCircle className="h-3 w-3 text-trust-safe" /> :
                  e.status === "failure" ? <XCircle className="h-3 w-3 text-destructive" /> :

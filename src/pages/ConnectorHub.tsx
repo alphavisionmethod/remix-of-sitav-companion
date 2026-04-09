@@ -17,15 +17,6 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
 
-interface ConnectorHubRow {
-  connectorId?: unknown;
-  connector_id?: unknown;
-  connector_type?: unknown;
-  id?: string;
-  message?: string;
-  records_synced?: unknown;
-  status?: string;
-}
 
 const ConnectorHub = () => {
   const { isDemoMode } = useDataMode();
@@ -118,7 +109,7 @@ const ConnectorHub = () => {
         toast.error("Google OAuth not configured. Set up GOOGLE_CONNECTOR_CLIENT_ID and GOOGLE_CONNECTOR_CLIENT_SECRET.");
       }
     },
-    onError: (e: ConnectorHubRow) => toast.error(`Connect failed: ${e.message}`),
+    onError: (e: any) => toast.error(`Connect failed: ${e.message}`),
   });
 
   // Disconnect mutation
@@ -134,17 +125,17 @@ const ConnectorHub = () => {
       toast.success("Connector disconnected");
       queryClient.invalidateQueries({ queryKey: ["real-connector-accounts"] });
     },
-    onError: (e: ConnectorHubRow) => toast.error(`Disconnect failed: ${e.message}`),
+    onError: (e: any) => toast.error(`Disconnect failed: ${e.message}`),
   });
 
-  const filtered = filter === "all" ? connectors : connectors.filter((c: ConnectorHubRow) => c.status === filter);
-  const selected = connectors.find((c: ConnectorHubRow) => c.id === selectedId);
-  const selectedLogs = syncLogs.filter((l: ConnectorHubRow) => l.connector_id === selectedId);
-  const selectedCred = credentials.find((c: ConnectorHubRow) => selected && c.connector_id === selected.id);
-  const activeCount = connectors.filter((c: ConnectorHubRow) => c.status === "active").length;
+  const filtered = filter === "all" ? connectors : connectors.filter((c: any) => c.status === filter);
+  const selected = connectors.find((c: any) => c.id === selectedId);
+  const selectedLogs = syncLogs.filter((l: any) => l.connector_id === selectedId);
+  const selectedCred = credentials.find((c: any) => selected && c.connector_id === selected.id);
+  const activeCount = connectors.filter((c: any) => c.status === "active").length;
 
   const getHealthColor = (connectorId: string) => {
-    const health = healthResult?.connectors.find((h: ConnectorHubRow) => h.connectorId === connectorId);
+    const health = healthResult?.connectors.find((h: any) => h.connectorId === connectorId);
     if (!health) return "text-muted-foreground";
     if (health.status === "up") return "text-primary";
     if (health.status === "degraded") return "text-yellow-500";
@@ -152,7 +143,7 @@ const ConnectorHub = () => {
   };
 
   const getAccountForConnector = (connectorId: string) => {
-    return connectorAccounts.find((a: ConnectorHubRow) => a.connector_type === connectorId && a.status === "connected");
+    return connectorAccounts.find((a: any) => a.connector_type === connectorId && a.status === "connected");
   };
 
   const isGoogleConfigured = oauthConfig?.google_oauth_configured === true;
@@ -189,7 +180,7 @@ const ConnectorHub = () => {
           {registry.length === 0 ? (
             <p className="text-sm text-muted-foreground">No real connectors registered. Seed the registry from Admin → Connectors.</p>
           ) : (
-            registry.map((reg: ConnectorHubRow) => {
+            registry.map((reg: any) => {
               const account = getAccountForConnector(reg.connector_id);
               const isConnected = !!account;
               return (
@@ -245,9 +236,9 @@ const ConnectorHub = () => {
       <SitaTabs
         tabs={[
           { key: "all", label: "All", count: connectors.length },
-          { key: "active", label: "Active", count: connectors.filter((c: ConnectorHubRow) => c.status === "active").length },
-          { key: "inactive", label: "Inactive", count: connectors.filter((c: ConnectorHubRow) => c.status === "inactive").length },
-          { key: "error", label: "Error", count: connectors.filter((c: ConnectorHubRow) => c.status === "error").length },
+          { key: "active", label: "Active", count: connectors.filter((c: any) => c.status === "active").length },
+          { key: "inactive", label: "Inactive", count: connectors.filter((c: any) => c.status === "inactive").length },
+          { key: "error", label: "Error", count: connectors.filter((c: any) => c.status === "error").length },
         ]}
         active={filter}
         onChange={setFilter}
@@ -309,7 +300,7 @@ const ConnectorHub = () => {
                   <SitaCard hover={false}>
                     <SitaCardTitle>Sync History</SitaCardTitle>
                     <div className="mt-2 space-y-1.5 max-h-48 overflow-y-auto">
-                      {selectedLogs.slice(0, 10).map((log: ConnectorHubRow) => (
+                      {selectedLogs.slice(0, 10).map((log: any) => (
                         <div key={log.id} className="flex items-center justify-between rounded-lg bg-secondary/30 px-3 py-2">
                           <div className="flex items-center gap-2">
                             <div className={`h-2 w-2 rounded-full ${log.status === "success" ? "bg-primary" : "bg-destructive"}`} />

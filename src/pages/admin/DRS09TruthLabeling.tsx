@@ -9,10 +9,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface DRS09TruthLabelingRow {
-  launch_claim_class?: unknown;
-  mode_key?: unknown;
-}
 
 export default function DRS09TruthLabeling() {
   const { isDemoMode } = useDataMode();
@@ -55,7 +51,7 @@ export default function DRS09TruthLabeling() {
 
       {isLoading ? <Loader2 className="h-5 w-5 animate-spin text-muted-foreground mx-auto" /> : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {displayLabels?.map((l: DRS09TruthLabelingRow) => (
+          {displayLabels?.map((l: any) => (
             <Card key={l.mode_key}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm flex items-center gap-2">

@@ -15,26 +15,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface CJ02JourneyTruthMatrixRow {
-  current_status?: unknown;
-  d?: unknown;
-  display_name?: string;
-  domain?: string;
-  domain_family?: unknown;
-  id?: string;
-  journey_id?: unknown;
-  journey_key?: unknown;
-  last_verified_at?: unknown;
-  launch_importance?: unknown;
-  owner?: unknown;
-  owner_team?: unknown;
-  persona?: unknown;
-  primary_modes?: unknown;
-  priority_class?: unknown;
-  proof_confidence?: unknown;
-  supported_modes?: unknown;
-  surface_class?: string;
-}
 
 const PROOF_CONFIDENCE_CONFIG: Record<string, { label: string; color: string }> = {
   verified_e2e: { label: "E2E Verified", color: "bg-emerald-500/15 text-emerald-400" },
@@ -60,7 +40,7 @@ export default function CJ02JourneyTruthMatrix() {
   // Prefer summary view data, fall back to legacy
   const allJourneys = useMemo(() => {
     if ((summaryView ?? []).length > 0) {
-      return (summaryView ?? []).map((j: CJ02JourneyTruthMatrixRow) => ({
+      return (summaryView ?? []).map((j: any) => ({
         id: j.journey_id || j.id,
         journey_key: j.journey_key,
         display_name: j.display_name,
@@ -75,7 +55,7 @@ export default function CJ02JourneyTruthMatrix() {
         last_verified_at: j.last_verified_at,
       }));
     }
-    return (journeys ?? []).map((j: CJ02JourneyTruthMatrixRow) => ({
+    return (journeys ?? []).map((j: any) => ({
       ...j,
       proof_confidence: "unverified",
       surface_class: "web_app",
@@ -83,13 +63,13 @@ export default function CJ02JourneyTruthMatrix() {
   }, [summaryView, journeys]);
 
   // Extract unique filter values
-  const domains: string[] = useMemo(() => Array.from(new Set<string>(allJourneys.map((j: CJ02JourneyTruthMatrixRow) => j.domain))).sort(), [allJourneys]);
-  const statuses: string[] = useMemo(() => Array.from(new Set<string>(allJourneys.map((j: CJ02JourneyTruthMatrixRow) => j.current_status))).sort(), [allJourneys]);
-  const owners: string[] = useMemo(() => Array.from(new Set<string>(allJourneys.map((j: CJ02JourneyTruthMatrixRow) => j.owner).filter(Boolean))).sort(), [allJourneys]);
-  const surfaces: string[] = useMemo(() => Array.from(new Set<string>(allJourneys.map((j: CJ02JourneyTruthMatrixRow) => j.surface_class).filter(Boolean))).sort(), [allJourneys]);
+  const domains: string[] = useMemo(() => Array.from(new Set<string>(allJourneys.map((j: any) => j.domain))).sort(), [allJourneys]);
+  const statuses: string[] = useMemo(() => Array.from(new Set<string>(allJourneys.map((j: any) => j.current_status))).sort(), [allJourneys]);
+  const owners: string[] = useMemo(() => Array.from(new Set<string>(allJourneys.map((j: any) => j.owner).filter(Boolean))).sort(), [allJourneys]);
+  const surfaces: string[] = useMemo(() => Array.from(new Set<string>(allJourneys.map((j: any) => j.surface_class).filter(Boolean))).sort(), [allJourneys]);
 
   const filtered = useMemo(() => {
-    return allJourneys.filter((j: CJ02JourneyTruthMatrixRow) => {
+    return allJourneys.filter((j: any) => {
       if (search && !j.journey_key.toLowerCase().includes(search.toLowerCase()) &&
           !j.display_name.toLowerCase().includes(search.toLowerCase())) return false;
       if (domainFilter !== "all" && j.domain !== domainFilter) return false;
@@ -176,7 +156,7 @@ export default function CJ02JourneyTruthMatrix() {
             <div>Verified</div>
           </div>
 
-          {filtered.map((j: CJ02JourneyTruthMatrixRow) => {
+          {filtered.map((j: any) => {
             const statusCfg = JOURNEY_STATUS_CONFIG[j.current_status] || JOURNEY_STATUS_CONFIG.unverified;
             const impactCfg = LAUNCH_IMPACT_CONFIG[j.launch_importance] || LAUNCH_IMPACT_CONFIG.non_blocking;
             const proofCfg = PROOF_CONFIDENCE_CONFIG[j.proof_confidence] || PROOF_CONFIDENCE_CONFIG.unverified;

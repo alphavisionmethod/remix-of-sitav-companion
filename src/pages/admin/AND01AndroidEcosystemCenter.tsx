@@ -11,24 +11,6 @@ import { Smartphone, Watch, Shield, Heart, Wifi, Activity, Clock, Zap, CheckCirc
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-interface AND01AndroidEcosystemCenterRow {
-  biometric_verified?: unknown;
-  channel_type?: unknown;
-  device_id?: unknown;
-  ecosystem_devices?: unknown;
-  enabled?: unknown;
-  event_type?: string;
-  id?: string;
-  launch_ready?: unknown;
-  launch_stage?: string;
-  read_permission?: unknown;
-  revoked_at?: unknown;
-  routing_pr?: unknown;
-  routing_priority?: unknown;
-  surface?: unknown;
-  target?: unknown;
-  target_name?: unknown;
-}
 
 import {
   useEcosystemDevices, useEcosystemLaunchReadiness, useEcosystemTrustRecords,
@@ -75,9 +57,9 @@ const AND01AndroidEcosystemCenter = () => {
   const updatePush = useUpdatePushRoute();
 
   const hasData = (devices?.length ?? 0) > 0;
-  const trustedCount = trustRecords?.filter((t: AND01AndroidEcosystemCenterRow) => t.biometric_verified).length ?? 0;
-  const consentCount = healthConsents?.filter((c: AND01AndroidEcosystemCenterRow) => c.read_permission && !c.revoked_at).length ?? 0;
-  const launchReadyCount = launchData?.filter((r: AND01AndroidEcosystemCenterRow) => r.launch_ready).length ?? 0;
+  const trustedCount = trustRecords?.filter((t: any) => t.biometric_verified).length ?? 0;
+  const consentCount = healthConsents?.filter((c: any) => c.read_permission && !c.revoked_at).length ?? 0;
+  const launchReadyCount = launchData?.filter((r: any) => r.launch_ready).length ?? 0;
 
   const overallReadiness = launchData && launchData.length > 0
     ? Math.round(launchData.reduce((sum: number, r: any) => {
@@ -148,9 +130,9 @@ const AND01AndroidEcosystemCenter = () => {
             <Card><CardContent className="py-12 text-center text-muted-foreground">No Android devices registered. Click "Seed Android Data" to populate demo devices.</CardContent></Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {devices!.map((device: AND01AndroidEcosystemCenterRow) => {
+              {devices!.map((device: any) => {
                 const meta = SURFACE_META[device.surface] || { title: device.surface, icon: Smartphone, desc: "", tech: [], capabilities: [] };
-                const trust = trustRecords?.find((t: AND01AndroidEcosystemCenterRow) => t.device_id === device.id);
+                const trust = trustRecords?.find((t: any) => t.device_id === device.id);
                 return (
                   <Card key={device.id} className="group hover:shadow-md transition-shadow">
                     <CardHeader className="pb-2">
@@ -210,7 +192,7 @@ const AND01AndroidEcosystemCenter = () => {
                   </tr></thead>
                   <tbody>
                     {DEMO_PROVIDER_CAPS.map((cap) => {
-                      const matchingLaunch = launchData?.find((r: AND01AndroidEcosystemCenterRow) => r.target.includes(cap.key.replace("android_", "")));
+                      const matchingLaunch = launchData?.find((r: any) => r.target.includes(cap.key.replace("android_", "")));
                       const status = matchingLaunch?.launch_stage || "planned";
                       return (
                         <tr key={cap.key} className="border-b hover:bg-muted/30">
@@ -235,7 +217,7 @@ const AND01AndroidEcosystemCenter = () => {
             <Card><CardContent className="py-12 text-center text-muted-foreground">No launch readiness records. Seed data first.</CardContent></Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {launchData.map((rec: AND01AndroidEcosystemCenterRow) => (
+              {launchData.map((rec: any) => (
                 <Card key={rec.id}>
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
@@ -268,7 +250,7 @@ const AND01AndroidEcosystemCenter = () => {
             <Card><CardContent className="py-12 text-center text-muted-foreground">No wearable configs found. Seed data to populate Android wearable configurations.</CardContent></Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {wearableConfigs.map((config: AND01AndroidEcosystemCenterRow) => (
+              {wearableConfigs.map((config: any) => (
                 <Card key={config.id}>
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
@@ -305,7 +287,7 @@ const AND01AndroidEcosystemCenter = () => {
                     <th className="p-2">Active</th>
                   </tr></thead>
                   <tbody>
-                    {pushRoutes.map((route: AND01AndroidEcosystemCenterRow) => (
+                    {pushRoutes.map((route: any) => (
                       <tr key={route.id} className="border-b hover:bg-muted/30">
                         <td className="p-2">{route.ecosystem_devices?.device_model || route.ecosystem_devices?.surface || "—"}</td>
                         <td className="p-2 font-mono">{route.channel_type || "default"}</td>
@@ -332,7 +314,7 @@ const AND01AndroidEcosystemCenter = () => {
               <CardHeader><CardTitle className="text-sm">Android Continuity Events</CardTitle></CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {continuityEvents.map((event: AND01AndroidEcosystemCenterRow) => (
+                  {continuityEvents.map((event: any) => (
                     <div key={event.id} className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/30">
                       <div className="p-1.5 rounded bg-primary/10"><Monitor className="h-3.5 w-3.5 text-primary" /></div>
                       <div className="flex-1 min-w-0">

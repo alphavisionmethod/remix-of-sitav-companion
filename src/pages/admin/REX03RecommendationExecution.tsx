@@ -8,11 +8,6 @@ import { formatDistanceToNow } from "date-fns";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface REX03RecommendationExecutionRow {
-  id?: string;
-  status?: string;
-  title?: string;
-}
 
 function useRecommendationExecution() {
   return useQuery({
@@ -71,7 +66,7 @@ export default function REX03RecommendationExecution() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {(recs || []).map((rec: REX03RecommendationExecutionRow) => (
+                {(recs || []).map((rec: any) => (
                   <TableRow key={rec.id}>
                     <TableCell className="text-foreground text-sm max-w-[200px] truncate">{rec.title || "Untitled"}</TableCell>
                     <TableCell>

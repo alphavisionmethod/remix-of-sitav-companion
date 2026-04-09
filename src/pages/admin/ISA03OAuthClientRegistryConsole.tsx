@@ -11,11 +11,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseProviderFamilyRef } from "@/lib/types/relation-parsers";
 
 
-interface ISA03OAuthClientRegistryConsoleRow {
-  client_name?: unknown;
-  client_purpose?: unknown;
-  id?: string;
-}
 
 const purposeLabels: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
   identity_web: { label: "Identity Web", color: "bg-blue-500/20 text-blue-400", icon: <Shield className="h-3 w-3" /> },
@@ -42,9 +37,9 @@ export default function ISA03OAuthClientRegistryConsole() {
     },
   });
 
-  const identityClients = clients.filter((c: ISA03OAuthClientRegistryConsoleRow) => c.client_purpose?.startsWith("identity"));
-  const connectorClients = clients.filter((c: ISA03OAuthClientRegistryConsoleRow) => c.client_purpose?.startsWith("connector"));
-  const testClients = clients.filter((c: ISA03OAuthClientRegistryConsoleRow) => c.client_purpose === "internal_test");
+  const identityClients = clients.filter((c: any) => c.client_purpose?.startsWith("identity"));
+  const connectorClients = clients.filter((c: any) => c.client_purpose?.startsWith("connector"));
+  const testClients = clients.filter((c: any) => c.client_purpose === "internal_test");
 
   const filtered = tab === "identity" ? identityClients
     : tab === "connector" ? connectorClients
@@ -138,7 +133,7 @@ export default function ISA03OAuthClientRegistryConsole() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filtered.map((c: ISA03OAuthClientRegistryConsoleRow) => {
+                  {filtered.map((c: any) => {
                     const purpose = purposeLabels[c.client_purpose] || { label: c.client_purpose, color: "bg-muted text-muted-foreground", icon: null };
                     return (
                       <TableRow key={c.id}>

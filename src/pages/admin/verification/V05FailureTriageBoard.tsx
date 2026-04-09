@@ -11,26 +11,14 @@ import { AlertTriangle, XCircle } from "lucide-react";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface V05FailureTriageBoardRow {
-  action_label?: unknown;
-  created_at?: string;
-  failure_reason?: unknown;
-  id?: string;
-  mode?: unknown;
-  passed?: unknown;
-  route_key?: unknown;
-  run_type?: unknown;
-  test_pri?: unknown;
-  verification_status?: unknown;
-}
 
 export default function FailureTriageBoard() {
   const { isDemoMode } = useDataMode();
   const { data: dbSurfaces } = useVerificationSurfaces();
   const { data: runs } = useVerificationRuns();
 
-  const failedSurfaces = (dbSurfaces || []).filter((s: V05FailureTriageBoardRow) => s.verification_status === "fail");
-  const failedRuns = (runs || []).filter((r: V05FailureTriageBoardRow) => !r.passed);
+  const failedSurfaces = (dbSurfaces || []).filter((s: any) => s.verification_status === "fail");
+  const failedRuns = (runs || []).filter((r: any) => !r.passed);
   const recentFailures = failedRuns.slice(0, 20);
 
   return (
@@ -52,7 +40,7 @@ export default function FailureTriageBoard() {
             <Card>
               <CardContent className="p-4 space-y-2">
                 <h3 className="font-semibold flex items-center gap-2"><XCircle className="h-4 w-4 text-destructive" /> Failed Surfaces ({failedSurfaces.length})</h3>
-                {failedSurfaces.map((s: V05FailureTriageBoardRow) => (
+                {failedSurfaces.map((s: any) => (
                   <div key={s.id} className="flex items-center justify-between p-2 rounded border border-destructive/20 bg-destructive/5">
                     <div>
                       <span className="font-mono text-sm">{s.route_key}</span>
@@ -73,7 +61,7 @@ export default function FailureTriageBoard() {
             <Card>
               <CardContent className="p-4 space-y-2">
                 <h3 className="font-semibold">Recent Failed Runs ({recentFailures.length})</h3>
-                {recentFailures.map((r: V05FailureTriageBoardRow) => (
+                {recentFailures.map((r: any) => (
                   <div key={r.id} className="p-2 rounded border border-destructive/20 bg-destructive/5 text-sm">
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-xs">{r.run_type} / {r.mode}</span>

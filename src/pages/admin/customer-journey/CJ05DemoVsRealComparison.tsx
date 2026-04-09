@@ -15,19 +15,6 @@ import { toast } from "sonner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface CJ05DemoVsRealComparisonRow {
-  claim_risk?: unknown;
-  comparison_id?: unknown;
-  comparison_summary?: unknown;
-  demo_status?: unknown;
-  display_name?: string;
-  domain_family?: unknown;
-  internal_test_status?: unknown;
-  journey_key?: unknown;
-  message?: string;
-  mode?: unknown;
-  real_status?: unknown;
-}
 
 const comparisonLabels: Record<string, { label: string; color: string }> = {
   both_work: { label: "Both Work", color: "bg-emerald-500/15 text-emerald-400" },
@@ -62,7 +49,7 @@ export default function CJ05DemoVsRealComparison() {
   const useViewData = (viewDeltas ?? []).length > 0;
 
   const comparisons = useViewData
-    ? (viewDeltas ?? []).map((d: CJ05DemoVsRealComparisonRow) => ({
+    ? (viewDeltas ?? []).map((d: any) => ({
         journey: { journey_key: d.journey_key, display_name: d.display_name, domain_family: d.domain_family, id: d.comparison_id },
         demoRun: null,
         realRun: null,
@@ -73,12 +60,12 @@ export default function CJ05DemoVsRealComparison() {
         realStatus: d.real_status,
         internalTestStatus: d.internal_test_status || null,
       }))
-    : (journeys ?? []).map((j: CJ05DemoVsRealComparisonRow) => {
-        const jRuns = (runs ?? []).filter((r: CJ05DemoVsRealComparisonRow) => r.journey_key === j.journey_key);
-        const demoRun = jRuns.find((r: CJ05DemoVsRealComparisonRow) => r.mode === "demo");
-        const realRun = jRuns.find((r: CJ05DemoVsRealComparisonRow) => r.mode === "real");
-        const internalRun = jRuns.find((r: CJ05DemoVsRealComparisonRow) => r.mode === "internal_test");
-        const persisted = (persistedComparisons ?? []).find((c: CJ05DemoVsRealComparisonRow) => c.journey_key === j.journey_key);
+    : (journeys ?? []).map((j: any) => {
+        const jRuns = (runs ?? []).filter((r: any) => r.journey_key === j.journey_key);
+        const demoRun = jRuns.find((r: any) => r.mode === "demo");
+        const realRun = jRuns.find((r: any) => r.mode === "real");
+        const internalRun = jRuns.find((r: any) => r.mode === "internal_test");
+        const persisted = (persistedComparisons ?? []).find((c: any) => c.journey_key === j.journey_key);
 
         let comparison = "no_data";
         const demoStatus = demoRun?.status || persisted?.demo_status;
@@ -121,7 +108,7 @@ export default function CJ05DemoVsRealComparison() {
         count++;
       }
       toast.success(`Persisted ${count} mode comparisons`);
-    } catch (e: CJ05DemoVsRealComparisonRow) {
+    } catch (e: any) {
       toast.error(e.message);
     }
   };

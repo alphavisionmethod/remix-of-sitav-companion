@@ -22,19 +22,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useOutcomes } from "@/hooks/use-live-data";
 
 
-interface OutcomeEnginePageRow {
-  blockers?: string[];
-  category?: string;
-  current_value?: unknown;
-  description?: string;
-  domain?: string;
-  id?: string;
-  impact?: string;
-  nextAction?: unknown;
-  progress?: unknown;
-  target_value?: unknown;
-  title?: string;
-}
 
 export default function OutcomeEnginePage() {
   const { isDemoMode } = useDataMode();
@@ -44,7 +31,7 @@ export default function OutcomeEnginePage() {
   const outcomes = useMemo(() => {
     if (isDemoMode) return DEMO_OUTCOMES;
     if (!liveOutcomes?.length) return [];
-    return liveOutcomes.map((o: OutcomeEnginePageRow) => ({
+    return liveOutcomes.map((o: any) => ({
       id: o.id,
       title: o.title,
       description: o.description || "",
@@ -111,7 +98,7 @@ export default function OutcomeEnginePage() {
             <EmptyState icon={Target} title="No outcomes yet" description="Add your first outcome to start tracking progress." />
           ) : (
             <div className="grid gap-4 lg:grid-cols-2">
-              {outcomes.map((o: OutcomeEnginePageRow) => (
+              {outcomes.map((o: any) => (
                 <OutcomeProgress
                   key={o.id}
                   title={o.title}

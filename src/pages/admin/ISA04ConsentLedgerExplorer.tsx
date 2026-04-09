@@ -11,18 +11,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseProviderFamilyRef, parseProviderCapabilityRef } from "@/lib/types/relation-parsers";
 
 
-interface ISA04ConsentLedgerExplorerRow {
-  consent_type?: unknown;
-  created_at?: string;
-  from_scopes?: unknown;
-  granted_at?: unknown;
-  id?: string;
-  reason?: unknown;
-  revoked?: unknown;
-  revoked_at?: unknown;
-  revoked_scopes?: unknown;
-  to_scopes?: unknown;
-}
 
 const typeColors: Record<string, string> = {
   identity_link: "bg-blue-500/20 text-blue-400",
@@ -72,10 +60,10 @@ export default function ISA04ConsentLedgerExplorer() {
     },
   });
 
-  const identityConsents = consents.filter((c: ISA04ConsentLedgerExplorerRow) => c.consent_type === "identity_link");
-  const connectorConsents = consents.filter((c: ISA04ConsentLedgerExplorerRow) => c.consent_type !== "identity_link");
-  const activeConsents = consents.filter((c: ISA04ConsentLedgerExplorerRow) => !c.revoked);
-  const revokedConsents = consents.filter((c: ISA04ConsentLedgerExplorerRow) => c.revoked);
+  const identityConsents = consents.filter((c: any) => c.consent_type === "identity_link");
+  const connectorConsents = consents.filter((c: any) => c.consent_type !== "identity_link");
+  const activeConsents = consents.filter((c: any) => !c.revoked);
+  const revokedConsents = consents.filter((c: any) => c.revoked);
 
   return (
     <div className="space-y-6 p-6">
@@ -132,7 +120,7 @@ export default function ISA04ConsentLedgerExplorer() {
                     <TableHead>Reason</TableHead><TableHead>Approved</TableHead>
                   </TableRow></TableHeader>
                   <TableBody>
-                    {upgrades.map((u: ISA04ConsentLedgerExplorerRow) => (
+                    {upgrades.map((u: any) => (
                       <TableRow key={u.id}>
                         <TableCell className="text-xs">{new Date(u.created_at).toLocaleDateString()}</TableCell>
                         <TableCell><div className="flex flex-wrap gap-1">{(u.from_scopes || []).map((s: string) => <Badge key={s} variant="outline" className="text-xs">{s}</Badge>)}</div></TableCell>
@@ -154,7 +142,7 @@ export default function ISA04ConsentLedgerExplorer() {
                     <TableHead>Date</TableHead><TableHead>Revoked Scopes</TableHead><TableHead>Reason</TableHead><TableHead>By</TableHead>
                   </TableRow></TableHeader>
                   <TableBody>
-                    {revocations.map((r: ISA04ConsentLedgerExplorerRow) => (
+                    {revocations.map((r: any) => (
                       <TableRow key={r.id}>
                         <TableCell className="text-xs">{new Date(r.revoked_at).toLocaleDateString()}</TableCell>
                         <TableCell><div className="flex flex-wrap gap-1">{(r.revoked_scopes || []).map((s: string) => <Badge key={s} className="bg-red-500/20 text-red-400 text-xs">{s}</Badge>)}</div></TableCell>
@@ -176,7 +164,7 @@ export default function ISA04ConsentLedgerExplorer() {
                     <TableHead>Service</TableHead><TableHead>Scopes</TableHead><TableHead>Mode</TableHead><TableHead>Status</TableHead>
                   </TableRow></TableHeader>
                   <TableBody>
-                    {(tab === "identity" ? identityConsents : tab === "connector" ? connectorConsents : consents).map((c: ISA04ConsentLedgerExplorerRow) => (
+                    {(tab === "identity" ? identityConsents : tab === "connector" ? connectorConsents : consents).map((c: any) => (
                       <TableRow key={c.id}>
                         <TableCell className="text-xs">{new Date(c.granted_at || c.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>

@@ -19,11 +19,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface RecoveryCenterRow {
-  id?: string;
-  started_at?: unknown;
-  status?: string;
-}
 
 const RecoveryCenter = () => {
   const { isDemoMode } = useDataMode();
@@ -80,8 +75,8 @@ const RecoveryCenter = () => {
     },
   });
 
-  const stuckRuns = (failedRuns as never[]).filter((r: RecoveryCenterRow) => r.status === "running" && Date.now() - new Date(r.started_at).getTime() > 3600000);
-  const failedOnly = (failedRuns as never[]).filter((r: RecoveryCenterRow) => r.status === "failed");
+  const stuckRuns = (failedRuns as never[]).filter((r: any) => r.status === "running" && Date.now() - new Date(r.started_at).getTime() > 3600000);
+  const failedOnly = (failedRuns as never[]).filter((r: any) => r.status === "failed");
   const openIncidents = incidents.filter(i => i.status === "open");
   const resolvedIncidents = incidents.filter(i => i.status === "resolved");
 

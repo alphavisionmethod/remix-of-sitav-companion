@@ -26,17 +26,6 @@ import { toast } from "sonner";
 import { DEMO_APPROVAL_ITEMS, type DemoApprovalItem as ApprovalItem } from "@/lib/demo-data/approval-chamber";
 
 
-interface ApprovalChamberRow {
-  action_summary?: unknown;
-  action_type?: string;
-  description?: string;
-  id?: string;
-  message?: string;
-  proposed_action?: unknown;
-  risk_level?: unknown;
-  status?: string;
-  title?: string;
-}
 
 const MOCK_APPROVALS = DEMO_APPROVAL_ITEMS;
 
@@ -309,7 +298,7 @@ const ApprovalChamber = () => {
   const [tab, setTab] = useState("pending");
 
   // Map DB approvals to ApprovalItem interface, fall back to mocks when empty
-  const items: ApprovalItem[] = (dbApprovals.length > 0 && !isDemoMode) ? dbApprovals.map((a: ApprovalChamberRow) => ({
+  const items: ApprovalItem[] = (dbApprovals.length > 0 && !isDemoMode) ? dbApprovals.map((a: any) => ({
     id: a.id,
     title: a.action_summary || a.title || "Untitled",
     description: a.description || JSON.stringify(a.proposed_action || {}),
@@ -337,7 +326,7 @@ const ApprovalChamber = () => {
         if (action === "approve") approve(id);
         else if (action === "reject") reject(id);
         toast.success(`Approval ${action}ed`);
-      } catch (e: ApprovalChamberRow) {
+      } catch (e: any) {
         toast.error(e.message || `Failed to ${action}`);
       }
       return;

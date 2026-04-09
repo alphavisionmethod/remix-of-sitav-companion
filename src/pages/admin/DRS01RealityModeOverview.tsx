@@ -8,10 +8,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface DRS01RealityModeOverviewRow {
-  active?: unknown;
-  length?: unknown;
-}
 
 function useModeSummary() {
   return useQuery({
@@ -70,7 +66,7 @@ export default function DRS01RealityModeOverview() {
           <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Layers className="h-4 w-4" /> Scenarios</CardTitle></CardHeader>
           <CardContent>
             <p className="text-2xl font-bold">{data?.scenarios.length ?? 0}</p>
-            <p className="text-xs text-muted-foreground">{data?.scenarios.filter((s: DRS01RealityModeOverviewRow) => s.active).length ?? 0} active</p>
+            <p className="text-xs text-muted-foreground">{data?.scenarios.filter((s: any) => s.active).length ?? 0} active</p>
           </CardContent>
         </Card>
         <Card>

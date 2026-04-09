@@ -15,22 +15,12 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useNotes } from "@/hooks/use-live-data";
 
 
-interface NotesWorkspaceRow {
-  content?: unknown;
-  created_at?: string;
-  folder?: unknown;
-  id?: string;
-  pinned?: unknown;
-  tags?: string[];
-  title?: string;
-  updated_at?: string;
-}
 
 const TYPE_ICONS: Record<string, React.ElementType> = { note: FileText, meeting: Brain, checklist: CheckSquare, voice: Mic, knowledge: Bookmark };
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
 // Map Supabase note row to DemoNote shape for UI compatibility
-function mapDbNote(row: NotesWorkspaceRow): Note {
+function mapDbNote(row: any): Note {
   return {
     id: row.id,
     title: row.title || "Untitled",

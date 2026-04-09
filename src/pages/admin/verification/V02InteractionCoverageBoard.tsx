@@ -12,10 +12,6 @@ import { CheckCircle2, XCircle, MinusCircle, BarChart3 } from "lucide-react";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface V02InteractionCoverageBoardRow {
-  domain?: string;
-  verification_status?: unknown;
-}
 
 export default function InteractionCoverageBoard() {
   const { isDemoMode } = useDataMode();
@@ -23,8 +19,8 @@ export default function InteractionCoverageBoard() {
   const surfaces = dbSurfaces && dbSurfaces.length > 0 ? dbSurfaces : [];
   const stats = getVerificationStats();
 
-  const passed = surfaces.filter((s: V02InteractionCoverageBoardRow) => s.verification_status === "pass").length;
-  const failed = surfaces.filter((s: V02InteractionCoverageBoardRow) => s.verification_status === "fail").length;
+  const passed = surfaces.filter((s: any) => s.verification_status === "pass").length;
+  const failed = surfaces.filter((s: any) => s.verification_status === "fail").length;
   const untested = Math.max(0, stats.total - passed - failed);
   const coverage = stats.total > 0 ? Math.round((passed / stats.total) * 100) : 0;
 
@@ -32,8 +28,8 @@ export default function InteractionCoverageBoard() {
   const domains = [...new Set(SURFACE_REGISTRY.map((s) => s.domain))];
   const domainCoverage = domains.map((d) => {
     const domainSurfaces = SURFACE_REGISTRY.filter((s) => s.domain === d);
-    const dbDomain = surfaces.filter((s: V02InteractionCoverageBoardRow) => s.domain === d);
-    const domainPassed = dbDomain.filter((s: V02InteractionCoverageBoardRow) => s.verification_status === "pass").length;
+    const dbDomain = surfaces.filter((s: any) => s.domain === d);
+    const domainPassed = dbDomain.filter((s: any) => s.verification_status === "pass").length;
     return { domain: d, total: domainSurfaces.length, passed: domainPassed, pct: domainSurfaces.length > 0 ? Math.round((domainPassed / domainSurfaces.length) * 100) : 0 };
   }).sort((a, b) => b.total - a.total);
 

@@ -12,12 +12,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface AR09AutomationLaunchGateRow {
-  enabled?: unknown;
-  policy_family?: unknown;
-  run_count?: unknown;
-  state?: unknown;
-}
 
 interface GateCheck {
   label: string;
@@ -52,12 +46,12 @@ export default function AR09AutomationLaunchGate() {
     },
   });
 
-  const activeJobs = jobs.filter((j: AR09AutomationLaunchGateRow) => j.state === "active");
-  const jobsWithRuns = activeJobs.filter((j: AR09AutomationLaunchGateRow) => j.run_count > 0);
-  const jobsNeverRun = activeJobs.filter((j: AR09AutomationLaunchGateRow) => j.run_count === 0);
-  const degradedJobs = jobs.filter((j: AR09AutomationLaunchGateRow) => j.state === "degraded");
-  const activeKills = killSwitches.filter((k: AR09AutomationLaunchGateRow) => k.enabled);
-  const jobsWithoutPolicy = jobs.filter((j: AR09AutomationLaunchGateRow) => !j.policy_family);
+  const activeJobs = jobs.filter((j: any) => j.state === "active");
+  const jobsWithRuns = activeJobs.filter((j: any) => j.run_count > 0);
+  const jobsNeverRun = activeJobs.filter((j: any) => j.run_count === 0);
+  const degradedJobs = jobs.filter((j: any) => j.state === "degraded");
+  const activeKills = killSwitches.filter((k: any) => k.enabled);
+  const jobsWithoutPolicy = jobs.filter((j: any) => !j.policy_family);
 
   const checks: GateCheck[] = [
     {

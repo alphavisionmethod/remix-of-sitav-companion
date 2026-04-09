@@ -9,29 +9,13 @@ import { useWearableProviders } from "@/hooks/use-health-signal-data";
 import { DEMO_SIGNAL_PROVIDERS } from "@/lib/demo-data/health-signals";
 
 
-interface HRS02SignalSourcesBoardRow {
-  api?: unknown;
-  api_type?: unknown;
-  categories?: unknown;
-  display_name?: string;
-  key?: unknown;
-  launch_stage?: string;
-  name?: string;
-  native?: unknown;
-  partner?: unknown;
-  platform?: unknown;
-  provider_key?: unknown;
-  readiness?: unknown;
-  signals?: unknown;
-  stage?: unknown;
-}
 
 const HRS02SignalSourcesBoard = () => {
   const { data: providers, isLoading } = useWearableProviders();
 
   // Use DB data if available, map to display shape; else use demo
   const displayProviders = providers && providers.length > 0 && 'provider_key' in (providers[0] as never)
-    ? (providers as never[]).map((p: HRS02SignalSourcesBoardRow) => ({
+    ? (providers as never[]).map((p: any) => ({
         key: p.provider_key || p.key,
         name: p.display_name || p.name,
         api: p.api_type || p.api || "REST API",
@@ -62,9 +46,9 @@ const HRS02SignalSourcesBoard = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { label: "Total Providers", value: displayProviders.length, icon: Radio },
-              { label: "Native", value: displayProviders.filter((p: HRS02SignalSourcesBoardRow) => p.native).length, icon: Smartphone },
-              { label: "Cloud API", value: displayProviders.filter((p: HRS02SignalSourcesBoardRow) => !p.native && p.api !== "Manual").length, icon: Wifi },
-              { label: "Partner", value: displayProviders.filter((p: HRS02SignalSourcesBoardRow) => p.partner).length, icon: CheckCircle2 },
+              { label: "Native", value: displayProviders.filter((p: any) => p.native).length, icon: Smartphone },
+              { label: "Cloud API", value: displayProviders.filter((p: any) => !p.native && p.api !== "Manual").length, icon: Wifi },
+              { label: "Partner", value: displayProviders.filter((p: any) => p.partner).length, icon: CheckCircle2 },
             ].map((s) => (
               <Card key={s.label}><CardContent className="pt-4 pb-3"><div className="flex items-center justify-between"><span className="text-xs text-muted-foreground">{s.label}</span><s.icon className="h-4 w-4 text-muted-foreground" /></div><div className="text-2xl font-bold">{s.value}</div></CardContent></Card>
             ))}
@@ -78,7 +62,7 @@ const HRS02SignalSourcesBoard = () => {
 
             <TabsContent value="providers">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {displayProviders.map((p: HRS02SignalSourcesBoardRow) => (
+                {displayProviders.map((p: any) => (
                   <Card key={p.key} className="hover:shadow-md transition-shadow">
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between">
@@ -112,12 +96,12 @@ const HRS02SignalSourcesBoard = () => {
                 <CardHeader><CardTitle className="text-sm">Signal Type Coverage</CardTitle></CardHeader>
                 <CardContent>
                   <table className="w-full text-xs">
-                    <thead><tr className="border-b"><th className="text-left p-2">Signal</th>{displayProviders.slice(0, 6).map((p: HRS02SignalSourcesBoardRow) => <th key={p.key} className="p-2 text-center">{p.name.split(" ")[0]}</th>)}</tr></thead>
+                    <thead><tr className="border-b"><th className="text-left p-2">Signal</th>{displayProviders.slice(0, 6).map((p: any) => <th key={p.key} className="p-2 text-center">{p.name.split(" ")[0]}</th>)}</tr></thead>
                     <tbody>
                       {["heart_rate", "sleep", "steps", "hrv", "exercise", "stress"].map((sig) => (
                         <tr key={sig} className="border-b">
                           <td className="p-2 font-mono">{sig}</td>
-                          {displayProviders.slice(0, 6).map((p: HRS02SignalSourcesBoardRow) => (
+                          {displayProviders.slice(0, 6).map((p: any) => (
                             <td key={p.key} className="p-2 text-center">{Array.isArray(p.signals) && p.signals.includes(sig) ? <CheckCircle2 className="h-3 w-3 mx-auto text-green-500" /> : <span className="text-muted-foreground">—</span>}</td>
                           ))}
                         </tr>

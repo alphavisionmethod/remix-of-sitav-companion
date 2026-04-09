@@ -12,15 +12,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 
 
-interface RelationshipCenterRow {
-  company?: unknown;
-  health_score?: unknown;
-  last_contact_at?: unknown;
-  lifecycle_stage?: unknown;
-  ltv?: unknown;
-  name?: string;
-  tags?: string[];
-}
 
 const DEMO_LIFECYCLE_STAGES = [
   { label: "Subscriber", count: 234, color: "bg-blue-400" },
@@ -44,7 +35,7 @@ export default function RelationshipCenter() {
   const { data: liveContacts, isLoading } = useCustomers();
 
   const LIFECYCLE_STAGES = isDemoMode ? DEMO_LIFECYCLE_STAGES : DEMO_LIFECYCLE_STAGES;
-  const CONTACTS = isDemoMode ? DEMO_CONTACTS : (liveContacts?.map((c: RelationshipCenterRow) => ({
+  const CONTACTS = isDemoMode ? DEMO_CONTACTS : (liveContacts?.map((c: any) => ({
     name: c.name || "Unknown", company: c.company || "", stage: c.lifecycle_stage || "Lead",
     health: c.health_score || 50, ltv: `$${c.ltv || 0}`, lastContact: c.last_contact_at ? new Date(c.last_contact_at).toLocaleDateString() : "Never",
     tags: c.tags || [],

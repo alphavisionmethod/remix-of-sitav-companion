@@ -14,20 +14,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 
 
-interface CommunicationsPageRow {
-  body?: unknown;
-  channel?: unknown;
-  contact_name?: unknown;
-  created_at?: string;
-  direction?: unknown;
-  domain?: string;
-  id?: string;
-  preview?: unknown;
-  recipient?: unknown;
-  sent_at?: unknown;
-  status?: string;
-  subject?: unknown;
-}
 
 const CHANNEL_ICONS: Record<ChannelType, typeof Mail> = { email: Mail, sms: MessageSquare, call: Phone, chat: Send };
 const STATUS_STYLES: Record<MessageStatus, { color: string; icon: typeof CheckCircle2 }> = {
@@ -49,7 +35,7 @@ export default function CommunicationsPage() {
     queryFn: async () => {
       const { data } = await fromTable("communications").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
       if (!data?.length) return null;
-      return data.map((c: CommunicationsPageRow) => ({
+      return data.map((c: any) => ({
         id: c.id,
         contactName: c.contact_name || c.recipient || "Unknown",
         channel: (c.channel || "email") as ChannelType,

@@ -7,13 +7,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface FIPOwnerBoundaryRow {
-  feature_id?: unknown;
-  id?: string;
-  module_drift_risk?: unknown;
-  second_brain_risk?: unknown;
-  unsupported_root_risk?: unknown;
-}
 
 const riskBadge = (risk: boolean, label: string) => risk ? <Badge variant="destructive" className="text-xs">{label}</Badge> : null;
 
@@ -21,9 +14,9 @@ const FIPOwnerBoundary = () => {
   const { data: decisions = [], isLoading } = useOwnerDecisions();
 
   const risks = {
-    secondBrain: decisions.filter((d: FIPOwnerBoundaryRow) => d.second_brain_risk).length,
-    moduleDrift: decisions.filter((d: FIPOwnerBoundaryRow) => d.module_drift_risk).length,
-    unsupportedRoot: decisions.filter((d: FIPOwnerBoundaryRow) => d.unsupported_root_risk).length,
+    secondBrain: decisions.filter((d: any) => d.second_brain_risk).length,
+    moduleDrift: decisions.filter((d: any) => d.module_drift_risk).length,
+    unsupportedRoot: decisions.filter((d: any) => d.unsupported_root_risk).length,
   };
 
   return (
@@ -44,7 +37,7 @@ const FIPOwnerBoundary = () => {
       <div className="space-y-3">
         {isLoading ? <p className="text-center py-8 text-muted-foreground">Loading owner decisions...</p> :
           decisions.length === 0 ? <Card><CardContent className="py-12 text-center text-muted-foreground">No owner boundary decisions recorded. Decisions are created during feature intake.</CardContent></Card> :
-          decisions.map((d: FIPOwnerBoundaryRow) => (
+          decisions.map((d: any) => (
             <Card key={d.id} className="hover:border-primary/30 transition-colors">
               <CardContent className="py-4">
                 <div className="flex items-center justify-between">

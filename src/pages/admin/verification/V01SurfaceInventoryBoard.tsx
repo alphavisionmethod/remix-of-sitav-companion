@@ -16,17 +16,6 @@ import { Database, Layers, Search, Loader2, Download, RefreshCw } from "lucide-r
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface V01SurfaceInventoryBoardRow {
-  actionLabel?: unknown;
-  action_label?: unknown;
-  launchHonestyClass?: unknown;
-  routeKey?: unknown;
-  route_key?: unknown;
-  shell?: unknown;
-  surfaceClass?: unknown;
-  testPriority?: unknown;
-  test_priority?: unknown;
-}
 
 const priorityColors: Record<string, string> = { P0: "bg-destructive text-destructive-foreground", P1: "bg-orange-500/20 text-orange-400", P2: "bg-muted text-muted-foreground" };
 const statusColors: Record<string, string> = { untested: "bg-muted text-muted-foreground", pass: "bg-green-500/20 text-green-400", fail: "bg-destructive/20 text-destructive", blocked: "bg-orange-500/20 text-orange-400" };
@@ -42,7 +31,7 @@ export default function SurfaceInventoryBoard() {
 
   const surfaces = dbSurfaces && dbSurfaces.length > 0 ? dbSurfaces : SURFACE_REGISTRY.map((s) => ({ ...s, id: s.routeKey, verification_status: "untested", route_key: s.routeKey, route_path: s.routePath, test_priority: s.testPriority, action_type: s.actionType, action_label: s.actionLabel, surface_class: s.surfaceClass, launch_honesty_class: s.launchHonestyClass }));
 
-  const filtered = surfaces.filter((s: V01SurfaceInventoryBoardRow) => {
+  const filtered = surfaces.filter((s: any) => {
     const key = s.route_key || s.routeKey || "";
     const label = s.action_label || s.actionLabel || "";
     const matchSearch = !search || key.toLowerCase().includes(search.toLowerCase()) || label.toLowerCase().includes(search.toLowerCase());

@@ -12,11 +12,6 @@ import { History, Loader2, AlertTriangle, CheckCircle2, Image, GitBranch } from 
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface CJ09RecentVerificationRunsRow {
-  id?: string;
-  run_id?: unknown;
-  status?: string;
-}
 
 const PROOF_BADGES: Record<string, { label: string; color: string }> = {
   verified_e2e: { label: "E2E", color: "bg-emerald-500/15 text-emerald-400" },
@@ -33,7 +28,7 @@ export default function CJ09RecentVerificationRuns() {
   // Merge and deduplicate, prefer view data
   const allRuns = [...(runs ?? []), ...(recentFailures ?? [])];
   const seenIds = new Set<string>();
-  const dedupedRuns = allRuns.filter((r: CJ09RecentVerificationRunsRow) => {
+  const dedupedRuns = allRuns.filter((r: any) => {
     const id = r.id || r.run_id;
     if (seenIds.has(id)) return false;
     seenIds.add(id);
@@ -44,8 +39,8 @@ export default function CJ09RecentVerificationRuns() {
     return db - da;
   });
 
-  const failCount = dedupedRuns.filter((r: CJ09RecentVerificationRunsRow) => r.status === "fail" || r.status === "broken" || r.status === "partial").length;
-  const passCount = dedupedRuns.filter((r: CJ09RecentVerificationRunsRow) => r.status === "pass" || r.status === "working").length;
+  const failCount = dedupedRuns.filter((r: any) => r.status === "fail" || r.status === "broken" || r.status === "partial").length;
+  const passCount = dedupedRuns.filter((r: any) => r.status === "pass" || r.status === "working").length;
 
   return (
     <div className="space-y-6 p-6" data-testid="cj09-recent-runs">

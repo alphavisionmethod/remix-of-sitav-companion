@@ -10,16 +10,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 
 
-interface BookingCenterRow {
-  client?: unknown;
-  client_name?: unknown;
-  duration_minutes?: unknown;
-  mode?: unknown;
-  service_type?: unknown;
-  start_time?: string;
-  status?: string;
-  time?: unknown;
-}
 
 const DEMO_UPCOMING = [
   { client: "Sarah Mitchell", type: "Strategy Call", time: "Today, 2:00 PM", duration: "45 min", mode: "video", status: "confirmed" },
@@ -46,7 +36,7 @@ export default function BookingCenter() {
   const { isDemoMode } = useDataMode();
   const { data: liveBookings, isLoading } = useBookings();
 
-  const UPCOMING = isDemoMode ? DEMO_UPCOMING : (liveBookings?.map((b: BookingCenterRow) => ({
+  const UPCOMING = isDemoMode ? DEMO_UPCOMING : (liveBookings?.map((b: any) => ({
     client: b.client_name || "Unknown", type: b.service_type || "Meeting",
     time: new Date(b.start_time).toLocaleString(), duration: `${b.duration_minutes || 30} min`,
     mode: b.mode || "video", status: b.status || "pending",
@@ -107,7 +97,7 @@ export default function BookingCenter() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><Calendar className="w-4 h-4 text-primary" /> Upcoming Appointments</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {UPCOMING.map((a: BookingCenterRow) => (
+            {UPCOMING.map((a: any) => (
               <div key={`${a.client}-${a.time}`} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 border border-border/30">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">

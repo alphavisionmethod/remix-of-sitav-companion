@@ -11,13 +11,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface ActionLineageExplorerRow {
-  action_type?: string;
-  effect?: unknown;
-  id?: string;
-  rule_name?: unknown;
-  topic?: unknown;
-}
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -186,7 +179,7 @@ export default function ActionLineageExplorer() {
                     {(explanation.events?.length ?? 0) > 0 && (
                       <div>
                         <p className="text-muted-foreground mb-1">Linked Events ({explanation.events.length}):</p>
-                        {explanation.events.slice(0, 5).map((e: ActionLineageExplorerRow) => (
+                        {explanation.events.slice(0, 5).map((e: any) => (
                           <Badge key={e.id} variant="outline" className="text-[9px] mr-1">{e.topic}</Badge>
                         ))}
                       </div>
@@ -194,7 +187,7 @@ export default function ActionLineageExplorer() {
                     {(explanation.policies?.length ?? 0) > 0 && (
                       <div>
                         <p className="text-muted-foreground mb-1">Linked Policies ({explanation.policies.length}):</p>
-                        {explanation.policies.slice(0, 5).map((p: ActionLineageExplorerRow) => (
+                        {explanation.policies.slice(0, 5).map((p: any) => (
                           <Badge key={p.id} variant="outline" className="text-[9px] mr-1">{p.rule_name}: {p.effect}</Badge>
                         ))}
                       </div>
@@ -202,7 +195,7 @@ export default function ActionLineageExplorer() {
                     {(explanation.receipts?.length ?? 0) > 0 && (
                       <div>
                         <p className="text-muted-foreground mb-1">Linked Receipts ({explanation.receipts.length}):</p>
-                        {explanation.receipts.slice(0, 5).map((r: ActionLineageExplorerRow) => (
+                        {explanation.receipts.slice(0, 5).map((r: any) => (
                           <Badge key={r.id} variant="outline" className="text-[9px] mr-1">{r.action_type}</Badge>
                         ))}
                       </div>

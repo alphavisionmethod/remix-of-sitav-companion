@@ -14,16 +14,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
 
-interface NOT02NotificationRoutingBoardRow {
-  categor?: unknown;
-  category?: string;
-  channel_in_app?: unknown;
-  channel_push?: unknown;
-  created_at?: string;
-  id?: string;
-  status?: string;
-  title?: string;
-}
 
 export default function NOT02NotificationRoutingBoard() {
   const { isDemoMode } = useDataMode();
@@ -100,11 +90,11 @@ export default function NOT02NotificationRoutingBoard() {
           <p className="text-xs text-muted-foreground">Delivery Receipts</p>
         </CardContent></Card>
         <Card><CardContent className="p-4 text-center">
-          <p className="text-2xl font-bold text-foreground">{receipts.filter((r: NOT02NotificationRoutingBoardRow) => r.status === "delivered").length}</p>
+          <p className="text-2xl font-bold text-foreground">{receipts.filter((r: any) => r.status === "delivered").length}</p>
           <p className="text-xs text-muted-foreground">Delivered</p>
         </CardContent></Card>
         <Card><CardContent className="p-4 text-center">
-          <p className="text-2xl font-bold text-foreground">{receipts.filter((r: NOT02NotificationRoutingBoardRow) => r.status === "failed" || r.status === "suppressed").length}</p>
+          <p className="text-2xl font-bold text-foreground">{receipts.filter((r: any) => r.status === "failed" || r.status === "suppressed").length}</p>
           <p className="text-xs text-muted-foreground">Failed / Suppressed</p>
         </CardContent></Card>
       </div>
@@ -125,7 +115,7 @@ export default function NOT02NotificationRoutingBoard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {queue.slice(0, 25).map((n: NOT02NotificationRoutingBoardRow) => (
+              {queue.slice(0, 25).map((n: any) => (
                 <TableRow key={n.id}>
                   <TableCell className="text-xs text-muted-foreground">
                     {n.created_at ? new Date(n.created_at).toLocaleString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "—"}
@@ -167,7 +157,7 @@ export default function NOT02NotificationRoutingBoard() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {preferences.map((p: NOT02NotificationRoutingBoardRow) => (
+                {preferences.map((p: any) => (
                   <TableRow key={p.id}>
                     <TableCell className="text-xs font-medium">{p.category}</TableCell>
                     <TableCell>{p.channel_push ? <Bell className="h-3.5 w-3.5 text-emerald-400" /> : <BellOff className="h-3.5 w-3.5 text-muted-foreground" />}</TableCell>

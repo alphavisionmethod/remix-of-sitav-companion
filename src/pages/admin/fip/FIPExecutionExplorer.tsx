@@ -7,12 +7,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface FIPExecutionExplorerRow {
-  brain_core_involvement?: unknown;
-  feature_id?: unknown;
-  id?: string;
-  replay_safe?: unknown;
-}
 
 const PathNode = ({ label, value, active }: { label: string; value?: string; active: boolean }) => (
   <div className={`flex flex-col items-center p-2 rounded-lg border ${active ? 'border-primary bg-primary/5' : 'border-border bg-muted/30'}`}>
@@ -34,14 +28,14 @@ const FIPExecutionExplorer = () => {
 
       <div className="grid grid-cols-3 gap-4">
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{paths.length}</p><p className="text-xs text-muted-foreground">Execution Paths</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{paths.filter((p: FIPExecutionExplorerRow) => p.replay_safe).length}</p><p className="text-xs text-muted-foreground">Replay Safe</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{paths.filter((p: FIPExecutionExplorerRow) => p.brain_core_involvement).length}</p><p className="text-xs text-muted-foreground">Brain-Core Involved</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{paths.filter((p: any) => p.replay_safe).length}</p><p className="text-xs text-muted-foreground">Replay Safe</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{paths.filter((p: any) => p.brain_core_involvement).length}</p><p className="text-xs text-muted-foreground">Brain-Core Involved</p></CardContent></Card>
       </div>
 
       <div className="space-y-4">
         {isLoading ? <p className="text-center py-8 text-muted-foreground">Loading execution paths...</p> :
           paths.length === 0 ? <Card><CardContent className="py-12 text-center text-muted-foreground">No execution paths defined yet. Paths are created when side-effecting features are designed.</CardContent></Card> :
-          paths.map((path: FIPExecutionExplorerRow) => (
+          paths.map((path: any) => (
             <Card key={path.id}>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">

@@ -8,12 +8,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface DRS04ScenarioEntityGraphRow {
-  entity_key?: unknown;
-  id?: string;
-  label?: unknown;
-  visibility_scope?: unknown;
-}
 
 const ENTITY_ICONS: Record<string, React.ReactNode> = {
   person: <User className="h-3 w-3" />, company: <Building2 className="h-3 w-3" />,
@@ -69,7 +63,7 @@ export default function DRS04ScenarioEntityGraph() {
             </CardHeader>
             <CardContent>
               <div className="space-y-1">
-                {entities.slice(0, 10).map((e: DRS04ScenarioEntityGraphRow) => (
+                {entities.slice(0, 10).map((e: any) => (
                   <div key={e.id} className="flex items-center gap-2 text-sm py-1 border-b border-border/30 last:border-0">
                     <span className="font-medium text-foreground">{e.label}</span>
                     <span className="text-xs text-muted-foreground">{e.entity_key}</span>

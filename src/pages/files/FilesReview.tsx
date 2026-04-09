@@ -10,16 +10,8 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface FilesReviewRow {
-  classification?: unknown;
-  extracted_data?: unknown;
-  filename?: unknown;
-  mime_type?: unknown;
-  sensitivity?: unknown;
-  status?: string;
-}
 
-function classifyDomainFromFile(f: FilesReviewRow): string {
+function classifyDomainFromFile(f: any): string {
   const text = `${f.filename} ${f.extracted_data?.text || ""} ${f.classification || ""}`.toLowerCase();
   if (text.includes("invoice") || text.includes("contract")) return "Business";
   if (text.includes("bank") || text.includes("receipt")) return "Finance";
@@ -37,8 +29,8 @@ const FilesReview = () => {
   // Files needing classification review: low-confidence or missing classification
   const classificationItems = useMemo(() =>
     allFiles
-      .filter((f: FilesReviewRow) => !f.classification || f.status === "review")
-      .map((f: FilesReviewRow) => ({
+      .filter((f: any) => !f.classification || f.status === "review")
+      .map((f: any) => ({
         name: f.filename,
         fileType: f.mime_type?.split("/")[1] || "file",
         inferredDomain: classifyDomainFromFile(f),
@@ -55,9 +47,9 @@ const FilesReview = () => {
   // Files with extracted data for fact verification
   const extractionItems = useMemo(() =>
     allFiles
-      .filter((f: FilesReviewRow) => f.extracted_data?.text && f.status !== "processing")
+      .filter((f: any) => f.extracted_data?.text && f.status !== "processing")
       .slice(0, 10)
-      .map((f: FilesReviewRow) => {
+      .map((f: any) => {
         const text = (f.extracted_data?.text || "") as string;
         const facts: Array<{ label: string; value: string; type: "entity" | "amount" | "obligation" | "deadline"; confirmed?: boolean }> = [];
 

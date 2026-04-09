@@ -12,14 +12,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface CN03AccountLinkageBoardRow {
-  account_email?: unknown;
-  connected_at?: string;
-  connector_type?: unknown;
-  display_name?: string;
-  id?: string;
-  message?: string;
-}
 
 const statusColors: Record<string, string> = {
   connected: "bg-green-500/20 text-green-400", pending: "bg-yellow-500/20 text-yellow-400",
@@ -44,7 +36,7 @@ export default function CN03AccountLinkageBoard() {
       return data;
     },
     onSuccess: () => { toast.success("Account disconnected"); queryClient.invalidateQueries({ queryKey: ["connector-accounts"] }); },
-    onError: (e: CN03AccountLinkageBoardRow) => toast.error(`Disconnect failed: ${e.message}`),
+    onError: (e: any) => toast.error(`Disconnect failed: ${e.message}`),
   });
 
   return (
@@ -57,7 +49,7 @@ export default function CN03AccountLinkageBoard() {
             <p className="text-sm text-muted-foreground">No linked accounts yet.</p>
           ) : (
             <div className="space-y-3">
-              {accounts.map((a: CN03AccountLinkageBoardRow) => (
+              {accounts.map((a: any) => (
                 <div key={a.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">
                   <div>
                     <p className="font-medium text-sm">{a.display_name || a.connector_type}</p>

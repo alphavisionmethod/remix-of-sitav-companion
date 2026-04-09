@@ -7,15 +7,6 @@ import { BarChart3, CheckCircle2, XCircle, Clock, TrendingUp, AlertTriangle } fr
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface REX01RecommendationIntelligenceRow {
-  domain?: string;
-  execution_binding_status?: unknown;
-  score_accuracy?: unknown;
-  score_actionability?: unknown;
-  score_overall?: unknown;
-  score_usefulness?: unknown;
-  status?: string;
-}
 
 function useRecommendationStats() {
   return useQuery({
@@ -28,11 +19,11 @@ function useRecommendationStats() {
       const total = recs.length;
       const byStatus: Record<string, number> = {};
       const byDomain: Record<string, number> = {};
-      recs.forEach((r: REX01RecommendationIntelligenceRow) => {
+      recs.forEach((r: any) => {
         byStatus[r.status || "new"] = (byStatus[r.status || "new"] || 0) + 1;
         byDomain[r.domain || "unknown"] = (byDomain[r.domain || "unknown"] || 0) + 1;
       });
-      const bound = recs.filter((r: REX01RecommendationIntelligenceRow) => r.execution_binding_status === "bound" || r.execution_binding_status === "verified").length;
+      const bound = recs.filter((r: any) => r.execution_binding_status === "bound" || r.execution_binding_status === "verified").length;
       return { total, byStatus, byDomain, bound };
     },
     staleTime: 30_000,
@@ -50,10 +41,10 @@ function useRecommendationScores() {
       if (scores.length === 0) return { avgOverall: 0, avgAccuracy: 0, avgUsefulness: 0, avgActionability: 0, count: 0 };
       const avg = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length;
       return {
-        avgOverall: avg(scores.map((s: REX01RecommendationIntelligenceRow) => s.score_overall || 0)),
-        avgAccuracy: avg(scores.filter((s: REX01RecommendationIntelligenceRow) => s.score_accuracy).map((s: REX01RecommendationIntelligenceRow) => s.score_accuracy)),
-        avgUsefulness: avg(scores.filter((s: REX01RecommendationIntelligenceRow) => s.score_usefulness).map((s: REX01RecommendationIntelligenceRow) => s.score_usefulness)),
-        avgActionability: avg(scores.filter((s: REX01RecommendationIntelligenceRow) => s.score_actionability).map((s: REX01RecommendationIntelligenceRow) => s.score_actionability)),
+        avgOverall: avg(scores.map((s: any) => s.score_overall || 0)),
+        avgAccuracy: avg(scores.filter((s: any) => s.score_accuracy).map((s: any) => s.score_accuracy)),
+        avgUsefulness: avg(scores.filter((s: any) => s.score_usefulness).map((s: any) => s.score_usefulness)),
+        avgActionability: avg(scores.filter((s: any) => s.score_actionability).map((s: any) => s.score_actionability)),
         count: scores.length,
       };
     },

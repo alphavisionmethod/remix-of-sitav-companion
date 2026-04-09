@@ -8,13 +8,6 @@ import { formatDistanceToNow } from "date-fns";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface REX05OutcomeVerificationRow {
-  actual_improvement?: unknown;
-  expected_improvement?: unknown;
-  id?: string;
-  score_adjustment?: unknown;
-  verified?: unknown;
-}
 
 export default function REX05OutcomeVerification() {
   const { isDemoMode } = useDataMode();
@@ -24,7 +17,7 @@ export default function REX05OutcomeVerification() {
     staleTime: 30_000,
   });
 
-  const verified = verifications?.filter((v: REX05OutcomeVerificationRow) => v.verified) || [];
+  const verified = verifications?.filter((v: any) => v.verified) || [];
   const avgScoreAdj = verified.length > 0
     ? verified.reduce((acc: number, v: any) => acc + (v.score_adjustment || 0), 0) / verified.length
     : 0;
@@ -79,7 +72,7 @@ export default function REX05OutcomeVerification() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {(verifications || []).map((v: REX05OutcomeVerificationRow) => (
+                {(verifications || []).map((v: any) => (
                   <TableRow key={v.id}>
                     <TableCell className="text-foreground text-sm max-w-[200px] truncate">{v.expected_improvement || "—"}</TableCell>
                     <TableCell className="text-foreground text-sm max-w-[200px] truncate">{v.actual_improvement || "—"}</TableCell>

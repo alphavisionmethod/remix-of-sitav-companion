@@ -3,10 +3,6 @@ import { render } from "@/test/test-utils";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface TestModuleRow {
-  default?: unknown;
-  [key: string]: unknown;
-}
 
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");
@@ -45,7 +41,7 @@ const pages = [
   ["BuilderKnowledgeBase", () => import("@/pages/admin/BuilderKnowledgeBase")],
 ] as const;
 
-function getComponent(mod: TestModuleRow) {
+function getComponent(mod: any) {
   return mod.default || Object.values(mod).find((v: unknown) => typeof v === "function");
 }
 

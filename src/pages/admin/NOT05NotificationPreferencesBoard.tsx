@@ -14,14 +14,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
 
-interface NOT05NotificationPreferencesBoardRow {
-  category?: string;
-  channel_in_app?: unknown;
-  channel_push?: unknown;
-  id?: string;
-  platform?: unknown;
-  user_id?: unknown;
-}
 
 export default function NOT05NotificationPreferencesBoard() {
   const { isDemoMode } = useDataMode();
@@ -41,9 +33,9 @@ export default function NOT05NotificationPreferencesBoard() {
     },
   });
 
-  const uniqueUsers = new Set(preferences.map((p: NOT05NotificationPreferencesBoardRow) => p.user_id)).size;
-  const pushEnabledCount = preferences.filter((p: NOT05NotificationPreferencesBoardRow) => p.channel_push).length;
-  const inAppOnlyCount = preferences.filter((p: NOT05NotificationPreferencesBoardRow) => !p.channel_push && p.channel_in_app).length;
+  const uniqueUsers = new Set(preferences.map((p: any) => p.user_id)).size;
+  const pushEnabledCount = preferences.filter((p: any) => p.channel_push).length;
+  const inAppOnlyCount = preferences.filter((p: any) => !p.channel_push && p.channel_in_app).length;
 
   return (
     <div className="p-6 space-y-6 max-w-6xl" data-testid="not05-prefs-board">
@@ -92,7 +84,7 @@ export default function NOT05NotificationPreferencesBoard() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {tokens.map((t: NOT05NotificationPreferencesBoardRow) => (
+                {tokens.map((t: any) => (
                   <TableRow key={t.id}>
                     <TableCell className="text-xs font-mono">{t.user_id?.slice(0, 8)}…</TableCell>
                     <TableCell>
@@ -135,7 +127,7 @@ export default function NOT05NotificationPreferencesBoard() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {preferences.map((p: NOT05NotificationPreferencesBoardRow) => (
+                {preferences.map((p: any) => (
                   <TableRow key={p.id}>
                     <TableCell className="text-xs font-mono">{p.user_id?.slice(0, 8)}…</TableCell>
                     <TableCell className="text-xs font-medium">{p.category}</TableCell>

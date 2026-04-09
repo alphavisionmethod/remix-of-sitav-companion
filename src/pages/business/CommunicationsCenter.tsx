@@ -18,18 +18,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 
 
-interface CommunicationsCenterRow {
-  body?: unknown;
-  channel?: unknown;
-  contact_name?: unknown;
-  created_at?: string;
-  id?: string;
-  requires_approval?: unknown;
-  sent_at?: unknown;
-  status?: string;
-  subject?: unknown;
-  type?: string;
-}
 
 type CommStatus = "draft" | "review" | "approved" | "sent" | "delivered" | "opened" | "replied" | "failed";
 
@@ -74,7 +62,7 @@ const CommunicationsCenter = () => {
   const { data: dbComms = [] } = useCommunications();
 
   // Map DB communications to local type
-  const liveComms: Communication[] = dbComms.map((c: CommunicationsCenterRow) => ({
+  const liveComms: Communication[] = dbComms.map((c: any) => ({
     id: c.id,
     type: (c.channel || c.type || "email") as "email" | "sms" | "message",
     subject: c.subject || "",

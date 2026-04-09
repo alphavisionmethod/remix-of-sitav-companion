@@ -13,18 +13,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface CN04SyncTruthCenterRow {
-  account_id?: unknown;
-  connector_type?: unknown;
-  display_name?: string;
-  id?: string;
-  message?: string;
-  records_fetched?: unknown;
-  records_imported?: unknown;
-  status?: string;
-  sync_type?: unknown;
-  trigger?: unknown;
-}
 
 const statusColors: Record<string, string> = {
   completed: "bg-green-500/20 text-green-400", running: "bg-blue-500/20 text-blue-400",
@@ -53,13 +41,13 @@ export default function CN04SyncTruthCenter() {
       return data;
     },
     onSuccess: () => { toast.success("Sync completed"); queryClient.invalidateQueries({ queryKey: ["connector-sync-runs"] }); },
-    onError: (e: CN04SyncTruthCenterRow) => toast.error(`Sync failed: ${e.message}`),
+    onError: (e: any) => toast.error(`Sync failed: ${e.message}`),
   });
 
-  const getAccountName = (id: string) => accounts.find((a: CN04SyncTruthCenterRow) => a.id === id)?.display_name || id.slice(0, 8);
+  const getAccountName = (id: string) => accounts.find((a: any) => a.id === id)?.display_name || id.slice(0, 8);
 
-  const completed = syncRuns.filter((s: CN04SyncTruthCenterRow) => s.status === "completed").length;
-  const failed = syncRuns.filter((s: CN04SyncTruthCenterRow) => s.status === "failed").length;
+  const completed = syncRuns.filter((s: any) => s.status === "completed").length;
+  const failed = syncRuns.filter((s: any) => s.status === "failed").length;
   const totalRecords = syncRuns.reduce((acc: number, s: any) => acc + (s.records_imported || 0), 0);
 
   return (
@@ -74,7 +62,7 @@ export default function CN04SyncTruthCenter() {
 
         {accounts.length > 0 && (
           <div className="flex gap-2 flex-wrap">
-            {accounts.filter((a: CN04SyncTruthCenterRow) => a.connector_type).map((a: CN04SyncTruthCenterRow) => (
+            {accounts.filter((a: any) => a.connector_type).map((a: any) => (
               <Button key={a.id} size="sm" variant="outline" onClick={() => syncMutation.mutate(a.id)} disabled={syncMutation.isPending}>
                 <RefreshCw className="h-3 w-3 mr-1" /> Sync {a.display_name || a.connector_type}
               </Button>
@@ -100,7 +88,7 @@ export default function CN04SyncTruthCenter() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {syncRuns.map((s: CN04SyncTruthCenterRow) => (
+                {syncRuns.map((s: any) => (
                   <TableRow key={s.id}>
                     <TableCell className="text-sm">{getAccountName(s.account_id)}</TableCell>
                     <TableCell>{s.sync_type}</TableCell>

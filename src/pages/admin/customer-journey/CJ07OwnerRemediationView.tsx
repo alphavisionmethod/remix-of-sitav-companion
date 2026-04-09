@@ -11,13 +11,6 @@ import { Wrench, Loader2 } from "lucide-react";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface CJ07OwnerRemediationViewRow {
-  current_status?: unknown;
-  display_?: unknown;
-  id?: string;
-  journey_key?: unknown;
-  owner?: unknown;
-}
 
 export default function CJ07OwnerRemediationView() {
   const { isDemoMode } = useDataMode();
@@ -25,7 +18,7 @@ export default function CJ07OwnerRemediationView() {
   const { data: runs } = useCustomerJourneyRuns();
 
   // Journeys needing attention
-  const needsWork = (journeys ?? []).filter((j: CJ07OwnerRemediationViewRow) =>
+  const needsWork = (journeys ?? []).filter((j: any) =>
     j.current_status !== "working" && j.current_status !== "planned" && j.current_status !== "internal_only"
   );
 
@@ -69,9 +62,9 @@ export default function CJ07OwnerRemediationView() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {ownerJourneys.map((j: CJ07OwnerRemediationViewRow) => {
+                {ownerJourneys.map((j: any) => {
                   const statusCfg = JOURNEY_STATUS_CONFIG[j.current_status] || JOURNEY_STATUS_CONFIG.unverified;
-                  const latestRun = (runs ?? []).find((r: CJ07OwnerRemediationViewRow) => r.journey_key === j.journey_key);
+                  const latestRun = (runs ?? []).find((r: any) => r.journey_key === j.journey_key);
                   return (
                     <div key={j.id} className="p-3 rounded border bg-card">
                       <div className="flex items-center justify-between">

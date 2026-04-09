@@ -17,15 +17,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 
 
-interface AppReceiptsPageRow {
-  action?: string;
-  actor?: unknown;
-  created_at?: string;
-  id?: string;
-  me?: unknown;
-  metadata?: unknown;
-  outcome?: unknown;
-}
 
 const AppReceiptsPage = () => {
   const navigate = useNavigate();
@@ -41,7 +32,7 @@ const AppReceiptsPage = () => {
       if (appId) query = query.eq("metadata->>appId", appId);
       const { data } = await query;
       if (!data?.length) return null;
-      return data.map((r: AppReceiptsPageRow) => ({
+      return data.map((r: any) => ({
         receiptId: r.id,
         appId: r.metadata?.appId || appId || "unknown",
         appName: r.metadata?.appName || r.action || "App",

@@ -11,18 +11,6 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-interface AITokenDashboardRow {
-  capability_key?: string;
-  estimated_cost_usd?: unknown;
-  id?: string;
-  is_active?: unknown;
-  policy_key?: unknown;
-  request_count?: unknown;
-  scope_type?: unknown;
-  spend_date?: unknown;
-  total_cost_usd?: unknown;
-  total_tokens?: unknown;
-}
 
 import {
   useBudgetPolicies, useBudgetSummary, useUsageLedger, useDailyAggregation,
@@ -49,11 +37,11 @@ export default function AITokenDashboard() {
   const records = ledger ?? [];
   const totalTokens = records.reduce((s, r: any) => s + (r.total_tokens || 0), 0);
   const totalCost = records.reduce((s, r: any) => s + (Number(r.estimated_cost_usd) || 0), 0);
-  const uniqueCapabilities = new Set(records.map((r: AITokenDashboardRow) => r.capability_key)).size;
+  const uniqueCapabilities = new Set(records.map((r: any) => r.capability_key)).size;
 
   // By capability breakdown
   const byCap: Record<string, { tokens: number; cost: number; calls: number }> = {};
-  records.forEach((r: AITokenDashboardRow) => {
+  records.forEach((r: any) => {
     const k = r.capability_key || "unknown";
     if (!byCap[k]) byCap[k] = { tokens: 0, cost: 0, calls: 0 };
     byCap[k].tokens += r.total_tokens || 0;
@@ -145,7 +133,7 @@ export default function AITokenDashboard() {
             <CardTitle className="text-sm font-semibold">Daily Spend (Last 14 Days)</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {dailyData.length > 0 ? dailyData.map((d: AITokenDashboardRow) => (
+            {dailyData.length > 0 ? dailyData.map((d: any) => (
               <div key={`${d.spend_date}-${d.capability_key}`} className="flex items-center justify-between text-xs border-b border-border/20 pb-1">
                 <span className="text-muted-foreground">{d.spend_date}</span>
                 <span className="font-mono">{d.capability_key}</span>
@@ -172,7 +160,7 @@ export default function AITokenDashboard() {
             <p className="text-sm text-muted-foreground text-center py-4">No budget policies configured</p>
           ) : (
             <div className="space-y-2">
-              {(policies ?? []).map((p: AITokenDashboardRow) => (
+              {(policies ?? []).map((p: any) => (
                 <div key={p.id} className="flex items-center justify-between p-3 rounded-lg border text-xs">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">

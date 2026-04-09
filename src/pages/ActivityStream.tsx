@@ -26,13 +26,6 @@ import { DEMO_ACTIVITY_TIMELINE } from "@/lib/demo-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 
-interface ActivityStreamRow {
-  action_summary?: unknown;
-  action_type?: string;
-  created_at?: string;
-  domain?: string;
-  status?: string;
-}
 
 // ── Category System ──────────────────────────────────────────
 type FeedCategory = "all" | "actions" | "approvals" | "proof" | "workflows" | "finance" | "communications" | "household" | "system";
@@ -302,7 +295,7 @@ const ActivityStream = () => {
         .select("*")
         .order("created_at", { ascending: false })
         .limit(20);
-      return (data || []).map((a: ActivityStreamRow) => ({
+      return (data || []).map((a: any) => ({
         type: `approval.${a.status}`,
         created_at: a.created_at,
         payload: { summary: a.action_summary, action_type: a.action_type },
@@ -322,7 +315,7 @@ const ActivityStream = () => {
         .select("*")
         .order("created_at", { ascending: false })
         .limit(20);
-      return (data || []).map((p: ActivityStreamRow) => ({
+      return (data || []).map((p: any) => ({
         type: "receipt.created",
         created_at: p.created_at,
         payload: { summary: p.action_summary, domain: p.domain },

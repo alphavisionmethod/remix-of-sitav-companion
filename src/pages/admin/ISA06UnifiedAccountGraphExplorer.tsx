@@ -8,13 +8,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface ISA06UnifiedAccountGraphExplorerRow {
-  display_name?: string;
-  from_node_id?: unknown;
-  id?: string;
-  node_type?: unknown;
-  to_node_id?: unknown;
-}
 
 const nodeTypeConfig: Record<string, { color: string; icon: React.ReactNode; label: string }> = {
   identity_provider: { color: "bg-blue-500/20 text-blue-400 border-blue-500/30", icon: <Shield className="h-4 w-4" />, label: "Identity" },
@@ -114,7 +107,7 @@ export default function ISA06UnifiedAccountGraphExplorer() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {typeNodes.map((node: ISA06UnifiedAccountGraphExplorerRow) => (
+                {typeNodes.map((node: any) => (
                   <Card key={node.id} className={`border ${config.color} bg-opacity-5`}>
                     <CardContent className="pt-4">
                       <div className="flex items-center justify-between mb-1">
@@ -149,9 +142,9 @@ export default function ISA06UnifiedAccountGraphExplorer() {
           <CardHeader><CardTitle className="text-lg">Graph Edges</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {edges.map((edge: ISA06UnifiedAccountGraphExplorerRow) => {
-                const fromNode = nodes.find((n: ISA06UnifiedAccountGraphExplorerRow) => n.id === edge.from_node_id);
-                const toNode = nodes.find((n: ISA06UnifiedAccountGraphExplorerRow) => n.id === edge.to_node_id);
+              {edges.map((edge: any) => {
+                const fromNode = nodes.find((n: any) => n.id === edge.from_node_id);
+                const toNode = nodes.find((n: any) => n.id === edge.to_node_id);
                 return (
                   <div key={edge.id} className="flex items-center gap-2 text-sm p-2 rounded bg-muted/30">
                     <span className="font-medium">{fromNode?.display_name || edge.from_node_id?.slice(0, 8)}</span>

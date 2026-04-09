@@ -12,9 +12,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface PlatformMaturityDashboardRow {
-  scope_id?: unknown;
-}
 
 const gradeColors: Record<string, string> = {
   S: "text-yellow-400 bg-yellow-400/10", A: "text-green-400 bg-green-400/10",
@@ -33,7 +30,7 @@ const PlatformMaturityDashboard = () => {
 
   // Build display from persisted scores or defaults
   const domains = CANONICAL_DOMAIN_PACKS.map(pack => {
-    const score = (scores ?? []).find((s: PlatformMaturityDashboardRow) => s.scope_id === pack.domainKey);
+    const score = (scores ?? []).find((s: any) => s.scope_id === pack.domainKey);
     const composite = score ? Number(score.composite_score) : 0;
     const grade = getMaturityGrade(composite);
     return {

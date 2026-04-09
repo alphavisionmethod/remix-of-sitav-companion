@@ -28,10 +28,6 @@ import { useAction } from "@/lib/hooks/useAction";
 import { PlainEnglishPolicyEditor } from "@/components/sita/PlainEnglishPolicyEditor";
 
 
-interface ConstitutionEditorRow {
-  is_active?: unknown;
-  natural_text?: unknown;
-}
 
 // ── Category Config ─────────────────────────────────────────────
 
@@ -303,7 +299,7 @@ export default function ConstitutionEditor() {
 
       if (!error && data && data.length > 0) {
         // Hydrate the in-memory compiler with DB rules
-        data.forEach((row: ConstitutionEditorRow) => {
+        data.forEach((row: any) => {
           // Only add if not already in compiler
           const existing = compiler.getAllRules();
           if (!existing.find((r: ConstitutionRule) => r.naturalLanguage === row.natural_text)) {
