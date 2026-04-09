@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Check, Sparkles, ArrowLeft, ChevronRight, Shield, Brain, Briefcase, DollarSign, Headphones, Eye } from "lucide-react";
+import { Check, Sparkles, ArrowLeft, ChevronRight, Shield, Brain, Briefcase, DollarSign, Headphones, Eye, Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { LifeRhythmData } from "./LifeRhythmStep";
 import type { StressMapData } from "./StressSlippageStep";
@@ -132,6 +132,31 @@ export const EnvironmentSummaryStep = ({ displayName, trustLevel, primaryUseMode
             <p className="text-[9px] text-[hsl(var(--sita-gold))] font-semibold uppercase tracking-wider mb-1">First Win</p>
             <p className="text-sm text-foreground">{firstWinAction}</p>
           </div>
+        )}
+
+        {/* Already-helped insight card */}
+        {(stressMap?.heavierThanShould?.length >= 2 || (enabledDomains.includes("business") && enabledDomains.includes("money"))) && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="rounded-xl border border-[hsl(var(--sita-gold))]/15 bg-[hsl(var(--sita-gold))]/5 p-4 space-y-2"
+          >
+            <div className="flex items-center gap-2">
+              <Lightbulb className="h-3.5 w-3.5 text-[hsl(var(--sita-gold))]" />
+              <p className="text-[10px] uppercase tracking-wider text-[hsl(var(--sita-gold))] font-semibold">Already Noticed</p>
+            </div>
+            {stressMap?.heavierThanShould?.length >= 2 && (
+              <p className="text-xs text-foreground/80">
+                Multiple stress points detected — SITA is preparing targeted support for your most pressing responsibilities.
+              </p>
+            )}
+            {enabledDomains.includes("business") && enabledDomains.includes("money") && (
+              <p className="text-xs text-foreground/80">
+                With both business and money active, SITA can cross-reference revenue with spending for smarter financial insights.
+              </p>
+            )}
+          </motion.div>
         )}
 
         {/* Planning & rhythm */}

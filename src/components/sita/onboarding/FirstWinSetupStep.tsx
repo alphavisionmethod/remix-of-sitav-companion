@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { getRecommendationReason } from "@/lib/setup/reflection-copy";
 
 export interface FirstWinData {
   category: string;
@@ -23,6 +24,7 @@ interface FirstWinSetupStepProps {
   data: FirstWinData;
   onUpdate: (data: FirstWinData) => void;
   primaryUseMode: string;
+  painPoints?: string[];
   onNext: () => void;
   onPrev: () => void;
 }
@@ -66,7 +68,7 @@ const WIN_OPTIONS: Record<string, WinOption[]> = {
 
 const FLOW_STEPS = ["Select", "Preview", "Approve", "Prepare", "Ready"];
 
-export function FirstWinSetupStep({ data, onUpdate, primaryUseMode, onNext, onPrev }: FirstWinSetupStepProps) {
+export function FirstWinSetupStep({ data, onUpdate, primaryUseMode, painPoints, onNext, onPrev }: FirstWinSetupStepProps) {
   const [flowStep, setFlowStep] = useState(data.approved ? (data.prepared ? 4 : 3) : data.action ? 1 : 0);
 
   const options = WIN_OPTIONS[primaryUseMode] || WIN_OPTIONS.personal;
@@ -131,7 +133,9 @@ export function FirstWinSetupStep({ data, onUpdate, primaryUseMode, onNext, onPr
         {/* Step 0: Select */}
         {flowStep === 0 && (
           <motion.div key="select" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-2.5">
-            {options.map((opt, i) => (
+            {options.map((opt, i) => {
+              const reason = getRecommendationReason("firstWin", opt.id, { primaryUseMode, painPoints });
+              return (
               <motion.button
                 key={opt.id}
                 initial={{ opacity: 0, x: -12 }}
@@ -149,11 +153,13 @@ export function FirstWinSetupStep({ data, onUpdate, primaryUseMode, onNext, onPr
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-foreground">{opt.title}</p>
                     <p className="text-xs text-muted-foreground">{opt.desc}</p>
+                    {reason && <p className="text-[10px] text-primary/70 mt-0.5">{reason}</p>}
                   </div>
                   <ArrowRight className="h-4 w-4 text-muted-foreground" />
                 </div>
               </motion.button>
-            ))}
+              );
+            })}
           </motion.div>
         )}
 
