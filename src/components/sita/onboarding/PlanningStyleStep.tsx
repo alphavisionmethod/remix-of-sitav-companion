@@ -71,6 +71,19 @@ export const PlanningStyleStep = ({ data, onUpdate, onNext, onPrev }: Props) => 
           </div>
         </motion.div>
       )}
+
+      {/* Show what this changes (Req #8) */}
+      {data.viewPreference && data.focusPreference && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          className="rounded-2xl border border-primary/20 bg-primary/5 p-3 mt-4">
+          <p className="text-[10px] text-primary font-semibold uppercase tracking-wider mb-1">This changes</p>
+          <p className="text-[11px] text-muted-foreground">
+            Home screen: <span className="text-foreground capitalize">{data.viewPreference}</span> layout · 
+            Start of day: <span className="text-foreground capitalize">{data.focusPreference}</span> view · 
+            Task presentation: <span className="text-foreground">{data.viewPreference === "boards" ? "kanban columns" : data.viewPreference === "timelines" ? "timeline view" : "card-based"}</span>
+          </p>
+        </motion.div>
+      )}
     </div>
 
     <div className="flex items-center justify-between mt-6">

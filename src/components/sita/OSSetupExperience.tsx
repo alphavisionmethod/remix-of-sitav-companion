@@ -73,6 +73,8 @@ import { PreviewExampleModal } from "@/components/sita/onboarding/PreviewExample
 import { CinematicIntro } from "@/components/sita/onboarding/CinematicIntro";
 import { RestorePreviewStep } from "@/components/sita/onboarding/RestorePreviewStep";
 import { ContextualWelcomeTour } from "@/components/sita/onboarding/ContextualWelcomeTour";
+import { OperatingContextStep } from "@/components/sita/onboarding/OperatingContextStep";
+import { RelationshipSensitivityStep } from "@/components/sita/onboarding/RelationshipSensitivityStep";
 import { Progress } from "@/components/ui/progress";
 
 // ── Types ───────────────────────────────────────────────────
@@ -125,6 +127,9 @@ interface SetupData {
   memoryConsent: string;
   homeComposition: string;
   recoverFirst: string;
+  operatingContext: string;
+  relationshipFocus: string;
+  desktopDensity: string;
 }
 
 // ── Phase Status Indicator ──────────────────────────────────
@@ -389,6 +394,14 @@ const FULLSCREEN_PHASES: SetupPhaseId[] = ["boot", "secure-foundation", "languag
 
 // ── Main Setup Component ────────────────────────────────────
 
+// Derive desktop density from stress + context (Req #3/#8)
+function computeDesktopDensity(s: SetupData): string {
+  const stressCount = s.stressMap.heavierThanShould.length;
+  if (stressCount >= 4 || s.operatingContext === "regaining-control") return "calm";
+  if (stressCount >= 2 || s.operatingContext === "managing-complexity") return "balanced";
+  return "dense";
+}
+
 export function OSSetupExperience() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -461,6 +474,9 @@ export function OSSetupExperience() {
     memoryConsent: "",
     homeComposition: "",
     recoverFirst: "",
+    operatingContext: "",
+    relationshipFocus: "",
+    desktopDensity: "",
   });
 
   // Sync setup state to engine for branch evaluation
@@ -527,6 +543,9 @@ export function OSSetupExperience() {
         mem("memory_consent", state.memoryConsent, "privacy", { sensitivity: "high" }),
         mem("home_composition", state.homeComposition, "preference"),
         mem("recover_first", state.recoverFirst, "preference"),
+        mem("operating_context", state.operatingContext, "preference"),
+        mem("relationship_focus", state.relationshipFocus, "preference"),
+        mem("desktop_density", computeDesktopDensity(state), "preference", { source: "derived", confidence: 0.8 }),
       ].filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
 
       await fromTable("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
@@ -805,6 +824,13 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
+                {phase === "operating-context" && (
+                  <OperatingContextStep key="operating-context"
+                    selected={state.operatingContext}
+                    onSelect={v => setState(s => ({ ...s, operatingContext: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
                 {phase === "want-less-of" && (
                   <WantLessOfStep key="want-less-of"
                     selected={state.wantLessOf}
@@ -830,6 +856,13 @@ export function OSSetupExperience() {
                   <HouseholdGraphStep key="household-graph"
                     nodes={state.householdGraph}
                     onUpdate={nodes => setState(s => ({ ...s, householdGraph: nodes }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "relationship-sensitivity" && (
+                  <RelationshipSensitivityStep key="relationship-sensitivity"
+                    selected={state.relationshipFocus}
+                    onSelect={v => setState(s => ({ ...s, relationshipFocus: v }))}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 

@@ -4650,6 +4650,39 @@ export type Database = {
         }
         Relationships: []
       }
+      calibration_checkpoints: {
+        Row: {
+          checkpoint_key: string
+          created_at: string
+          dismissed: boolean
+          id: string
+          response: Json | null
+          triggered_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          checkpoint_key: string
+          created_at?: string
+          dismissed?: boolean
+          id?: string
+          response?: Json | null
+          triggered_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          checkpoint_key?: string
+          created_at?: string
+          dismissed?: boolean
+          id?: string
+          response?: Json | null
+          triggered_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       call_logs: {
         Row: {
           contact_id: string | null

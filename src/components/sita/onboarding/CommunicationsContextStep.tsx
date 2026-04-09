@@ -87,6 +87,18 @@ export const CommunicationsContextStep = ({ data, onUpdate, onNext, onPrev }: Pr
             </p>
           </motion.div>
         )}
+
+        {/* Show what this changes (Req #8) */}
+        {data.communicationStress && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            className="rounded-2xl border border-primary/20 bg-primary/5 p-3">
+            <p className="text-[10px] text-primary font-semibold uppercase tracking-wider mb-1">This changes</p>
+            <p className="text-[11px] text-muted-foreground">
+              Notification frequency: <span className="text-foreground">{data.communicationStress === "overwhelming" ? "reduced, batched" : data.communicationStress === "often" ? "smart filtering" : "standard"}</span> · 
+              Desktop widget: <span className="text-foreground">{data.supportNeeds.length > 0 ? "reply queue active" : "communication overview"}</span>
+            </p>
+          </motion.div>
+        )}
       </div>
 
       <div className="flex items-center justify-between mt-6">
