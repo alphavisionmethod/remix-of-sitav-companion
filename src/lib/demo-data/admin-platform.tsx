@@ -218,7 +218,7 @@ const createEnvelope = (
   lastUpdated: new Date().toISOString(),
 });
 
-// ... keep existing code (lines 207-1490 unchanged)
+
 
 export const DEMO_BUDGETS: BudgetEnvelope[] = [
   { ...createEnvelope("tenant", "t-1", "t-1", "Acme Corp — Monthly", 15000, 300), spentCents: 12400, remainingCents: 2600, deepReasoningMinutesUsed: 180, proactiveInferenceSpentCents: 3200, retrySpentCents: 420, retriesUsed: 6, status: "approaching" as BudgetStatus },
