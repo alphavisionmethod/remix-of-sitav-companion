@@ -813,6 +813,13 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
+                {phase === "operating-context" && (
+                  <OperatingContextStep key="operating-context"
+                    selected={state.operatingContext}
+                    onSelect={v => setState(s => ({ ...s, operatingContext: v }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
                 {phase === "want-less-of" && (
                   <WantLessOfStep key="want-less-of"
                     selected={state.wantLessOf}
@@ -838,6 +845,13 @@ export function OSSetupExperience() {
                   <HouseholdGraphStep key="household-graph"
                     nodes={state.householdGraph}
                     onUpdate={nodes => setState(s => ({ ...s, householdGraph: nodes }))}
+                    onNext={goNext} onPrev={goPrev} />
+                )}
+
+                {phase === "relationship-sensitivity" && (
+                  <RelationshipSensitivityStep key="relationship-sensitivity"
+                    selected={state.relationshipFocus}
+                    onSelect={v => setState(s => ({ ...s, relationshipFocus: v }))}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
