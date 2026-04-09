@@ -1,0 +1,190 @@
+{
+  "version": "2.2.0",
+  "generatedAt": "2026-04-09",
+  "architecture": "4-tier OS/App separation",
+  "tiers": {
+    "tier1_public": {
+      "name": "Public",
+      "description": "No kernel, no OS runtime — PublicLayout only",
+      "wrapper": "PublicLayout → PublicRoute",
+      "routeCount": 5,
+      "routes": [
+        { "path": "/", "component": "HomeRoute", "purpose": "Landing or redirect" },
+        { "path": "/login", "component": "Login", "purpose": "Authentication" },
+        { "path": "/signup", "component": "Signup", "purpose": "Registration" },
+        { "path": "/forgot-password", "component": "ForgotPassword", "purpose": "Password recovery" },
+        { "path": "/reset-password", "component": "ResetPassword", "purpose": "Password reset" }
+      ]
+    },
+    "tier2_authenticated_no_shell": {
+      "name": "Authenticated, No Shell",
+      "description": "OS providers active (DataMode, DemoMode, Kernel, OSRuntime) but no ShellLayout sidebar",
+      "wrapper": "AuthenticatedProviders → ProtectedRoute or OnboardingGuard",
+      "routeCount": 13,
+      "groups": {
+        "onboarding": [
+          { "path": "/onboarding", "component": "Onboarding" },
+          { "path": "/auth/callback", "component": "EmailVerificationHandler" },
+          { "path": "/first-win", "component": "FirstWinActivation" },
+          { "path": "/learn-later", "component": "LearnLaterPage" }
+        ],
+        "mobile": [
+          { "path": "/mobile", "component": "MobileHome" },
+          { "path": "/mobile/approvals", "component": "MobileApprovals" },
+          { "path": "/mobile/proof", "component": "MobileProof" },
+          { "path": "/mobile/alerts", "component": "MobileAlerts" },
+          { "path": "/mobile/boardroom", "component": "MobileBoardroom" },
+          { "path": "/mobile/workflow/:id", "component": "MobileWorkflowDetail" },
+          { "path": "/mobile/receipt/:id", "component": "MobileReceiptDetail" },
+          { "path": "/mobile/approval/:id", "component": "MobileApprovalDetail" },
+          { "path": "/mobile/settings", "component": "MobileSettings" }
+        ]
+      }
+    },
+    "tier3_full_os_shell": {
+      "name": "Full OS Shell",
+      "description": "Authenticated + ShellLayout (sidebar, header, command palette) — the daily operating environment",
+      "wrapper": "AuthenticatedProviders → ProtectedRoute → ShellLayout → RouteErrorBoundary",
+      "estimatedRouteCount": 420,
+      "groups": {
+        "3A_os_home": {
+          "name": "OS Home & Desktop",
+          "prefixes": ["/home", "/desktop", "/profile", "/life"],
+          "routeCount": 7
+        },
+        "3B_os_core_spaces": {
+          "name": "OS Core Spaces",
+          "spaces": {
+            "business": { "prefix": "/business/*", "routeCount": 21, "pattern": "BusinessCenter tab-based" },
+            "money": { "prefix": "/money/*", "routeCount": 17, "pattern": "MoneyCenter tab-based" },
+            "concierge": { "prefix": "/concierge/*", "routeCount": 16, "pattern": "ConciergeCenter tab-based" },
+            "boardroom": { "prefix": "/boardroom/*", "routeCount": 10, "pattern": "Boardroom tab-based" }
+          }
+        },
+        "3B_os_offices": {
+          "name": "OS Intelligence & Workspace Surfaces",
+          "offices": {
+            "investments": { "prefix": "/investments/*", "routeCount": 38 },
+            "revenue_office": { "prefix": "/revenue-office/*", "routeCount": 40 },
+            "digital_presence": { "prefix": "/digital-presence/*", "routeCount": 19 },
+            "workflows": { "prefix": "/workflows/*", "routeCount": 4 },
+            "proof": { "prefix": "/proof/*", "routeCount": 5 },
+            "files": { "prefix": "/files/*", "routeCount": 10 },
+            "memory": { "prefix": "/memory/*", "routeCount": 6 },
+            "automation": { "prefix": "/automation/*", "routeCount": 4 },
+            "system": { "prefix": "/system/*", "routeCount": 9 },
+            "personalization": { "prefix": "/personalization/*", "routeCount": 6 },
+            "settings": { "prefix": "/settings/*", "routeCount": 11 },
+            "owner": { "prefix": "/owner/*", "routeCount": 35 },
+            "governance": { "prefix": "/governance/*", "routeCount": 6 },
+            "enterprise": { "prefix": "/enterprise/*", "routeCount": 6 },
+            "mission_control": { "prefix": "/mission-control/*", "routeCount": 11 },
+            "mission": { "prefix": "/mission/*", "routeCount": 12 },
+            "atlas": { "prefix": "/atlas/*", "routeCount": 11 },
+            "integrations": { "prefix": "/integrations/*", "routeCount": 6 },
+            "advisors": { "prefix": "/advisors/*", "routeCount": 8 }
+          }
+        },
+        "3C_os_builtin_apps": {
+          "name": "OS Built-in Apps",
+          "apps": [
+            { "path": "/apps/email", "component": "EmailApp" },
+            { "path": "/apps/messenger", "component": "MessengerApp" },
+            { "path": "/apps/vault", "component": "VaultApp" },
+            { "path": "/apps/health", "component": "HealthApp" },
+            { "path": "/apps/gallery", "component": "GalleryApp" },
+            { "path": "/apps/weather-news", "component": "WeatherNewsApp" }
+          ]
+        },
+        "3D_os_workspaces": {
+          "name": "OS Workspaces",
+          "workspaces": [
+            { "path": "/calendar", "component": "CalendarWorkspace" },
+            { "path": "/notes", "component": "NotesWorkspace" },
+            { "path": "/people", "component": "PeopleWorkspace" },
+            { "path": "/team", "component": "TeamWorkspace" },
+            { "path": "/editor", "component": "DocumentEditor" },
+            { "path": "/reporting", "component": "ReportingWorkspace" },
+            { "path": "/trust", "component": "TrustCenter" },
+            { "path": "/media", "component": "MediaWorkspace" },
+            { "path": "/templates", "component": "TemplateCenter" },
+            { "path": "/import-export", "component": "ImportExportCenter" },
+            { "path": "/workspace/principal", "component": "PrincipalWorkspace" },
+            { "path": "/workspace/operator", "component": "OperatorWorkspace" },
+            { "path": "/workspace/docs", "component": "DocsWorkspace" },
+            { "path": "/workspace/sheets", "component": "SheetsWorkspace" },
+            { "path": "/workspace/slides", "component": "SlidesWorkspace" }
+          ]
+        },
+        "3E_app_platform": {
+          "name": "App Platform (third-party apps)",
+          "groups": {
+            "app_store": { "prefix": "/app-store/*", "routeCount": 16 },
+            "pack_store": { "prefix": "/store/*", "routeCount": 11 }
+          }
+        }
+      }
+    },
+    "tier4_admin_builder": {
+      "name": "Admin / Builder",
+      "description": "Platform governance — internal tools, not user-facing OS. All under /admin/* prefix",
+      "wrapper": "Same as Tier 3 (AuthenticatedProviders → ShellLayout) — sidebar adapts",
+      "estimatedRouteCount": 320,
+      "subsystems": [
+        { "prefix": "/admin/dashboard", "name": "Core Admin", "routeCount": 20 },
+        { "prefix": "/admin/ai-*", "name": "AI Engineering Board", "routeCount": 17 },
+        { "prefix": "/admin/drs/*", "name": "DRS (Dual Reality System)", "routeCount": 10 },
+        { "prefix": "/admin/sag/*", "name": "SAG (Sovereign AI Gateway)", "routeCount": 12 },
+        { "prefix": "/admin/automation/*", "name": "AR (Automation Reality)", "routeCount": 9 },
+        { "prefix": "/admin/truth/*", "name": "LT (Launch Truth)", "routeCount": 7 },
+        { "prefix": "/admin/verification/*", "name": "V (Verification)", "routeCount": 7 },
+        { "prefix": "/admin/customer-journey/*", "name": "CJ (Customer Journey)", "routeCount": 9 },
+        { "prefix": "/admin/connectors/*", "name": "CN (Connector Reality)", "routeCount": 7 },
+        { "prefix": "/admin/msa/*", "name": "MSA (Multi-Surface Architecture)", "routeCount": 5 },
+        { "prefix": "/admin/pfa/*", "name": "PFA (Provider Families)", "routeCount": 11 },
+        { "prefix": "/admin/isa/*", "name": "ISA (Identity/Security Architecture)", "routeCount": 7 },
+        { "prefix": "/admin/aig/*", "name": "AIG (AI Gateway v2)", "routeCount": 9 },
+        { "prefix": "/admin/uao/*", "name": "UAO (Ubiquitous Ambient OS)", "routeCount": 8 },
+        { "prefix": "/admin/dwe/*", "name": "DWE (Devices & Wearables)", "routeCount": 7 },
+        { "prefix": "/admin/apl/*", "name": "APL (Apple Ecosystem)", "routeCount": 6 },
+        { "prefix": "/admin/and/*", "name": "AND (Android Ecosystem)", "routeCount": 5 },
+        { "prefix": "/admin/hrs/*", "name": "HRS (Health/Readiness/Signals)", "routeCount": 6 },
+        { "prefix": "/admin/nrc/*", "name": "NRC (Notification Routing)", "routeCount": 11 },
+        { "prefix": "/admin/nss/*", "name": "NSS (Native Shell Strategy)", "routeCount": 4 },
+        { "prefix": "/admin/core-persistence", "name": "CPS (Core Persistence)", "routeCount": 10 },
+        { "prefix": "/admin/feature-*", "name": "Delivery OS", "routeCount": 10 },
+        { "prefix": "/admin/fip/*", "name": "FIP (Feature Integration Protocol)", "routeCount": 14 },
+        { "prefix": "/admin/rex/*", "name": "REX (Recommendation → Execution)", "routeCount": 5 },
+        { "prefix": "/admin/flagship/*", "name": "FL (Flagship Loops)", "routeCount": 2 },
+        { "prefix": "/admin/services/*", "name": "SERV (Service Ownership)", "routeCount": 6 },
+        { "prefix": "/admin/launch/*", "name": "LAUNCH (Launch Readiness)", "routeCount": 6 },
+        { "prefix": "/admin/security/*", "name": "Security Command Center", "routeCount": 6 },
+        { "prefix": "/admin/frontend/*", "name": "Frontend Quality", "routeCount": 2 },
+        { "prefix": "/admin/architecture/*", "name": "Architecture", "routeCount": 3 },
+        { "prefix": "/admin/intelligence/*", "name": "Intelligence Architecture (from AdminRoutes)", "routeCount": 11 },
+        { "prefix": "/admin/strategic/*", "name": "Strategic Intelligence (from AdminRoutes)", "routeCount": 12 },
+        { "prefix": "/admin/ai-team/*", "name": "AIT (AI Team, from AdminRoutes)", "routeCount": 10 },
+        { "prefix": "/admin/ai-gateway/*", "name": "AI Gateway (from AdminRoutes)", "routeCount": 9 }
+      ]
+    }
+  },
+  "separation_rules": {
+    "public_routes": "PublicLayout only — no kernel, no runtime, no entity context",
+    "mobile_routes": "AuthenticatedProviders active, bypasses ShellLayout (own mobile navigation)",
+    "onboarding_routes": "AuthenticatedProviders active, bypasses ShellLayout (ceremony experience)",
+    "os_shell_routes": "Full AuthenticatedProviders + ShellLayout (sidebar adapts by context)",
+    "admin_routes": "Same shell as OS, /admin/* prefix — sidebar shows admin navigation"
+  },
+  "what_mixes_correctly": [
+    "AuthenticatedProviders wraps ALL authenticated routes (OS + Admin)",
+    "ShellLayout wraps both OS and Admin (sidebar navigation adapts)",
+    "ProtectedRoute enforces auth + onboarding completion for all",
+    "Admin routes are deeper shell routes — same providers, same shell"
+  ],
+  "what_stays_separate": [
+    "Public routes have NO kernel/runtime/entity context",
+    "Mobile routes bypass ShellLayout (own navigation)",
+    "Onboarding bypasses ShellLayout (ceremony experience)",
+    "Setup/boot experience is its own world (OSSetupExperience)"
+  ]
+}
