@@ -1,5 +1,415 @@
 // SITA OS — Demo Data: Admin Platform
 
+import type { ReactNode } from "react";
+import {
+  Activity,
+  AlertTriangle,
+  Ban,
+  BookOpen,
+  Bot,
+  Brain,
+  Bug,
+  CheckCircle2,
+  Clock,
+  Code,
+  Code2,
+  Database,
+  Eye,
+  FileCheck,
+  FileJson,
+  FileText,
+  Fingerprint,
+  Gauge,
+  GitBranch,
+  Heart,
+  KeyRound,
+  Layers,
+  Link,
+  Lock,
+  Mail,
+  MessageSquare,
+  Monitor,
+  Palette,
+  Plug,
+  Rocket,
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+  Smartphone,
+  Sparkles,
+  Target,
+  TestTube,
+  TrendingUp,
+  User,
+  Users,
+  Watch,
+  Wrench,
+  XCircle,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
+
+type ExportMode = "json" | "markdown" | "approval" | "pr-ready" | "investor";
+type AutonomyLevel = "observe_only" | "draft_only" | "safe_auto_heal" | "approval_required" | "never_automate";
+type RingStatus = "deployed" | "canary" | "staging" | "blocked" | "pending";
+type GateStatus = "passed" | "failed" | "pending" | "skipped" | "blocked";
+type PlanTier = "Starter" | "Professional" | "Business";
+type ComputeModelTier = "utility" | "standard" | "premium" | "exceptional";
+type CostClass = "A" | "B" | "C" | "D";
+type ProviderDomain = "boardroom" | "investment" | "money" | "business" | "workspace" | "owner" | "calendar" | "advisor";
+type IntelligenceAssetType =
+  | "root-cause-analysis"
+  | "investment-thesis"
+  | "automation-playbook"
+  | "website-diagnostic"
+  | "issue-fingerprint"
+  | "strategic-summary"
+  | "decision-frame"
+  | "pattern";
+type OutcomeType =
+  | "incident-prevented"
+  | "bug-resolved"
+  | "lead-recovered"
+  | "self-heal-success"
+  | "release-approved"
+  | "strategic-recommendation-accepted"
+  | "automation-completed"
+  | "customer-retained";
+type DomainId =
+  | "admin-ops"
+  | "engineering"
+  | "revenue-business"
+  | "digital-presence"
+  | "investment-finance"
+  | "concierge-household"
+  | "connectors-integrations"
+  | "launch-deployment"
+  | "compliance-trust";
+type HealthStatus = "healthy" | "warning" | "degraded" | "critical";
+type DomainMigrationStatus = "real" | "demo_provider" | "mock_direct" | "mixed" | "blocked";
+type LaunchMode = "not_launch_safe" | "internal_only" | "pilot_ready" | "private_beta_ready" | "public_launch_qualified" | "public_launch_ready";
+
+interface AgentBoundary {
+  agent: string;
+  icon: LucideIcon;
+  autonomy: AutonomyLevel;
+  scope: string;
+  lastOverride?: string;
+}
+
+interface MissionBoundary {
+  missionType: string;
+  defaultAutonomy: AutonomyLevel;
+  overridable: boolean;
+  rationale: string;
+}
+
+interface ChangeTypeBoundary {
+  changeType: string;
+  maxAutonomy: AutonomyLevel;
+  requiresSimulation: boolean;
+  requiresCanary: boolean;
+  rationale: string;
+}
+
+interface DeploymentRing {
+  name: string;
+  status: RingStatus;
+  version: string;
+  deployedAt?: string;
+  health: number;
+  instances: number;
+  errorRate: number;
+}
+
+interface PromotionGate {
+  name: string;
+  status: GateStatus;
+  description: string;
+  evidence?: string;
+  checkedAt?: string;
+  blocker?: boolean;
+}
+
+interface ReadModel {
+  id: string;
+  name: string;
+  source: string;
+  freshness: string;
+  lagMs: number;
+  lastRebuilt: string;
+  affectedSurfaces: string[];
+  eventToProjectionDelay: number;
+  rebuildSuccess: boolean;
+}
+
+interface TruthClaim {
+  id: string;
+  capability: string;
+  claimedStatus: string;
+  runtimeEvidence: string;
+  status: "verified" | "drift" | "unverified" | "stale";
+  severity: "low" | "medium" | "high";
+  lastChecked: string;
+  remediation?: string;
+}
+
+interface Alert {
+  id: string;
+  title: string;
+  severity: "critical" | "high" | "medium" | "low";
+  status: "active" | "acknowledged" | "suppressed" | "resolved";
+  source: string;
+  cluster?: string;
+  timeToBreachMin?: number;
+  runbookId?: string;
+  assignee?: string;
+  createdAt: string;
+  likelyImpact: string;
+}
+
+interface VerificationCheck {
+  label: string;
+  check: (data: {
+    registry: Record<string, any>[];
+    accounts: Record<string, any>[];
+    tokens: Record<string, any>[];
+    receipts: Record<string, any>[];
+    oauthConfig: Record<string, any> | null;
+  }) => boolean;
+}
+
+interface BudgetEnvelope {
+  scopeType: "tenant" | "workspace" | "agent" | "mission" | "domain" | "environment";
+  scopeRef: string;
+  tenantId: string;
+  label: string;
+  budgetCents: number;
+  deepReasoningMinutesCap: number;
+}
+
+const createEnvelope = (
+  scopeType: BudgetEnvelope["scopeType"],
+  scopeRef: string,
+  tenantId: string,
+  label: string,
+  budgetCents: number,
+  deepReasoningMinutesCap: number,
+): BudgetEnvelope => ({
+  scopeType,
+  scopeRef,
+  tenantId,
+  label,
+  budgetCents,
+  deepReasoningMinutesCap,
+});
+
+interface ConciergeTask {
+  id: string;
+  title: string;
+  domain: string;
+  state: string;
+  assignee: string;
+  lastUpdated: string;
+  continuityBroken: boolean;
+  receiptRef?: string;
+}
+
+interface ConnectorStatus {
+  id: string;
+  name: string;
+  type: string;
+  status: "healthy" | "degraded" | "stale" | "disconnected";
+  lastSyncAt: string;
+  staleness: string;
+  errorRate: number;
+  syncCount24h: number;
+  credentialStatus: string;
+  credentialExpiresIn?: string;
+  affectedDomains: string[];
+  latencyMs: number;
+  dataFreshness: string;
+}
+
+interface ServiceMigration {
+  name: string;
+  currentBacking: string;
+  targetBacking: string;
+  phase: string;
+  blockers: string[];
+  continuityGain: string;
+  tables: string[];
+}
+
+interface DomainReality {
+  domain: string;
+  overallReadiness: number;
+  features: Array<{
+    feature: string;
+    readPath: string;
+    writePath: string;
+    emptyState: boolean;
+    loadingState: boolean;
+    errorState: boolean;
+    tables: string[];
+  }>;
+}
+
+interface UseCase {
+  id: string;
+  title: string;
+  description: string;
+  connectors: Array<{ name: string; status: string }>;
+  workflows: string[];
+  riskLevel: "low" | "medium" | "high";
+  readiness: number;
+}
+
+interface EfficiencyScore {
+  entityType: "agent" | "workflow" | "advisor" | "reasoning-path";
+}
+
+interface ProofEntry {
+  id: string;
+  action: string;
+  actor: string;
+  timestamp: string;
+  proofChain: Array<{ step: string; status: string }>;
+  rollbackEvidence: boolean;
+  approvalContext: boolean;
+  exportable: boolean;
+}
+
+interface LaunchBlocker {
+  id: string;
+  title: string;
+  severity: "critical" | "high" | "medium" | "low";
+  status: "open" | "in-progress" | "resolved" | "accepted-risk";
+  domain: string;
+  owner: string;
+  description: string;
+  evidenceMissing?: string[];
+  unblockSteps?: string[];
+  ringImpact: string[];
+  createdAt: string;
+}
+
+interface ReadinessCheck {
+  category: string;
+  checks: Array<{ name: string; status: "pass" | "fail" | "warning" | "skip"; detail: string }>;
+}
+
+interface DomainMigration {
+  domain: string;
+  status: DomainMigrationStatus;
+  totalPages: number;
+  migratedPages: number;
+  realProviderReady: boolean;
+  demoProviderReady: boolean;
+  tablesExist: boolean;
+  blockers: string[];
+  priority: "critical" | "high" | "medium" | "low";
+}
+
+interface ServiceStatus {
+  name: string;
+  icon: ReactNode;
+  adapter: string;
+  table: string;
+  wired: boolean;
+  description: string;
+}
+
+interface PolicyDraft {
+  id: string;
+  name: string;
+  description: string;
+  rule: string;
+  status: "draft" | "simulated" | "active";
+  affectedSystems: string[];
+  affectedUsers: number;
+  riskLevel: "low" | "medium" | "high";
+  approvalPath: string[];
+  createdAt: string;
+}
+
+interface ProofRecord {
+  id: string;
+  type: string;
+  action: string;
+  actor: string;
+  timestamp: string;
+  verified: boolean;
+  receiptId?: string;
+  evidenceCount: number;
+  chain: string[];
+  domain: string;
+  finality: string;
+  rollbackEligible: boolean;
+}
+
+interface RouteSource {
+  path: string;
+  pageName: string;
+  domain: string;
+  activeProvider: string;
+  dataServices: string[];
+  mockImports: string[];
+  scenarioBinding: string | null;
+  launchHonesty: string;
+  notes: string;
+}
+
+interface ShadowPattern {
+  pattern: string;
+  severity: "high" | "medium" | "low";
+  domain: string;
+  description: string;
+  recommendation: string;
+}
+
+interface PostureItem {
+  domain: string;
+  encryption: string;
+  rlsEnabled: boolean;
+  secretsIntegrity: string;
+  sensitiveData: boolean;
+  lastVerified: string;
+  gaps: string[];
+}
+
+interface CoreService {
+  name: string;
+  backing: string;
+  domains: string[];
+  persistenceTarget: string;
+  stateLossSeverity: string;
+  migrationStatus: string;
+  owner: string;
+}
+
+interface WorkflowRun {
+  id: string;
+  workflowName: string;
+  status: string;
+  startedAt: string;
+  completedAt?: string;
+  actor: string;
+  receiptId?: string;
+  rollbackRef?: string;
+  branchPath: string;
+  steps: Array<{
+    name: string;
+    status: string;
+    type: string;
+    timestamp: string;
+    actor?: string;
+    duration?: string;
+    output?: string;
+    receiptRef?: string;
+  }>;
+}
+
 export const DEMO_DEBATES = [
   {
     id: 1, topic: "How to fix projection cache corruption",
