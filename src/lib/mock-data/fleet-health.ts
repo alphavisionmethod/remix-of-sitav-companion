@@ -17,6 +17,6 @@ export const DEMO_FLEET_SERVICES: Array<{
   { id: "fleet-orchestrator", name: "Fleet Orchestrator", deps: ["auth-service"], passed: true, metrics: { uptimePercent: 99.99, avgLatencyMs: 8, p99LatencyMs: 25, errorRate: 0, requestsPerMinute: 500 } },
   { id: "ai-gateway", name: "AI Gateway", deps: ["auth-service", "advisor-engine"], passed: true, metrics: { uptimePercent: 99.6, avgLatencyMs: 450, p99LatencyMs: 2100, errorRate: 1.8, requestsPerMinute: 40 } },
   { id: "trust-governor", name: "Trust Governor", deps: ["canonical-chain"], passed: true, metrics: { uptimePercent: 100, avgLatencyMs: 12, p99LatencyMs: 35, errorRate: 0, requestsPerMinute: 200 } },
-] as const;
+];
 
 export type DemoFleetService = (typeof DEMO_FLEET_SERVICES)[number];
