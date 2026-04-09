@@ -18,6 +18,7 @@ Deno.test("brain-core: handles CORS preflight", async () => {
     method: "OPTIONS",
     headers: { "Origin": "http://localhost:3000" },
   });
+  await res.text(); // consume body to avoid resource leak
   assertEquals(res.status, 200);
   assertExists(res.headers.get("access-control-allow-origin"));
 });
