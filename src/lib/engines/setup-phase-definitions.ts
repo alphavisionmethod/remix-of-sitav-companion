@@ -176,6 +176,13 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     statusUX: defaultStatusUX("Quick Identity"),
   },
   {
+    id: "operating-context", title: "Operating Context", description: "Understand your current life stage and operating reality",
+    dependencies: ["quick-identity"], blocking: false, required: false,
+    backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 10.5, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Operating Context"),
+  },
+  {
     id: "want-less-of", title: "Want Less Of", description: "Select what you want less of in life",
     dependencies: ["quick-identity"], blocking: false, required: false,
     backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],

@@ -7,7 +7,8 @@
 export type SetupPhaseId =
   | "boot" | "secure-foundation" | "language-region" | "network-setup" | "device-readiness" | "device-ownership"
   | "account-environment" | "restore-preview" | "setup-style" | "access-protection" | "recover-first"
-  | "privacy-transparency" | "memory-consent" | "quick-identity" | "want-less-of" | "protect-most" | "deep-world-modeling" | "household-graph"
+  | "privacy-transparency" | "memory-consent" | "quick-identity" | "operating-context" | "want-less-of" | "protect-most" | "deep-world-modeling" | "household-graph"
+  | "relationship-sensitivity"
   | "life-rhythm" | "stress-slippage" | "communications-context" | "planning-style"
   | "explanation-style" | "presence-style" | "interruption-style" | "rituals" | "home-composition" | "desktop-preview"
   | "primary-use-mode" | "trust-calibration" | "advisor-activation"
