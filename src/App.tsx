@@ -189,6 +189,11 @@ const MigrationWavePlanner = lazy(() => import("./pages/admin/MigrationWavePlann
 const RealityProgressTimeline = lazy(() => import("./pages/admin/RealityProgressTimeline"));
 const RuntimeRealityValidation = lazy(() => import("./pages/admin/RuntimeRealityValidation"));
 const PersonalBrain = lazy(() => import("./pages/PersonalBrain"));
+const PersonalLifeWorkspace = lazy(() => import("./pages/PersonalLifeWorkspace"));
+const DownloadsCenter = lazy(() => import("./pages/DownloadsCenter"));
+const StorageManager = lazy(() => import("./pages/StorageManager"));
+const NetworkUtility = lazy(() => import("./pages/NetworkUtility"));
+const PlanningCanvas = lazy(() => import("./pages/PlanningCanvas"));
 
 // ── AI Engineering Board ──
 const AIEngineeringBoard = lazy(() => import("./pages/admin/AIEngineeringBoard"));

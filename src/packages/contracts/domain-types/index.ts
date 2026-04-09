@@ -27,3 +27,6 @@ export * from "./capital-allocation";
 export * from "./self-learning";
 export * from "./file-ingestion";
 export * from "./revenue-autopilot";
+export * from "./release-record";
+export * from "./admin-route-truth";
+export * from "./vmware-evidence";
