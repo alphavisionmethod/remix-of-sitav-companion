@@ -234,7 +234,7 @@ export async function refreshToken(): Promise<PushTokenRecord | null> {
 
 export function isPushSupported(): boolean {
   if (typeof window === "undefined") return false;
-  if ((window as any)?.Capacitor?.isNativePlatform?.()) return true;
+  if (window.Capacitor?.isNativePlatform?.()) return true;
   if (('electron' in window)) return true;
   return "serviceWorker" in navigator && "PushManager" in window;
 }
