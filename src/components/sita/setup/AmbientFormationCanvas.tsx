@@ -15,15 +15,20 @@ interface AmbientFormationCanvasProps {
   secondaryHue?: string;
   /** Emotional phase metadata — when provided, overrides primaryHue/secondaryHue */
   emotionalPhase?: EmotionalPhaseMetadata;
+  /** Performance tier — disables canvas on "low" */
+  performanceTier?: "low" | "medium" | "high";
 }
 
 export function AmbientFormationCanvas({
   primaryHue: legacyPrimary,
   secondaryHue: legacySecondary,
   emotionalPhase,
+  performanceTier = "high",
 }: AmbientFormationCanvasProps) {
   const reduced = useReducedMotion();
 
+  // Skip rendering on low performance tier
+  if (reduced || performanceTier === "low") return null;
   const { primary, secondary, tertiaryOpacity } = useMemo(() => {
     if (!emotionalPhase) {
       return {
@@ -44,8 +49,10 @@ export function AmbientFormationCanvas({
       tertiaryOpacity: energy > 0.6 ? energy * 0.02 : 0,
     };
   }, [emotionalPhase, legacyPrimary, legacySecondary]);
-
-  if (reduced) return null;
+  // Medium tier: reduce blur radius
+  const blurPrimary = performanceTier === "medium" ? "blur-[80px]" : "blur-[120px]";
+  const blurSecondary = performanceTier === "medium" ? "blur-[60px]" : "blur-[100px]";
+  const blurTertiary = performanceTier === "medium" ? "blur-[100px]" : "blur-[140px]";
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
