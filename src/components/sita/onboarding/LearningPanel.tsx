@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Shield, Sparkles, BarChart3, Home, Activity, MessageCircle } from "lucide-react";
+import { Brain, Shield, Sparkles, BarChart3, Home, Activity, MessageCircle, Compass, Clock, Gauge, Layout, Radio } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMemo } from "react";
 import { generateReflections, type ReflectionInput } from "@/lib/setup/reflection-copy";
@@ -15,27 +15,68 @@ interface SetupSnapshot {
   presenceStyle?: string;
   rituals?: string[];
   homeComposition?: string;
+  // Enhanced fields
+  operatingContext?: string;
+  supportNeedPrimary?: string;
+  lifeRhythm?: { weeklyStructure?: string; planningPreference?: string };
+  stressMap?: { heavierThanShould?: string[]; affectedFirst?: string[] };
+  commsContext?: { stressLevel?: string; summaryPreference?: string };
+  planningStyle?: { viewPreference?: string; focusPreference?: string };
+  desktopDensity?: string;
 }
 
 interface LearningPanelProps {
   state: SetupSnapshot;
 }
 
+const CONTEXT_LABELS: Record<string, string> = {
+  "getting-control": "Getting in control",
+  "managing-many": "Managing many moving parts",
+  "rebuilding": "Rebuilding structure",
+  "growing": "Growing / scaling",
+  "maintaining": "Maintaining what works",
+  "transition": "In transition",
+  "mixed": "Mixed season",
+};
+
+const DENSITY_LABELS: Record<string, string> = {
+  calm: "Calm & minimal",
+  balanced: "Balanced",
+  dense: "Dense command center",
+};
+
 export function LearningPanel({ state }: LearningPanelProps) {
   const insights = useMemo(() => {
     const items: { icon: typeof Brain; label: string; value: string }[] = [];
 
     // Active advisors
-    const advisorCount = state.enabledDomains.length + 1; // +1 for core advisor
+    const advisorCount = state.enabledDomains.length + 1;
     items.push({ icon: Brain, label: "Active Advisors", value: `${advisorCount} advisor${advisorCount !== 1 ? "s" : ""}` });
 
     // Trust mode
     const trustLabels: Record<string, string> = { open: "Open — Act freely", balanced: "Balanced — Ask first", guarded: "Guarded — Full control" };
     items.push({ icon: Shield, label: "Trust Mode", value: trustLabels[state.trustLevel] || "Not set" });
 
+    // Operating context
+    if (state.operatingContext && CONTEXT_LABELS[state.operatingContext]) {
+      items.push({ icon: Compass, label: "Current Season", value: CONTEXT_LABELS[state.operatingContext] });
+    }
+
     // Detected priorities
     if (state.painPoints && state.painPoints.length > 0) {
       items.push({ icon: Activity, label: "Detected Priorities", value: state.painPoints.slice(0, 2).join(", ") });
+    }
+
+    // Stress load
+    if (state.stressMap?.heavierThanShould && state.stressMap.heavierThanShould.length > 0) {
+      const count = state.stressMap.heavierThanShould.length;
+      items.push({ icon: Gauge, label: "Stress Load", value: `${count} pressure area${count !== 1 ? "s" : ""} detected` });
+    }
+
+    // Life rhythm
+    if (state.lifeRhythm?.planningPreference) {
+      const rhythmLabels: Record<string, string> = { daily: "Day-by-day", weekly: "Week-at-a-glance", monthly: "Monthly cadence", "long-term": "Long-term view" };
+      items.push({ icon: Clock, label: "Planning Rhythm", value: rhythmLabels[state.lifeRhythm.planningPreference] || state.lifeRhythm.planningPreference });
     }
 
     // Likely workflows
@@ -47,14 +88,30 @@ export function LearningPanel({ state }: LearningPanelProps) {
       items.push({ icon: Sparkles, label: "Likely First Workflows", value: workflows.join(", ") });
     }
 
+    // Planning style
+    if (state.planningStyle?.viewPreference) {
+      items.push({ icon: Layout, label: "View Style", value: `${state.planningStyle.viewPreference} · ${state.planningStyle.focusPreference || "default"}` });
+    }
+
+    // Communications
+    if (state.commsContext?.stressLevel) {
+      const commsLabels: Record<string, string> = { low: "Low comm stress", moderate: "Moderate comm load", high: "High comm pressure" };
+      items.push({ icon: Radio, label: "Comms Load", value: commsLabels[state.commsContext.stressLevel] || state.commsContext.stressLevel });
+    }
+
     // Desktop shape
     if (state.homeComposition) {
       const shapes: Record<string, string> = { calm: "Calm dashboard", business: "Business-first", family: "Family-first", money: "Money-first", command: "Full command center" };
       items.push({ icon: Home, label: "Desktop Shape", value: shapes[state.homeComposition] || state.homeComposition });
     }
 
+    // Desktop density
+    if (state.desktopDensity && DENSITY_LABELS[state.desktopDensity]) {
+      items.push({ icon: Gauge, label: "Desktop Density", value: DENSITY_LABELS[state.desktopDensity] });
+    }
+
     // Rituals
-    if (state.rituals.length > 0) {
+    if (state.rituals && state.rituals.length > 0) {
       items.push({ icon: BarChart3, label: "Rhythm", value: `${state.rituals.length} ritual${state.rituals.length !== 1 ? "s" : ""} active` });
     }
 
@@ -73,7 +130,7 @@ export function LearningPanel({ state }: LearningPanelProps) {
     return generateReflections(input).slice(0, 2);
   }, [state]);
 
-  // Domain confidence (Req #1)
+  // Domain confidence
   const domainConfidence = useMemo(() => {
     const domains = state.enabledDomains;
     return domains.map(d => {
@@ -115,7 +172,7 @@ export function LearningPanel({ state }: LearningPanelProps) {
         ))}
       </AnimatePresence>
 
-      {/* Domain confidence badges (Req #1) */}
+      {/* Domain confidence badges */}
       {domainConfidence.length > 0 && (
         <div className="border-t border-border/50 pt-3 space-y-1.5">
           <p className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">Domain Confidence</p>
@@ -132,7 +189,7 @@ export function LearningPanel({ state }: LearningPanelProps) {
         </div>
       )}
 
-      {/* Reflection copy — what SITA understands */}
+      {/* Reflection copy */}
       {reflections.length > 0 && (
         <div className="border-t border-border/50 pt-3 space-y-2">
           <div className="flex items-center gap-1.5">

@@ -86,7 +86,11 @@ export const PlanningStyleStep = ({ data, onUpdate, onNext, onPrev }: Props) => 
       )}
     </div>
 
-    <div className="flex items-center justify-between mt-6">
+    <p className="text-[10px] text-muted-foreground text-center mt-4">
+      You can refine planning style anytime in Settings.
+    </p>
+
+    <div className="flex items-center justify-between mt-4">
       <button onClick={onPrev} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
         <ArrowLeft className="h-3 w-3" /> Back
       </button>

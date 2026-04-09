@@ -274,6 +274,11 @@ export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCa
             )}
           </AnimatePresence>
 
+          {/* Refine later */}
+          <p className="text-[10px] text-muted-foreground text-center">
+            You can refine trust and autonomy anytime in Settings → Trust & Governance.
+          </p>
+
           {/* Navigation */}
           <StageTransitionController
             onPrev={onPrev}
