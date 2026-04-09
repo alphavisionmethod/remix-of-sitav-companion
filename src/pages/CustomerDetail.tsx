@@ -13,7 +13,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 // Mock customer data keyed by ID
-const customersData: Record<string, {
+const DEMO_CUSTOMERS_DATA: Record<string, {
   name: string; initials: string; email: string; phone: string; company?: string; location: string; website?: string;
   since: string; trust: "verified" | "review" | "degraded"; health: number; healthLabel: string; healthTrend: "up" | "down" | "flat";
   totalRevenue: string; invoicesPaid: number; invoicesTotal: number; outstanding: string; avgPayDays: number;
@@ -69,7 +69,7 @@ const CustomerDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [tab, setTab] = useState("overview");
-  const customer = customersData[id || "marcus-johnson"] || customersData["marcus-johnson"];
+  const customer = DEMO_CUSTOMERS_DATA[id || "marcus-johnson"] || DEMO_CUSTOMERS_DATA["marcus-johnson"];
 
   const healthColor = customer.health >= 80 ? "text-trust-verified" : customer.health >= 50 ? "text-trust-review" : "text-urgency-high";
   const healthBg = customer.health >= 80 ? "bg-trust-verified" : customer.health >= 50 ? "bg-trust-review" : "bg-urgency-high";

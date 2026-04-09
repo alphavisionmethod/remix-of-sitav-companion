@@ -11,7 +11,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const mockPatterns = [
+const DEMO_PATTERNS = [
   { id: "p-1", type: "issue_fingerprint", domain: "engineering", label: "API timeout cascade after deploy", confidence: 94, falsePositive: 2, sourceCount: 42, privacy: "anonymizable", reusable: true, description: "Cascading timeout pattern detected post-deployment in microservice mesh" },
   { id: "p-2", type: "workflow_pattern", domain: "revenue-business", label: "Lead cold after 48hr no follow-up", confidence: 88, falsePositive: 5, sourceCount: 67, privacy: "anonymizable", reusable: true, description: "Leads consistently going cold without 48hr follow-up touch" },
   { id: "p-3", type: "deployment_pattern", domain: "engineering", label: "Migration timeout on large tables", confidence: 91, falsePositive: 3, sourceCount: 23, privacy: "anonymizable", reusable: true, description: "DB migrations exceeding timeout threshold on tables > 1M rows" },
@@ -32,9 +32,9 @@ const PatternLearningCenter = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const totalPatterns = mockPatterns.length;
-  const reusableCount = mockPatterns.filter(p => p.reusable).length;
-  const avgConfidence = Math.round(mockPatterns.reduce((s, p) => s + p.confidence, 0) / totalPatterns);
+  const totalPatterns = DEMO_PATTERNS.length;
+  const reusableCount = DEMO_PATTERNS.filter(p => p.reusable).length;
+  const avgConfidence = Math.round(DEMO_PATTERNS.reduce((s, p) => s + p.confidence, 0) / totalPatterns);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -50,7 +50,7 @@ const PatternLearningCenter = () => {
           { label: "Total Patterns", value: String(totalPatterns) },
           { label: "Cross-Tenant Reusable", value: String(reusableCount), color: "text-emerald-400" },
           { label: "Avg Confidence", value: `${avgConfidence}%` },
-          { label: "Privacy Restricted", value: String(mockPatterns.filter(p => p.privacy === "tenant_private").length), color: "text-rose-400" },
+          { label: "Privacy Restricted", value: String(DEMO_PATTERNS.filter(p => p.privacy === "tenant_private").length), color: "text-rose-400" },
         ].map(m => (
           <Card key={m.label} className="bg-card/80 border-border/50">
             <CardContent className="p-3 text-center">
@@ -79,7 +79,7 @@ const PatternLearningCenter = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockPatterns.sort((a, b) => b.confidence - a.confidence).map(p => {
+              {DEMO_PATTERNS.sort((a, b) => b.confidence - a.confidence).map(p => {
                 const PrivIcon = privacyBadges[p.privacy]?.icon || Shield;
                 const privColor = privacyBadges[p.privacy]?.color || "text-muted-foreground";
                 return (
@@ -113,7 +113,7 @@ const PatternLearningCenter = () => {
 
       {/* Pattern Details Grid */}
       <div className="grid md:grid-cols-2 gap-4">
-        {mockPatterns.slice(0, 4).map(p => (
+        {DEMO_PATTERNS.slice(0, 4).map(p => (
           <Card key={p.id} className="bg-card/80 border-border/50">
             <CardContent className="p-4 space-y-3">
               <div className="flex items-center justify-between">

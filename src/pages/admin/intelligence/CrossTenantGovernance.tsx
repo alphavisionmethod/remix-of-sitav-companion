@@ -10,7 +10,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const mockPatterns = [
+const DEMO_PATTERNS = [
   { id: "ct-1", label: "API timeout cascade after deploy", type: "issue_fingerprint", domain: "engineering", confidence: 94, tenants: 18, anonymization: "k_anonymity", approved: true, restrictions: ["confidence_gated"], privacyGates: ["no_pii", "min_source_count", "min_confidence"] },
   { id: "ct-2", label: "Lead cold after 48hr no follow-up", type: "workflow_pattern", domain: "revenue-business", confidence: 88, tenants: 31, anonymization: "aggregation", approved: true, restrictions: ["confidence_gated"], privacyGates: ["no_pii", "min_source_count"] },
   { id: "ct-3", label: "Migration timeout on large tables", type: "deployment_pattern", domain: "engineering", confidence: 91, tenants: 12, anonymization: "k_anonymity", approved: true, restrictions: ["enterprise_opt_out"], privacyGates: ["no_pii", "min_source_count", "min_confidence", "low_false_positive"] },
@@ -20,16 +20,16 @@ const mockPatterns = [
   { id: "ct-7", label: "Env var drift staging/prod", type: "config_drift", domain: "engineering", confidence: 85, tenants: 0, anonymization: "redaction", approved: false, restrictions: ["tenant_private", "enterprise_opt_out"], privacyGates: [] },
 ];
 
-const restrictedDomains = ["investment-finance", "concierge-household"];
-const enterpriseExclusions = ["Acme Corp (custom policy)", "FinanceHQ (regulatory)"];
+const DEMO_RESTRICTED_DOMAINS = ["investment-finance", "concierge-household"];
+const DEMO_ENTERPRISE_EXCLUSIONS = ["Acme Corp (custom policy)", "FinanceHQ (regulatory)"];
 
 const CrossTenantGovernance = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const approved = mockPatterns.filter(p => p.approved).length;
-  const pending = mockPatterns.filter(p => !p.approved && p.tenants > 0).length;
-  const blocked = mockPatterns.filter(p => p.tenants === 0).length;
+  const approved = DEMO_PATTERNS.filter(p => p.approved).length;
+  const pending = DEMO_PATTERNS.filter(p => !p.approved && p.tenants > 0).length;
+  const blocked = DEMO_PATTERNS.filter(p => p.tenants === 0).length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -42,7 +42,7 @@ const CrossTenantGovernance = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Total Patterns", value: String(mockPatterns.length) },
+          { label: "Total Patterns", value: String(DEMO_PATTERNS.length) },
           { label: "Approved", value: String(approved), color: "text-emerald-400" },
           { label: "Pending Review", value: String(pending), color: "text-amber-400" },
           { label: "Blocked (Private)", value: String(blocked), color: "text-rose-400" },
@@ -75,7 +75,7 @@ const CrossTenantGovernance = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockPatterns.map(p => (
+              {DEMO_PATTERNS.map(p => (
                 <TableRow key={p.id}>
                   <TableCell className="text-xs font-medium text-foreground max-w-[200px] truncate">{p.label}</TableCell>
                   <TableCell><Badge variant="outline" className="text-[9px]">{p.type.replace(/_/g, " ")}</Badge></TableCell>
@@ -105,14 +105,14 @@ const CrossTenantGovernance = () => {
             <div className="p-3 rounded-lg bg-secondary/20 space-y-2">
               <p className="text-xs font-medium text-foreground">Restricted Domains</p>
               <div className="flex flex-wrap gap-2">
-                {restrictedDomains.map(d => <Badge key={d} variant="destructive" className="text-[9px]">{d}</Badge>)}
+                {DEMO_RESTRICTED_DOMAINS.map(d => <Badge key={d} variant="destructive" className="text-[9px]">{d}</Badge>)}
               </div>
               <p className="text-[10px] text-muted-foreground">These domains never participate in cross-tenant generalization</p>
             </div>
             <div className="p-3 rounded-lg bg-secondary/20 space-y-2">
               <p className="text-xs font-medium text-foreground">Enterprise Exclusions</p>
               <div className="flex flex-wrap gap-2">
-                {enterpriseExclusions.map(e => <Badge key={e} variant="outline" className="text-[9px]">{e}</Badge>)}
+                {DEMO_ENTERPRISE_EXCLUSIONS.map(e => <Badge key={e} variant="outline" className="text-[9px]">{e}</Badge>)}
               </div>
               <p className="text-[10px] text-muted-foreground">Opted out of cross-tenant learning by policy</p>
             </div>
@@ -133,7 +133,7 @@ const CrossTenantGovernance = () => {
         <Card className="bg-card/80 border-border/50">
           <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Eye className="h-4 w-4 text-blue-400" /> Pattern Eligibility Summary</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {mockPatterns.map(p => (
+            {DEMO_PATTERNS.map(p => (
               <div key={p.id} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                 <div className="min-w-0 flex-1">
                   <p className="text-xs font-medium text-foreground truncate">{p.label}</p>

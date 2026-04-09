@@ -25,27 +25,27 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Mock Data ───────────────────────────────────────────────
 
-const mockTenantSpend = [
+const DEMO_TENANT_SPEND = [
   { tenantId: "t-1", name: "Acme Corp", plan: "Business" as PlanTier, spend: 12400, budget: 15000, margin: 68, cacheHit: 0.72, anomalies: 0, deepUsed: 180, deepCap: 300 },
   { tenantId: "t-2", name: "Household Smith", plan: "Professional" as PlanTier, spend: 2100, budget: 3000, margin: 74, cacheHit: 0.65, anomalies: 1, deepUsed: 40, deepCap: 120 },
   { tenantId: "t-3", name: "Solo User", plan: "Starter" as PlanTier, spend: 380, budget: 500, margin: 52, cacheHit: 0.45, anomalies: 0, deepUsed: 8, deepCap: 30 },
 ];
 
-const mockAgentSpend = [
+const DEMO_AGENT_SPEND = [
   { agentId: "finance-advisor", name: "Finance Advisor", tokens: 284000, cost: 420, calls: 1240, tier: "standard" as ComputeModelTier },
   { agentId: "monitor-agent", name: "Proactive Monitor", tokens: 890000, cost: 180, calls: 12400, tier: "utility" as ComputeModelTier },
   { agentId: "strategy-agent", name: "Strategy Synthesizer", tokens: 64000, cost: 960, calls: 32, tier: "premium" as ComputeModelTier },
   { agentId: "self-heal", name: "Self-Healing Agent", tokens: 120000, cost: 95, calls: 340, tier: "utility" as ComputeModelTier },
 ];
 
-const mockAnomalies = [
+const DEMO_ANOMALIES = [
   { id: "a1", type: "retry-storm", severity: "warning" as const, tenant: "Household Smith", desc: "12 retries on portfolio analysis in 5min", suggested: "pause-autonomy", time: "2min ago", confidence: 92, affectedAgents: ["Finance Advisor"], estimatedWaste: 340 },
   { id: "a2", type: "low-cache-efficiency", severity: "info" as const, tenant: "Solo User", desc: "Cache hit rate only 12% — optimization available", suggested: "digest-mode", time: "15min ago", confidence: 78, affectedAgents: ["Monitor"], estimatedWaste: 120 },
   { id: "a3", type: "burn-spike", severity: "critical" as const, tenant: "Acme Corp", desc: "Spend increased 340% vs daily average — runaway automation loop suspected", suggested: "pause-agent", time: "6min ago", confidence: 96, affectedAgents: ["Growth Agent"], estimatedWaste: 890 },
   { id: "a4", type: "duplicate-action", severity: "info" as const, tenant: "Acme Corp", desc: "Same SEO audit requested 4 times — dedup suggested", suggested: "dedup-merge", time: "42min ago", confidence: 85, affectedAgents: ["Content Advisor"], estimatedWaste: 200 },
 ];
 
-const mockBudgets: BudgetEnvelope[] = [
+const DEMO_BUDGETS: BudgetEnvelope[] = [
   { ...createEnvelope("tenant", "t-1", "t-1", "Acme Corp — Monthly", 15000, 300), spentCents: 12400, remainingCents: 2600, deepReasoningMinutesUsed: 180, proactiveInferenceSpentCents: 3200, retrySpentCents: 420, retriesUsed: 6, status: "approaching" },
   { ...createEnvelope("workspace", "ws-1", "t-1", "Finance Workspace", 5000, 120), spentCents: 3800, remainingCents: 1200, deepReasoningMinutesUsed: 90, status: "warning" },
   { ...createEnvelope("agent", "a-1", "t-2", "Strategy Synthesizer", 2000, 60), spentCents: 960, remainingCents: 1040, deepReasoningMinutesUsed: 28, status: "healthy" },
@@ -54,7 +54,7 @@ const mockBudgets: BudgetEnvelope[] = [
   { ...createEnvelope("environment", "e-1", "t-1", "Production Env", 12000, 250), spentCents: 8900, remainingCents: 3100, deepReasoningMinutesUsed: 160, status: "healthy" },
 ];
 
-const mockRoutingEvents = [
+const DEMO_ROUTING_EVENTS = [
   { id: "r1", taskClass: "B" as CostClass, intent: "Portfolio rebalance advice", selectedModel: "gemini-2.5-flash", selectedTier: "standard" as ComputeModelTier, confidence: 0.89, cost: 3.2, downgraded: false, cached: false, time: "1min ago" },
   { id: "r2", taskClass: "A" as CostClass, intent: "Inbox triage", selectedModel: "gemini-3-flash", selectedTier: "utility" as ComputeModelTier, confidence: 0.95, cost: 0.4, downgraded: false, cached: true, time: "2min ago" },
   { id: "r3", taskClass: "C" as CostClass, intent: "Strategic tax optimization", selectedModel: "gemini-2.5-pro", selectedTier: "premium" as ComputeModelTier, confidence: 0.72, cost: 12.8, downgraded: false, cached: false, time: "5min ago" },
@@ -62,7 +62,7 @@ const mockRoutingEvents = [
   { id: "r5", taskClass: "D" as CostClass, intent: "Cross-domain simulation", selectedModel: "gpt-5", selectedTier: "exceptional" as ComputeModelTier, confidence: 0.91, cost: 48.0, downgraded: false, cached: false, time: "12min ago" },
 ];
 
-const mockDeepJobs = [
+const DEMO_DEEP_JOBS = [
   { id: "dj1", type: "explicit-deep", title: "Q2 Tax Strategy Deep Analysis", status: "running", costClass: "C" as CostClass, estimatedCost: 1200, elapsedMin: 8, approval: "auto-approved", tenant: "Acme Corp", quality: null },
   { id: "dj2", type: "strategic-review", title: "Churn Prediction Multi-Advisor Synthesis", status: "queued", costClass: "D" as CostClass, estimatedCost: 3400, elapsedMin: 0, approval: "awaiting", tenant: "Acme Corp", quality: null },
   { id: "dj3", type: "premium-debate", title: "Market Entry Debate", status: "completed", costClass: "C" as CostClass, estimatedCost: 1800, elapsedMin: 22, approval: "approved", tenant: "Household Smith", quality: 87 },
@@ -101,7 +101,7 @@ const ComputeGovernanceBoard = () => {
     },
   });
 
-  const forecasts = mockBudgets.filter(b => b.scope === "tenant").map(b => forecastSpend(b, 18, 30));
+  const forecasts = DEMO_BUDGETS.filter(b => b.scope === "tenant").map(b => forecastSpend(b, 18, 30));
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -143,7 +143,7 @@ const ComputeGovernanceBoard = () => {
             <MetricCard icon={DollarSign} label="Total AI Spend" value="$149.00" sub="this month" trend="down" />
             <MetricCard icon={BarChart3} label="Gross Margin" value="67%" sub="across all tenants" trend="up" />
             <MetricCard icon={RefreshCw} label="Cache Hit Rate" value="64%" sub="tokens saved: 1.2M" trend="up" />
-            <MetricCard icon={AlertTriangle} label="Active Anomalies" value={String(mockAnomalies.length)} sub={`${mockAnomalies.filter(a => a.severity === "critical").length} critical`} trend="neutral" />
+            <MetricCard icon={AlertTriangle} label="Active Anomalies" value={String(DEMO_ANOMALIES.length)} sub={`${DEMO_ANOMALIES.filter(a => a.severity === "critical").length} critical`} trend="neutral" />
             <MetricCard icon={Wallet} label="Budget Pressure" value="2/6" sub="envelopes approaching" trend="up" />
             <MetricCard icon={Sparkles} label="Deep Reasoning" value="320min" sub="of 490min used" trend="neutral" />
           </div>
@@ -192,7 +192,7 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Spend by Agent</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {mockAgentSpend.sort((a, b) => b.cost - a.cost).map(a => (
+                {DEMO_AGENT_SPEND.sort((a, b) => b.cost - a.cost).map(a => (
                   <div key={a.agentId} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                     <div className="flex items-center gap-2">
                       <Badge className={tierColors[a.tier]} variant="secondary">{a.tier[0].toUpperCase()}</Badge>
@@ -210,7 +210,7 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Margin Posture</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {mockTenantSpend.map(t => (
+                {DEMO_TENANT_SPEND.map(t => (
                   <div key={t.tenantId} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                     <div>
                       <p className="text-xs font-medium text-foreground">{t.name}</p>
@@ -227,7 +227,7 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Active Anomalies</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {mockAnomalies.slice(0, 3).map(a => (
+                {DEMO_ANOMALIES.slice(0, 3).map(a => (
                   <div key={a.id} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                     <div className="flex items-center gap-2">
                       <Badge variant={a.severity === "critical" ? "destructive" : a.severity === "warning" ? "destructive" : "secondary"} className="text-[9px]">{a.severity}</Badge>
@@ -325,7 +325,7 @@ const ComputeGovernanceBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockRoutingEvents.map(r => (
+                  {DEMO_ROUTING_EVENTS.map(r => (
                     <TableRow key={r.id}>
                       <TableCell><span className={`font-mono font-bold ${classColors[r.taskClass]}`}>{r.taskClass}</span></TableCell>
                       <TableCell className="text-xs max-w-[200px] truncate">{r.intent}</TableCell>
@@ -433,7 +433,7 @@ const ComputeGovernanceBoard = () => {
         <TabsContent value="budgets" className="space-y-4 mt-4">
           {/* Budget Pressure Indicators */}
           <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
-            {mockBudgets.map(env => {
+            {DEMO_BUDGETS.map(env => {
               const pct = env.allocatedCents > 0 ? Math.round((env.spentCents / env.allocatedCents) * 100) : 0;
               return (
                 <Card key={env.envelopeId} className="bg-card/80 border-border/50">
@@ -464,7 +464,7 @@ const ComputeGovernanceBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockBudgets.map(env => (
+                  {DEMO_BUDGETS.map(env => (
                     <TableRow key={env.envelopeId}>
                       <TableCell><Badge variant="outline" className="text-[10px]">{env.scope}</Badge></TableCell>
                       <TableCell className="text-xs font-medium text-foreground">{env.label}</TableCell>
@@ -658,7 +658,7 @@ const ComputeGovernanceBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockTenantSpend.map(t => {
+                  {DEMO_TENANT_SPEND.map(t => {
                     const deepPct = t.deepCap > 0 ? Math.round((t.deepUsed / t.deepCap) * 100) : 0;
                     const needsUpgrade = deepPct > 80 || t.margin < 55;
                     return (
@@ -748,7 +748,7 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Upgrade Candidates</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {mockTenantSpend.filter(t => t.margin < 60 || (t.deepUsed / t.deepCap) > 0.8).map(t => (
+                {DEMO_TENANT_SPEND.filter(t => t.margin < 60 || (t.deepUsed / t.deepCap) > 0.8).map(t => (
                   <div key={t.tenantId} className="p-2 rounded-lg bg-secondary/20 flex items-center justify-between">
                     <div>
                       <p className="text-xs font-medium text-foreground">{t.name}</p>
@@ -757,7 +757,7 @@ const ComputeGovernanceBoard = () => {
                     <Badge variant="destructive" className="text-[9px]">Recommend</Badge>
                   </div>
                 ))}
-                {mockTenantSpend.filter(t => t.margin < 60 || (t.deepUsed / t.deepCap) > 0.8).length === 0 && (
+                {DEMO_TENANT_SPEND.filter(t => t.margin < 60 || (t.deepUsed / t.deepCap) > 0.8).length === 0 && (
                   <p className="text-xs text-muted-foreground text-center py-4">No upgrade candidates at this time.</p>
                 )}
               </CardContent>
@@ -798,7 +798,7 @@ const ComputeGovernanceBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockDeepJobs.map(j => (
+                  {DEMO_DEEP_JOBS.map(j => (
                     <TableRow key={j.id}>
                       <TableCell className="text-xs font-medium text-foreground max-w-[200px] truncate">{j.title}</TableCell>
                       <TableCell><Badge variant="outline" className="text-[10px]">{j.type}</Badge></TableCell>
@@ -831,7 +831,7 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Class D Events</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {mockDeepJobs.filter(j => j.costClass === "D").map(j => (
+                {DEMO_DEEP_JOBS.filter(j => j.costClass === "D").map(j => (
                   <div key={j.id} className="p-2 rounded-lg bg-secondary/20 flex items-center justify-between">
                     <div>
                       <p className="text-xs font-medium text-foreground">{j.title}</p>
@@ -840,7 +840,7 @@ const ComputeGovernanceBoard = () => {
                     <Badge variant={j.approval === "awaiting" ? "destructive" : "secondary"} className="text-[9px]">{j.approval}</Badge>
                   </div>
                 ))}
-                {mockDeepJobs.filter(j => j.costClass === "D").length === 0 && (
+                {DEMO_DEEP_JOBS.filter(j => j.costClass === "D").length === 0 && (
                   <p className="text-xs text-muted-foreground text-center py-4">No Class D events.</p>
                 )}
               </CardContent>
@@ -890,7 +890,7 @@ const ComputeGovernanceBoard = () => {
           <Card className="bg-card/80 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm">Deep Reasoning Usage by Tenant</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {mockTenantSpend.map(t => {
+              {DEMO_TENANT_SPEND.map(t => {
                 const pct = t.deepCap > 0 ? Math.round((t.deepUsed / t.deepCap) * 100) : 0;
                 return (
                   <div key={t.tenantId} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
@@ -912,25 +912,25 @@ const ComputeGovernanceBoard = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <Card className="bg-card/80 border-border/50">
               <CardContent className="p-3 text-center">
-                <p className="text-2xl font-bold text-foreground">{mockAnomalies.length}</p>
+                <p className="text-2xl font-bold text-foreground">{DEMO_ANOMALIES.length}</p>
                 <p className="text-[10px] text-muted-foreground">Total Anomalies</p>
               </CardContent>
             </Card>
             <Card className="bg-card/80 border-border/50">
               <CardContent className="p-3 text-center">
-                <p className="text-2xl font-bold text-rose-400">{mockAnomalies.filter(a => a.severity === "critical").length}</p>
+                <p className="text-2xl font-bold text-rose-400">{DEMO_ANOMALIES.filter(a => a.severity === "critical").length}</p>
                 <p className="text-[10px] text-muted-foreground">Critical</p>
               </CardContent>
             </Card>
             <Card className="bg-card/80 border-border/50">
               <CardContent className="p-3 text-center">
-                <p className="text-2xl font-bold text-foreground">${(mockAnomalies.reduce((s, a) => s + a.estimatedWaste, 0) / 100).toFixed(2)}</p>
+                <p className="text-2xl font-bold text-foreground">${(DEMO_ANOMALIES.reduce((s, a) => s + a.estimatedWaste, 0) / 100).toFixed(2)}</p>
                 <p className="text-[10px] text-muted-foreground">Estimated Waste</p>
               </CardContent>
             </Card>
             <Card className="bg-card/80 border-border/50">
               <CardContent className="p-3 text-center">
-                <p className="text-2xl font-bold text-foreground">{Math.round(mockAnomalies.reduce((s, a) => s + a.confidence, 0) / mockAnomalies.length)}%</p>
+                <p className="text-2xl font-bold text-foreground">{Math.round(DEMO_ANOMALIES.reduce((s, a) => s + a.confidence, 0) / DEMO_ANOMALIES.length)}%</p>
                 <p className="text-[10px] text-muted-foreground">Avg Confidence</p>
               </CardContent>
             </Card>
@@ -940,7 +940,7 @@ const ComputeGovernanceBoard = () => {
           <Card className="bg-card/80 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Radar className="h-4 w-4 text-primary" /> Anomaly Radar</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {mockAnomalies.map((a, i) => (
+              {DEMO_ANOMALIES.map((a, i) => (
                 <motion.div key={a.id} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }} className="p-3 rounded-lg bg-secondary/20 space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -970,13 +970,13 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Retry Storm Detection</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {mockAnomalies.filter(a => a.type === "retry-storm").map(a => (
+                {DEMO_ANOMALIES.filter(a => a.type === "retry-storm").map(a => (
                   <div key={a.id} className="p-2 rounded-lg bg-secondary/20">
                     <p className="text-xs font-medium text-foreground">{a.desc}</p>
                     <p className="text-[10px] text-muted-foreground">{a.tenant} · {a.time}</p>
                   </div>
                 ))}
-                {mockAnomalies.filter(a => a.type === "retry-storm").length === 0 && (
+                {DEMO_ANOMALIES.filter(a => a.type === "retry-storm").length === 0 && (
                   <p className="text-xs text-muted-foreground text-center py-4">No retry storms detected.</p>
                 )}
               </CardContent>
@@ -985,7 +985,7 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Automation Loop Alerts</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {mockAnomalies.filter(a => a.type === "burn-spike" || a.type === "duplicate-action").map(a => (
+                {DEMO_ANOMALIES.filter(a => a.type === "burn-spike" || a.type === "duplicate-action").map(a => (
                   <div key={a.id} className="p-2 rounded-lg bg-secondary/20">
                     <div className="flex items-center gap-2 mb-1">
                       <Badge variant="destructive" className="text-[9px]">{a.type}</Badge>

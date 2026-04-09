@@ -26,7 +26,7 @@ interface Message {
   read: boolean;
 }
 
-const mockChats: Chat[] = [
+const DEMO_CHATS: Chat[] = [
   { id: "1", name: "Money Advisor", avatar: "💰", lastMessage: "Your portfolio is up 2.3% this week. I've prepared a summary.", time: "2m ago", unread: 1, online: true, isAdvisor: true },
   { id: "2", name: "Business Advisor", avatar: "📊", lastMessage: "The Apex Corp deal has moved to negotiation stage.", time: "15m ago", unread: 0, online: true, isAdvisor: true },
   { id: "3", name: "Concierge", avatar: "🎯", lastMessage: "Your dentist appointment is confirmed for Thursday 3pm.", time: "1h ago", unread: 0, online: true, isAdvisor: true },
@@ -34,7 +34,7 @@ const mockChats: Chat[] = [
   { id: "5", name: "System Alerts", avatar: "🔔", lastMessage: "Edge function deployed: chat-advisor v3.2", time: "5h ago", unread: 2, online: true, isAdvisor: false },
 ];
 
-const mockMessages: Message[] = [
+const DEMO_MESSAGES: Message[] = [
   { id: "1", sender: "other", text: "Good morning! I've analyzed your portfolio performance this week.", time: "9:30 AM", read: true },
   { id: "2", sender: "other", text: "Your portfolio is up 2.3%. The tech sector allocation contributed 1.8% of the gains. I've also noticed your emergency fund could use a top-up.", time: "9:30 AM", read: true },
   { id: "3", sender: "me", text: "Great, what do you recommend for the emergency fund?", time: "9:45 AM", read: true },
@@ -45,11 +45,11 @@ const mockMessages: Message[] = [
 
 export default function MessengerApp() {
   const { isDemoMode } = useDataMode();
-  const [selectedChat, setSelectedChat] = useState<Chat | null>(mockChats[0]);
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(DEMO_CHATS[0]);
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");
 
-  const filtered = mockChats.filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()));
+  const filtered = DEMO_CHATS.filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto">
@@ -110,7 +110,7 @@ export default function MessengerApp() {
                 </div>
               </div>
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                {mockMessages.map(msg => (
+                {DEMO_MESSAGES.map(msg => (
                   <div key={msg.id} className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}>
                     <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${msg.sender === "me" ? "bg-primary text-primary-foreground rounded-br-md" : "bg-muted text-foreground rounded-bl-md"}`}>
                       <p className="text-sm">{msg.text}</p>

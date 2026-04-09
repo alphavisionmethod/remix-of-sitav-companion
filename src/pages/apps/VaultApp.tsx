@@ -20,7 +20,7 @@ interface VaultEntry {
   breached: boolean;
 }
 
-const mockEntries: VaultEntry[] = [
+const DEMO_ENTRIES: VaultEntry[] = [
   { id: "1", name: "Google Workspace", username: "admin@company.com", url: "google.com", category: "login", lastUsed: "Today", strength: "strong", breached: false },
   { id: "2", name: "AWS Console", username: "devops@company.com", url: "aws.amazon.com", category: "login", lastUsed: "Yesterday", strength: "strong", breached: false },
   { id: "3", name: "Stripe Dashboard", username: "finance@company.com", url: "stripe.com", category: "login", lastUsed: "2 days ago", strength: "medium", breached: false },
@@ -39,9 +39,9 @@ export default function VaultApp() {
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
   const { toast } = useToast();
 
-  const filtered = mockEntries.filter(e => !search || e.name.toLowerCase().includes(search.toLowerCase()));
-  const breachedCount = mockEntries.filter(e => e.breached).length;
-  const weakCount = mockEntries.filter(e => e.strength === "weak").length;
+  const filtered = DEMO_ENTRIES.filter(e => !search || e.name.toLowerCase().includes(search.toLowerCase()));
+  const breachedCount = DEMO_ENTRIES.filter(e => e.breached).length;
+  const weakCount = DEMO_ENTRIES.filter(e => e.strength === "weak").length;
 
   const toggleShow = (id: string) => setShowPasswords(p => ({ ...p, [id]: !p[id] }));
   const copyToClipboard = (text: string) => {
@@ -75,8 +75,8 @@ export default function VaultApp() {
       )}
 
       <div className="grid grid-cols-3 gap-3">
-        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{mockEntries.length}</p><p className="text-[10px] text-muted-foreground">Total Entries</p></CardContent></Card>
-        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-500">{mockEntries.filter(e => e.strength === "strong").length}</p><p className="text-[10px] text-muted-foreground">Strong</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{DEMO_ENTRIES.length}</p><p className="text-[10px] text-muted-foreground">Total Entries</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-500">{DEMO_ENTRIES.filter(e => e.strength === "strong").length}</p><p className="text-[10px] text-muted-foreground">Strong</p></CardContent></Card>
         <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">256-bit</p><p className="text-[10px] text-muted-foreground">Encryption</p></CardContent></Card>
       </div>
 

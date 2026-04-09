@@ -11,7 +11,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const mockDiffs = [
+const DEMO_DIFFS = [
   { id: "dr-1", domain: "investment-finance", desc: "Portfolio state — minor price fluctuation", materiality: 22, action: "reuse-as-is", costFull: 120, costActual: 5, deltas: 2, confidence: 92, preserved: 8, invalidated: 0, changes: ["AAPL +1.2%", "Bond yield -0.05%"] },
   { id: "dr-2", domain: "engineering", desc: "Build pipeline — new dependency added", materiality: 68, action: "partial-update", costFull: 120, costActual: 35, deltas: 5, confidence: 65, preserved: 4, invalidated: 3, changes: ["New dep: @supabase/ssr", "CI config updated", "Test coverage drop 2%", "Build time +8s", "Lock file changed"] },
   { id: "dr-3", domain: "revenue-business", desc: "CRM state — one lead status change", materiality: 12, action: "reuse-as-is", costFull: 80, costActual: 3, deltas: 1, confidence: 96, preserved: 12, invalidated: 0, changes: ["Lead #42 → qualified"] },
@@ -31,12 +31,12 @@ const DifferentialReasoningExplorer = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const totalSaved = mockDiffs.reduce((s, d) => s + (d.costFull - d.costActual), 0);
-  const reuseCount = mockDiffs.filter(d => d.action === "reuse-as-is").length;
-  const partialCount = mockDiffs.filter(d => d.action === "partial-update").length;
-  const fullCount = mockDiffs.filter(d => d.action === "full-reanalysis").length;
-  const totalPreserved = mockDiffs.reduce((s, d) => s + d.preserved, 0);
-  const totalInvalidated = mockDiffs.reduce((s, d) => s + d.invalidated, 0);
+  const totalSaved = DEMO_DIFFS.reduce((s, d) => s + (d.costFull - d.costActual), 0);
+  const reuseCount = DEMO_DIFFS.filter(d => d.action === "reuse-as-is").length;
+  const partialCount = DEMO_DIFFS.filter(d => d.action === "partial-update").length;
+  const fullCount = DEMO_DIFFS.filter(d => d.action === "full-reanalysis").length;
+  const totalPreserved = DEMO_DIFFS.reduce((s, d) => s + d.preserved, 0);
+  const totalInvalidated = DEMO_DIFFS.reduce((s, d) => s + d.invalidated, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -86,7 +86,7 @@ const DifferentialReasoningExplorer = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockDiffs.map(d => (
+              {DEMO_DIFFS.map(d => (
                 <TableRow key={d.id}>
                   <TableCell className="text-xs font-medium text-foreground">{d.domain}</TableCell>
                   <TableCell className="text-xs text-muted-foreground max-w-[200px] truncate">{d.desc}</TableCell>
@@ -114,7 +114,7 @@ const DifferentialReasoningExplorer = () => {
       <Card className="bg-card/80 border-border/50">
         <CardHeader className="pb-2"><CardTitle className="text-sm">Detected Changes by Domain</CardTitle></CardHeader>
         <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {mockDiffs.filter(d => d.changes.length > 0).map(d => (
+          {DEMO_DIFFS.filter(d => d.changes.length > 0).map(d => (
             <div key={d.id} className="p-3 rounded-lg bg-secondary/20 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-foreground">{d.domain}</span>

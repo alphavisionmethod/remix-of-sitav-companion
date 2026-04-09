@@ -18,7 +18,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Mock Data ───────────────────────────────────────────────
 
-const mockAssets: Array<{ id: string; type: IntelligenceAssetType; domain: string; title: string; usageCount: number; qualityScore: number; acceptanceRate: number; status: string; freshness: string; savings: number }> = [
+const DEMO_ASSETS: Array<{ id: string; type: IntelligenceAssetType; domain: string; title: string; usageCount: number; qualityScore: number; acceptanceRate: number; status: string; freshness: string; savings: number }> = [
   { id: "ia-1", type: "root-cause-analysis", domain: "engineering", title: "Memory leak in portfolio renderer", usageCount: 12, qualityScore: 92, acceptanceRate: 0.95, status: "active", freshness: "2hr", savings: 540 },
   { id: "ia-2", type: "investment-thesis", domain: "investment-finance", title: "Tech sector rotation thesis Q2", usageCount: 8, qualityScore: 88, acceptanceRate: 0.88, status: "active", freshness: "6hr", savings: 960 },
   { id: "ia-3", type: "automation-playbook", domain: "revenue-business", title: "Lead follow-up sequence playbook", usageCount: 24, qualityScore: 85, acceptanceRate: 0.92, status: "active", freshness: "1d", savings: 1080 },
@@ -29,7 +29,7 @@ const mockAssets: Array<{ id: string; type: IntelligenceAssetType; domain: strin
   { id: "ia-8", type: "pattern", domain: "engineering", title: "Common N+1 query regression pattern", usageCount: 31, qualityScore: 96, acceptanceRate: 0.98, status: "active", freshness: "1hr", savings: 1400 },
 ];
 
-const mockDifferentials = [
+const DEMO_DIFFERENTIALS = [
   { id: "da-1", domain: "investment-finance", materiality: 22, action: "reuse-as-is" as const, costFull: 120, costPartial: 35, costReuse: 5, deltas: 2, confidence: 92, desc: "Portfolio state — minor price fluctuation" },
   { id: "da-2", domain: "engineering", materiality: 68, action: "partial-update" as const, costFull: 120, costPartial: 35, costReuse: 5, deltas: 5, confidence: 65, desc: "Build pipeline — new dependency added" },
   { id: "da-3", domain: "revenue-business", materiality: 12, action: "reuse-as-is" as const, costFull: 80, costPartial: 25, costReuse: 3, deltas: 1, confidence: 96, desc: "CRM state — one lead status change" },
@@ -37,7 +37,7 @@ const mockDifferentials = [
   { id: "da-5", domain: "compliance-trust", materiality: 5, action: "reuse-as-is" as const, costFull: 100, costPartial: 30, costReuse: 4, deltas: 0, confidence: 98, desc: "Trust policy — no changes" },
 ];
 
-const mockEfficiency: Array<{ id: string; name: string; type: EfficiencyScore["entityType"]; composite: number; quality: number; costEff: number; acceptance: number; override: number; reuse: number; trend: string }> = [
+const DEMO_EFFICIENCY: Array<{ id: string; name: string; type: EfficiencyScore["entityType"]; composite: number; quality: number; costEff: number; acceptance: number; override: number; reuse: number; trend: string }> = [
   { id: "e-1", name: "Finance Advisor", type: "agent", composite: 82, quality: 88, costEff: 76, acceptance: 0.92, override: 0.08, reuse: 0.45, trend: "improving" },
   { id: "e-2", name: "Self-Healing Agent", type: "agent", composite: 78, quality: 90, costEff: 82, acceptance: 0.95, override: 0.05, reuse: 0.62, trend: "stable" },
   { id: "e-3", name: "Strategy Synthesizer", type: "agent", composite: 71, quality: 85, costEff: 52, acceptance: 0.78, override: 0.22, reuse: 0.28, trend: "degrading" },
@@ -45,7 +45,7 @@ const mockEfficiency: Array<{ id: string; name: string; type: EfficiencyScore["e
   { id: "e-5", name: "Monitor Agent", type: "agent", composite: 91, quality: 92, costEff: 95, acceptance: 0.98, override: 0.02, reuse: 0.72, trend: "improving" },
 ];
 
-const mockOutcomes: Array<{ type: OutcomeType; count: number; costCents: number; valueCents: number; roi: number }> = [
+const DEMO_OUTCOMES: Array<{ type: OutcomeType; count: number; costCents: number; valueCents: number; roi: number }> = [
   { type: "incident-prevented", count: 8, costCents: 2400, valueCents: 48000, roi: 20.0 },
   { type: "bug-resolved", count: 14, costCents: 4200, valueCents: 28000, roi: 6.7 },
   { type: "lead-recovered", count: 6, costCents: 1800, valueCents: 18000, roi: 10.0 },
@@ -56,7 +56,7 @@ const mockOutcomes: Array<{ type: OutcomeType; count: number; costCents: number;
   { type: "customer-retained", count: 2, costCents: 1600, valueCents: 24000, roi: 15.0 },
 ];
 
-const mockPackets: Array<{ domain: DomainId; tokenCount: number; compressionRatio: number; fresh: boolean; changes: number; risks: number; confidence: number; compiledAgo: string }> = [
+const DEMO_PACKETS: Array<{ domain: DomainId; tokenCount: number; compressionRatio: number; fresh: boolean; changes: number; risks: number; confidence: number; compiledAgo: string }> = [
   { domain: "admin-ops", tokenCount: 1200, compressionRatio: 0.12, fresh: true, changes: 3, risks: 1, confidence: 82, compiledAgo: "15min" },
   { domain: "engineering", tokenCount: 1800, compressionRatio: 0.15, fresh: true, changes: 5, risks: 2, confidence: 76, compiledAgo: "8min" },
   { domain: "revenue-business", tokenCount: 1400, compressionRatio: 0.11, fresh: true, changes: 2, risks: 0, confidence: 89, compiledAgo: "22min" },
@@ -68,7 +68,7 @@ const mockPackets: Array<{ domain: DomainId; tokenCount: number; compressionRati
   { domain: "compliance-trust", tokenCount: 1300, compressionRatio: 0.12, fresh: true, changes: 0, risks: 0, confidence: 96, compiledAgo: "1hr" },
 ];
 
-const mockCrossTenantPatterns = [
+const DEMO_CROSS_TENANT_PATTERNS = [
   { type: "issue-signature", desc: "API timeout cascade after deploy", freq: 42, conf: 94, tenants: 18 },
   { type: "crm-leakage", desc: "Leads going cold after 48hr without follow-up", freq: 67, conf: 88, tenants: 31 },
   { type: "deployment-failure", desc: "Migration timeout on large tables", freq: 23, conf: 91, tenants: 12 },
@@ -104,12 +104,12 @@ const trendColors = { improving: "text-emerald-400", stable: "text-muted-foregro
 const IntelligenceEfficiencyBoard = () => {
   const [activeTab, setActiveTab] = useState("overview");
 
-  const totalSavings = mockAssets.reduce((s, a) => s + a.savings, 0);
-  const totalReuses = mockAssets.reduce((s, a) => s + a.usageCount, 0);
-  const avgQuality = Math.round(mockAssets.reduce((s, a) => s + a.qualityScore, 0) / mockAssets.length);
-  const reuseDecisions = mockDifferentials.filter(d => d.action === "reuse-as-is").length;
-  const totalOutcomeValue = mockOutcomes.reduce((s, o) => s + o.valueCents, 0);
-  const totalOutcomeCost = mockOutcomes.reduce((s, o) => s + o.costCents, 0);
+  const totalSavings = DEMO_ASSETS.reduce((s, a) => s + a.savings, 0);
+  const totalReuses = DEMO_ASSETS.reduce((s, a) => s + a.usageCount, 0);
+  const avgQuality = Math.round(DEMO_ASSETS.reduce((s, a) => s + a.qualityScore, 0) / DEMO_ASSETS.length);
+  const reuseDecisions = DEMO_DIFFERENTIALS.filter(d => d.action === "reuse-as-is").length;
+  const totalOutcomeValue = DEMO_OUTCOMES.reduce((s, o) => s + o.valueCents, 0);
+  const totalOutcomeCost = DEMO_OUTCOMES.reduce((s, o) => s + o.costCents, 0);
   const overallROI = totalOutcomeCost > 0 ? (totalOutcomeValue / totalOutcomeCost).toFixed(1) : "0";
 
   return (
@@ -145,13 +145,13 @@ const IntelligenceEfficiencyBoard = () => {
         {/* ══ Overview ════════════════════════════════════════ */}
         <TabsContent value="overview" className="space-y-4 mt-4">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-            <MetricCard icon={Library} label="Intelligence Assets" value={String(mockAssets.length)} sub={`${mockAssets.filter(a => a.status === "active").length} active`} />
+            <MetricCard icon={Library} label="Intelligence Assets" value={String(DEMO_ASSETS.length)} sub={`${DEMO_ASSETS.filter(a => a.status === "active").length} active`} />
             <MetricCard icon={RefreshCw} label="Total Reuses" value={String(totalReuses)} sub="this period" />
             <MetricCard icon={DollarSign} label="Compute Saved" value={`$${(totalSavings / 100).toFixed(0)}`} sub="via intelligence reuse" color="text-emerald-400" />
-            <MetricCard icon={GitCompare} label="Differential Reuse" value={`${reuseDecisions}/${mockDifferentials.length}`} sub="domains reused as-is" />
+            <MetricCard icon={GitCompare} label="Differential Reuse" value={`${reuseDecisions}/${DEMO_DIFFERENTIALS.length}`} sub="domains reused as-is" />
             <MetricCard icon={Award} label="Avg Quality" value={`${avgQuality}/100`} sub="across all assets" />
             <MetricCard icon={Target} label="Outcome ROI" value={`${overallROI}x`} sub="value / AI cost" color="text-emerald-400" />
-            <MetricCard icon={Package} label="Domain Packets" value={`${mockPackets.filter(p => p.fresh).length}/${mockPackets.length}`} sub="fresh packets" />
+            <MetricCard icon={Package} label="Domain Packets" value={`${DEMO_PACKETS.filter(p => p.fresh).length}/${DEMO_PACKETS.length}`} sub="fresh packets" />
           </div>
 
           {/* Key Lanes */}
@@ -160,7 +160,7 @@ const IntelligenceEfficiencyBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Top Reused Assets</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {mockAssets.sort((a, b) => b.usageCount - a.usageCount).slice(0, 5).map(a => (
+                {DEMO_ASSETS.sort((a, b) => b.usageCount - a.usageCount).slice(0, 5).map(a => (
                   <div key={a.id} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                     <div className="max-w-[65%]">
                       <p className="text-xs font-medium text-foreground truncate">{a.title}</p>
@@ -179,7 +179,7 @@ const IntelligenceEfficiencyBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Differential Reasoning</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {mockDifferentials.map(d => (
+                {DEMO_DIFFERENTIALS.map(d => (
                   <div key={d.id} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                     <div className="max-w-[60%]">
                       <p className="text-xs font-medium text-foreground">{d.domain}</p>
@@ -195,7 +195,7 @@ const IntelligenceEfficiencyBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Top Outcome ROI</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {mockOutcomes.sort((a, b) => b.roi - a.roi).slice(0, 5).map(o => (
+                {DEMO_OUTCOMES.sort((a, b) => b.roi - a.roi).slice(0, 5).map(o => (
                   <div key={o.type} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                     <span className="text-xs text-foreground">{o.type.replace(/-/g, " ")}</span>
                     <div className="flex items-center gap-2 text-[10px]">
@@ -214,7 +214,7 @@ const IntelligenceEfficiencyBoard = () => {
             <CardContent>
               <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
                 {Object.entries(
-                  mockAssets.reduce<Record<string, number>>((acc, a) => { acc[a.domain] = (acc[a.domain] || 0) + a.savings; return acc; }, {})
+                  DEMO_ASSETS.reduce<Record<string, number>>((acc, a) => { acc[a.domain] = (acc[a.domain] || 0) + a.savings; return acc; }, {})
                 ).sort(([, a], [, b]) => b - a).map(([domain, savings]) => (
                   <div key={domain} className="p-3 rounded-lg bg-secondary/20 text-center">
                     <p className="text-lg font-bold text-emerald-400">${(savings / 100).toFixed(0)}</p>
@@ -246,7 +246,7 @@ const IntelligenceEfficiencyBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockAssets.map(a => (
+                  {DEMO_ASSETS.map(a => (
                     <TableRow key={a.id}>
                       <TableCell className="text-xs font-medium text-foreground max-w-[200px] truncate">{a.title}</TableCell>
                       <TableCell><Badge variant="outline" className="text-[9px]">{a.type}</Badge></TableCell>
@@ -270,7 +270,7 @@ const IntelligenceEfficiencyBoard = () => {
             <CardContent>
               <div className="flex flex-wrap gap-2">
                 {Object.entries(
-                  mockAssets.reduce<Record<string, number>>((acc, a) => { acc[a.type] = (acc[a.type] || 0) + 1; return acc; }, {})
+                  DEMO_ASSETS.reduce<Record<string, number>>((acc, a) => { acc[a.type] = (acc[a.type] || 0) + 1; return acc; }, {})
                 ).sort(([, a], [, b]) => b - a).map(([type, count]) => (
                   <Badge key={type} variant="outline" className="text-xs">{type}: {count}</Badge>
                 ))}
@@ -291,20 +291,20 @@ const IntelligenceEfficiencyBoard = () => {
             </Card>
             <Card className="bg-card/80 border-border/50">
               <CardContent className="p-3 text-center">
-                <p className="text-2xl font-bold text-blue-400">{mockDifferentials.filter(d => d.action === "partial-update").length}</p>
+                <p className="text-2xl font-bold text-blue-400">{DEMO_DIFFERENTIALS.filter(d => d.action === "partial-update").length}</p>
                 <p className="text-[10px] text-muted-foreground">Partial Updates</p>
               </CardContent>
             </Card>
             <Card className="bg-card/80 border-border/50">
               <CardContent className="p-3 text-center">
-                <p className="text-2xl font-bold text-amber-400">{mockDifferentials.filter(d => d.action === "full-reanalysis").length}</p>
+                <p className="text-2xl font-bold text-amber-400">{DEMO_DIFFERENTIALS.filter(d => d.action === "full-reanalysis").length}</p>
                 <p className="text-[10px] text-muted-foreground">Full Reanalysis</p>
               </CardContent>
             </Card>
             <Card className="bg-card/80 border-border/50">
               <CardContent className="p-3 text-center">
                 <p className="text-2xl font-bold text-foreground">
-                  ${(mockDifferentials.reduce((s, d) => s + (d.action === "reuse-as-is" ? d.costFull - d.costReuse : d.action === "partial-update" ? d.costFull - d.costPartial : 0), 0) / 100).toFixed(0)}
+                  ${(DEMO_DIFFERENTIALS.reduce((s, d) => s + (d.action === "reuse-as-is" ? d.costFull - d.costReuse : d.action === "partial-update" ? d.costFull - d.costPartial : 0), 0) / 100).toFixed(0)}
                 </p>
                 <p className="text-[10px] text-muted-foreground">Saved This Cycle</p>
               </CardContent>
@@ -329,7 +329,7 @@ const IntelligenceEfficiencyBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockDifferentials.map(d => (
+                  {DEMO_DIFFERENTIALS.map(d => (
                     <TableRow key={d.id}>
                       <TableCell className="text-xs font-medium text-foreground">{d.domain}</TableCell>
                       <TableCell className="text-xs text-muted-foreground max-w-[200px] truncate">{d.desc}</TableCell>
@@ -392,7 +392,7 @@ const IntelligenceEfficiencyBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockPackets.map(p => (
+                  {DEMO_PACKETS.map(p => (
                     <TableRow key={p.domain}>
                       <TableCell className="text-xs font-medium text-foreground">{p.domain}</TableCell>
                       <TableCell className="text-xs text-right font-mono">{p.tokenCount.toLocaleString()}</TableCell>
@@ -414,10 +414,10 @@ const IntelligenceEfficiencyBoard = () => {
             <CardHeader className="pb-2"><CardTitle className="text-sm">Zero-Waste Prompt Architecture</CardTitle></CardHeader>
             <CardContent className="grid md:grid-cols-4 gap-3">
               {[
-                { label: "Avg Packet Size", value: `${Math.round(mockPackets.reduce((s, p) => s + p.tokenCount, 0) / mockPackets.length).toLocaleString()} tok`, desc: "vs ~12k avg raw prompt" },
-                { label: "Avg Compression", value: `${Math.round(mockPackets.reduce((s, p) => s + p.compressionRatio, 0) / mockPackets.length * 100)}%`, desc: "of original context size" },
-                { label: "Fresh Packets", value: `${mockPackets.filter(p => p.fresh).length}/${mockPackets.length}`, desc: "ready for immediate use" },
-                { label: "Estimated Savings", value: `$${((mockPackets.reduce((s, p) => s + (12000 - p.tokenCount), 0) * 0.003) / 100).toFixed(0)}/day`, desc: "from packet-driven prompts" },
+                { label: "Avg Packet Size", value: `${Math.round(DEMO_PACKETS.reduce((s, p) => s + p.tokenCount, 0) / DEMO_PACKETS.length).toLocaleString()} tok`, desc: "vs ~12k avg raw prompt" },
+                { label: "Avg Compression", value: `${Math.round(DEMO_PACKETS.reduce((s, p) => s + p.compressionRatio, 0) / DEMO_PACKETS.length * 100)}%`, desc: "of original context size" },
+                { label: "Fresh Packets", value: `${DEMO_PACKETS.filter(p => p.fresh).length}/${DEMO_PACKETS.length}`, desc: "ready for immediate use" },
+                { label: "Estimated Savings", value: `$${((DEMO_PACKETS.reduce((s, p) => s + (12000 - p.tokenCount), 0) * 0.003) / 100).toFixed(0)}/day`, desc: "from packet-driven prompts" },
               ].map(s => (
                 <div key={s.label} className="p-3 rounded-lg bg-secondary/20 text-center">
                   <p className="text-xl font-bold text-foreground">{s.value}</p>
@@ -448,7 +448,7 @@ const IntelligenceEfficiencyBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockEfficiency.sort((a, b) => b.composite - a.composite).map(e => {
+                  {DEMO_EFFICIENCY.sort((a, b) => b.composite - a.composite).map(e => {
                     const TrendIcon = trendIcons[e.trend as keyof typeof trendIcons] || Activity;
                     return (
                       <TableRow key={e.id}>
@@ -481,7 +481,7 @@ const IntelligenceEfficiencyBoard = () => {
           <Card className="bg-card/80 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm">Efficiency Recommendations</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {mockEfficiency.filter(e => e.composite < 80).map(e => (
+              {DEMO_EFFICIENCY.filter(e => e.composite < 80).map(e => (
                 <div key={e.id} className="flex items-center gap-2 p-2 rounded-lg bg-secondary/20">
                   <AlertTriangle className="h-3.5 w-3.5 text-amber-400 flex-shrink-0" />
                   <span className="text-xs text-foreground">
@@ -502,7 +502,7 @@ const IntelligenceEfficiencyBoard = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <Card className="bg-card/80 border-border/50">
               <CardContent className="p-3 text-center">
-                <p className="text-2xl font-bold text-foreground">{mockOutcomes.reduce((s, o) => s + o.count, 0)}</p>
+                <p className="text-2xl font-bold text-foreground">{DEMO_OUTCOMES.reduce((s, o) => s + o.count, 0)}</p>
                 <p className="text-[10px] text-muted-foreground">Total Outcomes</p>
               </CardContent>
             </Card>
@@ -542,7 +542,7 @@ const IntelligenceEfficiencyBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockOutcomes.sort((a, b) => b.roi - a.roi).map(o => (
+                  {DEMO_OUTCOMES.sort((a, b) => b.roi - a.roi).map(o => (
                     <TableRow key={o.type}>
                       <TableCell className="text-xs font-medium text-foreground">{o.type.replace(/-/g, " ")}</TableCell>
                       <TableCell className="text-xs text-right">{o.count}</TableCell>
@@ -576,7 +576,7 @@ const IntelligenceEfficiencyBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockCrossTenantPatterns.map((p, i) => (
+                  {DEMO_CROSS_TENANT_PATTERNS.map((p, i) => (
                     <TableRow key={i}>
                       <TableCell><Badge variant="outline" className="text-[10px]">{p.type}</Badge></TableCell>
                       <TableCell className="text-xs text-foreground">{p.desc}</TableCell>

@@ -11,7 +11,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const mockProfiles = [
+const DEMO_PROFILES = [
   { domain: "engineering", taskType: "root-cause", version: "v3.2", maxContext: "B", packetDriven: true, redundancy: 8, costReduction: 42, qualityImpact: 2, active: true },
   { domain: "engineering", taskType: "fix-plan", version: "v2.8", maxContext: "B", packetDriven: true, redundancy: 12, costReduction: 38, qualityImpact: 1, active: true },
   { domain: "revenue-business", taskType: "lead-scoring", version: "v2.1", maxContext: "A", packetDriven: true, redundancy: 5, costReduction: 55, qualityImpact: 0, active: true },
@@ -24,12 +24,12 @@ const mockProfiles = [
   { domain: "admin-ops", taskType: "synthesis", version: "v1.2", maxContext: "D", packetDriven: false, redundancy: 45, costReduction: 5, qualityImpact: -5, active: false },
 ];
 
-const offenders = mockProfiles
+const offenders = DEMO_PROFILES
   .filter(p => p.redundancy > 20)
   .sort((a, b) => b.redundancy - a.redundancy);
 
-const avgCostReduction = Math.round(mockProfiles.reduce((s, p) => s + p.costReduction, 0) / mockProfiles.length);
-const packetDrivenPct = Math.round((mockProfiles.filter(p => p.packetDriven).length / mockProfiles.length) * 100);
+const avgCostReduction = Math.round(DEMO_PROFILES.reduce((s, p) => s + p.costReduction, 0) / DEMO_PROFILES.length);
+const packetDrivenPct = Math.round((DEMO_PROFILES.filter(p => p.packetDriven).length / DEMO_PROFILES.length) * 100);
 
 const ZeroWastePromptView = () => {
   const { isAdmin, loading } = useRequireAdmin();
@@ -46,7 +46,7 @@ const ZeroWastePromptView = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Prompt Profiles", value: String(mockProfiles.length) },
+          { label: "Prompt Profiles", value: String(DEMO_PROFILES.length) },
           { label: "Avg Cost Reduction", value: `${avgCostReduction}%`, color: "text-emerald-400" },
           { label: "Packet-Driven", value: `${packetDrivenPct}%` },
           { label: "Offenders", value: String(offenders.length), color: offenders.length > 0 ? "text-amber-400" : "text-emerald-400" },
@@ -79,7 +79,7 @@ const ZeroWastePromptView = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockProfiles.map((p, i) => (
+              {DEMO_PROFILES.map((p, i) => (
                 <TableRow key={i}>
                   <TableCell className="text-xs font-medium text-foreground">{p.domain}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{p.taskType}</TableCell>
@@ -124,7 +124,7 @@ const ZeroWastePromptView = () => {
         <CardHeader className="pb-2"><CardTitle className="text-sm">Redundancy by Domain</CardTitle></CardHeader>
         <CardContent className="space-y-2">
           {Object.entries(
-            mockProfiles.reduce<Record<string, number[]>>((acc, p) => {
+            DEMO_PROFILES.reduce<Record<string, number[]>>((acc, p) => {
               if (!acc[p.domain]) acc[p.domain] = [];
               acc[p.domain].push(p.redundancy);
               return acc;

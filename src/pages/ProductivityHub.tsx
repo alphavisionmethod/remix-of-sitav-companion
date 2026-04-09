@@ -21,7 +21,7 @@ const subpageFromPath = (path: string): SubPage => {
   return "overview";
 };
 
-const recentDocs = [
+const DEMO_RECENT_DOCS = [
   { id: "d1", title: "Q2 Revenue Forecast", type: "doc", updated: "2h ago", icon: FileText },
   { id: "d2", title: "Client Pipeline Tracker", type: "sheet", updated: "4h ago", icon: Table2 },
   { id: "d3", title: "Board Deck — April", type: "slides", updated: "1d ago", icon: Presentation },
@@ -66,7 +66,7 @@ const OverviewPage = () => {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {recentDocs.map(doc => (
+        {DEMO_RECENT_DOCS.map(doc => (
           <SitaCard key={doc.id} className="p-4 cursor-pointer group">
             <div className="flex items-start gap-3">
               <div className="rounded-lg bg-secondary p-2">
