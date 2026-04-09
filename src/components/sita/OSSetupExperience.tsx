@@ -75,6 +75,7 @@ import { RestorePreviewStep } from "@/components/sita/onboarding/RestorePreviewS
 import { ContextualWelcomeTour } from "@/components/sita/onboarding/ContextualWelcomeTour";
 import { OperatingContextStep } from "@/components/sita/onboarding/OperatingContextStep";
 import { RelationshipSensitivityStep } from "@/components/sita/onboarding/RelationshipSensitivityStep";
+import { PersonalizationPivotStep } from "@/components/sita/onboarding/PersonalizationPivotStep";
 import { Progress } from "@/components/ui/progress";
 
 // ── Types ───────────────────────────────────────────────────
@@ -128,6 +129,7 @@ interface SetupData {
   homeComposition: string;
   recoverFirst: string;
   operatingContext: string;
+  supportNeedPrimary: string;
   relationshipFocus: string;
   desktopDensity: string;
 }
@@ -475,6 +477,7 @@ export function OSSetupExperience() {
     homeComposition: "",
     recoverFirst: "",
     operatingContext: "",
+    supportNeedPrimary: "",
     relationshipFocus: "",
     desktopDensity: "",
   });
