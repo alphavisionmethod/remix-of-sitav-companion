@@ -20,7 +20,7 @@ import {
   Code, AlignLeft, AlignCenter, AlignRight, Heading1, Heading2, Heading3,
   Save, Download, Eye, Edit3, MessageSquare, History, Paperclip,
   Undo2, Redo2, Strikethrough, Quote, Table, Minus, CheckSquare,
-  Clock, Shield, Sparkles, FileTemplate, ChevronRight, Plus, Trash2,
+  Clock, Shield, Sparkles, FileBox, ChevronRight, Plus, Trash2,
 } from "lucide-react";
 
 // ── Templates ──────────────────────────────────────────────────
@@ -129,7 +129,7 @@ const DocumentEditor = () => {
       >
         <div className="flex gap-2">
           <Button size="sm" variant="outline" className="gap-1.5 text-xs" onClick={() => setShowTemplates(!showTemplates)}>
-            <FileTemplate className="w-3.5 h-3.5" /> Templates
+            <FileBox className="w-3.5 h-3.5" /> Templates
           </Button>
           <Button size="sm" variant="outline" className="gap-1.5 text-xs" onClick={() => setShowHistory(!showHistory)}>
             <History className="w-3.5 h-3.5" /> History
@@ -151,7 +151,7 @@ const DocumentEditor = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {TEMPLATES.map(t => (
                 <button key={t.id} onClick={() => handleApplyTemplate(t)} className="text-left p-3 rounded-lg border border-border/30 hover:border-primary/40 hover:bg-primary/5 transition-all">
-                  <FileTemplate className="h-5 w-5 text-primary mb-1.5" />
+                  <FileBox className="h-5 w-5 text-primary mb-1.5" />
                   <p className="text-xs font-medium">{t.title}</p>
                   <p className="text-[10px] text-muted-foreground">{t.description}</p>
                 </button>

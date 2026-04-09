@@ -21,7 +21,7 @@ import { toast } from "sonner";
 import {
   BarChart3, TrendingUp, DollarSign, Users, Briefcase, Download, Calendar,
   Filter, PieChart, Activity, Target, ArrowUpRight, ArrowDownRight, FileText,
-  Save, Share2, Clock, Shield, CheckCircle2, AlertTriangle, Bookmark,
+  Save, Share2, Clock, Shield, CheckCircle2, AlertTriangle, Bookmark, PlusCircle,
   ChevronRight, Eye, RotateCcw,
 } from "lucide-react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, BarChart, Bar, PieChart as RechartsPie, Pie, Cell, LineChart, Line, CartesianGrid } from "recharts";
@@ -327,7 +327,7 @@ const ReportingWorkspace = () => {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base">Saved Reports</CardTitle>
-                <Button size="sm" variant="outline" className="gap-1.5 text-xs"><Plus className="w-3.5 h-3.5" /> New Report</Button>
+                <Button size="sm" variant="outline" className="gap-1.5 text-xs"><PlusCircle className="w-3.5 h-3.5" /> New Report</Button>
               </div>
             </CardHeader>
             <CardContent className="space-y-2">
