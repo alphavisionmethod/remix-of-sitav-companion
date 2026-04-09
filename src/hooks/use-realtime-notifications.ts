@@ -48,7 +48,7 @@ export function useRealtimeNotifications() {
           // Native Electron notification
           if (isElectron()) {
             try {
-              (window as any).electron?.sendNotification(
+              window.electron?.sendNotification?.(
                 `${style.icon} ${n.title}`,
                 n.body || ""
               );
