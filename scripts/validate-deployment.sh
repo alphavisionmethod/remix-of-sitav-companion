@@ -40,6 +40,30 @@ echo ""
 echo "📋 Scripts"
 check "generate-health.sh exists" "test -f scripts/generate-health.sh"
 check "build-ova.sh exists" "test -f scripts/build-ova.sh"
+check "check-edge-function-health.ts exists" "test -f scripts/check-edge-function-health.ts"
+check "check-route-drift.ts exists" "test -f scripts/check-route-drift.ts"
+check "validate-deployment.sh exists" "test -f scripts/validate-deployment.sh"
+
+echo ""
+echo "🚀 Deploy Scripts"
+check "OTA agent exists" "test -f deploy/ota-agent.sh"
+check "First-boot script exists" "test -f deploy/first-boot.sh || test -f scripts/first-boot.sh"
+check "Metrics agent exists" "test -f deploy/metrics-agent.sh || test -f scripts/metrics-agent.sh"
+check "Backup script exists" "test -f deploy/backup.sh || test -f scripts/backup.sh"
+
+echo ""
+echo "📄 Architecture Docs"
+check "Service registry exists" "test -f docs/architecture/registry/services.yaml"
+check "VMware deployment doc" "test -f docs/vmware-deployment.md"
+check "Architecture docs directory" "test -d docs/architecture"
+
+echo ""
+echo "⚡ Edge Functions"
+check "Edge functions directory" "test -d supabase/functions"
+FN_COUNT=$(ls -d supabase/functions/*/index.ts 2>/dev/null | wc -l)
+echo "  📊 $FN_COUNT edge functions found"
+TEST_COUNT=$(ls supabase/functions/*/index_test.ts supabase/functions/*/index.test.ts 2>/dev/null | wc -l)
+echo "  🧪 $TEST_COUNT edge function test files found"
 
 echo ""
 if [ $ERRORS -eq 0 ]; then
