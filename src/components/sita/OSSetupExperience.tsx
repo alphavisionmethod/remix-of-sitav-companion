@@ -404,6 +404,28 @@ function computeDesktopDensity(s: SetupData): string {
   return "dense";
 }
 
+// Compute per-domain confidence metadata for persistence (Req #1 / Part 5-P)
+function computeDomainConfidence(s: SetupData): Record<string, { confidence: string; source: string; editableLater: boolean }> {
+  const conf = (hasData: boolean, source = "explicit") => ({
+    confidence: hasData ? "good-signal" : "still-learning",
+    source,
+    editableLater: true,
+  });
+  return {
+    identity: conf(!!s.displayName || s.quickIdentity.runFirst.length > 0),
+    operatingContext: conf(!!s.operatingContext),
+    lifeRhythm: conf(!!s.lifeRhythm.weekStructure),
+    stress: conf(s.stressMap.heavierThanShould.length > 0),
+    household: conf(s.householdGraph.length > 0),
+    work: conf(s.worldModel.work.industry.length > 0),
+    money: conf(s.worldModel.money.goals.length > 0),
+    communications: conf(!!s.commsContext.communicationStress),
+    planning: conf(!!s.planningStyle.viewPreference),
+    trust: conf(s.trustCalibration.level > 0),
+    relationships: conf(!!s.relationshipFocus),
+  };
+}
+
 export function OSSetupExperience() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -547,8 +569,10 @@ export function OSSetupExperience() {
         mem("home_composition", state.homeComposition, "preference"),
         mem("recover_first", state.recoverFirst, "preference"),
         mem("operating_context", state.operatingContext, "preference"),
+        mem("support_need_primary", state.supportNeedPrimary, "preference"),
         mem("relationship_focus", state.relationshipFocus, "preference"),
         mem("desktop_density", computeDesktopDensity(state), "preference", { source: "derived", confidence: 0.8 }),
+        mem("domain_confidence", computeDomainConfidence(state), "preference", { source: "derived", confidence: 0.7 }),
       ].filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
 
       await fromTable("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });

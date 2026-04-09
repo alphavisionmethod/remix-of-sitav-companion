@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { EnterpriseFlow } from "@/components/sita/EnterpriseFlow";
 import { RestoreFlow } from "@/components/sita/RestoreFlow";
+import { FirstWeekCalibration } from "@/components/sita/FirstWeekCalibration";
 import { useState } from "react";
 
 export default function DesktopPage() {
@@ -29,13 +30,14 @@ export default function DesktopPage() {
   return (
     <>
       <h1 className="sr-only">Desktop</h1>
+      <FirstWeekCalibration />
       <DesktopSurface
-      userName={user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User"}
-      trustPosture={state.trustPosture}
-      notifications={state.notifications}
-      continuity={state.continuity}
-      onOpenCommand={openCommand}
-    />
+        userName={user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User"}
+        trustPosture={state.trustPosture}
+        notifications={state.notifications}
+        continuity={state.continuity}
+        onOpenCommand={openCommand}
+      />
     </>
   );
 }
