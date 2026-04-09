@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type {
-  ArrivalSummary, DeferredSetupItem, OwnershipProfile, UseModeProfile,
+  ArrivalSummary, SetupDeferredItem, OwnershipProfile, UseModeProfile,
   TrustProfile, AdvisorProfile, ConnectionProfile, FirstWinProfile,
   PrivacyProfile, WorldModel, StarterProfile, SecurityBaseline, AccessProfile,
 } from "@/packages/contracts/specialized/setup-data-models";
@@ -25,7 +25,7 @@ export interface SetupSummaryContext {
   starter: StarterProfile;
   security: SecurityBaseline;
   access: AccessProfile;
-  deferredItems: DeferredSetupItem[];
+  deferredItems: SetupDeferredItem[];
   skippedStages: string[];
   locale: string;
   region: string;

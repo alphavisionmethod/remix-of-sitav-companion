@@ -6,7 +6,7 @@
 import type {
   OwnershipProfile, PrivacyProfile, TrustProfile, AdvisorProfile,
   ConnectionProfile, FirstWinProfile, UseModeProfile, ArrivalSummary,
-  WorldModel, DeferredSetupItem, StarterProfile, SecurityBaseline,
+  WorldModel, SetupDeferredItem, StarterProfile, SecurityBaseline,
   AccessProfile, AutonomyLevel,
 } from "./setup-data-models";
 
@@ -65,7 +65,7 @@ export interface TrustCenterHandoffPayload {
 // ── Completion Center Handoff ───────────────────────────────
 
 export interface CompletionCenterHandoffPayload {
-  deferredItems: DeferredSetupItem[];
+  deferredItems: SetupDeferredItem[];
   skippedStages: string[];
   incompleteOptionalItems: string[];
   setupCompletedAt: string;

@@ -302,7 +302,7 @@ export interface ArrivalSummary {
   connectedSystems: string[];
   preparedWorkflow?: string;
   privacyBaselineSummary: string;
-  deferredItems: DeferredSetupItem[];
+  deferredItems: SetupDeferredItem[];
   desktopPreviewModel: Record<string, unknown>;
   welcomePriorities: string[];
 }
@@ -312,7 +312,7 @@ export interface ArrivalSummary {
 export type DeferredItemType = "security" | "connection" | "personalization" | "privacy" | "advisor" | "recovery";
 export type DeferredItemUrgency = "low" | "medium" | "high";
 
-export interface DeferredSetupItem {
+export interface SetupDeferredItem {
   itemId: string;
   itemType: DeferredItemType;
   label: string;
