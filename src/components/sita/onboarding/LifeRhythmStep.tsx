@@ -132,6 +132,19 @@ export const LifeRhythmStep = ({ data, onUpdate, onNext, onPrev }: Props) => {
             className="w-full mt-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40">
             Continue <ChevronRight className="inline h-4 w-4 ml-1" />
           </button>
+
+          {/* Show what this changes (Req #8) */}
+          {data.planningSupport.length > 0 && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              className="rounded-2xl border border-primary/20 bg-primary/5 p-3 mt-3">
+              <p className="text-[10px] text-primary font-semibold uppercase tracking-wider mb-1">This changes</p>
+              <p className="text-[11px] text-muted-foreground">
+                Boardroom density: <span className="text-foreground">{data.weekStructure === "chaotic" ? "flexible" : "structured"}</span> · 
+                Daily summary: <span className="text-foreground">{data.planningHorizon === "today" ? "morning-focused" : "horizon-aware"}</span> · 
+                Notifications: <span className="text-foreground">{data.overloadMoments.length > 2 ? "quieter during peak times" : "standard timing"}</span>
+              </p>
+            </motion.div>
+          )}
         </div>
       )}
 

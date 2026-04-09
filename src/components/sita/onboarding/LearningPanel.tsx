@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Brain, Shield, Sparkles, BarChart3, Home, Activity, MessageCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useMemo } from "react";
 import { generateReflections, type ReflectionInput } from "@/lib/setup/reflection-copy";
 

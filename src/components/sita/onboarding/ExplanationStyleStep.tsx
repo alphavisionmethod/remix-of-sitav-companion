@@ -60,7 +60,18 @@ export function ExplanationStyleStep({ selected, onSelect, onNext, onPrev }: Exp
         ))}
       </div>
 
-      <div className="flex items-center justify-between pt-2">
+      {/* Show what this changes (Req #8) */}
+      {selected && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          className="rounded-2xl border border-primary/20 bg-primary/5 p-3">
+          <p className="text-[10px] text-primary font-semibold uppercase tracking-wider mb-1">This changes</p>
+          <p className="text-[11px] text-muted-foreground">
+            Summary length: <span className="text-foreground">{selected === "simple" ? "short" : selected === "detailed" ? "comprehensive" : selected === "executive" ? "dense, data-rich" : "balanced"}</span> · 
+            Advisor tone: <span className="text-foreground">{selected === "simple" ? "plain, jargon-free" : selected === "executive" ? "decision-ready" : "clear with context"}</span> · 
+            Boardroom detail: <span className="text-foreground">{selected === "detailed" || selected === "executive" ? "high" : "standard"}</span>
+          </p>
+        </motion.div>
+      )}
         <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
         <button onClick={onNext}
           className="rounded-xl px-6 py-2.5 text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-2">
