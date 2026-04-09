@@ -8,7 +8,7 @@ import { FolderOpen, Search, Eye, Link2, Shield, Upload } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAllFiles } from "@/hooks/use-domain-data";
 import { FileUploader } from "@/components/sita/FileUploader";
-import { classifyFile, detectSensitivity } from "@/lib/core-services/file-ingestion";
+import { classifyFile, detectSensitivity } from "@/lib/utils/file-classification";
 import { format } from "date-fns";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";

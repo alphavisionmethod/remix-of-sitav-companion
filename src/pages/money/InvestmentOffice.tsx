@@ -24,10 +24,10 @@ import {
 import {
   getWatchlist, getTradeReviewPackets, getExecutionIntents,
   getOpportunityScores, getAvailableTrustModes, getInvestmentTrustMode,
-} from "@/lib/core-services/finance-os/investment-office.service";
+} from "@/lib/demo-data/investment";
 import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investment-data";
 import { MOCK_CAPITAL_BUCKETS, MOCK_POSITIONS as FALLBACK_POSITIONS, MOCK_THESES as FALLBACK_THESES } from "@/lib/mock-data/investment";
-import { INVESTMENT_POLICY_RULES } from "@/lib/core-services/investment-policy-rules";
+import { INVESTMENT_POLICY_RULES } from "@/lib/demo-data/investment";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
