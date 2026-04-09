@@ -104,23 +104,44 @@ export class SetupOrchestrationEngine {
       return role === "family-office" || role === "personal";
     });
 
-    // Setup style based
-    for (const combo of ["style:guided,advanced", "style:advanced"]) {
+    // Setup style based — register all combos used in phase definitions
+    for (const combo of ["style:express,guided,advanced", "style:guided,advanced", "style:advanced"]) {
       const styles = combo.replace("style:", "").split(",");
-      this.branchEvaluators.set(combo, (s) => {
+      this.branchEvaluators.set(combo, () => {
         const style = this.getSessionData<string>("setupStyle") ?? "guided";
         return styles.includes(style);
       });
     }
 
-    // Domain-based (generic)
-    this.branchEvaluators.set("domain:money", (s) => {
+    // Domain-based evaluators — check enabledDomains OR quickIdentity signals
+    const domainEvaluator = (domainKeys: string[]) => () => {
       const domains = this.getSessionData<string[]>("enabledDomains") ?? [];
-      return domains.includes("money");
+      const painPoints = this.getSessionData<string[]>("painPoints") ?? [];
+      const focusAreas = this.getSessionData<string[]>("focusAreas") ?? [];
+      return domainKeys.some(k =>
+        domains.includes(k) || painPoints.includes(k) || focusAreas.includes(k)
+      );
+    };
+
+    this.branchEvaluators.set("domain:household", domainEvaluator(["household", "family", "home", "shared-living"]));
+    this.branchEvaluators.set("domain:work", domainEvaluator(["business", "work", "clients", "team", "leads", "ops"]));
+    this.branchEvaluators.set("domain:money", domainEvaluator(["money", "bills", "spending", "approvals", "budget"]));
+    this.branchEvaluators.set("domain:communications", domainEvaluator(["communications", "messages", "replies", "follow-up", "email"]));
+
+    // Tone branching — overwhelmed indicator
+    this.branchEvaluators.set("tone:overwhelmed", () => {
+      const stressAreas = this.getSessionData<string[]>("stressAreas") ?? [];
+      const operatingContext = this.getSessionData<string>("operatingContext") ?? "";
+      return stressAreas.length >= 4 || operatingContext === "regaining-control" || operatingContext === "overwhelmed";
     });
 
-    // Custom: user-chose-restore / user-chose-enterprise are manual overrides
-    this.branchEvaluators.set("user-chose-restore", () => false);
+    // Custom: restore-path checks accountPath
+    this.branchEvaluators.set("custom:restore-path", () => {
+      const accountPath = this.getSessionData<string>("accountPath") ?? "";
+      return accountPath === "restore" || accountPath === "restore-lookup";
+    });
+
+    // Custom: enterprise is manual override
     this.branchEvaluators.set("user-chose-enterprise", () => false);
   }
 
