@@ -43,6 +43,7 @@ export default function CN07ConnectorLaunchGate() {
   return (
     <div className="space-y-6 p-6"  >
       <DemoModeBadge />
+      <h1 className="sr-only">Connector Launch Gate</h1>
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="bg-card border-border"><CardContent className="pt-4">

@@ -105,6 +105,7 @@ const FirstLaunchPage = () => {
   return (
     <div className="mx-auto max-w-lg py-8">
       <DemoModeBadge />
+      <h1 className="sr-only">First Launch</h1>
       <div className="rounded-2xl border border-border bg-card shadow-xl shadow-primary/5 overflow-hidden">
         {/* Progress */}
         <div className="flex gap-1 p-4 pb-0">

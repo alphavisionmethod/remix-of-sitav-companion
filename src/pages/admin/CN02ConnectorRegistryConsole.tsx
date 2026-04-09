@@ -27,6 +27,7 @@ export default function CN02ConnectorRegistryConsole() {
   return (
     <div className="space-y-6 p-6"  >
       <DemoModeBadge />
+      <h1 className="sr-only">Connector Registry Console</h1>
       <Card className="bg-card border-border">
         <CardHeader><CardTitle>Connector Types</CardTitle></CardHeader>
         <CardContent>

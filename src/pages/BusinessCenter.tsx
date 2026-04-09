@@ -74,6 +74,7 @@ const BusinessCenter = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <h1 className="sr-only">Business Center</h1>
       <DemoModeBadge />
       <motion.div
         className="overflow-x-auto -mx-2 px-2"

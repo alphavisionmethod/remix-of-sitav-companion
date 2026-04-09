@@ -132,7 +132,8 @@ export default function CN01ConnectorRealityOverview() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
+       <DemoModeBadge />
+      <h1 className="sr-only">Connector Reality Overview</h1>
       <div className="flex items-center gap-3">
         <Button onClick={() => seedMutation.mutate({})} disabled={seedMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${seedMutation.isPending ? "animate-spin" : ""}`} />

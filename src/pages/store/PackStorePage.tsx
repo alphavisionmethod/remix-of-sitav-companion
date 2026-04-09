@@ -40,6 +40,7 @@ const PackStorePage = () => {
   return (
     <div className="mx-auto max-w-6xl space-y-8">
       <DemoModeBadge />
+      <h1 className="sr-only">Pack Store</h1>
       {/* Hero */}
       <StoreHero
         installedCount={installed.length}

@@ -28,6 +28,7 @@ export default function CN06ConnectorDemoReview() {
   return (
     <div className="space-y-6 p-6"  >
       <DemoModeBadge />
+      <h1 className="sr-only">Connector Demo Review</h1>
       <div className="space-y-6">
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={() => activateMutation.mutate({ id: "demo_google_drive" })} disabled={activateMutation.isPending}>

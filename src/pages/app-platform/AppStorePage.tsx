@@ -47,6 +47,7 @@ const AppStorePage = () => {
   return (
     <div className="mx-auto max-w-6xl space-y-8">
       <DemoModeBadge />
+      <h1 className="sr-only">App Store</h1>
       <StoreHero installedCount={installed.length} appsAvailable={APP_CATALOG.length} />
 
       {/* Quick Nav */}

@@ -52,6 +52,7 @@ const FilesCenter = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <h1 className="sr-only">Files Center</h1>
       <DemoModeBadge />
       <motion.div
         className="overflow-x-auto -mx-2 px-2"
