@@ -84,6 +84,7 @@ export const PlanningStyleStep = ({ data, onUpdate, onNext, onPrev }: Props) => 
           </p>
         </motion.div>
       )}
+    </div>
 
     <div className="flex items-center justify-between mt-6">
       <button onClick={onPrev} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
