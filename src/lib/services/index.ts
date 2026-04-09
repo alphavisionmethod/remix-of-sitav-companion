@@ -20,6 +20,7 @@ export * from "./brain-core";
 export * from "./business-os";
 export * from "./finance-os";
 export * from "./concierge-os";
+export * from "./conscience-gate";
 
 export { evaluateTruthBoundaries, getBoundaryRule, listProtectedFields, isFieldProtected } from "./policy-engine";
 export { resolveApprovalRequirements, getThresholdsForDomain } from "./policy-engine";
