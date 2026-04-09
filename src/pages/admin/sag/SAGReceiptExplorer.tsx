@@ -12,7 +12,7 @@ const SAGReceiptExplorer = () => {
   const { data: receipts = [], isLoading } = useInferenceReceipts();
   const { data: tasks = [] } = useTaskRequests();
 
-  const verified = receipts.filter((r: any) => r.verification_outcome === 'passed').length;
+  const verified = receipts.filter((r: Record<string, any>) => r.verification_outcome === 'passed').length;
   const totalCost = receipts.reduce((s: number, r: any) => s + (r.cost_actual_cents || 0), 0);
 
   return (
@@ -27,7 +27,7 @@ const SAGReceiptExplorer = () => {
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{receipts.length}</p><p className="text-xs text-muted-foreground">Total Receipts</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{verified}</p><p className="text-xs text-muted-foreground">Verified</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">${(totalCost / 100).toFixed(2)}</p><p className="text-xs text-muted-foreground">Total Receipted Cost</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{receipts.filter((r: any) => r.cache_hits > 0).length}</p><p className="text-xs text-muted-foreground">Cache Hits</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{receipts.filter((r: Record<string, any>) => r.cache_hits > 0).length}</p><p className="text-xs text-muted-foreground">Cache Hits</p></CardContent></Card>
       </div>
 
       <div className="space-y-3">
@@ -38,7 +38,7 @@ const SAGReceiptExplorer = () => {
               <p className="text-muted-foreground">No inference receipts yet. Every AI action will be receipted here with full trace data.</p>
             </CardContent></Card>
           ) :
-          receipts.map((r: any) => (
+          receipts.map((r: Record<string, any>) => (
             <Card key={r.id} className="hover:border-primary/30 transition-colors">
               <CardContent className="py-4">
                 <div className="flex items-center justify-between mb-2">

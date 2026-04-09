@@ -93,7 +93,7 @@ export default function ConnectorGovernanceCenter() {
         .order("created_at", { ascending: false })
         .limit(30);
       if (error || !data || data.length === 0) return DEMO_FALLBACK_SYNC_HISTORY;
-      return data.map((log: any) => ({
+      return data.map((log: Record<string, any>) => ({
         connector: log.details?.connector_type || log.target_type || "Unknown",
         time: new Date(log.created_at).toLocaleString(),
         status: log.details?.status || (log.action?.includes("fail") ? "failed" : "success"),
@@ -118,7 +118,7 @@ export default function ConnectorGovernanceCenter() {
   });
 
   const activeConnectors = dbConnectors ? DEMO_CONNECTORS.map(c => {
-    const acc = dbConnectors.accounts.find((a: any) => a.connector_type === c.id);
+    const acc = dbConnectors.accounts.find((a: Record<string, any>) => a.connector_type === c.id);
     return acc ? { ...c, status: acc.status === "active" ? "healthy" as const : c.status, lastSyncAt: acc.connected_at ? new Date(acc.connected_at).toLocaleTimeString() : c.lastSyncAt } : c;
   }) : DEMO_CONNECTORS;
 

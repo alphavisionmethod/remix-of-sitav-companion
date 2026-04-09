@@ -100,7 +100,7 @@ const HRS03ReadinessExplanation = () => {
                 <table className="w-full text-xs">
                   <thead><tr className="border-b"><th className="text-left p-2">Level</th><th className="text-left p-2">Confidence</th><th className="text-left p-2">Source</th><th className="text-left p-2">Assessed</th></tr></thead>
                   <tbody>
-                    {dbReadiness.map((r: any) => (
+                    {dbReadiness.map((r: Record<string, any>) => (
                       <tr key={r.id} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-mono font-medium">{r.readiness_level}</td>
                         <td className="p-2">{r.confidence != null ? `${Math.round(r.confidence * 100)}%` : "—"}</td>

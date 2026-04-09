@@ -27,7 +27,7 @@ const FIPCapabilityRegistry = () => {
     setForm({ capability_id: '', name: '', capability_class: 'observe', owner_service: '', risk_tier: 'standard', approval_type: 'none', receipt_requirement: 'none' });
   };
 
-  const classCounts = CAPABILITY_CLASSES.reduce((acc, c) => ({ ...acc, [c]: caps.filter((cap: any) => cap.capability_class === c).length }), {} as Record<string, number>);
+  const classCounts = CAPABILITY_CLASSES.reduce((acc, c) => ({ ...acc, [c]: caps.filter((cap: Record<string, any>) => cap.capability_class === c).length }), {} as Record<string, number>);
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -77,7 +77,7 @@ const FIPCapabilityRegistry = () => {
             <TableBody>
               {isLoading ? <TableRow><TableCell colSpan={8} className="text-center py-8">Loading...</TableCell></TableRow> :
                 caps.length === 0 ? <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No capabilities registered</TableCell></TableRow> :
-                caps.map((cap: any) => (
+                caps.map((cap: Record<string, any>) => (
                   <TableRow key={cap.id}>
                     <TableCell className="font-mono text-xs">{cap.capability_id}</TableCell>
                     <TableCell>{cap.name}</TableCell>

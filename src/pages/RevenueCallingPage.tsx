@@ -263,7 +263,7 @@ const RevenueCallingPage = () => {
   const contacts: Contact[] = useMemo(() => {
     if (isDemoMode) return MOCK_CONTACTS;
     if (!liveContacts?.length) return [];
-    return liveContacts.map((c: any) => ({
+    return liveContacts.map((c: Record<string, any>) => ({
       id: c.id,
       name: c.name,
       company: c.company || "",
@@ -281,7 +281,7 @@ const RevenueCallingPage = () => {
   const callLogs: CallLog[] = useMemo(() => {
     if (isDemoMode) return MOCK_CALL_LOGS;
     if (!liveLogs?.length) return [];
-    return liveLogs.map((l: any): CallLog => ({
+    return liveLogs.map((l: Record<string, any>): CallLog => ({
       id: l.id,
       contactId: l.contact_id || "",
       contactName: l.contact_name || "",

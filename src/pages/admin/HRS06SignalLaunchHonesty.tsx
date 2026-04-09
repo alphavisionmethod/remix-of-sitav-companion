@@ -43,9 +43,9 @@ const HRS06SignalLaunchHonesty = () => {
         <>
           <div className="grid grid-cols-3 gap-4">
             {[
-              { label: "Demo Ready", count: items.filter((t: any) => t.demo).length },
-              { label: "Real Data", count: items.filter((t: any) => t.real).length },
-              { label: "Critical Path", count: items.filter((t: any) => t.critical).length },
+              { label: "Demo Ready", count: items.filter((t: Record<string, any>) => t.demo).length },
+              { label: "Real Data", count: items.filter((t: Record<string, any>) => t.real).length },
+              { label: "Critical Path", count: items.filter((t: Record<string, any>) => t.critical).length },
             ].map((s) => (
               <Card key={s.label}><CardContent className="pt-4 pb-3"><div className="text-xs text-muted-foreground">{s.label}</div><div className="text-2xl font-bold">{s.count}/{items.length}</div></CardContent></Card>
             ))}
@@ -59,7 +59,7 @@ const HRS06SignalLaunchHonesty = () => {
 
             <TabsContent value="grid">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {items.map((item: any) => (
+                {items.map((item: Record<string, any>) => (
                   <Card key={item.target || item.key} className={item.critical ? "border-primary/50" : ""}>
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between">
@@ -87,7 +87,7 @@ const HRS06SignalLaunchHonesty = () => {
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 flex-wrap">
-                    {items.filter((s: any) => s.key !== "hrs_demo").map((s: any, i: number) => (
+                    {items.filter((s: Record<string, any>) => s.key !== "hrs_demo").map((s: any, i: number) => (
                       <div key={s.key} className="flex items-center gap-2">
                         {i > 0 && <ArrowRight className="h-4 w-4 text-muted-foreground" />}
                         <div className={`p-3 rounded-lg border ${s.readiness > 50 ? "bg-green-500/10" : "bg-muted/30"}`}>

@@ -43,7 +43,7 @@ export default function PFA06PermissionUpgradeCenter() {
         </CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4">
           <p className="text-xs text-muted-foreground">Pending Upgrades</p>
-          <p className="text-2xl font-bold">{levels.filter((l: any) => l.upgrade_available).length}</p>
+          <p className="text-2xl font-bold">{levels.filter((l: Record<string, any>) => l.upgrade_available).length}</p>
         </CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4">
           <p className="text-xs text-muted-foreground">Completed Upgrades</p>
@@ -67,7 +67,7 @@ export default function PFA06PermissionUpgradeCenter() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {policies.map((p: any) => (
+                {policies.map((p: Record<string, any>) => (
                   <TableRow key={p.id}>
                     <TableCell className="font-mono text-xs">{p.provider_capabilities?.capability_key}</TableCell>
                     <TableCell><Badge variant="outline">{p.default_grant_profile}</Badge></TableCell>

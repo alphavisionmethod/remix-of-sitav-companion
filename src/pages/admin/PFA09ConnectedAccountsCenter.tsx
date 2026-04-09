@@ -47,7 +47,7 @@ export default function PFA09ConnectedAccountsCenter() {
       <Card className="bg-card border-border">
         <CardHeader><CardTitle className="flex items-center gap-2"><Shield className="h-5 w-5" /> Sign-In Identity</CardTitle></CardHeader>
         <CardContent className="space-y-3">
-          {identities.length > 0 ? identities.map((id: any) => (
+          {identities.length > 0 ? identities.map((id: Record<string, any>) => (
             <div key={id.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 border border-border">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold">{id.provider_families?.name?.charAt(0)}</div>
@@ -71,8 +71,8 @@ export default function PFA09ConnectedAccountsCenter() {
       <Card className="bg-card border-border">
         <CardHeader><CardTitle className="flex items-center gap-2"><Link2 className="h-5 w-5" /> Connected Services</CardTitle></CardHeader>
         <CardContent className="space-y-3">
-          {services.length > 0 ? services.map((svc: any) => {
-            const level = levels.find((l: any) => l.provider_capability_id === svc.provider_capability_id);
+          {services.length > 0 ? services.map((svc: Record<string, any>) => {
+            const level = levels.find((l: Record<string, any>) => l.provider_capability_id === svc.provider_capability_id);
             return (
               <div key={svc.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 border border-border">
                 <div className="flex items-center gap-3">
@@ -109,9 +109,9 @@ export default function PFA09ConnectedAccountsCenter() {
           <CardHeader><CardTitle>Available Providers</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {families.map((f: any) => {
-                const hasIdentity = identities.some((i: any) => i.provider_family_id === f.id);
-                const connectedServices = services.filter((s: any) => s.provider_family_id === f.id);
+              {families.map((f: Record<string, any>) => {
+                const hasIdentity = identities.some((i: Record<string, any>) => i.provider_family_id === f.id);
+                const connectedServices = services.filter((s: Record<string, any>) => s.provider_family_id === f.id);
                 return (
                   <div key={f.id} className="p-3 rounded-lg border border-border bg-muted/5 space-y-1">
                     <div className="flex items-center gap-2">

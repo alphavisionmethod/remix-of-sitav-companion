@@ -62,7 +62,7 @@ const CommunicationsCenter = () => {
   const { data: dbComms = [] } = useCommunications();
 
   // Map DB communications to local type
-  const liveComms: Communication[] = dbComms.map((c: any) => ({
+  const liveComms: Communication[] = dbComms.map((c: Record<string, any>) => ({
     id: c.id,
     type: (c.channel || c.type || "email") as "email" | "sms" | "message",
     subject: c.subject || "",

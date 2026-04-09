@@ -30,13 +30,13 @@ export default function UAO08AmbientLaunchReadiness() {
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Launch readiness seeded"); queryClient.invalidateQueries(); },
-    onError: (e: any) => toast.error(e.message),
+    onError: (e: Record<string, any>) => toast.error(e.message),
   });
 
-  const deviceFamilies = readiness.filter((r: any) => r.target_type === "device_family");
-  const wearableProviders = readiness.filter((r: any) => r.target_type === "wearable_provider");
-  const launchReady = readiness.filter((r: any) => r.launch_ready).length;
-  const withBlockers = readiness.filter((r: any) => (r.blockers || []).length > 0).length;
+  const deviceFamilies = readiness.filter((r: Record<string, any>) => r.target_type === "device_family");
+  const wearableProviders = readiness.filter((r: Record<string, any>) => r.target_type === "wearable_provider");
+  const launchReady = readiness.filter((r: Record<string, any>) => r.launch_ready).length;
+  const withBlockers = readiness.filter((r: Record<string, any>) => (r.blockers || []).length > 0).length;
 
   return (
     <div className="space-y-6 p-6">
@@ -55,7 +55,7 @@ export default function UAO08AmbientLaunchReadiness() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Total</p><p className="text-2xl font-bold">{readiness.length}</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Launch Ready</p><p className="text-2xl font-bold text-green-400">{launchReady}</p></CardContent></Card>
-        <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Demo Available</p><p className="text-2xl font-bold">{readiness.filter((r: any) => r.demo_available).length}</p></CardContent></Card>
+        <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Demo Available</p><p className="text-2xl font-bold">{readiness.filter((r: Record<string, any>) => r.demo_available).length}</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">With Blockers</p><p className="text-2xl font-bold text-destructive">{withBlockers}</p></CardContent></Card>
       </div>
 
@@ -66,7 +66,7 @@ export default function UAO08AmbientLaunchReadiness() {
             <Table>
               <TableHeader><TableRow><TableHead>Device</TableHead><TableHead>Label</TableHead><TableHead>Supported</TableHead><TableHead>Demo</TableHead><TableHead>Pilot</TableHead><TableHead>Launch</TableHead><TableHead>Blockers</TableHead></TableRow></TableHeader>
               <TableBody>
-                {deviceFamilies.map((r: any) => (
+                {deviceFamilies.map((r: Record<string, any>) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-medium">{r.target_name}</TableCell>
                     <TableCell><Badge className={labelColors[r.launch_label] || ""}>{r.launch_label}</Badge></TableCell>
@@ -90,7 +90,7 @@ export default function UAO08AmbientLaunchReadiness() {
             <Table>
               <TableHeader><TableRow><TableHead>Provider</TableHead><TableHead>Label</TableHead><TableHead>Supported</TableHead><TableHead>Demo</TableHead><TableHead>Pilot</TableHead><TableHead>Launch</TableHead><TableHead>Blockers</TableHead></TableRow></TableHeader>
               <TableBody>
-                {wearableProviders.map((r: any) => (
+                {wearableProviders.map((r: Record<string, any>) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-medium">{r.target_name}</TableCell>
                     <TableCell><Badge className={labelColors[r.launch_label] || ""}>{r.launch_label}</Badge></TableCell>

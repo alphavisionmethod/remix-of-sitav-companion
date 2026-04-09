@@ -30,7 +30,7 @@ const PlatformMaturityDashboard = () => {
 
   // Build display from persisted scores or defaults
   const domains = CANONICAL_DOMAIN_PACKS.map(pack => {
-    const score = (scores ?? []).find((s: any) => s.scope_id === pack.domainKey);
+    const score = (scores ?? []).find((s: Record<string, any>) => s.scope_id === pack.domainKey);
     const composite = score ? Number(score.composite_score) : 0;
     const grade = getMaturityGrade(composite);
     return {

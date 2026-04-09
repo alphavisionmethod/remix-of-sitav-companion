@@ -174,8 +174,8 @@ const NotificationCenter = () => {
 
   const allNotifs = useMemo(() => {
     const combined = [
-      ...notifications.map((n: any) => ({ ...n, source: "queue" })),
-      ...legacyNotifs.map((n: any) => ({ ...n, source: "legacy", category: n.domain || n.type || "system" })),
+      ...notifications.map((n: Record<string, any>) => ({ ...n, source: "queue" })),
+      ...legacyNotifs.map((n: Record<string, any>) => ({ ...n, source: "legacy", category: n.domain || n.type || "system" })),
     ].sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
     if (isDemoMode) {
@@ -193,14 +193,14 @@ const NotificationCenter = () => {
   // Filter
   const filtered = useMemo(() => {
     if (category === "all") return allNotifs;
-    if (category === "resolved") return allNotifs.filter((n: any) => n.read_at || n.read || n.status === "sent");
-    if (category === "action") return allNotifs.filter((n: any) => !n.read_at && !n.read && (n.urgency === "high" || n.urgency === "critical"));
-    return allNotifs.filter((n: any) => n.category === category);
+    if (category === "resolved") return allNotifs.filter((n: Record<string, any>) => n.read_at || n.read || n.status === "sent");
+    if (category === "action") return allNotifs.filter((n: Record<string, any>) => !n.read_at && !n.read && (n.urgency === "high" || n.urgency === "critical"));
+    return allNotifs.filter((n: Record<string, any>) => n.category === category);
   }, [allNotifs, category]);
 
-  const unreadCount = allNotifs.filter((n: any) => !n.read_at && !n.read).length;
-  const criticalCount = allNotifs.filter((n: any) => n.urgency === "critical" && !n.read_at).length;
-  const approvalCount = allNotifs.filter((n: any) => n.category === "approval" && !n.read_at).length;
+  const unreadCount = allNotifs.filter((n: Record<string, any>) => !n.read_at && !n.read).length;
+  const criticalCount = allNotifs.filter((n: Record<string, any>) => n.urgency === "critical" && !n.read_at).length;
+  const approvalCount = allNotifs.filter((n: Record<string, any>) => n.category === "approval" && !n.read_at).length;
 
   const handleMarkRead = (id: string) => {
     toast.success("Marked as read");
@@ -298,7 +298,7 @@ const NotificationCenter = () => {
       ) : (
         <AnimatePresence mode="popLayout">
           <div className="space-y-2">
-            {filtered.map((notif: any) => (
+            {filtered.map((notif: Record<string, any>) => (
               <NotificationCard
                 key={notif.id}
                 notif={notif}

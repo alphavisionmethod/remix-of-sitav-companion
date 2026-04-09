@@ -109,7 +109,7 @@ const HRS05AssistantTimingBoard = () => {
               <CardHeader><CardTitle className="text-sm">Current Readiness → Timing Decisions</CardTitle></CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {dbReadiness.map((r: any) => {
+                  {dbReadiness.map((r: Record<string, any>) => {
                     const level = r.readiness_level || "unknown";
                     const timingDecision = level === "high" ? "Open — all briefings eligible" : level === "low" ? "Restricted — high+ urgency only" : level === "overload_risk" ? "Suppressed — emergency only" : "Standard routing";
                     return (

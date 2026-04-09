@@ -68,7 +68,7 @@ export default function AR02ScheduledJobRegistry() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {jobs.map((j: any) => {
+                {jobs.map((j: Record<string, any>) => {
                   const StateIcon = stateIcons[j.state] || Clock;
                   return (
                     <TableRow key={j.id}>

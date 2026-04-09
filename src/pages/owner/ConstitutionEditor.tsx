@@ -299,7 +299,7 @@ export default function ConstitutionEditor() {
 
       if (!error && data && data.length > 0) {
         // Hydrate the in-memory compiler with DB rules
-        data.forEach((row: any) => {
+        data.forEach((row: Record<string, any>) => {
           // Only add if not already in compiler
           const existing = compiler.getAllRules();
           if (!existing.find((r: ConstitutionRule) => r.naturalLanguage === row.natural_text)) {

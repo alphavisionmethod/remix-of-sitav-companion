@@ -27,9 +27,9 @@ export default function PFA10IntegrationLaunchHonesty() {
     queryFn: async () => { const { data } = await fromTable("integration_launch_honesty").select("*, provider_families(name, provider_key), provider_capabilities(display_name, capability_key)").order("created_at"); return data || []; },
   });
 
-  const launchReady = honesty.filter((h: any) => h.launch_label === "launch_ready").length;
-  const shellOnly = honesty.filter((h: any) => h.launch_label === "shell_only").length;
-  const withBlockers = honesty.filter((h: any) => (h.blockers || []).length > 0).length;
+  const launchReady = honesty.filter((h: Record<string, any>) => h.launch_label === "launch_ready").length;
+  const shellOnly = honesty.filter((h: Record<string, any>) => h.launch_label === "shell_only").length;
+  const withBlockers = honesty.filter((h: Record<string, any>) => (h.blockers || []).length > 0).length;
 
   return (
     <div className="space-y-6 p-6">
@@ -72,7 +72,7 @@ export default function PFA10IntegrationLaunchHonesty() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {honesty.map((h: any) => (
+                {honesty.map((h: Record<string, any>) => (
                   <TableRow key={h.id}>
                     <TableCell>{h.provider_families?.name || "—"}</TableCell>
                     <TableCell className="text-xs">{h.provider_capabilities?.display_name || "Family-level"}</TableCell>

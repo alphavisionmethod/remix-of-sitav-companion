@@ -37,15 +37,15 @@ export default function BoardroomHistory() {
         .eq("user_id", user!.id)
         .order("created_at", { ascending: false });
       if (error || !data || data.length === 0) return DEMO_SESSIONS;
-      return data.map((s: any) => ({
+      return data.map((s: Record<string, any>) => ({
         ...s,
         decisions_count: s.boardroom_decisions?.length || 0,
       }));
     },
   });
 
-  const completed = sessions.filter((s: any) => s.status === "completed").length;
-  const active = sessions.filter((s: any) => s.status === "active").length;
+  const completed = sessions.filter((s: Record<string, any>) => s.status === "completed").length;
+  const active = sessions.filter((s: Record<string, any>) => s.status === "active").length;
   const avgConfidence = sessions.length > 0
     ? Math.round(sessions.reduce((a: number, s: any) => a + (s.confidence_score || 0), 0) / sessions.length)
     : 0;
@@ -70,7 +70,7 @@ export default function BoardroomHistory() {
         {sessions.length === 0 ? (
           <EmptyState icon={BarChart3} title="No sessions yet" description="Start a boardroom session to see history here" />
         ) : (
-          sessions.map((session: any) => (
+          sessions.map((session: Record<string, any>) => (
             <SitaCard key={session.id} className="p-4 cursor-pointer hover:border-primary/30 transition-colors" onClick={() => navigate("/boardroom/replay")}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">

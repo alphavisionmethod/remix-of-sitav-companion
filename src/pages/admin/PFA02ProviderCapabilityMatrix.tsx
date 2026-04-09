@@ -50,7 +50,7 @@ export default function PFA02ProviderCapabilityMatrix() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {caps.map((c: any) => (
+                {caps.map((c: Record<string, any>) => (
                   <TableRow key={c.id}>
                     <TableCell className="font-mono text-xs">{c.capability_key}</TableCell>
                     <TableCell><Badge variant="outline">{c.category}</Badge></TableCell>

@@ -36,11 +36,11 @@ export default function UAO03AmbientTeamControl() {
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Assistant roles seeded"); queryClient.invalidateQueries(); },
-    onError: (e: any) => toast.error(e.message),
+    onError: (e: Record<string, any>) => toast.error(e.message),
   });
 
-  const activeRoles = roles.filter((r: any) => r.active);
-  const proactiveRoles = roles.filter((r: any) => r.proactive_mode);
+  const activeRoles = roles.filter((r: Record<string, any>) => r.active);
+  const proactiveRoles = roles.filter((r: Record<string, any>) => r.proactive_mode);
 
   return (
     <div className="space-y-6 p-6">
@@ -70,7 +70,7 @@ export default function UAO03AmbientTeamControl() {
             <Table>
               <TableHeader><TableRow><TableHead>Role</TableHead><TableHead>Description</TableHead><TableHead>Intensity</TableHead><TableHead>Tone</TableHead><TableHead>Proactive</TableHead><TableHead>Escalation</TableHead><TableHead>Active</TableHead></TableRow></TableHeader>
               <TableBody>
-                {roles.map((r: any) => (
+                {roles.map((r: Record<string, any>) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-medium">{r.role_name}</TableCell>
                     <TableCell className="text-xs max-w-[250px] truncate">{r.description}</TableCell>

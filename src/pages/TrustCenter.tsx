@@ -82,7 +82,7 @@ const TrustCenter = () => {
               </div>
               <div>
                 <div className="text-lg font-bold text-emerald-400">Trust Posture: Secure</div>
-                <div className="text-xs text-muted-foreground">All systems nominal · {displayDevices.filter((d: any) => d.status === "online").length} devices online · Approvals up to date</div>
+                <div className="text-xs text-muted-foreground">All systems nominal · {displayDevices.filter((d: Record<string, any>) => d.status === "online").length} devices online · Approvals up to date</div>
               </div>
             </div>
             <div className="flex items-center gap-6 text-center">
@@ -155,7 +155,7 @@ const TrustCenter = () => {
             <SitaCard className="p-4">
               <SitaCardTitle className="text-xs mb-3 flex items-center gap-1.5"><Smartphone className="w-3 h-3" /> Trusted Devices</SitaCardTitle>
               <div className="space-y-2">
-                {displayDevices.map((dev: any) => (
+                {displayDevices.map((dev: Record<string, any>) => (
                   <div key={dev.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-accent/10 transition-colors">
                     <div className={cn("w-2 h-2 rounded-full", dev.status === "online" ? "bg-emerald-400" : "bg-muted-foreground/30")} />
                     <div className="flex-1">
@@ -185,7 +185,7 @@ const TrustCenter = () => {
 
       {tab === "devices" && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
-          {displayDevices.map((dev: any) => (
+          {displayDevices.map((dev: Record<string, any>) => (
             <SitaCard key={dev.id} className="p-4" hover>
               <div className="flex items-center gap-4">
                 <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", dev.status === "online" ? "bg-emerald-500/15" : "bg-muted/20")}>

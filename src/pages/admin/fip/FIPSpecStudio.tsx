@@ -66,14 +66,14 @@ const FIPSpecStudio = () => {
 
       <div className="grid grid-cols-3 gap-4">
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{specs.length}</p><p className="text-xs text-muted-foreground">Total Specs</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{specs.filter((s: any) => (s.completeness_score || 0) >= 80).length}</p><p className="text-xs text-muted-foreground">Complete (≥80%)</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{specs.filter((s: any) => (s.completeness_score || 0) < 40).length}</p><p className="text-xs text-muted-foreground">Needs Work (&lt;40%)</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{specs.filter((s: Record<string, any>) => (s.completeness_score || 0) >= 80).length}</p><p className="text-xs text-muted-foreground">Complete (≥80%)</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{specs.filter((s: Record<string, any>) => (s.completeness_score || 0) < 40).length}</p><p className="text-xs text-muted-foreground">Needs Work (&lt;40%)</p></CardContent></Card>
       </div>
 
       <div className="space-y-3">
         {isLoading ? <p className="text-center py-8 text-muted-foreground">Loading specs...</p> :
           specs.length === 0 ? <Card><CardContent className="py-12 text-center text-muted-foreground">No feature specs yet. Create one to begin protocol-compliant specification.</CardContent></Card> :
-          specs.map((spec: any) => (
+          specs.map((spec: Record<string, any>) => (
             <Card key={spec.id} className="hover:border-primary/30 transition-colors">
               <CardContent className="py-4">
                 <div className="flex items-center justify-between mb-2">

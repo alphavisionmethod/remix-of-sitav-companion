@@ -249,7 +249,7 @@ const RevenueForecast = () => {
     queryFn: async () => {
       const { data, error } = await fromTable("digital_twins").select("*");
       if (error) throw error;
-      return data?.length ? data.map((t: any) => ({
+      return data?.length ? data.map((t: Record<string, any>) => ({
         id: t.id,
         name: t.name,
         healthScore: t.health_score,
@@ -269,7 +269,7 @@ const RevenueForecast = () => {
     queryFn: async () => {
       const { data, error } = await fromTable("playbook_metrics").select("*");
       if (error) throw error;
-      return data?.length ? data.map((p: any) => ({
+      return data?.length ? data.map((p: Record<string, any>) => ({
         id: p.playbook_id,
         name: p.name,
         projectedLift: p.projected_lift,

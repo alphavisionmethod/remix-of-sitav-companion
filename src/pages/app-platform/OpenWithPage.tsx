@@ -68,7 +68,7 @@ const OpenWithPage = () => {
 
       {/* App List */}
       <div className="space-y-2">
-        {candidateApps.map((app: any) => {
+        {candidateApps.map((app: Record<string, any>) => {
           const isRecommended = app.id === recommended?.id;
           const isSelected = selectedApp === app.id;
           return (

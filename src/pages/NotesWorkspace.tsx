@@ -20,7 +20,7 @@ const TYPE_ICONS: Record<string, React.ElementType> = { note: FileText, meeting:
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
 // Map Supabase note row to DemoNote shape for UI compatibility
-function mapDbNote(row: any): Note {
+function mapDbNote(row: Record<string, any>): Note {
   return {
     id: row.id,
     title: row.title || "Untitled",

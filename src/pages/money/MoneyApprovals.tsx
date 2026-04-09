@@ -19,8 +19,8 @@ const MoneyApprovals = () => {
   const approveMut = useApproveMoneyAction();
   const rejectMut = useRejectMoneyAction();
 
-  const selected = approvals.find((a: any) => a.id === selectedId);
-  const pendingCount = approvals.filter((a: any) => a.status === "pending").length;
+  const selected = approvals.find((a: Record<string, any>) => a.id === selectedId);
+  const pendingCount = approvals.filter((a: Record<string, any>) => a.status === "pending").length;
 
   const handleApprove = () => {
     if (!selectedId) return;
@@ -48,7 +48,7 @@ const MoneyApprovals = () => {
         <div className="lg:col-span-3 space-y-2">
           {approvals.length === 0 ? (
             <EmptyState icon={Shield} title="No pending approvals" description="All financial actions are resolved" />
-          ) : approvals.map((a: any) => {
+          ) : approvals.map((a: Record<string, any>) => {
             const pa = a.proposed_action || {};
             const risk = pa.risk || "low";
             return (

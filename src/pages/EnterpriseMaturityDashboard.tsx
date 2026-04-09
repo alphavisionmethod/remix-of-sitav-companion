@@ -127,7 +127,7 @@ function ReleaseCard({ release }: { release: any }) {
         ))}
       </div>
       <div className="flex items-center gap-2">
-        <span className="text-[9px] text-muted-foreground">Checklist: {release.readinessChecklist.filter((c: any) => c.met).length}/{release.readinessChecklist.length}</span>
+        <span className="text-[9px] text-muted-foreground">Checklist: {release.readinessChecklist.filter((c: Record<string, any>) => c.met).length}/{release.readinessChecklist.length}</span>
         {release.impactPrediction.riskLevel !== "low" && (
           <Badge className="bg-accent/10 text-accent border-accent/20 text-[9px]">
             <AlertTriangle className="h-2.5 w-2.5 mr-1" />{release.impactPrediction.riskLevel} risk

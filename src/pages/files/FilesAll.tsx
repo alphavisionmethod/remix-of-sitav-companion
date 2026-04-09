@@ -17,7 +17,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 type FileCategory = "all" | "business" | "money" | "household" | "travel" | "legal" | "sensitive";
 
-function classifyDomain(f: any): string {
+function classifyDomain(f: Record<string, any>): string {
   const text = `${f.filename} ${f.extracted_data?.text || ""} ${f.classification || ""}`.toLowerCase();
   if (text.includes("invoice") || text.includes("contract") || text.includes("nda")) return "business";
   if (text.includes("bank") || text.includes("statement") || text.includes("receipt") || text.includes("bill")) return "money";
@@ -54,7 +54,7 @@ const FilesAll = () => {
   const [category, setCategory] = useState<FileCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const files = useMemo(() => rawFiles.map((f: any) => ({
+  const files = useMemo(() => rawFiles.map((f: Record<string, any>) => ({
     ...f,
     domain: classifyDomain(f),
     trust: trustFromSensitivity(f.sensitivity),
@@ -125,7 +125,7 @@ const FilesAll = () => {
         <EmptyState icon={FolderOpen} title="No files found" description="Upload files to get started, or adjust your filters" />
       ) : (
         <div className="space-y-2">
-          {filtered.map((file: any) => (
+          {filtered.map((file: Record<string, any>) => (
             <SitaCard key={file.id} className="p-4">
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4 min-w-0 flex-1">

@@ -75,8 +75,8 @@ const RecoveryCenter = () => {
     },
   });
 
-  const stuckRuns = (failedRuns as never[]).filter((r: any) => r.status === "running" && Date.now() - new Date(r.started_at).getTime() > 3600000);
-  const failedOnly = (failedRuns as never[]).filter((r: any) => r.status === "failed");
+  const stuckRuns = (failedRuns as never[]).filter((r: Record<string, any>) => r.status === "running" && Date.now() - new Date(r.started_at).getTime() > 3600000);
+  const failedOnly = (failedRuns as never[]).filter((r: Record<string, any>) => r.status === "failed");
   const openIncidents = incidents.filter(i => i.status === "open");
   const resolvedIncidents = incidents.filter(i => i.status === "resolved");
 

@@ -78,7 +78,7 @@ const EnterpriseControlPlane = () => {
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
       const { data } = await fromTable("profiles").select("*, user_roles(role)").limit(50);
-      return (data ?? []).map((p: any) => ({
+      return (data ?? []).map((p: Record<string, any>) => ({
         id: p.id || p.user_id,
         name: p.display_name || p.email || "Unknown",
         email: p.email || "",
@@ -95,7 +95,7 @@ const EnterpriseControlPlane = () => {
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
       const { data } = await fromTable("audit_logs").select("*").eq("category", "deployment").order("created_at", { ascending: false }).limit(10);
-      return (data ?? []).map((a: any) => ({
+      return (data ?? []).map((a: Record<string, any>) => ({
         id: a.id,
         env: a.details?.environment || "production",
         version: a.details?.version || "v2.x",

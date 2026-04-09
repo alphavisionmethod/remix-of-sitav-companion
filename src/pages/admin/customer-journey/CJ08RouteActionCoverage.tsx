@@ -40,24 +40,24 @@ export default function CJ08RouteActionCoverage() {
       const ac = await seedActions.mutateAsync();
       const rc = await seedCoverage.mutateAsync();
       toast.success(`Seeded ${ac} actions + ${rc} routes`);
-    } catch (e: any) {
+    } catch (e: Record<string, any>) {
       toast.error(e.message);
     }
   };
 
   const totalActions = actions?.length ?? 0;
-  const p0Count = (actions ?? []).filter((a: any) => a.priority_class === "p0").length;
-  const p1Count = (actions ?? []).filter((a: any) => a.priority_class === "p1").length;
+  const p0Count = (actions ?? []).filter((a: Record<string, any>) => a.priority_class === "p0").length;
+  const p1Count = (actions ?? []).filter((a: Record<string, any>) => a.priority_class === "p1").length;
   const totalRoutes = coverage?.length ?? 0;
-  const zeroCoverage = (coverage ?? []).filter((r: any) => (r.coverage_percent ?? 0) === 0).length;
-  const weakCoverage = (coverage ?? []).filter((r: any) => {
+  const zeroCoverage = (coverage ?? []).filter((r: Record<string, any>) => (r.coverage_percent ?? 0) === 0).length;
+  const weakCoverage = (coverage ?? []).filter((r: Record<string, any>) => {
     const pct = r.coverage_percent ?? 0;
     return pct > 0 && pct < WEAK_THRESHOLD;
   }).length;
 
   const filteredActions = filter === "all"
     ? (actions ?? [])
-    : (actions ?? []).filter((a: any) => a.priority_class === filter);
+    : (actions ?? []).filter((a: Record<string, any>) => a.priority_class === filter);
 
   // Domain coverage heatmap data
   const domainHeatmap = useMemo(() => {
@@ -174,7 +174,7 @@ export default function CJ08RouteActionCoverage() {
             <Card>
               <CardHeader className="pb-2"><CardTitle className="text-lg">Route Coverage</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {(coverage ?? []).map((r: any) => {
+                {(coverage ?? []).map((r: Record<string, any>) => {
                   const pct = r.coverage_percent ?? 0;
                   const isWeak = pct > 0 && pct < WEAK_THRESHOLD;
                   return (
@@ -212,7 +212,7 @@ export default function CJ08RouteActionCoverage() {
               {filteredActions.length === 0 ? (
                 <p className="text-sm text-muted-foreground text-center py-4">No actions found. Click "Seed from Registry" to populate.</p>
               ) : (
-                filteredActions.map((a: any) => (
+                filteredActions.map((a: Record<string, any>) => (
                   <div key={a.id} className="flex items-center justify-between p-2 rounded border bg-card text-sm">
                     <div className="flex-1 min-w-0">
                       <div className="font-medium truncate">{a.action_label || a.action_key}</div>

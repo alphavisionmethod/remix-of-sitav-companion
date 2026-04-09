@@ -31,7 +31,7 @@ export default function CampaignOrchestrator() {
   const { isDemoMode } = useDataMode();
   const { data: liveCampaigns, isLoading } = useCampaigns();
 
-  const CAMPAIGNS = isDemoMode ? DEMO_CAMPAIGNS : (liveCampaigns?.map((c: any) => ({
+  const CAMPAIGNS = isDemoMode ? DEMO_CAMPAIGNS : (liveCampaigns?.map((c: Record<string, any>) => ({
     name: c.name, type: c.channel || "email", status: c.status, subscribers: c.audience_size || 0,
     openRate: c.open_rate || 0, clickRate: c.click_rate || 0, conversions: c.conversions || 0,
     revenue: `$${c.revenue_generated || 0}`, steps: c.steps || 0, completionRate: c.completion_rate || 0,

@@ -43,11 +43,11 @@ export default function UAO05HealthReadiness() {
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Readiness checked"); queryClient.invalidateQueries(); },
-    onError: (e: any) => toast.error(e.message),
+    onError: (e: Record<string, any>) => toast.error(e.message),
   });
 
   const current = readiness[0];
-  const consentedCount = consents.filter((c: any) => c.consented).length;
+  const consentedCount = consents.filter((c: Record<string, any>) => c.consented).length;
 
   return (
     <div className="space-y-6 p-6">
@@ -76,7 +76,7 @@ export default function UAO05HealthReadiness() {
             <Table>
               <TableHeader><TableRow><TableHead>Category</TableHead><TableHead>Provider</TableHead><TableHead>Consented</TableHead><TableHead>Retention</TableHead><TableHead>Advisors</TableHead><TableHead>Routing</TableHead><TableHead>Visibility</TableHead></TableRow></TableHeader>
               <TableBody>
-                {consents.map((c: any) => (
+                {consents.map((c: Record<string, any>) => (
                   <TableRow key={c.id}>
                     <TableCell className="font-medium">{c.signal_category}</TableCell>
                     <TableCell className="text-xs">{c.wearable_providers?.name || "—"}</TableCell>
@@ -100,7 +100,7 @@ export default function UAO05HealthReadiness() {
             <Table>
               <TableHeader><TableRow><TableHead>Category</TableHead><TableHead>Privacy Tier</TableHead><TableHead>Local Only</TableHead><TableHead>Anonymize</TableHead><TableHead>Redact Export</TableHead><TableHead>Boardroom</TableHead><TableHead>Timeline</TableHead></TableRow></TableHeader>
               <TableBody>
-                {privacy.map((p: any) => (
+                {privacy.map((p: Record<string, any>) => (
                   <TableRow key={p.id}>
                     <TableCell className="font-medium">{p.signal_category}</TableCell>
                     <TableCell><Badge variant="outline" className="text-xs">{p.privacy_tier}</Badge></TableCell>
@@ -124,7 +124,7 @@ export default function UAO05HealthReadiness() {
             <Table>
               <TableHeader><TableRow><TableHead>Type</TableHead><TableHead>Value</TableHead><TableHead>Unit</TableHead><TableHead>Quality</TableHead><TableHead>Provider</TableHead><TableHead>Recorded</TableHead></TableRow></TableHeader>
               <TableBody>
-                {signals.slice(0, 10).map((s: any) => (
+                {signals.slice(0, 10).map((s: Record<string, any>) => (
                   <TableRow key={s.id}>
                     <TableCell className="text-xs font-mono">{s.signal_type}</TableCell>
                     <TableCell className="font-bold">{s.signal_value}</TableCell>

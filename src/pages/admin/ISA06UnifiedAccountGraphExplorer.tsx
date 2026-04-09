@@ -107,7 +107,7 @@ export default function ISA06UnifiedAccountGraphExplorer() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {typeNodes.map((node: any) => (
+                {typeNodes.map((node: Record<string, any>) => (
                   <Card key={node.id} className={`border ${config.color} bg-opacity-5`}>
                     <CardContent className="pt-4">
                       <div className="flex items-center justify-between mb-1">
@@ -142,9 +142,9 @@ export default function ISA06UnifiedAccountGraphExplorer() {
           <CardHeader><CardTitle className="text-lg">Graph Edges</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {edges.map((edge: any) => {
-                const fromNode = nodes.find((n: any) => n.id === edge.from_node_id);
-                const toNode = nodes.find((n: any) => n.id === edge.to_node_id);
+              {edges.map((edge: Record<string, any>) => {
+                const fromNode = nodes.find((n: Record<string, any>) => n.id === edge.from_node_id);
+                const toNode = nodes.find((n: Record<string, any>) => n.id === edge.to_node_id);
                 return (
                   <div key={edge.id} className="flex items-center gap-2 text-sm p-2 rounded bg-muted/30">
                     <span className="font-medium">{fromNode?.display_name || edge.from_node_id?.slice(0, 8)}</span>

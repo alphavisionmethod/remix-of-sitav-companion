@@ -21,8 +21,8 @@ const FIPGeneratedTruthBoard = () => {
   const { isDemoMode } = useDataMode();
   const { data: impacts = [], isLoading } = useGeneratedTruthImpacts();
 
-  const verified = impacts.filter((i: any) => i.verified).length;
-  const missing = impacts.filter((i: any) => i.current_state === 'missing').length;
+  const verified = impacts.filter((i: Record<string, any>) => i.verified).length;
+  const missing = impacts.filter((i: Record<string, any>) => i.current_state === 'missing').length;
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -44,9 +44,9 @@ const FIPGeneratedTruthBoard = () => {
         <CardContent>
           <div className="grid grid-cols-3 gap-3">
             {DEMO_GENERATED_ARTIFACTS.map(artifact => {
-              const relatedImpacts = impacts.filter((i: any) => i.artifact_path === artifact);
-              const allVerified = relatedImpacts.length > 0 && relatedImpacts.every((i: any) => i.verified);
-              const hasMissing = relatedImpacts.some((i: any) => i.current_state === 'missing');
+              const relatedImpacts = impacts.filter((i: Record<string, any>) => i.artifact_path === artifact);
+              const allVerified = relatedImpacts.length > 0 && relatedImpacts.every((i: Record<string, any>) => i.verified);
+              const hasMissing = relatedImpacts.some((i: Record<string, any>) => i.current_state === 'missing');
               return (
                 <div key={artifact} className={`p-3 rounded-lg border ${allVerified ? 'border-green-500/30' : hasMissing ? 'border-destructive/30' : 'border-border'}`}>
                   <div className="flex items-center gap-2 mb-1">
@@ -67,7 +67,7 @@ const FIPGeneratedTruthBoard = () => {
       <div className="space-y-3">
         {isLoading ? <p className="text-center py-8 text-muted-foreground">Loading...</p> :
           impacts.length === 0 ? <Card><CardContent className="py-12 text-center text-muted-foreground">No generated truth impacts tracked yet. Impacts are recorded when features modify platform artifacts.</CardContent></Card> :
-          impacts.map((i: any) => (
+          impacts.map((i: Record<string, any>) => (
             <Card key={i.id}>
               <CardContent className="py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">

@@ -31,7 +31,7 @@ export default function OutcomeEnginePage() {
   const outcomes = useMemo(() => {
     if (isDemoMode) return DEMO_OUTCOMES;
     if (!liveOutcomes?.length) return [];
-    return liveOutcomes.map((o: any) => ({
+    return liveOutcomes.map((o: Record<string, any>) => ({
       id: o.id,
       title: o.title,
       description: o.description || "",
@@ -98,7 +98,7 @@ export default function OutcomeEnginePage() {
             <EmptyState icon={Target} title="No outcomes yet" description="Add your first outcome to start tracking progress." />
           ) : (
             <div className="grid gap-4 lg:grid-cols-2">
-              {outcomes.map((o: any) => (
+              {outcomes.map((o: Record<string, any>) => (
                 <OutcomeProgress
                   key={o.id}
                   title={o.title}

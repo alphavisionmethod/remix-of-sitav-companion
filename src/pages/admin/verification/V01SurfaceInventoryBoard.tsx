@@ -31,7 +31,7 @@ export default function SurfaceInventoryBoard() {
 
   const surfaces = dbSurfaces && dbSurfaces.length > 0 ? dbSurfaces : SURFACE_REGISTRY.map((s) => ({ ...s, id: s.routeKey, verification_status: "untested", route_key: s.routeKey, route_path: s.routePath, test_priority: s.testPriority, action_type: s.actionType, action_label: s.actionLabel, surface_class: s.surfaceClass, launch_honesty_class: s.launchHonestyClass }));
 
-  const filtered = surfaces.filter((s: any) => {
+  const filtered = surfaces.filter((s: Record<string, any>) => {
     const key = s.route_key || s.routeKey || "";
     const label = s.action_label || s.actionLabel || "";
     const matchSearch = !search || key.toLowerCase().includes(search.toLowerCase()) || label.toLowerCase().includes(search.toLowerCase());

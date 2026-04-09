@@ -113,7 +113,7 @@ const ChangeImpactAnalyzer = () => {
           <CardHeader><CardTitle>Recent Impact Analyses</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {(records ?? []).map((r: any) => (
+              {(records ?? []).map((r: Record<string, any>) => (
                 <div key={r.id} className="flex items-center justify-between p-2 rounded border">
                   <span className="text-sm">{r.change_title}</span>
                   <div className="flex gap-2">

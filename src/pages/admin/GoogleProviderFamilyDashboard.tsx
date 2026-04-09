@@ -239,7 +239,7 @@ export default function GoogleProviderFamilyDashboard() {
                     {CAPABILITY_ICONS[key]} <span className="text-sm font-medium">{key.replace(/_/g, " ").replace("google ", "Google ")}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    {apis.map((api: any) => (
+                    {apis.map((api: Record<string, any>) => (
                       <Badge key={api.apiName} variant="outline" className="text-xs">{api.apiDisplayName}</Badge>
                     ))}
                   </div>

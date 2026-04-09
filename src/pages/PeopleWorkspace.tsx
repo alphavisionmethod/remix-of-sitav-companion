@@ -67,9 +67,9 @@ const PeopleWorkspace = () => {
 
   const allPeople = useMemo(() => {
     const people: Array<{ id: string; name: string; email?: string; phone?: string; company?: string; role: PersonRole; status: string; lastContact?: string; value?: number; healthScore?: number }> = [];
-    customers.forEach((c: any) => people.push({ id: c.id, name: c.name, email: c.email, phone: c.phone, company: c.company, role: "client", status: c.status, lastContact: c.last_contact_at, value: c.lifetime_revenue, healthScore: c.health_score }));
-    leads.forEach((l: any) => people.push({ id: l.id, name: l.name, email: l.email, phone: l.phone, company: l.company, role: "lead", status: l.status, lastContact: l.last_contact_at, value: l.likely_value }));
-    householdMembers.forEach((h: any) => people.push({ id: h.id, name: h.display_name, role: "household", status: h.role }));
+    customers.forEach((c: Record<string, any>) => people.push({ id: c.id, name: c.name, email: c.email, phone: c.phone, company: c.company, role: "client", status: c.status, lastContact: c.last_contact_at, value: c.lifetime_revenue, healthScore: c.health_score }));
+    leads.forEach((l: Record<string, any>) => people.push({ id: l.id, name: l.name, email: l.email, phone: l.phone, company: l.company, role: "lead", status: l.status, lastContact: l.last_contact_at, value: l.likely_value }));
+    householdMembers.forEach((h: Record<string, any>) => people.push({ id: h.id, name: h.display_name, role: "household", status: h.role }));
     return people;
   }, [customers, leads, householdMembers]);
 

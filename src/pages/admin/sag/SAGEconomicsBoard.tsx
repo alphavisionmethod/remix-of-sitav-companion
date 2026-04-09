@@ -22,7 +22,7 @@ const SAGEconomicsBoard = () => {
 
   // Domain spend
   const domainSpend: Record<string, number> = {};
-  tasks.forEach((t: any) => { if (t.domain) domainSpend[t.domain] = (domainSpend[t.domain] || 0) + (t.cost_actual_cents || 0); });
+  tasks.forEach((t: Record<string, any>) => { if (t.domain) domainSpend[t.domain] = (domainSpend[t.domain] || 0) + (t.cost_actual_cents || 0); });
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -54,7 +54,7 @@ const SAGEconomicsBoard = () => {
             </div>
           ) : (
             <div className="space-y-3">
-              {allocations.map((a: any) => {
+              {allocations.map((a: Record<string, any>) => {
                 const pct = a.budget_cents > 0 ? (a.spent_cents / a.budget_cents) * 100 : 0;
                 return (
                   <div key={a.id} className="space-y-1">
@@ -87,10 +87,10 @@ const SAGEconomicsBoard = () => {
         <Card>
           <CardHeader><CardTitle className="text-base">Premium Spend Justification</CardTitle></CardHeader>
           <CardContent>
-            {tasks.filter((t: any) => t.model_chosen?.includes('pro') || t.model_chosen?.includes('premium')).length === 0 ?
+            {tasks.filter((t: Record<string, any>) => t.model_chosen?.includes('pro') || t.model_chosen?.includes('premium')).length === 0 ?
               <p className="text-sm text-muted-foreground">No premium model usage yet. Premium models require explicit justification.</p> :
               <div className="space-y-2">
-                {tasks.filter((t: any) => t.model_chosen?.includes('pro') || t.model_chosen?.includes('premium')).slice(0, 5).map((t: any) => (
+                {tasks.filter((t: Record<string, any>) => t.model_chosen?.includes('pro') || t.model_chosen?.includes('premium')).slice(0, 5).map((t: Record<string, any>) => (
                   <div key={t.id} className="flex justify-between text-sm">
                     <span>{t.capability_id || t.task_class}</span>
                     <Badge variant="outline">{t.cost_actual_cents}¢</Badge>

@@ -58,9 +58,9 @@ const APL01AppleEcosystemCenter = () => {
   const updatePush = useUpdatePushRoute();
 
   const hasData = (devices?.length ?? 0) > 0;
-  const trustedCount = trustRecords?.filter((t: any) => t.biometric_verified).length ?? 0;
-  const consentCount = healthConsents?.filter((c: any) => c.read_permission && !c.revoked_at).length ?? 0;
-  const launchReadyCount = launchData?.filter((r: any) => r.launch_ready).length ?? 0;
+  const trustedCount = trustRecords?.filter((t: Record<string, any>) => t.biometric_verified).length ?? 0;
+  const consentCount = healthConsents?.filter((c: Record<string, any>) => c.read_permission && !c.revoked_at).length ?? 0;
+  const launchReadyCount = launchData?.filter((r: Record<string, any>) => r.launch_ready).length ?? 0;
 
   const overallReadiness = launchData && launchData.length > 0
     ? Math.round(launchData.reduce((sum: number, r: any) => {
@@ -130,9 +130,9 @@ const APL01AppleEcosystemCenter = () => {
             <Card><CardContent className="py-12 text-center text-muted-foreground">No Apple devices registered. Click "Seed Apple Data" to populate demo devices.</CardContent></Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {devices!.map((device: any) => {
+              {devices!.map((device: Record<string, any>) => {
                 const meta = SURFACE_META[device.surface] || { title: device.surface, icon: Smartphone, desc: "", tech: [], capabilities: [] };
-                const trust = trustRecords?.find((t: any) => t.device_id === device.id);
+                const trust = trustRecords?.find((t: Record<string, any>) => t.device_id === device.id);
                 return (
                   <Card key={device.id} className="group hover:shadow-md transition-shadow">
                     <CardHeader className="pb-2">
@@ -193,7 +193,7 @@ const APL01AppleEcosystemCenter = () => {
                   </tr></thead>
                   <tbody>
                     {DEMO_PROVIDER_CAPS.map((cap) => {
-                      const matchingLaunch = launchData?.find((r: any) => r.target.includes(cap.key.replace("apple_", "")));
+                      const matchingLaunch = launchData?.find((r: Record<string, any>) => r.target.includes(cap.key.replace("apple_", "")));
                       const status = matchingLaunch?.launch_stage || "planned";
                       return (
                         <tr key={cap.key} className="border-b hover:bg-muted/30">
@@ -218,7 +218,7 @@ const APL01AppleEcosystemCenter = () => {
             <Card><CardContent className="py-12 text-center text-muted-foreground">No launch readiness records. Seed data first.</CardContent></Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {launchData.map((rec: any) => (
+              {launchData.map((rec: Record<string, any>) => (
                 <Card key={rec.id}>
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
@@ -251,7 +251,7 @@ const APL01AppleEcosystemCenter = () => {
             <Card><CardContent className="py-12 text-center text-muted-foreground">No wearable configurations found. Seed Apple data first.</CardContent></Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {wearableConfigs.map((wc: any) => (
+              {wearableConfigs.map((wc: Record<string, any>) => (
                 <Card key={wc.id}>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm flex items-center gap-2"><Watch className="h-4 w-4 text-primary" />{wc.config_name || wc.wearable_type}</CardTitle>
@@ -286,7 +286,7 @@ const APL01AppleEcosystemCenter = () => {
                     <th className="p-2">Active</th>
                   </tr></thead>
                   <tbody>
-                    {pushRoutes.map((pr: any) => (
+                    {pushRoutes.map((pr: Record<string, any>) => (
                       <tr key={pr.id} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-mono">{pr.route_key || pr.category}</td>
                         <td className="p-2 text-center">{pr.channel || "apns"}</td>
@@ -309,7 +309,7 @@ const APL01AppleEcosystemCenter = () => {
             <Card><CardContent className="py-12 text-center text-muted-foreground">No continuity events recorded. Seed Apple data first.</CardContent></Card>
           ) : (
             <div className="space-y-3">
-              {continuityEvents.map((ce: any) => (
+              {continuityEvents.map((ce: Record<string, any>) => (
                 <Card key={ce.id}>
                   <CardContent className="py-3 px-4">
                     <div className="flex items-center justify-between">

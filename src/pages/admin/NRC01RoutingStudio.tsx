@@ -49,7 +49,7 @@ const NRC01RoutingStudio = () => {
                       <th className="p-2">Traveling</th>
                     </tr></thead>
                     <tbody>
-                      {(routingMatrix ?? []).map((r: any) => (
+                      {(routingMatrix ?? []).map((r: Record<string, any>) => (
                         <tr key={r.urg ?? r.id} className="border-b hover:bg-muted/30">
                           <td className="p-2 font-mono font-medium">{r.urg ?? r.urgency_class}</td>
                           <td className="p-2 text-center">{r.normal ?? r.normal_focus}</td>

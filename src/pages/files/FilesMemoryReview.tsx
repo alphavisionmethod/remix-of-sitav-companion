@@ -37,7 +37,7 @@ const FilesMemoryReview = () => {
   // Build memory items from files that have extracted data
   const memoryItems = useMemo(() => {
     // First use real advisor memories
-    const fromMemories = memories.map((m: any) => ({
+    const fromMemories = memories.map((m: Record<string, any>) => ({
       learned: m.content,
       source: m.metadata?.source_file || "System learned",
       writtenTo: `${m.memory_type} Memory`,
@@ -47,9 +47,9 @@ const FilesMemoryReview = () => {
 
     // Then augment with file-derived knowledge
     const fromFiles = files
-      .filter((f: any) => f.extracted_data?.text && f.status === "complete")
+      .filter((f: Record<string, any>) => f.extracted_data?.text && f.status === "complete")
       .slice(0, 10)
-      .map((f: any) => {
+      .map((f: Record<string, any>) => {
         const text = (f.extracted_data?.text || "") as string;
         return {
           learned: text.length > 120 ? text.slice(0, 120) + "..." : text,
@@ -66,7 +66,7 @@ const FilesMemoryReview = () => {
   // Build entity graph from files
   const graphLinks = useMemo(() => {
     const entityMap: Record<string, string[]> = {};
-    files.forEach((f: any) => {
+    files.forEach((f: Record<string, any>) => {
       const text = `${f.filename} ${f.extracted_data?.text || ""}`;
       // Simple entity extraction
       const entities = extractEntities(text);
@@ -95,7 +95,7 @@ const FilesMemoryReview = () => {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Memory Items" value={memoryItems.length} icon={Brain} sub="From files & advisors" />
         <KPITile label="Graph Links" value={graphLinks.reduce((s, g) => s + g.linkCount, 0)} icon={Eye} sub="Cross-domain connections" />
-        <KPITile label="Source Files" value={files.filter((f: any) => f.extracted_data?.text).length} icon={RotateCcw} sub="With extracted data" />
+        <KPITile label="Source Files" value={files.filter((f: Record<string, any>) => f.extracted_data?.text).length} icon={RotateCcw} sub="With extracted data" />
         <KPITile label="Forgotten Items" value={0} icon={Trash2} sub="User-removed" />
       </div>
 
@@ -143,7 +143,7 @@ const FilesMemoryReview = () => {
   );
 };
 
-function classifyMemoryDomain(f: any): string {
+function classifyMemoryDomain(f: Record<string, any>): string {
   const text = `${f.filename} ${f.classification || ""}`.toLowerCase();
   if (text.includes("invoice") || text.includes("contract")) return "Business";
   if (text.includes("bank") || text.includes("statement")) return "Finance";

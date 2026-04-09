@@ -60,7 +60,7 @@ export default function FL02FlagshipLoopDetail() {
     staleTime: 30_000,
   });
 
-  const loop = (loops || []).find((l: any) => l.loop_key === loopKey);
+  const loop = (loops || []).find((l: Record<string, any>) => l.loop_key === loopKey);
   const domains = getDomainsByFlagshipLoop(loopKey);
 
   if (isLoading) return <p className="text-muted-foreground p-6">Loading…</p>;

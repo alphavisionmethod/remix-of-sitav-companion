@@ -17,8 +17,8 @@ export default function FailureTriageBoard() {
   const { data: dbSurfaces } = useVerificationSurfaces();
   const { data: runs } = useVerificationRuns();
 
-  const failedSurfaces = (dbSurfaces || []).filter((s: any) => s.verification_status === "fail");
-  const failedRuns = (runs || []).filter((r: any) => !r.passed);
+  const failedSurfaces = (dbSurfaces || []).filter((s: Record<string, any>) => s.verification_status === "fail");
+  const failedRuns = (runs || []).filter((r: Record<string, any>) => !r.passed);
   const recentFailures = failedRuns.slice(0, 20);
 
   return (
@@ -40,7 +40,7 @@ export default function FailureTriageBoard() {
             <Card>
               <CardContent className="p-4 space-y-2">
                 <h3 className="font-semibold flex items-center gap-2"><XCircle className="h-4 w-4 text-destructive" /> Failed Surfaces ({failedSurfaces.length})</h3>
-                {failedSurfaces.map((s: any) => (
+                {failedSurfaces.map((s: Record<string, any>) => (
                   <div key={s.id} className="flex items-center justify-between p-2 rounded border border-destructive/20 bg-destructive/5">
                     <div>
                       <span className="font-mono text-sm">{s.route_key}</span>
@@ -61,7 +61,7 @@ export default function FailureTriageBoard() {
             <Card>
               <CardContent className="p-4 space-y-2">
                 <h3 className="font-semibold">Recent Failed Runs ({recentFailures.length})</h3>
-                {recentFailures.map((r: any) => (
+                {recentFailures.map((r: Record<string, any>) => (
                   <div key={r.id} className="p-2 rounded border border-destructive/20 bg-destructive/5 text-sm">
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-xs">{r.run_type} / {r.mode}</span>

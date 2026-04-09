@@ -42,9 +42,9 @@ const SAGRoutingPolicy = () => {
 
       <div className="grid grid-cols-4 gap-4">
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.length}</p><p className="text-xs text-muted-foreground">Routing Policies</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: any) => p.async_eligible).length}</p><p className="text-xs text-muted-foreground">Async Eligible</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: any) => p.reuse_eligible).length}</p><p className="text-xs text-muted-foreground">Reuse Eligible</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: any) => p.verification_policy !== 'none').length}</p><p className="text-xs text-muted-foreground">With Verification</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: Record<string, any>) => p.async_eligible).length}</p><p className="text-xs text-muted-foreground">Async Eligible</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: Record<string, any>) => p.reuse_eligible).length}</p><p className="text-xs text-muted-foreground">Reuse Eligible</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: Record<string, any>) => p.verification_policy !== 'none').length}</p><p className="text-xs text-muted-foreground">With Verification</p></CardContent></Card>
       </div>
 
       {showForm && (
@@ -78,7 +78,7 @@ const SAGRoutingPolicy = () => {
       <div className="space-y-3">
         {isLoading ? <p className="text-center py-8 text-muted-foreground">Loading...</p> :
           policies.length === 0 ? <Card><CardContent className="py-12 text-center text-muted-foreground">No routing policies yet. Define how capabilities map to models.</CardContent></Card> :
-          policies.map((p: any) => (
+          policies.map((p: Record<string, any>) => (
             <Card key={p.id} className="hover:border-primary/30 transition-colors">
               <CardContent className="py-4">
                 <div className="flex items-center justify-between">

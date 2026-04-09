@@ -15,7 +15,7 @@ const stageIndex = (stage: string) => READINESS_STAGES.indexOf(stage as never);
 const FIPReadinessGateReview = () => {
   const { data: gates = [], isLoading } = useReadinessGates();
 
-  const stageDistribution = READINESS_STAGES.map(s => ({ stage: s, count: gates.filter((g: any) => g.current_stage === s).length }));
+  const stageDistribution = READINESS_STAGES.map(s => ({ stage: s, count: gates.filter((g: Record<string, any>) => g.current_stage === s).length }));
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -41,8 +41,8 @@ const FIPReadinessGateReview = () => {
 
       <div className="grid grid-cols-3 gap-4">
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{gates.length}</p><p className="text-xs text-muted-foreground">Total Features</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{gates.filter((g: any) => g.support_signoff).length}</p><p className="text-xs text-muted-foreground">Support Signed Off</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-destructive">{gates.filter((g: any) => g.missing_evidence?.length > 0).length}</p><p className="text-xs text-muted-foreground">Missing Evidence</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{gates.filter((g: Record<string, any>) => g.support_signoff).length}</p><p className="text-xs text-muted-foreground">Support Signed Off</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-destructive">{gates.filter((g: Record<string, any>) => g.missing_evidence?.length > 0).length}</p><p className="text-xs text-muted-foreground">Missing Evidence</p></CardContent></Card>
       </div>
 
       <Card>
@@ -60,7 +60,7 @@ const FIPReadinessGateReview = () => {
       <div className="space-y-3">
         {isLoading ? <p className="text-center py-8 text-muted-foreground">Loading...</p> :
           gates.length === 0 ? <Card><CardContent className="py-12 text-center text-muted-foreground">No readiness gates configured. Gates are created when features enter protocol compliance.</CardContent></Card> :
-          gates.map((g: any) => {
+          gates.map((g: Record<string, any>) => {
             const progress = ((stageIndex(g.current_stage) + 1) / READINESS_STAGES.length) * 100;
             return (
               <Card key={g.id}>

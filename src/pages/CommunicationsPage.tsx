@@ -35,7 +35,7 @@ export default function CommunicationsPage() {
     queryFn: async () => {
       const { data } = await fromTable("communications").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
       if (!data?.length) return null;
-      return data.map((c: any) => ({
+      return data.map((c: Record<string, any>) => ({
         id: c.id,
         contactName: c.contact_name || c.recipient || "Unknown",
         channel: (c.channel || "email") as ChannelType,

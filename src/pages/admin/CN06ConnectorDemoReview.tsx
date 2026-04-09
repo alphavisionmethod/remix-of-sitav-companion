@@ -29,7 +29,7 @@ export default function CN06ConnectorDemoReview() {
       return data;
     },
     onSuccess: () => { toast.success("Demo connector activated"); queryClient.invalidateQueries({ queryKey: ["connector-accounts"] }); },
-    onError: (e: any) => toast.error(`Activation failed: ${e.message}`),
+    onError: (e: Record<string, any>) => toast.error(`Activation failed: ${e.message}`),
   });
 
   return (
@@ -48,7 +48,7 @@ export default function CN06ConnectorDemoReview() {
         {demoBindings.length === 0 ? (
           <Card className="bg-card border-border"><CardContent className="pt-6 text-center text-muted-foreground">No demo bindings. Seed the registry first.</CardContent></Card>
         ) : (
-          demoBindings.map((db: any) => (
+          demoBindings.map((db: Record<string, any>) => (
             <Card key={db.id} className="bg-card border-border">
               <CardHeader>
                 <div className="flex items-center justify-between">

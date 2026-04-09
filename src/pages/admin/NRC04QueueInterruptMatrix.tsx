@@ -84,7 +84,7 @@ const NRC04QueueInterruptMatrix = () => {
                 <table className="w-full text-xs">
                   <thead><tr className="border-b"><th className="text-left p-2">Category</th><th className="text-left p-2">Default Delivery</th><th className="text-left p-2">Escalation</th><th className="p-2">Priority</th></tr></thead>
                   <tbody>
-                    {(categoryRouting ?? []).map((c: any) => (
+                    {(categoryRouting ?? []).map((c: Record<string, any>) => (
                       <tr key={c.category ?? c.id} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-mono">{c.category ?? c.policy_name}</td>
                         <td className="p-2">{c.defaultDelivery ?? c.default_delivery}</td>

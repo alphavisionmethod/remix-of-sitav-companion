@@ -39,7 +39,7 @@ const LT04RuntimeProbeCenter = () => {
     enabled: false,
   });
 
-  const getLatestRun = (probeId: string) => probeRuns?.find((r: any) => r.probe_id === probeId);
+  const getLatestRun = (probeId: string) => probeRuns?.find((r: Record<string, any>) => r.probe_id === probeId);
 
   return (
     <div className="space-y-6 p-6">
@@ -69,7 +69,7 @@ const LT04RuntimeProbeCenter = () => {
               </Badge>
             </div>
             <div className="space-y-2">
-              {liveProbe.probes?.map((p: any) => (
+              {liveProbe.probes?.map((p: Record<string, any>) => (
                 <div key={p.probe_id} className="flex items-center justify-between p-3 rounded border">
                   <div>
                     <p className="font-medium">{p.name}</p>
@@ -94,7 +94,7 @@ const LT04RuntimeProbeCenter = () => {
                   <th className="p-2">Name</th><th className="p-2">Target</th><th className="p-2">Cadence</th><th className="p-2">Severity</th><th className="p-2">Launch Impact</th><th className="p-2">Latest</th>
                 </tr></thead>
                 <tbody>
-                  {probes.map((p: any) => {
+                  {probes.map((p: Record<string, any>) => {
                     const latest = getLatestRun(p.id);
                     return (
                       <tr key={p.id} className="border-b hover:bg-muted/50">

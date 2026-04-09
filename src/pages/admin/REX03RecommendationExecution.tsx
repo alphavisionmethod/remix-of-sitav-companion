@@ -66,7 +66,7 @@ export default function REX03RecommendationExecution() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {(recs || []).map((rec: any) => (
+                {(recs || []).map((rec: Record<string, any>) => (
                   <TableRow key={rec.id}>
                     <TableCell className="text-foreground text-sm max-w-[200px] truncate">{rec.title || "Untitled"}</TableCell>
                     <TableCell>

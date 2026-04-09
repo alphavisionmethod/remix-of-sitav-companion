@@ -28,7 +28,7 @@ export default function CJ09RecentVerificationRuns() {
   // Merge and deduplicate, prefer view data
   const allRuns = [...(runs ?? []), ...(recentFailures ?? [])];
   const seenIds = new Set<string>();
-  const dedupedRuns = allRuns.filter((r: any) => {
+  const dedupedRuns = allRuns.filter((r: Record<string, any>) => {
     const id = r.id || r.run_id;
     if (seenIds.has(id)) return false;
     seenIds.add(id);
@@ -39,8 +39,8 @@ export default function CJ09RecentVerificationRuns() {
     return db - da;
   });
 
-  const failCount = dedupedRuns.filter((r: any) => r.status === "fail" || r.status === "broken" || r.status === "partial").length;
-  const passCount = dedupedRuns.filter((r: any) => r.status === "pass" || r.status === "working").length;
+  const failCount = dedupedRuns.filter((r: Record<string, any>) => r.status === "fail" || r.status === "broken" || r.status === "partial").length;
+  const passCount = dedupedRuns.filter((r: Record<string, any>) => r.status === "pass" || r.status === "working").length;
 
   return (
     <div className="space-y-6 p-6" data-testid="cj09-recent-runs">

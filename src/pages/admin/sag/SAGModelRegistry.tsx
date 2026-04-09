@@ -27,7 +27,7 @@ const SAGModelRegistry = () => {
     setShowForm(false);
   };
 
-  const classCounts = MODEL_CLASSES.reduce((a, c) => ({ ...a, [c]: models.filter((m: any) => m.model_class === c).length }), {} as Record<string, number>);
+  const classCounts = MODEL_CLASSES.reduce((a, c) => ({ ...a, [c]: models.filter((m: Record<string, any>) => m.model_class === c).length }), {} as Record<string, number>);
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -80,7 +80,7 @@ const SAGModelRegistry = () => {
             <TableBody>
               {isLoading ? <TableRow><TableCell colSpan={10} className="text-center py-8">Loading...</TableCell></TableRow> :
                 models.length === 0 ? <TableRow><TableCell colSpan={10} className="text-center py-8 text-muted-foreground">No models registered. Register your first model above.</TableCell></TableRow> :
-                models.map((m: any) => (
+                models.map((m: Record<string, any>) => (
                   <TableRow key={m.id}>
                     <TableCell className="font-mono text-xs">{m.model_id}</TableCell>
                     <TableCell><Badge variant="outline" className="text-xs">{m.provider}</Badge></TableCell>

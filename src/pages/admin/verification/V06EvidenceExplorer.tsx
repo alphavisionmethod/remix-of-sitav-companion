@@ -44,7 +44,7 @@ export default function VerificationEvidenceExplorer() {
     enabled: !!selectedRunId,
   });
 
-  const selectedRun = (runs || []).find((r: any) => r.id === selectedRunId);
+  const selectedRun = (runs || []).find((r: Record<string, any>) => r.id === selectedRunId);
 
   return (
     <div className="space-y-6 p-6" data-testid="verification-evidence-explorer">
@@ -60,7 +60,7 @@ export default function VerificationEvidenceExplorer() {
         <Select value={selectedRunId || ""} onValueChange={(v) => setSelectedRunId(v || undefined)}>
           <SelectTrigger className="w-96"><SelectValue placeholder="Select a verification run..." /></SelectTrigger>
           <SelectContent>
-            {(runs || []).map((r: any) => (
+            {(runs || []).map((r: Record<string, any>) => (
               <SelectItem key={r.id} value={r.id}>
                 {r.verification_type || "e2e"} — {r.mode || "real"} — {r.status === "pass" ? "✅" : r.status === "partial" ? "⚠️" : "❌"} — {new Date(r.completed_at || r.created_at).toLocaleString()}
               </SelectItem>
@@ -101,7 +101,7 @@ export default function VerificationEvidenceExplorer() {
         <Card><CardContent className="p-8 text-center text-muted-foreground">No step results for this run</CardContent></Card>
       ) : (
         <div className="space-y-2">
-          {(steps || []).map((step: any) => {
+          {(steps || []).map((step: Record<string, any>) => {
             const StatusIcon = step.status === "pass" ? CheckCircle2 : step.status === "skipped" ? AlertTriangle : XCircle;
             const statusColor = step.status === "pass" ? "text-emerald-400" : step.status === "skipped" ? "text-amber-400" : "text-destructive";
 

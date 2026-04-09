@@ -29,7 +29,7 @@ export default function AR04AgentScheduler() {
   const { data: executions = [] } = useQuery({
     queryKey: ["agent-executions"],
     queryFn: async () => {
-      const jobIds = agentJobs.map((j: any) => j.id);
+      const jobIds = agentJobs.map((j: Record<string, any>) => j.id);
       if (jobIds.length === 0) return [];
       const { data } = await fromTable("job_executions").select("*").in("job_id", jobIds).order("started_at", { ascending: false }).limit(50);
       return data || [];
@@ -37,8 +37,8 @@ export default function AR04AgentScheduler() {
     enabled: agentJobs.length > 0,
   });
 
-  const heartbeats = agentJobs.filter((j: any) => j.job_class === "agent_heartbeat");
-  const execJobs = agentJobs.filter((j: any) => j.job_class === "agent_execution");
+  const heartbeats = agentJobs.filter((j: Record<string, any>) => j.job_class === "agent_heartbeat");
+  const execJobs = agentJobs.filter((j: Record<string, any>) => j.job_class === "agent_execution");
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
@@ -81,7 +81,7 @@ export default function AR04AgentScheduler() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {agentJobs.map((j: any) => (
+              {agentJobs.map((j: Record<string, any>) => (
                 <TableRow key={j.id}>
                   <TableCell className="text-xs font-medium">{j.name}</TableCell>
                   <TableCell><Badge variant="secondary" className="text-[9px]">{j.job_class}</Badge></TableCell>
@@ -103,7 +103,7 @@ export default function AR04AgentScheduler() {
           {executions.length === 0 ? (
             <p className="text-xs text-muted-foreground">No agent executions recorded</p>
           ) : (
-            executions.map((e: any) => (
+            executions.map((e: Record<string, any>) => (
               <div key={e.id} className="flex items-center gap-2 rounded-lg bg-secondary/10 px-3 py-2">
                 {e.status === "success" ? <CheckCircle className="h-3 w-3 text-trust-safe" /> : <XCircle className="h-3 w-3 text-destructive" />}
                 <span className="text-[10px] flex-1">{new Date(e.started_at).toLocaleString()}</span>

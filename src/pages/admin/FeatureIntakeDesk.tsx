@@ -160,7 +160,7 @@ const FeatureIntakeDesk = () => {
         <Card>
           <CardHeader><CardTitle className="flex items-center gap-2"><Layers className="h-5 w-5" /> Recent Blueprints</CardTitle></CardHeader>
           <CardContent className="space-y-3 max-h-[600px] overflow-y-auto">
-            {(blueprints ?? []).map((bp: any) => (
+            {(blueprints ?? []).map((bp: Record<string, any>) => (
               <motion.div key={bp.id} className="p-3 rounded-lg border bg-card/50 space-y-1" whileHover={{ scale: 1.01 }}>
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-sm">{bp.title}</span>

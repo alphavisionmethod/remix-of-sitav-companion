@@ -63,8 +63,8 @@ export default function ISA01IdentityProviderRegistryBoard() {
     },
   });
 
-  const activeProviders = families.filter((f: any) => f.active).length;
-  const linkedIdentities = identityLinks.filter((l: any) => l.status === "active").length;
+  const activeProviders = families.filter((f: Record<string, any>) => f.active).length;
+  const linkedIdentities = identityLinks.filter((l: Record<string, any>) => l.status === "active").length;
 
   return (
     <div className="space-y-6 p-6">
@@ -116,7 +116,7 @@ export default function ISA01IdentityProviderRegistryBoard() {
           <CardContent className="pt-4">
             <p className="text-xs text-muted-foreground">Auth Methods</p>
             <p className="text-2xl font-bold">
-              {new Set(families.map((f: any) => f.metadata?.auth_type || "oauth2")).size}
+              {new Set(families.map((f: Record<string, any>) => f.metadata?.auth_type || "oauth2")).size}
             </p>
           </CardContent>
         </Card>
@@ -142,7 +142,7 @@ export default function ISA01IdentityProviderRegistryBoard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {families.map((f: any) => (
+              {families.map((f: Record<string, any>) => (
                 <TableRow key={f.id}>
                   <TableCell className="font-medium">{f.name}</TableCell>
                   <TableCell>
@@ -202,7 +202,7 @@ export default function ISA01IdentityProviderRegistryBoard() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {oauthClients.map((c: any) => (
+                {oauthClients.map((c: Record<string, any>) => (
                   <TableRow key={c.id}>
                     <TableCell className="font-medium">{c.client_name}</TableCell>
                     <TableCell>{getRelation(c, "provider_families", parseProviderFamilyRef).name || "—"}</TableCell>
@@ -229,7 +229,7 @@ export default function ISA01IdentityProviderRegistryBoard() {
         <CardContent>
           {identityLinks.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {identityLinks.map((link: any) => (
+              {identityLinks.map((link: Record<string, any>) => (
                 <Card key={link.id} className="bg-muted/30 border-border">
                   <CardContent className="pt-4 flex items-center justify-between">
                     <div>

@@ -35,7 +35,7 @@ export default function RelationshipCenter() {
   const { data: liveContacts, isLoading } = useCustomers();
 
   const LIFECYCLE_STAGES = isDemoMode ? DEMO_LIFECYCLE_STAGES : DEMO_LIFECYCLE_STAGES;
-  const CONTACTS = isDemoMode ? DEMO_CONTACTS : (liveContacts?.map((c: any) => ({
+  const CONTACTS = isDemoMode ? DEMO_CONTACTS : (liveContacts?.map((c: Record<string, any>) => ({
     name: c.name || "Unknown", company: c.company || "", stage: c.lifecycle_stage || "Lead",
     health: c.health_score || 50, ltv: `$${c.ltv || 0}`, lastContact: c.last_contact_at ? new Date(c.last_contact_at).toLocaleDateString() : "Never",
     tags: c.tags || [],

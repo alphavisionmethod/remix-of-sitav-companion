@@ -36,7 +36,7 @@ export default function CN03AccountLinkageBoard() {
       return data;
     },
     onSuccess: () => { toast.success("Account disconnected"); queryClient.invalidateQueries({ queryKey: ["connector-accounts"] }); },
-    onError: (e: any) => toast.error(`Disconnect failed: ${e.message}`),
+    onError: (e: Record<string, any>) => toast.error(`Disconnect failed: ${e.message}`),
   });
 
   return (
@@ -49,7 +49,7 @@ export default function CN03AccountLinkageBoard() {
             <p className="text-sm text-muted-foreground">No linked accounts yet.</p>
           ) : (
             <div className="space-y-3">
-              {accounts.map((a: any) => (
+              {accounts.map((a: Record<string, any>) => (
                 <div key={a.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">
                   <div>
                     <p className="font-medium text-sm">{a.display_name || a.connector_type}</p>

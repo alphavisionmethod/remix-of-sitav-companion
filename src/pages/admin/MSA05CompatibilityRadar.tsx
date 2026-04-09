@@ -55,20 +55,20 @@ export default function MSA05CompatibilityRadar() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => { toast.success(`Consistency check: ${data?.inconsistent || 0} drifts found`); queryClient.invalidateQueries(); },
-    onError: (e: any) => toast.error(`Check failed: ${e.message}`),
+    onSuccess: (data: Record<string, any>) => { toast.success(`Consistency check: ${data?.inconsistent || 0} drifts found`); queryClient.invalidateQueries(); },
+    onError: (e: Record<string, any>) => toast.error(`Check failed: ${e.message}`),
   });
 
-  const consistent = consistency.filter((c: any) => c.consistent);
-  const drifts = consistency.filter((c: any) => !c.consistent);
+  const consistent = consistency.filter((c: Record<string, any>) => c.consistent);
+  const drifts = consistency.filter((c: Record<string, any>) => !c.consistent);
 
   // Build heatmap: domains vs surfaces
-  const domains = [...new Set(bindings.map((b: any) => b.capability_definitions?.domain).filter(Boolean))];
+  const domains = [...new Set(bindings.map((b: Record<string, any>) => b.capability_definitions?.domain).filter(Boolean))];
   const heatmapData = domains.map(domain => {
     const row: Record<string, any> = { domain };
-    surfaces.forEach((s: any) => {
-      const domainBindings = bindings.filter((b: any) => b.capability_definitions?.domain === domain && b.surface_id === s.id);
-      const prodCount = domainBindings.filter((b: any) => b.binding_status === "production").length;
+    surfaces.forEach((s: Record<string, any>) => {
+      const domainBindings = bindings.filter((b: Record<string, any>) => b.capability_definitions?.domain === domain && b.surface_id === s.id);
+      const prodCount = domainBindings.filter((b: Record<string, any>) => b.binding_status === "production").length;
       const total = domainBindings.length;
       row[s.surface_key] = { total, production: prodCount, status: prodCount > 0 ? "production" : total > 0 ? "planned" : "none" };
     });
@@ -77,7 +77,7 @@ export default function MSA05CompatibilityRadar() {
 
   // Migration recommendations
   const recommendations = boundaries
-    .filter((b: any) => b.migration_target)
+    .filter((b: Record<string, any>) => b.migration_target)
     .sort((a: any, b: any) => {
       const priority: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
       return (priority[a.migration_priority] || 3) - (priority[b.migration_priority] || 3);
@@ -126,16 +126,16 @@ export default function MSA05CompatibilityRadar() {
                 <thead>
                   <tr>
                     <th className="text-left p-2 font-medium text-muted-foreground">Domain</th>
-                    {surfaces.map((s: any) => (
+                    {surfaces.map((s: Record<string, any>) => (
                       <th key={s.id} className="text-center p-2 font-medium text-muted-foreground">{s.display_name}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {heatmapData.map((row: any) => (
+                  {heatmapData.map((row: Record<string, any>) => (
                     <tr key={row.domain}>
                       <td className="p-2 font-mono">{row.domain}</td>
-                      {surfaces.map((s: any) => {
+                      {surfaces.map((s: Record<string, any>) => {
                         const cell = row[s.surface_key] || { total: 0, production: 0, status: "none" };
                         return (
                           <td key={s.id} className={`p-2 text-center rounded ${heatCell(cell.status)}`}>
@@ -163,7 +163,7 @@ export default function MSA05CompatibilityRadar() {
           <CardHeader><CardTitle className="flex items-center gap-2"><AlertTriangle className="h-5 w-5 text-yellow-400" /> Web-Trapped Logic ({boundaries.length})</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {boundaries.map((b: any) => (
+              {boundaries.map((b: Record<string, any>) => (
                 <div key={b.id} className="flex items-center justify-between p-2 rounded bg-muted/20">
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-xs">{b.component_path}</span>
@@ -224,7 +224,7 @@ export default function MSA05CompatibilityRadar() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {consistency.map((c: any) => (
+                {consistency.map((c: Record<string, any>) => (
                   <TableRow key={c.id}>
                     <TableCell><Badge variant="outline">{c.check_type}</Badge></TableCell>
                     <TableCell className="text-sm">{c.scope}</TableCell>

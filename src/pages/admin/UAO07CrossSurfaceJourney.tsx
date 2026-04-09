@@ -31,8 +31,8 @@ export default function UAO07CrossSurfaceJourney() {
     queryFn: async () => { const { data } = await fromTable("surface_context_states").select("*").order("last_active_at", { ascending: false }).limit(20); return data || []; },
   });
 
-  const completed = handoffs.filter((h: any) => h.handoff_status === "completed");
-  const failed = handoffs.filter((h: any) => h.handoff_status === "failed");
+  const completed = handoffs.filter((h: Record<string, any>) => h.handoff_status === "completed");
+  const failed = handoffs.filter((h: Record<string, any>) => h.handoff_status === "failed");
   const successRate = handoffs.length > 0 ? Math.round((completed.length / handoffs.length) * 100) : 0;
 
   return (
@@ -47,7 +47,7 @@ export default function UAO07CrossSurfaceJourney() {
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Total Handoffs</p><p className="text-2xl font-bold">{handoffs.length}</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Success Rate</p><p className="text-2xl font-bold text-green-400">{successRate}%</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Failed</p><p className="text-2xl font-bold text-destructive">{failed.length}</p></CardContent></Card>
-        <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Active Contexts</p><p className="text-2xl font-bold">{continuity.filter((c: any) => c.resumable).length}</p></CardContent></Card>
+        <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Active Contexts</p><p className="text-2xl font-bold">{continuity.filter((c: Record<string, any>) => c.resumable).length}</p></CardContent></Card>
       </div>
 
       {handoffs.length > 0 && (
@@ -57,7 +57,7 @@ export default function UAO07CrossSurfaceJourney() {
             <Table>
               <TableHeader><TableRow><TableHead>From</TableHead><TableHead></TableHead><TableHead>To</TableHead><TableHead>Status</TableHead><TableHead>Quality</TableHead><TableHead>Friction</TableHead><TableHead>When</TableHead></TableRow></TableHeader>
               <TableBody>
-                {handoffs.slice(0, 15).map((h: any) => (
+                {handoffs.slice(0, 15).map((h: Record<string, any>) => (
                   <TableRow key={h.id}>
                     <TableCell className="text-xs font-medium">{h.source_surface}</TableCell>
                     <TableCell><ArrowRight className="h-3 w-3 text-muted-foreground" /></TableCell>
@@ -81,7 +81,7 @@ export default function UAO07CrossSurfaceJourney() {
             <Table>
               <TableHeader><TableRow><TableHead>Surface</TableHead><TableHead>Route</TableHead><TableHead>View</TableHead><TableHead>Last Active</TableHead></TableRow></TableHeader>
               <TableBody>
-                {surfaceStates.map((s: any) => (
+                {surfaceStates.map((s: Record<string, any>) => (
                   <TableRow key={s.id}>
                     <TableCell className="font-medium">{s.surface}</TableCell>
                     <TableCell className="text-xs font-mono">{s.current_route || "—"}</TableCell>

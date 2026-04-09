@@ -25,7 +25,7 @@ const ImportExportCenter = () => {
   const uploads = useMemo(() => {
     if (isDemoMode) return DEMO_UPLOADS;
     if (!liveJobs?.length) return [];
-    return liveJobs.filter((j: any) => j.job_type === "import").map((j: any) => ({
+    return liveJobs.filter((j: Record<string, any>) => j.job_type === "import").map((j: Record<string, any>) => ({
       id: j.id,
       name: j.file_name || "Untitled",
       type: j.format || "file",
@@ -39,7 +39,7 @@ const ImportExportCenter = () => {
   const exports = useMemo(() => {
     if (isDemoMode) return DEMO_EXPORTS;
     if (!liveJobs?.length) return [];
-    return liveJobs.filter((j: any) => j.job_type === "export").map((j: any) => ({
+    return liveJobs.filter((j: Record<string, any>) => j.job_type === "export").map((j: Record<string, any>) => ({
       id: j.id,
       name: j.file_name || "Export",
       type: j.format || "file",
@@ -82,7 +82,7 @@ const ImportExportCenter = () => {
             <EmptyState icon={Upload} title="No uploads yet" description="Upload files to see them here." />
           ) : (
             <div className="space-y-2">
-              {uploads.map((item: any) => {
+              {uploads.map((item: Record<string, any>) => {
                 const StatusIcon = STATUS_ICONS[item.status as keyof typeof STATUS_ICONS] || Clock;
                 return (
                   <SitaCard key={item.id} className="p-3" hover>
@@ -157,7 +157,7 @@ const ImportExportCenter = () => {
             <EmptyState icon={Download} title="No exports yet" description="Export data to see download history here." />
           ) : (
             <div className="space-y-2">
-              {exports.map((item: any) => {
+              {exports.map((item: Record<string, any>) => {
                 const StatusIcon = STATUS_ICONS[item.status as keyof typeof STATUS_ICONS] || Clock;
                 return (
                   <SitaCard key={item.id} className="p-3" hover>

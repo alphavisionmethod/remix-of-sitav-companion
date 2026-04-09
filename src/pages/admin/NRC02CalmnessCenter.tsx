@@ -36,7 +36,7 @@ const NRC02CalmnessCenter = () => {
         <TabsContent value="roles">
           {isLoading ? <p className="text-xs text-muted-foreground p-4">Loading…</p> : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {(roles ?? []).map((r: any) => (
+              {(roles ?? []).map((r: Record<string, any>) => (
                 <Card key={r.key ?? r.id} className="hover:shadow-md transition-shadow">
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">

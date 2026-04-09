@@ -32,7 +32,7 @@ const AppReceiptsPage = () => {
       if (appId) query = query.eq("metadata->>appId", appId);
       const { data } = await query;
       if (!data?.length) return null;
-      return data.map((r: any) => ({
+      return data.map((r: Record<string, any>) => ({
         receiptId: r.id,
         appId: r.metadata?.appId || appId || "unknown",
         appName: r.metadata?.appName || r.action || "App",

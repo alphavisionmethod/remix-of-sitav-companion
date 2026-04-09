@@ -75,7 +75,7 @@ export default function SovereignExportPage() {
       URL.revokeObjectURL(url);
 
       toast.success("Data exported successfully");
-    } catch (e: any) {
+    } catch (e: Record<string, any>) {
       toast.error(e.message || "Export failed");
     } finally {
       setExporting(false);
@@ -101,7 +101,7 @@ export default function SovereignExportPage() {
       if (error) throw error;
       toast.success("Deletion request submitted. Processing within 30 days per GDPR.");
       setConfirmDelete(false);
-    } catch (e: any) {
+    } catch (e: Record<string, any>) {
       toast.error(e.message || "Deletion request failed");
     } finally {
       setDeleting(false);

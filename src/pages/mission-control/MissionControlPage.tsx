@@ -506,7 +506,7 @@ function MCIncidents() {
 function MCConnectors() {
   const { fleetHealth } = useMCAdmin();
   const connectors = mockConnectorHealth.map(c => {
-    const fleetService = fleetHealth?.services?.find((s: any) => s.name?.toLowerCase().includes(c.name.toLowerCase()));
+    const fleetService = fleetHealth?.services?.find((s: Record<string, any>) => s.name?.toLowerCase().includes(c.name.toLowerCase()));
     return fleetService ? { ...c, healthScore: Math.round(fleetService.uptime ?? c.healthScore) } : c;
   });
   const sorted = [...connectors].sort((a, b) => a.healthScore - b.healthScore);

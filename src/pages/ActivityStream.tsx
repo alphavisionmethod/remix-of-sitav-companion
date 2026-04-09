@@ -295,7 +295,7 @@ const ActivityStream = () => {
         .select("*")
         .order("created_at", { ascending: false })
         .limit(20);
-      return (data || []).map((a: any) => ({
+      return (data || []).map((a: Record<string, any>) => ({
         type: `approval.${a.status}`,
         created_at: a.created_at,
         payload: { summary: a.action_summary, action_type: a.action_type },
@@ -315,7 +315,7 @@ const ActivityStream = () => {
         .select("*")
         .order("created_at", { ascending: false })
         .limit(20);
-      return (data || []).map((p: any) => ({
+      return (data || []).map((p: Record<string, any>) => ({
         type: "receipt.created",
         created_at: p.created_at,
         payload: { summary: p.action_summary, domain: p.domain },

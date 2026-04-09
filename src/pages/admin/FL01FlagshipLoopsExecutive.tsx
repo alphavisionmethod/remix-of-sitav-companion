@@ -116,8 +116,8 @@ export default function FL01FlagshipLoopsExecutive() {
   const loopList = loops || [];
   const overallTruth = getOverallTruthScore(loopList);
   const { grade: overallGrade, color: overallColor } = getLoopGrade(overallTruth);
-  const criticalCount = loopList.filter((l: any) => l.launch_importance === "launch_critical").length;
-  const activeCount = loopList.filter((l: any) => l.status === "active").length;
+  const criticalCount = loopList.filter((l: Record<string, any>) => l.launch_importance === "launch_critical").length;
+  const activeCount = loopList.filter((l: Record<string, any>) => l.status === "active").length;
   const blockerCount = loopList.reduce((s: number, l: any) => s + (Array.isArray(l.launch_blockers) ? l.launch_blockers.length : 0), 0);
 
   // Map verification runs to loop keys for proof overlay
@@ -228,7 +228,7 @@ export default function FL01FlagshipLoopsExecutive() {
 
           {/* Loop Cards */}
           <div className="space-y-4">
-          {loopList.map((loop: any) => {
+          {loopList.map((loop: Record<string, any>) => {
               const domains = getDomainsByFlagshipLoop(loop.loop_key);
               const blockers = Array.isArray(loop.launch_blockers) ? loop.launch_blockers : [];
               const routes = Array.isArray(loop.routes) ? loop.routes : [];

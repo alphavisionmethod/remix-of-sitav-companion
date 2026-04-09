@@ -18,7 +18,7 @@ export default function CJ07OwnerRemediationView() {
   const { data: runs } = useCustomerJourneyRuns();
 
   // Journeys needing attention
-  const needsWork = (journeys ?? []).filter((j: any) =>
+  const needsWork = (journeys ?? []).filter((j: Record<string, any>) =>
     j.current_status !== "working" && j.current_status !== "planned" && j.current_status !== "internal_only"
   );
 
@@ -62,9 +62,9 @@ export default function CJ07OwnerRemediationView() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {ownerJourneys.map((j: any) => {
+                {ownerJourneys.map((j: Record<string, any>) => {
                   const statusCfg = JOURNEY_STATUS_CONFIG[j.current_status] || JOURNEY_STATUS_CONFIG.unverified;
-                  const latestRun = (runs ?? []).find((r: any) => r.journey_key === j.journey_key);
+                  const latestRun = (runs ?? []).find((r: Record<string, any>) => r.journey_key === j.journey_key);
                   return (
                     <div key={j.id} className="p-3 rounded border bg-card">
                       <div className="flex items-center justify-between">

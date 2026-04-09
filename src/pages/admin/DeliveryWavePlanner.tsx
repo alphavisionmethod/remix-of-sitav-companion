@@ -39,7 +39,7 @@ const DeliveryWavePlanner = () => {
       </motion.div>
 
       <div className="space-y-4">
-        {(waves ?? []).map((wave: any) => {
+        {(waves ?? []).map((wave: Record<string, any>) => {
           const featureCount = Array.isArray(wave.feature_ids) ? wave.feature_ids.length : 0;
           const domainFocus = Array.isArray(wave.domain_focus) ? wave.domain_focus : [];
           return (

@@ -42,7 +42,7 @@ const HRS04NotificationInfluence = () => {
                   <table className="w-full text-xs">
                     <thead><tr className="border-b"><th className="text-left p-2">Readiness</th><th className="text-left p-2">Action</th><th className="p-2">Min Urgency</th><th className="p-2">Critical Override</th><th className="text-left p-2">Description</th></tr></thead>
                     <tbody>
-                      {(suppressionRules as never[]).map((r: any) => (
+                      {(suppressionRules as never[]).map((r: Record<string, any>) => (
                         <tr key={r.readiness ?? r.id} className="border-b hover:bg-muted/30">
                           <td className="p-2"><Badge variant="outline" className="font-mono">{r.readiness ?? r.policy_name}</Badge></td>
                           <td className="p-2 font-medium">{r.action}</td>

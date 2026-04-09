@@ -55,13 +55,13 @@ export default function NOT01NotificationRuntimeVerification() {
   });
 
   // Computed stats
-  const activeSubscriptions = subscriptions.filter((s: any) => s.active);
-  const successReceipts = receipts.filter((r: any) => r.delivery_status === "delivered");
-  const failedReceipts = receipts.filter((r: any) => r.delivery_status === "failed");
+  const activeSubscriptions = subscriptions.filter((s: Record<string, any>) => s.active);
+  const successReceipts = receipts.filter((r: Record<string, any>) => r.delivery_status === "delivered");
+  const failedReceipts = receipts.filter((r: Record<string, any>) => r.delivery_status === "failed");
   const deliveryRate = receipts.length > 0 ? Math.round((successReceipts.length / receipts.length) * 100) : 0;
-  const calmSuppressed = receipts.filter((r: any) => r.delivery_status === "suppressed_calm").length;
-  const prefSuppressed = receipts.filter((r: any) => r.delivery_status === "suppressed_preference").length;
-  const pushRouted = queueItems.filter((q: any) => q.channel === "push").length;
+  const calmSuppressed = receipts.filter((r: Record<string, any>) => r.delivery_status === "suppressed_calm").length;
+  const prefSuppressed = receipts.filter((r: Record<string, any>) => r.delivery_status === "suppressed_preference").length;
+  const pushRouted = queueItems.filter((q: Record<string, any>) => q.channel === "push").length;
 
   const webPushConfigured = activeSubscriptions.length > 0;
   const dispatchVerified = successReceipts.length > 0;
@@ -75,7 +75,7 @@ export default function NOT01NotificationRuntimeVerification() {
       subscriptionAvailable: webPushConfigured,
       dispatchVerified,
       receiptVerified,
-      responseLoop: receipts.some((r: any) => r.clicked_at),
+      responseLoop: receipts.some((r: Record<string, any>) => r.clicked_at),
       preferenceRouting: preferences.length > 0,
       calmPolicy: calmSuppressed > 0 || true, // Calm policy code exists
       honestyClass: dispatchVerified ? "real" : "partial",
@@ -211,8 +211,8 @@ export default function NOT01NotificationRuntimeVerification() {
             {[
               { label: "Total Tokens", value: subscriptions.length },
               { label: "Active", value: activeSubscriptions.length },
-              { label: "Inactive", value: subscriptions.filter((s: any) => !s.active).length },
-              { label: "Users w/ Preferences", value: new Set(preferences.map((p: any) => p.user_id)).size },
+              { label: "Inactive", value: subscriptions.filter((s: Record<string, any>) => !s.active).length },
+              { label: "Users w/ Preferences", value: new Set(preferences.map((p: Record<string, any>) => p.user_id)).size },
             ].map((s) => (
               <Card key={s.label}><CardContent className="pt-4 pb-3">
                 <div className="text-xs text-muted-foreground">{s.label}</div>
@@ -236,7 +236,7 @@ export default function NOT01NotificationRuntimeVerification() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {subscriptions.slice(0, 20).map((s: any) => (
+                    {subscriptions.slice(0, 20).map((s: Record<string, any>) => (
                       <TableRow key={s.id}>
                         <TableCell className="text-sm">{s.platform || "web"}</TableCell>
                         <TableCell className="text-sm">{s.browser || "—"}</TableCell>

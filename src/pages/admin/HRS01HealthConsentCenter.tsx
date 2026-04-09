@@ -40,7 +40,7 @@ const HRS01HealthConsentCenter = () => {
     if (dbConsents?.length) {
       const fromDb: Record<string, boolean> = {};
       DEMO_CONSENT_CATEGORIES.forEach(c => {
-        const match = dbConsents.find((dc: any) => dc.consent_scope === c.key && dc.read_permission && !dc.revoked_at);
+        const match = dbConsents.find((dc: Record<string, any>) => dc.consent_scope === c.key && dc.read_permission && !dc.revoked_at);
         fromDb[c.key] = !!match;
       });
       setEnabledCats(fromDb);
@@ -110,7 +110,7 @@ const HRS01HealthConsentCenter = () => {
                 <table className="w-full text-xs">
                   <thead><tr className="border-b"><th className="text-left p-2">Signal Type</th><th className="text-left p-2">Scope</th><th className="p-2">Read</th><th className="p-2">Revoked</th><th className="text-left p-2">Granted</th></tr></thead>
                   <tbody>
-                    {dbConsents.map((consent: any) => (
+                    {dbConsents.map((consent: Record<string, any>) => (
                       <tr key={consent.id} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-mono">{consent.signal_type}</td>
                         <td className="p-2">{consent.consent_scope || "—"}</td>

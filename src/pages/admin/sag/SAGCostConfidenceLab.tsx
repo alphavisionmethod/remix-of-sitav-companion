@@ -12,16 +12,16 @@ import { useDataMode } from "@/contexts/DataModeContext";
 const SAGCostConfidenceLab = () => {
   const { data: tasks = [] } = useTaskRequests();
 
-  const withConfidence = tasks.filter((t: any) => t.verification_confidence != null);
+  const withConfidence = tasks.filter((t: Record<string, any>) => t.verification_confidence != null);
   const avgConfidence = withConfidence.length ? withConfidence.reduce((s: number, t: any) => s + t.verification_confidence, 0) / withConfidence.length : 0;
   const avgCost = tasks.length ? tasks.reduce((s: number, t: any) => s + (t.cost_actual_cents || 0), 0) / tasks.length : 0;
 
   const costBuckets = [
-    { label: '0-1¢', tasks: tasks.filter((t: any) => (t.cost_actual_cents || 0) <= 1) },
-    { label: '1-5¢', tasks: tasks.filter((t: any) => (t.cost_actual_cents || 0) > 1 && (t.cost_actual_cents || 0) <= 5) },
-    { label: '5-25¢', tasks: tasks.filter((t: any) => (t.cost_actual_cents || 0) > 5 && (t.cost_actual_cents || 0) <= 25) },
-    { label: '25-100¢', tasks: tasks.filter((t: any) => (t.cost_actual_cents || 0) > 25 && (t.cost_actual_cents || 0) <= 100) },
-    { label: '100¢+', tasks: tasks.filter((t: any) => (t.cost_actual_cents || 0) > 100) },
+    { label: '0-1¢', tasks: tasks.filter((t: Record<string, any>) => (t.cost_actual_cents || 0) <= 1) },
+    { label: '1-5¢', tasks: tasks.filter((t: Record<string, any>) => (t.cost_actual_cents || 0) > 1 && (t.cost_actual_cents || 0) <= 5) },
+    { label: '5-25¢', tasks: tasks.filter((t: Record<string, any>) => (t.cost_actual_cents || 0) > 5 && (t.cost_actual_cents || 0) <= 25) },
+    { label: '25-100¢', tasks: tasks.filter((t: Record<string, any>) => (t.cost_actual_cents || 0) > 25 && (t.cost_actual_cents || 0) <= 100) },
+    { label: '100¢+', tasks: tasks.filter((t: Record<string, any>) => (t.cost_actual_cents || 0) > 100) },
   ];
 
   return (
@@ -49,9 +49,9 @@ const SAGCostConfidenceLab = () => {
                 <p className="text-[10px] text-muted-foreground">{b.label}</p>
                 {b.tasks.length > 0 && (
                   <p className="text-[10px] text-muted-foreground mt-1">
-                    Avg conf: {b.tasks.filter((t: any) => t.verification_confidence != null).length > 0 ?
-                      (b.tasks.filter((t: any) => t.verification_confidence != null).reduce((s: number, t: any) => s + t.verification_confidence, 0) /
-                       b.tasks.filter((t: any) => t.verification_confidence != null).length * 100).toFixed(0) + '%' : '—'}
+                    Avg conf: {b.tasks.filter((t: Record<string, any>) => t.verification_confidence != null).length > 0 ?
+                      (b.tasks.filter((t: Record<string, any>) => t.verification_confidence != null).reduce((s: number, t: any) => s + t.verification_confidence, 0) /
+                       b.tasks.filter((t: Record<string, any>) => t.verification_confidence != null).length * 100).toFixed(0) + '%' : '—'}
                   </p>
                 )}
               </div>

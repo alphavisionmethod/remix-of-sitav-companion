@@ -179,7 +179,7 @@ export default function ActionLineageExplorer() {
                     {(explanation.events?.length ?? 0) > 0 && (
                       <div>
                         <p className="text-muted-foreground mb-1">Linked Events ({explanation.events.length}):</p>
-                        {explanation.events.slice(0, 5).map((e: any) => (
+                        {explanation.events.slice(0, 5).map((e: Record<string, any>) => (
                           <Badge key={e.id} variant="outline" className="text-[9px] mr-1">{e.topic}</Badge>
                         ))}
                       </div>
@@ -187,7 +187,7 @@ export default function ActionLineageExplorer() {
                     {(explanation.policies?.length ?? 0) > 0 && (
                       <div>
                         <p className="text-muted-foreground mb-1">Linked Policies ({explanation.policies.length}):</p>
-                        {explanation.policies.slice(0, 5).map((p: any) => (
+                        {explanation.policies.slice(0, 5).map((p: Record<string, any>) => (
                           <Badge key={p.id} variant="outline" className="text-[9px] mr-1">{p.rule_name}: {p.effect}</Badge>
                         ))}
                       </div>
@@ -195,7 +195,7 @@ export default function ActionLineageExplorer() {
                     {(explanation.receipts?.length ?? 0) > 0 && (
                       <div>
                         <p className="text-muted-foreground mb-1">Linked Receipts ({explanation.receipts.length}):</p>
-                        {explanation.receipts.slice(0, 5).map((r: any) => (
+                        {explanation.receipts.slice(0, 5).map((r: Record<string, any>) => (
                           <Badge key={r.id} variant="outline" className="text-[9px] mr-1">{r.action_type}</Badge>
                         ))}
                       </div>

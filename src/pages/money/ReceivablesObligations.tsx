@@ -17,7 +17,7 @@ const ReceivablesObligations = () => {
   const { data: bills = [], isLoading: billsLoading } = useBills();
 
   const receivables = useMemo(() =>
-    invoices.filter((i: any) => i.status !== "paid").map((i: any) => {
+    invoices.filter((i: Record<string, any>) => i.status !== "paid").map((i: Record<string, any>) => {
       const now = new Date();
       const due = new Date(i.due_date);
       const daysOut = Math.ceil((due.getTime() - now.getTime()) / 86400000);
@@ -32,7 +32,7 @@ const ReceivablesObligations = () => {
   [invoices]);
 
   const obligations = useMemo(() =>
-    bills.filter((b: any) => b.status !== "paid").map((b: any) => {
+    bills.filter((b: Record<string, any>) => b.status !== "paid").map((b: Record<string, any>) => {
       const now = new Date();
       const due = new Date(b.due_date);
       const daysOut = Math.ceil((due.getTime() - now.getTime()) / 86400000);

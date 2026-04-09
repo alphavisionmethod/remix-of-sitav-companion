@@ -37,7 +37,7 @@ export default function AIWorkforcePage() {
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
       const { data } = await fromTable("advisor_registry").select("*").eq("active", true);
-      return (data ?? []).map((a: any) => ({
+      return (data ?? []).map((a: Record<string, any>) => ({
         id: a.id, name: a.display_name, role: a.advisor_type,
         status: "active" as const, tasksCompleted: 0, trustScore: Math.round(a.trust_threshold * 100), costToday: 0,
       }));

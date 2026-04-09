@@ -385,7 +385,7 @@ const ApprovalQueue = () => {
 
   // Use DB approvals if available, otherwise mock
   const approvals = (!isDemoMode && pendingApprovals.length > 0)
-    ? pendingApprovals.map((a: any) => ({
+    ? pendingApprovals.map((a: Record<string, any>) => ({
         id: a.id,
         advisorId: "system",
         title: a.action_summary || "Pending Approval",
@@ -449,7 +449,7 @@ const MemoryTransparency = () => {
 
   // Map DB memory to mock format, or use mocks
   const memoryItems = (!isDemoMode && dbMemory.length > 0)
-    ? dbMemory.map((m: any) => ({
+    ? dbMemory.map((m: Record<string, any>) => ({
         id: m.id,
         type: m.memory_type || "learned",
         source: m.source || "System",

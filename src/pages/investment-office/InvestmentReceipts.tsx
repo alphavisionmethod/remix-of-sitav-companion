@@ -42,7 +42,7 @@ export default function InvestmentReceipts() {
     queryFn: async () => {
       const { data } = await fromTable("proof_records").select("*").eq("user_id", user!.id).eq("domain", "investment").order("created_at", { ascending: false }).limit(50);
       if (!data?.length) return null;
-      return data.map((r: any) => ({
+      return data.map((r: Record<string, any>) => ({
         id: r.id,
         type: (r.metadata?.type || r.action || "trade") as Receipt["type"],
         title: r.metadata?.title || r.action || "Investment Action",

@@ -104,7 +104,7 @@ const AppAssociationsPage = () => {
                   <p className="text-[10px] text-muted-foreground">{ft.ext}</p>
                 </div>
                 <div className="flex items-center gap-1">
-                  {apps.map((a: any) => (
+                  {apps.map((a: Record<string, any>) => (
                     <span key={a.id} className="text-sm" title={a.name}>{a.icon}</span>
                   ))}
                 </div>

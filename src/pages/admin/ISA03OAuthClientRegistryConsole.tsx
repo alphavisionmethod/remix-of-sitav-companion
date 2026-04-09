@@ -37,9 +37,9 @@ export default function ISA03OAuthClientRegistryConsole() {
     },
   });
 
-  const identityClients = clients.filter((c: any) => c.client_purpose?.startsWith("identity"));
-  const connectorClients = clients.filter((c: any) => c.client_purpose?.startsWith("connector"));
-  const testClients = clients.filter((c: any) => c.client_purpose === "internal_test");
+  const identityClients = clients.filter((c: Record<string, any>) => c.client_purpose?.startsWith("identity"));
+  const connectorClients = clients.filter((c: Record<string, any>) => c.client_purpose?.startsWith("connector"));
+  const testClients = clients.filter((c: Record<string, any>) => c.client_purpose === "internal_test");
 
   const filtered = tab === "identity" ? identityClients
     : tab === "connector" ? connectorClients
@@ -133,7 +133,7 @@ export default function ISA03OAuthClientRegistryConsole() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filtered.map((c: any) => {
+                  {filtered.map((c: Record<string, any>) => {
                     const purpose = purposeLabels[c.client_purpose] || { label: c.client_purpose, color: "bg-muted text-muted-foreground", icon: null };
                     return (
                       <TableRow key={c.id}>

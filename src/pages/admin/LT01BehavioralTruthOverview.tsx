@@ -102,7 +102,7 @@ const LT01BehavioralTruthOverview = () => {
         <CardContent>
           {regressions && regressions.length > 0 ? (
             <div className="space-y-2">
-              {regressions.map((r: any) => (
+              {regressions.map((r: Record<string, any>) => (
                 <div key={r.id} className="flex items-center justify-between p-3 rounded-lg border">
                   <div>
                     <p className="font-medium">{r.description || r.route || "Unknown regression"}</p>

@@ -63,7 +63,7 @@ export default function DRS04ScenarioEntityGraph() {
             </CardHeader>
             <CardContent>
               <div className="space-y-1">
-                {entities.slice(0, 10).map((e: any) => (
+                {entities.slice(0, 10).map((e: Record<string, any>) => (
                   <div key={e.id} className="flex items-center gap-2 text-sm py-1 border-b border-border/30 last:border-0">
                     <span className="font-medium text-foreground">{e.label}</span>
                     <span className="text-xs text-muted-foreground">{e.entity_key}</span>

@@ -28,14 +28,14 @@ const FIPExecutionExplorer = () => {
 
       <div className="grid grid-cols-3 gap-4">
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{paths.length}</p><p className="text-xs text-muted-foreground">Execution Paths</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{paths.filter((p: any) => p.replay_safe).length}</p><p className="text-xs text-muted-foreground">Replay Safe</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{paths.filter((p: any) => p.brain_core_involvement).length}</p><p className="text-xs text-muted-foreground">Brain-Core Involved</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{paths.filter((p: Record<string, any>) => p.replay_safe).length}</p><p className="text-xs text-muted-foreground">Replay Safe</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{paths.filter((p: Record<string, any>) => p.brain_core_involvement).length}</p><p className="text-xs text-muted-foreground">Brain-Core Involved</p></CardContent></Card>
       </div>
 
       <div className="space-y-4">
         {isLoading ? <p className="text-center py-8 text-muted-foreground">Loading execution paths...</p> :
           paths.length === 0 ? <Card><CardContent className="py-12 text-center text-muted-foreground">No execution paths defined yet. Paths are created when side-effecting features are designed.</CardContent></Card> :
-          paths.map((path: any) => (
+          paths.map((path: Record<string, any>) => (
             <Card key={path.id}>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">

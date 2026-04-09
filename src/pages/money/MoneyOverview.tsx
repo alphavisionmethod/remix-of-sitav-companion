@@ -59,12 +59,12 @@ const MoneyOverview = () => {
   const upcomingBills = useMemo(() => {
     const now = new Date();
     return bills
-      .filter((b: any) => {
+      .filter((b: Record<string, any>) => {
         const due = new Date(b.due_date);
         const diff = Math.ceil((due.getTime() - now.getTime()) / 86400000);
         return diff >= 0 && diff <= 7;
       })
-      .map((b: any) => {
+      .map((b: Record<string, any>) => {
         const due = new Date(b.due_date);
         const daysLeft = Math.max(0, Math.ceil((due.getTime() - now.getTime()) / 86400000));
         return { name: b.name || b.payee, amount: `$${Number(b.amount).toLocaleString()}`, due: due.toLocaleDateString("en", { month: "short", day: "numeric" }), daysLeft };
@@ -74,11 +74,11 @@ const MoneyOverview = () => {
 
   // Recent receivables from DB
   const pendingInvoices = useMemo(() =>
-    invoices.filter((i: any) => i.status !== "paid").slice(0, 3), [invoices]);
+    invoices.filter((i: Record<string, any>) => i.status !== "paid").slice(0, 3), [invoices]);
 
   // Waste subscriptions from DB
   const wasteSubscriptions = useMemo(() =>
-    subscriptions.filter((s: any) => s.is_waste).slice(0, 3), [subscriptions]);
+    subscriptions.filter((s: Record<string, any>) => s.is_waste).slice(0, 3), [subscriptions]);
 
   const kBase = kpis || { totalBalance: 0, safeToSpend: 0, billsDue7d: 0, billsDue7dCount: 0, reserveHealth: 0, subscriptionMonthly: 0, subscriptionCount: 0, estWaste: 0, wasteCount: 0, receivables: 0, receivableCount: 0, monthlyBurn: 0 };
 
@@ -164,7 +164,7 @@ const MoneyOverview = () => {
         <div className="space-y-6">
           <div className="space-y-3">
             <SitaSectionHeader title="Accounts" />
-            {accounts.map((acc: any) => {
+            {accounts.map((acc: Record<string, any>) => {
               const Icon = accountIcons[acc.account_type] || accountIcons.default;
               return (
                 <SitaCard key={acc.id} className="p-4">
@@ -290,7 +290,7 @@ const MoneyOverview = () => {
           {/* Receivables from DB */}
           <div className="space-y-3">
             <SitaSectionHeader title="Expected Inflows" action={<button onClick={() => navigate("/money/receivables")} className="text-xs text-primary hover:underline">View all</button>} />
-            {pendingInvoices.map((inv: any) => (
+            {pendingInvoices.map((inv: Record<string, any>) => (
               <SitaCard key={inv.id} className="p-4" lane="opportunity">
                 <div className="flex items-center justify-between">
                   <div>

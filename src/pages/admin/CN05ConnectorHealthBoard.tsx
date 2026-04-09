@@ -36,8 +36,8 @@ export default function CN05ConnectorHealthBoard() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => { toast.success(`Health check: ${data?.results?.length || 0} accounts checked`); queryClient.invalidateQueries({ queryKey: ["connector-health-all"] }); },
-    onError: (e: any) => toast.error(`Health check failed: ${e.message}`),
+    onSuccess: (data: Record<string, any>) => { toast.success(`Health check: ${data?.results?.length || 0} accounts checked`); queryClient.invalidateQueries({ queryKey: ["connector-health-all"] }); },
+    onError: (e: Record<string, any>) => toast.error(`Health check failed: ${e.message}`),
   });
 
   const grouped = healthRecords.reduce((acc: any, h: any) => {
