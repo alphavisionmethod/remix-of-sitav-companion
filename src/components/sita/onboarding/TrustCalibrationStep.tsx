@@ -12,6 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { SetupStageHeader, StageTransitionController, TrustLadderControl } from "@/components/sita/setup";
+import { ProofPreviewCard } from "@/components/sita/onboarding/ProofPreviewCard";
 
 export interface TrustCalibrationData {
   level: number;
@@ -383,40 +384,17 @@ export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCa
               )}
             </AnimatePresence>
 
-            {/* Example workflow */}
+            {/* Proof-of-action preview */}
             <AnimatePresence mode="wait">
               {data.level > 0 && (
                 <motion.div
-                  key={`example-${data.level}`}
+                  key={`proof-${data.level}`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ type: "spring", damping: 24, stiffness: 260, delay: 0.05 }}
-                  className="space-y-2"
                 >
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Example</p>
-                  <div className="rounded-lg bg-secondary/30 p-3 space-y-1.5">
-                    <p className="text-[11px] text-foreground font-medium">💳 Subscription renewal detected</p>
-                    <div className="space-y-1">
-                      {[
-                        { min: 1, text: "→ SITA detects the charge pattern", color: "text-muted-foreground" },
-                        { min: 2, text: '→ Suggests "Cancel unused service"', color: "text-muted-foreground" },
-                        { min: 3, text: "→ Simulates savings: $14.99/month", color: "text-muted-foreground" },
-                        { min: 4, text: "→ Drafts cancellation, awaits approval", color: "text-muted-foreground" },
-                        { min: 5, text: "→ Auto-cancels with proof receipt", color: "text-[hsl(var(--trust-safe))]" },
-                      ].filter(step => data.level >= step.min).map((step, idx) => (
-                        <motion.p
-                          key={step.min}
-                          initial={{ opacity: 0, x: -8 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: prefersReduced ? 0 : idx * 0.07, duration: 0.3 }}
-                          className={cn("text-[10px]", step.color)}
-                        >
-                          {step.text}
-                        </motion.p>
-                      ))}
-                    </div>
-                  </div>
+                  <ProofPreviewCard trustLevel={data.level} />
                 </motion.div>
               )}
             </AnimatePresence>
