@@ -277,6 +277,11 @@ export default function ConstitutionEditor() {
   const [tab, setTab] = useState("all");
   const [dbLoaded, setDbLoaded] = useState(false);
 
+  // Kernel action fns for constitution CRUD
+  const constitutionCreate = useActionFn("owner", "constitution.create", { silent: true });
+  const constitutionUpdate = useActionFn("owner", "constitution.update", { silent: true });
+  const constitutionDelete = useActionFn("owner", "constitution.delete", { silent: true });
+
   // Load persisted rules from DB on mount (skip for demo users)
   useEffect(() => {
     if (dbLoaded || isDemo || !user?.id) return;
@@ -354,15 +359,18 @@ export default function ConstitutionEditor() {
       const rules = compiler.getAllRules();
       const added = rules.find((r: ConstitutionRule) => r.naturalLanguage === text);
       if (added) {
-        await fromTable("constitution_rules").insert([{
-          user_id: user.id,
-          natural_text: text,
-          category: added.category,
-          priority: (added.compiledPolicy?.parameters?.priority ?? 50) as number,
-          enforcement_mode: added.enforcementMode,
-          is_active: true,
-          compiled_json: JSON.parse(JSON.stringify(added.compiledPolicy ?? null)) as import("@/integrations/supabase/types").Json,
-        }]);
+        await constitutionCreate({
+          table: "constitution_rules",
+          data: {
+            user_id: user.id,
+            natural_text: text,
+            category: added.category,
+            priority: (added.compiledPolicy?.parameters?.priority ?? 50) as number,
+            enforcement_mode: added.enforcementMode,
+            is_active: true,
+            compiled_json: JSON.parse(JSON.stringify(added.compiledPolicy ?? null)),
+          },
+        });
       }
     }
   }, [compileRule, isDemo, user?.id, compiler]);
@@ -373,10 +381,11 @@ export default function ConstitutionEditor() {
     if (!isDemo && user?.id) {
       const rule = compiler.getAllRules().find((r: ConstitutionRule) => r.id === id);
       if (rule) {
-        await fromTable("constitution_rules")
-          .update({ is_active: active })
-          .eq("user_id", user.id)
-          .eq("natural_text", rule.naturalLanguage);
+        await constitutionUpdate({
+          table: "constitution_rules",
+          updates: { is_active: active },
+          filters: { user_id: user.id, natural_text: rule.naturalLanguage },
+        });
       }
     }
   }, [toggleRule, isDemo, user?.id, compiler]);
@@ -386,12 +395,12 @@ export default function ConstitutionEditor() {
     const rule = compiler.getAllRules().find((r: ConstitutionRule) => r.id === id);
     deleteRule(id);
     if (!isDemo && user?.id && rule) {
-      await fromTable("constitution_rules")
-        .delete()
-        .eq("user_id", user.id)
-        .eq("natural_text", rule.naturalLanguage);
+      await constitutionDelete({
+        table: "constitution_rules",
+        filters: { user_id: user.id, natural_text: rule.naturalLanguage },
+      });
     }
-  }, [deleteRule, isDemo, user?.id, compiler]);
+  }, [deleteRule, isDemo, user?.id, compiler, constitutionDelete]);
 
   const allRules = compiler.getAllRules();
   const stats = compiler.getStats();

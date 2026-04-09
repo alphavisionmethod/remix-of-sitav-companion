@@ -101,24 +101,14 @@ const CommunicationsCenter = () => {
   const handleSubmit = async () => {
     if (!form.subject.trim()) { toast.error("Subject is required"); return; }
     if (!user) return;
-    const result = await executeComm({
+    await executeComm({
       operation: editingId ? "update" : "insert",
       id: editingId,
       data: editingId
         ? { channel: form.type, subject: form.subject, body: form.body, status: form.status, contact_name: form.customer_name }
         : { user_id: user.id, type: form.type, channel: form.type, subject: form.subject, body: form.body, status: form.status, contact_name: form.customer_name, direction: "outbound" },
     });
-    if (result) {
-      toast.success(editingId ? "Communication updated" : "Communication created");
-    } else {
-      // Fallback
-      if (editingId) {
-        await fromTable("communications").update({ channel: form.type, subject: form.subject, body: form.body, status: form.status, contact_name: form.customer_name }).eq("id", editingId);
-      } else {
-        await fromTable("communications").insert({ user_id: user.id, type: form.type, channel: form.type, subject: form.subject, body: form.body, status: form.status, contact_name: form.customer_name, direction: "outbound" });
-      }
-      toast.success(editingId ? "Communication updated" : "Communication created");
-    }
+    toast.success(editingId ? "Communication updated" : "Communication created");
     queryClient.invalidateQueries({ queryKey: ["communications"] });
     resetForm();
   };
