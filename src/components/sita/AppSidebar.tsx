@@ -85,7 +85,7 @@ const bottomNav = [
   { title: "AI Tokens", url: "/admin/ai-tokens", icon: Gauge },
   { title: "System Mgmt", url: "/admin/system", icon: Server },
   { title: "Pack Store", url: "/store", icon: Package },
-  { title: "Enterprise", url: "/admin/enterprise", icon: Globe },
+  { title: "Enterprise", url: "/enterprise", icon: Globe },
   { title: "Settings", url: "/settings", icon: Settings },
   { title: "Control Room", url: "/owner", icon: Shield },
 ];
