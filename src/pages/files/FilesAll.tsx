@@ -54,7 +54,7 @@ const FilesAll = () => {
   const [category, setCategory] = useState<FileCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const files = useMemo(() => rawFiles.map((f: Record<string, any>) => ({
+  const files = useMemo(() => rawFiles.map((f: any) => ({
     ...f,
     domain: classifyDomain(f),
     trust: trustFromSensitivity(f.sensitivity),

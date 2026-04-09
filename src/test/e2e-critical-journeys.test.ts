@@ -27,13 +27,13 @@ vi.mock("@/integrations/supabase/client", () => ({
 
 describe("Critical User Journey: Authentication", () => {
   it("login page imports without error", async () => {
-    const mod = await import("@/pages/auth/LoginPage");
+    const mod = await import("@/pages/auth/Login");
     expect(mod).toBeDefined();
     expect(mod.default).toBeDefined();
   });
 
   it("signup page imports without error", async () => {
-    const mod = await import("@/pages/auth/SignupPage");
+    const mod = await import("@/pages/auth/Signup");
     expect(mod).toBeDefined();
     expect(mod.default).toBeDefined();
   });

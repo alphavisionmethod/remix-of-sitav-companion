@@ -50,7 +50,7 @@ const FilesProcessing = () => {
 
   const ingestedFiles = useMemo(() => {
     const files = realFiles && realFiles.length > 0 ? realFiles : mockData;
-    return files.map((f: Record<string, any>) => ({
+    return files.map((f: any) => ({
       ...f,
       filename: f.filename || f.name || "Unknown",
       textContent: f.extracted_data?.text || f.textContent || "",
