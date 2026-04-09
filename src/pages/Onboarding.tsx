@@ -6,6 +6,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
+import { useActionFn } from "@/hooks/use-action";
 import { toast } from "sonner";
 import logo from "@/assets/logo.jpeg";
 import {
@@ -81,11 +82,13 @@ const Onboarding = () => {
   };
   const prev = () => idx > 0 && setStep(stepOrder[idx - 1]);
 
+  const upsertMemory = useActionFn("workspace", "memory.upsert", { silent: true });
+  const updateProfile = useActionFn("workspace", "profile.update", { silent: true });
+
   const persistOnboardingData = async () => {
     if (!user) return;
     setIsSaving(true);
     try {
-      // Persist memory items from onboarding choices
       const memoryItems = [
         { user_id: user.id, key: "role", value: JSON.stringify(state.role), category: "preference" },
         { user_id: user.id, key: "business_name", value: JSON.stringify(state.businessName), category: "profile" },
@@ -99,13 +102,18 @@ const Onboarding = () => {
         { user_id: user.id, key: "first_win", value: JSON.stringify(state.firstWin), category: "preference" },
       ].filter(m => m.value && m.value !== '""' && m.value !== "[]");
 
-      const { error } = await fromTable("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
-      if (error) {
-        console.error("Failed to persist onboarding data:", error);
-      } else {
-        // Mark onboarding as completed in profile
-        await fromTable("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
+      // Route through kernel
+      const result = await upsertMemory({ table: "user_memory", items: memoryItems, onConflict: "user_id,key" });
+      if (result) {
+        await updateProfile({ table: "profiles", updates: { onboarding_completed: true }, userId: user.id });
         toast.success("Your preferences have been saved!");
+      } else {
+        // Fallback to direct write
+        const { error } = await fromTable("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
+        if (!error) {
+          await fromTable("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
+          toast.success("Your preferences have been saved!");
+        }
       }
     } catch (e) {
       console.error("Onboarding persistence error:", e);
