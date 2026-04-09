@@ -1,2 +1,2 @@
-// Canonical re-export — core-services/frontend
-export * from "@/lib/services/frontend";
+// Canonical — core-services/frontend
+export * from "./frontend-quality-engine";

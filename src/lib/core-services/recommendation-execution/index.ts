@@ -1,2 +1,2 @@
-// Canonical re-export — core-services/recommendation-execution
-export * from "@/lib/services/recommendation-execution";
+// Canonical — core-services/recommendation-execution
+export * from "./recommendation-loop-service";

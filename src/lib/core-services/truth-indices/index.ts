@@ -1,2 +1,2 @@
-// Canonical re-export — core-services/truth-indices
-export * from "@/lib/services/truth-indices";
+// Canonical — core-services/truth-indices
+export * from "./truth-index-aggregator";

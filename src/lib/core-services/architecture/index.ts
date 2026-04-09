@@ -1,2 +1,2 @@
-// Canonical re-export — core-services/architecture
-export * from "@/lib/services/architecture";
+// Canonical — core-services/architecture
+export * from "./god-tier-integration-engine";
