@@ -46,10 +46,10 @@ check "validate-deployment.sh exists" "test -f scripts/validate-deployment.sh"
 
 echo ""
 echo "🚀 Deploy Scripts"
-check "OTA agent exists" "test -f deploy/ota-agent.sh"
-check "First-boot script exists" "test -f deploy/first-boot.sh || test -f scripts/first-boot.sh"
-check "Metrics agent exists" "test -f deploy/metrics-agent.sh || test -f scripts/metrics-agent.sh"
-check "Backup script exists" "test -f deploy/backup.sh || test -f scripts/backup.sh"
+check "OTA agent exists" "test -f deploy/ota-agent.sh || test -f scripts/release/iso/sita-ota-agent.sh"
+check "First-boot script exists" "test -f deploy/first-boot.sh || test -f scripts/release/iso/sita-first-boot.sh || test -f scripts/first-boot.sh"
+check "Metrics agent exists" "test -f deploy/metrics-agent.sh || test -f scripts/release/iso/sita-metrics-agent.sh || test -f scripts/metrics-agent.sh"
+check "Backup script exists" "test -f deploy/backup.sh || test -f scripts/release/iso/sita-backup.sh || test -f scripts/backup.sh"
 
 echo ""
 echo "📄 Architecture Docs"
@@ -64,6 +64,12 @@ FN_COUNT=$(ls -d supabase/functions/*/index.ts 2>/dev/null | wc -l)
 echo "  📊 $FN_COUNT edge functions found"
 TEST_COUNT=$(ls supabase/functions/*/index_test.ts supabase/functions/*/index.test.ts 2>/dev/null | wc -l)
 echo "  🧪 $TEST_COUNT edge function test files found"
+
+echo ""
+echo "📱 PWA"
+check "Web manifest exists" "test -f public/manifest.webmanifest || test -f public/manifest.json"
+check "Icon 192 exists" "test -f public/icons/icon-192.png"
+check "Icon 512 exists" "test -f public/icons/icon-512.png"
 
 echo ""
 if [ $ERRORS -eq 0 ]; then
