@@ -72,6 +72,8 @@ export function ExplanationStyleStep({ selected, onSelect, onNext, onPrev }: Exp
           </p>
         </motion.div>
       )}
+
+      <div className="flex items-center justify-between pt-2">
         <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
         <button onClick={onNext}
           className="rounded-xl px-6 py-2.5 text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-2">
