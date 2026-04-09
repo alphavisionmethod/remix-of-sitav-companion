@@ -198,7 +198,7 @@ const MemoryCenter = () => {
                     <Edit className="h-3 w-3" />
                   </button>
                   <button
-                    onClick={() => forgetMutation.mutate(m.id)}
+                    onClick={() => forgetMutation.mutate({ id: m.id })}
                     className="rounded-md p-1 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                     title="Forget"
                   >

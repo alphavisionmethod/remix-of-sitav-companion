@@ -224,7 +224,7 @@ const HouseholdTasks = () => {
                             {t.status !== "done" && t.status !== "in-progress" && (
                               <button onClick={() => updateStatus.mutate({ id: t.id, status: "in-progress" })} className="text-[10px] text-primary hover:underline">Start</button>
                             )}
-                            <button onClick={() => deleteTask.mutate(t.id)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-3 w-3" /></button>
+                            <button onClick={() => deleteTask.mutate({ id: t.id })} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-3 w-3" /></button>
                           </div>
                         </div>
                       </div>

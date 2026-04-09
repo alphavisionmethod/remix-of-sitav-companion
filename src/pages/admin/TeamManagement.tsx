@@ -209,7 +209,7 @@ export default function TeamManagement() {
       variant: "destructive",
       requireTypedConfirmation: agent.name,
     });
-    if (ok) deleteAdvisor.mutate(agent.id);
+    if (ok) deleteAdvisor.mutate({ id: agent.id });
   };
 
   const handleFormSubmit = () => {
@@ -218,9 +218,9 @@ export default function TeamManagement() {
       return;
     }
     if (formDialog.mode === "create") {
-      createAdvisor.mutate(formDialog.data);
+      createAdvisor.mutate(formDialog.data as unknown as Record<string, unknown>);
     } else if (formDialog.editId) {
-      updateAdvisor.mutate({ id: formDialog.editId, ...formDialog.data });
+      updateAdvisor.mutate({ id: formDialog.editId, ...formDialog.data } as Record<string, unknown>);
     }
   };
 

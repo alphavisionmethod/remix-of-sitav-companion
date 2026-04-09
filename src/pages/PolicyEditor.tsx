@@ -151,7 +151,7 @@ const PolicyEditor = () => {
 
                 <div className="flex gap-2">
                   <SitaButton variant="accent" className="flex-1"><Play className="h-3.5 w-3.5" /> Simulate</SitaButton>
-                  <SitaButton variant="danger" onClick={() => deletePolicy.mutate(selected.id)}><Trash2 className="h-3.5 w-3.5" /> Delete</SitaButton>
+                  <SitaButton variant="danger" onClick={() => deletePolicy.mutate({ id: selected.id })}><Trash2 className="h-3.5 w-3.5" /> Delete</SitaButton>
                 </div>
               </>
             ) : (
