@@ -24,8 +24,8 @@ function detectPlatform(): PushPlatform {
   if (typeof window === "undefined") return "web";
   if (('electron' in window)) return "electron";
   // Capacitor detection
-  if ((window as any)?.Capacitor?.isNativePlatform?.()) {
-    return (window as any)?.Capacitor?.getPlatform?.() === "ios" ? "ios" : "android";
+  if (window.Capacitor?.isNativePlatform?.()) {
+    return window.Capacitor?.getPlatform?.() === "ios" ? "ios" : "android";
   }
   return "web";
 }
