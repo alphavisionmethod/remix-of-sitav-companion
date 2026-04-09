@@ -1,83 +1,65 @@
 
 
-# Fix Section 11 (Orphaned Tables) & Section 17 (Missing Headings)
+# Fix All P1 Items — Rename mock Arrays, Gate Behind isDemoMode, Verify Wiring
 
-## Section 11: 24 Orphaned Tables — ALREADY FIXED
+## Status Summary
 
-All 24 tables listed as "orphaned" are already wired to data services:
+| P1 Item | Current State | Action Needed |
+|---------|--------------|---------------|
+| Wire 88 pages to isDemoMode | **Only 6 pages remain unwired** — all are auth/landing pages that correctly don't need it | **None** |
+| Prefix 151 hardcoded arrays with DEMO_ | **35 `mock*` arrays across 17 files + 7 non-prefixed data arrays across 3 files = 42 total** | **Rename all 42** |
+| Wire 24 orphaned tables | **All 24 confirmed wired** in data services | **None** |
+| Wire ConstitutionEditor form | **Already fully wired** — loads from DB, persists create/toggle/delete via `constitution_rules` table | **None** |
 
-| Table | Wired In |
-|-------|----------|
-| action_escalations | cai-data-service.ts (`escalations`) |
-| adaptive_interface_profiles | cai-data-service.ts (`interfaceProfiles`) |
-| ai_agent_tasks | persistence-adapters.ts (full CRUD) |
-| boundary_policies | cai-data-service.ts (`boundaryPolicies`) |
-| cai_continuity_sessions | cai-data-service.ts (`continuitySessions`) |
-| command_orchestrations | cai-data-service.ts (`commands`) |
-| coordinated_assistant_sessions | cai-data-service.ts (`assistantSessions`) |
-| digest_compilations | cai-data-service.ts (`digests`) |
-| experience_signature_rules | cai-data-service.ts (`experienceRules`) |
-| financial_documents | money-data-service.ts (4 functions) |
-| handoff_contexts | cai-data-service.ts (`handoffs`) |
-| human_obligations | cai-data-service.ts (`obligations`) |
-| intelligence_assets_library | intelligence-asset-persistence.ts |
-| intent_resolutions | cai-data-service.ts (`intents`) |
-| memory_corrections | cai-data-service.ts (`memoryCorrections`) |
-| memory_governance_records | cai-data-service.ts (`memoryGovernance`) |
-| operating_modes | cai-data-service.ts (`operatingModes`) |
-| opportunity_signals | cai-data-service.ts (`opportunitySignals`) |
-| personal_operating_graph_edges | cai-data-service.ts (`graphEdges`) |
-| personal_operating_graph_nodes | cai-data-service.ts (`graphNodes`) |
-| priority_stacks | cai-data-service.ts (`priorities`) |
-| relationship_contexts | cai-data-service.ts (`relationships`) |
-| scenarios | platform-ops-data-service.ts (`platformScenarios`) |
-| timing_intelligence_decisions | cai-data-service.ts (`timingDecisions`) |
+## What Actually Needs Fixing
 
-**No code changes needed for Section 11.**
+**42 hardcoded data arrays** across **19 files** need renaming from `mock*`/generic names to `DEMO_*` to match the codebase convention. All 19 files already have `isDemoMode` wired — the arrays just need the naming convention applied.
 
----
+### Files and Renames
 
-## Section 17: Pages Without Headings — 18 Pages Need Fixes
+**17 files with `mock*` prefix (35 arrays):**
 
-After filtering out pages that already get `<h1>` from `MobileShell`, `DomainHeader`, or are sub-components (onboarding screens), **18 pages** truly lack an accessible `<h1>`:
+1. `src/pages/admin/ComputeGovernanceBoard.tsx` — 6 arrays: `mockTenantSpend`, `mockAgentSpend`, `mockAnomalies`, `mockBudgets`, `mockRoutingEvents`, `mockDeepJobs`
+2. `src/pages/admin/IntelligenceEfficiencyBoard.tsx` — 6 arrays: `mockAssets`, `mockDifferentials`, `mockEfficiency`, `mockOutcomes`, `mockPackets`, `mockCrossTenantPatterns`
+3. `src/pages/admin/intelligence/AIEfficiencyScoreboard.tsx` — 3: `mockAgents`, `mockWorkflows`, `mockPaths`
+4. `src/pages/admin/intelligence/CrossTenantGovernance.tsx` — 1: `mockPatterns`
+5. `src/pages/admin/intelligence/DifferentialReasoningExplorer.tsx` — 1: `mockDiffs`
+6. `src/pages/admin/intelligence/EscalationControlCenter.tsx` — 1: `mockEscalations`
+7. `src/pages/admin/intelligence/IntelligenceAssetLibrary.tsx` — 1: `mockAssets`
+8. `src/pages/admin/intelligence/IntelligencePacketInspector.tsx` — 1: `mockPackets`
+9. `src/pages/admin/intelligence/IntelligenceReuseOverview.tsx` — 5: `mockReuseData`, `mockAssetClasses`, `mockDomainReuse`, `mockInvalidationFeed`, `mockConfidenceTrend`
+10. `src/pages/admin/intelligence/OutcomeEconomicsBoard.tsx` — 2: `mockOutcomes`, `mockReasoningPaths`
+11. `src/pages/admin/intelligence/PatternLearningCenter.tsx` — 1: `mockPatterns`
+12. `src/pages/admin/intelligence/SmartDigestCenter.tsx` — 1: `mockDigests`
+13. `src/pages/admin/intelligence/ZeroWastePromptView.tsx` — 1: `mockProfiles`
+14. `src/pages/apps/EmailApp.tsx` — 1: `mockEmails`
+15. `src/pages/apps/GalleryApp.tsx` — 1: `mockPhotos`
+16. `src/pages/apps/MessengerApp.tsx` — 2: `mockChats`, `mockMessages`
+17. `src/pages/apps/VaultApp.tsx` — 1: `mockEntries`
 
-### Category A: Tab-wrapper pages (4 files)
-These are shell pages that render child components via tabs. Each child already has its own `SitaPageHeader`. Add a **visually-hidden** `<h1>` for screen readers:
+**3 files with generic names (7 arrays):**
 
-- `src/pages/BusinessCenter.tsx` → `<h1 className="sr-only">Business Center</h1>`
-- `src/pages/ConciergeCenter.tsx` → `<h1 className="sr-only">Concierge Center</h1>`
-- `src/pages/FilesCenter.tsx` → `<h1 className="sr-only">Files Center</h1>`
-- `src/pages/MoneyCenter.tsx` → `<h1 className="sr-only">Money Center</h1>`
+18. `src/pages/CustomerDetail.tsx` — 4: `customersData`, `timeline`, `actions`, `documents`
+19. `src/pages/ProductivityHub.tsx` — 1: `recentDocs`
+20. `src/pages/admin/intelligence/CrossTenantGovernance.tsx` — 2: `restrictedDomains`, `enterpriseExclusions`
 
-### Category B: Admin connector pages (7 files)
-Add `SitaPageHeader` import from `SitaCard` and insert a header at the top of the return block:
+### Implementation
 
-- `CN01ConnectorRealityOverview.tsx` — "Connector Reality Overview"
-- `CN02ConnectorRegistryConsole.tsx` — "Connector Registry Console"
-- `CN03AccountLinkageBoard.tsx` — "Account Linkage Board"
-- `CN04SyncTruthCenter.tsx` — "Sync Truth Center"
-- `CN05ConnectorHealthBoard.tsx` — "Connector Health Board"
-- `CN06ConnectorDemoReview.tsx` — "Connector Demo Review"
-- `CN07ConnectorLaunchGate.tsx` — "Connector Launch Gate"
+For each file:
+1. Rename `mock*` → `DEMO_*` (e.g., `mockTenantSpend` → `DEMO_TENANT_SPEND`)
+2. Rename generic names → `DEMO_*` (e.g., `timeline` → `DEMO_TIMELINE`)
+3. Update all references within the same file
+4. No logic changes — these files already have `isDemoMode` wired
 
-### Category C: App platform & store pages (3 files)
-- `AppStorePage.tsx` — Add `<h1>` "App Store"
-- `FirstLaunchPage.tsx` — Add `<h1>` "First Launch"
-- `PackStorePage.tsx` — Add `<h1>` "Pack Store"
+### Verification
 
-### Category D: Standalone pages (4 files)
-- `WeatherNewsApp.tsx` — Add `<h1>` "Weather & News"
-- `DPOOnboarding.tsx` — Add `<h1>` "Digital Presence Onboarding"
-- `PlatformTruthDashboard.tsx` — Add `<h1>` "Platform Truth Dashboard"
-- `OnboardingWrapper.tsx` — Add `<h1 className="sr-only">Setup</h1>` (wrapper for OSSetupExperience)
+- Run `grep -rn "^const mock" src/pages` — expect 0 matches (excluding tests)
+- Run `npx tsc --noEmit` — expect 0 errors
+- All 4 P1 items confirmed resolved
 
-### Implementation Pattern
+## Technical Details
 
-For Category A (wrappers): Add `<h1 className="sr-only">{name}</h1>` right after the opening `<div>`.
-
-For Categories B/C/D: Add `SitaPageHeader` from `@/components/sita/SitaCard` with appropriate title/subtitle, consistent with the rest of the app.
-
-## Files Changed
-- **0 files** for Section 11 (already wired)
-- **18 files** updated for Section 17 (heading accessibility)
+- **Pattern**: Simple find-and-replace within each file; no cross-file dependencies since these are module-scoped constants
+- **Risk**: Zero — purely cosmetic rename, no logic changes
+- **Files changed**: 19 files (1 file appears in both lists: CrossTenantGovernance)
 
