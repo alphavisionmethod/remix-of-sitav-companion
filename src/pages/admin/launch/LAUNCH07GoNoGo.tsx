@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Gavel, CheckCircle, XCircle, Clock } from "lucide-react";
-import { computeLaunchReadiness, getGoNoGoConditions, type LaunchReadinessResult, type GoNoGoCondition, type LaunchMode } from "@/lib/services/launch-readiness/launch-readiness-engine";
+import { computeLaunchReadiness, getGoNoGoConditions, type LaunchReadinessResult, type GoNoGoCondition, type LaunchMode } from "@/lib/core-services/launch-readiness/launch-readiness-engine";
 import { cn } from "@/lib/utils";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_MODE_ORDER } from "@/lib/demo-data/admin-platform";

@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Shield, CheckCircle, AlertTriangle, XCircle } from "lucide-react";
-import { computeLaunchReadiness, type CapabilityClassification, type ClaimSafety } from "@/lib/services/launch-readiness/launch-readiness-engine";
+import { computeLaunchReadiness, type CapabilityClassification, type ClaimSafety } from "@/lib/core-services/launch-readiness/launch-readiness-engine";
 import { cn } from "@/lib/utils";
 import { useDataMode } from "@/contexts/DataModeContext";
 

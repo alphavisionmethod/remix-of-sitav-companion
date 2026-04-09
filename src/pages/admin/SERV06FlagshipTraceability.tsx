@@ -5,9 +5,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { getRoutesByFlagshipLoop } from "@/lib/services/service-registry/route-to-service-inventory";
-import { getDomainsByFlagshipLoop, SERVICE_OWNERSHIP_REGISTRY } from "@/lib/services/service-registry/service-ownership-registry";
-import { FLAGSHIP_LOOP_SEEDS } from "@/lib/services/flagship-loops/flagship-loop-service";
+import { getRoutesByFlagshipLoop } from "@/lib/core-services/service-registry/route-to-service-inventory";
+import { getDomainsByFlagshipLoop, SERVICE_OWNERSHIP_REGISTRY } from "@/lib/core-services/service-registry/service-ownership-registry";
+import { FLAGSHIP_LOOP_SEEDS } from "@/lib/core-services/flagship-loops/flagship-loop-service";
 import { Layers, Route, Database, AlertTriangle, CheckCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";

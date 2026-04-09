@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ArrowLeft, CheckCircle, AlertTriangle, RefreshCw, Trash2, Activity, Clock, Settings, Shield } from "lucide-react";
-import { DEMO_CONNECTIONS } from "@/lib/services/integration-hub/demo-connections";
-import { getProviderById } from "@/lib/services/integration-hub/providers";
+import { DEMO_CONNECTIONS } from "@/lib/core-services/integration-hub/demo-connections";
+import { getProviderById } from "@/lib/core-services/integration-hub/providers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 

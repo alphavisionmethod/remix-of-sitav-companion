@@ -13,7 +13,7 @@ import {
 import { useGoogleProviderFamily } from "@/hooks/use-google-provider-family";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import type { GoogleConnectorState } from "@/lib/services/google-provider-family/types";
+import type { GoogleConnectorState } from "@/lib/core-services/google-provider-family/types";
 
 const CAPABILITY_ICONS: Record<string, React.ReactNode> = {
   google_drive: <HardDrive className="h-5 w-5" />,

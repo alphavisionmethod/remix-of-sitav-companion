@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Cpu, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { getAIModelRegistry } from "@/lib/services/ai-gateway";
+import { getAIModelRegistry } from "@/lib/core-services/ai-gateway";
 
 export default function AIG02ModelRegistry() {
   const { isDemoMode } = useDataMode();

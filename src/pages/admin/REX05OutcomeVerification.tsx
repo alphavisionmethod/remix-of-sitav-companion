@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchOutcomeVerifications } from "@/lib/services/recommendation-execution/recommendation-loop-service";
+import { fetchOutcomeVerifications } from "@/lib/core-services/recommendation-execution/recommendation-loop-service";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";

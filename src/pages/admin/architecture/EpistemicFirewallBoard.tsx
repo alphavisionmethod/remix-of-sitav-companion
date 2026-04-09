@@ -3,10 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Shield, AlertTriangle, CheckCircle, XCircle, Eye, Brain, Activity } from "lucide-react";
-import { EVIDENCE_GRADE_POLICIES } from "@/lib/services/epistemic-firewall/evidence-grader";
-import { GROUNDING_RULES } from "@/lib/services/epistemic-firewall/tool-grounding";
-import { getInvariants } from "@/lib/services/epistemic-firewall/sentinel-engine";
-import { CORTEX_LOOP_CONFIGS } from "@/lib/services/epistemic-firewall/cortex-loop";
+import { EVIDENCE_GRADE_POLICIES } from "@/lib/core-services/epistemic-firewall/evidence-grader";
+import { GROUNDING_RULES } from "@/lib/core-services/epistemic-firewall/tool-grounding";
+import { getInvariants } from "@/lib/core-services/epistemic-firewall/sentinel-engine";
+import { CORTEX_LOOP_CONFIGS } from "@/lib/core-services/epistemic-firewall/cortex-loop";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 function EpistemicFirewallBoard() {

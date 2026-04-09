@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import type { WorkforceRole } from "@/lib/services/ai-workforce/workforce-orchestrator";
+import type { WorkforceRole } from "@/lib/core-services/ai-workforce/workforce-orchestrator";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Progress } from "@/components/ui/progress";
-import { getWorkforceRoles, getRecentInvocations } from "@/lib/services/ai-workforce/workforce-orchestrator";
+import { getWorkforceRoles, getRecentInvocations } from "@/lib/core-services/ai-workforce/workforce-orchestrator";
 import { Users, X, ChevronRight, TrendingUp, TrendingDown, Filter } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";

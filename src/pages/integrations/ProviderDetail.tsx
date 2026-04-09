@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, CheckCircle, Shield, Zap, Globe, ExternalLink, BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
-import { getProviderById } from "@/lib/services/integration-hub/providers";
-import { DEMO_CONNECTIONS } from "@/lib/services/integration-hub/demo-connections";
+import { getProviderById } from "@/lib/core-services/integration-hub/providers";
+import { DEMO_CONNECTIONS } from "@/lib/core-services/integration-hub/demo-connections";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 

@@ -3,7 +3,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AlertOctagon, ArrowUp, Target } from "lucide-react";
-import { computeLaunchReadiness, type LaunchBlockerEntry } from "@/lib/services/launch-readiness/launch-readiness-engine";
+import { computeLaunchReadiness, type LaunchBlockerEntry } from "@/lib/core-services/launch-readiness/launch-readiness-engine";
 import { cn } from "@/lib/utils";
 import { useDataMode } from "@/contexts/DataModeContext";
 

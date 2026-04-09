@@ -12,7 +12,7 @@ import {
   getModelBudgetStatus,
   type ModelBudgetStatus,
   type BrainModelRoutingDecision,
-} from "@/lib/services/brain-core/model-router";
+} from "@/lib/core-services/brain-core/model-router";
 import {
   Brain, Activity, DollarSign, Zap, RefreshCw, Shield,
   TrendingUp, Clock, Server, AlertTriangle, CheckCircle2, XCircle,

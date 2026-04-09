@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Route, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { getRoutingPolicies, getCapabilityRouting } from "@/lib/services/ai-gateway";
+import { getRoutingPolicies, getCapabilityRouting } from "@/lib/core-services/ai-gateway";
 
 export default function AIG03RoutingMatrix() {
   const { isDemoMode } = useDataMode();

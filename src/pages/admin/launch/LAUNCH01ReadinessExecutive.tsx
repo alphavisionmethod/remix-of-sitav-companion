@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Rocket, RefreshCw, Shield, AlertTriangle, CheckCircle, XCircle, Target } from "lucide-react";
-import { computeLaunchReadiness, type LaunchReadinessResult } from "@/lib/services/launch-readiness/launch-readiness-engine";
-import { computeTruthIndices } from "@/lib/services/truth-indices/truth-index-aggregator";
+import { computeLaunchReadiness, type LaunchReadinessResult } from "@/lib/core-services/launch-readiness/launch-readiness-engine";
+import { computeTruthIndices } from "@/lib/core-services/truth-indices/truth-index-aggregator";
 import { cn } from "@/lib/utils";
 import { useDataMode } from "@/contexts/DataModeContext";
 

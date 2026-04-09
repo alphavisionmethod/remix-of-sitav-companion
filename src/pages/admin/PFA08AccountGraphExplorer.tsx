@@ -16,7 +16,7 @@ import {
   getConsentHistory,
   getSeparationAudits,
   getAccountGraphSummary,
-} from "@/lib/services/identity-auth";
+} from "@/lib/core-services/identity-auth";
 
 export default function PFA08AccountGraphExplorer() {
   const { isDemoMode } = useDataMode();

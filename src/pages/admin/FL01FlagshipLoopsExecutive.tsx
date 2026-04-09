@@ -7,8 +7,8 @@ import {
   getLoopGrade,
   getImportanceBadge,
   getStatusBadge,
-} from "@/lib/services/flagship-loops/flagship-loop-service";
-import { getDomainsByFlagshipLoop } from "@/lib/services/service-registry/service-ownership-registry";
+} from "@/lib/core-services/flagship-loops/flagship-loop-service";
+import { getDomainsByFlagshipLoop } from "@/lib/core-services/service-registry/service-ownership-registry";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

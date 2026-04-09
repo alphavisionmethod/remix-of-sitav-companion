@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Receipt, BarChart3, ArrowDownUp } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { getInferenceReceipts, getReceiptStats, getReceiptRecords, getFallbackEvents } from "@/lib/services/ai-gateway";
+import { getInferenceReceipts, getReceiptStats, getReceiptRecords, getFallbackEvents } from "@/lib/core-services/ai-gateway";
 
 export default function AIG05ReceiptsExplorer() {
   const { isDemoMode } = useDataMode();

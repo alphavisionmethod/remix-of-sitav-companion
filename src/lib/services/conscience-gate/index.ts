@@ -1,10 +1,2 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — ConscienceGate + CritiqueLoop Barrel
-// ═══════════════════════════════════════════════════════════════
-
-export { ConscienceGateService, conscienceGate } from "./conscience-gate";
-export type { GateVerdict, GateRequest, GateDecision, EvidenceState, BudgetState, RoutingHints } from "./conscience-gate";
-
-export { runCritique, logCritique, getCritiqueLog, getCritiqueStats } from "./critique-loop";
-export type { CritiqueResult, CritiqueIssue, CritiqueRecommendation, EvidenceSource } from "./critique-loop";
-
+// Reverse shim — canonical implementation is in core-services/conscience-gate
+export * from "@/lib/core-services/conscience-gate";

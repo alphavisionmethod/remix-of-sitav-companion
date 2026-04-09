@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Fingerprint, Key, Mail, Shield, Check, ChevronRight, Download, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SetupStageHeader } from "@/components/sita/setup";
-import { biometricAuthBridge } from "@/lib/services/biometric-auth";
+import { biometricAuthBridge } from "@/lib/core-services/biometric-auth";
 
 type AccessMethod = "pin" | "password" | "";
 type RecoveryMethod = "email" | "key" | "";

@@ -1,7 +1,7 @@
 import { Database, Lock, AlertTriangle, Server } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { SENSITIVE_ASSETS, SECRET_INVENTORY } from "@/lib/services/security/security-posture-engine";
+import { SENSITIVE_ASSETS, SECRET_INVENTORY } from "@/lib/core-services/security/security-posture-engine";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const levelBadge = (level: string) => {

@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ROUTE_SERVICE_INVENTORY, type RouteInventoryEntry } from "@/lib/services/service-registry/route-to-service-inventory";
+import { ROUTE_SERVICE_INVENTORY, type RouteInventoryEntry } from "@/lib/core-services/service-registry/route-to-service-inventory";
 import { Route, ArrowRight, Database, Plug } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";

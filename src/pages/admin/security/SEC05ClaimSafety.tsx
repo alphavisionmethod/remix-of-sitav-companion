@@ -1,7 +1,7 @@
 import { Shield, CheckCircle, AlertTriangle, XCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { SECURITY_CLAIM_SAFETY, THREAT_MODEL } from "@/lib/services/security/security-posture-engine";
+import { SECURITY_CLAIM_SAFETY, THREAT_MODEL } from "@/lib/core-services/security/security-posture-engine";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function SEC05ClaimSafety() {

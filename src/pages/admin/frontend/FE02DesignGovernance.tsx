@@ -1,7 +1,7 @@
 import { Ruler, CheckCircle, XCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { DESIGN_GOVERNANCE_RULES } from "@/lib/services/frontend/frontend-quality-engine";
+import { DESIGN_GOVERNANCE_RULES } from "@/lib/core-services/frontend/frontend-quality-engine";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const categoryColor = (cat: string) => {

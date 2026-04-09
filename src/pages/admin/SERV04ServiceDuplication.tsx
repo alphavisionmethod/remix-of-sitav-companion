@@ -5,8 +5,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { SERVICE_OWNERSHIP_REGISTRY, DUPLICATE_CLUSTER_RESOLUTIONS, type ClusterResolution } from "@/lib/services/service-registry/service-ownership-registry";
-import { getDuplicateActionPatterns, getRoutesWithShadowRisk } from "@/lib/services/service-registry/route-to-service-inventory";
+import { SERVICE_OWNERSHIP_REGISTRY, DUPLICATE_CLUSTER_RESOLUTIONS, type ClusterResolution } from "@/lib/core-services/service-registry/service-ownership-registry";
+import { getDuplicateActionPatterns, getRoutesWithShadowRisk } from "@/lib/core-services/service-registry/route-to-service-inventory";
 import { AlertTriangle, Copy, Ghost, Shield, CheckCircle, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";

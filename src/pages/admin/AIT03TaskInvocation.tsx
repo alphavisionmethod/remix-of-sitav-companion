@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getWorkforceRoles } from "@/lib/services/ai-workforce/workforce-orchestrator";
+import { getWorkforceRoles } from "@/lib/core-services/ai-workforce/workforce-orchestrator";
 import { executeWorkforceTask, type WorkforceExecutionResult } from "@/lib/ai/workforce-executor";
 import { AIWorkforceInvocationPanel } from "@/components/ai/AIWorkforceInvocationPanel";
 import { Terminal, Play, Loader2, DollarSign, AlertTriangle, Clock, Save, History, Copy } from "lucide-react";

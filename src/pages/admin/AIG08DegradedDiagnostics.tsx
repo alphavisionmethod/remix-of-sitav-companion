@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { AlertOctagon, KeyRound, Gauge, ServerCrash, DollarSign, FileWarning, Ban } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { getDegradedDiagnostics, type DegradedDiagnostic } from "@/lib/services/ai-gateway/diagnostics.service";
+import { getDegradedDiagnostics, type DegradedDiagnostic } from "@/lib/core-services/ai-gateway/diagnostics.service";
 
 const CATEGORY_META: Record<DegradedDiagnostic["category"], { label: string; icon: React.ReactNode; color: string }> = {
   missing_key: { label: "Missing Key", icon: <KeyRound className="h-3.5 w-3.5" />, color: "text-destructive" },

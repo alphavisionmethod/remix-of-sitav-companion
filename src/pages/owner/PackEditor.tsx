@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Package, Layers, Zap, Shield, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { listPacks } from "@/lib/services/capability-router/pack-enablement.service";
+import { listPacks } from "@/lib/core-services/capability-router/pack-enablement.service";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 

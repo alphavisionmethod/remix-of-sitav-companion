@@ -1,11 +1,2 @@
-// @persistence: none — stateless module, no durable state to persist
-export * from "./orchestrate-intent";
-export * from "./councils";
-export * from "./choose-advisors";
-export * from "./choose-execution-mode";
-export * from "./build-explanation";
-export * from "./build-simulation-request";
-export * from "./build-approval-package";
-export * from "./build-boardroom-request";
-export * from "./model-router";
-
+// Reverse shim — canonical implementation is in core-services/brain-core
+export * from "@/lib/core-services/brain-core";

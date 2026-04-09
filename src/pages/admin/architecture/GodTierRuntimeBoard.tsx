@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GLOBAL_TASK_REGISTRY, listTaskTypes, type TaskContract } from "@/lib/contracts/global-contracts-registry";
-import { PipelineStage } from "@/lib/services/canonical-pipeline";
+import { PipelineStage } from "@/lib/core-services/canonical-pipeline";
 import { Shield, GitBranch, Layers, Cpu, Activity, Database, CheckCircle2, XCircle, AlertTriangle, Clock } from "lucide-react";
 import { useDataMode } from "@/contexts/DataModeContext";
 

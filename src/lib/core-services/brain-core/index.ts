@@ -1,3 +1,10 @@
-// Canonical re-export — core-services/brain-core
-// Import from here; implementation lives in lib/services/brain-core
-export * from "@/lib/services/brain-core";
+// Canonical implementation — core-services/brain-core
+export * from "./orchestrate-intent";
+export * from "./councils";
+export * from "./choose-advisors";
+export * from "./choose-execution-mode";
+export * from "./build-explanation";
+export * from "./build-simulation-request";
+export * from "./build-approval-package";
+export * from "./build-boardroom-request";
+export * from "./model-router";
