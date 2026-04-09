@@ -1,4 +1,11 @@
 // SITA OS — Demo Data: Digital Presence
+import {
+  Smartphone, Globe, Users, Shield, Link2, Layout, Clock, Phone, MapPin, Tag,
+  MousePointer, ShoppingCart, FileText, Image, Eye, Target, TrendingUp, Calendar,
+  BarChart3, Monitor, Palette, Store, Megaphone, Sparkles, Wrench, Rocket, Server,
+  Lock,
+} from "lucide-react";
+
 
 export const DEMO_DPO_DISAGREEMENTS = [
   {

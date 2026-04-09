@@ -1,5 +1,9 @@
 // SITA OS — Demo Data: Business
 
+interface PlaybookDraft { category: "recovery" | "growth" | "retention" | "efficiency"; }
+interface PlaybookRevenue { id: string; name: string; category: string; recovered: number; generated: number; actionsRun: number; successRate: number; roi: number; trend: number; }
+
+
 export const DEMO_TRIGGER_EVENTS = [
   { value: "invoice-overdue", label: "Invoice becomes overdue" },
   { value: "lead-cold", label: "Lead goes cold (no activity 30d)" },

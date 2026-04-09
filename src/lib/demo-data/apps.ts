@@ -1,4 +1,12 @@
 // SITA OS — Demo Data: Apps
+import { Sun, Cloud, CloudRain } from "lucide-react";
+
+interface Email { id: string; from: string; subject: string; preview: string; time: string; read: boolean; starred: boolean; category: string; hasAttachment: boolean; }
+interface Photo { id: string; url: string; title: string; date: string; album: string; tags: string[]; favorite: boolean; }
+interface Chat { id: string; name: string; avatar: string; lastMessage: string; time: string; unread: number; online: boolean; isAdvisor: boolean; }
+interface Message { id: string; sender: string; text: string; time: string; read: boolean; }
+interface VaultEntry { id: string; name: string; username: string; url: string; category: string; lastUsed: string; strength: string; breached: boolean; }
+
 
 export const DEMO_EMAILS: Email[] = [
   { id: "1", from: "Sarah Chen", subject: "Q2 Revenue Projections", preview: "Hi, I've attached the updated revenue projections for Q2. Please review before our meeting tomorrow...", time: "10:32 AM", read: false, starred: true, category: "primary", hasAttachment: true },

@@ -186,6 +186,13 @@ interface BudgetEnvelope {
   label: string;
   budgetCents: number;
   deepReasoningMinutesCap: number;
+  spentCents?: number;
+  remainingCents?: number;
+  deepReasoningMinutesUsed?: number;
+  proactiveInferenceSpentCents?: number;
+  retrySpentCents?: number;
+  retriesUsed?: number;
+  status?: string;
 }
 
 const createEnvelope = (
