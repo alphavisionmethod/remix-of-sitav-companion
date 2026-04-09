@@ -5,7 +5,7 @@ import { SitaButton, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard"
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+
 import { useActionFn } from "@/hooks/use-action";
 import { toast } from "sonner";
 import logo from "@/assets/logo.jpeg";
