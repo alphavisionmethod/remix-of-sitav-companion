@@ -20,7 +20,7 @@ interface SetupSnapshot {
   supportNeedPrimary?: string;
   lifeRhythm?: { weekStructure?: string; planningHorizon?: string; planningSupport?: string[] };
   stressMap?: { heavierThanShould?: string[]; affectedFirst?: string[] };
-  commsContext?: { stressLevel?: string; summaryPreference?: string };
+  commsContext?: { communicationStress?: string; supportNeeds?: string[] };
   planningStyle?: { viewPreference?: string; focusPreference?: string };
   desktopDensity?: string;
 }
@@ -74,9 +74,9 @@ export function LearningPanel({ state }: LearningPanelProps) {
     }
 
     // Life rhythm
-    if (state.lifeRhythm?.planningPreference) {
-      const rhythmLabels: Record<string, string> = { daily: "Day-by-day", weekly: "Week-at-a-glance", monthly: "Monthly cadence", "long-term": "Long-term view" };
-      items.push({ icon: Clock, label: "Planning Rhythm", value: rhythmLabels[state.lifeRhythm.planningPreference] || state.lifeRhythm.planningPreference });
+    if (state.lifeRhythm?.planningHorizon) {
+      const rhythmLabels: Record<string, string> = { today: "Day-by-day", "this-week": "Week-at-a-glance", "this-month": "Monthly cadence", "long-term": "Long-term view" };
+      items.push({ icon: Clock, label: "Planning Rhythm", value: rhythmLabels[state.lifeRhythm.planningHorizon] || state.lifeRhythm.planningHorizon });
     }
 
     // Likely workflows
