@@ -41,7 +41,7 @@ const pages = [
   ["BuilderKnowledgeBase", () => import("@/pages/admin/BuilderKnowledgeBase")],
 ] as const;
 
-function getComponent(mod: Record<string, any>) {
+function getComponent(mod: any) {
   return mod.default || Object.values(mod).find((v: unknown) => typeof v === "function");
 }
 

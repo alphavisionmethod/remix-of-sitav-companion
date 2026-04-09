@@ -154,7 +154,7 @@ const SettingsPage = () => {
       const { error } = await fromTable("profiles").update({ display_name: displayName, preferences }).eq("user_id", user.id);
       if (error) throw error;
       toast.success("Settings saved");
-    } catch (e: Record<string, any>) {
+    } catch (e: any) {
       toast.error(e.message || "Failed to save");
     } finally {
       setIsSaving(false);
@@ -254,7 +254,7 @@ const SettingsPage = () => {
                       setAvatarUrl(url);
                       await fromTable("profiles").update({ avatar_url: url }).eq("user_id", user.id);
                       toast.success("Photo updated");
-                    } catch (err: Record<string, any>) { toast.error(err.message || "Upload failed"); }
+                    } catch (err: any) { toast.error(err.message || "Upload failed"); }
                     finally { setUploadingAvatar(false); }
                   }} />
                 </label>
@@ -303,7 +303,7 @@ const SettingsPage = () => {
                     if (error) throw error;
                     if (data?.skipped) toast.info("Data already seeded");
                     else toast.success("Demo data seeded successfully");
-                  } catch (e: Record<string, any>) { toast.error(e.message || "Seed failed"); }
+                  } catch (e: any) { toast.error(e.message || "Seed failed"); }
                 }}>
                   <RefreshCw className="h-3.5 w-3.5 mr-1" /> Seed Data
                 </SitaButton>
@@ -397,7 +397,7 @@ const SettingsPage = () => {
                       const a = document.createElement("a"); a.href = url; a.download = `sita-export-${new Date().toISOString().slice(0, 10)}.json`; a.click();
                       URL.revokeObjectURL(url);
                       toast.success("Data exported");
-                    } catch (e: Record<string, any>) { toast.error(e.message || "Export failed"); }
+                    } catch (e: any) { toast.error(e.message || "Export failed"); }
                   }}
                 >
                   <Download className="h-3.5 w-3.5 text-muted-foreground" /> Export All Data (JSON)
@@ -410,7 +410,7 @@ const SettingsPage = () => {
                       const { error } = await supabase.functions.invoke("gdpr-delete", { method: "POST", body: {} });
                       if (error) throw error;
                       toast.success("Deletion request submitted");
-                    } catch (e: Record<string, any>) { toast.error(e.message || "Deletion failed"); }
+                    } catch (e: any) { toast.error(e.message || "Deletion failed"); }
                   }}
                 >
                   <Trash2 className="h-3.5 w-3.5" /> Delete All Data

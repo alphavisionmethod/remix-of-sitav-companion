@@ -108,7 +108,7 @@ export default function CJ05DemoVsRealComparison() {
         count++;
       }
       toast.success(`Persisted ${count} mode comparisons`);
-    } catch (e: Record<string, any>) {
+    } catch (e: any) {
       toast.error(e.message);
     }
   };

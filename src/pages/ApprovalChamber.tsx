@@ -326,7 +326,7 @@ const ApprovalChamber = () => {
         if (action === "approve") approve(id);
         else if (action === "reject") reject(id);
         toast.success(`Approval ${action}ed`);
-      } catch (e: Record<string, any>) {
+      } catch (e: any) {
         toast.error(e.message || `Failed to ${action}`);
       }
       return;

@@ -59,7 +59,7 @@ export default function CJ04LaunchBlockerView() {
     try {
       await resolveScore.mutateAsync(id);
       toast.success("Blocker resolved");
-    } catch (e: Record<string, any>) {
+    } catch (e: any) {
       toast.error(e.message);
     }
   };

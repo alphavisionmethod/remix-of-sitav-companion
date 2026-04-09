@@ -40,7 +40,7 @@ export default function CJ08RouteActionCoverage() {
       const ac = await seedActions.mutateAsync();
       const rc = await seedCoverage.mutateAsync();
       toast.success(`Seeded ${ac} actions + ${rc} routes`);
-    } catch (e: Record<string, any>) {
+    } catch (e: any) {
       toast.error(e.message);
     }
   };

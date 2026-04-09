@@ -41,7 +41,7 @@ export default function RealityConversionOverview() {
       toast.success(`Seeded ${result.classifications.seeded} classifications + ${result.replacements.seeded} mock replacements (${result.classifications.skipped + result.replacements.skipped} skipped)`);
       qc.invalidateQueries({ queryKey: ["reality-classifications"] });
       qc.invalidateQueries({ queryKey: ["mock-replacements"] });
-    } catch (e: Record<string, any>) {
+    } catch (e: any) {
       toast.error(e.message || "Seed failed");
     } finally {
       setSeeding(false);

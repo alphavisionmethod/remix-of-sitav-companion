@@ -75,7 +75,7 @@ function PersonalBrainInner() {
         }
         setMessages(prev => [...prev, { role: "assistant", content: fullContent || "I'm here to help. What would you like to explore?" }]);
       }
-    } catch (e: Record<string, any>) {
+    } catch (e: any) {
       setMessages(prev => [...prev, { role: "assistant", content: `Error: ${e.message || "Something went wrong"}` }]);
     } finally {
       setStreaming(false);
