@@ -1,5 +1,7 @@
 import { ReactNode, useState, useEffect } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { SkipToContent } from "./SkipToContent";
+import { RouteAnnouncer } from "./RouteAnnouncer";
 import { AppSidebar } from "./AppSidebar";
 import { SitaTopBar } from "./SitaTopBar";
 import { AdvisorChat } from "./AdvisorChat";
