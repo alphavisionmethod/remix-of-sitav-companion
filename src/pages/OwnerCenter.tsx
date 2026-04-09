@@ -17,6 +17,8 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { DEMO_ENGINE_COSTS } from "@/lib/demo-data/core-pages";
 // Demo simulation helper (inline — no mock-data import)
 interface SimPolicyResult {
   policy_name: string;
@@ -39,7 +41,6 @@ const buildDemoSimResult = (simInput: { amount: number; [key: string]: unknown }
     results: [{ policy_name: "Auto-pay under $500", effect: simInput.amount > 500 ? "deny" : "allow", reasons: simInput.amount > 500 ? [`Amount $${simInput.amount} exceeds max $500`] : ["Within auto-pay limit"] }],
   },
 });
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 // Engine costs — canonical inline data (no mock import needed)
 import {
   useAdminIncidents, useAcknowledgeIncident, useResolveIncident, useCreateIncident,
@@ -62,7 +63,6 @@ import type { InternalAgentCouncil, InternalAgentDefinition } from "@/lib/intern
 
 
 import {
-import { DEMO_ENGINE_COSTS } from "@/lib/demo-data/core-pages";
   Shield, Activity, Wifi, CheckCircle, AlertTriangle, Clock, Eye, Lock, Cpu, Zap, BarChart3,
   Globe, Key, History, Users, RotateCcw, DollarSign, FileText, Server, Database, RefreshCw,
   Pause, Play, XCircle, Brain, Settings, AlertOctagon, Sparkles, ArrowRight, Search,
