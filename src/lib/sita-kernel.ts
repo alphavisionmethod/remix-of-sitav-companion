@@ -44,7 +44,6 @@ import { EdgeDeviceRuntimeService } from "./services/edge-device-runtime";
 import { FleetOTAService } from "./services/fleet-ota";
 import { IncidentManagementService } from "./services/incident-management";
 import { EmergencyHaltService } from "./services/emergency-halt";
-import { IncidentManagementService } from "./services/incident-management";
 import {
   createExecutionPath, advanceStage, attachSidecar, finalizePath,
   type ExecutionPathRecord,
@@ -242,7 +241,7 @@ export class SitaKernel {
 
   private checkKillSwitch(): { blocked: boolean; reason?: string; forcedMode?: "EMULATED" } {
     // Check both internal flag and EmergencyHaltService
-    const haltCheck = this.emergencyHalt.check("global");
+    const haltCheck = this.emergencyHalt.checkHalt("global");
     const isActive = this._killSwitchActive || haltCheck.halted;
     if (!isActive) return { blocked: false };
     const mode = haltCheck.halted ? (haltCheck.mode as "block" | "downgrade" ?? "downgrade") : this._killSwitchMode;
