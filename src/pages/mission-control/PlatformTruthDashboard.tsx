@@ -383,6 +383,7 @@ export default function PlatformTruthDashboard() {
 
   return (
     <div className="space-y-5">
+      <h1 className="sr-only">Platform Truth Dashboard</h1>
       <TruthScoreHero />
 
       {/* Active degraded states always visible */}

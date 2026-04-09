@@ -5,6 +5,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 const OnboardingWrapper = () => (
   <>
+    <h1 className="sr-only">Setup</h1>
     <DemoModeBadge />
     <OSSetupExperience />
   </>

@@ -46,6 +46,7 @@ export default function CN04SyncTruthCenter() {
   return (
     <div className="space-y-6 p-6"  >
       <DemoModeBadge />
+      <h1 className="sr-only">Sync Truth Center</h1>
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-sm text-muted-foreground">Total Syncs</p><p className="text-2xl font-bold">{syncRuns.length}</p></CardContent></Card>

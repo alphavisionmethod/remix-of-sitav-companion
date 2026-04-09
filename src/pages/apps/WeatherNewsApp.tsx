@@ -43,6 +43,7 @@ export default function WeatherNewsApp() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">
       <DemoModeBadge />
+      <h1 className="sr-only">Weather &amp; News</h1>
       <Tabs defaultValue="weather">
         <TabsList>
           <TabsTrigger value="weather" className="gap-1.5"><Cloud className="h-3.5 w-3.5" /> Weather</TabsTrigger>

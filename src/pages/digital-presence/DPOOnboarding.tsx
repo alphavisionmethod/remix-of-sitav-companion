@@ -556,6 +556,7 @@ export default function DPOOnboarding() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <h1 className="sr-only">Digital Presence Onboarding</h1>
       {/* Progress bar */}
       <div className="p-4 border-b border-border/30">
         <div className="max-w-3xl mx-auto">
