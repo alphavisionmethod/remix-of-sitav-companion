@@ -54,7 +54,7 @@ export * from "./advisor";
 // ── Runtime contracts ───────────────────────────────────────
 export * from "./runtime";
 // Explicit claim to prevent TS2308 ambiguity with star-exports
-export { DeferredSetupItem } from "./runtime/first-boot-provisioning";
+export type { DeferredSetupItem } from "./runtime/first-boot-provisioning";
 
 // ── Memory & no-hallucination contracts ─────────────────────
 export * from "./memory";
