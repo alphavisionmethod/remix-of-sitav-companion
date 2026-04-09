@@ -211,6 +211,13 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     statusUX: defaultStatusUX("Household Graph"),
   },
   {
+    id: "relationship-sensitivity", title: "Relationship Focus", description: "Should SITA help with people or focus on tasks",
+    dependencies: ["household-graph"], blocking: false, required: false,
+    backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 14.5, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Relationship Focus"),
+  },
+  {
     id: "life-rhythm", title: "Life Rhythm", description: "Understand your weekly flow and planning cadence",
     dependencies: ["deep-world-modeling"], blocking: false, required: false,
     backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
