@@ -113,6 +113,24 @@ export const StressSlippageStep = ({ data, onUpdate, onNext, onPrev }: Props) =>
             </div>
           </motion.div>
         )}
+
+        {/* Recovery/forgiveness UX (Req #6) — compassionate transition when overwhelmed */}
+        {data.heavierThanShould.length >= 4 && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="rounded-2xl border border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5 p-4"
+          >
+            <p className="text-xs text-foreground font-medium mb-1">
+              That's a lot to carry — SITA sees that
+            </p>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              You're managing more than most. SITA will adopt a gentler, more restorative approach —
+              focusing on what matters most, keeping noise low, and helping you regain ground step by step.
+            </p>
+          </motion.div>
+        )}
       </div>
 
       <div className="flex items-center justify-between mt-6">

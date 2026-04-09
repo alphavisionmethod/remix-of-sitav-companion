@@ -72,6 +72,17 @@ export function LearningPanel({ state }: LearningPanelProps) {
     return generateReflections(input).slice(0, 2);
   }, [state]);
 
+  // Domain confidence (Req #1)
+  const domainConfidence = useMemo(() => {
+    const domains = state.enabledDomains;
+    return domains.map(d => {
+      const hasSignal = d === "business" ? (state.painPoints?.length > 0) :
+        d === "money" ? (state.protectionPriorities?.length > 0) :
+        !!state.homeComposition;
+      return { domain: d, confident: hasSignal };
+    });
+  }, [state]);
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -102,6 +113,23 @@ export function LearningPanel({ state }: LearningPanelProps) {
           </motion.div>
         ))}
       </AnimatePresence>
+
+      {/* Domain confidence badges (Req #1) */}
+      {domainConfidence.length > 0 && (
+        <div className="border-t border-border/50 pt-3 space-y-1.5">
+          <p className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">Domain Confidence</p>
+          {domainConfidence.map(dc => (
+            <div key={dc.domain} className="flex items-center justify-between">
+              <span className="text-[10px] text-foreground capitalize">{dc.domain}</span>
+              <span className={cn("text-[9px] font-medium rounded-full px-1.5 py-0.5",
+                dc.confident ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" : "bg-muted text-muted-foreground"
+              )}>
+                {dc.confident ? "Good signal" : "Still learning"}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Reflection copy — what SITA understands */}
       {reflections.length > 0 && (
