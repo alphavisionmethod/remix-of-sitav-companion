@@ -18,7 +18,7 @@ interface SetupSnapshot {
   // Enhanced fields
   operatingContext?: string;
   supportNeedPrimary?: string;
-  lifeRhythm?: { weeklyStructure?: string; planningPreference?: string };
+  lifeRhythm?: { weekStructure?: string; planningHorizon?: string; planningSupport?: string[] };
   stressMap?: { heavierThanShould?: string[]; affectedFirst?: string[] };
   commsContext?: { stressLevel?: string; summaryPreference?: string };
   planningStyle?: { viewPreference?: string; focusPreference?: string };
