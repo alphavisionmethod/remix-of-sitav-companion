@@ -517,7 +517,7 @@ export default function AIG09RuntimeVerification() {
             Mission control for AI runtime truth — provider health, capability verification, receipts, and launch honesty
           </p>
         </div>
-        <Button onClick={() => runSmokeTest.mutate({})} disabled={runSmokeTest.isPending} className="gap-2">
+        <Button onClick={() => runSmokeTest.mutate()} disabled={runSmokeTest.isPending} className="gap-2">
           {runSmokeTest.isPending ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
           Run Verification
         </Button>
