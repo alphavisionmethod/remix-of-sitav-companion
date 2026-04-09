@@ -24,7 +24,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { useAction } from "@/hooks/use-action";
+import { useActionFn } from "@/hooks/use-action";
 import { PlainEnglishPolicyEditor } from "@/components/sita/PlainEnglishPolicyEditor";
 import { DEMO_EXAMPLE_RULES } from "@/lib/demo-data/core-pages";
 
@@ -314,15 +314,18 @@ export default function ConstitutionEditor() {
           const rules = compiler.getAllRules();
           const added = rules.find((r: ConstitutionRule) => r.naturalLanguage === d);
           if (added) {
-            await fromTable("constitution_rules").insert([{
-              user_id: user.id,
-              natural_text: d,
-              category: added.category,
-              priority: (added.compiledPolicy?.parameters?.priority ?? 50) as number,
-              enforcement_mode: added.enforcementMode,
-              is_active: true,
-              compiled_json: JSON.parse(JSON.stringify(added.compiledPolicy ?? null)) as import("@/integrations/supabase/types").Json,
-            }]);
+            await constitutionCreate({
+              table: "constitution_rules",
+              data: {
+                user_id: user.id,
+                natural_text: d,
+                category: added.category,
+                priority: (added.compiledPolicy?.parameters?.priority ?? 50) as number,
+                enforcement_mode: added.enforcementMode,
+                is_active: true,
+                compiled_json: JSON.parse(JSON.stringify(added.compiledPolicy ?? null)),
+              },
+            });
           }
         }
       }
