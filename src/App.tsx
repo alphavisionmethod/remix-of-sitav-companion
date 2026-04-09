@@ -486,6 +486,7 @@ const CalendarWorkspace = lazy(() => import("./pages/CalendarWorkspace"));
 const NotesWorkspace = lazy(() => import("./pages/NotesWorkspace"));
 const PeopleWorkspace = lazy(() => import("./pages/PeopleWorkspace"));
 const TeamWorkspace = lazy(() => import("./pages/TeamWorkspace"));
+const TasksWorkflowsCenter = lazy(() => import("./pages/TasksWorkflowsCenter"));
 const DocumentEditor = lazy(() => import("./pages/DocumentEditor"));
 const ReportingWorkspace = lazy(() => import("./pages/ReportingWorkspace"));
 const TrustCenter = lazy(() => import("./pages/TrustCenter"));
@@ -1590,6 +1591,7 @@ const App = () => (
 
                     {/* ── 3D: OS Workspaces ── */}
                     <Route path="/calendar" element={<CalendarWorkspace />} />
+                    <Route path="/tasks" element={<TasksWorkflowsCenter />} />
                     <Route path="/notes" element={<NotesWorkspace />} />
                     <Route path="/people" element={<PeopleWorkspace />} />
                     <Route path="/team" element={<TeamWorkspace />} />
