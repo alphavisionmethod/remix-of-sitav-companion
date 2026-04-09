@@ -13,7 +13,7 @@ import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { useCommunications } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+
 import { useActionFn } from "@/hooks/use-action";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";

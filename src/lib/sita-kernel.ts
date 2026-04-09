@@ -43,6 +43,8 @@ import { CloudControlPlaneService } from "./services/cloud-control-plane-infra";
 import { EdgeDeviceRuntimeService } from "./services/edge-device-runtime";
 import { FleetOTAService } from "./services/fleet-ota";
 import { IncidentManagementService } from "./services/incident-management";
+import { EmergencyHaltService } from "./services/emergency-halt";
+import { IncidentManagementService } from "./services/incident-management";
 import {
   createExecutionPath, advanceStage, attachSidecar, finalizePath,
   type ExecutionPathRecord,
@@ -97,6 +99,7 @@ export class SitaKernel {
   readonly edgeDeviceRuntime: EdgeDeviceRuntimeService;
   readonly fleetOTA: FleetOTAService;
   readonly incidentManagement: IncidentManagementService;
+  readonly emergencyHalt: EmergencyHaltService;
 
   // ── Runtime State ─────────────────────────────────────────
   private _activeEntity: EntityProfile | null = null;
@@ -167,6 +170,7 @@ export class SitaKernel {
     this.edgeDeviceRuntime = new EdgeDeviceRuntimeService();
     this.fleetOTA = new FleetOTAService();
     this.incidentManagement = new IncidentManagementService();
+    this.emergencyHalt = new EmergencyHaltService();
 
     // ── Admin/owner event subscriptions (same truth chain) ──
     this.eventBus.subscribe("*", () => { this._eventCount++; }, "kernel-counter");
@@ -237,8 +241,12 @@ export class SitaKernel {
   get killSwitchActive(): boolean { return this._killSwitchActive; }
 
   private checkKillSwitch(): { blocked: boolean; reason?: string; forcedMode?: "EMULATED" } {
-    if (!this._killSwitchActive) return { blocked: false };
-    if (this._killSwitchMode === "block") return { blocked: true, reason: "Kill switch active — all execution blocked" };
+    // Check both internal flag and EmergencyHaltService
+    const haltCheck = this.emergencyHalt.check("global");
+    const isActive = this._killSwitchActive || haltCheck.halted;
+    if (!isActive) return { blocked: false };
+    const mode = haltCheck.halted ? (haltCheck.mode as "block" | "downgrade" ?? "downgrade") : this._killSwitchMode;
+    if (mode === "block") return { blocked: true, reason: haltCheck.reason ?? "Kill switch active — all execution blocked" };
     return { blocked: false, forcedMode: "EMULATED" };
   }
 
