@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Fingerprint, Key, Mail, Shield, Check, ChevronRight, Download, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -42,9 +42,11 @@ export function AccessProtectionStep({ onNext, onPrev, onStateChange }: Props) {
       .catch(() => setBiometricAvailable(false));
   }, []);
 
+  const onStateChangeRef = useRef(onStateChange);
+  onStateChangeRef.current = onStateChange;
   useEffect(() => {
-    onStateChange({ accessMethod, recoveryMethod });
-  }, [accessMethod, recoveryMethod, onStateChange]);
+    onStateChangeRef.current({ accessMethod, recoveryMethod });
+  }, [accessMethod, recoveryMethod]);
 
   const handleBiometricEnroll = useCallback(async () => {
     setBiometricLoading(true);
