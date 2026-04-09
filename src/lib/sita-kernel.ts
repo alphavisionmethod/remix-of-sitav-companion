@@ -244,7 +244,7 @@ export class SitaKernel {
     const haltCheck = this.emergencyHalt.checkHalt("global");
     const isActive = this._killSwitchActive || haltCheck.halted;
     if (!isActive) return { blocked: false };
-    const mode = haltCheck.halted ? (haltCheck.mode as "block" | "downgrade" ?? "downgrade") : this._killSwitchMode;
+    const mode = haltCheck.halted ? "downgrade" : this._killSwitchMode;
     if (mode === "block") return { blocked: true, reason: haltCheck.reason ?? "Kill switch active — all execution blocked" };
     return { blocked: false, forcedMode: "EMULATED" };
   }
