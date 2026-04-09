@@ -820,6 +820,14 @@ export function OSSetupExperience() {
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
+                {phase === "personalization-pivot" && (
+                  <PersonalizationPivotStep key="personalization-pivot"
+                    onNext={goNext} onPrev={goPrev}
+                    onRequestFast={() => { setState(s => ({ ...s, setupStyle: "express" })); setSessionData("setupStyle", "express"); }}
+                    onRequestDeep={() => { setState(s => ({ ...s, setupStyle: "advanced" })); setSessionData("setupStyle", "advanced"); }}
+                  />
+                )}
+
                 {phase === "quick-identity" && (
                   <QuickIdentityStep key="quick-identity"
                     data={state.quickIdentity}
@@ -831,6 +839,8 @@ export function OSSetupExperience() {
                   <OperatingContextStep key="operating-context"
                     selected={state.operatingContext}
                     onSelect={v => setState(s => ({ ...s, operatingContext: v }))}
+                    supportNeedPrimary={state.supportNeedPrimary}
+                    onSupportNeedSelect={v => setState(s => ({ ...s, supportNeedPrimary: v }))}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
