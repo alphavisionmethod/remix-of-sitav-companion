@@ -169,6 +169,7 @@ const AdminPolicySimulator = lazy(() => import("./pages/admin/PolicySimulator"))
 const WorkflowReplayAudit = lazy(() => import("./pages/admin/WorkflowReplayAudit"));
 const ComputeGovernanceBoard = lazy(() => import("./pages/admin/ComputeGovernanceBoard"));
 const SystemHealthDashboard = lazy(() => import("./pages/admin/SystemHealthDashboard"));
+const BrainCoreDashboard = lazy(() => import("./pages/admin/BrainCoreDashboard"));
 const IntegrationConciergePage = lazy(() => import("./pages/admin/IntegrationConciergePage"));
 const RevenueAutopilotMonitor = lazy(() => import("./pages/admin/RevenueAutopilotMonitor"));
 const InvestorProofLedger = lazy(() => import("./pages/admin/InvestorProofLedger"));
@@ -859,6 +860,7 @@ const App = () => (
                     <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
                     <Route path="/admin/persistence-status" element={<PersistenceStatus />} />
                     <Route path="/admin/system-health" element={<SystemHealthDashboard />} />
+                    <Route path="/admin/brain-core" element={<BrainCoreDashboard />} />
                     <Route path="/admin/drs/overview" element={<DRS01RealityModeOverview />} />
                     <Route path="/admin/drs/registry" element={<DRS02ModeRegistryConsole />} />
                     <Route path="/admin/drs/scenarios" element={<DRS03ScenarioLibrary />} />
