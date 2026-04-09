@@ -9,6 +9,13 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface DeliveryWavePlannerRow {
+  domain_focus?: unknown;
+  feature_ids?: unknown;
+  id?: string;
+}
+
 const statusColors: Record<string, string> = {
   planning: "bg-blue-500/20 text-blue-400",
   active: "bg-green-500/20 text-green-400",
@@ -37,7 +44,7 @@ const DeliveryWavePlanner = () => {
       </motion.div>
 
       <div className="space-y-4">
-        {(waves ?? []).map((wave: any) => {
+        {(waves ?? []).map((wave: DeliveryWavePlannerRow) => {
           const featureCount = Array.isArray(wave.feature_ids) ? wave.feature_ids.length : 0;
           const domainFocus = Array.isArray(wave.domain_focus) ? wave.domain_focus : [];
           return (

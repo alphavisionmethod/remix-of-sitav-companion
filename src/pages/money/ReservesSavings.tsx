@@ -22,6 +22,13 @@ import { useQueryFreshness } from "@/hooks/use-query-freshness";
 import { ContextualEmptyState } from "@/components/sita/ContextualEmptyState";
 import { getContextualEmptyState } from "@/lib/ux-trust/contextual-empty-states";
 
+
+interface ReservesSavingsRow {
+  current_amount?: unknown;
+  id?: string;
+  target_amount?: unknown;
+}
+
 const ReservesSavings = () => {
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();
@@ -91,7 +98,7 @@ const ReservesSavings = () => {
         <EmptyState icon={PiggyBank} title="No reserves yet" description="Create your first savings goal to start building financial resilience." />
       ) : (
         <div className="space-y-4">
-          {reserves.map((r: any) => {
+          {reserves.map((r: ReservesSavingsRow) => {
             const pct = r.target_amount > 0 ? Math.round((r.current_amount / r.target_amount) * 100) : 0;
             const healthColor = pct >= 80 ? "bg-trust-verified" : pct >= 50 ? "bg-trust-review" : "bg-urgency-high";
             const healthText = pct >= 80 ? "text-trust-verified" : pct >= 50 ? "text-trust-review" : "text-urgency-high";

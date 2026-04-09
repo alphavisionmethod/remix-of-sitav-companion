@@ -6,6 +6,17 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useCrossDeviceSurfaces, useDeliveryRules, useHandoffFlows } from "@/hooks/use-notification-calm-data";
 
+
+interface NRC05CrossDeviceDeliveryRow {
+  desc?: unknown;
+  enforcement?: unknown;
+  family_key?: unknown;
+  name?: string;
+  priority?: string;
+  rule?: unknown;
+  surface?: unknown;
+}
+
 const NRC05CrossDeviceDelivery = () => {
   const { data: surfaces, isLoading: surfacesLoading } = useCrossDeviceSurfaces();
   const { data: deliveryRules } = useDeliveryRules();
@@ -33,7 +44,7 @@ const NRC05CrossDeviceDelivery = () => {
         <TabsContent value="surfaces">
           {surfacesLoading ? <p className="text-xs text-muted-foreground p-4">Loading…</p> : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {(surfaces ?? []).map((s: any) => {
+              {(surfaces ?? []).map((s: NRC05CrossDeviceDeliveryRow) => {
                 const Icon = iconMap[s.surface] || Monitor;
                 return (
                   <Card key={s.surface ?? s.family_key} className="hover:shadow-md transition-shadow">
@@ -62,7 +73,7 @@ const NRC05CrossDeviceDelivery = () => {
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Rule</th><th className="text-left p-2">Description</th><th className="p-2">Enforcement</th><th className="p-2">Priority</th></tr></thead>
                 <tbody>
-                  {(deliveryRules ?? []).map((r: any) => (
+                  {(deliveryRules ?? []).map((r: NRC05CrossDeviceDeliveryRow) => (
                     <tr key={r.rule} className="border-b hover:bg-muted/30">
                       <td className="p-2 font-medium">{r.rule}</td>
                       <td className="p-2 text-muted-foreground">{r.desc}</td>

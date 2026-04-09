@@ -23,6 +23,11 @@ import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface HQApprovalQueueRow {
+  message?: string;
+}
+
 // ── Types ──
 interface QueueItem {
   id: string;
@@ -219,7 +224,7 @@ function HQ02QueueDetail() {
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["hq-queue"] }); qc.invalidateQueries({ queryKey: ["hq-all-items"] }); toast.success("Queue item updated"); },
-    onError: (err: any) => toast.error(err.message),
+    onError: (err: HQApprovalQueueRow) => toast.error(err.message),
   });
 
   const setFilter = (key: string, val: string) => setFilters(prev => ({ ...prev, [key]: val }));

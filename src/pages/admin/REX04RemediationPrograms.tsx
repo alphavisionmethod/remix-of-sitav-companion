@@ -5,6 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { Layers, CheckCircle2, Clock, Target } from "lucide-react";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface REX04RemediationProgramsRow {
+  id?: string;
+  status?: string;
+  title?: string;
+}
+
 const statusBadge: Record<string, string> = {
   draft: "bg-muted text-muted-foreground",
   active: "bg-blue-500/15 text-blue-400",
@@ -22,8 +29,8 @@ export default function REX04RemediationPrograms() {
 
   const summary = {
     total: programs?.length || 0,
-    active: programs?.filter((p: any) => p.status === "active").length || 0,
-    completed: programs?.filter((p: any) => p.status === "completed").length || 0,
+    active: programs?.filter((p: REX04RemediationProgramsRow) => p.status === "active").length || 0,
+    completed: programs?.filter((p: REX04RemediationProgramsRow) => p.status === "completed").length || 0,
   };
 
   return (
@@ -61,7 +68,7 @@ export default function REX04RemediationPrograms() {
             </CardContent>
           </Card>
         ) : (
-          (programs || []).map((program: any) => (
+          (programs || []).map((program: REX04RemediationProgramsRow) => (
             <Card key={program.id} className="bg-card border-border">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">

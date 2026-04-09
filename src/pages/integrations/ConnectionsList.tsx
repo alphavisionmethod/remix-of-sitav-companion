@@ -17,6 +17,15 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
 
+
+interface ConnectionsListRow {
+  eventType?: unknown;
+  id?: string;
+  providerId?: unknown;
+  status?: string;
+  summary?: unknown;
+}
+
 export default function ConnectionsList() {
   const [tab, setTab] = useState("connections");
   const [agencyMode, setAgencyMode] = useState(false);
@@ -79,7 +88,7 @@ export default function ConnectionsList() {
         <TabsContent value="connections" className="mt-4 space-y-3">
           {connections.length === 0 && !isDemoMode ? (
             <EmptyState icon={LinkIcon} title="No connections yet" description="Connect your first integration to get started." />
-          ) : connections.map((conn: any) => {
+          ) : connections.map((conn: ConnectionsListRow) => {
             const provider = getProviderById(conn.providerId);
             return (
               <Card key={conn.id} className={`bg-card/50 border-border/50 hover:border-primary/30 transition-colors cursor-pointer ${conn.status === "expired" ? "border-l-2 border-l-amber-500" : conn.status === "connected" ? "border-l-2 border-l-green-500" : ""}`}
@@ -125,7 +134,7 @@ export default function ConnectionsList() {
 
         <TabsContent value="health" className="mt-4 space-y-3">
           <div className="grid sm:grid-cols-2 gap-3">
-            {connections.map((conn: any) => {
+            {connections.map((conn: ConnectionsListRow) => {
               const provider = getProviderById(conn.providerId);
               return (
                 <Card key={conn.id} className="bg-card/50 border-border/50">
@@ -160,7 +169,7 @@ export default function ConnectionsList() {
         <TabsContent value="audit" className="mt-4 space-y-2">
           {auditLog.length === 0 && !isDemoMode ? (
             <EmptyState icon={Activity} title="No audit events" description="Activity will appear here as integrations sync." />
-          ) : auditLog.map((entry: any) => (
+          ) : auditLog.map((entry: ConnectionsListRow) => (
             <div key={entry.id} className="flex items-start gap-3 p-3 bg-muted/20 rounded-lg">
               <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${entry.eventType.includes("error") || entry.eventType.includes("warning") ? "bg-amber-400" : entry.eventType.includes("rejected") ? "bg-red-400" : "bg-green-400"}`} />
               <div className="flex-1">

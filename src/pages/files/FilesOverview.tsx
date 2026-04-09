@@ -19,6 +19,12 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
+
+interface FilesOverviewRow {
+  classification?: unknown;
+  status?: string;
+}
+
 type ViewVariant = "founder" | "household" | "finance" | "premium";
 
 
@@ -44,8 +50,8 @@ const FilesOverview = () => {
     queryFn: async () => {
       const { data, count } = await fromTable("file_metadata").select("*", { count: "exact" }).eq("user_id", user!.id);
       const files = data || [];
-      const obligations = files.filter((f: any) => f.classification === "contract" || f.classification === "invoice").length;
-      const linked = files.filter((f: any) => f.status === "linked" || f.status === "processed").length;
+      const obligations = files.filter((f: FilesOverviewRow) => f.classification === "contract" || f.classification === "invoice").length;
+      const linked = files.filter((f: FilesOverviewRow) => f.status === "linked" || f.status === "processed").length;
       return { total: count || 0, obligations, linked };
     },
     staleTime: 30000,

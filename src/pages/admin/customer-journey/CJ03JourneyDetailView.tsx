@@ -12,6 +12,20 @@ import { ListChecks, Loader2, ChevronDown, ChevronRight, Image, FileText, AlertC
 import { useState } from "react";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface CJ03JourneyDetailViewRow {
+  asset_type?: unknown;
+  current_status?: unknown;
+  duration_ms?: unknown;
+  id?: string;
+  journey_key?: unknown;
+  label?: unknown;
+  launch_importance?: unknown;
+  status?: string;
+  step_order?: unknown;
+  steps?: unknown;
+}
+
 function StepResultsPanel({ runId }: { runId: string }) {
   const { data: stepResults } = useStepResults(runId);
   const { data: evidence } = useEvidenceAssets(runId);
@@ -24,7 +38,7 @@ function StepResultsPanel({ runId }: { runId: string }) {
     <div className="space-y-3">
       <h4 className="text-sm font-semibold">Step Results</h4>
       <div className="space-y-1">
-        {stepResults.map((s: any) => (
+        {stepResults.map((s: CJ03JourneyDetailViewRow) => (
           <div key={s.id} className={`flex items-start gap-3 text-sm p-2 rounded ${s.status === "fail" ? "bg-destructive/5 border border-destructive/20" : "bg-muted/30"}`}>
             <span className="text-xs w-6">{statusIcon[s.status] || "—"}</span>
             <div className="flex-1">
@@ -48,7 +62,7 @@ function StepResultsPanel({ runId }: { runId: string }) {
         <div>
           <h4 className="text-sm font-semibold">Evidence</h4>
           <div className="flex flex-wrap gap-2 mt-1">
-            {evidence.map((e: any) => (
+            {evidence.map((e: CJ03JourneyDetailViewRow) => (
               <Badge key={e.id} variant="outline" className="text-[10px] gap-1">
                 {e.asset_type === "screenshot" ? <Image className="h-3 w-3" /> : <FileText className="h-3 w-3" />}
                 {e.label || e.asset_type}
@@ -87,11 +101,11 @@ export default function CJ03JourneyDetailView() {
         <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-muted-foreground" /></div>
       ) : (
         <div className="space-y-3">
-          {(journeys ?? []).map((j: any) => {
+          {(journeys ?? []).map((j: CJ03JourneyDetailViewRow) => {
             const statusCfg = JOURNEY_STATUS_CONFIG[j.current_status] || JOURNEY_STATUS_CONFIG.unverified;
             const impactCfg = LAUNCH_IMPACT_CONFIG[j.launch_importance] || LAUNCH_IMPACT_CONFIG.non_blocking;
             const isOpen = expanded === j.id;
-            const jRuns = (runs ?? []).filter((r: any) => r.journey_key === j.journey_key);
+            const jRuns = (runs ?? []).filter((r: CJ03JourneyDetailViewRow) => r.journey_key === j.journey_key);
             const steps = Array.isArray(j.steps) ? j.steps : [];
 
             return (
@@ -162,7 +176,7 @@ export default function CJ03JourneyDetailView() {
                         <div>
                           <h3 className="text-sm font-semibold mb-2">Recent Verification Runs</h3>
                           <div className="space-y-2">
-                            {jRuns.slice(0, 5).map((r: any) => {
+                            {jRuns.slice(0, 5).map((r: CJ03JourneyDetailViewRow) => {
                               const rCfg = JOURNEY_STATUS_CONFIG[r.status] || JOURNEY_STATUS_CONFIG.unverified;
                               const isSelected = selectedRun === r.id;
                               return (

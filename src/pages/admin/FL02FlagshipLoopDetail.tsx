@@ -29,6 +29,11 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface FL02FlagshipLoopDetailRow {
+  loop_key?: unknown;
+}
+
 function ScoreCard({ label, score, icon, description }: { label: string; score: number; icon: React.ReactNode; description: string }) {
   const { grade, color } = getLoopGrade(score);
   return (
@@ -58,7 +63,7 @@ export default function FL02FlagshipLoopDetail() {
     staleTime: 30_000,
   });
 
-  const loop = (loops || []).find((l: any) => l.loop_key === loopKey);
+  const loop = (loops || []).find((l: FL02FlagshipLoopDetailRow) => l.loop_key === loopKey);
   const domains = getDomainsByFlagshipLoop(loopKey);
 
   if (isLoading) return <p className="text-muted-foreground p-6">Loading…</p>;

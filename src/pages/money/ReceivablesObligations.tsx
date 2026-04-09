@@ -9,13 +9,29 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvoices, useBills } from "@/hooks/use-sita-data";
 
+
+interface ReceivablesObligationsRow {
+  amount?: number;
+  category?: string;
+  client_name?: unknown;
+  description?: string;
+  due_date?: string;
+  id?: string;
+  invoice_number?: string;
+  is_recu?: unknown;
+  is_recurring?: unknown;
+  name?: string;
+  payee?: unknown;
+  status?: string;
+}
+
 const ReceivablesObligations = () => {
   const [tab, setTab] = useState("receivables");
   const { data: invoices = [], isLoading: invLoading } = useInvoices();
   const { data: bills = [], isLoading: billsLoading } = useBills();
 
   const receivables = useMemo(() =>
-    invoices.filter((i: any) => i.status !== "paid").map((i: any) => {
+    invoices.filter((i: ReceivablesObligationsRow) => i.status !== "paid").map((i: ReceivablesObligationsRow) => {
       const now = new Date();
       const due = new Date(i.due_date);
       const daysOut = Math.ceil((due.getTime() - now.getTime()) / 86400000);
@@ -30,7 +46,7 @@ const ReceivablesObligations = () => {
   [invoices]);
 
   const obligations = useMemo(() =>
-    bills.filter((b: any) => b.status !== "paid").map((b: any) => {
+    bills.filter((b: ReceivablesObligationsRow) => b.status !== "paid").map((b: ReceivablesObligationsRow) => {
       const now = new Date();
       const due = new Date(b.due_date);
       const daysOut = Math.ceil((due.getTime() - now.getTime()) / 86400000);

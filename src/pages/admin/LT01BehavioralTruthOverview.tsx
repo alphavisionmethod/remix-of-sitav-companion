@@ -8,6 +8,17 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface LT01BehavioralTruthOverviewRow {
+  description?: string;
+  domain?: string;
+  id?: string;
+  occurrence_count?: unknown;
+  regression_type?: unknown;
+  route?: unknown;
+  severity?: string;
+}
+
 const LT01BehavioralTruthOverview = () => {
   const { data: routeTruth } = useQuery({
     queryKey: ["route-truth-summary"],
@@ -100,7 +111,7 @@ const LT01BehavioralTruthOverview = () => {
         <CardContent>
           {regressions && regressions.length > 0 ? (
             <div className="space-y-2">
-              {regressions.map((r: any) => (
+              {regressions.map((r: LT01BehavioralTruthOverviewRow) => (
                 <div key={r.id} className="flex items-center justify-between p-3 rounded-lg border">
                   <div>
                     <p className="font-medium">{r.description || r.route || "Unknown regression"}</p>

@@ -14,6 +14,27 @@ import { toast } from "sonner";
 import { useMemo } from "react";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface CJ01ExecutiveReportRow {
+  blocker_type?: unknown;
+  claim_risk?: unknown;
+  commit_sha?: unknown;
+  current_status?: unknown;
+  domain?: string;
+  domain_family?: unknown;
+  environment?: unknown;
+  id?: string;
+  journey_key?: unknown;
+  last_v?: unknown;
+  last_verified_at?: unknown;
+  message?: string;
+  mode?: unknown;
+  resolved?: unknown;
+  run_id?: unknown;
+  steps_failed?: unknown;
+  summary?: unknown;
+}
+
 const PROOF_LABELS: Record<string, { label: string; color: string }> = {
   verified_e2e: { label: "E2E Verified", color: "bg-emerald-500" },
   verified_interaction: { label: "Interaction", color: "bg-blue-500" },
@@ -43,11 +64,11 @@ export default function CJ01ExecutiveReport() {
   const handleSeedRegistry = () => {
     seedRegistryMutation.mutate(undefined, {
       onSuccess: (result) => toast.success(`Seeded ${result.registryCount} registry entries + ${result.statusCount} status rows`),
-      onError: (e: any) => toast.error(e.message),
+      onError: (e: CJ01ExecutiveReportRow) => toast.error(e.message),
     });
   };
 
-  const unresolvedBlockers = (blockers ?? []).filter((b: any) => !b.resolved);
+  const unresolvedBlockers = (blockers ?? []).filter((b: CJ01ExecutiveReportRow) => !b.resolved);
 
   const viewJourneys = summaryView ?? [];
   const hasViewData = viewJourneys.length > 0;
@@ -91,15 +112,15 @@ export default function CJ01ExecutiveReport() {
   }, [viewJourneys, journeys, hasViewData]);
 
   // Real vs demo mismatch count
-  const mismatchCount = (modeDeltas ?? []).filter((d: any) => d.claim_risk).length;
+  const mismatchCount = (modeDeltas ?? []).filter((d: CJ01ExecutiveReportRow) => d.claim_risk).length;
 
   // Domain scores
   const domainScores = useMemo(() => {
     const source = hasViewData ? viewJourneys : (journeys ?? []);
-    const domains: string[] = Array.from(new Set<string>(source.map((j: any) => (j.domain_family || j.domain))));
+    const domains: string[] = Array.from(new Set<string>(source.map((j: CJ01ExecutiveReportRow) => (j.domain_family || j.domain))));
     return domains.map((d) => {
-      const dj = source.filter((j: any) => (j.domain_family || j.domain) === d);
-      const working = dj.filter((j: any) => j.current_status === "working").length;
+      const dj = source.filter((j: CJ01ExecutiveReportRow) => (j.domain_family || j.domain) === d);
+      const working = dj.filter((j: CJ01ExecutiveReportRow) => j.current_status === "working").length;
       return { domain: d, total: dj.length, working, score: dj.length > 0 ? Math.round((working / dj.length) * 100) : 0 };
     });
   }, [viewJourneys, journeys, hasViewData]);
@@ -108,7 +129,7 @@ export default function CJ01ExecutiveReport() {
   const lastVerification = useMemo(() => {
     const source = hasViewData ? viewJourneys : (journeys ?? []);
     const dates = source
-      .map((j: any) => j.last_verified_at)
+      .map((j: CJ01ExecutiveReportRow) => j.last_verified_at)
       .filter(Boolean)
       .sort((a: string, b: string) => new Date(b).getTime() - new Date(a).getTime());
     return dates[0] || null;
@@ -260,7 +281,7 @@ export default function CJ01ExecutiveReport() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {unresolvedBlockers.slice(0, 10).map((b: any) => (
+                {unresolvedBlockers.slice(0, 10).map((b: CJ01ExecutiveReportRow) => (
                   <div key={b.id} className="flex items-center justify-between p-2 rounded bg-destructive/5 border border-destructive/20">
                     <div>
                       <span className="font-mono text-sm">{b.journey_key}</span>
@@ -283,7 +304,7 @@ export default function CJ01ExecutiveReport() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {(recentFailures ?? []).slice(0, 5).map((f: any) => (
+                {(recentFailures ?? []).slice(0, 5).map((f: CJ01ExecutiveReportRow) => (
                   <div key={f.run_id} className="flex items-center justify-between p-2 rounded bg-amber-500/5 border border-amber-500/20">
                     <div>
                       <span className="font-mono text-sm">{f.journey_key}</span>

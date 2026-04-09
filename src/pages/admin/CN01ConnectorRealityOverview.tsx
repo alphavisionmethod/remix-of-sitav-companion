@@ -12,6 +12,26 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface CN01ConnectorRealityOverviewRow {
+  checked_at?: unknown;
+  connector_account_id?: string;
+  connector_class?: string;
+  demo_mode?: boolean;
+  display_name?: string;
+  event_type?: string;
+  expires_at?: string;
+  health_status?: unknown;
+  id?: string;
+  latency_ms?: unknown;
+  message?: string;
+  provider?: string;
+  refresh_token?: string;
+  registry_id?: string;
+  scopes?: string[];
+  status?: string;
+}
+
 const statusColors: Record<string, string> = {
   healthy: "bg-emerald-500/15 text-emerald-400", connected: "bg-emerald-500/15 text-emerald-400",
   degraded: "bg-amber-500/15 text-amber-400", reauth_required: "bg-orange-500/15 text-orange-400",
@@ -35,12 +55,12 @@ interface VerificationCheck {
 
 const DEMO_VERIFICATION_CHECKS: VerificationCheck[] = [
   { label: "OAuth Configured", check: ({ oauthConfig }) => oauthConfig?.google_oauth_configured === true },
-  { label: "Registry Seeded", check: ({ registry }) => registry.some((r: any) => r.connector_class === "real") },
-  { label: "Callback Verified", check: ({ receipts }) => receipts.some((r: any) => r.event_type === "oauth_connect") },
+  { label: "Registry Seeded", check: ({ registry }) => registry.some((r: CN01ConnectorRealityOverviewRow) => r.connector_class === "real") },
+  { label: "Callback Verified", check: ({ receipts }) => receipts.some((r: CN01ConnectorRealityOverviewRow) => r.event_type === "oauth_connect") },
   { label: "Token Exchange", check: ({ tokens }) => tokens.length > 0 },
-  { label: "Connected Accounts", check: ({ accounts }) => accounts.some((a: any) => a.status === "connected" && !a.demo_mode) },
-  { label: "Reauth Flow", check: ({ tokens }) => tokens.some((t: any) => t.refresh_token) },
-  { label: "Disconnect Flow", check: ({ receipts }) => receipts.some((r: any) => r.event_type === "disconnect") },
+  { label: "Connected Accounts", check: ({ accounts }) => accounts.some((a: CN01ConnectorRealityOverviewRow) => a.status === "connected" && !a.demo_mode) },
+  { label: "Reauth Flow", check: ({ tokens }) => tokens.some((t: CN01ConnectorRealityOverviewRow) => t.refresh_token) },
+  { label: "Disconnect Flow", check: ({ receipts }) => receipts.some((r: CN01ConnectorRealityOverviewRow) => r.event_type === "disconnect") },
 ];
 
 const DEMO_CAPABILITIES = [
@@ -116,23 +136,23 @@ export default function CN01ConnectorRealityOverview() {
       return data;
     },
     onSuccess: () => { toast.success("Connector registry seeded"); queryClient.invalidateQueries({ queryKey: ["connector-registry"] }); queryClient.invalidateQueries({ queryKey: ["connector-launch-readiness"] }); },
-    onError: (e: any) => toast.error(`Seed failed: ${e.message}`),
+    onError: (e: CN01ConnectorRealityOverviewRow) => toast.error(`Seed failed: ${e.message}`),
   });
 
-  const realConnectors = registry.filter((r: any) => r.connector_class === "real");
-  const testConnectors = registry.filter((r: any) => r.connector_class === "internal_test");
-  const demoConnectors = registry.filter((r: any) => r.connector_class === "demo");
-  const connectedAccounts = accounts.filter((a: any) => a.status === "connected" || a.status === "demo_simulated" || a.status === "internal_test");
+  const realConnectors = registry.filter((r: CN01ConnectorRealityOverviewRow) => r.connector_class === "real");
+  const testConnectors = registry.filter((r: CN01ConnectorRealityOverviewRow) => r.connector_class === "internal_test");
+  const demoConnectors = registry.filter((r: CN01ConnectorRealityOverviewRow) => r.connector_class === "demo");
+  const connectedAccounts = accounts.filter((a: CN01ConnectorRealityOverviewRow) => a.status === "connected" || a.status === "demo_simulated" || a.status === "internal_test");
 
   const verificationData = { registry, accounts, tokens, receipts, oauthConfig };
   const passedChecks = DEMO_VERIFICATION_CHECKS.filter((c) => c.check(verificationData)).length;
 
   const failureGroups = [
     { type: "Missing OAuth Config", count: oauthConfig?.google_oauth_configured ? 0 : 1, icon: <AlertTriangle className="h-3 w-3" /> },
-    { type: "Callback Failures", count: receipts.filter((r: any) => r.event_type === "oauth_connect" && r.status === "failed").length, icon: <XCircle className="h-3 w-3" /> },
-    { type: "Token Expired", count: tokens.filter((t: any) => t.expires_at && new Date(t.expires_at) < new Date()).length, icon: <XCircle className="h-3 w-3" /> },
-    { type: "Reauth Required", count: accounts.filter((a: any) => a.status === "reauth_required").length, icon: <AlertTriangle className="h-3 w-3" /> },
-    { type: "Disconnected", count: accounts.filter((a: any) => a.status === "disconnected").length, icon: <XCircle className="h-3 w-3" /> },
+    { type: "Callback Failures", count: receipts.filter((r: CN01ConnectorRealityOverviewRow) => r.event_type === "oauth_connect" && r.status === "failed").length, icon: <XCircle className="h-3 w-3" /> },
+    { type: "Token Expired", count: tokens.filter((t: CN01ConnectorRealityOverviewRow) => t.expires_at && new Date(t.expires_at) < new Date()).length, icon: <XCircle className="h-3 w-3" /> },
+    { type: "Reauth Required", count: accounts.filter((a: CN01ConnectorRealityOverviewRow) => a.status === "reauth_required").length, icon: <AlertTriangle className="h-3 w-3" /> },
+    { type: "Disconnected", count: accounts.filter((a: CN01ConnectorRealityOverviewRow) => a.status === "disconnected").length, icon: <XCircle className="h-3 w-3" /> },
   ];
 
   return (
@@ -219,12 +239,12 @@ export default function CN01ConnectorRealityOverview() {
                 </TableHeader>
                 <TableBody>
                   {DEMO_CAPABILITIES.map((cap) => {
-                    const capTokens = tokens.filter((t: any) => t.scopes?.some((s: string) => cap.scopes.some((cs) => s.includes(cs))));
-                    const hasCallback = receipts.some((r: any) => r.event_type === "oauth_connect");
-                    const hasDisconnect = receipts.some((r: any) => r.event_type === "disconnect");
-                    const capAccounts = accounts.filter((a: any) => a.provider === "google");
-                    const isConnected = capAccounts.some((a: any) => a.status === "connected");
-                    const hasReauth = capTokens.some((t: any) => t.refresh_token);
+                    const capTokens = tokens.filter((t: CN01ConnectorRealityOverviewRow) => t.scopes?.some((s: string) => cap.scopes.some((cs) => s.includes(cs))));
+                    const hasCallback = receipts.some((r: CN01ConnectorRealityOverviewRow) => r.event_type === "oauth_connect");
+                    const hasDisconnect = receipts.some((r: CN01ConnectorRealityOverviewRow) => r.event_type === "disconnect");
+                    const capAccounts = accounts.filter((a: CN01ConnectorRealityOverviewRow) => a.provider === "google");
+                    const isConnected = capAccounts.some((a: CN01ConnectorRealityOverviewRow) => a.status === "connected");
+                    const hasReauth = capTokens.some((t: CN01ConnectorRealityOverviewRow) => t.refresh_token);
                     const oauthOk = oauthConfig?.google_oauth_configured === true;
                     const status = isConnected ? "live_verified" : oauthOk ? "partial" : "not_configured";
                     return (
@@ -265,8 +285,8 @@ export default function CN01ConnectorRealityOverview() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {accounts.map((a: any) => {
-                      const token = tokens.find((t: any) => t.connector_account_id === a.id);
+                    {accounts.map((a: CN01ConnectorRealityOverviewRow) => {
+                      const token = tokens.find((t: CN01ConnectorRealityOverviewRow) => t.connector_account_id === a.id);
                       return (
                         <TableRow key={a.id}>
                           <TableCell className="font-medium text-sm">{a.provider || "—"}</TableCell>
@@ -293,8 +313,8 @@ export default function CN01ConnectorRealityOverview() {
                 <p className="text-sm text-muted-foreground">No connectors registered.</p>
               ) : (
                 <div className="space-y-3">
-                  {registry.map((c: any) => {
-                    const lr = readiness.find((r: any) => r.registry_id === c.id);
+                  {registry.map((c: CN01ConnectorRealityOverviewRow) => {
+                    const lr = readiness.find((r: CN01ConnectorRealityOverviewRow) => r.registry_id === c.id);
                     return (
                       <div key={c.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">
                         <div className="flex items-center gap-3">
@@ -348,7 +368,7 @@ export default function CN01ConnectorRealityOverview() {
               <CardHeader><CardTitle className="text-lg">Recent Health Checks</CardTitle></CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {healthRecords.slice(0, 10).map((h: any) => (
+                  {healthRecords.slice(0, 10).map((h: CN01ConnectorRealityOverviewRow) => (
                     <div key={h.id} className="flex items-center justify-between p-2 rounded bg-muted/20">
                       <Badge className={statusColors[h.health_status] || ""}>{h.health_status}</Badge>
                       <span className="text-xs text-muted-foreground">{h.latency_ms ? `${h.latency_ms}ms` : "—"}</span>

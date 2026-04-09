@@ -12,6 +12,17 @@ import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface AR01AutomationOverviewRow {
+  domain?: string;
+  enabled?: unknown;
+  id?: string;
+  job_id?: unknown;
+  name?: string;
+  state?: unknown;
+  status?: string;
+}
+
 function useScheduledJobs() {
   return useQuery({
     queryKey: ["scheduled-jobs"],
@@ -48,14 +59,14 @@ export default function AR01AutomationOverview() {
   const { data: executions = [] } = useRecentExecutions();
   const { data: killSwitches = [] } = useKillSwitches();
 
-  const activeJobs = jobs.filter((j: any) => j.state === "active");
-  const pausedJobs = jobs.filter((j: any) => j.state === "paused");
-  const degradedJobs = jobs.filter((j: any) => j.state === "degraded");
-  const blockedJobs = jobs.filter((j: any) => j.state === "blocked");
+  const activeJobs = jobs.filter((j: AR01AutomationOverviewRow) => j.state === "active");
+  const pausedJobs = jobs.filter((j: AR01AutomationOverviewRow) => j.state === "paused");
+  const degradedJobs = jobs.filter((j: AR01AutomationOverviewRow) => j.state === "degraded");
+  const blockedJobs = jobs.filter((j: AR01AutomationOverviewRow) => j.state === "blocked");
 
-  const successExecs = executions.filter((e: any) => e.status === "success");
-  const failedExecs = executions.filter((e: any) => e.status === "failure");
-  const activeKills = killSwitches.filter((k: any) => k.enabled);
+  const successExecs = executions.filter((e: AR01AutomationOverviewRow) => e.status === "success");
+  const failedExecs = executions.filter((e: AR01AutomationOverviewRow) => e.status === "failure");
+  const activeKills = killSwitches.filter((k: AR01AutomationOverviewRow) => k.enabled);
 
   const successRate = executions.length > 0
     ? Math.round((successExecs.length / executions.length) * 100) : 0;
@@ -117,7 +128,7 @@ export default function AR01AutomationOverview() {
             {executions.length === 0 ? (
               <p className="text-xs text-muted-foreground">No executions recorded yet</p>
             ) : (
-              executions.slice(0, 15).map((e: any) => (
+              executions.slice(0, 15).map((e: AR01AutomationOverviewRow) => (
                 <div key={e.id} className="flex items-center gap-2 rounded-lg bg-secondary/10 px-2 py-1.5">
                   {e.status === "success" ? <CheckCircle className="h-3 w-3 text-trust-safe" /> :
                    e.status === "failure" ? <XCircle className="h-3 w-3 text-destructive" /> :
@@ -135,7 +146,7 @@ export default function AR01AutomationOverview() {
         <SitaCard className="border-destructive/30 bg-destructive/5">
           <SitaCardTitle>⚠ Blocked Jobs</SitaCardTitle>
           <div className="space-y-1 mt-2">
-            {blockedJobs.map((j: any) => (
+            {blockedJobs.map((j: AR01AutomationOverviewRow) => (
               <div key={j.id} className="text-xs text-destructive">{j.name} — {j.domain}</div>
             ))}
           </div>

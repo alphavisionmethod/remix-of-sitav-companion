@@ -6,11 +6,20 @@ import { useInferenceReceipts, useTaskRequests } from "@/hooks/use-sag-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface SAGReceiptExplorerRow {
+  cache_hits?: unknown;
+  capability_id?: string;
+  cost_actual_cents?: unknown;
+  id?: string;
+  verification_outcome?: unknown;
+}
+
 const SAGReceiptExplorer = () => {
   const { data: receipts = [], isLoading } = useInferenceReceipts();
   const { data: tasks = [] } = useTaskRequests();
 
-  const verified = receipts.filter((r: any) => r.verification_outcome === 'passed').length;
+  const verified = receipts.filter((r: SAGReceiptExplorerRow) => r.verification_outcome === 'passed').length;
   const totalCost = receipts.reduce((s: number, r: any) => s + (r.cost_actual_cents || 0), 0);
 
   return (
@@ -25,7 +34,7 @@ const SAGReceiptExplorer = () => {
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{receipts.length}</p><p className="text-xs text-muted-foreground">Total Receipts</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{verified}</p><p className="text-xs text-muted-foreground">Verified</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">${(totalCost / 100).toFixed(2)}</p><p className="text-xs text-muted-foreground">Total Receipted Cost</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{receipts.filter((r: any) => r.cache_hits > 0).length}</p><p className="text-xs text-muted-foreground">Cache Hits</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{receipts.filter((r: SAGReceiptExplorerRow) => r.cache_hits > 0).length}</p><p className="text-xs text-muted-foreground">Cache Hits</p></CardContent></Card>
       </div>
 
       <div className="space-y-3">
@@ -36,7 +45,7 @@ const SAGReceiptExplorer = () => {
               <p className="text-muted-foreground">No inference receipts yet. Every AI action will be receipted here with full trace data.</p>
             </CardContent></Card>
           ) :
-          receipts.map((r: any) => (
+          receipts.map((r: SAGReceiptExplorerRow) => (
             <Card key={r.id} className="hover:border-primary/30 transition-colors">
               <CardContent className="py-4">
                 <div className="flex items-center justify-between mb-2">

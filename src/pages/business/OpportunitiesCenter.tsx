@@ -15,6 +15,18 @@ import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface OpportunitiesCenterRow {
+  co?: unknown;
+  confidence?: unknown;
+  customers?: Record<string, unknown> | null;
+  id?: string;
+  stage?: unknown;
+  stale_risk?: unknown;
+  title?: string;
+  value?: number;
+}
+
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
@@ -80,12 +92,12 @@ const OpportunitiesCenter = () => {
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["opportunities"] }); setSelectedId(null); toast.success("Deleted"); },
   });
 
-  const selected = opportunities.find((o: any) => o.id === selectedId);
+  const selected = opportunities.find((o: OpportunitiesCenterRow) => o.id === selectedId);
 
   const filtered = tab === "all" ? opportunities
-    : tab === "at-risk" ? opportunities.filter((o: any) => o.stale_risk)
-    : tab === "high-value" ? opportunities.filter((o: any) => (o.confidence || 0) >= 70)
-    : opportunities.filter((o: any) => o.stage === "won");
+    : tab === "at-risk" ? opportunities.filter((o: OpportunitiesCenterRow) => o.stale_risk)
+    : tab === "high-value" ? opportunities.filter((o: OpportunitiesCenterRow) => (o.confidence || 0) >= 70)
+    : opportunities.filter((o: OpportunitiesCenterRow) => o.stage === "won");
 
   const totalValue = opportunities.reduce((sum: number, o: any) => sum + (o.value || 0), 0);
   const avgConf = opportunities.length > 0 ? Math.round(opportunities.reduce((s: number, o: any) => s + (o.confidence || 0), 0) / opportunities.length) : 0;
@@ -127,17 +139,17 @@ const OpportunitiesCenter = () => {
 
       <motion.div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" variants={stagger} initial="hidden" animate="show">
         {[
-          { label: "Open", value: String(opportunities.filter((o: any) => !["won", "lost"].includes(o.stage)).length), icon: Target },
+          { label: "Open", value: String(opportunities.filter((o: OpportunitiesCenterRow) => !["won", "lost"].includes(o.stage)).length), icon: Target },
           { label: "Pipeline Value", value: totalValue > 0 ? `$${(totalValue / 1000).toFixed(0)}K` : "$0", icon: DollarSign },
-          { label: "At Risk", value: String(opportunities.filter((o: any) => o.stale_risk).length), icon: AlertTriangle },
+          { label: "At Risk", value: String(opportunities.filter((o: OpportunitiesCenterRow) => o.stale_risk).length), icon: AlertTriangle },
           { label: "Avg Confidence", value: `${avgConf}%`, icon: TrendingUp },
         ].map(kpi => <motion.div key={kpi.label} variants={fadeUp}><KPITile {...kpi} /></motion.div>)}
       </motion.div>
 
       <SitaTabs tabs={[
         { key: "all", label: "All", count: opportunities.length },
-        { key: "at-risk", label: "At Risk", count: opportunities.filter((o: any) => o.stale_risk).length },
-        { key: "high-value", label: "High Confidence", count: opportunities.filter((o: any) => (o.confidence || 0) >= 70).length },
+        { key: "at-risk", label: "At Risk", count: opportunities.filter((o: OpportunitiesCenterRow) => o.stale_risk).length },
+        { key: "high-value", label: "High Confidence", count: opportunities.filter((o: OpportunitiesCenterRow) => (o.confidence || 0) >= 70).length },
         { key: "won", label: "Won" },
       ]} active={tab} onChange={setTab} />
 
@@ -145,7 +157,7 @@ const OpportunitiesCenter = () => {
         /* ── Pipeline Kanban ── */
         <div className="flex gap-3 overflow-x-auto pb-4 -mx-2 px-2">
           {["lead", "discovery", "qualified", "proposal", "negotiation", "won"].map(stage => {
-            const stageOpps = opportunities.filter((o: any) => o.stage === stage);
+            const stageOpps = opportunities.filter((o: OpportunitiesCenterRow) => o.stage === stage);
             const stageValue = stageOpps.reduce((s: number, o: any) => s + (o.value || 0), 0);
             return (
               <div key={stage} className="flex-shrink-0 w-64 rounded-xl border border-border bg-card/50">
@@ -157,7 +169,7 @@ const OpportunitiesCenter = () => {
                   {stageValue > 0 && <p className="text-[10px] text-muted-foreground mt-0.5">${(stageValue / 1000).toFixed(0)}K</p>}
                 </div>
                 <div className="p-2 space-y-2 min-h-[120px]">
-                  {stageOpps.map((opp: any) => (
+                  {stageOpps.map((opp: OpportunitiesCenterRow) => (
                     <div key={opp.id} onClick={() => setSelectedId(opp.id)} className="rounded-lg border border-border/50 bg-card p-3 cursor-pointer hover:border-primary/20 hover:shadow-sm transition-all">
                       <p className="text-[12px] font-medium text-foreground truncate">{opp.title}</p>
                       <p className="text-[10px] text-muted-foreground mt-0.5">{opp.customers?.name || "No customer"}</p>
@@ -182,7 +194,7 @@ const OpportunitiesCenter = () => {
             : filtered.length === 0 ? <EmptyState icon={Target} title="No opportunities" description={opportunities.length === 0 ? "Add your first opportunity to build your pipeline" : "Try a different filter"} />
             : (
               <motion.div className="space-y-2" variants={stagger} initial="hidden" animate="show">
-                {filtered.map((opp: any) => {
+                {filtered.map((opp: OpportunitiesCenterRow) => {
                   const conf = opp.confidence || 0;
                   const customerName = opp.customers?.name || "No customer";
                   return (

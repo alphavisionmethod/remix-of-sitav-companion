@@ -21,6 +21,23 @@ import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
 import { useCreateCalendarEvent, useUpdateCalendarEvent, useDeleteCalendarEvent } from "@/hooks/use-calendar-mutations";
 import { useBookingList, useBookingCreate, useBookingCancel } from "@/hooks/use-backend-actions";
 
+
+interface CalendarWorkspaceRow {
+  booking_type?: unknown;
+  domain?: string;
+  end_date?: unknown;
+  end_time?: unknown;
+  event_date?: string;
+  event_type?: string;
+  id?: string;
+  location?: unknown;
+  overlap_warning?: unknown;
+  priority?: string;
+  start_date?: unknown;
+  start_time?: string;
+  title?: string;
+}
+
 type CalView = "day" | "week" | "month" | "agenda";
 
 const DOMAIN_COLORS: Record<string, string> = {
@@ -71,7 +88,7 @@ const CalendarWorkspace = () => {
       const { data, error } = await fromTable("calendar_events").select("*")
         .eq("user_id", user.id).order("event_date", { ascending: true });
       if (error || !data?.length) return null;
-      return data.map((e: any): CalEvent => ({
+      return data.map((e: CalendarWorkspaceRow): CalEvent => ({
         id: e.id, title: e.title, date: new Date(e.event_date).toISOString(),
         time: e.start_time, endTime: e.end_time, domain: e.domain,
         type: e.event_type, location: e.location, priority: e.priority,
@@ -380,7 +397,7 @@ const CalendarWorkspace = () => {
             <p className="text-xs text-muted-foreground text-center py-4">No bookings yet. Add your first travel or appointment booking.</p>
           ) : (
             <div className="space-y-2">
-              {(bookings as never[]).map((b: any) => (
+              {(bookings as never[]).map((b: CalendarWorkspaceRow) => (
                 <div key={b.id} className="flex items-center justify-between p-3 rounded-lg border border-border/30 bg-secondary/10">
                   <div>
                     <p className="text-sm font-medium text-foreground">{b.title}</p>

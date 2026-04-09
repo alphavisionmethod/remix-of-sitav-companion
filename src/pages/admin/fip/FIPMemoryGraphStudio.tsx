@@ -6,9 +6,14 @@ import { useFeatureSpecs } from "@/hooks/use-fip-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface FIPMemoryGraphStudioRow {
+  memory_graph_effects?: unknown;
+}
+
 const FIPMemoryGraphStudio = () => {
   const { data: specs = [], isLoading } = useFeatureSpecs();
-  const specsWithMemory = specs.filter((s: any) => s.memory_graph_effects && Object.keys(s.memory_graph_effects).length > 0);
+  const specsWithMemory = specs.filter((s: FIPMemoryGraphStudioRow) => s.memory_graph_effects && Object.keys(s.memory_graph_effects).length > 0);
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -32,7 +37,7 @@ const FIPMemoryGraphStudio = () => {
             {['reads', 'writes', 'sensitivity', 'expiration', 'correction_path', 'forget_path'].map(field => (
               <div key={field} className="flex justify-between text-sm py-1 border-b last:border-0">
                 <span className="capitalize">{field.replace(/_/g, ' ')}</span>
-                <Badge variant="outline">{specsWithMemory.filter((s: any) => s.memory_graph_effects?.[field]).length} defined</Badge>
+                <Badge variant="outline">{specsWithMemory.filter((s: FIPMemoryGraphStudioRow) => s.memory_graph_effects?.[field]).length} defined</Badge>
               </div>
             ))}
           </CardContent>
@@ -43,7 +48,7 @@ const FIPMemoryGraphStudio = () => {
             {['nodes_touched', 'edges_touched', 'authority_model', 'visibility_rules', 'revocation_behavior', 'actor_scope'].map(field => (
               <div key={field} className="flex justify-between text-sm py-1 border-b last:border-0">
                 <span className="capitalize">{field.replace(/_/g, ' ')}</span>
-                <Badge variant="outline">{specsWithMemory.filter((s: any) => s.memory_graph_effects?.[field]).length} defined</Badge>
+                <Badge variant="outline">{specsWithMemory.filter((s: FIPMemoryGraphStudioRow) => s.memory_graph_effects?.[field]).length} defined</Badge>
               </div>
             ))}
           </CardContent>

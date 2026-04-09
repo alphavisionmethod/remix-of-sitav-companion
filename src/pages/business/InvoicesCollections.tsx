@@ -15,6 +15,19 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvoiceGenerate, useInvoiceSend } from "@/hooks/use-backend-actions";
 
+
+interface InvoicesCollectionsRow {
+  amount?: number;
+  computedStatus?: string;
+  customers?: Record<string, unknown> | null;
+  day?: unknown;
+  daysOverdue?: number;
+  due_date?: string;
+  id?: string;
+  status?: string;
+  updated_at?: string;
+}
+
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
@@ -46,7 +59,7 @@ const InvoicesCollections = () => {
       if (!user) return [];
       const { data, error } = await fromTable("invoices").select("*, customers(name)").eq("user_id", user.id).order("created_at", { ascending: false });
       if (error) throw error;
-      return data.map((inv: any) => {
+      return data.map((inv: InvoicesCollectionsRow) => {
         const due = new Date(inv.due_date);
         const now = new Date();
         const daysOverdue = inv.status !== "paid" ? Math.max(0, Math.floor((now.getTime() - due.getTime()) / 86400000)) : 0;
@@ -74,16 +87,16 @@ const InvoicesCollections = () => {
     onSuccess: () => { setSelectedId(null); },
   });
 
-  const selected = invoices.find((i: any) => i.id === selectedId);
+  const selected = invoices.find((i: InvoicesCollectionsRow) => i.id === selectedId);
 
   const filtered = tab === "all" ? invoices
-    : tab === "due" ? invoices.filter((i: any) => i.computedStatus === "overdue" || i.computedStatus === "sent")
-    : tab === "overdue" ? invoices.filter((i: any) => i.computedStatus === "overdue")
-    : invoices.filter((i: any) => i.computedStatus === "paid");
+    : tab === "due" ? invoices.filter((i: InvoicesCollectionsRow) => i.computedStatus === "overdue" || i.computedStatus === "sent")
+    : tab === "overdue" ? invoices.filter((i: InvoicesCollectionsRow) => i.computedStatus === "overdue")
+    : invoices.filter((i: InvoicesCollectionsRow) => i.computedStatus === "paid");
 
-  const outstanding = invoices.filter((i: any) => !["paid", "draft"].includes(i.computedStatus)).reduce((s: number, i: any) => s + Number(i.amount), 0);
-  const overdue = invoices.filter((i: any) => i.computedStatus === "overdue").reduce((s: number, i: any) => s + Number(i.amount), 0);
-  const paidThisMonth = invoices.filter((i: any) => i.status === "paid" && new Date(i.updated_at).getMonth() === new Date().getMonth()).reduce((s: number, i: any) => s + Number(i.amount), 0);
+  const outstanding = invoices.filter((i: InvoicesCollectionsRow) => !["paid", "draft"].includes(i.computedStatus)).reduce((s: number, i: any) => s + Number(i.amount), 0);
+  const overdue = invoices.filter((i: InvoicesCollectionsRow) => i.computedStatus === "overdue").reduce((s: number, i: any) => s + Number(i.amount), 0);
+  const paidThisMonth = invoices.filter((i: InvoicesCollectionsRow) => i.status === "paid" && new Date(i.updated_at).getMonth() === new Date().getMonth()).reduce((s: number, i: any) => s + Number(i.amount), 0);
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -123,10 +136,10 @@ const InvoicesCollections = () => {
       {/* Aging Buckets */}
       <div className="grid gap-3 sm:grid-cols-4">
         {[
-          { label: "Current", count: invoices.filter((i: any) => i.daysOverdue === 0 && !["paid", "draft"].includes(i.status)).length, color: "border-l-trust-verified" },
-          { label: "1–14 Days Late", count: invoices.filter((i: any) => i.daysOverdue > 0 && i.daysOverdue <= 14).length, color: "border-l-trust-review" },
-          { label: "15–30 Days Late", count: invoices.filter((i: any) => i.daysOverdue > 14 && i.daysOverdue <= 30).length, color: "border-l-urgency-high" },
-          { label: "30+ Days Late", count: invoices.filter((i: any) => i.daysOverdue > 30).length, color: "border-l-urgency-critical" },
+          { label: "Current", count: invoices.filter((i: InvoicesCollectionsRow) => i.daysOverdue === 0 && !["paid", "draft"].includes(i.status)).length, color: "border-l-trust-verified" },
+          { label: "1–14 Days Late", count: invoices.filter((i: InvoicesCollectionsRow) => i.daysOverdue > 0 && i.daysOverdue <= 14).length, color: "border-l-trust-review" },
+          { label: "15–30 Days Late", count: invoices.filter((i: InvoicesCollectionsRow) => i.daysOverdue > 14 && i.daysOverdue <= 30).length, color: "border-l-urgency-high" },
+          { label: "30+ Days Late", count: invoices.filter((i: InvoicesCollectionsRow) => i.daysOverdue > 30).length, color: "border-l-urgency-critical" },
         ].map(b => (
           <div key={b.label} className={`rounded-xl border border-border bg-card p-3.5 border-l-4 ${b.color}`}>
             <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{b.label}</p>
@@ -137,9 +150,9 @@ const InvoicesCollections = () => {
 
       <SitaTabs tabs={[
         { key: "all", label: "All", count: invoices.length },
-        { key: "due", label: "Action Needed", count: invoices.filter((i: any) => ["overdue", "sent"].includes(i.computedStatus)).length },
-        { key: "overdue", label: "Overdue", count: invoices.filter((i: any) => i.computedStatus === "overdue").length },
-        { key: "paid", label: "Paid", count: invoices.filter((i: any) => i.computedStatus === "paid").length },
+        { key: "due", label: "Action Needed", count: invoices.filter((i: InvoicesCollectionsRow) => ["overdue", "sent"].includes(i.computedStatus)).length },
+        { key: "overdue", label: "Overdue", count: invoices.filter((i: InvoicesCollectionsRow) => i.computedStatus === "overdue").length },
+        { key: "paid", label: "Paid", count: invoices.filter((i: InvoicesCollectionsRow) => i.computedStatus === "paid").length },
       ]} active={tab} onChange={setTab} />
 
       <div className="grid gap-6 lg:grid-cols-5">
@@ -148,7 +161,7 @@ const InvoicesCollections = () => {
           : filtered.length === 0 ? <EmptyState icon={DollarSign} title="No invoices" description={invoices.length === 0 ? "Create your first invoice" : "Try a different filter"} />
           : (
             <motion.div className="space-y-2" variants={stagger} initial="hidden" animate="show">
-              {filtered.map((inv: any) => {
+              {filtered.map((inv: InvoicesCollectionsRow) => {
                 const st = statusConfig[inv.computedStatus] || statusConfig.draft;
                 const customerName = inv.customers?.name;
                 return (

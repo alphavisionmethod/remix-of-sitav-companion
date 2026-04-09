@@ -41,6 +41,20 @@ import type { AdvisorConfig, AdvisorId } from "@/packages/advisor-config";
 import type { ProofPack, TypedReceipt } from "@/packages/proof-model";
 import type { RefusalState, ContradictionReport } from "@/packages/policy-contracts";
 
+
+interface AdvisorWorkspaceRow {
+  action_summary?: unknown;
+  action_type?: string;
+  confidence?: unknown;
+  content?: unknown;
+  created_at?: string;
+  decision_reason?: unknown;
+  id?: string;
+  key?: unknown;
+  memory_type?: unknown;
+  source?: unknown;
+}
+
 // ── Operating Modes ─────────────────────────────────────────────
 
 type CouncilMode = "daily-pulse" | "business" | "money" | "concierge" | "boardroom" | "executive";
@@ -383,7 +397,7 @@ const ApprovalQueue = () => {
 
   // Use DB approvals if available, otherwise mock
   const approvals = (!isDemoMode && pendingApprovals.length > 0)
-    ? pendingApprovals.map((a: any) => ({
+    ? pendingApprovals.map((a: AdvisorWorkspaceRow) => ({
         id: a.id,
         advisorId: "system",
         title: a.action_summary || "Pending Approval",
@@ -447,7 +461,7 @@ const MemoryTransparency = () => {
 
   // Map DB memory to mock format, or use mocks
   const memoryItems = (!isDemoMode && dbMemory.length > 0)
-    ? dbMemory.map((m: any) => ({
+    ? dbMemory.map((m: AdvisorWorkspaceRow) => ({
         id: m.id,
         type: m.memory_type || "learned",
         source: m.source || "System",

@@ -15,6 +15,24 @@ import { toast } from "sonner";
 import { useMemo } from "react";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface CJ04LaunchBlockerViewRow {
+  blocker_id?: unknown;
+  blocker_type?: unknown;
+  created_at?: string;
+  current_status?: unknown;
+  display_name?: string;
+  id?: string;
+  journey_key?: unknown;
+  launch_importance?: unknown;
+  message?: string;
+  reason_summary?: unknown;
+  resolved?: unknown;
+  scored_at?: unknown;
+  severity_score?: unknown;
+  summary?: unknown;
+}
+
 const BLOCKER_TYPE_COLORS: Record<string, string> = {
   launch_blocker: "bg-destructive/15 text-destructive",
   pilot_blocker: "bg-orange-500/15 text-orange-400",
@@ -35,17 +53,17 @@ export default function CJ04LaunchBlockerView() {
   const { data: viewBlockers } = useBlockersView();
   const resolveScore = useResolveBlockerScore();
 
-  const criticalJourneys = (journeys ?? []).filter((j: any) =>
+  const criticalJourneys = (journeys ?? []).filter((j: CJ04LaunchBlockerViewRow) =>
     j.launch_importance === "launch_blocker" || j.launch_importance === "pilot_blocker" || j.launch_importance === "claim_risk"
   );
 
-  const unresolvedBlockers = (blockers ?? []).filter((b: any) => !b.resolved);
-  const resolvedBlockers = (blockers ?? []).filter((b: any) => b.resolved);
+  const unresolvedBlockers = (blockers ?? []).filter((b: CJ04LaunchBlockerViewRow) => !b.resolved);
+  const resolvedBlockers = (blockers ?? []).filter((b: CJ04LaunchBlockerViewRow) => b.resolved);
 
   const allScoredBlockers = useMemo(() => {
     const merged = [...(scores ?? []), ...(viewBlockers ?? [])];
     const seenIds = new Set<string>();
-    return merged.filter((s: any) => {
+    return merged.filter((s: CJ04LaunchBlockerViewRow) => {
       const id = s.id || s.blocker_id;
       if (seenIds.has(id)) return false;
       seenIds.add(id);
@@ -57,15 +75,15 @@ export default function CJ04LaunchBlockerView() {
     try {
       await resolveScore.mutateAsync(id);
       toast.success("Blocker resolved");
-    } catch (e: any) {
+    } catch (e: CJ04LaunchBlockerViewRow) {
       toast.error(e.message);
     }
   };
 
   const totalBlockers = allScoredBlockers.length + unresolvedBlockers.length;
-  const launchBlockerCount = allScoredBlockers.filter((s: any) => s.blocker_type === "launch_blocker").length;
-  const pilotBlockerCount = allScoredBlockers.filter((s: any) => s.blocker_type === "pilot_blocker").length;
-  const claimRiskCount = allScoredBlockers.filter((s: any) => s.blocker_type === "claim_risk").length;
+  const launchBlockerCount = allScoredBlockers.filter((s: CJ04LaunchBlockerViewRow) => s.blocker_type === "launch_blocker").length;
+  const pilotBlockerCount = allScoredBlockers.filter((s: CJ04LaunchBlockerViewRow) => s.blocker_type === "pilot_blocker").length;
+  const claimRiskCount = allScoredBlockers.filter((s: CJ04LaunchBlockerViewRow) => s.blocker_type === "claim_risk").length;
 
   return (
     <div className="space-y-6 p-6" data-testid="cj04-launch-blockers">
@@ -113,7 +131,7 @@ export default function CJ04LaunchBlockerView() {
                 <CardTitle className="text-destructive text-lg">🎯 Active Blockers ({allScoredBlockers.length})</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {allScoredBlockers.map((s: any) => {
+                {allScoredBlockers.map((s: CJ04LaunchBlockerViewRow) => {
                   const id = s.id || s.blocker_id;
                   const journeyKey = s.journey_key || "unknown";
                   const blockerType = s.blocker_type || "unknown";
@@ -179,7 +197,7 @@ export default function CJ04LaunchBlockerView() {
                 <CardTitle className="text-destructive text-lg">🚫 Legacy Blockers ({unresolvedBlockers.length})</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {unresolvedBlockers.map((b: any) => {
+                {unresolvedBlockers.map((b: CJ04LaunchBlockerViewRow) => {
                   const age = b.created_at ? daysSince(b.created_at) : 0;
                   return (
                     <div key={b.id} className="p-3 rounded border border-destructive/20 bg-destructive/5 space-y-1">
@@ -206,7 +224,7 @@ export default function CJ04LaunchBlockerView() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {criticalJourneys.map((j: any) => {
+                {criticalJourneys.map((j: CJ04LaunchBlockerViewRow) => {
                   const statusCfg = JOURNEY_STATUS_CONFIG[j.current_status] || JOURNEY_STATUS_CONFIG.unverified;
                   const impactCfg = LAUNCH_IMPACT_CONFIG[j.launch_importance] || LAUNCH_IMPACT_CONFIG.non_blocking;
                   return (
@@ -233,7 +251,7 @@ export default function CJ04LaunchBlockerView() {
                 <CardTitle className="text-lg text-emerald-400">✅ Resolved ({resolvedBlockers.length})</CardTitle>
               </CardHeader>
               <CardContent className="space-y-1">
-                {resolvedBlockers.map((b: any) => (
+                {resolvedBlockers.map((b: CJ04LaunchBlockerViewRow) => (
                   <div key={b.id} className="p-2 rounded bg-emerald-500/5 border border-emerald-500/20 text-xs">
                     <span className="font-mono">{b.journey_key}</span>
                     <span className="text-muted-foreground ml-2">{b.summary}</span>

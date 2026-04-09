@@ -11,14 +11,21 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useMoneyApprovals, useApproveMoneyAction, useRejectMoneyAction } from "@/hooks/use-domain-data";
 import { toast } from "sonner";
 
+
+interface MoneyApprovalsRow {
+  id?: string;
+  proposed_action?: unknown;
+  status?: string;
+}
+
 const MoneyApprovals = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { data: approvals = [], isLoading } = useMoneyApprovals();
   const approveMut = useApproveMoneyAction();
   const rejectMut = useRejectMoneyAction();
 
-  const selected = approvals.find((a: any) => a.id === selectedId);
-  const pendingCount = approvals.filter((a: any) => a.status === "pending").length;
+  const selected = approvals.find((a: MoneyApprovalsRow) => a.id === selectedId);
+  const pendingCount = approvals.filter((a: MoneyApprovalsRow) => a.status === "pending").length;
 
   const handleApprove = () => {
     if (!selectedId) return;
@@ -46,7 +53,7 @@ const MoneyApprovals = () => {
         <div className="lg:col-span-3 space-y-2">
           {approvals.length === 0 ? (
             <EmptyState icon={Shield} title="No pending approvals" description="All financial actions are resolved" />
-          ) : approvals.map((a: any) => {
+          ) : approvals.map((a: MoneyApprovalsRow) => {
             const pa = a.proposed_action || {};
             const risk = pa.risk || "low";
             return (

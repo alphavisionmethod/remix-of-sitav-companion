@@ -9,6 +9,17 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface DeliveryReadinessBoardRow {
+  feature_id?: unknown;
+  gap_description?: unknown;
+  id?: string;
+  priority?: string;
+  status?: string;
+  suggested_action?: unknown;
+  title?: string;
+}
+
 const DeliveryReadinessBoard = () => {
   const { data: blueprints } = useQuery({
     queryKey: ["readiness-blueprints"],
@@ -35,10 +46,10 @@ const DeliveryReadinessBoard = () => {
   });
 
   const totalFeatures = blueprints?.length ?? 0;
-  const draftCount = (blueprints ?? []).filter((b: any) => b.status === "draft").length;
-  const approvedCount = (blueprints ?? []).filter((b: any) => b.status === "approved").length;
+  const draftCount = (blueprints ?? []).filter((b: DeliveryReadinessBoardRow) => b.status === "draft").length;
+  const approvedCount = (blueprints ?? []).filter((b: DeliveryReadinessBoardRow) => b.status === "approved").length;
   const openRemediations = remediations?.length ?? 0;
-  const criticalRemediations = (remediations ?? []).filter((r: any) => r.priority === "critical").length;
+  const criticalRemediations = (remediations ?? []).filter((r: DeliveryReadinessBoardRow) => r.priority === "critical").length;
 
   const overallReadiness = totalFeatures > 0 ? Math.round(((totalFeatures - draftCount) / totalFeatures) * 100) : 0;
 
@@ -84,7 +95,7 @@ const DeliveryReadinessBoard = () => {
         <Card className="border-red-500/30">
           <CardHeader><CardTitle className="flex items-center gap-2 text-red-400"><XCircle className="h-5 w-5" /> Critical Blockers ({criticalRemediations})</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {(remediations ?? []).filter((r: any) => r.priority === "critical").map((r: any) => (
+            {(remediations ?? []).filter((r: DeliveryReadinessBoardRow) => r.priority === "critical").map((r: DeliveryReadinessBoardRow) => (
               <div key={r.id} className="p-2 rounded border border-red-500/20 bg-red-500/5">
                 <div className="text-sm font-medium">{r.gap_description}</div>
                 <div className="text-xs text-muted-foreground mt-1">→ {r.suggested_action}</div>
@@ -98,8 +109,8 @@ const DeliveryReadinessBoard = () => {
         <CardHeader><CardTitle>Feature Readiness Details</CardTitle></CardHeader>
         <CardContent>
           <div className="space-y-2">
-            {(blueprints ?? []).map((bp: any) => {
-              const depMap = (deps ?? []).find((d: any) => d.feature_id === bp.feature_id);
+            {(blueprints ?? []).map((bp: DeliveryReadinessBoardRow) => {
+              const depMap = (deps ?? []).find((d: DeliveryReadinessBoardRow) => d.feature_id === bp.feature_id);
               const depPct = depMap && depMap.total_count > 0 ? Math.round((depMap.resolved_count / depMap.total_count) * 100) : 0;
               return (
                 <div key={bp.id} className="flex items-center justify-between p-2 rounded border">

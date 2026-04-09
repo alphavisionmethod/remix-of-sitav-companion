@@ -11,6 +11,21 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface CN07ConnectorLaunchGateRow {
+  connector_type?: unknown;
+  created_at?: string;
+  demo_available?: unknown;
+  disconnect_working?: unknown;
+  event_type?: string;
+  health_reporting?: unknown;
+  id?: string;
+  oauth_working?: unknown;
+  readiness_stage?: string;
+  sync_working?: unknown;
+  token_storage_working?: unknown;
+}
+
 const stageColors: Record<string, string> = {
   shell_only: "bg-muted text-muted-foreground", framework_ready: "bg-blue-500/20 text-blue-400",
   reference_implemented: "bg-cyan-500/20 text-cyan-400", user_connectable: "bg-green-500/20 text-green-400",
@@ -30,12 +45,12 @@ export default function CN07ConnectorLaunchGate() {
     queryFn: async () => { const { data } = await fromTable("connector_receipts").select("*").order("created_at", { ascending: false }).limit(20); return data || []; },
   });
 
-  const getScore = (r: any) => {
+  const getScore = (r: CN07ConnectorLaunchGateRow) => {
     const checks = [r.oauth_working, r.token_storage_working, r.sync_working, r.health_reporting, r.disconnect_working, r.demo_available];
     return Math.round((checks.filter(Boolean).length / checks.length) * 100);
   };
 
-  const launchReady = readiness.filter((r: any) => getScore(r) === 100).length;
+  const launchReady = readiness.filter((r: CN07ConnectorLaunchGateRow) => getScore(r) === 100).length;
   const totalConnectors = readiness.length;
 
   return (
@@ -75,7 +90,7 @@ export default function CN07ConnectorLaunchGate() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {readiness.map((r: any) => {
+                {readiness.map((r: CN07ConnectorLaunchGateRow) => {
                   const score = getScore(r);
                   const Icon = ({ val }: { val: boolean }) => val ? <CheckCircle className="h-4 w-4 text-green-400" /> : <XCircle className="h-4 w-4 text-red-400" />;
                   return (
@@ -109,7 +124,7 @@ export default function CN07ConnectorLaunchGate() {
             <CardHeader><CardTitle>Recent Connector Events</CardTitle></CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {receipts.map((r: any) => (
+                {receipts.map((r: CN07ConnectorLaunchGateRow) => (
                   <div key={r.id} className="flex items-center justify-between p-2 rounded bg-muted/20">
                     <div className="flex items-center gap-2">
                       <Badge variant="outline" className="text-xs">{r.event_type}</Badge>

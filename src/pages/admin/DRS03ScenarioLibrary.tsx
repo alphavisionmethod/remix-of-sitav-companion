@@ -7,6 +7,14 @@ import { Loader2, BookOpen, Users, Layers } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface DRS03ScenarioLibraryRow {
+  description?: string;
+  id?: string;
+  name?: string;
+  status?: string;
+}
+
 export default function DRS03ScenarioLibrary() {
   const { isDemoMode } = useDataMode();
   const { data: scenarios, isLoading } = useQuery({
@@ -35,7 +43,7 @@ export default function DRS03ScenarioLibrary() {
         <Card><CardContent className="py-12 text-center"><BookOpen className="h-8 w-8 text-muted-foreground mx-auto mb-3" /><p className="text-sm text-muted-foreground">No scenarios created yet. Create your first investor demo scenario.</p></CardContent></Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {scenarios?.map((s: any) => (
+          {scenarios?.map((s: DRS03ScenarioLibraryRow) => (
             <Card key={s.id}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm flex items-center gap-2">

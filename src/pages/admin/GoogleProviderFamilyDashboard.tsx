@@ -17,6 +17,12 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import type { GoogleCapabilityKey } from "@/lib/services/google-provider-family/types";
 import { GOOGLE_API_REQUIREMENTS, GOOGLE_OAUTH_CLIENT_TEMPLATES } from "@/lib/services/google-provider-family/types";
 
+
+interface GoogleProviderFamilyDashboardRow {
+  apiDisplayName?: unknown;
+  apiName?: unknown;
+}
+
 const STAGE_COLORS: Record<string, string> = {
   production: "bg-green-500/20 text-green-400",
   beta: "bg-blue-500/20 text-blue-400",
@@ -237,7 +243,7 @@ export default function GoogleProviderFamilyDashboard() {
                     {CAPABILITY_ICONS[key]} <span className="text-sm font-medium">{key.replace(/_/g, " ").replace("google ", "Google ")}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    {apis.map((api: any) => (
+                    {apis.map((api: GoogleProviderFamilyDashboardRow) => (
                       <Badge key={api.apiName} variant="outline" className="text-xs">{api.apiDisplayName}</Badge>
                     ))}
                   </div>

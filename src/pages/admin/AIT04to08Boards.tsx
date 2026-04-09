@@ -21,6 +21,17 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface AIT04to08BoardsRow {
+  domain?: string;
+  id?: string;
+  message?: string;
+  originating_role?: unknown;
+  severity?: string;
+  status?: string;
+  title?: string;
+}
+
 // ═══════════════════════════════════════════════════════════════
 // AIT04 — Workforce Activity Feed (Full Spec)
 // ═══════════════════════════════════════════════════════════════
@@ -252,17 +263,17 @@ export function AIT06Recommendations() {
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["ai-workforce-recommendations"] }); toast.success("Recommendation updated"); },
-    onError: (err: any) => toast.error(err.message),
+    onError: (err: AIT04to08BoardsRow) => toast.error(err.message),
   });
 
-  const filtered = recs.filter((r: any) => {
+  const filtered = recs.filter((r: AIT04to08BoardsRow) => {
     if (filterDomain !== "all" && r.domain !== filterDomain) return false;
     if (filterStatus !== "all" && r.status !== filterStatus) return false;
     return true;
   });
 
-  const domains = [...new Set(recs.map((r: any) => r.domain))];
-  const statuses = [...new Set(recs.map((r: any) => r.status))];
+  const domains = [...new Set(recs.map((r: AIT04to08BoardsRow) => r.domain))];
+  const statuses = [...new Set(recs.map((r: AIT04to08BoardsRow) => r.status))];
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
@@ -319,7 +330,7 @@ export function AIT06Recommendations() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filtered.length === 0 ? (
           <Card className="md:col-span-2"><CardContent className="py-8 text-center text-muted-foreground text-sm">No recommendations match filters.</CardContent></Card>
-        ) : filtered.map((r: any) => (
+        ) : filtered.map((r: AIT04to08BoardsRow) => (
           <Card key={r.id} className="hover:shadow-md transition-shadow">
             <CardContent className="pt-4 space-y-2">
               <div className="flex items-center justify-between">
@@ -374,7 +385,7 @@ export function AIT07ApprovalQueue() {
       if (error) throw error;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["ai-workforce-approval-queue"] }); toast.success("Approval updated"); },
-    onError: (err: any) => toast.error(err.message),
+    onError: (err: AIT04to08BoardsRow) => toast.error(err.message),
   });
 
   return (
@@ -398,7 +409,7 @@ export function AIT07ApprovalQueue() {
       <div className="space-y-3">
         {queue.length === 0 ? (
           <Card><CardContent className="py-8 text-center text-muted-foreground text-sm">No {filterStatus !== "all" ? filterStatus : ""} approval items.</CardContent></Card>
-        ) : queue.map((item: any) => (
+        ) : queue.map((item: AIT04to08BoardsRow) => (
           <Card key={item.id} className="hover:shadow-md transition-shadow">
             <CardContent className="pt-4 space-y-3">
               <div className="flex items-center justify-between">

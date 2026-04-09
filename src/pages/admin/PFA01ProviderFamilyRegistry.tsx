@@ -11,6 +11,17 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface PFA01ProviderFamilyRegistryRow {
+  active?: unknown;
+  categories?: unknown;
+  connector_support?: unknown;
+  id?: string;
+  identity_support?: unknown;
+  message?: string;
+  name?: string;
+}
+
 const stageColors: Record<string, string> = {
   production: "bg-green-500/20 text-green-400", alpha: "bg-blue-500/20 text-blue-400",
   beta: "bg-cyan-500/20 text-cyan-400", planned: "bg-muted text-muted-foreground",
@@ -34,7 +45,7 @@ export default function PFA01ProviderFamilyRegistry() {
       return true;
     },
     onSuccess: () => { toast.success("Provider families seeded"); queryClient.invalidateQueries(); },
-    onError: (e: any) => toast.error(`Seed failed: ${e.message}`),
+    onError: (e: PFA01ProviderFamilyRegistryRow) => toast.error(`Seed failed: ${e.message}`),
   });
 
   return (
@@ -58,15 +69,15 @@ export default function PFA01ProviderFamilyRegistry() {
         </CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4">
           <p className="text-xs text-muted-foreground">Identity Providers</p>
-          <p className="text-2xl font-bold">{families.filter((f: any) => f.identity_support).length}</p>
+          <p className="text-2xl font-bold">{families.filter((f: PFA01ProviderFamilyRegistryRow) => f.identity_support).length}</p>
         </CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4">
           <p className="text-xs text-muted-foreground">Connector Providers</p>
-          <p className="text-2xl font-bold">{families.filter((f: any) => f.connector_support).length}</p>
+          <p className="text-2xl font-bold">{families.filter((f: PFA01ProviderFamilyRegistryRow) => f.connector_support).length}</p>
         </CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4">
           <p className="text-xs text-muted-foreground">Active</p>
-          <p className="text-2xl font-bold">{families.filter((f: any) => f.active).length}</p>
+          <p className="text-2xl font-bold">{families.filter((f: PFA01ProviderFamilyRegistryRow) => f.active).length}</p>
         </CardContent></Card>
       </div>
 
@@ -86,7 +97,7 @@ export default function PFA01ProviderFamilyRegistry() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {families.map((f: any) => (
+                {families.map((f: PFA01ProviderFamilyRegistryRow) => (
                   <TableRow key={f.id}>
                     <TableCell className="font-medium">{f.name}</TableCell>
                     <TableCell className="flex gap-1 flex-wrap">{(f.categories || []).map((c: string) => <Badge key={c} variant="outline" className="text-xs">{c}</Badge>)}</TableCell>

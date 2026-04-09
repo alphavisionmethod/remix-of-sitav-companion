@@ -10,6 +10,17 @@ import { CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface CN02ConnectorRegistryConsoleRow {
+  auth_method?: string;
+  connector_class?: string;
+  display_name?: string;
+  id?: string;
+  provider?: string;
+  read_supported?: unknown;
+  registry_id?: string;
+}
+
 export default function CN02ConnectorRegistryConsole() {
   const { isDemoMode } = useDataMode();
   const { data: registry = [] } = useQuery({
@@ -43,8 +54,8 @@ export default function CN02ConnectorRegistryConsole() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {registry.map((c: any) => {
-                const policy = policies.find((p: any) => p.registry_id === c.id);
+              {registry.map((c: CN02ConnectorRegistryConsoleRow) => {
+                const policy = policies.find((p: CN02ConnectorRegistryConsoleRow) => p.registry_id === c.id);
                 return (
                   <TableRow key={c.id}>
                     <TableCell className="font-medium">{c.display_name}</TableCell>

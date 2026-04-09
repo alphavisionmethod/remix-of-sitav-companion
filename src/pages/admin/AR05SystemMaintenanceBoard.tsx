@@ -12,6 +12,17 @@ import { Wrench, CheckCircle, XCircle, Clock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface AR05SystemMaintenanceBoardRow {
+  cron_expression?: unknown;
+  id?: string;
+  job_class?: unknown;
+  name?: string;
+  started_at?: unknown;
+  state?: unknown;
+  status?: string;
+}
+
 export default function AR05SystemMaintenanceBoard() {
   const { isDemoMode } = useDataMode();
   const { data: maintenanceJobs = [] } = useQuery({
@@ -27,7 +38,7 @@ export default function AR05SystemMaintenanceBoard() {
   const { data: executions = [] } = useQuery({
     queryKey: ["maintenance-executions"],
     queryFn: async () => {
-      const jobIds = maintenanceJobs.map((j: any) => j.id);
+      const jobIds = maintenanceJobs.map((j: AR05SystemMaintenanceBoardRow) => j.id);
       if (jobIds.length === 0) return [];
       const { data } = await fromTable("job_executions").select("*").in("job_id", jobIds).order("started_at", { ascending: false }).limit(50);
       return data || [];
@@ -62,7 +73,7 @@ export default function AR05SystemMaintenanceBoard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {maintenanceJobs.map((j: any) => (
+              {maintenanceJobs.map((j: AR05SystemMaintenanceBoardRow) => (
                 <TableRow key={j.id}>
                   <TableCell className="text-xs font-medium">{j.name}</TableCell>
                   <TableCell><Badge variant="secondary" className="text-[9px]">{j.job_class}</Badge></TableCell>
@@ -84,7 +95,7 @@ export default function AR05SystemMaintenanceBoard() {
           {executions.length === 0 ? (
             <p className="text-xs text-muted-foreground">No maintenance executions recorded</p>
           ) : (
-            executions.map((e: any) => (
+            executions.map((e: AR05SystemMaintenanceBoardRow) => (
               <div key={e.id} className="flex items-center gap-2 rounded-lg bg-secondary/10 px-3 py-2">
                 {e.status === "success" ? <CheckCircle className="h-3 w-3 text-trust-safe" /> :
                  e.status === "failure" ? <XCircle className="h-3 w-3 text-destructive" /> :

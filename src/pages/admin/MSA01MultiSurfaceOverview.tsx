@@ -12,6 +12,22 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface MSA01MultiSurfaceOverviewRow {
+  blockers?: string[];
+  capability_id?: string;
+  capability_key?: string;
+  display_name?: string;
+  domain?: string;
+  id?: string;
+  key?: unknown;
+  message?: string;
+  portability_class?: string;
+  surface_class?: string;
+  surface_id?: string;
+  surface_key?: string;
+}
+
 const surfaceIcons: Record<string, React.ReactNode> = {
   web: <Globe className="h-5 w-5" />, mobile_ios: <Smartphone className="h-5 w-5" />,
   mobile_android: <Smartphone className="h-5 w-5" />, desktop: <Monitor className="h-5 w-5" />,
@@ -73,18 +89,18 @@ export default function MSA01MultiSurfaceOverview() {
       return true;
     },
     onSuccess: () => { toast.success("MSA fully seeded"); queryClient.invalidateQueries(); },
-    onError: (e: any) => toast.error(`Seed failed: ${e.message}`),
+    onError: (e: MSA01MultiSurfaceOverviewRow) => toast.error(`Seed failed: ${e.message}`),
   });
 
-  const activeSurfaces = surfaces.filter((s: any) => s.surface_class === "active").length;
-  const plannedSurfaces = surfaces.filter((s: any) => s.surface_class !== "active" && s.surface_class !== "deprecated").length;
-  const portableCaps = capabilities.filter((c: any) => c.portability_class === "portable").length;
+  const activeSurfaces = surfaces.filter((s: MSA01MultiSurfaceOverviewRow) => s.surface_class === "active").length;
+  const plannedSurfaces = surfaces.filter((s: MSA01MultiSurfaceOverviewRow) => s.surface_class !== "active" && s.surface_class !== "deprecated").length;
+  const portableCaps = capabilities.filter((c: MSA01MultiSurfaceOverviewRow) => c.portability_class === "portable").length;
 
   // Build portability matrix
-  const capMatrix = capabilities.map((cap: any) => {
+  const capMatrix = capabilities.map((cap: MSA01MultiSurfaceOverviewRow) => {
     const row: Record<string, string> = { key: cap.capability_key, name: cap.display_name, domain: cap.domain };
-    surfaces.forEach((s: any) => {
-      const binding = bindings.find((b: any) => b.capability_id === cap.id && b.surface_id === s.id);
+    surfaces.forEach((s: MSA01MultiSurfaceOverviewRow) => {
+      const binding = bindings.find((b: MSA01MultiSurfaceOverviewRow) => b.capability_id === cap.id && b.surface_id === s.id);
       row[s.surface_key] = binding ? binding.binding_status : "—";
     });
     return row;
@@ -92,13 +108,13 @@ export default function MSA01MultiSurfaceOverview() {
 
   // Collect all blockers across surfaces
   const allBlockers: Array<{ surface: string; blocker: string }> = [];
-  readiness.forEach((r: any) => {
-    const surf = surfaces.find((s: any) => s.id === r.surface_id);
+  readiness.forEach((r: MSA01MultiSurfaceOverviewRow) => {
+    const surf = surfaces.find((s: MSA01MultiSurfaceOverviewRow) => s.id === r.surface_id);
     const name = surf?.display_name || "Unknown";
     (r.blockers || []).forEach((b: string) => allBlockers.push({ surface: name, blocker: b }));
   });
-  launchProfiles.forEach((lp: any) => {
-    const surf = surfaces.find((s: any) => s.id === lp.surface_id);
+  launchProfiles.forEach((lp: MSA01MultiSurfaceOverviewRow) => {
+    const surf = surfaces.find((s: MSA01MultiSurfaceOverviewRow) => s.id === lp.surface_id);
     const name = surf?.display_name || "Unknown";
     (lp.blockers || []).forEach((b: string) => {
       if (!allBlockers.some(ab => ab.surface === name && ab.blocker === b)) {
@@ -154,10 +170,10 @@ export default function MSA01MultiSurfaceOverview() {
 
       {/* ── PortabilityCoverageCards ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {surfaces.map((s: any) => {
-          const shell = shells.find((sh: any) => sh.surface_id === s.id);
-          const ready = readiness.find((r: any) => r.surface_id === s.id);
-          const lp = launchProfiles.find((l: any) => l.surface_id === s.id);
+        {surfaces.map((s: MSA01MultiSurfaceOverviewRow) => {
+          const shell = shells.find((sh: MSA01MultiSurfaceOverviewRow) => sh.surface_id === s.id);
+          const ready = readiness.find((r: MSA01MultiSurfaceOverviewRow) => r.surface_id === s.id);
+          const lp = launchProfiles.find((l: MSA01MultiSurfaceOverviewRow) => l.surface_id === s.id);
           return (
             <Card key={s.id} className="bg-card border-border">
               <CardHeader className="pb-2">
@@ -231,7 +247,7 @@ export default function MSA01MultiSurfaceOverview() {
                 <TableRow>
                   <TableHead>Capability</TableHead>
                   <TableHead>Domain</TableHead>
-                  {surfaces.map((s: any) => (
+                  {surfaces.map((s: MSA01MultiSurfaceOverviewRow) => (
                     <TableHead key={s.id} className="text-center">
                       <div className="flex items-center justify-center gap-1">
                         {surfaceIcons[s.surface_key]}
@@ -241,11 +257,11 @@ export default function MSA01MultiSurfaceOverview() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {capMatrix.map((row: any) => (
+                {capMatrix.map((row: MSA01MultiSurfaceOverviewRow) => (
                   <TableRow key={row.key}>
                     <TableCell className="font-mono text-xs">{row.key}</TableCell>
                     <TableCell><Badge variant="outline" className="text-xs">{row.domain}</Badge></TableCell>
-                    {surfaces.map((s: any) => (
+                    {surfaces.map((s: MSA01MultiSurfaceOverviewRow) => (
                       <TableCell key={s.id} className="text-center">
                         {statusIcon(row[s.surface_key])}
                       </TableCell>

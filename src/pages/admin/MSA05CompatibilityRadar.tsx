@@ -11,6 +11,27 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface MSA05CompatibilityRadarRow {
+  binding_status?: string;
+  capability_definitions?: unknown;
+  check_type?: unknown;
+  component_path?: unknown;
+  consistent?: unknown;
+  display_name?: string;
+  domain?: string;
+  id?: string;
+  inconsistent?: unknown;
+  message?: string;
+  migration_priority?: unknown;
+  migration_tar?: unknown;
+  migration_target?: unknown;
+  scope?: unknown;
+  surface_id?: string;
+  surface_key?: string;
+  surfaces_checked?: unknown;
+}
+
 const sevColors: Record<string, string> = {
   critical: "bg-red-500/20 text-red-400", high: "bg-orange-500/20 text-orange-400",
   medium: "bg-yellow-500/20 text-yellow-400", low: "bg-muted text-muted-foreground",
@@ -53,20 +74,20 @@ export default function MSA05CompatibilityRadar() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => { toast.success(`Consistency check: ${data?.inconsistent || 0} drifts found`); queryClient.invalidateQueries(); },
-    onError: (e: any) => toast.error(`Check failed: ${e.message}`),
+    onSuccess: (data: MSA05CompatibilityRadarRow) => { toast.success(`Consistency check: ${data?.inconsistent || 0} drifts found`); queryClient.invalidateQueries(); },
+    onError: (e: MSA05CompatibilityRadarRow) => toast.error(`Check failed: ${e.message}`),
   });
 
-  const consistent = consistency.filter((c: any) => c.consistent);
-  const drifts = consistency.filter((c: any) => !c.consistent);
+  const consistent = consistency.filter((c: MSA05CompatibilityRadarRow) => c.consistent);
+  const drifts = consistency.filter((c: MSA05CompatibilityRadarRow) => !c.consistent);
 
   // Build heatmap: domains vs surfaces
-  const domains = [...new Set(bindings.map((b: any) => b.capability_definitions?.domain).filter(Boolean))];
+  const domains = [...new Set(bindings.map((b: MSA05CompatibilityRadarRow) => b.capability_definitions?.domain).filter(Boolean))];
   const heatmapData = domains.map(domain => {
     const row: Record<string, any> = { domain };
-    surfaces.forEach((s: any) => {
-      const domainBindings = bindings.filter((b: any) => b.capability_definitions?.domain === domain && b.surface_id === s.id);
-      const prodCount = domainBindings.filter((b: any) => b.binding_status === "production").length;
+    surfaces.forEach((s: MSA05CompatibilityRadarRow) => {
+      const domainBindings = bindings.filter((b: MSA05CompatibilityRadarRow) => b.capability_definitions?.domain === domain && b.surface_id === s.id);
+      const prodCount = domainBindings.filter((b: MSA05CompatibilityRadarRow) => b.binding_status === "production").length;
       const total = domainBindings.length;
       row[s.surface_key] = { total, production: prodCount, status: prodCount > 0 ? "production" : total > 0 ? "planned" : "none" };
     });
@@ -75,7 +96,7 @@ export default function MSA05CompatibilityRadar() {
 
   // Migration recommendations
   const recommendations = boundaries
-    .filter((b: any) => b.migration_target)
+    .filter((b: MSA05CompatibilityRadarRow) => b.migration_target)
     .sort((a: any, b: any) => {
       const priority: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
       return (priority[a.migration_priority] || 3) - (priority[b.migration_priority] || 3);
@@ -124,16 +145,16 @@ export default function MSA05CompatibilityRadar() {
                 <thead>
                   <tr>
                     <th className="text-left p-2 font-medium text-muted-foreground">Domain</th>
-                    {surfaces.map((s: any) => (
+                    {surfaces.map((s: MSA05CompatibilityRadarRow) => (
                       <th key={s.id} className="text-center p-2 font-medium text-muted-foreground">{s.display_name}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {heatmapData.map((row: any) => (
+                  {heatmapData.map((row: MSA05CompatibilityRadarRow) => (
                     <tr key={row.domain}>
                       <td className="p-2 font-mono">{row.domain}</td>
-                      {surfaces.map((s: any) => {
+                      {surfaces.map((s: MSA05CompatibilityRadarRow) => {
                         const cell = row[s.surface_key] || { total: 0, production: 0, status: "none" };
                         return (
                           <td key={s.id} className={`p-2 text-center rounded ${heatCell(cell.status)}`}>
@@ -161,7 +182,7 @@ export default function MSA05CompatibilityRadar() {
           <CardHeader><CardTitle className="flex items-center gap-2"><AlertTriangle className="h-5 w-5 text-yellow-400" /> Web-Trapped Logic ({boundaries.length})</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {boundaries.map((b: any) => (
+              {boundaries.map((b: MSA05CompatibilityRadarRow) => (
                 <div key={b.id} className="flex items-center justify-between p-2 rounded bg-muted/20">
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-xs">{b.component_path}</span>
@@ -222,7 +243,7 @@ export default function MSA05CompatibilityRadar() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {consistency.map((c: any) => (
+                {consistency.map((c: MSA05CompatibilityRadarRow) => (
                   <TableRow key={c.id}>
                     <TableCell><Badge variant="outline">{c.check_type}</Badge></TableCell>
                     <TableCell className="text-sm">{c.scope}</TableCell>

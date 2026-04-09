@@ -2,6 +2,11 @@ import { describe, it, expect, vi } from "vitest";
 import { render } from "@/test/test-utils";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface admin-pages-batch2.testRow {
+  default?: unknown;
+}
+
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");
   return { ...actual, useNavigate: () => vi.fn(), useParams: () => ({ id: "test" }), useSearchParams: () => [new URLSearchParams(), vi.fn()] };
@@ -39,8 +44,8 @@ const pages = [
   ["BuilderKnowledgeBase", () => import("@/pages/admin/BuilderKnowledgeBase")],
 ] as const;
 
-function getComponent(mod: any) {
-  return mod.default || Object.values(mod).find((v: any) => typeof v === "function");
+function getComponent(mod: admin-pages-batch2.testRow) {
+  return mod.default || Object.values(mod).find((v: admin-pages-batch2.testRow) => typeof v === "function");
 }
 
 describe("Admin Pages Batch 2", () => {

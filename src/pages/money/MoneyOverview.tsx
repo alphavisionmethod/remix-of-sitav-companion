@@ -21,6 +21,21 @@ import type { FraudSummary } from "@/lib/core-services/fraud-sentinel";
 import { BudgetAutomationPanel } from "@/components/sita/BudgetAutomationPanel";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
+
+interface MoneyOverviewRow {
+  account_type?: unknown;
+  amount?: number;
+  client_name?: unknown;
+  description?: string;
+  due_date?: string;
+  id?: string;
+  invoice_number?: string;
+  is_waste?: unknown;
+  name?: string;
+  payee?: unknown;
+  status?: string;
+}
+
 const accountIcons: Record<string, typeof Briefcase> = {
   checking: Wallet, savings: PiggyBank, investment: Building, default: Briefcase,
 };
@@ -57,12 +72,12 @@ const MoneyOverview = () => {
   const upcomingBills = useMemo(() => {
     const now = new Date();
     return bills
-      .filter((b: any) => {
+      .filter((b: MoneyOverviewRow) => {
         const due = new Date(b.due_date);
         const diff = Math.ceil((due.getTime() - now.getTime()) / 86400000);
         return diff >= 0 && diff <= 7;
       })
-      .map((b: any) => {
+      .map((b: MoneyOverviewRow) => {
         const due = new Date(b.due_date);
         const daysLeft = Math.max(0, Math.ceil((due.getTime() - now.getTime()) / 86400000));
         return { name: b.name || b.payee, amount: `$${Number(b.amount).toLocaleString()}`, due: due.toLocaleDateString("en", { month: "short", day: "numeric" }), daysLeft };
@@ -72,11 +87,11 @@ const MoneyOverview = () => {
 
   // Recent receivables from DB
   const pendingInvoices = useMemo(() =>
-    invoices.filter((i: any) => i.status !== "paid").slice(0, 3), [invoices]);
+    invoices.filter((i: MoneyOverviewRow) => i.status !== "paid").slice(0, 3), [invoices]);
 
   // Waste subscriptions from DB
   const wasteSubscriptions = useMemo(() =>
-    subscriptions.filter((s: any) => s.is_waste).slice(0, 3), [subscriptions]);
+    subscriptions.filter((s: MoneyOverviewRow) => s.is_waste).slice(0, 3), [subscriptions]);
 
   const kBase = kpis || { totalBalance: 0, safeToSpend: 0, billsDue7d: 0, billsDue7dCount: 0, reserveHealth: 0, subscriptionMonthly: 0, subscriptionCount: 0, estWaste: 0, wasteCount: 0, receivables: 0, receivableCount: 0, monthlyBurn: 0 };
 
@@ -162,7 +177,7 @@ const MoneyOverview = () => {
         <div className="space-y-6">
           <div className="space-y-3">
             <SitaSectionHeader title="Accounts" />
-            {accounts.map((acc: any) => {
+            {accounts.map((acc: MoneyOverviewRow) => {
               const Icon = accountIcons[acc.account_type] || accountIcons.default;
               return (
                 <SitaCard key={acc.id} className="p-4">
@@ -288,7 +303,7 @@ const MoneyOverview = () => {
           {/* Receivables from DB */}
           <div className="space-y-3">
             <SitaSectionHeader title="Expected Inflows" action={<button onClick={() => navigate("/money/receivables")} className="text-xs text-primary hover:underline">View all</button>} />
-            {pendingInvoices.map((inv: any) => (
+            {pendingInvoices.map((inv: MoneyOverviewRow) => (
               <SitaCard key={inv.id} className="p-4" lane="opportunity">
                 <div className="flex items-center justify-between">
                   <div>

@@ -6,6 +6,14 @@ import { useDeprecationRecords } from "@/hooks/use-fip-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface FIPDeprecationManagerRow {
+  feature_id?: unknown;
+  feature_name?: unknown;
+  id?: string;
+  retirement_status?: unknown;
+}
+
 const statusColors: Record<string, string> = {
   active: 'bg-green-500/10 text-green-500',
   deprecated: 'bg-yellow-500/10 text-yellow-500',
@@ -17,10 +25,10 @@ const FIPDeprecationManager = () => {
   const { data: records = [], isLoading } = useDeprecationRecords();
 
   const stats = {
-    active: records.filter((r: any) => r.retirement_status === 'active').length,
-    deprecated: records.filter((r: any) => r.retirement_status === 'deprecated').length,
-    retiring: records.filter((r: any) => r.retirement_status === 'retiring').length,
-    retired: records.filter((r: any) => r.retirement_status === 'retired').length,
+    active: records.filter((r: FIPDeprecationManagerRow) => r.retirement_status === 'active').length,
+    deprecated: records.filter((r: FIPDeprecationManagerRow) => r.retirement_status === 'deprecated').length,
+    retiring: records.filter((r: FIPDeprecationManagerRow) => r.retirement_status === 'retiring').length,
+    retired: records.filter((r: FIPDeprecationManagerRow) => r.retirement_status === 'retired').length,
   };
 
   return (
@@ -45,7 +53,7 @@ const FIPDeprecationManager = () => {
               <p className="text-muted-foreground">No deprecation records. The no-undead-features rule requires every feature to have an end-of-life path.</p>
             </CardContent></Card>
           ) :
-          records.map((r: any) => (
+          records.map((r: FIPDeprecationManagerRow) => (
             <Card key={r.id}>
               <CardContent className="py-4">
                 <div className="flex items-center justify-between">

@@ -13,6 +13,22 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
+
+interface ConciergeOverviewRow {
+  assigned_to?: string;
+  category?: string;
+  due_date?: string;
+  event_date?: string;
+  event_type?: string;
+  notes?: string;
+  participants?: string[];
+  priority?: string;
+  start_time?: string;
+  status?: string;
+  title?: string;
+  updated_at?: string;
+}
+
 /* ============ DATA DERIVATION ============ */
 
 function deriveKPIs(tasks: any[], events: any[]) {
@@ -20,13 +36,13 @@ function deriveKPIs(tasks: any[], events: any[]) {
   const todayStr = now.toISOString().slice(0, 10);
   const tomorrowStr = new Date(now.getTime() + 86400000).toISOString().slice(0, 10);
 
-  const todayTasks = tasks.filter((t: any) => t.due_date?.startsWith(todayStr));
-  const todayEvents = events.filter((e: any) => e.event_date?.startsWith(todayStr));
-  const tomorrowTasks = tasks.filter((t: any) => t.due_date?.startsWith(tomorrowStr));
-  const overdue = tasks.filter((t: any) => t.status !== "done" && t.due_date && t.due_date < todayStr);
-  const schoolTasks = tasks.filter((t: any) => (t.category || "").toLowerCase().includes("school"));
-  const groceryTasks = tasks.filter((t: any) => (t.category || "").toLowerCase().includes("grocer") || (t.category || "").toLowerCase().includes("shopping"));
-  const pendingApprovals = tasks.filter((t: any) => t.status === "escalated" || t.status === "waiting");
+  const todayTasks = tasks.filter((t: ConciergeOverviewRow) => t.due_date?.startsWith(todayStr));
+  const todayEvents = events.filter((e: ConciergeOverviewRow) => e.event_date?.startsWith(todayStr));
+  const tomorrowTasks = tasks.filter((t: ConciergeOverviewRow) => t.due_date?.startsWith(tomorrowStr));
+  const overdue = tasks.filter((t: ConciergeOverviewRow) => t.status !== "done" && t.due_date && t.due_date < todayStr);
+  const schoolTasks = tasks.filter((t: ConciergeOverviewRow) => (t.category || "").toLowerCase().includes("school"));
+  const groceryTasks = tasks.filter((t: ConciergeOverviewRow) => (t.category || "").toLowerCase().includes("grocer") || (t.category || "").toLowerCase().includes("shopping"));
+  const pendingApprovals = tasks.filter((t: ConciergeOverviewRow) => t.status === "escalated" || t.status === "waiting");
 
   return {
     todayCommitments: todayTasks.length + todayEvents.length,
@@ -35,7 +51,7 @@ function deriveKPIs(tasks: any[], events: any[]) {
     overdueHousehold: overdue.length,
     groceryAlerts: groceryTasks.length,
     appointmentPrep: todayEvents.length,
-    travelItems: events.filter((e: any) => (e.event_type || "").toLowerCase().includes("travel")).length,
+    travelItems: events.filter((e: ConciergeOverviewRow) => (e.event_type || "").toLowerCase().includes("travel")).length,
     urgentApprovals: pendingApprovals.length,
   };
 }
@@ -47,13 +63,13 @@ function derivePriorities(tasks: any[], events: any[]) {
 
   // Add overdue and today's tasks
   tasks
-    .filter((t: any) => t.status !== "done" && t.due_date && t.due_date <= todayStr)
+    .filter((t: ConciergeOverviewRow) => t.status !== "done" && t.due_date && t.due_date <= todayStr)
     .sort((a: any, b: any) => {
       const pOrder: Record<string, number> = { high: 0, medium: 1, low: 2 };
       return (pOrder[a.priority] ?? 1) - (pOrder[b.priority] ?? 1);
     })
     .slice(0, 6)
-    .forEach((t: any) => {
+    .forEach((t: ConciergeOverviewRow) => {
       const cat = t.category || "General";
       const urgency = t.due_date < todayStr ? "high" : t.priority === "high" ? "high" : t.priority === "low" ? "low" : "medium";
       items.push({
@@ -69,9 +85,9 @@ function derivePriorities(tasks: any[], events: any[]) {
 
   // Add today's events
   events
-    .filter((e: any) => e.event_date?.startsWith(todayStr))
+    .filter((e: ConciergeOverviewRow) => e.event_date?.startsWith(todayStr))
     .slice(0, 3)
-    .forEach((e: any) => {
+    .forEach((e: ConciergeOverviewRow) => {
       items.push({
         title: e.title,
         due: e.start_time || "Today",
@@ -88,10 +104,10 @@ function derivePriorities(tasks: any[], events: any[]) {
 function deriveUpcomingSchedule(events: any[]) {
   const now = new Date();
   return events
-    .filter((e: any) => e.event_date && e.event_date >= now.toISOString().slice(0, 10))
+    .filter((e: ConciergeOverviewRow) => e.event_date && e.event_date >= now.toISOString().slice(0, 10))
     .sort((a: any, b: any) => (a.event_date || "").localeCompare(b.event_date || ""))
     .slice(0, 6)
-    .map((e: any) => ({
+    .map((e: ConciergeOverviewRow) => ({
       event: e.title,
       time: e.event_date,
       who: e.participants?.join(", ") || "Family",
@@ -140,9 +156,9 @@ const ConciergeOverview = () => {
   const driftingItems = useMemo(() => {
     const todayStr = new Date().toISOString().slice(0, 10);
     return tasks
-      .filter((t: any) => t.status !== "done" && t.due_date && t.due_date < todayStr)
+      .filter((t: ConciergeOverviewRow) => t.status !== "done" && t.due_date && t.due_date < todayStr)
       .slice(0, 4)
-      .map((t: any) => ({
+      .map((t: ConciergeOverviewRow) => ({
         item: `${t.title} — ${Math.ceil((Date.now() - new Date(t.due_date).getTime()) / 86400000)} days overdue`,
         severity: (t.priority === "high" ? "high" : t.priority === "medium" ? "medium" : "low") as "high" | "medium" | "low",
       }));
@@ -151,9 +167,9 @@ const ConciergeOverview = () => {
   // Derive school alerts from tasks with school category
   const schoolAlerts = useMemo(() => {
     return tasks
-      .filter((t: any) => (t.category || "").toLowerCase().includes("school") && t.status !== "done")
+      .filter((t: ConciergeOverviewRow) => (t.category || "").toLowerCase().includes("school") && t.status !== "done")
       .slice(0, 4)
-      .map((t: any) => ({
+      .map((t: ConciergeOverviewRow) => ({
         title: t.title,
         child: t.assigned_to || "Child",
         urgency: t.priority === "high" ? "high" : "medium",
@@ -163,9 +179,9 @@ const ConciergeOverview = () => {
   // Derive grocery alerts from shopping/grocery tasks
   const groceryAlerts = useMemo(() => {
     return tasks
-      .filter((t: any) => ((t.category || "").toLowerCase().includes("grocer") || (t.category || "").toLowerCase().includes("shopping")) && t.status !== "done")
+      .filter((t: ConciergeOverviewRow) => ((t.category || "").toLowerCase().includes("grocer") || (t.category || "").toLowerCase().includes("shopping")) && t.status !== "done")
       .slice(0, 3)
-      .map((t: any) => ({
+      .map((t: ConciergeOverviewRow) => ({
         item: t.title,
         lastPurchased: t.due_date || "Unknown",
         cycle: "As needed",
@@ -176,10 +192,10 @@ const ConciergeOverview = () => {
   // Derive recent proof from completed tasks
   const recentProof = useMemo(() => {
     return tasks
-      .filter((t: any) => t.status === "done")
+      .filter((t: ConciergeOverviewRow) => t.status === "done")
       .sort((a: any, b: any) => (b.updated_at || "").localeCompare(a.updated_at || ""))
       .slice(0, 4)
-      .map((t: any) => ({
+      .map((t: ConciergeOverviewRow) => ({
         action: t.title,
         time: t.updated_at ? new Date(t.updated_at).toLocaleDateString() : "Recently",
         verified: true,

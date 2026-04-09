@@ -13,6 +13,15 @@ import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+
+interface TrustCenterRow {
+  device_name?: unknown;
+  device_type?: unknown;
+  id?: string;
+  os?: unknown;
+  status?: string;
+}
+
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
@@ -80,7 +89,7 @@ const TrustCenter = () => {
               </div>
               <div>
                 <div className="text-lg font-bold text-emerald-400">Trust Posture: Secure</div>
-                <div className="text-xs text-muted-foreground">All systems nominal · {displayDevices.filter((d: any) => d.status === "online").length} devices online · Approvals up to date</div>
+                <div className="text-xs text-muted-foreground">All systems nominal · {displayDevices.filter((d: TrustCenterRow) => d.status === "online").length} devices online · Approvals up to date</div>
               </div>
             </div>
             <div className="flex items-center gap-6 text-center">
@@ -153,7 +162,7 @@ const TrustCenter = () => {
             <SitaCard className="p-4">
               <SitaCardTitle className="text-xs mb-3 flex items-center gap-1.5"><Smartphone className="w-3 h-3" /> Trusted Devices</SitaCardTitle>
               <div className="space-y-2">
-                {displayDevices.map((dev: any) => (
+                {displayDevices.map((dev: TrustCenterRow) => (
                   <div key={dev.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-accent/10 transition-colors">
                     <div className={cn("w-2 h-2 rounded-full", dev.status === "online" ? "bg-emerald-400" : "bg-muted-foreground/30")} />
                     <div className="flex-1">
@@ -183,7 +192,7 @@ const TrustCenter = () => {
 
       {tab === "devices" && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
-          {displayDevices.map((dev: any) => (
+          {displayDevices.map((dev: TrustCenterRow) => (
             <SitaCard key={dev.id} className="p-4" hover>
               <div className="flex items-center gap-4">
                 <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", dev.status === "online" ? "bg-emerald-500/15" : "bg-muted/20")}>

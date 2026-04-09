@@ -11,6 +11,19 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface UAO08AmbientLaunchReadinessRow {
+  blockers?: string[];
+  demo_available?: unknown;
+  id?: string;
+  launch_label?: unknown;
+  launch_ready?: unknown;
+  message?: string;
+  supported?: unknown;
+  target_name?: unknown;
+  target_type?: unknown;
+}
+
 const labelColors: Record<string, string> = { alpha: "bg-blue-500/20 text-blue-400", planned: "bg-muted text-muted-foreground", future: "bg-muted text-muted-foreground/50", production: "bg-green-500/20 text-green-400", beta: "bg-cyan-500/20 text-cyan-400" };
 
 export default function UAO08AmbientLaunchReadiness() {
@@ -28,13 +41,13 @@ export default function UAO08AmbientLaunchReadiness() {
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Launch readiness seeded"); queryClient.invalidateQueries(); },
-    onError: (e: any) => toast.error(e.message),
+    onError: (e: UAO08AmbientLaunchReadinessRow) => toast.error(e.message),
   });
 
-  const deviceFamilies = readiness.filter((r: any) => r.target_type === "device_family");
-  const wearableProviders = readiness.filter((r: any) => r.target_type === "wearable_provider");
-  const launchReady = readiness.filter((r: any) => r.launch_ready).length;
-  const withBlockers = readiness.filter((r: any) => (r.blockers || []).length > 0).length;
+  const deviceFamilies = readiness.filter((r: UAO08AmbientLaunchReadinessRow) => r.target_type === "device_family");
+  const wearableProviders = readiness.filter((r: UAO08AmbientLaunchReadinessRow) => r.target_type === "wearable_provider");
+  const launchReady = readiness.filter((r: UAO08AmbientLaunchReadinessRow) => r.launch_ready).length;
+  const withBlockers = readiness.filter((r: UAO08AmbientLaunchReadinessRow) => (r.blockers || []).length > 0).length;
 
   return (
     <div className="space-y-6 p-6">
@@ -53,7 +66,7 @@ export default function UAO08AmbientLaunchReadiness() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Total</p><p className="text-2xl font-bold">{readiness.length}</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Launch Ready</p><p className="text-2xl font-bold text-green-400">{launchReady}</p></CardContent></Card>
-        <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Demo Available</p><p className="text-2xl font-bold">{readiness.filter((r: any) => r.demo_available).length}</p></CardContent></Card>
+        <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Demo Available</p><p className="text-2xl font-bold">{readiness.filter((r: UAO08AmbientLaunchReadinessRow) => r.demo_available).length}</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">With Blockers</p><p className="text-2xl font-bold text-destructive">{withBlockers}</p></CardContent></Card>
       </div>
 
@@ -64,7 +77,7 @@ export default function UAO08AmbientLaunchReadiness() {
             <Table>
               <TableHeader><TableRow><TableHead>Device</TableHead><TableHead>Label</TableHead><TableHead>Supported</TableHead><TableHead>Demo</TableHead><TableHead>Pilot</TableHead><TableHead>Launch</TableHead><TableHead>Blockers</TableHead></TableRow></TableHeader>
               <TableBody>
-                {deviceFamilies.map((r: any) => (
+                {deviceFamilies.map((r: UAO08AmbientLaunchReadinessRow) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-medium">{r.target_name}</TableCell>
                     <TableCell><Badge className={labelColors[r.launch_label] || ""}>{r.launch_label}</Badge></TableCell>
@@ -88,7 +101,7 @@ export default function UAO08AmbientLaunchReadiness() {
             <Table>
               <TableHeader><TableRow><TableHead>Provider</TableHead><TableHead>Label</TableHead><TableHead>Supported</TableHead><TableHead>Demo</TableHead><TableHead>Pilot</TableHead><TableHead>Launch</TableHead><TableHead>Blockers</TableHead></TableRow></TableHeader>
               <TableBody>
-                {wearableProviders.map((r: any) => (
+                {wearableProviders.map((r: UAO08AmbientLaunchReadinessRow) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-medium">{r.target_name}</TableCell>
                     <TableCell><Badge className={labelColors[r.launch_label] || ""}>{r.launch_label}</Badge></TableCell>

@@ -11,6 +11,18 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 
+
+interface DRS06DemoPolicySafetyRow {
+  ai_execution_mode?: unknown;
+  analytics_mode?: unknown;
+  created_at?: string;
+  id?: string;
+  name?: string;
+  receipt_mode?: unknown;
+  receipt_type?: unknown;
+  summary?: unknown;
+}
+
 export default function DRS06DemoPolicySafety() {
   const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
@@ -121,7 +133,7 @@ export default function DRS06DemoPolicySafety() {
             <p className="text-sm text-muted-foreground text-center py-4">No demo receipts logged yet — receipts appear as policy decisions are made</p>
           ) : (
             <div className="space-y-1 max-h-48 overflow-auto">
-              {recentReceipts.map((r: any) => (
+              {recentReceipts.map((r: DRS06DemoPolicySafetyRow) => (
                 <div key={r.id} className="flex items-center gap-2 text-xs border-b border-border/20 py-1 last:border-0">
                   <Badge variant="outline" className="text-[10px]">{r.receipt_type}</Badge>
                   <span className="text-muted-foreground flex-1 truncate">{r.summary}</span>
@@ -142,7 +154,7 @@ export default function DRS06DemoPolicySafety() {
               <p className="text-sm text-muted-foreground text-center py-4">No custom policy profiles yet</p>
             ) : (
               <div className="space-y-2">
-                {profiles?.map((p: any) => (
+                {profiles?.map((p: DRS06DemoPolicySafetyRow) => (
                   <div key={p.id} className="flex items-center gap-3 text-sm border-b border-border/30 py-2 last:border-0">
                     <span className="font-medium text-foreground">{p.name}</span>
                     <Badge variant="outline" className="text-xs">AI: {p.ai_execution_mode}</Badge>

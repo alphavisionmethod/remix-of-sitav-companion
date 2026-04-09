@@ -24,6 +24,25 @@ import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface RevenueForecastRow {
+  active_customers?: unknown;
+  avg_health_delta?: unknown;
+  churn_probability?: unknown;
+  confidence?: unknown;
+  health_score?: unknown;
+  id?: string;
+  last_activity?: unknown;
+  name?: string;
+  playbook_id?: unknown;
+  predicted_revenue?: unknown;
+  projected_lift?: unknown;
+  revenue_at_risk?: unknown;
+  segment?: unknown;
+  status?: string;
+  trend?: string;
+}
+
 // ── Types ────────────────────────────────────────────────────────
 
 interface DigitalTwin {
@@ -247,7 +266,7 @@ const RevenueForecast = () => {
     queryFn: async () => {
       const { data, error } = await fromTable("digital_twins").select("*");
       if (error) throw error;
-      return data?.length ? data.map((t: any) => ({
+      return data?.length ? data.map((t: RevenueForecastRow) => ({
         id: t.id,
         name: t.name,
         healthScore: t.health_score,
@@ -267,7 +286,7 @@ const RevenueForecast = () => {
     queryFn: async () => {
       const { data, error } = await fromTable("playbook_metrics").select("*");
       if (error) throw error;
-      return data?.length ? data.map((p: any) => ({
+      return data?.length ? data.map((p: RevenueForecastRow) => ({
         id: p.playbook_id,
         name: p.name,
         projectedLift: p.projected_lift,

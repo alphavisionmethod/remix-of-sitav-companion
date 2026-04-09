@@ -11,6 +11,11 @@ import ReactMarkdown from "react-markdown";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface PersonalBrainRow {
+  message?: string;
+}
+
 type Mode = "think" | "learn" | "build" | "create";
 
 interface Message {
@@ -73,7 +78,7 @@ function PersonalBrainInner() {
         }
         setMessages(prev => [...prev, { role: "assistant", content: fullContent || "I'm here to help. What would you like to explore?" }]);
       }
-    } catch (e: any) {
+    } catch (e: PersonalBrainRow) {
       setMessages(prev => [...prev, { role: "assistant", content: `Error: ${e.message || "Something went wrong"}` }]);
     } finally {
       setStreaming(false);

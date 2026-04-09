@@ -28,6 +28,16 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
+
+interface ProofCenterRow {
+  action_summary?: unknown;
+  created_at?: string;
+  domain?: string;
+  id?: string;
+  result?: unknown;
+  verification?: unknown;
+}
+
 type FilterType = "all" | "verified" | "pending" | "failed" | "rolled-back";
 type DomainFilter = "all" | "finance" | "business" | "household" | "system" | "workflow";
 type DetailViewId = string | null;
@@ -46,7 +56,7 @@ const generateHash = (id: string) => {
   return hash;
 };
 
-const buildSteps = (item: any) => {
+const buildSteps = (item: ProofCenterRow) => {
   const steps = [
     { label: "Action Initiated", detail: item.action_summary || "System action", status: "completed" as const, timestamp: item.created_at ? new Date(item.created_at).toLocaleTimeString() : undefined },
     { label: "Receipt Generated", detail: `Hash: ${generateHash(item.id || "unknown").slice(0, 16)}…`, status: "completed" as const },
@@ -179,10 +189,10 @@ const ProofCenter = () => {
     },
   });
 
-  const verified = proofRecords.filter((p: any) => p.verification === "system-verified" || p.result === "completed");
-  const pending = proofRecords.filter((p: any) => p.verification === "pending" || p.result === "executing");
-  const failed = proofRecords.filter((p: any) => p.result === "failed" || p.result === "escalated");
-  const rolledBack = proofRecords.filter((p: any) => p.result === "rolled-back");
+  const verified = proofRecords.filter((p: ProofCenterRow) => p.verification === "system-verified" || p.result === "completed");
+  const pending = proofRecords.filter((p: ProofCenterRow) => p.verification === "pending" || p.result === "executing");
+  const failed = proofRecords.filter((p: ProofCenterRow) => p.result === "failed" || p.result === "escalated");
+  const rolledBack = proofRecords.filter((p: ProofCenterRow) => p.result === "rolled-back");
   const trustScore = proofRecords.length > 0 ? Math.round((verified.length / proofRecords.length) * 100) : 96;
 
   const filtered = useMemo(() => {
@@ -191,16 +201,16 @@ const ProofCenter = () => {
       items = filter === "verified" ? verified : filter === "pending" ? pending : filter === "failed" ? failed : rolledBack;
     }
     if (domainFilter !== "all") {
-      items = items.filter((p: any) => (p.domain || "system") === domainFilter);
+      items = items.filter((p: ProofCenterRow) => (p.domain || "system") === domainFilter);
     }
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      items = items.filter((p: any) => (p.action_summary || "").toLowerCase().includes(q));
+      items = items.filter((p: ProofCenterRow) => (p.action_summary || "").toLowerCase().includes(q));
     }
     return items;
   }, [proofRecords, filter, domainFilter, searchQuery, verified, pending, failed, rolledBack]);
 
-  const selectedItem = detailId ? proofRecords.find((p: any) => p.id === detailId) : null;
+  const selectedItem = detailId ? proofRecords.find((p: ProofCenterRow) => p.id === detailId) : null;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">

@@ -14,6 +14,11 @@ import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Layers, Rock
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface RealityConversionOverviewRow {
+  message?: string;
+}
+
 const STATE_COLORS = {
   presentational: { bg: "bg-muted", text: "text-muted-foreground", icon: Eye, label: "Presentational" },
   simulated: { bg: "bg-yellow-500/20", text: "text-yellow-400", icon: Cpu, label: "Simulated" },
@@ -39,7 +44,7 @@ export default function RealityConversionOverview() {
       toast.success(`Seeded ${result.classifications.seeded} classifications + ${result.replacements.seeded} mock replacements (${result.classifications.skipped + result.replacements.skipped} skipped)`);
       qc.invalidateQueries({ queryKey: ["reality-classifications"] });
       qc.invalidateQueries({ queryKey: ["mock-replacements"] });
-    } catch (e: any) {
+    } catch (e: RealityConversionOverviewRow) {
       toast.error(e.message || "Seed failed");
     } finally {
       setSeeding(false);

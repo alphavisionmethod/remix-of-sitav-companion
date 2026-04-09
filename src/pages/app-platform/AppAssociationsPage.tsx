@@ -11,6 +11,14 @@ import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface AppAssociationsPageRow {
+  icon?: unknown;
+  id?: string;
+  name?: string;
+  protocolAssociations?: unknown;
+}
+
 const DEMO_APP_SLOTS = [
   { id: "browser", label: "Default Browser", icon: Globe, currentApp: "chrome", candidates: ["chrome", "firefox"] },
   { id: "email", label: "Default Email", icon: Mail, currentApp: "gmail", candidates: ["gmail"] },
@@ -102,7 +110,7 @@ const AppAssociationsPage = () => {
                   <p className="text-[10px] text-muted-foreground">{ft.ext}</p>
                 </div>
                 <div className="flex items-center gap-1">
-                  {apps.map((a: any) => (
+                  {apps.map((a: AppAssociationsPageRow) => (
                     <span key={a.id} className="text-sm" title={a.name}>{a.icon}</span>
                   ))}
                 </div>

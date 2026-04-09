@@ -7,6 +7,15 @@ import { Loader2, BarChart3, AlertTriangle, Filter } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface DRS08AnalyticsSegregationRow {
+  created_at?: string;
+  event_name?: unknown;
+  id?: string;
+  mode?: unknown;
+  route?: unknown;
+}
+
 export default function DRS08AnalyticsSegregation() {
   const { isDemoMode } = useDataMode();
   const { data, isLoading } = useQuery({
@@ -48,7 +57,7 @@ export default function DRS08AnalyticsSegregation() {
           {isLoading ? <Loader2 className="h-5 w-5 animate-spin text-muted-foreground mx-auto" /> :
           (data?.recentEvents.length ?? 0) === 0 ? <p className="text-sm text-muted-foreground text-center py-4">No demo analytics events recorded</p> : (
             <div className="space-y-1">
-              {data?.recentEvents.map((e: any) => (
+              {data?.recentEvents.map((e: DRS08AnalyticsSegregationRow) => (
                 <div key={e.id} className="flex items-center gap-3 text-sm py-1.5 border-b border-border/30 last:border-0">
                   <Badge variant="outline" className="text-xs">{e.mode}</Badge>
                   <span className="text-foreground font-medium">{e.event_name}</span>

@@ -9,6 +9,15 @@ import { Layers, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface PFA02ProviderCapabilityMatrixRow {
+  capability_key?: string;
+  category?: string;
+  id?: string;
+  read_write?: unknown;
+  sync_support?: unknown;
+}
+
 export default function PFA02ProviderCapabilityMatrix() {
   const { isDemoMode } = useDataMode();
   const { data: capabilities = [] } = useQuery({
@@ -48,7 +57,7 @@ export default function PFA02ProviderCapabilityMatrix() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {caps.map((c: any) => (
+                {caps.map((c: PFA02ProviderCapabilityMatrixRow) => (
                   <TableRow key={c.id}>
                     <TableCell className="font-mono text-xs">{c.capability_key}</TableCell>
                     <TableCell><Badge variant="outline">{c.category}</Badge></TableCell>

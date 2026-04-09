@@ -15,6 +15,13 @@ import { classifyFeatureDomain } from "@/lib/delivery-methodology/feature-factor
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface FeatureIntakeDeskRow {
+  id?: string;
+  status?: string;
+  title?: string;
+}
+
 const DEMO_ARCHETYPES = [
   "boardroom","office","simulator","workflow","onboarding","crud",
   "action-center","dashboard","detail-view","connector-flow",
@@ -158,7 +165,7 @@ const FeatureIntakeDesk = () => {
         <Card>
           <CardHeader><CardTitle className="flex items-center gap-2"><Layers className="h-5 w-5" /> Recent Blueprints</CardTitle></CardHeader>
           <CardContent className="space-y-3 max-h-[600px] overflow-y-auto">
-            {(blueprints ?? []).map((bp: any) => (
+            {(blueprints ?? []).map((bp: FeatureIntakeDeskRow) => (
               <motion.div key={bp.id} className="p-3 rounded-lg border bg-card/50 space-y-1" whileHover={{ scale: 1.01 }}>
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-sm">{bp.title}</span>

@@ -11,6 +11,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface FilesMemoryReviewRow {
+  classification?: unknown;
+  content?: unknown;
+  extracted_data?: unknown;
+  filename?: unknown;
+  memory_type?: unknown;
+  metadata?: unknown;
+  sensitivity?: unknown;
+  status?: string;
+}
+
 const FilesMemoryReview = () => {
   const { isDemoMode } = useDataMode();
   const { data: files = [], isLoading: loadingFiles } = useAllFiles();
@@ -35,7 +47,7 @@ const FilesMemoryReview = () => {
   // Build memory items from files that have extracted data
   const memoryItems = useMemo(() => {
     // First use real advisor memories
-    const fromMemories = memories.map((m: any) => ({
+    const fromMemories = memories.map((m: FilesMemoryReviewRow) => ({
       learned: m.content,
       source: m.metadata?.source_file || "System learned",
       writtenTo: `${m.memory_type} Memory`,
@@ -45,9 +57,9 @@ const FilesMemoryReview = () => {
 
     // Then augment with file-derived knowledge
     const fromFiles = files
-      .filter((f: any) => f.extracted_data?.text && f.status === "complete")
+      .filter((f: FilesMemoryReviewRow) => f.extracted_data?.text && f.status === "complete")
       .slice(0, 10)
-      .map((f: any) => {
+      .map((f: FilesMemoryReviewRow) => {
         const text = (f.extracted_data?.text || "") as string;
         return {
           learned: text.length > 120 ? text.slice(0, 120) + "..." : text,
@@ -64,7 +76,7 @@ const FilesMemoryReview = () => {
   // Build entity graph from files
   const graphLinks = useMemo(() => {
     const entityMap: Record<string, string[]> = {};
-    files.forEach((f: any) => {
+    files.forEach((f: FilesMemoryReviewRow) => {
       const text = `${f.filename} ${f.extracted_data?.text || ""}`;
       // Simple entity extraction
       const entities = extractEntities(text);
@@ -93,7 +105,7 @@ const FilesMemoryReview = () => {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Memory Items" value={memoryItems.length} icon={Brain} sub="From files & advisors" />
         <KPITile label="Graph Links" value={graphLinks.reduce((s, g) => s + g.linkCount, 0)} icon={Eye} sub="Cross-domain connections" />
-        <KPITile label="Source Files" value={files.filter((f: any) => f.extracted_data?.text).length} icon={RotateCcw} sub="With extracted data" />
+        <KPITile label="Source Files" value={files.filter((f: FilesMemoryReviewRow) => f.extracted_data?.text).length} icon={RotateCcw} sub="With extracted data" />
         <KPITile label="Forgotten Items" value={0} icon={Trash2} sub="User-removed" />
       </div>
 
@@ -141,7 +153,7 @@ const FilesMemoryReview = () => {
   );
 };
 
-function classifyMemoryDomain(f: any): string {
+function classifyMemoryDomain(f: FilesMemoryReviewRow): string {
   const text = `${f.filename} ${f.classification || ""}`.toLowerCase();
   if (text.includes("invoice") || text.includes("contract")) return "Business";
   if (text.includes("bank") || text.includes("statement")) return "Finance";

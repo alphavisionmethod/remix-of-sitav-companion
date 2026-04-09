@@ -74,7 +74,7 @@ const EMPTY: FormData = {
   launch_impact: "none", mock_sources: "", backend_target: "", readiness_score: 0, notes: "",
 };
 
-function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; initial?: FormData; onSave: (d: any) => void }) {
+function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; initial?: FormData; onSave: (d: Record<string, unknown>) => void }) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<FormData>(initial ?? EMPTY);
   const handleOpen = (v: boolean) => { if (v) setForm(initial ?? EMPTY); setOpen(v); };

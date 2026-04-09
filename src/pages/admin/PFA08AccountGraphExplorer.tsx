@@ -6,6 +6,31 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Network, User, Link2, CheckCircle, XCircle, Shield, ScrollText } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+
+interface PFA08AccountGraphExplorerRow {
+  action?: string;
+  active?: unknown;
+  auth_domain?: unknown;
+  auth_method?: string;
+  check_name?: unknown;
+  connection_status?: unknown;
+  consent_type?: unknown;
+  cr?: unknown;
+  created_at?: string;
+  edge_count?: unknown;
+  email?: unknown;
+  granted_scopes?: unknown;
+  id?: string;
+  label?: unknown;
+  node_type?: unknown;
+  passed?: unknown;
+  permission_level?: unknown;
+  primary_identity?: unknown;
+  provider_capabilities?: unknown;
+  provider_families?: unknown;
+  severity?: string;
+}
+
 import {
   getAccountNodes,
   getAccountEdges,
@@ -96,7 +121,7 @@ export default function PFA08AccountGraphExplorer() {
             <Table>
               <TableHeader><TableRow><TableHead>Provider</TableHead><TableHead>Email</TableHead><TableHead>Method</TableHead><TableHead>Primary</TableHead><TableHead>Active</TableHead></TableRow></TableHeader>
               <TableBody>
-                {identities.map((i: any) => (
+                {identities.map((i: PFA08AccountGraphExplorerRow) => (
                   <TableRow key={i.id}>
                     <TableCell>{i.provider_families?.name ?? "—"}</TableCell>
                     <TableCell className="text-xs">{i.email || "—"}</TableCell>
@@ -119,7 +144,7 @@ export default function PFA08AccountGraphExplorer() {
             <Table>
               <TableHeader><TableRow><TableHead>Provider</TableHead><TableHead>Capability</TableHead><TableHead>Status</TableHead><TableHead>Permission</TableHead><TableHead>Health</TableHead><TableHead>Mode</TableHead></TableRow></TableHeader>
               <TableBody>
-                {services.map((s: any) => (
+                {services.map((s: PFA08AccountGraphExplorerRow) => (
                   <TableRow key={s.id}>
                     <TableCell>{s.provider_families?.name ?? "—"}</TableCell>
                     <TableCell className="text-xs">{s.provider_capabilities?.display_name ?? "—"}</TableCell>
@@ -143,7 +168,7 @@ export default function PFA08AccountGraphExplorer() {
             <Table>
               <TableHeader><TableRow><TableHead>Provider</TableHead><TableHead>Type</TableHead><TableHead>Action</TableHead><TableHead>Granted Scopes</TableHead><TableHead>Date</TableHead></TableRow></TableHeader>
               <TableBody>
-                {consents.map((c: any) => (
+                {consents.map((c: PFA08AccountGraphExplorerRow) => (
                   <TableRow key={c.id}>
                     <TableCell>{c.provider_families?.name ?? "—"}</TableCell>
                     <TableCell className="text-xs">{c.consent_type}</TableCell>
@@ -166,7 +191,7 @@ export default function PFA08AccountGraphExplorer() {
             <Table>
               <TableHeader><TableRow><TableHead>Check</TableHead><TableHead>Auth Domain</TableHead><TableHead>Result</TableHead><TableHead>Severity</TableHead><TableHead>Date</TableHead></TableRow></TableHeader>
               <TableBody>
-                {audits.map((a: any) => (
+                {audits.map((a: PFA08AccountGraphExplorerRow) => (
                   <TableRow key={a.id}>
                     <TableCell className="text-xs">{a.check_name}</TableCell>
                     <TableCell className="text-xs">{a.auth_domain}</TableCell>
@@ -189,7 +214,7 @@ export default function PFA08AccountGraphExplorer() {
             <Table>
               <TableHeader><TableRow><TableHead>Label</TableHead><TableHead>Type</TableHead><TableHead>Edges</TableHead></TableRow></TableHeader>
               <TableBody>
-                {graphSummary.map((g: any) => (
+                {graphSummary.map((g: PFA08AccountGraphExplorerRow) => (
                   <TableRow key={g.id}>
                     <TableCell>{g.label}</TableCell>
                     <TableCell><Badge variant="outline" className="text-xs">{g.node_type}</Badge></TableCell>

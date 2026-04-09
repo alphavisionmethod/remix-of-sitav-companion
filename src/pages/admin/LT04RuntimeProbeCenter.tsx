@@ -7,6 +7,19 @@ import { Radar, Clock, Shield, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface LT04RuntimeProbeCenterRow {
+  cadence_seconds?: unknown;
+  id?: string;
+  latency_ms?: unknown;
+  name?: string;
+  probe_id?: unknown;
+  severity?: string;
+  status?: string;
+  target?: unknown;
+  target_system?: unknown;
+}
+
 const LT04RuntimeProbeCenter = () => {
   const { data: probes } = useQuery({
     queryKey: ["runtime-probes"],
@@ -37,7 +50,7 @@ const LT04RuntimeProbeCenter = () => {
     enabled: false,
   });
 
-  const getLatestRun = (probeId: string) => probeRuns?.find((r: any) => r.probe_id === probeId);
+  const getLatestRun = (probeId: string) => probeRuns?.find((r: LT04RuntimeProbeCenterRow) => r.probe_id === probeId);
 
   return (
     <div className="space-y-6 p-6">
@@ -67,7 +80,7 @@ const LT04RuntimeProbeCenter = () => {
               </Badge>
             </div>
             <div className="space-y-2">
-              {liveProbe.probes?.map((p: any) => (
+              {liveProbe.probes?.map((p: LT04RuntimeProbeCenterRow) => (
                 <div key={p.probe_id} className="flex items-center justify-between p-3 rounded border">
                   <div>
                     <p className="font-medium">{p.name}</p>
@@ -92,7 +105,7 @@ const LT04RuntimeProbeCenter = () => {
                   <th className="p-2">Name</th><th className="p-2">Target</th><th className="p-2">Cadence</th><th className="p-2">Severity</th><th className="p-2">Launch Impact</th><th className="p-2">Latest</th>
                 </tr></thead>
                 <tbody>
-                  {probes.map((p: any) => {
+                  {probes.map((p: LT04RuntimeProbeCenterRow) => {
                     const latest = getLatestRun(p.id);
                     return (
                       <tr key={p.id} className="border-b hover:bg-muted/50">

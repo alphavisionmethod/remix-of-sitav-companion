@@ -7,6 +7,16 @@ import { Route, MousePointer, Eye } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface LT06RouteInteractionTruthRow {
+  id?: string;
+  interaction_type?: unknown;
+  la?: unknown;
+  provider_mode?: unknown;
+  route?: unknown;
+  status?: string;
+}
+
 const LT06RouteInteractionTruth = () => {
   const { data: routeRecords } = useQuery({
     queryKey: ["route-truth-all"],
@@ -16,9 +26,9 @@ const LT06RouteInteractionTruth = () => {
     },
   });
 
-  const uniqueRoutes = [...new Set(routeRecords?.map((r: any) => r.route) ?? [])];
+  const uniqueRoutes = [...new Set(routeRecords?.map((r: LT06RouteInteractionTruthRow) => r.route) ?? [])];
   const passingRoutes = uniqueRoutes.filter(route => {
-    const latest = routeRecords?.find((r: any) => r.route === route);
+    const latest = routeRecords?.find((r: LT06RouteInteractionTruthRow) => r.route === route);
     return latest?.status === "pass";
   });
 
@@ -61,7 +71,7 @@ const LT06RouteInteractionTruth = () => {
                   <th className="p-2">Route</th><th className="p-2">Interaction</th><th className="p-2">Status</th><th className="p-2">Mode</th><th className="p-2">Latency</th><th className="p-2">Verified</th>
                 </tr></thead>
                 <tbody>
-                  {routeRecords.slice(0, 30).map((r: any) => (
+                  {routeRecords.slice(0, 30).map((r: LT06RouteInteractionTruthRow) => (
                     <tr key={r.id} className="border-b hover:bg-muted/50">
                       <td className="p-2 font-mono text-xs">{r.route}</td>
                       <td className="p-2">{r.interaction_type}</td>

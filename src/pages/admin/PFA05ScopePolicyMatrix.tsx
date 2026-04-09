@@ -9,6 +9,14 @@ import { Shield, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface PFA05ScopePolicyMatrixRow {
+  id?: string;
+  minimum_scopes?: unknown;
+  optional_scopes?: unknown;
+  provider_capabilities?: unknown;
+}
+
 export default function PFA05ScopePolicyMatrix() {
   const { isDemoMode } = useDataMode();
   const { data: policies = [] } = useQuery({
@@ -41,7 +49,7 @@ export default function PFA05ScopePolicyMatrix() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {policies.map((p: any) => (
+                {policies.map((p: PFA05ScopePolicyMatrixRow) => (
                   <TableRow key={p.id}>
                     <TableCell className="text-sm">{p.provider_capabilities?.provider_families?.name || "—"}</TableCell>
                     <TableCell className="font-mono text-xs">{p.provider_capabilities?.capability_key || "—"}</TableCell>

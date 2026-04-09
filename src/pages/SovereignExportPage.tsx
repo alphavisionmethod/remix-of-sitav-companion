@@ -12,6 +12,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
+
+interface SovereignExportPageRow {
+  message?: string;
+}
+
 const DEMO_EXPORTABLE_TABLES = [
   { name: "Profiles", rows: 1, size: "2 KB" },
   { name: "Connector Configs", rows: 5, size: "8 KB" },
@@ -73,7 +78,7 @@ export default function SovereignExportPage() {
       URL.revokeObjectURL(url);
 
       toast.success("Data exported successfully");
-    } catch (e: any) {
+    } catch (e: SovereignExportPageRow) {
       toast.error(e.message || "Export failed");
     } finally {
       setExporting(false);
@@ -99,7 +104,7 @@ export default function SovereignExportPage() {
       if (error) throw error;
       toast.success("Deletion request submitted. Processing within 30 days per GDPR.");
       setConfirmDelete(false);
-    } catch (e: any) {
+    } catch (e: SovereignExportPageRow) {
       toast.error(e.message || "Deletion request failed");
     } finally {
       setDeleting(false);

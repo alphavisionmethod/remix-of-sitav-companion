@@ -12,6 +12,15 @@ import { Calendar, Zap, Clock, AlertTriangle, Pause, Play, Ban } from "lucide-re
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface AR02ScheduledJobRegistryRow {
+  domain?: string;
+  id?: string;
+  job_class?: unknown;
+  name?: string;
+  state?: unknown;
+}
+
 const stateColors: Record<string, string> = {
   active: "bg-trust-verified/10 text-trust-safe border-trust-verified/20",
   paused: "bg-accent/10 text-accent border-accent/20",
@@ -66,7 +75,7 @@ export default function AR02ScheduledJobRegistry() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {jobs.map((j: any) => {
+                {jobs.map((j: AR02ScheduledJobRegistryRow) => {
                   const StateIcon = stateIcons[j.state] || Clock;
                   return (
                     <TableRow key={j.id}>

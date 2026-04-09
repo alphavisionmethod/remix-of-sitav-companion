@@ -7,6 +7,19 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useAttentionDecisions } from "@/hooks/use-notification-calm-data";
 import { DEMO_CHANNEL_SPECS, DEMO_DELIVERY_PRINCIPLES } from "@/lib/demo-data/notification-calm";
 
+
+interface NRC01RoutingStudioRow {
+  deep?: unknown;
+  deep_work?: unknown;
+  id?: string;
+  normal?: unknown;
+  normal_focus?: unknown;
+  sleep?: unknown;
+  sleeping?: unknown;
+  urg?: unknown;
+  urgency_class?: unknown;
+}
+
 const NRC01RoutingStudio = () => {
   const { data: routingMatrix, isLoading } = useAttentionDecisions();
   const channelSpecs = DEMO_CHANNEL_SPECS;
@@ -47,7 +60,7 @@ const NRC01RoutingStudio = () => {
                       <th className="p-2">Traveling</th>
                     </tr></thead>
                     <tbody>
-                      {(routingMatrix ?? []).map((r: any) => (
+                      {(routingMatrix ?? []).map((r: NRC01RoutingStudioRow) => (
                         <tr key={r.urg ?? r.id} className="border-b hover:bg-muted/30">
                           <td className="p-2 font-mono font-medium">{r.urg ?? r.urgency_class}</td>
                           <td className="p-2 text-center">{r.normal ?? r.normal_focus}</td>

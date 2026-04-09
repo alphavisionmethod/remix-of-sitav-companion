@@ -7,6 +7,16 @@ import { Clock, AlertTriangle, CheckCircle2, ShieldAlert, Timer } from "lucide-r
 import { formatDistanceToNow } from "date-fns";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+interface REX02ApprovalQueueCompletionRow {
+  action_type?: string;
+  created_at?: string;
+  id?: string;
+  resolved_at?: unknown;
+  risk_tier?: unknown;
+  status?: string;
+}
+
 function useApprovalQueueStats() {
   return useQuery({
     queryKey: ["rex02-approval-queue-stats"],
@@ -15,9 +25,9 @@ function useApprovalQueueStats() {
         .select("status, risk_tier, created_at, resolved_at, updated_at");
       if (error) throw error;
       const items = data || [];
-      const pending = items.filter((i: any) => i.status === "pending");
-      const highRiskPending = pending.filter((i: any) => i.risk_tier === "critical" || i.risk_tier === "elevated");
-      const resolved = items.filter((i: any) => i.resolved_at);
+      const pending = items.filter((i: REX02ApprovalQueueCompletionRow) => i.status === "pending");
+      const highRiskPending = pending.filter((i: REX02ApprovalQueueCompletionRow) => i.risk_tier === "critical" || i.risk_tier === "elevated");
+      const resolved = items.filter((i: REX02ApprovalQueueCompletionRow) => i.resolved_at);
       const avgLatencyMs = resolved.length > 0
         ? resolved.reduce((acc: number, i: any) => {
             const created = new Date(i.created_at).getTime();
@@ -25,7 +35,7 @@ function useApprovalQueueStats() {
             return acc + (resolvedAt - created);
           }, 0) / resolved.length
         : 0;
-      const aging = pending.filter((i: any) => {
+      const aging = pending.filter((i: REX02ApprovalQueueCompletionRow) => {
         const age = Date.now() - new Date(i.created_at).getTime();
         return age > 24 * 60 * 60 * 1000; // older than 24h
       });
@@ -83,7 +93,7 @@ export default function REX02ApprovalQueueCompletion() {
             <p className="text-muted-foreground">No pending items.</p>
           ) : (
             <div className="space-y-2">
-              {(stats?.items || []).map((item: any) => (
+              {(stats?.items || []).map((item: REX02ApprovalQueueCompletionRow) => (
                 <div key={item.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">
                   <div>
                     <p className="text-sm font-medium text-foreground">{item.action_type || "Unknown action"}</p>

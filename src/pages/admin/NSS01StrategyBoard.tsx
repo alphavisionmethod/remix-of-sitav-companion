@@ -8,6 +8,15 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useNativeShellPlatforms } from "@/hooks/use-native-shell-data";
 import { DEMO_STRATEGY_PRINCIPLES, DEMO_ARCHITECTURE_LAYERS } from "@/lib/demo-data/native-shell";
 
+
+interface NSS01StrategyBoardRow {
+  family_key?: unknown;
+  launch_stage?: string;
+  name?: string;
+  platform?: unknown;
+  stage?: unknown;
+}
+
 const NSS01StrategyBoard = () => {
   const { data: platforms, isLoading } = useNativeShellPlatforms();
   const items = platforms ?? [];
@@ -33,7 +42,7 @@ const NSS01StrategyBoard = () => {
         <TabsContent value="platforms">
           {isLoading ? <p className="text-xs text-muted-foreground p-4">Loading…</p> : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {items.map((s: any) => (
+              {items.map((s: NSS01StrategyBoardRow) => (
                 <Card key={s.platform ?? s.family_key} className="hover:shadow-md transition-shadow">
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">

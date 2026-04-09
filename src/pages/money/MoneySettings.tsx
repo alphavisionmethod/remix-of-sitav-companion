@@ -9,6 +9,13 @@ import { useMoneyPolicies, useToggleMoneyPolicy } from "@/hooks/use-domain-data"
 import { useMemo } from "react";
 import { toast } from "sonner";
 
+
+interface MoneySettingsRow {
+  category?: string;
+  icon_key?: unknown;
+  id?: string;
+}
+
 const iconMap: Record<string, typeof Shield> = {
   Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, AlertTriangle, Settings,
 };
@@ -27,7 +34,7 @@ const MoneySettings = () => {
   const { data: policies = [], isLoading } = useMoneyPolicies();
   const toggleMut = useToggleMoneyPolicy();
 
-  const categories = useMemo(() => [...new Set(policies.map((p: any) => p.category))], [policies]);
+  const categories = useMemo(() => [...new Set(policies.map((p: MoneySettingsRow) => p.category))], [policies]);
 
   const handleToggle = (id: string, currentEnabled: boolean) => {
     toggleMut.mutate({ id, enabled: !currentEnabled }, {
@@ -48,7 +55,7 @@ const MoneySettings = () => {
           {categories.map((cat: string) => (
             <div key={cat} className="space-y-3">
               <SitaSectionHeader title={cat} />
-              {policies.filter((p: any) => p.category === cat).map((policy: any) => {
+              {policies.filter((p: MoneySettingsRow) => p.category === cat).map((policy: MoneySettingsRow) => {
                 const Icon = iconMap[policy.icon_key || ""] || Shield;
                 return (
                   <SitaCard key={policy.id} className="p-4">
