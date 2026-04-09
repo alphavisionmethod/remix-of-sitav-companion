@@ -11,6 +11,8 @@ interface CapacitorGlobal {
 }
 
 interface Window {
-  electron?: unknown;
+  electron?: {
+    sendNotification?: (title: string, body: string) => void;
+  };
   Capacitor?: CapacitorGlobal;
 }
