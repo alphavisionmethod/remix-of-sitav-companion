@@ -1,88 +1,48 @@
 
 
-# Fix Route Family Boundary Violations — 23 Non-Admin Pages
+# Fix Service Family Layer — Deduplicate 7 DUP Services
 
-## Problem
+## Current State
 
-23 non-admin app pages import runtime functions/data directly from `@/lib/core-services/` or `@/lib/services/`, bypassing the kernel execution boundary. The audit requires all non-admin pages to access data through hooks (`useAction`, `useDomainData`) or demo-data modules — never direct service imports.
+The first 6 services (brain-core, model-router, inference-gateway, conscience-gate, trust-governor, mnemosyne) are **already correctly canonical** in `core-services/` with real implementations and reverse shims in `lib/services/`. No action needed.
 
-## Classification of Violations
+The 7 DUP services have a split-brain problem:
+- `core-services/X/index.ts` re-exports from a **flat file** (`core-services/X.ts`) — the main engine
+- `lib/services/X/` has **additional implementation files** (sub-services) NOT available through core-services
 
-### Group A: Demo data imports (11 pages) — Move to `src/lib/demo-data/`
-These pages import static demo arrays/constants. The fix is to re-export these from `src/lib/demo-data/` modules instead.
+| Service | Flat file (core) | Extra files in lib/services | Total exports split |
+|---------|-----------------|----------------------------|-------------------|
+| memory-service | 357 lines | 7 files (profile, workflow, boardroom, correction, preference, trust) | Split |
+| executor-service | 380 lines | 3 files (action, connector-action, workflow-step) | Split |
+| event-bus | 251 lines | 4 files (envelope, publish, subscribe, unified) | Split |
+| receipt-service | 285 lines | 4 files (receipts, proof-bundles, approval, execution) | Split |
+| policy-engine | 252 lines | 4 files (truth-boundaries, approval-req, sensitive-doc, outbound-comm) | Split |
+| capability-router | 131 lines | 3 files (registry, pack-enablement, shell-space) | Split |
+| verification-engine | 231 lines | 5 files (verification, rollback, postcondition, receipt-verify, replay) | Split |
 
-| Page | Current Import | Target |
-|------|---------------|--------|
-| integrations/ActionsApprovals.tsx | `integration-hub/demo-connections` | `demo-data/integrations` |
-| integrations/ConnectionDetail.tsx | `integration-hub/demo-connections`, `providers` | `demo-data/integrations` |
-| integrations/IntegrationsCatalog.tsx | `integration-hub/providers` | `demo-data/integrations` |
-| integrations/ProviderDetail.tsx | `integration-hub/providers`, `demo-connections` | `demo-data/integrations` |
-| integrations/ConnectionsList.tsx | `integration-hub/demo-connections`, `providers` | `demo-data/integrations` |
-| money/InvestmentOffice.tsx | `finance-os/investment-office.service`, `investment-policy-rules` | `demo-data/investment` |
-| owner/PackEditor.tsx | `capability-router/pack-enablement.service` | `demo-data/packs` |
-| settings/GoogleConnectedAccounts.tsx | already fixed (0 hits) | — |
-| ConnectorHub.tsx | `connector-health-service` | `demo-data/connectors` |
-| LifeSimulator.tsx | already fixed (0 hits) | — |
+Only 5 remaining imports go through `lib/services/` (all in test files) — the reverse shims handle them.
 
-### Group B: Utility function imports (5 pages) — Move to `src/lib/utils/` or hooks
-These import pure utility functions (classifiers, simulators). Move to a shared utils layer.
+## Fix
 
-| Page | Current Import | Fix |
-|------|---------------|-----|
-| files/FilesAll.tsx | `file-ingestion` (`classifyFile`, `detectSensitivity`) | Move to `src/lib/utils/file-classification.ts` |
-| files/FilesOverview.tsx | `file-ingestion` (same) | Same util |
-| money/BillsWorkspace.tsx | `payment-execution` (`simulatePayment`) | Move to `src/lib/utils/payment-simulation.ts` |
-| SystemStatus.tsx | `self-healing` (runtime functions + types) | Move data to `demo-data/system-status` |
+For each of the 7 DUP services, update `core-services/X/index.ts` to re-export **both** the flat canonical file AND all `lib/services/X/` sub-services. Then convert `lib/services/X/index.ts` to a pure reverse shim.
 
-### Group C: Type-only imports (7 pages) — Convert to `import type`
-These only use types. Convert to `import type` which is erased at compile time and doesn't violate boundaries.
+### Per-service changes (14 files total)
 
-| Page | Current Import |
-|------|---------------|
-| files/FilesSearch.tsx | `type SearchResponse` — already `import type` ✓ |
-| mission/PolicySimulatorPage.tsx | `type SimulationResult` — already `import type` ✓ |
-| money/MoneyOverview.tsx | `type FraudSummary` — already `import type` ✓ |
-| owner/LeaseDashboard.tsx | `type CapabilityLease, LeaseViolation` — already `import type` ✓ |
-| owner/ConstitutionEditor.tsx | `type ConstitutionRule, ConstitutionRuleCategory` — already `import type` ✓ |
-| PolicySimulatorHub.tsx | `type SimulationResult` — already `import type` ✓ |
-| SettingsPage.tsx | `type SimulationResult` — already `import type` ✓ |
+**For each service:**
+1. `core-services/X/index.ts` — add `export * from "@/lib/services/X/sub-service"` lines for each sub-service file
+2. `lib/services/X/index.ts` — replace with `export * from "@/lib/core-services/X"` reverse shim
 
-These 7 are already clean — `import type` is erased at build time and doesn't create a runtime boundary violation.
+This makes `core-services/` the single canonical source while keeping `lib/services/` as a compatibility shim.
 
-## Implementation Steps
-
-### Step 1: Create `src/lib/demo-data/integrations.ts`
-Re-export `DEMO_CONNECTIONS`, `DEMO_AUDIT_LOG`, `DEMO_ACTION_REQUESTS`, `INTEGRATION_PROVIDERS`, `PROVIDER_CATEGORIES`, `getProviderById` from here. Source the data from `core-services/integration-hub/` internally.
-
-### Step 2: Create `src/lib/demo-data/investment.ts`
-Re-export investment office demo data and policy rules.
-
-### Step 3: Create `src/lib/demo-data/packs.ts`
-Re-export `listPacks` from here.
-
-### Step 4: Create `src/lib/demo-data/connectors.ts`
-Re-export `fetchConnectorHealth` and types.
-
-### Step 5: Create `src/lib/utils/file-classification.ts`
-Move `classifyFile`, `detectSensitivity` and their types here as pure utility functions (no service dependency).
-
-### Step 6: Create `src/lib/utils/payment-simulation.ts`
-Move `simulatePayment` and `PaymentSimulation` type here.
-
-### Step 7: Create `src/lib/demo-data/system-status.ts`
-Re-export self-healing data functions and types.
-
-### Step 8: Update all 16 pages with runtime imports
-Repoint imports from `@/lib/core-services/*` to the new `@/lib/demo-data/*` or `@/lib/utils/*` locations.
-
-### Step 9: Verify build
-Run `npx tsc --noEmit` to confirm 0 errors.
+### Verification
+- Run `npx tsc --noEmit` to confirm 0 errors
+- Grep to confirm no remaining split exports
 
 ## Files Changed
-- **7 new files**: demo-data/integrations.ts, demo-data/investment.ts, demo-data/packs.ts, demo-data/connectors.ts, demo-data/system-status.ts, utils/file-classification.ts, utils/payment-simulation.ts
-- **16 pages updated**: import paths changed
-- **0 logic changes**: all runtime behavior identical
+- 7 `core-services/*/index.ts` — expanded to include all sub-service exports
+- 7 `lib/services/*/index.ts` — converted to reverse shims
+- 0 consumer changes needed (shims maintain compatibility)
 
 ## Risk
-Low — creating facade modules that re-export existing code. All type-only imports are already compliant. Build verification ensures nothing breaks.
+Low — reverse shims ensure all existing imports continue to resolve. Build verification catches any missing re-exports.
 
